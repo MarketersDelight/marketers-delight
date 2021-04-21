@@ -25,13 +25,13 @@
 
 /* ICONS */
 
-.md-icon-twitter { color: #1da1f2; }
 <?php
 	foreach ( md_icons() as $icon => $fields ) {
+		if ( ! isset( $fields['unicode'] ) ) continue;
 		$selectors = '';
 		if ( isset( $fields['classes'] ) )
 			foreach ( $fields['classes'] as $selector )
-				$selectors .= ",.{$selector}:before";
-		echo '.' . $icon . ":before{$selectors}{content:'" . $fields['glyph'] . '\'}';
+				$selectors .= ",{$selector}:before";
+		echo '.md-icon-' . $icon . ":before{$selectors}{content:'\\" . $fields['unicode'] . '\'}';
 	}
 ?>

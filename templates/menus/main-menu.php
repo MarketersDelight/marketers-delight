@@ -5,7 +5,7 @@
 
 			<?php if ( has_nav_menu( 'main' ) ) : ?>
 				<span class="menu-trigger menu-trigger-menu" data-menu-trigger="menu">
-					<i class="md-icon-menu"></i> <span class="menu-trigger-text"><?php echo md_get_menu_name( 'main' ); ?></span>
+					<?php echo md_icon( 'menu' ); ?> <span class="menu-trigger-text"><?php echo md_get_menu_name( 'main' ); ?></span>
 				</span>
 			<?php endif; ?>
 
@@ -13,13 +13,13 @@
 
 			<?php if ( md_main_menu_has_search() ) : ?>
 				<span class="menu-trigger menu-trigger-search" data-menu-trigger="search">
-					<i class="md-icon-search"></i> <span class="menu-trigger-text"><?php _e( 'Search', 'md' ); ?></span>
+					<?php echo md_icon( 'search' ); ?> <span class="menu-trigger-text"><?php _e( 'Search', 'md' ); ?></span>
 				</span>
 			<?php endif; ?>
 
 			<?php if ( has_nav_menu( 'social' ) ) : ?>
 				<span class="menu-trigger menu-trigger-social" data-menu-trigger="social">
-					<i class="md-icon-user-add"></i> <span class="menu-trigger-text"><?php echo md_get_menu_name( 'social' ); ?></span>
+					<?php echo md_icon( 'user-add' ); ?> <span class="menu-trigger-text"><?php echo md_get_menu_name( 'social' ); ?></span>
 				</span>
 			<?php endif; ?>
 

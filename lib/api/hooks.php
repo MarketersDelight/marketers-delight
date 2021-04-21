@@ -48,12 +48,24 @@ function md_hook_before_content_box() {
 	do_action( 'md_hook_before_content_box', 'before_content_box' );
 }
 
+function md_hook_content_box_top() {
+	do_action( 'md_hook_content_box_top' );
+}
+
 function md_hook_content_box_bottom() {
 	do_action( 'md_hook_content_box_bottom' );
 }
 
 function md_hook_content() {
 	do_action( 'md_hook_content', 'content' );
+}
+
+function md_hook_content_top() {
+	do_action( 'md_hook_content_top' );
+}
+
+function md_hook_content_bottom() {
+	do_action( 'md_hook_content_bottom' );
 }
 
 function md_hook_before_content() {

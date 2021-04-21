@@ -78,6 +78,7 @@
 }
 
 .md-icon-yes { background-color: #30a146; }
+.md-file-upload-success .dashicons-yes, .md-action .dashicons-yes { color: #30a146; }
 .md-icon-no { background-color: #ae2525; }
 
 /* LAYOUT */
@@ -129,6 +130,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	font-weight: normal;
 	line-height: 1.2em;
 	margin: 0 0 1em;
+}
+
+.md-med-title {
+	font-size: 17px;
+	font-weight: normal;
+	line-height: 26px;
 }
 
 .md-hr {
@@ -290,19 +297,20 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md .columns-half { margin-left: -11px; }
 .md .columns-half > .col { padding-left: 11px; }
 
-@media all and (min-width: 1000px) {
-	.md .col {
-		float: left;
-/*
-		display: inline-block;
-		margin-left: -3px;
-		vertical-align: top;
-*/
-	}
+.md .columns-flex > .col {
+	display: inline-block;
+	float: none;
+	margin-left: -4px;
+	vertical-align: middle;
+}
+
+@media all and (min-width: 900px) {
+	.md .col { float: left; }
 	.md .columns-2 .col { width: 50%; }
 	.md .columns-3 > .col { width: 33.333333333%; }
 	.md .columns-4 > .col, .md .columns-25-75 > .col1 { width: 25%; }
 	.md .columns-5 > .col { width: 20%; }
+	.md .columns-6 > .col { width: 16.6666666667%; }
 	.md .columns-10-90 > .col1 { width: 13%; }
 	.md .columns-10-90 > .col2 { width: 87%; }
 	.md .columns-65-35 > .col2, .md .columns-35-65 > .col1 { width: 35%; }
@@ -315,12 +323,17 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .col.col-right { float: right; }
 }
 
+@media all and (max-width: 900px) {
+	.md.wrap { margin-right: 10px; }
+	.md .columns-flex > .col { width: 50%; }
+}
+
 .md .col-style {
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-width: 0 1px 1px;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-	padding: 15px;
+	padding: 15px 10px;
 }
 
 .md .col-image {
@@ -346,10 +359,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md .col-style p {
-	font-size: 14px;
-	line-height: 22px;
-	margin-bottom: 22px;
+	margin-bottom: 0;
+	margin-top: 0;
 }
+
+.md .col-style p:not(:last-child) { margin-bottom: 10px; }
 
 .md .col-featured {
 	border: 0;
@@ -467,7 +481,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-opened .md-dashicon-arrow-down:before { content: "\f142"; }
 
-.md-widget .md-loading {
+.md-integration .md-loading {
 	display: none;
 	float: right;
 	font-size: 21px;
@@ -787,6 +801,44 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .has-upload .md-upload-remove { display: inline-block; }
 
+.md-file-upload-field {
+	display: inline-block;
+	position: relative;
+}
+
+.md-file-uploading {
+	display: none;
+	position: relative;
+		top: -11px;
+}
+
+.md-tooltip {
+	background-color: rgba(0, 0, 0, 0.8);
+	border-bottom: 0;
+	border-radius: 3px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	color: #fff;
+	display: none;
+	font-size: 14px;
+	padding: 5px;
+	position: absolute;
+		top: -17px;
+		right: -204px;
+	width: 260px;
+}
+
+.md-tooltip:before {
+	border-bottom: 7px solid transparent;
+	border-top: 7px solid transparent;
+	border-right: 7px solid rgba(0, 0, 0, 0.8);
+	content: '';
+	height: 0;
+	position: absolute;
+		left: -7px;
+		top: 9px;
+	width: 0;
+}
+
 /* REPEAT */
 
 .md-badge, .md-badge:hover, a.md-badge {
@@ -840,6 +892,12 @@ a.md-circle-badge {
 .md-input {
 	border-radius: 3px;
 	padding: 10px;
+	width: 100%;
+}
+
+.md-input-full {
+	font-size: 1.3em;
+	height: 1.3em;
 	width: 100%;
 }
 
@@ -903,29 +961,22 @@ a.md-circle-badge {
 	padding-top: 0;
 	min-width: auto;
 }
-
 .md h3.hndle input[type="text"] {
 	border: 0;
 	box-shadow: none;
 	padding: 0;
 }
-
 .md .postbox-container { width: 100%; }
-
 .md .postbox-container h3 {
 	font-size: 14px;
 	padding: 8px 12px;
 	margin: 0;
 	line-height: 1.4;
 }
-
 .md .postbox .hndle .regular-text,
 .md .md-repeat-bar .regular-text,
-
 .md .postbox .hndle .regular-text { max-width: 13em; }
-
 .term-md-wrap .postbox, .md .mb-none { margin-bottom: 0 !important; }
-
 .md .mt-none { margin-top: 0 !important; }
 
 /* DROPINS */
@@ -967,6 +1018,21 @@ a.md-circle-badge {
 	width: 12px;
 }
 .md-mods h3 { margin-bottom: 5px; }
+
+/* FONT ICONS */
+
+.md-font-icons .col { text-align: center; }
+
+.md-font-icons .regular-text.md-med-title {
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	line-height: inherit;
+	min-height: inherit;
+	padding: 0;
+	text-align: center;
+}
 
 
 

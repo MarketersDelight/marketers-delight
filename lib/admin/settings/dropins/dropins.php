@@ -114,6 +114,7 @@ class md_dropins extends md_api {
 	public function options() {
 		$options = array(
 			'admin_bar' => sprintf( __( 'Enable <b>MD Admin Bar</b> [%s]', 'md' ), '<a href="https://marketersdelight.com/dropins/admin-bar/" target="_blank">?</a>' ),
+			'subtitle' => __( 'Enable <b>Subtitle</b>', 'md' ),
 			'stream' => sprintf( __( 'Enable <b>Stream</b> [%s]', 'md' ), '<a href="https://marketersdelight.com/marketers-delight-492/" target="_blank">?</a>' ),
 			'bookshelf' => sprintf( __( 'Enable <b>Bookshelf</b> [%s]', 'md' ), '<a href="https://marketersdelight.com/books/" target="_blank">?</a>' ),
 			'share' => __( 'Disable <b>Share</b>', 'md' ),
@@ -150,6 +151,7 @@ class md_dropins extends md_api {
 							'share',
 							'main_menu',
 							'admin_bar',
+							'subtitle',
 							'footnotes',
 							'tracking_scripts',
 							'woocommerce'

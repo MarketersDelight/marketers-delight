@@ -29,7 +29,7 @@ class md_floating_bars_data {
 			),
 			'icon' => array(
 				'type' => 'select',
-				'options' => md_get_icons( 'ids' )
+				'options' => md_get_icons( 'ids', null, 'md-icon-' )
 			),
 			'cta_type' => array(
 				'type' => 'select',

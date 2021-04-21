@@ -146,10 +146,8 @@ function md_has_byline() {
 function md_has_author_box() {
 	$enable = md_setting( array( 'content', 'author_box', 'enable' ) );
 	if (
-		is_single() && (
-			( ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
-			( empty( $enable ) && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
-		)
+		( is_singular( 'post' ) && ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
+		( is_singular() && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
 	)
 		return true;
 }

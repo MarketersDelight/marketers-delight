@@ -75,7 +75,7 @@ class md_floating_bars extends md_api {
 		$position = md_setting( array( 'floating_bars', 'bars', $field, 'position' ) );
 		$show = md_setting( array( 'floating_bars', 'bars', $field, 'show' ) );
 		$colors = $this->data->colors();
-		$icons = md_get_icons( 'options' );
+		$icons = md_get_icons( 'options', null, 'md-icon-' );
 		include( md_template( $this->dir, 'floating-bars/admin/floating-bar-fields', true ) );
 	}
 

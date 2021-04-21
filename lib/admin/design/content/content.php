@@ -105,7 +105,7 @@ class md_content extends md_api {
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )
 				$cta_options[$cta_id] = $cta_fields['name'];
-		include( MD_DIR . 'lib/admin/design/content/content-settings.php' );
+		include( 'content-settings.php' );
 	}
 
 }

@@ -13,7 +13,7 @@
 				<a href="<?php echo esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ); ?>" rel="author"><span class="byline-author-name fn" itemprop="name"><?php esc_html( the_author() ); ?></span></a>
 			</span>
 			<?php if ( get_the_author_meta( 'twitter' ) ) : ?>
-				<a href="//twitter.com/<?php echo esc_html( get_the_author_meta( 'twitter' ) ); ?>/" class="byline-twitter byline-icon" rel="nofollow" target="_blank"><i class="md-icon-twitter"></i></a>
+				<a href="//twitter.com/<?php echo esc_html( get_the_author_meta( 'twitter' ) ); ?>/" class="byline-twitter byline-icon" rel="nofollow" target="_blank"><?php echo md_icon( 'twitter' ); ?></a>
 			<?php endif; ?>
 		<?php endif; ?>
 	</span>

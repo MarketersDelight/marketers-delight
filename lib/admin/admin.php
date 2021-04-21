@@ -61,6 +61,9 @@ class md_admin {
 		// Scripts
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		// AJAX actions
+		add_action( 'wp_ajax_md_action', array( $this, 'action' ) );
+		add_action( 'wp_ajax_nopriv_md_action', array( $this, 'action' ) );
 	}
 
 	/**
@@ -116,10 +119,14 @@ class md_admin {
 		$screen = get_current_screen();
 		$style = 'lib/admin/css/admin.css';
 		$script = 'lib/admin/js/admin.js';
-		$vars['user_id'] = get_current_user_id();
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'wp-color-picker', 'md-alpha-color' ), md_ver( $script ), true );
+
+		$vars = array(
+			'user_id' => get_current_user_id(),
+			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' )	
+		);
 
 		if ( in_array( $screen->base, array( 'edit', 'post' ) ) && ! in_array( $screen->post_type, array( 'post', 'page' ) ) ) {
 			if ( $screen->base == 'post' )
@@ -168,8 +175,10 @@ class md_admin {
 	 * @since 5.0
 	 */
 
-    public function admin_row( $actions, $post ){
-		$actions['md_post_id'] = '<span class="md-action-row-label">ID: ' . get_the_ID() . '</span>';
+    public function admin_row( $actions, $post ) {
+	    $user = wp_get_current_user();
+	    if ( in_array( $user->roles[0], array( 'administrator', 'editor' ) ) )
+			$actions['md_post_id'] = '<span class="md-action-row-label">ID: ' . get_the_ID() . '</span>';
 		return $actions;
     }
 
@@ -180,15 +189,19 @@ class md_admin {
 	 */
 
 	public function add_meta_boxes() {
+		$screen = get_current_screen();
 		foreach ( md_register( 'meta_boxes' ) as $meta_box => $fields ) {
 			$post_types = isset( $fields['post_type'] ) ? $fields['post_type'] : md_post_type_meta();
 			$context = isset( $fields['context'] ) ? $fields['context'] : 'normal';
 			$priority = isset( $fields['priority'] ) ? $fields['priority'] : 'default';
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
-			foreach ( $post_types as $post_type )
+			foreach ( $post_types as $post_type ) {
+				if ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) )
+					continue;
 				add_meta_box( $fields['id'], $fields['name'], array( $this, 'meta_box' ), $post_type, $context, $priority, array(
 					'function_callback' => $callback
 				) );
+			}
 		}
 	}
 
@@ -265,6 +278,26 @@ class md_admin {
 				$classes .= 'md-editor-full';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Run various MD actions sent through AJAX.
+	 *
+	 * @since 5.2.3
+	 */
+
+	public function action() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
+			return;
+
+		if ( isset( $_POST['action_type'] ) && $_POST['action_type'] == 'reset-icons' ) {
+			$option = md_setting();
+			$option['icons'] = $option['custom_icons'] = array();
+			update_option( 'marketers_delight', $option );
+			md_compile_css();
+		}
+
+		wp_die();
 	}
 
 	/**

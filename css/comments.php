@@ -32,14 +32,14 @@ ol.comments-list, ul.children {
 .md-tab-content.active { display: block; }
 
 .comments-tabs {
-	background-color: rgba(0, 0, 0, 0.03);
+	background-color: #eee;
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	line-height: 1;
 	padding-top: <?php echo $half; ?>px;
 	text-align: center;
 }
 
-.comment-tab {
+.comments-tabs .comment-tab {
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 4px 4px 0 0;
 	border-width: 1px 1px 0;
@@ -51,7 +51,7 @@ ol.comments-list, ul.children {
 	padding: <?php echo $half; ?>px;
 }
 
-.comment-tab.active {
+.comments-tabs .comment-tab.active {
 	background-color: #fff;
 	border-bottom-color: #fff;
 	border-bottom-width: 1px;

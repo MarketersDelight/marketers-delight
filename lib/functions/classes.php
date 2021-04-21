@@ -7,6 +7,13 @@
  */
 
 function md_body_classes( $classes ) {
+	// Add custom body classes
+	$custom_classes = md_meta( array( 'scripts', 'body_class' ) );
+	if ( ! empty( $custom_classes ) ) {
+		$custom_classes = explode( ' ' , $custom_classes );
+		foreach ( $custom_classes as $custom_class )
+			$classes[] = esc_attr( $custom_class );
+	}
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
 		'single-format-standard',

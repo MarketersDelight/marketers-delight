@@ -155,6 +155,19 @@ function md_google_fonts( $format = null ) {
 }
 
 /**
+ * Get MD font icons URL.
+ *
+ * @since 5.2.3
+ */
+
+function md_font_icons_url() {
+	$file = MD_URL . 'lib/assets/icons/md.woff';
+	if ( file_exists( get_stylesheet_directory() . '/md.woff' ) )
+		$file = get_stylesheet_directory_uri() . '/md.woff';
+	return $file;
+}
+
+/**
  * Return HTML for Page Lead background color/image.
  *
  * @since 5.0
@@ -203,4 +216,20 @@ function md_button( $button ) {
 	$button['color'] = ! empty( $button['color'] ) ? ' ' . $button['color'] : '';
 	if ( $template = md_template( 'button', true ) )
 		include( $template );
+}
+
+/**
+ * Render an MD font icon.
+ *
+ * @since 5.2.3
+ */
+
+function md_icon( $icon, $args = null ) {
+	$classes[] = "md-icon-{$icon}";
+	if ( isset( $args['classes'] ) )
+		$classes[] = esc_attr( $args['classes'] );
+	$classes = join( ' ', $classes );
+	if ( is_bool( $args ) )
+		return $classes;
+	return '<i class="' . esc_attr( $classes ) . '"></i>';
 }

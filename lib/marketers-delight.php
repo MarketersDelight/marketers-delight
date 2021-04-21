@@ -1,7 +1,7 @@
 <?php
 
 // Define MD constants
-define( 'MD_VERSION', '5.2.2' );
+define( 'MD_VERSION', '5.2.3' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -52,6 +52,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/fields.php' );
 		require_once( MD_DIR . 'lib/api/icons.php' );
 		require_once( MD_DIR . 'lib/api/css.php' );
+		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
 		require_once( MD_DIR . 'lib/functions/email-functions.php' );
@@ -90,6 +91,9 @@ final class marketers_delight {
 			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
 
 		require_once( MD_DROPINS_DIR . 'optins/optins.php' );
+
+		if ( ! md_has( 'subtitle' ) )
+			require_once( MD_DROPINS_DIR . 'subtitle.php' );
 
 		if ( md_has( 'footnotes' ) )
 			require_once( MD_DROPINS_DIR . 'footnotes/footnotes.php' );
@@ -191,7 +195,6 @@ final class marketers_delight {
 		$data = md_setting( array( 'integrations' ) );
 		if ( ! empty( $data['enabled']['mailerlite'] ) )
 			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
-
 	}
 
 	/**

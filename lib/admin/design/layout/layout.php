@@ -172,7 +172,7 @@ class md_layout extends md_api {
 		) )
 			$sidebar_display = 'block';
 
-		include( MD_DIR . 'lib/admin/design/layout/layout-settings.php' );
+		include( 'layout-settings.php' );
 	}
 
 	/**

@@ -130,22 +130,17 @@ class md_license extends md_api {
 	public function actions() {
 		if ( md_setting( 'version' ) < MD_VERSION )
 			return;
-		$option = md_setting();
+			
 		$check = get_transient( 'md_license' );
 		$license = md_setting( array( 'license', 'status' ) );
 
-		if ( isset( $_POST['md_license_activate'] ) )
-			$option['license'] = $this->activate_license();
+		if ( ! empty( $_POST['md_license_activate'] ) )
+			$this->activate_license();
+		elseif ( ! empty( $_POST['md_license_deactivate'] ) )
+			$this->deactivate_license();
 
-		if ( isset( $_POST['md_license_deactivate'] ) )
-			$option['license'] = $this->deactivate_license();
-
-		if ( empty( $check ) && $license != 'deactivated' && $license != 'expired' ) {
-			$option['license'] = $this->check_license();
-			set_transient( 'md_license', true, DAY_IN_SECONDS );
-		}
-
-		update_option( 'marketers_delight', $option );
+		if ( empty( $check ) && $license != 'deactivated' && $license != 'expired' )
+			$this->check_license();
 	}
 
 	/**
@@ -174,7 +169,7 @@ class md_license extends md_api {
 	 */
 
 	public function check_license() {
-	 	$save = array();
+	 	$option = md_setting();
 	 	$response = $this->get_api_response( array(
 			'edd_action' => 'check_license',
 			'license' => trim( md_setting( array( 'settings', 'license_key' ) ) ),
@@ -183,19 +178,20 @@ class md_license extends md_api {
 		) );
 
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) )
-			$save['status'] = 'error';
+			$option['license']['status'] = 'error';
 		else {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			if ( ! empty( $license_data->success ) ) {
-				$save['status'] = $license_data->license;
-				$save['expire'] = $license_data->expires;
-				$save['sites'] = $license_data->site_count;
-				$save['limit'] = $license_data->license_limit;
+				$option['license']['status'] = $license_data->license;
+				$option['license']['expire'] = $license_data->expires;
+				$option['license']['sites'] = $license_data->site_count;
+				$option['license']['limit'] = $license_data->license_limit;
 			}
 		}
 
-		return $save;
+		update_option( 'marketers_delight', $option );
+		set_transient( 'md_license', true, DAY_IN_SECONDS );
 	}
 
 	/**
@@ -205,7 +201,7 @@ class md_license extends md_api {
 	 */
 
 	 public function activate_license() {
-	 	$save = array();
+	 	$option = md_setting();
 	 	$response = $this->get_api_response( array(
 			'edd_action' => 'activate_license',
 			'license' => trim( md_setting( array( 'settings', 'license_key' ) ) ),
@@ -213,21 +209,21 @@ class md_license extends md_api {
 		) );
 
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) )
-			$save['status'] = 'error';
+			$option['license']['status'] = 'error';
 		else {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			if ( ! empty( $license_data->success ) ) {
-				$save['status'] = $license_data->license;
-				$save['expire'] = $license_data->expires;
-				$save['sites']  = $license_data->site_count;
-				$save['limit']  = $license_data->license_limit;
+				$option['license']['status'] = $license_data->license;
+				$option['license']['expire'] = $license_data->expires;
+				$option['license']['sites']  = $license_data->site_count;
+				$option['license']['limit']  = $license_data->license_limit;
 			}
 			elseif ( $license_data->success === false )
-				$save['status'] = $license_data->error;
+				$option['license']['status'] = $license_data->error;
 		}
 
-		return $save;
+		update_option( 'marketers_delight', $option );
 	}
 
 	/**
@@ -237,7 +233,7 @@ class md_license extends md_api {
 	 */
 
 	 public function deactivate_license() {
-	 	$save = array();
+	 	$option = md_setting();
 	 	$response = $this->get_api_response( array(
 			'edd_action' => 'deactivate_license',
 			'license'    => trim( md_setting( array( 'settings', 'license_key' ) ) ),
@@ -245,19 +241,19 @@ class md_license extends md_api {
 		) );
 
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) )
-			$save['status'] = 'error';
+			$option['license']['status'] = 'error';
 		else {
 			$license_data = json_decode( wp_remote_retrieve_body( $response ) );
 
 			if ( ! empty( $license_data->license ) ) {
-				$save['status'] = $license_data->license;
-				unset( $save['sites'] );
-				unset( $save['expire'] );
-				unset( $save['limit'] );
+				$option['license']['status'] = $license_data->license;
+				unset( $option['license']['sites'] );
+				unset( $option['license']['expire'] );
+				unset( $option['license']['limit'] );
 			}
 		}
 
-		return $save;
+		update_option( 'marketers_delight', $option );
 	}
 
 	/**

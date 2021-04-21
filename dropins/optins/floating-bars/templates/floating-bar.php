@@ -65,7 +65,7 @@
 		</div>
 	</div>
 	<?php if ( ! empty( $fields['display']['close'] ) ) : ?>
-		<div class="cta-bar-corner cta-bar-close"><i class="md-icon-cancel"></i></div>
+		<div class="cta-bar-corner cta-bar-close"><?php echo md_icon( 'cancel' ); ?></div>
 	<?php endif; ?>
 </div>
 <?php if ( ! empty( $fields['links_color'] ) ) : ?>

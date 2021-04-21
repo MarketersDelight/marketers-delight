@@ -63,7 +63,7 @@ class md_hotspots extends md_api {
 		$text = ! empty( $text ) ? $text : __( 'Get updates', 'md' );
 	?>
 		<span class="byline-popup byline-item">
-			<i class="byline-item-icon md-icon-mail-alt"></i> <a href="#" class="md-popup-trigger" data-popup="md_popup_<?php echo md_setting( array( 'popups', 'byline' ) ); ?>"><?php echo esc_html( $text ); ?></a>
+			<?php echo md_icon( 'mail-alt', array( 'classes' => 'byline-item-icon' ) ); ?> <a href="#" class="md-popup-trigger" data-popup="md_popup_<?php echo md_setting( array( 'popups', 'byline' ) ); ?>"><?php echo esc_html( $text ); ?></a>
 		</span>
 	<?php }
 
@@ -81,7 +81,7 @@ class md_hotspots extends md_api {
 			$button_classes = ! empty( $button ) ? apply_filters( 'md_header_menu_popup_button_color', ' button button-sec' ) : '';
 			$items .=
 				'<li class="menu-item menu-popup' . $button_classes . '">'.
-					'<a href="#" class="md-popup-trigger" data-popup="md_popup_' . esc_attr( md_setting( array( 'popups', 'header_menu' ) ) ) . '"><i class="md-icon-mail-alt mr-small"></i> ' . $text . '</a>'.
+					'<a href="#" class="md-popup-trigger" data-popup="md_popup_' . esc_attr( md_setting( array( 'popups', 'header_menu' ) ) ) . '"><i class="' . md_icon( 'mail-alt', true ) . ' mr-small"></i> ' . $text . '</a>'.
 				'</li>';
 		}
 		return $items;
@@ -95,7 +95,7 @@ class md_hotspots extends md_api {
 
 	public function main_menu_desktop() { ?>
 		<span class="md-popup-trigger menu-popup close-on-max" data-popup="md_popup_<?php echo md_setting( array( 'popups', 'main_menu' ) ); ?>">
-			<i class="md-icon-mail-alt"></i>
+			<?php echo md_icon( 'mail-alt' ); ?>
 		</span>
 	<?php }
 
@@ -107,7 +107,7 @@ class md_hotspots extends md_api {
 
 	public function main_menu_mobile() { ?>
 		<span class="md-popup-trigger menu-popup col" data-popup="md_popup_<?php echo md_setting( array( 'popups', 'main_menu' ) ); ?>">
-			<i class="md-icon md-icon-mail-alt"></i>
+			<?php echo md_icon( 'mail-alt' ); ?>
 			<span class="menu-trigger-text close-on-mobile"><?php echo md_get_menu_name( 'main' ); ?></span>
 		</span>
 	<?php }

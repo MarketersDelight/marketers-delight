@@ -66,7 +66,7 @@
 .format a:hover, .format .no-border { border-bottom-width: 0; }
 
 .format .headline, .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	margin-bottom: <?php echo ( $half + $third ); ?>px;
+	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -162,7 +162,7 @@
 
 .text-right { text-align: right; }
 
-.text-intro, .intro {
+.text-intro, .intro, .subtitle {
 	font-size: 1.2em;
 	line-height: 1.5em;
 }

@@ -145,9 +145,10 @@ class md_blocks {
 				$scripts['popups'][] = array( 'label' => $fields['name'], 'value' => $popup );
 
 		if ( in_array( 'icons', $data ) )
-			foreach ( md_icons() as $icon => $fields )
-				$scripts['icons'][] = array( 'label' => $fields['label'], 'value' => $icon );
-
+			foreach ( md_icons() as $icon => $fields ) {
+				$label = ! empty( $fields['label'] ) ? $fields['label'] : $icon;
+				$scripts['icons'][] = array( 'label' => $label, 'value' => "md-icon-$icon" );
+			}
 		return $scripts;
 	}
 

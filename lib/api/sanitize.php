@@ -349,7 +349,7 @@ class md_sanitize {
 		$data = md_register( $settings );
 
 		foreach ( $input as $key => $input_fields ) {
-			if ( ! in_array( $key, array( 'integrations', 'popups_data', 'license' ) ) ) {
+			if ( ! in_array( $key, array( 'integrations', 'popups_data', 'license', 'custom_icons' ) ) ) {
 				if ( ! empty( $data[$key]['fields'] ) )
 					foreach ( $data[$key]['fields'] as $group => $group_fields )
 						if ( isset( $group_fields['type'] ) && $group_fields['type'] == 'group' && isset( $input[$key][$group] ) ) {
@@ -376,6 +376,7 @@ class md_sanitize {
 			else
 				$save[$key] = $input[$key];
 		}
+
 		return $save;
 	}
 

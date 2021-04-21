@@ -5,7 +5,7 @@
 	<?php if ( have_comments() ) : ?>
 
 		<div class="comments-title">
-			<h3 class="micro-title"><i class="byline-item-icon md-icon-chat"></i> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?> <span><a href="#respond"><?php echo __( 'add your comment', 'md' ); ?></a></span></h3>
+			<h3 class="micro-title"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?> <span><a href="#respond"><?php echo __( 'add your comment', 'md' ); ?></a></span></h3>
 		</div>
 
 		<div class="comments-area">
@@ -19,8 +19,8 @@
 			<?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : ?>
 				<div class="pagination">
 					<?php paginate_comments_links( array(
-						'prev_text' => '<i class="md-icon-angle-left"></i> ' . __( 'Previous', 'md' ),
-						'next_text' => __( 'Next', 'md' ) . ' <i class="md-icon-angle-right"></i>',
+						'prev_text' => '<i class="' . md_icon( 'angle-left', true ) . '"></i> ' . __( 'Previous', 'md' ),
+						'next_text' => __( 'Next', 'md' ) . ' <i class="' . md_icon( 'angle-right', true ) . '"></i>',
 					) ); ?>
 				</div>
 			<?php endif; ?>

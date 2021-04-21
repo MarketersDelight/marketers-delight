@@ -42,7 +42,7 @@
 							'name' => array( 'type' => 'text' ),
 							'icon' => array(
 								'type' => 'select',
-								'options' => md_get_icons( 'ids' )
+								'options' => md_get_icons( 'ids', null, 'md-icon-' )
 							),
 							'url' => array( 'type' => 'url' )
 						)
@@ -124,7 +124,7 @@
 					'type' => 'select',
 					'label' => __( 'Icon', 'md' ),
 					'empty_label' => __( 'Select icon...', 'md' ),
-					'options' => md_get_icons( 'options' )
+					'options' => md_get_icons( 'options', null, 'md-icon-' )
 				) ); ?>
 			</div>
 			<div class="col col2 md-sep-small">

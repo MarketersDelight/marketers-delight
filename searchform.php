@@ -23,5 +23,5 @@
 	<?php if ( is_post_type_archive() || is_home() || is_tax() || is_category() ) : ?>
 		<input type="hidden" name="post_type" value="<?php echo get_post_type(); ?>" />
 	<?php endif; ?>
-	<button type="submit" class="search-submit form-submit md-icon-search" id="searchsubmit" /></button>
+	<button type="submit" class="search-submit form-submit <?php echo md_icon( 'search', true ); ?>" id="searchsubmit"></button>
 </form>

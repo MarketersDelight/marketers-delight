@@ -587,10 +587,13 @@ function md_page_data() {
  * @since 5.0
  */
 
-function md_get_icons( $sort = null ) {
+function md_get_icons( $sort = null, $show_defaults = null, $prefix = null ) {
 	$icons = array();
-	foreach ( md_icons() as $icon => $fields ) {
-		$icons['options'][$icon] = $fields['label'];
+	$prefix = isset( $prefix ) ? $prefix : '';
+	foreach ( md_icons( $show_defaults ) as $icon => $fields ) {
+		$icon = "$prefix{$icon}";
+		if ( isset( $fields['label'] ) )
+			$icons['options'][$icon] = $fields['label'];
 		$icons['ids'][] = $icon;
 	}
 	if ( isset( $sort ) )

@@ -85,7 +85,7 @@
 					'headline' => __( 'Remove <b>Headline</b>', 'md' )
 				)
 			) ); ?>
-			<?php if ( $screen->post_type == 'post' ) : ?>
+			<?php if ( $screen->post_type != 'page' ) : ?>
 				<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
 					<?php $this->fields->field( 'content', array(
 						'type' => 'checkbox',
@@ -94,7 +94,7 @@
 						)
 					) ); ?>
 				</div>
-				<?php if ( ! empty( $author_box ) ) : ?>
+				<?php if ( is_singular( 'post' ) && ! empty( $author_box ) ) : ?>
 					<?php $this->fields->field( 'content', array(
 						'type' => 'checkbox',
 						'options' => array(

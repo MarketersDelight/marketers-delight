@@ -2,7 +2,7 @@
 
 <?php echo '/*
 	Theme Name: Marketers Delight
-	Version: ' . MD_VERSION . '
+	Version: ' . MD_VERSION . ' BETA
 	Author: Alex Mangini
 	Description: Marketers Delight is your smart website design system for the future. Built on a foundation of typography, MD\'s features and layout all work together to help you create stunning content on the web. Use the Site Designer to design your site, capture subscribers with MD\'s email and popups tools, and enable power features like the Stream and Bookshelf to deliver unique kinds of content to your audience. All of that and more in Marketers Delight.
 	Theme URI: https://marketersdelight.com/
@@ -25,7 +25,7 @@
 
 @font-face {
 	font-family: md-icon;
-	src: url('<?php echo MD_URL; ?>lib/assets/icons/md.woff') format('woff');
+	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -42,9 +42,9 @@ body {
 
 b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
-[class*="md-icon-"] { display: inline-block; }
+[class*="md-icon"] { display: inline-block; }
 
-[class*="md-icon-"]:before {
+[class*="md-icon"]:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -56,6 +56,8 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 	text-decoration: inherit;
 	text-transform: none;
 }
+
+.md-icon.icon-data:before { content: attr(data-md-icon); }
 
 .small {
 	font-size: 0.85em;
