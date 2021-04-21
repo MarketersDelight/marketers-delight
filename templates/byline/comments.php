@@ -1,0 +1,3 @@
+<?php if ( ! in_array( 'comments', $byline ) && md_has_comments() ) : ?>
+	<span class="byline-comments byline-item byline-icon<?php echo isset( $args['classes'] ) ? ' ' . $args['classes'] : ''; ?>"><a href="<?php comments_link(); ?>"><i class="md-icon-chat"></i> <?php echo sprintf( _nx( '1 <span class="byline-comments-label">comment</span>', '%1$s <span class="byline-comments-label">comments</span>', get_comments_number(), 'Number of comments', 'md' ), number_format_i18n( get_comments_number() ) ); ?></a></span>
+<?php endif; ?>
