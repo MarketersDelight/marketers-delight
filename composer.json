@@ -2,5 +2,8 @@
     "name": "marketers-delight/marketers-delight",
     "description": "MD Codebase Theme",
     "type": "project",
-    "require": {}
+    "license": "proprietary",
+    "require": {
+        "php": ">=7.4"
+    }
 }
