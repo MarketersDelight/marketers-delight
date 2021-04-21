@@ -14,7 +14,7 @@
 				</p>
 				<h2 class="md-header-nav md-clear">
 					<?php foreach ( $admin_pages as $admin_page => $fields ) :
-						if ( isset( $fields['parent'] ) && $fields['parent'] == $page )
+						if ( ( isset( $fields['parent'] ) && $fields['parent'] == $page ) || ( isset( $fields['admin_tab_parent'] ) && $fields['admin_tab_parent'] == $page ) )
 							$admin_tabs[$fields['id']] = $fields;
 						if ( ! isset( $fields['admin_header'] ) )
 							continue;
@@ -27,8 +27,16 @@
 			</div>
 			<?php if ( ! empty( $admin_tabs ) ) : ?>
 				<div class="md-submenu">
-					<?php foreach ( $admin_tabs as $admin_tab => $child ) : ?>
-						<a href="?page=<?php echo urlencode( $page ); ?>&tab=<?php echo $admin_tab; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo $child['name']; ?>">
+					<?php foreach ( $admin_tabs as $admin_tab => $child ) :
+						$tab_url = "&tab=$admin_tab";
+						if ( isset( $child['admin_tab_parent'] ) && ! isset( $_GET['tab'] ) ) {
+							$admin_tab = $tab;
+							$tab_url = '';
+						}
+						if ( isset( $child['admin_tab_parent'] ) && $child['admin_tab_parent'] == $page )
+							$tab_url = '';
+					?>
+						<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo $child['name']; ?>">
 							<?php echo $child['name']; ?>
 						</a>
 					<?php endforeach; ?>

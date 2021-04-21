@@ -203,6 +203,9 @@ function md_email_input( $field, $service ) {
 function md_email_fields( $options = null ) {
 	$services = md_email_data( array( 'show' => 'service' ) );
 	$list = md_setting( array( 'cta', 'email_list' ) );
+	$name_label = __( 'Enter your name&hellip;', 'md' );
+	$email_label = __( 'Enter your email&hellip;', 'md' );
+	$submit_text = __( 'Join Now!', 'md' );
 	if ( $options == null ) {
 		$fields = array(
 			'email_service' => ! empty( $services[$list] ) ? $services[$list] : '',
@@ -213,9 +216,9 @@ function md_email_fields( $options = null ) {
 			'email_input' => array(
 				'name' => md_setting( array( 'email', 'email_input', 'name' ) )
 			),
-			'email_name_label' => md_setting( array( 'email', 'email_name_label' ) ),
-			'email_email_label' => md_setting( array( 'email', 'email_email_label' ) ),
-			'email_submit_text' => md_setting( array( 'email', 'email_submit_text' ) ),
+			'email_name_label' => md_setting( array( 'email', 'email_name_label' ), $name_label ),
+			'email_email_label' => md_setting( array( 'email', 'email_email_label' ), $email_label ),
+			'email_submit_text' => md_setting( array( 'email', 'email_submit_text' ), $submit_text ),
 			'email_image' => md_setting( array( 'email', 'email_image' ) ),
 			'email_form_style' => array(
 				'attached' => md_setting( array( 'email', 'email_form_style', 'attached' ) )
@@ -241,9 +244,9 @@ function md_email_fields( $options = null ) {
 			'email_input' => array(
 				'name' => ! empty( $options['email_input']['name'] ) ? $options['email_input']['name'] : ''
 			),
-			'email_name_label' => isset( $options['email_name_label'] ) ? $options['email_name_label'] : '',
-			'email_email_label' => isset( $options['email_email_label'] ) ? $options['email_email_label'] : '',
-			'email_submit_text' => isset( $options['email_submit_text'] ) ? $options['email_submit_text'] : '',
+			'email_name_label' => isset( $options['email_name_label'] ) ? $options['email_name_label'] : $name_label,
+			'email_email_label' => isset( $options['email_email_label'] ) ? $options['email_email_label'] : $email_label,
+			'email_submit_text' => isset( $options['email_submit_text'] ) ? $options['email_submit_text'] : $submit_text,
 			'email_image' => ! empty( $options['email_image'] ) ? $options['email_image'] : '',
 			'email_form_style' => array(
 				'attached' => ! empty( $options['email_form_style']['attached'] ) ? $options['email_form_style']['attached'] : ''
@@ -279,10 +282,6 @@ function md_email_form( $options = null, $atts = null ) {
 	$service = $fields['email_service'];
 	$title = $fields['email_title'];
 	$desc = $fields['email_desc'];
-
-	$name_label = ! empty( $fields['email_name_label'] ) ? $fields['email_name_label'] : __( 'Enter your name&hellip;', 'md' );
-	$email_label = ! empty( $fields['email_email_label'] ) ? $fields['email_email_label'] : __( 'Enter your email&hellip;', 'md' );
-	$submit_text = ! empty( $fields['email_submit_text'] ) ? $fields['email_submit_text'] : __( 'Join Now!', 'md' );
 
 	$form_classes[] = 'clear';
 

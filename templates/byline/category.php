@@ -4,5 +4,5 @@
 	if ( empty( $category ) )
 		return false;
 ?>
-	<span class="byline-category byline-item"><i class="md-icon-tags"></i> <a href="<?php echo get_category_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a></span>
+	<span class="byline-category byline-item"><?php echo md_icon( 'tags' ); ?> <a href="<?php echo get_category_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a></span>
 <?php endif; ?>

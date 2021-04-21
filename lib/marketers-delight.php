@@ -1,7 +1,7 @@
 <?php
 
 // Define MD constants
-define( 'MD_VERSION', '5.2.2' );
+define( 'MD_VERSION', '5.3' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -10,6 +10,7 @@ define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 define( 'MD_PLUGIN_DIR', MD_DIR . 'lib/' );
 define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
+define( 'MD_INSTALLED_DROPINS', ABSPATH . 'wp-content/md-dropins' ); #5.3
 define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 
 /**
@@ -52,6 +53,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/fields.php' );
 		require_once( MD_DIR . 'lib/api/icons.php' );
 		require_once( MD_DIR . 'lib/api/css.php' );
+		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
 		require_once( MD_DIR . 'lib/functions/email-functions.php' );
@@ -66,6 +68,9 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/functions/featured-image.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/functions/classes.php' );
+		require_once( MD_DROPINS_DIR . 'optins/optins.php' );
+		require_once( MD_DROPINS_DIR . 'featured-image/featured-image.php' );
+		require_once( MD_DROPINS_DIR . 'featured-video/featured-video.php' );
 		require_once( MD_DIR . 'lib/wp/optimize.php' );
 		require_once( MD_DIR . 'lib/wp/walker.php' );
 		require_once( MD_DIR . 'lib/wp/shortcodes.php' );
@@ -74,6 +79,12 @@ final class marketers_delight {
 		include_once( MD_DIR . 'lib/wp/widgets/text-image.php' );
 		include_once( MD_DIR . 'lib/wp/widgets/quote.php' );
 		require_once( MD_DIR . 'lib/wp/widgets/email-form.php' );
+		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
+			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
+		if ( md_setting( array( 'content', 'post', 'subtitle' ) ) )
+			require_once( MD_DROPINS_DIR . 'subtitle.php' );
+		if ( md_setting( array( 'content', 'post', 'footnotes' ) ) )
+			require_once( MD_DROPINS_DIR . 'footnotes/footnotes.php' );
 	}
 
 	/**
@@ -83,34 +94,23 @@ final class marketers_delight {
 	 */
 
 	public function dropins() {
-		require_once( MD_DROPINS_DIR . 'featured-image/featured-image.php' );
-		require_once( MD_DROPINS_DIR . 'featured-video/featured-video.php' );
+		$core = md_get_dropins( 'core', 'active' );
+		foreach ( $core as $dropin )
+			if ( md_has( $dropin ) && file_exists( $file = MD_DROPINS_DIR . "$dropin/$dropin.php" ) )
+				require_once( $file );
 
-		if ( function_exists( 'register_block_type' ) && md_has( 'blocks' ) )
-			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
-
-		require_once( MD_DROPINS_DIR . 'optins/optins.php' );
-
-		if ( md_has( 'footnotes' ) )
-			require_once( MD_DROPINS_DIR . 'footnotes/footnotes.php' );
-
-		if ( md_has( 'share' ) )
-			require_once( MD_DROPINS_DIR . 'share/share.php' );
-
-		if ( md_has( 'tracking_scripts' ) )
-			require_once( MD_DROPINS_DIR . 'scripts-manager.php' );
-
-		if ( ! md_has( 'stream' ) )
-			require_once( MD_DROPINS_DIR . 'stream/stream.php' );
-
-		if ( ! md_has( 'bookshelf' ) )
-			require_once( MD_DROPINS_DIR . 'bookshelf/bookshelf.php' );
-
-		if ( ! md_has( 'admin_bar' ) )
-			require_once( MD_DROPINS_DIR . 'admin-bar/admin-bar.php' );
-
-		if ( class_exists( 'WooCommerce' ) && ! md_has( 'woocommerce' ) )
-			require_once( MD_DROPINS_DIR . 'woocommerce/woocommerce.php' );
+		$installed = md_get_dropins( 'installed', 'active' );
+		foreach ( $installed as $dropin ) {
+			if ( md_has( $dropin ) )
+				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+					require_once( $file );
+				else {
+					$option = md_setting();
+					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+					unset( $option['installed_dropins'][$dropin] );
+					update_option( 'marketers_delight', $option );
+				}
+		}
 	}
 
 	/**
@@ -149,7 +149,7 @@ final class marketers_delight {
 		// Optimize <head>
 		new md_optimize_wp;
 
-		if ( class_exists( 'WooCommerce' ) && ! md_has( 'woocommerce' ) )
+		if ( class_exists( 'WooCommerce' ) && md_has( 'woocommerce' ) )
 			add_theme_support( 'woocommerce' );
 	}
 
@@ -160,6 +160,17 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
+
+
+/*
+		$option = md_setting();
+		unset( $option['installed_dropins'] );
+		unset( $option['dropins'] );
+		update_option( 'marketers_delight', $option );
+		print_r( md_setting( 'installed_dropins' ) );
+
+*/
+
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
@@ -184,14 +195,13 @@ final class marketers_delight {
 			wp_enqueue_script( 'comment-reply' );
 
 		// Dequeue Blocks Library if necessary
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) || ! md_has( 'blocks' ) )
+		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) )
 			wp_dequeue_style( 'wp-block-library' );
 
 		// Load stupid legacy MailerLite script
 		$data = md_setting( array( 'integrations' ) );
 		if ( ! empty( $data['enabled']['mailerlite'] ) )
 			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
-
 	}
 
 	/**
@@ -307,7 +317,7 @@ final class marketers_delight {
 	 */
 
 	public function post_types_meta( $post_types ) {
-		if ( ! md_has( 'woocommerce' ) )
+		if ( md_has( 'woocommerce' ) )
 			$post_types[] = 'product';
 		$post_types[] = 'stream';
 		return $post_types;
@@ -320,11 +330,11 @@ final class marketers_delight {
 	 */
 
 	public function taxonomies_meta( $taxonomies ) {
-		if ( ! md_has( 'stream' ) )
+		if ( md_has( 'stream' ) )
 			$taxonomies[] = 'stream_categories';
-		if ( ! md_has( 'bookshelf' ) )
+		if ( md_has( 'bookshelf' ) )
 			$taxonomies[] = 'bookshelf_categories';
-		if ( ! md_has( 'woocommerce' ) )
+		if ( md_has( 'woocommerce' ) )
 			$taxonomies[] = 'product_cat';
 		return $taxonomies;
 	}

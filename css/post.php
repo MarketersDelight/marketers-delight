@@ -202,6 +202,8 @@
 
 .byline a.byline-icon, .byline .byline-icon a { border-bottom: 0; }
 
+.byline-item .md-icon-twitter { color: #1da1f2; }
+
 .byline-author .avatar {
 	margin-right: <?php echo $small; ?>px;
 	position: relative;

@@ -25,6 +25,11 @@ class md_api {
 
 		$this->_id = isset( $id ) ? $id : get_class( $this );
 
+		// Register MD Drop-ins
+
+		if ( method_exists( $this, 'dropin' ) )
+			add_filter( 'md_filter_installed_dropins', array( $this, 'dropin' ) );
+
 		/**
 		 * Load subclass' psuedo-contructor, if it exists.
 		 * @DEPRECATED 5.0, now use $this->actions() and $this->includes() respectively

@@ -224,7 +224,7 @@ class md_optins extends md_api {
 		$position = md_meta( array( 'optins', 'floating_bars', $field, 'position' ) );
 		$show = md_meta( array( 'optins', 'floating_bars', $field, 'show' ) );
 		$colors = $this->floating_bars->colors();
-		$icons = md_get_icons( 'options' );
+		$icons = md_get_icons( 'options', null, 'md-icon-' );
 		include( md_template( $this->dir, 'floating-bars/admin/floating-bar-fields', true ) );
 	}
 

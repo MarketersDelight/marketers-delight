@@ -7,6 +7,13 @@
  */
 
 function md_body_classes( $classes ) {
+	// Add custom body classes
+	$custom_classes = md_meta( array( 'scripts', 'body_class' ) );
+	if ( ! empty( $custom_classes ) ) {
+		$custom_classes = explode( ' ' , $custom_classes );
+		foreach ( $custom_classes as $custom_class )
+			$classes[] = esc_attr( $custom_class );
+	}
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
 		'single-format-standard',
@@ -111,13 +118,6 @@ function md_post_classes( $classes ) {
 	) );
 
 	$classes[] = 'post-box';
-
-	// Footnotes classes
-	if ( md_has( 'footnotes' ) ) {
-		$footnotes = md_post_meta( array( 'footnotes' ) );
-		if ( ( md_has_sidebar() && ! empty( $footnotes ) ) || ! empty( $footnotes['after_post']['toggle'] ) )
-			$classes[] = 'toggle-footnotes';
-	}
 
 	return $classes;
 }

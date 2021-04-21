@@ -7,6 +7,8 @@
  *
  * As of MD5.2 parent templates can now be stored outside of the main
  * templates folder but still be overridden from the child theme templates folder.
+ * This is to be used for Core Drop-in functions, but will probably be changed
+ * as of the creation of md_dropin_template() in MD5.3.
  *
  * Set $path to true to return the file path instead.
  *
@@ -49,6 +51,32 @@ function md_template( $file, $path = null, $include = null ) {
 		return $template;
 
 	return load_template( $template, false );
+}
+
+/**
+ * Call templates from Drop-ins that live in wp-content/md-dropins/ but load
+ * from child theme templates directory if overriden.
+ *
+ * @since 5.3
+ */
+
+function md_dropin_template( $file, $include = null ) {
+	$ext = '.php';
+	$file_name = "/$file{$ext}";
+	$dir = MD_INSTALLED_DROPINS . $file_name;
+	$template = locate_template( "dropins/$file_name" );
+
+	if ( $template )
+		if ( isset( $include ) )
+			return $template;
+		else
+			return load_template( $template, false );
+
+	if ( file_exists( $dir ) )
+		if ( isset( $include ) )
+			return $dir;
+		else
+			include( $dir );
 }
 
 /**
@@ -244,10 +272,37 @@ function md_ver( $file, $path = null ) {
  * @since 4.5
  */
 
-function md_has( $feature ) {
-	$setting = md_setting( array( 'dropins', 'features', $feature ) );
-	if ( empty( $setting ) )
+function md_has( $dropin ) {
+	$enabled = md_get_dropins( null, 'active' );
+	if ( in_array( $dropin, $enabled ) )
 		return true;
+}
+
+/**
+ * Returns list of enabled Drop-ins.
+ *
+ * @since 5.3
+ */
+
+function md_get_dropins( $type = null, $status = null ) {
+	$dropins = array();
+	if ( $type == null || $type == 'core' )
+		foreach ( md_setting( array( 'dropins', 'core' ), array() ) as $dropin => $fields )
+			if (
+				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
+				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+				$status == null
+			)
+				$dropins[] = esc_attr( $dropin );
+	if ( $type == null || $type == 'installed' )
+		foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
+			if (
+				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
+				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+				$status == null
+			)
+				$dropins[] = esc_attr( $dropin );
+	return $dropins;
 }
 
 /**
@@ -579,23 +634,6 @@ function md_page_data() {
 			'excerpt' => get_post_field( 'post_excerpt', $id )
 		);
 	}
-}
-
-/**
- * Get Icons data in various formats.
- *
- * @since 5.0
- */
-
-function md_get_icons( $sort = null ) {
-	$icons = array();
-	foreach ( md_icons() as $icon => $fields ) {
-		$icons['options'][$icon] = $fields['label'];
-		$icons['ids'][] = $icon;
-	}
-	if ( isset( $sort ) )
-		$icons = $icons[$sort];
-	return $icons;
 }
 
 /**

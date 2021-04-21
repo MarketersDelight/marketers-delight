@@ -45,9 +45,9 @@ class md_content extends md_api {
 						'type' => 'select',
 						'options' => array( 'minimal' )
 					),
-					'breadcrumbs' => array(
+					'post' => array(
 						'type' => 'checkbox',
-						'options' => array( 'enable' )
+						'options' => array( 'breadcrumbs', 'subtitle', 'footnotes', 'blocks' )
 					),
 					'sidebar' => array(
 						'type' => 'checkbox',
@@ -105,7 +105,7 @@ class md_content extends md_api {
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )
 				$cta_options[$cta_id] = $cta_fields['name'];
-		include( MD_DIR . 'lib/admin/design/content/content-settings.php' );
+		include( 'content-settings.php' );
 	}
 
 }

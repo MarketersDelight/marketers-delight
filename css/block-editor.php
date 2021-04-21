@@ -26,12 +26,12 @@
 
 @font-face {
 	font-family: md-icon;
-	src: url('<?php echo MD_URL . 'lib/assets/icons/md.woff'; ?>') format('woff');
+	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
 
-[class*="md-icon-"]:before {
+[class*="md-icon"]:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -43,6 +43,8 @@
 	text-decoration: inherit;
 	text-transform: none;
 }
+
+.md-icon.icon-data:before { content: attr(data-md-icon); }
 
 /* MAIN TYPE */
 

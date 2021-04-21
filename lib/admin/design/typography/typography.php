@@ -73,7 +73,7 @@ class md_typography extends md_api {
 
 	public function admin_page() {
 		$defaults = $this->defaults['typography'];
-		include( MD_DIR . 'lib/admin/design/typography/typography-settings.php' );
+		include( 'typography-settings.php' );
 	}
 
 }

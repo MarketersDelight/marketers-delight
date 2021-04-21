@@ -139,7 +139,7 @@ class md_popups extends md_api {
 		$post_type = get_post_type();
 		$popups_remove = md_meta( array( 'optins', 'popups_remove' ), true );
 		$remove = ! empty( $popups_remove ) ? array_keys( $popups_remove ) : array();
-		$popups_add = md_meta( array( 'optins', 'popups' ), true );
+		$popups_add = md_meta( array( 'optins', 'popups' ) );
 		$add = ! empty( $popups_add ) ? $popups_add : array();
 
 		if ( $remove )

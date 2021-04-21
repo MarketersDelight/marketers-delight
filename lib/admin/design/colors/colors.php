@@ -178,7 +178,7 @@ class md_colors extends md_api {
 	public function admin_page() {
 		$options = $this->options();
 		$defaults = $this->defaults['colors'];
-		include( MD_DIR . 'lib/admin/design/colors/colors-settings.php' );
+		include( 'colors-settings.php' );
 	}
 
 }

@@ -18,18 +18,16 @@
 					<h3 class="md-widget-title"><?php echo __( 'Popup Hotspots', 'md' ); ?></h3>
 					<div class="md-widget-item">
 						<?php if ( md_setting( 'popups' ) ) : ?>
-							<?php if ( md_has( 'main_menu' ) ) : ?>
-								<div class="md-sep-micro">
-									<?php $this->fields->field( 'main_menu', array(
-										'type' => 'select',
-										'label' => __( 'Main Menu', 'md' ),
-										'empty_label' => __( 'Select a popup&hellip;', 'md' ),
-										'description' => __( 'Add an email icon to the Main Menu that opens a popup when clicked.', 'md' ),
-										'options' => $options
-									) ); ?>
-								</div>
-								<hr class="md-sep-small" />
-							<?php endif; ?>
+							<div class="md-sep-micro">
+								<?php $this->fields->field( 'main_menu', array(
+									'type' => 'select',
+									'label' => __( 'Main Menu', 'md' ),
+									'empty_label' => __( 'Select a popup&hellip;', 'md' ),
+									'description' => __( 'Add an email icon to the Main Menu that opens a popup when clicked.', 'md' ),
+									'options' => $options
+								) ); ?>
+							</div>
+							<hr class="md-sep-small" />
 							<div class="md-sep-micro">
 								<?php $this->fields->field( 'byline', array(
 									'type' => 'select',

@@ -81,7 +81,7 @@ class md_header extends md_api {
 
 	public function admin_page() {
 		$defaults = $this->defaults['header'];
-		include( MD_DIR . 'lib/admin/design/header/header-settings.php' );
+		include( 'header-settings.php' );
 	}
 
 }

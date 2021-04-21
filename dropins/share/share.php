@@ -105,7 +105,7 @@ class md_share extends md_api {
 				'share' => true,
 				'url' => "https://pinterest.com/pin/create/button/?url={$permalink}&description={$excerpt}&media={$image}&is_video=false",
 				'color' => '#bd081c',
-				'icon' => 'md-icon-pinterest-squared',
+				'icon' => 'md-icon-pinterest',
 				'context' => 'side',
 				'status' => 'inactive',
 				'fields' => array( 'url' )
@@ -235,7 +235,7 @@ class md_share extends md_api {
 				elseif ( $field == 'popup' ) {
 					$popups = array();
 					$option = md_setting( array( 'popups' ) );
-					if ( ! empty( $option ) )
+					if ( ! empty( $option['popups'] ) )
 						foreach ( $option['popups'] as $popup => $fields )
 							$popups[] = $popup;
 					$icons[$field] = array(
@@ -511,7 +511,7 @@ class md_share extends md_api {
 		echo "<$html class=\"share" . esc_attr( $classes ) . '">';
 
 		foreach ( $active as $share ) {
-			$action = '';
+			$action = $class = '';
 			$fields = ! empty( $option['fields'][$share] ) ? $option['fields'][$share] : array();
 			$disable = ! empty( $fields['disable'] ) ? $fields['disable'] : array();
 			if ( ! empty( $disable[$type] ) || ( $share == 'comments' && ! md_has_comments() ) )
@@ -523,10 +523,11 @@ class md_share extends md_api {
 			$color = ! empty( $fields['color'] ) ? $fields['color'] : $data['color'];
 			$color_prop = $style_class == 'minimal' ? 'color' : 'background-color';
 			$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : $data['icon'];
-			$class = ! empty( $popup ) ? ' md-popup-trigger' : '';
 			if ( ! empty( $fields['popup'] ) ) {
 				$url = '#';
-				$action = ' data-popup="md_popup_' . esc_attr( $fields['popup'] );
+				$class = ' md-popup-trigger';
+				$action = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
+				md_popup( array( 'id' => $fields['popup'] ) );
 			}
 			elseif ( isset( $data['share'] ) && empty( $fields['url'] ) )
 				$action = ' data-share="true" rel="nofollow"';

@@ -39,11 +39,11 @@
 
 		<div class="stream-stats">
 			<span class="stream-stat stat-posts mr-half">
-				<i class="stat-icon md-icon-pin"></i>
+				<?php echo md_icon( 'pin', array( 'classes' => 'stat-icon' ) ); ?>
 				<b class="stat-count"><?php echo esc_attr( $posts_count ); ?></b> <span class="stat-text"><?php echo __( 'Posts', 'md' ); ?></span>
 			</span>
 			<span class="stream-stat stat-likes">
-				<i class="stat-icon md-icon-heart-empty"></i>
+				<?php echo md_icon( 'heart-empty', array( 'classes' => 'stat-icon' ) ); ?>
 				<b class="share-total" data-share-total="stream"><?php echo esc_attr( $likes_count ); ?></b> <span class="stat-text"><?php echo __( 'Likes', 'md' ); ?></span>
 			</span>
 		</div>

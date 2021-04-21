@@ -25,7 +25,7 @@
 
 @font-face {
 	font-family: md-icon;
-	src: url('<?php echo MD_URL; ?>lib/assets/icons/md.woff') format('woff');
+	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -42,9 +42,9 @@ body {
 
 b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
-[class*="md-icon-"] { display: inline-block; }
+[class*="md-icon"] { display: inline-block; }
 
-[class*="md-icon-"]:before {
+[class*="md-icon"]:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -56,6 +56,8 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 	text-decoration: inherit;
 	text-transform: none;
 }
+
+.md-icon.icon-data:before { content: attr(data-md-icon); }
 
 .small {
 	font-size: 0.85em;
@@ -115,6 +117,11 @@ pre, code {
 	color: #3e3e3e;
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
 	font-size: 0.9em;
+}
+
+code a, .format code a {
+	border-bottom: 0;
+	color: #3e3e3e;
 }
 
 pre {

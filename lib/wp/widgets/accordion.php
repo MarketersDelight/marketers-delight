@@ -84,7 +84,7 @@ class md_accordion_widget extends WP_Widget {
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php echo __( 'Category type', 'md' ); ?>:</label><br />
 			<select id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>">
 				<option value=""><?php echo __( 'Select category type...', 'md' ); ?></option>
-				<?php foreach ( $taxonomies as $count => $tax ) : print_r( $count ); ?>
+				<?php foreach ( $taxonomies as $count => $tax ) : ?>
 					<option value="<?php echo esc_attr( $tax ); ?>"<?php echo selected( $val['taxonomy'], esc_attr( $tax ), false ); ?>><?php echo $tax; ?></option>
 				<?php endforeach; ?>
 			</select>

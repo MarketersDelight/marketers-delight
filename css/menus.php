@@ -99,7 +99,7 @@
 	.sub-menu .sub-menu a { padding-left: 16px; }
 }
 
-<?php if ( md_has( 'main_menu' ) ) : ?>
+<?php if ( has_nav_menu( 'main' ) ) : ?>
 
 /*------------------------------*\
 	$MAIN_MENU

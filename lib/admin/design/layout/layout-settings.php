@@ -20,7 +20,7 @@
 	</div>
 </div>
 
-<?php if ( md_has( 'main_menu' ) ) :
+<?php if ( has_nav_menu( 'main' ) ) :
 	$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 	foreach ( $nav_menus as $menu )
 		$menus[$menu->slug] = $menu->name;
@@ -59,7 +59,7 @@
 		)
 	) ); ?>
 	<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
-		<?php if ( md_setting( array( 'content', 'breadcrumbs', 'enable' ) ) ) : ?>
+		<?php if ( md_setting( array( 'content', 'post', 'breadcrumbs' ) ) ) : ?>
 			<?php $this->fields->field( 'breadcrumbs', array(
 				'type' => 'checkbox',
 				'options' => array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) )
@@ -85,7 +85,7 @@
 					'headline' => __( 'Remove <b>Headline</b>', 'md' )
 				)
 			) ); ?>
-			<?php if ( $screen->post_type == 'post' ) : ?>
+			<?php if ( $screen->post_type != 'page' ) : ?>
 				<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
 					<?php $this->fields->field( 'content', array(
 						'type' => 'checkbox',
@@ -94,7 +94,7 @@
 						)
 					) ); ?>
 				</div>
-				<?php if ( ! empty( $author_box ) ) : ?>
+				<?php if ( is_singular( 'post' ) && ! empty( $author_box ) ) : ?>
 					<?php $this->fields->field( 'content', array(
 						'type' => 'checkbox',
 						'options' => array(

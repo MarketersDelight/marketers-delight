@@ -52,6 +52,7 @@ class md_scripts extends md_api {
 	public function fields() {
 		$scripts = $this->dequeue_data( 'ids' );
 		$save = array(
+			'body_class' => array( 'type' => 'text' ),
 			'header_scripts' => array( 'type' => 'code' ),
 			'footer_scripts' => array( 'type' => 'code' )
 		);
@@ -73,6 +74,15 @@ class md_scripts extends md_api {
 		$scripts = $this->dequeue_data( 'labels' );
 		$screen = get_current_screen();
 	?>
+		<?php if ( $screen->base !== 'toplevel_page_md_settings' ) : ?>
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'body_class', array(
+					'type' => 'text',
+					'label' => __( 'Body classes', 'md' ),
+					'description' => __( 'Add custom CSS classes to the <code>body</code> tag of this page.', 'md' )
+				) ); ?>
+			</div>
+		<?php endif; ?>
 		<div class="md-sep-small">
 			<?php $this->fields->field( 'header_scripts', array(
 				'type' => 'code',

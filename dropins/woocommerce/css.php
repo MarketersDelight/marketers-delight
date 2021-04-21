@@ -42,9 +42,7 @@
 
 .woocommerce .star-rating, .woocommerce ul.products li.product .star-rating { color: #FFB900; }
 
-.woocommerce-breadcrumb a {
-	border-bottom-color: #ccc;
-}
+.woocommerce-breadcrumb a { border-bottom-color: #ccc; }
 
 .header-cart {
 	color: <?php echo $colors['header']['menu']['links']; ?>;

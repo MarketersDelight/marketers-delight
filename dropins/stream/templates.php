@@ -171,11 +171,12 @@ class md_stream_templates extends md_api {
 		}
 		$has_thread = ! empty( $thread ) ? true : false;
 		$post_id = $html_id = get_the_ID();
+		$title = get_the_title();
 		$embed_id = md_post_meta( array( 'stream', 'post_id' ) );
 		$post_type = get_post_type( $embed_id );
 		$post_date = get_post_timestamp();
 		$post_author = get_post_field( 'post_author', $post_id );
-		$post_content = get_post_field( 'post_content', $post_id );
+		$post_content = get_the_content( md_read_more_text() );
 		$stream_image = get_the_post_thumbnail( $post_id, ( $c == 0 ? 'md-image' : 'thumbnail' ) );
 		$classes = in_array( $post_id, get_option( 'sticky_posts' ) ) ? ' sticky' : '';
 		include( md_template( $this->dir, 'stream/stream-post', true ) );

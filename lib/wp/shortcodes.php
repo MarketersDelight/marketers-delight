@@ -56,7 +56,7 @@ class md_shortcodes {
 					'name' => ! empty( $atts['email_input_name'] ) ? $atts['email_input_name'] : md_setting( array( 'email', 'email_input', 'name' ) )
 				),
 				'email_form_style' => array(
-					'attached' => ( isset( $atts['attached'] ) ? $atts['attached'] == 'true' ? true : false : md_setting( array( 'email', 'email_form_style', 'attached' ) ) ),
+					'attached' => isset( $atts['attached'] ) && in_array( $atts['attached'], array( '1', 'true' ) ) ? true : md_setting( array( 'email', 'email_form_style', 'attached' ), false ),
 				),
 				'email_bg_color' => ! empty( $atts['bg_color'] ) ? $atts['bg_color'] : md_setting( array( 'email', 'bg_color' ) ),
 				'email_image' => ! empty( $atts['bg_image'] ) ? $atts['bg_image'] : md_setting( array( 'email', 'bg_image' ) ),

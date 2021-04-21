@@ -15,8 +15,8 @@
 	<?php endif; ?>
 </div>
 <?php if ( $listing == 'excerpt' ) : ?>
-	<div class="book-text block-half">
-		<h4 class="med-title mb-half"><?php echo md_text_field( $post['title'] ); ?></h4>
+	<div class="book-text block-half-lr">
+		<h4 class="small-title mb-small"><?php echo md_text_field( $post['title'] ); ?></h4>
 		<div class="book-text-content block-half-bot">
 			<?php echo wpautop( $post['excerpt'] ); ?>
 			<p>
@@ -27,7 +27,7 @@
 					<span class="book-download middot"><a href="<?php echo esc_url( $post['download_url'] ); ?>" target="_blank"><?php echo esc_html( $post['default_text'] ); ?></a></span>
 				<?php endif; ?>
 				<?php if ( ! is_post_type_archive( 'bookshelf' ) ) : ?>
-					<span class="book-link middot"><a href="<?php echo get_post_type_archive_link( 'bookshelf' ); ?>"><?php echo __( 'See all books &rarr;', 'md' ); ?></a></span>
+					<span class="book-link middot"><a href="<?php echo get_post_type_archive_link( 'bookshelf' ); ?>"><?php echo __( 'All books', 'md' ); ?></a></span>
 				<?php endif; ?>
 			</p>
 		</div>

@@ -16,6 +16,16 @@ function md_register( $group = null ) {
 }
 
 /**
+ * A collection of installed Drop-ins data.
+ *
+ * @since 5.3
+ */
+
+function md_filter_installed_dropins() {
+	return apply_filters( 'md_filter_installed_dropins', array() );
+}
+
+/**
  * Filter the default image sizes of MD.
  *
  * @since 4.7.4.4
@@ -58,10 +68,8 @@ function md_image_sizes() {
 
 function md_filter_register_nav_menus() {
 	$menus['header'] = __( 'Header Menu', 'md' );
-	if ( md_has( 'main_menu' ) ) {
-		$menus['main'] = __( 'Main Menu', 'md' );
-		$menus['social'] = __( 'Social Media Menu', 'md' );
-	}
+	$menus['main'] = __( 'Main Menu', 'md' );
+	$menus['social'] = __( 'Social Media Menu', 'md' );
 
 	return apply_filters( 'md_filter_register_nav_menus', $menus );
 }

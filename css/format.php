@@ -66,7 +66,7 @@
 .format a:hover, .format .no-border { border-bottom-width: 0; }
 
 .format .headline, .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	margin-bottom: <?php echo ( $half + $third ); ?>px;
+	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -75,7 +75,7 @@
 	color: <?php echo $colors['site']['headline-links']; ?>;
 }
 
-.format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image { margin-bottom: <?php echo $single; ?>px; }
+.format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
 
 .format ul, .format ol { margin-left: <?php echo $single; ?>px; }
 
@@ -162,7 +162,7 @@
 
 .text-right { text-align: right; }
 
-.text-intro, .intro {
+.text-intro, .intro, .subtitle {
 	font-size: 1.2em;
 	line-height: 1.5em;
 }

@@ -1,7 +1,7 @@
 <<?php echo $article_h; ?> id="stream_<?php echo esc_attr( $html_id ); ?>" class="stream-item<?php echo esc_attr( $classes ); ?>">
 	<div class="stream-byline mb-half">
 		<?php if ( in_array( $post_id, get_option( 'sticky_posts' ) ) ) : ?>
-			<p class="stream-byline-pinned byline-item"><i class="md-icon-pin"></i> <?php echo __( 'Pinned', 'md' ); ?></p>
+			<p class="stream-byline-pinned byline-item"><?php echo md_icon( 'pin' ); ?> <?php echo __( 'Pinned', 'md' ); ?></p>
 		<?php endif; ?>
 		<?php $this->byline( $post_id, $embed_id, $post_type, array(
 			'post_date' => $post_date,
@@ -9,24 +9,30 @@
 			'html_id' => $html_id
 		) ); ?>
 	</div>
-	<div class="stream-content mb-single clear">
-		<?php if ( $stream_image ) : ?>
-			<div class="stream-media">
-				<div class="stream-box md-popup-trigger" data-popup="md_popup_stream_<?php echo $post_id; ?>">
-					<?php echo $stream_image; ?>
-					<span class="stream-icon md-icon-search"></span>
+	<?php if ( $title || $post_content || $stream_image ) : ?>
+		<div class="stream-content mb-single clear">
+			<?php if ( $stream_image ) : ?>
+				<div class="stream-media">
+					<div class="stream-box md-popup-trigger" data-popup="md_popup_stream_<?php echo $post_id; ?>">
+						<?php echo $stream_image; ?>
+						<?php echo md_icon( 'search', array( 'classes' => 'stream-icon' ) ); ?>
+					</div>
 				</div>
-			</div>
-		<?php endif; ?>
-		<div class="stream-text">
-			<?php if ( ! is_singular() && ! $has_titles ) : ?>
-				<h1 class="stream-title small-title mb-half"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h1>
-			<?php elseif ( is_singular() && ! $has_titles && $c == 0 ) : ?>
-				<h1 class="stream-title small-title mb-half"><?php the_title(); ?></h1>
 			<?php endif; ?>
-			<?php echo apply_filters( 'the_content', $post_content ); ?>
+			<div class="stream-text">
+				<?php if ( $title ) : ?>
+					<?php if ( ! is_singular() && ! $has_titles ) : ?>
+						<h1 class="stream-title small-title mb-half"><a href="<?php the_permalink(); ?>"><?php echo $title; ?></a></h1>
+					<?php elseif ( is_singular() && ! $has_titles && $c == 0 ) : ?>
+						<h1 class="stream-title small-title mb-half"><?php echo $title; ?></h1>
+					<?php endif; ?>
+				<?php endif; ?>
+				<?php if ( $post_content ) : ?>
+					<?php echo apply_filters( 'the_content', $post_content ); ?>
+				<?php endif; ?>
+			</div>
 		</div>
-	</div>
+	<?php endif; ?>
 	<?php if ( $embed_id ) :
 		$embed = array(
 			'title' => get_the_title( $embed_id ),

@@ -35,7 +35,7 @@
 		<?php if ( md_has( 'popups' ) && in_array( 'popup', $fields ) ) :
 			$popups = md_setting( array( 'popups' ) );
 		?>
-			<?php if ( ! empty( $popups ) ) :
+			<?php if ( ! empty( $popups['popups'] ) ) :
 				foreach ( $popups['popups'] as $popup_id => $popup )
 					$options[$popup_id] = $popup['name'];
 			?>

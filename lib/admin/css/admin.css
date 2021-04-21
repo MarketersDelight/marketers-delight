@@ -78,6 +78,7 @@
 }
 
 .md-icon-yes { background-color: #30a146; }
+.md-file-upload-success .dashicons-yes, .md-action .dashicons-yes { color: #30a146; }
 .md-icon-no { background-color: #ae2525; }
 
 /* LAYOUT */
@@ -129,6 +130,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	font-weight: normal;
 	line-height: 1.2em;
 	margin: 0 0 1em;
+}
+
+.md-med-title {
+	font-size: 17px;
+	font-weight: normal;
+	line-height: 26px;
 }
 
 .md-hr {
@@ -290,24 +297,26 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md .columns-half { margin-left: -11px; }
 .md .columns-half > .col { padding-left: 11px; }
 
-@media all and (min-width: 1000px) {
-	.md .col {
-		float: left;
-/*
-		display: inline-block;
-		margin-left: -3px;
-		vertical-align: top;
-*/
-	}
+.md .columns-flex > .col {
+	display: inline-block;
+	float: none;
+	margin-left: -4px;
+	vertical-align: middle;
+}
+
+@media all and (min-width: 900px) {
+	.md .col { float: left; }
 	.md .columns-2 .col { width: 50%; }
 	.md .columns-3 > .col { width: 33.333333333%; }
 	.md .columns-4 > .col, .md .columns-25-75 > .col1 { width: 25%; }
-	.md .columns-5 > .col { width: 20%; }
+	.md .columns-5 > .col, .md .columns-20-80 > .col1 { width: 20%; }
+	.md .columns-6 > .col { width: 16.6666666667%; }
 	.md .columns-10-90 > .col1 { width: 13%; }
 	.md .columns-10-90 > .col2 { width: 87%; }
 	.md .columns-65-35 > .col2, .md .columns-35-65 > .col1 { width: 35%; }
 	.md .columns-65-35 > .col1, .md .columns-35-65 > .col2 { width: 65%; }
 	.md .columns-30-70 > .col1, .md .columns-70-30 > .col2 { width: 30%; }
+	.md .columns-20-80 > .col2 { width: 80%; }
 	.md .columns-25-75 > .col2 { width: 75%; }
 	.md .columns-70-30 > .col1, .md .columns-30-70 > .col2 { width: 70%; }
 	.md .columns-60-40 > .col1, .md .columns-40-60 > .col2 { width: 60%; }
@@ -315,12 +324,17 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .col.col-right { float: right; }
 }
 
+@media all and (max-width: 900px) {
+	.md.wrap { margin-right: 10px; }
+	.md .columns-flex > .col { width: 50%; }
+}
+
 .md .col-style {
 	background-color: #fff;
 	border: 1px solid #ddd;
 	border-width: 0 1px 1px;
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-	padding: 15px;
+	padding: 15px 10px;
 }
 
 .md .col-image {
@@ -346,10 +360,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md .col-style p {
-	font-size: 14px;
-	line-height: 22px;
-	margin-bottom: 22px;
+	margin-bottom: 0;
+	margin-top: 0;
 }
+
+.md .col-style p:not(:last-child) { margin-bottom: 10px; }
 
 .md .col-featured {
 	border: 0;
@@ -467,7 +482,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-opened .md-dashicon-arrow-down:before { content: "\f142"; }
 
-.md-widget .md-loading {
+.md-integration .md-loading {
 	display: none;
 	float: right;
 	font-size: 21px;
@@ -787,6 +802,44 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .has-upload .md-upload-remove { display: inline-block; }
 
+.md-file-upload-field {
+	display: inline-block;
+	position: relative;
+}
+
+.md-file-uploading {
+	display: none;
+	position: relative;
+		top: -11px;
+}
+
+.md-tooltip {
+	background-color: rgba(0, 0, 0, 0.8);
+	border-bottom: 0;
+	border-radius: 3px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	color: #fff;
+	display: none;
+	font-size: 14px;
+	padding: 5px;
+	position: absolute;
+		top: -17px;
+		right: -204px;
+	width: 260px;
+}
+
+.md-tooltip:before {
+	border-bottom: 7px solid transparent;
+	border-top: 7px solid transparent;
+	border-right: 7px solid rgba(0, 0, 0, 0.8);
+	content: '';
+	height: 0;
+	position: absolute;
+		left: -7px;
+		top: 9px;
+	width: 0;
+}
+
 /* REPEAT */
 
 .md-badge, .md-badge:hover, a.md-badge {
@@ -840,6 +893,12 @@ a.md-circle-badge {
 .md-input {
 	border-radius: 3px;
 	padding: 10px;
+	width: 100%;
+}
+
+.md-input-full {
+	font-size: 1.3em;
+	height: 1.3em;
 	width: 100%;
 }
 
@@ -903,70 +962,203 @@ a.md-circle-badge {
 	padding-top: 0;
 	min-width: auto;
 }
-
 .md h3.hndle input[type="text"] {
 	border: 0;
 	box-shadow: none;
 	padding: 0;
 }
-
 .md .postbox-container { width: 100%; }
-
 .md .postbox-container h3 {
 	font-size: 14px;
 	padding: 8px 12px;
 	margin: 0;
 	line-height: 1.4;
 }
-
 .md .postbox .hndle .regular-text,
 .md .md-repeat-bar .regular-text,
-
 .md .postbox .hndle .regular-text { max-width: 13em; }
-
 .term-md-wrap .postbox, .md .mb-none { margin-bottom: 0 !important; }
-
 .md .mt-none { margin-top: 0 !important; }
 
 /* DROPINS */
 
-.md-dropins .col { margin-bottom: 11px; }
-.md-dropins .col-inner {
+.md-dropins-list, .md-dropins-upload {
+	background-color: #fff;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.md-dropins-title {
+	border-bottom: 1px solid #ddd;
+	border-radius: 5px 5px 0 0;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.md-dropins-title h3 { margin: 0; }
+
+.md-dropins-title a {
+	border: 0;
+	color: #222;
+	display: inline-block;
+	padding: 15px;
+	text-decoration: none;
+}
+
+.md-dropins-title a:active, .md-dropins-title a:focus {
+	border: 0;
+	box-shadow: none;
+}
+
+.md-dropins-title a:not(:last-child) { border-right: 1px solid #f0f0f1; }
+
+.md-dropins-title .md-tab.nav-tab-active {
+	color: #2271b1;
+	margin-bottom: 0;
+}
+
+.md-dropins-title span {
+	color: #777;
+	font-size: 0.9em;
+	font-weight: normal;
+}
+
+.md-dropins .md-dropin, .md-dropins-upload { padding: 15px 20px; }
+
+.md-dropins-upload { display: none; }
+
+.md-dropin p {
+	margin-bottom: 0;
+	margin-top: 0;
+}
+
+.md-dropin:not(:last-child) { border-bottom: 1px solid #ddd; }
+
+.md-dropin.dropin-enabled {
+	background-color: #f0f6fc;
+	border-left: 6px solid #72aee6;
+}
+
+.md-dropins-upload .md-label-wrap { margin-top: 0; }
+
+.md-dropin.dropin-enabled .columns-2 {
+	position: relative;
+		left: -6px;
+}
+
+.md-dropin.dropin-enabled .md-dropin-controls { right: -6px; }
+
+.md-dropin.dropin-enabled:last-child { border-radius: 0 0 5px 5px; }
+
+.md-dropin-placeholder {
+	background-color: #1e73be;
+	border-radius: 5px;
+	color: #fff;
+    display: block;
+	height: 95px;
+	text-align: center;
+	width: 100%;
+}
+
+.md-dropin-placeholder .dashicons {
+	font-size: 50px;
+	line-height: 1;
+	margin-left: -28px;
+	margin-top: 22px;
+}
+
+.md-dropin .md-title small, .md-store h3 small {
+	color: #777;
+	font-size: 0.85em;
+}
+
+.md-dropin .md-title, .md-dropin-controls {
+	display: inline-block;
+	margin-bottom: 0;
+}
+
+.md-dropin-controls {
+	margin-left: 6px;
+	position: relative;
+		top: -3px;
+		right: 0;
+}
+
+.md-dropin .md-title { margin-bottom: 3px; }
+
+.md-dropin .md-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.md-dropin .md-dropin-description { margin-bottom: 10px; }
+
+.md-dropin .button-icon {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.md-dropin .dashicons-no { color: #b32d2e; }
+
+.md-dropin-byline .button { margin-right: 3px; }
+
+/* DROPIN STORE */
+
+.md-store .col { margin-bottom: 11px; }
+.md-store .col-inner {
 	background-color: #fff;
 	border-radius: 3px;
 	box-shadow: 0 4px 10px #ddd;
-	padding: 10px;
+	padding: 15px;
 }
-.md-dropin-byline { color: #777; }
-.md-dropins h3 {
-	border-bottom: 1px solid #ddd;
-	font-size: 18px;
-	line-height: 23px;
-	padding-bottom: 8px;
+.md-store h3 {
+	font-size: 19px;
+	line-height: 24px;
+	margin-bottom: 6px;
 	margin-top: 0;
 }
-.md-dropins h3 a { color: inherit; text-decoration: none; }
-.md-dropins p { margin-bottom: 3px; margin-top: 0; }
-.md-dropin-image { display: block; }
-.md-dropin-image img { border-radius: 3px 3px 0 0; }
-.md-dropins i { font-size: 12px; }
-.md-dropin-status {
+.md-store h3 a { color: inherit; text-decoration: none; }
+.md-store p { margin-bottom: 0; margin-top: 0; }
+.md-store-item-image { display: block; }
+.md-store-item-image img { border-radius: 3px 3px 0 0; }
+.md-store-item-byline {
+	border-top: 1px solid #ddd;
+	padding-top: 12px;
+	margin-top: 8px;	
+}
+.md-store-item i { font-size: 12px; }
+.md-store-item-status {
 	color: green;
 	cursor: default;
 	float: right;
 	font-size: 13px;
 	font-weight: normal;
 	position: relative;
-		top: 5px;
+		top: 4px;
 }
-.md-dropin-status .dashicons {
+.md-store-item-status .dashicons {
 	font-size: 14px;
 	height: 12px;
 	position: relative;
 		top: 3px;
 	width: 12px;
 }
-.md-mods h3 { margin-bottom: 5px; }
+
+/* FONT ICONS */
+
+.md-font-icons .col { text-align: center; }
+
+.md-font-icons .regular-text.md-med-title {
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	line-height: inherit;
+	min-height: inherit;
+	padding: 0;
+	text-align: center;
+}
 
 
 

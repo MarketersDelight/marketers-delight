@@ -52,7 +52,7 @@
 					</div>
 				</div>
 			</div>
-			<?php if ( md_has( 'tracking_scripts' ) ) :
+			<?php if ( md_has( 'scripts' ) ) :
 				$scripts = new md_scripts( $this->_id );
 			?>
 				<div class="md-widget md-toggle md-sep-small">

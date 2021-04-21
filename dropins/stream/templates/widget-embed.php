@@ -20,9 +20,6 @@
 		<div class="stream-loop">
 
 			<?php while ( $stream->have_posts() ) : $stream->the_post();
-				$like_icon = md_setting( array( 'share', 'icons', 'like', 'icon' ) );
-				if ( empty( $like_icon ) )
-					$like_icon = 'md-icon-heart';
 				$likes = md_post_meta( array( 'share', 'likes' ) );
 				$first_name = get_the_author_meta( 'first_name' );
 				$author = ! empty( $first_name ) ? $first_name : get_the_author();
@@ -39,7 +36,7 @@
 				<div class="stream-widget-post">
 
 					<span class="stream-widget-icon">
-						<i class="md-icon-chat"></i>
+						<?php echo md_icon( 'chat' ); ?>
 					</span>
 
 					<?php if ( get_the_title() && empty( $val['hide_title'] ) ) : ?>
@@ -73,7 +70,7 @@
 		</div>
 
 		<div class="stream-widget-more">
-			<a href="<?php echo get_post_type_archive_link( 'stream' ); ?>" class="button button-small">see more posts &rarr;</a>
+			<a href="<?php echo get_post_type_archive_link( 'stream' ); ?>" class="button button-small"><?php echo __( 'see more posts &rarr;', 'md' ); ?></a>
 		</div>
 
 	</div>

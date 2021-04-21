@@ -30,14 +30,14 @@
 						) ); ?>
 					</div>
 					<p class="description"><?php echo __( '<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box.', 'md' ); ?>
-					<p class="description"><?php echo sprintf( __( '<b>Tip:</b> For best results use this formula to calculate your custom site width: <code><b>%s</b> + <b>%2s</b>%3s</code>', 'md' ), $values['content']['width']['post'], $values['content']['width']['sidebar'], ( md_setting( array( 'content', 'style' ) ) == '' ? ' + <b>' . ( $values['typography']['body']['line_height']['desktop'] * 4 ) . '</b>' : '' ) ); ?></p>
+					<p class="description"><?php echo sprintf( __( '<b>Tip:</b> For the most accurate results you must add any extra spacing within the content box and sidebar to find the true width of your site.<br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>', 'md' ), $values['content']['width']['post'], $values['content']['width']['sidebar'], ( md_setting( array( 'content', 'style' ) ) == '' ? ' + <b>' . ( $values['typography']['body']['line_height']['desktop'] * 4 ) . '</b>' : '' ), $values['content']['width']['site'] ); ?></p>
 				</div>
 				<div class="col">
 					<div class="md-sep-micro md-desktop">
 						<?php $this->fields->field( 'layout', array(
 							'type' => 'select',
 							'empty_label' => __( 'Select layout...', 'md' ),
-							'label' => __( 'Content Box', 'md' ),
+							'label' => __( 'Content box', 'md' ),
 							'options' => $sanitize->values['content_box']
 						) ); ?>
 					</div>
@@ -51,11 +51,14 @@
 						) ); ?>
 					</div>
 					<div class="md-sep-small">
-						<?php $this->fields->field( 'breadcrumbs', array(
+						<?php $this->fields->field( 'post', array(
 							'type' => 'checkbox',
-							'label' => __( 'Breadcrumbs', 'md' ),
+							'label' => __( 'Content', 'md' ),
 							'options' => array(
-								'enable' => __( 'Enable breadcrumbs', 'md' )
+								'breadcrumbs' => __( 'Enable breadcrumbs', 'md' ),
+								'subtitle' => __( 'Enable subtitle', 'md' ),
+								'footnotes' => __( 'Enable footnotes', 'md' ),
+								'blocks' => __( 'Disable MD editor blocks', 'md' ),
 							)
 						) ); ?>
 					</div>
