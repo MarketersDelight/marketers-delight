@@ -111,7 +111,7 @@ class md_stream extends md_api {
 	public function publish_activity( $new, $old, $post ) {
 		$post_types = md_post_type_meta();
 		$post_type = esc_attr( $post->post_type );
-		if ( $new == 'publish' && in_array( $post_type, $post_types ) && $post_type !== 'stream' ) {
+		if ( $old !== 'publish' && $new == 'publish' && in_array( $post_type, $post_types ) && $post_type !== 'stream' ) {
 			$new_post_id = wp_insert_post( array(
 				'post_type' => 'stream_activity',
 				'post_status' => 'publish'

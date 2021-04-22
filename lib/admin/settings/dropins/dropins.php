@@ -89,7 +89,7 @@ class md_dropins extends md_api {
 	public function includes() {
 		require_once( 'store.php' );
 	}
-	 
+
 	/**
 	 * Register admin page.
 	 *
