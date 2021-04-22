@@ -186,6 +186,9 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 
 	$meta = get_term_meta( $id, 'marketers_delight', true );
 
+	if ( empty( $meta ) )
+		$meta = array();
+
 	if ( isset( $keys ) ) {
 		if ( is_string( $keys ) )
 			$keys = (array) $keys;

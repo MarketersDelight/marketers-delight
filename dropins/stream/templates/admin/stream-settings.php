@@ -32,6 +32,14 @@
 			<h2><?php echo __( 'General Settings', 'md' ); ?></h2>
 			<hr />
 			<div class="md-sep-small">
+				<?php $this->fields->field( 'settings', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'disable_activity' => __( '<b>Disable</b> latest activity', 'md' )
+					)
+				) ); ?>
+			</div>
+			<div class="md-sep-small">
 				<?php $this->fields->field( 'slug', array(
 					'type' => 'text',
 					'label' => __( 'Page Slug', 'md' ),

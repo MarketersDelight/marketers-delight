@@ -36,8 +36,10 @@ class md_stream extends md_api {
 		add_action( 'init', array( $this, 'post_type' ), 1 );
 		add_filter( 'md_share_show_on', array( $this, 'share' ) );
 		add_filter( 'md_filter_sidebars_post_types', array( $this, 'sidebars' ) );
-		if ( is_admin() )
+		if ( is_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
+			add_action( 'transition_post_status', array( $this, 'publish_activity' ), 10, 3 );
+		}
 	}
 
 	/**
@@ -76,6 +78,48 @@ class md_stream extends md_api {
 				'all_items' => __( 'Stream', 'md' )
 			)
 		) );
+		if ( ! md_setting( array( 'stream', 'settings', 'disable_activity' ) ) )
+			register_post_type( 'stream_activity', array(
+				'hierarchial' => true,
+				'public' => false,
+				'has_archive' => false,
+				'show_in_menu' => 'edit.php?post_type=stream',
+				'supports' => $supports,
+				'rewrite' => array( 'slug' => "{$this->slug}-activity", 'with_front' => true ),
+				'labels' => array(
+					'name' => __( 'Stream activity', 'md' ),
+					'singular_name' => __( 'Stream activity', 'md' ),
+					'menu_name' => __( 'Stream activity', 'md' ),
+					'name_admin_bar' => __( 'Stream activity', 'md' ),
+					'add_new_item' => __( 'Add New Stream', 'md' ),
+					'edit_item' => __( 'Edit Stream', 'md' ),
+					'view_items' => __( 'View Stream', 'md' ),
+					'search_items' => __( 'Search activity', 'md' ),
+					'not_found' => __( 'No activity found', 'md' ),
+					'not_found_in_trash' => __( 'No stream activities found in trash', 'md' ),
+					'all_items' => __( 'Activity', 'md' )
+				)
+			) );
+	}
+
+	/**
+	 * Publishes updates to Stream activity from approved custom post types.
+	 *
+	 * @since 5.3
+	 */
+
+	public function publish_activity( $new, $old, $post ) {
+		$post_types = md_post_type_meta();
+		$post_type = esc_attr( $post->post_type );
+		if ( $new == 'publish' && in_array( $post_type, $post_types ) && $post_type !== 'stream' ) {
+			$new_post_id = wp_insert_post( array(
+				'post_type' => 'stream_activity',
+				'post_status' => 'publish'
+			) );
+			$post_meta = md_post_meta( null, $new_post_id, array() );
+			$post_meta['stream']['post_id'] = esc_attr( $post->ID );
+			update_post_meta( $new_post_id, 'marketers_delight', $post_meta );	
+		}
 	}
 
 	/**
@@ -120,6 +164,10 @@ class md_stream extends md_api {
 				'name' => __( 'Settings', 'md' ),
 				'parent_slug' => 'edit.php?post_type=stream',
 				'fields' => array(
+					'settings' => array(
+						'type' => 'checkbox',
+						'options' => array( 'disable_activity' )
+					),
 					'archives_title' => array( 'type' => 'text' ),
 					'archives_text' => array( 'type' => 'textarea' ),
 					'archives_photo' => array(
@@ -136,7 +184,7 @@ class md_stream extends md_api {
 			),
 			'meta_box' => array(
 				'name' => __( 'Stream', 'md' ),
-				'post_type' => array( 'stream' ),
+				'post_type' => array( 'stream', 'stream_activity' ),
 				'priority' => 'high',
 				'fields' => array(
 					'post_id' => array( 'type' => 'number' ),

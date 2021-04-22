@@ -51,6 +51,10 @@ class md_stream_templates extends md_api {
 			if ( $single_sidebar )
 				add_filter( 'md_filter_has_sidebar', '__return_true' );
 		}
+		if ( is_single() && 'stream_activity' == get_post_type() ) {
+			wp_redirect( get_post_type_archive_link( 'stream' ), 301 );
+			exit;
+		}
 	}
 
 	/**

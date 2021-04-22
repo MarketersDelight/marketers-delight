@@ -77,7 +77,7 @@
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
-	<?php if ( ! is_singular() || ( is_singular() && $c == 0 ) ) : ?>
+	<?php if ( get_post_type() !== 'stream_activity' && ! is_singular() || ( is_singular() && $c == 0 ) ) : ?>
 		<?php if ( $has_thread ) : ?>
 			<p><a href="<?php echo get_permalink(); ?>#stream_<?php echo esc_attr( $first_thread ); ?>" class="stream-thread-text"><?php echo sprintf( __( 'Show thread (%s)', 'md' ), count( $thread ) ); ?></a></p>
 		<?php endif; ?>
