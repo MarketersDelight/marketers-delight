@@ -145,6 +145,8 @@
 	padding-bottom: 4px;
 }
 
+.stream-byline .md-icon-plus { color: #22a340; }
+
 .stream-byline-avatar {
 	position: relative;
 		top: 3px;

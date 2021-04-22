@@ -15,7 +15,7 @@
 	?>
 
 		<?php if ( get_post_type() == 'stream_activity' ) : ?>
-			<?php echo md_icon( 'star', array( 'classes' => 'mr-small' ) ); ?> <?php echo get_the_author_meta( 'first_name', $post_author ); ?> <?php echo sprintf( __( ' published a %s', 'md' ), '<b>' . ( isset( $types[$post_type] ) ? $types[$post_type]['label'] : $post_type ) . '</b>' ); ?> <?php echo $label; ?>
+			<?php echo md_icon( 'plus', array( 'classes' => 'mr-small' ) ); ?> <?php echo get_the_author_meta( 'first_name', $post_author ); ?> <?php echo sprintf( __( ' published a new %s', 'md' ), '<b>' . ( isset( $types[$post_type] ) ? $types[$post_type]['label'] : $post_type ) . '</b>' ); ?> <?php echo $label; ?>
 		<?php else : ?>
 			<?php echo md_icon( 'share', array( 'classes' => 'mr-small' ) ); ?> <?php echo get_the_author_meta( 'first_name', $post_author ); ?> <?php echo sprintf( __( ' shared a %s', 'md' ), '<b>' . ( isset( $types[$post_type] ) ? $types[$post_type]['label'] : $post_type ) . '</b>' ); ?> <?php echo $label; ?><a href="<?php echo get_permalink( $post_id ); ?><?php echo $html_id; ?>"><?php echo $date; ?></a>
 		<?php endif; ?>

@@ -81,7 +81,7 @@ class md_stream extends md_api {
 		if ( ! md_setting( array( 'stream', 'settings', 'disable_activity' ) ) )
 			register_post_type( 'stream_activity', array(
 				'hierarchial' => true,
-				'public' => false,
+				'public' => true,
 				'has_archive' => false,
 				'show_in_menu' => 'edit.php?post_type=stream',
 				'supports' => $supports,

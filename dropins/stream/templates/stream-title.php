@@ -10,7 +10,7 @@
 
 		<?php if ( empty( $context ) ) : ?>
 
-			<?php if ( is_tax( $taxonomy_name ) ) : ?>
+			<?php if ( is_tax( $taxonomy_label ) ) : ?>
 				<h1 class="stream-head-title<?php echo esc_attr( $title_classes ); ?>"><?php echo single_cat_title(); ?></h1>
 				<?php if ( ! empty( $cat_desc ) ) : ?>
 					<div class="stream-head-text mb-half">
@@ -31,7 +31,7 @@
 
 		<?php endif; ?>
 
-		<?php if ( ! is_tax( $taxonomy_name ) && $archives_desc && $context != 'widget' ) : ?>
+		<?php if ( ! is_tax( $taxonomy_label ) && $archives_desc && $context != 'widget' ) : ?>
 			<div class="stream-head-text mb-half">
 				<?php echo wpautop( $archives_desc ); ?>
 			</div>

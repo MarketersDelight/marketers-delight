@@ -5,17 +5,20 @@
  * @since 5.0
  */
 
-class md_stream_templates extends md_api {
+class md_stream_templates {
+
+	public $dir = 'dropins';
+	public $taxonomy_label = 'stream_categories';
 
 	/**
-	 * Run actions and filters.
+	 * Load templates class.
 	 *
-	 * @since 5.0
+	 * @since 5.3
 	 */
-
-	public function actions() {
-		$this->dir = 'dropins';
-		$this->taxonomy_label = 'stream_categories';
+	
+	public function init() {
+		add_action( 'template_redirect', array( $this, 'template' ) );
+		add_action( 'parse_query', array( $this, 'parse_query' ) );
 	}
 
 	/**
@@ -112,7 +115,7 @@ class md_stream_templates extends md_api {
 	 */
 
 	public function title( $args = null ) {
-		$taxonomy_name = 'stream_categories';
+		$taxonomy_label = $this->taxonomy_label;
 		$archives_title = md_setting( array( 'stream', 'archives_title' ) );
 		$archives_desc = md_setting( array( 'stream', 'archives_text' ) );
 		$archives_photo = md_setting( array( 'stream', 'archives_photo', 'id' ) );
@@ -267,4 +270,5 @@ class md_stream_templates extends md_api {
 
 }
 
-new md_stream_templates;
+$stream_templates = new md_stream_templates;
+$stream_templates->init();
