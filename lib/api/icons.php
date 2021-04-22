@@ -158,6 +158,10 @@ function md_icons( $show_defaults = null ) {
 			'label' => __( 'Pinterest', 'md' ),
 			'classes' => array( '.md-icon-pinterest-squared' )
 		),
+		'plus' => array(
+			'unicode' => 'ea0a',
+			'label' => __( 'Plus', 'md' )
+		),
 		'quote' => array(
 			'unicode' => 'f10e',
 			'label' => __( 'Quote', 'md' )
