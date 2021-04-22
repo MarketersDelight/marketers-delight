@@ -13,8 +13,10 @@
 		<div class="md-dropins-title">
 			<h3>
 				<a href="#" class="md-tab nav-tab-active" data-md-tab="md-all"><?php echo sprintf( __( 'Installed <span>(%s)</span>', 'md' ), count( md_get_dropins( 'installed' ) ) ); ?></a>
-				<a href="#" class="md-tab" data-md-tab="dropin-enabled"><?php echo sprintf( __( 'Enabled <span>(%s)</span>', 'md' ), count( md_get_dropins( 'installed', 'active' ) ) ); ?></a>
-				<a href="#" class="md-tab" data-md-tab="dropin-inactive"><?php echo sprintf( __( 'Inactive <span>(%s)</span>', 'md' ), count( md_get_dropins( 'installed', 'inactive' ) ) ); ?></a>
+				<?php if ( md_get_dropins( 'installed', 'active' ) ) : ?>
+					<a href="#" class="md-tab" data-md-tab="dropin-enabled"><?php echo sprintf( __( 'Active <span>(%s)</span>', 'md' ), count( md_get_dropins( 'installed', 'active' ) ) ); ?></a>
+					<a href="#" class="md-tab" data-md-tab="dropin-inactive"><?php echo sprintf( __( 'Inactive <span>(%s)</span>', 'md' ), count( md_get_dropins( 'installed', 'inactive' ) ) ); ?></a>
+				<?php endif; ?>
 			</h3>
 		</div>
 		<?php if ( ! empty( $installed ) ) : ?>
@@ -79,7 +81,7 @@
 		<div class="md-dropins-title">
 			<h3>
 				<a href="#" class="md-tab nav-tab-active" data-md-tab="md-all"><?php echo sprintf( __( 'Core <span>(%s)</span>', 'md' ), $core_count ); ?></a>
-				<a href="#" class="md-tab" data-md-tab="dropin-enabled"><?php echo sprintf( __( 'Enabled <span>(%s)</span>', 'md' ), $core_active_count ); ?></a>
+				<a href="#" class="md-tab" data-md-tab="dropin-enabled"><?php echo sprintf( __( 'Active <span>(%s)</span>', 'md' ), $core_active_count ); ?></a>
 				<a href="#" class="md-tab" data-md-tab="dropin-inactive"><?php echo sprintf( __( 'Inactive <span>(%s)</span>', 'md' ), ( $core_count - $core_active_count ) ); ?></a>
 			</h3>
 		</div>
