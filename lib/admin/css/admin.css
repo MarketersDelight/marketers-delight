@@ -1025,9 +1025,9 @@ a.md-circle-badge {
 }
 
 .md-dropins .md-dropin, .md-dropins-upload { padding: 15px 20px; }
-
+/*
 .md-dropins-upload { display: none; }
-
+*/
 .md-dropin p {
 	margin-bottom: 0;
 	margin-top: 0;
@@ -1073,35 +1073,41 @@ a.md-circle-badge {
 	font-size: 0.85em;
 }
 
-.md-dropin .md-title, .md-dropin-controls {
+.md-dropin .md-title {
 	display: inline-block;
-	margin-bottom: 0;
+	margin-bottom: 3px;
 }
-
-.md-dropin-controls {
-	margin-left: 6px;
-	position: relative;
-		top: -3px;
-		right: 0;
-}
-
-.md-dropin .md-title { margin-bottom: 3px; }
 
 .md-dropin .md-title a {
 	color: inherit;
 	text-decoration: none;
 }
 
+.md-dropin-controls {
+	display: inline-block;
+	margin-left: 6px;
+	position: relative;
+		top: -3px;
+		right: 0;
+}
+
+.md-dropin-controls .md-checkboxes { display: inline-block; }
+
+.md-dropin-delete {
+	color: #b32d2e;
+	cursor: pointer;
+	float: right;
+	margin-top: 2px;
+}
+
 .md-dropin .md-dropin-description { margin-bottom: 10px; }
+
+.md-dropin-byline .button { margin-right: 3px; }
 
 .md-dropin .button-icon {
 	padding-left: 6px;
 	padding-right: 6px;
 }
-
-.md-dropin .dashicons-no { color: #b32d2e; }
-
-.md-dropin-byline .button { margin-right: 3px; }
 
 /* DROPIN STORE */
 

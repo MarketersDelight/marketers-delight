@@ -6,69 +6,85 @@
  */
 
 class md_files {
-	
+
 	/**
-	 * Run hooks and filters on class instantiation.
+	 * Determine and run file actions.
 	 *
 	 * @since 5.2.3
 	 */
+	
+	public function file_action( $args = null ) {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
+			return;
 
-	public function __construct() {
-		if ( is_admin() ) {
-			add_action( 'wp_ajax_md_file', array( $this, 'action' ) );
-			add_action( 'wp_ajax_nopriv_md_file', array( $this, 'action' ) );
+		$url = wp_nonce_url( 'admin.php?page=md_dropins', 'marketers-delight' );
+
+		if ( false === ( $creds = request_filesystem_credentials( $url, '', false, false, null ) ) )
+			return;
+
+		if ( ! WP_Filesystem( $creds ) ) {
+			request_filesystem_credentials( $url, '', true, false, null );
+			return;
 		}
+
+		global $wp_filesystem;		
+
+		$dropin_id = ! empty( $_POST['dropin_id'] ) ? $_POST['dropin_id'] : '';
+		$action = ! empty( $_POST['upload_action'] ) ? $_POST['upload_action'] : '';
+		if ( isset( $args['action'] ) )
+			$action = $args['action'];
+
+		if ( in_array( $action, array( 'md_icons', 'md_dropin' ) ) )
+	 		$this->file_upload( $action, $_FILES, $wp_filesystem, array(
+		 		'accept' => ! empty( $_POST['accept'] ) ? $_POST['accept'] : array()
+	 		) );
+	 	elseif ( $action == 'delete-dropin' )
+	 		$this->delete_dropin( $dropin_id, $wp_filesystem );
+
+		wp_die();
+	}
+	
+	public function delete_dropin( $dropin_id, $wp_filesystem ) {
+		$uploads_dir = MD_INSTALLED_DROPINS;
+		$option = md_setting();
+		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
+			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
+		unset( $option['dropins']['installed'][$dropin_id] );
+		unset( $option['installed_dropins'][$dropin_id] );
+		update_option( 'marketers_delight', $option );
+		md_compile_css();
 	}
 
 	/**
-	 * Run AJAX action for MD file uploads.
+	 * Run specialty file uploads.
 	 *
-	 * @since 5.2.3
+	 * @since 5.3
 	 */
-	
-	public function action() {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
-			return;
-	
-		$max_upload_size = wp_max_upload_size();
-	
-		if ( ( empty( $_FILES['file']['name'] ) ) && ! empty( $_POST['accept'] ) && ( $_FILES['file']['error'] > 0 || $_FILES['file']['size'] >= $max_upload_size ) )
+	 
+	public function file_upload( $action, $files, $wp_filesystem, $args ) {
+		if ( ( empty( $files['file']['name'] ) ) && ! empty( $args['accept'] ) && ( $files['file']['error'] > 0 || $files['file']['size'] >= wp_max_upload_size() ) )
 			return;
 
-		$accept = explode( ',', trim( str_replace( '.', '', $_POST['accept'] ) ) );
-		$parts = explode( '.', $_FILES['file']['name'] );
+		$accept = explode( ',', trim( str_replace( '.', '', $args['accept'] ) ) );
+		$parts = explode( '.', $files['file']['name'] );
 		$extension = end( $parts );
+		$dir_name = str_replace( ".$extension", '', $files['file']['name'] );
 
 		if ( ! in_array( $extension, $accept ) )
 			return;
 
-		$dir_name = str_replace( ".$extension", '', $_FILES['file']['name'] );
-
-		$upload_action = ! empty( $_POST['upload_action'] ) ? $_POST['upload_action'] : '';
-
-		if ( $extension == 'zip' ) {
-			$url = wp_nonce_url( 'admin.php?page=md_dropins', 'marketers-delight' );
-
-			if ( false === ( $creds = request_filesystem_credentials ($url, '', false, false, null ) ) )
-				return;
-
-			if ( ! WP_Filesystem( $creds ) ) {
-				request_filesystem_credentials( $url, '', true, false, null );
-				return;
-			}
-			
-			global $wp_filesystem;		
+		if ( $action == 'md_dropin' && $extension == 'zip' ) {
 			$uploads_dir = MD_INSTALLED_DROPINS;
-			$zip_file = basename( $_FILES['file']['name'] );
+			$zip_file = basename( $files['file']['name'] );
 			$zip_path = "$uploads_dir/$zip_file";
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) )
 				$wp_filesystem->mkdir( $uploads_dir );
 
 			if ( $wp_filesystem->exists( "$uploads_dir/$dir_name" ) )
-				$wp_filesystem->delete( "$uploads_dir/$dir_name" , true );
+				$wp_filesystem->delete( "$uploads_dir/$dir_name", true );
 
-			if ( unzip_file( $_FILES['file']['tmp_name'], $uploads_dir ) ) {
+			if ( unzip_file( $files['file']['tmp_name'], $uploads_dir ) ) {
 				$files = $wp_filesystem->dirlist( $uploads_dir );
 				$option = md_setting();
 				foreach ( $files as $file => $fields ) {
@@ -88,14 +104,11 @@ class md_files {
 				update_option( 'marketers_delight', $option );
 			}
 		}
-		elseif ( $extension == 'json' ) {
-			$json = file_get_contents( $_FILES['file']['tmp_name'] );
+		elseif ( $action == 'md_icons' && $extension == 'json' ) {
+			$json = file_get_contents( $files['file']['tmp_name'] );
 			$file = json_decode( $json );
-			if ( $upload_action == 'md_icons' )
-				$this->icons( $file );
+			$this->update_icons( $file );
 		}
-
-		wp_die();
 	}
 
 	/**
@@ -104,7 +117,7 @@ class md_files {
 	 * @since 5.2.3
 	 */
 	
-	public function icons( $file ) {
+	public function update_icons( $file ) {
 		$custom_icons = array();
 		$option = md_setting();
 		$icons = md_icons();
@@ -120,5 +133,3 @@ class md_files {
 		md_compile_css();
 	}
 }
-
-new md_files;

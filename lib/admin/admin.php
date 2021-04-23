@@ -43,7 +43,9 @@ class md_admin {
 
 	public function actions() {
 		$this->sanitize = new md_sanitize;
+		$this->files = new md_files;
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+		add_action( 'wp_update_nav_menu', 'md_compile_css' );
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
@@ -64,7 +66,8 @@ class md_admin {
 		// AJAX actions
 		add_action( 'wp_ajax_md_action', array( $this, 'action' ) );
 		add_action( 'wp_ajax_nopriv_md_action', array( $this, 'action' ) );
-		add_action( 'wp_update_nav_menu', 'md_compile_css' );		
+		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
+		add_action( 'wp_ajax_nopriv_md_file', array( $this->files, 'file_action' ) );
 	}
 
 	/**
@@ -291,12 +294,23 @@ class md_admin {
 		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
 			return;
 
-		if ( isset( $_POST['action_type'] ) && $_POST['action_type'] == 'reset-icons' ) {
-			$option = md_setting();
-			$option['icons'] = $option['custom_icons'] = array();
-			update_option( 'marketers_delight', $option );
-			md_compile_css();
+		$option = md_setting();
+
+		if ( isset( $_POST['action_type'] ) ) {
+
+			if ( $_POST['action_type'] == 'delete-dropin' ) {
+				$dropin_id = isset( $_POST['dropin_id'] ) ? esc_attr( $_POST['dropin_id'] ) : '';
+				$this->files->file_action( array(
+					'action' => $_POST['action_type']
+				) );
+			}
+			elseif ( $_POST['action_type'] == 'reset-icons' )
+				$option['icons'] = $option['custom_icons'] = array();
+
 		}
+
+		update_option( 'marketers_delight', $option );
+		md_compile_css();
 
 		wp_die();
 	}
