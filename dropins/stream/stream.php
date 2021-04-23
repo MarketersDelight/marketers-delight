@@ -36,6 +36,7 @@ class md_stream extends md_api {
 		add_action( 'init', array( $this, 'post_type' ), 1 );
 		add_filter( 'md_share_show_on', array( $this, 'share' ) );
 		add_filter( 'md_filter_sidebars_post_types', array( $this, 'sidebars' ) );
+		add_filter( 'md_optins_locations', array( $this, 'optins_locations' ) );
 		if ( is_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
 			add_action( 'transition_post_status', array( $this, 'publish_activity' ), 10, 3 );
@@ -242,6 +243,21 @@ class md_stream extends md_api {
 			$sidebars['stream']['single'] = true;
 //		$sidebars['stream']['stream_categories'] = true;
 		return $sidebars;
+	}
+
+	/**
+	 * Add Stream to MD optins locations.
+	 *
+	 * @since 5.3
+	 */
+
+	public function optins_locations( $locations ) {
+		$locations['stream'] = array(
+			'archive' => __( 'Stream Page', 'md' ),
+			'single' => __( 'Stream Posts', 'md' ),
+			'stream_categories' => __( 'Stream Categories', 'md' )
+		);
+		return $locations;
 	}
 
 	/**
