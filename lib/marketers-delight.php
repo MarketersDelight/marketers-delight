@@ -175,7 +175,7 @@ final class marketers_delight {
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => true
+			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'core', 'admin-bar', 'status', 'enable' ), false ) : false
 		) );
 
 		// Comment reply JS
