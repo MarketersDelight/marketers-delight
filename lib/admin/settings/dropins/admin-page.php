@@ -43,7 +43,7 @@
 									<?php $this->fields->field( array( 'installed', $dropin, 'status' ), array(
 										'type' => 'checkbox',
 										'options' => array(
-											'enable' => __( '<b>Active</b>', 'md' )
+											'enable' => __( '<b>Activate</b>', 'md' )
 										)
 									) ); ?>
 								<?php else : ?>
@@ -113,16 +113,17 @@
 										'enable' => __( '<b>Activate</b>', 'md' )
 									)
 								) ); ?>
-							<?php else : ?>
-								<p><i class="dashicons dashicons-no"></i> <?php echo sprintf( __( 'Requires <b>%s</b> plugin', 'md' ), $fields['plugin_name'] ); ?></p>
 							<?php endif; ?>
 						</div>
 						<p class="md-dropin-description"><?php echo esc_html( $fields['description'] ); ?></p>
 						<p class="md-dropin-byline">
 							<?php if ( $is_enabled && isset( $fields['settings_url'] ) ) : ?>
-								<a href="<?php echo admin_url( $fields['settings_url'] ); ?>" class="button button-icon"><i class="dashicons dashicons-admin-generic"></i> Settings</a>
+								<a href="<?php echo admin_url( $fields['settings_url'] ); ?>" class="button button-icon"><i class="dashicons dashicons-admin-generic"></i> <?php echo __( 'Settings', 'md' ); ?></a>
 							<?php endif; ?>
 							<?php echo sprintf( __( '<i>by</i> <a href="%s" target="_blank">%1s</a>', 'md' ), $fields['author_url'], $fields['author'] ); ?></b>
+							<?php if ( $needs_plugin ) : ?>
+								<span class="md-dropin-plugin-required"><i class="dashicons dashicons-info"></i> <?php echo sprintf( __( 'Requires <b>%s</b> plugin', 'md' ), $fields['plugin_name'] ); ?></span>
+							<?php endif; ?>
 						</p>
 					</div>
 				</div>

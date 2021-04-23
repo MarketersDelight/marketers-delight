@@ -1096,11 +1096,21 @@ a.md-circle-badge {
 .md-dropin-delete {
 	color: #b32d2e;
 	cursor: pointer;
+	display: none;
 	float: right;
 	margin-top: 2px;
 }
 
+.md-dropin:hover .md-dropin-delete { display: block; }
+
 .md-dropin .md-dropin-description { margin-bottom: 10px; }
+
+.md-dropin-plugin-required {
+	color: #666;
+	margin-left: 3px;
+}
+
+.md-dropin-plugin-required .dashicons { color: #f7ac1e; }
 
 .md-dropin-byline .button { margin-right: 3px; }
 
