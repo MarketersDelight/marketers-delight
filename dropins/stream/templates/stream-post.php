@@ -33,7 +33,7 @@
 			</div>
 		</div>
 	<?php endif; ?>
-	<?php if ( $embed_id ) :
+	<?php if ( $embed_id && get_post_status( $embed_id ) ) :
 		$embed = array(
 			'title' => get_the_title( $embed_id ),
 			'link' => get_permalink( $embed_id ),

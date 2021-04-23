@@ -4,7 +4,8 @@
 		$loop = new WP_Query( array(
 			'post_type' => array( 'stream', 'stream_activity' ),
 			'posts_per_page' => md_setting( array( 'stream', 'posts_per_page' ), 10 ),
-			'fields' => 'ids'
+			'fields' => 'ids',
+			'paged' => get_query_var( 'paged' )
 		) );
 		if ( $loop->have_posts() )
 			while ( $loop->have_posts() ) {

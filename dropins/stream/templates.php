@@ -74,7 +74,7 @@ class md_stream_templates {
 		}
 		return $wp;
 	}
-
+	
 	/**
 	 * Load Share script only when needed.
 	 *
@@ -149,8 +149,9 @@ class md_stream_templates {
 	public function loop() {
 		$c = 0;
 		$disable_comments = md_setting( array( 'stream', 'layout', 'disable_comments' ) );
+		$loop = null;
 		$loop_h = is_post_type_archive( 'stream' ) || is_tax( 'stream' ) ? 'div' : 'article';
-		$article_h = is_singular( 'stream' ) ? 'div' : 'article';
+		$article_h = is_singular( 'stream' ) ? 'div' : 'article';		
 		include( md_template( $this->dir, 'stream/stream-loop', true ) );
 	}
 

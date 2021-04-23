@@ -84,7 +84,7 @@ class md_stream extends md_api {
 				'public' => true,
 				'has_archive' => false,
 				'show_in_menu' => 'edit.php?post_type=stream',
-				'supports' => $supports,
+				'supports' => array( 'title' ),
 				'rewrite' => array( 'slug' => "{$this->slug}-activity", 'with_front' => true ),
 				'labels' => array(
 					'name' => __( 'Stream activity', 'md' ),
