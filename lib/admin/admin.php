@@ -64,7 +64,7 @@ class md_admin {
 		// AJAX actions
 		add_action( 'wp_ajax_md_action', array( $this, 'action' ) );
 		add_action( 'wp_ajax_nopriv_md_action', array( $this, 'action' ) );
-		add_action( 'wp_update_nav_menu', 'md_compile_css' );
+		add_action( 'wp_update_nav_menu', 'md_compile_css' );		
 	}
 
 	/**

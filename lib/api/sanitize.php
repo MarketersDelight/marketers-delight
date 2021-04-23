@@ -283,7 +283,7 @@ class md_sanitize {
 	 * @since 4.0
 	 */
 
-	public function admin_save( $input ) {
+	public function admin_save( $input ) {	
 		$save = $this->validate( 'admin_pages', $input );
 		return array_merge( md_setting(), $save );
 	}

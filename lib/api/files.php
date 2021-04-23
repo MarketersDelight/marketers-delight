@@ -42,32 +42,42 @@ class md_files {
 		if ( ! in_array( $extension, $accept ) )
 			return;
 
-		$zip_name = str_replace( ".$extension", '', $_FILES['file']['name'] );
+		$dir_name = str_replace( ".$extension", '', $_FILES['file']['name'] );
+
 		$upload_action = ! empty( $_POST['upload_action'] ) ? $_POST['upload_action'] : '';
 
 		if ( $extension == 'zip' ) {
+			$url = wp_nonce_url( 'admin.php?page=md_dropins', 'marketers-delight' );
+
+			if ( false === ( $creds = request_filesystem_credentials ($url, '', false, false, null ) ) )
+				return;
+
+			if ( ! WP_Filesystem( $creds ) ) {
+				request_filesystem_credentials( $url, '', true, false, null );
+				return;
+			}
+			
+			global $wp_filesystem;		
 			$uploads_dir = MD_INSTALLED_DROPINS;
 			$zip_file = basename( $_FILES['file']['name'] );
 			$zip_path = "$uploads_dir/$zip_file";
 
-			if ( ! file_exists( $uploads_dir ) )
-				wp_mkdir_p( $uploads_dir );
+			if ( ! $wp_filesystem->exists( $uploads_dir ) )
+				$wp_filesystem->mkdir( $uploads_dir );
 
-			if ( move_uploaded_file( $_FILES['file']['tmp_name'], $zip_path ) ) {
-				$zip = new ZipArchive;
-				if ( $zip->open( $zip_path ) ) {
-					$zip->extractTo( $uploads_dir );
-					$zip->close();
-				}
-				$files = scandir( $uploads_dir );
+			if ( $wp_filesystem->exists( "$uploads_dir/$dir_name" ) )
+				$wp_filesystem->delete( "$uploads_dir/$dir_name" , true );
+
+			if ( unzip_file( $_FILES['file']['tmp_name'], $uploads_dir ) ) {
+				$files = $wp_filesystem->dirlist( $uploads_dir );
 				$option = md_setting();
-				foreach ( $files as $file ) {
+				foreach ( $files as $file => $fields ) {
 					$upload_file = "$uploads_dir/$file/$file.php";
-					if ( file_exists( $upload_file ) ) {
+					if ( $wp_filesystem->exists( $upload_file ) ) {
 						$config = "$uploads_dir/$file/config.json";
 						$option['installed_dropins'][] = esc_attr( $file );
-						if ( file_exists( $config ) ) {
-							$json = file_get_contents( $config );
+						if ( $wp_filesystem->exists( $config ) ) {
+							$json = $wp_filesystem->get_contents( $config );
 							$data = json_decode( $json, true );
 							foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class' ) as $setting )
 								if ( ! empty ( $data[$setting] ) )
@@ -75,7 +85,6 @@ class md_files {
 						}
 					}
 				}
-				unlink( $zip_path );
 				update_option( 'marketers_delight', $option );
 			}
 		}
