@@ -347,7 +347,7 @@ class md_sanitize {
 	public function validate( $settings, $input ) {
 		$save = array();
 		$data = md_register( $settings );
-		$whitelist = array( 'integrations', 'popups_data', 'license', 'custom_icons', 'installed_dropins' );
+		$whitelist = array( 'integrations', 'popups_data', 'license', 'custom_icons' );
 
 		foreach ( $input as $key => $input_fields ) {
 			$save[$key] = array();

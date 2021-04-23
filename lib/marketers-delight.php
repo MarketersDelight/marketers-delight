@@ -107,7 +107,6 @@ final class marketers_delight {
 				else {
 					$option = md_setting();
 					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-					unset( $option['installed_dropins'][$dropin] );
 					update_option( 'marketers_delight', $option );
 				}
 		}
@@ -164,10 +163,9 @@ final class marketers_delight {
 
 /*
 		$option = md_setting();
-		unset( $option['installed_dropins'] );
 		unset( $option['dropins'] );
 		update_option( 'marketers_delight', $option );
-		print_r( md_setting( 'installed_dropins' ) );
+		print_r( md_setting( 'dropins' ) );
 
 */
 

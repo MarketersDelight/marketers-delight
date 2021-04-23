@@ -50,7 +50,6 @@ class md_files {
 		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
 			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
 		unset( $option['dropins']['installed'][$dropin_id] );
-		unset( $option['installed_dropins'][$dropin_id] );
 		update_option( 'marketers_delight', $option );
 		md_compile_css();
 	}
@@ -91,7 +90,6 @@ class md_files {
 					$upload_file = "$uploads_dir/$file/$file.php";
 					if ( $wp_filesystem->exists( $upload_file ) ) {
 						$config = "$uploads_dir/$file/config.json";
-						$option['installed_dropins'][] = esc_attr( $file );
 						if ( $wp_filesystem->exists( $config ) ) {
 							$json = $wp_filesystem->get_contents( $config );
 							$data = json_decode( $json, true );

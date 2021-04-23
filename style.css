@@ -2154,56 +2154,6 @@ ol.comments-list, ul.children {
 	}
 }
 /*------------------------------*\
-	$GLOSSARY
-\*------------------------------*/
-.post-type-archive-glossary .content-inner {
-	background-color: transparent;
-	box-shadow: none;
-}
-/* LETTERS NAV */
-.glossary-letters {
-	background-color: #fff;
-	border-top: 1px solid rgba(0, 0, 0, 0.1);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	padding: 14px;
-}
-.glossary-letter {
-	border-bottom: 0;
-	border-radius: 50%;
-	display: inline-block;
-	height: 32px;
-	transition: 0.3s;
-	width: 32px;
-}
-.glossary-letter:hover, .glossary-letter.active {
-	background-color: #3E3E3E;
-	color: #fff;
-}
-/* LOOP */
-.glossary-term {
-	border-left: 8px solid #AE2525;
-	border-radius: 5px;
-}
-.glossary-term-letter {
-	font-size: #1E1E1Epx;
-	line-height: 1;
-}
-.glossary-link.active { font-weight: bold; }
-/* CALL TO ACTION */
-.glossary-cta {
-	border-left-color: #3E3E3E;
-	text-align: center;
-}
-/* QUERIES */
-@media all and (min-width: 900px) {
-	.glossary-content { padding: 56px 56px 28px; }
-	.glossary-after { padding-top: 56px; }
-}
-@media all and (max-width: 900px) {
-	.glossary-content { padding: 28px 14px; }
-	.glossary-after { padding-top: 28px; }
-}
-/*------------------------------*\
 	$EMAIL FORMS
 \*------------------------------*/
 .cta {
