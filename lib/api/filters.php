@@ -16,16 +16,6 @@ function md_register( $group = null ) {
 }
 
 /**
- * A collection of installed Drop-ins data.
- *
- * @since 5.3
- */
-
-function md_filter_installed_dropins() {
-	return apply_filters( 'md_filter_installed_dropins', array() );
-}
-
-/**
  * Filter the default image sizes of MD.
  *
  * @since 4.7.4.4

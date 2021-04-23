@@ -159,16 +159,6 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
-
-
-/*
-		$option = md_setting();
-		unset( $option['dropins'] );
-		update_option( 'marketers_delight', $option );
-		print_r( md_setting( 'dropins' ) );
-
-*/
-
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
