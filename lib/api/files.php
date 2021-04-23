@@ -43,16 +43,6 @@ class md_files {
 
 		wp_die();
 	}
-	
-	public function delete_dropin( $dropin_id, $wp_filesystem ) {
-		$uploads_dir = MD_INSTALLED_DROPINS;
-		$option = md_setting();
-		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
-			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
-		unset( $option['dropins']['installed'][$dropin_id] );
-		update_option( 'marketers_delight', $option );
-		md_compile_css();
-	}
 
 	/**
 	 * Run specialty file uploads.
@@ -130,4 +120,22 @@ class md_files {
 		update_option( 'marketers_delight', $option );
 		md_compile_css();
 	}
+
+	/**
+	 * Run delete drop-in action to delete all files and
+	 * scrub data from MD settings.
+	 *
+	 * @since 5.2.3
+	 */
+
+	public function delete_dropin( $dropin_id, $wp_filesystem ) {
+		$uploads_dir = MD_INSTALLED_DROPINS;
+		$option = md_setting();
+		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
+			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
+		unset( $option['dropins']['installed'][$dropin_id] );
+		update_option( 'marketers_delight', $option );
+		md_compile_css();
+	}
+
 }
