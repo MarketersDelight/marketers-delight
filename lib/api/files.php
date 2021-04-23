@@ -28,7 +28,6 @@ class md_files {
 		}
 
 		global $wp_filesystem;		
-
 		$dropin_id = ! empty( $_POST['dropin_id'] ) ? $_POST['dropin_id'] : '';
 		$action = ! empty( $_POST['upload_action'] ) ? $_POST['upload_action'] : '';
 		if ( isset( $args['action'] ) )
@@ -64,8 +63,6 @@ class md_files {
 
 		if ( $action == 'md_dropin' && $extension == 'zip' ) {
 			$uploads_dir = MD_INSTALLED_DROPINS;
-			$zip_file = basename( $files['file']['name'] );
-			$zip_path = "$uploads_dir/$zip_file";
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) )
 				$wp_filesystem->mkdir( $uploads_dir );
@@ -74,8 +71,8 @@ class md_files {
 				$wp_filesystem->delete( "$uploads_dir/$dir_name", true );
 
 			if ( unzip_file( $files['file']['tmp_name'], $uploads_dir ) ) {
-				$files = $wp_filesystem->dirlist( $uploads_dir );
 				$option = md_setting();
+				$files = $wp_filesystem->dirlist( $uploads_dir );
 				foreach ( $files as $file => $fields ) {
 					$upload_file = "$uploads_dir/$file/$file.php";
 					if ( $wp_filesystem->exists( $upload_file ) ) {
@@ -93,7 +90,7 @@ class md_files {
 			}
 		}
 		elseif ( $action == 'md_icons' && $extension == 'json' ) {
-			$json = file_get_contents( $files['file']['tmp_name'] );
+			$json = $wp_filesystem->get_contents( $files['file']['tmp_name'] );
 			$file = json_decode( $json );
 			$this->update_icons( $file );
 		}
