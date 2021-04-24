@@ -103,7 +103,6 @@ class md_dropins extends md_api {
 				'admin_header' => true,
 				'admin_tab' => __( 'Dropin-ins', 'md' ),
 				'admin_tab_parent' => 'md_dropins',
-				'save_hook' => array( $this, 'dropins_update' ),
 				'fields' => array(
 					'core' => array(
 						'type' => 'group',
@@ -137,12 +136,6 @@ class md_dropins extends md_api {
 				)
 			)
 		);
-	}
-	
-	public function dropins_update() {
-		print_r( $_POST );
-		print_r( 'made it!' );
-		die();
 	}
 
 	/**
