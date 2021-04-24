@@ -46,8 +46,12 @@ class md_stream_templates {
 				add_action( 'md_hook_stream_before_loop', array( $this, 'loop_sticky' ) );
 			remove_action( 'md_hook_content', 'md_archives_title' );
 		}
-		if ( is_post_type_archive( 'stream' ) && $archives_sidebar )
-			add_filter( 'md_filter_has_sidebar', '__return_true' );
+		if ( is_post_type_archive( 'stream' ) ) {
+			if ( md_setting( array( 'stream', 'layout', 'remove_breadcrumbs' ) ) )
+				remove_action( 'md_hook_content', 'md_breadcrumbs', 5 );
+			if ( $archives_sidebar )
+				add_filter( 'md_filter_has_sidebar', '__return_true' );
+		}
 		if ( is_singular( 'stream' ) ) {
 			if ( $add_title )
 				add_action( 'md_hook_content', array( $this, 'title' ), 5 );

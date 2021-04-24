@@ -179,7 +179,7 @@ class md_stream extends md_api {
 					'posts_per_page' => array( 'type' => 'number' ),
 					'layout' => array(
 						'type' => 'checkbox',
-						'options' => array( 'disable_comments', 'add_archives_sidebar', 'add_single_sidebar', 'add_stream_title', 'remove_post_titles' )
+						'options' => array( 'disable_comments', 'add_archives_sidebar', 'add_single_sidebar', 'add_stream_title', 'remove_breadcrumbs', 'remove_post_titles' )
 					)
 				)
 			),

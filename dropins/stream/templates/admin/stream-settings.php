@@ -65,6 +65,7 @@
 						'add_single_sidebar' => __( '<b>Add sidebar</b> to Stream posts', 'md' ),
 						'add_stream_title' => __( '<b>Add stream title</b> to Stream posts', 'md' ),
 						'remove_post_titles' => __( '<b>Remove post title</b> from Stream posts', 'md' ),
+						'remove_breadcrumbs' => __( '<b>Remove breadcrumbs</b> from Stream page', 'md' ),
 						'disable_comments' => __( '<b>Disable</b> comments', 'md' )
 					)
 				) ); ?>
