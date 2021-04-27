@@ -363,7 +363,8 @@ class md_fields {
 			</div>
 			<?php wp_enqueue_media(); ?>
 		<?php elseif ( $type == 'file' ) :
-			$success_text = isset( $args['success_text'] ) ? $args['success_text'] : __( 'File successfully updated.', 'md' )
+			$alert = isset( $args['alert'] ) ? $args['alert'] : __( 'You are about to upload a new file. Do you want to proceed?', 'md' );
+			$success_text = isset( $args['success_text'] ) ? $args['success_text'] : __( 'File successfully updated.', 'md' );
 		?>
 			<div class="md-file-upload">
 				<div class="md-file-upload-field">

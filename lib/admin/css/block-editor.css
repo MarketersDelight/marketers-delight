@@ -187,7 +187,7 @@ div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
 /* ICONS */
 @font-face {
 	font-family: md-icon;
-	src: url('http://localhost:8888/dev/wp-content/themes/marketers-delight/lib/assets/icons/md.woff') format('woff');
+	src: url('http://localhost:8888/dev/wp-content/themes/md-child/md.woff') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }

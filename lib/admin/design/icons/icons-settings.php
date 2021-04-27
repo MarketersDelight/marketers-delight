@@ -16,7 +16,7 @@
 				) ); ?>
 			</div>
 			<div class="md-sep-small">
-				<button class="button md-action" data-md-action="reset-icons"<?php echo ! md_setting( 'custom_icons' ) ? ' disabled' : ''; ?>><i class="dashicons dashicons-update-alt"></i> <?php echo __( 'Restore default icons', 'md' ); ?></button>
+				<button class="button md-action" data-md-action="reset-icons" data-md-alert="<?php echo __( "You are about to revert to the default MD font icons set. No files will be deleted, but your current icons\ndata will be removed and any custom icons may no longer show on your website. Do you wish to proceed?", 'md' ); ?>"<?php echo ! md_setting( 'custom_icons' ) ? ' disabled' : ''; ?>><i class="dashicons dashicons-update-alt"></i> <?php echo __( 'Restore default icons', 'md' ); ?></button>
 			</div>
 		</div>
 	</div>

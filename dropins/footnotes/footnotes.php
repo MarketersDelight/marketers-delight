@@ -14,7 +14,7 @@ class md_footnotes extends md_api {
 	 */
 	
 	public function actions() {
-	add_filter( 'post_class', array( $this, 'post_classes' ) );
+		add_filter( 'post_class', array( $this, 'post_classes' ) );
 		add_filter( 'the_content', array( $this, 'footnotes_list' ) );
 	}
 

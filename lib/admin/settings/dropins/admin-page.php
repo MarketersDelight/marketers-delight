@@ -6,7 +6,8 @@
 			'upload_type' => 'file',
 			'upload_action' => 'md_dropin',
 			'accept' => '.zip',
-			'label' => __( 'Drop-in file', 'md' ),
+			'success_text' => __( 'Drop-in installed!', 'md' ),
+			'label' => __( 'Drop-in file', 'md' )
 		) ); ?>
 	</div>
 	<div class="md-dropins-list md-tabs md-sep-small">
@@ -37,7 +38,7 @@
 						</div>
 						<div class="md-dropin-content col col2">
 							<h4 class="md-title"><a href="<?php echo esc_url( $fields['dropin_url'] ); ?>" target="_blank"><?php echo esc_html( $fields['name'] ); ?> <small><?php echo $fields['version']; ?></small></a></h4>
-							<span class="md-dropin-delete md-action" data-md-action="delete-dropin" data-md-dropin-id="<?php echo esc_attr( $dropin ); ?>"><i class="dashicons dashicons-no"></i> <?php echo __( 'Delete', 'md' ); ?></span>
+							<span class="md-delete md-action" data-md-action="delete-dropin" data-md-dropin-id="<?php echo esc_attr( $dropin ); ?>" data-md-alert="<?php echo sprintf( __( "You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\nand not all data will be saved. Do you want to proceed?", 'md' ), $fields['name'] ); ?>"><i class="dashicons dashicons-no"></i> <?php echo __( 'Delete', 'md' ); ?></span>
 							<div class="md-dropin-controls">
 								<?php if ( ! $needs_plugin ) : ?>
 									<?php $this->fields->field( array( 'installed', $dropin, 'status' ), array(

@@ -78,7 +78,7 @@
 }
 
 .md-icon-yes { background-color: #30a146; }
-.md-file-upload-success .dashicons-yes, .md-action .dashicons-yes { color: #30a146; }
+.md-file-upload-success .dashicons-yes, .button.md-action .dashicons-yes { color: #30a146; }
 .md-icon-no { background-color: #ae2525; }
 
 /* LAYOUT */
@@ -590,10 +590,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-reorder { cursor: move; }
 
 .md-delete {
-	color: darkred;
+	color: #b32d2e;
 	cursor: pointer;
 	display: none;
 }
+
+.md-delete .md-loading:before { content: "\f113"; /* dashicons-update-alt */ }
 
 .md-group:hover .md-delete { display: inline-block; }
 
@@ -1093,15 +1095,13 @@ a.md-circle-badge {
 
 .md-dropin-controls .md-checkboxes { display: inline-block; }
 
-.md-dropin-delete {
-	color: #b32d2e;
-	cursor: pointer;
-	display: none;
+.md-dropin .md-delete {
 	float: right;
+	font-size: inherit;
 	margin-top: 2px;
 }
 
-.md-dropin:hover .md-dropin-delete { display: block; }
+.md-dropin:hover .md-delete { display: block; }
 
 .md-dropin .md-dropin-description { margin-bottom: 10px; }
 
