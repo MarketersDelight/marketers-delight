@@ -122,7 +122,7 @@ class md_files {
 	 * Run delete drop-in action to delete all files and
 	 * scrub data from MD settings.
 	 *
-	 * @since 5.2.3
+	 * @since 5.3
 	 */
 
 	public function delete_dropin( $dropin_id, $wp_filesystem ) {
