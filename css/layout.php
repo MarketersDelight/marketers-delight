@@ -383,7 +383,10 @@
 
 /* ARCHIVES TITLE */
 
-.archives-title { margin-bottom: <?php echo $single; ?>px; }
+.archives-title {
+	margin-bottom: <?php echo $single; ?>px;
+	position: relative;
+}
 .archives-title .headline { margin-bottom: <?php echo $third; ?>px; }
 
 @media all and (min-width: 900px) {
