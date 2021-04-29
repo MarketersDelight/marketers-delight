@@ -23,6 +23,13 @@
 
 .spin, .md-icon-loading { animation: spin 2s linear infinite; }
 
+.button-loading .md-icon-loading { display: none; }
+
+.is-loading .md-icon-loading {
+	display: inline-block;
+	margin-left: <?php echo $small; ?>px;
+}
+
 /* ICONS */
 
 <?php

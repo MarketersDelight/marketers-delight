@@ -119,6 +119,17 @@ window.MD = {
 			}
 		}
 	},
+	button: function() {
+		var buttons = document.getElementsByClassName( 'button-loading' );
+		for ( var i = 0; i < buttons.length; i++ ) {
+			buttons[i].onclick = function( e ) {
+				var form = this.parentNode;
+				form.addEventListener( 'submit', function() {
+					MD.addClass( this, 'is-loading' );
+				});
+			}
+		}
+	},
 	share: {
 		init: function() {
 			MD.share.window();

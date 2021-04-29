@@ -32,7 +32,7 @@
 
 				<input type="email" class="form-input form-input-email" name="<?php echo md_email_input( 'email', $service ); ?>" placeholder="<?php echo esc_attr( $fields['email_email_label'] ); ?>" required />
 
-				<button class="email-form-submit form-submit mb-half<?php echo trim( esc_attr( $submit_classes ) ); ?>"<?php echo $submit_style; ?><?php echo md_email_attrs( 'submit', $fields ); ?>><?php echo esc_attr( $fields['email_submit_text'] ); ?></button>
+				<button class="email-form-submit form-submit button-loading mb-half<?php echo trim( esc_attr( $submit_classes ) ); ?>"<?php echo $submit_style; ?><?php echo md_email_attrs( 'submit', $fields ); ?>><?php echo esc_attr( $fields['email_submit_text'] ); ?> <i class="<?php echo md_icon( 'loading', true ); ?>"></i></button>
 
 				<?php if ( ! empty( $fields['email_form_footer'] ) || is_customize_preview() ) : ?>
 					<div class="email-form-footer mb-single">
@@ -73,3 +73,4 @@
 
 	</div>
 </div>
+<?php wp_add_inline_script( 'marketers-delight', 'MD.button();' ); ?>
