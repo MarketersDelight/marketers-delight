@@ -140,7 +140,7 @@
 	width: 60px;
 }
 
-.stream-byline {
+.stream-byline{
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-bottom: 4px;
 }
@@ -171,7 +171,11 @@
 
 .stream-activity .stream-byline { font-style: italic; }
 
-.stream-activity .stream-text { margin-bottom: <?php echo $half; ?>px; }
+.stream-activity .share {
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	margin-top: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
 
 /* SINGLE */
 

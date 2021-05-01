@@ -2615,7 +2615,7 @@ ol.comments-list, ul.children {
 	text-align: center;
 	width: 60px;
 }
-.stream-byline {
+.stream-byline{
 	border-bottom: 1px solid #DDDDDD;
 	padding-bottom: 4px;
 }
@@ -2638,7 +2638,11 @@ ol.comments-list, ul.children {
 }
 /* ACTIVITY */
 .stream-activity .stream-byline { font-style: italic; }
-.stream-activity .stream-text { margin-bottom: 14px; }
+.stream-activity .share {
+	border-top: 1px solid #DDDDDD;
+	margin-top: 14px;
+	padding-top: 14px;
+}
 /* SINGLE */
 .single-stream .comments {
 	max-width: 100%;

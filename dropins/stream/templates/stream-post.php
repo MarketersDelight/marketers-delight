@@ -50,38 +50,40 @@
 				'c' => $c
 			), $embed ) ); ?>
 		<?php else : ?>
-			<div class="stream-embed block-half mb-single clear">
-				<?php if ( ! empty( $embed['image'] ) ) : ?>
-					<div class="stream-media">
-						<div class="stream-box">
-							<a href="<?php echo $embed['link']; ?>" class="clear">
-								<?php echo $embed['image']; ?>
-								<?php if ( isset( $types[$post_type]['embed_icon'] ) ) : ?>
-									<span class="stream-icon <?php echo esc_attr( $types[$post_type]['embed_icon'] ); ?>"></span>
-								<?php endif; ?>
-							</a>
-						</div>
-					</div>
-				<?php endif; ?>
-				<div class="stream-text">
-					<p class="stream-title small-title mb-small"><a href="<?php echo $embed['link']; ?>" title="<?php echo $embed['title']; ?>"><?php echo $embed['title']; ?></a></p>
-					<?php if ( ! empty( $embed['excerpt'] ) ) : ?>
-						<div class="mb-small">
-							<?php echo $embed['excerpt']; ?>
+			<div class="stream-embed block-half">
+				<div class="stream-embed-content clear">
+					<?php if ( ! empty( $embed['image'] ) ) : ?>
+						<div class="stream-media">
+							<div class="stream-box">
+								<a href="<?php echo $embed['link']; ?>" class="clear">
+									<?php echo $embed['image']; ?>
+									<?php if ( isset( $types[$post_type]['embed_icon'] ) ) : ?>
+										<span class="stream-icon <?php echo esc_attr( $types[$post_type]['embed_icon'] ); ?>"></span>
+									<?php endif; ?>
+								</a>
+							</div>
 						</div>
 					<?php endif; ?>
-					<?php $this->byline( $post_id, $embed_id, $post_type, array(
-						'is_embed' => true
-					) ); ?>
+					<div class="stream-text">
+						<p class="stream-title small-title mb-small"><a href="<?php echo $embed['link']; ?>" title="<?php echo $embed['title']; ?>"><?php echo $embed['title']; ?></a></p>
+						<?php if ( ! empty( $embed['excerpt'] ) ) : ?>
+							<div class="mb-small">
+								<?php echo $embed['excerpt']; ?>
+							</div>
+						<?php endif; ?>
+						<?php $this->byline( $post_id, $embed_id, $post_type, array(
+							'is_embed' => true
+						) ); ?>
+					</div>
 				</div>
-			<?php if ( md_has( 'share' ) && get_post_type() == 'stream_activity' ) {
-				$share = new md_share;
-				$share->share_button( array(
-					'style' => 'minimal',
-					'post_id' => $embed_id,
-					'post_type' => $post_type
-				) );
-			} ?>
+				<?php if ( md_has( 'share' ) && get_post_type() == 'stream_activity' ) {
+					$share = new md_share;
+					$share->share_button( array(
+						'style' => 'minimal',
+						'post_id' => $embed_id,
+						'post_type' => $post_type
+					) );
+				} ?>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
