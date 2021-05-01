@@ -700,9 +700,9 @@ function md_like() {
 		$option = md_setting();
 		$is_archive = isset( $_POST['archive'] ) && $_POST['archive'] == 'true' ? true : false;
 		if ( $is_archive )
-			$meta = get_term_meta( $id, 'marketers_delight', true );
+			$meta = md_term_meta( null, $id );
 		else
-			$meta = get_post_meta( $id, 'marketers_delight', true );
+			$meta = md_post_meta( null, $id );
 		if ( empty( $meta['share']['likes'] ) )
 			$meta['share']['likes'] = '';
 		$meta['share']['likes']++;

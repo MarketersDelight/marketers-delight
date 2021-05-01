@@ -39,7 +39,20 @@ class md_stream extends md_api {
 		add_filter( 'md_optins_locations', array( $this, 'optins_locations' ) );
 		if ( is_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
-			add_action( 'transition_post_status', array( $this, 'publish_activity' ), 10, 3 );
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
+		}
+	}
+
+	/**
+	 * Run stream actions on MD post type publish.
+	 *
+	 * @since 5.3
+	 */
+
+	public function admin_init() {
+		foreach ( md_post_type_meta() as $post_type ) {
+			if ( $post_type == 'stream' ) continue;
+			add_action( "publish_$post_type", array( $this, 'publish_activity' ) );
 		}
 	}
 
@@ -85,7 +98,7 @@ class md_stream extends md_api {
 				'public' => true,
 				'has_archive' => false,
 				'show_in_menu' => 'edit.php?post_type=stream',
-				'supports' => array( 'title' ),
+				'supports' => $supports,
 				'rewrite' => array( 'slug' => "{$this->slug}-activity", 'with_front' => true ),
 				'labels' => array(
 					'name' => __( 'Stream activity', 'md' ),
@@ -109,18 +122,14 @@ class md_stream extends md_api {
 	 * @since 5.3
 	 */
 
-	public function publish_activity( $new, $old, $post ) {
-		$post_types = md_post_type_meta();
-		$post_type = esc_attr( $post->post_type );
-		if ( $old !== 'publish' && $new == 'publish' && in_array( $post_type, $post_types ) && $post_type !== 'stream' ) {
-			$new_post_id = wp_insert_post( array(
-				'post_type' => 'stream_activity',
-				'post_status' => 'publish'
-			) );
-			$post_meta = md_post_meta( null, $new_post_id, array() );
-			$post_meta['stream']['post_id'] = esc_attr( $post->ID );
-			update_post_meta( $new_post_id, 'marketers_delight', $post_meta );	
-		}
+	public function publish_activity( $post_id ) {
+		$new_post_id = wp_insert_post( array(
+			'post_type' => 'stream_activity',
+			'post_status' => 'publish'
+		) );
+		$post_meta = md_post_meta( null, $new_post_id, array() );
+		$post_meta['stream']['post_id'] = esc_attr( $post_id );
+		update_post_meta( $new_post_id, 'marketers_delight', $post_meta );	
 	}
 
 	/**
