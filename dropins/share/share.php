@@ -494,7 +494,8 @@ class md_share extends md_api {
 		$option = $this->get_order();
 		$active = isset( $args['show'] ) ? $args['show'] : $option['active'];
 
-		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : null;
+		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_the_ID();
+		$post_type = isset( $args['post_type'] ) ? $args['post_type'] : get_post_type();
 		$style = isset( $args['style'] ) ? $args['style'] : null;
 		$type = isset( $args['type'] ) ? $args['type'] : 'inline';
 
@@ -532,10 +533,9 @@ class md_share extends md_api {
 			elseif ( isset( $data['share'] ) && empty( $fields['url'] ) )
 				$action = ' data-share="true" rel="nofollow"';
 			elseif ( $share == 'like' ) {
-				$id = get_the_ID();
 				$liked = ! empty( $_COOKIE['md_likes'] ) ? json_decode( stripslashes( $_COOKIE['md_likes'] ) ) : array();
-				$class = in_array( $id, $liked ) ? ' liked' : '';
-				$action = ' data-share-id="' . esc_attr( $id ) . '" data-share-type="' . get_post_type() . '"';
+				$class = in_array( $post_id, $liked ) ? ' liked' : '';
+				$action = ' data-share-id="' . esc_attr( $post_id ) . '" data-share-type="' . esc_attr( $post_type ) . '"';
 				$action .= ' data-share-archive="' . ( is_category() || is_tax() ? 'true' : 'false' ) . '"';
 			}
 			include( md_template( $this->dir, 'share/share', true ) );

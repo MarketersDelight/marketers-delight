@@ -167,6 +167,12 @@
 	text-transform: uppercase;
 }
 
+/* ACTIVITY */
+
+.stream-activity .stream-byline { font-style: italic; }
+
+.stream-activity .stream-text { margin-bottom: <?php echo $half; ?>px; }
+
 /* SINGLE */
 
 .single-stream .comments {

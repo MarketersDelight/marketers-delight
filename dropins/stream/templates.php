@@ -166,6 +166,7 @@ class md_stream_templates {
 	 */
 
 	public function loop_query( $c ) {
+		$classes = array( 'stream-item' );
 		$loop_h = is_post_type_archive( 'stream' ) || is_tax( 'stream' ) ? 'div' : 'article';
 		$article_h = is_singular( 'stream' ) ? 'div' : 'article';
 		$types = $this->types();
@@ -190,7 +191,11 @@ class md_stream_templates {
 		$post_author = get_post_field( 'post_author', $post_id );
 		$post_content = get_the_content( md_read_more_text() );
 		$stream_image = get_the_post_thumbnail( $post_id, ( $c == 0 ? 'md-image' : 'thumbnail' ) );
-		$classes = in_array( $post_id, get_option( 'sticky_posts' ) ) ? ' sticky' : '';
+		if ( get_post_type() == 'stream_activity' )
+			$classes[] = 'stream-activity';
+		if ( in_array( $post_id, get_option( 'sticky_posts' ) ) )
+			$classes[] = 'sticky';
+		$classes = join( ' ', $classes );
 		include( md_template( $this->dir, 'stream/stream-post', true ) );
 		if ( $stream_image )
 			if ( class_exists( 'md_popup' ) )

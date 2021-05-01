@@ -27,7 +27,7 @@ body {
 	background-color: #F0F0F0;
 	color: #1E1E1E;
 	font-size: 17px;
-	font-family: Open Sans;
+	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
 	font-weight: 400;
 	line-height: 28px;
 	position: relative;
@@ -2636,6 +2636,9 @@ ol.comments-list, ul.children {
 	margin-bottom: 5px;
 	text-transform: uppercase;
 }
+/* ACTIVITY */
+.stream-activity .stream-byline { font-style: italic; }
+.stream-activity .stream-text { margin-bottom: 14px; }
 /* SINGLE */
 .single-stream .comments {
 	max-width: 100%;

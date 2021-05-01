@@ -1,4 +1,4 @@
-<<?php echo $article_h; ?> id="stream_<?php echo esc_attr( $html_id ); ?>" class="stream-item<?php echo esc_attr( $classes ); ?>">
+<<?php echo $article_h; ?> id="stream_<?php echo esc_attr( $html_id ); ?>" class="<?php echo esc_attr( $classes ); ?>">
 	<div class="stream-byline mb-half">
 		<?php if ( in_array( $post_id, get_option( 'sticky_posts' ) ) ) : ?>
 			<p class="stream-byline-pinned byline-item"><?php echo md_icon( 'pin' ); ?> <?php echo __( 'Pinned', 'md' ); ?></p>
@@ -37,7 +37,7 @@
 		$embed = array(
 			'title' => get_the_title( $embed_id ),
 			'link' => get_permalink( $embed_id ),
-			'excerpt' => $embed_id != 'page' ? get_post_field( 'post_excerpt', $embed_id ) : '',
+			'excerpt' => $embed_id != 'page' ? get_the_excerpt( $embed_id ) : '',
 			'content' => get_post_field( 'post_content', $embed_id ),
 			'date' => get_post_timestamp( $embed_id ),
 			'author' => get_post_field( 'post_author', $embed_id ),
@@ -74,6 +74,14 @@
 						'is_embed' => true
 					) ); ?>
 				</div>
+			<?php if ( md_has( 'share' ) && get_post_type() == 'stream_activity' ) {
+				$share = new md_share;
+				$share->share_button( array(
+					'style' => 'minimal',
+					'post_id' => $embed_id,
+					'post_type' => $post_type
+				) );
+			} ?>
 			</div>
 		<?php endif; ?>
 	<?php endif; ?>
