@@ -164,7 +164,7 @@
 		padding-top: <?php echo $third; ?>px;
 		position: absolute;
 			top: 0;
-			right: <?php echo $single; ?>px;
+			right: <?php echo $half; ?>px;
 	}
 	.header-menu {
 		display: none;
