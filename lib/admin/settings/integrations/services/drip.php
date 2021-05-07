@@ -4,8 +4,13 @@
  * @modified Alex Mangini
  */
 
-Class MD_Drip {
-	private $version = "2";
+class MD_Drip
+{
+    const GET = 1;
+    const POST = 2;
+    const DELETE = 3;
+    const PUT = 4;
+    private $version = "2";
     private $api_token = '';
     private $error_code = '';
     private $error_message = '';
@@ -16,12 +21,8 @@ Class MD_Drip {
     private $connect_timeout = 30;
     private $debug = false;
 
-    const GET  = 1;
-    const POST = 2;
-    const DELETE = 3;
-    const PUT = 4;
-
-    public function __construct($api_token) {
+    public function __construct($api_token)
+    {
         $api_token = trim($api_token);
 
         if (empty($api_token) || !preg_match('#^[\w-]+$#si', $api_token)) {
@@ -31,7 +32,8 @@ Class MD_Drip {
         $this->api_token = $api_token;
     }
 
-    public function get_forms($params) {
+    public function get_forms($params)
+    {
         if (empty($params['account_id'])) {
             throw new Exception("Account ID not specified");
         }
@@ -55,15 +57,16 @@ Class MD_Drip {
         }
 
         $forms = empty($raw_json)
-                ? false
-                : empty($raw_json['forms'])
-                    ? array()
-                    : $raw_json['forms'];
+            ? false
+            : empty($raw_json['forms'])
+                ? array()
+                : $raw_json['forms'];
 
         return $forms;
     }
 
-    public function make_request($url, $params = array(), $req_method = self::GET) {
+    public function make_request($url, $params = array(), $req_method = self::GET)
+    {
         if (!function_exists('curl_init')) {
             throw new Exception("Cannot find cURL php extension or it's not loaded.");
         }
@@ -96,7 +99,7 @@ Class MD_Drip {
 
         if (!empty($params)) {
             if ((isset($params['__req']) && strtolower($params['__req']) == 'get')
-                    || $req_method == self::GET) {
+                || $req_method == self::GET) {
                 unset($params['__req']);
                 $url .= '?' . http_build_query($params);
             } elseif ($req_method == self::POST || $req_method == self::DELETE) {
@@ -115,13 +118,13 @@ Class MD_Drip {
         $status = !empty($buffer);
 
         $data = array(
-            'url'       => $url,
-            'params'    => $params,
-            'status'    => $status,
-            'error'     => empty($buffer) ? curl_error($ch) : '',
-            'error_no'  => empty($buffer) ? curl_errno($ch) : '',
+            'url' => $url,
+            'params' => $params,
+            'status' => $status,
+            'error' => empty($buffer) ? curl_error($ch) : '',
+            'error_no' => empty($buffer) ? curl_errno($ch) : '',
             'http_code' => curl_getinfo($ch, CURLINFO_HTTP_CODE),
-            'debug'     => $this->debug ? curl_getinfo($ch) : '',
+            'debug' => $this->debug ? curl_getinfo($ch) : '',
         );
 
         curl_close($ch);
@@ -136,7 +139,8 @@ Class MD_Drip {
         return $data;
     }
 
-    public function _parse_error($res) {
+    public function _parse_error($res)
+    {
         if (empty($res['http_code']) || $res['http_code'] >= 200 && $res['http_code'] <= 299) {
             return true;
         }
@@ -179,7 +183,8 @@ Class MD_Drip {
         }
     }
 
-    public function __call($method, $args) {
+    public function __call($method, $args)
+    {
         return array();
     }
 

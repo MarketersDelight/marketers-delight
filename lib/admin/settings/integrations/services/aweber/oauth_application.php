@@ -22,13 +22,19 @@ if (!class_exists('CurlResponse')) require_once('curl_response.php');
  * @package
  * @version $id$
  */
-interface OAuthServiceProvider {
+interface OAuthServiceProvider
+{
 
     public function getAccessTokenUrl();
+
     public function getAuthorizeUrl();
+
     public function getRequestTokenUrl();
+
     public function getAuthTokenFromUrl();
+
     public function getBaseUri();
+
     public function getUserData();
 
 }
@@ -53,7 +59,8 @@ interface OAuthServiceProvider {
  * @package
  * @version $id$
  */
-class OAuthApplication implements AWeberOAuthAdapter {
+class OAuthApplication implements AWeberOAuthAdapter
+{
     public $debug = false;
 
     public $userAgent = 'AWeber OAuth Consumer Application 1.0 - https://labs.aweber.com/';
@@ -63,7 +70,7 @@ class OAuthApplication implements AWeberOAuthAdapter {
     public $requiresTokenSecret = true;
 
     public $signatureMethod = 'HMAC-SHA1';
-    public $version         = '1.0';
+    public $version = '1.0';
 
     /**
      * @var OAuthUser User currently interacting with the service provider
@@ -82,7 +89,8 @@ class OAuthApplication implements AWeberOAuthAdapter {
      * @access public
      * @return void
      */
-    public function __construct($parentApp = false) {
+    public function __construct($parentApp = false)
+    {
         if ($parentApp) {
             if (!is_a($parentApp, 'OAuthServiceProvider')) {
                 throw new Exception('Parent App must be a valid OAuthServiceProvider!');
@@ -103,7 +111,8 @@ class OAuthApplication implements AWeberOAuthAdapter {
      * @access public
      * @return void
      */
-    public function request($method, $uri, $data = array(), $options = array()) {
+    public function request($method, $uri, $data = array(), $options = array())
+    {
         $uri = $this->app->removeBaseUri($uri);
         $url = $this->app->getBaseUri() . $uri;
 
@@ -137,290 +146,6 @@ class OAuthApplication implements AWeberOAuthAdapter {
     }
 
     /**
-     * getRequestToken
-     *
-     * Gets a new request token / secret for this user.
-     * @access public
-     * @return void
-     */
-    public function getRequestToken($callbackUrl=false) {
-        $data = ($callbackUrl)? array('oauth_callback' => $callbackUrl) : array();
-        $resp = $this->makeRequest('POST', $this->app->getRequestTokenUrl(), $data);
-        $data = $this->parseResponse($resp);
-        $this->requiredFromResponse($data, array('oauth_token', 'oauth_token_secret'));
-        $this->user->requestToken = $data['oauth_token'];
-        $this->user->tokenSecret  = $data['oauth_token_secret'];
-        return $data['oauth_token'];
-    }
-
-    /**
-     * getAccessToken
-     *
-     * Makes a request for access tokens.  Requires that the current user has an authorized
-     * token and token secret.
-     *
-     * @access public
-     * @return void
-     */
-    public function getAccessToken() {
-        $resp = $this->makeRequest('POST', $this->app->getAccessTokenUrl(),
-            array('oauth_verifier' => $this->user->verifier)
-        );
-        $data = $this->parseResponse($resp);
-        $this->requiredFromResponse($data, array('oauth_token', 'oauth_token_secret'));
-
-        if (empty($data['oauth_token'])) {
-            throw new AWeberOAuthDataMissing('oauth_token');
-        }
-
-        $this->user->accessToken = $data['oauth_token'];
-        $this->user->tokenSecret = $data['oauth_token_secret'];
-        return array($data['oauth_token'], $data['oauth_token_secret']);
-    }
-
-    /**
-     * parseAsError
-     *
-     * Checks if response is an error.  If it is, raise an appropriately
-     * configured exception.
-     *
-     * @param mixed $response   Data returned from the server, in array form
-     * @access public
-     * @throws AWeberOAuthException
-     * @return void
-     */
-    public function parseAsError($response) {
-        if (!empty($response['error'])) {
-            throw new AWeberOAuthException($response['error']['type'],
-                $response['error']['message']);
-        }
-    }
-
-    /**
-     * requiredFromResponse
-     *
-     * Enforce that all the fields in requiredFields are present and not
-     * empty in data.  If a required field is empty, throw an exception.
-     *
-     * @param mixed $data               Array of data
-     * @param mixed $requiredFields     Array of required field names.
-     * @access protected
-     * @return void
-     */
-    protected function requiredFromResponse($data, $requiredFields) {
-        foreach ($requiredFields as $field) {
-            if (empty($data[$field])) {
-                throw new AWeberOAuthDataMissing($field);
-            }
-        }
-    }
-
-    /**
-     * get
-     *
-     * Make a get request.  Used to exchange user tokens with serice provider.
-     * @param mixed $url        URL to make a get request from.
-     * @param array $data       Data for the request.
-     * @access protected
-     * @return void
-     */
-    protected function get($url, $data) {
-        $url = $this->_addParametersToUrl($url, $data);
-        $handle = curl_init($url);
-        $resp = $this->_sendRequest($handle);
-        return $resp;
-    }
-
-    /**
-     * _addParametersToUrl
-     *
-     * Adds the parameters in associative array $data to the 
-     * given URL
-     * @param String $url       URL 
-     * @param array $data       Parameters to be added as a query string to
-     *      the URL provided
-     * @access protected
-     * @return void
-     */
-    protected function _addParametersToUrl($url, $data) {
-        if (!empty($data)) {
-            if (strpos($url, '?') === false) {
-                $url .= '?'.$this->buildData($data);
-            } else {
-                $url .= '&'.$this->buildData($data);
-            }
-        }
-        return $url;
-    }
-
-    /**
-     * generateNonce
-     *
-     * Generates a 'nonce', which is a unique request id based on the
-     * timestamp.  If no timestamp is provided, generate one.
-     * @param mixed $timestamp Either a timestamp (epoch seconds) or false,
-     *  in which case it will generate a timestamp.
-     * @access public
-     * @return string   Returns a unique nonce
-     */
-    public function generateNonce($timestamp = false) {
-        if (!$timestamp) $timestamp = $this->generateTimestamp();
-        return md5($timestamp.'-'.rand(10000,99999).'-'.uniqid());
-    }
-
-    /**
-     * generateTimestamp
-     *
-     * Generates a timestamp, in seconds
-     * @access public
-     * @return int Timestamp, in epoch seconds
-     */
-    public function generateTimestamp() {
-        return time();
-    }
-
-    /**
-     * createSignature
-     *
-     * Creates a signature on the signature base and the signature key
-     * @param mixed $sigBase    Base string of data to sign
-     * @param mixed $sigKey     Key to sign the data with
-     * @access public
-     * @return string   The signature
-     */
-    public function createSignature($sigBase, $sigKey) {
-        switch ($this->signatureMethod) {
-        case 'HMAC-SHA1':
-        default:
-            return base64_encode(hash_hmac('sha1', $sigBase, $sigKey, true));
-        }
-    }
-
-    /**
-     * encode
-     *
-     * Short-cut for utf8_encode / rawurlencode
-     * @param mixed $data   Data to encode
-     * @access protected
-     * @return void         Encoded data
-     */
-    protected function encode($data) {
-        return rawurlencode(utf8_encode($data));
-    }
-
-    /**
-     * createSignatureKey
-     *
-     * Creates a key that will be used to sign our signature.  Signatures
-     * are signed with the consumerSecret for this consumer application and
-     * the token secret of the user that the application is acting on behalf
-     * of.
-     * @access public
-     * @return void
-     */
-    public function createSignatureKey() {
-        return $this->consumerSecret.'&'.$this->user->tokenSecret;
-    }
-
-    /**
-     * getOAuthRequestData
-     *
-     * Get all the pre-signature, OAuth specific parameters for a request.
-     * @access public
-     * @return void
-     */
-    public function getOAuthRequestData() {
-        $token = $this->user->getHighestPriorityToken();
-        $ts = $this->generateTimestamp();
-        $nonce = $this->generateNonce($ts);
-        return array(
-            'oauth_token' => $token,
-            'oauth_consumer_key' => $this->consumerKey,
-            'oauth_version' => $this->version,
-            'oauth_timestamp' => $ts,
-            'oauth_signature_method' => $this->signatureMethod,
-            'oauth_nonce' => $nonce);
-    }
-
-
-    /**
-     * mergeOAuthData
-     *
-     * @param mixed $requestData
-     * @access public
-     * @return void
-     */
-    public function mergeOAuthData($requestData) {
-        $oauthData = $this->getOAuthRequestData();
-        return array_merge($requestData, $oauthData);
-    }
-
-    /**
-     * createSignatureBase
-     *
-     * @param mixed $method     String name of HTTP method, such as "GET"
-     * @param mixed $url        URL where this request will go
-     * @param mixed $data       Array of params for this request. This should
-     *      include ALL oauth properties except for the signature.
-     * @access public
-     * @return void
-     */
-    public function createSignatureBase($method, $url, $data) {
-        $method = $this->encode(strtoupper($method));
-        $query = parse_url($url, PHP_URL_QUERY);
-        if ($query) {
-            $url = array_shift(explode('?', $url, 2));
-            $items = explode('&', $query);
-            foreach ($items as $item) {
-                list($key, $value) = explode('=', $item);
-                $data[$key] = $value;
-            }
-        }
-        $url = $this->encode($url);
-        $data = $this->encode($this->collapseDataForSignature($data));
-        return $method.'&'.$url.'&'.$data;
-    }
-
-    /**
-     * collapseDataForSignature
-     *
-     * Turns an array of request data into a string, as used by the oauth
-     * signature
-     * @param mixed $data
-     * @access public
-     * @return void
-     */
-    public function collapseDataForSignature($data) {
-        ksort($data);
-        $collapse = '';
-        foreach ($data as $key => $val) {
-            if (!empty($collapse)) $collapse .= '&';
-            $collapse .= $key.'='.$this->encode($val);
-        }
-        return $collapse;
-    }
-
-    /**
-     * signRequest
-     *
-     * Signs the request.
-     *
-     * @param mixed $method     HTTP method
-     * @param mixed $url        URL for the request
-     * @param mixed $data       The data to be signed
-     * @access public
-     * @return array            The data, with the signature.
-     */
-    public function signRequest($method, $url, $data) {
-        $base = $this->createSignatureBase($method, $url, $data);
-        $key  = $this->createSignatureKey();
-        $data['oauth_signature'] = $this->createSignature($base, $key);
-        ksort($data);
-        return $data;
-    }
-
-
-    /**
      * makeRequest
      *
      * Public facing function to make a request
@@ -430,7 +155,8 @@ class OAuthApplication implements AWeberOAuthAdapter {
      * @access public
      * @return void
      */
-    public function makeRequest($method, $url, $data=array()) {
+    public function makeRequest($method, $url, $data = array())
+    {
 
         if ($this->debug) echo "\n** {$method}: $url\n";
 
@@ -452,7 +178,7 @@ class OAuthApplication implements AWeberOAuthAdapter {
 
             case 'PATCH':
                 $oauth = $this->prepareRequest($method, $url, array());
-                $resp  = $this->patch($url, $oauth, $data);
+                $resp = $this->patch($url, $oauth, $data);
                 break;
         }
 
@@ -466,14 +192,14 @@ class OAuthApplication implements AWeberOAuthAdapter {
         }
 
         if (!$resp) {
-            $msg  = 'Unable to connect to the AWeber API.  Please ensure that CURL is enabled and your ';
+            $msg = 'Unable to connect to the AWeber API.  Please ensure that CURL is enabled and your ';
             $msg .= 'firewall allows outbound SSL requests from your web server.';
             $error = array('message' => $msg, 'type' => 'APIUnreachableError',
-                           'documentation_url' => 'https://labs.aweber.com/docs/troubleshooting');
+                'documentation_url' => 'https://labs.aweber.com/docs/troubleshooting');
             throw new AWeberAPIException($error, $url);
         }
 
-        if($resp->headers['Status-Code'] >= 400) {
+        if ($resp->headers['Status-Code'] >= 400) {
             $data = json_decode($resp->body, true);
             throw new AWeberAPIException($data['error'], $url);
         }
@@ -482,22 +208,194 @@ class OAuthApplication implements AWeberOAuthAdapter {
     }
 
     /**
-     * put
+     * prepareRequest
      *
-     * Prepare an OAuth put method.
+     * @param mixed $method HTTP method
+     * @param mixed $url URL for the request
+     * @param mixed $data The data to generate oauth data and be signed
+     * @access public
+     * @return void             The data, with all its OAuth variables and signature
+     */
+    public function prepareRequest($method, $url, $data)
+    {
+        $data = $this->mergeOAuthData($data);
+        $data = $this->signRequest($method, $url, $data);
+        return $data;
+    }
+
+    /**
+     * mergeOAuthData
      *
-     * @param mixed $url    URL where we are making the request to
-     * @param mixed $data   Data that is used to make the request
-     * @access private
+     * @param mixed $requestData
+     * @access public
      * @return void
      */
-    protected function patch($url, $oauth, $data) {
-        $url = $this->_addParametersToUrl($url, $oauth);
-        $handle = curl_init($url);
-        curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'PATCH');
-        curl_setopt($handle, CURLOPT_POSTFIELDS, json_encode($data));
-        $resp = $this->_sendRequest($handle, array('Expect:', 'Content-Type: application/json'));
-        return $resp;
+    public function mergeOAuthData($requestData)
+    {
+        $oauthData = $this->getOAuthRequestData();
+        return array_merge($requestData, $oauthData);
+    }
+
+    /**
+     * getOAuthRequestData
+     *
+     * Get all the pre-signature, OAuth specific parameters for a request.
+     * @access public
+     * @return void
+     */
+    public function getOAuthRequestData()
+    {
+        $token = $this->user->getHighestPriorityToken();
+        $ts = $this->generateTimestamp();
+        $nonce = $this->generateNonce($ts);
+        return array(
+            'oauth_token' => $token,
+            'oauth_consumer_key' => $this->consumerKey,
+            'oauth_version' => $this->version,
+            'oauth_timestamp' => $ts,
+            'oauth_signature_method' => $this->signatureMethod,
+            'oauth_nonce' => $nonce);
+    }
+
+    /**
+     * generateTimestamp
+     *
+     * Generates a timestamp, in seconds
+     * @access public
+     * @return int Timestamp, in epoch seconds
+     */
+    public function generateTimestamp()
+    {
+        return time();
+    }
+
+    /**
+     * generateNonce
+     *
+     * Generates a 'nonce', which is a unique request id based on the
+     * timestamp.  If no timestamp is provided, generate one.
+     * @param mixed $timestamp Either a timestamp (epoch seconds) or false,
+     *  in which case it will generate a timestamp.
+     * @access public
+     * @return string   Returns a unique nonce
+     */
+    public function generateNonce($timestamp = false)
+    {
+        if (!$timestamp) $timestamp = $this->generateTimestamp();
+        return md5($timestamp . '-' . rand(10000, 99999) . '-' . uniqid());
+    }
+
+    /**
+     * signRequest
+     *
+     * Signs the request.
+     *
+     * @param mixed $method HTTP method
+     * @param mixed $url URL for the request
+     * @param mixed $data The data to be signed
+     * @access public
+     * @return array            The data, with the signature.
+     */
+    public function signRequest($method, $url, $data)
+    {
+        $base = $this->createSignatureBase($method, $url, $data);
+        $key = $this->createSignatureKey();
+        $data['oauth_signature'] = $this->createSignature($base, $key);
+        ksort($data);
+        return $data;
+    }
+
+    /**
+     * createSignatureBase
+     *
+     * @param mixed $method String name of HTTP method, such as "GET"
+     * @param mixed $url URL where this request will go
+     * @param mixed $data Array of params for this request. This should
+     *      include ALL oauth properties except for the signature.
+     * @access public
+     * @return void
+     */
+    public function createSignatureBase($method, $url, $data)
+    {
+        $method = $this->encode(strtoupper($method));
+        $query = parse_url($url, PHP_URL_QUERY);
+        if ($query) {
+            $url = array_shift(explode('?', $url, 2));
+            $items = explode('&', $query);
+            foreach ($items as $item) {
+                list($key, $value) = explode('=', $item);
+                $data[$key] = $value;
+            }
+        }
+        $url = $this->encode($url);
+        $data = $this->encode($this->collapseDataForSignature($data));
+        return $method . '&' . $url . '&' . $data;
+    }
+
+    /**
+     * encode
+     *
+     * Short-cut for utf8_encode / rawurlencode
+     * @param mixed $data Data to encode
+     * @access protected
+     * @return void         Encoded data
+     */
+    protected function encode($data)
+    {
+        return rawurlencode(utf8_encode($data));
+    }
+
+    /**
+     * collapseDataForSignature
+     *
+     * Turns an array of request data into a string, as used by the oauth
+     * signature
+     * @param mixed $data
+     * @access public
+     * @return void
+     */
+    public function collapseDataForSignature($data)
+    {
+        ksort($data);
+        $collapse = '';
+        foreach ($data as $key => $val) {
+            if (!empty($collapse)) $collapse .= '&';
+            $collapse .= $key . '=' . $this->encode($val);
+        }
+        return $collapse;
+    }
+
+    /**
+     * createSignatureKey
+     *
+     * Creates a key that will be used to sign our signature.  Signatures
+     * are signed with the consumerSecret for this consumer application and
+     * the token secret of the user that the application is acting on behalf
+     * of.
+     * @access public
+     * @return void
+     */
+    public function createSignatureKey()
+    {
+        return $this->consumerSecret . '&' . $this->user->tokenSecret;
+    }
+
+    /**
+     * createSignature
+     *
+     * Creates a signature on the signature base and the signature key
+     * @param mixed $sigBase Base string of data to sign
+     * @param mixed $sigKey Key to sign the data with
+     * @access public
+     * @return string   The signature
+     */
+    public function createSignature($sigBase, $sigKey)
+    {
+        switch ($this->signatureMethod) {
+            case 'HMAC-SHA1':
+            default:
+                return base64_encode(hash_hmac('sha1', $sigBase, $sigKey, true));
+        }
     }
 
     /**
@@ -505,12 +403,13 @@ class OAuthApplication implements AWeberOAuthAdapter {
      *
      * Prepare an OAuth post method.
      *
-     * @param mixed $url    URL where we are making the request to
-     * @param mixed $data   Data that is used to make the request
+     * @param mixed $url URL where we are making the request to
+     * @param mixed $data Data that is used to make the request
      * @access private
      * @return void
      */
-    protected function post($url, $oauth) {
+    protected function post($url, $oauth)
+    {
         $handle = curl_init($url);
         $postData = $this->buildData($oauth);
         curl_setopt($handle, CURLOPT_POST, true);
@@ -520,35 +419,19 @@ class OAuthApplication implements AWeberOAuthAdapter {
     }
 
     /**
-     * delete
-     *
-     * Makes a DELETE request
-     * @param mixed $url        URL where we are making the request to
-     * @param mixed $data       Data that is used in the request
-     * @access protected
-     * @return void
-     */
-    protected function delete($url, $data) {
-        $url = $this->_addParametersToUrl($url, $data);
-        $handle = curl_init($url);
-        curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'DELETE');
-        $resp = $this->_sendRequest($handle);
-        return $resp;
-    }
-
-    /**
      * buildData
      *
      * Creates a string of data for either post or get requests.
-     * @param mixed $data       Array of key value pairs
+     * @param mixed $data Array of key value pairs
      * @access public
      * @return void
      */
-    public function buildData($data) {
+    public function buildData($data)
+    {
         ksort($data);
         $params = array();
         foreach ($data as $key => $value) {
-            $params[] = $key.'='.$this->encode($value);
+            $params[] = $key . '=' . $this->encode($value);
         }
         return implode('&', $params);
     }
@@ -557,12 +440,13 @@ class OAuthApplication implements AWeberOAuthAdapter {
      * _sendRequest
      *
      * Actually makes a request.
-     * @param mixed $handle     Curl handle
-     * @param array $headers    Additional headers needed for request
+     * @param mixed $handle Curl handle
+     * @param array $headers Additional headers needed for request
      * @access private
      * @return void
      */
-    private function _sendRequest($handle, $headers = array('Expect:')) {
+    private function _sendRequest($handle, $headers = array('Expect:'))
+    {
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_HEADER, true);
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
@@ -575,49 +459,202 @@ class OAuthApplication implements AWeberOAuthAdapter {
         if ($resp) {
             return new CurlResponse($resp);
         }
-        $this->error = curl_errno($handle).' - '.curl_error($handle);
+        $this->error = curl_errno($handle) . ' - ' . curl_error($handle);
         return false;
     }
 
     /**
-     * prepareRequest
+     * get
      *
-     * @param mixed $method     HTTP method
-     * @param mixed $url        URL for the request
-     * @param mixed $data       The data to generate oauth data and be signed
-     * @access public
-     * @return void             The data, with all its OAuth variables and signature
+     * Make a get request.  Used to exchange user tokens with serice provider.
+     * @param mixed $url URL to make a get request from.
+     * @param array $data Data for the request.
+     * @access protected
+     * @return void
      */
-    public function prepareRequest($method, $url, $data) {
-        $data = $this->mergeOAuthData($data);
-        $data = $this->signRequest($method, $url, $data);
-        return $data;
+    protected function get($url, $data)
+    {
+        $url = $this->_addParametersToUrl($url, $data);
+        $handle = curl_init($url);
+        $resp = $this->_sendRequest($handle);
+        return $resp;
+    }
+
+    /**
+     * _addParametersToUrl
+     *
+     * Adds the parameters in associative array $data to the
+     * given URL
+     * @param String $url URL
+     * @param array $data Parameters to be added as a query string to
+     *      the URL provided
+     * @access protected
+     * @return void
+     */
+    protected function _addParametersToUrl($url, $data)
+    {
+        if (!empty($data)) {
+            if (strpos($url, '?') === false) {
+                $url .= '?' . $this->buildData($data);
+            } else {
+                $url .= '&' . $this->buildData($data);
+            }
+        }
+        return $url;
+    }
+
+    /**
+     * delete
+     *
+     * Makes a DELETE request
+     * @param mixed $url URL where we are making the request to
+     * @param mixed $data Data that is used in the request
+     * @access protected
+     * @return void
+     */
+    protected function delete($url, $data)
+    {
+        $url = $this->_addParametersToUrl($url, $data);
+        $handle = curl_init($url);
+        curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        $resp = $this->_sendRequest($handle);
+        return $resp;
+    }
+
+    /**
+     * put
+     *
+     * Prepare an OAuth put method.
+     *
+     * @param mixed $url URL where we are making the request to
+     * @param mixed $data Data that is used to make the request
+     * @access private
+     * @return void
+     */
+    protected function patch($url, $oauth, $data)
+    {
+        $url = $this->_addParametersToUrl($url, $oauth);
+        $handle = curl_init($url);
+        curl_setopt($handle, CURLOPT_CUSTOMREQUEST, 'PATCH');
+        curl_setopt($handle, CURLOPT_POSTFIELDS, json_encode($data));
+        $resp = $this->_sendRequest($handle, array('Expect:', 'Content-Type: application/json'));
+        return $resp;
+    }
+
+    /**
+     * getRequestToken
+     *
+     * Gets a new request token / secret for this user.
+     * @access public
+     * @return void
+     */
+    public function getRequestToken($callbackUrl = false)
+    {
+        $data = ($callbackUrl) ? array('oauth_callback' => $callbackUrl) : array();
+        $resp = $this->makeRequest('POST', $this->app->getRequestTokenUrl(), $data);
+        $data = $this->parseResponse($resp);
+        $this->requiredFromResponse($data, array('oauth_token', 'oauth_token_secret'));
+        $this->user->requestToken = $data['oauth_token'];
+        $this->user->tokenSecret = $data['oauth_token_secret'];
+        return $data['oauth_token'];
     }
 
     /**
      * parseResponse
      *
      * Parses the body of the response into an array
-     * @param mixed $string     The body of a response
+     * @param mixed $string The body of a response
      * @access public
      * @return void
      */
-    public function parseResponse($resp) {
+    public function parseResponse($resp)
+    {
         $data = array();
 
-        if (!$resp) {       return $data; }
-        if (empty($resp)) { return $data; }
-        if (empty($resp->body)) { return $data; }
+        if (!$resp) {
+            return $data;
+        }
+        if (empty($resp)) {
+            return $data;
+        }
+        if (empty($resp->body)) {
+            return $data;
+        }
 
         switch ($this->format) {
-        case 'json':
-            $data = json_decode($resp->body);
-            break;
-        default:
-            parse_str($resp->body, $data);
+            case 'json':
+                $data = json_decode($resp->body);
+                break;
+            default:
+                parse_str($resp->body, $data);
         }
         $this->parseAsError($data);
         return $data;
+    }
+
+    /**
+     * parseAsError
+     *
+     * Checks if response is an error.  If it is, raise an appropriately
+     * configured exception.
+     *
+     * @param mixed $response Data returned from the server, in array form
+     * @access public
+     * @return void
+     * @throws AWeberOAuthException
+     */
+    public function parseAsError($response)
+    {
+        if (!empty($response['error'])) {
+            throw new AWeberOAuthException($response['error']['type'],
+                $response['error']['message']);
+        }
+    }
+
+    /**
+     * requiredFromResponse
+     *
+     * Enforce that all the fields in requiredFields are present and not
+     * empty in data.  If a required field is empty, throw an exception.
+     *
+     * @param mixed $data Array of data
+     * @param mixed $requiredFields Array of required field names.
+     * @access protected
+     * @return void
+     */
+    protected function requiredFromResponse($data, $requiredFields)
+    {
+        foreach ($requiredFields as $field) {
+            if (empty($data[$field])) {
+                throw new AWeberOAuthDataMissing($field);
+            }
+        }
+    }
+
+    /**
+     * getAccessToken
+     *
+     * Makes a request for access tokens.  Requires that the current user has an authorized
+     * token and token secret.
+     *
+     * @access public
+     * @return void
+     */
+    public function getAccessToken()
+    {
+        $resp = $this->makeRequest('POST', $this->app->getAccessTokenUrl(),
+            array('oauth_verifier' => $this->user->verifier)
+        );
+        $data = $this->parseResponse($resp);
+        $this->requiredFromResponse($data, array('oauth_token', 'oauth_token_secret'));
+
+        if (empty($data['oauth_token'])) {
+            throw new AWeberOAuthDataMissing('oauth_token');
+        }
+
+        $this->user->accessToken = $data['oauth_token'];
+        $this->user->tokenSecret = $data['oauth_token_secret'];
+        return array($data['oauth_token'], $data['oauth_token_secret']);
     }
 
 }
@@ -629,7 +666,8 @@ class OAuthApplication implements AWeberOAuthAdapter {
  * @package
  * @version $id$
  */
-class OAuthUser {
+class OAuthUser
+{
 
     public $authorizedToken = false;
     public $requestToken = false;
@@ -644,7 +682,8 @@ class OAuthUser {
      * @access public
      * @return void
      */
-    public function isAuthorized() {
+    public function isAuthorized()
+    {
         if (empty($this->authorizedToken) && empty($this->accessToken)) {
             return false;
         }
@@ -660,7 +699,8 @@ class OAuthUser {
      * @access public
      * @return void
      */
-    public function getHighestPriorityToken() {
+    public function getHighestPriorityToken()
+    {
         if (!empty($this->accessToken)) return $this->accessToken;
         if (!empty($this->authorizedToken)) return $this->authorizedToken;
         if (!empty($this->requestToken)) return $this->requestToken;

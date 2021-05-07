@@ -1,6 +1,8 @@
 <?php
 
-interface AWeberOAuthAdapter {
+interface AWeberOAuthAdapter
+{
     public function request($method, $uri, $data = array());
-    public function getRequestToken($callbackUrl=false);
+
+    public function getRequestToken($callbackUrl = false);
 }

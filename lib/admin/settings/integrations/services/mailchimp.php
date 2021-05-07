@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Super-simple, minimum abstraction MailChimp API v3 wrapper
  * MailChimp API v3: http://developer.mailchimp.com
@@ -7,27 +8,28 @@
  * @author  Drew McLellan <drew.mclellan@gmail.com>
  * @version 2.5
  */
-class MD_MailChimp {
-    private $api_key;
-    private $api_endpoint = 'https://<dc>.api.mailchimp.com/3.0';
+class MD_MailChimp
+{
     const TIMEOUT = 10;
     public $verify_ssl = true;
+    private $api_key;
+    private $api_endpoint = 'https://<dc>.api.mailchimp.com/3.0';
     private $request_successful = false;
-    private $last_error         = '';
-    private $last_response      = array();
-    private $last_request       = array();
+    private $last_error = '';
+    private $last_response = array();
+    private $last_request = array();
 
     public function __construct($api_key, $api_endpoint = null)
     {
         if (!function_exists('curl_init') || !function_exists('curl_setopt')) {
-            throw new \Exception("cURL support is required, but can't be found.");
+            throw new Exception("cURL support is required, but can't be found.");
         }
 
         $this->api_key = $api_key;
 
         if ($api_endpoint === null) {
             if (strpos($this->api_key, '-') === false) {
-                throw new \Exception("Invalid MailChimp API key supplied.");
+                throw new Exception("Invalid MailChimp API key supplied.");
             }
             list(, $data_center) = explode('-', $this->api_key);
             $this->api_endpoint = str_replace('<dc>', $data_center, $this->api_endpoint);
@@ -77,26 +79,6 @@ class MD_MailChimp {
     public function delete($method, $args = array(), $timeout = self::TIMEOUT)
     {
         return $this->makeRequest('delete', $method, $args, $timeout);
-    }
-
-    public function get($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('get', $method, $args, $timeout);
-    }
-
-    public function patch($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('patch', $method, $args, $timeout);
-    }
-
-    public function post($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('post', $method, $args, $timeout);
-    }
-
-    public function put($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('put', $method, $args, $timeout);
     }
 
     private function makeRequest($http_verb, $method, $args = array(), $timeout = self::TIMEOUT)
@@ -154,10 +136,10 @@ class MD_MailChimp {
                 break;
         }
 
-        $responseContent     = curl_exec($ch);
+        $responseContent = curl_exec($ch);
         $response['headers'] = curl_getinfo($ch);
-        $response            = $this->setResponseState($response, $responseContent, $ch);
-        $formattedResponse   = $this->formatResponse($response);
+        $response = $this->setResponseState($response, $responseContent, $ch);
+        $formattedResponse = $this->formatResponse($response);
 
         curl_close($ch);
 
@@ -173,20 +155,46 @@ class MD_MailChimp {
         $this->request_successful = false;
 
         $this->last_response = array(
-            'headers'     => null, // array of details from curl_getinfo()
+            'headers' => null, // array of details from curl_getinfo()
             'httpHeaders' => null, // array of HTTP headers
-            'body'        => null // content of the response
+            'body' => null // content of the response
         );
 
         $this->last_request = array(
-            'method'  => $http_verb,
-            'path'    => $method,
-            'url'     => $url,
-            'body'    => '',
+            'method' => $http_verb,
+            'path' => $method,
+            'url' => $url,
+            'body' => '',
             'timeout' => $timeout,
         );
 
         return $this->last_response;
+    }
+
+    private function attachRequestPayload(&$ch, $data)
+    {
+        $encoded = json_encode($data);
+        $this->last_request['body'] = $encoded;
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
+    }
+
+    private function setResponseState($response, $responseContent, $ch)
+    {
+        if ($responseContent === false) {
+            $this->last_error = curl_error($ch);
+        } else {
+
+            $headerSize = $response['headers']['header_size'];
+
+            $response['httpHeaders'] = $this->getHeadersAsArray(substr($responseContent, 0, $headerSize));
+            $response['body'] = substr($responseContent, $headerSize);
+
+            if (isset($response['headers']['request_header'])) {
+                $this->last_request['headers'] = $response['headers']['request_header'];
+            }
+        }
+
+        return $response;
     }
 
     private function getHeadersAsArray($headersAsString)
@@ -231,13 +239,6 @@ class MD_MailChimp {
         return $urls;
     }
 
-    private function attachRequestPayload(&$ch, $data)
-    {
-        $encoded                    = json_encode($data);
-        $this->last_request['body'] = $encoded;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
-    }
-
     private function formatResponse($response)
     {
         $this->last_response = $response;
@@ -247,25 +248,6 @@ class MD_MailChimp {
         }
 
         return false;
-    }
-
-    private function setResponseState($response, $responseContent, $ch)
-    {
-        if ($responseContent === false) {
-            $this->last_error = curl_error($ch);
-        } else {
-
-            $headerSize = $response['headers']['header_size'];
-
-            $response['httpHeaders'] = $this->getHeadersAsArray(substr($responseContent, 0, $headerSize));
-            $response['body']        = substr($responseContent, $headerSize);
-
-            if (isset($response['headers']['request_header'])) {
-                $this->last_request['headers'] = $response['headers']['request_header'];
-            }
-        }
-
-        return $response;
     }
 
     private function determineSuccess($response, $formattedResponse, $timeout)
@@ -302,5 +284,25 @@ class MD_MailChimp {
         }
 
         return 418;
+    }
+
+    public function get($method, $args = array(), $timeout = self::TIMEOUT)
+    {
+        return $this->makeRequest('get', $method, $args, $timeout);
+    }
+
+    public function patch($method, $args = array(), $timeout = self::TIMEOUT)
+    {
+        return $this->makeRequest('patch', $method, $args, $timeout);
+    }
+
+    public function post($method, $args = array(), $timeout = self::TIMEOUT)
+    {
+        return $this->makeRequest('post', $method, $args, $timeout);
+    }
+
+    public function put($method, $args = array(), $timeout = self::TIMEOUT)
+    {
+        return $this->makeRequest('put', $method, $args, $timeout);
     }
 }
