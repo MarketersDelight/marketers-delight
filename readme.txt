@@ -1,0 +1,8 @@
+Theme Name: Marketers Delight
+Version: 5.3
+Author: Alex Mangini
+Description: Marketers Delight is your smart website design system for the future. Built on a foundation of typography, MD's features and layout all work together to help you create stunning content on the web. Use the Site Designer to design your site, capture subscribers with MD's email and popups tools, and enable power features like the Stream and Bookshelf to deliver unique kinds of content to your audience. All of that and more in Marketers Delight.
+Theme URI: https://marketersdelight.com/
+Author URI: https://alexmangini.com/
+Text Domain: md
+GitHub Theme URI: https://github.com/MarketersDelight/marketers-delight
