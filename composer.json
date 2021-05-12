@@ -4,6 +4,23 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": ">=7.4"
+        "php": ">=7.4",
+        "afragen/git-updater": "^9",
+        "composer/installers": "^1"
+    },
+    ,
+    "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/afragen/git-updater"
+        }
+    ],
+    "extra": {
+        "installer-paths": {
+            "wp-content/themes/{$name}/": [
+                "type:wordpress-theme"
+            ]
+        }
     }
 }
