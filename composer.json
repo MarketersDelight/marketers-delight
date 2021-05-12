@@ -1,8 +1,13 @@
 {
-    "name": "marketers-delight/marketers-delight",
+    "name": "marketersdelight/marketers-delight",
     "description": "MD Codebase Theme",
-    "type": "project",
-    "license": "proprietary",
+    "type": "library",
+    "keywords": [
+      "wordpress",
+      "readme",
+      "parser"
+    ],
+    "license": "MIT",
     "require": {
         "php": ">=7.4",
         "afragen/git-updater": "^9",
@@ -16,6 +21,7 @@
             "url": "https://github.com/MarketersDelight/marketers-delight"
         }
     ],
+    "prefer-stable": true,
     "extra": {
         "installer-paths": {
             "wp-content/themes/{$name}/": [
