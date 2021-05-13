@@ -7,6 +7,7 @@
 .header {
 	background-color: <?php echo $colors['header']['bg_color']; ?>;
 	color: <?php echo $colors['header']['menu']['links']; ?>;
+	<?php echo ( ! empty( $typography['header']['font_family'] ) ? "\tfont-family: " . $typography['header']['font_family'] . ";\n" : '' ); ?>
 	<?php if ( ! empty( $typography['header']['font_size']['desktop'] ) ) : ?>
 		font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
 	<?php endif; ?>
