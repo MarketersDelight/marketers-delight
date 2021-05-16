@@ -8,7 +8,8 @@
  * @since 4.6.2
  */
 
-class md_sidebars extends md_api {
+class md_sidebars extends md_api
+{
 
 	/**
 	 * Register fields for save validation.
@@ -16,7 +17,8 @@ class md_sidebars extends md_api {
 	 * @since 4.6.2
 	 */
 
-	public function register() {
+	public function register()
+	{
 		$options = array();
 		$types = md_sidebars();
 		$sidebars = md_get_sidebars();
@@ -25,16 +27,16 @@ class md_sidebars extends md_api {
 				'type' => 'group',
 				'group_key_lowercase' => true, // widgets must save all lowercase
 				'fields' => array(
-					'name' => array( 'type' => 'text' )
+					'name' => array('type' => 'text')
 				)
 			)
 		);
 
-		foreach ( $sidebars as $id => $name )
+		foreach ($sidebars as $id => $name)
 			$options[] = $id;
 
-		foreach ( $types as $type => $pages )
-			foreach ( $pages as $page => $val )
+		foreach ($types as $type => $pages)
+			foreach ($pages as $page => $val)
 				$fields["{$type}_$page"] = array(
 					'type' => 'select',
 					'options' => $options
@@ -42,7 +44,7 @@ class md_sidebars extends md_api {
 
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Sidebars', 'md' ),
+				'name' => __('Sidebars', 'md'),
 				'parent' => 'md_site_design',
 				'fields' => $fields
 			)
@@ -55,10 +57,11 @@ class md_sidebars extends md_api {
 	 * @since 4.6.2
 	 */
 
-	public function admin_page() {
+	public function admin_page()
+	{
 		$types = md_sidebars();
 		$sidebars = md_get_sidebars();
-		include( 'sidebars-settings.php' );
+		include('sidebars-settings.php');
 	}
 
 	/**
@@ -67,12 +70,13 @@ class md_sidebars extends md_api {
 	 * @since 4.6.2
 	 */
 
-	public function widget_areas( $group, $field ) {
-		$this->fields->field( array( $group, $field, 'name' ), array(
+	public function widget_areas($group, $field)
+	{
+		$this->fields->field(array($group, $field, 'name'), array(
 			'type' => 'text',
-			'placeholder' => __( 'Enter sidebar name...', 'md' ),
+			'placeholder' => __('Enter sidebar name...', 'md'),
 			'classes' => 'md-focus'
-		) );
+		));
 	}
 
 }

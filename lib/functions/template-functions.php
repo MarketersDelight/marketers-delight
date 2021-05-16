@@ -15,42 +15,43 @@
  * @since 5.0
  */
 
-function md_template( $file, $path = null, $include = null ) {
+function md_template($file, $path = null, $include = null)
+{
 	$dir = $template_path = '';
-	if ( isset( $path ) && is_string( $path ) ) {
+	if (isset($path) && is_string($path)) {
 		$dir = $file;
 		$file = $path;
 	}
 
-	$template = locate_template( array(
+	$template = locate_template(array(
 		"content/$file.php",
 		"templates/$file.php"
-	) );
+	));
 
-	if ( ! $template && ! empty( $dir ) ) {
-		$parts = explode( '/', $file );
-		$total = count( $parts );
-		$parts_keys = array_keys( $parts );
-		$file_key = end( $parts_keys );
+	if (!$template && !empty($dir)) {
+		$parts = explode('/', $file);
+		$total = count($parts);
+		$parts_keys = array_keys($parts);
+		$file_key = end($parts_keys);
 
-		foreach ( $parts as $part_key => $part )
-			if ( $part_key == 0 )
+		foreach ($parts as $part_key => $part)
+			if ($part_key == 0)
 				$template_path .= "$part/templates/";
-			elseif ( $part_key != $file_key )
+			elseif ($part_key != $file_key)
 				$template_path .= "$part/";
 			else
 				$template_path .= "$part.php";
 
 		$template = MD_DIR . "$dir/$template_path";
 
-		if ( ! file_exists( $template ) )
+		if (!file_exists($template))
 			return;
 	}
 
-	if ( ( isset( $path ) && ! is_string( $path ) ) || isset( $include ) )
+	if ((isset($path) && !is_string($path)) || isset($include))
 		return $template;
 
-	return load_template( $template, false );
+	return load_template($template, false);
 }
 
 /**
@@ -60,23 +61,24 @@ function md_template( $file, $path = null, $include = null ) {
  * @since 5.3
  */
 
-function md_dropin_template( $file, $include = null ) {
+function md_dropin_template($file, $include = null)
+{
 	$ext = '.php';
 	$file_name = "/$file{$ext}";
 	$dir = MD_INSTALLED_DROPINS . $file_name;
-	$template = locate_template( "dropins/$file_name" );
+	$template = locate_template("dropins/$file_name");
 
-	if ( $template )
-		if ( isset( $include ) )
+	if ($template)
+		if (isset($include))
 			return $template;
 		else
-			return load_template( $template, false );
+			return load_template($template, false);
 
-	if ( file_exists( $dir ) )
-		if ( isset( $include ) )
+	if (file_exists($dir))
+		if (isset($include))
 			return $dir;
 		else
-			include( $dir );
+			include($dir);
 }
 
 /**
@@ -86,25 +88,26 @@ function md_dropin_template( $file, $include = null ) {
  * @since 5.1.1
  */
 
-function md_css( $file, $path = null, $include = null ) {
+function md_css($file, $path = null, $include = null)
+{
 	$dir = $template_path = '';
 
-	if ( isset( $path ) && is_string( $path ) ) {
+	if (isset($path) && is_string($path)) {
 		$dir = $file;
 		$file = $path;
 	}
 
-	if ( ! empty( $dir ) ) {
-		$parts = explode( '/', $file );
+	if (!empty($dir)) {
+		$parts = explode('/', $file);
 		$file = $parts[0];
-		$parts_keys = array_keys( $parts );
-		$file_key = end( $parts_keys );
+		$parts_keys = array_keys($parts);
+		$file_key = end($parts_keys);
 	}
-	$template = locate_template( "css/$file.php" );
+	$template = locate_template("css/$file.php");
 
-	if ( ! $template ) {
-		foreach ( $parts as $part_key => $part ) {
-			if ( $part_key != $file_key )
+	if (!$template) {
+		foreach ($parts as $part_key => $part) {
+			if ($part_key != $file_key)
 				$template_path .= "$part/";
 			else
 				$template_path .= $part;
@@ -112,15 +115,15 @@ function md_css( $file, $path = null, $include = null ) {
 		$template = MD_DIR . "$dir/$template_path";
 	}
 
-	if ( file_exists( "$template.php" ) )
+	if (file_exists("$template.php"))
 		$template .= '.php';
-	elseif ( file_exists( "$template.css" ) )
+	elseif (file_exists("$template.css"))
 		$template .= '.css';
 
-	if ( ( isset( $path ) && ! is_string( $path ) ) || isset( $include ) )
+	if ((isset($path) && !is_string($path)) || isset($include))
 		return $template;
 
-	return load_template( $template, false );
+	return load_template($template, false);
 }
 
 /**
@@ -130,18 +133,19 @@ function md_css( $file, $path = null, $include = null ) {
  * @since 4.7
  */
 
-function md_setting( $keys = null, $default = null ) {
+function md_setting($keys = null, $default = null)
+{
 	$c = 0;
-	$option = get_option( 'marketers_delight' );
+	$option = get_option('marketers_delight');
 
-	if ( empty( $option ) )
+	if (empty($option))
 		$option = array();
 
-	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-		foreach ( $keys as $key ) {
-			$option = ! empty( $option[$key] ) ? $option[$key] : ( $c == 0 ? array() : $default );
+	if (isset($keys)) {
+		if (is_string($keys))
+			$keys = (array)$keys;
+		foreach ($keys as $key) {
+			$option = !empty($option[$key]) ? $option[$key] : ($c == 0 ? array() : $default);
 			$c++;
 		}
 	}
@@ -155,18 +159,19 @@ function md_setting( $keys = null, $default = null ) {
  * @since 4.7
  */
 
-function md_post_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_string( $id ) || is_int( $id ) )
+function md_post_meta($keys = null, $id = null, $default = null)
+{
+	if (is_string($id) || is_int($id))
 		$id = $id;
 	else
 		$id = $id == true ? get_queried_object_id() : get_the_ID();
-	$meta = get_post_meta( $id, 'marketers_delight', true );
+	$meta = get_post_meta($id, 'marketers_delight', true);
 
-	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-		foreach ( $keys as $key )
-			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
+	if (isset($keys)) {
+		if (is_string($keys))
+			$keys = (array)$keys;
+		foreach ($keys as $key)
+			$meta = !empty($meta[$key]) ? $meta[$key] : $default;
 	}
 
 	return $meta;
@@ -178,22 +183,23 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
  * @since 4.7
  */
 
-function md_term_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_admin() )
-		$id = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
+function md_term_meta($keys = null, $id = null, $default = null)
+{
+	if (is_admin())
+		$id = isset($_GET['tag_ID']) ? $_GET['tag_ID'] : '';
 	else
-		$id = isset( $id ) ? $id : get_queried_object_id();
+		$id = isset($id) ? $id : get_queried_object_id();
 
-	$meta = get_term_meta( $id, 'marketers_delight', true );
+	$meta = get_term_meta($id, 'marketers_delight', true);
 
-	if ( empty( $meta ) )
+	if (empty($meta))
 		$meta = array();
 
-	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-		foreach ( $keys as $key )
-			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
+	if (isset($keys)) {
+		if (is_string($keys))
+			$keys = (array)$keys;
+		foreach ($keys as $key)
+			$meta = !empty($meta[$key]) ? $meta[$key] : $default;
 	}
 
 	return $meta;
@@ -205,16 +211,17 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
  * @since 4.7
  */
 
-function md_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_string( $id ) || is_int( $id ) )
-		$id = esc_attr( $id );
-	elseif ( is_home() )
+function md_meta($keys = null, $id = null, $default = null)
+{
+	if (is_string($id) || is_int($id))
+		$id = esc_attr($id);
+	elseif (is_home())
 		$id = get_queried_object_id();
 
-	if ( is_category() || is_tax() )
-		return md_term_meta( $keys, $id, $default );
+	if (is_category() || is_tax())
+		return md_term_meta($keys, $id, $default);
 	else
-		return md_post_meta( $keys, $id, $default );
+		return md_post_meta($keys, $id, $default);
 }
 
 /**
@@ -224,16 +231,17 @@ function md_meta( $keys = null, $id = null, $default = null ) {
  * @since 4.7
  */
 
-function md_module( $keys = null ) {
-	if ( is_category() || is_tax() )
-		$meta = md_term_meta( $keys );
+function md_module($keys = null)
+{
+	if (is_category() || is_tax())
+		$meta = md_term_meta($keys);
 	else
-		$meta = md_post_meta( $keys );
+		$meta = md_post_meta($keys);
 
-	if ( ! empty( $meta ) )
+	if (!empty($meta))
 		$field = $meta;
 	else
-		$field = md_setting( $keys );
+		$field = md_setting($keys);
 
 	return $field;
 }
@@ -244,8 +252,9 @@ function md_module( $keys = null ) {
  * @since 4.9
  */
 
-function md_block_field( $attributes, $field ) {
-	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
+function md_block_field($attributes, $field)
+{
+	return !empty($attributes[$field]) ? $attributes[$field] : '';
 }
 
 /**
@@ -254,8 +263,9 @@ function md_block_field( $attributes, $field ) {
  * @since 5.0
  */
 
-function md_clean_id( $id ) {
-	return preg_replace( '/^' . preg_quote( 'md_', '/' ) . '/', '', $id );
+function md_clean_id($id)
+{
+	return preg_replace('/^' . preg_quote('md_', '/') . '/', '', $id);
 }
 
 /**
@@ -264,9 +274,10 @@ function md_clean_id( $id ) {
  * @since 4.8.4
  */
 
-function md_ver( $file, $path = null ) {
-	$path = isset( $path ) ? $path : MD_DIR;
-	return date( 'ymds', filemtime( $path . $file ) );
+function md_ver($file, $path = null)
+{
+	$path = isset($path) ? $path : MD_DIR;
+	return date('ymds', filemtime($path . $file));
 }
 
 /**
@@ -275,9 +286,10 @@ function md_ver( $file, $path = null ) {
  * @since 4.5
  */
 
-function md_has( $dropin ) {
-	$enabled = md_get_dropins( null, 'active' );
-	if ( in_array( $dropin, $enabled ) )
+function md_has($dropin)
+{
+	$enabled = md_get_dropins(null, 'active');
+	if (in_array($dropin, $enabled))
 		return true;
 }
 
@@ -287,24 +299,25 @@ function md_has( $dropin ) {
  * @since 5.3
  */
 
-function md_get_dropins( $type = null, $status = null ) {
+function md_get_dropins($type = null, $status = null)
+{
 	$dropins = array();
-	if ( $type == null || $type == 'core' )
-		foreach ( md_setting( array( 'dropins', 'core' ), array() ) as $dropin => $fields )
+	if ($type == null || $type == 'core')
+		foreach (md_setting(array('dropins', 'core'), array()) as $dropin => $fields)
 			if (
-				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+				(($status == null || $status == 'active') && !empty($fields['status']['enable'])) ||
+				(($status == 'inactive') && empty($fields['status']['enable'])) ||
 				$status == null
 			)
-				$dropins[] = esc_attr( $dropin );
-	if ( $type == null || $type == 'installed' )
-		foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
+				$dropins[] = esc_attr($dropin);
+	if ($type == null || $type == 'installed')
+		foreach (md_setting(array('dropins', 'installed'), array()) as $dropin => $fields)
 			if (
-				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+				(($status == null || $status == 'active') && !empty($fields['status']['enable'])) ||
+				(($status == 'inactive') && empty($fields['status']['enable'])) ||
 				$status == null
 			)
-				$dropins[] = esc_attr( $dropin );
+				$dropins[] = esc_attr($dropin);
 	return $dropins;
 }
 
@@ -314,9 +327,10 @@ function md_get_dropins( $type = null, $status = null ) {
  * @since 5.2.2
  */
 
-function md_text_field( $string ) {
+function md_text_field($string)
+{
 	$sanitize = new md_sanitize;
-	return wp_kses( $string, $sanitize->_allowed_html );
+	return wp_kses($string, $sanitize->_allowed_html);
 }
 
 /**
@@ -325,21 +339,22 @@ function md_text_field( $string ) {
  * @since 5.0
  */
 
-function md_js_object( $args ) {
+function md_js_object($args)
+{
 	$string = '';
 	$g = 1;
-	$g_total = count( $args );
-	foreach ( $args as $group => $fields ) {
+	$g_total = count($args);
+	foreach ($args as $group => $fields) {
 		$f = 1;
 		$string .= "$group:{";
-		$f_total = count( $fields );
-		foreach ( $fields as $key => $value ) {
+		$f_total = count($fields);
+		foreach ($fields as $key => $value) {
 			$string .= "$key:'$value'";
-			if ( $f < $f_total )
+			if ($f < $f_total)
 				$string .= ',';
 			$f++;
 		}
-		$string .= '}' . ( $g < $g_total ? ',' : '' );
+		$string .= '}' . ($g < $g_total ? ',' : '');
 		$g++;
 	}
 	return $string;
@@ -354,9 +369,10 @@ function md_js_object( $args ) {
  * @since 4.8
  */
 
-function md_compile_css( $delete = null ) {
+function md_compile_css($delete = null)
+{
 	$css = new md_css;
-	$css->compile( $delete );
+	$css->compile($delete);
 }
 
 /**
@@ -365,11 +381,12 @@ function md_compile_css( $delete = null ) {
  * @since 4.0
  */
 
-function md_get_menu_name( $menu ) {
+function md_get_menu_name($menu)
+{
 	$menus = get_nav_menu_locations();
-	$menu_object = wp_get_nav_menu_object( $menus[$menu] );
-	$menu_name = isset( $menu_object->name ) ? $menu_object->name : __( 'Menu', 'md' );
-	return esc_html( $menu_name );
+	$menu_object = wp_get_nav_menu_object($menus[$menu]);
+	$menu_name = isset($menu_object->name) ? $menu_object->name : __('Menu', 'md');
+	return esc_html($menu_name);
 }
 
 /**
@@ -378,17 +395,19 @@ function md_get_menu_name( $menu ) {
  * @since 4.1
  */
 
-function md_main_menu_items() {
-	return count( array_filter( array(
-		has_nav_menu( 'main' ), // menu
+function md_main_menu_items()
+{
+	return count(array_filter(array(
+		has_nav_menu('main'), // menu
 		md_main_menu_has_search(),
-		has_nav_menu( 'social' ), // social
-		apply_filters( 'md_filter_main_menu_items', '' )
-	) ) );
+		has_nav_menu('social'), // social
+		apply_filters('md_filter_main_menu_items', '')
+	)));
 }
 
-function md_main_menu_has_search() {
-	return ! md_setting( array( 'header', 'main_menu', 'disable', 'search' ) ) ? true : false;
+function md_main_menu_has_search()
+{
+	return !md_setting(array('header', 'main_menu', 'disable', 'search')) ? true : false;
 }
 
 /**
@@ -397,11 +416,12 @@ function md_main_menu_has_search() {
  * @since 4.1
  */
 
-function md_main_menu_custom_menu() {
-	if ( is_category() || is_tax() )
-		return md_term_meta( array( 'layout', 'main_menu_menu' ) );
+function md_main_menu_custom_menu()
+{
+	if (is_category() || is_tax())
+		return md_term_meta(array('layout', 'main_menu_menu'));
 	else
-		return md_post_meta( array( 'layout', 'main_menu_menu' ) );
+		return md_post_meta(array('layout', 'main_menu_menu'));
 }
 
 /**
@@ -410,40 +430,39 @@ function md_main_menu_custom_menu() {
  * @since 4.6.4
  */
 
-function md_get_loop( $keys = null ) {
-	$loop = md_setting( array( 'loop' ) );
+function md_get_loop($keys = null)
+{
+	$loop = md_setting(array('loop'));
 	$type = 'default';
-	$global = md_setting( array( 'loop', 'archives' ), $type );
+	$global = md_setting(array('loop', 'archives'), $type);
 
-	if ( has_filter( 'md_filter_loop_type' ) )
-		$type = apply_filters( 'md_filter_loop_type', $type );
+	if (has_filter('md_filter_loop_type'))
+		$type = apply_filters('md_filter_loop_type', $type);
 
-	if ( is_category() || is_tax() ) {
-		$term = md_term_meta( array( 'loop', 'archives' ) );
-		if ( $term ) {
-			$loop = md_term_meta( 'loop' );
-			if ( ! has_filter( 'md_filter_loop_type' ) )
-				$type = md_term_meta( array( 'loop', 'archives' ) );
-		}
-		elseif ( ! has_filter( 'md_filter_loop_type' ) )
+	if (is_category() || is_tax()) {
+		$term = md_term_meta(array('loop', 'archives'));
+		if ($term) {
+			$loop = md_term_meta('loop');
+			if (!has_filter('md_filter_loop_type'))
+				$type = md_term_meta(array('loop', 'archives'));
+		} elseif (!has_filter('md_filter_loop_type'))
 			$type = $global;
-	}
-	elseif ( ( is_home() || is_post_type_archive() || is_search() ) && ( ! empty( $global ) || $global == 'default' ) && ! has_filter( 'md_filter_loop_type' ) )
+	} elseif ((is_home() || is_post_type_archive() || is_search()) && (!empty($global) || $global == 'default') && !has_filter('md_filter_loop_type'))
 		$type = $global;
-	elseif ( is_singular() ) {
-		$loop['byline'] = md_setting( array( 'content', 'byline' ) );
-		$loop['byline_position'] = md_setting( array( 'content', 'byline_position' ) );
+	elseif (is_singular()) {
+		$loop['byline'] = md_setting(array('content', 'byline'));
+		$loop['byline_position'] = md_setting(array('content', 'byline_position'));
 	}
 
-	if ( isset( $keys ) ) {
+	if (isset($keys)) {
 		$c = 0;
 		$fields = array();
-		if ( $keys == 'fields' )
+		if ($keys == 'fields')
 			return $loop;
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-		foreach ( $keys as $key ) {
-			$fields = ! empty( $loop[$key] ) ? $loop[$key] : ( $c == 0 ? array() : '' );
+		if (is_string($keys))
+			$keys = (array)$keys;
+		foreach ($keys as $key) {
+			$fields = !empty($loop[$key]) ? $loop[$key] : ($c == 0 ? array() : '');
 			$c++;
 		}
 		return $fields;
@@ -458,19 +477,20 @@ function md_get_loop( $keys = null ) {
  * @since 5.1
  */
 
-function md_get_byline() {
-	$byline = md_get_loop( array( 'loop', 'byline' ) );
+function md_get_byline()
+{
+	$byline = md_get_loop(array('loop', 'byline'));
 
-	if ( empty( $byline ) )
+	if (empty($byline))
 		$byline = array();
 
 	// do not use filter
-	if ( has_filter( 'md_filter_custom_byline' ) ) {
-		$filter = apply_filters( 'md_filter_custom_byline', array() );
-		$byline = array_merge( $byline, $filter );
+	if (has_filter('md_filter_custom_byline')) {
+		$filter = apply_filters('md_filter_custom_byline', array());
+		$byline = array_merge($byline, $filter);
 	}
 
-	return array_keys( $byline );
+	return array_keys($byline);
 }
 
 /**
@@ -479,7 +499,8 @@ function md_get_byline() {
  * @since 4.1
  */
 
-function md_content_item_headline_html() {
+function md_content_item_headline_html()
+{
 	return md_has_headline_cover() ? 'div' : 'header';
 }
 
@@ -489,14 +510,14 @@ function md_content_item_headline_html() {
  * @since 4.0
  */
 
-function md_real_comment_count( $count ) {
-	if ( ! is_admin() ) {
+function md_real_comment_count($count)
+{
+	if (!is_admin()) {
 		global $id;
-		$status = get_comments( "status=approve&post_id=$id" );
-		$comments_by_type = separate_comments( $status );
-		return count( $comments_by_type['comment'] );
-	}
-	else
+		$status = get_comments("status=approve&post_id=$id");
+		$comments_by_type = separate_comments($status);
+		return count($comments_by_type['comment']);
+	} else
 		return $count;
 }
 
@@ -506,14 +527,15 @@ function md_real_comment_count( $count ) {
  * @since 4.6.2.1
  */
 
-function md_get_sidebar_id() {
+function md_get_sidebar_id()
+{
 	$global = md_get_global_sidebar_id();
 
 	// single chosen custom sidebar
-	if ( md_meta( array( 'layout', 'custom_sidebar' ) ) )
-		$name = md_meta( array( 'layout', 'custom_sidebar' ) );
+	if (md_meta(array('layout', 'custom_sidebar')))
+		$name = md_meta(array('layout', 'custom_sidebar'));
 	// any type of global sidebar
-	elseif ( ! empty( $global ) )
+	elseif (!empty($global))
 		$name = $global;
 	// default sidebar
 	else
@@ -528,40 +550,41 @@ function md_get_sidebar_id() {
  * @since 4.6.2.1
  */
 
-function md_get_global_sidebar_id() {
+function md_get_global_sidebar_id()
+{
 	$post_types = $term = array();
 	$id = get_queried_object_id();
 	$sidebars = md_sidebars();
-	$option = md_setting( array( 'sidebars' ) );
+	$option = md_setting(array('sidebars'));
 
 	// post types
 	$post_type = get_post_type();
-	foreach ( $sidebars as $type => $pages )
+	foreach ($sidebars as $type => $pages)
 		$post_types[] = $type;
 
 	// taxonomies
-	$taxonomies = get_taxonomies( array( 'public' => true ) );
-	$terms = wp_get_post_terms( $id, $taxonomies );
-	foreach ( $terms as $term_count => $fields ) {
-		if ( md_term_meta( array( 'layout', 'entries_sidebar' ), $fields->term_id ) ) {
+	$taxonomies = get_taxonomies(array('public' => true));
+	$terms = wp_get_post_terms($id, $taxonomies);
+	foreach ($terms as $term_count => $fields) {
+		if (md_term_meta(array('layout', 'entries_sidebar'), $fields->term_id)) {
 			$term['taxonomy'] = $fields->taxonomy;
 			$term['term_id'] = $fields->term_id;
 		}
 	}
-	$taxonomy = ! empty( $term['taxonomy'] ) ? $term['taxonomy'] : '';
-	$term_id = ! empty( $term['term_id'] ) ? $term['term_id'] : '';
-	$tax_var = get_query_var( 'taxonomy' );
+	$taxonomy = !empty($term['taxonomy']) ? $term['taxonomy'] : '';
+	$term_id = !empty($term['term_id']) ? $term['term_id'] : '';
+	$tax_var = get_query_var('taxonomy');
 
 	// single posts in category sidebar
-	if ( is_singular() && has_term( $term_id, $taxonomy ) && md_term_meta( array( 'layout', 'entries_sidebar' ), $term_id ) != '' )
-		$name = md_term_meta( array( 'layout', 'entries_sidebar' ), $term_id );
+	if (is_singular() && has_term($term_id, $taxonomy) && md_term_meta(array('layout', 'entries_sidebar'), $term_id) != '')
+		$name = md_term_meta(array('layout', 'entries_sidebar'), $term_id);
 	// global post types archive sidebar
-	elseif ( ( is_home() || is_post_type_archive( $post_type ) ) && ! empty( $sidebars[$post_type]['archive'] ) && ! empty( $option["{$post_type}_archive"] ) )
+	elseif ((is_home() || is_post_type_archive($post_type)) && !empty($sidebars[$post_type]['archive']) && !empty($option["{$post_type}_archive"]))
 		$name = $option["{$post_type}_archive"];
 	// global post types single sidebar
-	elseif ( is_singular( $post_type ) && ! empty( $sidebars[$post_type]['single'] ) && ! empty( $option["{$post_type}_single"] ) )
+	elseif (is_singular($post_type) && !empty($sidebars[$post_type]['single']) && !empty($option["{$post_type}_single"]))
 		$name = $option["{$post_type}_single"];
-	elseif ( ( is_category() || is_tax() ) && ! empty( $sidebars[$post_type][$tax_var] ) && ! empty( $option["{$post_type}_{$tax_var}"] ) )
+	elseif ((is_category() || is_tax()) && !empty($sidebars[$post_type][$tax_var]) && !empty($option["{$post_type}_{$tax_var}"]))
 		$name = $option["{$post_type}_{$tax_var}"];
 	else
 		$name = '';
@@ -575,9 +598,10 @@ function md_get_global_sidebar_id() {
  * @since 4.1
  */
 
-function md_sidebar() {
+function md_sidebar()
+{
 	$name = md_get_sidebar_id();
-	dynamic_sidebar( $name );
+	dynamic_sidebar($name);
 }
 
 /**
@@ -586,15 +610,16 @@ function md_sidebar() {
  * @since 4.6.2
  */
 
-function md_get_sidebars() {
+function md_get_sidebars()
+{
 	$sidebars = array();
-	$areas = md_setting( array( 'sidebars', 'areas' ) );
+	$areas = md_setting(array('sidebars', 'areas'));
 
-	if ( ! empty( $areas ) )
-		foreach ( $areas as $area => $fields )
+	if (!empty($areas))
+		foreach ($areas as $area => $fields)
 			$sidebars[$area] = $fields['name'];
 
-	return array_filter( $sidebars );
+	return array_filter($sidebars);
 }
 
 /**
@@ -603,12 +628,13 @@ function md_get_sidebars() {
  * @since 4.0
  */
 
-function md_footer_columns() {
+function md_footer_columns()
+{
 	$columns = array();
-	foreach ( array_filter( wp_get_sidebars_widgets() ) as $area => $widgets )
-		if ( substr( $area, 0, 13 ) == 'md-footer-col' )
+	foreach (array_filter(wp_get_sidebars_widgets()) as $area => $widgets)
+		if (substr($area, 0, 13) == 'md-footer-col')
 			$columns[] = $area;
-	return count( $columns );
+	return count($columns);
 }
 
 /**
@@ -617,24 +643,24 @@ function md_footer_columns() {
  * @since 4.6
  */
 
-function md_page_data() {
-	if ( is_category() || is_tax() ) {
+function md_page_data()
+{
+	if (is_category() || is_tax()) {
 		$term = get_queried_object();
 		$id = $term->term_id;
 		return array(
-			'title' => get_cat_name( $id ),
-			'link' => get_category_link( $id ),
-			'image' => md_term_meta( array( 'featured_image', 'image', 'url' ) ),
-			'excerpt' => strip_tags( category_description( $id ) )
+			'title' => get_cat_name($id),
+			'link' => get_category_link($id),
+			'image' => md_term_meta(array('featured_image', 'image', 'url')),
+			'excerpt' => strip_tags(category_description($id))
 		);
-	}
-	else {
+	} else {
 		$id = get_queried_object_id();
 		return array(
-			'title' => get_the_title( $id ),
-			'link' => get_permalink( $id ),
-			'image' => get_the_post_thumbnail_url( $id ),
-			'excerpt' => get_post_field( 'post_excerpt', $id )
+			'title' => get_the_title($id),
+			'link' => get_permalink($id),
+			'image' => get_the_post_thumbnail_url($id),
+			'excerpt' => get_post_field('post_excerpt', $id)
 		);
 	}
 }
@@ -645,9 +671,10 @@ function md_page_data() {
  * @since 5.0
  */
 
-function md_popup( $args ) {
-	if ( ! in_array( $args['id'], md_filter_popups() ) )
-		new md_popup( $args );
+function md_popup($args)
+{
+	if (!in_array($args['id'], md_filter_popups()))
+		new md_popup($args);
 }
 
 /**
@@ -656,20 +683,21 @@ function md_popup( $args ) {
  * @since 5.0
  */
 
-function md_get_popups( $show = null ) {
+function md_get_popups($show = null)
+{
 	$popups = array();
-	$option = md_setting( array( 'popups', 'popups' ) );
+	$option = md_setting(array('popups', 'popups'));
 
-	if ( ! empty( $option ) ) {
-		if ( $show == 'ids' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
+	if (!empty($option)) {
+		if ($show == 'ids') {
+			foreach ($option as $popup => $fields)
+				if (!empty($popup))
 					$popups[] = $popup;
 			return $popups;
 		}
-		if ( $show == 'options' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
+		if ($show == 'options') {
+			foreach ($option as $popup => $fields)
+				if (!empty($popup))
 					$popups[$popup] = $fields['name'];
 			return $popups;
 		}
@@ -683,8 +711,9 @@ function md_get_popups( $show = null ) {
  * @since 4.5
  */
 
-function md_popup_connect_notice() {
-	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
+function md_popup_connect_notice()
+{
+	echo '<p class="description">' . sprintf(__('You must <a href="%s">create at least one popup</a> before you can add one here.', 'md'), admin_url('themes.php?page=md_popups')) . '</p>';
 }
 
 /**
@@ -693,27 +722,28 @@ function md_popup_connect_notice() {
  * @since 4.9.2
  */
 
-function md_like() {
-	if ( wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) ) {
-		$id = esc_attr( $_POST['post_id'] );
-		$post_type = get_post_type( $id );
+function md_like()
+{
+	if (wp_verify_nonce($_POST['nonce'], 'marketers_delight_nonce')) {
+		$id = esc_attr($_POST['post_id']);
+		$post_type = get_post_type($id);
 		$option = md_setting();
-		$is_archive = isset( $_POST['archive'] ) && $_POST['archive'] == 'true' ? true : false;
-		if ( $is_archive )
-			$meta = md_term_meta( null, $id );
+		$is_archive = isset($_POST['archive']) && $_POST['archive'] == 'true' ? true : false;
+		if ($is_archive)
+			$meta = md_term_meta(null, $id);
 		else
-			$meta = md_post_meta( null, $id );
-		if ( empty( $meta['share']['likes'] ) )
+			$meta = md_post_meta(null, $id);
+		if (empty($meta['share']['likes']))
 			$meta['share']['likes'] = '';
 		$meta['share']['likes']++;
-		if ( empty( $option['share']["{$post_type}_likes"] ) )
+		if (empty($option['share']["{$post_type}_likes"]))
 			$option['share']["{$post_type}_likes"] = '';
 		$option['share']["{$post_type}_likes"]++;
-		if ( $is_archive )
-			update_term_meta( $id, 'marketers_delight', $meta );
+		if ($is_archive)
+			update_term_meta($id, 'marketers_delight', $meta);
 		else
-			update_post_meta( $id, 'marketers_delight', $meta );
-		update_option( 'marketers_delight', $option );
+			update_post_meta($id, 'marketers_delight', $meta);
+		update_option('marketers_delight', $option);
 	}
 	wp_die();
 }
@@ -724,13 +754,14 @@ function md_like() {
  * @since 5.0
  */
 
-function md_share_icons( $group = null ) {
+function md_share_icons($group = null)
+{
 	$icons = array();
-	$option = md_setting( array( 'share', 'icons' ) );
-	if ( ! empty( $option ) )
-		foreach( $option as $icon => $fields )
+	$option = md_setting(array('share', 'icons'));
+	if (!empty($option))
+		foreach ($option as $icon => $fields)
 			$icons[$fields['status']][] = $icon;
-	if ( isset( $group ) )
+	if (isset($group))
 		$icons = $icons[$group];
 	return $icons;
 }

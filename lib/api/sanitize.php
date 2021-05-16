@@ -5,17 +5,8 @@
  * @since 4.5
  */
 
-class md_sanitize {
-
-	/**
-	 * Assign properties.
-	 *
-	 * @since 5.0
-	 */
-
-	public function __construct() {
-		$this->values = $this->values();
-	}
+class md_sanitize
+{
 
 	/**
 	 * Allow only the following HTML tags + attributes
@@ -95,7 +86,6 @@ class md_sanitize {
 		's' => array(),
 		'code' => array()
 	);
-
 	/**
 	 * Add needed font weights for design controls.
 	 *
@@ -117,117 +107,42 @@ class md_sanitize {
 	);
 
 	/**
+	 * Assign properties.
+	 *
+	 * @since 5.0
+	 */
+
+	public function __construct()
+	{
+		$this->values = $this->values();
+	}
+
+	/**
 	 * Settings that are often reused with the same values.
 	 *
 	 * @since 5.0
 	 */
 
-	public function values() {
+	public function values()
+	{
 		return array(
 			'content_box' => array(
-				'content_sidebar' => __( 'Content / Sidebar', 'md' ),
-				'sidebar_content' => __( 'Sidebar / Content', 'md' )
+				'content_sidebar' => __('Content / Sidebar', 'md'),
+				'sidebar_content' => __('Sidebar / Content', 'md')
 			),
 			'featured_image' => array(
-				'right' => __( 'Right, text wrap', 'md' ),
-				'left' => __( 'Left, text wrap', 'md' ),
-				'center' => __( 'Center, no text wrap', 'md' ),
-				'below_headline' => __( 'Full-width, below headline', 'md' ),
-				'above_headline' => __( 'Full-width, above headline', 'md' ),
-				'headline_cover' => __( 'Headline cover', 'md' ),
-				'header_cover' => __( 'Header cover', 'md' ),
-				'header_cover_full' => __( 'Full Header cover', 'md' ),
-				'remove' => __( 'Hide image', 'md' )
+				'right' => __('Right, text wrap', 'md'),
+				'left' => __('Left, text wrap', 'md'),
+				'center' => __('Center, no text wrap', 'md'),
+				'below_headline' => __('Full-width, below headline', 'md'),
+				'above_headline' => __('Full-width, above headline', 'md'),
+				'headline_cover' => __('Headline cover', 'md'),
+				'header_cover' => __('Header cover', 'md'),
+				'header_cover_full' => __('Full Header cover', 'md'),
+				'remove' => __('Hide image', 'md')
 			),
-			'alignment' => array( 'alignleft', 'alignright', 'aligncenter' )
+			'alignment' => array('alignleft', 'alignright', 'aligncenter')
 		);
-	}
-
-	/**
-	 * Run text field through native WP function.
-	 *
-	 * @since 4.5
-	 */
-
-	public function text( $input ) {
-		return wp_kses( $input, $this->_allowed_html );
-	}
-
-	/**
-	 * Ensure only a number is saved.
-	 *
-	 * @since 4.7
-	 */
-
-	public function number( $input ) {
-		return preg_replace( '/\D/', '', $input );
-	}
-
-	/**
-	 * Clean URL field for valid characters only.
-	 *
-	 * @since 4.7
-	 */
-
-	public function url( $input ) {
-		return wp_kses_bad_protocol( $input, array( 'http', 'https' ) );
-	}
-
-	/**
-	 * Escape image URL for uploaded media.
-	 *
-	 * @since 4.5
-	 */
-
-	public function upload( $input, $upload_type ) {
-		if ( $upload_type == 'media' )
-			$save = array(
-				'id' => esc_attr( $input['id'] ),
-				'url' => esc_url( $input['url'] )
-			);
-		return $save;
-	}
-
-	/**
-	 * Properly save color values to color fields as hex or RGBA.
-	 *
-	 * @since 4.7
-	 */
-
-	public function color( $input ) {
-		if ( strpos( $input, 'rgba' ) === false )
-			return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
-		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
-		return "rgba({$r},{$g},{$b},{$a})";
-	}
-
-	/**
-	 * A checkbox can only have 2 possible return values.
-	 * Lock results to '' or true.
-	 *
-	 * @since 4.5
-	 */
-
-	public function checkbox( $input ) {
-		if ( is_array( $input ) ) {
-			$save = array();
-			foreach ( $input as $check => $val )
-				if ( ! empty( $val ) )
-					$save[$check] = true;
-		}
-		else
-			$save = $input == true ? true : false;
-		return $save;
-	}
-
-	/**
-	 * Compare input to predefined valued to save only valid select options.
-	 *
-	 * @since 4.7
-	 */
-
-	public function select( $input, $options ) {
-		return in_array( $input, $options ) ? $input : '';
 	}
 
 	/**
@@ -236,10 +151,11 @@ class md_sanitize {
 	 * @since 5.0
 	 */
 
-	public function customize_select( $input, $setting ) {
-		$input = sanitize_key( $input );
-		$choices = $setting->manager->get_control( $setting->id )->choices;
-		return array_key_exists( $input, $choices ) ? $input : $setting->default;
+	public function customize_select($input, $setting)
+	{
+		$input = sanitize_key($input);
+		$choices = $setting->manager->get_control($setting->id)->choices;
+		return array_key_exists($input, $choices) ? $input : $setting->default;
 	}
 
 	/**
@@ -248,11 +164,12 @@ class md_sanitize {
 	 * @since 4.8
 	 */
 
-	public function font_weights( $input ) {
+	public function font_weights($input)
+	{
 		$weights = array();
-		foreach ( $this->_font_weights as $weight => $label )
+		foreach ($this->_font_weights as $weight => $label)
 			$weights[] = $weight;
-		return in_array( $input, $weights ) ? $input : '';
+		return in_array($input, $weights) ? $input : '';
 	}
 
 	/**
@@ -262,8 +179,9 @@ class md_sanitize {
 	 * @moved 4.5.4
 	 */
 
-	public function content_box( $input ) {
-		return in_array( $input, array( 'content_sidebar', 'sidebar_content' ) ) ? $input : '';
+	public function content_box($input)
+	{
+		return in_array($input, array('content_sidebar', 'sidebar_content')) ? $input : '';
 	}
 
 	/**
@@ -273,8 +191,9 @@ class md_sanitize {
 	 * @moved 4.5.4
 	 */
 
-	public function featured_image_position( $input ) {
-		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'headline_cover', 'header_cover', 'header_cover_full', 'remove' ) ) ? $input : '';
+	public function featured_image_position($input)
+	{
+		return in_array($input, array('right', 'left', 'center', 'below_headline', 'above_headline', 'headline_cover', 'header_cover', 'header_cover_full', 'remove')) ? $input : '';
 	}
 
 	/**
@@ -283,56 +202,10 @@ class md_sanitize {
 	 * @since 4.0
 	 */
 
-	public function admin_save( $input ) {	
-		$save = $this->validate( 'admin_pages', $input );
-		return array_merge( md_setting(), $save );
-	}
-
-	/**
-	 * Saves and sanitizes term fields.
-	 *
-	 * @since 4.3.5
-	 */
-
-	public function term_save( $term_id ) {
-		$option = 'marketers_delight';
-		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
-			$save = $this->validate( 'terms', $_POST[$option] );
-			if ( $save )
-				update_term_meta( $term_id, $option, $save );
-			elseif ( empty( $save ) )
-				delete_term_meta( $term_id, $option );
-		}
-	}
-
-	/**
-	 * Saves all types of post meta fields.
-	 *
-	 * @since 4.0
-	 */
-
-	public function meta_save( $post_id, $post ) {
-		$option = 'marketers_delight';
-
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return $post_id;
-
-		if ( ! isset( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
-			return $post_id;
-
-		if ( ! current_user_can( get_post_type_object( $post->post_type )->cap->edit_post, $post_id ) )
-			return $post_id;
-
-		if ( ! isset( $_POST[$option] ) )
-			return $post_id;
-
-		$value = get_post_meta( $post_id, $option, true );
-		$save = $this->validate( 'meta_boxes', $_POST[$option] );
-
-		if ( $save )
-			update_post_meta( $post_id, $option, $save );
-		elseif ( $save == '' && $value )
-			delete_post_meta( $post_id, $option, $value );
+	public function admin_save($input)
+	{
+		$save = $this->validate('admin_pages', $input);
+		return array_merge(md_setting(), $save);
 	}
 
 	/**
@@ -344,39 +217,38 @@ class md_sanitize {
 	 * @since 4.7
 	 */
 
-	public function validate( $settings, $input ) {
+	public function validate($settings, $input)
+	{
 		$save = array();
-		$data = md_register( $settings );
-		$whitelist = array( 'integrations', 'popups_data', 'license', 'custom_icons' );
+		$data = md_register($settings);
+		$whitelist = array('integrations', 'popups_data', 'license', 'custom_icons');
 
-		foreach ( $input as $key => $input_fields ) {
+		foreach ($input as $key => $input_fields) {
 			$save[$key] = array();
-			if ( ! in_array( $key, $whitelist ) ) {
-				if ( ! empty( $data[$key]['fields'] ) )
-					foreach ( $data[$key]['fields'] as $group => $group_fields ) {
-						if ( isset( $group_fields['type'] ) && $group_fields['type'] == 'group' && isset( $input[$key][$group] ) ) {
-							unset( $input[$key][$group]['{clone}'] );
-							foreach ( $input[$key][$group] as $clone_group => $clone_fields ) {
-								if ( isset( $group_fields['group_key_lowercase'] ) )
-									$clone_group = strtolower( $clone_group );
-								foreach ( $clone_fields as $clone_key => $clone_val )
-									if ( ! empty( $clone_val ) || $clone_val == '0' )
-										$save[$key][$group][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data[$key]['fields'][$group]['fields'][$clone_key] );
+			if (!in_array($key, $whitelist)) {
+				if (!empty($data[$key]['fields']))
+					foreach ($data[$key]['fields'] as $group => $group_fields) {
+						if (isset($group_fields['type']) && $group_fields['type'] == 'group' && isset($input[$key][$group])) {
+							unset($input[$key][$group]['{clone}']);
+							foreach ($input[$key][$group] as $clone_group => $clone_fields) {
+								if (isset($group_fields['group_key_lowercase']))
+									$clone_group = strtolower($clone_group);
+								foreach ($clone_fields as $clone_key => $clone_val)
+									if (!empty($clone_val) || $clone_val == '0')
+										$save[$key][$group][$clone_group][$clone_key] = $this->validate_field($clone_val, $data[$key]['fields'][$group]['fields'][$clone_key]);
 							}
-						}
-						elseif ( isset( $group_fields['type'] ) && ( ! empty( $input[$key][$group] ) || ( ! empty( $input[$key][$group] ) && $input[$key][$group] == '0' ) ) )
-							$save[$key][$group] = $this->validate_field( $input[$key][$group], $group_fields );
+						} elseif (isset($group_fields['type']) && (!empty($input[$key][$group]) || (!empty($input[$key][$group]) && $input[$key][$group] == '0')))
+							$save[$key][$group] = $this->validate_field($input[$key][$group], $group_fields);
 						else
-							foreach ( $group_fields as $option_name => $option_fields )
-								if ( isset( $option_fields['type'] ) && ! empty( $input[$key][$group][$option_name] ) )
-									$save[$key][$group][$option_name] = $this->validate_field( $input[$key][$group][$option_name], $option_fields );
-								elseif ( is_array( $option_fields ) )
-									foreach ( $option_fields as $val_name => $val_fields )
-										if ( isset( $val_fields['type'] ) && ! empty( $input[$key][$group][$option_name][$val_name] ) )
-											$save[$key][$group][$option_name][$val_name] = $this->validate_field( $input[$key][$group][$option_name][$val_name], $val_fields );
+							foreach ($group_fields as $option_name => $option_fields)
+								if (isset($option_fields['type']) && !empty($input[$key][$group][$option_name]))
+									$save[$key][$group][$option_name] = $this->validate_field($input[$key][$group][$option_name], $option_fields);
+								elseif (is_array($option_fields))
+									foreach ($option_fields as $val_name => $val_fields)
+										if (isset($val_fields['type']) && !empty($input[$key][$group][$option_name][$val_name]))
+											$save[$key][$group][$option_name][$val_name] = $this->validate_field($input[$key][$group][$option_name][$val_name], $val_fields);
 					}
-			}
-			else
+			} else
 				$save[$key] = $input[$key];
 		}
 
@@ -389,41 +261,184 @@ class md_sanitize {
 	 * @since 5.0
 	 */
 
-	public function validate_field( $val, $fields ) {
+	public function validate_field($val, $fields)
+	{
 		$field = '';
-		$type = isset( $fields['type'] ) ? $fields['type'] : '';
-		$sub_options = isset( $fields['options'] ) ? $fields['options'] : '';
+		$type = isset($fields['type']) ? $fields['type'] : '';
+		$sub_options = isset($fields['options']) ? $fields['options'] : '';
 
-		if ( $val == '' && isset( $fields['default'] ) )
+		if ($val == '' && isset($fields['default']))
 			$val = $fields['default'];
 
-		if ( in_array( $type, array( 'text', 'textarea', 'hidden' ) ) )
-			$field = $this->text( $val );
+		if (in_array($type, array('text', 'textarea', 'hidden')))
+			$field = $this->text($val);
 
-		if ( $type == 'number' || $type == 'range' )
-			$field = $this->number( $val );
+		if ($type == 'number' || $type == 'range')
+			$field = $this->number($val);
 
-		if ( in_array( $type, array( 'code', 'data' ) ) )
+		if (in_array($type, array('code', 'data')))
 			$field = $val;
 
-		if ( $type == 'url' )
-			$field = $this->url( $val );
+		if ($type == 'url')
+			$field = $this->url($val);
 
-		if ( $type == 'checkbox' )
-			$field = $this->checkbox( $val );
+		if ($type == 'checkbox')
+			$field = $this->checkbox($val);
 
-		if ( in_array( $type, array( 'select', 'radio' ) ) && is_array( $sub_options ) )
-			$field = $this->select( $val, $sub_options );
+		if (in_array($type, array('select', 'radio')) && is_array($sub_options))
+			$field = $this->select($val, $sub_options);
 
-		if ( $type == 'upload' ) {
-			$upload_type = isset( $fields['upload_type'] ) ? $fields['upload_type'] : '';
-			$field = $this->upload( $val, $upload_type );
+		if ($type == 'upload') {
+			$upload_type = isset($fields['upload_type']) ? $fields['upload_type'] : '';
+			$field = $this->upload($val, $upload_type);
 		}
 
-		if ( $type == 'color' )
-			$field = $this->color( $val );
+		if ($type == 'color')
+			$field = $this->color($val);
 
 		return $field;
+	}
+
+	/**
+	 * Run text field through native WP function.
+	 *
+	 * @since 4.5
+	 */
+
+	public function text($input)
+	{
+		return wp_kses($input, $this->_allowed_html);
+	}
+
+	/**
+	 * Ensure only a number is saved.
+	 *
+	 * @since 4.7
+	 */
+
+	public function number($input)
+	{
+		return preg_replace('/\D/', '', $input);
+	}
+
+	/**
+	 * Clean URL field for valid characters only.
+	 *
+	 * @since 4.7
+	 */
+
+	public function url($input)
+	{
+		return wp_kses_bad_protocol($input, array('http', 'https'));
+	}
+
+	/**
+	 * A checkbox can only have 2 possible return values.
+	 * Lock results to '' or true.
+	 *
+	 * @since 4.5
+	 */
+
+	public function checkbox($input)
+	{
+		if (is_array($input)) {
+			$save = array();
+			foreach ($input as $check => $val)
+				if (!empty($val))
+					$save[$check] = true;
+		} else
+			$save = $input == true ? true : false;
+		return $save;
+	}
+
+	/**
+	 * Compare input to predefined valued to save only valid select options.
+	 *
+	 * @since 4.7
+	 */
+
+	public function select($input, $options)
+	{
+		return in_array($input, $options) ? $input : '';
+	}
+
+	/**
+	 * Escape image URL for uploaded media.
+	 *
+	 * @since 4.5
+	 */
+
+	public function upload($input, $upload_type)
+	{
+		if ($upload_type == 'media')
+			$save = array(
+				'id' => esc_attr($input['id']),
+				'url' => esc_url($input['url'])
+			);
+		return $save;
+	}
+
+	/**
+	 * Properly save color values to color fields as hex or RGBA.
+	 *
+	 * @since 4.7
+	 */
+
+	public function color($input)
+	{
+		if (strpos($input, 'rgba') === false)
+			return preg_match('/^#[a-f0-9]{6}$/i', $input) ? stripslashes(strip_tags($input)) : '';
+		sscanf($input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a);
+		return "rgba({$r},{$g},{$b},{$a})";
+	}
+
+	/**
+	 * Saves and sanitizes term fields.
+	 *
+	 * @since 4.3.5
+	 */
+
+	public function term_save($term_id)
+	{
+		$option = 'marketers_delight';
+		if (isset($_POST[$option]) && isset($_POST["{$option}_nonce"]) && wp_verify_nonce($_POST["{$option}_nonce"], "{$option}_nonce")) {
+			$save = $this->validate('terms', $_POST[$option]);
+			if ($save)
+				update_term_meta($term_id, $option, $save);
+			elseif (empty($save))
+				delete_term_meta($term_id, $option);
+		}
+	}
+
+	/**
+	 * Saves all types of post meta fields.
+	 *
+	 * @since 4.0
+	 */
+
+	public function meta_save($post_id, $post)
+	{
+		$option = 'marketers_delight';
+
+		if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+			return $post_id;
+
+		if (!isset($_POST["{$option}_nonce"]) || !wp_verify_nonce($_POST["{$option}_nonce"], "{$option}_nonce"))
+			return $post_id;
+
+		if (!current_user_can(get_post_type_object($post->post_type)->cap->edit_post, $post_id))
+			return $post_id;
+
+		if (!isset($_POST[$option]))
+			return $post_id;
+
+		$value = get_post_meta($post_id, $option, true);
+		$save = $this->validate('meta_boxes', $_POST[$option]);
+
+		if ($save)
+			update_post_meta($post_id, $option, $save);
+		elseif ($save == '' && $value)
+			delete_post_meta($post_id, $option, $value);
 	}
 
 }

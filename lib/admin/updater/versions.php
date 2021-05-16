@@ -6,12 +6,13 @@
  * @since 5.2.1
  */
 
-function marketers_delight_521() {
+function marketers_delight_521()
+{
 	$options = md_setting();
-	if ( ! empty( $options['settings']['features'] ) ) {
+	if (!empty($options['settings']['features'])) {
 		$options['dropins']['features'] = $options['settings']['features'];
-		unset( $options['settings']['features'] );
-		update_option( 'marketers_delight', $options );
+		unset($options['settings']['features']);
+		update_option('marketers_delight', $options);
 	}
 	return false;
 }
@@ -22,12 +23,13 @@ function marketers_delight_521() {
  * @since 5.1
  */
 
-function marketers_delight_51() {
+function marketers_delight_51()
+{
 	$option = md_setting();
-	if ( ! empty( $option['content']['loop'] ) ) {
+	if (!empty($option['content']['loop'])) {
 		$option['content']['loop']['archives'] = 'teasers';
-		unset( $option['content']['loop'] );
-		update_option( 'marketers_delight', $option );
+		unset($option['content']['loop']);
+		update_option('marketers_delight', $option);
 	}
 	return false;
 }
@@ -38,16 +40,17 @@ function marketers_delight_51() {
  * @since 4.9.6
  */
 
-function marketers_delight_496() {
+function marketers_delight_496()
+{
 	$keys = array();
 	$option = md_setting();
 
-	if ( ! empty( $option['share']['order'] ) ) {
-		foreach ( $option['share']['order'] as $order => $name )
-			if ( $name !== 'google' )
+	if (!empty($option['share']['order'])) {
+		foreach ($option['share']['order'] as $order => $name)
+			if ($name !== 'google')
 				$keys[$order] = $name;
 		$option['share']['order'] = $keys;
-		update_option( 'marketers_delight', $option );
+		update_option('marketers_delight', $option);
 	}
 
 	return false;
@@ -59,111 +62,112 @@ function marketers_delight_496() {
  * @since 4.9
  */
 
-function marketers_delight_49() {
+function marketers_delight_49()
+{
 
 	// 1. Update Option
 
 	$option = md_setting();
 	$integrations = array();
 
-	if ( ! empty( $option['settings']['typekit'] ) ) {
-		$integrations['api_keys']['typekit']['key'] = esc_attr( $option['settings']['typekit'] );
+	if (!empty($option['settings']['typekit'])) {
+		$integrations['api_keys']['typekit']['key'] = esc_attr($option['settings']['typekit']);
 		$integrations['enabled']['typekit'] = true;
-		unset( $option['settings']['typekit'] );
+		unset($option['settings']['typekit']);
 	}
 
-	if ( ! empty( $option['email_data'] ) ) {
-		if ( ! in_array( 'custom_code', $option['email_data'] ) ) {
-			foreach ( $option['email_data'] as $service => $fields )
+	if (!empty($option['email_data'])) {
+		if (!in_array('custom_code', $option['email_data'])) {
+			foreach ($option['email_data'] as $service => $fields)
 				$integrations['enabled'][$service] = true;
 			$integrations['services'] = $option['email_data'];
-			if ( ! empty( $integrations['services'] ) ) {
-				foreach ( $integrations['services'] as $service => $lists ) {
-					foreach ( $lists as $list => $fields ) {
-						$integrations['services'][$service][$list]['id'] = esc_attr( $list );
-						if ( $service == 'mailchimp' ) {
+			if (!empty($integrations['services'])) {
+				foreach ($integrations['services'] as $service => $lists) {
+					foreach ($lists as $list => $fields) {
+						$integrations['services'][$service][$list]['id'] = esc_attr($list);
+						if ($service == 'mailchimp') {
 							$url = $integrations['services'][$service][$list]['url'];
-							$parse = parse_url( $url );
-							parse_str( $parse['query'], $form );
-							$host = str_replace( array( 'manage1', 'manage2' ), 'manage', $parse['host'] );
-							$integrations['services'][$service][$list]['url'] = esc_url_raw( '//' . $host . '/subscribe/post/' );
-							$integrations['services'][$service][$list]['uid'] = esc_attr( $form['u'] );
+							$parse = parse_url($url);
+							parse_str($parse['query'], $form);
+							$host = str_replace(array('manage1', 'manage2'), 'manage', $parse['host']);
+							$integrations['services'][$service][$list]['url'] = esc_url_raw('//' . $host . '/subscribe/post/');
+							$integrations['services'][$service][$list]['uid'] = esc_attr($form['u']);
 						}
 					}
 				}
 			}
 		}
-		unset( $option['email_data'] );
+		unset($option['email_data']);
 	}
 
-	if ( empty( $option['settings']['license_key'] ) && ! empty( $option['dashboard']['license_key'] ) ) # 4.8.4
+	if (empty($option['settings']['license_key']) && !empty($option['dashboard']['license_key'])) # 4.8.4
 		$option['settings']['license_key'] = $option['dashboard']['license_key'];
 
-	if ( isset( $option['dashboard'] ) )
-		unset( $option['dashboard'] );
+	if (isset($option['dashboard']))
+		unset($option['dashboard']);
 
 	$option['integrations'] = $integrations;
 
-	update_option( 'md_integrations', $integrations );
-	update_option( 'marketers_delight', $option );
+	update_option('md_integrations', $integrations);
+	update_option('marketers_delight', $option);
 
 	// 2. Update Theme Mod
 
-	$new   = array();
-	$theme = get_theme_mod( 'marketers_delight' );
+	$new = array();
+	$theme = get_theme_mod('marketers_delight');
 
-	if ( ! isset( $theme['post'] ) )
+	if (!isset($theme['post']))
 		$theme['post'] = array();
 
 	// Text
-	if ( isset( $theme['content']['color'] ) ) {
+	if (isset($theme['content']['color'])) {
 		$new['site']['text'] = $theme['content']['color'];
-		unset( $theme['content']['color'] );
+		unset($theme['content']['color']);
 	}
 
 	// Headline
-	if ( isset( $theme['content']['headline']['color'] ) )
+	if (isset($theme['content']['headline']['color']))
 		$new['site']['headline'] = $theme['content']['headline']['color'];
 
-	if ( isset( $theme['content']['headline']['links']['color'] ) )
+	if (isset($theme['content']['headline']['links']['color']))
 		$new['site']['headline-links'] = $theme['content']['headline']['links']['color'];
 
-	if ( isset( $theme['content']['headline'] ) )
-		unset( $theme['content']['headline'] );
+	if (isset($theme['content']['headline']))
+		unset($theme['content']['headline']);
 
 	// Links
-	if ( isset( $theme['content']['links']['color'] ) )
+	if (isset($theme['content']['links']['color']))
 		$new['site']['links'] = $theme['content']['links']['color'];
 
-	if ( ! empty( $theme['content']['links'] ) )
-		unset( $theme['content']['links'] );
+	if (!empty($theme['content']['links']))
+		unset($theme['content']['links']);
 
 	// Buttons
-	if ( isset( $theme['site']['button']['main']['bg_color'] ) )
+	if (isset($theme['site']['button']['main']['bg_color']))
 		$new['site']['button'] = $theme['site']['button']['main']['bg_color'];
 
-	if ( isset( $theme['site']['button']['main']['text']['color'] ) )
+	if (isset($theme['site']['button']['main']['text']['color']))
 		$new['site']['button-text'] = $theme['site']['button']['main']['text']['color'];
 
-	if ( isset( $theme['site']['button']['secondary']['bg_color'] ) )
+	if (isset($theme['site']['button']['secondary']['bg_color']))
 		$new['site']['button-sec'] = $theme['site']['button']['secondary']['bg_color'];
 
-	if ( isset( $theme['site']['button']['secondary']['text']['color'] ) )
+	if (isset($theme['site']['button']['secondary']['text']['color']))
 		$new['site']['button-sec-text'] = $theme['site']['button']['secondary']['text']['color'];
 
-	if ( ! empty( $theme['site']['button'] ) )
-		unset( $theme['site']['button'] );
+	if (!empty($theme['site']['button']))
+		unset($theme['site']['button']);
 
-	$theme = array_merge( $theme, $new );
+	$theme = array_merge($theme, $new);
 
-	set_theme_mod( 'marketers_delight', $theme );
+	set_theme_mod('marketers_delight', $theme);
 
 	// 3. Move Inline CSS
 
-	$css = get_option( 'marketers_delight_css' );
-	if ( ! empty( $inline ) ) {
-		update_option( 'marketers_delight_design_css', $css );
-		delete_option( 'marketers_delight_css' );
+	$css = get_option('marketers_delight_css');
+	if (!empty($inline)) {
+		update_option('marketers_delight_design_css', $css);
+		delete_option('marketers_delight_css');
 	}
 
 }

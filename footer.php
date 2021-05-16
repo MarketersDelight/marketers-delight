@@ -1,8 +1,8 @@
-<?php if ( md_filter_template() !== false ) : ?>
+<?php if (md_filter_template() !== false) : ?>
 
 	<?php md_hook_before_footer(); ?>
 
-	<?php if ( md_has_footer() ) : ?>
+	<?php if (md_has_footer()) : ?>
 		<footer id="footer" class="footer format<?php echo md_footer_classes(); ?>">
 			<?php md_hook_footer_top(); ?>
 			<div class="inner">

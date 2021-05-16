@@ -1,9 +1,9 @@
 {
-    "name": "marketers-delight/marketers-delight",
-    "description": "MD Codebase Theme",
-    "type": "project",
-    "license": "proprietary",
-    "require": {
-        "php": ">=7.4"
-    }
+  "name": "marketers-delight/marketers-delight",
+  "description": "MD Codebase Theme",
+  "type": "project",
+  "license": "proprietary",
+  "require": {
+	"php": ">=7.4"
+  }
 }

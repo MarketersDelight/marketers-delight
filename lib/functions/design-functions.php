@@ -6,7 +6,8 @@
  * since 4.9
  */
 
-function md_editor_colors() {
+function md_editor_colors()
+{
 	$design = new md_design;
 	return $design->editor_colors();
 }
@@ -17,14 +18,15 @@ function md_editor_colors() {
  * @since 4.8
  */
 
-function md_enqueue_fonts() {
-	$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
-	if ( md_web_fonts( 'google' ) ) {
-		$url = md_setting( array( 'typography', 'google_fonts' ) );
-		wp_enqueue_style( 'marketers-delight-google-fonts', $url );
+function md_enqueue_fonts()
+{
+	$typekit = md_setting(array('integrations', 'api_keys', 'typekit'));
+	if (md_web_fonts('google')) {
+		$url = md_setting(array('typography', 'google_fonts'));
+		wp_enqueue_style('marketers-delight-google-fonts', $url);
 	}
-	if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
-		wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );
+	if (!empty($typekit['key']) && md_web_fonts('typekit'))
+		wp_enqueue_style('marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr($typekit['key']) . '.css');
 }
 
 /**
@@ -33,14 +35,15 @@ function md_enqueue_fonts() {
  * @since 4.8
  */
 
-function md_webfonts_loader() {
-	$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
+function md_webfonts_loader()
+{
+	$typekit = md_setting(array('integrations', 'api_keys', 'typekit'));
 	$fonts = md_web_fonts();
-	$has_typekit = ( ! empty( $typekit ) && ! empty( $fonts['typekit'] ) ) ? true : false;
-	$has_google = ( ! empty( $fonts['google'] ) ) ? true : false;
-	if ( $has_google || $has_typekit )
+	$has_typekit = (!empty($typekit) && !empty($fonts['typekit'])) ? true : false;
+	$has_google = (!empty($fonts['google'])) ? true : false;
+	if ($has_google || $has_typekit)
 		return
-			"\t<script>WebFontConfig={" . ( $has_google ? 'google:{families:[' .  md_google_fonts( 'ids' ) . ']},' : '' ) . ( $has_typekit ? 'typekit:{id:\'' . esc_attr( $typekit['key'] ) . '\'}' : '' ) . '};(function(d){var wf=d.createElement(\'script\'),s=d.scripts[0];wf.src=\'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js\';wf.async=true;s.parentNode.insertBefore(wf,s);})(document);' . "</script>\n";
+			"\t<script>WebFontConfig={" . ($has_google ? 'google:{families:[' . md_google_fonts('ids') . ']},' : '') . ($has_typekit ? 'typekit:{id:\'' . esc_attr($typekit['key']) . '\'}' : '') . '),s=d.scripts[0];wf.src=\\' . "</script>\n";
 }
 
 /**
@@ -51,60 +54,58 @@ function md_webfonts_loader() {
  * @since 4.8
  */
 
-function md_web_fonts( $show_type = null ) {
+function md_web_fonts($show_type = null)
+{
 	$font_s = '';
 	$fonts = array();
-	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'sidebar_title', 'footer_title' );
-	$areas = array_merge( array( 'body', 'site_title', 'site_tagline', 'sidebar', 'footer' ), $headings );
-	$body_t = md_setting( array( 'typography', 'body', 'font_type' ) );
-	$body_f = md_setting( array( 'typography', 'body', 'font_family' ) );
-	$body_w = md_setting( array( 'typography', 'body', 'font_weight' ) );
-	$bold = md_setting( array( 'typography', 'body', 'bold' ) );
-	$h1_t = md_setting( array( 'typography', 'h1', 'font_type' ) );
-	$h1_f = md_setting( array( 'typography', 'h1', 'font_family' ) );
-	$h1_w = md_setting( array( 'typography', 'h1', 'font_weight' ) );
+	$headings = array('h1', 'h2', 'h3', 'h4', 'h5', 'sidebar_title', 'footer_title');
+	$areas = array_merge(array('body', 'site_title', 'site_tagline', 'sidebar', 'footer'), $headings);
+	$body_t = md_setting(array('typography', 'body', 'font_type'));
+	$body_f = md_setting(array('typography', 'body', 'font_family'));
+	$body_w = md_setting(array('typography', 'body', 'font_weight'));
+	$bold = md_setting(array('typography', 'body', 'bold'));
+	$h1_t = md_setting(array('typography', 'h1', 'font_type'));
+	$h1_f = md_setting(array('typography', 'h1', 'font_family'));
+	$h1_w = md_setting(array('typography', 'h1', 'font_weight'));
 
-	foreach ( $areas as $area ) {
-		$type = md_setting( array( 'typography', $area, 'font_type' ) );
-		$family = md_setting( array( 'typography', $area, 'font_family' ) );
-		$weight = md_setting( array( 'typography', $area, 'font_weight' ) );
-		$style = md_setting( array( 'typography', $area, 'font_style' ) );
+	foreach ($areas as $area) {
+		$type = md_setting(array('typography', $area, 'font_type'));
+		$family = md_setting(array('typography', $area, 'font_family'));
+		$weight = md_setting(array('typography', $area, 'font_weight'));
+		$style = md_setting(array('typography', $area, 'font_style'));
 
-		if ( ! empty( $weight ) ) {
-			if ( $type == 'google' && ! empty( $style ) )
+		if (!empty($weight)) {
+			if ($type == 'google' && !empty($style))
 				$font_s = "{$weight}i";
 
-			if ( empty( $family ) ) {
+			if (empty($family)) {
 				// Make hx inherit h1
-				if ( in_array( $area, $headings ) && ! empty( $h1_f ) ) {
+				if (in_array($area, $headings) && !empty($h1_f)) {
 					$fonts[$h1_t][$h1_f][] = $weight;
 //					if ( $font_s )
 //						$fonts[$h1_t][$h1_f][] = $font_s;
-				}
-				// Make font inherit body values
-				elseif ( ! empty( $body_f ) ) {
+				} // Make font inherit body values
+				elseif (!empty($body_f)) {
 					$fonts[$body_t][$body_f][] = $weight;
 //					if ( $font_s )
 //						$fonts[$body_t][$body_f][] = $font_s;
 				}
-			}
-			else {
+			} else {
 				// Directly assign setting to value
 				$fonts[$type][$family][] = $weight;
-				$fonts[$type][$family] = array_unique( $fonts[$type][$family] );
+				$fonts[$type][$family] = array_unique($fonts[$type][$family]);
 //				if ( $font_s )
 //					$fonts[$type][$family][] = $font_s;
 			}
-		}
-		elseif ( ! empty( $family ) )
+		} elseif (!empty($family))
 			$fonts[$type][$family] = array();
 
-		if ( $area == 'body' && $bold )
+		if ($area == 'body' && $bold)
 			$fonts[$type][$family][] = $bold;
 	}
 
-	if ( isset( $show_type ) )
-		$show = ! empty( $fonts[$show_type] ) ? $fonts[$show_type] : '';
+	if (isset($show_type))
+		$show = !empty($fonts[$show_type]) ? $fonts[$show_type] : '';
 	else
 		$show = $fonts;
 
@@ -119,39 +120,40 @@ function md_web_fonts( $show_type = null ) {
  * @since 4.8
  */
 
-function md_google_fonts( $format = null ) {
+function md_google_fonts($format = null)
+{
 	$string = '';
 	$f = 1;
-	$fonts = md_web_fonts( 'google' );
-	$total_fonts = count( $fonts );
+	$fonts = md_web_fonts('google');
+	$total_fonts = count($fonts);
 	$google = 'https://fonts.googleapis.com/css?family=';
 
-	foreach ( $fonts as $name => $weights ) {
+	foreach ($fonts as $name => $weights) {
 		$string .= $format == 'ids' ? "'" : '';
 		$string .= $name;
 
-		if ( ! empty( $weights ) ) {
-			$w             = 1;
-			$total_weights = count( $weights );
-			$string        .= ':';
-			foreach ( $weights as $weight ) {
-				$string .= $weight . ( $w < $total_weights ? ',' : '' );
+		if (!empty($weights)) {
+			$w = 1;
+			$total_weights = count($weights);
+			$string .= ':';
+			foreach ($weights as $weight) {
+				$string .= $weight . ($w < $total_weights ? ',' : '');
 				$w++;
 			}
 		}
 
 		$string .= $format == 'ids' ? "'" : '';
 
-		if ( $f < $total_fonts )
+		if ($f < $total_fonts)
 			$string .= $format == 'ids' ? ',' : '|';
 
 		$f++;
 	}
 
-	if ( $format == 'ids' )
+	if ($format == 'ids')
 		return $string;
 	else
-		return $google . urlencode( $string );
+		return $google . urlencode($string);
 }
 
 /**
@@ -160,32 +162,33 @@ function md_google_fonts( $format = null ) {
  * @since 5.0
  */
 
-function md_style( $fields ) {
+function md_style($fields)
+{
 	$style = '';
 	$attributes = array();
-	if ( ! empty( $fields['bg_color'] ) )
-		$attributes['bg_color'] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
-	if ( ! empty( $fields['bg_image'] ) )
-		$attributes['bg_image'] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
-	if ( ! empty( $fields['bg_size'] ) )
-		$attributes['bg_size'] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
-	if ( isset( $fields['border'] ) && ! empty( $fields['border'][2] ) ) {
-		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
-		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
-		$border_color = ! empty( $fields['border'][2] ) ? $fields['border'][2] : '#1e1e1e';
-		$attributes['border'] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $border_color ) . ';';
+	if (!empty($fields['bg_color']))
+		$attributes['bg_color'] = 'background-color:' . esc_attr($fields['bg_color']) . ';';
+	if (!empty($fields['bg_image']))
+		$attributes['bg_image'] = 'background-image:url(' . esc_url($fields['bg_image']) . ');';
+	if (!empty($fields['bg_size']))
+		$attributes['bg_size'] = 'background-size:' . esc_attr($fields['bg_size']) . ';';
+	if (isset($fields['border']) && !empty($fields['border'][2])) {
+		$border_width = !empty($fields['border'][0]) ? $fields['border'][0] : 1;
+		$border_style = !empty($fields['border'][1]) ? $fields['border'][1] : 'solid';
+		$border_color = !empty($fields['border'][2]) ? $fields['border'][2] : '#1e1e1e';
+		$attributes['border'] = 'border:' . esc_attr($border_width) . 'px ' . esc_attr($border_style) . ' ' . esc_attr($border_color) . ';';
 	}
-	if ( ! empty( $fields['color'] ) )
-		$attributes['color'] = 'color:' . esc_attr( $fields['color'] ) . ';';
-	if ( ! empty( $fields['width'] ) )
-		$attributes['width'] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
-	if ( ! empty( $fields['max_width'] ) )
-		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
-	if ( ! empty( $fields['height'] ) )
-		$attributes['height'] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
+	if (!empty($fields['color']))
+		$attributes['color'] = 'color:' . esc_attr($fields['color']) . ';';
+	if (!empty($fields['width']))
+		$attributes['width'] = 'width:' . esc_attr($fields['width']) . (isset($fields['width_unit']) ? $fields['width_unit'] : 'px') . ';';
+	if (!empty($fields['max_width']))
+		$attributes['max_width'] = 'max-width:' . esc_attr($fields['max_width']) . (isset($fields['width_unit']) ? $fields['width_unit'] : 'px') . ';';
+	if (!empty($fields['height']))
+		$attributes['height'] = 'height:' . esc_attr($fields['height']) . 'px;';
 
-	if ( ! empty( $attributes ) )
-		$style = ' style="' . join( '', $attributes ) . '"';
+	if (!empty($attributes))
+		$style = ' style="' . join('', $attributes) . '"';
 
 	return $style;
 }
@@ -196,13 +199,14 @@ function md_style( $fields ) {
  * @since 4.3.5
  */
 
-function md_button( $button ) {
+function md_button($button)
+{
 	$classes = '';
-	$button['classes'] = ! empty( $button['classes'] ) ? ' ' . $button['classes'] : '';
-	$button['bg_color'] = ! empty( $button['bg_color'] ) ? ' ' . $button['bg_color'] : '';
-	$button['color'] = ! empty( $button['color'] ) ? ' ' . $button['color'] : '';
-	if ( $template = md_template( 'button', true ) )
-		include( $template );
+	$button['classes'] = !empty($button['classes']) ? ' ' . $button['classes'] : '';
+	$button['bg_color'] = !empty($button['bg_color']) ? ' ' . $button['bg_color'] : '';
+	$button['color'] = !empty($button['color']) ? ' ' . $button['color'] : '';
+	if ($template = md_template('button', true))
+		include($template);
 }
 
 /**
@@ -211,16 +215,17 @@ function md_button( $button ) {
  * @since 5.0
  */
 
-function md_get_icons( $sort = null, $show_defaults = null, $prefix = null ) {
+function md_get_icons($sort = null, $show_defaults = null, $prefix = null)
+{
 	$icons = array();
-	$prefix = isset( $prefix ) ? $prefix : '';
-	foreach ( md_icons( $show_defaults ) as $icon => $fields ) {
+	$prefix = isset($prefix) ? $prefix : '';
+	foreach (md_icons($show_defaults) as $icon => $fields) {
 		$icon = "$prefix{$icon}";
-		if ( isset( $fields['label'] ) )
+		if (isset($fields['label']))
 			$icons['options'][$icon] = $fields['label'];
 		$icons['ids'][] = $icon;
 	}
-	if ( isset( $sort ) )
+	if (isset($sort))
 		$icons = $icons[$sort];
 	return $icons;
 }
@@ -231,9 +236,10 @@ function md_get_icons( $sort = null, $show_defaults = null, $prefix = null ) {
  * @since 5.2.3
  */
 
-function md_font_icons_url() {
+function md_font_icons_url()
+{
 	$file = MD_URL . 'lib/assets/icons/md.woff';
-	if ( file_exists( get_stylesheet_directory() . '/md.woff' ) )
+	if (file_exists(get_stylesheet_directory() . '/md.woff'))
 		$file = get_stylesheet_directory_uri() . '/md.woff';
 	return $file;
 }
@@ -244,12 +250,13 @@ function md_font_icons_url() {
  * @since 5.2.3
  */
 
-function md_icon( $icon, $args = null ) {
+function md_icon($icon, $args = null)
+{
 	$classes[] = "md-icon-{$icon}";
-	if ( isset( $args['classes'] ) )
-		$classes[] = esc_attr( $args['classes'] );
-	$classes = join( ' ', $classes );
-	if ( is_bool( $args ) )
+	if (isset($args['classes']))
+		$classes[] = esc_attr($args['classes']);
+	$classes = join(' ', $classes);
+	if (is_bool($args))
 		return $classes;
-	return '<i class="' . esc_attr( $classes ) . '"></i>';
+	return '<i class="' . esc_attr($classes) . '"></i>';
 }

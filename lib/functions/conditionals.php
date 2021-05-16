@@ -6,8 +6,9 @@
  * @since 4.1
  */
 
-function md_has_logo() {
-	if ( ( md_has_custom_logo() || md_has_site_title() ) && ! md_meta( array( 'layout', 'header', 'logo' ) ) )
+function md_has_logo()
+{
+	if ((md_has_custom_logo() || md_has_site_title()) && !md_meta(array('layout', 'header', 'logo')))
 		return true;
 }
 
@@ -17,8 +18,9 @@ function md_has_logo() {
  * @since 4.5.4
  */
 
-function md_has_custom_logo() {
-	if ( md_setting( array( 'header', 'logo' ) ) )
+function md_has_custom_logo()
+{
+	if (md_setting(array('header', 'logo')))
 		return true;
 }
 
@@ -28,8 +30,9 @@ function md_has_custom_logo() {
  * @since 4.5.4
  */
 
-function md_has_site_title() {
-	if ( ! md_setting( array( 'header', 'display', 'site_title' ) ) )
+function md_has_site_title()
+{
+	if (!md_setting(array('header', 'display', 'site_title')))
 		return true;
 }
 
@@ -39,8 +42,9 @@ function md_has_site_title() {
  * @since 4.4.2
  */
 
-function md_has_tagline() {
-	if ( get_bloginfo( 'description' ) && ! md_setting( array( 'header', 'display', 'site_tagline' ) ) && ! md_meta( array( 'layout', 'header', 'tagline' ) ) )
+function md_has_tagline()
+{
+	if (get_bloginfo('description') && !md_setting(array('header', 'display', 'site_tagline')) && !md_meta(array('layout', 'header', 'tagline')))
 		return true;
 }
 
@@ -50,9 +54,10 @@ function md_has_tagline() {
  * @since 4.1
  */
 
-function md_has_menu( $name = null ) {
-	$name = ! isset( $name ) ? 'header' : $name;
-	if ( ! md_meta( array( 'layout', 'header', 'remove' ) ) && ! md_meta( array( 'layout', 'header', 'menu' ) ) && has_nav_menu( $name ) )
+function md_has_menu($name = null)
+{
+	$name = !isset($name) ? 'header' : $name;
+	if (!md_meta(array('layout', 'header', 'remove')) && !md_meta(array('layout', 'header', 'menu')) && has_nav_menu($name))
 		return true;
 }
 
@@ -62,17 +67,18 @@ function md_has_menu( $name = null ) {
  * @since 4.1
  */
 
-function md_has_main_menu() {
+function md_has_main_menu()
+{
 	$is_tax = is_category() || is_tax() ? true : false;
-	if ( $is_tax )
-		$single = md_term_meta( array( 'layout', 'main_menu' ) );
+	if ($is_tax)
+		$single = md_term_meta(array('layout', 'main_menu'));
 	else
-		$single = md_post_meta( array( 'layout', 'main_menu' ) );
-	$single_remove = isset( $single['remove'] ) ? $single['remove'] : '';
-	if ( has_nav_menu( 'main' ) ) {
-		if ( ( is_singular() || $is_tax ) && ! empty( $single_remove ) )
+		$single = md_post_meta(array('layout', 'main_menu'));
+	$single_remove = isset($single['remove']) ? $single['remove'] : '';
+	if (has_nav_menu('main')) {
+		if ((is_singular() || $is_tax) && !empty($single_remove))
 			return false;
-		return apply_filters( 'md_filter_has_main_menu', true );
+		return apply_filters('md_filter_has_main_menu', true);
 	}
 }
 
@@ -82,9 +88,10 @@ function md_has_main_menu() {
  * @since 4.1
  */
 
-function md_has_content_box() {
-	if ( ! md_meta( array( 'layout', 'content', 'remove' ) ) )
-		return apply_filters( 'md_filter_has_content_box', true );
+function md_has_content_box()
+{
+	if (!md_meta(array('layout', 'content', 'remove')))
+		return apply_filters('md_filter_has_content_box', true);
 }
 
 /**
@@ -93,9 +100,10 @@ function md_has_content_box() {
  * @since 4.1
  */
 
-function md_has_headline_cover() {
+function md_has_headline_cover()
+{
 	$position = md_featured_image_position();
-	return in_array( $position, array( 'header_cover', 'header_cover_full' ) ) && is_singular() ? true : false;
+	return in_array($position, array('header_cover', 'header_cover_full')) && is_singular() ? true : false;
 }
 
 /**
@@ -104,11 +112,12 @@ function md_has_headline_cover() {
  * @since 5.2.2
  */
 
-function md_has_breadcrumbs() {
-	$enable = md_setting( array( 'content', 'post', 'breadcrumbs' ) );
+function md_has_breadcrumbs()
+{
+	$enable = md_setting(array('content', 'post', 'breadcrumbs'));
 	if (
-		( ! empty( $enable ) && ! md_meta( array( 'layout', 'breadcrumbs', 'remove' ) ) ) ||
-		( empty( $enable ) && md_meta( array( 'layout', 'breadcrumbs', 'add' ) ) )
+		(!empty($enable) && !md_meta(array('layout', 'breadcrumbs', 'remove'))) ||
+		(empty($enable) && md_meta(array('layout', 'breadcrumbs', 'add')))
 	)
 		return true;
 }
@@ -119,8 +128,9 @@ function md_has_breadcrumbs() {
  * @since 4.1
  */
 
-function md_has_headline() {
-	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+function md_has_headline()
+{
+	if (!md_meta(array('layout', 'content', 'headline')))
 		return true;
 }
 
@@ -130,8 +140,9 @@ function md_has_headline() {
  * @since 4.1
  */
 
-function md_has_byline() {
-	if ( ! is_page() && ! is_404() && ! md_post_meta( array( 'layout', 'content', 'byline' ) ) )
+function md_has_byline()
+{
+	if (!is_page() && !is_404() && !md_post_meta(array('layout', 'content', 'byline')))
 		return true;
 }
 
@@ -141,11 +152,12 @@ function md_has_byline() {
  * @since 4.5
  */
 
-function md_has_author_box() {
-	$enable = md_setting( array( 'content', 'author_box', 'enable' ) );
+function md_has_author_box()
+{
+	$enable = md_setting(array('content', 'author_box', 'enable'));
 	if (
-		( is_singular( 'post' ) && ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
-		( is_singular() && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
+		(is_singular('post') && !empty($enable) && !md_post_meta(array('layout', 'content', 'author_box'))) ||
+		(is_singular() && md_post_meta(array('layout', 'content', 'add_author_box')))
 	)
 		return true;
 }
@@ -156,8 +168,9 @@ function md_has_author_box() {
  * @since 4.1
  */
 
-function md_has_comments() {
-	if ( ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
+function md_has_comments()
+{
+	if ((comments_open() || get_comments_number() != 0) && !post_password_required())
 		return true;
 }
 
@@ -167,37 +180,38 @@ function md_has_comments() {
  * @since 4.1
  */
 
-function md_has_sidebar() {
+function md_has_sidebar()
+{
 	$id = md_get_sidebar_id();
 
-	if ( ! is_active_sidebar( $id ) )
+	if (!is_active_sidebar($id))
 		return false;
 
-	$single = md_setting( array( 'content', 'sidebar', 'single' ) );
-	$category = md_setting( array( 'content', 'sidebar', 'category' ) );
-	$blog_remove = md_setting( array( 'content', 'sidebar', 'blog_remove' ) );
+	$single = md_setting(array('content', 'sidebar', 'single'));
+	$category = md_setting(array('content', 'sidebar', 'category'));
+	$blog_remove = md_setting(array('content', 'sidebar', 'blog_remove'));
 
-	$single_add = md_meta( array( 'layout', 'sidebar', 'add' ) );
-	$single_remove = md_meta( array( 'layout', 'sidebar', 'remove' ) );
+	$single_add = md_meta(array('layout', 'sidebar', 'add'));
+	$single_remove = md_meta(array('layout', 'sidebar', 'remove'));
 
-	if ( has_filter( 'md_filter_has_sidebar' ) )
-		return apply_filters( 'md_filter_has_sidebar', '' );
+	if (has_filter('md_filter_has_sidebar'))
+		return apply_filters('md_filter_has_sidebar', '');
 
-	if ( is_home() && empty( $blog_remove ) )
+	if (is_home() && empty($blog_remove))
 		return true;
 
-	if ( ( is_category() || is_tax() ) && (
-		( ! empty( $category ) && empty( $single_remove ) ) ||
-		( empty( $category ) && ! empty( $single_add ) )
-	) )
+	if ((is_category() || is_tax()) && (
+			(!empty($category) && empty($single_remove)) ||
+			(empty($category) && !empty($single_add))
+		))
 		return true;
 
-	if ( is_single() && (
-		( ! empty( $single ) && empty( $single_remove ) ) ||
-		( empty( $single ) && ! empty( $single_add ) )
-	) )
+	if (is_single() && (
+			(!empty($single) && empty($single_remove)) ||
+			(empty($single) && !empty($single_add))
+		))
 		return true;
-	elseif ( is_singular() && ! empty( $single_add ) )
+	elseif (is_singular() && !empty($single_add))
 		return true;
 
 	return false;
@@ -209,9 +223,10 @@ function md_has_sidebar() {
  * @since 4.1
  */
 
-function md_has_footer() {
-	if ( ! md_meta( array( 'layout', 'footer', 'remove' ) ) && ( md_has_footer_columns() || is_active_sidebar( 'footer-copy' ) ) )
-		return apply_filters( 'md_filter_has_footer', true );
+function md_has_footer()
+{
+	if (!md_meta(array('layout', 'footer', 'remove')) && (md_has_footer_columns() || is_active_sidebar('footer-copy')))
+		return apply_filters('md_filter_has_footer', true);
 }
 
 /**
@@ -220,7 +235,8 @@ function md_has_footer() {
  * @since 4.1
  */
 
-function md_has_footer_columns() {
-	if ( md_footer_columns() && ! md_meta( array( 'layout', 'footer', 'columns' ) ) )
+function md_has_footer_columns()
+{
+	if (md_footer_columns() && !md_meta(array('layout', 'footer', 'columns')))
 		return true;
 }

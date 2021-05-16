@@ -1,8 +1,8 @@
-<?php md_template( 'html' ); ?>
+<?php md_template('html'); ?>
 
 <?php md_hook_before_html(); ?>
 
-<?php if ( md_has_header() ) : ?>
+<?php if (md_has_header()) : ?>
 
 	<header id="header" class="<?php echo md_header_classes(); ?>">
 
@@ -16,7 +16,7 @@
 
 				<?php md_hook_header(); ?>
 
-				<?php if ( md_has_menu() ) : ?>
+				<?php if (md_has_menu()) : ?>
 					<div class="header-aside">
 						<?php md_hook_header_aside(); ?>
 					</div>
@@ -38,6 +38,6 @@
 
 <?php endif; ?>
 
-<?php if ( md_filter_template() !== false ) : ?>
+<?php if (md_filter_template() !== false) : ?>
 	<?php md_hook_before_content_box(); ?>
 <?php endif; ?>

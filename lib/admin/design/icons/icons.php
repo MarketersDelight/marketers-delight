@@ -5,7 +5,8 @@
  * @since 5.2.3
  */
 
-class md_icons extends md_api {
+class md_icons extends md_api
+{
 
 	/**
 	 * Register admin page.
@@ -13,21 +14,22 @@ class md_icons extends md_api {
 	 * @since 5.2.3
 	 */
 
-	public function register() {
+	public function register()
+	{
 		return array(
-			'admin_page' => array(
-				'name' => __( 'Icons', 'md' ),
-				'parent' => 'md_site_design',
-				'fields' => array(
-					'data' => array(
-						'type' => 'group',
+				'admin_page' => array(
+						'name' => __('Icons', 'md'),
+						'parent' => 'md_site_design',
 						'fields' => array(
-							'label' => array( 'type' => 'text' ),
-							'unicode' => array( 'type' => 'text' )
+								'data' => array(
+										'type' => 'group',
+										'fields' => array(
+												'label' => array('type' => 'text'),
+												'unicode' => array('type' => 'text')
+										)
+								)
 						)
-					)
 				)
-			)
 		);
 	}
 
@@ -37,7 +39,8 @@ class md_icons extends md_api {
 	 * @since 5.2.3
 	 */
 
-	public function admin_enqueue() { ?>
+	public function admin_enqueue()
+	{ ?>
 		<style type="text/css">
 			@font-face {
 				font-family: md-icon;
@@ -45,6 +48,7 @@ class md_icons extends md_api {
 				font-style: normal;
 				font-weight: 400;
 			}
+
 			[class*="md-icon"]:before {
 				display: inline-block;
 				font-family: md-icon;
@@ -58,7 +62,11 @@ class md_icons extends md_api {
 				text-decoration: inherit;
 				text-transform: none;
 			}
-			.md-icon.icon-data:before { content: attr(data-md-icon); }
+
+			.md-icon.icon-data:before {
+				content: attr(data-md-icon);
+			}
+
 			<?php
 				foreach ( md_icons() as $icon => $fields ) {
 					if ( ! isset( $fields['unicode'] ) ) continue;
@@ -68,9 +76,9 @@ class md_icons extends md_api {
 							$selectors .= ",{$selector}:before";
 					echo '.md-icon-' . $icon . ":before{$selectors}{content:'\\" . $fields['unicode'] . '\'}';
 				}
-			?>			
+			?>
 		</style>
-	<?php }	
+	<?php }
 
 	/**
 	 * Create admin settings fields.
@@ -78,11 +86,12 @@ class md_icons extends md_api {
 	 * @since 5.2.3
 	 */
 
-	public function admin_page() {
+	public function admin_page()
+	{
 		$icons = md_icons();
-		$icons_count = count( $icons );
-		$default_icons_ids = md_get_icons( 'ids', true );
-		include( 'icons-settings.php' );
+		$icons_count = count($icons);
+		$default_icons_ids = md_get_icons('ids', true);
+		include('icons-settings.php');
 	}
 
 }

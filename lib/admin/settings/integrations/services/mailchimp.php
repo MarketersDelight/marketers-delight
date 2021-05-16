@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Super-simple, minimum abstraction MailChimp API v3 wrapper
  * MailChimp API v3: http://developer.mailchimp.com
@@ -7,300 +8,301 @@
  * @author  Drew McLellan <drew.mclellan@gmail.com>
  * @version 2.5
  */
-class MD_MailChimp {
-    private $api_key;
-    private $api_endpoint = 'https://<dc>.api.mailchimp.com/3.0';
-    const TIMEOUT = 10;
-    public $verify_ssl = true;
-    private $request_successful = false;
-    private $last_error         = '';
-    private $last_response      = array();
-    private $last_request       = array();
+class MD_MailChimp
+{
+	const TIMEOUT = 10;
+	public $verify_ssl = true;
+	private $api_key;
+	private $api_endpoint = 'https://<dc>.api.mailchimp.com/3.0';
+	private $request_successful = false;
+	private $last_error = '';
+	private $last_response = array();
+	private $last_request = array();
 
-    public function __construct($api_key, $api_endpoint = null)
-    {
-        if (!function_exists('curl_init') || !function_exists('curl_setopt')) {
-            throw new \Exception("cURL support is required, but can't be found.");
-        }
+	public function __construct($api_key, $api_endpoint = null)
+	{
+		if (!function_exists('curl_init') || !function_exists('curl_setopt')) {
+			throw new Exception("cURL support is required, but can't be found.");
+		}
 
-        $this->api_key = $api_key;
+		$this->api_key = $api_key;
 
-        if ($api_endpoint === null) {
-            if (strpos($this->api_key, '-') === false) {
-                throw new \Exception("Invalid MailChimp API key supplied.");
-            }
-            list(, $data_center) = explode('-', $this->api_key);
-            $this->api_endpoint = str_replace('<dc>', $data_center, $this->api_endpoint);
-        } else {
-            $this->api_endpoint = $api_endpoint;
-        }
+		if ($api_endpoint === null) {
+			if (strpos($this->api_key, '-') === false) {
+				throw new Exception("Invalid MailChimp API key supplied.");
+			}
+			list(, $data_center) = explode('-', $this->api_key);
+			$this->api_endpoint = str_replace('<dc>', $data_center, $this->api_endpoint);
+		} else {
+			$this->api_endpoint = $api_endpoint;
+		}
 
-        $this->last_response = array('headers' => null, 'body' => null);
-    }
+		$this->last_response = array('headers' => null, 'body' => null);
+	}
 
-    public function new_batch($batch_id = null)
-    {
-        return new Batch($this, $batch_id);
-    }
+	public function new_batch($batch_id = null)
+	{
+		return new Batch($this, $batch_id);
+	}
 
-    public function getApiEndpoint()
-    {
-        return $this->api_endpoint;
-    }
+	public function getApiEndpoint()
+	{
+		return $this->api_endpoint;
+	}
 
 
-    public function subscriberHash($email)
-    {
-        return md5(strtolower($email));
-    }
+	public function subscriberHash($email)
+	{
+		return md5(strtolower($email));
+	}
 
-    public function success()
-    {
-        return $this->request_successful;
-    }
+	public function success()
+	{
+		return $this->request_successful;
+	}
 
-    public function getLastError()
-    {
-        return $this->last_error ?: false;
-    }
+	public function getLastError()
+	{
+		return $this->last_error ?: false;
+	}
 
-    public function getLastResponse()
-    {
-        return $this->last_response;
-    }
+	public function getLastResponse()
+	{
+		return $this->last_response;
+	}
 
-    public function getLastRequest()
-    {
-        return $this->last_request;
-    }
+	public function getLastRequest()
+	{
+		return $this->last_request;
+	}
 
-    public function delete($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('delete', $method, $args, $timeout);
-    }
+	public function delete($method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		return $this->makeRequest('delete', $method, $args, $timeout);
+	}
 
-    public function get($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('get', $method, $args, $timeout);
-    }
+	private function makeRequest($http_verb, $method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		$url = $this->api_endpoint . '/' . $method;
 
-    public function patch($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('patch', $method, $args, $timeout);
-    }
+		$response = $this->prepareStateForRequest($http_verb, $method, $url, $timeout);
 
-    public function post($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('post', $method, $args, $timeout);
-    }
+		$httpHeader = array(
+			'Accept: application/vnd.api+json',
+			'Content-Type: application/vnd.api+json',
+			'Authorization: apikey ' . $this->api_key
+		);
 
-    public function put($method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        return $this->makeRequest('put', $method, $args, $timeout);
-    }
+		if (isset($args["language"])) {
+			$httpHeader[] = "Accept-Language: " . $args["language"];
+		}
 
-    private function makeRequest($http_verb, $method, $args = array(), $timeout = self::TIMEOUT)
-    {
-        $url = $this->api_endpoint . '/' . $method;
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeader);
+		curl_setopt($ch, CURLOPT_USERAGENT, 'DrewM/MailChimp-API/3.0 (github.com/drewm/mailchimp-api)');
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_VERBOSE, true);
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
+		curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
+		curl_setopt($ch, CURLOPT_ENCODING, '');
+		curl_setopt($ch, CURLINFO_HEADER_OUT, true);
 
-        $response = $this->prepareStateForRequest($http_verb, $method, $url, $timeout);
+		switch ($http_verb) {
+			case 'post':
+				curl_setopt($ch, CURLOPT_POST, true);
+				$this->attachRequestPayload($ch, $args);
+				break;
 
-        $httpHeader = array(
-            'Accept: application/vnd.api+json',
-            'Content-Type: application/vnd.api+json',
-            'Authorization: apikey ' . $this->api_key
-        );
+			case 'get':
+				$query = http_build_query($args, '', '&');
+				curl_setopt($ch, CURLOPT_URL, $url . '?' . $query);
+				break;
 
-        if (isset($args["language"])) {
-            $httpHeader[] = "Accept-Language: " . $args["language"];
-        }
+			case 'delete':
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+				break;
 
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeader);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'DrewM/MailChimp-API/3.0 (github.com/drewm/mailchimp-api)');
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_VERBOSE, true);
-        curl_setopt($ch, CURLOPT_HEADER, true);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verify_ssl);
-        curl_setopt($ch, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_0);
-        curl_setopt($ch, CURLOPT_ENCODING, '');
-        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+			case 'patch':
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
+				$this->attachRequestPayload($ch, $args);
+				break;
 
-        switch ($http_verb) {
-            case 'post':
-                curl_setopt($ch, CURLOPT_POST, true);
-                $this->attachRequestPayload($ch, $args);
-                break;
+			case 'put':
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+				$this->attachRequestPayload($ch, $args);
+				break;
+		}
 
-            case 'get':
-                $query = http_build_query($args, '', '&');
-                curl_setopt($ch, CURLOPT_URL, $url . '?' . $query);
-                break;
+		$responseContent = curl_exec($ch);
+		$response['headers'] = curl_getinfo($ch);
+		$response = $this->setResponseState($response, $responseContent, $ch);
+		$formattedResponse = $this->formatResponse($response);
 
-            case 'delete':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
-                break;
+		curl_close($ch);
 
-            case 'patch':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-                $this->attachRequestPayload($ch, $args);
-                break;
+		$isSuccess = $this->determineSuccess($response, $formattedResponse, $timeout);
 
-            case 'put':
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
-                $this->attachRequestPayload($ch, $args);
-                break;
-        }
+		return is_array($formattedResponse) ? $formattedResponse : $isSuccess;
+	}
 
-        $responseContent     = curl_exec($ch);
-        $response['headers'] = curl_getinfo($ch);
-        $response            = $this->setResponseState($response, $responseContent, $ch);
-        $formattedResponse   = $this->formatResponse($response);
+	private function prepareStateForRequest($http_verb, $method, $url, $timeout)
+	{
+		$this->last_error = '';
 
-        curl_close($ch);
+		$this->request_successful = false;
 
-        $isSuccess = $this->determineSuccess($response, $formattedResponse, $timeout);
+		$this->last_response = array(
+			'headers' => null, // array of details from curl_getinfo()
+			'httpHeaders' => null, // array of HTTP headers
+			'body' => null // content of the response
+		);
 
-        return is_array($formattedResponse) ? $formattedResponse : $isSuccess;
-    }
+		$this->last_request = array(
+			'method' => $http_verb,
+			'path' => $method,
+			'url' => $url,
+			'body' => '',
+			'timeout' => $timeout,
+		);
 
-    private function prepareStateForRequest($http_verb, $method, $url, $timeout)
-    {
-        $this->last_error = '';
+		return $this->last_response;
+	}
 
-        $this->request_successful = false;
+	private function attachRequestPayload(&$ch, $data)
+	{
+		$encoded = json_encode($data);
+		$this->last_request['body'] = $encoded;
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
+	}
 
-        $this->last_response = array(
-            'headers'     => null, // array of details from curl_getinfo()
-            'httpHeaders' => null, // array of HTTP headers
-            'body'        => null // content of the response
-        );
+	private function setResponseState($response, $responseContent, $ch)
+	{
+		if ($responseContent === false) {
+			$this->last_error = curl_error($ch);
+		} else {
 
-        $this->last_request = array(
-            'method'  => $http_verb,
-            'path'    => $method,
-            'url'     => $url,
-            'body'    => '',
-            'timeout' => $timeout,
-        );
+			$headerSize = $response['headers']['header_size'];
 
-        return $this->last_response;
-    }
+			$response['httpHeaders'] = $this->getHeadersAsArray(substr($responseContent, 0, $headerSize));
+			$response['body'] = substr($responseContent, $headerSize);
 
-    private function getHeadersAsArray($headersAsString)
-    {
-        $headers = array();
+			if (isset($response['headers']['request_header'])) {
+				$this->last_request['headers'] = $response['headers']['request_header'];
+			}
+		}
 
-        foreach (explode("\r\n", $headersAsString) as $i => $line) {
-            if ($i === 0) { // HTTP code
-                continue;
-            }
+		return $response;
+	}
 
-            $line = trim($line);
-            if (empty($line)) {
-                continue;
-            }
+	private function getHeadersAsArray($headersAsString)
+	{
+		$headers = array();
 
-            list($key, $value) = explode(': ', $line);
+		foreach (explode("\r\n", $headersAsString) as $i => $line) {
+			if ($i === 0) { // HTTP code
+				continue;
+			}
 
-            if ($key == 'Link') {
-                $value = array_merge(
-                    array('_raw' => $value),
-                    $this->getLinkHeaderAsArray($value)
-                );
-            }
+			$line = trim($line);
+			if (empty($line)) {
+				continue;
+			}
 
-            $headers[$key] = $value;
-        }
+			list($key, $value) = explode(': ', $line);
 
-        return $headers;
-    }
+			if ($key == 'Link') {
+				$value = array_merge(
+					array('_raw' => $value),
+					$this->getLinkHeaderAsArray($value)
+				);
+			}
 
-    private function getLinkHeaderAsArray($linkHeaderAsString)
-    {
-        $urls = array();
+			$headers[$key] = $value;
+		}
 
-        if (preg_match_all('/<(.*?)>\s*;\s*rel="(.*?)"\s*/', $linkHeaderAsString, $matches)) {
-            foreach ($matches[2] as $i => $relName) {
-                $urls[$relName] = $matches[1][$i];
-            }
-        }
+		return $headers;
+	}
 
-        return $urls;
-    }
+	private function getLinkHeaderAsArray($linkHeaderAsString)
+	{
+		$urls = array();
 
-    private function attachRequestPayload(&$ch, $data)
-    {
-        $encoded                    = json_encode($data);
-        $this->last_request['body'] = $encoded;
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded);
-    }
+		if (preg_match_all('/<(.*?)>\s*;\s*rel="(.*?)"\s*/', $linkHeaderAsString, $matches)) {
+			foreach ($matches[2] as $i => $relName) {
+				$urls[$relName] = $matches[1][$i];
+			}
+		}
 
-    private function formatResponse($response)
-    {
-        $this->last_response = $response;
+		return $urls;
+	}
 
-        if (!empty($response['body'])) {
-            return json_decode($response['body'], true);
-        }
+	private function formatResponse($response)
+	{
+		$this->last_response = $response;
 
-        return false;
-    }
+		if (!empty($response['body'])) {
+			return json_decode($response['body'], true);
+		}
 
-    private function setResponseState($response, $responseContent, $ch)
-    {
-        if ($responseContent === false) {
-            $this->last_error = curl_error($ch);
-        } else {
+		return false;
+	}
 
-            $headerSize = $response['headers']['header_size'];
+	private function determineSuccess($response, $formattedResponse, $timeout)
+	{
+		$status = $this->findHTTPStatus($response, $formattedResponse);
 
-            $response['httpHeaders'] = $this->getHeadersAsArray(substr($responseContent, 0, $headerSize));
-            $response['body']        = substr($responseContent, $headerSize);
+		if ($status >= 200 && $status <= 299) {
+			$this->request_successful = true;
+			return true;
+		}
 
-            if (isset($response['headers']['request_header'])) {
-                $this->last_request['headers'] = $response['headers']['request_header'];
-            }
-        }
+		if (isset($formattedResponse['detail'])) {
+			$this->last_error = sprintf('%d: %s', $formattedResponse['status'], $formattedResponse['detail']);
+			return false;
+		}
 
-        return $response;
-    }
+		if ($timeout > 0 && $response['headers'] && $response['headers']['total_time'] >= $timeout) {
+			$this->last_error = sprintf('Request timed out after %f seconds.', $response['headers']['total_time']);
+			return false;
+		}
 
-    private function determineSuccess($response, $formattedResponse, $timeout)
-    {
-        $status = $this->findHTTPStatus($response, $formattedResponse);
+		$this->last_error = 'Unknown error, call getLastResponse() to find out what happened.';
+		return false;
+	}
 
-        if ($status >= 200 && $status <= 299) {
-            $this->request_successful = true;
-            return true;
-        }
+	private function findHTTPStatus($response, $formattedResponse)
+	{
+		if (!empty($response['headers']) && isset($response['headers']['http_code'])) {
+			return (int)$response['headers']['http_code'];
+		}
 
-        if (isset($formattedResponse['detail'])) {
-            $this->last_error = sprintf('%d: %s', $formattedResponse['status'], $formattedResponse['detail']);
-            return false;
-        }
+		if (!empty($response['body']) && isset($formattedResponse['status'])) {
+			return (int)$formattedResponse['status'];
+		}
 
-        if ($timeout > 0 && $response['headers'] && $response['headers']['total_time'] >= $timeout) {
-            $this->last_error = sprintf('Request timed out after %f seconds.', $response['headers']['total_time']);
-            return false;
-        }
+		return 418;
+	}
 
-        $this->last_error = 'Unknown error, call getLastResponse() to find out what happened.';
-        return false;
-    }
+	public function get($method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		return $this->makeRequest('get', $method, $args, $timeout);
+	}
 
-    private function findHTTPStatus($response, $formattedResponse)
-    {
-        if (!empty($response['headers']) && isset($response['headers']['http_code'])) {
-            return (int)$response['headers']['http_code'];
-        }
+	public function patch($method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		return $this->makeRequest('patch', $method, $args, $timeout);
+	}
 
-        if (!empty($response['body']) && isset($formattedResponse['status'])) {
-            return (int)$formattedResponse['status'];
-        }
+	public function post($method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		return $this->makeRequest('post', $method, $args, $timeout);
+	}
 
-        return 418;
-    }
+	public function put($method, $args = array(), $timeout = self::TIMEOUT)
+	{
+		return $this->makeRequest('put', $method, $args, $timeout);
+	}
 }

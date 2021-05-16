@@ -5,7 +5,8 @@
  * @since 4.9.4
  */
 
-class md_woocommerce extends md_api {
+class md_woocommerce extends md_api
+{
 
 	/**
 	 * Include WooCommerce files.
@@ -13,8 +14,9 @@ class md_woocommerce extends md_api {
 	 * @since 5.0
 	 */
 
-	public function includes() {
-		require_once( 'templates.php' );
+	public function includes()
+	{
+		require_once('templates.php');
 	}
 
 	/**
@@ -23,12 +25,13 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function actions() {
-		$this->woo = md_setting( array( 'woocommerce' ) );
-		add_action( 'md_filter_dequeue_scripts', array( $this, 'dequeue' ) );
-		add_filter( 'md_filter_sidebars_post_types', array( $this, 'sidebars' ) );
-		if ( isset( $_GET['page'] ) && $_GET['page'] == 'md_woocommerce' && isset( $_GET['settings-updated'] ) ) {
-			add_action( 'admin_init', array( $this, 'utilities' ) );
+	public function actions()
+	{
+		$this->woo = md_setting(array('woocommerce'));
+		add_action('md_filter_dequeue_scripts', array($this, 'dequeue'));
+		add_filter('md_filter_sidebars_post_types', array($this, 'sidebars'));
+		if (isset($_GET['page']) && $_GET['page'] == 'md_woocommerce' && isset($_GET['settings-updated'])) {
+			add_action('admin_init', array($this, 'utilities'));
 			flush_rewrite_rules();
 		}
 	}
@@ -39,10 +42,11 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function register() {
+	public function register()
+	{
 		return array(
 			'admin_page' => array(
-				'name' => __( 'WooCommerce', 'md' ),
+				'name' => __('WooCommerce', 'md'),
 				'parent' => 'md_settings',
 				'fields' => array(
 					'settings' => array(
@@ -57,7 +61,7 @@ class md_woocommerce extends md_api {
 							'phone_optional'
 						)
 					),
-					'sale_label' => array( 'type' => 'text' )
+					'sale_label' => array('type' => 'text')
 				)
 			)
 		);
@@ -69,8 +73,9 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function admin_page() {
-		include( 'admin-page.php' );
+	public function admin_page()
+	{
+		include('admin-page.php');
 	}
 
 	/**
@@ -81,8 +86,9 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function utilities() {
-		md_compile_css( true );
+	public function utilities()
+	{
+		md_compile_css(true);
 	}
 
 	/**
@@ -91,9 +97,10 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function css( $templates ) {
-		if ( empty( $this->woo['settings']['remove_css'] ) )
-			$templates['woocommerce'] = md_css( 'dropins', 'woocommerce/css', true );
+	public function css($templates)
+	{
+		if (empty($this->woo['settings']['remove_css']))
+			$templates['woocommerce'] = md_css('dropins', 'woocommerce/css', true);
 		return $templates;
 	}
 
@@ -103,9 +110,10 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function dequeue( $scripts ) {
+	public function dequeue($scripts)
+	{
 		$scripts['woocommerce'] = array(
-			'label' => __( '<b>Remove</b> WooCommerce scripts and styles', 'md' ),
+			'label' => __('<b>Remove</b> WooCommerce scripts and styles', 'md'),
 			'styles' => array(
 				'woocommerce-layout', 'woocommerce-smallscreen', 'woocommerce-general', 'wc-block-style'
 			),
@@ -122,10 +130,11 @@ class md_woocommerce extends md_api {
 	 * @since 4.9.4
 	 */
 
-	public function sidebars( $sidebars ) {
-		if ( ! empty( $this->woo['settings']['enable_archives_sidebar'] ) )
+	public function sidebars($sidebars)
+	{
+		if (!empty($this->woo['settings']['enable_archives_sidebar']))
 			$sidebars['product']['archive'] = true;
-		if ( ! empty( $this->woo['settings']['enable_single_sidebar'] ) )
+		if (!empty($this->woo['settings']['enable_single_sidebar']))
 			$sidebars['product']['single'] = true;
 		return $sidebars;
 	}

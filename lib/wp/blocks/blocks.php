@@ -5,7 +5,8 @@
  * @since 4.9.3
  */
 
-class md_blocks {
+class md_blocks
+{
 
 	/**
 	 * Block names with callback.
@@ -16,19 +17,19 @@ class md_blocks {
 	public $blocks = array(
 		'email' => array(
 			'callback' => 'email',
-			'localize' => array( 'colors', 'email' )
+			'localize' => array('colors', 'email')
 		),
 		'content-upgrade' => array(
 			'callback' => 'content_upgrade',
-			'localize' => array( 'colors', 'popups', 'icons' )
+			'localize' => array('colors', 'popups', 'icons')
 		),
 		'callout' => array(
 			'callback' => 'callout',
-			'localize' => array( 'colors', 'popups', 'icons' )
+			'localize' => array('colors', 'popups', 'icons')
 		),
 		'share-notice' => array(
 			'callback' => 'share_notice',
-			'localize' => array( 'colors' )
+			'localize' => array('colors')
 		),
 		'arrow' => array(
 			'callback' => 'arrow'
@@ -41,12 +42,13 @@ class md_blocks {
 	 * @since 4.9.3
 	 */
 
-	public function init() {
+	public function init()
+	{
 		$this->register();
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
-		add_action( 'md_css_files', array( $this, 'css' ) );
-		add_action( 'admin_head', array( $this, 'admin_head' ), 1 );
-		add_filter( 'block_categories', array( $this, 'categories' ), 10, 2 );
+		add_action('enqueue_block_editor_assets', array($this, 'enqueue'));
+		add_action('md_css_files', array($this, 'css'));
+		add_action('admin_head', array($this, 'admin_head'), 1);
+		add_filter('block_categories', array($this, 'categories'), 10, 2);
 	}
 
 	/**
@@ -55,11 +57,12 @@ class md_blocks {
 	 * @since 4.9.3
 	 */
 
-	public function register() {
-		foreach ( $this->blocks as $block => $fields )
-			register_block_type( "marketers-delight/{$block}", array(
-				'render_callback' => array( $this, $fields['callback'] )
-			) );
+	public function register()
+	{
+		foreach ($this->blocks as $block => $fields)
+			register_block_type("marketers-delight/{$block}", array(
+				'render_callback' => array($this, $fields['callback'])
+			));
 	}
 
 	/**
@@ -68,11 +71,12 @@ class md_blocks {
 	 * @since 4.9
 	 */
 
-	public function categories( $categories ) {
-		return array_merge( $categories, array( array(
+	public function categories($categories)
+	{
+		return array_merge($categories, array(array(
 			'slug' => 'marketers-delight',
-			'title' => __( 'Marketers Delight', 'md' )
-		) ) );
+			'title' => __('Marketers Delight', 'md')
+		)));
 	}
 
 	/**
@@ -81,7 +85,8 @@ class md_blocks {
 	 * @since 4.9.4
 	 */
 
-	public function css( $files ) {
+	public function css($files)
+	{
 		$files['block-editor'] = array(
 			'templates' => array(
 				'blocks' => MD_CSS_DIR . 'block-editor.php'
@@ -97,26 +102,26 @@ class md_blocks {
 	 * @since 4.9
 	 */
 
-	public function enqueue() {
+	public function enqueue()
+	{
 		// Load Fonts
-		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
+		if (!md_setting(array('settings', 'webfonts', 'loader')))
 			md_enqueue_fonts();
 
 		// Load Blocks JS
-		foreach ( $this->blocks as $block => $fields ) {
+		foreach ($this->blocks as $block => $fields) {
 			$path = "lib/wp/blocks/{$block}.js";
-			wp_enqueue_script( "md-block-{$block}", MD_URL . $path, array( 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path ) );
-			if ( isset( $fields['localize'] ) )
-				wp_localize_script( "md-block-{$block}", 'MDBlocks', $this->localized_scripts( $fields['localize'] ) );
+			wp_enqueue_script("md-block-{$block}", MD_URL . $path, array('wp-editor', 'wp-i18n', 'wp-element'), md_ver($path));
+			if (isset($fields['localize']))
+				wp_localize_script("md-block-{$block}", 'MDBlocks', $this->localized_scripts($fields['localize']));
 		}
 
 		// Load Blocks CSS
-		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) ) {
+		if (!md_setting(array('settings', 'css', 'inline'))) {
 			$css = 'lib/admin/css/block-editor.css';
-			wp_enqueue_style( 'md-blocks', MD_URL . $css, array( 'wp-edit-blocks' ), md_ver( $css ) );
-		}
-		else
-			wp_add_inline_style( 'wp-edit-post', get_option( 'marketers_delight_blocks_css' ) );
+			wp_enqueue_style('md-blocks', MD_URL . $css, array('wp-edit-blocks'), md_ver($css));
+		} else
+			wp_add_inline_style('wp-edit-post', get_option('marketers_delight_blocks_css'));
 	}
 
 	/**
@@ -125,29 +130,30 @@ class md_blocks {
 	 * @since 4.9
 	 */
 
-	public function localized_scripts( $data ) {
+	public function localized_scripts($data)
+	{
 		$scripts = array();
-		$popups = md_setting( array( 'popups', 'popups' ) );
-		$email = md_email_data( array( 'show' => 'names', 'label' => true, 'empty_label' => true ) );
+		$popups = md_setting(array('popups', 'popups'));
+		$email = md_email_data(array('show' => 'names', 'label' => true, 'empty_label' => true));
 
-		if ( in_array( 'colors' , $data ) )
-			foreach ( md_editor_colors() as $group => $fields ) {
-				$scripts['colors']['slug'][$fields['slug']] = esc_attr( $fields['color'] );
-				$scripts['colors']['hex'][$fields['color']] = esc_attr( $fields['slug'] );
+		if (in_array('colors', $data))
+			foreach (md_editor_colors() as $group => $fields) {
+				$scripts['colors']['slug'][$fields['slug']] = esc_attr($fields['color']);
+				$scripts['colors']['hex'][$fields['color']] = esc_attr($fields['slug']);
 			}
 
-		if ( in_array( 'email', $data ) && ! empty( $email ) )
-			foreach ( $email as $list => $name )
-				$scripts['email'][] = array( 'label' => $name, 'value' => $list );
+		if (in_array('email', $data) && !empty($email))
+			foreach ($email as $list => $name)
+				$scripts['email'][] = array('label' => $name, 'value' => $list);
 
-		if ( in_array( 'popups', $data ) && ! empty( $popups ) )
-			foreach ( $popups as $popup => $fields )
-				$scripts['popups'][] = array( 'label' => $fields['name'], 'value' => $popup );
+		if (in_array('popups', $data) && !empty($popups))
+			foreach ($popups as $popup => $fields)
+				$scripts['popups'][] = array('label' => $fields['name'], 'value' => $popup);
 
-		if ( in_array( 'icons', $data ) )
-			foreach ( md_icons() as $icon => $fields ) {
-				$label = ! empty( $fields['label'] ) ? $fields['label'] : $icon;
-				$scripts['icons'][] = array( 'label' => $label, 'value' => "md-icon-$icon" );
+		if (in_array('icons', $data))
+			foreach (md_icons() as $icon => $fields) {
+				$label = !empty($fields['label']) ? $fields['label'] : $icon;
+				$scripts['icons'][] = array('label' => $label, 'value' => "md-icon-$icon");
 			}
 		return $scripts;
 	}
@@ -158,9 +164,10 @@ class md_blocks {
 	 * @since 4.9
 	 */
 
-	public function admin_head() {
+	public function admin_head()
+	{
 		$screen = get_current_screen();
-		if ( $screen->base == 'post' && md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
+		if ($screen->base == 'post' && md_setting(array('settings', 'webfonts', 'loader')))
 			echo md_webfonts_loader();
 	}
 
@@ -170,9 +177,10 @@ class md_blocks {
 	 * @since 4.9
 	 */
 
-	public function email( $attributes, $content ) {
+	public function email($attributes, $content)
+	{
 		ob_start();
-		include( md_template( 'blocks/email', true ) );
+		include(md_template('blocks/email', true));
 		return ob_get_clean();
 	}
 
@@ -182,9 +190,10 @@ class md_blocks {
 	 * @since 4.9.3
 	 */
 
-	public function content_upgrade( $attributes, $content ) {
+	public function content_upgrade($attributes, $content)
+	{
 		ob_start();
-		include( md_template( 'blocks/content-upgrade', true ) );
+		include(md_template('blocks/content-upgrade', true));
 		return ob_get_clean();
 	}
 
@@ -194,9 +203,10 @@ class md_blocks {
 	 * @since 4.9.3
 	 */
 
-	public function callout( $attributes, $content ) {
+	public function callout($attributes, $content)
+	{
 		ob_start();
-		include( md_template( 'blocks/callout', true ) );
+		include(md_template('blocks/callout', true));
 		return ob_get_clean();
 	}
 
@@ -206,12 +216,14 @@ class md_blocks {
 	 * @since 4.9.3
 	 */
 
-	public function share_notice( $attributes, $content ) {
+	public function share_notice($attributes, $content)
+	{
 		ob_start();
-		include( md_template( 'blocks/share-notice', true ) );
+		include(md_template('blocks/share-notice', true));
 		return ob_get_clean();
 	}
 
 }
+
 $md_blocks = new md_blocks;
 $md_blocks->init();

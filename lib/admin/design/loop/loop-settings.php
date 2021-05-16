@@ -1,101 +1,101 @@
 <div class="md-widget md-toggle md-sep-small">
-	<h3 class="md-widget-title"><?php echo __( 'Loop', 'md' ); ?></h3>
+	<h3 class="md-widget-title"><?php echo __('Loop', 'md'); ?></h3>
 	<div class="md-widget-item">
 		<div class="md-sep-small">
-			<?php $this->fields->field( array( 'archives' ), array(
-				'type' => 'select',
-				'label' => __( 'Select Loop', 'md' ),
-				'empty_label' => __( 'Select a loop...', 'md' ),
-				'options' => md_loops()
-			) ); ?>
+			<?php $this->fields->field(array('archives'), array(
+					'type' => 'select',
+					'label' => __('Select Loop', 'md'),
+					'empty_label' => __('Select a loop...', 'md'),
+					'options' => md_loops()
+			)); ?>
 		</div>
 		<div id="content_loop_teasers" style="display: <?php echo $archives_loop == 'teasers' ? 'block' : 'none'; ?>">
-			<hr class="md-sep-small" />
+			<hr class="md-sep-small"/>
 			<div class="columns-2 columns-single mb-sep-small">
 				<div class="col md-sep-micro">
-					<?php $this->fields->field( array( 'featured' ), array(
-						'type' => 'number',
-						'label' => __( 'Featured Posts', 'md' ),
-						'description' => __( 'Enter the number of posts to feature before breaking into the standard loop template.', 'md' )
-					) ); ?>
+					<?php $this->fields->field(array('featured'), array(
+							'type' => 'number',
+							'label' => __('Featured Posts', 'md'),
+							'description' => __('Enter the number of posts to feature before breaking into the standard loop template.', 'md')
+					)); ?>
 				</div>
 				<div class="col md-sep-micro">
-					<?php $this->fields->field( array( 'columns' ), array(
-						'type' => 'number',
-						'label' => __( 'Columns', 'md' ),
-						'placeholder' => '2',
-						'description' => __( 'Enter the number of columns to list standard posts.', 'md' )
-					) ); ?>
+					<?php $this->fields->field(array('columns'), array(
+							'type' => 'number',
+							'label' => __('Columns', 'md'),
+							'placeholder' => '2',
+							'description' => __('Enter the number of columns to list standard posts.', 'md')
+					)); ?>
 				</div>
 			</div>
 		</div>
-		<hr class="md-sep-small" />
-		<h4><?php echo __( 'Byline', 'md' ); ?></h4>
+		<hr class="md-sep-small"/>
+		<h4><?php echo __('Byline', 'md'); ?></h4>
 		<div class="md-sep-small">
-			<?php $this->fields->field( array( 'byline_position' ), array(
-				'type' => 'select',
-				'empty_label' => __( 'Select byline position...', 'md' ),
-				'options' => array(
-					'before_headline' => __( 'Show before headline', 'md' ),
-					'after_headline' => __( 'Show after headline', 'md' )
-				)
-			) ); ?>
+			<?php $this->fields->field(array('byline_position'), array(
+					'type' => 'select',
+					'empty_label' => __('Select byline position...', 'md'),
+					'options' => array(
+							'before_headline' => __('Show before headline', 'md'),
+							'after_headline' => __('Show after headline', 'md')
+					)
+			)); ?>
 		</div>
 		<div class="md-sep-small">
-			<?php $this->fields->field( array( 'byline' ), array(
-				'type' => 'checkbox',
-				'multi' => true,
-				'options' => md_byline_items()
-			) ); ?>
+			<?php $this->fields->field(array('byline'), array(
+					'type' => 'checkbox',
+					'multi' => true,
+					'options' => md_byline_items()
+			)); ?>
 		</div>
-		<hr class="md-sep-small" />
-		<h4><?php echo __( 'Post Content', 'md' ); ?></h4>
+		<hr class="md-sep-small"/>
+		<h4><?php echo __('Post Content', 'md'); ?></h4>
 		<div class="columns-3 columns-single">
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'content' ), array(
-					'type' => 'select',
-					'label' => __( 'Post Text', 'md' ),
-					'options' => array(
-						'' => __( 'Show full text (default)', 'md' ),
-						'excerpt' => __( 'Show excerpt', 'md' ),
-						'hide' => __( 'Hide text', 'md' )
-					)
-				) ); ?>
+				<?php $this->fields->field(array('content'), array(
+						'type' => 'select',
+						'label' => __('Post Text', 'md'),
+						'options' => array(
+								'' => __('Show full text (default)', 'md'),
+								'excerpt' => __('Show excerpt', 'md'),
+								'hide' => __('Hide text', 'md')
+						)
+				)); ?>
 			</div>
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'excerpt_length' ), array(
-					'type' => 'number',
-					'label' => __( 'Excerpt Length', 'md' ),
-					'unit' => __( 'words', 'md' ),
-					'placeholder' => __( '55', 'md' )
-				) ); ?>
+				<?php $this->fields->field(array('excerpt_length'), array(
+						'type' => 'number',
+						'label' => __('Excerpt Length', 'md'),
+						'unit' => __('words', 'md'),
+						'placeholder' => __('55', 'md')
+				)); ?>
 			</div>
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'read_more' ), array(
-					'type' => 'text',
-					'label' => __( 'Read More Text', 'md' ),
-					'placeholder' => __( 'Continue reading &rarr;', 'md' )
-				) ); ?>
+				<?php $this->fields->field(array('read_more'), array(
+						'type' => 'text',
+						'label' => __('Read More Text', 'md'),
+						'placeholder' => __('Continue reading &rarr;', 'md')
+				)); ?>
 			</div>
 		</div>
-		<hr class="md-sep-small" />
-		<h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
+		<hr class="md-sep-small"/>
+		<h4><?php echo __('Call to Action', 'md'); ?></h4>
 		<div class="columns-2 columns-single">
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'cta_x_loop' ), array(
-					'type' => 'number',
-					'label' => __( 'Show After X Post', 'md' ),
-					'description' => __( 'Enter the post number to show a call to action after.', 'md' )
-				) ); ?>
+				<?php $this->fields->field(array('cta_x_loop'), array(
+						'type' => 'number',
+						'label' => __('Show After X Post', 'md'),
+						'description' => __('Enter the post number to show a call to action after.', 'md')
+				)); ?>
 			</div>
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'x_cta' ), array(
-					'type' => 'select',
-					'label' => __( 'Call to Action', 'md' ),
-					'description' => sprintf( __( 'Choose one of your pre-made <a href="%s">call to actions</a> from MD Optins to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
-					'empty_label' => __( 'Select call to action...', 'md' ),
-					'options' => $cta_options
-				) ); ?>
+				<?php $this->fields->field(array('x_cta'), array(
+						'type' => 'select',
+						'label' => __('Call to Action', 'md'),
+						'description' => sprintf(__('Choose one of your pre-made <a href="%s">call to actions</a> from MD Optins to show within this loop.', 'md'), admin_url('admin.php?page=md_optins&tab=md_cta')),
+						'empty_label' => __('Select call to action...', 'md'),
+						'options' => $cta_options
+				)); ?>
 			</div>
 		</div>
 	</div>

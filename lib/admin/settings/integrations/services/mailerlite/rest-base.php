@@ -1,6 +1,7 @@
 <?php
 
-class MD_MailerLite_Forms_Rest_Base {
+class MD_MailerLite_Forms_Rest_Base
+{
 	protected $url;
 	protected $verb;
 	protected $requestBody;
@@ -14,30 +15,33 @@ class MD_MailerLite_Forms_Rest_Base {
 	protected $path = '';
 	private $curlError = false;
 
-	public function __construct( $url = 'https://api.mailerlite.com/api/v2/', $verb = 'GET' ) {
-		$this->url           = $url;
-		$this->verb          = $verb;
+	public function __construct($url = 'https://api.mailerlite.com/api/v2/', $verb = 'GET')
+	{
+		$this->url = $url;
+		$this->verb = $verb;
 		$this->requestLength = 0;
-		$this->username      = null;
-		$this->password      = null;
-		$this->acceptType    = 'application/json';
-		$this->responseBody  = null;
-		$this->responseInfo  = null;
+		$this->username = null;
+		$this->password = null;
+		$this->acceptType = 'application/json';
+		$this->responseBody = null;
+		$this->responseInfo = null;
 	}
 
-	public function flush() {
-		$this->requestBody   = null;
+	public function flush()
+	{
+		$this->requestBody = null;
 		$this->requestLength = 0;
-		$this->verb          = 'GET';
-		$this->responseBody  = null;
-		$this->responseInfo  = null;
+		$this->verb = 'GET';
+		$this->responseBody = null;
+		$this->responseInfo = null;
 	}
 
-	public function execute( $method = null, $data = null ) {
+	public function execute($method = null, $data = null)
+	{
 		$ch = curl_init();
-		$this->setAuth( $ch );
+		$this->setAuth($ch);
 
-		if ( $method )
+		if ($method)
 			$this->verb = $method;
 
 		$this->requestBody = $data;
@@ -45,161 +49,182 @@ class MD_MailerLite_Forms_Rest_Base {
 		$this->buildPostBody();
 
 		try {
-			switch ( strtoupper( $this->verb ) ) {
+			switch (strtoupper($this->verb)) {
 				case 'GET':
-					$this->executeGet( $ch );
+					$this->executeGet($ch);
 					break;
 				case 'POST':
-					$this->executePost( $ch );
+					$this->executePost($ch);
 					break;
 				case 'PUT':
-					$this->executePut( $ch );
+					$this->executePut($ch);
 					break;
 				case 'DELETE':
-					$this->executeDelete( $ch );
+					$this->executeDelete($ch);
 					break;
 				default:
-					throw new InvalidArgumentException( 'Current verb (' . $this->verb . ') is an invalid REST verb.' );
+					throw new InvalidArgumentException('Current verb (' . $this->verb . ') is an invalid REST verb.');
 			}
-		} catch ( InvalidArgumentException $e ) {
-			curl_close( $ch );
+		} catch (InvalidArgumentException $e) {
+			curl_close($ch);
 			throw $e;
-		} catch ( Exception $e ) {
-			curl_close( $ch );
+		} catch (Exception $e) {
+			curl_close($ch);
 			throw $e;
 		}
 
 		return $this->responseBody;
 	}
 
-	public function buildPostBody() {
+	protected function setAuth(&$curlHandle)
+	{
+		if ($this->username !== null && $this->password !== null) {
+			curl_setopt($curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST);
+			curl_setopt($curlHandle, CURLOPT_USERPWD, $this->username . ':' . $this->password);
+		}
+	}
+
+	public function buildPostBody()
+	{
 		$data = $this->requestBody;
 
 		$data['apiKey'] = $this->apiKey;
 
-		if ( ! is_array( $data ) )
-			throw new InvalidArgumentException( 'Invalid data input for postBody. Array expected' );
+		if (!is_array($data))
+			throw new InvalidArgumentException('Invalid data input for postBody. Array expected');
 
-		$data              = http_build_query( $data, '', '&' );
+		$data = http_build_query($data, '', '&');
 		$this->requestBody = $data;
 	}
 
-	protected function executeGet( $ch ) {
-		$this->path .= ( strpos( $this->path, '?' ) === false ? '?' : '&' ) . $this->requestBody;
-		$this->doExecute( $ch );
+	protected function executeGet($ch)
+	{
+		$this->path .= (strpos($this->path, '?') === false ? '?' : '&') . $this->requestBody;
+		$this->doExecute($ch);
 	}
 
-	protected function executePost( $ch ) {
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, $this->requestBody );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
+	protected function doExecute(&$curlHandle)
+	{
+		$this->setCurlOpts($curlHandle);
+		$this->responseBody = curl_exec($curlHandle);
 
-		$this->doExecute( $ch );
-	}
-
-	protected function executePut( $ch ) {
-		$this->requestLength = strlen( $this->requestBody );
-
-		$fh = fopen( 'php://memory', 'rw' );
-		fwrite( $fh, $this->requestBody );
-		rewind( $fh );
-
-		curl_setopt( $ch, CURLOPT_INFILE, $fh );
-		curl_setopt( $ch, CURLOPT_INFILESIZE, $this->requestLength );
-		curl_setopt( $ch, CURLOPT_PUT, true );
-
-		$this->doExecute( $ch );
-
-		fclose( $fh );
-	}
-
-	protected function executeDelete( $ch ) {
-		$this->path .= ( strpos( $this->path, '?' ) === false ? '?' : '&' ) . $this->requestBody;
-
-		curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, 'DELETE' );
-
-		$this->doExecute( $ch );
-	}
-
-	protected function doExecute( &$curlHandle ) {
-		$this->setCurlOpts( $curlHandle );
-		$this->responseBody = curl_exec( $curlHandle );
-
-		if ( $this->responseBody === false ) {
-			$this->responseBody = 'CURL errno: ' . curl_errno( $curlHandle ) . ', CURL error: ' . curl_error( $curlHandle );
-			$this->curlError    = true;
+		if ($this->responseBody === false) {
+			$this->responseBody = 'CURL errno: ' . curl_errno($curlHandle) . ', CURL error: ' . curl_error($curlHandle);
+			$this->curlError = true;
 		}
 
-		$this->responseInfo = curl_getinfo( $curlHandle );
+		$this->responseInfo = curl_getinfo($curlHandle);
 
-		curl_close( $curlHandle );
+		curl_close($curlHandle);
 	}
 
-	protected function setCurlOpts( &$curlHandle ) {
-		curl_setopt( $curlHandle, CURLOPT_TIMEOUT, 30 );
-		curl_setopt( $curlHandle, CURLOPT_URL, $this->path );
-		curl_setopt( $curlHandle, CURLOPT_RETURNTRANSFER, true );
-		curl_setopt( $curlHandle, CURLOPT_HTTPHEADER, [ 'Accept: ' . $this->acceptType ] );
+	protected function setCurlOpts(&$curlHandle)
+	{
+		curl_setopt($curlHandle, CURLOPT_TIMEOUT, 30);
+		curl_setopt($curlHandle, CURLOPT_URL, $this->path);
+		curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($curlHandle, CURLOPT_HTTPHEADER, ['Accept: ' . $this->acceptType]);
 
-		curl_setopt( $curlHandle, CURLOPT_SSL_VERIFYHOST, false );
-		curl_setopt( $curlHandle, CURLOPT_SSL_VERIFYPEER, false );
+		curl_setopt($curlHandle, CURLOPT_SSL_VERIFYHOST, false);
+		curl_setopt($curlHandle, CURLOPT_SSL_VERIFYPEER, false);
 	}
 
-	public function hasCurlError() {
+	protected function executePost($ch)
+	{
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $this->requestBody);
+		curl_setopt($ch, CURLOPT_POST, 1);
+
+		$this->doExecute($ch);
+	}
+
+	protected function executePut($ch)
+	{
+		$this->requestLength = strlen($this->requestBody);
+
+		$fh = fopen('php://memory', 'rw');
+		fwrite($fh, $this->requestBody);
+		rewind($fh);
+
+		curl_setopt($ch, CURLOPT_INFILE, $fh);
+		curl_setopt($ch, CURLOPT_INFILESIZE, $this->requestLength);
+		curl_setopt($ch, CURLOPT_PUT, true);
+
+		$this->doExecute($ch);
+
+		fclose($fh);
+	}
+
+	protected function executeDelete($ch)
+	{
+		$this->path .= (strpos($this->path, '?') === false ? '?' : '&') . $this->requestBody;
+
+		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+
+		$this->doExecute($ch);
+	}
+
+	public function hasCurlError()
+	{
 		return $this->curlError;
 	}
 
-	protected function setAuth( &$curlHandle ) {
-		if ( $this->username !== null && $this->password !== null ) {
-			curl_setopt( $curlHandle, CURLOPT_HTTPAUTH, CURLAUTH_DIGEST );
-			curl_setopt( $curlHandle, CURLOPT_USERPWD, $this->username . ':' . $this->password );
-		}
-	}
-
-	public function getAcceptType() {
+	public function getAcceptType()
+	{
 		return $this->acceptType;
 	}
 
-	public function setAcceptType( $acceptType ) {
+	public function setAcceptType($acceptType)
+	{
 		$this->acceptType = $acceptType;
 	}
 
-	public function getPassword() {
+	public function getPassword()
+	{
 		return $this->password;
 	}
 
-	public function setPassword( $password ) {
+	public function setPassword($password)
+	{
 		$this->password = $password;
 	}
 
-	public function getResponseBody() {
+	public function getResponseBody()
+	{
 		return $this->responseBody;
 	}
 
-	public function getResponseInfo() {
+	public function getResponseInfo()
+	{
 		return $this->responseInfo;
 	}
 
-	public function getUrl() {
+	public function getUrl()
+	{
 		return $this->url;
 	}
 
-	public function setUrl( $url ) {
+	public function setUrl($url)
+	{
 		$this->url = $url;
 	}
 
-	public function getUsername() {
+	public function getUsername()
+	{
 		return $this->username;
 	}
 
-	public function setUsername( $username ) {
+	public function setUsername($username)
+	{
 		$this->username = $username;
 	}
 
-	public function getVerb() {
+	public function getVerb()
+	{
 		return $this->verb;
 	}
 
-	public function setVerb( $verb ) {
+	public function setVerb($verb)
+	{
 		$this->verb = $verb;
 	}
 }

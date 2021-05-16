@@ -2,13 +2,21 @@
 	$BOOKSHELF
 \*------------------------------*/
 
-.loop-bookshelf .breadcrumbs { text-align: center; }
+.loop-bookshelf .breadcrumbs {
+	text-align: center;
+}
 
-.md-popup-bookshelf { background-color: #F9FCE9; }
+.md-popup-bookshelf {
+	background-color: #F9FCE9;
+}
 
-.post-type-archive-bookshelf .content, .tax-bookshelf_categories .content { box-shadow: none; }
+.post-type-archive-bookshelf .content, .tax-bookshelf_categories .content {
+	box-shadow: none;
+}
 
-.bookshelf-category.is-active { font-weight: bold; }
+.bookshelf-category.is-active {
+	font-weight: bold;
+}
 
 .bookshelf-row:after {
 	background-color: rgba(255, 255, 255, 0.15);
@@ -24,9 +32,13 @@
 	display: block;
 }
 
-.book-thumb img { box-shadow: 1px 0px 16px rgba(0, 0, 0, 0.1); }
+.book-thumb img {
+	box-shadow: 1px 0px 16px rgba(0, 0, 0, 0.1);
+}
 
-.bookshelf-grid, .bookshelf-excerpt .book { text-align: center; }
+.bookshelf-grid, .bookshelf-excerpt .book {
+	text-align: center;
+}
 
 .bookshelf-grid .book {
 	display: inline-block;
@@ -44,7 +56,9 @@
 	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-.widget .bookshelf-grid { padding-top: 0; }
+.widget .bookshelf-grid {
+	padding-top: 0;
+}
 
 @media all and (min-width: 900px) {
 	.bookshelf-excerpt .book {
@@ -53,6 +67,7 @@
 		width: 30%;
 		z-index: 10;
 	}
+
 	.bookshelf-excerpt .book-text {
 		float: left;
 		width: 70%;
