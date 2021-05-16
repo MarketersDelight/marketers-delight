@@ -7,7 +7,8 @@
 			'upload_action' => 'md_dropin',
 			'accept' => '.zip',
 			'success_text' => __( 'Drop-in installed!', 'md' ),
-			'label' => __( 'Drop-in file', 'md' )
+			'label' => __( 'Upload your Drop-in package file', 'md' ),
+			'description' => __( 'If you have a drop-in in a <code>.zip</code> format, you may install or update it by uploading it here. Find more available drop-ins here at the official <a href="https://marketersdelight.com/dropins/" target="_blank">Drop-ins Library</a>', 'md' )
 		) ); ?>
 	</div>
 	<div class="md-dropins-list md-tabs md-sep-small">
