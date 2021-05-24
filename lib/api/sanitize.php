@@ -5,6 +5,9 @@
  * @since 4.5
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_sanitize {
 
 	/**

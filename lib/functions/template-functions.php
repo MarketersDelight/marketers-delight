@@ -15,6 +15,9 @@
  * @since 5.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_template( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
 	if ( isset( $path ) && is_string( $path ) ) {

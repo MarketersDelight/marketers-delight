@@ -5,6 +5,9 @@
  * @since 4.0
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_featured_image( $position = null, $size = null, $atts = null ) {
 	$position = isset( $position ) ? $position : md_featured_image_position();
 	$size = isset( $size ) ? $size : md_featured_image_size();

@@ -6,6 +6,9 @@
  * @since 4.9
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_email_data( $atts = null ) {
 	$label = '';
 	$ids = array();

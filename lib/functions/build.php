@@ -9,6 +9,9 @@
  * theme with the same file path.
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 // Build header
 add_action( 'md_hook_header', 'md_logo' );
 add_action( 'md_hook_header_aside', 'md_menu' );

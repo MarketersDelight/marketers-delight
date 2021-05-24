@@ -7,6 +7,9 @@
  * @since 4.9.3
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_icons( $show_defaults = null ) {
 	$icons = array(
 		'angle-down' => array(

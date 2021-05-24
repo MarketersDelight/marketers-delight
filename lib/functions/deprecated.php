@@ -5,6 +5,10 @@
  * @since 4.8.4
  * @deprecated 5.3
  */
+
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_whats_new() {
 	$new['version'] = '';
 	$new['link'] = '#';

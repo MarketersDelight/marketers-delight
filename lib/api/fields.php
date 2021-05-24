@@ -7,6 +7,9 @@
  * @since 4.7
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_fields {
 
 	public $_option = 'marketers_delight';

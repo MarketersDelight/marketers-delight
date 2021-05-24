@@ -5,6 +5,9 @@
  * @since 5.2.3
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_files {
 
 	/**

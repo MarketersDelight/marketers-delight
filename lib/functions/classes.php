@@ -6,6 +6,9 @@
  * @since 4.1
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 function md_body_classes( $classes ) {
 	// Add custom body classes
 	$custom_classes = md_meta( array( 'scripts', 'body_class' ) );

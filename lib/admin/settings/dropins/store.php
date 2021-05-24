@@ -6,6 +6,9 @@
  * @since 5.3
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_store extends md_api {
 
 	/**

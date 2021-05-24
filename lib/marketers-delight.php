@@ -1,4 +1,6 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
 define( 'MD_VERSION', '5.3' );

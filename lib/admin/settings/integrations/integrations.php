@@ -5,6 +5,9 @@
  * @since 4.9
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_integrations extends md_api {
 
 	/**

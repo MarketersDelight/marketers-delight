@@ -5,6 +5,8 @@
  *
  * @since 4.1
  */
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_has_logo() {
 	if ( ( md_has_custom_logo() || md_has_site_title() ) && ! md_meta( array( 'layout', 'header', 'logo' ) ) )

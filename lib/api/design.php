@@ -6,6 +6,9 @@
  * @since 4.8
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_design {
 
 	/**

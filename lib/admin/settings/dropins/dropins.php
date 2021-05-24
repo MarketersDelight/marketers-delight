@@ -5,6 +5,9 @@
  * @since 5.2.1
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_dropins extends md_api {
 
 	/**

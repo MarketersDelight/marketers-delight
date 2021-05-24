@@ -6,6 +6,10 @@
  *
  * @since 4.0
  */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_menu_walker extends Walker_Nav_Menu {
 	function __construct( $title = true, $desc = false ) {
 		$this->md_title = $title;
