@@ -66,7 +66,9 @@ class md_files {
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) )
 				$wp_filesystem->mkdir( $uploads_dir );
-
+			
+			$this->md_create_protection_file($uploads_dir);
+			
 			if ( $wp_filesystem->exists( "$uploads_dir/$dir_name" ) )
 				$wp_filesystem->delete( "$uploads_dir/$dir_name", true );
 
@@ -75,6 +77,8 @@ class md_files {
 				$files = $wp_filesystem->dirlist( $uploads_dir );
 				foreach ( $files as $file => $fields ) {
 					$upload_file = "$uploads_dir/$file/$file.php";
+					$upload_dir = "$uploads_dir/$file";
+					$this->md_create_protection_file($upload_dir);
 					if ( $wp_filesystem->exists( $upload_file ) ) {
 						$config = "$uploads_dir/$file/config.json";
 						if ( $wp_filesystem->exists( $config ) ) {
@@ -93,6 +97,13 @@ class md_files {
 			$json = $wp_filesystem->get_contents( $files['file']['tmp_name'] );
 			$file = json_decode( $json );
 			$this->update_icons( $file );
+		}
+	}
+
+	public function md_create_protection_file($upload_dir = MD_DROPINS_DIR)
+	{
+		if (!file_exists($upload_dir . '/index.php') && wp_is_writable($upload_dir)) {
+			@file_put_contents($upload_dir . '/index.php', '<?php' . PHP_EOL . '// Silence is golden.');
 		}
 	}
 
