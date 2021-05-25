@@ -16,7 +16,7 @@ jobs:
         REPO_NAME: 'BobAnkh/add-contributors'
         CONTRIBUTOR: '### Contributors'
         COLUMN_PER_ROW: '6'
-        ACCESS_TOKEN: ${{secrets.GITHUB_PT}}
+        ACCESS_TOKEN: ${{secrets.GH_PT}}
         IMG_WIDTH: '100'
         FONT_SIZE: '14'
         PATH: '/README.md'
