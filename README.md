@@ -1,3 +1,3 @@
-# marketers-delight
+# Marketers Delight
 
 ### Contributors
