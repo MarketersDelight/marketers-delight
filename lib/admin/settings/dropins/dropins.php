@@ -1,12 +1,13 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Create Drop-ins settings panel.
  *
  * @since 5.2.1
  */
-
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_dropins extends md_api {
 
@@ -15,6 +16,17 @@ class md_dropins extends md_api {
 	 */
 
 	public $core = array(
+		'optins' => array(
+			'name' => 'Optins',
+			'author' => 'Alex, Marketers Delight',
+			'version' => '1.0',
+			'description' => 'Design and deploy custom popups, floating bars, and inline optin forms with smart precision tools and display features to tastefully capture more leads around your website.',
+			'dropin_url' => 'https://marketersdelight.com/optins//',
+			'author_url' => 'https://marketersdelight.com/',
+			'settings_url' => 'admin.php?page=md_optins&tab=md_cta',
+			'icon' => 'dashicons-email',
+			'colors' => '#1d2327'
+		),
 		'share' => array(
 			'name' => 'Share',
 			'author' => 'Alex, Marketers Delight',

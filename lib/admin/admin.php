@@ -1,13 +1,14 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Create admin pages, meta boxes, terms, register settings,
  * load custom fields API and run other administrative actions.
  *
  * @since 5.0
  */
-
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_admin {
 
@@ -30,8 +31,8 @@ class md_admin {
 
 	public function includes() {
 		require_once( 'settings/dashboard/dashboard.php' );
-		require_once( 'settings/dropins/dropins.php' );
 		require_once( 'design/design.php' );
+		require_once( 'settings/dropins/dropins.php' );
 		require_once( 'settings/integrations/integrations.php' );
 		require_once( 'updater/updater.php' );
 		if ( md_setting( 'version' ) < '5.0' )

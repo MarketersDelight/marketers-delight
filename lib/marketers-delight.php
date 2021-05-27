@@ -58,7 +58,6 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
-		require_once( MD_DIR . 'lib/functions/email-functions.php' );
 		require_once( MD_DIR . 'lib/functions/design-functions.php' );
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
 		require_once( MD_DIR . 'lib/functions/deprecated.php' );
@@ -70,17 +69,12 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/functions/featured-image.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/functions/classes.php' );
-		require_once( MD_DROPINS_DIR . 'optins/optins.php' );
 		require_once( MD_DROPINS_DIR . 'featured-image/featured-image.php' );
 		require_once( MD_DROPINS_DIR . 'featured-video/featured-video.php' );
 		require_once( MD_DIR . 'lib/wp/optimize.php' );
 		require_once( MD_DIR . 'lib/wp/walker.php' );
-		require_once( MD_DIR . 'lib/wp/shortcodes.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/accordion.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/content-spotlight.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/text-image.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/quote.php' );
-		require_once( MD_DIR . 'lib/wp/widgets/email-form.php' );
+		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
+			include_once( MD_DIR . "lib/wp/widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
 			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
 		if ( md_setting( array( 'content', 'post', 'subtitle' ) ) )
@@ -232,7 +226,6 @@ final class marketers_delight {
 		register_widget( 'md_content_spotlight' );
 		register_widget( 'md_text_image' );
 		register_widget( 'md_quote_widget' );
-		register_widget( 'md_email_form' );
 
 		// Main Sidebar
 		register_sidebar( array(

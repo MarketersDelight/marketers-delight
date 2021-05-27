@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Create Optins admin page.
  *
@@ -16,9 +20,13 @@ class md_optins extends md_api {
 	 */
 
 	public function includes() {
+		require_once( 'template-functions.php' );
 		require_once( 'cta/cta.php' );
 		require_once( 'floating-bars/floating-bars.php' );
 		require_once( 'popups/popups.php' );
+		require_once( 'blocks/blocks.php' );
+		require_once( 'wp/shortcodes.php' );
+		require_once( 'wp/widget-email-form.php' );
 	}
 
 	/**
@@ -33,6 +41,16 @@ class md_optins extends md_api {
 		if ( isset( $_GET['page'] ) && ! isset( $_GET['tab'] ) && $_GET['page'] == $this->_id )
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_filter( 'md_optins_locations', array( $this, 'locations' ) );
+	}
+
+	/**
+	 * Register Optins widgets.
+	 *
+	 * @since 5.3
+	 */
+
+	public function widgets() {
+		register_widget( 'md_email_form' );
 	}
 
 	/**

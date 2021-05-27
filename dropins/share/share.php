@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Main class for MD share.
  *
@@ -32,6 +36,7 @@ class md_share extends md_api {
 		);
 		add_action( 'wp_ajax_md_like', 'md_like' );
 		add_action( 'wp_ajax_nopriv_md_like', 'md_like' );
+		add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
 	}
 
 	/**
@@ -142,6 +147,33 @@ class md_share extends md_api {
 		$fields = array_merge( $fields, apply_filters( 'md_share_buttons', array() ) );
 
 		return $fields;
+	}
+
+	/**
+	 * Load Share Notice Block to MD Blocks system.
+	 *
+	 * @since 5.3
+	 */
+
+	public function blocks( $blocks ) {
+		$blocks['share-notice'] = array(
+			'path' => 'dropins/share/blocks/share-notice.js',
+			'callback' => array( $this, 'share_notice' ),
+			'localize' => array( 'colors' )
+		);
+		return $blocks;
+	}
+
+	/**
+	 * Frontend Share Notice template.
+	 *
+	 * @since 4.9.3
+	 */
+
+	public function share_notice( $attributes, $content ) {
+		ob_start();
+		include( md_template( 'dropins/share', 'blocks/share-notice', true ) );
+		return ob_get_clean();
 	}
 
 	/**

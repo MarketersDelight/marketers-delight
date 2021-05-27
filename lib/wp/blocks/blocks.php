@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Register Block, enqueue assets, build templates.
  *
@@ -8,32 +12,27 @@
 class md_blocks {
 
 	/**
-	 * Block names with callback.
+	 * Block names with callbacks.
 	 *
 	 * @since 4.9.3
 	 */
 
-	public $blocks = array(
-		'email' => array(
-			'callback' => 'email',
-			'localize' => array( 'colors', 'email' )
-		),
-		'content-upgrade' => array(
-			'callback' => 'content_upgrade',
-			'localize' => array( 'colors', 'popups', 'icons' )
-		),
-		'callout' => array(
-			'callback' => 'callout',
-			'localize' => array( 'colors', 'popups', 'icons' )
-		),
-		'share-notice' => array(
-			'callback' => 'share_notice',
-			'localize' => array( 'colors' )
-		),
-		'arrow' => array(
-			'callback' => 'arrow'
-		)
-	);
+	public function blocks() {
+		$blocks = array(
+			'arrow' => array(
+				'callback' => array( $this, 'arrow' )
+			),
+			'content-upgrade' => array(
+				'callback' => array( $this, 'content_upgrade' ),
+				'localize' => array( 'colors', 'popups', 'icons' )
+			),
+			'callout' => array(
+				'callback' => array( $this, 'callout' ),
+				'localize' => array( 'colors', 'popups', 'icons' )
+			)
+		);
+		return apply_filters( 'md_filter_blocks', $blocks );
+	}
 
 	/**
 	 * Run block registration, hooks and other core actions for MD Blocks.
@@ -56,9 +55,9 @@ class md_blocks {
 	 */
 
 	public function register() {
-		foreach ( $this->blocks as $block => $fields )
+		foreach ( $this->blocks() as $block => $fields )
 			register_block_type( "marketers-delight/{$block}", array(
-				'render_callback' => array( $this, $fields['callback'] )
+				'render_callback' => $fields['callback']
 			) );
 	}
 
@@ -103,9 +102,10 @@ class md_blocks {
 			md_enqueue_fonts();
 
 		// Load Blocks JS
-		foreach ( $this->blocks as $block => $fields ) {
-			$path = "lib/wp/blocks/{$block}.js";
-			wp_enqueue_script( "md-block-{$block}", MD_URL . $path, array( 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path ) );
+		foreach ( $this->blocks() as $block => $fields ) {
+			$dir = isset( $fields['dir'] ) ? $fields['dir'] : MD_URL;
+			$path = isset( $fields['path'] ) ? $fields['path'] : "lib/wp/blocks/{$block}.js";
+			wp_enqueue_script( "md-block-{$block}", "{$dir}$path", array( 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path ) );
 			if ( isset( $fields['localize'] ) )
 				wp_localize_script( "md-block-{$block}", 'MDBlocks', $this->localized_scripts( $fields['localize'] ) );
 		}
@@ -127,8 +127,6 @@ class md_blocks {
 
 	public function localized_scripts( $data ) {
 		$scripts = array();
-		$popups = md_setting( array( 'popups', 'popups' ) );
-		$email = md_email_data( array( 'show' => 'names', 'label' => true, 'empty_label' => true ) );
 
 		if ( in_array( 'colors' , $data ) )
 			foreach ( md_editor_colors() as $group => $fields ) {
@@ -136,20 +134,13 @@ class md_blocks {
 				$scripts['colors']['hex'][$fields['color']] = esc_attr( $fields['slug'] );
 			}
 
-		if ( in_array( 'email', $data ) && ! empty( $email ) )
-			foreach ( $email as $list => $name )
-				$scripts['email'][] = array( 'label' => $name, 'value' => $list );
-
-		if ( in_array( 'popups', $data ) && ! empty( $popups ) )
-			foreach ( $popups as $popup => $fields )
-				$scripts['popups'][] = array( 'label' => $fields['name'], 'value' => $popup );
-
 		if ( in_array( 'icons', $data ) )
 			foreach ( md_icons() as $icon => $fields ) {
 				$label = ! empty( $fields['label'] ) ? $fields['label'] : $icon;
 				$scripts['icons'][] = array( 'label' => $label, 'value' => "md-icon-$icon" );
 			}
-		return $scripts;
+
+		return apply_filters( 'md_filter_blocks_scripts', $scripts, $data );
 	}
 
 	/**
@@ -165,53 +156,30 @@ class md_blocks {
 	}
 
 	/**
-	 * Frontend Email template.
-	 *
-	 * @since 4.9
-	 */
-
-	public function email( $attributes, $content ) {
-		ob_start();
-		include( md_template( 'blocks/email', true ) );
-		return ob_get_clean();
-	}
-
-	/**
 	 * Frontend Content Upgrade template.
 	 *
 	 * @since 4.9.3
 	 */
-
+	
 	public function content_upgrade( $attributes, $content ) {
 		ob_start();
 		include( md_template( 'blocks/content-upgrade', true ) );
 		return ob_get_clean();
 	}
-
+	
 	/**
 	 * Frontend Callout template.
 	 *
 	 * @since 4.9.3
 	 */
-
+	
 	public function callout( $attributes, $content ) {
 		ob_start();
 		include( md_template( 'blocks/callout', true ) );
 		return ob_get_clean();
 	}
 
-	/**
-	 * Frontend Share Notice template.
-	 *
-	 * @since 4.9.3
-	 */
-
-	public function share_notice( $attributes, $content ) {
-		ob_start();
-		include( md_template( 'blocks/share-notice', true ) );
-		return ob_get_clean();
-	}
-
 }
+
 $md_blocks = new md_blocks;
 $md_blocks->init();

@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Call this function to load MD template files. Checks the /content/
  * and /templates/ folder in child themes first, if not found loads
@@ -14,9 +18,6 @@
  *
  * @since 5.0
  */
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_template( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
@@ -640,54 +641,6 @@ function md_page_data() {
 			'excerpt' => get_post_field( 'post_excerpt', $id )
 		);
 	}
-}
-
-/**
- * Call a new popup instance only if popup is not on page.
- *
- * @since 5.0
- */
-
-function md_popup( $args ) {
-	if ( ! in_array( $args['id'], md_filter_popups() ) )
-		new md_popup( $args );
-}
-
-/**
- * Get MD Popups data in various formats.
- *
- * @since 5.0
- */
-
-function md_get_popups( $show = null ) {
-	$popups = array();
-	$option = md_setting( array( 'popups', 'popups' ) );
-
-	if ( ! empty( $option ) ) {
-		if ( $show == 'ids' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
-					$popups[] = $popup;
-			return $popups;
-		}
-		if ( $show == 'options' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
-					$popups[$popup] = $fields['name'];
-			return $popups;
-		}
-	}
-	return $option;
-}
-
-/**
- * If no service is connected, display this message.
- *
- * @since 4.5
- */
-
-function md_popup_connect_notice() {
-	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
 }
 
 /**

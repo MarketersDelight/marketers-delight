@@ -14,10 +14,9 @@ class md_site_design extends md_api {
 	 */
 
 	public function includes() {
-		if ( is_admin() ) {
+		if ( is_admin() )
 			foreach ( array( 'colors', 'typography', 'icons', 'layout', 'header', 'content', 'loop', 'sidebars' ) as $file )
 				require_once( "{$file}/{$file}.php" );
-		}
 	}
 
 	/**

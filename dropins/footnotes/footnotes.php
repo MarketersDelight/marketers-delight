@@ -16,6 +16,7 @@ class md_footnotes extends md_api {
 	public function actions() {
 		add_filter( 'post_class', array( $this, 'post_classes' ) );
 		add_filter( 'the_content', array( $this, 'footnotes_list' ) );
+		add_shortcode( 'fn', array( $this, 'shortcode' ) );
 	}
 
 	/**
@@ -66,6 +67,31 @@ class md_footnotes extends md_api {
 		if ( ( md_has_sidebar() && ! empty( $footnotes ) ) || ! empty( $footnotes['after_post']['toggle'] ) )
 			$classes[] = 'toggle-footnotes';
 		return $classes;
+	}
+
+	/**
+	 * [fn] shortcode template.
+	 *
+	 * @since 4.5
+	 */
+
+	public function shortcode( $atts ) {
+		extract( shortcode_atts( array(
+			'id' => '',
+			'align' => ''
+		), $atts, 'footnote' ) );
+		static $i = 1;
+		$id = ! empty( $atts['id'] ) ? $atts['id'] : '';
+		$footnotes = md_post_meta( array( 'footnotes' ) );
+
+		if ( empty( $footnotes['footnotes'][$id] ) )
+			return;
+
+		$url = get_permalink();
+		$align = ( $i % 2 == 0 || ( isset( $atts['align'] ) && $atts['align'] == 'right' ) ? ' right' : '' );
+		ob_start();
+		include( md_template( 'dropins', 'footnotes/footnote', true ) );
+		return ob_get_clean();
 	}
 
 	/**
