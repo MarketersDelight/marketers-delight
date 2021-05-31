@@ -56,8 +56,6 @@
 							'label' => __( 'Content', 'md' ),
 							'options' => array(
 								'breadcrumbs' => __( 'Enable breadcrumbs', 'md' ),
-								'subtitle' => __( 'Enable subtitle', 'md' ),
-								'footnotes' => __( 'Enable footnotes', 'md' ),
 								'blocks' => __( 'Disable MD editor blocks', 'md' ),
 							)
 						) ); ?>

@@ -1,13 +1,13 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Filter body classes.
  *
  * @since 4.1
  */
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_body_classes( $classes ) {
 	// Add custom body classes

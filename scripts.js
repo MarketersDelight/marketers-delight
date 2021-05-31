@@ -50,9 +50,11 @@ window.MD = {
 		}
 	},
 	headerMenu: function() {
-		document.getElementById( 'header-menu-trigger' ).onclick = function( e ) {
-			MD.toggleClass( document.getElementById( 'header' ), 'has-mobile-menu' );
-		}
+		var headerTrigger = document.getElementById( 'header-menu-trigger' );
+		if ( headerTrigger )
+			headerTrigger.onclick = function( e ) {
+				MD.toggleClass( document.getElementById( 'header' ), 'has-mobile-menu' );
+			}
 	},
 	mainMenu: function() {
 		var mainMenu = document.getElementById( 'main_menu' ),

@@ -68,8 +68,11 @@ class md_license extends md_api {
 
 	public function after_update() {
 		$version = md_setting( array( 'version' ) );
-		if ( empty( $version ) || $version < MD_VERSION ) {
 			include_once( 'versions.php' );
+			marketers_delight_53();
+
+		if ( empty( $version ) || $version < MD_VERSION ) {
+//			include_once( 'versions.php' );
 
 			if ( $version < '4.9' )
 				marketers_delight_49();

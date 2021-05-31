@@ -21,6 +21,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_template( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
+	$directory = MD_DIR;
+
 	if ( isset( $path ) && is_string( $path ) ) {
 		$dir = $file;
 		$file = $path;
@@ -45,7 +47,12 @@ function md_template( $file, $path = null, $include = null ) {
 			else
 				$template_path .= "$part.php";
 
-		$template = MD_DIR . "$dir/$template_path";
+		if ( $dir == 'dropins' ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
+		}
+
+		$template = "{$directory}$dir/$template_path";
 
 		if ( ! file_exists( $template ) )
 			return;
@@ -58,32 +65,6 @@ function md_template( $file, $path = null, $include = null ) {
 }
 
 /**
- * Call templates from Drop-ins that live in wp-content/md-dropins/ but load
- * from child theme templates directory if overriden.
- *
- * @since 5.3
- */
-
-function md_dropin_template( $file, $include = null ) {
-	$ext = '.php';
-	$file_name = "/$file{$ext}";
-	$dir = MD_INSTALLED_DROPINS . $file_name;
-	$template = locate_template( "dropins/$file_name" );
-
-	if ( $template )
-		if ( isset( $include ) )
-			return $template;
-		else
-			return load_template( $template, false );
-
-	if ( file_exists( $dir ) )
-		if ( isset( $include ) )
-			return $dir;
-		else
-			include( $dir );
-}
-
-/**
  * Call this function to load CSS template from child theme
  * or use default templates.
  *
@@ -92,6 +73,7 @@ function md_dropin_template( $file, $include = null ) {
 
 function md_css( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
+	$directory = MD_DIR;
 
 	if ( isset( $path ) && is_string( $path ) ) {
 		$dir = $file;
@@ -104,16 +86,22 @@ function md_css( $file, $path = null, $include = null ) {
 		$parts_keys = array_keys( $parts );
 		$file_key = end( $parts_keys );
 	}
+
 	$template = locate_template( "css/$file.php" );
 
 	if ( ! $template ) {
-		foreach ( $parts as $part_key => $part ) {
+		foreach ( $parts as $part_key => $part )
 			if ( $part_key != $file_key )
 				$template_path .= "$part/";
 			else
 				$template_path .= $part;
+
+		if ( $dir == 'dropins' ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
 		}
-		$template = MD_DIR . "$dir/$template_path";
+
+		$template = "{$directory}$dir/$template_path";
 	}
 
 	if ( file_exists( "$template.php" ) )
@@ -280,7 +268,7 @@ function md_ver( $file, $path = null ) {
  */
 
 function md_has( $dropin ) {
-	$enabled = md_get_dropins( null, 'active' );
+	$enabled = md_get_dropins( 'active' );
 	if ( in_array( $dropin, $enabled ) )
 		return true;
 }
@@ -291,24 +279,15 @@ function md_has( $dropin ) {
  * @since 5.3
  */
 
-function md_get_dropins( $type = null, $status = null ) {
+function md_get_dropins( $status = null ) {
 	$dropins = array();
-	if ( $type == null || $type == 'core' )
-		foreach ( md_setting( array( 'dropins', 'core' ), array() ) as $dropin => $fields )
-			if (
-				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
-				$status == null
-			)
-				$dropins[] = esc_attr( $dropin );
-	if ( $type == null || $type == 'installed' )
-		foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
-			if (
-				( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-				( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
-				$status == null
-			)
-				$dropins[] = esc_attr( $dropin );
+	foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
+		if (
+			( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
+			( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+			$status == null
+		)
+			$dropins[] = esc_attr( $dropin );
 	return $dropins;
 }
 
@@ -641,52 +620,4 @@ function md_page_data() {
 			'excerpt' => get_post_field( 'post_excerpt', $id )
 		);
 	}
-}
-
-/**
- * Like counter on AJAX request.
- *
- * @since 4.9.2
- */
-
-function md_like() {
-	if ( wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) ) {
-		$id = esc_attr( $_POST['post_id'] );
-		$post_type = get_post_type( $id );
-		$option = md_setting();
-		$is_archive = isset( $_POST['archive'] ) && $_POST['archive'] == 'true' ? true : false;
-		if ( $is_archive )
-			$meta = md_term_meta( null, $id );
-		else
-			$meta = md_post_meta( null, $id );
-		if ( empty( $meta['share']['likes'] ) )
-			$meta['share']['likes'] = '';
-		$meta['share']['likes']++;
-		if ( empty( $option['share']["{$post_type}_likes"] ) )
-			$option['share']["{$post_type}_likes"] = '';
-		$option['share']["{$post_type}_likes"]++;
-		if ( $is_archive )
-			update_term_meta( $id, 'marketers_delight', $meta );
-		else
-			update_post_meta( $id, 'marketers_delight', $meta );
-		update_option( 'marketers_delight', $option );
-	}
-	wp_die();
-}
-
-/**
- * Get share icons.
- *
- * @since 5.0
- */
-
-function md_share_icons( $group = null ) {
-	$icons = array();
-	$option = md_setting( array( 'share', 'icons' ) );
-	if ( ! empty( $option ) )
-		foreach( $option as $icon => $fields )
-			$icons[$fields['status']][] = $icon;
-	if ( isset( $group ) )
-		$icons = $icons[$group];
-	return $icons;
 }

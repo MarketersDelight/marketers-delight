@@ -7,7 +7,6 @@
 
 class md_stream_templates {
 
-	public $dir = 'dropins';
 	public $taxonomy_label = 'stream_categories';
 
 	/**
@@ -131,7 +130,7 @@ class md_stream_templates {
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		$title_classes = isset( $args['title_classes'] ) ? ' ' . $args['title_classes'] : ' med-title';
 		if ( $archives_title || $archives_desc )
-			include( md_template( $this->dir, 'stream/stream-title', true ) );
+			include( md_template( 'dropins', 'stream/stream-title', true ) );
 	}
 
 	/**
@@ -156,7 +155,7 @@ class md_stream_templates {
 		$loop = null;
 		$loop_h = is_post_type_archive( 'stream' ) || is_tax( 'stream' ) ? 'div' : 'article';
 		$article_h = is_singular( 'stream' ) ? 'div' : 'article';		
-		include( md_template( $this->dir, 'stream/stream-loop', true ) );
+		include( md_template( 'dropins', 'stream/stream-loop', true ) );
 	}
 
 	/**
@@ -196,7 +195,7 @@ class md_stream_templates {
 		if ( in_array( $post_id, get_option( 'sticky_posts' ) ) )
 			$classes[] = 'sticky';
 		$classes = join( ' ', $classes );
-		include( md_template( $this->dir, 'stream/stream-post', true ) );
+		include( md_template( 'dropins', 'stream/stream-post', true ) );
 		if ( $stream_image )
 			if ( class_exists( 'md_popup' ) )
 				new md_popup( array(
@@ -218,7 +217,7 @@ class md_stream_templates {
 				$post_content = $fields['text'];
 				$image_id = ! empty( $fields['image']['id'] ) ? esc_attr( $fields['image']['id'] ) : '';
 				$stream_image = wp_get_attachment_image( $image_id, 'thumbnail' );
-				include( md_template( $this->dir, 'stream/stream-post', true ) );
+				include( md_template( 'dropins', 'stream/stream-post', true ) );
 				if ( class_exists( 'md_popup' ) && $stream_image )
 					md_popup( array(
 						'id' => "stream_{$post_id}",
@@ -265,7 +264,7 @@ class md_stream_templates {
 	public function byline( $post_id, $embed_id, $post_type, $args = null ) {
 		$types = $this->types();
 		$is_embed = ! empty( $args['is_embed'] ) ? true : null;
-		include( md_template( $this->dir, 'stream/stream-byline', true ) );
+		include( md_template( 'dropins', 'stream/stream-byline', true ) );
 	}
 
 	/**
@@ -275,7 +274,7 @@ class md_stream_templates {
 	 */
 
 	public function popup( $atts ) {
-		include( md_template( $this->dir, 'stream/stream-popup', true ) );
+		include( md_template( 'dropins', 'stream/stream-popup', true ) );
 	}
 
 }

@@ -23,7 +23,7 @@
 					'popup' => $fields['button_popup'],
 					'bg_color' => $fields['button_color'],
 					'color' => $fields['button_text_color'],
-					'text' => $fields['button_text']
+					'text' => ! empty( $fields['button_text'] ) ? $fields['button_text'] : __( 'Get Access Now', 'md' )
 				) ); ?>
 			<?php elseif ( $fields['cta_type'] == 'email' && $fields['email_list'] != 'custom_html' ) : ?>
 				<?php md_email_form(

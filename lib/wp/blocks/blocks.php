@@ -103,9 +103,10 @@ class md_blocks {
 
 		// Load Blocks JS
 		foreach ( $this->blocks() as $block => $fields ) {
-			$dir = isset( $fields['dir'] ) ? $fields['dir'] : MD_URL;
+			$dir_url = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS_URL ) : MD_URL;
+			$dir = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS ) : null;
 			$path = isset( $fields['path'] ) ? $fields['path'] : "lib/wp/blocks/{$block}.js";
-			wp_enqueue_script( "md-block-{$block}", "{$dir}$path", array( 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path ) );
+			wp_enqueue_script( "md-block-{$block}", "{$dir_url}$path", array( 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path, $dir ) );
 			if ( isset( $fields['localize'] ) )
 				wp_localize_script( "md-block-{$block}", 'MDBlocks', $this->localized_scripts( $fields['localize'] ) );
 		}

@@ -9,8 +9,6 @@
 
 class md_stream extends md_api {
 
-	public $dir = 'dropins';
-
 	/**
 	 * Include Stream files.
 	 *
@@ -18,7 +16,7 @@ class md_stream extends md_api {
 	 */
 
 	public function includes() {
-		require_once( 'templates.php' );
+		require_once( 'templates/templates.php' );
 		require_once( 'widget.php' );
 	}
 
@@ -298,7 +296,7 @@ class md_stream extends md_api {
 	 */
 
 	public function admin_page() {
-		include( md_template( $this->dir, 'stream/admin/stream-settings', true ) );
+		include( md_template( 'dropins', 'stream/admin/stream-settings', true ) );
 	}
 
 	/**
@@ -308,7 +306,7 @@ class md_stream extends md_api {
 	 */
 
 	public function meta_box() {
-		include( md_template( $this->dir, 'stream/admin/stream-meta', true ) );
+		include( md_template( 'dropins', 'stream/admin/stream-meta', true ) );
 	}
 
 	/**
@@ -318,7 +316,7 @@ class md_stream extends md_api {
 	 */
 
 	public function thread( $group, $field ) {
-		include( md_template( $this->dir, 'stream/admin/stream-thread-meta', true ) );
+		include( md_template( 'dropins', 'stream/admin/stream-thread-meta', true ) );
 	}
 
 }

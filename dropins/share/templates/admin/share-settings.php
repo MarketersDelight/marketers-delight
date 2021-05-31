@@ -40,7 +40,7 @@
 	<hr />
 </div>
 <div class="md-content-wrap-wide">
-	<?php include( md_template( $this->dir, 'share/admin/share-icons', true ) ); ?>
+	<?php include( md_template( 'dropins', 'share/admin/share-icons', true ) ); ?>
 	<hr class="md-sep-small" />
 	<?php $this->fields->save(); ?>
 	<?php foreach ( $post_types as $post_type ) : ?>

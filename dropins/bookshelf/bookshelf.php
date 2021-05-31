@@ -8,7 +8,6 @@
 class md_bookshelf extends md_api {
 
 	public $taxonomy_label = 'bookshelf_categories';
-	public $dir = 'dropins';
 	public $slug;
 
 	/**
@@ -187,7 +186,7 @@ class md_bookshelf extends md_api {
 	 */
 
 	public function admin_page() {
-		include( md_template( $this->dir, 'bookshelf/admin/bookshelf-settings', true ) );
+		include( md_template( 'dropins', 'bookshelf/admin/bookshelf-settings', true ) );
 	}
 
 	/**
@@ -197,7 +196,7 @@ class md_bookshelf extends md_api {
 	 */
 
 	public function meta_box() {
-		include( md_template( $this->dir, 'bookshelf/admin/bookshelf-meta', true ) );
+		include( md_template( 'dropins', 'bookshelf/admin/bookshelf-meta', true ) );
 	}
 
 }

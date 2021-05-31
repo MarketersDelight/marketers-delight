@@ -11,7 +11,7 @@
 				while ( $query->have_posts() ) {
 					$query->the_post();
 					$post = $this->the_post();
-					include( md_template( $this->dir, 'bookshelf/bookshelf-post', true ) );
+					include( md_template( 'dropins', 'bookshelf/bookshelf-post', true ) );
 					$c++; $cc++;
 				}
 		}
@@ -19,7 +19,7 @@
 			while ( have_posts() ) {
 				the_post();
 				$post = $this->the_post();
-				include( md_template( $this->dir, 'bookshelf/bookshelf-post', true ) );
+				include( md_template( 'dropins', 'bookshelf/bookshelf-post', true ) );
 				$c++; $cc++;
 			}
 		wp_reset_postdata();

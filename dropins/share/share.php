@@ -12,13 +12,22 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class md_share extends md_api {
 
 	/**
+	 * Included files.
+	 *
+	 * @since 5.3
+	 */
+	
+	public function includes() {
+		require_once( 'templates/template-functions.php' );
+	}
+
+	/**
 	 * Fire actions, filters, and set properties.
 	 *
 	 * @since 5.0
 	 */
 
 	public function actions() {
-		$this->dir = 'dropins';
 		$this->floating = array(
 			'post' => __( 'Side of post', 'md' ),
 			'left' => __( 'Left side of screen', 'md' ),
@@ -157,7 +166,8 @@ class md_share extends md_api {
 
 	public function blocks( $blocks ) {
 		$blocks['share-notice'] = array(
-			'path' => 'dropins/share/blocks/share-notice.js',
+			'dropins' => true,
+			'path' => 'share/share-notice.js',
 			'callback' => array( $this, 'share_notice' ),
 			'localize' => array( 'colors' )
 		);
@@ -172,7 +182,7 @@ class md_share extends md_api {
 
 	public function share_notice( $attributes, $content ) {
 		ob_start();
-		include( md_template( 'dropins/share', 'blocks/share-notice', true ) );
+		include( md_template( 'dropins', 'share/share-notice', true ) );
 		return ob_get_clean();
 	}
 
@@ -325,7 +335,7 @@ class md_share extends md_api {
 		$post_types = md_share_post_types();
 		foreach ( $post_types as $post_type )
 			$types[$post_type] = ucwords( $post_type );
-		include( md_template( $this->dir, 'share/admin/share-settings', true ) );
+		include( md_template( 'dropins', 'share/admin/share-settings', true ) );
 	}
 
 	/**
@@ -380,7 +390,7 @@ class md_share extends md_api {
 		$floating = md_setting( array( 'share', 'floating' ) );
 		foreach ( $post_types as $post_type )
 			$types[$post_type] = ucwords( $post_type );
-		include( md_template( $this->dir, 'share/admin/share-meta', true ) );
+		include( md_template( 'dropins', 'share/admin/share-meta', true ) );
 	}
 
 	/**
@@ -570,7 +580,7 @@ class md_share extends md_api {
 				$action = ' data-share-id="' . esc_attr( $post_id ) . '" data-share-type="' . esc_attr( $post_type ) . '"';
 				$action .= ' data-share-archive="' . ( is_category() || is_tax() ? 'true' : 'false' ) . '"';
 			}
-			include( md_template( $this->dir, 'share/share', true ) );
+			include( md_template( 'dropins', 'share/share', true ) );
 		}
 
 		echo "</$html>";

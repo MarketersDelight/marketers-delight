@@ -47,7 +47,7 @@ class md_content extends md_api {
 					),
 					'post' => array(
 						'type' => 'checkbox',
-						'options' => array( 'breadcrumbs', 'subtitle', 'footnotes', 'blocks' )
+						'options' => array( 'breadcrumbs', 'blocks' )
 					),
 					'sidebar' => array(
 						'type' => 'checkbox',

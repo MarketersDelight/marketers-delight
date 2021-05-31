@@ -54,7 +54,7 @@
 	)
 ) ); ?>
 <div id="md_share_buttons" style="display: <?php echo $this->fields->module( 'buttons' ) ? 'block' : 'none'; ?>">
-	<?php include( md_template( $this->dir, 'share/admin/share-icons', true ) ); ?>
+	<?php include( md_template( 'dropins', 'share/admin/share-icons', true ) ); ?>
 </div>
 <?php $this->fields->field( 'likes', array(
 	'type' => 'text',

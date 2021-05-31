@@ -14,7 +14,7 @@ class MD_Customize_Control_Range extends WP_Customize_Control {
 	public $unit = 'px';
 
 	public function enqueue() {
-		wp_enqueue_script( 'md-range', MD_URL . 'dropins/optins/popups/customize/controls/range.js', array( 'jquery' ), false, true );
+		wp_enqueue_script( 'md-range', MD_INSTALLED_DROPINS_URL . '/optins/popups/customize/controls/range.js', array( 'jquery' ), false, true );
 	}
 
 	public function to_json() {

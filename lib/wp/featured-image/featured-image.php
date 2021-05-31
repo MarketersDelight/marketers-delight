@@ -8,6 +8,10 @@
 
 class md_featured_image extends md_api {
 
+	public function includes() {
+		require_once( 'template-functions.php' );
+	}
+
 	/**
 	 * Run actions and filters.
 	 *

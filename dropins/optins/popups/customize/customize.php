@@ -62,7 +62,7 @@ class md_popups_customize {
 	 */
 
 	public function preview_scripts() {
-		wp_enqueue_script( 'md-popups-preview', MD_URL . 'dropins/optins/popups/customize/preview.js', array( 'customize-preview' ), md_ver( 'dropins/optins/popups/customize/preview.js' ), true );
+		wp_enqueue_script( 'md-popups-preview', MD_INSTALLED_DROPINS_URL . '/optins/popups/customize/preview.js', array( 'customize-preview' ), md_ver( '/optins/popups/customize/preview.js', MD_INSTALLED_DROPINS ), true );
 		wp_localize_script( 'md-popups-preview', 'mdPopups', array(
 			'popups' => md_get_popups( 'ids' ),
 			'popupsDesigner' => get_site_url() . '?popups_designer&popup_id=' . ( ! empty( $_GET['popups_designer']['popup'] ) ? $_GET['popups_designer']['popup'] : '' )
@@ -76,10 +76,10 @@ class md_popups_customize {
 	 */
 
 	public function controls_enqueue() {
-		$css_path = 'dropins/optins/popups/customize/controls/controls.css';
-		$js_path = 'dropins/optins/popups/customize/controls/controls.js';
-		wp_enqueue_style( 'md-customize-controls', MD_URL . $css_path, array(), md_ver( $css_path ) );
-		wp_enqueue_script( 'md-popups-controls', MD_URL . $js_path, array( 'customize-controls' ), md_ver( $js_path ), true );
+		$css_path = '/optins/popups/customize/controls/controls.css';
+		$js_path = '/optins/popups/customize/controls/controls.js';
+		wp_enqueue_style( 'md-customize-controls', MD_INSTALLED_DROPINS_URL . $css_path, array(), md_ver( $css_path, MD_INSTALLED_DROPINS ) );
+		wp_enqueue_script( 'md-popups-controls', MD_INSTALLED_DROPINS_URL . $js_path, array( 'customize-controls' ), md_ver( $js_path, MD_INSTALLED_DROPINS ), true );
 		wp_localize_script( 'md-popups-controls', 'mdPopups', array(
 			'popups' => md_get_popups( 'ids' ),
 			'popupsDesigner' => get_site_url() . '?popups_designer&popup_id=' . ( ! empty( $_GET['popups_designer']['popup'] ) ? $_GET['popups_designer']['popup'] : '' ),
@@ -95,6 +95,7 @@ class md_popups_customize {
 	public function template() {
 		add_filter( 'md_filter_has_header', '__return_false' );
 		add_filter( 'md_filter_has_template', '__return_false' );
+		add_filter( 'md_filter_has_content_box', '__return_false' );
 		add_filter( 'md_filter_has_footer', '__return_false' );
 		md_popup( array( 'id' => $_GET['id'] ) );
 	}

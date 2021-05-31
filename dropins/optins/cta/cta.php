@@ -7,8 +7,6 @@
 
 class md_cta extends md_api {
 
-	public $dir = 'dropins/optins';
-
 	/**
 	 * Include files for Floating Bars.
 	 *
@@ -61,7 +59,7 @@ class md_cta extends md_api {
 	 */
 
 	public function admin_page() {
-		include( md_template( $this->dir, 'cta/admin/cta-settings', true ) );
+		include( md_template( 'dropins', 'optins/admin/cta-settings', true ) );
 	}
 
 	/**
@@ -77,7 +75,7 @@ class md_cta extends md_api {
 		$button_type = md_setting( array( 'cta', 'forms', $field, 'button_type' ) );
 		$data = md_setting( 'integrations' );
 		$email_data = md_email_data();
-		include( md_template( $this->dir, 'cta/admin/cta-fields', true ) );
+		include( md_template( 'dropins', 'optins/admin/cta-fields', true ) );
 	}
 
 	/**
@@ -334,7 +332,7 @@ class md_cta extends md_api {
 			'bg_size' => ! empty( $fields['bg_image_style'] ) ? 'auto' : '',
 			'color' => ! empty( $fields['text_color'] ) ? $fields['text_color'] : $colors['text_color']['color']
 		);
-		include( md_template( $this->dir, 'cta/cta', true ) );
+		include( md_template( 'dropins', 'optins/cta', true ) );
 	}
 
 }

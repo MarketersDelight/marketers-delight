@@ -7,8 +7,6 @@
 
 class md_floating_bars extends md_api {
 
-	public $dir = 'dropins/optins';
-
 	/**
 	 * Include files for Floating Bars.
 	 *
@@ -58,7 +56,7 @@ class md_floating_bars extends md_api {
 	 */
 
 	public function admin_page() {
-		include( md_template( $this->dir, 'floating-bars/admin/floating-bars-settings', true ) );
+		include( md_template( 'dropins', 'optins/admin/floating-bars-settings', true ) );
 	}
 
 	/**
@@ -76,7 +74,7 @@ class md_floating_bars extends md_api {
 		$show = md_setting( array( 'floating_bars', 'bars', $field, 'show' ) );
 		$colors = $this->data->colors();
 		$icons = md_get_icons( 'options', null, 'md-icon-' );
-		include( md_template( $this->dir, 'floating-bars/admin/floating-bar-fields', true ) );
+		include( md_template( 'dropins', 'optins/admin/floating-bar-fields', true ) );
 	}
 
 	/**
@@ -199,7 +197,7 @@ class md_floating_bars extends md_api {
 		$content_width = ! empty( $fields['content_width'] ) ? $fields['content_width'] : '';
 		$cta_width = ! empty( $fields['cta_width'] ) ? $fields['cta_width'] : '';
 		$image_width = ! empty( $fields['image_width'] ) ? $fields['image_width'] : '';
-		include( md_template( $this->dir, 'floating-bars/floating-bar', true ) );
+		include( md_template( 'dropins', 'optins/floating-bar', true ) );
 	}
 
 }

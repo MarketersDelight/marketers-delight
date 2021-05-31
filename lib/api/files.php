@@ -1,12 +1,13 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Create file uploader class and actions.
  *
  * @since 5.2.3
  */
-
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_files {
 
@@ -30,7 +31,7 @@ class md_files {
 			return;
 		}
 
-		global $wp_filesystem;		
+		global $wp_filesystem;
 		$dropin_id = ! empty( $_POST['dropin_id'] ) ? $_POST['dropin_id'] : '';
 		$action = ! empty( $_POST['upload_action'] ) ? $_POST['upload_action'] : '';
 		if ( isset( $args['action'] ) )
@@ -40,6 +41,8 @@ class md_files {
 	 		$this->file_upload( $action, $_FILES, $wp_filesystem, array(
 		 		'accept' => ! empty( $_POST['accept'] ) ? $_POST['accept'] : array()
 	 		) );
+	 	elseif ( $action == 'move-dropins' )
+	 		$this->move_dropins( $wp_filesystem );
 	 	elseif ( $action == 'delete-dropin' )
 	 		$this->delete_dropin( $dropin_id, $wp_filesystem );
 
@@ -67,34 +70,18 @@ class md_files {
 		if ( $action == 'md_dropin' && $extension == 'zip' ) {
 			$uploads_dir = MD_INSTALLED_DROPINS;
 
-			if ( ! $wp_filesystem->exists( $uploads_dir ) )
+			if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
 				$wp_filesystem->mkdir( $uploads_dir );
-
-			$this->create_protection_file( $uploads_dir );
+				$this->create_protection_file( $uploads_dir );
+			}
 
 			if ( $wp_filesystem->exists( "$uploads_dir/$dir_name" ) )
 				$wp_filesystem->delete( "$uploads_dir/$dir_name", true );
 
 			if ( unzip_file( $files['file']['tmp_name'], $uploads_dir ) ) {
-				$option = md_setting();
 				$uploaded_files = $wp_filesystem->dirlist( $uploads_dir );
-				foreach ( $uploaded_files as $file => $fields ) {
-					$upload_file = "$uploads_dir/$file/$file.php";
-					$upload_dir = "$uploads_dir/$file";
-					if ( $wp_filesystem->is_dir( $upload_dir ) )
-						$this->create_protection_file( $upload_dir );
-					if ( $wp_filesystem->exists( $upload_file ) ) {
-						$config = "$uploads_dir/$file/config.json";
-						if ( $wp_filesystem->exists( $config ) ) {
-							$json = $wp_filesystem->get_contents( $config );
-							$data = json_decode( $json, true );
-							foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class' ) as $setting )
-								if ( ! empty ( $data[$setting] ) )
-									$option['dropins']['installed'][$file][$setting] = $data[$setting];
-						}
-					}
-				}
-				update_option( 'marketers_delight', $option );
+				foreach ( $uploaded_files as $file => $fields )
+					$this->activate_dropin( $file, $uploads_dir, $wp_filesystem );
 			}
 		}
 		elseif ( $action == 'md_icons' && $extension == 'json' ) {
@@ -105,14 +92,79 @@ class md_files {
 	}
 
 	/**
-	 * Create blank index file if not found.
+	 * Move Core Drop-ins to /wp-content/md-dropins/ folder.
 	 *
 	 * @since 5.3
 	 */
 
-	public function create_protection_file( $upload_dir = MD_DROPINS_DIR ) {
-		if ( ! file_exists( "$upload_dir/index.php" ) && wp_is_writable( $upload_dir ) )
-			file_put_contents( "$upload_dir/index.php", "<?php\n// Silence is golden." );
+	public function move_dropins( $wp_filesystem, $files = null ) {
+		$core_dir = MD_DROPINS_DIR;
+		$files = isset( $files ) ? $files : md_get_dropins();
+
+		if ( $wp_filesystem->exists( $core_dir ) ) {
+			$core_dropins = $wp_filesystem->dirlist( $core_dir );
+			$installed_dir = MD_INSTALLED_DROPINS;
+			if ( ! $wp_filesystem->exists( $installed_dir ) ) {
+				$wp_filesystem->mkdir( $installed_dir );
+				$this->create_protection_file( $installed_dir );
+			}
+			foreach ( $core_dropins as $file => $fields ) {
+				$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
+				if ( ! in_array( $file, $files ) ) {
+//					$installed_dropins = $wp_filesystem->dirlist( $installed_dir );
+					$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
+				}
+			}
+			if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
+				$wp_filesystem->delete( $core_dir );
+		}
+	}
+
+	/**
+	 * Verify Drop-in into MD's system by saving config data,
+	 * activate if told to.
+	 *
+	 * @since 5.3
+	 */
+
+	public function activate_dropin( $file, $uploads_dir, $wp_filesystem ) {
+		$option = md_setting();
+		$upload_file = "$uploads_dir/$file/$file.php";
+		$upload_dir = "$uploads_dir/$file";
+		if ( $wp_filesystem->is_dir( $upload_dir ) )
+			$this->create_protection_file( $upload_dir );
+		if ( $wp_filesystem->exists( $upload_file ) ) {
+			$config = "$uploads_dir/$file/config.json";
+			if ( $wp_filesystem->exists( $config ) ) {
+				$json = $wp_filesystem->get_contents( $config );
+				$data = json_decode( $json, true );
+				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'active' ) as $setting ) {
+					if ( ! empty( $data[$setting] ) )
+						$option['dropins']['installed'][$file][$setting] = $data[$setting];
+					if ( $setting == 'active' && ! empty( $data[$setting] ) )
+						$option['dropins']['installed'][$file]['status']['enable'] = true;
+				}
+				$wp_filesystem->delete( $config );
+			}
+		}
+		update_option( 'marketers_delight', $option );
+	}
+
+	/**
+	 * Run delete drop-in action to delete all files and
+	 * scrub data from MD settings.
+	 *
+	 * @since 5.3
+	 */
+
+	public function delete_dropin( $dropin_id, $wp_filesystem ) {
+		$uploads_dir = MD_INSTALLED_DROPINS;
+		$option = md_setting();
+		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
+			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
+		unset( $option['dropins']['installed'][$dropin_id] );
+		update_option( 'marketers_delight', $option );
+		md_compile_css();
 	}
 
 	/**
@@ -138,20 +190,14 @@ class md_files {
 	}
 
 	/**
-	 * Run delete drop-in action to delete all files and
-	 * scrub data from MD settings.
+	 * Create blank index file if not found.
 	 *
 	 * @since 5.3
 	 */
 
-	public function delete_dropin( $dropin_id, $wp_filesystem ) {
-		$uploads_dir = MD_INSTALLED_DROPINS;
-		$option = md_setting();
-		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
-			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
-		unset( $option['dropins']['installed'][$dropin_id] );
-		update_option( 'marketers_delight', $option );
-		md_compile_css();
+	public function create_protection_file( $upload_dir = MD_DROPINS_DIR ) {
+		if ( ! file_exists( "$upload_dir/index.php" ) && wp_is_writable( $upload_dir ) )
+			file_put_contents( "$upload_dir/index.php", "<?php\n// Silence is golden." );
 	}
 
 }

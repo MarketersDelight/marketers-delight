@@ -13,6 +13,7 @@ define( 'MD_PLUGIN_DIR', MD_DIR . 'lib/' );
 define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
 define( 'MD_INSTALLED_DROPINS', ABSPATH . 'wp-content/md-dropins' ); #5.3
+define( 'MD_INSTALLED_DROPINS_URL', site_url() . '/wp-content/md-dropins' ); #5.3
 define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 
 /**
@@ -66,21 +67,16 @@ final class marketers_delight {
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/functions/conditionals.php' );
 		require_once( MD_DIR . 'lib/functions/build.php' );
-		require_once( MD_DIR . 'lib/functions/featured-image.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/functions/classes.php' );
-		require_once( MD_DROPINS_DIR . 'featured-image/featured-image.php' );
-		require_once( MD_DROPINS_DIR . 'featured-video/featured-video.php' );
 		require_once( MD_DIR . 'lib/wp/optimize.php' );
 		require_once( MD_DIR . 'lib/wp/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "lib/wp/widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
 			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
-		if ( md_setting( array( 'content', 'post', 'subtitle' ) ) )
-			require_once( MD_DROPINS_DIR . 'subtitle.php' );
-		if ( md_setting( array( 'content', 'post', 'footnotes' ) ) )
-			require_once( MD_DROPINS_DIR . 'footnotes/footnotes.php' );
+		require_once( MD_DIR . 'lib/wp/featured-image/featured-image.php' );
+		require_once( MD_DIR . 'lib/wp/featured-video/featured-video.php' );
 	}
 
 	/**
@@ -90,12 +86,7 @@ final class marketers_delight {
 	 */
 
 	public function dropins() {
-		$core = md_get_dropins( 'core', 'active' );
-		foreach ( $core as $dropin )
-			if ( md_has( $dropin ) && file_exists( $file = MD_DROPINS_DIR . "$dropin/$dropin.php" ) )
-				require_once( $file );
-
-		$installed = md_get_dropins( 'installed', 'active' );
+		$installed = md_get_dropins( 'active' );
 		foreach ( $installed as $dropin ) {
 			if ( md_has( $dropin ) )
 				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
@@ -155,6 +146,22 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
+
+/*
+$option = md_setting();
+$option['dropins']['features'] = array(
+	'stream' => true,
+	'bookshelf' => true
+);
+update_option( 'marketers_delight', $option );
+*/
+
+/*
+$option = md_setting();
+unset( $option['dropins'] );
+update_option( 'marketers_delight', $option );
+*/
+
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
@@ -171,7 +178,7 @@ final class marketers_delight {
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'core', 'admin-bar', 'status', 'enable' ), false ) : false
+			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'installed', 'admin-bar', 'status', 'enable' ), false ) : false
 		) );
 
 		// Comment reply JS

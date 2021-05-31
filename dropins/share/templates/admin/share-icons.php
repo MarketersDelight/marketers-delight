@@ -5,7 +5,7 @@
 			<?php foreach ( $icons['active'] as $share ) :
 				$args = $data[$share];
 				$fields = $args['fields'];
-				include( md_template( $this->dir, 'share/admin/share-fields', true ) );
+				include( md_template( 'dropins', 'share/admin/share-fields', true ) );
 			endforeach; ?>
 		</div>
 	</div>
@@ -15,7 +15,7 @@
 			<?php foreach ( $icons['inactive'] as $share ) :
 				$args = $data[$share];
 				$fields = $args['fields'];
-				include( md_template( $this->dir, 'share/admin/share-fields', true ) );
+				include( md_template( 'dropins', 'share/admin/share-fields', true ) );
 			endforeach; ?>
 		</div>
 	</div>

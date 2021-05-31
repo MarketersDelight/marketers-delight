@@ -1,13 +1,13 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * A procedural function to access Block Editor colors.
  *
  * since 4.9
  */
-
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_editor_colors() {
 	$design = new md_design;

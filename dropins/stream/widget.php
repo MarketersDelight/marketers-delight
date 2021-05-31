@@ -13,7 +13,6 @@ class md_stream_widget extends WP_Widget {
 	 * List of settings.
 	 */
 
-	public $dir = 'dropins';
 	public $fields_parsed = array(
 		'title' => '',
 		'description' => '',
@@ -65,7 +64,7 @@ class md_stream_widget extends WP_Widget {
 		$stream_templates = new md_stream_templates;
 		$excerpt_length = ! empty( $val['excerpt_length'] ) ? $val['excerpt_length'] : 20;
 		$excerpt_text = ! empty( $val['excerpt_text'] ) ? $val['excerpt_text'] : __( 'read more', 'md' );
-		include( md_template( $this->dir, 'stream/widget-embed', true ) );
+		include( md_template( 'dropins', 'stream/widget-embed', true ) );
 	}
 
 	/**
@@ -76,7 +75,7 @@ class md_stream_widget extends WP_Widget {
 
 	public function form( $val ) {
 		$val = wp_parse_args( (array) $val, $this->fields_parsed );
-		include( md_template( $this->dir, 'stream/admin/widget-form', true ) );
+		include( md_template( 'dropins', 'stream/admin/widget-form', true ) );
 	}
 
 	/**

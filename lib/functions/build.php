@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * The functions below load template HTML from the /templates/ folder.
  * These functions are then hooked into their respective locations throughout
@@ -8,9 +12,6 @@
  * the /templates/ folder and copying and pasting the contents into a child
  * theme with the same file path.
  */
-
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Build header
 add_action( 'md_hook_header', 'md_logo' );

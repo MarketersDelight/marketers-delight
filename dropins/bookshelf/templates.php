@@ -8,7 +8,6 @@
 class md_bookshelf_templates extends md_api {
 
 	public $taxonomy_label = 'bookshelf_categories';
-	public $dir = 'dropins';
 
 	/**
 	 * Fire important class actions.
@@ -91,7 +90,7 @@ class md_bookshelf_templates extends md_api {
 		$has_categories = md_setting( array( 'bookshelf', 'archives_layout', 'categories' ) ) ? true : false;
 		$has_sidebar = md_setting( array( 'bookshelf', 'archives_layout', 'sidebar' ) ) ? true : false;
 		if ( $title || $text )
-			include( md_template( $this->dir, 'bookshelf/bookshelf-title', true ) );
+			include( md_template( 'dropins', 'bookshelf/bookshelf-title', true ) );
 	}
 
 	/**
@@ -142,7 +141,7 @@ class md_bookshelf_templates extends md_api {
 		$default_type = md_setting( array( 'bookshelf', 'archives_listing' ) ) ? md_setting( array( 'bookshelf', 'archives_listing' ) ) : 'grid';
 		$listing = ! empty( $args['type'] ) ? $args['type'] : $default_type;
 		$columns_count = $listing == 'excerpt' ? 1 : ( ! empty( $args['row'] ) ? $args['row'] : 5 );
-		include( md_template( $this->dir, 'bookshelf/bookshelf-loop', true ) );
+		include( md_template( 'dropins', 'bookshelf/bookshelf-loop', true ) );
 	}
 
 	/**
@@ -208,7 +207,7 @@ class md_bookshelf_templates extends md_api {
 
 	public function popup( $post ) {
 		if ( ! empty( $post['content'] ) )
-			include( md_template( $this->dir, 'bookshelf/bookshelf-popup', true ) );
+			include( md_template( 'dropins', 'bookshelf/bookshelf-popup', true ) );
 	}
 
 }
