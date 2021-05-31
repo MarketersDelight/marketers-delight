@@ -35,6 +35,11 @@ class md_dropins extends md_api {
 				'admin_tab' => __( 'Dropin-ins', 'md' ),
 				'admin_tab_parent' => 'md_dropins',
 				'fields' => array(
+					// features is added for backwards compatibility during MD5.3 upgrade. Unused afterwards.
+					'features' => array(
+						'type' => 'checkbox',
+						'options' => array( 'blocks', 'stream', 'bookshelf', 'share', 'main_menu', 'admin_bar', 'footnotes', 'tracking_scripts', 'woocommerce' )
+					),
 					'installed' => array(
 						'type' => 'group',
 						'fields' => array(

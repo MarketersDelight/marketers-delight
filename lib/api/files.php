@@ -97,9 +97,8 @@ class md_files {
 	 * @since 5.3
 	 */
 
-	public function move_dropins( $wp_filesystem, $files = null ) {
+	public function move_dropins( $wp_filesystem ) {
 		$core_dir = MD_DROPINS_DIR;
-		$files = isset( $files ) ? $files : md_get_dropins();
 
 		if ( $wp_filesystem->exists( $core_dir ) ) {
 			$core_dropins = $wp_filesystem->dirlist( $core_dir );
@@ -110,10 +109,7 @@ class md_files {
 			}
 			foreach ( $core_dropins as $file => $fields ) {
 				$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
-				if ( ! in_array( $file, $files ) ) {
-//					$installed_dropins = $wp_filesystem->dirlist( $installed_dir );
-					$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
-				}
+				$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
 			}
 			if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
 				$wp_filesystem->delete( $core_dir );
@@ -131,6 +127,10 @@ class md_files {
 		$option = md_setting();
 		$upload_file = "$uploads_dir/$file/$file.php";
 		$upload_dir = "$uploads_dir/$file";
+
+		$old_dropins = array_keys( md_setting( array( 'dropins', 'features' ), array() ) );
+		if ( ! empty( $old_dropins ) )
+			$old_dropins[] = 'optins';
 		if ( $wp_filesystem->is_dir( $upload_dir ) )
 			$this->create_protection_file( $upload_dir );
 		if ( $wp_filesystem->exists( $upload_file ) ) {
@@ -141,7 +141,7 @@ class md_files {
 				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'active' ) as $setting ) {
 					if ( ! empty( $data[$setting] ) )
 						$option['dropins']['installed'][$file][$setting] = $data[$setting];
-					if ( $setting == 'active' && ! empty( $data[$setting] ) )
+					if ( ( $setting == 'active' && ! empty( $data[$setting] ) ) || in_array( $file, $old_dropins ) )
 						$option['dropins']['installed'][$file]['status']['enable'] = true;
 				}
 				$wp_filesystem->delete( $config );

@@ -80,22 +80,29 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Load MD Dropins after theme is setup.
+	 * Load MD Dropins after theme is setup. Supports old Drop-ins
+	 * locations pre-MD5.3.
 	 *
 	 * @since 4.6
 	 */
 
 	public function dropins() {
-		$installed = md_get_dropins( 'active' );
-		foreach ( $installed as $dropin ) {
-			if ( md_has( $dropin ) )
-				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
-					require_once( $file );
-				else {
-					$option = md_setting();
-					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-					update_option( 'marketers_delight', $option );
-				}
+		$old_dropins = md_setting( array( 'dropins', 'features' ) );
+		if ( ! empty( $old_dropins ) ) 
+			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
+				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
+					require_once( $old_dropin_file );
+		else {
+			$dropins = md_get_dropins( 'active' );
+			foreach ( $dropins as $dropin )
+				if ( md_has( $dropin ) )
+					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+						require_once( $file );
+					else {
+						$option = md_setting();
+						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+						update_option( 'marketers_delight', $option );
+					}
 		}
 	}
 
@@ -153,15 +160,11 @@ $option['dropins']['features'] = array(
 	'stream' => true,
 	'bookshelf' => true
 );
+
+
+unset( $option['dropins']['installed'] );
 update_option( 'marketers_delight', $option );
 */
-
-/*
-$option = md_setting();
-unset( $option['dropins'] );
-update_option( 'marketers_delight', $option );
-*/
-
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();

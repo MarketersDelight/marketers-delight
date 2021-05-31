@@ -47,7 +47,7 @@ function md_template( $file, $path = null, $include = null ) {
 			else
 				$template_path .= "$part.php";
 
-		if ( $dir == 'dropins' ) {
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
 			$dir = '';
 			$directory = MD_INSTALLED_DROPINS;
 		}
