@@ -86,6 +86,8 @@ class md_license extends md_api {
 			if ( $version >= '5.0' ) {
 				$option = md_setting();
 				$option['version'] = MD_VERSION;
+				if ( file_exists( MD_DROPINS ) )
+					$option['move_dropins'] = true;
 				update_option( 'marketers_delight', $option );
 			}
 
