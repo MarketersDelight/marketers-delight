@@ -11,23 +11,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 
 function marketers_delight_53() {
-	$files = new md_files;
 	$option = md_setting();
-	$features = ! empty( $option['dropins']['features'] ) ? $option['dropins']['features'] : array();
-	$features = array_keys( $features );
-	$features[] = 'optins';
-/*
-	foreach ( $features as $feature )
-		$option['dropins']['installed'][$feature]['status']['enable'] = true;
-	
-	unset( $option['dropins']['features'] );
-
+	if ( ! empty( $option['dropins']['features'] ) )
+		unset( $option['dropins']['features'] );
+	$option['move_dropins'] = true;
 	update_option( 'marketers_delight', $option );
-*/
-	print_r( $features );
-
-//	$files->move_dropins(  );
-//	$files->install_dropins();
 }
 
 /**

@@ -88,10 +88,11 @@ final class marketers_delight {
 
 	public function dropins() {
 		$old_dropins = md_setting( array( 'dropins', 'features' ) );
-		if ( ! empty( $old_dropins ) ) 
+		if ( ! empty( $old_dropins ) )  {
 			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
 				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
 					require_once( $old_dropin_file );
+		}
 		else {
 			$dropins = md_get_dropins( 'active' );
 			foreach ( $dropins as $dropin )

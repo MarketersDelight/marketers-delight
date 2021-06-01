@@ -96,7 +96,7 @@ function md_css( $file, $path = null, $include = null ) {
 			else
 				$template_path .= $part;
 
-		if ( $dir == 'dropins' ) {
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
 			$dir = '';
 			$directory = MD_INSTALLED_DROPINS;
 		}

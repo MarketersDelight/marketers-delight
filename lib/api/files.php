@@ -99,7 +99,6 @@ class md_files {
 
 	public function move_dropins( $wp_filesystem ) {
 		$core_dir = MD_DROPINS_DIR;
-
 		if ( $wp_filesystem->exists( $core_dir ) ) {
 			$core_dropins = $wp_filesystem->dirlist( $core_dir );
 			$installed_dir = MD_INSTALLED_DROPINS;
@@ -113,6 +112,11 @@ class md_files {
 			}
 			if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
 				$wp_filesystem->delete( $core_dir );
+		}
+		if ( md_setting( 'move_dropins' ) ) {
+			$option = md_setting();
+			unset( $option['move_dropins'] );
+			update_option( 'marketers_delight', $option );
 		}
 	}
 
