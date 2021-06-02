@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function marketers_delight_53() {
 	$option = md_setting();
-	if ( ! empty( $option['dropins']['features'] ) )
-		unset( $option['dropins']['features'] );
 	$option['move_dropins'] = true;
 	update_option( 'marketers_delight', $option );
 }

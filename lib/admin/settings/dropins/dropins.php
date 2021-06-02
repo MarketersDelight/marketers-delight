@@ -28,40 +28,40 @@ class md_dropins extends md_api {
 	 */
 
 	public function register() {
+		$fields = array(
+			'installed' => array(
+				'type' => 'group',
+				'fields' => array(
+					'name' => array( 'type' => 'text' ),
+					'version' => array( 'type' => 'text' ),
+					'description' => array( 'type' => 'text' ),
+					'dropin_url' => array( 'type' => 'url' ),
+					'author_url' => array( 'type' => 'url' ),
+					'settings_url' => array( 'type' => 'url' ),
+					'icon' => array( 'type' => 'text' ),
+					'author' => array( 'type' => 'text' ),
+					'colors' => array( 'type' => 'text' ),
+					'status' => array(
+						'type' => 'checkbox',
+						'options' => array( 'enable' )
+					),
+					'plugin_name' => array( 'type' => 'text' ),
+					'plugin_class' => array( 'type' => 'text' ),
+					'active' => array( 'type' => 'text' )
+				)
+			)
+		);
+		$fields['features'] = array(
+			'type' => 'checkbox',
+			'options' => array( 'blocks', 'stream', 'bookshelf', 'optins', 'share', 'main_menu', 'admin_bar', 'footnotes', 'tracking_scripts', 'woocommerce' )
+		);
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Drop-ins', 'md' ),
 				'admin_header' => true,
 				'admin_tab' => __( 'Dropin-ins', 'md' ),
 				'admin_tab_parent' => 'md_dropins',
-				'fields' => array(
-					// features is added for backwards compatibility during MD5.3 upgrade. Unused afterwards.
-					'features' => array(
-						'type' => 'checkbox',
-						'options' => array( 'blocks', 'stream', 'bookshelf', 'share', 'main_menu', 'admin_bar', 'footnotes', 'tracking_scripts', 'woocommerce' )
-					),
-					'installed' => array(
-						'type' => 'group',
-						'fields' => array(
-							'name' => array( 'type' => 'text' ),
-							'version' => array( 'type' => 'text' ),
-							'description' => array( 'type' => 'text' ),
-							'dropin_url' => array( 'type' => 'url' ),
-							'author_url' => array( 'type' => 'url' ),
-							'settings_url' => array( 'type' => 'url' ),
-							'icon' => array( 'type' => 'text' ),
-							'author' => array( 'type' => 'text' ),
-							'colors' => array( 'type' => 'text' ),
-							'status' => array(
-								'type' => 'checkbox',
-								'options' => array( 'enable' )
-							),
-							'plugin_name' => array( 'type' => 'text' ),
-							'plugin_class' => array( 'type' => 'text' ),
-							'active' => array( 'type' => 'text' )
-						)
-					)
-				)
+				'fields' => $fields
 			)
 		);
 	}

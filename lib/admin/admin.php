@@ -133,7 +133,7 @@ class md_admin {
 
 		$vars = array(
 			'user_id' => get_current_user_id(),
-			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' )	
+			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' )
 		);
 
 		if ( in_array( $screen->base, array( 'edit', 'post' ) ) && ! in_array( $screen->post_type, array( 'post', 'page' ) ) ) {

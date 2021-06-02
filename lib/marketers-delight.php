@@ -87,14 +87,18 @@ final class marketers_delight {
 	 */
 
 	public function dropins() {
+		$dropins = md_get_dropins( 'active' );
 		$old_dropins = md_setting( array( 'dropins', 'features' ) );
-		if ( ! empty( $old_dropins ) )  {
+		if ( ! empty( $old_dropins ) && empty( $dropins ) ) {
+			$old_dropins['optins'] = true;
+			$old_dropins['share'] = true;
+			$old_dropins['scripts'] = true;
+			$old_dropins['footnotes'] = true;
 			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
 				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
 					require_once( $old_dropin_file );
 		}
 		else {
-			$dropins = md_get_dropins( 'active' );
 			foreach ( $dropins as $dropin )
 				if ( md_has( $dropin ) )
 					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )

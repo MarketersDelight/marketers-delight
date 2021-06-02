@@ -133,8 +133,12 @@ class md_files {
 		$upload_dir = "$uploads_dir/$file";
 
 		$old_dropins = array_keys( md_setting( array( 'dropins', 'features' ), array() ) );
-		if ( ! empty( $old_dropins ) )
+		if ( ! empty( $old_dropins ) ) {
 			$old_dropins[] = 'optins';
+			$old_dropins[] = 'share';
+			if ( in_array( 'admin_bar', $old_dropins ) )
+				$old_dropins[] = 'admin-bar';
+		}
 		if ( $wp_filesystem->is_dir( $upload_dir ) )
 			$this->create_protection_file( $upload_dir );
 		if ( $wp_filesystem->exists( $upload_file ) ) {
