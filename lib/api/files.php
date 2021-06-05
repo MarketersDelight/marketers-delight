@@ -99,23 +99,27 @@ class md_files {
 
 	public function move_dropins( $wp_filesystem ) {
 		$core_dir = MD_DROPINS_DIR;
+		$installed_dir = MD_INSTALLED_DROPINS;
 		if ( $wp_filesystem->exists( $core_dir ) ) {
-			$core_dropins = $wp_filesystem->dirlist( $core_dir );
-			$installed_dir = MD_INSTALLED_DROPINS;
-			if ( ! $wp_filesystem->exists( $installed_dir ) ) {
-				$wp_filesystem->mkdir( $installed_dir );
-				$this->create_protection_file( $installed_dir );
+			if ( $wp_filesystem->exists( $installed_dir ) )
+				$wp_filesystem->delete( $core_dir, true );
+			else {
+				$core_dropins = $wp_filesystem->dirlist( $core_dir );
+				if ( ! $wp_filesystem->exists( $installed_dir ) ) {
+					$wp_filesystem->mkdir( $installed_dir );
+					$this->create_protection_file( $installed_dir );
+				}
+				foreach ( $core_dropins as $file => $fields ) {
+					$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
+					$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
+				}
+				if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
+					$wp_filesystem->delete( $core_dir );
 			}
-			foreach ( $core_dropins as $file => $fields ) {
-				$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
-				$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
-			}
-			if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
-				$wp_filesystem->delete( $core_dir );
 		}
 		if ( md_setting( 'move_dropins' ) ) {
 			$option = md_setting();
-			unset( $option['move_dropins'] );
+			$option['move_dropins'] = false;
 			update_option( 'marketers_delight', $option );
 		}
 	}
@@ -131,14 +135,8 @@ class md_files {
 		$option = md_setting();
 		$upload_file = "$uploads_dir/$file/$file.php";
 		$upload_dir = "$uploads_dir/$file";
+		$old_dropins = $this->old_dropins();
 
-		$old_dropins = array_keys( md_setting( array( 'dropins', 'features' ), array() ) );
-		if ( ! empty( $old_dropins ) ) {
-			$old_dropins[] = 'optins';
-			$old_dropins[] = 'share';
-			if ( in_array( 'admin_bar', $old_dropins ) )
-				$old_dropins[] = 'admin-bar';
-		}
 		if ( $wp_filesystem->is_dir( $upload_dir ) )
 			$this->create_protection_file( $upload_dir );
 		if ( $wp_filesystem->exists( $upload_file ) ) {
@@ -146,16 +144,36 @@ class md_files {
 			if ( $wp_filesystem->exists( $config ) ) {
 				$json = $wp_filesystem->get_contents( $config );
 				$data = json_decode( $json, true );
-				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'active' ) as $setting ) {
+				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'priority', 'active' ) as $setting ) {
 					if ( ! empty( $data[$setting] ) )
 						$option['dropins']['installed'][$file][$setting] = $data[$setting];
 					if ( ( $setting == 'active' && ! empty( $data[$setting] ) ) || in_array( $file, $old_dropins ) )
 						$option['dropins']['installed'][$file]['status']['enable'] = true;
+					if ( ! empty( $data[$setting]['priority'] ) )
+						$option['dropins']['priority'][$file] = true;
 				}
 				$wp_filesystem->delete( $config );
 			}
 		}
 		update_option( 'marketers_delight', $option );
+	}
+
+	/**
+	 * If Drop-ins data from versions older than MD5.3 exist, move
+	 * them into the new format. Backwards compatibility method.
+	 *
+	 * @since 5.3
+	 */
+
+	public function old_dropins() {
+		$old_dropins = array_keys( md_setting( array( 'dropins', 'features' ), array() ) );
+		if ( ! empty( $old_dropins ) ) {
+			$old_dropins[] = 'optins';
+			$old_dropins[] = 'share';
+			if ( in_array( 'admin_bar', $old_dropins ) )
+				$old_dropins[] = 'admin-bar';
+		}
+		return $old_dropins;
 	}
 
 	/**

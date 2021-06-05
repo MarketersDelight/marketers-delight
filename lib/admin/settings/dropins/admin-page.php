@@ -64,7 +64,7 @@
 							</p>
 						</div>
 						<div style="display: none;">
-							<?php foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class' ) as $field ) : ?>
+							<?php foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'priority', 'plugin_class' ) as $field ) : ?>
 								<?php $this->fields->field( array( 'installed', $dropin, $field ), array(
 									'type' => 'text',
 									'hidden' => true

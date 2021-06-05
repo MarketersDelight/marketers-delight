@@ -280,14 +280,19 @@ function md_has( $dropin ) {
  */
 
 function md_get_dropins( $status = null ) {
-	$dropins = array();
+	$dropins = $priority = array();
 	foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
 		if (
 			( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
 			( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
 			$status == null
-		)
-			$dropins[] = esc_attr( $dropin );
+		) {
+			if ( isset( $fields['priority'] ) )
+				$priority[] = esc_attr( $dropin );
+			else
+				$dropins[] = esc_attr( $dropin );
+		}
+	$dropins = array_merge( $priority, $dropins );
 	return $dropins;
 }
 

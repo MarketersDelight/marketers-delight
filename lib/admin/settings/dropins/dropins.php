@@ -47,6 +47,7 @@ class md_dropins extends md_api {
 					),
 					'plugin_name' => array( 'type' => 'text' ),
 					'plugin_class' => array( 'type' => 'text' ),
+					'priority' => array( 'type' => 'text' ),
 					'active' => array( 'type' => 'text' )
 				)
 			)

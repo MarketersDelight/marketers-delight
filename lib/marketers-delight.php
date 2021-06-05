@@ -94,6 +94,10 @@ final class marketers_delight {
 			$old_dropins['share'] = true;
 			$old_dropins['scripts'] = true;
 			$old_dropins['footnotes'] = true;
+			if ( isset( $old_dropins['admin_bar'] ) ) {
+				unset( $old_dropins['admin_bar'] );
+				$old_dropins['admin-bar'] = true;
+			}
 			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
 				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
 					require_once( $old_dropin_file );
@@ -158,18 +162,6 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
-
-/*
-$option = md_setting();
-$option['dropins']['features'] = array(
-	'stream' => true,
-	'bookshelf' => true
-);
-
-
-unset( $option['dropins']['installed'] );
-update_option( 'marketers_delight', $option );
-*/
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();

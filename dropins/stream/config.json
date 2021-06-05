@@ -6,5 +6,6 @@
 	"dropin_url" : "https://marketersdelight.com/dropins/stream/",
 	"settings_url" : "edit.php?post_type=stream&page=md_stream",
 	"author_url" : "https://alexmangini.com/",
-	"icon" : "dashicons-schedule"
+	"icon" : "dashicons-schedule",
+	"priority" : "true"
 }

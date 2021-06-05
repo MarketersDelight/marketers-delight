@@ -8,5 +8,6 @@
 	"author_url" : "https://alexmangini.com/",
 	"icon" : "dashicons-share",
 	"colors" : "#09b73c",
+	"priority" : "true",
 	"active" : "true"
 }
