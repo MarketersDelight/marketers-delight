@@ -57,7 +57,7 @@ function md_webfonts_loader() {
 function md_web_fonts( $show_type = null ) {
 	$font_s = '';
 	$fonts = array();
-	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'sidebar_title', 'footer_title' );
+	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'header', 'sidebar_title', 'footer_title' );
 	$areas = array_merge( array( 'body', 'site_title', 'site_tagline', 'sidebar', 'footer' ), $headings );
 	$body_t = md_setting( array( 'typography', 'body', 'font_type' ) );
 	$body_f = md_setting( array( 'typography', 'body', 'font_family' ) );
