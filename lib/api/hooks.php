@@ -153,6 +153,14 @@ function md_hook_after_footer() {
 	do_action( 'md_hook_after_footer' );
 }
 
+function md_hook_before_footer_copy() {
+	do_action( 'md_hook_before_footer_copy' );
+}
+
+function md_hook_after_footer_copy() {
+	do_action( 'md_hook_after_footer_copy' );
+}
+
 function md_hook_js() {
 	do_action( 'md_hook_js' );
 }
