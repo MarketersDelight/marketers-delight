@@ -7,5 +7,5 @@
 	"settings_url" : "edit.php?post_type=stream&page=md_stream",
 	"author_url" : "https://alexmangini.com/",
 	"icon" : "dashicons-schedule",
-	"priority" : "true"
+	"colors" : "#1e73be"
 }

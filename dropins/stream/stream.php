@@ -48,10 +48,8 @@ class md_stream extends md_api {
 	 */
 
 	public function admin_init() {
-		foreach ( md_post_type_meta() as $post_type ) {
-			if ( $post_type == 'stream' ) continue;
+		foreach ( md_setting( array( 'stream', 'activity_post_types' ), array() ) as $post_type => $val )
 			add_action( "publish_$post_type", array( $this, 'publish_activity' ) );
-		}
 	}
 
 	/**
@@ -90,7 +88,7 @@ class md_stream extends md_api {
 				'all_items' => __( 'Stream', 'md' )
 			)
 		) );
-		if ( ! md_setting( array( 'stream', 'settings', 'disable_activity' ) ) )
+		if ( md_setting( array( 'stream', 'settings', 'enable_activity' ) ) )
 			register_post_type( 'stream_activity', array(
 				'hierarchial' => true,
 				'public' => true,
@@ -174,7 +172,11 @@ class md_stream extends md_api {
 				'fields' => array(
 					'settings' => array(
 						'type' => 'checkbox',
-						'options' => array( 'disable_activity' )
+						'options' => array( 'enable_activity' )
+					),
+					'activity_post_types' => array(
+						'type' => 'checkbox',
+						'options' => md_post_type_meta()
 					),
 					'archives_title' => array( 'type' => 'text' ),
 					'archives_text' => array( 'type' => 'textarea' ),
@@ -296,6 +298,11 @@ class md_stream extends md_api {
 	 */
 
 	public function admin_page() {
+		$post_types = md_post_type_meta();
+		foreach ( $post_types as $post_type ) {
+			if ( $post_type == 'stream' ) continue;
+			$types[$post_type] = ucwords( $post_type );
+		}
 		include( md_template( 'dropins', 'stream/admin/stream-settings', true ) );
 	}
 

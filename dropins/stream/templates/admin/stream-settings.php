@@ -3,8 +3,14 @@
 <div class="md-content-wrap-wide">
 	<div class="columns-2 columns-double md-sep-small">
 		<div class="col">
-			<h2><?php echo __( 'Stream Title', 'md' ); ?></h2>
-			<hr />
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'slug', array(
+					'type' => 'text',
+					'label' => __( 'Page Slug', 'md' ),
+					'description' =>  __( 'Change the URL of your Stream pages.', 'md' ),
+					'placeholder' => $this->slug,
+				) ); ?>
+			</div>
 			<div class="md-sep-small">
 				<?php $this->fields->field( 'archives_title', array(
 					'type' => 'text',
@@ -29,32 +35,6 @@
 			</div>
 		</div>
 		<div class="col">
-			<h2><?php echo __( 'General Settings', 'md' ); ?></h2>
-			<hr />
-			<div class="md-sep-small">
-				<?php $this->fields->field( 'settings', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'disable_activity' => __( '<b>Disable</b> latest activity', 'md' )
-					)
-				) ); ?>
-			</div>
-			<div class="md-sep-small">
-				<?php $this->fields->field( 'slug', array(
-					'type' => 'text',
-					'label' => __( 'Page Slug', 'md' ),
-					'description' =>  __( 'Change the URL of your Stream pages.', 'md' ),
-					'placeholder' => $this->slug,
-				) ); ?>
-			</div>
-			<div class="md-sep-small">
-				<?php $this->fields->field( 'posts_per_page', array(
-					'type' => 'number',
-					'label' => __( 'Posts Per Page', 'md' ),
-					'description' => __( 'Change how many posts to show on Stream pages.', 'md' ),
-					'placeholder' => 10
-				) ); ?>
-			</div>
 			<div class="md-sep-small">
 				<?php $this->fields->field( 'layout', array(
 					'type' => 'checkbox',
@@ -68,6 +48,32 @@
 						'remove_breadcrumbs' => __( '<b>Remove breadcrumbs</b> from Stream page', 'md' ),
 						'disable_comments' => __( '<b>Disable</b> comments', 'md' )
 					)
+				) ); ?>
+			</div>
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'posts_per_page', array(
+					'type' => 'number',
+					'label' => __( 'Posts Per Page', 'md' ),
+					'description' => __( 'Change how many posts to show on Stream pages.', 'md' ),
+					'placeholder' => 10
+				) ); ?>
+			</div>
+			<h2><?php echo __( 'Stream Activity', 'md' ); ?></h2>
+			<hr />
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'settings', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'enable_activity' => __( '<b>Enable</b> Stream activity', 'md' )
+					)
+				) ); ?>
+			</div>
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'activity_post_types', array(
+					'type' => 'checkbox',
+					'label' => __( 'Include post types', 'md' ),
+					'options' => $types,
+					'description' => __( 'Auto-post publish activity from the selected post types.', 'md' )
 				) ); ?>
 			</div>
 		</div>

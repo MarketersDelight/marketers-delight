@@ -152,7 +152,6 @@ class md_files {
 					if ( ! empty( $data[$setting]['priority'] ) )
 						$option['dropins']['priority'][$file] = true;
 				}
-				$wp_filesystem->delete( $config );
 			}
 		}
 		update_option( 'marketers_delight', $option );

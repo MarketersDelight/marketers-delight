@@ -170,7 +170,6 @@ class md_popup {
 				$fields = array_merge( $args, $this->fields( $args['id'] ) );
 				$fields['id'] = $args['id'];
 				$template = ! empty( $fields['template'] ) ? '-' . $fields['template'] : '';
-				print_r( $template );
 				if ( $template = md_template( 'dropins', 'optins/popup' . esc_attr( $template ), true ) )
 					include( $template );
 				if ( ! empty( $fields['custom_css'] ) && ! is_customize_preview() )
