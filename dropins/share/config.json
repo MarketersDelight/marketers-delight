@@ -1,0 +1,13 @@
+{
+	"name" : "Share",
+	"author" : "Alex, Marketers Delight",
+	"version" : "1.0",
+	"description" : "Add precise share buttons around your site. Add inline or floating icons across post types and choose your design style. Add/remove from individual posts and pages",
+	"dropin_url" : "https://marketersdelight.com/dropins/share/",
+	"settings_url" : "admin.php?page=md_settings&tab=md_share",
+	"author_url" : "https://alexmangini.com/",
+	"icon" : "dashicons-share",
+	"colors" : "#09b73c",
+	"priority" : "true",
+	"active" : "true"
+}
