@@ -187,7 +187,7 @@ div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
 /* ICONS */
 @font-face {
 	font-family: md-icon;
-	src: url('http://localhost:8888/dev/wp-content/themes/md-child/md.woff') format('woff');
+	src: url('http://localhost:10008/wp-content/themes/marketers-delight/lib/assets/icons/md.woff') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -227,7 +227,7 @@ div.editor-styles-wrapper p,
 .editor-post-title__block .editor-post-title__input {
 	font-size: 17px;
 	font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
-	 font-weight: 400;	line-height: 28px;
+		line-height: 28px;
 }
 div.editor-styles-wrapper .has-huge-font-size, div.editor-styles-wrapper .has-large-font-size, div.editor-styles-wrapper .has-medium-font-size, div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
@@ -235,49 +235,49 @@ div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
 	line-height: 87px;
 }
 div.editor-styles-wrapper .huge-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
 	font-size: 47px;
 	line-height: 63px;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
 	font-size: 38px;
 	line-height: 51px;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
 	font-size: 33px;
 	line-height: 45px;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
 	font-size: 28px;
 	line-height: 42px;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
 	font-size: 24px;
 	line-height: 35px;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
 	font-size: 21px;
 	line-height: 30px;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-weight: 700;
+	font-weight: bold;
 }
 @media all and (max-width: 900px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 66px; line-height: 81px; }
@@ -384,7 +384,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
-	font-weight: 700;
+	font-weight: bold;
 	padding: 17px 28px;
 	position: relative;
 	text-align: center;
@@ -538,8 +538,8 @@ input.md-input-name, input.md-input-email {
 	background-position: 16px center;
 	padding-left: 45px;
 }
-input.md-input-name { background-image: url('http://localhost:8888/dev/wp-content/themes/marketers-delight/lib/assets/images/user.png'); }
-input.md-input-email { background-image: url('http://localhost:8888/dev/wp-content/themes/marketers-delight/lib/assets/images/mail.png'); }
+input.md-input-name { background-image: url('http://localhost:10008/wp-content/themes/marketers-delight/lib/assets/images/user.png'); }
+input.md-input-email { background-image: url('http://localhost:10008/wp-content/themes/marketers-delight/lib/assets/images/mail.png'); }
 .md-email-full .md-input, .md-email-full .md-submit { width: 100%; }
 .md-email-full .md-input { margin-bottom: 14px; }
 [class*="md-email-attached"] .md-input, [class*="md-email-attached"] .md-submit { float: left; }

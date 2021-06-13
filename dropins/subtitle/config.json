@@ -1,9 +1,0 @@
-{
-	"name" : "Subtitle",
-	"author" : "Alex, Marketers Delight",
-	"version" : "1.0",
-	"description" : "Adds a new Subtitle field beneath post editor title. Edit post > Subtitle in Block Editor.",
-	"dropin_url" : "https://marketersdelight.com/dropins/subtitle/",
-	"author_url" : "https://alexmangini.com/",
-	"icon" : "dashicons-editor-paste-text"
-}
