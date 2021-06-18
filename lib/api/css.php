@@ -29,21 +29,21 @@ class md_css {
 
 	public function style_css() {
 		$templates = array(
-			'attributes' => MD_CSS_DIR . 'attributes.php',
-			'forms' => MD_CSS_DIR . 'forms.php',
-			'blocks' => MD_CSS_DIR . 'blocks.php',
-			'spacers' => MD_CSS_DIR . 'spacers.php',
-			'columns' => MD_CSS_DIR . 'columns.php',
-			'buttons' => MD_CSS_DIR . 'buttons.php',
-			'format' => MD_CSS_DIR . 'format.php',
-			'layout' => MD_CSS_DIR . 'layout.php',
-			'sidebar' => MD_CSS_DIR . 'sidebar.php',
-			'menus' => MD_CSS_DIR . 'menus.php',
-			'header' => MD_CSS_DIR . 'header.php',
-			'post' => MD_CSS_DIR . 'post.php',
-			'comments' => MD_CSS_DIR . 'comments.php',
-			'widgets' => MD_CSS_DIR . 'widgets.php',
-			'footer' => MD_CSS_DIR . 'footer.php'
+			'attributes' => locate_template( 'css/attributes.php' ),
+			'forms' => locate_template( 'css/forms.php' ),
+			'blocks' => locate_template( 'css/blocks.php' ),
+			'spacers' => locate_template( 'css/spacers.php' ),
+			'columns' => locate_template( 'css/columns.php' ),
+			'buttons' => locate_template( 'css/buttons.php' ),
+			'format' => locate_template( 'css/format.php' ),
+			'layout' => locate_template( 'css/layout.php' ),
+			'sidebar' => locate_template( 'css/sidebar.php' ),
+			'menus' => locate_template( 'css/menus.php' ),
+			'header' => locate_template( 'css/header.php' ),
+			'post' => locate_template( 'css/post.php' ),
+			'comments' => locate_template( 'css/comments.php' ),
+			'widgets' => locate_template( 'css/widgets.php' ),
+			'footer' => locate_template( 'css/footer.php' )
 		);
 
 		$dropins = apply_filters( 'md_dropins_css_templates', array() );
