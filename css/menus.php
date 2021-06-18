@@ -207,8 +207,8 @@
 	.menu-social .menu-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 }
 
-@media all and (min-wdth: 900px) {
-	.menu-main .sub-menu .sub-menu { left: 0; }
+@media all and (min-width: 900px) {
+	.menu-main .sub-menu { left: 0; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
