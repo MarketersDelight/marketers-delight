@@ -72,7 +72,7 @@ class md_files {
 			$option = md_setting();
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
-				$wp_filesystem->mkdir( $uploads_dir );
+				$wp_filesystem->mkdir( $uploads_dir, 0777 );
 				$this->create_protection_file( $uploads_dir );
 			}
 
@@ -109,7 +109,7 @@ class md_files {
 			else {
 				$core_dropins = $wp_filesystem->dirlist( $core_dir );
 				if ( ! $wp_filesystem->exists( $installed_dir ) ) {
-					$wp_filesystem->mkdir( $installed_dir );
+					$wp_filesystem->mkdir( $installed_dir, 0777 );
 					$this->create_protection_file( $installed_dir );
 				}
 				foreach ( $core_dropins as $file => $fields ) {
