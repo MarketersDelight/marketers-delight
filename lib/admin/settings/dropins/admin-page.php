@@ -1,7 +1,7 @@
 <div class="md-dropins md-content-wrap-med">
 	<h2 class="md-title md-sep-small">
 		<?php echo __( 'Drop-ins', 'md' ); ?>
-		<?php if ( file_exists( MD_INSTALLED_DROPINS ) ) : ?>
+		<?php if ( md_setting( array( 'dropins', 'moved_dropins' ) ) : ?>
 			&nbsp;<button id="md_upload_dropin_button" class="button"><?php echo __( 'Add new', 'md' ); ?></button>
 		<?php endif; ?>
 	</h2>
