@@ -159,9 +159,9 @@ class md_admin {
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
 		wp_enqueue_script( 'md-sortable', MD_URL . 'lib/admin/js/sortable.js', array(), '', true );
 		wp_register_script( 'md-alpha-color', MD_URL . 'lib/admin/js/alpha-color.js', array( 'wp-color-picker' ), '', true );
-
-		if ( md_setting( 'move_dropins' ) )
-			wp_add_inline_script( 'marketers-delight', "MD.moveDropins();" );
+		
+		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
+			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
 	}
 
 	/**

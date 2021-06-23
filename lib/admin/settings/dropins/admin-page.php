@@ -1,5 +1,10 @@
 <div class="md-dropins md-content-wrap-med">
-	<h2 class="md-title md-sep-small"><?php echo __( 'Drop-ins', 'md' ); ?> &nbsp;<button id="md_upload_dropin_button" class="button"><?php echo __( 'Add new', 'md' ); ?></button></h2>
+	<h2 class="md-title md-sep-small">
+		<?php echo __( 'Drop-ins', 'md' ); ?>
+		<?php if ( file_exists( MD_INSTALLED_DROPINS ) ) : ?>
+			&nbsp;<button id="md_upload_dropin_button" class="button"><?php echo __( 'Add new', 'md' ); ?></button>
+		<?php endif; ?>
+	</h2>
 	<div id="md_upload_dropin" class="md-dropins-upload md-sep-small">
 		<?php $this->fields->field( 'upload', array(
 			'type' => 'upload',
@@ -73,6 +78,12 @@
 						</div>
 					</div>
 				</div>
+			<?php endforeach; ?>
+			<?php foreach ( array( 'move_dropins', 'migrate_dropins', 'moved_dropins' ) as $dropin_status ) : ?>
+				<?php $this->fields->field( array( 'dropins', $dropin_status ), array(
+					'type' => 'text',
+					'hidden' => true
+				) ); ?>
 			<?php endforeach; ?>
 		<?php else : ?>
 			<div class="md-dropin">

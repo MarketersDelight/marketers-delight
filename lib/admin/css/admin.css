@@ -78,8 +78,11 @@
 }
 
 .md-icon-yes { background-color: #30a146; }
-.md-file-upload-success .dashicons-yes, .button.md-action .dashicons-yes { color: #30a146; }
+.md .dashicons-yes, .md-updated { color: #30a146; }
 .md-icon-no { background-color: #ae2525; }
+.md.notice .md-loading, .md-after-update, .md-updated .md-before-update { display: none; }
+.md-updated .md-after-update { display: block; }
+.md.md-updating .md-loading { display: inline-block; }
 
 /* LAYOUT */
 

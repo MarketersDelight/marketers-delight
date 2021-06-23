@@ -4,19 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Run MD5.3 upgrader scripts. Move previously built-in Drop-ins
- * to NEW /wp-content/md-dropings/ folder.
- *
- * @since 5.3
- */
-
-function marketers_delight_53() {
-	$option = md_setting();
-	$option['move_dropins'] = true;
-	update_option( 'marketers_delight', $option );
-}
-
-/**
  * MD5.2.1 moves Features Manager to Dropins page.
  *
  * @since 5.2.1

@@ -69,6 +69,7 @@ class md_files {
 
 		if ( $action == 'md_dropin' && $extension == 'zip' ) {
 			$uploads_dir = MD_INSTALLED_DROPINS;
+			$option = md_setting();
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
 				$wp_filesystem->mkdir( $uploads_dir );
@@ -81,7 +82,7 @@ class md_files {
 			if ( unzip_file( $files['file']['tmp_name'], $uploads_dir ) ) {
 				$uploaded_files = $wp_filesystem->dirlist( $uploads_dir );
 				foreach ( $uploaded_files as $file => $fields )
-					$this->activate_dropin( $file, $uploads_dir, $wp_filesystem );
+					$option = $this->activate_dropin( $file, $uploads_dir, $option, $wp_filesystem );
 			}
 		}
 		elseif ( $action == 'md_icons' && $extension == 'json' ) {
@@ -100,6 +101,7 @@ class md_files {
 	public function move_dropins( $wp_filesystem ) {
 		$core_dir = MD_DROPINS_DIR;
 		$installed_dir = MD_INSTALLED_DROPINS;
+		$option = md_setting();
 		if ( $wp_filesystem->exists( $core_dir ) ) {
 			if ( $wp_filesystem->exists( $installed_dir ) )
 				$wp_filesystem->delete( $core_dir, true );
@@ -111,17 +113,17 @@ class md_files {
 				}
 				foreach ( $core_dropins as $file => $fields ) {
 					$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
-					$this->activate_dropin( $file, $installed_dir, $wp_filesystem );
+					$option = $this->activate_dropin( $file, $installed_dir, $option, $wp_filesystem );
 				}
 				if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
 					$wp_filesystem->delete( $core_dir );
 			}
 		}
-		if ( md_setting( 'move_dropins' ) ) {
-			$option = md_setting();
-			$option['move_dropins'] = false;
-			update_option( 'marketers_delight', $option );
-		}
+		unset( $option['dropins']['features'] );
+		unset( $option['dropins']['move_dropins'] );
+		unset( $option['dropins']['migrate_dropins'] );
+		$option['dropins']['moved_dropins'] = true;
+		update_option( 'marketers_delight', $option );
 	}
 
 	/**
@@ -131,8 +133,7 @@ class md_files {
 	 * @since 5.3
 	 */
 
-	public function activate_dropin( $file, $uploads_dir, $wp_filesystem ) {
-		$option = md_setting();
+	public function activate_dropin( $file, $uploads_dir, $option, $wp_filesystem ) {
 		$upload_file = "$uploads_dir/$file/$file.php";
 		$upload_dir = "$uploads_dir/$file";
 		$old_dropins = $this->old_dropins();
@@ -154,7 +155,7 @@ class md_files {
 				}
 			}
 		}
-		update_option( 'marketers_delight', $option );
+		return $option;
 	}
 
 	/**

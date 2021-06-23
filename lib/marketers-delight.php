@@ -12,8 +12,8 @@ define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 define( 'MD_PLUGIN_DIR', MD_DIR . 'lib/' );
 define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
-define( 'MD_INSTALLED_DROPINS', ABSPATH . 'wp-content/md-dropins' ); #5.3
-define( 'MD_INSTALLED_DROPINS_URL', site_url() . '/wp-content/md-dropins' ); #5.3
+define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
+define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 
 /**
@@ -88,8 +88,19 @@ final class marketers_delight {
 
 	public function dropins() {
 		$dropins = md_get_dropins( 'active' );
-		$old_dropins = md_setting( array( 'dropins', 'features' ) );
-		if ( ! empty( $old_dropins ) && empty( $dropins ) ) {
+		$old_dropins = md_setting( array( 'dropins', 'features' ), array() );
+		if ( ! empty( $dropins ) ) {
+			foreach ( $dropins as $dropin )
+				if ( md_has( $dropin ) )
+					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+						require_once( $file );
+					else {
+						$option = md_setting();
+						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+						update_option( 'marketers_delight', $option );
+					}
+		}
+		else {
 			$old_dropins['optins'] = true;
 			$old_dropins['share'] = true;
 			$old_dropins['scripts'] = true;
@@ -101,17 +112,6 @@ final class marketers_delight {
 			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
 				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
 					require_once( $old_dropin_file );
-		}
-		else {
-			foreach ( $dropins as $dropin )
-				if ( md_has( $dropin ) )
-					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
-						require_once( $file );
-					else {
-						$option = md_setting();
-						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-						update_option( 'marketers_delight', $option );
-					}
 		}
 	}
 

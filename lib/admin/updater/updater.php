@@ -42,6 +42,10 @@ class md_license extends md_api {
 		add_action( 'init', array( $this, 'after_update' ) );
 		add_action( 'md_hook_settings_col2_top', array( $this, 'license' ) );
 		add_filter( 'http_request_args', array( $this, 'disable_wp_requests' ), 5, 2 );
+		if ( md_setting( array( 'dropins', 'migrate_dropins' ) ) ) {
+			add_action( 'admin_notices', array( $this, 'update_notice' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'update_scripts' ) );
+		}
 
 		$this->remote_api_url = $config['remote_api_url'];
 		$this->theme_slug = sanitize_key( $config['theme_slug'] );
@@ -59,6 +63,27 @@ class md_license extends md_api {
 		add_action( 'admin_init', array( $this, 'actions' ) );
 		add_action( 'admin_init', array( $this, 'updater' ) );
 	}
+
+	/**
+	 * Run the MD5.3 updater nag and scripts if applicable.
+	 *
+	 * @sincd 5.3
+	 */
+
+	public function update_scripts() {
+		$dropins_url = admin_url( 'admin.php?page=md_dropins' );
+		wp_add_inline_script( 'marketers-delight', "MD.migrateDropins('$dropins_url');" );
+	}
+
+	public function update_notice() { ?>
+		<div id="md_updater_notice" class="md notice notice-error">
+			<div class="md-before-update">
+				<p><?php echo __( 'For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.', 'md' ); ?></p>
+				<p><button id="md_updater_button" class="button"><?php echo __( 'Update now', 'md' ); ?> <i class="dashicons dashicons-update-alt md-loading"></i></button></p>
+			</div>
+			<p class="md-after-update"><i class="dashicons dashicons-yes"></i> <?php echo __( 'Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>...', 'md' ); ?></p>
+		</div>
+	<?php }
 
 	/**
 	 * Run after upgrade processes.
@@ -80,14 +105,14 @@ class md_license extends md_api {
 				marketers_delight_51();
 			elseif ( $version < '5.2.1' )
 				marketers_delight_521();
-			elseif ( $version < '5.3' )
-				marketers_delight_53();
 
 			if ( $version >= '5.0' ) {
 				$option = md_setting();
+				if ( empty( $option ) )
+					$option['dropins']['move_dropins'] = true;
+				elseif ( empty( $option['dropins']['moved_dropins'] ) )
+					$option['dropins']['migrate_dropins'] = true;
 				$option['version'] = MD_VERSION;
-				if ( file_exists( MD_DROPINS_DIR ) )
-					$option['move_dropins'] = true;
 				update_option( 'marketers_delight', $option );
 			}
 
@@ -135,7 +160,7 @@ class md_license extends md_api {
 	public function actions() {
 		if ( md_setting( 'version' ) < MD_VERSION )
 			return;
-			
+
 		$check = get_transient( 'md_license' );
 		$license = md_setting( array( 'license', 'status' ) );
 
