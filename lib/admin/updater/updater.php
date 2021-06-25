@@ -78,7 +78,7 @@ class md_license extends md_api {
 	public function update_notice() { ?>
 		<div id="md_updater_notice" class="md notice notice-error">
 			<div class="md-before-update">
-				<p><?php echo __( 'For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.', 'md' ); ?></p>
+				<p><?php echo __( 'For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.<br /><b>Note:</b> It is strongly recommended you make a complete site and database backup before running this process.', 'md' ); ?></p>
 				<p><button id="md_updater_button" class="button"><?php echo __( 'Update now', 'md' ); ?> <i class="dashicons dashicons-update-alt md-loading"></i></button></p>
 			</div>
 			<p class="md-after-update"><i class="dashicons dashicons-yes"></i> <?php echo __( 'Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>...', 'md' ); ?></p>
@@ -108,7 +108,7 @@ class md_license extends md_api {
 
 			if ( $version >= '5.0' ) {
 				$option = md_setting();
-				if ( empty( $option ) )
+				if ( empty( $option ) || file_exists( MD_INSTALLED_DROPINS ) )
 					$option['dropins']['move_dropins'] = true;
 				elseif ( empty( $option['dropins']['moved_dropins'] ) )
 					$option['dropins']['migrate_dropins'] = true;

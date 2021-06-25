@@ -84,6 +84,7 @@ class md_files {
 				foreach ( $uploaded_files as $file => $fields )
 					$option = $this->activate_dropin( $file, $uploads_dir, $option, $wp_filesystem );
 			}
+
 			update_option( 'marketers_delight', $option );
 		}
 		elseif ( $action == 'md_icons' && $extension == 'json' ) {

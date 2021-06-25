@@ -106,7 +106,7 @@ class md_store extends md_api {
 	public function admin_page() { ?>
 		<div class="md-store">
 			<h2 class="md-title"><?php echo __( 'Get new Drop-ins', 'md' ); ?></h2>
-			<p class="md-sep-small"><?php echo __( 'Find and download new features to your website from the official <a href="%s" target="_blank">MD Drop-ins library</a>.', 'md' ); ?></p>
+			<p class="md-sep-small"><?php echo sprintf( __( 'Find and download new features to your website from the official <a href="%s" target="_blank">MD Drop-ins library</a>.', 'md' ), 'https://marketersdelight.com/dropins/' ); ?></p>
 			<div class="columns-3 columns-single columns-flex">
 				<?php foreach ( $this->dropins as $dropin => $fields ) :
 					$is_installed = function_exists( $fields['callback'] ) || class_exists( $fields['callback'] ) ? true : false;
