@@ -1,13 +1,13 @@
 <?php if ( ! in_array( 'date', $byline ) ) : ?>
 	<span class="byline-date byline-item">
 		<?php echo md_icon( 'clock' ); ?> <time datetime="<?php the_date( 'c' ); ?>" itemprop="datePublished"><?php the_time( get_option( 'date_format' ) ); ?></time>
-		<?php if ( in_array( 'last-updated', $byline ) ) : ?>
+		<?php if ( in_array( 'last-updated', $byline ) && ! isset( $args['hide_last_updated'] ) ) : ?>
 			(<?php echo __( 'updated ', 'md' ); ?> <?php the_modified_date(); ?>)
 		<?php endif; ?>
 	</span>
 <?php endif; ?>
 
-<?php if ( in_array( 'last-updated', $byline ) && in_array( 'date', $byline ) ) : ?>
+<?php if ( in_array( 'last-updated', $byline ) && ! isset( $args['hide_last_updated'] ) && in_array( 'date', $byline ) ) : ?>
 	<span class="byline-date-modified byline-item" itemprop="dateModified" content="<?php the_modified_date( 'c' ); ?>">
 		<?php echo md_icon( 'clock' ); ?> <?php echo __( 'Last updated:', 'md' ); ?> <?php the_modified_date(); ?>
 	</span>
