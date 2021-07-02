@@ -71,7 +71,7 @@ function md_logo() {
 
 function md_secondary_logo() {
 	$secondary_logo = md_setting( array( 'header', 'logo_alt', 'url' ) );
-	echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $secondary_logo ) . '" /></a>';
+	echo '<span class="secondary-logo"><a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $secondary_logo ) . '" /></a></span>';
 }
 
 function md_the_logo() {

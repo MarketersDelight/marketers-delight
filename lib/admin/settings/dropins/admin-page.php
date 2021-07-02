@@ -80,7 +80,7 @@
 				</div>
 			<?php endforeach; ?>
 			<?php foreach ( array( 'move_dropins', 'migrate_dropins', 'moved_dropins' ) as $dropin_status ) : ?>
-				<?php $this->fields->field( array( 'dropins', $dropin_status ), array(
+				<?php $this->fields->field( $dropin_status, array(
 					'type' => 'text',
 					'hidden' => true
 				) ); ?>
