@@ -1,6 +1,6 @@
 <?php if ( ! in_array( 'author', $byline ) || in_array( 'avatar', $byline ) ) : ?>
 	<span class="byline-author byline-item">
-		<?php if ( in_array( 'avatar', $byline ) ) :
+		<?php if ( in_array( 'avatar', $byline ) && ! isset( $args['hide_avatar'] ) ) :
 			$avatar_size = isset( $args['avatar_size'] ) ? $args['avatar_size'] : 30;
 		?>
 			<?php echo get_avatar( get_the_author_meta( 'ID' ), $avatar_size, '', false, array(
