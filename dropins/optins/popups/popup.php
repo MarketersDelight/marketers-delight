@@ -21,7 +21,6 @@ class md_popup {
 		if ( empty( $args['id'] ) )
 			return;
 
-		$this->dir = 'dropins/optins';
 		$this->args[] = $args;
 		$popups = md_filter_popups();
 		$fields = $this->fields( $args['id'] );
@@ -171,7 +170,7 @@ class md_popup {
 				$fields = array_merge( $args, $this->fields( $args['id'] ) );
 				$fields['id'] = $args['id'];
 				$template = ! empty( $fields['template'] ) ? '-' . $fields['template'] : '';
-				if ( $template = md_template( $this->dir, 'popups/popup' . esc_attr( $template ), true ) )
+				if ( $template = md_template( 'dropins', 'optins/popup' . esc_attr( $template ), true ) )
 					include( $template );
 				if ( ! empty( $fields['custom_css'] ) && ! is_customize_preview() )
 					echo '<style type="text/css">' . $fields['custom_css'] . '</style>';

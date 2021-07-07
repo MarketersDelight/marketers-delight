@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * The functions below load template HTML from the /templates/ folder.
  * These functions are then hooked into their respective locations throughout
@@ -67,7 +71,7 @@ function md_logo() {
 
 function md_secondary_logo() {
 	$secondary_logo = md_setting( array( 'header', 'logo_alt', 'url' ) );
-	echo '<a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $secondary_logo ) . '" /></a>';
+	echo '<span class="secondary-logo"><a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $secondary_logo ) . '" /></a></span>';
 }
 
 function md_the_logo() {
@@ -220,40 +224,6 @@ function md_404_template() {
 		wp_reset_query();
 	}
 }
-
-/**
- * Generate footnotes list after post.
- *
- * @since 4.5
- */
-
-if ( ! function_exists( 'md_footnotes_list' ) ) :
-
-function md_footnotes_list( $content ) {
-	if ( md_has( 'footnotes' ) && in_the_loop() && is_main_query() ) {
-		$footnotes = md_post_meta( array( 'footnotes' ) );
-		if ( ! empty( $footnotes['after_post']['show'] ) && ! empty( $footnotes['footnotes'] ) && is_singular() ) {
-			$notes = '';
-			$c = 0;
-			$url = get_permalink();
-			foreach ( $footnotes['footnotes'] as $footnote => $fields ) {
-				if ( ! empty( $fields['footnote'] ) )
-					$notes .= '<li>' . $fields['footnote'] . " <a href=\"{$url}#footnote_{$footnote}\">&#8617;</a>" . '</li>';
-				$c++;
-			}
-			$content .=
-				'<div id="footnotes" class="footnotes">'.
-				'<h4>' . apply_filters( 'md_footnotes_list_title', __( 'Footnotes', 'md' ) ) . '</h4>'.
-				'<ol>' . $notes . '</ol>'.
-				'</div>';
-		}
-	}
-	return $content;
-}
-
-endif;
-
-add_filter( 'the_content', 'md_footnotes_list' );
 
 /**
  * Create pagination for use on home and archives pages.

@@ -6,6 +6,10 @@
  *
  * @since 4.0
  */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_menu_walker extends Walker_Nav_Menu {
 	function __construct( $title = true, $desc = false ) {
 		$this->md_title = $title;
@@ -22,6 +26,8 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$id = apply_filters( 'nav_menu_item_id', 'menu-item-'. $item->ID, $item, $args );
 		$id = $id ? ' id="' . esc_attr( $id ) . '"' : '';
 		$output .= $indent . '<li' . $id . $class_names .'>';
+		if ( in_array( 'menu-item-has-children', $item->classes ) )
+			$output .= '<span class="menu-toggle" data-menu-toggle="menu-item-' . esc_attr( $item->ID ) . '"></span>';
 		$atts = array();
 		$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
 		$atts['target'] = ! empty( $item->target )     ? $item->target     : '';

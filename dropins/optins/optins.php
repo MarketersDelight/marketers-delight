@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Create Optins admin page.
  *
@@ -16,9 +20,13 @@ class md_optins extends md_api {
 	 */
 
 	public function includes() {
+		require_once( 'lib/integrations/integrations.php' );
+		require_once( 'lib/template-functions.php' );
 		require_once( 'cta/cta.php' );
 		require_once( 'floating-bars/floating-bars.php' );
 		require_once( 'popups/popups.php' );
+		require_once( 'lib/shortcodes.php' );
+		require_once( 'lib/widget-email-form.php' );
 	}
 
 	/**
@@ -32,7 +40,145 @@ class md_optins extends md_api {
 		$this->cta = new md_cta_data;
 		if ( isset( $_GET['page'] ) && ! isset( $_GET['tab'] ) && $_GET['page'] == $this->_id )
 			add_action( 'admin_init', array( $this, 'admin_init' ) );
+		add_action( 'md_integrations_actions', array( $this, 'integration_actions' ), 10, 2 );
+		add_filter( 'md_integrations', array( $this, 'integrations' ) );
 		add_filter( 'md_optins_locations', array( $this, 'locations' ) );
+		add_filter( 'md_filter_blocks', array( $this, 'register_blocks' ) );
+		add_filter( 'md_filter_blocks_scripts', array( $this, 'blocks_scripts' ), 10, 2 );
+	}
+
+	/**
+	 * Add email marketing services to MD Integrations.
+	 *
+	 * @since 5.3
+	 */
+	
+	public function integrations( $integrations ) {
+		$integrations['mailchimp'] = array(
+			'name' => __( 'MailChimp', 'md' ),
+			'url'  => 'http://admin.mailchimp.com/account/api-key-popup',
+			'type' => 'email'
+		);
+		$integrations['aweber'] = array(
+			'name' => __( 'AWeber', 'md' ),
+			'url' => 'https://auth.aweber.com/1.0/oauth/authorize_app/e5957609',
+			'type' => 'email',
+			'manual_refresh' => true,
+			'labels' => array(
+				'api_key' => __( 'Authorization Key', 'md' )
+			)
+		);
+		$integrations['convertkit'] = array(
+			'name' => __( 'ConvertKit', 'md' ),
+			'url' => 'https://app.convertkit.com/account/edit',
+			'type' => 'email'
+		);
+		$integrations['activecampaign'] = array(
+			'name' => __( 'ActiveCampaign', 'md' ),
+			'url' => 'https://marketersdelight.com/connect-email-activecampaign/',
+			'type' => 'email',
+			'fields' => array( 'account_url' ),
+			'labels' => array(
+				'account_url' => __( 'API URL', 'md' )
+			)
+		);
+		$integrations['mailerlite'] = array(
+			'name' => __( 'MailerLite', 'md' ),
+			'url' => 'https://app.mailerlite.com/integrations/api/',
+			'type' => 'email'
+		);
+		$integrations['drip'] = array(
+			'name' => __( 'Drip', 'md' ),
+			'url' => 'https://www.getdrip.com/user/edit',
+			'type' => 'email',
+			'fields' => array( 'account_id' ),
+			'labels' => array(
+				'api_key' => __( 'API Token', 'md' )
+			)
+		);
+		return $integrations;		
+	}
+
+	/**
+	 * Run email service actions on connection.
+	 *
+	 * @since 5.3
+	 */
+
+	public function integration_actions( $integration, $api_keys ) {
+		$integrations = new md_optins_integrations;
+		$option = md_setting();
+		if ( $integration == 'mailchimp' )
+			$integrations->mailchimp( $api_keys['mailchimp']['key'], $option );
+		elseif ( $integration == 'aweber' )
+			$integrations->aweber( $api_keys['aweber']['key'], $option );
+		elseif ( $integration == 'activecampaign' )
+			$integrations->activecampaign( $api_keys['activecampaign']['account_url'], $api_keys['activecampaign']['key'], $option );
+		elseif ( $integration == 'convertkit' )
+			$integrations->convertkit( $api_keys['convertkit']['key'], $option );
+		elseif ( $integration == 'mailerlite' )
+			$integrations->mailerlite( $api_keys['mailerlite']['key'], $option );
+		elseif ( $integration == 'drip' )
+			$integrations->drip( $api_keys['drip']['key'], $api_keys['drip']['account_id'], $option );
+	}
+	
+	/**
+	 * Filter Optins Blocks into MD Blocks system.
+	 *
+	 * @since 5.3
+	 */
+	
+	public function register_blocks( $blocks ) {
+		$blocks['email'] = array(
+			'dropins' => true,
+			'path' => 'optins/lib/block-email.js',
+			'callback' => array( $this, 'block_email_template' ),
+			'localize' => array( 'colors', 'email' )
+		);
+		return $blocks;
+	}
+	
+	/**
+	 * Add custom parameters to Block localized script.
+	 *
+	 * @since 5.3
+	 */
+	
+	public function blocks_scripts( $scripts, $data ) {
+		$email = md_email_data( array( 'show' => 'names', 'label' => true, 'empty_label' => true ) );
+		$popups = md_setting( array( 'popups', 'popups' ) );
+	
+		if ( in_array( 'email', $data ) && ! empty( $email ) )
+			foreach ( $email as $list => $name )
+				$scripts['email'][] = array( 'label' => $name, 'value' => $list );
+	
+		if ( in_array( 'popups', $data ) && ! empty( $popups ) )
+			foreach ( $popups as $popup => $fields )
+				$scripts['popups'][] = array( 'label' => $fields['name'], 'value' => $popup );
+	
+		return $scripts;
+	}
+	
+	/**
+	 * Email Block template
+	 *
+	 * @since 4.9
+	 */
+	
+	public function block_email_template( $attributes, $content ) {
+		ob_start();
+		include( md_template( 'dropins', 'optins/block-email', true ) );
+		return ob_get_clean();
+	}
+
+	/**
+	 * Register Optins widgets.
+	 *
+	 * @since 5.3
+	 */
+
+	public function widgets() {
+		register_widget( 'md_email_form' );
 	}
 
 	/**
@@ -182,7 +328,7 @@ class md_optins extends md_api {
 		$active_popups = $this->active_optins( array( 'popups', 'popups' ) );
 		$active_floating_bars = $this->active_optins( array( 'floating_bars', 'bars' ) );
 		$active_cta = $this->active_optins( array( 'cta', 'forms' ) );
-		include( 'meta-box.php' );
+		include( md_template( 'dropins', 'optins/admin/meta-box', true ) );
 	}
 
 	/**
@@ -193,7 +339,7 @@ class md_optins extends md_api {
 
 	public function popups_meta( $group, $field ) {
 		$show = md_meta( array( 'optins', 'popups', $field, 'show' ) );
-		include( md_template( $this->dir, 'popups/admin/popups-meta', true ) );
+		include( md_template( 'dropins', 'optins/admin/popups-meta', true ) );
 	}
 
 	/**
@@ -207,7 +353,7 @@ class md_optins extends md_api {
 		$colors = $this->cta->colors();
 		$cta_type = md_meta( array( 'optins', 'cta', $field, 'cta_type' ) );
 		$button_type = md_meta( array( 'optins', 'cta', $field, 'button_type' ) );
-		include( md_template( $this->dir, 'cta/admin/cta-fields', true ) );
+		include( md_template( 'dropins', 'optins/admin/cta-fields', true ) );
 	}
 
 	/**
@@ -224,8 +370,8 @@ class md_optins extends md_api {
 		$position = md_meta( array( 'optins', 'floating_bars', $field, 'position' ) );
 		$show = md_meta( array( 'optins', 'floating_bars', $field, 'show' ) );
 		$colors = $this->floating_bars->colors();
-		$icons = md_get_icons( 'options' );
-		include( md_template( $this->dir, 'floating-bars/admin/floating-bar-fields', true ) );
+		$icons = md_get_icons( 'options', null, 'md-icon-' );
+		include( md_template( 'dropins', 'optins/admin/floating-bar-fields', true ) );
 	}
 
 	/**

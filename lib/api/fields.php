@@ -7,6 +7,9 @@
  * @since 4.7
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_fields {
 
 	public $_option = 'marketers_delight';
@@ -160,14 +163,14 @@ class md_fields {
 	 */
 
 	public function text( $name, $id, $option, $args ) {
-		$type = isset( $args['hidden'] ) ? 'hidden' : 'text';
+		$type = ! empty( $args['hidden'] ) ? 'hidden' : 'text';
 		$value = isset( $args['default'] ) && $option == '' ? $args['default'] : $option;
 		$placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
 		$readonly = isset( $args['readonly_after_save'] ) && ! empty( $option ) ? ' readonly' : '';
 		$style = isset( $args['style'] ) ? ' style="' . esc_attr( $args['style'] ) . '"' : '';
 		$populate = isset( $args['populate'] ) ? ' md-populate-' . $args['populate'] : '';
 		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';
-		$disabled = isset( $args['disabled'] ) ? ' disabled' : '';
+		$disabled = ! empty( $args['disabled'] ) ? ' disabled' : '';
 	?>
 		<input type="<?php echo $type; ?>" name="<?php echo $name; ?>" id="<?php echo $id; ?>" value="<?php echo esc_attr( stripslashes( $value ) ); ?>"<?php echo $placeholder; ?> class="regular-text<?php echo esc_attr( $classes ); ?><?php echo esc_attr( $populate ); ?>"<?php echo $readonly; ?><?php echo $style; ?><?php echo $disabled; ?> />
 	<?php }
@@ -289,7 +292,7 @@ class md_fields {
 					<?php endforeach; ?>
 					</optgroup>
 				<?php endforeach; ?>
-			<?php else : ?>
+			<?php elseif ( ! empty( $args['options'] ) ) : ?>
 				<?php foreach ( $args['options'] as $val => $label ) : ?>
 					<option value="<?php echo esc_attr( $val ); ?>"<?php echo selected( $option, $val, false ); ?>><?php echo esc_html( $label ); ?></option>
 				<?php endforeach; ?>
@@ -329,36 +332,52 @@ class md_fields {
 		$upload_url = ! empty( $option['url'] ) ? $option['url'] : '';
 		$upload_id = ! empty( $option['id'] ) ? $option['id'] : '';
 		$placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . $args['placeholder'] . '"' : '';
-
-	?>
-		<div class="md-upload md-upload-<?php echo $type; ?><?php echo ! empty( $upload_url ) ? ' has-upload' : ''; ?>">
-			<div class="md-uploader">
-				<div class="md-upload-preview md-upload-add">
-					<div class="md-upload-previewer">
-						<span class="dashicons dashicons-upload"></span>
-						<p class="md-upload-preview-text"><?php echo __( 'Click to upload', 'md' ); ?></p>
-					</div>
-					<div class="md-upload-preview-image">
-						<img src="<?php echo $upload_url; ?>" alt="<?php echo __( 'Preview Image', 'md' ); ?>" />
-					</div>
-				</div>
-				<div class="md-upload-controls">
-					<label class="md-label" for="<?php echo $id; ?>_url"><?php echo __( 'Image URL', 'md' ); ?></label>
-					<input type="url" class="md-upload-url regular-text" name="<?php echo $name; ?>[url]" id="<?php echo "{$id}_url"; ?>" value="<?php echo esc_attr( $upload_url ); ?>" placeholder="https://">
-					<input type="hidden" class="md-upload-id regular-text" name="<?php echo $name; ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
-					<?php if ( $upload_id ) : ?>
-						<div class="md-upload-id-label">
-							<?php echo sprintf( __( 'ID: %s', 'md' ), $upload_id ); ?>
+		$upload_action = isset( $args['upload_action'] ) ? $args['upload_action'] : '';
+		$accepts = isset( $args['accept'] ) ? $args['accept'] : '';
+		$accept = ! empty( $accepts ) ? " accept=\"$accepts\"" : '';
+	?>	
+		<?php if ( $type == 'media' ) : ?>
+			<div class="md-upload md-upload-<?php echo $type; ?><?php echo ! empty( $upload_url ) ? ' has-upload' : ''; ?>">
+				<div class="md-uploader">
+					<div class="md-upload-preview md-upload-add">
+						<div class="md-upload-previewer">
+							<span class="dashicons dashicons-upload"></span>
+							<p class="md-upload-preview-text"><?php echo __( 'Click to upload', 'md' ); ?></p>
 						</div>
-					<?php endif; ?>
+						<div class="md-upload-preview-image">
+							<img src="<?php echo $upload_url; ?>" alt="<?php echo __( 'Preview Image', 'md' ); ?>" />
+						</div>
+					</div>
+					<div class="md-upload-controls">
+						<label class="md-label" for="<?php echo $id; ?>_url"><?php echo __( 'Image URL', 'md' ); ?></label>
+						<input type="url" class="md-upload-url regular-text" name="<?php echo $name; ?>[url]" id="<?php echo "{$id}_url"; ?>" value="<?php echo esc_attr( $upload_url ); ?>" placeholder="https://">
+						<input type="hidden" class="md-upload-id regular-text" name="<?php echo $name; ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
+						<?php if ( $upload_id ) : ?>
+							<div class="md-upload-id-label">
+								<?php echo sprintf( __( 'ID: %s', 'md' ), $upload_id ); ?>
+							</div>
+						<?php endif; ?>
+					</div>
+				</div>
+				<div class="md-upload-buttons">
+					<input type="button" class="md-upload-add button" value="<?php echo __( 'Add Image', 'md' ); ?>" />
+					<input type="button" class="md-upload-remove button" value="<?php echo __( 'Remove Image', 'md' ); ?>" />
 				</div>
 			</div>
-			<div class="md-upload-buttons">
-				<input type="button" class="md-upload-add button" value="<?php echo __( 'Add Image', 'md' ); ?>" />
-				<input type="button" class="md-upload-remove button" value="<?php echo __( 'Remove Image', 'md' ); ?>" />
+			<?php wp_enqueue_media(); ?>
+		<?php elseif ( $type == 'file' ) :
+			$alert = isset( $args['alert'] ) ? $args['alert'] : __( 'You are about to upload a new file. Do you want to proceed?', 'md' );
+			$success_text = isset( $args['success_text'] ) ? $args['success_text'] : __( 'File successfully updated.', 'md' );
+		?>
+			<div class="md-file-upload">
+				<div class="md-file-upload-field">
+					<input type="file" name="<?php echo $name; ?>[url]" id="<?php echo esc_attr( "{$id}_file" ); ?>"<?php echo $accept; ?> />
+					<span class="md-loading md-file-uploading"><i class="dashicons dashicons-update-alt"></i></span>
+					<span class="md-tooltip md-file-upload-success"><i class="dashicons dashicons-yes"></i> <?php echo esc_html( $success_text ); ?></span>
+				</div>
 			</div>
-		</div>
-		<?php wp_enqueue_media(); ?>
+			<?php wp_add_inline_script( 'marketers-delight', "MD.fileUpload( '" . esc_attr( "{$id}_file" ) . "', '{$upload_action}' );" ); ?>
+		<?php endif; ?>
 	<?php }
 
 	/**
@@ -520,7 +539,7 @@ class md_fields {
 	 */
 
 	public function save( $label = null, $args = null ) {
-		$label = isset( $label ) ? $label : __( 'Save Settings', 'md' );
+		$label = isset( $label ) ? $label : __( 'Save settings', 'md' );
 		// recompile CSS on save
 		$admin_tabs = array();
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields )

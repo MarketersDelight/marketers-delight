@@ -1,5 +1,8 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * A procedural function to access Block Editor colors.
  *
@@ -54,7 +57,7 @@ function md_webfonts_loader() {
 function md_web_fonts( $show_type = null ) {
 	$font_s = '';
 	$fonts = array();
-	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'sidebar_title', 'footer_title' );
+	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'header', 'sidebar_title', 'footer_title' );
 	$areas = array_merge( array( 'body', 'site_title', 'site_tagline', 'sidebar', 'footer' ), $headings );
 	$body_t = md_setting( array( 'typography', 'body', 'font_type' ) );
 	$body_f = md_setting( array( 'typography', 'body', 'font_family' ) );
@@ -203,4 +206,53 @@ function md_button( $button ) {
 	$button['color'] = ! empty( $button['color'] ) ? ' ' . $button['color'] : '';
 	if ( $template = md_template( 'button', true ) )
 		include( $template );
+}
+
+/**
+ * Get Icons data in various formats.
+ *
+ * @since 5.0
+ */
+
+function md_get_icons( $sort = null, $show_defaults = null, $prefix = null ) {
+	$icons = array();
+	$prefix = isset( $prefix ) ? $prefix : '';
+	foreach ( md_icons( $show_defaults ) as $icon => $fields ) {
+		$icon = "$prefix{$icon}";
+		if ( isset( $fields['label'] ) )
+			$icons['options'][$icon] = $fields['label'];
+		$icons['ids'][] = $icon;
+	}
+	if ( isset( $sort ) )
+		$icons = $icons[$sort];
+	return $icons;
+}
+
+/**
+ * Get MD font icons URL.
+ *
+ * @since 5.2.3
+ */
+
+function md_font_icons_url() {
+	$file = MD_URL . 'lib/assets/icons/md.woff';
+	if ( file_exists( get_stylesheet_directory() . '/md.woff' ) )
+		$file = get_stylesheet_directory_uri() . '/md.woff';
+	return $file;
+}
+
+/**
+ * Render an MD font icon.
+ *
+ * @since 5.2.3
+ */
+
+function md_icon( $icon, $args = null ) {
+	$classes[] = "md-icon-{$icon}";
+	if ( isset( $args['classes'] ) )
+		$classes[] = esc_attr( $args['classes'] );
+	$classes = join( ' ', $classes );
+	if ( is_bool( $args ) )
+		return $classes;
+	return '<i class="' . esc_attr( $classes ) . '"></i>';
 }

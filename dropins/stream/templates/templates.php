@@ -5,17 +5,19 @@
  * @since 5.0
  */
 
-class md_stream_templates extends md_api {
+class md_stream_templates {
+
+	public $taxonomy_label = 'stream_categories';
 
 	/**
-	 * Run actions and filters.
+	 * Load templates class.
 	 *
-	 * @since 5.0
+	 * @since 5.3
 	 */
-
-	public function actions() {
-		$this->dir = 'dropins';
-		$this->taxonomy_label = 'stream_categories';
+	
+	public function init() {
+		add_action( 'template_redirect', array( $this, 'template' ) );
+		add_action( 'parse_query', array( $this, 'parse_query' ) );
 	}
 
 	/**
@@ -43,13 +45,21 @@ class md_stream_templates extends md_api {
 				add_action( 'md_hook_stream_before_loop', array( $this, 'loop_sticky' ) );
 			remove_action( 'md_hook_content', 'md_archives_title' );
 		}
-		if ( is_post_type_archive( 'stream' ) && $archives_sidebar )
-			add_filter( 'md_filter_has_sidebar', '__return_true' );
+		if ( is_post_type_archive( 'stream' ) ) {
+			if ( md_setting( array( 'stream', 'layout', 'remove_breadcrumbs' ) ) )
+				remove_action( 'md_hook_content', 'md_breadcrumbs', 5 );
+			if ( $archives_sidebar )
+				add_filter( 'md_filter_has_sidebar', '__return_true' );
+		}
 		if ( is_singular( 'stream' ) ) {
 			if ( $add_title )
 				add_action( 'md_hook_content', array( $this, 'title' ), 5 );
 			if ( $single_sidebar )
 				add_filter( 'md_filter_has_sidebar', '__return_true' );
+		}
+		if ( is_single() && 'stream_activity' == get_post_type() ) {
+			wp_redirect( get_post_type_archive_link( 'stream' ), 301 );
+			exit;
 		}
 	}
 
@@ -67,7 +77,7 @@ class md_stream_templates extends md_api {
 		}
 		return $wp;
 	}
-
+	
 	/**
 	 * Load Share script only when needed.
 	 *
@@ -108,7 +118,7 @@ class md_stream_templates extends md_api {
 	 */
 
 	public function title( $args = null ) {
-		$taxonomy_name = 'stream_categories';
+		$taxonomy_label = $this->taxonomy_label;
 		$archives_title = md_setting( array( 'stream', 'archives_title' ) );
 		$archives_desc = md_setting( array( 'stream', 'archives_text' ) );
 		$archives_photo = md_setting( array( 'stream', 'archives_photo', 'id' ) );
@@ -120,7 +130,7 @@ class md_stream_templates extends md_api {
 		$context = isset( $args['context'] ) ? $args['context'] : '';
 		$title_classes = isset( $args['title_classes'] ) ? ' ' . $args['title_classes'] : ' med-title';
 		if ( $archives_title || $archives_desc )
-			include( md_template( $this->dir, 'stream/stream-title', true ) );
+			include( md_template( 'dropins', 'stream/stream-title', true ) );
 	}
 
 	/**
@@ -142,9 +152,10 @@ class md_stream_templates extends md_api {
 	public function loop() {
 		$c = 0;
 		$disable_comments = md_setting( array( 'stream', 'layout', 'disable_comments' ) );
+		$loop = null;
 		$loop_h = is_post_type_archive( 'stream' ) || is_tax( 'stream' ) ? 'div' : 'article';
-		$article_h = is_singular( 'stream' ) ? 'div' : 'article';
-		include( md_template( $this->dir, 'stream/stream-loop', true ) );
+		$article_h = is_singular( 'stream' ) ? 'div' : 'article';		
+		include( md_template( 'dropins', 'stream/stream-loop', true ) );
 	}
 
 	/**
@@ -154,6 +165,7 @@ class md_stream_templates extends md_api {
 	 */
 
 	public function loop_query( $c ) {
+		$classes = array( 'stream-item' );
 		$loop_h = is_post_type_archive( 'stream' ) || is_tax( 'stream' ) ? 'div' : 'article';
 		$article_h = is_singular( 'stream' ) ? 'div' : 'article';
 		$types = $this->types();
@@ -171,14 +183,19 @@ class md_stream_templates extends md_api {
 		}
 		$has_thread = ! empty( $thread ) ? true : false;
 		$post_id = $html_id = get_the_ID();
+		$title = get_the_title();
 		$embed_id = md_post_meta( array( 'stream', 'post_id' ) );
 		$post_type = get_post_type( $embed_id );
 		$post_date = get_post_timestamp();
 		$post_author = get_post_field( 'post_author', $post_id );
-		$post_content = get_post_field( 'post_content', $post_id );
+		$post_content = get_the_content( md_read_more_text() );
 		$stream_image = get_the_post_thumbnail( $post_id, ( $c == 0 ? 'md-image' : 'thumbnail' ) );
-		$classes = in_array( $post_id, get_option( 'sticky_posts' ) ) ? ' sticky' : '';
-		include( md_template( $this->dir, 'stream/stream-post', true ) );
+		if ( get_post_type() == 'stream_activity' )
+			$classes[] = 'stream-activity';
+		if ( in_array( $post_id, get_option( 'sticky_posts' ) ) )
+			$classes[] = 'sticky';
+		$classes = join( ' ', $classes );
+		include( md_template( 'dropins', 'stream/stream-post', true ) );
 		if ( $stream_image )
 			if ( class_exists( 'md_popup' ) )
 				new md_popup( array(
@@ -200,7 +217,7 @@ class md_stream_templates extends md_api {
 				$post_content = $fields['text'];
 				$image_id = ! empty( $fields['image']['id'] ) ? esc_attr( $fields['image']['id'] ) : '';
 				$stream_image = wp_get_attachment_image( $image_id, 'thumbnail' );
-				include( md_template( $this->dir, 'stream/stream-post', true ) );
+				include( md_template( 'dropins', 'stream/stream-post', true ) );
 				if ( class_exists( 'md_popup' ) && $stream_image )
 					md_popup( array(
 						'id' => "stream_{$post_id}",
@@ -247,7 +264,7 @@ class md_stream_templates extends md_api {
 	public function byline( $post_id, $embed_id, $post_type, $args = null ) {
 		$types = $this->types();
 		$is_embed = ! empty( $args['is_embed'] ) ? true : null;
-		include( md_template( $this->dir, 'stream/stream-byline', true ) );
+		include( md_template( 'dropins', 'stream/stream-byline', true ) );
 	}
 
 	/**
@@ -257,9 +274,10 @@ class md_stream_templates extends md_api {
 	 */
 
 	public function popup( $atts ) {
-		include( md_template( $this->dir, 'stream/stream-popup', true ) );
+		include( md_template( 'dropins', 'stream/stream-popup', true ) );
 	}
 
 }
 
-new md_stream_templates;
+$stream_templates = new md_stream_templates;
+$stream_templates->init();

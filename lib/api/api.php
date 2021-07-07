@@ -8,6 +8,9 @@
  * @refactored 5.0
  */
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_api {
 
 	public $_id;

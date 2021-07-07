@@ -5,6 +5,9 @@
  * @since 4.3
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_settings extends md_api {
 
 	/**

@@ -9,8 +9,6 @@
 
 class md_stream extends md_api {
 
-	public $dir = 'dropins';
-
 	/**
 	 * Include Stream files.
 	 *
@@ -18,7 +16,7 @@ class md_stream extends md_api {
 	 */
 
 	public function includes() {
-		require_once( 'templates.php' );
+		require_once( 'templates/templates.php' );
 		require_once( 'widget.php' );
 	}
 
@@ -36,8 +34,22 @@ class md_stream extends md_api {
 		add_action( 'init', array( $this, 'post_type' ), 1 );
 		add_filter( 'md_share_show_on', array( $this, 'share' ) );
 		add_filter( 'md_filter_sidebars_post_types', array( $this, 'sidebars' ) );
-		if ( is_admin() )
+		add_filter( 'md_optins_locations', array( $this, 'optins_locations' ) );
+		if ( is_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
+		}
+	}
+
+	/**
+	 * Run stream actions on MD post type publish.
+	 *
+	 * @since 5.3
+	 */
+
+	public function admin_init() {
+		foreach ( md_setting( array( 'stream', 'activity_post_types' ), array() ) as $post_type => $val )
+			add_action( "publish_$post_type", array( $this, 'publish_activity' ) );
 	}
 
 	/**
@@ -76,6 +88,44 @@ class md_stream extends md_api {
 				'all_items' => __( 'Stream', 'md' )
 			)
 		) );
+		if ( md_setting( array( 'stream', 'settings', 'enable_activity' ) ) )
+			register_post_type( 'stream_activity', array(
+				'hierarchial' => true,
+				'public' => true,
+				'has_archive' => false,
+				'show_in_menu' => 'edit.php?post_type=stream',
+				'supports' => $supports,
+				'rewrite' => array( 'slug' => "{$this->slug}-activity", 'with_front' => true ),
+				'labels' => array(
+					'name' => __( 'Stream activity', 'md' ),
+					'singular_name' => __( 'Stream activity', 'md' ),
+					'menu_name' => __( 'Stream activity', 'md' ),
+					'name_admin_bar' => __( 'Stream activity', 'md' ),
+					'add_new_item' => __( 'Add New Stream', 'md' ),
+					'edit_item' => __( 'Edit Stream', 'md' ),
+					'view_items' => __( 'View Stream', 'md' ),
+					'search_items' => __( 'Search activity', 'md' ),
+					'not_found' => __( 'No activity found', 'md' ),
+					'not_found_in_trash' => __( 'No stream activities found in trash', 'md' ),
+					'all_items' => __( 'Activity', 'md' )
+				)
+			) );
+	}
+
+	/**
+	 * Publishes updates to Stream activity from approved custom post types.
+	 *
+	 * @since 5.3
+	 */
+
+	public function publish_activity( $post_id ) {
+		$new_post_id = wp_insert_post( array(
+			'post_type' => 'stream_activity',
+			'post_status' => 'publish'
+		) );
+		$post_meta = md_post_meta( null, $new_post_id, array() );
+		$post_meta['stream']['post_id'] = esc_attr( $post_id );
+		update_post_meta( $new_post_id, 'marketers_delight', $post_meta );	
 	}
 
 	/**
@@ -120,6 +170,14 @@ class md_stream extends md_api {
 				'name' => __( 'Settings', 'md' ),
 				'parent_slug' => 'edit.php?post_type=stream',
 				'fields' => array(
+					'settings' => array(
+						'type' => 'checkbox',
+						'options' => array( 'enable_activity' )
+					),
+					'activity_post_types' => array(
+						'type' => 'checkbox',
+						'options' => md_post_type_meta()
+					),
 					'archives_title' => array( 'type' => 'text' ),
 					'archives_text' => array( 'type' => 'textarea' ),
 					'archives_photo' => array(
@@ -130,13 +188,13 @@ class md_stream extends md_api {
 					'posts_per_page' => array( 'type' => 'number' ),
 					'layout' => array(
 						'type' => 'checkbox',
-						'options' => array( 'disable_comments', 'add_archives_sidebar', 'add_single_sidebar', 'add_stream_title', 'remove_post_titles' )
+						'options' => array( 'disable_comments', 'add_archives_sidebar', 'add_single_sidebar', 'add_stream_title', 'remove_breadcrumbs', 'remove_post_titles' )
 					)
 				)
 			),
 			'meta_box' => array(
 				'name' => __( 'Stream', 'md' ),
-				'post_type' => array( 'stream' ),
+				'post_type' => array( 'stream', 'stream_activity' ),
 				'priority' => 'high',
 				'fields' => array(
 					'post_id' => array( 'type' => 'number' ),
@@ -197,6 +255,21 @@ class md_stream extends md_api {
 	}
 
 	/**
+	 * Add Stream to MD optins locations.
+	 *
+	 * @since 5.3
+	 */
+
+	public function optins_locations( $locations ) {
+		$locations['stream'] = array(
+			'archive' => __( 'Stream Page', 'md' ),
+			'single' => __( 'Stream Posts', 'md' ),
+			'stream_categories' => __( 'Stream Categories', 'md' )
+		);
+		return $locations;
+	}
+
+	/**
 	 * Add Stream Archives link to Admin Bar.
 	 *
 	 * @since 4.9.2
@@ -225,7 +298,12 @@ class md_stream extends md_api {
 	 */
 
 	public function admin_page() {
-		include( md_template( $this->dir, 'stream/admin/stream-settings', true ) );
+		$post_types = md_post_type_meta();
+		foreach ( $post_types as $post_type ) {
+			if ( $post_type == 'stream' ) continue;
+			$types[$post_type] = ucwords( $post_type );
+		}
+		include( md_template( 'dropins', 'stream/admin/stream-settings', true ) );
 	}
 
 	/**
@@ -235,7 +313,7 @@ class md_stream extends md_api {
 	 */
 
 	public function meta_box() {
-		include( md_template( $this->dir, 'stream/admin/stream-meta', true ) );
+		include( md_template( 'dropins', 'stream/admin/stream-meta', true ) );
 	}
 
 	/**
@@ -245,7 +323,7 @@ class md_stream extends md_api {
 	 */
 
 	public function thread( $group, $field ) {
-		include( md_template( $this->dir, 'stream/admin/stream-thread-meta', true ) );
+		include( md_template( 'dropins', 'stream/admin/stream-thread-meta', true ) );
 	}
 
 }

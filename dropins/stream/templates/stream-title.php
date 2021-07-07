@@ -10,7 +10,7 @@
 
 		<?php if ( empty( $context ) ) : ?>
 
-			<?php if ( is_tax( $taxonomy_name ) ) : ?>
+			<?php if ( is_tax( $taxonomy_label ) ) : ?>
 				<h1 class="stream-head-title<?php echo esc_attr( $title_classes ); ?>"><?php echo single_cat_title(); ?></h1>
 				<?php if ( ! empty( $cat_desc ) ) : ?>
 					<div class="stream-head-text mb-half">
@@ -31,7 +31,7 @@
 
 		<?php endif; ?>
 
-		<?php if ( ! is_tax( $taxonomy_name ) && $archives_desc && $context != 'widget' ) : ?>
+		<?php if ( ! is_tax( $taxonomy_label ) && $archives_desc && $context != 'widget' ) : ?>
 			<div class="stream-head-text mb-half">
 				<?php echo wpautop( $archives_desc ); ?>
 			</div>
@@ -39,11 +39,11 @@
 
 		<div class="stream-stats">
 			<span class="stream-stat stat-posts mr-half">
-				<i class="stat-icon md-icon-pin"></i>
+				<?php echo md_icon( 'pin', array( 'classes' => 'stat-icon' ) ); ?>
 				<b class="stat-count"><?php echo esc_attr( $posts_count ); ?></b> <span class="stat-text"><?php echo __( 'Posts', 'md' ); ?></span>
 			</span>
 			<span class="stream-stat stat-likes">
-				<i class="stat-icon md-icon-heart-empty"></i>
+				<?php echo md_icon( 'heart-empty', array( 'classes' => 'stat-icon' ) ); ?>
 				<b class="share-total" data-share-total="stream"><?php echo esc_attr( $likes_count ); ?></b> <span class="stat-text"><?php echo __( 'Likes', 'md' ); ?></span>
 			</span>
 		</div>

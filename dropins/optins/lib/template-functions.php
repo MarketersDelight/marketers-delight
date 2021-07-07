@@ -1,5 +1,8 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Organize array of lists for use in options.
  *
@@ -203,6 +206,9 @@ function md_email_input( $field, $service ) {
 function md_email_fields( $options = null ) {
 	$services = md_email_data( array( 'show' => 'service' ) );
 	$list = md_setting( array( 'cta', 'email_list' ) );
+	$name_label = __( 'Enter your name&hellip;', 'md' );
+	$email_label = __( 'Enter your email&hellip;', 'md' );
+	$submit_text = __( 'Join Now!', 'md' );
 	if ( $options == null ) {
 		$fields = array(
 			'email_service' => ! empty( $services[$list] ) ? $services[$list] : '',
@@ -213,9 +219,9 @@ function md_email_fields( $options = null ) {
 			'email_input' => array(
 				'name' => md_setting( array( 'email', 'email_input', 'name' ) )
 			),
-			'email_name_label' => md_setting( array( 'email', 'email_name_label' ) ),
-			'email_email_label' => md_setting( array( 'email', 'email_email_label' ) ),
-			'email_submit_text' => md_setting( array( 'email', 'email_submit_text' ) ),
+			'email_name_label' => md_setting( array( 'email', 'email_name_label' ), $name_label ),
+			'email_email_label' => md_setting( array( 'email', 'email_email_label' ), $email_label ),
+			'email_submit_text' => md_setting( array( 'email', 'email_submit_text' ), $submit_text ),
 			'email_image' => md_setting( array( 'email', 'email_image' ) ),
 			'email_form_style' => array(
 				'attached' => md_setting( array( 'email', 'email_form_style', 'attached' ) )
@@ -241,9 +247,9 @@ function md_email_fields( $options = null ) {
 			'email_input' => array(
 				'name' => ! empty( $options['email_input']['name'] ) ? $options['email_input']['name'] : ''
 			),
-			'email_name_label' => isset( $options['email_name_label'] ) ? $options['email_name_label'] : '',
-			'email_email_label' => isset( $options['email_email_label'] ) ? $options['email_email_label'] : '',
-			'email_submit_text' => isset( $options['email_submit_text'] ) ? $options['email_submit_text'] : '',
+			'email_name_label' => ! empty( $options['email_name_label'] ) ? $options['email_name_label'] : $name_label,
+			'email_email_label' => ! empty( $options['email_email_label'] ) ? $options['email_email_label'] : $email_label,
+			'email_submit_text' => ! empty( $options['email_submit_text'] ) ? $options['email_submit_text'] : $submit_text,
 			'email_image' => ! empty( $options['email_image'] ) ? $options['email_image'] : '',
 			'email_form_style' => array(
 				'attached' => ! empty( $options['email_form_style']['attached'] ) ? $options['email_form_style']['attached'] : ''
@@ -279,10 +285,6 @@ function md_email_form( $options = null, $atts = null ) {
 	$service = $fields['email_service'];
 	$title = $fields['email_title'];
 	$desc = $fields['email_desc'];
-
-	$name_label = ! empty( $fields['email_name_label'] ) ? $fields['email_name_label'] : __( 'Enter your name&hellip;', 'md' );
-	$email_label = ! empty( $fields['email_email_label'] ) ? $fields['email_email_label'] : __( 'Enter your email&hellip;', 'md' );
-	$submit_text = ! empty( $fields['email_submit_text'] ) ? $fields['email_submit_text'] : __( 'Join Now!', 'md' );
 
 	$form_classes[] = 'clear';
 
@@ -328,6 +330,39 @@ function md_email_form( $options = null, $atts = null ) {
 }
 
 /**
+ * Call a new popup instance only if popup is not on page.
+ *
+ * @since 5.0
+ */
+
+function md_popup( $args ) {
+	if ( ! in_array( $args['id'], md_filter_popups() ) )
+		new md_popup( $args );
+}
+
+/**
+ * Get MD Popups data in various formats.
+ *
+ * @since 5.0
+ */
+
+function md_get_popups( $show = null ) {
+	$popups = array();
+	$option = md_setting( array( 'popups', 'popups' ) );
+
+	if ( ! empty( $option ) ) {
+		foreach ( $option as $popup => $fields )
+			if ( ! empty( $popup ) )
+				if ( $show == 'ids' )
+					$popups[] = $popup;
+				elseif ( $show == 'options' )
+					$popups[$popup] = $fields['name'];
+		return $popups;
+	}
+	return $option;
+}
+
+/**
  * If no service is connected, display this message.
  *
  * @since 4.0
@@ -338,4 +373,14 @@ function md_email_connect_notice() {
 		echo '<p class="description"><em>' . sprintf( __( 'To easily embed an email list from your mail provider, please first connect your lists to the <a href="%s">Integrations panel</a>, then come back here to quickly embed it to your site.', 'md' ), admin_url( 'admin.php?page=md_integrations' ) ) . '</em></p>';
 	else
 		echo '<p class="alert shadow">' . __( '<b>Attention</b>: please select an email list or enter a custom form code to show an email form here!', 'md' ) . '</p>';
+}
+
+/**
+ * If no service is connected, display this message.
+ *
+ * @since 4.5
+ */
+
+function md_popup_connect_notice() {
+	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
 }

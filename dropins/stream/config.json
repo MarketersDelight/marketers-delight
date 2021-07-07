@@ -1,0 +1,11 @@
+{
+	"name" : "Stream",
+	"author" : "Alex, Marketers Delight",
+	"version" : "1.0",
+	"description" : "Create your own stream timeline of short posts, status updates, latest activity feeds, and other fun micro-blogging features for a more addicting blogging experience.",
+	"dropin_url" : "https://marketersdelight.com/dropins/stream/",
+	"settings_url" : "edit.php?post_type=stream&page=md_stream",
+	"author_url" : "https://alexmangini.com/",
+	"icon" : "dashicons-schedule",
+	"colors" : "#1e73be"
+}

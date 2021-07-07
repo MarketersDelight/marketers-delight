@@ -1,5 +1,8 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * A collection of all registered components and fields for build and save.
  *
@@ -58,10 +61,8 @@ function md_image_sizes() {
 
 function md_filter_register_nav_menus() {
 	$menus['header'] = __( 'Header Menu', 'md' );
-	if ( md_has( 'main_menu' ) ) {
-		$menus['main'] = __( 'Main Menu', 'md' );
-		$menus['social'] = __( 'Social Media Menu', 'md' );
-	}
+	$menus['main'] = __( 'Main Menu', 'md' );
+	$menus['social'] = __( 'Social Media Menu', 'md' );
 
 	return apply_filters( 'md_filter_register_nav_menus', $menus );
 }

@@ -3,7 +3,7 @@
  * Theme updater class.
  *
  * @package EDD Sample Theme
- * @version 1.0.3
+ * @version 1.1.0
  */
 
 class EDD_Theme_Updater {
@@ -35,6 +35,7 @@ class EDD_Theme_Updater {
 			'version'        => '',
 			'author'         => '',
 			'beta'           => false,
+			'item_id'        => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -48,6 +49,7 @@ class EDD_Theme_Updater {
 		$this->remote_api_url = $args['remote_api_url'];
 		$this->response_key   = $this->theme_slug . '-' . $this->beta . '-update-response';
 		$this->strings        = $strings;
+		$this->item_id        = $args['item_id'];
 
 		add_filter( 'site_transient_update_themes',        array( $this, 'theme_update_transient' ) );
 		add_filter( 'delete_site_transient_update_themes', array( $this, 'delete_theme_update_transient' ) );
@@ -86,7 +88,7 @@ class EDD_Theme_Updater {
 
 		if ( version_compare( $this->version, $api_response->new_version, '<' ) ) {
 
-			echo '<div id="update-nag">';
+			echo '<div id="update-nag" class="update-nag notice notice-warning inline">';
 			printf(
 				$strings['update-available'],
 				$theme->get( 'Name' ),
@@ -110,11 +112,20 @@ class EDD_Theme_Updater {
 	 * @return array|boolean  If an update is available, returns the update parameters, if no update is needed returns false, if
 	 *                        the request fails returns false.
 	 */
-	function theme_update_transient( $value ) {
+	public function theme_update_transient( $value ) {
 		$update_data = $this->check_for_update();
 		if ( $update_data ) {
-			$value->response[ $this->theme_slug ] = $update_data;
+
+			// Make sure the theme property is set. See issue 1463 on Github in the Software Licensing Repo.
+			$update_data['theme'] = $this->theme_slug;
+
+			if ( version_compare( $this->version, $update_data['new_version'], '<' ) ) {
+				$value->response[ $this->theme_slug ] = $update_data;
+			} else {
+				$value->no_update[ $this->theme_slug ] = $update_data;
+			}
 		}
+
 		return $value;
 	}
 
@@ -133,7 +144,7 @@ class EDD_Theme_Updater {
 	 * @return array|boolean  If an update is available, returns the update parameters, if no update is needed returns false, if
 	 *                        the request fails returns false.
 	 */
-	function check_for_update() {
+	private function check_for_update() {
 
 		$update_data = get_transient( $this->response_key );
 
@@ -147,7 +158,8 @@ class EDD_Theme_Updater {
 				'slug'       => $this->theme_slug,
 				'version'    => $this->version,
 				'author'     => $this->author,
-				'beta'       => $this->beta
+				'beta'       => $this->beta,
+				'item_id'    => $this->item_id,
 			);
 
 			$response = wp_remote_post( $this->remote_api_url, array( 'timeout' => 15, 'body' => $api_params ) );
@@ -167,19 +179,15 @@ class EDD_Theme_Updater {
 			if ( $failed ) {
 				$data = new stdClass;
 				$data->new_version = $this->version;
-				set_transient( $this->response_key, $data, strtotime( '+30 minutes', current_time( 'timestamp' ) ) );
+				set_transient( $this->response_key, $data, strtotime( '+30 minutes', time() ) );
 				return false;
 			}
 
 			// If the status is 'ok', return the update arguments
 			if ( ! $failed ) {
 				$update_data->sections = maybe_unserialize( $update_data->sections );
-				set_transient( $this->response_key, $update_data, strtotime( '+12 hours', current_time( 'timestamp' ) ) );
+				set_transient( $this->response_key, $update_data, strtotime( '+12 hours', time() ) );
 			}
-		}
-
-		if ( version_compare( $this->version, $update_data->new_version, '>=' ) ) {
-			return false;
 		}
 
 		return (array) $update_data;

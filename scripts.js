@@ -50,9 +50,11 @@ window.MD = {
 		}
 	},
 	headerMenu: function() {
-		document.getElementById( 'header-menu-trigger' ).onclick = function( e ) {
-			MD.toggleClass( document.getElementById( 'header' ), 'has-mobile-menu' );
-		}
+		var headerTrigger = document.getElementById( 'header-menu-trigger' );
+		if ( headerTrigger )
+			headerTrigger.onclick = function( e ) {
+				MD.toggleClass( document.getElementById( 'header' ), 'has-mobile-menu' );
+			}
 	},
 	mainMenu: function() {
 		var mainMenu = document.getElementById( 'main_menu' ),
@@ -119,6 +121,17 @@ window.MD = {
 			}
 		}
 	},
+	button: function() {
+		var buttons = document.getElementsByClassName( 'button-loading' );
+		for ( var i = 0; i < buttons.length; i++ ) {
+			buttons[i].onclick = function( e ) {
+				var form = this.parentNode;
+				form.addEventListener( 'submit', function() {
+					MD.addClass( this, 'is-loading' );
+				});
+			}
+		}
+	},
 	share: {
 		init: function() {
 			MD.share.window();
@@ -149,17 +162,16 @@ window.MD = {
 							counts = document.getElementsByClassName( 'share-count' ),
 							request = new XMLHttpRequest();
 						for ( var i = 0; i < counts.length; i++ )
-							if ( likes[i].getAttribute( 'data-share-id' ) === post_id )
+							if ( likes[i].getAttribute( 'data-share-id' ) === post_id ) {
+								counts[i].innerHTML++;
 								MD.addClass( likes[i], 'liked' );
+							}
 						request.open( 'POST', MDJS.ajaxurl, true );
 						request.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' );
 						request.onreadystatechange = function() {
 							if ( request.readyState === 4 && request.status === 200 ) {
 								var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [];
 								liked.push( post_id );
-								for ( var i = 0; i < counts.length; i++ )
-									if ( likes[i].getAttribute( 'data-share-id' ) === post_id )
-										counts[i].innerHTML++;
 								if ( totals )
 									for ( var i = 0; i < totals.length; i++ )
 										if ( totals[i].getAttribute( 'data-share-total' ) === post_type )

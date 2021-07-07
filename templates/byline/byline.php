@@ -2,4 +2,5 @@
 	<?php foreach ( md_byline_items() as $item => $label ) : ?>
 		<?php md_byline_item( $item ); ?>
 	<?php endforeach; ?>
+	<?php md_hook_byline_item(); ?>
 </div>

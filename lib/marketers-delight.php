@@ -1,7 +1,9 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
-define( 'MD_VERSION', '5.2.2' );
+define( 'MD_VERSION', '5.3' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -10,6 +12,8 @@ define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 define( 'MD_PLUGIN_DIR', MD_DIR . 'lib/' );
 define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
+define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
+define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 
 /**
@@ -52,9 +56,9 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/fields.php' );
 		require_once( MD_DIR . 'lib/api/icons.php' );
 		require_once( MD_DIR . 'lib/api/css.php' );
+		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
-		require_once( MD_DIR . 'lib/functions/email-functions.php' );
 		require_once( MD_DIR . 'lib/functions/design-functions.php' );
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
 		require_once( MD_DIR . 'lib/functions/deprecated.php' );
@@ -63,54 +67,52 @@ final class marketers_delight {
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/functions/conditionals.php' );
 		require_once( MD_DIR . 'lib/functions/build.php' );
-		require_once( MD_DIR . 'lib/functions/featured-image.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/functions/classes.php' );
 		require_once( MD_DIR . 'lib/wp/optimize.php' );
 		require_once( MD_DIR . 'lib/wp/walker.php' );
-		require_once( MD_DIR . 'lib/wp/shortcodes.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/accordion.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/content-spotlight.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/text-image.php' );
-		include_once( MD_DIR . 'lib/wp/widgets/quote.php' );
-		require_once( MD_DIR . 'lib/wp/widgets/email-form.php' );
+		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
+			include_once( MD_DIR . "lib/wp/widgets/$widget.php" );
+		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
+			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
+		require_once( MD_DIR . 'lib/wp/featured-image/featured-image.php' );
+		require_once( MD_DIR . 'lib/wp/featured-video/featured-video.php' );
 	}
 
 	/**
-	 * Load MD Dropins after theme is setup.
+	 * Load MD Dropins after theme is setup. Supports old Drop-ins
+	 * locations pre-MD5.3.
 	 *
 	 * @since 4.6
 	 */
 
 	public function dropins() {
-		require_once( MD_DROPINS_DIR . 'featured-image/featured-image.php' );
-		require_once( MD_DROPINS_DIR . 'featured-video/featured-video.php' );
-
-		if ( function_exists( 'register_block_type' ) && md_has( 'blocks' ) )
-			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
-
-		require_once( MD_DROPINS_DIR . 'optins/optins.php' );
-
-		if ( md_has( 'footnotes' ) )
-			require_once( MD_DROPINS_DIR . 'footnotes/footnotes.php' );
-
-		if ( md_has( 'share' ) )
-			require_once( MD_DROPINS_DIR . 'share/share.php' );
-
-		if ( md_has( 'tracking_scripts' ) )
-			require_once( MD_DROPINS_DIR . 'scripts-manager.php' );
-
-		if ( ! md_has( 'stream' ) )
-			require_once( MD_DROPINS_DIR . 'stream/stream.php' );
-
-		if ( ! md_has( 'bookshelf' ) )
-			require_once( MD_DROPINS_DIR . 'bookshelf/bookshelf.php' );
-
-		if ( ! md_has( 'admin_bar' ) )
-			require_once( MD_DROPINS_DIR . 'admin-bar/admin-bar.php' );
-
-		if ( class_exists( 'WooCommerce' ) && ! md_has( 'woocommerce' ) )
-			require_once( MD_DROPINS_DIR . 'woocommerce/woocommerce.php' );
+		$dropins = md_get_dropins( 'active' );
+		$old_dropins = md_setting( array( 'dropins', 'features' ), array() );
+		if ( ! empty( $dropins ) ) {
+			foreach ( $dropins as $dropin )
+				if ( md_has( $dropin ) )
+					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+						require_once( $file );
+					else {
+						$option = md_setting();
+						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+						update_option( 'marketers_delight', $option );
+					}
+		}
+		else {
+			$old_dropins['optins'] = true;
+			$old_dropins['share'] = true;
+			$old_dropins['scripts'] = true;
+			$old_dropins['footnotes'] = true;
+			if ( isset( $old_dropins['admin_bar'] ) ) {
+				unset( $old_dropins['admin_bar'] );
+				$old_dropins['admin-bar'] = true;
+			}
+			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
+				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
+					require_once( $old_dropin_file );
+		}
 	}
 
 	/**
@@ -149,7 +151,7 @@ final class marketers_delight {
 		// Optimize <head>
 		new md_optimize_wp;
 
-		if ( class_exists( 'WooCommerce' ) && ! md_has( 'woocommerce' ) )
+		if ( class_exists( 'WooCommerce' ) && md_has( 'woocommerce' ) )
 			add_theme_support( 'woocommerce' );
 	}
 
@@ -176,7 +178,7 @@ final class marketers_delight {
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) && md_setting( array( 'dropins', 'features', 'admin_bar' ) ) ? true : false
+			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'installed', 'admin-bar', 'status', 'enable' ), false ) : false
 		) );
 
 		// Comment reply JS
@@ -184,14 +186,13 @@ final class marketers_delight {
 			wp_enqueue_script( 'comment-reply' );
 
 		// Dequeue Blocks Library if necessary
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) || ! md_has( 'blocks' ) )
+		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) )
 			wp_dequeue_style( 'wp-block-library' );
 
 		// Load stupid legacy MailerLite script
 		$data = md_setting( array( 'integrations' ) );
 		if ( ! empty( $data['enabled']['mailerlite'] ) )
 			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
-
 	}
 
 	/**
@@ -232,7 +233,6 @@ final class marketers_delight {
 		register_widget( 'md_content_spotlight' );
 		register_widget( 'md_text_image' );
 		register_widget( 'md_quote_widget' );
-		register_widget( 'md_email_form' );
 
 		// Main Sidebar
 		register_sidebar( array(
@@ -307,7 +307,7 @@ final class marketers_delight {
 	 */
 
 	public function post_types_meta( $post_types ) {
-		if ( ! md_has( 'woocommerce' ) )
+		if ( md_has( 'woocommerce' ) )
 			$post_types[] = 'product';
 		$post_types[] = 'stream';
 		return $post_types;
@@ -320,11 +320,11 @@ final class marketers_delight {
 	 */
 
 	public function taxonomies_meta( $taxonomies ) {
-		if ( ! md_has( 'stream' ) )
+		if ( md_has( 'stream' ) )
 			$taxonomies[] = 'stream_categories';
-		if ( ! md_has( 'bookshelf' ) )
+		if ( md_has( 'bookshelf' ) )
 			$taxonomies[] = 'bookshelf_categories';
-		if ( ! md_has( 'woocommerce' ) )
+		if ( md_has( 'woocommerce' ) )
 			$taxonomies[] = 'product_cat';
 		return $taxonomies;
 	}

@@ -134,7 +134,7 @@ class md_woocommerce_templates extends md_api {
 		$count = WC()->cart->cart_contents_count;
 	?>
 		<a class="header-cart cart-contents" href="<?php echo wc_get_cart_url(); ?>" title="<?php echo __( 'View your shopping cart', 'md' ); ?>">
-			<i class="md-icon-cart"></i>
+			<?php echo md_icon( 'cart' ); ?>
 			<span class="cart-contents-count">
 				<?php echo esc_html( $count ); ?>
 			</span>

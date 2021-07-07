@@ -7,8 +7,6 @@
 
 class md_popups extends md_api {
 
-	public $dir = 'dropins/optins';
-
 	/**
 	 * Load required files for Popups environment.
 	 *
@@ -99,7 +97,7 @@ class md_popups extends md_api {
 		$options = md_get_popups( 'options' );
 		$header_menu = $this->fields->module( 'header_menu' );
 		$byline_text = $this->fields->module( 'byline' );
-		include( md_template( $this->dir, 'popups/admin/popups-settings', true ) );
+		include( md_template( 'dropins', 'optins/admin/popups-settings', true ) );
 	}
 
 	/**
@@ -110,7 +108,7 @@ class md_popups extends md_api {
 
 	public function fields( $group, $field ) {
 		$show = md_setting( array( 'popups', 'popups', $field, 'show' ) );
-		include( md_template( $this->dir, 'popups/admin/popups-fields', true ) );
+		include( md_template( 'dropins', 'optins/admin/popups-fields', true ) );
 	}
 
 	/**
@@ -122,7 +120,7 @@ class md_popups extends md_api {
 
 	public function html() {
 		if ( has_action( 'md_popups' ) )
-			md_template( $this->dir, 'popups/popups' );
+			md_template( 'dropins', 'optins/popups' );
 	}
 
 	/**
@@ -139,7 +137,7 @@ class md_popups extends md_api {
 		$post_type = get_post_type();
 		$popups_remove = md_meta( array( 'optins', 'popups_remove' ), true );
 		$remove = ! empty( $popups_remove ) ? array_keys( $popups_remove ) : array();
-		$popups_add = md_meta( array( 'optins', 'popups' ), true );
+		$popups_add = md_meta( array( 'optins', 'popups' ) );
 		$add = ! empty( $popups_add ) ? $popups_add : array();
 
 		if ( $remove )

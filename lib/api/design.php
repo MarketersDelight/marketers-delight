@@ -6,6 +6,9 @@
  * @since 4.8
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_design {
 
 	/**
@@ -70,6 +73,7 @@ class md_design {
 		$content_width = $post_width;
 		if ( $layout_style == '' )
 			$content_width = $post_width + ( $line_height * 4 );
+		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
 		$site_width = $content_width + $sidebar_width;
 		// Finally, return list of default values

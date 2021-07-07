@@ -140,10 +140,12 @@
 	width: 60px;
 }
 
-.stream-byline {
+.stream-byline{
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-bottom: 4px;
 }
+
+.stream-byline .md-icon-plus { color: #22a340; }
 
 .stream-byline-avatar {
 	position: relative;
@@ -163,6 +165,16 @@
 	font-weight: <?php echo $bold; ?>;
 	margin-bottom: <?php echo $small; ?>px;
 	text-transform: uppercase;
+}
+
+/* ACTIVITY */
+
+.stream-activity .stream-byline { font-style: italic; }
+
+.stream-activity .share {
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	margin-top: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
 
 /* SINGLE */

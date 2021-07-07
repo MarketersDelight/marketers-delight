@@ -1,10 +1,15 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * A quick recap of what's new in MD.
  *
  * @since 4.8.4
  * @deprecated 5.3
  */
+
 function md_whats_new() {
 	$new['version'] = '';
 	$new['link'] = '#';

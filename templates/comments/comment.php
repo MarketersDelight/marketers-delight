@@ -8,7 +8,7 @@
 				<div class="byline-avatar">
 					<?php echo get_avatar( $comment, $args['avatar_size'] ); ?>
 					<?php if ( $comment->user_id == $post->post_author ) : ?>
-						<span class="byline-avatar-author md-icon-pencil" title="<?php echo __( 'Post Author', 'md' ); ?>"></span>
+						<span class="byline-avatar-author <?php echo md_icon( 'pencil', true ); ?>" title="<?php echo __( 'Post Author', 'md' ); ?>"></span>
 					<?php endif; ?>
 				</div>
 			<?php endif; ?>
@@ -36,7 +36,7 @@
 					'after' => '</span>'
 				) ) ); ?>
 
-				<?php edit_comment_link( '<i class="md-icon-pencil"></i>', '<span class="byline-icon byline-edit">', '</span>' ); ?>
+				<?php edit_comment_link( '<i class="' . md_icon( 'pencil', true ) . '"></i>', '<span class="byline-icon byline-edit">', '</span>' ); ?>
 			</div>
 
 		</footer>

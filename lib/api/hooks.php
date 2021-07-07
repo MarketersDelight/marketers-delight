@@ -1,4 +1,6 @@
 <?php
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_hook_before_html() {
 	do_action( 'md_hook_before_html', 'before_html' );
@@ -48,12 +50,24 @@ function md_hook_before_content_box() {
 	do_action( 'md_hook_before_content_box', 'before_content_box' );
 }
 
+function md_hook_content_box_top() {
+	do_action( 'md_hook_content_box_top' );
+}
+
 function md_hook_content_box_bottom() {
 	do_action( 'md_hook_content_box_bottom' );
 }
 
 function md_hook_content() {
 	do_action( 'md_hook_content', 'content' );
+}
+
+function md_hook_content_top() {
+	do_action( 'md_hook_content_top' );
+}
+
+function md_hook_content_bottom() {
+	do_action( 'md_hook_content_bottom' );
 }
 
 function md_hook_before_content() {
@@ -82,6 +96,10 @@ function md_hook_before_headline() {
 
 function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline' );
+}
+
+function md_hook_byline_item() {
+	do_action( 'md_hook_byline_item' );
 }
 
 function md_hook_after_featured_image() {
@@ -137,6 +155,14 @@ function md_hook_footer_bottom() {
 
 function md_hook_after_footer() {
 	do_action( 'md_hook_after_footer' );
+}
+
+function md_hook_before_footer_copy() {
+	do_action( 'md_hook_before_footer_copy' );
+}
+
+function md_hook_after_footer_copy() {
+	do_action( 'md_hook_after_footer_copy' );
 }
 
 function md_hook_js() {

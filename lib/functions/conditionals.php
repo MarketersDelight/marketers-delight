@@ -1,5 +1,8 @@
 <?php
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Checks if logo is enabled.
  *
@@ -63,8 +66,6 @@ function md_has_menu( $name = null ) {
  */
 
 function md_has_main_menu() {
-	if ( ! md_has( 'main_menu' ) )
-		return false;
 	$is_tax = is_category() || is_tax() ? true : false;
 	if ( $is_tax )
 		$single = md_term_meta( array( 'layout', 'main_menu' ) );
@@ -107,7 +108,7 @@ function md_has_headline_cover() {
  */
 
 function md_has_breadcrumbs() {
-	$enable = md_setting( array( 'content', 'breadcrumbs', 'enable' ) );
+	$enable = md_setting( array( 'content', 'post', 'breadcrumbs' ) );
 	if (
 		( ! empty( $enable ) && ! md_meta( array( 'layout', 'breadcrumbs', 'remove' ) ) ) ||
 		( empty( $enable ) && md_meta( array( 'layout', 'breadcrumbs', 'add' ) ) )
@@ -146,10 +147,8 @@ function md_has_byline() {
 function md_has_author_box() {
 	$enable = md_setting( array( 'content', 'author_box', 'enable' ) );
 	if (
-		is_single() && (
-			( ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
-			( empty( $enable ) && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
-		)
+		( is_singular( 'post' ) && ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
+		( is_singular() && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
 	)
 		return true;
 }

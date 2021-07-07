@@ -5,6 +5,9 @@
  * @since 4.5
  */
 
+ // Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 class md_sanitize {
 
 	/**
@@ -283,7 +286,7 @@ class md_sanitize {
 	 * @since 4.0
 	 */
 
-	public function admin_save( $input ) {
+	public function admin_save( $input ) {	
 		$save = $this->validate( 'admin_pages', $input );
 		return array_merge( md_setting(), $save );
 	}
@@ -347,11 +350,13 @@ class md_sanitize {
 	public function validate( $settings, $input ) {
 		$save = array();
 		$data = md_register( $settings );
+		$whitelist = array( 'version', 'integrations', 'popups_data', 'license', 'custom_icons' );
 
 		foreach ( $input as $key => $input_fields ) {
-			if ( ! in_array( $key, array( 'integrations', 'popups_data', 'license' ) ) ) {
+			$save[$key] = array();
+			if ( ! in_array( $key, $whitelist ) ) {
 				if ( ! empty( $data[$key]['fields'] ) )
-					foreach ( $data[$key]['fields'] as $group => $group_fields )
+					foreach ( $data[$key]['fields'] as $group => $group_fields ) {
 						if ( isset( $group_fields['type'] ) && $group_fields['type'] == 'group' && isset( $input[$key][$group] ) ) {
 							unset( $input[$key][$group]['{clone}'] );
 							foreach ( $input[$key][$group] as $clone_group => $clone_fields ) {
@@ -372,10 +377,12 @@ class md_sanitize {
 									foreach ( $option_fields as $val_name => $val_fields )
 										if ( isset( $val_fields['type'] ) && ! empty( $input[$key][$group][$option_name][$val_name] ) )
 											$save[$key][$group][$option_name][$val_name] = $this->validate_field( $input[$key][$group][$option_name][$val_name], $val_fields );
+					}
 			}
 			else
 				$save[$key] = $input[$key];
 		}
+
 		return $save;
 	}
 

@@ -24,6 +24,7 @@
 	.width-25, .columns-4 > .col { width: 25%; }
 	.width-20, .columns-5 > .col { width: 20%; }
 	.columns-6 > .col { width: 16.666666667%; }
+	.columns-10-90 > .col2 { width: 90%; }
 	.width-80, .columns-80-20 > .col1,	.columns-20-80 > .col2 { width: 80%; }
 	.width-75, .columns-25-75 > .col2 { width: 75%; }
 	.width-70, .columns-70-30 > .col1, .columns-30-70 > .col2 { width: 70%; }
@@ -36,6 +37,7 @@
 	.width-30, .columns-70-30 > .col2, .columns-30-70 > .col1 { width: 30%; }
 	.width-25, .columns-25-75 > .col1 { width: 25%; }
 	.width-20, .columns-80-20 > .col2, .columns-20-80 > .col1 { width: 20%; }
+	.columns-10-90 > .col1 { width: 10%; }
 }
 
 @media all and (min-width: 700px) {

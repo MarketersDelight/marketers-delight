@@ -5,7 +5,7 @@
 			<?php if ( ! empty( $post['rating'] ) ) : ?>
 				<div class="book-rating mb-small">
 					<?php $sc = 0; while ( $sc < $post['rating'] ) : $sc++; ?>
-						<i class="md-icon-star"></i>
+						<?php echo md_icon( 'star' ); ?>
 					<?php endwhile; ?>
 				</div>
 			<?php endif; ?>

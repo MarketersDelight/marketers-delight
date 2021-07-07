@@ -77,7 +77,7 @@ class md_layout extends md_api {
 			)
 		);
 
-		if ( md_has( 'main_menu' ) ) {
+		if ( has_nav_menu( 'main' ) ) {
 			$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 			if ( ! empty( $nav_menus ) ) {
 				$menus = array();
@@ -172,7 +172,7 @@ class md_layout extends md_api {
 		) )
 			$sidebar_display = 'block';
 
-		include( MD_DIR . 'lib/admin/design/layout/layout-settings.php' );
+		include( 'layout-settings.php' );
 	}
 
 	/**
@@ -196,7 +196,7 @@ class md_layout extends md_api {
 				document.getElementById( '<?php echo $prefix; ?>_header_remove' ).onchange = function( e ) {
 					document.getElementById( 'header_options' ).style.display = this.checked ? 'none' : 'block';
 				}
-				<?php if ( md_has( 'main_menu' ) ) : ?>
+				<?php if ( has_nav_menu( 'main' ) ) : ?>
 					document.getElementById( '<?php echo $prefix; ?>_main_menu_remove' ).onchange = function( e ) {
 						document.getElementById( 'main_menu_options' ).style.display = this.checked ? 'none' : 'block';
 					}

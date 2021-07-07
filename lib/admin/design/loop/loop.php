@@ -102,7 +102,7 @@ class md_loop extends md_api {
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )
 				$cta_options[$cta_id] = $cta_fields['name'];
-		include( MD_DIR . 'lib/admin/design/loop/loop-settings.php' );
+		include( 'loop-settings.php' );
 		$this->admin_script();
 	}
 

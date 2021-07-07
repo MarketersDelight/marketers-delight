@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Call this function to load MD template files. Checks the /content/
  * and /templates/ folder in child themes first, if not found loads
@@ -7,6 +11,8 @@
  *
  * As of MD5.2 parent templates can now be stored outside of the main
  * templates folder but still be overridden from the child theme templates folder.
+ * This is to be used for Core Drop-in functions, but will probably be changed
+ * as of the creation of md_dropin_template() in MD5.3.
  *
  * Set $path to true to return the file path instead.
  *
@@ -15,6 +21,8 @@
 
 function md_template( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
+	$directory = MD_DIR;
+
 	if ( isset( $path ) && is_string( $path ) ) {
 		$dir = $file;
 		$file = $path;
@@ -39,7 +47,12 @@ function md_template( $file, $path = null, $include = null ) {
 			else
 				$template_path .= "$part.php";
 
-		$template = MD_DIR . "$dir/$template_path";
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
+		}
+
+		$template = "{$directory}$dir/$template_path";
 
 		if ( ! file_exists( $template ) )
 			return;
@@ -60,6 +73,7 @@ function md_template( $file, $path = null, $include = null ) {
 
 function md_css( $file, $path = null, $include = null ) {
 	$dir = $template_path = '';
+	$directory = MD_DIR;
 
 	if ( isset( $path ) && is_string( $path ) ) {
 		$dir = $file;
@@ -72,16 +86,22 @@ function md_css( $file, $path = null, $include = null ) {
 		$parts_keys = array_keys( $parts );
 		$file_key = end( $parts_keys );
 	}
+
 	$template = locate_template( "css/$file.php" );
 
 	if ( ! $template ) {
-		foreach ( $parts as $part_key => $part ) {
+		foreach ( $parts as $part_key => $part )
 			if ( $part_key != $file_key )
 				$template_path .= "$part/";
 			else
 				$template_path .= $part;
+
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
 		}
-		$template = MD_DIR . "$dir/$template_path";
+
+		$template = "{$directory}$dir/$template_path";
 	}
 
 	if ( file_exists( "$template.php" ) )
@@ -157,6 +177,9 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 		$id = isset( $id ) ? $id : get_queried_object_id();
 
 	$meta = get_term_meta( $id, 'marketers_delight', true );
+
+	if ( empty( $meta ) )
+		$meta = array();
 
 	if ( isset( $keys ) ) {
 		if ( is_string( $keys ) )
@@ -244,10 +267,33 @@ function md_ver( $file, $path = null ) {
  * @since 4.5
  */
 
-function md_has( $feature ) {
-	$setting = md_setting( array( 'dropins', 'features', $feature ) );
-	if ( empty( $setting ) )
+function md_has( $dropin ) {
+	$enabled = md_get_dropins( 'active' );
+	if ( in_array( $dropin, $enabled ) )
 		return true;
+}
+
+/**
+ * Returns list of enabled Drop-ins.
+ *
+ * @since 5.3
+ */
+
+function md_get_dropins( $status = null ) {
+	$dropins = $priority = array();
+	foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
+		if (
+			( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
+			( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
+			$status == null
+		) {
+			if ( isset( $fields['priority'] ) )
+				$priority[] = esc_attr( $dropin );
+			else
+				$dropins[] = esc_attr( $dropin );
+		}
+	$dropins = array_merge( $priority, $dropins );
+	return $dropins;
 }
 
 /**
@@ -579,117 +625,4 @@ function md_page_data() {
 			'excerpt' => get_post_field( 'post_excerpt', $id )
 		);
 	}
-}
-
-/**
- * Get Icons data in various formats.
- *
- * @since 5.0
- */
-
-function md_get_icons( $sort = null ) {
-	$icons = array();
-	foreach ( md_icons() as $icon => $fields ) {
-		$icons['options'][$icon] = $fields['label'];
-		$icons['ids'][] = $icon;
-	}
-	if ( isset( $sort ) )
-		$icons = $icons[$sort];
-	return $icons;
-}
-
-/**
- * Call a new popup instance only if popup is not on page.
- *
- * @since 5.0
- */
-
-function md_popup( $args ) {
-	if ( ! in_array( $args['id'], md_filter_popups() ) )
-		new md_popup( $args );
-}
-
-/**
- * Get MD Popups data in various formats.
- *
- * @since 5.0
- */
-
-function md_get_popups( $show = null ) {
-	$popups = array();
-	$option = md_setting( array( 'popups', 'popups' ) );
-
-	if ( ! empty( $option ) ) {
-		if ( $show == 'ids' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
-					$popups[] = $popup;
-			return $popups;
-		}
-		if ( $show == 'options' ) {
-			foreach ( $option as $popup => $fields )
-				if ( ! empty( $popup ) )
-					$popups[$popup] = $fields['name'];
-			return $popups;
-		}
-	}
-	return $option;
-}
-
-/**
- * If no service is connected, display this message.
- *
- * @since 4.5
- */
-
-function md_popup_connect_notice() {
-	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
-}
-
-/**
- * Like counter on AJAX request.
- *
- * @since 4.9.2
- */
-
-function md_like() {
-	if ( wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) ) {
-		$id = esc_attr( $_POST['post_id'] );
-		$post_type = get_post_type( $id );
-		$option = md_setting();
-		$is_archive = isset( $_POST['archive'] ) && $_POST['archive'] == 'true' ? true : false;
-		if ( $is_archive )
-			$meta = get_term_meta( $id, 'marketers_delight', true );
-		else
-			$meta = get_post_meta( $id, 'marketers_delight', true );
-		if ( empty( $meta['share']['likes'] ) )
-			$meta['share']['likes'] = '';
-		$meta['share']['likes']++;
-		if ( empty( $option['share']["{$post_type}_likes"] ) )
-			$option['share']["{$post_type}_likes"] = '';
-		$option['share']["{$post_type}_likes"]++;
-		if ( $is_archive )
-			update_term_meta( $id, 'marketers_delight', $meta );
-		else
-			update_post_meta( $id, 'marketers_delight', $meta );
-		update_option( 'marketers_delight', $option );
-	}
-	wp_die();
-}
-
-/**
- * Get share icons.
- *
- * @since 5.0
- */
-
-function md_share_icons( $group = null ) {
-	$icons = array();
-	$option = md_setting( array( 'share', 'icons' ) );
-	if ( ! empty( $option ) )
-		foreach( $option as $icon => $fields )
-			$icons[$fields['status']][] = $icon;
-	if ( isset( $group ) )
-		$icons = $icons[$group];
-	return $icons;
 }

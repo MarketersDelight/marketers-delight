@@ -13,7 +13,7 @@
 			<div class="author-meta">
 				<?php if ( ! empty( $archive ) && ! is_author() ) : ?>
 					<span class="author-link all-posts">
-						<span class="circle-icon micro"><i class="md-icon-pin"></i></span>
+						<span class="circle-icon micro"><?php echo md_icon( 'pin' ); ?></span>
 						<a href="<?php echo esc_url( $author ); ?>" target="_blank">
 							<?php echo __( 'See all posts', 'md' ); ?>
 						</a>
@@ -21,7 +21,7 @@
 				<?php endif; ?>
 				<?php if ( ! empty( $url ) ) : ?>
 					<span class="author-link website">
-						<span class="circle-icon micro"><i class="md-icon-url"></i></span>
+						<span class="circle-icon micro"><?php echo md_icon( 'url' ); ?></span>
 						<a href="<?php echo esc_url( $url ); ?>" target="_blank">
 							<?php echo __( 'Visit website', 'md' ); ?>
 						</a>
@@ -29,7 +29,7 @@
 				<?php endif; ?>
 				<?php if ( ! empty( $twitter ) ) : ?>
 					<span class="author-link twitter">
-						<span class="circle-icon micro"><i class="md-icon-twitter"></i></span>
+						<span class="circle-icon micro"><?php echo md_icon( 'twitter' ); ?></span>
 						<a href="https://twitter.com/<?php echo esc_attr( $twitter ); ?>" rel="nofollow" target="_blank">
 							<?php echo __( 'Follow on Twitter', 'md' ); ?>
 						</a>

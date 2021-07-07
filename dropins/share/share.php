@@ -1,4 +1,8 @@
 <?php
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 /**
  * Main class for MD share.
  *
@@ -8,13 +12,22 @@
 class md_share extends md_api {
 
 	/**
+	 * Included files.
+	 *
+	 * @since 5.3
+	 */
+	
+	public function includes() {
+		require_once( 'templates/template-functions.php' );
+	}
+
+	/**
 	 * Fire actions, filters, and set properties.
 	 *
 	 * @since 5.0
 	 */
 
 	public function actions() {
-		$this->dir = 'dropins';
 		$this->floating = array(
 			'post' => __( 'Side of post', 'md' ),
 			'left' => __( 'Left side of screen', 'md' ),
@@ -32,6 +45,7 @@ class md_share extends md_api {
 		);
 		add_action( 'wp_ajax_md_like', 'md_like' );
 		add_action( 'wp_ajax_nopriv_md_like', 'md_like' );
+		add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
 	}
 
 	/**
@@ -105,7 +119,7 @@ class md_share extends md_api {
 				'share' => true,
 				'url' => "https://pinterest.com/pin/create/button/?url={$permalink}&description={$excerpt}&media={$image}&is_video=false",
 				'color' => '#bd081c',
-				'icon' => 'md-icon-pinterest-squared',
+				'icon' => 'md-icon-pinterest',
 				'context' => 'side',
 				'status' => 'inactive',
 				'fields' => array( 'url' )
@@ -142,6 +156,34 @@ class md_share extends md_api {
 		$fields = array_merge( $fields, apply_filters( 'md_share_buttons', array() ) );
 
 		return $fields;
+	}
+
+	/**
+	 * Load Share Notice Block to MD Blocks system.
+	 *
+	 * @since 5.3
+	 */
+
+	public function blocks( $blocks ) {
+		$blocks['share-notice'] = array(
+			'dropins' => true,
+			'path' => 'share/share-notice.js',
+			'callback' => array( $this, 'share_notice' ),
+			'localize' => array( 'colors' )
+		);
+		return $blocks;
+	}
+
+	/**
+	 * Frontend Share Notice template.
+	 *
+	 * @since 4.9.3
+	 */
+
+	public function share_notice( $attributes, $content ) {
+		ob_start();
+		include( md_template( 'dropins', 'share/share-notice', true ) );
+		return ob_get_clean();
 	}
 
 	/**
@@ -235,7 +277,7 @@ class md_share extends md_api {
 				elseif ( $field == 'popup' ) {
 					$popups = array();
 					$option = md_setting( array( 'popups' ) );
-					if ( ! empty( $option ) )
+					if ( ! empty( $option['popups'] ) )
 						foreach ( $option['popups'] as $popup => $fields )
 							$popups[] = $popup;
 					$icons[$field] = array(
@@ -293,7 +335,7 @@ class md_share extends md_api {
 		$post_types = md_share_post_types();
 		foreach ( $post_types as $post_type )
 			$types[$post_type] = ucwords( $post_type );
-		include( md_template( $this->dir, 'share/admin/share-settings', true ) );
+		include( md_template( 'dropins', 'share/admin/share-settings', true ) );
 	}
 
 	/**
@@ -348,7 +390,7 @@ class md_share extends md_api {
 		$floating = md_setting( array( 'share', 'floating' ) );
 		foreach ( $post_types as $post_type )
 			$types[$post_type] = ucwords( $post_type );
-		include( md_template( $this->dir, 'share/admin/share-meta', true ) );
+		include( md_template( 'dropins', 'share/admin/share-meta', true ) );
 	}
 
 	/**
@@ -494,7 +536,8 @@ class md_share extends md_api {
 		$option = $this->get_order();
 		$active = isset( $args['show'] ) ? $args['show'] : $option['active'];
 
-		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : null;
+		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_the_ID();
+		$post_type = isset( $args['post_type'] ) ? $args['post_type'] : get_post_type();
 		$style = isset( $args['style'] ) ? $args['style'] : null;
 		$type = isset( $args['type'] ) ? $args['type'] : 'inline';
 
@@ -511,7 +554,7 @@ class md_share extends md_api {
 		echo "<$html class=\"share" . esc_attr( $classes ) . '">';
 
 		foreach ( $active as $share ) {
-			$action = '';
+			$action = $class = '';
 			$fields = ! empty( $option['fields'][$share] ) ? $option['fields'][$share] : array();
 			$disable = ! empty( $fields['disable'] ) ? $fields['disable'] : array();
 			if ( ! empty( $disable[$type] ) || ( $share == 'comments' && ! md_has_comments() ) )
@@ -523,21 +566,21 @@ class md_share extends md_api {
 			$color = ! empty( $fields['color'] ) ? $fields['color'] : $data['color'];
 			$color_prop = $style_class == 'minimal' ? 'color' : 'background-color';
 			$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : $data['icon'];
-			$class = ! empty( $popup ) ? ' md-popup-trigger' : '';
 			if ( ! empty( $fields['popup'] ) ) {
 				$url = '#';
-				$action = ' data-popup="md_popup_' . esc_attr( $fields['popup'] );
+				$class = ' md-popup-trigger';
+				$action = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
+				md_popup( array( 'id' => $fields['popup'] ) );
 			}
 			elseif ( isset( $data['share'] ) && empty( $fields['url'] ) )
 				$action = ' data-share="true" rel="nofollow"';
 			elseif ( $share == 'like' ) {
-				$id = get_the_ID();
 				$liked = ! empty( $_COOKIE['md_likes'] ) ? json_decode( stripslashes( $_COOKIE['md_likes'] ) ) : array();
-				$class = in_array( $id, $liked ) ? ' liked' : '';
-				$action = ' data-share-id="' . esc_attr( $id ) . '" data-share-type="' . get_post_type() . '"';
+				$class = in_array( $post_id, $liked ) ? ' liked' : '';
+				$action = ' data-share-id="' . esc_attr( $post_id ) . '" data-share-type="' . esc_attr( $post_type ) . '"';
 				$action .= ' data-share-archive="' . ( is_category() || is_tax() ? 'true' : 'false' ) . '"';
 			}
-			include( md_template( $this->dir, 'share/share', true ) );
+			include( md_template( 'dropins', 'share/share', true ) );
 		}
 
 		echo "</$html>";
