@@ -2,14 +2,14 @@
 # This file is distributed under the .
 msgid ""
 msgstr ""
-"Project-Id-Version: Marketers Delight 5.3\n"
+"Project-Id-Version: Marketers Delight 5.3.0.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/marketers-delight\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-07T20:02:24+00:00\n"
+"POT-Creation-Date: 2021-07-08T08:29:31+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: md\n"
@@ -1962,11 +1962,11 @@ msgstr ""
 msgid "View your shopping cart"
 msgstr ""
 
-#: dropins/woocommerce/woocommerce.php:45
+#: dropins/woocommerce/woocommerce.php:53
 msgid "WooCommerce"
 msgstr ""
 
-#: dropins/woocommerce/woocommerce.php:108
+#: dropins/woocommerce/woocommerce.php:116
 msgid "<b>Remove</b> WooCommerce scripts and styles"
 msgstr ""
 
@@ -2682,7 +2682,7 @@ msgstr ""
 msgid "<b>Enable</b> emojis, comment cookie, and other outdated WP tags"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:69
+#: lib/admin/settings/dashboard/templates/admin-page.php:70
 msgid "What's new at the <b>MD forums</b> &rarr;"
 msgstr ""
 
