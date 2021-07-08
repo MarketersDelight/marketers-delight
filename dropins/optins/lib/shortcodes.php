@@ -87,6 +87,8 @@ function md_popup_shortcode( $atts ) {
 	$html = $type == 'link' ? 'a href="#"' : 'span';
 	$html_c = $type == 'link' ? 'a' : 'span';
 	$classes = ( $type == 'button' ? ' button' : '' ) . $custom;
+	if ( $type == 'hidden' )
+		return;
 ?>
 
 	<?php if ( $type != 'image' ) : ?>

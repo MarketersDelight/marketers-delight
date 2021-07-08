@@ -62,6 +62,7 @@
 					</div>
 				</div>
 			<?php endif; ?>
+			<?php do_action( 'md_hook_admin_settings_groups' ); ?>
 		</div>
 		<div class="col col2">
 			<div class="md-save md-sep md-clear">

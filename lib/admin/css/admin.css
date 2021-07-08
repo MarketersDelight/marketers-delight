@@ -559,6 +559,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	$FIELDS
 \*------------------------------*/
 
+.md-label-wrap { margin-top: 0; }
+
 /* GROUPS/CLONES */
 
 .md-group:not(:last-child) { margin-bottom: 20px; }

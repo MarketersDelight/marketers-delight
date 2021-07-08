@@ -98,10 +98,6 @@ function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline' );
 }
 
-function md_hook_byline_item() {
-	do_action( 'md_hook_byline_item' );
-}
-
 function md_hook_after_featured_image() {
 	do_action( 'md_hook_after_featured_image' );
 }

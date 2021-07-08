@@ -1,4 +1,12 @@
 <?php
+	
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+// Exif if WooCommerce not enabled
+
+if ( ! class_exists( 'WooCommerce' ) ) exit;
+
 /**
  * Add admin page and custom WooCommerce settings panel.
  *
