@@ -147,6 +147,21 @@ class md_sanitize {
 	}
 
 	/**
+	 * Return terms hierarchy in data format.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function terms( $taxonomy = 'category' ) {
+		$cats = array();
+		$terms = get_terms( $taxonomy );
+		foreach ( $terms as $term )
+			if ( isset( $term->term_id ) )
+				$cats[] = esc_attr( $term->term_id );
+		return $cats;
+	}
+
+	/**
 	 * Run text field through native WP function.
 	 *
 	 * @since 4.5
@@ -174,6 +189,16 @@ class md_sanitize {
 
 	public function url( $input ) {
 		return wp_kses_bad_protocol( $input, array( 'http', 'https' ) );
+	}
+
+	/**
+	 * Ensure we are saving an email address.
+	 *
+	 * @since 4.5
+	 */
+
+	public function email( $input ) {
+		return sanitize_email( $input );
 	}
 
 	/**
@@ -289,6 +314,23 @@ class md_sanitize {
 	public function admin_save( $input ) {	
 		$save = $this->validate( 'admin_pages', $input );
 		return array_merge( md_setting(), $save );
+	}
+
+	/**
+	 * Saves and sanitizes user meta fields.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function user_meta_save( $user_id, $old_meta ) {
+		$option = 'marketers_delight';
+		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
+			return;
+		$save = $this->validate( 'user_meta', $_POST[$option] );
+		if ( $save )
+			update_user_meta( $user_id, $option, $save );
+		elseif ( empty( $save ) )
+			delete_term_meta( $term_id, $option );
 	}
 
 	/**

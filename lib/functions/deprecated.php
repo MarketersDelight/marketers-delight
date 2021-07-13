@@ -43,6 +43,18 @@ function md_hook_content_schema() {
 }
 
 /**
+ * Old menu Walker menu class name. Preserved for backwards compatibility.
+ *
+ * @since 4.5
+ */
+
+class md_main_menu_walker extends Walker_Nav_Menu {
+	function __construct( $title = true, $desc = false ) {
+		new md_menu_walker( $title, $desc );
+	}
+}
+
+/**
  * Filterable schema type for content type.
  *
  * @since 4.7.3.1

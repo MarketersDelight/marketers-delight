@@ -106,8 +106,11 @@ class md_api {
 				add_action( "md_{$taxonomy}_{$term}", $callback, $position );
 			}
 
-			// Scripts
+			// User meta
+			if ( isset( $register['user_meta'] ) && method_exists( $this, 'user_meta' ) )
+				add_action( 'md_user_meta_fields', array( $this, 'user_meta' ) );
 
+			// Scripts
 			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue' ) );
 			add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ) );
 		}
@@ -143,6 +146,12 @@ class md_api {
 			$data['terms'][$this->_clean_id]['id'] = $this->_id;
 		}
 
+		if ( isset( $register['user_meta'] ) ) {
+			$user_meta = $register['user_meta'];
+			$data['user_meta'][$this->_clean_id] = $user_meta;
+			$data['user_meta'][$this->_clean_id]['id'] = $this->_id;
+		}
+
 		return $data;
 	}
 
@@ -176,6 +185,9 @@ class md_api {
 
 		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_enqueue' ) )
 			$this->admin_enqueue();
+
+		if ( in_array( $screen->base, array( 'profile' ) ) && method_exists( $this, 'user_meta_enqueue' ) )
+			$this->user_meta_enqueue();
 	}
 
 	/**
@@ -197,6 +209,9 @@ class md_api {
 
 		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_scripts' ) )
 			$this->admin_scripts();
+
+		if ( in_array( $screen->base, array( 'profile' ) ) && method_exists( $this, 'user_meta_scripts' ) )
+			$this->user_meta_scripts();
 	}
 
 	// @DEPRECATED 5.0

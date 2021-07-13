@@ -46,8 +46,15 @@ class md_fields {
 
 		if ( wp_doing_ajax() || in_array( $screen->base, array( 'post', 'post-new' ) ) )
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
-		elseif ( $screen->base == 'term' )
-			$setting = get_term_meta( $_GET['tag_ID'], $this->_option, true );
+		elseif ( $screen->base == 'term' ) {
+			$tag_id = esc_attr( $_GET['tag_ID'] );
+			$setting = get_term_meta( $tag_id, $this->_option, true );
+		}
+		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) && isset( $args['user_meta'] ) ) {
+			$user_meta = $args['user_meta'];
+			$user_id = esc_attr( $user_meta->data->ID );
+			$setting = get_user_meta( $user_id, $this->_option, true );
+		}
 		else
 			$setting = get_option( $this->_option );
 
@@ -90,6 +97,8 @@ class md_fields {
 			$option = md_post_meta();
 		elseif ( $screen->base == 'term' )
 			$option = md_term_meta();
+		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) )
+			$option = md_user_meta();
 		else
 			$option = md_setting();
 
@@ -446,6 +455,60 @@ class md_fields {
 		</div>
 
 	<?php }
+
+	/**
+	 * Return terms hierarchy category structure.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function terms( $id, $args = null ) {
+		if ( ! isset( $id ) )
+			return;
+		
+		$group_id = $id;
+		$defaults = array(
+			'group_id' => $id,
+			'label' => __( 'Select categories...', 'md' ),
+			'description' => '',
+			'taxonomy' => 'category',
+			'depth' => 0,
+			'hide_empty' => false,
+			'hierarchical' => true,
+			'order' => 'ASC',
+			'orderby' => 'name',
+			'style' => 'list',
+			'use_desc_for_title' => true,
+			'walker' => new md_category_options_walker( $id, $this, $atts = array( 'post_type' => 'post' ) )
+		);
+
+		$parsed_args = wp_parse_args( $args, $defaults );
+
+		if ( is_array( $parsed_args['group_id'] ) )
+			$parsed_args['group_id'][] = $id;
+
+		if ( ! isset( $parsed_args['class'] ) )
+			$parsed_args['class'] = ( 'category' === $parsed_args['taxonomy'] ) ? 'categories' : $parsed_args['taxonomy'];
+
+		if ( ! taxonomy_exists( $parsed_args['taxonomy'] ) )
+			return false;
+
+		$output = '';
+		$categories = get_categories( $parsed_args );
+
+		$this->label( $parsed_args['group_id'], array( 'label' => $parsed_args['label'] ) );
+
+		$output .= '<ul class="md-terms-list">';
+		if ( empty( $categories ) )
+			$output .= '<li class="cat-item-none">' . __( 'No categories', 'md' ) . '</li>';
+		$output .= walk_category_tree( $categories, $parsed_args['depth'], $parsed_args );
+		$output .= '</ul>';
+
+		if ( ! empty( $parsed_args['description'] ) )
+			$output .= '<p class="description">' . $parsed_args['description'] . '</p>';
+
+		echo $output;
+	}
 
 	/**
 	 * Create group typography fields.

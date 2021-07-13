@@ -64,6 +64,10 @@ class md_admin {
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
 		// Terms
 		add_action( 'init', array( $this, 'add_terms' ) );
+		// User meta
+		add_action( 'show_user_profile', array( $this, 'user_meta' ) );
+		add_action( 'edit_user_profile', array( $this, 'user_meta' ) );
+		add_action( 'profile_update', array( $this->sanitize, 'user_meta_save' ), 10, 2 );
 		// Scripts
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
@@ -272,6 +276,19 @@ class md_admin {
 			</td>
 		</tr>
 	<?php }
+
+	/**
+	 * Build callback to load custom options on taxonomy screens.
+	 *
+	 * @since 4.3.5
+	 */
+
+	public function user_meta( $user_meta ) {
+		$this->nonce();
+		echo '<div class="md md-user-meta">';
+		do_action( 'md_user_meta_fields', $user_meta );
+		echo '</div>';
+	}
 
 	/**
 	 * Add classes to the admin <body> tag.

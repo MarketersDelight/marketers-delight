@@ -210,6 +210,33 @@ function md_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
+ * Access user meta.
+ *
+ * @since 5.3.1
+ */
+
+function md_user_meta( $keys = null, $id = null, $default = null ) {
+	if ( is_admin() )
+		$id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : '';
+	else
+		$id = get_current_user_id();
+
+	$meta = get_user_meta( $id, 'marketers_delight', true );
+
+	if ( empty( $meta ) )
+		$meta = array();
+
+	if ( isset( $keys ) ) {
+		if ( is_string( $keys ) )
+			$keys = (array) $keys;
+		foreach ( $keys as $key )
+			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
+	}
+
+	return $meta;
+}
+
+/**
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.
  *

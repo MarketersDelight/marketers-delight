@@ -561,6 +561,20 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-label-wrap { margin-top: 0; }
 
+/* TERMS LIST */
+
+.md-terms-list {
+	background-color: #fff;
+	border: 1px solid #c5c5c5;
+	border-radius: 5px;
+	height: 250px;
+	overflow-y: auto;
+	padding: 15px;
+	max-width: 350px;
+}
+
+.md-terms-list .children { margin-left: 20px; }
+
 /* GROUPS/CLONES */
 
 .md-group:not(:last-child) { margin-bottom: 20px; }
@@ -986,6 +1000,7 @@ a.md-circle-badge {
 .md .postbox .hndle .regular-text { max-width: 13em; }
 .term-md-wrap .postbox, .md .mb-none { margin-bottom: 0 !important; }
 .md .mt-none { margin-top: 0 !important; }
+.md-user-meta { margin-top: 25px; }
 
 /* DROPINS */
 

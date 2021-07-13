@@ -10,6 +10,58 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+/**
+ * Custom Category Walker for displaying terms/categories
+ * checkbox options with MD API.
+ *
+ * @since 5.3.1
+ */
+
+class md_category_options_walker extends Walker_Category {
+
+	public function __construct( $option_name, $fields = null, $atts = array() ) {
+		$this->fields = $fields;
+		$this->option_name = $option_name;
+		$this->atts = $atts;
+	}
+
+    public function start_el( &$output, $category, $depth = 0, $args = array(), $id = 0 ) {
+		$cat_name = apply_filters( 'list_cats', esc_attr( $category->name ), $category );
+
+		if ( '' === $cat_name )
+			return;
+
+		$attributes = '';
+		$atts = array();
+		$atts['href'] = get_term_link( $category );
+		$count = '<a href="' . admin_url( 'term.php?taxonomy=' . $category->taxonomy  . '&tag_ID=' . $category->term_id . '&post_type=' . $this->atts['post_type'] ) . '">' . number_format_i18n( $category->count ) . '</a>';
+
+		if ( 'list' == $args['style'] ) {
+			$output .= "\t<li";
+			$css_classes = array( 'cat-item', 'cat-item-' . $category->term_id );
+			$css_classes = implode( ' ', apply_filters( 'category_css_class', $css_classes, $category, $depth, $args ) );
+			$css_classes = $css_classes ? ' class="' . esc_attr( $css_classes ) . '"' : '';
+			$output .= $css_classes;
+			$output .= '>';
+			ob_start();
+			$this->fields->field( $this->option_name, array(
+				'type' => 'checkbox',
+				'options' => array( $category->term_id => "$category->name ($count)" )
+			) );
+			$output .= ob_get_contents();
+			ob_end_clean();
+		}
+	}
+
+}
+
+/**
+ * Custom Category Walker for displaying terms/categories
+ * checkbox options with MD API.
+ *
+ * @since 5.0
+ */
+
 class md_menu_walker extends Walker_Nav_Menu {
 	function __construct( $title = true, $desc = false ) {
 		$this->md_title = $title;
@@ -50,15 +102,5 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$item_output .= $desc . '</a>';
 		$item_output .= $args->after;
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
-	}
-}
-/**
- * Old menu Walker menu class name. Preserved for backwards compatibility.
- *
- * @since 4.5
- */
-class md_main_menu_walker extends Walker_Nav_Menu {
-	function __construct( $title = true, $desc = false ) {
-		new md_menu_walker( $title, $desc );
 	}
 }
