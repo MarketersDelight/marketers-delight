@@ -1,0 +1,3733 @@
+# Copyright (C) 2021 Alex Mangini
+# This file is distributed under the .
+msgid ""
+msgstr ""
+"Project-Id-Version: Marketers Delight 5.3.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/marketers-delight\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-07-14T03:37:02+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: md\n"
+
+#. Theme Name of the theme
+#: lib/admin/admin.php:98
+#: lib/admin/settings/admin-page.php:5
+#: lib/admin/settings/dashboard/dashboard.php:23
+#: lib/wp/blocks/blocks.php:73
+msgid "Marketers Delight"
+msgstr ""
+
+#. Theme URI of the theme
+msgid "https://marketersdelight.com/"
+msgstr ""
+
+#. Description of the theme
+msgid "Marketers Delight is your smart website design system for the future. Built on a foundation of typography, MD's features and layout all work together to help you create stunning content on the web. Use the Site Designer to design your site, capture subscribers with MD's email and popups tools, and enable power features like the Stream and Bookshelf to deliver unique kinds of content to your audience. All of that and more in Marketers Delight."
+msgstr ""
+
+#. Author of the theme
+msgid "Alex Mangini"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://alexmangini.com/"
+msgstr ""
+
+#. Template Name of the theme
+msgid "Builder Template"
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:36
+msgid "Admin Bar"
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:103
+#: lib/api/design.php:372
+msgid "Links"
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:104
+msgid "Link name..."
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:125
+#: dropins/optins/templates/admin/floating-bar-fields.php:30
+#: dropins/optins/templates/admin/floating-bar-fields.php:44
+#: dropins/share/templates/admin/share-fields.php:19
+msgid "Icon"
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:126
+#: dropins/optins/templates/admin/floating-bar-fields.php:45
+#: dropins/share/templates/admin/share-fields.php:21
+msgid "Select icon..."
+msgstr ""
+
+#: dropins/admin-bar/admin-bar.php:133
+#: dropins/optins/popups/customize/sections.php:277
+#: dropins/optins/templates/admin/cta-fields.php:101
+#: dropins/optins/templates/admin/floating-bar-fields.php:74
+#: lib/api/icons.php:119
+#: lib/wp/widgets/templates/content-spotlight.php:17
+#: lib/wp/widgets/templates/text-image.php:14
+msgid "Link"
+msgstr ""
+
+#: dropins/admin-bar/templates/admin-bar.php:6
+msgid "Admin"
+msgstr ""
+
+#: dropins/admin-bar/templates/admin-bar.php:11
+msgid "Edit"
+msgstr ""
+
+#: dropins/admin-bar/templates/admin-bar.php:16
+msgid "New"
+msgstr ""
+
+#: dropins/admin-bar/templates/admin-bar.php:19
+msgid "New %s"
+msgstr ""
+
+#: dropins/admin-bar/templates/admin-bar.php:35
+msgid "Logout"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:58
+#: dropins/bookshelf/bookshelf.php:60
+#: dropins/bookshelf/bookshelf.php:61
+msgid "Books"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:59
+#: dropins/bookshelf/bookshelf.php:122
+#: lib/api/icons.php:41
+msgid "Book"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:62
+msgid "Add New Book"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:63
+msgid "Edit Book"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:64
+msgid "New Book"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:65
+msgid "View Book"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:66
+#: dropins/bookshelf/bookshelf.php:173
+#: dropins/bookshelf/bookshelf.php:176
+msgid "View Books"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:67
+msgid "Search Books"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:68
+msgid "No books found"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:69
+msgid "No books found in trash"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:70
+#: dropins/bookshelf/templates/bookshelf-title.php:18
+msgid "All Books"
+msgstr ""
+
+#: dropins/bookshelf/bookshelf.php:104
+#: dropins/stream/stream.php:170
+#: dropins/woocommerce/admin-page.php:58
+#: lib/admin/admin.php:98
+#: lib/admin/settings/dashboard/dashboard.php:25
+#: lib/admin/settings/dropins/admin-page.php:64
+msgid "Settings"
+msgstr ""
+
+#: dropins/bookshelf/templates.php:104
+msgid "Read book review"
+msgstr ""
+
+#: dropins/bookshelf/templates.php:118
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:37
+msgid "Get this book"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:3
+msgid "Shortcode"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:5
+msgid "Use this shortcode to embed this book anywhere on your site."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:10
+msgid "Star Rating"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:11
+msgid "Enter a star rating 1-5 (or higher), whole numbers only."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:19
+msgid "Book Title"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:20
+msgid "Enter the title of book here."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:26
+msgid "Book Author"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:27
+msgid "The author(s) who wrote this book."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:35
+msgid "Download Text"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:36
+msgid "Set your own custom download text for visitors to click on."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:43
+msgid "Download URL"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-meta.php:44
+msgid "Link to the Amazon page/website to download or buy this book."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:1
+msgid "Books Settings"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:5
+#: dropins/optins/optins.php:199
+msgid "Books Page"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:10
+#: dropins/stream/templates/admin/stream-settings.php:17
+msgid "Page Title"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:11
+msgid "Add an <code>h1</code> title tag to the top of the archives page."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:17
+#: dropins/stream/templates/admin/stream-settings.php:24
+msgid "Page Text"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:18
+msgid "Add a text description below the archives title."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:24
+msgid "General Settings"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:29
+#: dropins/stream/templates/admin/stream-settings.php:9
+msgid "Page Slug"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:30
+msgid "Change the URL of the bookshelf archives page."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:37
+msgid "Books Per Page"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:38
+msgid "Change how many books per page should show on each archives page."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:45
+msgid "Page Layout"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:47
+msgid "Grid (default)"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:48
+msgid "Excerpt View"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:53
+msgid "To add a <b>custom sidebar</b>, first enable it here, then go to the \"Edit Sidebars\" in the <a href=\"%s\">Widgets</a> panel."
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:55
+msgid "Remove <b>Categories</b>"
+msgstr ""
+
+#: dropins/bookshelf/templates/admin/bookshelf-settings.php:56
+msgid "Add <b>Sidebar</b>"
+msgstr ""
+
+#: dropins/bookshelf/templates/bookshelf-popup.php:13
+msgid "Read:"
+msgstr ""
+
+#: dropins/bookshelf/templates/bookshelf-popup.php:23
+#: templates/byline/author.php:11
+msgid "by"
+msgstr ""
+
+#: dropins/bookshelf/templates/bookshelf-post.php:30
+msgid "All books"
+msgstr ""
+
+#: dropins/footnotes/footnotes.php:31
+#: dropins/footnotes/footnotes.php:117
+#: dropins/footnotes/footnotes.php:144
+msgid "Footnotes"
+msgstr ""
+
+#: dropins/footnotes/footnotes.php:137
+msgid "Show footnotes list (after post)"
+msgstr ""
+
+#: dropins/footnotes/footnotes.php:138
+msgid "Always toggle footnotes"
+msgstr ""
+
+#: dropins/footnotes/footnotes.php:146
+msgid "New Footnote"
+msgstr ""
+
+#: dropins/footnotes/footnotes.php:160
+msgid "Footnote"
+msgstr ""
+
+#: dropins/optins/cta/cta.php:39
+#: dropins/optins/templates/admin/meta-box.php:3
+#: lib/admin/design/loop/loop-settings.php:82
+#: lib/admin/design/loop/loop-settings.php:94
+msgid "Call to Action"
+msgstr ""
+
+#: dropins/optins/cta/data.php:109
+#: dropins/optins/floating-bars/data.php:117
+#: dropins/optins/lib/widget-email-form.php:196
+#: dropins/optins/popups/customize/sections.php:483
+#: lib/admin/design/colors/colors.php:109
+#: lib/admin/design/colors/colors.php:130
+#: lib/admin/design/colors/colors.php:139
+#: lib/admin/design/colors/colors.php:145
+#: lib/admin/design/colors/colors.php:154
+#: lib/admin/design/colors/colors.php:158
+#: lib/admin/design/colors/colors.php:164
+#: lib/wp/featured-image/admin-fields.php:23
+msgid "Background Color"
+msgstr ""
+
+#: dropins/optins/cta/data.php:113
+#: dropins/optins/floating-bars/data.php:121
+#: dropins/optins/lib/widget-email-form.php:200
+#: dropins/optins/popups/customize/sections.php:487
+#: lib/admin/design/colors/colors.php:117
+#: lib/admin/design/colors/colors.php:159
+#: lib/admin/design/colors/colors.php:165
+msgid "Text Color"
+msgstr ""
+
+#: dropins/optins/cta/data.php:117
+#: dropins/optins/floating-bars/data.php:125
+#: lib/admin/design/colors/colors.php:118
+msgid "Secondary Text Color"
+msgstr ""
+
+#: dropins/optins/cta/data.php:121
+#: dropins/optins/floating-bars/data.php:133
+#: dropins/optins/popups/customize/sections.php:488
+#: lib/admin/design/colors/colors.php:124
+msgid "Button Color"
+msgstr ""
+
+#: dropins/optins/cta/data.php:125
+#: dropins/optins/floating-bars/data.php:137
+#: dropins/optins/popups/customize/sections.php:489
+#: lib/admin/design/colors/colors.php:125
+msgid "Button Text Color"
+msgstr ""
+
+#: dropins/optins/floating-bars/data.php:129
+#: lib/admin/design/colors/colors.php:119
+#: lib/admin/design/colors/colors.php:134
+#: lib/admin/design/colors/colors.php:140
+#: lib/admin/design/colors/colors.php:146
+#: lib/admin/design/colors/colors.php:161
+#: lib/admin/design/colors/colors.php:167
+msgid "Links Color"
+msgstr ""
+
+#: dropins/optins/floating-bars/data.php:141
+msgid "Icon Color"
+msgstr ""
+
+#: dropins/optins/floating-bars/data.php:145
+msgid "Icon Text Color"
+msgstr ""
+
+#: dropins/optins/floating-bars/floating-bars.php:40
+#: dropins/optins/templates/admin/floating-bars-settings.php:5
+#: dropins/optins/templates/admin/meta-box.php:4
+msgid "Floating Bars"
+msgstr ""
+
+#: dropins/optins/floating-bars/floating-bars.php:176
+#: dropins/optins/templates/admin/cta-fields.php:112
+#: dropins/optins/templates/admin/floating-bar-fields.php:85
+#: dropins/optins/templates/cta.php:26
+msgid "Get Access Now"
+msgstr ""
+
+#: dropins/optins/lib/shortcodes.php:85
+#: dropins/optins/popups/customize/sections.php:261
+msgid "Open popup"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:21
+msgid "Use default email list..."
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:50
+#: dropins/optins/templates/admin/cta-fields.php:87
+#: dropins/optins/templates/admin/cta-fields.php:208
+#: dropins/optins/templates/admin/floating-bar-fields.php:60
+#: dropins/optins/templates/admin/floating-bar-fields.php:160
+msgid "Custom HTML"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:209
+#: dropins/optins/lib/widget-email-form.php:138
+#: dropins/optins/popups/customize/sections.php:395
+#: dropins/optins/templates/admin/cta-fields.php:171
+#: dropins/optins/templates/admin/floating-bar-fields.php:138
+msgid "Enter your name&hellip;"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:210
+#: dropins/optins/lib/widget-email-form.php:143
+#: dropins/optins/popups/customize/sections.php:413
+#: dropins/optins/templates/admin/cta-fields.php:178
+#: dropins/optins/templates/admin/floating-bar-fields.php:145
+msgid "Enter your email&hellip;"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:211
+#: dropins/optins/lib/widget-email-form.php:148
+#: dropins/optins/popups/customize/sections.php:431
+#: dropins/optins/templates/admin/cta-fields.php:185
+#: dropins/optins/templates/admin/floating-bar-fields.php:152
+msgid "Join Now!"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:373
+msgid "To easily embed an email list from your mail provider, please first connect your lists to the <a href=\"%s\">Integrations panel</a>, then come back here to quickly embed it to your site."
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:375
+msgid "<b>Attention</b>: please select an email list or enter a custom form code to show an email form here!"
+msgstr ""
+
+#: dropins/optins/lib/template-functions.php:385
+msgid "You must <a href=\"%s\">create at least one popup</a> before you can add one here."
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:15
+msgid "MD &rarr; Email Form"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:16
+msgid "Easily place email signup forms with AWeber, MailChimp, or your own custom code."
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:96
+#: dropins/optins/templates/admin/cta-fields.php:26
+#: dropins/optins/templates/admin/floating-bar-fields.php:12
+#: dropins/stream/templates/admin/widget-form.php:2
+#: lib/wp/widgets/accordion.php:80
+#: lib/wp/widgets/templates/quote.php:2
+#: lib/wp/widgets/templates/text-image.php:2
+msgid "Title"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:100
+#: dropins/optins/popups/customize/sections.php:83
+#: dropins/stream/templates/admin/widget-form.php:7
+#: lib/wp/widgets/templates/text-image.php:8
+msgid "Description"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:105
+#: dropins/optins/popups/customize/sections.php:348
+#: dropins/optins/templates/admin/cta-fields.php:142
+#: dropins/optins/templates/admin/floating-bar-fields.php:112
+msgid "Email List"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:108
+msgid "Use default email list&hellip;"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:122
+msgid "%s Form Code"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:125
+msgid "Custom HTML Code"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:131
+msgid "Input Fields"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:134
+#: dropins/optins/popups/customize/sections.php:363
+#: dropins/optins/templates/admin/cta-fields.php:163
+#: dropins/optins/templates/admin/floating-bar-fields.php:130
+msgid "Ask for subscribers name in signup form"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:137
+#: dropins/optins/popups/customize/sections.php:392
+#: dropins/optins/templates/admin/cta-fields.php:170
+#: dropins/optins/templates/admin/floating-bar-fields.php:137
+msgid "Name Field Label"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:141
+#: dropins/optins/popups/customize/sections.php:410
+#: dropins/optins/templates/admin/cta-fields.php:177
+#: dropins/optins/templates/admin/floating-bar-fields.php:144
+msgid "Email Field Label"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:146
+#: dropins/optins/templates/admin/cta-fields.php:184
+#: dropins/optins/templates/admin/floating-bar-fields.php:151
+msgid "Submit Button Text"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:153
+#: dropins/optins/popups/customize/sections.php:377
+msgid "Attach input fields to each other"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:156
+msgid "Form Title"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:161
+msgid "Form Footer"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:167
+msgid "Thank You Page URL %s"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:170
+#: dropins/optins/templates/admin/cta-fields.php:199
+msgid "Subscribers will be redirected to this URL after signup. Leave blank to use settings from your email provider. <br /><small>%s only available for AWeber & MailerLite forms.</small>"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:173
+msgid "Form Design"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:179
+#: lib/api/fields.php:354
+#: lib/wp/widgets/templates/content-spotlight.php:32
+#: lib/wp/widgets/templates/quote.php:25
+#: lib/wp/widgets/templates/text-image.php:31
+msgid "Click to upload"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:182
+#: lib/api/fields.php:357
+#: lib/wp/widgets/templates/content-spotlight.php:35
+#: lib/wp/widgets/templates/quote.php:28
+#: lib/wp/widgets/templates/text-image.php:34
+msgid "Preview Image"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:186
+#: lib/api/fields.php:361
+#: lib/wp/widgets/templates/content-spotlight.php:39
+#: lib/wp/widgets/templates/quote.php:32
+#: lib/wp/widgets/templates/text-image.php:38
+msgid "Image URL"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:191
+#: lib/api/fields.php:372
+#: lib/api/fields.php:796
+#: lib/wp/widgets/templates/content-spotlight.php:44
+#: lib/wp/widgets/templates/quote.php:37
+#: lib/wp/widgets/templates/text-image.php:43
+msgid "Add Image"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:192
+#: lib/api/fields.php:373
+#: lib/api/fields.php:797
+#: lib/wp/widgets/templates/content-spotlight.php:45
+#: lib/wp/widgets/templates/quote.php:38
+#: lib/wp/widgets/templates/text-image.php:44
+msgid "Remove Image"
+msgstr ""
+
+#: dropins/optins/lib/widget-email-form.php:204
+msgid "HTML Classes"
+msgstr ""
+
+#: dropins/optins/optins.php:58
+msgid "MailChimp"
+msgstr ""
+
+#: dropins/optins/optins.php:63
+msgid "AWeber"
+msgstr ""
+
+#: dropins/optins/optins.php:68
+msgid "Authorization Key"
+msgstr ""
+
+#: dropins/optins/optins.php:72
+msgid "ConvertKit"
+msgstr ""
+
+#: dropins/optins/optins.php:77
+msgid "ActiveCampaign"
+msgstr ""
+
+#: dropins/optins/optins.php:82
+msgid "API URL"
+msgstr ""
+
+#: dropins/optins/optins.php:86
+msgid "MailerLite"
+msgstr ""
+
+#: dropins/optins/optins.php:91
+msgid "Drip"
+msgstr ""
+
+#: dropins/optins/optins.php:96
+msgid "API Token"
+msgstr ""
+
+#: dropins/optins/optins.php:193
+#: dropins/stream/stream.php:265
+msgid "Stream Page"
+msgstr ""
+
+#: dropins/optins/optins.php:194
+#: dropins/stream/stream.php:266
+msgid "Stream Posts"
+msgstr ""
+
+#: dropins/optins/optins.php:195
+#: dropins/stream/stream.php:267
+msgid "Stream Categories"
+msgstr ""
+
+#: dropins/optins/optins.php:200
+msgid "Books Posts"
+msgstr ""
+
+#: dropins/optins/optins.php:201
+msgid "Books Categories"
+msgstr ""
+
+#: dropins/optins/optins.php:205
+msgid "Products Page"
+msgstr ""
+
+#: dropins/optins/optins.php:206
+msgid "Single Products"
+msgstr ""
+
+#: dropins/optins/optins.php:207
+msgid "Products Categories"
+msgstr ""
+
+#: dropins/optins/optins.php:230
+msgid "Optins"
+msgstr ""
+
+#: dropins/optins/popups/customize/customize.php:42
+msgid "Popups Designer"
+msgstr ""
+
+#: dropins/optins/popups/customize/customize.php:43
+msgid "Edit the Popups you have created from <a href=\"%s\"><b>MD > Optins > Popups</b></a>."
+msgstr ""
+
+#: dropins/optins/popups/customize/customize.php:50
+msgid "<a href=\"%s\" target=\"_blank\">Enhance with MD helper classes &rarr;</a>"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:21
+msgid "Template"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:34
+#: dropins/optins/popups/customize/sections.php:226
+#: dropins/optins/templates/admin/cta-fields.php:3
+#: dropins/optins/templates/admin/cta-fields.php:33
+#: dropins/optins/templates/admin/floating-bar-fields.php:18
+#: dropins/stream/templates/admin/stream-thread-meta.php:4
+#: lib/api/design.php:370
+msgid "Text"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:53
+#: dropins/subtitle/subtitle.php:31
+msgid "Subtitle"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:68
+msgid "Headline"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:95
+#: dropins/optins/popups/customize/sections.php:112
+#: dropins/optins/templates/admin/cta-fields.php:4
+#: dropins/optins/templates/admin/cta-fields.php:43
+#: dropins/optins/templates/admin/floating-bar-fields.php:29
+#: dropins/optins/templates/admin/floating-bar-fields.php:38
+#: dropins/stream/templates/admin/stream-thread-meta.php:17
+msgid "Image"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:127
+msgid "Alignment"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:130
+#: dropins/optins/templates/admin/cta-fields.php:61
+msgid "Select alignment..."
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:131
+msgid "Left"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:132
+msgid "Right"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:133
+msgid "Center"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:147
+msgid "Width"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:166
+msgid "Image CSS Classes"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:179
+msgid "Buttons"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:190
+msgid "Select a popup..."
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:211
+msgid "Enable %s"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:241
+msgid "Subtext"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:256
+#: lib/api/design.php:364
+msgid "Action"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:259
+msgid "Select button action..."
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:260
+msgid "Link to page"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:262
+msgid "Close popup"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:278
+msgid "Set Action to \"Link to page\" to use this field."
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:293
+msgid "Popup"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:294
+msgid "Set Action to \"Open popup\" to use this field."
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:316
+msgid "Buttons Footer Text"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:328
+#: dropins/optins/templates/admin/cta-fields.php:86
+#: dropins/optins/templates/admin/cta-fields.php:136
+#: dropins/optins/templates/admin/floating-bar-fields.php:59
+#: dropins/optins/templates/admin/floating-bar-fields.php:107
+msgid "Email Form"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:428
+msgid "Submit Button Label"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:446
+msgid "Email Footer"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:459
+msgid "Email CSS Classes"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:472
+#: dropins/optins/templates/admin/floating-bar-fields.php:6
+msgid "Design"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:484
+msgid "Secondary Background Color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:485
+#: lib/admin/design/colors/colors.php:155
+msgid "Border Color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:486
+#: lib/admin/design/colors/colors.php:120
+msgid "Headline Color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:490
+msgid "Button Secondary Color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:491
+msgid "Button Secondary Text Color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:492
+msgid "Close (&times;) color"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:516
+#: dropins/optins/templates/admin/cta-fields.php:282
+msgid "Background Image"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:531
+msgid "Enable background repeat"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:543
+msgid "Advanced"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:563
+msgid "Enable custom template"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:577
+msgid "Template HTML"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:591
+#: dropins/optins/templates/admin/cta-fields.php:219
+#: dropins/optins/templates/admin/floating-bar-fields.php:171
+msgid "Enable WordPress formatting"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:605
+msgid "Template CSS"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:607
+msgid "Popup ID: <code>#md_popup_%s</code>"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:620
+msgid "CSS Classes"
+msgstr ""
+
+#: dropins/optins/popups/hotspots.php:51
+msgid "<b>Remove</b> Popup"
+msgstr ""
+
+#: dropins/optins/popups/hotspots.php:63
+#: dropins/optins/popups/hotspots.php:80
+#: dropins/optins/templates/admin/popups-settings.php:44
+#: dropins/optins/templates/admin/popups-settings.php:62
+#: lib/admin/settings/dropins/admin-page.php:66
+msgid "Get updates"
+msgstr ""
+
+#: dropins/optins/popups/popups.php:40
+#: dropins/optins/templates/admin/meta-box.php:5
+msgid "Popups"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:5
+#: dropins/optins/templates/admin/floating-bar-fields.php:4
+msgid "CTA"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:6
+#: dropins/optins/templates/admin/floating-bar-fields.php:5
+#: dropins/share/templates/admin/share-fields.php:76
+msgid "Display"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:12
+msgid "HTML"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:50
+#: dropins/optins/templates/admin/floating-bar-fields.php:292
+msgid "Image Width"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:59
+msgid "Image Alignment"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:62
+msgid "Align to left"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:63
+msgid "Align to right"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:64
+msgid "Align to center"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:72
+#: dropins/optins/templates/admin/cta-fields.php:297
+msgid "%s Classes"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:73
+msgid "Commonly used classes: <code>avatar</code>, <code>shadow</code>, <code>circle</code> | <a href=\"%s\" target=\"_blank\">Enhance with MD helper classes &rarr;</a>"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:81
+#: dropins/optins/templates/admin/floating-bar-fields.php:54
+msgid "CTA Type"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:82
+#: dropins/optins/templates/admin/floating-bar-fields.php:55
+msgid "Select CTA type..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:85
+#: dropins/optins/templates/admin/cta-fields.php:93
+#: dropins/optins/templates/admin/floating-bar-fields.php:58
+#: dropins/optins/templates/admin/floating-bar-fields.php:66
+#: lib/api/design.php:373
+msgid "Button"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:97
+#: dropins/optins/templates/admin/floating-bar-fields.php:70
+msgid "Button Type"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:98
+#: dropins/optins/templates/admin/floating-bar-fields.php:71
+msgid "Select button type..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:102
+#: dropins/optins/templates/admin/floating-bar-fields.php:75
+msgid "Open Popup"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:111
+#: dropins/optins/templates/admin/floating-bar-fields.php:84
+#: lib/wp/widgets/templates/text-image.php:20
+msgid "Button Text"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:119
+#: dropins/optins/templates/admin/floating-bar-fields.php:91
+msgid "Button URL"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:120
+#: dropins/optins/templates/admin/floating-bar-fields.php:92
+#: lib/wp/widgets/templates/content-spotlight.php:18
+msgid "https://"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:126
+#: dropins/optins/templates/admin/floating-bar-fields.php:99
+msgid "Button Popup"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:127
+#: dropins/optins/templates/admin/floating-bar-fields.php:100
+msgid "Select popup..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:143
+#: dropins/optins/templates/admin/floating-bar-fields.php:113
+msgid "Use default email list"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:155
+#: dropins/optins/templates/admin/floating-bar-fields.php:122
+msgid "Form Fields"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:157
+#: dropins/optins/templates/admin/floating-bar-fields.php:124
+msgid "Attach input fields to each other in a single line"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:191
+msgid "Email Footer Text"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:198
+msgid "Thank You Page URL"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:212
+#: dropins/optins/templates/admin/floating-bar-fields.php:164
+msgid "Design your own call-to-action with custom HTML, scripts, and %s."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:231
+#: dropins/optins/templates/admin/floating-bar-fields.php:183
+#: dropins/optins/templates/admin/popups-fields.php:11
+msgid "Show on..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:240
+#: dropins/optins/templates/admin/floating-bar-fields.php:192
+#: dropins/optins/templates/admin/popups-fields.php:19
+msgid "Show to..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:241
+#: dropins/optins/templates/admin/floating-bar-fields.php:193
+#: dropins/optins/templates/admin/popups-fields.php:20
+msgid "All visitors"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:243
+#: dropins/optins/templates/admin/floating-bar-fields.php:195
+#: dropins/optins/templates/admin/popups-fields.php:22
+msgid "Logged in users only"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:244
+#: dropins/optins/templates/admin/floating-bar-fields.php:196
+#: dropins/optins/templates/admin/popups-fields.php:23
+msgid "Logged out users only"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:251
+#: dropins/optins/templates/admin/floating-bar-fields.php:203
+msgid "Position on page"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:252
+msgid "After Header (default)"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:255
+msgid "Before Header"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:256
+msgid "Before Content"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:257
+#: dropins/share/share.php:44
+msgid "After Post"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:258
+msgid "Before Sidebar"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:259
+msgid "After Sidebar"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:260
+msgid "Before Footer"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:289
+#: lib/admin/design/content/content-settings.php:140
+msgid "Use background repeat"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-fields.php:298
+msgid "Commonly used classes: <code>shadow</code>, <code>text-center</code> | <a href=\"%s\" target=\"_blank\">Enhance with MD helper classes &rarr;</a>"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-settings.php:6
+msgid "Default Email List"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-settings.php:7
+msgid "To make adding email forms around your website easier you can set a default email list here. Add/edit connected email services through the <a href=\"%s\">Integrations</a> panel."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-settings.php:8
+msgid "Select an email list..."
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-settings.php:16
+msgid "Call to Actions"
+msgstr ""
+
+#: dropins/optins/templates/admin/cta-settings.php:23
+msgid "Save Call to Actions"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:3
+#: lib/admin/design/content/content-settings.php:56
+#: lib/admin/design/content/content.php:32
+msgid "Content"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:25
+msgid "Media Type"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:26
+msgid "Select media type..."
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:76
+msgid "Close Floating Bar"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:204
+msgid "Bottom of page (floating)"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:207
+msgid "Before Footer (static)"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:208
+msgid "Top of page (floating)"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:209
+msgid "Top of page (static)"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:218
+#: dropins/optins/templates/admin/popups-fields.php:31
+#: dropins/optins/templates/admin/popups-meta.php:13
+msgid "Show Method"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:220
+#: dropins/optins/templates/admin/popups-fields.php:32
+#: dropins/optins/templates/admin/popups-meta.php:15
+msgid "Show after X seconds (default)"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:221
+#: dropins/optins/templates/admin/popups-fields.php:34
+msgid "Configure timing with \"Show Delay\" setting."
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:223
+#: dropins/optins/templates/admin/popups-fields.php:37
+#: dropins/optins/templates/admin/popups-meta.php:18
+msgid "Show after scroll percentage"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:230
+#: dropins/optins/templates/admin/popups-fields.php:44
+#: dropins/optins/templates/admin/popups-meta.php:25
+msgid "Show Delay"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:233
+msgid "How long before showing this floating bar."
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:239
+msgid "Close Button"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:241
+msgid "Allow this floating bar to be closed"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:248
+#: dropins/optins/templates/admin/popups-fields.php:55
+#: dropins/optins/templates/admin/popups-meta.php:33
+msgid "Cookie Duration"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:250
+msgid "Hide floating bar for X days after close.<br />Enter 0 to always show."
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:257
+#: dropins/stream/templates/admin/stream-settings.php:41
+#: lib/admin/design/content/content-settings.php:7
+#: lib/admin/design/layout/layout.php:18
+msgid "Layout"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:262
+msgid "Use entire width of browser"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:270
+msgid "Content Width"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:280
+msgid "CTA Width"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:302
+msgid "Image Style"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:304
+msgid "Add shadow effect"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:305
+msgid "Add breakout effect"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:311
+#: lib/admin/design/colors/colors.php:35
+msgid "Colors"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:328
+msgid "Classes"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:330
+msgid "Add additional %s to further style this floating bar."
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:13
+#: dropins/optins/templates/admin/meta-box.php:32
+#: dropins/optins/templates/admin/meta-box.php:51
+msgid "Remove from page"
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:14
+msgid "The above CTA's have been <a href=\"%s\">added to this page</a> and can be removed here, or you can create new ones here."
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:22
+msgid "Add Call to Action"
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:33
+msgid "The above Floating Bars have been added to this page from the <a href=\"%s\">Floating Bars Manager</a> and can be removed here, or you can create new ones here."
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:41
+msgid "Add Floating Bars"
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:52
+msgid "The above Popups have been added to this page from the <a href=\"%s\">Popups Manager</a> and can be removed here, or modified below."
+msgstr ""
+
+#: dropins/optins/templates/admin/meta-box.php:60
+msgid "Add Popups"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:3
+msgid "Edit in Customizer"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:4
+msgid "Copy Shortcode"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:36
+#: dropins/optins/templates/admin/popups-meta.php:17
+msgid "Show on exit intent"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:45
+msgid "seconds"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:47
+msgid "How long before showing this popup."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:57
+msgid "Hide popup for X days after close.<br />Enter 0 to always show."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-fields.php:63
+msgid "To edit this popup, first save the Popup Settings and return to this panel."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-meta.php:5
+msgid "Show Popup"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-meta.php:6
+#: dropins/optins/templates/admin/popups-settings.php:25
+#: dropins/optins/templates/admin/popups-settings.php:35
+#: dropins/optins/templates/admin/popups-settings.php:52
+#: dropins/share/templates/admin/share-fields.php:46
+msgid "Select a popup&hellip;"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:8
+msgid "Popups Manager"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:15
+msgid "Popups Extras"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:18
+msgid "Popup Hotspots"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:24
+#: lib/admin/design/colors/colors-settings.php:139
+#: lib/admin/design/header/header-settings.php:89
+#: lib/admin/design/layout/layout-settings.php:35
+#: lib/api/filters.php:64
+msgid "Main Menu"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:26
+msgid "Add an email icon to the Main Menu that opens a popup when clicked."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:34
+#: lib/admin/design/content/content-settings.php:87
+#: lib/admin/design/loop/loop-settings.php:33
+msgid "Byline"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:36
+msgid "Add a link to blog post bylines that open a popup when clicked."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:43
+msgid "Byline Text"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:51
+#: lib/admin/design/header/header-settings.php:77
+#: lib/api/filters.php:63
+msgid "Header Menu"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:53
+msgid "Add a popup button or link to the end of the header nav menu."
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:61
+msgid "Header Menu Text"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:68
+msgid "Header Menu Button"
+msgstr ""
+
+#: dropins/optins/templates/admin/popups-settings.php:70
+msgid "Show as button"
+msgstr ""
+
+#: dropins/scripts/scripts.php:33
+#: lib/admin/settings/dashboard/templates/admin-page.php:59
+msgid "Scripts Manager"
+msgstr ""
+
+#: dropins/scripts/scripts.php:81
+msgid "Body classes"
+msgstr ""
+
+#: dropins/scripts/scripts.php:82
+msgid "Add custom CSS classes to the <code>body</code> tag of this page."
+msgstr ""
+
+#: dropins/scripts/scripts.php:89
+msgid "Header Scripts"
+msgstr ""
+
+#: dropins/scripts/scripts.php:90
+msgid "Print scripts to the <code>&lt;head></code> section (before opening <code>&lt;body></code> tag)."
+msgstr ""
+
+#: dropins/scripts/scripts.php:96
+msgid "Footer Scripts"
+msgstr ""
+
+#: dropins/scripts/scripts.php:97
+msgid "Print scripts after the <code>&lt;footer></code> section (before closing <code>&lt;/body></code> tag)."
+msgstr ""
+
+#: dropins/scripts/scripts.php:104
+msgid "Scripts Optimization"
+msgstr ""
+
+#: dropins/scripts/scripts.php:105
+msgid "<b>Note:</b> Only remove the scripts and styles you know this page does not use, otherwise you may break some plugin functionality."
+msgstr ""
+
+#: dropins/share/share.php:32
+msgid "Side of post"
+msgstr ""
+
+#: dropins/share/share.php:33
+msgid "Left side of screen"
+msgstr ""
+
+#: dropins/share/share.php:34
+msgid "Bottom of screen"
+msgstr ""
+
+#: dropins/share/share.php:35
+msgid "Right side of screen"
+msgstr ""
+
+#: dropins/share/share.php:38
+msgid "Bold (default)"
+msgstr ""
+
+#: dropins/share/share.php:39
+msgid "Minimal"
+msgstr ""
+
+#: dropins/share/share.php:42
+msgid "Before Headline"
+msgstr ""
+
+#: dropins/share/share.php:43
+#: lib/wp/featured-video/meta-box.php:22
+msgid "After Headline"
+msgstr ""
+
+#: dropins/share/share.php:69
+#: lib/api/icons.php:227
+msgid "Twitter"
+msgstr ""
+
+#: dropins/share/share.php:78
+#: lib/api/icons.php:81
+msgid "Facebook"
+msgstr ""
+
+#: dropins/share/share.php:87
+#: lib/api/icons.php:123
+msgid "LinkedIn"
+msgstr ""
+
+#: dropins/share/share.php:96
+msgid "Email"
+msgstr ""
+
+#: dropins/share/share.php:97
+msgid "Sharing this link with you"
+msgstr ""
+
+#: dropins/share/share.php:105
+#: dropins/share/share.php:113
+#: lib/api/icons.php:115
+msgid "Like"
+msgstr ""
+
+#: dropins/share/share.php:111
+msgid "Empty Heart (default)"
+msgstr ""
+
+#: dropins/share/share.php:112
+#: lib/api/icons.php:99
+msgid "Heart"
+msgstr ""
+
+#: dropins/share/share.php:114
+#: lib/api/icons.php:95
+msgid "Hand"
+msgstr ""
+
+#: dropins/share/share.php:118
+#: lib/api/icons.php:161
+msgid "Pinterest"
+msgstr ""
+
+#: dropins/share/share.php:128
+#: lib/api/icons.php:248
+msgid "WhatsApp"
+msgstr ""
+
+#: dropins/share/share.php:138
+#: lib/api/icons.php:178
+msgid "RSS"
+msgstr ""
+
+#: dropins/share/share.php:146
+msgid "Comments"
+msgstr ""
+
+#: dropins/share/share.php:229
+#: lib/api/icons.php:186
+msgid "Share"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:5
+#: lib/api/fields.php:447
+msgid "Reorder"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:20
+msgid "Change the icon for this share button."
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:30
+msgid "Username"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:31
+msgid "Enter your username only, no @ characters."
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:45
+msgid "Select Popup"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:58
+msgid "Custom URL"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:59
+msgid "Add direct link to your profile instead of share link."
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:67
+msgid "Label"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:68
+msgid "Text only shows on <b>Inline buttons</b>."
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:78
+msgid "Remove from floating icons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-fields.php:79
+msgid "Remove from inline icons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-icons.php:3
+#: lib/admin/updater/updater.php:322
+msgid "Active"
+msgstr ""
+
+#: dropins/share/templates/admin/share-icons.php:13
+#: lib/admin/updater/updater.php:312
+msgid "Inactive"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:7
+#: dropins/share/templates/admin/share-settings.php:17
+msgid "Inline Buttons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:8
+#: dropins/share/templates/admin/share-settings.php:18
+msgid "Choose style..."
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:18
+msgid "Remove"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:25
+msgid "Add"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:37
+#: dropins/share/templates/admin/share-settings.php:33
+msgid "Floating Icons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:38
+#: dropins/share/templates/admin/share-settings.php:34
+msgid "Enable on..."
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:40
+msgid "Remove floating icons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:44
+msgid "Current position: %s"
+msgstr ""
+
+#: dropins/share/templates/admin/share-meta.php:53
+msgid "Use custom share buttons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-settings.php:2
+msgid "Share Buttons"
+msgstr ""
+
+#: dropins/share/templates/admin/share-settings.php:3
+msgid "Deploy share buttons throughout your site and adjust your share networks."
+msgstr ""
+
+#: dropins/share/templates/admin/share-settings.php:9
+msgid "Show on Post Types"
+msgstr ""
+
+#: dropins/share/templates/share-notice.php:8
+msgid "Enter share text here..."
+msgstr ""
+
+#: dropins/share/templates/share-notice.php:55
+msgid "Tweet This"
+msgstr ""
+
+#: dropins/share/templates/share-notice.php:57
+msgid "Post to Facebook"
+msgstr ""
+
+#: dropins/share/templates/share-notice.php:59
+msgid "Pin This"
+msgstr ""
+
+#: dropins/share/templates/share-notice.php:61
+msgid "Share on LinkedIn"
+msgstr ""
+
+#: dropins/stream/stream.php:76
+#: dropins/stream/stream.php:77
+#: dropins/stream/stream.php:78
+#: dropins/stream/stream.php:79
+#: dropins/stream/stream.php:88
+#: dropins/stream/stream.php:196
+msgid "Stream"
+msgstr ""
+
+#: dropins/stream/stream.php:80
+#: dropins/stream/stream.php:104
+msgid "Add New Stream"
+msgstr ""
+
+#: dropins/stream/stream.php:81
+#: dropins/stream/stream.php:105
+msgid "Edit Stream"
+msgstr ""
+
+#: dropins/stream/stream.php:82
+msgid "New Stream"
+msgstr ""
+
+#: dropins/stream/stream.php:83
+#: dropins/stream/stream.php:84
+#: dropins/stream/stream.php:106
+#: dropins/stream/stream.php:285
+#: dropins/stream/stream.php:288
+msgid "View Stream"
+msgstr ""
+
+#: dropins/stream/stream.php:85
+msgid "Search Streams"
+msgstr ""
+
+#: dropins/stream/stream.php:86
+msgid "No streams found"
+msgstr ""
+
+#: dropins/stream/stream.php:87
+msgid "No streams found in trash"
+msgstr ""
+
+#: dropins/stream/stream.php:100
+#: dropins/stream/stream.php:101
+#: dropins/stream/stream.php:102
+#: dropins/stream/stream.php:103
+msgid "Stream activity"
+msgstr ""
+
+#: dropins/stream/stream.php:107
+msgid "Search activity"
+msgstr ""
+
+#: dropins/stream/stream.php:108
+msgid "No activity found"
+msgstr ""
+
+#: dropins/stream/stream.php:109
+msgid "No stream activities found in trash"
+msgstr ""
+
+#: dropins/stream/stream.php:110
+msgid "Activity"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-meta.php:4
+#: dropins/stream/templates/admin/stream-thread-meta.php:10
+msgid "Post ID"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-meta.php:5
+msgid "To share a post, enter its ID here to embed in your status."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-meta.php:11
+msgid "Thread"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:1
+msgid "Stream Settings"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:10
+msgid "Change the URL of your Stream pages."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:18
+msgid "Add an <code>h1</code> title tag to the top of the Stream page."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:25
+msgid "Write a description below the title."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:32
+msgid "Profile Photo"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:33
+msgid "<b>Recommended size: 250x250px (or smaller)</b><br />Add a face to your Stream by uploading your photo or logo."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:42
+msgid "<b>Tip:</b> Assign custom sidebars to your stream archive and single pages at the <a href=\"%s\">Widgets > Edit Sidebars</a> screen."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:44
+msgid "<b>Add sidebar</b> to Stream page"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:45
+msgid "<b>Add sidebar</b> to Stream posts"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:46
+msgid "<b>Add stream title</b> to Stream posts"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:47
+msgid "<b>Remove post title</b> from Stream posts"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:48
+msgid "<b>Remove breadcrumbs</b> from Stream page"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:49
+msgid "<b>Disable</b> comments"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:56
+msgid "Posts Per Page"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:57
+msgid "Change how many posts to show on Stream pages."
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:61
+msgid "Stream Activity"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:67
+msgid "<b>Enable</b> Stream activity"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:74
+msgid "Include post types"
+msgstr ""
+
+#: dropins/stream/templates/admin/stream-settings.php:76
+msgid "Auto-post publish activity from the selected post types."
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:12
+msgid "Show number of posts:"
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:17
+msgid "Excerpt words length:"
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:22
+msgid "Excerpt text"
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:23
+#: dropins/stream/widget.php:66
+msgid "read more"
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:28
+msgid "<b>Remove</b> stream title"
+msgstr ""
+
+#: dropins/stream/templates/admin/widget-form.php:31
+msgid "<b>Remove</b> stream text"
+msgstr ""
+
+#: dropins/stream/templates/stream-byline.php:10
+#: dropins/stream/templates/widget-embed.php:29
+msgid " ago"
+msgstr ""
+
+#: dropins/stream/templates/stream-byline.php:13
+#: dropins/stream/templates/widget-embed.php:32
+msgid "on "
+msgstr ""
+
+#: dropins/stream/templates/stream-byline.php:18
+msgid " published a new %s"
+msgstr ""
+
+#: dropins/stream/templates/stream-byline.php:20
+msgid " shared a %s"
+msgstr ""
+
+#: dropins/stream/templates/stream-loop.php:26
+msgid "Go back to Stream"
+msgstr ""
+
+#: dropins/stream/templates/stream-post.php:4
+msgid "Pinned"
+msgstr ""
+
+#: dropins/stream/templates/stream-post.php:92
+msgid "Show thread (%s)"
+msgstr ""
+
+#: dropins/stream/templates/stream-title.php:43
+msgid "Posts"
+msgstr ""
+
+#: dropins/stream/templates/stream-title.php:47
+msgid "Likes"
+msgstr ""
+
+#: dropins/stream/templates/widget-embed.php:73
+msgid "see more posts &rarr;"
+msgstr ""
+
+#: dropins/stream/widget.php:33
+msgid "MD &rarr; Stream Embed"
+msgstr ""
+
+#: dropins/stream/widget.php:34
+msgid "Display the latest posts from your Stream in a beautiful widget."
+msgstr ""
+
+#: dropins/subtitle/subtitle.php:56
+msgid "Add subtitle"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:5
+msgid "Bonus Features"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:10
+msgid "<b>Add</b> shopping cart icon to header"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:17
+msgid "Enter text used for \"Sale!\" text"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:22
+msgid "Checkout Page"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:27
+msgid "<b>Enable</b> minimal checkout fields"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:34
+msgid "<b>Note:</b> Minimal checkout removes the following checkout fields: <b>Billing Address</b>, <b>Country</b>, <b>Company</b>, <b>City</b>, <b>State</b>, and <b>Postal Code</b>."
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:36
+msgid "<b>Remove</b> order comments field"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:37
+msgid "Make phone number field optional"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:45
+#: lib/admin/design/colors/colors-settings.php:171
+#: lib/admin/design/content/content-settings.php:66
+#: lib/admin/design/layout/layout-settings.php:131
+#: lib/admin/design/typography/typography-settings.php:98
+msgid "Sidebar"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:49
+msgid "Add <a href=\"%s\">custom sidebars</a> to the shop pages and enable/disable sidebars from the product post editor."
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:51
+msgid "<b>Add</b> sidebar to shop archives"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:52
+msgid "<b>Add</b> sidebar to product pages"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:61
+msgid "Marketers Delight enhances WooCommerce by adding its own custom styles to your site. Enable this option to remove those styles."
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:63
+msgid "<b>Remove</b> MD custom styles"
+msgstr ""
+
+#: dropins/woocommerce/admin-page.php:71
+msgid "WooCommerce Settings"
+msgstr ""
+
+#: dropins/woocommerce/templates.php:136
+msgid "View your shopping cart"
+msgstr ""
+
+#: dropins/woocommerce/woocommerce.php:53
+msgid "WooCommerce"
+msgstr ""
+
+#: dropins/woocommerce/woocommerce.php:116
+msgid "<b>Remove</b> WooCommerce scripts and styles"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:2
+msgid "Site Colors"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:3
+msgid "Set the primary colors to be used throughout your site design and default admin controls."
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:6
+msgid "Brand Colors"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:21
+msgid "Text Colors"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:36
+msgid "Button Colors"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:52
+#: lib/admin/design/header/header-settings.php:3
+#: lib/admin/design/header/header-settings.php:48
+#: lib/admin/design/header/header.php:30
+#: lib/admin/design/layout/layout-settings.php:6
+#: lib/admin/design/typography/typography-settings.php:50
+msgid "Header"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:64
+#: lib/admin/design/typography/typography-settings.php:70
+msgid "Site Title & Tagline"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:81
+#: lib/admin/design/header/header-settings.php:99
+msgid "Menu Links"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:109
+msgid "Sub Menu Links"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:154
+#: lib/admin/design/content/content-settings.php:3
+#: lib/admin/design/layout/layout-settings.php:56
+msgid "Content Box"
+msgstr ""
+
+#: lib/admin/design/colors/colors-settings.php:186
+#: lib/admin/design/layout/layout-settings.php:173
+#: lib/admin/design/typography/typography-settings.php:135
+msgid "Footer"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:110
+msgid "Primary Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:111
+msgid "Secondary Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:112
+msgid "Tertiary Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:113
+msgid "Action Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:114
+msgid "Accent Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:121
+msgid "Headline Links Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:126
+msgid "Secondary Button Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:127
+msgid "Secondary Button Text Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:131
+msgid "Site Title Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:132
+msgid "Site Tagline Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:135
+msgid "Hover Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:136
+#: lib/admin/design/colors/colors.php:147
+msgid "Links Active Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:141
+msgid "Links Hover Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:148
+msgid "Subtext Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:149
+msgid "Submenu Background Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:150
+msgid "Icons Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:151
+msgid "Social Icons Color"
+msgstr ""
+
+#: lib/admin/design/colors/colors.php:160
+#: lib/admin/design/colors/colors.php:166
+msgid "Title Color"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:4
+msgid "Adjust the width, design, and other parts of your website's content box."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:14
+msgid "Site Width"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:21
+msgid "Post Width"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:28
+msgid "Sidebar Width"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:32
+msgid "<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:33
+msgid "<b>Tip:</b> For the most accurate results you must add any extra spacing within the content box and sidebar to find the true width of your site.<br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:39
+msgid "Select layout..."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:40
+msgid "Content box"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:47
+msgid "Default style"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:49
+msgid "Minimal style"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:58
+msgid "Enable breadcrumbs"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:59
+msgid "Disable MD editor blocks"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:69
+msgid "Remove from blog page"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:70
+msgid "Enable on all category pages"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:71
+msgid "Enable on all blog posts"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:79
+msgid "Archives"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:80
+msgid "Change the display of archives pages like your blog and categories."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:83
+msgid "Single"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:84
+msgid "Change the display settings of single posts and pages."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:92
+#: lib/admin/design/loop/loop-settings.php:37
+msgid "Select byline position..."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:94
+#: lib/admin/design/loop/loop-settings.php:39
+msgid "Show before headline"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:95
+#: lib/admin/design/loop/loop-settings.php:40
+msgid "Show after headline"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:109
+#: lib/wp/featured-image/featured-image.php:35
+msgid "Featured Image"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:111
+msgid "Here you can set the default featured image settings across your entire site. Every post and page will use these settings, and you can also override them on any page within the post editor!"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:116
+msgid "Featured Image Position"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:117
+msgid "Select featured image position&hellip;"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:124
+msgid "Featured Image Cover Color"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:132
+msgid "Default Featured Image Cover"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:133
+msgid "Set a default background image for all Header/Headline cover posts, or set them individually from the Edit Post screen."
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:141
+msgid "Show dark text"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:148
+msgid "Author Box"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:154
+msgid "Enable author box after blog posts"
+msgstr ""
+
+#: lib/admin/design/content/content-settings.php:155
+msgid "Link to author archives page"
+msgstr ""
+
+#: lib/admin/design/design.php:47
+msgid "Site Design"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:4
+msgid "Adjust various header settings and controls."
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:7
+msgid "Logo"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:13
+msgid "Hide Site Title"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:14
+msgid "Hide Tagline"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:23
+msgid "Logo Width%s"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:34
+msgid "Site Logo"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:41
+msgid "Alternate Logo"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:56
+msgid "Top Spacing%s"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:67
+msgid "Bottom Spacing%s"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:82
+msgid "Links Left/Right Spacing"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:95
+msgid "Disable Search"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:104
+msgid "Top/Bottom Spacing"
+msgstr ""
+
+#: lib/admin/design/header/header-settings.php:110
+msgid "Left/Right Spacing"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:2
+msgid "Icons <small>(%s)</small>"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:3
+msgid "Customize the <a href=\"https://marketersdelight.com/font-icons-manager/\" target=\"_blank\">MD Icons library</a> with your own font icon set, and update default icons. "
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:5
+msgid "Manage Icons"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:13
+msgid "Upload font icons JSON file"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:14
+msgid "Icons successfully updated."
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:15
+msgid "To sync new and removed icons, upload the <code>selection.json</code> file from your <a href=\"https://icomoon.io/app/#/select\" target=\"_blank\">IcoMoon download</a>.<br />You should do this every time you change your <code>md.woff</code> child theme file."
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:19
+msgid ""
+"You are about to revert to the default MD font icons set. No files will be deleted, but your current icons\n"
+"data will be removed and any custom icons may no longer show on your website. Do you wish to proceed?"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:19
+msgid "Restore default icons"
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:36
+msgid "Enter icon name..."
+msgstr ""
+
+#: lib/admin/design/icons/icons-settings.php:55
+msgid "Save icons"
+msgstr ""
+
+#: lib/admin/design/icons/icons.php:19
+msgid "Icons"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:8
+msgid "Remove <b>Header</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:15
+msgid "Remove <b>Logo</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:16
+msgid "Remove <b>Tagline</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:17
+msgid "Remove <b>Menu</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:37
+msgid "Remove <b>Main Menu</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:43
+msgid "Select a custom menu..."
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:58
+msgid "Remove <b>Content Box</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:65
+msgid "Remove <b>Breadcrumbs</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:70
+msgid "Add <b>Breadcrumbs</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:77
+msgid "Enable <b>Teasers</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:85
+msgid "Remove <b>Headline</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:93
+msgid "Remove <b>Byline</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:101
+msgid "Remove <b>Author Box</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:108
+msgid "Add <b>Author Box</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:117
+msgid "Select content box layout&hellip;"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:118
+msgid "Content / Sidebar (default)"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:119
+#: lib/api/sanitize.php:132
+msgid "Sidebar / Content"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:133
+msgid "Remove <b>Sidebar</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:140
+msgid "Add <b>Main Sidebar</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:149
+msgid "Select custom sidebar&hellip;"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:154
+msgid "<b>Tip:</b> to reuse sidebars across pages, <a href=\"%s\" target=\"_blank\">add new Sidebars here</a> and come back and add it to this page."
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:161
+msgid "Select sidebar for posts in this category&hellip;"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:175
+msgid "Remove <b>Footer</b>"
+msgstr ""
+
+#: lib/admin/design/layout/layout-settings.php:182
+msgid "Remove <b>Footer Columns</b>"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:2
+#: lib/admin/design/loop/loop.php:27
+msgid "Loop"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:7
+msgid "Select Loop"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:8
+msgid "Select a loop..."
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:18
+msgid "Featured Posts"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:19
+msgid "Enter the number of posts to feature before breaking into the standard loop template."
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:25
+msgid "Columns"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:27
+msgid "Enter the number of columns to list standard posts."
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:52
+msgid "Post Content"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:57
+msgid "Post Text"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:59
+msgid "Show full text (default)"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:60
+msgid "Show excerpt"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:61
+msgid "Hide text"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:68
+msgid "Excerpt Length"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:69
+msgid "words"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:70
+msgid "55"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:76
+msgid "Read More Text"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:77
+#: lib/functions/build.php:327
+msgid "Continue reading &rarr;"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:87
+msgid "Show After X Post"
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:88
+msgid "Enter the post number to show a call to action after."
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:95
+msgid "Choose one of your pre-made <a href=\"%s\">call to actions</a> from MD Optins to show within this loop."
+msgstr ""
+
+#: lib/admin/design/loop/loop-settings.php:96
+msgid "Select call to action..."
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:5
+msgid "Custom Sidebars"
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:6
+msgid "Create custom sidebars and assign them to custom post types here. Once created you can go to the <a href=\"%s\">Widgets</a> screen to fill the sidebar area with widgets."
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:10
+msgid "Save Sidebars"
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:13
+msgid "Assign Sidebars"
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:14
+msgid "Set custom sidebars across different post type pages on your site."
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:25
+msgid "Use Main sidebar"
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars-settings.php:34
+msgid "<b>Tip:</b> First create a custom sidebar by clicking \"Add new\" and save your settings to assign your sidebars to post types."
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars.php:45
+msgid "Sidebars"
+msgstr ""
+
+#: lib/admin/design/sidebars/sidebars.php:73
+msgid "Enter sidebar name..."
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:3
+#: lib/admin/design/typography/typography.php:61
+msgid "Fonts & Typography"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:4
+msgid "Assign custom fonts and fine-tune your website's typography."
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:7
+msgid "Body"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:26
+msgid "Inherit from body"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:26
+msgid "Inherit from <h1>"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:29
+msgid "Headline (%s)"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:116
+msgid "Sidebar Title"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:128
+#: lib/admin/design/typography/typography-settings.php:129
+#: lib/admin/design/typography/typography-settings.php:165
+#: lib/admin/design/typography/typography-settings.php:166
+msgid "Inherit from <h3>"
+msgstr ""
+
+#: lib/admin/design/typography/typography-settings.php:153
+msgid "Footer Title"
+msgstr ""
+
+#: lib/admin/settings/admin-page.php:10
+msgid "Account"
+msgstr ""
+
+#: lib/admin/settings/admin-page.php:11
+#: lib/api/filters.php:112
+msgid "Docs"
+msgstr ""
+
+#: lib/admin/settings/admin-page.php:12
+msgid "Affiliates"
+msgstr ""
+
+#: lib/admin/settings/admin-page.php:13
+msgid "Forums"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:6
+#: lib/admin/settings/integrations/templates/integrations-settings.php:13
+msgid "Site Tools"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:11
+msgid "CSS Manager"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:12
+msgid "If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD's stylesheet file. For further optimization you can print your stylesheets inline to your site's %s.<br /><br />Note: if you combine your child theme styles you will need to resave the MD settings above to see any changes you make to the file afterwards."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:14
+msgid "Combine child theme CSS into %s"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:15
+msgid "Print %s inline"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:22
+msgid "404 Page ID"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:25
+msgid "Success! You can <a href=\"%s\">edit your 404 page here</a>."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:27
+msgid "Create a custom 404 page by attaching a new <a href=\"%s\">Page ID</a> here."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:33
+msgid "Web Fonts"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:34
+msgid "By default MD loads all Google and Typekit web fonts through a stylesheet and prefetch method. To <b>attempt</b> to improve font performance and fight off \"Flash of invisible text,\" enable the WebFont loader script here."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:36
+msgid "Enable WebFont Loader"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:43
+msgid "Clean <code>&lt;head&gt;</code> Tags"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:44
+msgid "By default, MD removes many unneeded scripts and tags from the %s (like emojis), and disables comment cookies for guests. To restore these features, enable this option."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:46
+msgid "<b>Remove</b> <code>block-library.css</code> style from head"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:47
+msgid "<b>Remove</b> <code>/wp-json/</code> REST API from head"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:48
+msgid "<b>Remove</b> <code>wp-embed.js</code> script from footer"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:49
+msgid "<b>Enable</b> emojis, comment cookie, and other outdated WP tags"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:70
+msgid "What's new at the <b>MD forums</b> &rarr;"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/license-key.php:3
+msgid "License Key"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/license-key.php:12
+msgid "Enter/edit your license key"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:3
+#: lib/admin/settings/dropins/dropins.php:64
+msgid "Drop-ins"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:5
+msgid "Add new"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:14
+msgid "Drop-in installed!"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:15
+msgid "Upload your Drop-in package file"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:16
+msgid "If you have a drop-in in a <code>.zip</code> format, you may install or update it by uploading it here. Find more available drop-ins here at the official <a href=\"https://marketersdelight.com/dropins/\" target=\"_blank\">Drop-ins Library</a>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:22
+msgid "Installed <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:24
+msgid "Active <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:25
+msgid "Inactive <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:47
+msgid ""
+"You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\n"
+"and not all data will be saved. Do you want to proceed?"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:47
+#: lib/api/fields.php:446
+msgid "Delete"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:53
+msgid "<b>Activate</b>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:57
+msgid "Requires <b>%s</b> plugin"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:68
+msgid "<i>by</i> <a href=\"%s\" target=\"_blank\">%1s</a>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:90
+msgid "No Drop-ins found."
+msgstr ""
+
+#: lib/admin/settings/dropins/dropins.php:66
+msgid "Dropin-ins"
+msgstr ""
+
+#: lib/admin/settings/dropins/store.php:94
+msgid "All (%s)"
+msgstr ""
+
+#: lib/admin/settings/dropins/store.php:108
+msgid "Get new Drop-ins"
+msgstr ""
+
+#: lib/admin/settings/dropins/store.php:109
+msgid "Find and download new features to your website from the official <a href=\"%s\" target=\"_blank\">MD Drop-ins library</a>."
+msgstr ""
+
+#: lib/admin/settings/dropins/store.php:122
+msgid "Get now"
+msgstr ""
+
+#: lib/admin/settings/dropins/store.php:124
+msgid "Installed"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:22
+msgid "Typekit"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:27
+msgid "Kit ID"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:29
+msgid "Your Font Kit is now loading on your site! Go to the <a href=\"%s\">Fonts and Typography</a> section in the Site Design panel to assign fonts to your design."
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:32
+msgid "Google Analytics"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:37
+msgid "Tracking ID"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:39
+msgid "The Google Analytics tracking code is now loading on your site! For best performance the script has been placed at the bottom of every page."
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:85
+msgid "Integrations"
+msgstr ""
+
+#: lib/admin/settings/integrations/integrations.php:134
+msgid "Sorry, there was an error during the connection process. Please try again."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:2
+msgid "API Key"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:3
+msgid "Account URL"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:17
+msgid "<b>Note:</b> To refresh %s data, please <a href=\"%2s\" target=\"_blank\">enter a new %s</a> below."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:19
+msgid "<b>Connection failed.</b> Please enter valid API credentials or try again in a few minutes."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:22
+msgid "Enter %s URL..."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:25
+msgid "Enter %s %2s..."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:27
+msgid "Account ID"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:28
+msgid "Enter %s Account ID..."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:31
+msgid "Connect to %s"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:35
+msgid "Enter the %s from your %2s account into the text field above then click the \"Connect\" button. <a href=\"%3s\" target=\"_blank\">Click here to get your API key &rarr;</a>"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:40
+msgid "Your site is connected to <b>%s</b>!"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:43
+msgid " (%s subscribers)"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:52
+msgid "Refresh %s"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-fields.php:54
+msgid "Disconnect from %s"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-settings.php:2
+msgid "Website Integrations"
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-settings.php:3
+msgid "Connect your website to your favorite third-party services."
+msgstr ""
+
+#: lib/admin/settings/integrations/templates/integrations-settings.php:8
+msgid "Email Services"
+msgstr ""
+
+#: lib/admin/updater/updater.php:81
+msgid "For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.<br /><b>Note:</b> It is strongly recommended you make a complete site and database backup before running this process."
+msgstr ""
+
+#: lib/admin/updater/updater.php:82
+msgid "Update now"
+msgstr ""
+
+#: lib/admin/updater/updater.php:84
+msgid "Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>..."
+msgstr ""
+
+#: lib/admin/updater/updater.php:148
+msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
+msgstr ""
+
+#: lib/admin/updater/updater.php:330
+msgid "Something went wrong. Please try to connect your license key again."
+msgstr ""
+
+#: lib/admin/updater/updater.php:333
+msgid "Disabled"
+msgstr ""
+
+#: lib/admin/updater/updater.php:334
+msgid "Your license key has been disabled. Please contact MD support for more information."
+msgstr ""
+
+#: lib/admin/updater/updater.php:338
+msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
+msgstr ""
+
+#: lib/admin/updater/updater.php:343
+msgid "Expired"
+msgstr ""
+
+#: lib/admin/updater/updater.php:344
+msgid "Renew now (save 40%)."
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:61
+msgid "Marketers Delight Upgrade"
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:61
+msgid "<b style=\"color:yellow\">Upgrade MD &rarr;</b>"
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:88
+msgid "Marketers Delight needs to upgrade your database for full compatibility with the newest version."
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:89
+msgid "Upgrade database &rarr;"
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:112
+msgid "Marketers Delight Upgrader"
+msgstr ""
+
+#: lib/admin/updater/upgrade/upgrade.php:114
+msgid "Your database is currently being upgraded to the latest version of Marketers Delight. Please do not leave this page until the upgrade process is complete."
+msgstr ""
+
+#: lib/api/design.php:361
+msgid "Primary"
+msgstr ""
+
+#: lib/api/design.php:362
+msgid "Secondary"
+msgstr ""
+
+#: lib/api/design.php:363
+msgid "Tertiary"
+msgstr ""
+
+#: lib/api/design.php:365
+msgid "Accent"
+msgstr ""
+
+#: lib/api/design.php:367
+msgid "White"
+msgstr ""
+
+#: lib/api/design.php:371
+msgid "Secondary Text"
+msgstr ""
+
+#: lib/api/design.php:374
+msgid "Button Secondary"
+msgstr ""
+
+#: lib/api/fields.php:366
+msgid "ID: %s"
+msgstr ""
+
+#: lib/api/fields.php:378
+msgid "You are about to upload a new file. Do you want to proceed?"
+msgstr ""
+
+#: lib/api/fields.php:379
+msgid "File successfully updated."
+msgstr ""
+
+#: lib/api/fields.php:441
+#: lib/api/fields.php:757
+msgid "New entry..."
+msgstr ""
+
+#: lib/api/fields.php:472
+msgid "Select categories..."
+msgstr ""
+
+#: lib/api/fields.php:503
+msgid "No categories"
+msgstr ""
+
+#: lib/api/fields.php:527
+msgid "Font Size"
+msgstr ""
+
+#: lib/api/fields.php:528
+msgid "Line Height"
+msgstr ""
+
+#: lib/api/fields.php:532
+msgid "Default Fonts"
+msgstr ""
+
+#: lib/api/fields.php:536
+msgid "Google Fonts"
+msgstr ""
+
+#: lib/api/fields.php:542
+msgid "TypeKit"
+msgstr ""
+
+#: lib/api/fields.php:566
+msgid "Font Family"
+msgstr ""
+
+#: lib/api/fields.php:579
+msgid "Font Weight"
+msgstr ""
+
+#: lib/api/fields.php:580
+#: lib/api/fields.php:589
+msgid "Select font weight..."
+msgstr ""
+
+#: lib/api/fields.php:588
+msgid "Bold Text"
+msgstr ""
+
+#: lib/api/fields.php:605
+msgid "Save settings"
+msgstr ""
+
+#: lib/api/fields.php:626
+#: lib/api/fields.php:720
+msgid "Add New"
+msgstr ""
+
+#: lib/api/fields.php:641
+msgid "Switch to Desktop controls"
+msgstr ""
+
+#: lib/api/fields.php:644
+msgid "Switch to Tablet controls"
+msgstr ""
+
+#: lib/api/fields.php:647
+msgid "Switch to Mobile controls"
+msgstr ""
+
+#: lib/api/fields.php:782
+msgid "Preview image"
+msgstr ""
+
+#: lib/api/fields.php:788
+msgid "Image Link"
+msgstr ""
+
+#: lib/api/fields.php:789
+msgid "http://"
+msgstr ""
+
+#: lib/api/filters.php:65
+msgid "Social Media Menu"
+msgstr ""
+
+#: lib/api/filters.php:109
+msgid "Default"
+msgstr ""
+
+#: lib/api/filters.php:110
+msgid "Teasers"
+msgstr ""
+
+#: lib/api/filters.php:111
+msgid "Blocks"
+msgstr ""
+
+#: lib/api/filters.php:135
+msgid "Add <b>New!</b> Badge"
+msgstr ""
+
+#: lib/api/filters.php:136
+msgid "Add <b>Avatar</b>"
+msgstr ""
+
+#: lib/api/filters.php:137
+msgid "Remove <b>Author</b>"
+msgstr ""
+
+#: lib/api/filters.php:138
+msgid "Remove <b>Date</b>"
+msgstr ""
+
+#: lib/api/filters.php:139
+msgid "Add <b>Last Updated</b>"
+msgstr ""
+
+#: lib/api/filters.php:140
+msgid "Add <b>Category</b>"
+msgstr ""
+
+#: lib/api/filters.php:141
+msgid "Remove <b>Comments</b>"
+msgstr ""
+
+#: lib/api/filters.php:142
+msgid "Remove <b>Edit</b>"
+msgstr ""
+
+#: lib/api/filters.php:177
+msgid "Simple (default)"
+msgstr ""
+
+#: lib/api/filters.php:178
+msgid "Holy Grail"
+msgstr ""
+
+#: lib/api/filters.php:179
+msgid "Border Box"
+msgstr ""
+
+#: lib/api/filters.php:180
+msgid "Bold Offer"
+msgstr ""
+
+#: lib/api/filters.php:181
+msgid "Notification"
+msgstr ""
+
+#: lib/api/filters.php:193
+msgid "Sitewide"
+msgstr ""
+
+#: lib/api/filters.php:194
+msgid "Front Page"
+msgstr ""
+
+#: lib/api/filters.php:195
+msgid "Blog Page"
+msgstr ""
+
+#: lib/api/filters.php:196
+msgid "All Posts"
+msgstr ""
+
+#: lib/api/filters.php:197
+msgid "All Categories"
+msgstr ""
+
+#: lib/api/filters.php:198
+msgid "All Pages"
+msgstr ""
+
+#: lib/api/filters.php:199
+msgid "All Author Pages"
+msgstr ""
+
+#: lib/api/filters.php:200
+msgid "Search Results"
+msgstr ""
+
+#: lib/api/icons.php:17
+msgid "Arrow Down"
+msgstr ""
+
+#: lib/api/icons.php:21
+msgid "Arrow Left"
+msgstr ""
+
+#: lib/api/icons.php:25
+msgid "Arrow Right"
+msgstr ""
+
+#: lib/api/icons.php:29
+msgid "Arrow Up"
+msgstr ""
+
+#: lib/api/icons.php:33
+msgid "Bell"
+msgstr ""
+
+#: lib/api/icons.php:37
+msgid "Bolt"
+msgstr ""
+
+#: lib/api/icons.php:45
+msgid "Cancel (X)"
+msgstr ""
+
+#: lib/api/icons.php:49
+msgid "Cart"
+msgstr ""
+
+#: lib/api/icons.php:53
+msgid "Chat"
+msgstr ""
+
+#: lib/api/icons.php:57
+msgid "Clock"
+msgstr ""
+
+#: lib/api/icons.php:61
+msgid "Code"
+msgstr ""
+
+#: lib/api/icons.php:65
+msgid "Download"
+msgstr ""
+
+#: lib/api/icons.php:69
+msgid "Dribbble"
+msgstr ""
+
+#: lib/api/icons.php:73
+msgid "Exclamation (!)"
+msgstr ""
+
+#: lib/api/icons.php:77
+msgid "Eye"
+msgstr ""
+
+#: lib/api/icons.php:86
+msgid "Flickr"
+msgstr ""
+
+#: lib/api/icons.php:90
+msgid "GitHub"
+msgstr ""
+
+#: lib/api/icons.php:103
+msgid "Heart Empty"
+msgstr ""
+
+#: lib/api/icons.php:107
+msgid "Instagram"
+msgstr ""
+
+#: lib/api/icons.php:111
+msgid "Key"
+msgstr ""
+
+#: lib/api/icons.php:128
+msgid "Loading"
+msgstr ""
+
+#: lib/api/icons.php:132
+msgid "Mail"
+msgstr ""
+
+#: lib/api/icons.php:136
+msgid "Medium"
+msgstr ""
+
+#: lib/api/icons.php:140
+#: lib/functions/template-functions.php:387
+msgid "Menu"
+msgstr ""
+
+#: lib/api/icons.php:144
+msgid "OK"
+msgstr ""
+
+#: lib/api/icons.php:149
+msgid "Pencil"
+msgstr ""
+
+#: lib/api/icons.php:153
+msgid "Phone"
+msgstr ""
+
+#: lib/api/icons.php:157
+msgid "Pin"
+msgstr ""
+
+#: lib/api/icons.php:166
+msgid "Plus"
+msgstr ""
+
+#: lib/api/icons.php:170
+msgid "Quote"
+msgstr ""
+
+#: lib/api/icons.php:174
+#: templates/comments/comment.php:34
+msgid "Reply"
+msgstr ""
+
+#: lib/api/icons.php:182
+#: templates/menus/main-menu.php:16
+msgid "Search"
+msgstr ""
+
+#: lib/api/icons.php:190
+msgid "Skype"
+msgstr ""
+
+#: lib/api/icons.php:194
+msgid "Slack"
+msgstr ""
+
+#: lib/api/icons.php:198
+msgid "SpeakerDeck"
+msgstr ""
+
+#: lib/api/icons.php:202
+msgid "Star"
+msgstr ""
+
+#: lib/api/icons.php:206
+msgid "Tags"
+msgstr ""
+
+#: lib/api/icons.php:210
+msgid "Telegram"
+msgstr ""
+
+#: lib/api/icons.php:214
+msgid "TikTok"
+msgstr ""
+
+#: lib/api/icons.php:218
+msgid "Trophy"
+msgstr ""
+
+#: lib/api/icons.php:222
+msgid "Tumblr"
+msgstr ""
+
+#: lib/api/icons.php:231
+msgid "User"
+msgstr ""
+
+#: lib/api/icons.php:235
+msgid "User Add"
+msgstr ""
+
+#: lib/api/icons.php:239
+#: lib/wp/featured-video/meta-box.php:8
+msgid "Vimeo"
+msgstr ""
+
+#: lib/api/icons.php:244
+msgid "Volume Up"
+msgstr ""
+
+#: lib/api/icons.php:252
+msgid "WordPress"
+msgstr ""
+
+#: lib/api/icons.php:256
+#: lib/wp/featured-video/meta-box.php:7
+msgid "YouTube"
+msgstr ""
+
+#: lib/api/sanitize.php:131
+msgid "Content / Sidebar"
+msgstr ""
+
+#: lib/api/sanitize.php:135
+msgid "Right, text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:136
+msgid "Left, text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:137
+msgid "Center, no text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:138
+msgid "Full-width, below headline"
+msgstr ""
+
+#: lib/api/sanitize.php:139
+msgid "Full-width, above headline"
+msgstr ""
+
+#: lib/api/sanitize.php:140
+msgid "Headline cover"
+msgstr ""
+
+#: lib/api/sanitize.php:141
+msgid "Header cover"
+msgstr ""
+
+#: lib/api/sanitize.php:142
+msgid "Full Header cover"
+msgstr ""
+
+#: lib/api/sanitize.php:143
+msgid "Hide image"
+msgstr ""
+
+#: lib/functions/build.php:163
+#: searchform.php:16
+msgid "Blog"
+msgstr ""
+
+#: lib/functions/build.php:415
+msgid "To view this protected post, enter the password below:"
+msgstr ""
+
+#: lib/functions/build.php:416
+msgid "Enter the password&hellip;"
+msgstr ""
+
+#: lib/functions/build.php:417
+msgid "Get Access"
+msgstr ""
+
+#: lib/marketers-delight.php:239
+msgid "Main Sidebar"
+msgstr ""
+
+#: lib/marketers-delight.php:240
+msgid "The default sidebar used around your site."
+msgstr ""
+
+#: lib/marketers-delight.php:252
+msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
+msgstr ""
+
+#: lib/marketers-delight.php:263
+msgid "Footer Copy"
+msgstr ""
+
+#: lib/marketers-delight.php:264
+msgid "Add text and site links to the bottom of the site footer."
+msgstr ""
+
+#: lib/marketers-delight.php:298
+msgid "Twitter username (without @)"
+msgstr ""
+
+#: lib/wp/featured-image/admin-fields.php:7
+msgid "Set featured image"
+msgstr ""
+
+#: lib/wp/featured-image/admin-fields.php:14
+msgid "Image Position"
+msgstr ""
+
+#: lib/wp/featured-image/admin-fields.php:15
+msgid "Select image position..."
+msgstr ""
+
+#: lib/wp/featured-image/admin-fields.php:31
+msgid "Show alternate text color"
+msgstr ""
+
+#: lib/wp/featured-image/admin-fields.php:39
+msgid "Add caption over image"
+msgstr ""
+
+#: lib/wp/featured-image/featured-image.php:38
+msgid "%s Extras"
+msgstr ""
+
+#: lib/wp/featured-image/template-functions.php:31
+#: templates/loops/loop-blocks.php:9
+#: templates/loops/loop-docs.php:7
+#: templates/loops/loop-teasers.php:24
+msgid "Permalink to %s"
+msgstr ""
+
+#: lib/wp/featured-video/featured-video.php:20
+msgid "Featured Video"
+msgstr ""
+
+#: lib/wp/featured-video/featured-video.php:70
+msgid "YouTube Video ID"
+msgstr ""
+
+#: lib/wp/featured-video/featured-video.php:74
+msgid "Vimeo Video ID"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:4
+msgid "Video Service"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:5
+msgid "Select video service&hellip;"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:9
+msgid "Embed Code"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:19
+msgid "Video Position"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:21
+msgid "Before Headline (default)"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:40
+msgid "Video Embed Code"
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:41
+msgid "Paste your custom video embed code here."
+msgstr ""
+
+#: lib/wp/featured-video/meta-box.php:51
+msgid "Video Thumbnail"
+msgstr ""
+
+#: lib/wp/widgets/accordion.php:17
+msgid "MD &rarr; Accordion Nav"
+msgstr ""
+
+#: lib/wp/widgets/accordion.php:18
+msgid "List category links in a highly organized accordion widget."
+msgstr ""
+
+#: lib/wp/widgets/accordion.php:84
+msgid "Category type"
+msgstr ""
+
+#: lib/wp/widgets/accordion.php:86
+msgid "Select category type..."
+msgstr ""
+
+#: lib/wp/widgets/accordion.php:93
+msgid "Posts per category"
+msgstr ""
+
+#: lib/wp/widgets/content-spotlight.php:6
+msgid "MD &rarr; Content Spotlight"
+msgstr ""
+
+#: lib/wp/widgets/content-spotlight.php:7
+msgid "Create a nicely designed image banner and link to any page on your site."
+msgstr ""
+
+#: lib/wp/widgets/quote.php:6
+msgid "MD &rarr; Testimonial"
+msgstr ""
+
+#: lib/wp/widgets/quote.php:7
+msgid "Add a testimonial/quote to any designated widget area!"
+msgstr ""
+
+#: lib/wp/widgets/templates/content-spotlight.php:2
+msgid "Outer Widget Title"
+msgstr ""
+
+#: lib/wp/widgets/templates/content-spotlight.php:7
+msgid "Box Intro"
+msgstr ""
+
+#: lib/wp/widgets/templates/content-spotlight.php:12
+msgid "Box Title"
+msgstr ""
+
+#: lib/wp/widgets/templates/content-spotlight.php:23
+msgid "Open link in new window"
+msgstr ""
+
+#: lib/wp/widgets/templates/quote.php:8
+msgid "Quoted Text"
+msgstr ""
+
+#: lib/wp/widgets/templates/quote.php:14
+msgid "Quote Author"
+msgstr ""
+
+#: lib/wp/widgets/text-image.php:16
+msgid "MD &rarr; Text and Image"
+msgstr ""
+
+#: lib/wp/widgets/text-image.php:17
+msgid "Create a Text widget with a small right-aligned image as well as a button."
+msgstr ""
+
+#: searchform.php:18
+msgid "this website"
+msgstr ""
+
+#: searchform.php:19
+msgid "Search %s..."
+msgstr ""
+
+#: templates/archives-title.php:25
+msgid "Search Results For: "
+msgstr ""
+
+#: templates/author-box.php:7
+msgid "About"
+msgstr ""
+
+#: templates/author-box.php:18
+msgid "See all posts"
+msgstr ""
+
+#: templates/author-box.php:26
+msgid "Visit website"
+msgstr ""
+
+#: templates/author-box.php:34
+msgid "Follow on Twitter"
+msgstr ""
+
+#: templates/blocks/content-upgrade.php:27
+msgid "Download now"
+msgstr ""
+
+#: templates/breadcrumbs.php:22
+msgid "Search results"
+msgstr ""
+
+#: templates/breadcrumbs.php:28
+#: templates/content-item-404.php:5
+msgid "Nothing Found"
+msgstr ""
+
+#: templates/byline/badge.php:3
+msgid "New!"
+msgstr ""
+
+#: templates/byline/comments.php:2
+msgctxt "Number of comments"
+msgid "1 <span class=\"byline-comments-label\">comment</span>"
+msgid_plural "%1$s <span class=\"byline-comments-label\">comments</span>"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/byline/date.php:5
+msgid "updated "
+msgstr ""
+
+#: templates/byline/date.php:12
+msgid "Last updated:"
+msgstr ""
+
+#: templates/comments/comment.php:11
+msgid "Post Author"
+msgstr ""
+
+#: templates/comments/comment.php:49
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: templates/comments/comments.php:8
+msgctxt "comments title"
+msgid "1 comment"
+msgid_plural "%1$s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/comments/comments.php:8
+msgid "add your comment"
+msgstr ""
+
+#: templates/comments/comments.php:22
+#: templates/pagination.php:8
+msgid "Previous"
+msgstr ""
+
+#: templates/comments/comments.php:23
+#: templates/pagination.php:9
+msgid "Next"
+msgstr ""
+
+#: templates/comments/comments.php:32
+msgid "Leave a Comment"
+msgstr ""
+
+#: templates/comments/comments.php:36
+msgid "Cancel"
+msgstr ""
+
+#: templates/content-item-404.php:14
+msgid "It looks like the page you're looking for isn't here! See if the tools below can help you find what you're looking for:"
+msgstr ""
+
+#: templates/content-item-404.php:16
+msgid "Search the Website"
+msgstr ""
+
+#: templates/content-item-404.php:17
+msgid "If you have an idea of what you're looking for, try typing in a few of the best keywords you can think of to get the most relevant search results possible."
+msgstr ""
+
+#: templates/content-item-404.php:23
+msgid "Browse Latest Posts"
+msgstr ""
+
+#: templates/content-item-404.php:35
+msgid "Browse By Month"
+msgstr ""
+
+#: templates/email-form.php:47
+msgid "There was an error submitting your subscription. Please try again."
+msgstr ""
+
+#: templates/email-form.php:50
+msgid "Thanks for joining! Check your email to complete your subscription"
+msgstr ""
+
+#: templates/email-form.php:56
+msgid "Thank you for joining! Check your email to complete your subscription."
+msgstr ""
+
+#: templates/headline.php:13
+#: templates/loops/loop-blocks.php:23
+msgid "Permanent Link to %s"
+msgstr ""
+
+#: templates/menus/main-menu-search.php:4
+msgid "To search, type and hit enter&hellip;"
+msgstr ""
+
+#: templates/post-nav.php:4
+msgid "Previous Post: "
+msgstr ""
+
+#: templates/post-nav.php:5
+msgid "Next Post: "
+msgstr ""
+
+#: templates/widgets/accordion.php:28
+msgid "Browse all <b>%s</b> articles &rarr;"
+msgstr ""
