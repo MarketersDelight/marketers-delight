@@ -216,10 +216,11 @@ function md_meta( $keys = null, $id = null, $default = null ) {
  */
 
 function md_user_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_admin() )
-		$id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : '';
-	else
-		$id = get_current_user_id();
+	if ( empty( $id ) )
+		if ( is_admin() )
+			$id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : '';
+		else
+			$id = get_current_user_id();
 
 	$meta = get_user_meta( $id, 'marketers_delight', true );
 

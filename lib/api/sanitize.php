@@ -330,7 +330,7 @@ class md_sanitize {
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );
 		elseif ( empty( $save ) )
-			delete_term_meta( $term_id, $option );
+			delete_user_meta( $user_id, $option );
 	}
 
 	/**
