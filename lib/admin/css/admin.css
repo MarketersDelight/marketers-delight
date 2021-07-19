@@ -569,6 +569,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-radius: 5px;
 	height: 250px;
 	overflow-y: auto;
+	margin-bottom: 0;
+	margin-top: 0;
 	padding: 15px;
 	max-width: 350px;
 }

@@ -19,10 +19,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_category_options_walker extends Walker_Category {
 
-	public function __construct( $option_name, $fields = null, $atts = array() ) {
-		$this->fields = $fields;
+	public function __construct( $option_name, $fields, $parsed_args ) {
 		$this->option_name = $option_name;
-		$this->atts = $atts;
+		$this->fields = $fields;
+		$this->parsed_args = $parsed_args;
 	}
 
     public function start_el( &$output, $category, $depth = 0, $args = array(), $id = 0 ) {
@@ -34,7 +34,7 @@ class md_category_options_walker extends Walker_Category {
 		$attributes = '';
 		$atts = array();
 		$atts['href'] = get_term_link( $category );
-		$count = '<a href="' . admin_url( 'term.php?taxonomy=' . $category->taxonomy  . '&tag_ID=' . $category->term_id . '&post_type=' . $this->atts['post_type'] ) . '">' . number_format_i18n( $category->count ) . '</a>';
+		$count = '<a href="' . admin_url( 'term.php?taxonomy=' . $category->taxonomy  . '&tag_ID=' . $category->term_id . '&post_type=' . $this->parsed_args['post_type'] ) . '">' . number_format_i18n( $category->count ) . '</a>';
 
 		if ( 'list' == $args['style'] ) {
 			$output .= "\t<li";

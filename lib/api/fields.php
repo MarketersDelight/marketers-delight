@@ -160,6 +160,9 @@ class md_fields {
 		if ( $type == 'group' || $type == 'repeat' )
 			$this->group( $name, $id, $option, $args );
 
+		if ( $type == 'terms' )
+			$this->terms( $name, $id, $option, $args );
+
 		#deprecated 4.8.4
 		if ( $type == 'media' )
 			$this->media( $name, $id, $option, $args );
@@ -407,70 +410,15 @@ class md_fields {
 	<?php }
 
 	/**
-	 * Wrapper for clone/group fields.
-	 *
-	 * @since 5.0
-	 */
-
-	public function group( $name, $id, $option, $args ) {
-		$var = '{clone}';
-		$option = ! empty( $option ) ? $option : array();
-		$empty[$var] = array();
-		$option = array_merge( $empty, $option );
-		$style = isset( $args['style'] ) ? $args['style'] : 'list';
-	?>
-
-		<div class="md-group-head md-clear">
-			<?php if ( isset( $args['label'] ) ) : ?>
-				<?php $this->label( $id, $args ); ?>
-			<?php endif; ?>
-			<?php if ( ! isset( $args['hide_button'] ) ) : ?>
-				<?php $this->clone_button( $args['field'] ); ?>
-			<?php endif; ?>
-		</div>
-
-		<div id="md_group_<?php echo esc_attr( "{$this->_id}_" . $args['field'] ); ?>" class="md-groups md-group-<?php echo $style; ?>">
-			<?php foreach ( $option as $group => $fields ) :
-				$valid = isset( $args['active_key'] ) && ! empty( $fields[$args['active_key']] ) ? ' valid' : '';
-			?>
-				<div class="md-group<?php echo ( $valid ) . ( "$group" == $var ? ' empty' : '' ) . ( $style == 'boxes' ? ' md-widget md-toggle' : '' ); ?>">
-					<div class="md-group-controls<?php echo ( $style == 'boxes' ? ' md-widget-title' : '' ); ?>">
-						<?php if ( $style == 'boxes' ) : ?>
-							<?php $this->field( array( $args['field'], $group, 'name' ), array(
-								'type' => 'text',
-								'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' ),
-								'classes' => 'md-focus'
-							) ); ?>
-						<?php endif; ?>
-						<span class="md-group-controls-inner">
-							<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
-							<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
-						</span>
-					</div>
-					<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-						<?php call_user_func( $args['callback'], $args['field'], $group ); ?>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-	<?php }
-
-	/**
 	 * Return terms hierarchy category structure.
 	 *
 	 * @since 5.3.1
 	 */
 
-	public function terms( $id, $args = null ) {
-		if ( ! isset( $id ) )
-			return;
-		
-		$group_id = $id;
+	public function terms( $name, $id, $option, $args ) {		
 		$defaults = array(
-			'group_id' => $id,
-			'label' => __( 'Select categories...', 'md' ),
 			'description' => '',
+			'post_type' => 'post',
 			'taxonomy' => 'category',
 			'depth' => 0,
 			'hide_empty' => false,
@@ -478,25 +426,21 @@ class md_fields {
 			'order' => 'ASC',
 			'orderby' => 'name',
 			'style' => 'list',
-			'use_desc_for_title' => true,
-			'walker' => new md_category_options_walker( $id, $this, $atts = array( 'post_type' => 'post' ) )
+			'use_desc_for_title' => true
 		);
 
 		$parsed_args = wp_parse_args( $args, $defaults );
 
-		if ( is_array( $parsed_args['group_id'] ) )
-			$parsed_args['group_id'][] = $id;
-
 		if ( ! isset( $parsed_args['class'] ) )
-			$parsed_args['class'] = ( 'category' === $parsed_args['taxonomy'] ) ? 'categories' : $parsed_args['taxonomy'];
+			$parsed_args['class'] = 'category' === $parsed_args['taxonomy'] ? 'categories' : $parsed_args['taxonomy'];
+
+		$parsed_args['walker'] = new md_category_options_walker( $args['field'], $this, $parsed_args );
 
 		if ( ! taxonomy_exists( $parsed_args['taxonomy'] ) )
 			return false;
 
 		$output = '';
 		$categories = get_categories( $parsed_args );
-
-		$this->label( $parsed_args['group_id'], array( 'label' => $parsed_args['label'] ) );
 
 		$output .= '<ul class="md-terms-list">';
 		if ( empty( $categories ) )
@@ -593,6 +537,56 @@ class md_fields {
 				<?php endif; ?>
 			</div>
 		</div>
+	<?php }
+
+	/**
+	 * Wrapper for clone/group fields.
+	 *
+	 * @since 5.0
+	 */
+
+	public function group( $name, $id, $option, $args ) {
+		$var = '{clone}';
+		$option = ! empty( $option ) ? $option : array();
+		$empty[$var] = array();
+		$option = array_merge( $empty, $option );
+		$style = isset( $args['style'] ) ? $args['style'] : 'list';
+	?>
+
+		<div class="md-group-head md-clear">
+			<?php if ( isset( $args['label'] ) ) : ?>
+				<?php $this->label( $id, $args ); ?>
+			<?php endif; ?>
+			<?php if ( ! isset( $args['hide_button'] ) ) : ?>
+				<?php $this->clone_button( $args['field'] ); ?>
+			<?php endif; ?>
+		</div>
+
+		<div id="md_group_<?php echo esc_attr( "{$this->_id}_" . $args['field'] ); ?>" class="md-groups md-group-<?php echo $style; ?>">
+			<?php foreach ( $option as $group => $fields ) :
+				$valid = isset( $args['active_key'] ) && ! empty( $fields[$args['active_key']] ) ? ' valid' : '';
+			?>
+				<div class="md-group<?php echo ( $valid ) . ( "$group" == $var ? ' empty' : '' ) . ( $style == 'boxes' ? ' md-widget md-toggle' : '' ); ?>">
+					<div class="md-group-controls<?php echo ( $style == 'boxes' ? ' md-widget-title' : '' ); ?>">
+						<?php if ( $style == 'boxes' ) : ?>
+							<?php $this->field( array( $args['field'], $group, 'name' ), array(
+								'type' => 'text',
+								'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' ),
+								'classes' => 'md-focus'
+							) ); ?>
+						<?php endif; ?>
+						<span class="md-group-controls-inner">
+							<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
+							<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
+						</span>
+					</div>
+					<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
+						<?php call_user_func( $args['callback'], $args['field'], $group ); ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+		</div>
+
 	<?php }
 
 	/**

@@ -6,7 +6,7 @@
 
 .col { position: relative; }
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 700px) {
 	.col { float: left; }
 	.columns-flex:not([class*="block-"]) {
 		padding-left: 5px;
