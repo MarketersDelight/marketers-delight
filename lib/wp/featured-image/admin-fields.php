@@ -33,10 +33,4 @@
 			) ); ?>
 		</div>
 	</div>
-	<?php $this->fields->field( 'caption', array(
-		'type' => 'checkbox',
-		'options' => array(
-			'add' => __( 'Add caption over image', 'md' )
-		)
-	) ); ?>
 </div>

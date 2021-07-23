@@ -63,10 +63,6 @@ class md_featured_image extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $this->sanitize->values['featured_image'] )
 			),
-			'caption' => array(
-				'type' => 'checkbox',
-				'options' => array( 'add' )
-			),
 			'bg_color' => array( 'type' => 'color' ),
 			'text_color' => array(
 				'type' => 'checkbox',

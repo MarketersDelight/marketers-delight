@@ -92,9 +92,8 @@ function md_has_inline_featured_image() {
  */
 
 function md_featured_image_caption() {
-	$enable = md_post_meta( array( 'featured_image', 'caption' ) );
 	$caption = get_the_post_thumbnail_caption();
-	if ( ! empty( $enable['add'] ) && ! empty( $caption ) )
+	if ( ! empty( $caption ) )
 		echo '<span class="featured-image-caption">' . $caption . '</span>';
 }
 
