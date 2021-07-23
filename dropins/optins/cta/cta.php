@@ -307,8 +307,7 @@ class md_cta extends md_api {
 		if ( in_array( $position, array( 'before_content', 'content' ) ) ) {
 			$layout = 'slim';
 			$title_classes = 'med-title';
-			if ( ! is_singular() )
-				$classes[] = 'post-box';
+			$classes[] = 'post-box';
 		}
 		elseif ( in_array( $position, array( 'before_sidebar', 'after_sidebar' ) ) ) {
 			$classes[] = 'mb-single';
