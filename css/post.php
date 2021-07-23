@@ -329,6 +329,13 @@
 	width: 150px;
 }
 
+.featured-image-caption {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: 13px;
+	font-style: italic;
+	line-height: 17px;
+}
+
 .featured-image-cover .featured-image-caption {
 	background-color: rgba(0, 0, 0, 0.8);
 	color: #fff;
