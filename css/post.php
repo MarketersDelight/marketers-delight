@@ -329,26 +329,6 @@
 	width: 150px;
 }
 
-.featured-image-caption {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: 13px;
-	font-style: italic;
-	line-height: 17px;
-}
-
-.featured-image-cover .featured-image-caption {
-	background-color: rgba(0, 0, 0, 0.8);
-	color: #fff;
-	font-size: 12px;
-	line-height: 17px;
-	padding: 7px 13px;
-	position: absolute;
-		bottom: 0;
-		left: 0;
-	text-align: center;
-	z-index: 10;
-}
-
 .featured-image-cover {
 	<?php echo ( ! empty( $content['featured_image']['cover']['url'] ) ? 'background-image: url(\'' . esc_url( $content['featured_image']['cover']['url'] ) . '\'); ': '' ); ?>
 	background-position: center center;
@@ -357,6 +337,31 @@
 }
 
 .header.featured-image-cover { background-color: transparent; }
+
+.featured-image-caption {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: 14px;
+	font-style: italic;
+	line-height: 20px;
+	text-align: center;
+}
+
+.featured-image-cover .featured-image-caption {
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #fff;
+	margin-bottom: 0;
+	padding: 7px 13px;
+	position: absolute;
+		bottom: 0;
+		left: 0;
+	z-index: 10;
+}
+
+.post-box .featured-image-caption {
+	margin-top: <?php echo $half; ?>px;
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
 
 <?php foreach ( $text_colors as $text_class => $text_atts ) :
 	$text_class = $text_atts['class'];
@@ -380,6 +385,10 @@
 	}
 	.featured-image-cover<?php echo $text_class; ?> a { border-bottom-color: <?php echo esc_attr( $text_atts['border'] ); ?>; }
 <?php endforeach; ?>
+
+@media all and (min-width: 800px) {
+	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
+}
 
 @media all and (max-width: 900px) {
 	.byline { font-size: 0.75em; }

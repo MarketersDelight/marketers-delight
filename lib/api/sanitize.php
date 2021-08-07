@@ -442,7 +442,7 @@ class md_sanitize {
 		if ( $val == '' && isset( $fields['default'] ) )
 			$val = $fields['default'];
 
-		if ( in_array( $type, array( 'text', 'textarea', 'hidden' ) ) )
+		if ( in_array( $type, array( 'text', 'textarea', 'editor', 'hidden' ) ) )
 			$field = $this->text( $val );
 
 		if ( $type == 'number' || $type == 'range' )

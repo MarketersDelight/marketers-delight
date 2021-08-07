@@ -154,6 +154,9 @@ class md_fields {
 		if ( $type == 'color' )
 			$this->color( $name, $id, $option, $args );
 
+		if ( $type == 'editor' )
+			$this->editor( $name, $id, $option, $args );
+
 		if ( $type == 'upload' )
 			$this->upload( $name, $id, $option, $args );
 
@@ -194,9 +197,13 @@ class md_fields {
 	 */
 
 	public function textarea( $name, $id, $option, $args ) {
+		$classes = array( 'large-text' );
+		if ( isset( $args['classes'] ) )
+			$classes[] = $args['classes'];
+		$classes = join( ' ', $classes );
 		$rows = ! empty( $args['rows'] ) ? intval( $args['rows'] ) : 6;
 	?>
-		<textarea name="<?php echo $name; ?>" id="<?php echo $id; ?>" class="large-text" rows="<?php echo $rows; ?>"><?php echo esc_attr( stripslashes( $option ) ); ?></textarea>
+		<textarea name="<?php echo $name; ?>" id="<?php echo $id; ?>" class="<?php echo $classes; ?>" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_attr( stripslashes( $option ) ); ?></textarea>
 	<?php }
 
 	/**
@@ -408,6 +415,27 @@ class md_fields {
 		<input type="text" name="<?php echo $name; ?>" id="<?php echo $id; ?>" value="<?php echo esc_attr( $option ); ?>" placeholder="<?php echo $placeholder; ?>" class="<?php echo esc_attr( $class ); ?>"<?php echo $alpha; ?> />
 		<?php wp_enqueue_style( 'wp-color-picker' ); ?>
 	<?php }
+
+	/**
+	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
+	 *
+	 * @since 5.3.1
+	 */
+	
+	public function editor( $name, $id, $option, $args ) {
+		if ( is_array( $args['field'] ) && empty( $option ) ) {
+			$args['classes'] = 'md-group-wp-editor';
+			$this->textarea( $name, $id, $option, $args );
+		}
+		else {
+			$settings = wp_parse_args( $args, array(
+				'textarea_name' => $name,
+				'textarea_rows' => 10
+			) );
+			wp_editor( $option, $id, $settings );
+			wp_enqueue_editor();
+		}
+	}
 
 	/**
 	 * Return terms hierarchy category structure.

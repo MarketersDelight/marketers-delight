@@ -94,12 +94,12 @@ function md_has_inline_featured_image() {
 function md_featured_image_caption() {
 	$caption = get_the_post_thumbnail_caption();
 	if ( ! empty( $caption ) )
-		echo '<span class="featured-image-caption">' . $caption . '</span>';
+		echo '<p class="featured-image-caption">' . $caption . '</p>';
 }
 
 function md_featured_image_caption_load() {
 	$position = md_featured_image_position();
-	if ( ! in_array( $position, array( 'above_headline', 'below_headline' ) ) )
+	if ( in_array( $position, array( 'headline_cover', 'header_cover', 'header_cover_full' ) ) )
 		md_featured_image_caption();
 }
 add_action( 'md_hook_headline_top', 'md_featured_image_caption_load' );
