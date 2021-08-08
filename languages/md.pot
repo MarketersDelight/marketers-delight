@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-07-24T20:13:30+00:00\n"
+"POT-Creation-Date: 2021-08-07T20:01:36+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: md\n"
@@ -560,7 +560,7 @@ msgid "Form Design"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:179
-#: lib/api/fields.php:357
+#: lib/api/fields.php:364
 #: lib/wp/widgets/templates/content-spotlight.php:32
 #: lib/wp/widgets/templates/quote.php:25
 #: lib/wp/widgets/templates/text-image.php:31
@@ -568,7 +568,7 @@ msgid "Click to upload"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:182
-#: lib/api/fields.php:360
+#: lib/api/fields.php:367
 #: lib/wp/widgets/templates/content-spotlight.php:35
 #: lib/wp/widgets/templates/quote.php:28
 #: lib/wp/widgets/templates/text-image.php:34
@@ -576,7 +576,7 @@ msgid "Preview Image"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:186
-#: lib/api/fields.php:364
+#: lib/api/fields.php:371
 #: lib/wp/widgets/templates/content-spotlight.php:39
 #: lib/wp/widgets/templates/quote.php:32
 #: lib/wp/widgets/templates/text-image.php:38
@@ -584,8 +584,8 @@ msgid "Image URL"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:191
-#: lib/api/fields.php:375
-#: lib/api/fields.php:790
+#: lib/api/fields.php:382
+#: lib/api/fields.php:818
 #: lib/wp/widgets/templates/content-spotlight.php:44
 #: lib/wp/widgets/templates/quote.php:37
 #: lib/wp/widgets/templates/text-image.php:43
@@ -593,8 +593,8 @@ msgid "Add Image"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:192
-#: lib/api/fields.php:376
-#: lib/api/fields.php:791
+#: lib/api/fields.php:383
+#: lib/api/fields.php:819
 #: lib/wp/widgets/templates/content-spotlight.php:45
 #: lib/wp/widgets/templates/quote.php:38
 #: lib/wp/widgets/templates/text-image.php:44
@@ -1534,7 +1534,7 @@ msgid "Share"
 msgstr ""
 
 #: dropins/share/templates/admin/share-fields.php:5
-#: lib/api/fields.php:580
+#: lib/api/fields.php:608
 msgid "Reorder"
 msgstr ""
 
@@ -2734,7 +2734,7 @@ msgid ""
 msgstr ""
 
 #: lib/admin/settings/dropins/admin-page.php:47
-#: lib/api/fields.php:579
+#: lib/api/fields.php:607
 msgid "Delete"
 msgstr ""
 
@@ -2970,94 +2970,94 @@ msgstr ""
 msgid "Button Secondary"
 msgstr ""
 
-#: lib/api/fields.php:369
+#: lib/api/fields.php:376
 msgid "ID: %s"
 msgstr ""
 
-#: lib/api/fields.php:381
+#: lib/api/fields.php:388
 msgid "You are about to upload a new file. Do you want to proceed?"
 msgstr ""
 
-#: lib/api/fields.php:382
+#: lib/api/fields.php:389
 msgid "File successfully updated."
 msgstr ""
 
-#: lib/api/fields.php:447
+#: lib/api/fields.php:475
 msgid "No categories"
 msgstr ""
 
-#: lib/api/fields.php:471
+#: lib/api/fields.php:499
 msgid "Font Size"
 msgstr ""
 
-#: lib/api/fields.php:472
+#: lib/api/fields.php:500
 msgid "Line Height"
 msgstr ""
 
-#: lib/api/fields.php:476
+#: lib/api/fields.php:504
 msgid "Default Fonts"
 msgstr ""
 
-#: lib/api/fields.php:480
+#: lib/api/fields.php:508
 msgid "Google Fonts"
 msgstr ""
 
-#: lib/api/fields.php:486
+#: lib/api/fields.php:514
 msgid "TypeKit"
 msgstr ""
 
-#: lib/api/fields.php:510
+#: lib/api/fields.php:538
 msgid "Font Family"
 msgstr ""
 
-#: lib/api/fields.php:523
+#: lib/api/fields.php:551
 msgid "Font Weight"
 msgstr ""
 
-#: lib/api/fields.php:524
-#: lib/api/fields.php:533
+#: lib/api/fields.php:552
+#: lib/api/fields.php:561
 msgid "Select font weight..."
 msgstr ""
 
-#: lib/api/fields.php:532
+#: lib/api/fields.php:560
 msgid "Bold Text"
 msgstr ""
 
-#: lib/api/fields.php:574
-#: lib/api/fields.php:751
+#: lib/api/fields.php:602
+#: lib/api/fields.php:779
 msgid "New entry..."
 msgstr ""
 
-#: lib/api/fields.php:599
+#: lib/api/fields.php:627
 msgid "Save settings"
 msgstr ""
 
-#: lib/api/fields.php:620
-#: lib/api/fields.php:714
+#: lib/api/fields.php:648
+#: lib/api/fields.php:742
 msgid "Add New"
 msgstr ""
 
-#: lib/api/fields.php:635
+#: lib/api/fields.php:663
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: lib/api/fields.php:638
+#: lib/api/fields.php:666
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: lib/api/fields.php:641
+#: lib/api/fields.php:669
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: lib/api/fields.php:776
+#: lib/api/fields.php:804
 msgid "Preview image"
 msgstr ""
 
-#: lib/api/fields.php:782
+#: lib/api/fields.php:810
 msgid "Image Link"
 msgstr ""
 
-#: lib/api/fields.php:783
+#: lib/api/fields.php:811
 msgid "http://"
 msgstr ""
 
