@@ -423,3 +423,19 @@ function md_password_form() {
 endif;
 
 add_filter( 'the_password_form', 'md_password_form' );
+
+add_action( 'init', 'md_post_type_rest_route', 25, 1 );
+function md_post_type_rest_route( $post_type ) {
+	
+	global $wp_post_types;
+
+	if( isset( $wp_post_types[ $post_type ] ) ) {
+		$wp_post_types[$post_type]->show_in_rest = true;
+	}
+}
+
+function cpt_rest_route( $args ) {
+	$args['show_in_rest'] = true;
+	return $args;
+}
+add_filter( 'register_post_type_args', 'cpt_rest_route' );
