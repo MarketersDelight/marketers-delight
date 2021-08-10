@@ -434,8 +434,9 @@ function md_post_type_rest_route( $post_type ) {
 	}
 }
 
-function cpt_rest_route( $args ) {
+function md_rest_route( $args ) {
 	$args['show_in_rest'] = true;
 	return $args;
 }
-add_filter( 'register_post_type_args', 'cpt_rest_route' );
+add_filter( 'register_post_type_args', 'md_rest_route' );
+add_filter( 'register_taxonomy_args', 'md_rest_route' );
