@@ -129,6 +129,8 @@ class md_css {
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 		$breakout = ( $gutter_width / $post_width ) * 100;
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
+		
+		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
 			include( $path );

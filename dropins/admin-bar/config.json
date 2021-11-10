@@ -1,7 +1,7 @@
 {
 	"name" : "Admin bar",
 	"author" : "Alex, Marketers Delight",
-	"version" : "1.0",
+	"version" : "1.0.1",
 	"description" : "A simple take on the standard WordPress admin bar, this drop-in loads a script-free and minimal admin bar with the ability to add your own custom admin links yourself. Recommended for performance enthusiasts and those who want to setup their own admin navigation experience.",
 	"dropin_url" : "https://marketersdelight.com/dropins/admin-bar/",
 	"settings_url" : "admin.php?page=md_settings&tab=md_admin_bar",

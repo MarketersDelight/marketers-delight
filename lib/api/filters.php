@@ -78,6 +78,16 @@ function md_post_type_meta() {
 }
 
 /**
+ * Default post type screens MD metaboxes are added to.
+ *
+ * @since 5.3.1
+ */
+
+function md_filter_css_values() {
+	return apply_filters( 'md_filter_css_values', array() );
+}
+
+/**
  * Default taxonomy screens MD metaboxes are added to.
  *
  * @since 4.5.4

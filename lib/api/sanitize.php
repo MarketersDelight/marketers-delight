@@ -57,7 +57,8 @@ class md_sanitize {
 			'href' => array(),
 			'class' => array(),
 			'id' => array(),
-			'target' => array()
+			'target' => array(),
+			'rel' => array()
 		),
 		'span' => array(
 			'class' => array(),

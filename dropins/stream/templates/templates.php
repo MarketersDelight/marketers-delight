@@ -70,7 +70,7 @@ class md_stream_templates {
 	 */
 
 	public function parse_query( $wp ) {
-		if ( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == 'stream' && $wp->is_main_query() && $wp->is_post_type_archive ) {
+		if ( ! is_admin() && isset( $wp->query['post_type'] ) && $wp->query['post_type'] == 'stream' && $wp->is_main_query() && $wp->is_post_type_archive ) {
 			$custom = md_setting( array( 'stream', 'posts_per_page' ) );
 			$wp->query_vars['posts_per_page'] = $custom ? preg_replace( '/\D/', '', $custom ) : 10;
 			$wp->set( 'post__not_in', get_option( 'sticky_posts' ) );

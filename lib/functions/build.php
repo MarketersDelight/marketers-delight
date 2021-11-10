@@ -70,8 +70,14 @@ function md_logo() {
 }
 
 function md_secondary_logo() {
-	$secondary_logo = md_setting( array( 'header', 'logo_alt', 'url' ) );
-	echo '<span class="secondary-logo"><a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home"><img src="' . esc_url( $secondary_logo ) . '" /></a></span>';
+	$secondary_logo_id = md_setting( array( 'header', 'logo_alt', 'id' ) );
+	$secondary_logo_url = md_setting( array( 'header', 'logo_alt', 'url' ) ); // if logo set pre-5.0
+	echo '<span class="secondary-logo"><a href="' . esc_url( home_url( '/' ) ) . '" class="custom-logo-link" rel="home">';
+	if ( ! empty( $secondary_logo_id ) )
+		echo wp_get_attachment_image( $secondary_logo_id, 'full' );
+	elseif ( ! empty( $secondary_logo_url ) )
+		echo '<img src="' . esc_url( $secondary_logo ) . '" alt="' . get_bloginfo( 'name' ) . '" />';
+	echo '</a></span>';
 }
 
 function md_the_logo() {
@@ -159,8 +165,13 @@ function md_breadcrumbs() {
 	if ( ! empty( $post_type_obj ) )
 		$post_type_title = md_text_field( $post_type_obj->labels->name );
 	$front_page = get_option( 'show_on_front' );
-	if ( $post_type == 'post' )
-		$post_type_title = __( 'Blog', 'md' );
+	if ( $post_type == 'post' ) {
+		$blog_id = get_option( 'page_for_posts' );
+		if ( ! empty( $blog_id ) )
+			$post_type_title = get_the_title( $blog_id );
+		else
+			$post_type_title = __( 'Blog', 'md' );
+	}
 	if ( is_category() )
 		$terms = get_the_category();
 	elseif ( is_tag() )
@@ -423,20 +434,3 @@ function md_password_form() {
 endif;
 
 add_filter( 'the_password_form', 'md_password_form' );
-
-add_action( 'init', 'md_post_type_rest_route', 25, 1 );
-function md_post_type_rest_route( $post_type ) {
-	
-	global $wp_post_types;
-
-	if( isset( $wp_post_types[ $post_type ] ) ) {
-		$wp_post_types[$post_type]->show_in_rest = true;
-	}
-}
-
-function md_rest_route( $args ) {
-	$args['show_in_rest'] = true;
-	return $args;
-}
-add_filter( 'register_post_type_args', 'md_rest_route' );
-add_filter( 'register_taxonomy_args', 'md_rest_route' );

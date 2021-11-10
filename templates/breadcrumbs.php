@@ -1,6 +1,7 @@
 <nav class="breadcrumbs">
 
 	<a class="mr-small" href="<?php echo get_site_url(); ?>"><?php echo get_bloginfo( 'name' ); ?></a>
+
 	<?php echo md_icon( 'angle-right', array( 'classes' => 'mr-small' ) ); ?>
 	
 	<?php if ( ! is_search() && ! is_page() && ! is_404() ) : ?>

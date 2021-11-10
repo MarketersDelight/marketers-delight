@@ -21,7 +21,7 @@ function md_has_logo() {
  */
 
 function md_has_custom_logo() {
-	if ( md_setting( array( 'header', 'logo' ) ) )
+	if ( md_setting( array( 'header', 'logo', 'url' ) ) )
 		return true;
 }
 
