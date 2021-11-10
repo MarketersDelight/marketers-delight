@@ -6,7 +6,7 @@
 		'container' => false,
 		'fallback_cb' => false,
 		'menu_class' => 'menu menu-header',
-		'walker' => new md_menu_walker( true, false )
+		'walker' => new md_menu_walker( true, true )
 	) ); ?>
 </nav>
 

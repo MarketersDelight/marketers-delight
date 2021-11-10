@@ -51,6 +51,9 @@ class md_api {
 		if ( method_exists( $this, 'css' ) )
 			add_filter( 'md_dropins_css_templates', array( $this, 'css' ) );
 
+		if ( method_exists( $this, 'css_data' ) )
+			add_filter( 'md_filter_css_values', array( $this, 'css_data' ) );
+
 		// Utilities
 
 		if ( method_exists( $this, 'after_setup_theme' ) )

@@ -248,11 +248,14 @@ function md_font_icons_url() {
  */
 
 function md_icon( $icon, $args = null ) {
+	$style = array();
 	$classes[] = "md-icon-{$icon}";
 	if ( isset( $args['classes'] ) )
 		$classes[] = esc_attr( $args['classes'] );
+	if ( isset( $args['color'] ) )
+		$style['color'] = $args['color'];
 	$classes = join( ' ', $classes );
 	if ( is_bool( $args ) )
 		return $classes;
-	return '<i class="' . esc_attr( $classes ) . '"></i>';
+	return '<i class="' . esc_attr( $classes ) . '"' . md_style( $style ) . '></i>';
 }

@@ -89,12 +89,13 @@ window.MD = {
 		for ( var i = 0; i < tabs.length; i++ ) {
 			tabs[i].onclick = function( e ) {
 				var tabID = this.getAttribute( 'data-tab' ),
-					parentTabs = document.querySelectorAll( parent + ' .md-tab' ),
-					parentContent = document.querySelectorAll( parent + ' .md-tab-content' );
+					parentTabs = document.querySelectorAll( '#' + parent + ' .md-tab' ),
+					parentContent = document.querySelectorAll( '#' + parent + ' .md-tab-content' );
 				for ( var i = 0; i < parentTabs.length; i++ )
 					MD.removeClass( parentTabs[i], 'active' );
 				for ( var i = 0; i < parentContent.length; i++ )
 					MD.removeClass( parentContent[i], 'active' );
+				document.getElementById( parent ).className = parent + ' has-' + tabID;
 				MD.addClass( document.getElementById( tabID ), 'active' );
 				MD.addClass( document.getElementById( tabID + '_tab' ), 'active' );
 			}

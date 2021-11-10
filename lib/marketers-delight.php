@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
-define( 'MD_VERSION', '5.3.1' );
+define( 'MD_VERSION', '5.3.2' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -42,6 +42,9 @@ final class marketers_delight {
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
 		add_filter( 'md_post_type_meta', array( $this, 'post_types_meta' ) );
 		add_filter( 'md_taxonomy_meta', array( $this, 'taxonomies_meta' ) );
+		add_action( 'rest_api_init', array( $this, 'post_type_rest' ), 25, 1 );
+		add_filter( 'register_post_type_args', array( $this, 'show_in_rest' ) );
+		add_filter( 'register_taxonomy_args', array( $this, 'show_in_rest' ) );
 	}
 
 	/**
@@ -327,6 +330,29 @@ final class marketers_delight {
 		if ( md_has( 'woocommerce' ) )
 			$taxonomies[] = 'product_cat';
 		return $taxonomies;
+	}
+
+	/**
+	 * Hook this method into various hooks to make REST API accessible.
+	 *
+	 * @since 5.3.2
+	 */
+	
+	public function show_in_rest( $args ) {
+		$args['show_in_rest'] = true;
+		return $args;
+	}
+
+	/**
+	 * Makes all custom registered post types available through REST.
+	 *
+	 * @since 5.3.2
+	 */
+
+	public function post_type_rest( $post_type ) {
+		global $wp_post_types;
+		if ( isset( $wp_post_types[$post_type] ) )
+			$wp_post_types[$post_type]->show_in_rest = true;
 	}
 
 }

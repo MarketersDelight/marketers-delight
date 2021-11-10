@@ -2,6 +2,10 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
+function md_hook_css_data() { // 5.3.1.1
+	do_action( 'md_hook_css_data' );
+}
+
 function md_hook_before_html() {
 	do_action( 'md_hook_before_html', 'before_html' );
 }

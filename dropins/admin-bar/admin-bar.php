@@ -4,7 +4,6 @@
  * Dropin Author: Alex Mangini
  * Dropin Demo: https://marketersdelight.com/dropins/admin-bar/
  * Dropin Description: A far more lightweight admin bar with customizeable links.
- * Dropin Version: 1.0
  * @since MD5.2.1
  */
 
@@ -18,9 +17,12 @@
 
 	public function actions() {
 		if ( current_user_can( 'administrator' ) ) {
-			add_filter( 'body_class', array( $this, 'body_class' ) );
-			add_filter( 'show_admin_bar', '__return_false' );
-			add_action( 'md_hook_before_html', array( $this, 'admin_bar' ) );
+			$show_admin_bar = get_user_meta( get_current_user_id(), 'show_admin_bar_front', true );
+			if ( $show_admin_bar == 'true' ) {
+				add_filter( 'body_class', array( $this, 'body_class' ) );
+				add_filter( 'show_admin_bar', '__return_false' );
+				add_action( 'md_hook_before_html', array( $this, 'admin_bar' ) );
+			}
 		}
 	}
 
