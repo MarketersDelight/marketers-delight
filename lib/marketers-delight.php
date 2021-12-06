@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
-define( 'MD_VERSION', '5.2' );
+define( 'MD_VERSION', '5.3.2' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -37,15 +37,14 @@ final class marketers_delight {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile_css' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_head', array( $this, 'head' ) );
-		add_action( 'wp_head', array( $this, 'head_priority' ), 5 );
+		add_action( 'wp_head', array( $this, 'head' ), 5 );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
 		add_filter( 'md_post_type_meta', array( $this, 'post_types_meta' ) );
 		add_filter( 'md_taxonomy_meta', array( $this, 'taxonomies_meta' ) );
-//		add_action( 'rest_api_init', array( $this, 'post_type_rest' ), 25, 1 );
-//		add_filter( 'register_post_type_args', array( $this, 'show_in_rest' ) );
-//		add_filter( 'register_taxonomy_args', array( $this, 'show_in_rest' ) );
+		add_action( 'rest_api_init', array( $this, 'post_type_rest' ), 25, 1 );
+		add_filter( 'register_post_type_args', array( $this, 'show_in_rest' ) );
+		add_filter( 'register_taxonomy_args', array( $this, 'show_in_rest' ) );
 	}
 
 	/**
@@ -64,10 +63,8 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
 		require_once( MD_DIR . 'lib/functions/design-functions.php' );
-		require_once( MD_DIR . 'lib/functions/dropin-functions.php' );
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
 		require_once( MD_DIR . 'lib/functions/deprecated.php' );
-		require_once( MD_DIR . 'lib/api/requests.php' );
 		require_once( MD_DIR . 'lib/api/api.php' );
 		if ( is_admin() )
 			require_once( MD_DIR . 'lib/admin/admin.php' );
@@ -75,7 +72,6 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/functions/build.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/functions/classes.php' );
-		require_once( MD_DIR . 'lib/wp/upgrader/dropin-upgrader.php' );
 		require_once( MD_DIR . 'lib/wp/optimize.php' );
 		require_once( MD_DIR . 'lib/wp/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
@@ -95,7 +91,7 @@ final class marketers_delight {
 
 	public function dropins() {
 		$dropins = md_get_dropins( 'active' );
-		$old_dropins = md_setting( array( 'dropins', 'features' ), array() ); #EOL
+		$old_dropins = md_setting( array( 'dropins', 'features' ), array() );
 		if ( ! empty( $dropins ) ) {
 			foreach ( $dropins as $dropin )
 				if ( md_has( $dropin ) )
@@ -163,25 +159,12 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Run limited actions on WP init.
-	 *
-	 * @since 5.2.1
-	 */
-
-	public function wp_init() {
-		$this->activate_dropin();
-
-		if ( isset( $_GET['md'] ) && $_GET['md'] == 'compile_css' && current_user_can( 'administrator' ) )
-			md_compile_css();
-	}
-
-	/**
 	 * Enqueue scripts and styles.
 	 *
 	 * @since 4.0
 	 */
 
-	public function enqueue() {		
+	public function enqueue() {
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
@@ -198,8 +181,7 @@ final class marketers_delight {
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'installed', 'admin-bar', 'status', 'enable' ), false ) : false,
-			'userID' => get_current_user_id()
+			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'installed', 'admin-bar', 'status', 'enable' ), false ) : false
 		) );
 
 		// Comment reply JS
@@ -217,12 +199,14 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Load regular priority CSS, JS, and meta to WP <head>.
+	 * Print inline CSS to <head>.
 	 *
 	 * @since 4.8
 	 */
 
 	public function head() {
+		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
+			echo md_webfonts_loader();
 		if ( md_setting( array( 'settings', 'css', 'inline' ) ) )
 			echo '<style type="text/css">'.
 				 	get_option( 'marketers_delight_style_css' ).
@@ -230,16 +214,14 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Load high priority assets and meta to top of WP <head>.
+	 * Run actions on WP init.
 	 *
-	 * @since 5.3.2
+	 * @since 5.2.1
 	 */
 
-	public function head_priority() {
-		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
-			echo md_webfonts_loader();
-
-		echo '<link rel="preload" href="' . md_font_icons_url() . '" as="font" type="font/woff" crossorigin>' . "\n";
+	public function wp_init() {
+		if ( isset( $_GET['md'] ) && $_GET['md'] == 'compile_css' && current_user_can( 'administrator' ) )
+			md_compile_css();
 	}
 
 	/**
@@ -322,33 +304,6 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Run Drop-in updater actions on admin page.
-	 *
-	 * @since 5.4
-	 */
-
-	public function activate_dropin() {
-		if ( ! current_user_can( 'activate_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to activate this drop-in.' ) );
-
-		$page = ! empty( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : false;
-		$action = ! empty( $_GET['action'] ) ? esc_attr( $_GET['action'] ) : false;
-		$dropin = ! empty( $_GET['dropin'] ) ? esc_attr( $_GET['dropin'] ) : false;
-		$fields = md_setting( array( 'dropins', 'installed', $dropin ), false );
-
-		if ( ! $page || $page !== 'md_dropins' || $action !== 'activate' || ! $dropin || ! $fields || ! empty( $fields['status']['enable'] ) )
-			return;
-
-		check_admin_referer( "activate-dropin_$dropin/$dropin.php" );
-
-		md_activate_dropin( $dropin );
-	
-		wp_redirect( self_admin_url( "admin.php?page=md_dropins&dropin=$dropin&dropin_status=activated" ) );
-
-		exit;
-	}
-
-	/**
 	 * Add MD meta options to various custom post type.
 	 *
 	 * @since 4.9.4
@@ -396,7 +351,7 @@ final class marketers_delight {
 
 	public function post_type_rest( $post_type ) {
 		global $wp_post_types;
-		if ( ! empty( $wp_post_types[$post_type] ) )
+		if ( isset( $wp_post_types[$post_type] ) )
 			$wp_post_types[$post_type]->show_in_rest = true;
 	}
 

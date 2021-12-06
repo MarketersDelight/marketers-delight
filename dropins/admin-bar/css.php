@@ -46,8 +46,6 @@
 
 .md-admin-bar-link:hover, .sub-menu .md-admin-bar-link:hover { background-color: rgba(255, 255, 255, 0.15); }
 
-.md-admin-bar-link i { margin-right: <?php echo $small; ?>px; }
-
 .md-admin-bar .menu-item-sep { border-right: 1px solid rgba(255, 255, 255, 0.2); }
 
 .md-admin-bar .sub-menu {

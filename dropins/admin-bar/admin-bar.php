@@ -9,70 +9,6 @@
 
  class md_admin_bar extends md_api {
 
- 	/**
-	 * Register plugin data.
-	 *
-	 * @since 1.1
-	 */
-	
-	public function links() {
-	 	return array(
-		 	'custom' => array(
-		 		'label' => __( 'Enter custom link...', 'md-admin-bar' ),
-		 	),
-		 	'customize' => array(
-		 		'label' => __( 'Customize', 'md-admin-bar' ),
-		 		'url' => admin_url( 'customize.php' ),
-		 		'icon' => 'md-icon-eye'
-		 	),
-		 	'menus' => array(
-		 		'label' => __( 'Menus', 'md-admin-bar' ),
-		 		'url' => admin_url( 'nav-menus.php' ),
-		 		'icon' => 'md-icon-menu'
-		 	),
-		 	'plugins' => array(
-		 		'label' => __( 'Plugins', 'md-admin-bar' ),
-		 		'url' => admin_url( 'plugins.php' ),
-		 		'icon' => 'md-icon-download'
-		 	),
-		 	'widgets' => array(
-		 		'label' => __( 'Widgets', 'md-admin-bar' ),
-		 		'url' => admin_url( 'widgets.php' ),
-		 		'icon' => 'md-icon-menu'
-		 	),
-		 	'settings' => array(
-		 		'label' => __( 'MD Settings', 'md-admin-bar' ),
-		 		'url' => admin_url( 'admin.php?page=md_settings' ),
-		 		'icon' => 'md-icon-loading'
-		 	),
-		 	'site_design' => array(
-		 		'label' => __( 'MD Site Design', 'md-admin-bar' ),
-		 		'url' => admin_url( 'admin.php?page=md_site_design' ),
-		 		'icon' => 'md-icon-eye'
-		 	),
-		 	'dropins' => array(
-		 		'label' => __( 'MD Drop-ins', 'md-admin-bar' ),
-		 		'url' => admin_url( 'admin.php?page=md_dropins' ),
-		 		'icon' => 'md-icon-download'
-		 	),
-		 	'integrations' => array(
-		 		'label' => __( 'MD Integrations', 'md-admin-bar' ),
-		 		'url' => admin_url( 'admin.php?page=md_integrations' ),
-		 		'icon' => 'md-icon-bolt'
-		 	),
-		 	'optins' => array(
-		 		'label' => __( 'MD Optins', 'md-admin-bar' ),
-		 		'url' => admin_url( 'admin.php?page=md_optins' ),
-		 		'icon' => 'md-icon-mail-alt'
-		 	),
-		 	'compile_css' => array(
-		 		'label' => __( 'MD Compile CSS', 'md-admin-bar' ),
-		 		'url' => '?md=compile_css',
-		 		'icon' => 'md-icon-code'
-		 	)
-	 	);
-	}
-
 	/**
 	 * Fire actions and filters.
 	 *
@@ -80,7 +16,6 @@
 	 */
 
 	public function actions() {
-		$this->links = $this->links();
 		if ( current_user_can( 'administrator' ) ) {
 			$show_admin_bar = get_user_meta( get_current_user_id(), 'show_admin_bar_front', true );
 			if ( $show_admin_bar == 'true' ) {
@@ -98,12 +33,9 @@
 	 */
 
 	public function register() {
-		$link_types = array();
-		foreach ( $this->links as $link_id => $link_fields )
-			$link_types[] = $link_id;
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Admin Bar', 'md-admin-bar' ),
+				'name' => __( 'Admin Bar', 'md' ),
 				'parent' => 'md_settings',
 				'fields' => array(
 					'links' => array(
@@ -114,11 +46,7 @@
 								'type' => 'select',
 								'options' => md_get_icons( 'ids', null, 'md-icon-' )
 							),
-							'url' => array( 'type' => 'url' ),
-							'link_type' => array(
-								'type' => 'select',
-								'options' => $link_types
-							)
+							'url' => array( 'type' => 'url' )
 						)
 					)
 				)
@@ -149,7 +77,6 @@
 		$add_new_links = $this->add_new_links();
 		$edit_url = $this->edit_url();
 		$links = md_setting( array( 'admin_bar', 'links' ), array() );
-		$link_types = $this->links;
 		include( md_template( 'dropins', 'admin-bar/admin-bar', true ) );
 	}
 
@@ -175,8 +102,8 @@
 			<div class="md-sep-small">
 				<?php $this->fields->field( 'links', array(
 					'type' => 'group',
-					'label' => __( 'Links', 'md-admin-bar' ),
-					'new_label' => __( 'Link name...', 'md-admin-bar' ),
+					'label' => __( 'Links', 'md' ),
+					'new_label' => __( 'Link name...', 'md' ),
 					'style' => 'boxes',
 					'callback' => array( $this, 'admin_links' )
 				) ); ?>
@@ -192,38 +119,21 @@
 	 * @since 1.0
 	 */
 
-	public function admin_links( $group, $field ) {
-		$link_types = array();
-		$link_type = md_setting( array( 'admin_bar', 'links', $field, 'link_type' ) );
-		$link_url = md_setting( array( 'admin_bar', 'links', $field, 'url' ) );
-		foreach ( $this->links as $link_id => $link_fields )
-			$link_types[$link_id] = $link_fields['label'];
-	?>
-		<div class="md-conditional">
-			<div class="md-sep-small">
-				<?php $this->fields->field( array( $group, $field, 'link_type' ), array(
+	public function admin_links( $group, $field ) { ?>
+		<div class="columns-25-75 columns-half">
+			<div class="col col1 md-sep-small">
+				<?php $this->fields->field( array( $group, $field, 'icon' ), array(
 					'type' => 'select',
-					'label' => __( 'Link to...', 'md-admin-bar' ),
-					'empty_label' => __( 'Choose admin link...', 'md-admin-bar' ),
-					'classes' => 'md-conditional-option',
-					'options' => $link_types
+					'label' => __( 'Icon', 'md' ),
+					'empty_label' => __( 'Select icon...', 'md' ),
+					'options' => md_get_icons( 'options', null, 'md-icon-' )
 				) ); ?>
 			</div>
-			<div class="md-conditional-item md-conditional-custom columns-25-75 columns-half" style="display: <?php echo $link_type == 'custom' || ( empty( $link_type ) && ! empty( $link_url ) ) ? 'block' : 'none'; ?>;">
-				<div class="col col1 md-sep-small">
-					<?php $this->fields->field( array( $group, $field, 'icon' ), array(
-						'type' => 'select',
-						'label' => __( 'Icon', 'md-admin-bar' ),
-						'empty_label' => __( 'Select icon...', 'md-admin-bar' ),
-						'options' => md_get_icons( 'options', null, 'md-icon-' )
-					) ); ?>
-				</div>
-				<div class="col col2 md-sep-small">
-					<?php $this->fields->field( array( $group, $field, 'url' ), array(
-						'type' => 'url',
-						'label' => __( 'Link URL', 'md-admin-bar' )
-					) ); ?>
-				</div>
+			<div class="col col2 md-sep-small">
+				<?php $this->fields->field( array( $group, $field, 'url' ), array(
+					'type' => 'url',
+					'label' => __( 'Link', 'md' )
+				) ); ?>
 			</div>
 		</div>
 	<?php }

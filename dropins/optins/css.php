@@ -19,8 +19,6 @@
 
 .cta-title { text-align: center; }
 
-.cta-small .cta-title, .cta-slim .cta-title { margin-bottom: <?php echo $half; ?>px; }
-
 .cta-image {
 	margin-left: auto;
 	margin-right: auto;

@@ -269,8 +269,6 @@
 .blog-teasers .col { margin-bottom: <?php echo $single; ?>px; }
 
 .blog-teasers .post-box {
-	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
 	margin-bottom: <?php echo $single; ?>px;
 	vertical-align: middle;
 }
@@ -293,8 +291,8 @@
 .featured-image + .blog-teaser { top: -<?php echo $half; ?>px; }
 
 .teaser-title {
-	font-size: <?php echo $h6['font_size']['desktop']; ?>px;
-	line-height: <?php echo $h6['line_height']['desktop']; ?>px;
+	font-size: <?php echo $h5['font_size']['desktop']; ?>px;
+	line-height: <?php echo $h5['line_height']['desktop']; ?>px;
 }
 
 .loop-teasers .teaser-title { margin-bottom: <?php echo $small; ?>px; }

@@ -17,7 +17,7 @@
 			<article id="post_<?php the_ID(); ?>" <?php post_class( $post_class ); ?>>
 				<?php md_hook_teaser_top(); ?>
 				<?php if ( has_post_thumbnail() ) : ?>
-					<?php md_featured_image( 'above_headline', 'full', array( 'hide_caption' => true ) ); ?>
+					<?php md_featured_image( 'above_headline', 'full' ); ?>
 				<?php endif; ?>
 				<div class="<?php echo md_teaser_classes(); ?>">
 					<?php md_hook_before_headline(); ?>

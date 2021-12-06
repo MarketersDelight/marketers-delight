@@ -12,8 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_admin {
 
-	public $requests;
-
 	/**
 	 * Run class methods on instantiation.
 	 *
@@ -36,9 +34,9 @@ class md_admin {
 		require_once( 'design/design.php' );
 		require_once( 'settings/dropins/dropins.php' );
 		require_once( 'settings/integrations/integrations.php' );
-		require_once( 'settings/upgrade/after-update.php' ); #can be better
+		require_once( 'updater/updater.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-			require_once( 'settings/upgrade/upgrade.php' );
+			require_once( 'updater/upgrade/upgrade.php' );
 	}
 
 	/**
@@ -50,7 +48,6 @@ class md_admin {
 	public function actions() {
 		$this->sanitize = new md_sanitize;
 		$this->files = new md_files;
-		$this->requests = new md_requests;
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_action( 'wp_update_nav_menu', 'md_compile_css' );
 		// Admin pages
@@ -74,15 +71,9 @@ class md_admin {
 		// Scripts
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-		// Updgrader hooks
-		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
-		add_filter( 'delete_site_transient_update_themes', array( $this->requests, 'delete_theme_update' ) );
-		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
-		add_action( 'update-custom_upload-md-dropin', array( $this->requests, 'upload_dropin' ) );
-		add_action( 'update-custom_upload-dropin-cancel-overwrite', array( $this->requests, 'cancel_dropin_overwrite' ) );
-		// Actions + requests
-		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
-		add_action( 'wp_ajax_nopriv_md_action', array( $this->requests, 'request' ) );
+		// AJAX actions
+		add_action( 'wp_ajax_md_action', array( $this, 'action' ) );
+		add_action( 'wp_ajax_nopriv_md_action', array( $this, 'action' ) );
 		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
 		add_action( 'wp_ajax_nopriv_md_file', array( $this->files, 'file_action' ) );
 	}
@@ -315,6 +306,37 @@ class md_admin {
 				$classes .= 'md-editor-full';
 		}
 		return $classes;
+	}
+
+	/**
+	 * Run various MD actions sent through AJAX.
+	 *
+	 * @since 5.2.3
+	 */
+
+	public function action() {
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
+			return;
+
+		$option = md_setting();
+
+		if ( isset( $_POST['action_type'] ) ) {
+
+			if ( $_POST['action_type'] == 'delete-dropin' ) {
+				$dropin_id = isset( $_POST['dropin_id'] ) ? esc_attr( $_POST['dropin_id'] ) : '';
+				$this->files->file_action( array(
+					'action' => $_POST['action_type']
+				) );
+			}
+			elseif ( $_POST['action_type'] == 'reset-icons' )
+				$option['icons'] = $option['custom_icons'] = array();
+
+		}
+
+		update_option( 'marketers_delight', $option );
+		md_compile_css();
+
+		wp_die();
 	}
 
 	/**
