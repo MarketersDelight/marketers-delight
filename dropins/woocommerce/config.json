@@ -1,7 +1,7 @@
 {
 	"name" : "MD + WooCommerce",
 	"author" : "Alex, Marketers Delight",
-	"version" : "1.0",
+	"version" : "1.0.2",
 	"description" : "Give your WooCommerce store a quick style and full integration with MD power features to give you more control over your store listing.",
 	"dropin_url" : "https://marketersdelight.com/dropins/woocommerce/",
 	"settings_url" : "admin.php?page=md_settings&tab=woocommerce",

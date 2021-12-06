@@ -4,6 +4,8 @@
 	$STREAM
 \*------------------------------*/
 
+.content-full.loop-stream .breadcrumbs { text-align: center; }
+
 .loop-stream .content-width {
 	margin-left: auto;
 	margin-right: auto;
@@ -140,9 +142,9 @@
 	width: 60px;
 }
 
-.stream-byline{
+.stream-byline {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	padding-bottom: 4px;
+	padding-bottom: <?php echo $small; ?>px;
 }
 
 .stream-byline .md-icon-plus { color: #22a340; }
@@ -282,11 +284,6 @@
 /* QUERIES */
 
 @media all and (max-width: 900px) {
-	.loop-stream .breadcrumbs {
-		padding-left: 0;
-		padding-top: 0;
-		padding-right: 0;
-	}
 	.stream-widget .stream-columns > .col1 { width: 12%; }
 	.stream-widget .stream-columns > .col2 { width: 88%; }
 	.loop-stream { padding: <?php echo $half; ?>px; }

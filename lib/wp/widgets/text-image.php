@@ -56,6 +56,6 @@ class md_text_image extends WP_Widget {
 		) );
 
 		$display = ! empty( $val['image'] ) ? 'block' : 'none';
-		include( 'templates/text-image.php' );
+		include( 'admin/text-image.php' );
 	}
 }
