@@ -48,7 +48,7 @@ function md_templates() {
 	$byline_position = md_get_loop( array( 'byline_position' ) );
 
 	if ( md_has_breadcrumbs() )
-		add_action( 'md_hook_content', 'md_breadcrumbs', 5 );
+		add_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
 
 	if ( $byline_position == 'after_headline' )
 		$hook = 'md_hook_after_headline';
@@ -311,6 +311,9 @@ function md_the_content() {
 		<?php endif; ?>
 	<?php else : ?>
 		<?php the_content( $read_more ); ?>
+		<?php if ( is_singular() ) : ?>
+			<?php wp_link_pages(); ?>
+		<?php endif; ?>
 	<?php endif; ?>
 <?php }
 
@@ -356,7 +359,7 @@ function md_byline() {
  * @since 5.1
  */
 
-function md_byline_item( $item, $args = null ) {
+function md_byline_item( $item, $args = array() ) {
 	$template = locate_template( "templates/byline/$item.php" );
 	$byline = md_get_byline();
 	if ( $template )

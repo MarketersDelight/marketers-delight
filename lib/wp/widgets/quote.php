@@ -43,7 +43,7 @@ class md_quote_widget extends WP_Widget {
 			'image'  => ''
 		) );
 		$display = ! empty( $val['image'] ) ? 'block' : 'none';
-		include( 'templates/quote.php' );
+		include( 'admin/quote.php' );
 	}
 
 }

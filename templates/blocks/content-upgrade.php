@@ -74,7 +74,9 @@
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>
-	<div class="content-upgrade-action">
-		<a href="<?php echo esc_url( $href ); ?>" class="button button-arrow <?php echo esc_attr( $button_classes ); ?>"<?php echo $button_style; ?><?php echo $popup_data; ?>><?php echo esc_html( $button_text ); ?></a>
-	</div>
+	<?php if ( ! empty( $url ) && ! $has_popup ) : ?>
+		<div class="content-upgrade-action">
+			<a href="<?php echo esc_url( $href ); ?>" class="button button-arrow <?php echo esc_attr( $button_classes ); ?>"<?php echo $button_style; ?><?php echo $popup_data; ?>><?php echo esc_html( $button_text ); ?></a>
+		</div>
+	<?php endif; ?>
 </div>

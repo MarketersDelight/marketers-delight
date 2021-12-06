@@ -47,7 +47,7 @@ class md_content_spotlight extends WP_Widget {
 			'image' => ''
 		) );
 		$display = ( ! empty( $val['image'] ) ? 'block' : 'none' );
-		include( 'templates/content-spotlight.php' );
+		include( 'admin/content-spotlight.php' );
 	}
 
 }

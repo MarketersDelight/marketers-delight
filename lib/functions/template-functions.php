@@ -152,7 +152,11 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
 		$id = $id;
 	else
 		$id = $id == true ? get_queried_object_id() : get_the_ID();
+
 	$meta = get_post_meta( $id, 'marketers_delight', true );
+
+	if ( empty( $meta ) )
+		$meta = array();
 
 	if ( isset( $keys ) ) {
 		if ( is_string( $keys ) )
@@ -302,29 +306,6 @@ function md_has( $dropin ) {
 }
 
 /**
- * Returns list of enabled Drop-ins.
- *
- * @since 5.3
- */
-
-function md_get_dropins( $status = null ) {
-	$dropins = $priority = array();
-	foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields )
-		if (
-			( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-			( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
-			$status == null
-		) {
-			if ( isset( $fields['priority'] ) )
-				$priority[] = esc_attr( $dropin );
-			else
-				$dropins[] = esc_attr( $dropin );
-		}
-	$dropins = array_merge( $priority, $dropins );
-	return $dropins;
-}
-
-/**
  * Run KSES with MD approved HTML tags.
  *
  * @since 5.2.2
@@ -444,7 +425,7 @@ function md_get_loop( $keys = null ) {
 		elseif ( ! has_filter( 'md_filter_loop_type' ) )
 			$type = $global;
 	}
-	elseif ( ( is_home() || is_post_type_archive() || is_search() ) && ( ! empty( $global ) || $global == 'default' ) && ! has_filter( 'md_filter_loop_type' ) )
+	elseif ( ( is_home() || is_post_type_archive() || is_tag() || is_author() || is_search() ) && ( ! empty( $global ) || $global == 'default' ) && ! has_filter( 'md_filter_loop_type' ) )
 		$type = $global;
 	elseif ( is_singular() ) {
 		$loop['byline'] = md_setting( array( 'content', 'byline' ) );
@@ -572,7 +553,7 @@ function md_get_global_sidebar_id() {
 	if ( is_singular() && has_term( $term_id, $taxonomy ) && md_term_meta( array( 'layout', 'entries_sidebar' ), $term_id ) != '' )
 		$name = md_term_meta( array( 'layout', 'entries_sidebar' ), $term_id );
 	// global post types archive sidebar
-	elseif ( ( is_home() || is_post_type_archive( $post_type ) ) && ! empty( $sidebars[$post_type]['archive'] ) && ! empty( $option["{$post_type}_archive"] ) )
+	elseif ( ( is_home() || is_author() || is_post_type_archive( $post_type ) ) && ! empty( $sidebars[$post_type]['archive'] ) && ! empty( $option["{$post_type}_archive"] ) )
 		$name = $option["{$post_type}_archive"];
 	// global post types single sidebar
 	elseif ( is_singular( $post_type ) && ! empty( $sidebars[$post_type]['single'] ) && ! empty( $option["{$post_type}_single"] ) )
