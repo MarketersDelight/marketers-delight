@@ -15,7 +15,6 @@
 .md .inside:after,
 .md .md-repeat-fields:after,
 .md .md-repeat-field:after,
-.md-dropin:after, .md-update:after,
 .md-groups:after,
 .md-group:after,
 .md-widgets-group:after,
@@ -439,9 +438,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin-top: 0;
 }
 
-/*
 .md-widget-item .col select { width: 100%; }
-*/
+
 .md-widget-item .nav-tab { background-color: #f8f8f8; }
 
 .md-widget-item .nav-tab:hover { background-color: #eee; }
@@ -517,7 +515,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-widget.valid, .md-widget.valid { border-left-color: #30a146; }
 .md-license.valid .badge { background-color: #30a146; }
-.md-license.has-updates .badge { background-color: #ff6f06; }
 .md-widget.invalid, .md-license.invalid { border-left-color: #ae2525; }
 .md-license.invalid .badge { background-color: #ae2525; }
 .md-alert-error, .md-alert-manual-refresh { display: none; }
@@ -535,38 +532,17 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	text-transform: uppercase;
 }
 
-.md-license.md-toggle .md-widget-title:before,
-.md-license.valid .md-action-activate-license , .md-license.invalid .md-action-deactivate-license, .md-license.invalid .md-action-check-license { display: none; }
-
-.md-license-toggle {
-	cursor: pointer;
-	display: block;
-	margin-top: 10px;
+.md-license .button {
+	float: left;
+	margin-right: 10px;
 }
 
-.md-widget .md-license-toggle.md-widget-title {
-	background-color: transparent;
-	color: #777;
-	font-size: inherit;
-	padding: 0;
+.md-license-message {
+	position: relative;
+		top: 4px;
 }
 
-.md-license-toggle.md-widget-title:hover, .md-license-fields.open .md-license-toggle { color: #111; }
-
-.md-license-toggle .dashicons {
-	font-size: inherit;
-	height: auto;
-	width: auto;
-	vertical-align: middle;
-}
-
-.md-license-fields .md-widget-item {
-	padding-bottom: 0;
-	padding-left: 0;
-	padding-right: 0;
-}
-
-.md-license-fields.open .md-license-toggle .dashicons:before { content: "\f343"; /* dashicons-arrow-up-alt2 */ }
+.md-license.md-toggle .md-widget-title:before { display: none; }
 
 /* POPUPS */
 
@@ -577,7 +553,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-optins-popups .columns-4 .col1, .md-optins-popups .columns-4 .col2 { width: 30%; }
 .md-optins-popups .columns-4 .col3, .md-optins-popups .columns-4 .col4 { width: 20%; }
 .md-optins-popups select { width: 100%; }
-
 
 
 /*------------------------------*\
@@ -642,19 +617,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-delete .md-loading:before { content: "\f113"; /* dashicons-update-alt */ }
-
-.md-delete .md-loading:before { content: "\f158"; /* dashicons-no */ }
-
-.md-delete .md-loading { animation: none; } 
-
-.md-delete.md-delete-text {
-	color: #777;
-	display: inline-block;
-	float: right;
-	font-size: inherit;
-}
-
-.md-delete.md-delete-text:hover { color: #b32d2e; }
 
 .md-group:hover .md-delete { display: inline-block; }
 
@@ -1147,8 +1109,10 @@ a.md-circle-badge {
 
 .md-dropin-controls {
 	display: inline-block;
-	float: right;
-	margin-left: 10px;
+	margin-left: 6px;
+	position: relative;
+		top: -3px;
+		right: 0;
 }
 
 .md-dropin-controls .md-checkboxes { display: inline-block; }
@@ -1175,73 +1139,6 @@ a.md-circle-badge {
 .md-dropin .button-icon {
 	padding-left: 6px;
 	padding-right: 6px;
-}
-
-/* UPDATE MESSAGE */
-
-.md .md-widget-item .md-widget-subtitle {
-	display: inline-block;
-	margin-bottom: 0;
-	margin-top: 5px;
-}
-
-.md-widget .md-widget-item .notice-warning {
-	background-color: #fff8e5;
-	box-shadow: 0 2px 5px #eee9dc;
-	border-color: #ffe7a8;
-	border-radius: 5px;
-	border-width: 1px;
-	border-right-width: 4px;
-	border-right-color: #f79155;
-	margin-bottom: 20px;
-	padding: 15px;
-}
-
-.md-update { padding-bottom: 12px; }
-
-.md-update:not(:last-child) { margin-bottom: 12px; }
-
-.md-update-dropins {
-	border-bottom: 1px solid #ddd;
-	margin-bottom: 12px;
-}
-
-.md-updates .md-dropin-image {
-	float: left;
-	width: 10%;
-}
-
-.md-updates .md-dropin-content {
-	float: left;
-	padding-top: 2px;
-	width: 90%;
-}
-
-.md-updates .md-dropin-placeholder {
-	height: 35px;
-	width: 35px;
-}
-
-.md-updates .md-dropin-placeholder .dashicons {
-	font-size: 23px;
-	line-height: 1;
-	margin-left: -4px;
-	margin-top: 7px;
-}
-
-.md-update-button {
-	color: #ff6f06;
-	float: right;
-	margin-top: 5px;
-	text-decoration: none;
-}
-
-.md-update-button:hover, .md-action-check-updates:hover { color: #359346; }
-
-.md-action-check-updates {
-	color: #777;
-	cursor: pointer;
-	float: right;
 }
 
 /* DROPIN STORE */

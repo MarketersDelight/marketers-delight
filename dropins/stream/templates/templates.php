@@ -47,7 +47,7 @@ class md_stream_templates {
 		}
 		if ( is_post_type_archive( 'stream' ) ) {
 			if ( md_setting( array( 'stream', 'layout', 'remove_breadcrumbs' ) ) )
-				remove_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
+				remove_action( 'md_hook_content', 'md_breadcrumbs', 5 );
 			if ( $archives_sidebar )
 				add_filter( 'md_filter_has_sidebar', '__return_true' );
 		}
@@ -208,7 +208,7 @@ class md_stream_templates {
 		if ( is_singular() && $has_thread ) {
 			$c = 1;
 			foreach ( $thread as $thread_id => $fields ) {
-				$html_id = $post_id = $thread_id;
+				$html_id = $thread_id;
 				$embed_id = ! empty( $fields['post_id'] ) ? $fields['post_id'] : '';
 				$post_type = get_post_type( $embed_id );
 				$post_date = ! empty( $fields['date'] ) ? esc_attr( $fields['date'] ) : '';
@@ -219,7 +219,7 @@ class md_stream_templates {
 				$stream_image = wp_get_attachment_image( $image_id, 'thumbnail' );
 				include( md_template( 'dropins', 'stream/stream-post', true ) );
 				if ( class_exists( 'md_popup' ) && $stream_image )
-					new md_popup( array(
+					md_popup( array(
 						'id' => "stream_{$post_id}",
 						'callback' => array( $this, 'popup' ),
 						'atts' => array(

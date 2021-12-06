@@ -47,11 +47,9 @@ class md_optimize_wp {
 			add_filter( 'rewrite_rules_array', array( $this, 'disable_embed_rewrites' ) );
 		}
 
-		// Disable Widgets blocks editor
-		if ( md_setting( array( 'settings', 'head', 'widgets' ) ) ) {
-			add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
-			add_filter( 'use_widgets_block_editor', '__return_false' );
-		}
+		 // Removes inline CSS Subtitles plugin prints to frontend
+		if ( class_exists( 'Subtitles' ) &&  method_exists( 'Subtitles', 'subtitle_styling' ) )
+		    remove_action( 'wp_head', array( Subtitles::getInstance(), 'subtitle_styling' ) );
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );

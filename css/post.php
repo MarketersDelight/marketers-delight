@@ -17,14 +17,9 @@
 
 /* WP BLOCKS */
 
-.wp-block-cover[class*="align"] { width: auto; }
+.wp-block-image.shadow { box-shadow: none; }
 
-.wp-block-image figcaption {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-style: italic;
-	font-size: 0.9em;
-	text-align: center;
-}
+.wp-block-cover[class*="align"] { width: auto; }
 
 .callout {
 	border: 4px solid rgba(0, 0, 0, 0.1);
@@ -194,7 +189,7 @@
 
 .byline {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-size: 0.85em;
 	position: relative;
 }
 
@@ -270,31 +265,22 @@
 	text-align: center;
 }
 
-.post-nav-links {
-	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 5px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-	padding: <?php echo $half; ?>px;
-}
-
-.pagination .page-numbers,
-.post-nav-links .post-page-numbers {
+.pagination .page-numbers {
 	background-color: #fff;
 	border-color: <?php echo $colors['content']['border_color']; ?>;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	display: inline-block;
+	margin-bottom: <?php echo $third; ?>px;
 	margin-right: <?php echo $small; ?>px;
 	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
 }
 
-.page-numbers.current,
-.post-page-numbers.current {
+.page-numbers.current {
 	cursor: default;
 	font-weight: bold;
 }
 
-.pagination .page-numbers:hover,
-.post-nav-links.post-page-numbers:hover { opacity: 0.8; }
+.pagination .page-numbers:hover { opacity: 0.8; }
 
 .page-numbers.dots {
 	background-color: transparent;

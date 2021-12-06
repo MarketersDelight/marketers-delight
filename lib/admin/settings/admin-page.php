@@ -1,4 +1,3 @@
-<?php do_action( "{$hook}_admin_page_before_form" ); ?>
 <form id="md-form" class="md wrap" method="post" action="options.php">
 	<?php if ( ! empty( $admin_pages[$page_id]['admin_header'] ) ) : ?>
 		<div class="md-header md-clear md-content-wrap-med">

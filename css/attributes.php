@@ -25,7 +25,6 @@
 
 @font-face {
 	font-family: md-icon;
-	font-display: swap;
 	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
 	font-style: normal;
 	font-weight: 400;

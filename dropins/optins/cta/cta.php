@@ -322,8 +322,6 @@ class md_cta extends md_api {
 		$classes[] = "cta-$layout";
 		if ( ! empty( $fields['classes'] ) )
 			$classes[] = $fields['classes'];
-		if ( ! empty( $fields['bg_image'] ) )
-			$classes[] = 'has-bg-image';
 		$classes = join( ' ', $classes );
 		$image_classes = ! empty( $fields['image_classes'] ) ? $fields['image_classes'] : '';
 		$title_html = ! empty( $fields['title_html'] ) ? $fields['title_html'] : 'p';

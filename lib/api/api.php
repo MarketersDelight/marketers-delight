@@ -94,9 +94,6 @@ class md_api {
 			if ( method_exists( $this, 'admin_page' ) && ( isset( $register['admin_page'] ) || $this->admin_page ) )
 				add_action( "{$this->_id}_admin_page", array( $this, 'admin_page' ) );
 
-			if ( method_exists( $this, 'admin_page_before' ) ) #MD5.4, drop-ins page
-				add_action( "{$this->_id}_admin_page_before_form", array( $this, 'admin_page_before' ) );
-
 			// Meta boxes
 
 			if ( method_exists( $this, 'meta_box' ) && ( isset( $register['meta_box'] ) || $this->meta_box ) )

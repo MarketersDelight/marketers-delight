@@ -179,10 +179,9 @@ class md_fields {
 
 	public function text( $name, $id, $option, $args ) {
 		$type = ! empty( $args['hidden'] ) ? 'hidden' : 'text';
-		$option = ! empty( $args['option'] ) ? $args['option'] : $option;
 		$value = isset( $args['default'] ) && $option == '' ? $args['default'] : $option;
 		$placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
-		$readonly = ! empty( $args['readonly_after_save'] ) && ! empty( $option ) ? ' readonly' : '';
+		$readonly = isset( $args['readonly_after_save'] ) && ! empty( $option ) ? ' readonly' : '';
 		$style = isset( $args['style'] ) ? ' style="' . esc_attr( $args['style'] ) . '"' : '';
 		$populate = isset( $args['populate'] ) ? ' md-populate-' . $args['populate'] : '';
 		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';

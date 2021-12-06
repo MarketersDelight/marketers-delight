@@ -43,9 +43,9 @@ class md_blocks {
 	public function init() {
 		$this->register();
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
-		add_filter( 'md_css_files', array( $this, 'css' ) );
+		add_action( 'md_css_files', array( $this, 'css' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 1 );
-		add_filter( 'block_categories_all', array( $this, 'categories' ), 10, 2 );
+		add_filter( 'block_categories', array( $this, 'categories' ), 10, 2 );
 	}
 
 	/**
@@ -117,7 +117,7 @@ class md_blocks {
 			wp_enqueue_style( 'md-blocks', MD_URL . $css, array( 'wp-edit-blocks' ), md_ver( $css ) );
 		}
 		else
-			wp_add_inline_style( 'wp-edit-post', get_option( 'marketers_delight_block-editor_css' ) );
+			wp_add_inline_style( 'wp-edit-post', get_option( 'marketers_delight_blocks_css' ) );
 	}
 
 	/**

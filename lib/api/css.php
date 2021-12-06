@@ -133,7 +133,6 @@ class md_css {
 		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
-			if ( ! file_exists( $path ) ) continue;
 			include( $path );
 			echo "\n\n";
 		}

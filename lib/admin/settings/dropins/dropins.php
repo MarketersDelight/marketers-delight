@@ -99,18 +99,6 @@ class md_dropins extends md_api {
 		include( 'admin-page.php' );
 	}
 
-	public function ____admin_page_before() { ?>
-		<div class="upload-dropin">
-			<p class="install-help"><?php _e( 'If you have a dropin in a .zip format, you may install or update it by uploading it here.' ); ?></p>
-			<form method="post" enctype="multipart/form-data" class="wp-upload-form" action="<?php echo self_admin_url( 'update.php?action=upload-md-dropin' ); ?>">
-				<?php wp_nonce_field( 'dropin-upload' ); ?>
-				<label class="screen-reader-text" for="dropinzip"><?php _e( 'Drop-in zip file' ); ?></label>
-				<input type="file" id="dropinzip" name="dropinzip" accept=".zip" />
-				<?php submit_button( __( 'Install Now' ), '', 'install-dropin-submit', false ); ?>
-			</form>
-		</div>
-	<?php }
-
 }
 
 new md_dropins;

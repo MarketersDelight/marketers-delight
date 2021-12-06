@@ -144,8 +144,7 @@
 }
 
 @media all and (max-width: 800px) {
-	.alignright, .alignleft,
-	.wp-block-image .alignleft, .wp-block-image .alignright {
+	.alignright, .alignleft {
 		clear: both;
 		display: block;
 		float: none;
@@ -153,9 +152,6 @@
 		margin-right: auto;
 		text-align: center;
 	}
-	.wp-block-image .aligncenter > figcaption,
-	.wp-block-image .alignleft > figcaption,
-	.wp-block-image .alignright > figcaption { display: block; }
 }
 
 /* TEXT STYLES */
@@ -375,15 +371,23 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }
 
-.shadow-large, .wp-block-image.shadow-large img { box-shadow: 0 5px 55px rgba(0, 0, 0, 0.15); }
+.wp-block-image figcaption {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-style: italic;
+	font-size: 0.9em;
+	padding: <?php echo $half; ?>px;
+	text-align: center;
+}
 
-.shadow-small, .wp-block-image.shadow-small img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
+.shadow-large { box-shadow: 0 5px 55px rgba(0, 0, 0, 0.15); }
 
-.wp-block-image.shadow, .wp-block-image.shadow-large, .wp-block-image.shadow-small { box-shadow: none; }
+.shadow-small { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
 
 .box { background-color: #fff; }
 
-.box-sec, .frame, .note { background-color: #eee; }
+.note { background-color: #eee; }
+
+.box-sec, .frame { background-color: #eee; }
 
 .box-dark {
 	background-color: #1e1e1e;
