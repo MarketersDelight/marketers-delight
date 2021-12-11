@@ -1,5 +1,15 @@
 <?php
 /**
+ * Drop-in Name: Stream
+ * Dropin Author: Alex, Kolakube
+ * Description: Create your own stream timeline of short posts, status updates, latest activity feeds, and other fun micro-blogging features for a more addicting blogging experience.
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/stream/
+ * Slug: stream
+ * Version: 1.0.2
+ */
+
+/**
  * Core files for building the MD Stream feature. Register
  * custom post type, taxonomy, load admin and frontend templates,
  * and other required actions.
@@ -35,21 +45,11 @@ class md_stream extends md_api {
 		add_filter( 'md_share_show_on', array( $this, 'share' ) );
 		add_filter( 'md_filter_sidebars_post_types', array( $this, 'sidebars' ) );
 		add_filter( 'md_optins_locations', array( $this, 'optins_locations' ) );
+		add_action( 'transition_post_status', array( $this, 'publish_activity' ), 10, 3 );
 		if ( is_admin() ) {
 			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
-			add_action( 'admin_init', array( $this, 'admin_init' ) );
+//			add_action( 'admin_init', array( $this, 'admin_init' ) );
 		}
-	}
-
-	/**
-	 * Run stream actions on MD post type publish.
-	 *
-	 * @since 5.3
-	 */
-
-	public function admin_init() {
-		foreach ( md_setting( array( 'stream', 'activity_post_types' ), array() ) as $post_type => $val )
-			add_action( "publish_$post_type", array( $this, 'publish_activity' ) );
 	}
 
 	/**
@@ -118,14 +118,18 @@ class md_stream extends md_api {
 	 * @since 5.3
 	 */
 
-	public function publish_activity( $post_id ) {
-		$new_post_id = wp_insert_post( array(
-			'post_type' => 'stream_activity',
-			'post_status' => 'publish'
-		) );
-		$post_meta = md_post_meta( null, $new_post_id, array() );
-		$post_meta['stream']['post_id'] = esc_attr( $post_id );
-		update_post_meta( $new_post_id, 'marketers_delight', $post_meta );	
+	public function publish_activity( $new, $old, $post ) {
+		$post_types = md_setting( array( 'stream', 'activity_post_types' ), array() );
+		if ( ! empty( $post_types[$post->post_type] ) && $new == 'publish' && $old !== 'publish' ) {
+			$post_id = $post->ID;
+			$activity_id = wp_insert_post( array(
+				'post_type' => 'stream_activity',
+				'post_status' => 'publish'
+			) );
+			$post_meta = md_post_meta( null, $post_id, array() );
+			$post_meta['stream']['post_id'] = esc_attr( $post_id );
+			update_post_meta( $activity_id, 'marketers_delight', $post_meta );
+		}
 	}
 
 	/**

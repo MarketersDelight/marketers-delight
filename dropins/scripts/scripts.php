@@ -1,5 +1,15 @@
 <?php
 /**
+ * Drop-in Name: Scripts manager
+ * Description: Add custom scripts to the body and footer of your pages. Offers sitewide scripts and the ability to adds scripts to specific posts and pages from the post editor.
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/wordpress-tracking-scripts/
+ * Slug: scripts
+ * Version: 1.0.1
+ */
+
+/**
  * Scripts and Styles manager. Add Header/Footer tracking scripts
  * sitewide or to a single post/page/category and disable scripts
  * and styles on the same basis.

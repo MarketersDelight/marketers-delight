@@ -186,7 +186,7 @@ function md_has_sidebar() {
 	if ( has_filter( 'md_filter_has_sidebar' ) )
 		return apply_filters( 'md_filter_has_sidebar', '' );
 
-	if ( is_home() && empty( $blog_remove ) )
+	if ( ( is_home() || is_author() || is_tag() ) && empty( $blog_remove ) )
 		return true;
 
 	if ( ( is_category() || is_tax() ) && (

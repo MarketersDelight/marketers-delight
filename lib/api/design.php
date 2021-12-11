@@ -33,7 +33,7 @@ class md_design {
 		$line_height = round( $desktop * $g );
 		// set headings font sizes
 		$h1 = array(
-			'desktop' => round( $desktop * ( $g * 1.7 ) ),
+			'desktop' => round( $desktop * ( $g * 1.6 ) ),
 			'tablet' => round( $desktop * ( $g * 1.6 ) ),
 			'mobile' => round( $desktop * ( $g * 1.2 ) )
 		);
@@ -53,14 +53,14 @@ class md_design {
 			'mobile'  => round( $h1['mobile'] * 0.6 )
 		);
 		$h5 = array(
-			'desktop' => round( $h1['desktop'] * 0.5 ),
-			'tablet'  => round( $h1['tablet'] * 0.5 ),
-			'mobile'  => round( $h1['mobile'] * 0.5 )
+			'desktop' => round( $h1['desktop'] * 0.55 ),
+			'tablet'  => round( $h1['tablet'] * 0.55 ),
+			'mobile'  => round( $h1['mobile'] * 0.55 )
 		);
 		$h6 = array(
 			'desktop' => round( $h1['desktop'] * 0.45 ),
-			'tablet'  => round( $h1['desktop'] * 0.4 ),
-			'mobile'  => round( $h1['desktop'] * 0.4 )
+			'tablet'  => round( $h1['desktop'] * 0.45 ),
+			'mobile'  => round( $h1['desktop'] * 0.45 )
 		);
 		// site title
 		$site_title = md_setting( array( 'typography', 'site_title', 'font_size', 'desktop' ) );
@@ -180,9 +180,9 @@ class md_design {
 						'mobile' => $h2['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h2['desktop'] * 1.35 ),
-						'tablet' => round( $h2['tablet'] * 1.35 ),
-						'mobile' => round( $h2['mobile'] * 1.35 )
+						'desktop' => round( $h2['desktop'] * 1.4 ),
+						'tablet' => round( $h2['tablet'] * 1.4 ),
+						'mobile' => round( $h2['mobile'] * 1.4 )
 					)
 				),
 				'h3' => array(
@@ -192,9 +192,9 @@ class md_design {
 						'mobile' => $h3['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h3['desktop'] * 1.35 ),
-						'tablet' => round( $h3['tablet'] * 1.35 ),
-						'mobile' => round( $h3['mobile'] * 1.35 )
+						'desktop' => round( $h3['desktop'] * 1.45 ),
+						'tablet' => round( $h3['tablet'] * 1.45 ),
+						'mobile' => round( $h3['mobile'] * 1.45 )
 					)
 				),
 				'h4' => array(
@@ -216,9 +216,9 @@ class md_design {
 						'mobile' => $h5['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.45 ),
-						'tablet' => round( $h5['tablet'] * 1.45 ),
-						'mobile' => round( $h5['mobile'] * 1.45 )
+						'desktop' => round( $h5['desktop'] * 1.5 ),
+						'tablet' => round( $h5['tablet'] * 1.5 ),
+						'mobile' => round( $h5['mobile'] * 1.5 )
 					)
 				),
 				'h6' => array(

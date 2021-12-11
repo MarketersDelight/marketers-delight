@@ -1,4 +1,13 @@
 <?php
+/**
+ * Drop-in Name: Optins
+ * Description: Design and deploy custom popups, floating bars, and inline optin forms with smart precision tools and display features to tastefully capture more leads around your website.
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/optins/
+ * Slug: optins
+ * Version: 1.0.3
+ */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;

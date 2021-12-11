@@ -1,10 +1,10 @@
 {
 	"name" : "Footnotes",
 	"author" : "Alex, Marketers Delight",
-	"version" : "1.0",
-	"description" : "A simple footnotes meta box that helps you create and organize footnotes in am article. Edit post > Footnotes",
-	"dropin_url" : "https://marketersdelight.com/footnotes/",
-	"author_url" : "https://alexmangini.com/",
+	"version" : "1.0.1",
+	"description" : "A simple footnotes meta box that helps you create and organize footnotes in am article. Edit post > Footnotes.",
+	"dropin_url" : "https://marketersdelight.com/dropins/footnotes/",
+	"author_url" : "https://marketersdelight.com/",
 	"icon" : "dashicons-info",
 	"colors" : "#97c660",
 	"active" : "true"

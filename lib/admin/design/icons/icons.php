@@ -41,6 +41,7 @@ class md_icons extends md_api {
 		<style type="text/css">
 			@font-face {
 				font-family: md-icon;
+				font-display: swap;
 				src: url('<?php echo md_font_icons_url(); ?>') format('woff');
 				font-style: normal;
 				font-weight: 400;

@@ -2,6 +2,9 @@
 	<div class="columns-70-30 columns-single">
 		<div class="col col1 md-sep-small">
 			<?php do_action( 'md_hook_settings_col2_top' ); ?>
+			<div id="md_update" class="md-sep-small">
+				<?php $this->updater(); ?>
+			</div>
 			<div class="md-widget md-toggle md-sep-small">
 				<h3 class="md-widget-title"><?php echo __( 'Site Tools', 'md' ); ?></h3>
 				<div class="md-widget-item">
@@ -40,9 +43,10 @@
 					<div class="md-sep">
 						<?php $this->fields->field( 'head', array(
 							'type' => 'checkbox',
-							'label' => __( 'Clean <code>&lt;head&gt;</code> Tags', 'md' ),
+							'label' => __( 'Optimize WP', 'md' ),
 							'description' => sprintf( __( 'By default, MD removes many unneeded scripts and tags from the %s (like emojis), and disables comment cookies for guests. To restore these features, enable this option.', 'md' ), '<code>&lt;head&gt;</code>' ),
 							'options' => array(
+								'widgets' => __( '<b>Disable</b> Widgets blocks editor', 'md' ),
 								'blocks' => __( '<b>Remove</b> <code>block-library.css</code> style from head', 'md' ),
 								'wpjson' => __( '<b>Remove</b> <code>/wp-json/</code> REST API from head', 'md' ),
 								'oembed' => __( '<b>Remove</b> <code>wp-embed.js</code> script from footer', 'md' ),
@@ -67,7 +71,6 @@
 		<div class="col col2">
 			<div class="md-save md-sep md-clear">
 				<?php $this->fields->save(); ?>
-				<p><a href="https://mdforums.org/" class="md-save-link" target="_blank"><?php echo __( 'What\'s new at the <b>MD forums</b> &rarr;', 'md' ); ?></a></p>
 			</div>
 		</div>
 	</div>

@@ -1,10 +1,12 @@
 <?php
 /**
- * Dropin Name: MD Subtitle
- * Dropin Author: Alex Mangini
- * Dropin Description: Add subtitles to posts and post type entries.
- * Dropin Version: 1.0
- * @since MD5.2.3
+ * Drop-in Name: Subtitle
+ * Dropin Author: Alex, Kolakube
+ * Description: Add subtitles to posts and post type entries.
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/add-subtitles-to-wordpress-posts-and-pages/
+ * Slug: subtitle
+ * Version: 1.0.1
  */
 
 class md_subtitle extends md_api {

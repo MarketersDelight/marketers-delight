@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  * @since 4.0
  */
 
-function md_featured_image( $position = null, $size = null, $atts = null ) {
+function md_featured_image( $position = null, $size = null, $args = null ) {
 	$position = isset( $position ) ? $position : md_featured_image_position();
 	$size = isset( $size ) ? $size : md_featured_image_size();
 	$style = '';
@@ -26,7 +26,7 @@ function md_featured_image( $position = null, $size = null, $atts = null ) {
 
 	<?php else : ?>
 
-		<div class="featured-image<?php echo ! empty( $position ) ? ' image-' . esc_attr( $position ) : ''; ?><?php echo md_featured_image_alignment_classes( $position, $atts ); ?>" <?php echo $style; ?>>
+		<div class="featured-image<?php echo ! empty( $position ) ? ' image-' . esc_attr( $position ) : ''; ?><?php echo md_featured_image_alignment_classes( $position, $args ); ?>" <?php echo $style; ?>>
 
 			<?php if ( ! is_singular() ) : ?><a href="<?php the_permalink(); ?>" title="<?php echo esc_attr( sprintf( __( 'Permalink to %s', 'md' ), the_title_attribute( 'echo=0' ) ) ); ?>" rel="bookmark"><?php endif; ?>
 
@@ -34,7 +34,9 @@ function md_featured_image( $position = null, $size = null, $atts = null ) {
 
 			<?php if ( ! is_singular() ) : ?></a><?php endif; ?>
 
-			<?php md_featured_image_caption(); ?>
+			<?php if ( ! isset( $args['hide_caption'] ) ) : ?>
+				<?php md_featured_image_caption(); ?>
+			<?php endif; ?>
 
 		</div>
 

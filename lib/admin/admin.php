@@ -12,6 +12,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_admin {
 
+	public $requests;
+
 	/**
 	 * Run class methods on instantiation.
 	 *
@@ -34,9 +36,9 @@ class md_admin {
 		require_once( 'design/design.php' );
 		require_once( 'settings/dropins/dropins.php' );
 		require_once( 'settings/integrations/integrations.php' );
-		require_once( 'updater/updater.php' );
+		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-			require_once( 'updater/upgrade/upgrade.php' );
+		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/upgrade.php' );
 	}
 
 	/**
@@ -48,6 +50,7 @@ class md_admin {
 	public function actions() {
 		$this->sanitize = new md_sanitize;
 		$this->files = new md_files;
+		$this->requests = new md_requests;
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_action( 'wp_update_nav_menu', 'md_compile_css' );
 		// Admin pages
@@ -71,9 +74,16 @@ class md_admin {
 		// Scripts
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
-		// AJAX actions
-		add_action( 'wp_ajax_md_action', array( $this, 'action' ) );
-		add_action( 'wp_ajax_nopriv_md_action', array( $this, 'action' ) );
+		// Upgrader hooks
+		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
+		add_filter( 'delete_site_transient_update_themes', array( $this->requests, 'delete_theme_update' ) );
+		add_action( 'load-themes.php', array( $this, 'load_themes_screen' ) );
+		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
+		add_action( 'update-custom_upload-md-dropin', array( $this->requests, 'upload_dropin' ) );
+		add_action( 'update-custom_upload-dropin-cancel-overwrite', array( $this->requests, 'cancel_dropin_overwrite' ) );
+		// Actions + requests
+		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
+		add_action( 'wp_ajax_nopriv_md_action', array( $this->requests, 'request' ) );
 		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
 		add_action( 'wp_ajax_nopriv_md_file', array( $this->files, 'file_action' ) );
 	}
@@ -86,6 +96,16 @@ class md_admin {
 
 	public function register_setting() {
 		register_setting( 'marketers_delight', 'marketers_delight', array( $this->sanitize, 'admin_save' ) );
+	}
+
+	/**
+	 * Load single MD nonce to post editors.
+	 *
+	 * @since 4.7
+	 */
+
+	public function nonce() {
+		wp_nonce_field( 'marketers_delight_nonce', 'marketers_delight_nonce' );
 	}
 
 	/**
@@ -113,9 +133,10 @@ class md_admin {
 
 			if ( ! empty( $fields['toplevel'] ) )
 				add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
-			else
-				add_submenu_page( $parent_slug, $fields['name'], $fields['name'], $capability, $menu_slug, $callback );
-
+			else {
+				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
+				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback );
+			}
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
 		}
@@ -309,45 +330,60 @@ class md_admin {
 	}
 
 	/**
-	 * Run various MD actions sent through AJAX.
-	 *
-	 * @since 5.2.3
-	 */
-
-	public function action() {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
-			return;
-
-		$option = md_setting();
-
-		if ( isset( $_POST['action_type'] ) ) {
-
-			if ( $_POST['action_type'] == 'delete-dropin' ) {
-				$dropin_id = isset( $_POST['dropin_id'] ) ? esc_attr( $_POST['dropin_id'] ) : '';
-				$this->files->file_action( array(
-					'action' => $_POST['action_type']
-				) );
-			}
-			elseif ( $_POST['action_type'] == 'reset-icons' )
-				$option['icons'] = $option['custom_icons'] = array();
-
-		}
-
-		update_option( 'marketers_delight', $option );
-		md_compile_css();
-
-		wp_die();
-	}
-
-	/**
-	 * Load single MD nonce to post editors.
+	 * Show MD update notification when necessary.
 	 *
 	 * @since 4.7
 	 */
 
-	public function nonce() {
-		wp_nonce_field( 'marketers_delight_nonce', 'marketers_delight_nonce' );
+	public function load_themes_screen() {
+		add_thickbox();
+		add_action( 'admin_notices', array( $this, 'update_nag' ) );
 	}
+
+	/**
+	 * Display the update notifications
+	 *
+	 * @since 5.4
+	 */
+
+	public function update_nag() {
+		$strings = array(
+			'update-notice' => esc_js( __( "Updating MD will lose any customizations you\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update.", 'md' ) ),
+			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
+		);
+		$license_status = md_setting( array( 'license', 'status' ) );
+		$theme_slug = $this->requests->license( 'theme_slug' );
+		$theme = md_setting( array( 'license', 'updates', 'theme' ) );
+		$theme_name = str_replace( ' 4', '', $theme['name'] );
+		$new_version = md_setting( array( 'license', 'updates', 'theme', 'new_version' ) );
+
+		if ( $license_status !== 'valid' || empty( $theme ) || version_compare( MD_VERSION, $new_version, '>=' ) )
+			return;
+
+		$update_url = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $theme_slug ), 'upgrade-theme_' . $theme_slug );
+		$update_onclick = ' onclick="if ( confirm(\'' . esc_js( $strings['update-notice'] ) . '\') ) {return true;}return false;"';
+
+	?>
+		<div id="update-nag" class="update-message notice inline notice-warning">
+			<?php printf(
+				$strings['update-available'],
+				$theme_name,
+				$new_version,
+				'#TB_inline?width=640&amp;inlineId=' . $theme_slug . '_changelog',
+				$theme_name,
+				$update_url,
+				$update_onclick
+			); ?>
+		</div>
+		<div id="<?php echo esc_attr( $theme_slug . '_changelog' ); ?>" style="display:none;">
+			<h1><?php echo sprintf( __( 'Ready to update %s %2s?', 'md' ), $theme_name, $new_version ); ?></h2>
+			<p><?php echo __( 'Here are some resources to help you:', 'md' ); ?></p>
+			<h3>- <a href="https://marketersdelight.com/changelog/" target="_blank"><?php echo __( 'Read the changelog' ); ?></a></h3>
+			<h3>- <a href="https://marketersdelight.com/news/" target="_blank"><?php echo __( 'See what\'s new in MD' ); ?></a></h3>
+			<h3>- <a href="https://marketersdelight.com/support/" target="_blank"><?php echo __( 'Get help at support' ); ?></a></h3>
+			<p><?php echo __( 'When in doubt, make a backup your website before proceeding.', 'md' ); ?></p>
+		</div>
+	<?php }
 
 }
 

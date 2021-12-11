@@ -1,11 +1,16 @@
 <?php
-	
+/**
+ * Drop-in Name: MD + WooCommerce
+ * Description: Give your WooCommerce store a quick style and full integration with MD power features to give you more control over your store listing.
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/woocommerce/
+ * Slug: md-woocommerce
+ * Version: 1.0.2
+ */
+
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
-
-// Exif if WooCommerce not enabled
-
-if ( ! class_exists( 'WooCommerce' ) ) exit;
 
 /**
  * Add admin page and custom WooCommerce settings panel.
@@ -22,7 +27,8 @@ class md_woocommerce extends md_api {
 	 */
 
 	public function includes() {
-		require_once( 'templates.php' );
+		if ( class_exists( 'WooCommerce' ) )
+			require_once( 'templates.php' );
 	}
 
 	/**

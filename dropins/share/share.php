@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Drop-in Name: Share
+ * Description: Add precise share buttons around your site. Add inline or floating icons across post types and choose your design style. Add/remove from individual posts and pages
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/share/
+ * Slug: share
+ * Version: 1.0.1
+ */
+ 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 

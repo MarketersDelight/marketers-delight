@@ -191,6 +191,7 @@ class md_files {
 		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
 			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
 		unset( $option['dropins']['installed'][$dropin_id] );
+		unset( $option['license']['updates']['dropins']["$dropin_id/$dropin_id.php"] );
 		update_option( 'marketers_delight', $option );
 		md_compile_css();
 	}

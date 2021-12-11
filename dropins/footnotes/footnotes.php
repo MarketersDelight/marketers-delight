@@ -1,5 +1,15 @@
 <?php
 /**
+ * Drop-in Name: Footnotes
+ * Description: A simple footnotes meta box that helps you create and organize footnotes in am article. Edit post > Footnotes.
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/footnotes/
+ * Slug: footnotes
+ * Version: 1.0.1
+ */
+
+/**
  * Setup MD Footnotes meta box & build various interface parts.
  *
  * @since 4.5

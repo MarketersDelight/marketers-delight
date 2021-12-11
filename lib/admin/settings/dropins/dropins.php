@@ -18,7 +18,7 @@ class md_dropins extends md_api {
 	 */
 	
 	public function includes() {
-		require_once( 'store.php' );
+//		require_once( 'store.php' );
 	}
 
 	/**
@@ -28,6 +28,7 @@ class md_dropins extends md_api {
 	 */
 
 	public function register() {
+		$name = __( 'Drop-ins', 'md' );
 		$fields = array(
 			'move_dropins' => array( 'type' => 'text' ),
 			'migrate_dropins' => array( 'type' => 'text' ),
@@ -59,12 +60,15 @@ class md_dropins extends md_api {
 			'type' => 'checkbox',
 			'options' => array( 'blocks', 'stream', 'bookshelf', 'optins', 'share', 'main_menu', 'admin_bar', 'footnotes', 'tracking_scripts', 'woocommerce' )
 		);
+		$total_updates = md_setting( array( 'license', 'updates', 'dropins' ), 0 );
+		$updates_badge = ! empty( $total_updates ) && count( $total_updates ) > 0 ? " <span class=\"update-plugins count-" . count( $total_updates ) . "\"><span class=\"plugin-count\">" . count( $total_updates ) . "</span></span>" : '';
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Drop-ins', 'md' ),
+				'name' => "$name{$updates_badge}",
 				'admin_header' => true,
-				'admin_tab' => __( 'Dropin-ins', 'md' ),
-				'admin_tab_parent' => 'md_dropins',
+				'admin_tab' => $name,
+				'tab_name' => $name,
+//				'admin_tab_parent' => 'md_dropins',
 				'fields' => $fields
 			)
 		);
@@ -95,9 +99,30 @@ class md_dropins extends md_api {
 
 	public function admin_page() {
 		$installed = md_setting( array( 'dropins', 'installed' ), array() );
+		$updates = md_setting( array( 'license', 'updates', 'dropins' ) );
 		ksort( $installed );
 		include( 'admin-page.php' );
 	}
+
+	/**
+	 * This form can install themes from anywhere, but is not
+	 * yet live. Refer to current drop-in install method at
+	 * lib/api/files.php
+	 *
+	 * @since 5.4
+	 */
+
+	public function ____admin_page_before() { ?>
+		<div class="upload-dropin">
+			<p class="install-help"><?php _e( 'If you have a dropin in a .zip format, you may install or update it by uploading it here.' ); ?></p>
+			<form method="post" enctype="multipart/form-data" class="wp-upload-form" action="<?php echo self_admin_url( 'update.php?action=upload-md-dropin' ); ?>">
+				<?php wp_nonce_field( 'dropin-upload' ); ?>
+				<label class="screen-reader-text" for="dropinzip"><?php _e( 'Drop-in zip file' ); ?></label>
+				<input type="file" id="dropinzip" name="dropinzip" accept=".zip" />
+				<?php submit_button( __( 'Install Now' ), '', 'install-dropin-submit', false ); ?>
+			</form>
+		</div>
+	<?php }
 
 }
 

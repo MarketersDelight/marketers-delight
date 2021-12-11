@@ -1,5 +1,15 @@
 <?php
 /**
+ * Drop-in Name: Books
+ * Description: Share your favorite books on your site. Write book reviews and organize your collection in the nicely designed bookshelf page.
+ * Author: Alex, Kolakube
+ * AuthorURI: https://marketersdelight.com/
+ * DropinURI: https://marketersdelight.com/dropins/books/
+ * Slug: bookshelf
+ * Version: 1.0.1
+ */
+
+/**
  * Create your own readings list with The Bookshelf.
  *
  * @since 4.8.5

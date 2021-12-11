@@ -1,3 +1,5 @@
+<?php do_action( 'md_admin_page_before_form' ); ?>
+<?php do_action( "{$hook}_admin_page_before_form" ); ?>
 <form id="md-form" class="md wrap" method="post" action="options.php">
 	<?php if ( ! empty( $admin_pages[$page_id]['admin_header'] ) ) : ?>
 		<div class="md-header md-clear md-content-wrap-med">
@@ -7,10 +9,10 @@
 			</div>
 			<div class="nav-tab-wrapper">
 				<p class="md-links">
-					<a href="https://marketersdelight.com/downloads/" target="_blank"><?php echo __( 'Account', 'md' ); ?></a> &nbsp;&middot;&nbsp;
-					<a href="https://marketersdelight.com/docs/" target="_blank"><?php echo __( 'Docs', 'md' ); ?></a> &nbsp;&middot;&nbsp;
-					<a href="https://marketersdelight.com/affiliates/" target="_blank"><?php echo __( 'Affiliates', 'md' ); ?></a> &nbsp;&middot;&nbsp;
-					<a href="https://mdforums.org/" target="_blank"><?php echo __( 'Forums', 'md' ); ?></a>
+					<a href="https://marketersdelight.com/docs/" target="_blank" title="Try reading the docs"><?php echo __( 'Docs', 'md' ); ?></a> &nbsp;&middot;&nbsp;
+					<a href="https://marketersdelight.com/support/" target="_blank" title="Get tutorials & ask questions"><?php echo __( 'Get support', 'md' ); ?></a> &nbsp;&middot;&nbsp;
+					<a href="https://marketersdelight.com/account/" target="_blank" title="Go to your MD.com account"><?php echo __( 'My account', 'md' ); ?></a>
+					<a href="https://kolakube.com/" target="_blank" title="by Kolakube"><span class="kolakube"></span></a>
 				</p>
 				<h2 class="md-header-nav md-clear">
 					<?php foreach ( $admin_pages as $admin_page => $fields ) :
@@ -36,8 +38,8 @@
 						if ( isset( $child['admin_tab_parent'] ) && $child['admin_tab_parent'] == $page )
 							$tab_url = '';
 					?>
-						<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo $child['name']; ?>">
-							<?php echo $child['name']; ?>
+						<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo esc_attr( $child['name'] ); ?>">
+							<?php echo isset( $child['tab_name'] ) ? $child['tab_name'] : $child['name']; ?>
 						</a>
 					<?php endforeach; ?>
 				</div>
@@ -51,3 +53,4 @@
 		<?php do_action( "{$hook}_admin_page" ); ?>
 	<?php endif; ?>
 </form>
+
