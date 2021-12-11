@@ -2,22 +2,22 @@
 # This file is distributed under the .
 msgid ""
 msgstr ""
-"Project-Id-Version: Marketers Delight 5.3.2\n"
+"Project-Id-Version: Marketers Delight 5.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/theme/marketers-delight\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2021-12-06T23:49:48+00:00\n"
+"POT-Creation-Date: 2021-12-11T03:31:21+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.5.0\n"
 "X-Domain: md\n"
 
 #. Theme Name of the theme
-#: lib/admin/admin.php:98
-#: lib/admin/settings/admin-page.php:5
-#: lib/admin/settings/dashboard/dashboard.php:23
+#: lib/admin/admin.php:118
+#: lib/admin/settings/admin-page.php:7
+#: lib/admin/settings/dashboard/dashboard.php:28
 #: lib/wp/blocks/blocks.php:73
 msgid "Marketers Delight"
 msgstr ""
@@ -35,134 +35,78 @@ msgid "Alex Mangini"
 msgstr ""
 
 #. Author URI of the theme
-msgid "https://alexmangini.com/"
+msgid "https://kolakube.com/"
 msgstr ""
 
 #. Template Name of the theme
 msgid "Builder Template"
 msgstr ""
 
-#: dropins/admin-bar/admin-bar.php:38
-msgid "Admin Bar"
-msgstr ""
-
-#: dropins/admin-bar/admin-bar.php:105
-#: lib/api/design.php:372
-msgid "Links"
-msgstr ""
-
-#: dropins/admin-bar/admin-bar.php:106
-msgid "Link name..."
-msgstr ""
-
-#: dropins/admin-bar/admin-bar.php:127
-#: dropins/optins/templates/admin/floating-bar-fields.php:30
-#: dropins/optins/templates/admin/floating-bar-fields.php:44
-#: dropins/share/templates/admin/share-fields.php:19
-msgid "Icon"
-msgstr ""
-
-#: dropins/admin-bar/admin-bar.php:128
-#: dropins/optins/templates/admin/floating-bar-fields.php:45
-#: dropins/share/templates/admin/share-fields.php:21
-msgid "Select icon..."
-msgstr ""
-
-#: dropins/admin-bar/admin-bar.php:135
-#: dropins/optins/popups/customize/sections.php:277
-#: dropins/optins/templates/admin/cta-fields.php:101
-#: dropins/optins/templates/admin/floating-bar-fields.php:74
-#: lib/api/icons.php:119
-#: lib/wp/widgets/templates/content-spotlight.php:17
-#: lib/wp/widgets/templates/text-image.php:14
-msgid "Link"
-msgstr ""
-
-#: dropins/admin-bar/templates/admin-bar.php:6
-msgid "Admin"
-msgstr ""
-
-#: dropins/admin-bar/templates/admin-bar.php:11
-msgid "Edit"
-msgstr ""
-
-#: dropins/admin-bar/templates/admin-bar.php:16
-msgid "New"
-msgstr ""
-
-#: dropins/admin-bar/templates/admin-bar.php:19
-msgid "New %s"
-msgstr ""
-
-#: dropins/admin-bar/templates/admin-bar.php:35
-msgid "Logout"
-msgstr ""
-
-#: dropins/bookshelf/bookshelf.php:58
-#: dropins/bookshelf/bookshelf.php:60
-#: dropins/bookshelf/bookshelf.php:61
+#: dropins/bookshelf/bookshelf.php:68
+#: dropins/bookshelf/bookshelf.php:70
+#: dropins/bookshelf/bookshelf.php:71
 msgid "Books"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:59
-#: dropins/bookshelf/bookshelf.php:122
+#: dropins/bookshelf/bookshelf.php:69
+#: dropins/bookshelf/bookshelf.php:132
 #: lib/api/icons.php:41
 msgid "Book"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:62
+#: dropins/bookshelf/bookshelf.php:72
 msgid "Add New Book"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:63
+#: dropins/bookshelf/bookshelf.php:73
 msgid "Edit Book"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:64
+#: dropins/bookshelf/bookshelf.php:74
 msgid "New Book"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:65
+#: dropins/bookshelf/bookshelf.php:75
 msgid "View Book"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:66
-#: dropins/bookshelf/bookshelf.php:173
-#: dropins/bookshelf/bookshelf.php:176
+#: dropins/bookshelf/bookshelf.php:76
+#: dropins/bookshelf/bookshelf.php:183
+#: dropins/bookshelf/bookshelf.php:186
 msgid "View Books"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:67
+#: dropins/bookshelf/bookshelf.php:77
 msgid "Search Books"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:68
+#: dropins/bookshelf/bookshelf.php:78
 msgid "No books found"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:69
+#: dropins/bookshelf/bookshelf.php:79
 msgid "No books found in trash"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:70
+#: dropins/bookshelf/bookshelf.php:80
 #: dropins/bookshelf/templates/bookshelf-title.php:18
 msgid "All Books"
 msgstr ""
 
-#: dropins/bookshelf/bookshelf.php:104
-#: dropins/stream/stream.php:170
+#: dropins/bookshelf/bookshelf.php:114
+#: dropins/stream/stream.php:174
 #: dropins/woocommerce/admin-page.php:58
-#: lib/admin/admin.php:98
-#: lib/admin/settings/dashboard/dashboard.php:25
-#: lib/admin/settings/dropins/admin-page.php:64
+#: lib/admin/admin.php:118
+#: lib/admin/settings/dashboard/dashboard.php:30
+#: lib/admin/settings/dropins/admin-page.php:74
 msgid "Settings"
 msgstr ""
 
-#: dropins/bookshelf/templates.php:104
+#: dropins/bookshelf/templates.php:105
 msgid "Read book review"
 msgstr ""
 
-#: dropins/bookshelf/templates.php:118
+#: dropins/bookshelf/templates.php:119
 #: dropins/bookshelf/templates/admin/bookshelf-meta.php:37
 msgid "Get this book"
 msgstr ""
@@ -220,7 +164,7 @@ msgid "Books Settings"
 msgstr ""
 
 #: dropins/bookshelf/templates/admin/bookshelf-settings.php:5
-#: dropins/optins/optins.php:199
+#: dropins/optins/optins.php:208
 msgid "Books Page"
 msgstr ""
 
@@ -300,25 +244,25 @@ msgstr ""
 msgid "All books"
 msgstr ""
 
-#: dropins/footnotes/footnotes.php:31
-#: dropins/footnotes/footnotes.php:117
-#: dropins/footnotes/footnotes.php:144
+#: dropins/footnotes/footnotes.php:41
+#: dropins/footnotes/footnotes.php:127
+#: dropins/footnotes/footnotes.php:154
 msgid "Footnotes"
 msgstr ""
 
-#: dropins/footnotes/footnotes.php:137
+#: dropins/footnotes/footnotes.php:147
 msgid "Show footnotes list (after post)"
 msgstr ""
 
-#: dropins/footnotes/footnotes.php:138
+#: dropins/footnotes/footnotes.php:148
 msgid "Always toggle footnotes"
 msgstr ""
 
-#: dropins/footnotes/footnotes.php:146
+#: dropins/footnotes/footnotes.php:156
 msgid "New Footnote"
 msgstr ""
 
-#: dropins/footnotes/footnotes.php:160
+#: dropins/footnotes/footnotes.php:170
 msgid "Footnote"
 msgstr ""
 
@@ -471,15 +415,15 @@ msgstr ""
 #: dropins/optins/templates/admin/floating-bar-fields.php:12
 #: dropins/stream/templates/admin/widget-form.php:2
 #: lib/wp/widgets/accordion.php:80
-#: lib/wp/widgets/templates/quote.php:2
-#: lib/wp/widgets/templates/text-image.php:2
+#: lib/wp/widgets/admin/quote.php:2
+#: lib/wp/widgets/admin/text-image.php:2
 msgid "Title"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:100
 #: dropins/optins/popups/customize/sections.php:83
 #: dropins/stream/templates/admin/widget-form.php:7
-#: lib/wp/widgets/templates/text-image.php:8
+#: lib/wp/widgets/admin/text-image.php:8
 msgid "Description"
 msgstr ""
 
@@ -560,44 +504,44 @@ msgid "Form Design"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:179
-#: lib/api/fields.php:364
-#: lib/wp/widgets/templates/content-spotlight.php:32
-#: lib/wp/widgets/templates/quote.php:25
-#: lib/wp/widgets/templates/text-image.php:31
+#: lib/api/fields.php:365
+#: lib/wp/widgets/admin/content-spotlight.php:32
+#: lib/wp/widgets/admin/quote.php:25
+#: lib/wp/widgets/admin/text-image.php:31
 msgid "Click to upload"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:182
-#: lib/api/fields.php:367
-#: lib/wp/widgets/templates/content-spotlight.php:35
-#: lib/wp/widgets/templates/quote.php:28
-#: lib/wp/widgets/templates/text-image.php:34
+#: lib/api/fields.php:368
+#: lib/wp/widgets/admin/content-spotlight.php:35
+#: lib/wp/widgets/admin/quote.php:28
+#: lib/wp/widgets/admin/text-image.php:34
 msgid "Preview Image"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:186
-#: lib/api/fields.php:371
-#: lib/wp/widgets/templates/content-spotlight.php:39
-#: lib/wp/widgets/templates/quote.php:32
-#: lib/wp/widgets/templates/text-image.php:38
+#: lib/api/fields.php:372
+#: lib/wp/widgets/admin/content-spotlight.php:39
+#: lib/wp/widgets/admin/quote.php:32
+#: lib/wp/widgets/admin/text-image.php:38
 msgid "Image URL"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:191
-#: lib/api/fields.php:382
-#: lib/api/fields.php:818
-#: lib/wp/widgets/templates/content-spotlight.php:44
-#: lib/wp/widgets/templates/quote.php:37
-#: lib/wp/widgets/templates/text-image.php:43
+#: lib/api/fields.php:383
+#: lib/api/fields.php:819
+#: lib/wp/widgets/admin/content-spotlight.php:44
+#: lib/wp/widgets/admin/quote.php:37
+#: lib/wp/widgets/admin/text-image.php:43
 msgid "Add Image"
 msgstr ""
 
 #: dropins/optins/lib/widget-email-form.php:192
-#: lib/api/fields.php:383
-#: lib/api/fields.php:819
-#: lib/wp/widgets/templates/content-spotlight.php:45
-#: lib/wp/widgets/templates/quote.php:38
-#: lib/wp/widgets/templates/text-image.php:44
+#: lib/api/fields.php:384
+#: lib/api/fields.php:820
+#: lib/wp/widgets/admin/content-spotlight.php:45
+#: lib/wp/widgets/admin/quote.php:38
+#: lib/wp/widgets/admin/text-image.php:44
 msgid "Remove Image"
 msgstr ""
 
@@ -605,78 +549,78 @@ msgstr ""
 msgid "HTML Classes"
 msgstr ""
 
-#: dropins/optins/optins.php:58
+#: dropins/optins/optins.php:67
 msgid "MailChimp"
 msgstr ""
 
-#: dropins/optins/optins.php:63
+#: dropins/optins/optins.php:72
 msgid "AWeber"
 msgstr ""
 
-#: dropins/optins/optins.php:68
+#: dropins/optins/optins.php:77
 msgid "Authorization Key"
 msgstr ""
 
-#: dropins/optins/optins.php:72
+#: dropins/optins/optins.php:81
 msgid "ConvertKit"
 msgstr ""
 
-#: dropins/optins/optins.php:77
+#: dropins/optins/optins.php:86
 msgid "ActiveCampaign"
 msgstr ""
 
-#: dropins/optins/optins.php:82
+#: dropins/optins/optins.php:91
 msgid "API URL"
 msgstr ""
 
-#: dropins/optins/optins.php:86
+#: dropins/optins/optins.php:95
 msgid "MailerLite"
 msgstr ""
 
-#: dropins/optins/optins.php:91
+#: dropins/optins/optins.php:100
 msgid "Drip"
 msgstr ""
 
-#: dropins/optins/optins.php:96
+#: dropins/optins/optins.php:105
 msgid "API Token"
 msgstr ""
 
-#: dropins/optins/optins.php:193
-#: dropins/stream/stream.php:265
+#: dropins/optins/optins.php:202
+#: dropins/stream/stream.php:269
 msgid "Stream Page"
 msgstr ""
 
-#: dropins/optins/optins.php:194
-#: dropins/stream/stream.php:266
+#: dropins/optins/optins.php:203
+#: dropins/stream/stream.php:270
 msgid "Stream Posts"
 msgstr ""
 
-#: dropins/optins/optins.php:195
-#: dropins/stream/stream.php:267
+#: dropins/optins/optins.php:204
+#: dropins/stream/stream.php:271
 msgid "Stream Categories"
 msgstr ""
 
-#: dropins/optins/optins.php:200
+#: dropins/optins/optins.php:209
 msgid "Books Posts"
 msgstr ""
 
-#: dropins/optins/optins.php:201
+#: dropins/optins/optins.php:210
 msgid "Books Categories"
 msgstr ""
 
-#: dropins/optins/optins.php:205
+#: dropins/optins/optins.php:214
 msgid "Products Page"
 msgstr ""
 
-#: dropins/optins/optins.php:206
+#: dropins/optins/optins.php:215
 msgid "Single Products"
 msgstr ""
 
-#: dropins/optins/optins.php:207
+#: dropins/optins/optins.php:216
 msgid "Products Categories"
 msgstr ""
 
-#: dropins/optins/optins.php:230
+#: dropins/optins/optins.php:239
 msgid "Optins"
 msgstr ""
 
@@ -707,7 +651,7 @@ msgid "Text"
 msgstr ""
 
 #: dropins/optins/popups/customize/sections.php:53
-#: dropins/subtitle/subtitle.php:31
+#: dropins/subtitle/subtitle.php:33
 msgid "Subtitle"
 msgstr ""
 
@@ -785,6 +729,15 @@ msgstr ""
 
 #: dropins/optins/popups/customize/sections.php:262
 msgid "Close popup"
+msgstr ""
+
+#: dropins/optins/popups/customize/sections.php:277
+#: dropins/optins/templates/admin/cta-fields.php:101
+#: dropins/optins/templates/admin/floating-bar-fields.php:74
+#: lib/api/icons.php:119
+#: lib/wp/widgets/admin/content-spotlight.php:17
+#: lib/wp/widgets/admin/text-image.php:14
+msgid "Link"
 msgstr ""
 
 #: dropins/optins/popups/customize/sections.php:278
@@ -901,7 +854,6 @@ msgstr ""
 #: dropins/optins/popups/hotspots.php:80
 #: dropins/optins/templates/admin/popups-settings.php:44
 #: dropins/optins/templates/admin/popups-settings.php:62
-#: lib/admin/settings/dropins/admin-page.php:66
 msgid "Get updates"
 msgstr ""
 
@@ -990,7 +942,7 @@ msgstr ""
 
 #: dropins/optins/templates/admin/cta-fields.php:111
 #: dropins/optins/templates/admin/floating-bar-fields.php:84
-#: lib/wp/widgets/templates/text-image.php:20
+#: lib/wp/widgets/admin/text-image.php:20
 msgid "Button Text"
 msgstr ""
 
@@ -1001,7 +953,7 @@ msgstr ""
 
 #: dropins/optins/templates/admin/cta-fields.php:120
 #: dropins/optins/templates/admin/floating-bar-fields.php:92
-#: lib/wp/widgets/templates/content-spotlight.php:18
+#: lib/wp/widgets/admin/content-spotlight.php:18
 msgid "https://"
 msgstr ""
 
@@ -1091,7 +1043,7 @@ msgid "Before Content"
 msgstr ""
 
 #: dropins/optins/templates/admin/cta-fields.php:257
-#: dropins/share/share.php:44
+#: dropins/share/share.php:53
 msgid "After Post"
 msgstr ""
 
@@ -1148,6 +1100,17 @@ msgstr ""
 
 #: dropins/optins/templates/admin/floating-bar-fields.php:26
 msgid "Select media type..."
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:30
+#: dropins/optins/templates/admin/floating-bar-fields.php:44
+#: dropins/share/templates/admin/share-fields.php:19
+msgid "Icon"
+msgstr ""
+
+#: dropins/optins/templates/admin/floating-bar-fields.php:45
+#: dropins/share/templates/admin/share-fields.php:21
+msgid "Select icon..."
 msgstr ""
 
 #: dropins/optins/templates/admin/floating-bar-fields.php:76
@@ -1396,145 +1359,145 @@ msgstr ""
 msgid "Show as button"
 msgstr ""
 
-#: dropins/scripts/scripts.php:33
-#: lib/admin/settings/dashboard/templates/admin-page.php:59
+#: dropins/scripts/scripts.php:43
+#: lib/admin/settings/dashboard/templates/admin-page.php:63
 msgid "Scripts Manager"
 msgstr ""
 
-#: dropins/scripts/scripts.php:81
+#: dropins/scripts/scripts.php:91
 msgid "Body classes"
 msgstr ""
 
-#: dropins/scripts/scripts.php:82
+#: dropins/scripts/scripts.php:92
 msgid "Add custom CSS classes to the <code>body</code> tag of this page."
 msgstr ""
 
-#: dropins/scripts/scripts.php:89
+#: dropins/scripts/scripts.php:99
 msgid "Header Scripts"
 msgstr ""
 
-#: dropins/scripts/scripts.php:90
+#: dropins/scripts/scripts.php:100
 msgid "Print scripts to the <code>&lt;head></code> section (before opening <code>&lt;body></code> tag)."
 msgstr ""
 
-#: dropins/scripts/scripts.php:96
+#: dropins/scripts/scripts.php:106
 msgid "Footer Scripts"
 msgstr ""
 
-#: dropins/scripts/scripts.php:97
+#: dropins/scripts/scripts.php:107
 msgid "Print scripts after the <code>&lt;footer></code> section (before closing <code>&lt;/body></code> tag)."
 msgstr ""
 
-#: dropins/scripts/scripts.php:104
+#: dropins/scripts/scripts.php:114
 msgid "Scripts Optimization"
 msgstr ""
 
-#: dropins/scripts/scripts.php:105
+#: dropins/scripts/scripts.php:115
 msgid "<b>Note:</b> Only remove the scripts and styles you know this page does not use, otherwise you may break some plugin functionality."
 msgstr ""
 
-#: dropins/share/share.php:32
+#: dropins/share/share.php:41
 msgid "Side of post"
 msgstr ""
 
-#: dropins/share/share.php:33
+#: dropins/share/share.php:42
 msgid "Left side of screen"
 msgstr ""
 
-#: dropins/share/share.php:34
+#: dropins/share/share.php:43
 msgid "Bottom of screen"
 msgstr ""
 
-#: dropins/share/share.php:35
+#: dropins/share/share.php:44
 msgid "Right side of screen"
 msgstr ""
 
-#: dropins/share/share.php:38
+#: dropins/share/share.php:47
 msgid "Bold (default)"
 msgstr ""
 
-#: dropins/share/share.php:39
+#: dropins/share/share.php:48
 msgid "Minimal"
 msgstr ""
 
-#: dropins/share/share.php:42
+#: dropins/share/share.php:51
 msgid "Before Headline"
 msgstr ""
 
-#: dropins/share/share.php:43
+#: dropins/share/share.php:52
 #: lib/wp/featured-video/meta-box.php:22
 msgid "After Headline"
 msgstr ""
 
-#: dropins/share/share.php:69
+#: dropins/share/share.php:78
 #: lib/api/icons.php:227
 msgid "Twitter"
 msgstr ""
 
-#: dropins/share/share.php:78
+#: dropins/share/share.php:87
 #: lib/api/icons.php:81
 msgid "Facebook"
 msgstr ""
 
-#: dropins/share/share.php:87
+#: dropins/share/share.php:96
 #: lib/api/icons.php:123
 msgid "LinkedIn"
 msgstr ""
 
-#: dropins/share/share.php:96
+#: dropins/share/share.php:105
 msgid "Email"
 msgstr ""
 
-#: dropins/share/share.php:97
+#: dropins/share/share.php:106
 msgid "Sharing this link with you"
 msgstr ""
 
-#: dropins/share/share.php:105
-#: dropins/share/share.php:113
+#: dropins/share/share.php:114
+#: dropins/share/share.php:122
 #: lib/api/icons.php:115
 msgid "Like"
 msgstr ""
 
-#: dropins/share/share.php:111
+#: dropins/share/share.php:120
 msgid "Empty Heart (default)"
 msgstr ""
 
-#: dropins/share/share.php:112
+#: dropins/share/share.php:121
 #: lib/api/icons.php:99
 msgid "Heart"
 msgstr ""
 
-#: dropins/share/share.php:114
+#: dropins/share/share.php:123
 #: lib/api/icons.php:95
 msgid "Hand"
 msgstr ""
 
-#: dropins/share/share.php:118
+#: dropins/share/share.php:127
 #: lib/api/icons.php:161
 msgid "Pinterest"
 msgstr ""
 
-#: dropins/share/share.php:128
+#: dropins/share/share.php:137
 #: lib/api/icons.php:248
 msgid "WhatsApp"
 msgstr ""
 
-#: dropins/share/share.php:138
+#: dropins/share/share.php:147
 #: lib/api/icons.php:178
 msgid "RSS"
 msgstr ""
 
-#: dropins/share/share.php:146
+#: dropins/share/share.php:155
 msgid "Comments"
 msgstr ""
 
-#: dropins/share/share.php:229
+#: dropins/share/share.php:238
 #: lib/api/icons.php:186
 msgid "Share"
 msgstr ""
 
 #: dropins/share/templates/admin/share-fields.php:5
-#: lib/api/fields.php:608
+#: lib/api/fields.php:609
 msgid "Reorder"
 msgstr ""
 
@@ -1579,12 +1542,12 @@ msgid "Remove from inline icons"
 msgstr ""
 
 #: dropins/share/templates/admin/share-icons.php:3
-#: lib/admin/updater/updater.php:322
+#: lib/admin/settings/dashboard/dashboard.php:74
 msgid "Active"
 msgstr ""
 
 #: dropins/share/templates/admin/share-icons.php:13
-#: lib/admin/updater/updater.php:312
+#: lib/admin/settings/dashboard/dashboard.php:64
 msgid "Inactive"
 msgstr ""
 
@@ -1665,7 +1628,7 @@ msgstr ""
 #: dropins/stream/stream.php:78
 #: dropins/stream/stream.php:79
 #: dropins/stream/stream.php:88
-#: dropins/stream/stream.php:196
+#: dropins/stream/stream.php:200
 msgid "Stream"
 msgstr ""
 
@@ -1686,8 +1649,8 @@ msgstr ""
 #: dropins/stream/stream.php:83
 #: dropins/stream/stream.php:84
 #: dropins/stream/stream.php:106
-#: dropins/stream/stream.php:285
-#: dropins/stream/stream.php:288
+#: dropins/stream/stream.php:289
+#: dropins/stream/stream.php:292
 msgid "View Stream"
 msgstr ""
 
@@ -1890,7 +1853,7 @@ msgstr ""
 msgid "Display the latest posts from your Stream in a beautiful widget."
 msgstr ""
 
-#: dropins/subtitle/subtitle.php:56
+#: dropins/subtitle/subtitle.php:58
 msgid "Add subtitle"
 msgstr ""
 
@@ -1962,12 +1925,28 @@ msgstr ""
 msgid "View your shopping cart"
 msgstr ""
 
-#: dropins/woocommerce/woocommerce.php:53
+#: dropins/woocommerce/woocommerce.php:59
 msgid "WooCommerce"
 msgstr ""
 
-#: dropins/woocommerce/woocommerce.php:116
+#: dropins/woocommerce/woocommerce.php:122
 msgid "<b>Remove</b> WooCommerce scripts and styles"
+msgstr ""
+
+#: lib/admin/admin.php:351
+msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
+msgstr ""
+
+#: lib/admin/admin.php:379
+msgid "Ready to update %s %2s?"
+msgstr ""
+
+#: lib/admin/admin.php:380
+msgid "Here are some resources to help you:"
+msgstr ""
+
+#: lib/admin/admin.php:384
+msgid "When in doubt, make a backup your website before proceeding."
 msgstr ""
 
 #: lib/admin/design/colors/colors-settings.php:2
@@ -2500,7 +2479,7 @@ msgid "Read More Text"
 msgstr ""
 
 #: lib/admin/design/loop/loop-settings.php:77
-#: lib/functions/build.php:338
+#: lib/functions/build.php:341
 msgid "Continue reading &rarr;"
 msgstr ""
 
@@ -2596,106 +2575,182 @@ msgstr ""
 msgid "Footer Title"
 msgstr ""
 
-#: lib/admin/settings/admin-page.php:10
-msgid "Account"
-msgstr ""
-
-#: lib/admin/settings/admin-page.php:11
+#: lib/admin/settings/admin-page.php:12
 #: lib/api/filters.php:122
 msgid "Docs"
 msgstr ""
 
-#: lib/admin/settings/admin-page.php:12
-msgid "Affiliates"
-msgstr ""
-
 #: lib/admin/settings/admin-page.php:13
-msgid "Forums"
+msgid "Get support"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:6
+#: lib/admin/settings/admin-page.php:14
+msgid "My account"
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:82
+msgid "Something went wrong. Please try to connect your license key again."
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:85
+msgid "Disabled"
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:86
+msgid "Your license key has been disabled. Please contact MD support for more information."
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:90
+msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:95
+msgid "Expired"
+msgstr ""
+
+#: lib/admin/settings/dashboard/dashboard.php:96
+msgid "Renew now (save 40%)."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:9
 #: lib/admin/settings/integrations/templates/integrations-settings.php:13
 msgid "Site Tools"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:11
+#: lib/admin/settings/dashboard/templates/admin-page.php:14
 msgid "CSS Manager"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:12
+#: lib/admin/settings/dashboard/templates/admin-page.php:15
 msgid "If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD's stylesheet file. For further optimization you can print your stylesheets inline to your site's %s.<br /><br />Note: if you combine your child theme styles you will need to resave the MD settings above to see any changes you make to the file afterwards."
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:14
+#: lib/admin/settings/dashboard/templates/admin-page.php:17
 msgid "Combine child theme CSS into %s"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:15
+#: lib/admin/settings/dashboard/templates/admin-page.php:18
 msgid "Print %s inline"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:22
+#: lib/admin/settings/dashboard/templates/admin-page.php:25
 msgid "404 Page ID"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:25
+#: lib/admin/settings/dashboard/templates/admin-page.php:28
 msgid "Success! You can <a href=\"%s\">edit your 404 page here</a>."
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:27
+#: lib/admin/settings/dashboard/templates/admin-page.php:30
 msgid "Create a custom 404 page by attaching a new <a href=\"%s\">Page ID</a> here."
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:33
+#: lib/admin/settings/dashboard/templates/admin-page.php:36
 msgid "Web Fonts"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:34
+#: lib/admin/settings/dashboard/templates/admin-page.php:37
 msgid "By default MD loads all Google and Typekit web fonts through a stylesheet and prefetch method. To <b>attempt</b> to improve font performance and fight off \"Flash of invisible text,\" enable the WebFont loader script here."
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:36
+#: lib/admin/settings/dashboard/templates/admin-page.php:39
 msgid "Enable WebFont Loader"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:43
-msgid "Clean <code>&lt;head&gt;</code> Tags"
-msgstr ""
-
-#: lib/admin/settings/dashboard/templates/admin-page.php:44
-msgid "By default, MD removes many unneeded scripts and tags from the %s (like emojis), and disables comment cookies for guests. To restore these features, enable this option."
-msgstr ""
-
 #: lib/admin/settings/dashboard/templates/admin-page.php:46
-msgid "<b>Remove</b> <code>block-library.css</code> style from head"
+msgid "Optimize WP"
 msgstr ""
 
 #: lib/admin/settings/dashboard/templates/admin-page.php:47
-msgid "<b>Remove</b> <code>/wp-json/</code> REST API from head"
-msgstr ""
-
-#: lib/admin/settings/dashboard/templates/admin-page.php:48
-msgid "<b>Remove</b> <code>wp-embed.js</code> script from footer"
+msgid "By default, MD removes many unneeded scripts and tags from the %s (like emojis), and disables comment cookies for guests. To restore these features, enable this option."
 msgstr ""
 
 #: lib/admin/settings/dashboard/templates/admin-page.php:49
+msgid "<b>Disable</b> Widgets blocks editor"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:50
+msgid "<b>Remove</b> <code>block-library.css</code> style from head"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:51
+msgid "<b>Remove</b> <code>/wp-json/</code> REST API from head"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:52
+msgid "<b>Remove</b> <code>wp-embed.js</code> script from footer"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/admin-page.php:53
 msgid "<b>Enable</b> emojis, comment cookie, and other outdated WP tags"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/admin-page.php:70
-msgid "What's new at the <b>MD forums</b> &rarr;"
+#: lib/admin/settings/dashboard/templates/update-fields.php:4
+msgid "Updates"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/license-key.php:3
-msgid "License Key"
+#: lib/admin/settings/dashboard/templates/update-fields.php:8
+#: templates/byline/badge.php:3
+msgid "New!"
 msgstr ""
 
-#: lib/admin/settings/dashboard/templates/license-key.php:12
-msgid "Enter/edit your license key"
+#: lib/admin/settings/dashboard/templates/update-fields.php:10
+msgid "Up to date"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:33
+#: lib/admin/settings/dashboard/templates/update-fields.php:58
+msgid "%s <span class=\"md-version-new\">%2s</span>"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:34
+msgid "NOTICE: You are about to update the Marketers Delight WordPress theme files. Any changes made directly to the MD parent theme will be erased. Your child theme files will always remain untouched."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:34
+#: lib/admin/settings/dashboard/templates/update-fields.php:59
+msgid "Upgrade now"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:59
+#: lib/admin/settings/dropins/admin-page.php:45
+msgid "NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:72
+msgid "Please wait upto 5 minutes to check again."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:75
+msgid "Check for updates"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:77
+msgid "Edit site license"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:82
+msgid "Enter MD license key"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:83
+msgid "Enter license key here..."
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:89
+msgid "Active license key"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:90
+msgid "NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?"
+msgstr ""
+
+#: lib/admin/settings/dashboard/templates/update-fields.php:90
+msgid "Deactivate site"
 msgstr ""
 
 #: lib/admin/settings/dropins/admin-page.php:3
-#: lib/admin/settings/dropins/dropins.php:64
+#: lib/admin/settings/dropins/dropins.php:31
 msgid "Drop-ins"
 msgstr ""
 
@@ -2727,35 +2782,39 @@ msgstr ""
 msgid "Inactive <span>(%s)</span>"
 msgstr ""
 
-#: lib/admin/settings/dropins/admin-page.php:47
+#: lib/admin/settings/dropins/admin-page.php:44
+msgid "There is a new version of <strong>%s</strong> available."
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:45
+msgid "Upgrade to <b>%s</b>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:62
+msgid "<b>Activate</b>"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:66
+msgid "Requires <b>%s</b> plugin"
+msgstr ""
+
+#: lib/admin/settings/dropins/admin-page.php:69
 msgid ""
 "You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\n"
 "and not all data will be saved. Do you want to proceed?"
 msgstr ""
 
-#: lib/admin/settings/dropins/admin-page.php:47
-#: lib/api/fields.php:607
+#: lib/admin/settings/dropins/admin-page.php:69
+#: lib/api/fields.php:608
 msgid "Delete"
 msgstr ""
 
-#: lib/admin/settings/dropins/admin-page.php:53
-msgid "<b>Activate</b>"
-msgstr ""
-
-#: lib/admin/settings/dropins/admin-page.php:57
-msgid "Requires <b>%s</b> plugin"
-msgstr ""
-
-#: lib/admin/settings/dropins/admin-page.php:68
+#: lib/admin/settings/dropins/admin-page.php:77
 msgid "<i>by</i> <a href=\"%s\" target=\"_blank\">%1s</a>"
 msgstr ""
 
-#: lib/admin/settings/dropins/admin-page.php:90
+#: lib/admin/settings/dropins/admin-page.php:100
 msgid "No Drop-ins found."
-msgstr ""
-
-#: lib/admin/settings/dropins/dropins.php:66
-msgid "Dropin-ins"
 msgstr ""
 
 #: lib/admin/settings/dropins/store.php:94
@@ -2878,70 +2937,6 @@ msgstr ""
 msgid "Email Services"
 msgstr ""
 
-#: lib/admin/updater/updater.php:81
-msgid "For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.<br /><b>Note:</b> It is strongly recommended you make a complete site and database backup before running this process."
-msgstr ""
-
-#: lib/admin/updater/updater.php:82
-msgid "Update now"
-msgstr ""
-
-#: lib/admin/updater/updater.php:84
-msgid "Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>..."
-msgstr ""
-
-#: lib/admin/updater/updater.php:148
-msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
-msgstr ""
-
-#: lib/admin/updater/updater.php:330
-msgid "Something went wrong. Please try to connect your license key again."
-msgstr ""
-
-#: lib/admin/updater/updater.php:333
-msgid "Disabled"
-msgstr ""
-
-#: lib/admin/updater/updater.php:334
-msgid "Your license key has been disabled. Please contact MD support for more information."
-msgstr ""
-
-#: lib/admin/updater/updater.php:338
-msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
-msgstr ""
-
-#: lib/admin/updater/updater.php:343
-msgid "Expired"
-msgstr ""
-
-#: lib/admin/updater/updater.php:344
-msgid "Renew now (save 40%)."
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:61
-msgid "Marketers Delight Upgrade"
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:61
-msgid "<b style=\"color:yellow\">Upgrade MD &rarr;</b>"
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:88
-msgid "Marketers Delight needs to upgrade your database for full compatibility with the newest version."
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:89
-msgid "Upgrade database &rarr;"
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:112
-msgid "Marketers Delight Upgrader"
-msgstr ""
-
-#: lib/admin/updater/upgrade/upgrade.php:114
-msgid "Your database is currently being upgraded to the latest version of Marketers Delight. Please do not leave this page until the upgrade process is complete."
-msgstr ""
-
 #: lib/api/design.php:361
 msgid "Primary"
 msgstr ""
@@ -2966,98 +2961,102 @@ msgstr ""
 msgid "Secondary Text"
 msgstr ""
 
+#: lib/api/design.php:372
+msgid "Links"
+msgstr ""
+
 #: lib/api/design.php:374
 msgid "Button Secondary"
 msgstr ""
 
-#: lib/api/fields.php:376
+#: lib/api/fields.php:377
 msgid "ID: %s"
 msgstr ""
 
-#: lib/api/fields.php:388
+#: lib/api/fields.php:389
 msgid "You are about to upload a new file. Do you want to proceed?"
 msgstr ""
 
-#: lib/api/fields.php:389
+#: lib/api/fields.php:390
 msgid "File successfully updated."
 msgstr ""
 
-#: lib/api/fields.php:475
+#: lib/api/fields.php:476
 msgid "No categories"
 msgstr ""
 
-#: lib/api/fields.php:499
+#: lib/api/fields.php:500
 msgid "Font Size"
 msgstr ""
 
-#: lib/api/fields.php:500
+#: lib/api/fields.php:501
 msgid "Line Height"
 msgstr ""
 
-#: lib/api/fields.php:504
+#: lib/api/fields.php:505
 msgid "Default Fonts"
 msgstr ""
 
-#: lib/api/fields.php:508
+#: lib/api/fields.php:509
 msgid "Google Fonts"
 msgstr ""
 
-#: lib/api/fields.php:514
+#: lib/api/fields.php:515
 msgid "TypeKit"
 msgstr ""
 
-#: lib/api/fields.php:538
+#: lib/api/fields.php:539
 msgid "Font Family"
 msgstr ""
 
-#: lib/api/fields.php:551
+#: lib/api/fields.php:552
 msgid "Font Weight"
 msgstr ""
 
-#: lib/api/fields.php:552
-#: lib/api/fields.php:561
+#: lib/api/fields.php:553
+#: lib/api/fields.php:562
 msgid "Select font weight..."
 msgstr ""
 
-#: lib/api/fields.php:560
+#: lib/api/fields.php:561
 msgid "Bold Text"
 msgstr ""
 
-#: lib/api/fields.php:602
-#: lib/api/fields.php:779
+#: lib/api/fields.php:603
+#: lib/api/fields.php:780
 msgid "New entry..."
 msgstr ""
 
-#: lib/api/fields.php:627
+#: lib/api/fields.php:628
 msgid "Save settings"
 msgstr ""
 
-#: lib/api/fields.php:648
-#: lib/api/fields.php:742
+#: lib/api/fields.php:649
+#: lib/api/fields.php:743
 msgid "Add New"
 msgstr ""
 
-#: lib/api/fields.php:663
+#: lib/api/fields.php:664
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: lib/api/fields.php:666
+#: lib/api/fields.php:667
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: lib/api/fields.php:669
+#: lib/api/fields.php:670
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: lib/api/fields.php:804
+#: lib/api/fields.php:805
 msgid "Preview image"
 msgstr ""
 
-#: lib/api/fields.php:810
+#: lib/api/fields.php:811
 msgid "Image Link"
 msgstr ""
 
-#: lib/api/fields.php:811
+#: lib/api/fields.php:812
 msgid "http://"
 msgstr ""
 
@@ -3254,7 +3253,7 @@ msgid "Medium"
 msgstr ""
 
 #: lib/api/icons.php:140
-#: lib/functions/template-functions.php:387
+#: lib/functions/template-functions.php:368
 msgid "Menu"
 msgstr ""
 
@@ -3354,6 +3353,14 @@ msgstr ""
 msgid "YouTube"
 msgstr ""
 
+#: lib/api/requests.php:380
+msgid "Sorry, you are not allowed to update drop-ins for this website."
+msgstr ""
+
+#: lib/api/requests.php:383
+msgid "Please select a dropin to update."
+msgstr ""
+
 #: lib/api/sanitize.php:132
 msgid "Content / Sidebar"
 msgstr ""
@@ -3399,39 +3406,39 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: lib/functions/build.php:426
+#: lib/functions/build.php:429
 msgid "To view this protected post, enter the password below:"
 msgstr ""
 
-#: lib/functions/build.php:427
+#: lib/functions/build.php:430
 msgid "Enter the password&hellip;"
 msgstr ""
 
-#: lib/functions/build.php:428
+#: lib/functions/build.php:431
 msgid "Get Access"
 msgstr ""
 
-#: lib/marketers-delight.php:242
+#: lib/marketers-delight.php:260
 msgid "Main Sidebar"
 msgstr ""
 
-#: lib/marketers-delight.php:243
+#: lib/marketers-delight.php:261
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: lib/marketers-delight.php:255
+#: lib/marketers-delight.php:273
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: lib/marketers-delight.php:266
+#: lib/marketers-delight.php:284
 msgid "Footer Copy"
 msgstr ""
 
-#: lib/marketers-delight.php:267
+#: lib/marketers-delight.php:285
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
 
-#: lib/marketers-delight.php:301
+#: lib/marketers-delight.php:319
 msgid "Twitter username (without @)"
 msgstr ""
 
@@ -3506,6 +3513,141 @@ msgstr ""
 msgid "Video Thumbnail"
 msgstr ""
 
+#: lib/wp/upgraders/dropins/dropin-upgrader-skin.php:78
+msgid "Go back to to Drop-ins Manager"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:34
+msgid "The dropin is at the latest version."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:35
+msgid "Update package not available."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:36
+msgid "Downloading update from %s&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:37
+msgid "Unpacking the update&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:38
+msgid "Removing the old version of the dropin&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:39
+msgid "Could not remove the old dropin."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:40
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:67
+msgid "Drop-in update failed."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:41
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:42
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:68
+msgid "Drop-in updated successfully."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:43
+msgid "Updating Drop-in %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:53
+msgid "Installation package not available."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:54
+msgid "Downloading installation package from %s&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:55
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:56
+msgid "Installing the drop-in&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:57
+msgid "Removing the current drop-in&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:58
+msgid "Could not remove the current drop-in."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:59
+msgid "The drop-in contains no files."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:60
+msgid "Drop-in installation failed."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:61
+msgid "Drop-in installed successfully."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:62
+msgid "Successfully installed the drop-in <strong>%1$s %2$s</strong>."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:66
+msgid "Updating the drop-in&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:72
+msgid "Downgrading the drop-in&#8230;"
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:73
+msgid "Drop-in downgrade failed."
+msgstr ""
+
+#: lib/wp/upgraders/dropins/dropin-upgrader.php:74
+msgid "Drop-in downgraded successfully."
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/md-upgrader.php:99
+msgid "For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.<br /><b>Note:</b> It is strongly recommended you make a complete site and database backup before running this process."
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/md-upgrader.php:100
+msgid "Update now"
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/md-upgrader.php:102
+msgid "Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>..."
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:61
+msgid "Marketers Delight Upgrade"
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:61
+msgid "<b style=\"color:yellow\">Upgrade MD &rarr;</b>"
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:88
+msgid "Marketers Delight needs to upgrade your database for full compatibility with the newest version."
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:89
+msgid "Upgrade database &rarr;"
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:112
+msgid "Marketers Delight Upgrader"
+msgstr ""
+
+#: lib/wp/upgraders/md-upgrader/upgrade.php:114
+msgid "Your database is currently being upgraded to the latest version of Marketers Delight. Please do not leave this page until the upgrade process is complete."
+msgstr ""
+
 #: lib/wp/widgets/accordion.php:17
 msgid "MD &rarr; Accordion Nav"
 msgstr ""
@@ -3526,6 +3668,30 @@ msgstr ""
 msgid "Posts per category"
 msgstr ""
 
+#: lib/wp/widgets/admin/content-spotlight.php:2
+msgid "Outer Widget Title"
+msgstr ""
+
+#: lib/wp/widgets/admin/content-spotlight.php:7
+msgid "Box Intro"
+msgstr ""
+
+#: lib/wp/widgets/admin/content-spotlight.php:12
+msgid "Box Title"
+msgstr ""
+
+#: lib/wp/widgets/admin/content-spotlight.php:23
+msgid "Open link in new window"
+msgstr ""
+
+#: lib/wp/widgets/admin/quote.php:8
+msgid "Quoted Text"
+msgstr ""
+
+#: lib/wp/widgets/admin/quote.php:14
+msgid "Quote Author"
+msgstr ""
+
 #: lib/wp/widgets/content-spotlight.php:6
 msgid "MD &rarr; Content Spotlight"
 msgstr ""
@@ -3540,30 +3706,6 @@ msgstr ""
 
 #: lib/wp/widgets/quote.php:7
 msgid "Add a testimonial/quote to any designated widget area!"
-msgstr ""
-
-#: lib/wp/widgets/templates/content-spotlight.php:2
-msgid "Outer Widget Title"
-msgstr ""
-
-#: lib/wp/widgets/templates/content-spotlight.php:7
-msgid "Box Intro"
-msgstr ""
-
-#: lib/wp/widgets/templates/content-spotlight.php:12
-msgid "Box Title"
-msgstr ""
-
-#: lib/wp/widgets/templates/content-spotlight.php:23
-msgid "Open link in new window"
-msgstr ""
-
-#: lib/wp/widgets/templates/quote.php:8
-msgid "Quoted Text"
-msgstr ""
-
-#: lib/wp/widgets/templates/quote.php:14
-msgid "Quote Author"
 msgstr ""
 
 #: lib/wp/widgets/text-image.php:16
@@ -3606,17 +3748,13 @@ msgstr ""
 msgid "Download now"
 msgstr ""
 
-#: templates/breadcrumbs.php:23
+#: templates/breadcrumbs.php:24
 msgid "Search results"
 msgstr ""
 
-#: templates/breadcrumbs.php:29
+#: templates/breadcrumbs.php:30
 #: templates/content-item-404.php:5
 msgid "Nothing Found"
-msgstr ""
-
-#: templates/byline/badge.php:3
-msgid "New!"
 msgstr ""
 
 #: templates/byline/comments.php:2
