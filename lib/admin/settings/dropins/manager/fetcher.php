@@ -158,7 +158,6 @@ function md__register_required_plugins() {
 	);
 
 	tgmpa( $dropins, $config );
-	//var_dump($dropins); die();
 }
 
 function external_dropin_list() {
@@ -169,8 +168,6 @@ function external_dropin_list() {
 	$response = json_decode( $response['body'], true, 4 );
 	$dropins = [];
 	$response = $response['dropins'];
-
-	//var_dump( $response ); die();
 
 	foreach( $response as $key => $value) {
 		if( $key == 'error' ) {
@@ -186,9 +183,6 @@ function external_dropin_list() {
 			'version'            => $value['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher. If the plugin version is higher than the plugin version installed, the user will be notified to update the plugin.
 			'external_url'       => $value['package'], // If set, overrides default API URL and points to an external URL.
 		];
-
-		
-
 	}
 
 	return $dropins;
