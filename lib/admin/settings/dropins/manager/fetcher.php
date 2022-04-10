@@ -184,7 +184,7 @@ function external_dropin_list() {
 			'external_url'       => $value['package'], // If set, overrides default API URL and points to an external URL.
 		];
 	}
-
+	//var_dump($dropins); die;
 	return $dropins;
 }
 

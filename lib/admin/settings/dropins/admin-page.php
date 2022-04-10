@@ -23,10 +23,38 @@
 				<?php if ( md_get_dropins( 'active' ) ) : ?>
 					<a href="#" class="md-tab" data-md-tab="dropin-enabled"><?php echo sprintf( __( 'Active <span>(%s)</span>', 'md' ), count( md_get_dropins( 'active' ) ) ); ?></a>
 					<a href="#" class="md-tab" data-md-tab="dropin-inactive"><?php echo sprintf( __( 'Inactive <span>(%s)</span>', 'md' ), count( md_get_dropins( 'inactive' ) ) ); ?></a>
+					<a href="#" class="md-tab" data-md-tab="dropin-list"><?php echo sprintf( __( 'To Install <span>(%s)</span>', 'md' ), count( external_dropin_list() ) ); ?></a>
 				<?php endif; ?>
 			</h3>
 		</div>
-		<?php if ( ! empty( $installed ) ) : ?>
+		<div class="md-dropins columns-half columns-2 column-flex mb-half md-sep-small">
+		<?php if ( ! empty( $installed ) ) : 
+	
+			foreach ( $dropins_list as $dropin => $fields ) :
+				$name = $fields['name'];
+				$slug = $fields['slug'];
+				$version = $fields['version'];
+				$url= $fields['external_url'];
+				?>
+			
+				<div class="col">
+					<div class="md-dropin">
+						
+					<h3 class="small-title"><?php echo $name; ?></h3>
+
+						<div class="md-dropin-byline byline">
+							<span class="byline-item"><i class="md-icon-star"></i> <?php echo $version; ?></span>
+							<span class="byline-item"><i class="md-icon-download"></i> <span id="download_81768_total">35</span></span>
+							<a href="<? echo $url ?>" class="button-download gray button can-download" data-post-id="81768">Download <i class="md-icon-angle-down ml-small"></i></a>
+						</div>
+
+					</div>
+
+				</div>	
+									
+
+			<?php endforeach; ?>
+			</div>
 			<?php foreach ( $installed as $dropin => $fields ) :
 				$is_enabled = md_setting( array( 'dropins', 'installed', $dropin, 'status', 'enable' ) ) ? true : false;
 				$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';

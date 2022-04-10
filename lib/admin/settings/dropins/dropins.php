@@ -98,6 +98,7 @@ class md_dropins extends md_api {
 	 */
 
 	public function admin_page() {
+		$dropins_list = external_dropin_list();
 		$installed = md_setting( array( 'dropins', 'installed' ), array() );
 		$updates = md_setting( array( 'license', 'updates', 'dropins' ) );
 		ksort( $installed );
