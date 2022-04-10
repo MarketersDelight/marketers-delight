@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
-define( 'MD_VERSION', '5.4' );
+define( 'MD_VERSION', '5.4.1' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );

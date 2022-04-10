@@ -1,9 +1,0 @@
-{
-	"name" : "Subtitle",
-	"author" : "Alex, Kolakube",
-	"version" : "1.0.1",
-	"description" : "Adds a new Subtitle field beneath post editor title. Edit post > Subtitle in Block Editor.",
-	"dropin_url" : "https://marketersdelight.com/dropins/add-subtitles-to-wordpress-posts-and-pages/",
-	"author_url" : "https://marketersdelight.com/",
-	"icon" : "dashicons-editor-paste-text"
-}

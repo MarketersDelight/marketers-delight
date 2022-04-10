@@ -138,7 +138,8 @@
 					'type' => 'checkbox',
 					'options' => array(
 						'repeat' => __( 'Use background repeat', 'md' ),
-						'text_color' => __( 'Show dark text', 'md' )
+						'text_color' => __( 'Show dark text', 'md' ),
+						'remove_caption' => __( 'Remove image captions', 'md' )
 					)
 				) ); ?>
 			</div>

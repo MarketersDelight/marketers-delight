@@ -134,7 +134,10 @@ function md_has_headline() {
  */
 
 function md_has_byline() {
-	if ( ! is_page() && ! is_404() && ! md_post_meta( array( 'layout', 'content', 'byline' ) ) )
+	$add_byline = md_post_meta( array( 'layout', 'content', 'add_byline' ) );
+	$remove_byline = md_post_meta( array( 'layout', 'content', 'byline' ) );
+
+	if ( ( ! is_page() && ! is_404() && ! $remove_byline ) || ( is_page() && $add_byline ) )
 		return true;
 }
 

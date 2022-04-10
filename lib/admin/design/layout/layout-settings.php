@@ -85,7 +85,7 @@
 					'headline' => __( 'Remove <b>Headline</b>', 'md' )
 				)
 			) ); ?>
-			<?php if ( $screen->post_type != 'page' ) : ?>
+			<?php if ( $screen->post_type !== 'page' ) : ?>
 				<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
 					<?php $this->fields->field( 'content', array(
 						'type' => 'checkbox',
@@ -109,6 +109,15 @@
 						)
 					) ); ?>
 				<?php endif; ?>
+			<?php else : ?>
+				<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
+					<?php $this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'add_byline' => __( 'Add <b>Byline</b>', 'md' ),
+						)
+					) ); ?>
+				</div>
 			<?php endif; ?>
 		<?php endif; ?>
 		<?php $this->fields->field( 'content_box', array(

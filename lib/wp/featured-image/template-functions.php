@@ -95,7 +95,8 @@ function md_has_inline_featured_image() {
 
 function md_featured_image_caption() {
 	$caption = get_the_post_thumbnail_caption();
-	if ( ! empty( $caption ) )
+	$global = md_setting( array( 'content', 'featured_image', 'styles', 'remove_caption' ) );
+	if ( ! empty( $caption ) && empty( $global ) )
 		echo '<p class="featured-image-caption">' . $caption . '</p>';
 }
 

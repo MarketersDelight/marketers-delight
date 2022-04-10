@@ -348,7 +348,7 @@ function md_read_more_text() {
  */
 
 function md_byline() {
-	if ( md_has_byline() && ! is_page() )
+	if ( md_has_byline() )
 		md_template( 'byline/byline' );
 }
 

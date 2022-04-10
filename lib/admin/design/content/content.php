@@ -69,7 +69,7 @@ class md_content extends md_api {
 						),
 						'styles' => array(
 							'type' => 'checkbox',
-							'options' => array( 'repeat', 'text_color' )
+							'options' => array( 'repeat', 'text_color', 'remove_caption' )
 						)
 					),
 					'byline' => array(
