@@ -219,14 +219,26 @@ class md_files {
 	}
 
 	/**
+	 * Download External Dropins.
+	 * 
+	 * @since 5.5
+	 */
+	public function download_dropin(){
+
+	}
+
+
+	
+
+	/**
 	 * Create blank index file if not found.
 	 *
 	 * @since 5.3
 	 */
-
 	public function create_protection_file( $upload_dir = MD_DROPINS_DIR ) {
 		if ( ! file_exists( "$upload_dir/index.php" ) && wp_is_writable( $upload_dir ) )
 			file_put_contents( "$upload_dir/index.php", "<?php\n// Silence is golden." );
 	}
 
 }
+

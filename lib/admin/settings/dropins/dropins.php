@@ -18,7 +18,7 @@ class md_dropins extends md_api {
 	 */
 	
 	public function includes() {
-//		require_once( 'store.php' );
+		require_once( 'manager/fetcher.php' );
 	}
 
 	/**
