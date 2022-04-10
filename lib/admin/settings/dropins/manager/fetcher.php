@@ -235,6 +235,7 @@ function md__register_required_plugins() {
 	);
 
 	tgmpa( $dropins, $config );
+	//var_dump($dropins); die();
 }
 
 function external_dropin_list() {
