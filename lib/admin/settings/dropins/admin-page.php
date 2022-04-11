@@ -1,3 +1,5 @@
+<?php $this->____admin_page_before(); ?>
+
 <div class="md-dropins md-content-wrap-med">
 	<h2 class="md-title md-sep-small">
 		<?php echo __( 'Drop-ins', 'md' ); ?>

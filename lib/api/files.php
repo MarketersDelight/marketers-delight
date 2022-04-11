@@ -219,18 +219,6 @@ class md_files {
 	}
 
 	/**
-	 * Download External Dropins.
-	 * 
-	 * @since 5.5
-	 */
-	public function download_dropin(){
-
-	}
-
-
-	
-
-	/**
 	 * Create blank index file if not found.
 	 *
 	 * @since 5.3

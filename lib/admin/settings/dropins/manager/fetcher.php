@@ -160,14 +160,48 @@ function md__register_required_plugins() {
 	tgmpa( $dropins, $config );
 }
 
+function download_dropin_url( $dropin ) {
+	if (empty($dropin)) {
+		return;
+	}
+
+	return $dropin['external_url'];
+}
+
+function download_dropin_package( $dropin ) {
+	if (empty($dropin)) {
+		return;
+	}
+
+	// If the function it's not available, require it.
+	if ( ! function_exists( 'download_url' ) ) {
+		require_once ABSPATH . 'wp-admin/includes/file.php';
+	}
+	WP_Filesystem();
+	global $wp_filesystem;
+
+	$tmp_file = download_url( download_dropin_url($dropin) );
+	
+	// Sets file final destination.
+	$filepath = MD_INSTALLED_DROPINS . '/' . $dropin['slug'] . '.zip';
+
+	copy( $tmp_file, $filepath );
+	@unlink( $tmp_file );
+
+	unzip_file( $filepath, MD_INSTALLED_DROPINS . '/' . $dropin['slug'] );
+
+	// Copies the file to the final destination and deletes temporary file.
+	
+}
+
 function external_dropin_list() {
 	$license = md_setting( array( 'settings', 'license_key' ) );
 
-	$json = "https://marketersdelight.com/edd-api/v2/?edd_action=get_version&item_id=63289&license=" . $license;
-	$response = wp_remote_get( $json );
-	$response = json_decode( $response['body'], true, 4 );
-	$dropins = [];
+	$body = wp_remote_retrieve_body( wp_remote_get( 'https://marketersdelight.com/edd-api/v2/?edd_action=get_version&item_id=63289&license=' . $license ) );
+
+	$response = json_decode( $body, true, 4 );
 	$response = $response['dropins'];
+	$dropins = [];
 
 	foreach( $response as $key => $value) {
 		if( $key == 'error' ) {
