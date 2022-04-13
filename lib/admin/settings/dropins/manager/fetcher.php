@@ -168,6 +168,7 @@ function download_dropin_url( $dropin ) {
 	return $dropin['external_url'];
 }
 
+
 function download_dropin_package( $dropin ) {
 	if (empty($dropin)) {
 		return;
