@@ -16,7 +16,7 @@ input, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
-	padding: 16px;
+	padding: <?php echo $half; ?>px;
 }
 
 input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="password"], textarea {

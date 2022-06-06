@@ -3,7 +3,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Define MD constants
-define( 'MD_VERSION', '5.4.1' );
+define( 'MD_VERSION', '5.5' );
 define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -35,7 +35,7 @@ final class marketers_delight {
 		$this->includes();
 		add_action( 'init', array( $this, 'wp_init' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
-		add_action( 'after_switch_theme', 'md_compile_css' );
+		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
 		add_action( 'wp_head', array( $this, 'head_priority' ), 5 );
@@ -60,13 +60,13 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/fields.php' );
 		require_once( MD_DIR . 'lib/api/icons.php' );
 		require_once( MD_DIR . 'lib/api/css.php' );
+		require_once( MD_DIR . 'lib/api/js.php' );
 		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
 		require_once( MD_DIR . 'lib/functions/template-functions.php' );
 		require_once( MD_DIR . 'lib/functions/design-functions.php' );
 		require_once( MD_DIR . 'lib/functions/dropin-functions.php' );
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
-		require_once( MD_DIR . 'lib/functions/deprecated.php' );
 		require_once( MD_DIR . 'lib/api/requests.php' );
 		require_once( MD_DIR . 'lib/api/api.php' );
 		if ( is_admin() )
@@ -84,6 +84,7 @@ final class marketers_delight {
 			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
 		require_once( MD_DIR . 'lib/wp/featured-image/featured-image.php' );
 		require_once( MD_DIR . 'lib/wp/featured-video/featured-video.php' );
+		require_once( MD_DIR . 'lib/functions/deprecated.php' );
 	}
 
 	/**
@@ -169,10 +170,16 @@ final class marketers_delight {
 	 */
 
 	public function wp_init() {
-		$this->activate_dropin();
+		if ( is_admin() )
+			$this->activate_dropin();
 
-		if ( isset( $_GET['md'] ) && $_GET['md'] == 'compile_css' && current_user_can( 'administrator' ) )
-			md_compile_css();
+		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) )
+			if ( $_GET['md'] == 'compile' )
+				md_compile();
+			elseif ( $_GET['md'] == 'compile_css' )
+				md_compile_css();
+			elseif ( $_GET['md'] == 'compile_js' )
+				md_compile_js();
 	}
 
 	/**
@@ -181,7 +188,14 @@ final class marketers_delight {
 	 * @since 4.0
 	 */
 
-	public function enqueue() {		
+	public function enqueue() {
+		
+		
+			md_compile();
+		
+		
+		
+		
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
@@ -207,8 +221,11 @@ final class marketers_delight {
 			wp_enqueue_script( 'comment-reply' );
 
 		// Dequeue Blocks Library if necessary
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) )
+		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
+		    global $wp_styles;
+		    $wp_styles->remove('global-styles');
 			wp_dequeue_style( 'wp-block-library' );
+		}
 
 		// Load stupid legacy MailerLite script
 		$data = md_setting( array( 'integrations' ) );

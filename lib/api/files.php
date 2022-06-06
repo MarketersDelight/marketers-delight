@@ -193,7 +193,7 @@ class md_files {
 		unset( $option['dropins']['installed'][$dropin_id] );
 		unset( $option['license']['updates']['dropins']["$dropin_id/$dropin_id.php"] );
 		update_option( 'marketers_delight', $option );
-		md_compile_css();
+		md_compile();
 	}
 
 	/**

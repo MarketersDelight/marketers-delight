@@ -86,6 +86,10 @@ function md_hook_content_item() {
 	do_action( 'md_hook_content_item', 'content' );
 }
 
+function md_hook_before_the_content() {
+	do_action( 'md_hook_before_the_content', '' );
+}
+
 function md_hook_headline_top() {
 	do_action( 'md_hook_headline_top' );
 }
@@ -104,6 +108,10 @@ function md_hook_after_headline() {
 
 function md_hook_after_featured_image() {
 	do_action( 'md_hook_after_featured_image' );
+}
+
+function md_hook_featured_image_bottom() {
+	do_action( 'md_hook_featured_image_bottom' );
 }
 
 function md_hook_content_item_text_top() {

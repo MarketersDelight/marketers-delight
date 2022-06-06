@@ -1,4 +1,8 @@
-<?php if ( is_category() || is_tax() ) :
+<?php if ( has_action( 'md_archives_title' ) ) : ?>
+
+	<?php do_action( 'md_archives_title' ); ?>
+
+<?php elseif ( is_category() || is_tax() ) :
 	$position = md_term_meta( array( 'featured_image', 'position' ) );
 	$image = md_term_meta( array( 'featured_image', 'image', 'url' ) );
 	$classes = ! empty( $position ) ? ' ' . md_headline_classes() : '';

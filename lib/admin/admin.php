@@ -33,7 +33,8 @@ class md_admin {
 
 	public function includes() {
 		require_once( 'settings/dashboard/dashboard.php' );
-		require_once( 'design/design.php' );
+		foreach ( array( 'colors', 'typography', 'icons', 'layout', 'header', 'content', 'loop', 'sidebars' ) as $file )
+			require_once( "settings/{$file}/{$file}.php" );
 		require_once( 'settings/dropins/dropins.php' );
 		require_once( 'settings/integrations/integrations.php' );
 		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/md-upgrader.php' );
@@ -52,7 +53,7 @@ class md_admin {
 		$this->files = new md_files;
 		$this->requests = new md_requests;
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
-		add_action( 'wp_update_nav_menu', 'md_compile_css' );
+		add_action( 'wp_update_nav_menu', 'md_compile' );
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
@@ -232,7 +233,7 @@ class md_admin {
 			$priority = isset( $fields['priority'] ) ? $fields['priority'] : 'default';
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
 			foreach ( $post_types as $post_type ) {
-				if ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) )
+				if ( isset( $fields['hide'] ) || ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) )
 					continue;
 				add_meta_box( $fields['id'], $fields['name'], array( $this, 'meta_box' ), $post_type, $context, $priority, array(
 					'function_callback' => $callback

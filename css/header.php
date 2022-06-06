@@ -73,12 +73,12 @@
 	display: inline-block;
 	font-size: 25px;
 	line-height: 1;
+	position: relative;
+	vertical-align: middle;
 }
 
 .header-trigger:before { font-family: 'md-icon'; }
-
 .header-menu-trigger:before { content: '\e815'; }
-
 .has-mobile-menu .header-menu-trigger:before { content: '\e810'; }
 
 /* MENU */
@@ -87,18 +87,9 @@
 
 .header a:hover { color: <?php echo $colors['header']['menu']['hover']; ?>; }
 
-.menu-header > .menu-item.current-menu-item > a { color: <?php echo $colors['header']['menu']['active']; ?>; }
-
-.menu-header .menu-item.button a {
-	padding-left: <?php echo $single; ?>px;
-	padding-right: <?php echo $single; ?>px;
-}
-
-.header .button, .header .button:hover, .menu-header > .current-menu-item.button > a { color: #fff; }
-
 /* QUERIES */
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 700px) {
 	.header {
 		padding-bottom: <?php echo $header['spacing_bottom']['desktop']; ?>px;
 		padding-top: <?php echo $header['spacing_top']['desktop']; ?>px;
@@ -112,23 +103,10 @@
 		vertical-align: middle;
 	}
 	.header-aside { text-align: right; }
-	.header-menu { display: inline-block; }
-	.header-menu-trigger { display: none; }
 	.logo {
 		font-size: <?php echo $typography['site_title']['font_size']['desktop']; ?>px;
 		line-height: <?php echo $typography['site_title']['line_height']['desktop'] . 'px'; ?>;
 	}
-	.menu-header .menu-item:not(.button):last-child a { padding-right: 0; }
-	.menu-header > .menu-item > a {
-		padding-left: <?php echo $header['menu']['spacing_lr']; ?>px;
-		padding-right: <?php echo $header['menu']['spacing_lr']; ?>px;
-	}
-	.menu-header > .menu-item-has-children > a { padding-right: 26px; }
-	.menu-header .sub-menu { background-color: <?php echo $colors['header']['submenu']['bg_color']; ?>; }
-	.menu-header .sub-menu .sub-menu { right: <?php echo ( $single * 9 ); ?>px; }
-	.menu-header .sub-menu > .menu-item-has-children > a { padding-left: 33px; }
-	.menu-header .sub-menu a { color: <?php echo $colors['header']['submenu']['links']; ?>; }
-	.menu-header .sub-menu a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
@@ -138,7 +116,7 @@
 	}
 }
 
-@media all and (max-width: 900px) {
+@media all and (max-width: 700px) {
 	.header {
 		<?php if ( ! empty( $typography['header']['font_size']['tablet'] ) ) : ?>
 			font-size: <?php echo $typography['header']['font_size']['tablet']; ?>px;
@@ -166,26 +144,6 @@
 		position: absolute;
 			top: 0;
 			right: <?php echo $half; ?>px;
-	}
-	.header-menu {
-		display: none;
-		margin-top: <?php echo $half; ?>px;
-	}
-	.has-mobile-menu .header-menu { display: block; }
-	.menu-header .sub-menu {
-		border-left: 1px solid rgba(0, 0, 0, 0.15);
-		margin-left: <?php echo $small; ?>px;
-	}
-	.menu-header .sub-menu .sub-menu { margin-left: <?php echo $half; ?>px; }
-	.menu-header .menu-item-has-children > a { padding-bottom: <?php echo $half; ?>px; }
-	.menu-header .menu-item a, .menu .current-menu-item.menu-item a {
-		padding-bottom: <?php echo $half; ?>px;
-		padding-top: <?php echo $half; ?>px;
-	}
-	.sub-menu .menu-item a { padding: <?php echo $half; ?>px; }
-	.menu-item.button {
-		padding: <?php echo $half; ?>px 0;
-		text-align: center;
 	}
 }
 

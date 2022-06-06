@@ -404,7 +404,7 @@ class md_upgrade_utilities {
 		delete_option( 'md_license' );
 		delete_option( 'md_integrations' );
 		delete_option( 'md_popups_edit' );
-		md_compile_css();
+		md_compile();
 	}
 
 }

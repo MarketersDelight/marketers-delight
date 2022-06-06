@@ -55,7 +55,7 @@ class Dropin_Upgrader_Skin extends WP_Upgrader_Skin {
 
 		unset( $option['license']['updates']['dropins'][$dropin_info] );
 		update_option( 'marketers_delight', $option );
-		md_compile_css();
+		md_compile();
 
 		// Back to WP processors
 

@@ -50,7 +50,7 @@ class md_upgrader {
 				$option['version'] = MD_VERSION;
 				update_option( 'marketers_delight', $option );
 			}
-			md_compile_css();
+			md_compile();
 		}
 	}
 

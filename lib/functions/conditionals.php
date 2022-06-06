@@ -4,6 +4,16 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Checks if page template is active.
+ *
+ * @since 4.9.4
+ */
+
+function md_filter_template() {
+	return apply_filters( 'md_filter_has_template', true );
+}
+
+/**
  * Checks if logo is enabled.
  *
  * @since 4.1
@@ -66,17 +76,33 @@ function md_has_menu( $name = null ) {
  */
 
 function md_has_main_menu() {
+	if ( ! has_nav_menu( 'main' ) )
+		return;
+
 	$is_tax = is_category() || is_tax() ? true : false;
+
 	if ( $is_tax )
 		$single = md_term_meta( array( 'layout', 'main_menu' ) );
 	else
 		$single = md_post_meta( array( 'layout', 'main_menu' ) );
+
 	$single_remove = isset( $single['remove'] ) ? $single['remove'] : '';
-	if ( has_nav_menu( 'main' ) ) {
-		if ( ( is_singular() || $is_tax ) && ! empty( $single_remove ) )
-			return false;
-		return apply_filters( 'md_filter_has_main_menu', true );
-	}
+
+	if ( ! empty( $single_remove ) )
+		return;
+
+	return apply_filters( 'md_filter_has_main_menu', true );
+}
+
+/**
+ * Checks if header is enabled.
+ *
+ * @since 4.1
+ */
+
+function md_has_header() {
+	if ( ! md_meta( array( 'layout', 'header', 'remove' ) ) && ( md_has_logo() || md_has_menu() ) )
+		return apply_filters( 'md_filter_has_header', true );
 }
 
 /**

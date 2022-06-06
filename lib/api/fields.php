@@ -258,7 +258,7 @@ class md_fields {
 	 */
 
 	public function checkbox( $name, $id, $option, $args ) { ?>
-		<div class="md-checkboxes<?php echo isset( $args['multi'] ) ? ' md-multi-checkbox' : ''; ?>">
+		<div class="md-checkboxes<?php echo ( isset( $args['multi'] ) ? ' md-multi-checkbox' : '' ) . ( isset( $args['inline'] ) ? ' md-inline-checkbox' : '' ); ?>">
 			<?php foreach ( $args['options'] as $val => $label ) :
 				$nameval = esc_attr( "{$name}[$val]" );
 				$idval = esc_attr( "{$id}_$val" );
@@ -299,14 +299,15 @@ class md_fields {
 
 	public function select( $name, $id, $option, $args ) {
 		$classes = isset( $args['classes'] ) ? ' class="' . $args['classes'] . '"' : '';
+		$style = isset( $args['style'] ) ? ' style="' . esc_attr( $args['style'] ) . '"' : '';
 	?>
-		<select name="<?php echo $name; ?>" id="<?php echo $id; ?>"<?php echo $classes; ?>>
+		<select name="<?php echo $name; ?>" id="<?php echo $id; ?>"<?php echo $classes; ?><?php echo $style; ?>>
 			<?php if ( isset( $args['empty_label'] ) ) : ?>
 				<option value=""><?php echo esc_html( $args['empty_label'] ); ?></option>
 			<?php endif; ?>
 			<?php if ( isset( $args['optgroup'] ) ) : ?>
 				<?php foreach ( $args['options'] as $group => $items ) : ?>
-					<optgroup label="<?php echo esc_html( ucwords( $group ) ); ?>">
+					<optgroup label="<?php echo esc_html( ucwords( str_replace( '_', ' ', $group ) ) ); ?>">
 					<?php foreach ( $items as $list => $fields ) : ?>
 						<option value="<?php echo esc_attr( $list ); ?>"<?php echo selected( $option, $list, false ); ?>><?php echo esc_html( $fields['name'] ); ?></option>
 					<?php endforeach; ?>
@@ -355,9 +356,10 @@ class md_fields {
 		$upload_action = isset( $args['upload_action'] ) ? $args['upload_action'] : '';
 		$accepts = isset( $args['accept'] ) ? $args['accept'] : '';
 		$accept = ! empty( $accepts ) ? " accept=\"$accepts\"" : '';
+		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';
 	?>	
 		<?php if ( $type == 'media' ) : ?>
-			<div class="md-upload md-upload-<?php echo $type; ?><?php echo ! empty( $upload_url ) ? ' has-upload' : ''; ?>">
+			<div class="md-upload md-upload-<?php echo $type; ?><?php echo ! empty( $upload_url ) ? ' has-upload' : ''; ?><?php echo esc_attr( $classes ); ?>">
 				<div class="md-uploader">
 					<div class="md-upload-preview md-upload-add">
 						<div class="md-upload-previewer">
@@ -631,7 +633,7 @@ class md_fields {
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields )
 			$admin_tabs[] = "md_$admin_page";
 		if ( isset( $_GET['page'] ) && ( $_GET['page'] == $this->_id || in_array( $this->_id, $admin_tabs ) ) && isset( $_GET['settings-updated'] ) ) {
-			md_compile_css( true ); // heh
+			md_compile( true ); // heh
 			flush_rewrite_rules();
 		}
 	?>

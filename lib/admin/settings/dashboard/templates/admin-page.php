@@ -44,13 +44,12 @@
 						<?php $this->fields->field( 'head', array(
 							'type' => 'checkbox',
 							'label' => __( 'Optimize WP', 'md' ),
-							'description' => sprintf( __( 'By default, MD removes many unneeded scripts and tags from the %s (like emojis), and disables comment cookies for guests. To restore these features, enable this option.', 'md' ), '<code>&lt;head&gt;</code>' ),
 							'options' => array(
 								'widgets' => __( '<b>Disable</b> Widgets blocks editor', 'md' ),
-								'blocks' => __( '<b>Remove</b> <code>block-library.css</code> style from head', 'md' ),
-								'wpjson' => __( '<b>Remove</b> <code>/wp-json/</code> REST API from head', 'md' ),
-								'oembed' => __( '<b>Remove</b> <code>wp-embed.js</code> script from footer', 'md' ),
-								'optimize' => __( '<b>Enable</b> emojis, comment cookie, and other outdated WP tags', 'md' )
+								'blocks' => __( '<code>&lt;head&gt;</code> <b>Remove</b> <code>block-library.css</code> and block inline styles', 'md' ),
+								'wpjson' => __( '<code>&lt;head&gt;</code> <b>Remove</b> <code>/wp-json/</code> REST API', 'md' ),
+								'optimize' => __( '<code>&lt;head&gt;</code> <b>Restore</b> all default <code>wp_head</code> tags', 'md' ),
+								'oembed' => __( '<code>&lt;/body&gt;</code> <b>Remove</b> <code>wp-embed.js</code> script', 'md' )
 							)
 						) ); ?>
 					</div>

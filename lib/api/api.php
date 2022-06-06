@@ -48,11 +48,17 @@ class md_api {
 
 		// Print dynamic CSS to master stylesheet
 
-		if ( method_exists( $this, 'css' ) )
+		if ( method_exists( $this, 'css' ) ) #since 4.9
 			add_filter( 'md_dropins_css_templates', array( $this, 'css' ) );
 
 		if ( method_exists( $this, 'css_data' ) )
 			add_filter( 'md_filter_css_values', array( $this, 'css_data' ) );
+
+		if ( method_exists( $this, 'js' ) ) #since 5.4.2
+			add_filter( 'md_js_templates', array( $this, 'js' ) ); 
+
+		if ( method_exists( $this, 'onscroll' ) ) #since 5.4.2
+			add_filter( 'md_js_onscroll', array( $this, 'onscroll' ) );
 
 		// Utilities
 
@@ -118,7 +124,7 @@ class md_api {
 
 			// Scripts
 			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue' ) );
-			add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ) );
+			add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ), 100 );
 		}
 
 	}

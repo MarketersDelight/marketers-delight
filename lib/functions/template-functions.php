@@ -116,6 +116,57 @@ function md_css( $file, $path = null, $include = null ) {
 }
 
 /**
+ * Call this function to load JS template from child theme
+ * or use default templates.
+ *
+ * @since 5.4.2
+ */
+
+function md_js( $file, $path = null, $include = null ) {
+	$dir = $template_path = '';
+	$directory = MD_DIR;
+
+	if ( isset( $path ) && is_string( $path ) ) {
+		$dir = $file;
+		$file = $path;
+	}
+
+	if ( ! empty( $dir ) ) {
+		$parts = explode( '/', $file );
+		$file = $parts[0];
+		$parts_keys = array_keys( $parts );
+		$file_key = end( $parts_keys );
+	}
+
+	$template = locate_template( "js/$file.php" );
+
+	if ( ! $template ) {
+		foreach ( $parts as $part_key => $part )
+			if ( $part_key != $file_key )
+				$template_path .= "$part/";
+			else
+				$template_path .= $part;
+
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
+		}
+
+		$template = "{$directory}$dir/$template_path";
+	}
+
+	if ( file_exists( "$template.php" ) )
+		$template .= '.php';
+	elseif ( file_exists( "$template.js" ) )
+		$template .= '.js';
+
+	if ( ( isset( $path ) && ! is_string( $path ) ) || isset( $include ) )
+		return $template;
+
+	return load_template( $template, false );
+}
+
+/**
  * Pull data from the Marketers Delight options array. For
  * best performance, always pull MD settings from here.
  *
@@ -343,6 +394,17 @@ function md_js_object( $args ) {
 }
 
 /**
+ * Compile MD CSS + JS files at the same time.
+ *
+ * @since 5.4.2
+ */
+
+function md_compile( $delete = null ) {
+	md_compile_css();
+	md_compile_js();
+}
+
+/**
  * Use this function to recompile MD's dynamic CSS. Based on user
  * selection, CSS will be recompiled to <head> or printed to
  * style.css. Only call on save actions or in design mode where
@@ -354,6 +416,18 @@ function md_js_object( $args ) {
 function md_compile_css( $delete = null ) {
 	$css = new md_css;
 	$css->compile( $delete );
+}
+
+/**
+ * Identical to md_compile_css(), when run this function
+ * rebuilds and prints new contents to the ND scripts.js file.
+ *
+ * @since 5.4.2
+ */
+
+function md_compile_js( $delete = null ) {
+	$js = new md_js;
+	$js->compile( $delete );
 }
 
 /**
@@ -386,19 +460,6 @@ function md_main_menu_items() {
 
 function md_main_menu_has_search() {
 	return ! md_setting( array( 'header', 'main_menu', 'disable', 'search' ) ) ? true : false;
-}
-
-/**
- * Returns custom page nav menu.
- *
- * @since 4.1
- */
-
-function md_main_menu_custom_menu() {
-	if ( is_category() || is_tax() )
-		return md_term_meta( array( 'layout', 'main_menu_menu' ) );
-	else
-		return md_post_meta( array( 'layout', 'main_menu_menu' ) );
 }
 
 /**

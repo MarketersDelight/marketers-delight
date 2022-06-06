@@ -76,6 +76,8 @@ class md_design {
 		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
 		$site_width = $content_width + $sidebar_width;
+		$gutter_width = round( ( $site_width - $post_width ) / 2 );
+
 		// Finally, return list of default values
 		return array(
 			'colors' => array(
@@ -114,6 +116,7 @@ class md_design {
 				'main_menu' => array(
 					'bg_color' => '#DDDDDD',
 					'links' => '#1E1E1E',
+					'links_hover' => '#777777',
 					'active' => '#1E1E1E',
 					'subtext' => '#444444',
 					'sub_menu' => '#FFFFFF',
@@ -404,10 +407,10 @@ class md_design {
 	public function values() {
 		$defaults = $this->defaults();
 		$design = array();
-		$design['colors'] = md_setting( array( 'colors' ) );
-		$design['typography'] = md_setting( array( 'typography' ) );
-		$design['header'] = md_setting( array( 'header' ) );
-		$design['content'] = md_setting( array( 'content' ) );
+		$design['colors'] = md_setting( 'colors' );
+		$design['typography'] = md_setting( 'typography' );
+		$design['header'] = md_setting( 'header' );
+		$design['content'] = md_setting( 'content' );
 		return array_replace_recursive( $defaults, $design );
 	}
 

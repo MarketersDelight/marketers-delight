@@ -166,11 +166,6 @@
 
 .text-right { text-align: right; }
 
-.text-intro, .intro, .subtitle {
-	font-size: 1.2em;
-	line-height: 1.5em;
-}
-
 .caps { text-transform: uppercase; }
 
 .text-dark { color: #1e1e1e; }
@@ -223,6 +218,13 @@ a.badge { border-bottom: 0; }
 	content: '\00b7';
 	margin-left: 6px;
 	margin-right: 3px;
+}
+
+@media all and (min-width: 900px) {
+	.text-intro, .intro, .subtitle {
+		font-size: 1.2em;
+		line-height: 1.5em;
+	}
 }
 
 /* LISTS */

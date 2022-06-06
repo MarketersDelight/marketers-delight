@@ -86,7 +86,7 @@
 					) ); ?>
 				</div>
 				<div class="md-license-button md-spacer-small">
-					<span class="button button-primary md-action md-action-activate-license" data-md-action="activate-license" data-md-canvas="#md_update"><?php echo __( 'Active license key', 'md' ); ?> <i class="dashicons dashicons-update-alt"></i></span>
+					<span class="button button-primary md-action md-action-activate-license" data-md-action="activate-license" data-md-canvas="#md_update"><?php echo __( 'Activate license key', 'md' ); ?> <i class="dashicons dashicons-update-alt"></i></span>
 					<span class="md-delete md-delete-text md-action md-action-deactivate-license" data-md-action="deactivate-license" data-md-canvas="#md_update" data-md-alert="<?php echo __( 'NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?', 'md' ); ?>"><?php echo __( 'Deactivate site', 'md' ); ?> <i class="dashicons dashicons-no"></i></span>
 				</div>	
 				<?php if ( ! empty( $license_message['text'] ) ) : ?>

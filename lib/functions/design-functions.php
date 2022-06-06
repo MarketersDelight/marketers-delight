@@ -172,6 +172,8 @@ function md_style( $fields ) {
 		$attributes['bg_image'] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
 	if ( ! empty( $fields['bg_size'] ) )
 		$attributes['bg_size'] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
+	if ( ! empty( $fields['border_color'] ) )
+		$attributes['bg_size'] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
 	if ( isset( $fields['border'] ) && ! empty( $fields['border'][2] ) ) {
 		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
 		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';

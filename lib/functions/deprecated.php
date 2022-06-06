@@ -4,6 +4,41 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Create Site Design admin page.
+ * This page was removed in 5.4.2 and this Class
+ * solely serves as a URL redirect.
+ *
+ * @since 5.0
+ * @deprecated 5.5
+ */
+class md_site_design extends md_api {
+	public function actions() {
+		if ( isset( $_GET['page'] ) && $_GET['page'] == 'md_site_design' ) {
+			wp_redirect( admin_url( 'admin.php?page=md_settings' ) );
+			exit;
+		}
+	}
+	public function register() {
+		return array( 'admin_page' => array() );
+	}
+}
+new md_site_design;
+
+/**
+ * Returns custom page nav menu.
+ *
+ * @since 4.1
+ * @deprecated 5.5
+ */
+
+function md_main_menu_custom_menu() {
+	if ( is_category() || is_tax() )
+		return md_term_meta( array( 'layout', 'main_menu_menu' ) );
+	else
+		return md_post_meta( array( 'layout', 'main_menu_menu' ) );
+}
+
+/**
  * A quick recap of what's new in MD.
  *
  * @since 4.8.4

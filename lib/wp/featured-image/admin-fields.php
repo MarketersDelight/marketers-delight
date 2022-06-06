@@ -33,4 +33,5 @@
 			) ); ?>
 		</div>
 	</div>
+	<?php do_action( 'md_hook_featured_image_settings_bottom' ); ?>
 </div>

@@ -106,7 +106,8 @@ function md_the_logo() {
  */
 
 function md_menu() {
-	md_template( 'menus/menu' );
+	$header_menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
+	include( md_template( 'menus/menu', true ) );
 }
 
 /**
@@ -303,6 +304,7 @@ function md_the_content() {
 	$archives = md_get_loop( array( 'loop', 'archives' ) );
 	$content = md_get_loop( array( 'loop', 'content' ) );
 	$read_more = md_read_more_text();
+	md_hook_before_the_content();
 ?>
 	<?php if ( ! is_singular() && $content == 'excerpt' ) : ?>
 		<?php the_excerpt(); ?>

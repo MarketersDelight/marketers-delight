@@ -1,5 +1,5 @@
 <div class="content-text">
-	<div class="content-inner">
+	<div id="the_content" class="content-inner">
 		<?php md_hook_content_item_text_top(); ?>
 		<?php if ( md_has_inline_featured_image() ) : ?>
 			<?php md_featured_image(); ?>

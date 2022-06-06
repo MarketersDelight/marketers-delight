@@ -81,10 +81,10 @@ class md_menu_walker extends Walker_Nav_Menu {
 		if ( in_array( 'menu-item-has-children', $item->classes ) )
 			$output .= '<span class="menu-toggle" data-menu-toggle="menu-item-' . esc_attr( $item->ID ) . '"></span>';
 		$atts = array();
-		$atts['title']  = ! empty( $item->attr_title ) ? $item->attr_title : '';
+		$atts['title'] = ! empty( $item->attr_title ) ? $item->attr_title : '';
 		$atts['target'] = ! empty( $item->target )     ? $item->target     : '';
-		$atts['rel']    = ! empty( $item->xfn )        ? $item->xfn        : '';
-		$atts['href']   = ! empty( $item->url )        ? $item->url        : '';
+		$atts['rel'] = ! empty( $item->xfn )        ? $item->xfn        : '';
+		$atts['href'] = ! empty( $item->url )        ? $item->url        : '';
 		$atts = apply_filters( 'nav_menu_link_attributes', $atts, $item, $args );
 		$attributes = '';
 		foreach ( $atts as $attr => $value ) {
