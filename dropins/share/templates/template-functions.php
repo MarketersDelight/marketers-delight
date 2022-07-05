@@ -1,16 +1,6 @@
 <?php
 
 /**
- * A list of post types to show Share buttons on.
- *
- * @since 5.0
- */
-
-function md_share_post_types() {
-	return array_merge( apply_filters( 'md_share_show_on', array() ), md_post_type_meta() );
-}
-
-/**
  * Like counter on AJAX request.
  *
  * @since 4.9.2

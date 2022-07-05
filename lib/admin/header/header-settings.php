@@ -54,7 +54,8 @@
 							<?php $this->fields->field( array( 'spacing_top', $device ), array(
 								'type' => 'range',
 								'label' => sprintf( __( 'Top Spacing%s', 'md' ), " ($device)" ),
-								'placeholder' => $defaults['spacing_top'][$device]
+								'placeholder' => $defaults['spacing_top'][$device],
+								'max' => $defaults['spacing_top'][$device] * 2
 							) ); ?>
 						</div>
 					<?php endforeach; ?>
@@ -65,7 +66,8 @@
 							<?php $this->fields->field( array( 'spacing_bottom', $device ), array(
 								'type' => 'range',
 								'label' => sprintf( __( 'Bottom Spacing%s', 'md' ), " ($device)" ),
-								'placeholder' => $defaults['spacing_bottom'][$device]
+								'placeholder' => $defaults['spacing_bottom'][$device],
+								'max' => $defaults['spacing_bottom'][$device] * 2
 							) ); ?>
 						</div>
 					<?php endforeach; ?>
@@ -74,42 +76,35 @@
 		</div>
 	</div>
 	<div class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title"><?php echo __( 'Header Menu', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><?php echo __( 'Menus', 'md' ); ?></h3>
 		<div class="md-widget-item">
-			<div class="md-sep-small">
-				<?php $this->fields->field( array( 'menu', 'spacing_lr' ), array(
-					'type' => 'range',
-					'label' => __( 'Links Left/Right Spacing', 'md' ),
-					'placeholder' => $defaults['menu']['spacing_lr']
-				) ); ?>
+			<h4><?php echo __( 'Menu Links', 'md' ); ?></h4>
+			<div class="columns-2">
+				<div class="col">
+					<?php $this->fields->field( array( 'menu', 'spacing_tb' ), array(
+						'type' => 'range',
+						'label' => __( 'Top + Bottom Spacing', 'md' ),
+						'placeholder' => $defaults['menu']['spacing_tb'],
+						'max' => $defaults['menu']['spacing_tb'] * 2
+					) ); ?>
+				</div>
+				<div class="col md-sep-small">
+					<?php $this->fields->field( array( 'menu', 'spacing_lr' ), array(
+						'type' => 'range',
+						'label' => __( 'Left + Right Spacing', 'md' ),
+						'placeholder' => $defaults['menu']['spacing_lr'],
+						'max' => $defaults['menu']['spacing_lr'] * 2
+					) ); ?>
+				</div>
 			</div>
-		</div>
-	</div>
-	<div class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title"><?php echo __( 'Main Menu', 'md' ); ?></h3>
-		<div class="md-widget-item">
+			<h4><?php echo __( 'Main Menu', 'md' ); ?></h4>
 			<div class="md-sep-small">
 				<?php $this->fields->field( array( 'main_menu', 'disable' ), array(
 					'type' => 'checkbox',
 					'options' => array(
-						'search' => __( 'Disable Search', 'md' )
+						'search' => __( 'Remove search bar', 'md' )
 					)
 				) ); ?>
-			</div>
-			<h4 class="md-title"><?php echo __( 'Menu Links', 'md' ); ?></h4>
-			<div class="columns-2">
-				<div class="col">
-					<?php $this->fields->field( array( 'main_menu', 'spacing_tb' ), array(
-						'type' => 'range',
-						'label' => __( 'Top/Bottom Spacing', 'md' )
-					) ); ?>
-				</div>
-				<div class="col">
-					<?php $this->fields->field( array( 'main_menu', 'spacing_lr' ), array(
-						'type' => 'range',
-						'label' => __( 'Left/Right Spacing', 'md' )
-					) ); ?>
-				</div>
 			</div>
 		</div>
 	</div>

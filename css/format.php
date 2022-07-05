@@ -100,7 +100,6 @@
 	display: block;
 	position: relative;
 	margin-bottom: <?php echo $single; ?>px;
-	z-index: 5;
 }
 
 .alignleft {

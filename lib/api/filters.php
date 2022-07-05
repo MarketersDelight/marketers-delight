@@ -204,3 +204,27 @@ function md_sidebars() {
 function md_filter_footer_columns() {
 	return apply_filters( 'md_filter_footer_columns', array( 1, 2, 3 ) );
 }
+
+/*-- Left-behind functions from when drop-ins were removed from Core. --*/
+
+/**
+ * Compile Popups to load on any given page.
+ *
+ * @since 5.0
+ * @moved to MD Optins 1.0.4
+ */
+
+function md_filter_popups() {
+	return apply_filters( 'md_filter_popups', array() );
+}
+
+/**
+ * A list of post types to show Share buttons on.
+ *
+ * @since 5.0
+ * @moved to MD Share 1.0.2
+ */
+
+function md_share_post_types() {
+	return array_merge( apply_filters( 'md_share_show_on', array() ), md_post_type_meta() );
+}

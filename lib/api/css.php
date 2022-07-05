@@ -206,6 +206,7 @@ class md_css {
 		$triple = $lht = round( $single * 3 );
 		$quad = $lhq = round( $single * 4 );
 
+		$submenu_width = ( $double * 5 );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 		$breakout = ( $gutter_width / $post_width ) * 100;
 		$breakout_full = ( $gutter_width / $site_width ) * 100;

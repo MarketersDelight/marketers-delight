@@ -125,13 +125,14 @@ popups: {
 				if ( shown || MD.popups.trigger ) return;
 				var pos = window.scrollY,
 					el = document.getElementById( MD.popup.id );
-				window.requestAnimationFrame( function() {
-					var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
-					if ( MD.popup.delay <= percent ) {
-						shown = true;
-						MD.popups.open.show();
-					}
-				});
+				if ( el !== null )
+					window.requestAnimationFrame( function() {
+						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
+						if ( MD.popup.delay <= percent ) {
+							shown = true;
+							MD.popups.open.show();
+						}
+					});
 			}
 		},
 		timer: function() {

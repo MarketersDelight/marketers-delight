@@ -32,14 +32,11 @@ class md_admin {
 	 */
 
 	public function includes() {
-		require_once( 'settings/dashboard/dashboard.php' );
-		foreach ( array( 'colors', 'typography', 'icons', 'layout', 'header', 'content', 'loop', 'sidebars' ) as $file )
-			require_once( "settings/{$file}/{$file}.php" );
-		require_once( 'settings/dropins/dropins.php' );
-		require_once( 'settings/integrations/integrations.php' );
+		foreach ( array( 'dashboard', 'colors', 'icons', 'typography', 'header', 'layout', 'content', 'loop', 'sidebars', 'integrations', 'dropins' ) as $file )
+			require_once( "{$file}/{$file}.php" );
 		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/upgrade.php' );
+			require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/upgrade.php' );
 	}
 
 	/**
@@ -151,8 +148,8 @@ class md_admin {
 
 	public function enqueue() {
 		$screen = get_current_screen();
-		$style = 'lib/admin/css/admin.css';
-		$script = 'lib/admin/js/admin.js';
+		$style = 'lib/assets/css/admin.css';
+		$script = 'lib/assets/js/admin.js';
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'wp-color-picker', 'md-alpha-color' ), md_ver( $script ), true );
@@ -183,8 +180,8 @@ class md_admin {
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_enqueue_script( 'md-sortable', MD_URL . 'lib/admin/js/sortable.js', array(), '', true );
-		wp_register_script( 'md-alpha-color', MD_URL . 'lib/admin/js/alpha-color.js', array( 'wp-color-picker' ), '', true );
+		wp_enqueue_script( 'md-sortable', MD_URL . 'lib/assets/js/sortable.js', array(), '', true );
+		wp_register_script( 'md-alpha-color', MD_URL . 'lib/assets/js/alpha-color.js', array( 'wp-color-picker' ), '', true );
 		
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
@@ -203,7 +200,7 @@ class md_admin {
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
-		include( 'settings/admin-page.php' );
+		include( 'admin-page.php' );
 	}
 
 	/**
@@ -233,7 +230,7 @@ class md_admin {
 			$priority = isset( $fields['priority'] ) ? $fields['priority'] : 'default';
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
 			foreach ( $post_types as $post_type ) {
-				if ( isset( $fields['hide'] ) || ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) )
+				if ( isset( $fields['hide'] ) || ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) || ( isset( $fields['post_id'] ) && isset( $_GET['post'] ) && $fields['post_id'] != $_GET['post'] ) )
 					continue;
 				add_meta_box( $fields['id'], $fields['name'], array( $this, 'meta_box' ), $post_type, $context, $priority, array(
 					'function_callback' => $callback

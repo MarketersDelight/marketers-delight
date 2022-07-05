@@ -4,16 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Compile Popups to load on any given page.
- *
- * @since 5.0
- */
-
-function md_filter_popups() {
-	return apply_filters( 'md_filter_popups', array() );
-}
-
-/**
  * A list of all Popups templates.
  *
  * @since 5.0
@@ -34,6 +24,8 @@ function md_filter_popups_templates() {
  *
  * @since 5.0
  */
+
+if ( ! function_exists( 'md_optins_locations' ) ) :
 
 function md_optins_locations( $sort = null ) {
 	$defaults = array(
@@ -75,6 +67,8 @@ function md_optins_locations( $sort = null ) {
 
 	return $locations;
 }
+
+endif;
 
 /**
  * Organize array of lists for use in options.

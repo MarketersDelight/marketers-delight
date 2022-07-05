@@ -21,6 +21,26 @@ class md_sanitize {
 	}
 
 	/**
+	 * Add needed font weights for design controls.
+	 *
+	 * @since 4.8
+	 */
+
+	public $_font_weights = array(
+		'normal' => 'Regular',
+		'bold' => 'Bold',
+		'100' => '100',
+		'200' => '200',
+		'300' => '300',
+		'400' => '400',
+		'500' => '500',
+		'600' => '600',
+		'700' => '700',
+		'800' => '800',
+		'900' => '900'
+	);
+
+	/**
 	 * Allow only the following HTML tags + attributes
 	 * on validation.
 	 *
@@ -101,26 +121,6 @@ class md_sanitize {
 	);
 
 	/**
-	 * Add needed font weights for design controls.
-	 *
-	 * @since 4.8
-	 */
-
-	public $_font_weights = array(
-		'normal' => 'Regular',
-		'bold' => 'Bold',
-		'100' => '100',
-		'200' => '200',
-		'300' => '300',
-		'400' => '400',
-		'500' => '500',
-		'600' => '600',
-		'700' => '700',
-		'800' => '800',
-		'900' => '900'
-	);
-
-	/**
 	 * Settings that are often reused with the same values.
 	 *
 	 * @since 5.0
@@ -145,21 +145,6 @@ class md_sanitize {
 			),
 			'alignment' => array( 'alignleft', 'alignright', 'aligncenter' )
 		);
-	}
-
-	/**
-	 * Return terms hierarchy in data format.
-	 *
-	 * @since 5.3.1
-	 */
-
-	public function terms( $taxonomy = 'category' ) {
-		$cats = array();
-		$terms = get_terms( $taxonomy );
-		foreach ( $terms as $term )
-			if ( isset( $term->term_id ) )
-				$cats[] = esc_attr( $term->term_id );
-		return $cats;
 	}
 
 	/**
@@ -304,6 +289,21 @@ class md_sanitize {
 
 	public function featured_image_position( $input ) {
 		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'headline_cover', 'header_cover', 'header_cover_full', 'remove' ) ) ? $input : '';
+	}
+
+	/**
+	 * Return terms hierarchy in data format.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function terms( $taxonomy = 'category' ) {
+		$cats = array();
+		$terms = get_terms( $taxonomy );
+		foreach ( $terms as $term )
+			if ( isset( $term->term_id ) )
+				$cats[] = esc_attr( $term->term_id );
+		return $cats;
 	}
 
 	/**

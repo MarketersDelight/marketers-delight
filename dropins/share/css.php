@@ -103,7 +103,7 @@
 }
 
 @media all and (min-width: <?php echo $site_width; ?>px) {
-	.share-sticky { z-index: 160; }
+	.share-sticky { z-index: 90; }
 	.share-sticky .share-icon { display: block; }
 	.share-sticky.side-left {
 		left: 0;
@@ -144,6 +144,7 @@
 		position: fixed;
 			top: <?php echo $single; ?>px;
 	}
+	.has-md-admin-bar .share-sticky.inline.sticky .share,
 	.admin-bar .share-sticky.inline.sticky .share { top: <?php echo $single + $admin_bar_height; ?>px; }
 	/* inline + right screen */
 	.share-sticky.inline .share-button, .share-sticky.side-right .share-button { box-shadow: inset -3px 0 2px rgba(0, 0, 0, 0.15); }
@@ -192,5 +193,6 @@
 	}
 	.style-minimal .content-headline + .share { margin-bottom: <?php echo $single; ?>px; }
 	.content-headline + .share { margin-top: <?php echo $single;?>px; }
+	.has-md-admin-bar .share-sticky.inline.sticky .share,
 	.admin-bar .share-sticky.inline.sticky .share { top: <?php echo $single + $admin_bar_height_mobile; ?>px; }
 }

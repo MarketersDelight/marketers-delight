@@ -72,6 +72,7 @@
 				'options' => array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) )
 			) ); ?>
 		<?php endif; ?>
+		<?php do_action( 'md_layout_content_options' ); ?>
 		<?php if ( $screen->base == 'term' && md_setting( array( 'loop' ) ) !== 'teasers' ) : ?>
 			<?php $this->fields->field( 'content', array(
 				'type' => 'checkbox',

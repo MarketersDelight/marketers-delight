@@ -480,6 +480,7 @@ class md_share extends md_api {
 
 	public function template() {
 		$post_type = get_post_type();
+		$post_id = get_queried_object_ID();
 		$post_types = md_setting( array( 'share', 'post_types' ) );
 		$post_types = ! empty( $post_types ) ? $post_types : array();
 		$floating_option = md_setting( array( 'share', 'floating' ) );
@@ -488,7 +489,7 @@ class md_share extends md_api {
 
 		if ( ( is_singular() || is_category() || is_tax() ) && ! empty( $floating_option ) && $floating_meta !== 'remove' && (
 			( in_array( $post_type, array_keys( $post_types ) ) ) ||
-			( md_meta( array( 'share', 'floating' ) ) )
+			( md_meta( array( 'share', 'floating' ), $post_id ) )
 		) ) {
 			$floating = md_module( array( 'share', 'floating' ) );
 			$order = '';
@@ -577,7 +578,7 @@ class md_share extends md_api {
 		$option = $this->get_order();
 		$active = isset( $args['show'] ) ? $args['show'] : $option['active'];
 
-		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_the_ID();
+		$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_queried_object_id();
 		$post_type = isset( $args['post_type'] ) ? $args['post_type'] : get_post_type();
 		$style = isset( $args['style'] ) ? $args['style'] : null;
 		$type = isset( $args['type'] ) ? $args['type'] : 'inline';
@@ -598,7 +599,7 @@ class md_share extends md_api {
 			$action = $class = '';
 			$fields = ! empty( $option['fields'][$share] ) ? $option['fields'][$share] : array();
 			$disable = ! empty( $fields['disable'] ) ? $fields['disable'] : array();
-			if ( ! empty( $disable[$type] ) || ( $share == 'comments' && ! md_has_comments() ) )
+			if ( ! empty( $disable[$type] ) || ( $share == 'comments' && ( ! is_singular() || ! md_has_comments() ) ) )
 				continue;
 			$data = $default[$share];
 			$default_url = ! empty( $data['url'] ) ? $data['url'] : '';

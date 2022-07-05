@@ -59,10 +59,9 @@ class md_header extends md_api {
 					),
 					'menu' => array(
 						'spacing_lr' => array( 'type' => 'range' ),
+						'spacing_tb' => array( 'type' => 'range' )
 					),
 					'main_menu' => array(
-						'spacing_tb' => array( 'type' => 'range' ),
-						'spacing_lr' => array( 'type' => 'range' ),
 						'disable' => array(
 							'type' => 'checkbox',
 							'options' => array( 'search' )

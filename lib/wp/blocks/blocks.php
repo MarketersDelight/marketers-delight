@@ -85,7 +85,7 @@ class md_blocks {
 			'templates' => array(
 				'blocks' => MD_CSS_DIR . 'block-editor.php'
 			),
-			'path' => MD_DIR . 'lib/admin/css/block-editor.css'
+			'path' => MD_DIR . 'lib/assets/css/block-editor.css'
 		);
 		return $files;
 	}
@@ -113,7 +113,7 @@ class md_blocks {
 
 		// Load Blocks CSS
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) ) {
-			$css = 'lib/admin/css/block-editor.css';
+			$css = 'lib/assets/css/block-editor.css';
 			wp_enqueue_style( 'md-blocks', MD_URL . $css, array( 'wp-edit-blocks' ), md_ver( $css ) );
 		}
 		else

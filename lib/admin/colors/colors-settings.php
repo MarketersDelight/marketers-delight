@@ -51,13 +51,23 @@
 	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
 		<div class="md-widget-item">
-			<div class="md-sep-small">
-				<?php $this->fields->field( array( 'header', 'bg_color' ), array(
-					'type' => 'color',
-					'group' => true,
-					'label' => $options['header']['bg_color'],
-					'default' => $defaults['header']['bg_color']
-				) ); ?>
+			<div class="columns-3 columns-single">
+				<div class="col md-sep-small">
+					<?php $this->fields->field( array( 'header', 'bg_color' ), array(
+						'type' => 'color',
+						'group' => true,
+						'label' => $options['header']['bg_color'],
+						'default' => $defaults['header']['bg_color']
+					) ); ?>
+				</div>
+				<div class="col md-sep-small">
+					<?php $this->fields->field( array( 'header', 'color' ), array(
+						'type' => 'color',
+						'group' => true,
+						'label' => $options['header']['color'],
+						'default' => $defaults['header']['color']
+					) ); ?>
+				</div>
 			</div>
 			<hr class="md-sep-small" />
 			<?php if ( empty( $this->values['header']['display']['site_title'] ) || empty( $this->values['header']['display']['site_tagline'] ) ) : ?>
@@ -137,17 +147,53 @@
 	</div>
 	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Main Menu', 'md' ); ?></h3>
-		<div class="md-widget-item columns-3">
-			<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'main_menu', $field ), array(
-						'type' => 'color',
-						'group' => true,
-						'label' => $label,
-						'default' => ! empty( $defaults['main_menu'][$field] ) ? $defaults['main_menu'][$field] : ''
-					) ); ?>
-				</div>
-			<?php endforeach; ?>
+		<div class="md-widget-item">
+			<div class="columns-3 columns-half">
+				<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
+					<?php if ( in_array( $field, array( 'bg_color', 'subtext' ) ) ) : ?>
+						<div class="col">
+							<?php $this->fields->field( array( 'main_menu', $field ), array(
+								'type' => 'color',
+								'group' => true,
+								'label' => $label,
+								'default' => ! empty( $defaults['main_menu'][$field] ) ? $defaults['main_menu'][$field] : ''
+							) ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+			<hr class="md-sep-small" />
+			<h4><?php echo __( 'Menu Links', 'md' ); ?></h4>
+			<div class="columns-3 columns-half">
+				<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
+					<?php if ( in_array( $field, array( 'links', 'links_hover', 'active', 'sub_menu' ) ) ) : ?>
+						<div class="col md-sep-small">
+							<?php $this->fields->field( array( 'main_menu', $field ), array(
+								'type' => 'color',
+								'group' => true,
+								'label' => $label,
+								'default' => ! empty( $defaults['main_menu'][$field] ) ? $defaults['main_menu'][$field] : ''
+							) ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
+			<hr class="md-sep-small" />
+			<h4><?php echo __( 'Icons', 'md' ); ?></h4>
+			<div class="columns-3 columns-half">
+				<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
+					<?php if ( in_array( $field, array( 'icons', 'social' ) ) ) : ?>
+						<div class="col md-sep-small">
+							<?php $this->fields->field( array( 'main_menu', $field ), array(
+								'type' => 'color',
+								'group' => true,
+								'label' => $label,
+								'default' => ! empty( $defaults['main_menu'][$field] ) ? $defaults['main_menu'][$field] : ''
+							) ); ?>
+						</div>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</div>
 		</div>
 	</div>
 	<div class="md-widget md-toggle md-sep-small">

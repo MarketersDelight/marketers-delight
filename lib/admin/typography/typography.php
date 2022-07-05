@@ -34,7 +34,12 @@ class md_typography extends md_api {
 
 	public function register() {
 		$fields = array();
-		$groups = array( 'body', 'h1', 'h2', 'h3', 'h4', 'h5', 'header', 'site_title', 'site_tagline', 'sidebar', 'sidebar_title', 'footer', 'footer_title' );
+		$groups = array(
+			'body', 'h1', 'h2', 'h3', 'h4', 'h5',
+			'header', 'site_title', 'site_tagline',
+			'sidebar', 'sidebar_title',
+			'footer', 'footer_title'
+		);
 		foreach ( $groups as $group ) {
 			foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
 				$fields[$group]['font_size'][$device]['type'] = 'range';
@@ -58,7 +63,7 @@ class md_typography extends md_api {
 		$fields['google_fonts']['type'] = 'text';
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Fonts & Typography', 'md' ),
+				'name' => __( 'Typography', 'md' ),
 				'parent' => 'md_settings',
 				'fields' => $fields
 			)

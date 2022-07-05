@@ -3,6 +3,7 @@
 		<?php echo __( 'Drop-ins', 'md' ); ?>
 		<?php if ( md_setting( array( 'dropins', 'moved_dropins' ) ) ) : ?>
 			&nbsp;<button id="md_upload_dropin_button" class="button"><?php echo __( 'Add new', 'md' ); ?></button>
+			&nbsp;<a href="https://marketersdelight.com/dropins/" target="_blank" class="button button-primary"><?php echo __( 'Get Drop-ins &rarr;', 'md' ); ?></a>
 		<?php endif; ?>
 	</h2>
 	<div id="md_upload_dropin" class="md-dropins-upload md-sep-small">

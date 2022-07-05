@@ -69,6 +69,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
 		require_once( MD_DIR . 'lib/api/requests.php' );
 		require_once( MD_DIR . 'lib/api/api.php' );
+		require_once( MD_DIR . 'lib/functions/deprecated.php' );
 		if ( is_admin() )
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/functions/conditionals.php' );
@@ -84,7 +85,6 @@ final class marketers_delight {
 			require_once( MD_DIR . 'lib/wp/blocks/blocks.php' );
 		require_once( MD_DIR . 'lib/wp/featured-image/featured-image.php' );
 		require_once( MD_DIR . 'lib/wp/featured-video/featured-video.php' );
-		require_once( MD_DIR . 'lib/functions/deprecated.php' );
 	}
 
 	/**
@@ -189,13 +189,6 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
-		
-		
-			md_compile();
-		
-		
-		
-		
 		// Custom Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();

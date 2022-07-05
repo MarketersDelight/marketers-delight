@@ -30,7 +30,7 @@
 					'type' => 'checkbox',
 					'multi' => true,
 					'label' => __( 'Remove from page', 'md' ),
-					'description' => sprintf( __( 'The above Floating Bars have been added to this page from the <a href="%s">Floating Bars Manager</a> and can be removed here, or you can create new ones here.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_floating_bars' ) ),
+					'description' => sprintf( __( 'The above Floating Bars have been added to this page from the <a href="%s">Floating Bars Manager</a> and can be removed here, or you can create new ones below.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_floating_bars' ) ),
 					'options' => $active_floating_bars
 				) ); ?>
 			</div>

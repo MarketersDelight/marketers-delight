@@ -6,8 +6,10 @@
 
 .header {
 	background-color: <?php echo $colors['header']['bg_color']; ?>;
-	color: <?php echo $colors['header']['menu']['links']; ?>;
-	<?php echo ( ! empty( $typography['header']['font_family'] ) ? "\tfont-family: " . $typography['header']['font_family'] . ";\n" : '' ); ?>
+	color: <?php echo $colors['header']['color']; ?>;
+	<?php if ( ! empty( $typography['header']['font_family'] ) ) : ?>
+		font-family: <?php echo $typography['header']['font_family']; ?>;
+	<?php endif; ?>
 	<?php if ( ! empty( $typography['header']['font_size']['desktop'] ) ) : ?>
 		font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
 	<?php endif; ?>
@@ -30,7 +32,7 @@
 
 /* LOGO + TAGLINE */
 
-.logo {
+.site-title {
 	<?php echo ( ! empty( $typography['site_title']['font_family'] ) ? "\tfont-family: " . $typography['site_title']['font_family'] . ";\n" : '' ); ?>
 	<?php echo ( ! empty( $typography['site_title']['font_style'] ) ? "font-style: italic;\n" : '' ); ?>
 	<?php echo ( ! empty( $typography['site_title']['font_weight'] ) ? "\tfont-weight: " . $typography['site_title']['font_weight'] . ";\n" : '' ); ?>
@@ -57,12 +59,20 @@
 
 .tagline {
 	color: <?php echo $colors['header']['site_tagline']; ?>;
-	<?php echo ( ! empty( $typography['site_tagline']['font_family'] ) ? "\tfont-family: " . $typography['site_tagline']['font_family'] . ";\n" : '' ); ?>
+	<?php if ( ! empty( $typography['site_tagline']['font_family'] ) ) : ?>
+		font-family: <?php echo $typography['site_tagline']['font_family']; ?>;
+	<?php endif; ?>
 	font-size: <?php echo $typography['site_tagline']['font_size']['desktop']; ?>px;
-	<?php echo ( ! empty( $typography['site_tagline']['font_style'] ) ? "\tfont-style: italic;\n" : '' ); ?>
-	<?php echo ( ! empty( $typography['site_tagline']['font_weight'] ) ? "\tfont-weight " . $typography['site_tagline']['font_weight'] . ';' : '' ); ?>
+	<?php if ( ! empty( $typography['site_tagline']['font_style'] ) ) : ?>
+		font-style: italic;
+	<?php endif; ?>
+	<?php if ( ! empty( $typography['site_tagline']['font_weight'] ) ) : ?>
+		font-weight: <?php echo $typography['site_tagline']['font_weight']; ?>;
+	<?php endif; ?>
 	line-height: <?php echo $typography['site_tagline']['line_height']['desktop'] ; ?>px;
 }
+
+.tagline a { color: <?php echo $colors['header']['site_tagline']; ?>; }
 
 /* TRIGGERS */
 
@@ -71,15 +81,22 @@
 .header-trigger {
 	cursor: pointer;
 	display: inline-block;
-	font-size: 25px;
-	line-height: 1;
 	position: relative;
 	vertical-align: middle;
 }
 
-.header-trigger:before { font-family: 'md-icon'; }
-.header-menu-trigger:before { content: '\e815'; }
-.has-mobile-menu .header-menu-trigger:before { content: '\e810'; }
+.header-menu-trigger-icon {
+	font-size: 25px;
+	line-height: 1;
+	vertical-align: middle;
+}
+
+.header-trigger-text {
+	margin-left: <?php echo $small; ?>px;
+	vertical-align: middle;
+}
+
+.has-mobile-menu .header-menu-trigger-icon:before { content: '\e810'; }
 
 /* MENU */
 
@@ -89,7 +106,7 @@
 
 /* QUERIES */
 
-@media all and (min-width: 700px) {
+@media all and (min-width: 800px) {
 	.header {
 		padding-bottom: <?php echo $header['spacing_bottom']['desktop']; ?>px;
 		padding-top: <?php echo $header['spacing_top']['desktop']; ?>px;
@@ -103,7 +120,7 @@
 		vertical-align: middle;
 	}
 	.header-aside { text-align: right; }
-	.logo {
+	.site-title {
 		font-size: <?php echo $typography['site_title']['font_size']['desktop']; ?>px;
 		line-height: <?php echo $typography['site_title']['line_height']['desktop'] . 'px'; ?>;
 	}
@@ -116,7 +133,7 @@
 	}
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 800px) {
 	.header {
 		<?php if ( ! empty( $typography['header']['font_size']['tablet'] ) ) : ?>
 			font-size: <?php echo $typography['header']['font_size']['tablet']; ?>px;
@@ -127,8 +144,7 @@
 		padding-bottom: <?php echo $header['spacing_top']['tablet']; ?>px;
 		padding-top: <?php echo $header['spacing_bottom']['tablet']; ?>px;
 	}
-	.header-logo { display: inline-block; }
-	.logo {
+	.site-title {
 		font-size: <?php echo $typography['site_title']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['site_title']['line_height']['tablet']; ?>px;
 	}
@@ -147,7 +163,7 @@
 	}
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 800px) {
 	.header {
 		<?php if ( ! empty( $typography['header']['font_size']['mobile'] ) ) : ?>
 			font-size: <?php echo $typography['header']['font_size']['mobile']; ?>px;
@@ -158,7 +174,7 @@
 		padding-bottom: <?php echo $header['spacing_top']['mobile']; ?>px;
 		padding-top: <?php echo $header['spacing_bottom']['mobile']; ?>px;
 	}
-	.logo {
+	.site-title {
 		font-size: <?php echo $typography['site_title']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['site_title']['line_height']['mobile']; ?>px;
 	}

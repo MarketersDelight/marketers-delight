@@ -91,10 +91,20 @@ accordion: function( parent ) {
 		}
 	}
 },
+toggleMenu: function() {
+	var menuToggles = document.getElementsByClassName( 'menu-toggle' );
+	for ( var i = 0; i < menuToggles.length; i++ ) {
+		menuToggles[i].onclick = function( e ) {
+			var menuID = this.getAttribute( 'data-menu-toggle' );
+			MD.toggleClass( document.getElementById( menuID ), 'show-submenu' );
+		}
+	}
+},
 
 <?php if ( has_nav_menu( 'header' ) ) : ?>
 
 headerMenu: function() {
+	this.toggleMenu();
 	var headerTrigger = document.getElementById( 'header-menu-trigger' );
 	if ( headerTrigger )
 		headerTrigger.onclick = function( e ) {
@@ -107,13 +117,11 @@ headerMenu: function() {
 <?php if ( has_nav_menu( 'main' ) ) : ?>
 
 mainMenu: function() {
+	this.toggleMenu();
 	var mainMenu = document.getElementById( 'main_menu' ),
-		mainMenuControls = document.getElementById( 'main_menu_controls' ),
-		menuMain = document.getElementById( 'menu_main' ),
 		triggers = document.getElementsByClassName( 'menu-trigger' );
-
-	menuMain.lastElementChild.style.marginRight = ( mainMenuControls.clientWidth + 25 ) + 'px';
-
+	if ( mainMenu == null )
+		return;
 	for ( var i = 0; i < triggers.length; i++ ) {
 		triggers[i].onclick = function( e ) {
 			e.preventDefault();
@@ -150,9 +158,11 @@ onScroll: function() {
 		pos = window.scrollY;
 		if ( ! ticking ) {
 			window.requestAnimationFrame( function() {
-				var contentBox = document.getElementById( 'content_box' ),
-					contentBoxOffsetTop = contentBox.offsetTop,
+				var contentBox = document.getElementById( 'content_box' );
+				if ( contentBox == null ) return;
+				var contentBoxOffsetTop = contentBox.offsetTop,
 					content = document.getElementById( 'the_content' );
+				if ( content == null ) return;
 				<?php do_action( 'md_js_onscroll' ); ?>
 				ticking = false;
 			});

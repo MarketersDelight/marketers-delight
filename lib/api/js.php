@@ -2,7 +2,7 @@
 /**
  * This class generates MD JS files and other actions.
  *
- * @since 5.4.2
+ * @since 5.5
  */
 
  // Exit if accessed directly
@@ -13,7 +13,7 @@ class md_js {
 	/**
 	 * Set properties.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function __construct() {
@@ -23,7 +23,7 @@ class md_js {
 	/**
 	 * A list of JS Templates to generate from all known files.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function files() {
@@ -38,13 +38,13 @@ class md_js {
 	/**
 	 * Load a list of JS template files to load to scripts.js file.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function script_js() {
 		$child_js = locate_template( 'scripts.php' );
 		$templates = array(
-			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'lib/assets/scripts.php'
+			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'lib/assets/js/scripts.php'
 		);
 		$templates = apply_filters( 'md_js_templates', $templates );
 		return $templates;
@@ -53,7 +53,7 @@ class md_js {
 	/**
 	 * Compile JS in the user designated manner on call.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function compile( $delete = null ) {
@@ -73,7 +73,7 @@ class md_js {
 	/**
 	 * Render JS Templates to static JavaScript.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function generate( $file ) {
@@ -93,7 +93,7 @@ class md_js {
 	/**
 	 * Clean up CSS before saving.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function clean( $js ) {
@@ -105,7 +105,7 @@ class md_js {
 	/**
 	 * Get JS template.
 	 *
-	 * @since 5.4.2
+	 * @since 5.5
 	 */
 
 	public function templates( $file ) {

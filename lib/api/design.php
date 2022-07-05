@@ -100,6 +100,7 @@ class md_design {
 				),
 				'header' => array(
 					'bg_color' => '#FFFFFF',
+					'color' => '#888888',
 					'site_title' => '#1E1E1E',
 					'site_tagline' => '#888888',
 					'menu' => array(
@@ -262,14 +263,14 @@ class md_design {
 				),
 				'site_tagline' => array(
 					'font_size' => array(
-						'desktop' => round( $site_title * 0.6 ),
-						'tablet'  => round( $site_title * 0.55 ),
-						'mobile'  => round( $site_title * 0.5 )
+						'desktop' => $df,
+						'tablet'  => $tf,
+						'mobile'  => $mf
 					),
 					'line_height' => array(
-						'desktop' => round( $site_title * 0.8 ),
-						'tablet' => round( $site_title * 0.7 ),
-						'mobile' => round( $site_title * 0.6 )
+						'desktop' => $line_height,
+						'tablet' => round( $tablet * $g ),
+						'mobile' => round( $mobile * $g )
 					)
 				),
 				'sidebar' => array(
@@ -333,6 +334,7 @@ class md_design {
 					'mobile' => round( $line_height / 3 )
 				),
 				'menu' => array(
+					'spacing_tb' => round( $line_height / 2 ),
 					'spacing_lr' => round( $line_height / 2 )
 				)
 			),

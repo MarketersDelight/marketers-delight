@@ -335,6 +335,7 @@
 .loop-blocks .byline-author-name { font-weight: <?php echo $bold; ?>; }
 
 @media all and (min-width: 900px) {
+	.blog-teasers .post-box { margin-bottom: <?php echo $single; ?>px; }
 	.loop-blocks.style-default.content-sidebar .post-box { padding: <?php echo $single; ?>px; }
 	.loop-blocks.style-default.content-full .post-box { padding: <?php echo $mid; ?>px; }
 }
@@ -368,7 +369,7 @@
 		padding-bottom: <?php echo $half; ?>px;
 		padding-top: <?php echo $half; ?>px;
 	}
-	.loop-blocks .featured-image { margin-bottom: <?php echo $half; ?>px; }
+	.blog-teasers .post-box, .loop-blocks .featured-image { margin-bottom: <?php echo $half; ?>px; }
 	.loop-blocks .content-footer {
 		padding-bottom: <?php echo $half; ?>px;
 		padding-left: <?php echo $half; ?>px;
