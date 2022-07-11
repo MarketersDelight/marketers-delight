@@ -27,18 +27,7 @@
 
 		</div>
 
-		<?php if ( has_nav_menu( 'main' ) ) : ?>
-			<?php wp_nav_menu( array(
-				'theme_location' => 'main',
-				'menu' => md_main_menu_custom_menu(),
-				'container' => false,
-				'fallback_cb' => false,
-				'menu_class' => 'menu menu-content menu-main',
-				'walker' => new md_menu_walker( true, true )
-			) ); ?>
-		<?php endif; ?>
-
-		<div class="main-menu-side clear">
+		<div class="main-menu-side">
 
 			<?php do_action( 'md_main_menu_side_triggers' ); ?>
 
@@ -58,6 +47,17 @@
 			<?php endif; ?>
 
 		</div>
+
+		<?php if ( has_nav_menu( 'main' ) ) : ?>
+			<?php wp_nav_menu( array(
+				'theme_location' => 'main',
+				'menu' => md_main_menu_custom_menu(),
+				'container' => false,
+				'fallback_cb' => false,
+				'menu_class' => 'menu menu-content menu-main',
+				'walker' => new md_menu_walker( true, true )
+			) ); ?>
+		<?php endif; ?>
 
 	</div>
 </nav>

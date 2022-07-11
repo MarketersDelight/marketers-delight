@@ -13,17 +13,31 @@
 			'type' => 'checkbox',
 			'options' => array(
 				'logo' => __( 'Remove <b>Logo</b>', 'md' ),
-				'tagline' => __( 'Remove <b>Tagline</b>', 'md' ),
-				'menu' => __( 'Remove <b>Menu</b>', 'md' )
 			)
 		) ); ?>
-		<div id="header_menu_options" style="display: <?php echo empty( $header['menu'] ) ? 'block' : 'none'; ?>; margin-top: 10px;">
-			<?php $this->fields->field( 'header_menu', array(
-				'type' => 'select',
-				'empty_label' => __( 'Select custom menu...', 'md' ),
-				'options' => $menus
+		<?php if ( ! md_setting( array( 'header', 'display', 'site_tagline' ) ) ) : ?>
+			<?php $this->fields->field( 'header', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'tagline' => __( 'Remove <b>Tagline</b>', 'md' ),
+				)
+			) ); ?>	
+		<?php endif; ?>
+		<?php if ( has_nav_menu( 'header' ) ) : ?>
+			<?php $this->fields->field( 'header', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'menu' => __( 'Remove <b>Menu</b>', 'md' )
+				)
 			) ); ?>
-		</div>
+			<div id="header_menu_options" style="display: <?php echo empty( $header['menu'] ) ? 'block' : 'none'; ?>; margin-top: 10px;">
+				<?php $this->fields->field( 'header_menu', array(
+					'type' => 'select',
+					'empty_label' => __( 'Select custom menu...', 'md' ),
+					'options' => $menus
+				) ); ?>
+			</div>
+		<?php endif; ?>
 	</div>
 </div>
 

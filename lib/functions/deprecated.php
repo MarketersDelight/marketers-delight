@@ -97,14 +97,6 @@ function md_whats_new() {
 	return $new;
 }
 
-// Old Byline hooks, deprecated 5.1
-function md_hook_byline_top() {
-	do_action( 'md_hook_byline_top' );
-}
-function md_hook_byline_bottom() {
-	do_action( 'md_hook_byline_bottom' );
-}
-
 /**
  * Checks if post listings has excerpts enabled.
  *

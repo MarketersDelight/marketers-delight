@@ -106,6 +106,14 @@ function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline' );
 }
 
+function md_hook_byline_top() {
+	do_action( 'md_hook_byline_top' );
+}
+
+function md_hook_byline_bottom() {
+	do_action( 'md_hook_byline_bottom' );
+}
+
 function md_hook_after_featured_image() {
 	do_action( 'md_hook_after_featured_image' );
 }

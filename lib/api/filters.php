@@ -222,7 +222,7 @@ function md_filter_popups() {
  * A list of post types to show Share buttons on.
  *
  * @since 5.0
- * @moved to MD Share 1.0.2
+ * @moved to MD Share 1.02
  */
 
 function md_share_post_types() {

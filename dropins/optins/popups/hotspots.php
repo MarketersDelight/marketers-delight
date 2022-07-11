@@ -42,7 +42,7 @@ class md_hotspots extends md_api {
 		// Byline
 		$byline = md_setting( array( 'popups', 'byline' ) );
 		if ( md_has_byline() && $byline && ! in_array( 'hotspot', md_get_byline() ) ) {
-			add_action( 'md_hook_byline_item', array( $this, 'byline' ) );
+			add_action( 'md_hook_byline_bottom', array( $this, 'byline' ) );
 			md_popup( array( 'id' => $byline ) );
 		}
 	}

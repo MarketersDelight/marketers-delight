@@ -34,8 +34,6 @@
 	line-height: <?php echo round( $line_height['desktop'] * 0.8 ); ?>px;
 }
 
-.sub-menu .current-menu-item > a > .menu-item-title { font-weight: <?php echo $bold; ?>; }
-
 /* TRIGGERS */
 
 .menu-trigger { cursor: pointer; }
@@ -104,7 +102,6 @@
 @media all and (max-width: 800px) {
 	.menu-item, .menu-item a { display: block; }
 	.sub-menu .sub-menu .sub-menu { margin-left: <?php echo $half; ?>px; }
-	.menu-item-has-children.show-submenu > a > .menu-item-title { font-weight: <?php echo $bold; ?>; }
 	.show-submenu > .menu-toggle:after { content: '\e817'; }
 	.menu .menu-toggle {
 		background-color: rgba(0, 0, 0, 0.05);
@@ -142,8 +139,8 @@
 	.menu-header .sub-menu > .menu-item-has-children > a { padding-left: <?php echo $single + $small; ?>px }
 	.menu-header .sub-menu { background-color: <?php echo $colors['header']['submenu']['bg_color']; ?>; }
 	.menu-header .sub-menu .sub-menu { right: <?php echo ( $single * 9 ); ?>px; }
-	.menu-header .sub-menu a { color: <?php echo $colors['header']['submenu']['links']; ?>; }
-	.menu-header .sub-menu a:hover {
+	.menu-header .sub-menu a, .menu-header .sub-menu .menu-toggle { color: <?php echo $colors['header']['submenu']['links']; ?>; }
+	.menu-header .sub-menu a:hover, .menu-header .sub-menu .menu-toggle:hover {
 		background-color: rgba(0, 0, 0, 0.1);
 		color: <?php echo $colors['header']['submenu']['hover']; ?>;
 	}
@@ -204,13 +201,15 @@
 
 .has-search .main-menu-side, .has-search .main-menu-search, .has-search .menu-search { display: block; }
 
+.has-search .main-menu-side { width: <?php echo $sidebar_width; ?>px; }
+
 .main-menu .search-input {
 	background-color: transparent;
 	border: none;
 	box-shadow: none;
 	margin-bottom: 0;
 	padding: <?php echo $m_tb; ?>px <?php echo $m_lr; ?>px;
-	width: <?php echo $sidebar_width; ?>px;
+	width: 90%;
 }
 
 .main-menu .search-input:focus { box-shadow: none; }
@@ -246,9 +245,31 @@
 
 /* QUERIES */
 
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.main-menu-side {
+		padding-left: <?php echo $m_tb; ?>px;
+		padding-right: <?php echo $m_tb; ?>px;
+	}
+	.has-search .menu-main { display: none; }
+	.has-search .main-menu .inner { display: block; }
+	.has-search .main-menu-side {
+		border-bottom: 0;
+		width: 100%;
+	}
+	.main-menu .search-input {
+		padding: <?php echo $half; ?>px;
+		width: 90%;
+	}
+	.main-menu .search-submit {
+		float: right;
+		padding-top: <?php echo $half; ?>px;
+		width: 10%;
+	}
+}
+
 @media all and (min-width: 800px) {
 	.menu-trigger, .menu-search { display: inline-block; }
-	.main-menu-triggers { display: none; }
+	.main-menu-triggers, .main-menu.has-search .menu-popup { display: none; }
 	.menu-main .menu-toggle {
 		padding-left: <?php echo $small; ?>px;
 		padding-right: <?php echo $small; ?>px;
@@ -272,7 +293,6 @@
 	.menu-main .sub-menu, .menu-main > .current-menu-item, .menu-main > .menu-item-has-children:hover > a, .menu-main > .current-menu-item:hover > a { background-color: <?php echo $colors['main_menu']['sub_menu']; ?>; }
 	.menu-main .current-menu-item a, .menu-main .menu-item-has-children:hover { color: <?php echo $colors['main_menu']['active']; ?>; }
 	.menu-main .sub-menu .menu-toggle:after { content: '\e80f'; }
-	.main-menu-content, .menu-main { float: left; }
 	.has-social-menu {
 		padding-bottom: <?php echo $half; ?>px;
 		padding-top: <?php echo $half; ?>px;
@@ -281,42 +301,45 @@
 		float: right;
 		margin-left: <?php echo $half; ?>px;
 	}
-	.main-menu.has-search .menu-popup { margin-top: 15px; }
+	.main-menu-triggers, .menu-search { float: right; }
+	.has-search .menu-search { float: none; }
+	.has-search .main-menu-side { margin-top: 0; }
+	.menu-social .menu-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+}
+
+@media all and (min-width: 900px) {
+	.main-menu .inner {
+		align-items: center;
+		display: flex;
+	}
+	.main-menu-side {
+		order: 2;
+		margin-left: auto;
+	}
+	.menu-social { float: right; }
 	.menu-search + .menu-social {
 		border-right: 1px solid rgba(0, 0, 0, 0.15);
 		margin-right: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
-	.main-menu-side, .main-menu-triggers, .menu-search, .menu-social { float: right; }
-	.has-search .menu-search { float: none; }
-	.main-menu-side {
-		margin-top: <?php echo $m_tb; ?>px;
-		margin-right: <?php echo $m_tb; ?>px;
-	}
-	.has-search .main-menu-side { margin-top: 0; }
-	.menu-social .menu-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
-	.has-search .main-menu-side {
-		position: absolute;
-			left: 0;
-			top: 0;
-		width: 100%;
+	.main-menu-side {
+		border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+		padding-bottom: <?php echo $small; ?>px;
+		padding-top: <?php echo $small; ?>px;
 	}
-	.main-menu .search-input {
-		padding: <?php echo $half; ?>px;
-		width: 90%;
-	}
-	.main-menu .search-submit {
-		float: right;
-		padding-top: <?php echo $half; ?>px;
-		width: 10%;
+	.main-menu-side:after {
+		clear: both;
+		content: '';
+		display: table;
 	}
 }
 
 @media all and (max-width: 800px) {
-	.menu-content, .main-menu-side, .menu-main.menu .menu-item-desc { display: none; }
+	.main-menu-side { margin-right: 0; }
+	.menu-content, .main-menu-side, .menu-main.menu .menu-item-desc, .main-menu-side .menu-popup { display: none; }
 	.has-menu .menu-main, .has-social .menu-social { display: block; }
 	.has-search .main-menu-side { position: static; }
 	.menu-trigger, .main-menu .md-popup-trigger {
@@ -370,7 +393,7 @@
 	}
 }
 
-@media all and (max-width: 600px) {
+@media all and (max-width: 700px) {
 	.menu-main .sub-menu .sub-menu { margin-left: 0; }
 	.menu-main .sub-menu .sub-menu .sub-menu { margin-left: <?php echo $m_lr; ?>px; }
 	.main-menu .columns-3 .col {
@@ -378,6 +401,7 @@
 		width: 33.333333333%;
 	}
 	.main-menu .columns-4 .col { width: 25%; }
+	.main-menu-triggers-4 .menu-trigger-text { display: none; }
 }
 
 @media all and (max-width: 400px) {

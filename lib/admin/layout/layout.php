@@ -201,9 +201,11 @@ class md_layout extends md_api {
 				document.getElementById( '<?php echo $prefix; ?>_header_remove' ).onchange = function( e ) {
 					document.getElementById( 'header_options' ).style.display = this.checked ? 'none' : 'block';
 				}
-				document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
-					document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
-				}
+				<?php if ( has_nav_menu( 'header' ) ) : ?>
+					document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
+						document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
+					}
+				<?php endif; ?>
 				<?php if ( has_nav_menu( 'main' ) ) : ?>
 					document.getElementById( '<?php echo $prefix; ?>_main_menu_remove' ).onchange = function( e ) {
 						document.getElementById( 'main_menu_options' ).style.display = this.checked ? 'none' : 'block';
