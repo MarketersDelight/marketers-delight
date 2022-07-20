@@ -1,7 +1,7 @@
 name: "PHPCS"
 
 on:
-  pull_request:
+  push:
     paths:
       - "**.php"
       - "phpcs.xml"
