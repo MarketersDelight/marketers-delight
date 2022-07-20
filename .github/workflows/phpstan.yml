@@ -1,0 +1,2 @@
+- name: PHPStan for WordPress
+  uses: dingo-d/phpstan-wp-action@v1
