@@ -1,17 +1,19 @@
-name: WPCS checker
-on: [push, pull_request]
+on: pull_request
+
+name: Inspections
 jobs:
-  linter_name:
-    name: runner / phpcs
+  runPHPCSInspection:
+    name: Run PHPCS inspection
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: shalior/action-phpcs-wordpress@master
-        with:
-          github_token: ${{ secrets.github_token }}
-          use_default_configuration_file: true
-          phpcs_args: '-n' # ignore warnings
-      - uses: stefanzweifel/git-auto-commit-action@v4 # auto commit the fixes action for GitHub
-        with:
-          commit_message: Fix PHPCS errors
-          
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+    - name: Run PHPCS inspection
+      uses: rtCamp/action-phpcs-code-review@v2
+      env:
+        GH_BOT_TOKEN: ${{ secrets.GH_APP_TOKEN }}
+        SKIP_FOLDERS: "tests,.github"
+        PHPCS_SNIFFS_EXCLUDE: "WordPress.Files.FileName"
+      with:
+        args: "WordPress,WordPress-Core,WordPress-Docs"
