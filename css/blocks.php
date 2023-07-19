@@ -175,11 +175,6 @@
 	}
 	.block-triple-top { padding-top: <?php echo $double; ?>px; }
 	.block-triple-bot { padding-bottom: <?php echo $double; ?>px; }
-	/* SINGLE */
-	.sidebar {
-		padding-bottom: <?php echo $single; ?>px;
-		padding-top: <?php echo $single; ?>px;
-	}
 }
 
 @media all and (max-width: 700px) {

@@ -4,13 +4,10 @@
 	$BUTTONS
 \*------------------------------*/
 
-input[type="submit"],
-button,
-.button, a.button, .button a,
-.format .button {
+button, .button, a.button, .button a, input[type="submit"], .format .button {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
-	border-radius: 3px;
+	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
@@ -18,19 +15,15 @@ button,
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
-	font-weight: <?php echo $bold; ?>;
-	padding: 17px <?php echo $single; ?>px;
+	padding: <?php echo $half; ?>px;
 	position: relative;
 	text-align: center;
-	text-transform: uppercase;
+	text-decoration: none;
 	transition: 0.3s;
 	-webkit-appearance: none;
 }
 
-input[type="submit"]:hover,
-button:hover,
-.button:hover, a.button:hover, .button a:hover,
-.format .button:hover {
+button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover, .format .button:hover {
 	-moz-transform: translateY(1px);
 	-ms-transform: translateY(1px);
 	-webkit-transform: translateY(1px);
@@ -91,8 +84,8 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 /* SIZES */
 
 .button.button-small {
-	font-size: 16px;
-	padding: 10px 15px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
 }
 
 .button.button-large {
@@ -107,12 +100,9 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 
 /* OUTLINE */
 
-.button.button-outline,
-.button.button-outline:hover {
+.button.button-outline, .button.button-outline:hover {
 	background-color: transparent;
-	border: 3px solid <?php echo $colors['site']['button']; ?>;
-	border-bottom-width: 3px;
-	border-radius: 3px;
+	border: 2px solid <?php echo $colors['site']['button']; ?>;
 	color: <?php echo $colors['site']['button']; ?>;
 }
 
@@ -150,7 +140,6 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 /* BADGE */
 
 .button.button-badge {
-	border-bottom: 0;
 	border-radius: 0 2px 2px 0;
 	padding-right: 84px;
 	position: relative;
@@ -173,9 +162,5 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 }
 
 @media all and (max-width: 700px) {
-	.button, button, input[type="submit"] {
-		display: block;
-		width: 100%;
-	}
 	.button + .button { margin-top: <?php echo $half; ?>px; }
 }

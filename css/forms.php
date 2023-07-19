@@ -16,14 +16,16 @@ input, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: inherit;
-	padding: 16px;
+	padding: <?php echo $half; ?>px;
 }
 
-input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="password"], textarea {
+input[type="text"], textarea,
+input[type="url"], input[type="email"],
+input[type="search"], input[type="password"] {
 	background-color: #fff;
-	border-radius: 0;
-	border: 1px solid #ddd;
-	margin-bottom: <?php echo $half; ?>px;
+	border-radius: 5px;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	line-height: 1;
 	position: relative;
 	width: 100%;
 	-webkit-appearance: none;
@@ -40,55 +42,79 @@ fieldset {
 	padding: <?php echo $single; ?>px;
 }
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="url"]:focus, input[type="password"]:focus, textarea:focus {
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+input[type="text"]:focus, textarea:focus,
+input[type="url"]:focus, input[type="email"]:focus,
+input[type="search"]:focus, input[type="password"]:focus {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
 
 select { max-width: 100%; }
 
-.form-input-name, .form-input-email {
-	background-position: 16px center;
-	background-repeat: no-repeat;
-	padding-left: 45px;
+/* ICON FIELDS */
+
+.fields-icons .form-field,
+.has-search .form-controls .form-inputs {
+	background-color: <?php echo $colors['header']['bg_color']; ?>;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-radius: 5px;
 }
 
-.form-input-name { background-image: url('<?php echo MD_URL; ?>lib/assets/images/user.png'); }
+.fields-icons .form-field { margin-bottom: <?php echo $half; ?>px; }
 
-.form-input-email { background-image: url('<?php echo MD_URL; ?>lib/assets/images/mail.png'); }
+.fields-icons .form-input, .fields-icons .form-input:focus,
+.has-search .form-controls .form-input {
+	border: 0;
+	box-shadow: none;
+}
 
-.email-form-title:empty, .email-form-footer:empty { display: none; }
-
-.email-form-footer {
-	clear: both;
-	font-size: 0.8em;
-	font-style: italic;
-	line-height: 1.5em;
+.form-field-icon {
+	color: <?php echo $colors['site']['text']; ?>;
+	font-size: 1.2em;
+	line-height: 1;
+	min-width: 50px;
+	padding: <?php echo $half; ?>px;
 	text-align: center;
 }
 
-.form-input, .form-submit { width: 100%; }
+.form-field-icon + .form-input { padding-left: 0; }
 
-.form-input, .form-submit:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.form-field-icon, .format .fields-icons .form-input { margin-bottom: 0; }
 
-.form-full .form-input { display: block; }
+/* LAYOUT */
+
+.form-full .form-field { display: block; }
+
+.form-inputs, .form-full .form-submit { width: 100%; }
+
+.search-form .form-submit { width: 40%; }
 
 @media all and (min-width: 700px) {
-	[class*="form-attached"] { position: relative; }
-	[class*="form-attached"] .form-input {
-		border-right-width: 0;
-		margin-bottom: 0;
-		float: left;
-		width: 78%;
+	[class*="form-attached"] {
+		display: flex;
+		position: relative;
 	}
-	.form-attached-2 .form-input { width: 39%; }
+	[class*="form-attached"] .form-field { margin-right: 2%; }
+	.form-multi-fields [class*="form-attached"] .form-field { width: auto; }
 	[class*="form-attached"] .form-submit {
-		border-radius: 0 2px 2px 0;
-		border-width: 3px 3px 3px 0;
-		float: left;
-		font-size: inherit;
-		line-height: inherit;
-		padding: 16px 7px;
-		width: 22%;
+		align-self: flex-start;
+		width: 40%;
 	}
 }
+
+/* SEARCH */
+
+.search-form .search-submit { margin-left: <?php echo $third; ?>px; }
+
+.has-search .form-controls .form-inputs { padding-left: <?php echo $half; ?>px; }
+
+/*
+.form-inputs .trigger,
+*/
+.form-toggle .search-input, .form-toggle .search-submit,
+.has-search .search-form .trigger-text { display: none; }
+
+/*
+.form-toggle .trigger { display: flex; }
+*/
+.has-search .search-input, .has-search .search-submit { display: block; }

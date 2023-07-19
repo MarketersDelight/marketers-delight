@@ -1,0 +1,59 @@
+<div class="md-sep-small">
+	<?php $this->fields->field( 'position', array(
+		'type' => 'select',
+		'label' => __( 'Featured Image Position', 'md' ),
+		'empty_label' => __( 'Use default position', 'md' ),
+		'options' => $sanitize->values['featured_image']
+	) ); ?>
+</div>
+
+<?php if ( ! in_array( $screen->base, array( 'post', 'post-new' ) ) ) : ?>
+	<div class="md-sep-small">
+		<?php $this->fields->field( 'image', array(
+			'type' => 'upload',
+			'upload_type' => 'media',
+			'label' => __( 'Set Featured Image', 'md' )
+		) ); ?>
+	</div>
+<?php endif; ?>
+
+<div class="md-sep-small">
+	<?php $this->fields->field( 'cover_position', array(
+		'type' => 'select',
+		'label' => __( 'Cover Photo', 'md' ),
+		'empty_label' => __( 'Use default cover image', 'md' ),
+		'options' => $sanitize->values['covers']
+	) ); ?>
+</div>
+
+<div id="md_cover_settings" class="md-display-none" style="display: <?php echo ! empty( $cover_position ) ? 'block' : 'none'; ?>">
+
+	<div class="md-sep-small">
+		<?php $this->fields->field( 'cover_image', array(
+			'type' => 'upload',
+			'upload_type' => 'media',
+			'label' => __( 'Cover Image', 'md' ),
+			'description' => __( 'Set a background image for Header and Headline background covers.<br /><b>Recommended photo size: 1280x720px</b>, or smaller for background patterns.', 'md' )
+		) ); ?>
+	</div>
+
+	<div id="md_cover_overlay" class="md-sep-small" style="display: <?php echo ( empty( $disable_overlay ) && empty( $disable_overlay_single ) ) || ( ! empty( $disable_overlay_single ) && ! empty( $disable_overlay ) ) ? 'block' : 'none'; ?>">
+		<?php $this->fields->field( 'bg_color', array(
+			'type' => 'color',
+			'label' =>  __( 'Cover Overlay', 'md' ),
+			'default' => $data['values']['colors']['header']['cover_color']
+		) ); ?>
+	</div>
+
+	<div class="md-sep-small">
+		<?php $this->fields->field( 'text_color', array(
+			'type' => 'checkbox',
+			'label' => __( 'Cover Settings', 'md' ),
+			'options' => array(
+				'alternate' => __( 'Use alternate text color', 'md' ),
+				'disable_cover' => $overlay_label
+			)
+		) ); ?>
+	</div>
+
+</div>

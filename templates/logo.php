@@ -1,19 +1,31 @@
 <div class="header-logo">
 
-	<?php if ( md_has_logo() ) : ?>
-		<<?php md_logo_html(); ?> class="logo">
-			<?php if ( md_has_custom_logo() ) : ?>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-logo" rel="home"><?php md_the_logo(); ?></a>
-			<?php endif; ?>
-			<?php if ( md_has_site_title() ) : ?>
-				<a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="site-title" rel="home"><?php echo get_bloginfo( 'name' ); ?></a>
-			<?php endif; ?>
-		</<?php echo md_logo_html(); ?>>
-	<?php endif; ?>
+	<a href="<?php echo esc_url( home_url( '/' ) ); ?>" title="<?php echo get_bloginfo( 'name' ); ?>" rel="home">
+		<?php if ( md_has_custom_logo() ) : ?>
 
-	<?php if ( md_has_tagline() ) : ?>
-		<p class="tagline" itemprop="description"><?php bloginfo( 'description' ); ?></p>
-	<?php endif; ?>
+			<<?php echo md_logo_html(); ?> class="logo">
+				<?php md_the_logo(); ?>
+			</<?php echo md_logo_html(); ?>>
+
+		<?php endif; ?>
+
+		<?php if ( md_has_site_title() || md_has_tagline() ) : ?>
+
+			<div class="header-details">
+
+				<?php if ( md_has_site_title() ) : ?>
+					<p class="site-title"><?php echo md_site_title(); ?></p>
+				<?php endif; ?>
+
+				<?php if ( md_has_tagline() ) : ?>
+					<p class="tagline"><?php echo md_site_tagline(); ?></p>
+				<?php endif; ?>
+
+			</div>
+
+		<?php endif; ?>
+
+	</a>
 
 	<?php md_hook_header_logo_bottom(); ?>
 

@@ -20,10 +20,10 @@
 								<?php md_byline_item( 'category' ); ?>
 							</div>
 						<?php endif; ?>
-						<h1 class="headline<?php echo md_has_sidebar() ? ' med-title' : ''; ?>"><a href="<?php the_permalink(); ?>" title="<?php echo sprintf( __( 'Permanent Link to %s', 'md' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a></h1>
+						<h1 class="headline"><a href="<?php the_permalink(); ?>" title="<?php echo sprintf( __( 'Permanent Link to %s', 'md' ), the_title_attribute( 'echo=0' ) ); ?>"><?php the_title(); ?></a></h1>
 					</div>
 					<?php if ( $content !== 'hide' ) : ?>
-						<div class="content-text<?php echo ! md_has_sidebar() ? ' micro-text' : ''; ?>">
+						<div class="content-text">
 							<?php md_the_content(); ?>
 						</div>
 					<?php endif; ?>

@@ -27,10 +27,16 @@
 				<?php endif; ?>
 
 				<?php if ( ! empty( $fields['email_input']['name'] ) ) : ?>
-					<input type="text" class="form-input form-input-name" name="<?php echo md_email_input( 'name', $service ); ?>" placeholder="<?php echo esc_attr( $fields['email_name_label'] ); ?>" required />
+					<span class="form-field form-field-name">
+						<label class="form-field-icon" for="input-name-<?php echo esc_attr( $id ); ?>"><?php echo md_icon( 'user' ); ?></label>
+						<input id="input-name-<?php echo esc_attr( $id ); ?>" type="text" class="form-input form-input-name" name="<?php echo md_email_input( 'name', $service ); ?>" placeholder="<?php echo esc_attr( $fields['email_name_label'] ); ?>" required />
+					</span>
 				<?php endif; ?>
 
-				<input type="email" class="form-input form-input-email" name="<?php echo md_email_input( 'email', $service ); ?>" placeholder="<?php echo esc_attr( $fields['email_email_label'] ); ?>" required />
+				<span class="form-field form-field-email">
+					<label class="form-field-icon" for="input-email-<?php echo esc_attr( $id ); ?>"><?php echo md_icon( 'mail-alt' ); ?></label>
+					<input id="input-email-<?php echo esc_attr( $id ); ?>" type="email" class="form-input form-input-email" name="<?php echo md_email_input( 'email', $service ); ?>" placeholder="<?php echo esc_attr( $fields['email_email_label'] ); ?>" required />
+				</span>
 
 				<button class="email-form-submit form-submit button-loading mb-half<?php echo trim( esc_attr( $submit_classes ) ); ?>"<?php echo $submit_style; ?><?php echo md_email_attrs( 'submit', $fields ); ?>><?php echo esc_attr( $fields['email_submit_text'] ); ?> <i class="<?php echo md_icon( 'loading', true ); ?>"></i></button>
 
@@ -73,4 +79,3 @@
 
 	</div>
 </div>
-<?php wp_add_inline_script( 'marketers-delight', 'MD.button();' ); ?>

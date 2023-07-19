@@ -8,7 +8,7 @@
 
 .breadcrumbs {
 	font-size: 0.85em;
-	margin-bottom: <?php echo $half; ?>px;
+	margin-bottom: <?php echo $small; ?>px;
 }
 
 @media all and (min-width: 900px) {
@@ -199,13 +199,17 @@
 }
 
 .byline a {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 	color: <?php echo $colors['site']['text-sec']; ?>;
+	text-decoration: none;
 }
 
-.byline-item { display: inline-block; }
+.author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
-.byline a.byline-icon, .byline .byline-icon a { border-bottom: 0; }
+.has-cover .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+
+.author-link:hover { border-bottom: 0; }
+
+.byline-item { display: inline-block; }
 
 .byline-item .md-icon-twitter { color: #1da1f2; }
 
@@ -241,13 +245,23 @@
 
 /* AUTHOR BOX */
 
-.author-box { text-align: center; }
-
-.author-title { font-weight: normal; }
+.author-box {
+	background-color: <?php echo $colors['site']['action']; ?>;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+	padding: <?php echo $half; ?>px;
+}
 
 .author-box .circle-icon { margin-right: <?php echo $small; ?>px; }
 
 .author-box .author-link:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+
+.author-box .author-title, .author-box .author-bio { margin-bottom: <?php echo $small; ?>px; }
+
+.author-box .author-avatar { flex: 0 1 <?php echo $triple * 2; ?>px; }
+
+.author-box .author-avatar img { width: 100%; }
+
+.author-box .author-content { padding-left: <?php echo $half; ?>px; }
 
 .author-link.twitter .circle-icon {
 	background-color: #1da1f2;
@@ -261,6 +275,14 @@
 	color: #1da1f2;
 }
 
+@media all and (min-width: 900px) {
+	.author-box {
+		border-radius: 5px;
+		padding-bottom: <?php echo $single; ?>px;
+		padding-top: <?php echo $single; ?>px;
+	}
+}
+
 /* PAGINATION  */
 
 .pagination {
@@ -270,17 +292,29 @@
 	text-align: center;
 }
 
+.pagination a { text-decoration: none; }
+
+<?php if ( md_setting( array( 'loop', 'pagination' ) ) == 'prev_next' ) : ?>
+
+.pagination-sep {
+	margin-left: <?php echo $small; ?>px;
+	margin-right: <?php echo $small; ?>px;
+}
+
+<?php else : ?>
+
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);
 	border-radius: 5px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 	padding: <?php echo $half; ?>px;
 }
 
 .pagination .page-numbers,
 .post-nav-links .post-page-numbers {
 	background-color: #fff;
-	border-color: <?php echo $colors['content']['border_color']; ?>;
+	border: 0;
+	border-radius: 50%;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	display: inline-block;
 	margin-right: <?php echo $small; ?>px;
@@ -296,116 +330,69 @@
 .pagination .page-numbers:hover,
 .post-nav-links.post-page-numbers:hover { opacity: 0.8; }
 
-.page-numbers.dots {
+.page-numbers.dots, .page-numbers.prev, .page-numbers.next {
 	background-color: transparent;
+	border-radius: inherit;
 	box-shadow: none;
 	border: 0;
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text']; ?>;
 	padding: 0;
 }
 
+.page-numbers.prev { margin-right: <?php echo $third; ?>px; }
+.page-numbers.next { margin-left: <?php echo $third; ?>px; }
+
+<?php endif; ?>
+
 /* POST NAV */
 
-.post-nav {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
+.post-nav p { margin-bottom: 0; }
+
+.post-nav a {
+	display: block;
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+	text-decoration: none;
 }
+
+.post-nav-next { text-align: right; }
+
+.post-nav-previous, .post-nav-next { flex: 1; }
+
+.post-nav-title { color: <?php echo $colors['site']['text']; ?>; }
+
+.post-nav-previous:hover .post-nav-title, .post-nav-next:hover .post-nav-title { text-decoration: underline; }
 
 /* FEATURED IMAGE */
 
-<?php
-	$text_colors = array(
-		'default' => array(
-			'class' => '',
-			'color' => ( ! empty( $content['featured_image']['styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
-			'link' => ( ! empty( $content['featured_image']['styles']['text_color'] ) ? '#444' : '#eee' ),
-			'border' => ( ! empty( $content['featured_image']['styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)' )
-		),
-		'alt' => array(
-			'class' => '.text-alt',
-			'color' => ( empty( $content['featured_image']['styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
-			'link' => ( empty( $content['featured_image']['styles']['text_color'] ) ? '#444' : '#eee' ),
-			'border' => ( empty( $content['featured_image']['styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.2)' )
-		)
-	);
-
-	$featured_image_text = ! empty( $content['featured_image']['styles']['text_color'] ) ? $colors['site']['headline'] : '#fff';
-?>
-
 .featured-image { position: relative; }
 
-.featured-image a { border-bottom: 0; }
+.featured-image a { display: block; }
 
-.featured-image img, .featured-image-tax img { width: 100%; }
+.featured-image img { width: 100%; }
 
-.featured-image-tax.alignleft img, .featured-image-tax.alignright img {
-	height: 150px;
-	width: 150px;
-}
-
-.featured-image-cover {
-	<?php echo ( ! empty( $content['featured_image']['cover']['url'] ) ? 'background-image: url(\'' . esc_url( $content['featured_image']['cover']['url'] ) . '\'); ': '' ); ?>
-	background-position: center center;
-	background-size: <?php echo ( empty( $content['featured_image']['styles']['repeat'] ) ? 'cover' : 'auto' ); ?>;
-	position: relative;
-}
-
-.header.featured-image-cover { background-color: transparent; }
-
-.featured-image-caption {
+.image-caption {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: 14px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	font-style: italic;
-	line-height: 20px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	padding: <?php echo $third; ?>px;
 	text-align: center;
 }
 
-.featured-image-cover .featured-image-caption {
-	background-color: rgba(0, 0, 0, 0.8);
+.post .image-caption { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.cover .image-caption {
+	background-color: rgba(0, 0, 0, 0.75);
 	color: #fff;
 	margin-bottom: 0;
-	padding: 7px 13px;
+	padding: <?php echo $small; ?>px <?php echo $third; ?>px;
 	position: absolute;
 		bottom: 0;
-		left: 0;
+		right: 0;
 	z-index: 10;
 }
 
-.post-box .featured-image-caption {
-	margin-top: <?php echo $half; ?>px;
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
-}
-
-<?php foreach ( $text_colors as $text_class => $text_atts ) :
-	$text_class = $text_atts['class'];
-?>
-	.featured-image-cover<?php echo $text_class; ?>,
-	.featured-image-cover<?php echo $text_class; ?> .logo .site-title,
-	.featured-image-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-	.featured-image-cover<?php echo $text_class; ?> .header-trigger,
-	.featured-image-cover<?php echo $text_class; ?> .headline,
-	.featured-image-cover<?php echo $text_class; ?> .headline a,
-	.featured-image-cover<?php echo $text_class; ?> .byline {
-		color: <?php echo esc_attr( $text_atts['color'] ); ?>;
-	}
-
-	.featured-image-cover<?php echo $text_class; ?> .menu > .menu-item > a:hover,
-	.featured-image-cover<?php echo $text_class; ?> .tagline,
-	.featured-image-cover<?php echo $text_class; ?> .text-sec,
-	.featured-image-cover<?php echo $text_class; ?> a,
-	.featured-image-cover<?php echo $text_class; ?> .entry-subtitle {
-		color: <?php echo esc_attr( $text_atts['link'] ); ?>;
-	}
-	.featured-image-cover<?php echo $text_class; ?> a { border-bottom-color: <?php echo esc_attr( $text_atts['border'] ); ?>; }
-<?php endforeach; ?>
-
 @media all and (min-width: 800px) {
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
-}
-
-@media all and (max-width: 900px) {
-	.byline { font-size: 0.75em; }
-	.featured-image-cover<?php echo $text_colors['default']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo esc_attr( $text_colors['default']['color'] ); ?>; }
-	.featured-image-cover<?php echo $text_colors['alt']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo esc_attr( $text_colors['alt']['color'] ); ?>; }
 }

@@ -59,7 +59,7 @@
 		$button_classes[] = 'md-popup-trigger';
 	$button_classes[] = ! empty( $buttonColorClass ) ? $buttonColorClass : '';
 	$button_classes = join( ' ', $button_classes );
-	if ( md_has( 'popups' ) && $has_popup )
+	if ( md_has( 'optins' ) && $has_popup )
 		md_popup( array( 'id' => $popup ) );
 ?>
 <div class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>

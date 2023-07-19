@@ -1,8 +1,7 @@
-<?php if ( is_single() && ( get_previous_post() || get_next_post() ) ) : ?>
-	<div class="post-nav">
-		<div class="content-inner">
-			<?php previous_post_link( '<p class="previous mb-half"><span>' . __( 'Previous Post: ', 'md' ) . '</span>%link</p>' ); ?>
-			<?php next_post_link( '<p class="next"><span>' . __( 'Next Post: ', 'md' ) . '</span>%link</p>' ); ?>
-		</div>
-	</div>
-<?php endif; ?>
+<div class="post-nav">
+
+	<?php previous_post_link( '<div class="post-nav-previous">%link</div>', '<p class="post-nav-byline">' . md_icon( 'angle-left', array( 'classes' => 'mr-small' ) ) . __( 'Previous', 'md' ) . '</p><p class="post-nav-title">%title</p>' ); ?>
+
+	<?php next_post_link( '<div class="post-nav-next">%link</div>', '<p class="post-nav-byline">' . __( 'Next', 'md' ) . md_icon( 'angle-right', array( 'classes' => 'ml-small' ) ) . '</p><p class="post-nav-title">%title</p>' ); ?>
+
+</div>

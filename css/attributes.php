@@ -4,7 +4,7 @@
 	Theme Name: Marketers Delight
 	Version: ' . MD_VERSION . '
 	Author: Alex Mangini
-	Description: Marketers Delight is your smart website design system for the future. Built on a foundation of typography, MD\'s features and layout all work together to help you create stunning content on the web. Use the Site Designer to design your site, capture subscribers with MD\'s email and popups tools, and enable power features like the Stream and Bookshelf to deliver unique kinds of content to your audience. All of that and more in Marketers Delight.
+		Description: Built on a foundation of typography and a vision to fuel powerful features with lightweight performance, Marketers Delight is your website marketing framework for now and into the future. Capture Leads with MD Optins, write and design beautiful long-form content with interactive tools, curate reading lists with the Bookshelf, and much, much more.
 	Theme URI: https://marketersdelight.com/
 	Author URI: https://kolakube.com/
 	Text Domain: md
@@ -34,14 +34,12 @@
 body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-weight: <?php echo $font_weight; ?>;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
 	position: relative;
 }
 
 b, strong, .bold { font-weight: <?php echo $bold; ?>; }
+
+i, em, .italic { font-style: italic; }
 
 [class*="md-icon"] { display: inline-block; }
 
@@ -85,10 +83,6 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 	line-height: 1;
 }
 
-main { display: block; }
-
-ul { list-style: square; }
-
 p { position: relative; }
 
 a {
@@ -108,37 +102,30 @@ sup { line-height: 1; }
 
 hr {
     border: 0;
-    height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    height: 0;
 }
 
 pre, code {
-	background-color: #ddd;
+	background-color: <?php echo $colors['site']['tertiary']; ?>;
 	color: #3e3e3e;
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
 	font-size: 0.9em;
 }
 
-code a, .format code a {
-	border-bottom: 0;
-	color: #3e3e3e;
-}
-
 pre {
 	overflow: auto;
-	padding: 26px;
+	padding: <?php echo $single; ?>px;
 }
 
 code {
-	border-radius: 3px;
+	border-radius: 5px;
 	padding: 2px 5px;
 }
 
 abbr, acronym {
-	border-bottom: 1px dotted #777;
+	border-bottom: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
 	cursor: help;
 	text-decoration: none;
 }
-
-a abbr, a acronym { border-bottom: none; }

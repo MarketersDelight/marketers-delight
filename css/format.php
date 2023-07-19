@@ -1,16 +1,41 @@
 <style type="text/css">
 
 /*------------------------------*\
-	$HELPERS
+	$FORMATTING
 \*------------------------------*/
 
-/* TYPOGRAPHY */
+/* BODY */
+
+body {
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
+	font-weight: <?php echo $font_weight; ?>;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+}
+
+@media all and (max-width: 900px) {
+	body {
+		font-size: <?php echo $font_size['tablet']; ?>px;
+		line-height: <?php echo $line_height['tablet']; ?>px;
+	}
+}
+
+<?php if ( $font_size['tablet'] !== $font_size['mobile'] ) : ?>
+@media all and (max-width: 700px) {
+	body {
+		font-size: <?php echo $font_size['mobile']; ?>px;
+		line-height: <?php echo $line_height['mobile']; ?>px;
+	}
+}
+<?php endif; ?>
+
+/* HEADLINES */
 
 <?php
 	$queries = array( 900 => 'tablet', 700 => 'mobile' );
 	$titles = array(
 		'huge' => '.huge-title',
-		'h1' => 'h1, .large-title',
+		'h1' => 'h1, .large-title, .headline',
 		'h2' => 'h2, .main-title',
 		'h3' => 'h3, .med-title',
 		'h4' => 'h4, .mid-title',
@@ -61,9 +86,11 @@
 
 .format { word-wrap: break-word; }
 
-.format a { border-bottom: 1px solid <?php echo $colors['site']['links']; ?>; }
+.format ul { list-style: square; }
 
-.format a:hover, .format .no-border { border-bottom-width: 0; }
+.format a { text-decoration: underline; }
+
+.format a:hover{ text-decoration: none; }
 
 .format .headline, .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
 	margin-bottom: <?php echo $half; ?>px;
@@ -71,11 +98,17 @@
 }
 
 .format .headline a, .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
-	border-bottom: 0;
 	color: <?php echo $colors['site']['headline-links']; ?>;
+	text-decoration: none;
 }
 
 .format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
+
+.format input[type="text"], .format textarea,
+.format input[type="url"], .format input[type="email"],
+.format input[type="password"] { margin-bottom: <?php echo $half; ?>px; }
+
+.format [class*="form-attached"] .form-input, .format [class*="form-attached"] .form-submit { margin-bottom: 0; }
 
 .format ul, .format ol { margin-left: <?php echo $single; ?>px; }
 
@@ -100,17 +133,16 @@
 	display: block;
 	position: relative;
 	margin-bottom: <?php echo $single; ?>px;
-	z-index: 5;
 }
 
 .alignleft {
 	float: left;
-	margin-right: <?php echo $single; ?>px;
+	margin-right: <?php echo $half; ?>px;
 }
 
 .alignright {
 	float: right;
-	margin-left: <?php echo $single; ?>px;
+	margin-left: <?php echo $half; ?>px;
 }
 
 .alignwide, .alignfull { max-width: initial; }
@@ -166,11 +198,6 @@
 
 .text-right { text-align: right; }
 
-.text-intro, .intro, .subtitle {
-	font-size: 1.2em;
-	line-height: 1.5em;
-}
-
 .caps { text-transform: uppercase; }
 
 .text-dark { color: #1e1e1e; }
@@ -217,12 +244,17 @@
     text-transform: uppercase;
 }
 
-a.badge { border-bottom: 0; }
-
 .middot:not(:last-child):after {
 	content: '\00b7';
 	margin-left: 6px;
 	margin-right: 3px;
+}
+
+@media all and (min-width: 900px) {
+	.text-intro, .intro, .subtitle {
+		font-size: 1.2em;
+		line-height: 1.5em;
+	}
 }
 
 /* LISTS */
@@ -357,7 +389,7 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 .image-overlay:after { z-index: -1; }
 
 .overlay, .image-overlay:after {
-	background-color: <?php echo $content['featured_image']['cover_color']; ?>;
+	background-color: <?php echo $colors['header']['cover_color']; ?>;
 	content: '';
 	display: block;
 	height: 100%;
@@ -399,16 +431,43 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+/* TRIGGERS */
+
+.trigger {
+	cursor: pointer;
+	position: relative;
+}
+
+.trigger-icon {
+	color: <?php echo $colors['header']['color']; ?>;
+	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
+	line-height: 1;
+}
+
+.trigger .trigger-text {
+	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
+	margin-left: <?php echo $small; ?>px;
+}
+
+.hide-label .trigger-text { display: none; }
+
+.has-search .trigger-search .trigger-icon:before,
+.has-mobile-menu .trigger-menu .trigger-icon:before {
+	content: '\e810';
+	color: <?php echo $colors['site']['primary']; ?>;
+}
+
 /* CIRCLE ICON */
 
 .circle-icon, a.circle-icon {
 	background-color: rgba(0, 0, 0, 0.15);
-	border-bottom: 0;
 	border-radius: 50%;
 	color: <?php echo $colors['site']['text']; ?>;
 	display: inline-block;
 	line-height: 1;
 	position: relative;
+	text-align: center;
 }
 
 .circle-icon.micro {

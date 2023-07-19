@@ -14,21 +14,19 @@
 }
 
 .footer-columns {
-	padding-bottom: <?php echo $double; ?>px;
-	padding-top: <?php echo $double; ?>px;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
 }
 
 .footer-columns + .footer-copy { background-color: rgba(0, 0, 0, 0.2); }
 
 .footer-copy {
+	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-.footer a:not(.button) {
-	border-bottom-color: <?php echo $colors['footer']['links']; ?>;
-	color: <?php echo $colors['footer']['links']; ?>
-}
+.footer a:not(.button) { color: <?php echo $colors['footer']['links']; ?> }
 
 .footer .footer-title {
 	color: <?php echo $colors['footer']['title']; ?>;
