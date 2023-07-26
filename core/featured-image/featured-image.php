@@ -175,11 +175,11 @@ class md_featured_image extends md_api {
 		add_action( 'md_hook_content_item', array( $this, 'above_headline' ) );
 		add_action( 'md_hook_content_item', array( $this, 'below_headline' ), 30 );
 		add_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
-		add_action( 'md_hook_before_page_title', array( $this, 'overlay' ), 1 );
 
 		$cover = md_cover();
 
 		if ( $cover['position'] == 'header_cover' ) {
+			add_action( 'md_hook_before_page_title', array( $this, 'overlay' ), 1 );
 			if ( md_has_headline() )
 				add_action( 'md_hook_before_content_box', array( $this, 'header_cover' ) );
 			if ( is_singular() || is_404() ) {

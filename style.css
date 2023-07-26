@@ -3036,8 +3036,9 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .header.has-cover .site-title,
 .header.has-cover .site-title:hover,
 .header.has-cover .tagline,
-.header.has-cover .menu-header > .menu-item > a,
+.header.has-cover .menu > .menu-item > a,
 .header.has-cover .trigger-icon,
+.header.has-cover .trigger-text,
 .cover,
 .cover .headline,
 .cover .headline a,
@@ -3048,13 +3049,14 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .header.has-cover .menu-header > .menu-item:not(:last-child),
 .cover .author-link,
 .header.has-cover .author-link { border-bottom-color: rgba(255, 255, 255, 0.3); }
-.header.has-cover .menu-item:hover .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
+.header.has-cover .menu > .menu-item:hover > .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
 .header.has-cover.text-alt,
 .header.has-cover.text-alt .site-title,
 .header.has-cover.text-alt .site-title:hover,
 .header.has-cover.text-alt .tagline,
-.header.has-cover.text-alt .menu-header > .menu-item > a,
+.header.has-cover.text-alt .menu > .menu-item > a,
 .header.has-cover.text-alt .trigger-icon,
+.header.has-cover.text-alt .trigger-text,
 .cover.text-alt,
 .cover.text-alt .headline,
 .cover.text-alt .headline a,
@@ -3065,10 +3067,12 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .header.has-cover.text-alt .menu-header > .menu-item:not(:last-child),
 .cover.text-alt .author-link,
 .header.has-cover.text-alt .author-link { border-bottom-color: rgba(0, 0, 0, 0.2); }
-.header.has-cover.text-alt .menu-item:hover .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }
+.header.has-cover.text-alt .menu > .menu-item:hover > .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }
 @media all and (max-width: 800px) {
-	.header.has-cover .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
-	.header.has-cover.text-alt .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }
+	.header.has-cover .sub-menu .toggle-menu,
+	.header.has-cover .menu .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
+	.header.has-cover.text-alt .sub-menu .toggle-menu,
+	.header.has-cover.text-alt .menu .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }
 	.header.has-cover .sub-menu > .menu-item > a { color: #fff; }
 	.header.has-cover.text-alt .sub-menu > .menu-item > a { color: #1E1E1E; }
 }

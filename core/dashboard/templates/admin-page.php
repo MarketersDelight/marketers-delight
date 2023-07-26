@@ -8,7 +8,7 @@
 			<div class="md-widget md-toggle md-sep-small">
 				<h3 class="md-widget-title"><?php echo __( 'Site Tools', 'md' ); ?></h3>
 				<div class="md-widget-item">
-					<div class="md-sep">
+					<div class="md-sep-small">
 						<?php $this->fields->field( 'css', array(
 							'type' => 'checkbox',
 							'label' => __( 'CSS Manager', 'md' ),
@@ -19,7 +19,7 @@
 							)
 						) ); ?>
 					</div>
-					<div class="md-sep">
+					<div class="md-sep-small">
 						<?php $this->fields->field( '404_page', array(
 							'type' => 'number',
 							'label' => __( '404 Page ID', 'md' )
@@ -30,7 +30,7 @@
 							<?php echo $this->fields->description( sprintf( __( 'Create a custom 404 page by attaching a new <a href="%s">Page ID</a> here.', 'md' ), admin_url( 'edit.php?post_type=page' ) ) ); ?>
 						<?php endif; ?>
 					</div>
-					<div class="md-sep">
+					<div class="md-sep-small">
 						<?php $this->fields->field( 'webfonts', array(
 							'type' => 'checkbox',
 							'label' => __( 'Web Fonts', 'md' ),
@@ -40,7 +40,7 @@
 							)
 						) ); ?>
 					</div>
-					<div class="md-sep">
+					<div class="md-sep-small">
 						<?php $this->fields->field( 'head', array(
 							'type' => 'checkbox',
 							'label' => __( 'Optimize WP', 'md' ),
@@ -68,9 +68,7 @@
 			<?php do_action( 'md_hook_admin_settings_groups' ); ?>
 		</div>
 		<div class="col col2">
-			<div class="md-save md-sep md-clear">
-				<?php $this->fields->save( __( 'Save Settings', 'md' ) ); ?>
-			</div>
+			<?php $this->fields->save( __( 'Save Settings', 'md' ) ); ?>
 		</div>
 	</div>
 </div>

@@ -47,8 +47,9 @@
 .header.has-cover<?php echo $text_class; ?> .site-title,
 .header.has-cover<?php echo $text_class; ?> .site-title:hover,
 .header.has-cover<?php echo $text_class; ?> .tagline,
-.header.has-cover<?php echo $text_class; ?> .menu-header > .menu-item > a,
+.header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
 .header.has-cover<?php echo $text_class; ?> .trigger-icon,
+.header.has-cover<?php echo $text_class; ?> .trigger-text,
 .cover<?php echo $text_class; ?>,
 .cover<?php echo $text_class; ?> .headline,
 .cover<?php echo $text_class; ?> .headline a,
@@ -59,17 +60,19 @@
 
 .header.has-cover<?php echo $text_class; ?> .menu-header > .menu-item:not(:last-child),
 .cover<?php echo $text_class; ?> .author-link,
-.header.has-cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo esc_attr( $text_atts['border'] ); ?>; }
+.header.has-cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 
-.header.has-cover<?php echo $text_class; ?> .menu-item:hover .menu-toggle { background-color: <?php echo esc_attr( $text_atts['border'] ); ?>; }
+.header.has-cover<?php echo $text_class; ?> .menu > .menu-item:hover > .menu-toggle { background-color: <?php echo $text_atts['border']; ?>; }
 
 <?php endforeach; ?>
 
 @media all and (max-width: 800px) {
-	.header.has-cover<?php echo $header_colors['default']['class']; ?> .menu-toggle { background-color: <?php echo esc_attr( $header_colors['default']['border'] ); ?>; }
-	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .menu-toggle { background-color: <?php echo esc_attr( $header_colors['alt']['border'] ); ?>; }
-	.header.has-cover<?php echo $header_colors['default']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo esc_attr( $header_colors['default']['color'] ); ?>; }
-	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo esc_attr( $header_colors['alt']['color'] ); ?>; }
+	.header.has-cover<?php echo $header_colors['default']['class']; ?> .sub-menu .toggle-menu,
+	.header.has-cover<?php echo $header_colors['default']['class']; ?> .menu .menu-toggle { background-color: <?php echo $header_colors['default']['border']; ?>; }
+	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .sub-menu .toggle-menu,
+	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .menu .menu-toggle { background-color: <?php echo $header_colors['alt']['border']; ?>; }
+	.header.has-cover<?php echo $header_colors['default']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo $header_colors['default']['color']; ?>; }
+	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo $header_colors['alt']['color']; ?>; }
 }
 
 /* BOUNCE */
