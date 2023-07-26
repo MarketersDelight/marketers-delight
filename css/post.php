@@ -294,14 +294,10 @@
 
 .pagination a { text-decoration: none; }
 
-<?php if ( md_setting( array( 'loop', 'pagination' ) ) == 'prev_next' ) : ?>
-
 .pagination-sep {
 	margin-left: <?php echo $small; ?>px;
 	margin-right: <?php echo $small; ?>px;
 }
-
-<?php else : ?>
 
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);
@@ -341,8 +337,6 @@
 
 .page-numbers.prev { margin-right: <?php echo $third; ?>px; }
 .page-numbers.next { margin-left: <?php echo $third; ?>px; }
-
-<?php endif; ?>
 
 /* POST NAV */
 

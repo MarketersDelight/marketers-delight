@@ -325,7 +325,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 function md_post_type_field( $keys = null, $default = null ) {
 	$post_type = get_post_type();
 
-	if ( ! is_post_type_archive( $post_type ) )
+	if ( ! is_post_type_archive( $post_type ) && ! is_home() )
 		return;
 
 	if ( is_string( $keys ) )
@@ -390,12 +390,12 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
  */
 
 function md_module( $keys = null, $default = null ) {
-	if ( is_category() || is_tax() )
+	if ( is_home() || is_post_type_archive() )
+		$option = md_post_type_field( $keys, $default );
+	elseif ( is_category() || is_tax() )
 		$option = md_term_meta( $keys, null, $default );
 	elseif ( is_singular() )
 		$option = md_post_meta( $keys, null, $default );
-	elseif ( is_home() || is_post_type_archive() )
-		$option = md_post_type_field( $keys, $default );
 	else
 		$option = md_setting( $keys );
 
@@ -567,37 +567,6 @@ function md_get_caption( $id = null ) {
 }
 
 /**
- * Returns position meta value.
- *
- * @since 4.1
- */
-
-function md_featured_image_position( $position = null ) {
-	if ( isset( $position ) )
-		return $position;
-
-	if ( has_filter( 'md_filter_featured_image_position' ) )
-		return apply_filters( 'md_filter_featured_image_position', '' );
-
-	$post_meta = md_post_meta( array( 'featured_image', 'position' ) );
-
-	if ( ! empty( $post_meta ) )
-		return $post_meta;
-
-	$term_meta = md_term_meta( array( 'featured_image', 'position' ) );
-
-	if ( ! empty( $term_meta ) )
-		return $term_meta;
-
-	$default = md_setting( array( 'colors', 'featured_image', 'position' ) );
-
-	if ( ! empty( $default ) )
-		return $default;
-
-	return false;
-}
-
-/**
  * Active list of byline items. Compares preset byline items (can
  * also be filtered in/out) with user settings).
  *
@@ -635,7 +604,7 @@ function md_byline_items( $sort = null ) {
  */
 
 function md_get_byline() {
-	$byline = md_get_loop( array( 'loop', 'byline' ), array() );
+	$byline = md_module( array( 'loop', 'byline' ), array() );
 	return array_keys( $byline );
 }
 

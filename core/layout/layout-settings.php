@@ -165,7 +165,7 @@
 
 		<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
 
-		<?php if ( ! $site_disable || $sidebar_sitewide || $site_enable ) : ?>
+		<?php if ( $has_sidebar ) : ?>
 			<?php $this->fields->field( 'sidebar', array(
 				'type' => 'checkbox',
 				'options' => array(

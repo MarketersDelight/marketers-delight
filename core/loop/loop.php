@@ -147,9 +147,11 @@ class md_loop extends md_api {
 	 * @since 5.1
 	 */
 
-	public function admin_script() { ?>
+	public function admin_script() {
+		$prefix = $this->_prefix();
+	?>
 		<script>
-			document.getElementById( '<?php echo "{$this->_prefix}_archives"; ?>' ).onchange = function( e ) {
+			document.getElementById( '<?php echo "{$prefix}_archives"; ?>' ).onchange = function( e ) {
 				document.getElementById( 'content_loop_teasers' ).style.display = this.value == 'teasers' ? 'block' : 'none';
 			}
 		</script>

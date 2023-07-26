@@ -98,6 +98,34 @@ function md_has_sidebar() {
 }
 
 /**
+ * Check if current admin page has sidebar enabled on frontend.
+ *
+ * @since 5.6
+ */
+
+function md_admin_has_sidebar() {
+	$screen = get_current_screen();
+	$post_type = esc_attr( $screen->post_type );
+	$screen_base = esc_attr( $screen->base );
+	$sitewide = md_setting( array( 'sidebars', 'display', 'sitewide' ) );
+
+	if ( in_array( $screen_base, array( 'post', 'post-new' ) ) )
+		$key = "{$post_type}_single_show";
+	elseif ( $screen_base == 'term' )
+		$key = "{$post_type}_{$screen->taxonomy}_show";
+	elseif ( ! empty( $_GET['page'] ) ) {
+		$page = md_clean_id( esc_attr( $_GET['page'] ) );
+		$key = "{$page}_archive_show";
+	}
+
+	$site_enable = md_setting( array( 'sidebars', $key, 'enable' ) );
+	$site_disable = md_setting( array( 'sidebars', $key, 'disable' ) );
+
+	if ( ! $site_disable && ( $sitewide || $site_enable ) )
+		return true;
+}
+
+/**
  * Get active sidebar ID for current page.
  *
  * @since 4.6.2.1

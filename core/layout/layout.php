@@ -160,25 +160,12 @@ class md_layout extends md_api {
 
 		$sidebar_display = 'none';
 		$sidebars = md_get_sidebars();
-
-		$sidebar_sitewide = md_setting( array( 'sidebars', 'display', 'sitewide' ) );
+		$has_sidebar = md_admin_has_sidebar();
 		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
 		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );
 
-		if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) {
-			$site_enable = md_setting( array( 'sidebars', "{$post_type}_single_show", 'enable' ) );
-			$site_disable = md_setting( array( 'sidebars', "{$post_type}_single_show", 'disable' ) );
-
-			if ( ! $single_remove && ( ( ! $site_disable && ( $sitewide || $site_enable ) ) || $single_add ) )
-				$sidebar_display = 'block';
-		}
-		elseif ( $screen_base == 'term' ) {
-			$site_enable = md_setting( array( 'sidebars', "{$post_type}_{$screen->taxonomy}_show", 'enable' ) );
-			$site_disable = md_setting( array( 'sidebars', "{$post_type}_{$screen->taxonomy}_show", 'disable' ) );
-
-			if ( ! $single_remove && ( ( ! $site_disable && ( $sidebar_sitewide || $site_enable ) ) || $single_add ) )
-				$sidebar_display = 'block';
-		}
+		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
+			$sidebar_display = 'block';
 
 		$author_box = md_setting( array( 'content', 'author_box', 'enable' ) );
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
@@ -201,10 +188,8 @@ class md_layout extends md_api {
 
 	public function scripts() {
 		$screen = get_current_screen();
+		$post_type = esc_attr( $screen->post_type );
 		$prefix = $this->_prefix();
-		$sidebar_single = md_setting( array( 'content', 'sidebar', 'single' ) );
-		$sidebar_category = md_setting( array( 'content', 'sidebar', 'category' ) );
-		$sitewide = md_setting( array( 'sidebars', 'display', 'sitewide' ) );
 	?>
 
 		<script>
@@ -230,11 +215,7 @@ class md_layout extends md_api {
 						document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
 					}
 				<?php endif; ?>
-				<?php if (
-					$sitewide ||
-					( $screen->base == 'term' && ! empty( $sidebar_category ) ) ||
-					( $screen->post_type != 'page' && ! empty( $sidebar_single ) )
-				) : ?>
+				<?php if ( md_admin_has_sidebar() ) : ?>
 					document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
 						document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
 					}

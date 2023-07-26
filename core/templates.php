@@ -3,10 +3,6 @@
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-add_filter( 'excerpt_length', 'md_excerpt_length' );
-add_filter( 'excerpt_more', 'md_excerpt_more' );
-add_filter( 'the_password_form', 'md_password_form' );
-
 /**
  * A collection of action hooks and filters that construct various
  * parts of the website layout.
@@ -17,6 +13,11 @@ add_filter( 'the_password_form', 'md_password_form' );
 function md_templates() {
 	if ( md_has_breadcrumbs() )
 		add_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
+
+	$cover = md_cover();
+
+	if ( empty( $cover['position'] ) )
+		add_action( 'md_hook_before_content_box', 'md_page_title' );
 
 	add_action( 'md_hook_content', 'md_loop' );
 	add_action( 'md_hook_content', 'md_pagination', 30 );
@@ -29,7 +30,7 @@ function md_templates() {
 	add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 
 	if ( ! is_404() && md_has_byline() ) {
-		$byline_position = md_get_loop( array( 'byline_position' ) );
+		$byline_position = md_module( array( 'loop', 'byline_position' ) );
 		$hook_byline = 'md_hook_before_headline';
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_after_headline';
@@ -191,59 +192,6 @@ function md_breadcrumbs() {
 }
 
 /**
- * The Main Loop used on all posts, pages, and archives.
- *
- * @since 4.1
- */
-
-function md_loop() {
-	$c = 1;
-	$h = md_html( 'h' );
-	$html = md_html( 'article' );
-	$loops = md_loops();
-	$type = md_get_loop();
-	$byline_position = md_get_loop( array( 'byline_position' ) );
-	$content = md_get_loop( array( 'content' ) );
-	$path = 'loop' . ( $type == 'default' ? '' : "-{$type}" );
-	if ( $type == 'stream' )
-		$path = "$type/" . $path;
-	$loop = md_get_loop( 'fields' );
-	$featured = ! empty( $loop['featured'] ) ? $loop['featured'] : 0;
-	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 2;
-	echo ! is_singular() ? '<div class="loop">' : '';
-	include( md_template( "loops/{$path}", true ) );
-	echo ! is_singular() ? '</div>' : '';
-}
-
-/**
- * Call custom 404 content box template.
- *
- * @since 5.1
- */
-
-function md_404_template() {
-	$page_id = md_setting( array( 'settings', '404_page' ) );
-	if ( empty( $page_id ) )
-		md_template( 'content-item-404' );
-	else {
-		$page404 = new WP_Query( array(
-			'post_type' => 'page',
-			'p' => $page_id,
-			'post_status' => array( 'publish' ),
-			'fields' => 'ids'
-		) );
-		if ( $page404->have_posts() )
-			while ( $page404->have_posts() ) {
-				$page404->the_post();
-				md_template( 'content-item' );
-			}
-		else
-			md_template( 'content-item-404' );
-		wp_reset_query();
-	}
-}
-
-/**
  * Featured Image HTML output.
  *
  * @since 4.0
@@ -270,6 +218,44 @@ function md_featured_image( $position = null, $size = null, $args = null ) {
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );
+}
+
+/**
+ * Render Page/Archives Title text and description.
+ *
+ * @since 5.6
+ */
+
+function md_page_title() {
+	if ( is_post_type_archive() ) {
+		$title = post_type_archive_title( '', false );
+		$description = md_post_type_field( 'archives_text' );
+	}
+	elseif ( is_home() || is_singular( 'post' ) ) {
+		$title = md_post_type_field( 'archives_title' );
+		$description = md_post_type_field( 'archives_text' );
+	}
+	elseif ( is_tax() && get_queried_object() ) {
+		$title = single_term_title( '', false );
+		$description = md_term_meta( 'archives_text' );
+	}
+	elseif ( is_category() ) {
+		$title = single_cat_title( '', false );
+		$description = category_description();
+	}
+	elseif ( is_tag() )
+		$title = single_tag_title( '', false );
+	elseif ( is_author() )
+		$title = get_the_author();
+
+	if ( has_filter( 'md_page_title' ) )
+		$title = do_action( 'md_page_title' );
+
+	if ( has_filter( 'md_page_description' ) )
+		$description = do_action( 'md_page_description' );
+
+	if ( $title || $description )
+		include( md_template( 'page-title', true ) );
 }
 
 /**
@@ -319,79 +305,6 @@ function md_cover_caption() {
 	$cover = md_cover();
 	if ( is_singular() && ! empty( $cover['position'] ) )
 		md_get_caption( $cover['id'] );
-}
-
-/**
- * Show full content or excerpt of any given page.
- *
- * @since 5.1
- */
-
-function md_the_content( $content = null) {
-	$archives = md_get_loop( array( 'loop', 'archives' ) );
-	if ( $content == null )
-		$content = md_get_loop( array( 'loop', 'content' ) );
-	$read_more = md_read_more_text();
-	md_hook_before_the_content();
-?>
-	<?php if ( ! is_singular() && $content == 'excerpt' ) : ?>
-		<?php the_excerpt(); ?>
-		<?php if ( empty( $archives ) || $archives == 'default' ) : ?>
-			<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
-		<?php endif; ?>
-	<?php else : ?>
-		<?php the_content( $read_more ); ?>
-		<?php if ( is_singular() ) : ?>
-			<?php wp_link_pages(); ?>
-		<?php endif; ?>
-	<?php endif; ?>
-
-<?php }
-
-/**
- * Displays post/page content text.
- *
- * @since 4.1
- */
-
-function md_content_text() {
-	$content = md_get_loop( array( 'loop', 'content' ) );
-	$read_more = md_read_more_text();
-	if ( $content !== 'hide' || is_singular() || is_404() )
-		include( md_template( 'text', true ) );
-}
-
-/**
- * Change Read More text to user settings.
- *
- * @since 5.1
- */
-
-function md_read_more_text() {
-	$read_more = md_get_loop( array( 'loop', 'read_more' ) );
-	return ! empty( $read_more ) ? $read_more : __( 'Continue reading &rarr;', 'md' );
-}
-
-/**
- * Filter length of excerpts + more text of loops.
- *
- * @since 4.5
- */
-
-function md_excerpt_length() {
-	$words = md_get_loop( array( 'loop', 'excerpt_length' ) );
-	$words = ! empty( $words ) ? $words : 55;
-	return apply_filters( 'md_filter_excerpt_length', esc_attr( $words ) );
-}
-
-/**
- * Filter trailing excerpt more text.
- *
- * @since 4.5
- */
-
-function md_excerpt_more( $more ) {
-    return md_setting( array( 'loop', 'excerpt_more' ), '[...]' );
 }
 
 /**
@@ -466,10 +379,9 @@ function md_post_nav() {
 
 function md_pagination() {
 	if ( is_singular() ) return;
-	$type = md_setting( array( 'loop', 'pagination' ) );
-	$is_page_numbers = ( empty( $type ) || $type == 'page_numbers' ? true : false );
-	$prelabel = md_setting( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
-	$nxtlabel = md_setting( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
+	$type = md_module( array( 'loop', 'pagination' ) );
+	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
+	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
 	include( md_template( 'pagination', true ) );
 }
 
@@ -562,3 +474,5 @@ function md_password_form() {
 }
 
 endif;
+
+add_filter( 'the_password_form', 'md_password_form' );

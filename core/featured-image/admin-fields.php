@@ -26,7 +26,7 @@
 	) ); ?>
 </div>
 
-<div id="md_cover_settings" class="md-display-none" style="display: <?php echo ! empty( $cover_position ) ? 'block' : 'none'; ?>">
+<div id="md_cover_settings" style="display: <?php echo ! empty( $cover_position ) ? 'block' : 'none'; ?>">
 
 	<div class="md-sep-small">
 		<?php $this->fields->field( 'cover_image', array(

@@ -119,7 +119,7 @@ function md_hook_post_actions( $post_id = null, $post_type = null ) {
 }
 
 function md_hook_x_loop( $c ) {
-	$x_loop = md_get_loop( array( 'loop', 'cta_x_loop' ) );
+	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
 	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	if ( $c == $x_loop && $paged == 1 )
 		do_action( 'md_hook_x_loop' );

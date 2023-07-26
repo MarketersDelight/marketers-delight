@@ -74,13 +74,12 @@ final class marketers_delight {
 		if ( is_admin() )
 			require_once( MD_DIR . 'core/admin/admin.php' );
 		require_once( MD_DIR . 'core/api/conditionals.php' );
-		require_once( MD_DIR . 'core/page-header.php' );
 
 		require_once( MD_DIR . 'core/header/header.php' );
-		require_once( MD_DIR . 'core/loop/loop.php' );
-		require_once( MD_DIR . 'core/blog/blog.php' );
 		require_once( MD_DIR . 'core/sidebars/sidebars.php' );
 		require_once( MD_DIR . 'core/layout/layout.php' );
+		require_once( MD_DIR . 'core/loop/loop.php' );
+		require_once( MD_DIR . 'core/blog/blog.php' );
 		require_once( MD_DIR . 'core/featured-image/featured-image.php' );
 		require_once( MD_DIR . 'core/featured-video/featured-video.php' );
 		require_once( MD_DIR . 'core/stream.php' );

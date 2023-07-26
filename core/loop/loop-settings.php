@@ -1,4 +1,3 @@
-
 <div class="md-sep-small">
 	<?php $this->fields->field( 'archives', array(
 		'type' => 'select',
@@ -36,9 +35,8 @@
 <div class="md-sep-small">
 	<?php $this->fields->field( 'byline_position', array(
 		'type' => 'select',
-		'empty_label' => __( 'Select byline position...', 'md' ),
+		'empty_label' => __( 'Show before headline', 'md' ),
 		'options' => array(
-			'before_headline' => __( 'Show before headline', 'md' ),
 			'after_headline' => __( 'Show after headline', 'md' )
 		)
 	) ); ?>
@@ -57,7 +55,7 @@
 <h4><?php echo __( 'Post Content', 'md' ); ?></h4>
 
 <div class="columns-4 columns-half">
-	<div class="col md-sep-micro">
+	<div class="col md-sep-small">
 		<?php $this->fields->field( 'content', array(
 			'type' => 'select',
 			'label' => __( 'Post Text', 'md' ),
@@ -70,21 +68,21 @@
 			)
 		) ); ?>
 	</div>
-	<div class="col md-sep-micro">
+	<div class="col md-sep-small">
 		<?php $this->fields->field( 'read_more', array(
 			'type' => 'text',
 			'label' => __( 'Read More Text', 'md' ),
 			'placeholder' => __( 'Continue reading &rarr;', 'md' )
 		) ); ?>
 	</div>
-	<div class="col md-sep-micro">
+	<div class="col md-sep-small">
 		<?php $this->fields->field( 'excerpt_more', array(
 			'type' => 'text',
 			'label' => __( 'Excerpt More', 'md' ),
 			'placeholder' => '[...]'
 		) ); ?>
 	</div>
-	<div class="col md-sep-micro">
+	<div class="col md-sep-small">
 		<?php $this->fields->field( 'excerpt_length', array(
 			'type' => 'number',
 			'label' => __( 'Excerpt Length', 'md' ),
@@ -100,9 +98,8 @@
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'pagination', array(
 			'type' => 'select',
-			'empty_label' => __( 'Edit pagination...', 'md' ),
+			'empty_label' => __( 'Page Numbers', 'md' ),
 			'options' => array(
-				'page_numbers' => __( 'Page Numbers', 'md' ),
 				'prev_next' => __( 'Previous/Next Links', 'md' )
 			)
 		) ); ?>

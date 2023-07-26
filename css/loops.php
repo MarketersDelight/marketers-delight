@@ -23,7 +23,8 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.header .headline-wrap.cover {
+.header .headline-wrap.cover,
+.header .page-title {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
 }
@@ -211,7 +212,8 @@
 		padding: <?php echo $mid; ?>px <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
 		max-width: 100%;
 	}
-	.header .headline-wrap.cover {
+	.header .headline-wrap.cover,
+	.header .page-title {
 		padding-bottom: <?php echo $triple; ?>px;
 		padding-top: <?php echo $triple; ?>px;
 		text-align: center;

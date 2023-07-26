@@ -1159,7 +1159,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding-bottom: 28px;
 	padding-top: 28px;
 }
-.header .headline-wrap.cover {
+.header .headline-wrap.cover,
+.header .page-title {
 	padding-bottom: 42px;
 	padding-top: 42px;
 }
@@ -1299,7 +1300,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding: 42px 6.25%;
 		max-width: 100%;
 	}
-	.header .headline-wrap.cover {
+	.header .headline-wrap.cover,
+	.header .page-title {
 		padding-bottom: 84px;
 		padding-top: 84px;
 		text-align: center;
@@ -2123,6 +2125,39 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-left: 5px;
 	margin-right: 5px;
 }
+.post-nav-links {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 5px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+	padding: 14px;
+}
+.pagination .page-numbers,
+.post-nav-links .post-page-numbers {
+	background-color: #fff;
+	border: 0;
+	border-radius: 50%;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	display: inline-block;
+	margin-right: 5px;
+	padding: 5px 14px;
+}
+.page-numbers.current,
+.post-page-numbers.current {
+	cursor: default;
+	font-weight: bold;
+}
+.pagination .page-numbers:hover,
+.post-nav-links.post-page-numbers:hover { opacity: 0.8; }
+.page-numbers.dots, .page-numbers.prev, .page-numbers.next {
+	background-color: transparent;
+	border-radius: inherit;
+	box-shadow: none;
+	border: 0;
+	color: #1E1E1E;
+	padding: 0;
+}
+.page-numbers.prev { margin-right: 9px; }
+.page-numbers.next { margin-left: 9px; }
 /* POST NAV */
 .post-nav p { margin-bottom: 0; }
 .post-nav a {
