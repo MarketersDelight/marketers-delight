@@ -48,6 +48,7 @@
 .header.has-cover<?php echo $text_class; ?> .site-title:hover,
 .header.has-cover<?php echo $text_class; ?> .tagline,
 .header.has-cover<?php echo $text_class; ?> .menu-header > .menu-item > a,
+.header.has-cover<?php echo $text_class; ?> .trigger-icon,
 .cover<?php echo $text_class; ?>,
 .cover<?php echo $text_class; ?> .headline,
 .cover<?php echo $text_class; ?> .headline a,

@@ -153,21 +153,27 @@
 		order: 3;
 	}
 	.header-flyer .header-menu  { flex: 1 0 auto; }
-	.header-flyer.has-search .header-controls { justify-content: end; }
+	.header-flyer.has-search .header-controls { order: inherit; }
 	.header-flyer.has-search .search-form { flex: 1; }
 	/* HEADER RTL */
 	.header-rtl .header-controls { order: 2; }
-	.header-rtl .sub-menu { left: 0; }
-	.header-rtl .sub-menu .sub-menu { left: <?php echo $submenu_width; ?>px; }
-	.header-rtl .menu .sub-menu > .menu-item-has-children > a {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-	.header-rtl .menu-toggle {
+	/* REVERSE SUB MENU */
+	.header-rtl .sub-menu,
+	.header-flyer .header-primary .sub-menu { left: 0; }
+	.header-rtl .sub-menu .sub-menu,
+	.header-flyer .header-primary .sub-menu .sub-menu { left: <?php echo $submenu_width; ?>px; }
+	.header-rtl .menu-toggle,
+	.header-flyer .header-primary .menu-toggle {
 		left: inherit;
 		right: <?php echo $half; ?>px;
 	}
-	.header-rtl .sub-menu .menu-toggle:after { content: '\e80f'; }
+	.header-rtl .menu .sub-menu > .menu-item-has-children > a,
+	.header-flyer .header-primary .menu .sub-menu > .menu-item-has-children > a {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+	.header-rtl .sub-menu .menu-toggle:after,
+	.header-flyer .header-primary .sub-menu .menu-toggle:after { content: '\e80f'; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
@@ -199,8 +205,9 @@
 	.has-mobile-menu .header-menu,
 	.has-mobile-menu .header_aside-menu,
 	.header-controls .header-link, .header-controls .header_aside-link { display: block; }
-	.menu-header a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
-	.menu-header > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.header .menu a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
+	.header-primary + .header-aside { border-top: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.header-controls .hide-label .trigger-icon { font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.7 ); ?>px; }
 	/* SEARCH */
 	.header-search { padding: <?php echo $half; ?>px; }

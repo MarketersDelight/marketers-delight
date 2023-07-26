@@ -118,8 +118,12 @@ add_filter( 'post_class', 'md_post_classes' );
  * @since 4.1
  */
 
-function md_headline_classes() {
+function md_headline_classes( $custom = null ) {
+	if ( isset( $custom ) )
+		$classes = $custom;
+
 	$classes[] = 'headline-wrap';
+
 	$cover_classes = md_cover_classes();
 
 	if ( ! empty( $cover_classes ) )
@@ -127,7 +131,7 @@ function md_headline_classes() {
 
 	$classes = join( ' ', $classes );
 
-	return apply_filters( 'md_filter_headline_classes', $classes );
+	return apply_filters( 'md_filter_headline_classes', esc_attr( $classes ) );
 }
 
 /**
