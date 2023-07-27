@@ -251,9 +251,9 @@ body {
 }
 
 @media all and (min-width: 900px) {
-	.text-intro, .intro, .subtitle {
-		font-size: 1.2em;
-		line-height: 1.5em;
+	.text-intro, .intro, .subtitle, .page-description {
+		font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+		line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
 	}
 }
 

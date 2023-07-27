@@ -235,7 +235,7 @@ final class marketers_delight {
 	public function enqueue() {
 
 
-//		md_compile();
+		md_compile();
 
 
 

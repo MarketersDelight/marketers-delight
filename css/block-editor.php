@@ -119,8 +119,8 @@ div.editor-styles-wrapper p.micro-title,
 div.editor-styles-wrapper p.small-title { margin-top: 0; }
 
 .editor-styles-wrapper .intro {
-	font-size: 1.2em;
-	line-height: 1.5em;
+	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+	line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
 }
 
 div.editor-styles-wrapper,

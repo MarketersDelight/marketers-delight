@@ -178,7 +178,11 @@ class md_featured_image extends md_api {
 
 		$cover = md_cover();
 
-		if ( $cover['position'] == 'header_cover' ) {
+		if ( $cover['position'] == 'headline_cover' ) {
+			add_action( 'md_hook_before_page_title', array( $this, 'overlay' ), 1 );
+			add_action( 'md_hook_content', 'md_page_title' );
+		}
+		elseif ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_before_page_title', array( $this, 'overlay' ), 1 );
 			if ( md_has_headline() )
 				add_action( 'md_hook_before_content_box', array( $this, 'header_cover' ) );
@@ -194,6 +198,10 @@ class md_featured_image extends md_api {
 				add_action( 'md_hook_after_header', array( $this, 'headline' ) );
 			if ( is_singular() || is_404() )
 				remove_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
+		}
+		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
+			add_action( 'md_hook_before_page_title', 'md_inner_html', 5 );
+			add_action( 'md_hook_after_page_title', 'md_html_close' );
 		}
 	}
 

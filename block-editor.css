@@ -249,8 +249,8 @@ div.editor-styles-wrapper p.mid-title,
 div.editor-styles-wrapper p.micro-title,
 div.editor-styles-wrapper p.small-title { margin-top: 0; }
 .editor-styles-wrapper .intro {
-	font-size: 1.2em;
-	line-height: 1.5em;
+	font-size: 20px;
+	line-height: 31px;
 }
 div.editor-styles-wrapper,
 div.editor-styles-wrapper p,

@@ -831,9 +831,9 @@ h6, .micro-title {
 	margin-right: 3px;
 }
 @media all and (min-width: 900px) {
-	.text-intro, .intro, .subtitle {
-		font-size: 1.2em;
-		line-height: 1.5em;
+	.text-intro, .intro, .subtitle, .page-description {
+		font-size: 20px;
+		line-height: 31px;
 	}
 }
 /* LISTS */
@@ -1300,8 +1300,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		max-width: 100%;
 	}
 	.header .headline-wrap.cover {
-		padding-bottom: 84px;
-		padding-top: 84px;
+		padding-bottom: 56px;
+		padding-top: 56px;
 		text-align: center;
 	}
 	/* TEASERS */
