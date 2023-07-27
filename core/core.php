@@ -211,6 +211,9 @@ final class marketers_delight {
 	 */
 
 	public function wp_init() {
+    	$post_type = get_post_type_object( 'post' );
+		$post_type->labels->name = $post_type->labels->menu_name = __( 'Blog', 'md' );
+
 		if ( is_admin() )
 			$this->activate_dropin();
 

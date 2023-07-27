@@ -8,16 +8,6 @@
 class md_post extends md_api {
 
 	/**
-	 * Run actions and filters for the Blog.
-	 *
-	 * @since 5.6
-	 */
-
-	public function actions() {
-		add_action( 'init', array( $this, 'wp_init' ) );
-	}
-
-	/**
 	 * Create admin page and meta box.
 	 *
 	 * @since 5.6
@@ -31,17 +21,6 @@ class md_post extends md_api {
 				'fields' => md_page_settings_fields()
 			)
 		);
-	}
-
-	/**
-	 * Change labels from Posts menu to Blog in WP admin.
-	 *
-	 * @since 5.6
-	 */
-
-	public function wp_init() {
-    	$post_type = get_post_type_object( 'post' );
-		$post_type->labels->name = $post_type->labels->menu_name = __( 'Blog', 'md' );
 	}
 
 	/**
