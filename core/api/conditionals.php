@@ -4,16 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Checks if page template is active.
- *
- * @since 4.9.4
- */
-
-function md_filter_template() {
-	return apply_filters( 'md_filter_has_template', true );
-}
-
-/**
  * Checks if logo is enabled.
  *
  * @since 4.1

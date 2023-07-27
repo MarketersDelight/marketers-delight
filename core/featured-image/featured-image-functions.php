@@ -1,6 +1,35 @@
 <?php
 
 /**
+ * Featured Image HTML output.
+ *
+ * @since 4.0
+ */
+
+function md_featured_image( $position = null, $size = null, $args = null ) {
+	$position = isset( $position ) ? $position : md_featured_image_position();
+
+	if ( ! isset( $size ) )
+		if ( in_array( $position, array( '', 'left', 'right' ) ) )
+			$size = 'md-image';
+		else
+			$size = 'full';
+
+	$classes = array( 'featured-image' );
+
+	if ( in_array( $position, array( '', 'right' ) ) )
+		$classes[] = 'alignright wrap';
+	elseif ( $position == 'left' )
+		$classes[] = 'alignleft wrap';
+	elseif ( $position == 'center' )
+		$classes[] = 'aligncenter';
+
+	$classes = join( ' ', $classes );
+
+	include( md_template( 'featured-image', true ) );
+}
+
+/**
  * Returns position meta value.
  *
  * @since 4.1
@@ -77,6 +106,18 @@ function md_featured_image_cover() {
 			'bg_image' => esc_url( $cover['image'][0] ),
 			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
 		) );
+}
+
+/**
+ * Show image caption from Cover image.
+ *
+ * @since 5.6
+ */
+
+function md_cover_caption() {
+	$cover = md_cover();
+	if ( is_singular() && ! empty( $cover['position'] ) )
+		md_get_caption( $cover['id'] );
 }
 
 /**

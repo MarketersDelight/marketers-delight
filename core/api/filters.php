@@ -74,7 +74,7 @@ function md_post_type_meta() {
 }
 
 /**
- * Default post type screens MD metaboxes are added to.
+ * Default post type screens MD meta boxes are added to.
  *
  * @since 5.3.1
  */
@@ -135,6 +135,16 @@ function md_page_settings_fields() {
 			'options' => array( 'stats', 'category', 'show_on_posts' )
 		)
 	) );
+}
+
+/**
+ * Checks if page template is active.
+ *
+ * @since 4.9.4
+ */
+
+function md_filter_template() {
+	return apply_filters( 'md_filter_has_template', true );
 }
 
 /**

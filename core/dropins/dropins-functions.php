@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Return a list of details as entered from Drop-in DocBlock.
  *

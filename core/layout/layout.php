@@ -8,6 +8,16 @@
 class md_layout extends md_api {
 
 	/**
+	 * Include additional files for Layout rendering.
+	 *
+	 * @since 5.6
+	 */
+
+	public function includes() {
+		include( 'layout-functions.php' );
+	}
+
+	/**
 	 * Create meta box and terms.
 	 *
 	 * @since 5.0

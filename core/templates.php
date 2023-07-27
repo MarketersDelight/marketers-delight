@@ -192,35 +192,6 @@ function md_breadcrumbs() {
 }
 
 /**
- * Featured Image HTML output.
- *
- * @since 4.0
- */
-
-function md_featured_image( $position = null, $size = null, $args = null ) {
-	$position = isset( $position ) ? $position : md_featured_image_position();
-
-	if ( ! isset( $size ) )
-		if ( in_array( $position, array( '', 'left', 'right' ) ) )
-			$size = 'md-image';
-		else
-			$size = 'full';
-
-	$classes = array( 'featured-image' );
-
-	if ( in_array( $position, array( '', 'right' ) ) )
-		$classes[] = 'alignright wrap';
-	elseif ( $position == 'left' )
-		$classes[] = 'alignleft wrap';
-	elseif ( $position == 'center' )
-		$classes[] = 'aligncenter';
-
-	$classes = join( ' ', $classes );
-
-	include( md_template( 'featured-image', true ) );
-}
-
-/**
  * Render Page/Archives Title text and description.
  *
  * @since 5.6
@@ -296,18 +267,6 @@ function md_byline_item( $item, $args = array() ) {
 }
 
 /**
- * Show image caption from Cover image.
- *
- * @since 5.6
- */
-
-function md_cover_caption() {
-	$cover = md_cover();
-	if ( is_singular() && ! empty( $cover['position'] ) )
-		md_get_caption( $cover['id'] );
-}
-
-/**
  * Displays full comments template.
  *
  * @since 4.1
@@ -358,6 +317,27 @@ function md_comment_form( $args = array() ) {
 		);
 	comment_form( $args );
 }
+
+/**
+ * Move Name, Email, and Website fields back to top of Comment Form.
+ *
+ * @since 5.6
+*/
+
+function md_comment_form_reorder( $fields ) {
+	$comment = $fields['comment'];
+	$cookies = $fields['cookies'];
+
+	unset( $fields['comment'] );
+	unset( $fields['cookies'] );
+
+	$fields['comment'] = $comment;
+	$fields['cookies'] = $cookies;
+
+	return $fields;
+}
+
+add_filter( 'comment_form_fields', 'md_comment_form_reorder' );
 
 /**
  * Creates previous/next post links at the end of a

@@ -109,7 +109,7 @@ class md_blocks {
 		foreach ( $this->blocks() as $block => $fields ) {
 			$dir_url = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS_URL ) : MD_URL;
 			$dir = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS ) : null;
-			$path = isset( $fields['path'] ) ? $fields['path'] : "core/wp/blocks/{$block}.js";
+			$path = isset( $fields['path'] ) ? $fields['path'] : "core/blocks/{$block}.js";
 			wp_enqueue_script( "md-block-{$block}", "{$dir_url}$path", array( 'marketers-delight', 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path, $dir ) );
 			if ( isset( $fields['localize'] ) )
 				wp_localize_script( "md-block-{$block}", 'MDBlocks', md_localize_scripts( $fields['localize'] ) );
