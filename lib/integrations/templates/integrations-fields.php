@@ -1,5 +1,5 @@
 <?php foreach ( $integrations as $id => $fields ) :
-	$icon_path = isset( $fields['icon_path'] ) ? $fields['icon_path'] : MD_URL . 'core/admin/images/';
+	$icon_path = isset( $fields['icon_path'] ) ? $fields['icon_path'] : MD_URL . 'lib/admin/images/';
 	$api_key_label = ! empty( $fields['labels']['api_key'] ) ? $fields['labels']['api_key'] : __( 'API Key', 'md' );
 	$account_url_label = ! empty( $fields['labels']['account_url'] ) ? $fields['labels']['account_url'] : __( 'Account URL', 'md' );
 ?>

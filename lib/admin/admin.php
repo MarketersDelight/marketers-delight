@@ -34,10 +34,10 @@ class md_admin {
 	public function includes() {
 		require_once( 'page-settings.php' );
 		foreach ( array( 'dashboard', 'typography', 'integrations', 'dropins' ) as $file )
-			require_once( MD_DIR . "core/{$file}/{$file}.php" );
-		require_once( MD_DIR . 'core/upgrade/md-upgrader.php' );
+			require_once( MD_DIR . "lib/{$file}/{$file}.php" );
+		require_once( MD_DIR . 'lib/upgrade/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-			require_once( MD_DIR . 'core/upgrade/upgrade.php' );
+			require_once( MD_DIR . 'lib/upgrade/upgrade.php' );
 	}
 
 	/**
@@ -152,8 +152,8 @@ class md_admin {
 
 	public function enqueue() {
 		$screen = get_current_screen();
-		$style = 'core/admin/admin.css';
-		$script = 'core/admin/js/admin.js';
+		$style = 'lib/admin/admin.css';
+		$script = 'lib/admin/js/admin.js';
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
@@ -185,8 +185,8 @@ class md_admin {
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_register_script( 'md-color', MD_URL . 'core/admin/js/jscolor.js', array(), '', true );
-		wp_register_script( 'md-sortable', MD_URL . 'core/admin/js/sortable.js', array(), '', true );
+		wp_register_script( 'md-color', MD_URL . 'lib/admin/js/jscolor.js', array(), '', true );
+		wp_register_script( 'md-sortable', MD_URL . 'lib/admin/js/sortable.js', array(), '', true );
 
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );

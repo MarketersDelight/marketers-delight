@@ -1,7 +1,7 @@
 <?php
 
 // Set upgrade URL
-define( 'MD_UPGRADE_URL', MD_URL . 'core/upgrade/' );
+define( 'MD_UPGRADE_URL', MD_URL . 'lib/upgrade/' );
 
 /**
  * A scaleable upgrade system to make sweeping updates to all
