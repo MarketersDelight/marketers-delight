@@ -21,6 +21,8 @@
 		) ); ?>
 	</div>
 
+	<?php do_action( 'md_hook_page_title_fields' ); ?>
+
 	<?php do_action( "{$this->_id}_admin_fields" ); ?>
 
 	<?php $this->fields->save(); ?>

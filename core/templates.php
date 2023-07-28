@@ -52,20 +52,6 @@ function md_templates() {
 add_action( 'template_redirect', 'md_templates' );
 
 /**
- * Inner HTML element and closing div.
- *
- * @since 5.6
- */
-
-function md_inner_html() {
-	echo '<div class="inner">';
-}
-
-function md_html_close() {
-	echo '</div>';
-}
-
-/**
  * Displays the logo, used in header by default.
  *
  * @since 4.1
@@ -198,6 +184,10 @@ function md_breadcrumbs() {
  */
 
 function md_page_title() {
+	$title = $description = '';
+
+
+
 	if ( is_post_type_archive() ) {
 		$title = post_type_archive_title( '', false );
 		$description = md_post_type_field( 'archives_text' );
@@ -218,6 +208,12 @@ function md_page_title() {
 		$title = single_tag_title( '', false );
 	elseif ( is_author() )
 		$title = get_the_author();
+	elseif ( is_year() )
+		$title  = get_the_date( _x( 'Y', 'yearly archives date format' ) );
+	elseif ( is_month() )
+		$title  = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+	elseif ( is_day() )
+		$title  = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
 
 	if ( has_filter( 'md_page_title' ) )
 		$title = do_action( 'md_page_title' );

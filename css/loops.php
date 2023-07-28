@@ -213,7 +213,7 @@
 	}
 	.header .headline-wrap.cover {
 		padding-bottom: <?php echo $double; ?>px;
-		padding-top: <?php echo $double; ?>px;
+		padding-top: <?php echo $triple; ?>px;
 		text-align: center;
 	}
 	/* TEASERS */

@@ -91,24 +91,3 @@
 		padding-right: <?php echo $half; ?>px;
 	}
 }
-
-/* PAGE HEADER */
-
-.page-header {
-	margin-bottom: <?php echo $single; ?>px;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $content_width; ?>px;
-}
-
-.page-header .page-headline { margin-bottom: <?php echo $small; ?>px; }
-
-.page-header-image { width: 25%; }
-.page-header-image img { width: 100%; }
-
-.page-header-image.image-left { margin-right: <?php echo $half; ?>px; }
-.page-header-image.image-right { margin-left: <?php echo $half; ?>px; }
-
-@media all and (max-width: 700px) {
-	.page-header-image { width: 50%; }
-}

@@ -25,7 +25,10 @@ class md_featured_image extends md_api {
 	 */
 
 	public function actions() {
+		$this->sanitize = $this->_data( 'sanitize' );
 		add_action( 'wp_head', array( $this, 'inline_css' ) );
+		add_action( 'md_layout_before_content_options', array( $this, 'featured_image_fields' ) );
+		add_action( 'md_hook_page_title_fields', array( $this, 'featured_image_fields' ) );
 	}
 
 	/**
@@ -35,7 +38,7 @@ class md_featured_image extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Featured Image', 'md' );
+		$this->name = __( 'Page Title', 'md' );
 		return array(
 			'meta_box' => array(
 				'name' => $this->name,
@@ -57,7 +60,6 @@ class md_featured_image extends md_api {
 	 */
 
 	public function fields() {
-		$sanitize = new md_sanitize;
 		return array(
 			'image' => array(
 				'type' => 'upload',
@@ -65,11 +67,11 @@ class md_featured_image extends md_api {
 			),
 			'position' => array(
 				'type' => 'select',
-				'options' => array_keys( $sanitize->values['featured_image'] )
+				'options' => array_keys( $this->sanitize->values['featured_image'] )
 			),
 			'cover_position' => array(
 				'type' => 'select',
-				'options' => array_keys( $sanitize->values['covers'] )
+				'options' => array_keys( $this->sanitize->values['covers'] )
 			),
 			'cover_image' => array(
 				'type' => 'upload',
@@ -129,16 +131,48 @@ class md_featured_image extends md_api {
 
 	public function admin_template( $group = null ) {
 		$screen = get_current_screen();
-		$data = $this->_data();
-		$sanitize = new md_sanitize;
+		$values = $this->_data( 'values' );
+		$sanitize = $this->sanitize;
 		$default_position = md_setting( array( 'colors', 'featured_image', 'cover_position' ) );
-		$cover_position = $this->fields->module(  'cover_position', $default_position );
+		$cover_position = $this->fields->module( 'cover_position', $default_position );
 		$disable_overlay = md_setting( array( 'colors', 'featured_image', 'cover_styles', 'disable_cover' ) );
 		$disable_overlay_single = $this->fields->module( array( 'text_color', 'disable_cover' ) );
 		$overlay_label = $disable_overlay ? __( 'Add overlay', 'md' ) : __( 'Remove overlay', 'md' );
 		include( 'admin-fields.php' );
 		$this->scripts();
 	}
+
+	/**
+	 * Featured Image Position field template.
+	 *
+	 * @since 5.6
+	 */
+
+	public function featured_image_fields() {
+		$screen = get_current_screen();
+		$classes = 'md-sep-small';
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+		if ( ! $is_post )
+			$classes .= ' md-field-row';
+	?>
+		<div class="md-sep-small <?php echo ! $is_post ? ' md-field-row' : ''; ?>">
+			<?php $this->fields->field( 'position', array(
+				'type' => 'select',
+				'label' => __( 'Featured Image', 'md' ),
+				'empty_label' => __( 'Use default position', 'md' ),
+				'options' => $this->sanitize->values['featured_image']
+			) ); ?>
+		</div>
+		<?php if ( ! $is_post ) : ?>
+			<div class="md-field-row md-sep-small">
+				<?php $this->fields->field( 'image', array(
+					'type' => 'upload',
+					'upload_type' => 'media',
+					'label' => __( 'Upload Image', 'md' )
+				) ); ?>
+			</div>
+		<?php endif; ?>
+	<?php }
 
 	/**
 	 * Toggle scripts for Cover Image admin controls.
@@ -199,7 +233,8 @@ class md_featured_image extends md_api {
 			if ( is_singular() || is_404() )
 				remove_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
 		}
-		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
+
+		if ( empty( $cover['position'] ) || $cover['position'] !== 'headline_cover' ) {
 			add_action( 'md_hook_before_page_title', 'md_inner_html', 5 );
 			add_action( 'md_hook_after_page_title', 'md_html_close' );
 		}
@@ -212,19 +247,17 @@ class md_featured_image extends md_api {
 	 */
 
 	public function inline_css() {
-//		if ( is_singular() || is_category() || is_tax() ) {
-			$cover = md_cover();
-			if ( $cover['position'] == 'header_cover_full' ) {
-				if ( ! empty( $cover['image'][0] ) )
-					echo
-						"\n<style type=\"text/css\">\n".
-						"\t.header.has-cover {\n".
-						"\t\tbackground-image: url('" . esc_url( $cover['image'][0] ) . "');\n".
-						"\t\tbackground-size: " . ( $cover['image'][1] < 500 ? 'auto' : 'cover' ) . ";\n".
-						"\t}\n".
-						"</style>\n";
-			}
-//		}
+		$cover = md_cover();
+		if ( $cover['position'] == 'header_cover_full' ) {
+			if ( ! empty( $cover['image'][0] ) )
+				echo
+					"\n<style type=\"text/css\">\n".
+					"\t.header.has-cover {\n".
+					"\t\tbackground-image: url('" . esc_url( $cover['image'][0] ) . "');\n".
+					"\t\tbackground-size: " . ( $cover['image'][1] < 500 ? 'auto' : 'cover' ) . ";\n".
+					"\t}\n".
+					"</style>\n";
+		}
 	}
 
 	/**

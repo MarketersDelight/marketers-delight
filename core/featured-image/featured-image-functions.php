@@ -101,11 +101,27 @@ function md_has_inline_featured_image() {
 function md_featured_image_cover() {
 	$cover = md_cover();
 
-	if ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) || ( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) )
+	if ( ! empty( $cover['image'] ) && ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) || ( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) ) )
 		return md_style( array(
 			'bg_image' => esc_url( $cover['image'][0] ),
 			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
 		) );
+}
+
+/**
+ * Get caption from image attachment or default to featured image.
+ *
+ * @since 4.0
+ */
+
+function md_get_caption( $id = null ) {
+	if ( empty( $id ) )
+		$id = get_post_thumbnail_id();
+
+	$caption = wp_get_attachment_caption( $id );
+
+	if ( ! empty( $caption ) )
+		echo '<p class="image-caption">' . $caption . '</p>';
 }
 
 /**

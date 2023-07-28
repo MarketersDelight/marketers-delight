@@ -514,59 +514,6 @@ function md_get_menu_name( $menu ) {
 }
 
 /**
- * Render dynamic HTML for important structural tags.
- *
- * @since 5.6
- */
-
-function md_html( $area ) {
-	$html = 'div';
-
-	if ( $area == 'h' )
-		$html = is_singular() ? 'h1' : 'h2';
-	elseif ( $area == 'article' )
-		$html = is_singular() ? 'article' : 'div';
-
-	return $html;
-}
-
-/**
- * Call a page title with or without a URL.
- *
- * @since 5.6
- */
-
-function md_title( $text, $url, $args = null ) {
-	$title = '';
-
-	if ( ! is_singular() )
-		$title .= '<a href="' . esc_url( $url ) . '">';
-
-	$title .= esc_html( $text );
-
-	if ( ! is_singular() )
-		$title .= '</a>';
-
-	return $title;
-}
-
-/**
- * Get caption from image attachment or default to featured image.
- *
- * @since 4.0
- */
-
-function md_get_caption( $id = null ) {
-	if ( empty( $id ) )
-		$id = get_post_thumbnail_id();
-
-	$caption = wp_get_attachment_caption( $id );
-
-	if ( ! empty( $caption ) )
-		echo '<p class="image-caption">' . $caption . '</p>';
-}
-
-/**
  * Active list of byline items. Compares preset byline items (can
  * also be filtered in/out) with user settings).
  *

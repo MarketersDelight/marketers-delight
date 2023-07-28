@@ -1,23 +1,4 @@
 <div class="md-sep-small">
-	<?php $this->fields->field( 'position', array(
-		'type' => 'select',
-		'label' => __( 'Featured Image Position', 'md' ),
-		'empty_label' => __( 'Use default position', 'md' ),
-		'options' => $sanitize->values['featured_image']
-	) ); ?>
-</div>
-
-<?php if ( ! in_array( $screen->base, array( 'post', 'post-new' ) ) ) : ?>
-	<div class="md-sep-small">
-		<?php $this->fields->field( 'image', array(
-			'type' => 'upload',
-			'upload_type' => 'media',
-			'label' => __( 'Set Featured Image', 'md' )
-		) ); ?>
-	</div>
-<?php endif; ?>
-
-<div class="md-sep-small">
 	<?php $this->fields->field( 'cover_position', array(
 		'type' => 'select',
 		'label' => __( 'Cover Photo', 'md' ),
@@ -41,7 +22,7 @@
 		<?php $this->fields->field( 'bg_color', array(
 			'type' => 'color',
 			'label' =>  __( 'Cover Overlay', 'md' ),
-			'default' => $data['values']['colors']['header']['cover_color']
+			'default' => $values['colors']['header']['cover_color']
 		) ); ?>
 	</div>
 

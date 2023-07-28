@@ -4,6 +4,57 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Render dynamic HTML for important structural tags.
+ *
+ * @since 5.6
+ */
+
+function md_html( $area ) {
+	$html = 'div';
+
+	if ( $area == 'h' )
+		$html = is_singular() ? 'h1' : 'h2';
+	elseif ( $area == 'article' )
+		$html = is_singular() ? 'article' : 'div';
+
+	return $html;
+}
+
+/**
+ * Call a page title with or without a URL.
+ *
+ * @since 5.6
+ */
+
+function md_title( $text, $url, $args = null ) {
+	$title = '';
+
+	if ( ! is_singular() )
+		$title .= '<a href="' . esc_url( $url ) . '">';
+
+	$title .= esc_html( $text );
+
+	if ( ! is_singular() )
+		$title .= '</a>';
+
+	return $title;
+}
+
+/**
+ * Inner HTML element and closing div.
+ *
+ * @since 5.6
+ */
+
+function md_inner_html() {
+	echo '<div class="inner">';
+}
+
+function md_html_close() {
+	echo '</div>';
+}
+
+/**
  * Filter body classes.
  *
  * @since 4.1
