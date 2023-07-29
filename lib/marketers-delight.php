@@ -82,7 +82,8 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/layout/layout.php' );
 		require_once( MD_DIR . 'lib/loop/loop.php' );
 		require_once( MD_DIR . 'lib/blog/blog.php' );
-		require_once( MD_DIR . 'lib/featured-image/featured-image.php' );
+		require_once( MD_DIR . 'lib/layout/featured-image/featured-image.php' );
+		require_once( MD_DIR . 'lib/layout/page-cover/page-cover.php' );
 		require_once( MD_DIR . 'lib/featured-video/featured-video.php' );
 		require_once( MD_DIR . 'lib/stream.php' );
 

@@ -1276,6 +1276,7 @@ a.md-circle-badge {
 .md .md-repeat-bar .regular-text,
 .md .postbox .hndle .regular-text { max-width: 13em; }
 .term-md-wrap .postbox, .md .mb-none { margin-bottom: 0 !important; }
+.term-md-wrap td { padding-left: 0; padding-right: 0; }
 .md .mt-none { margin-top: 0 !important; }
 .md-user-meta { margin-top: 25px; }
 

@@ -1,12 +1,6 @@
 <?php
-/**
- * Build meta box and taxonomy controls to add MD Featured Image
- * upload fields where needed, and extend onto WordPress' controls.
- *
- * @since 4.3.5
- */
 
-class md_featured_image extends md_api {
+class md_page_cover extends md_api {
 
 	/**
 	 * Include related files.
@@ -15,20 +9,7 @@ class md_featured_image extends md_api {
 	 */
 
 	public function includes() {
-		include_once( 'featured-image-functions.php' );
-	}
-
-	/**
-	 * Run actions and filters.
-	 *
-	 * @since 4.3.5
-	 */
-
-	public function actions() {
-		$this->sanitize = $this->_data( 'sanitize' );
-		add_action( 'wp_head', array( $this, 'inline_css' ) );
-		add_action( 'md_layout_post_before_content_options', array( $this, 'featured_image_position_field' ) );
-		add_action( 'md_hook_page_title_fields', array( $this, 'featured_image_fields' ) );
+		include_once( 'cover-functions.php' );
 	}
 
 	/**
@@ -54,6 +35,17 @@ class md_featured_image extends md_api {
 	}
 
 	/**
+	 * Run actions and filters.
+	 *
+	 * @since 4.3.5
+	 */
+
+	public function actions() {
+		$this->sanitize = $this->_data( 'sanitize' );
+		add_action( 'wp_head', array( $this, 'inline_css' ) );
+	}
+
+	/**
 	 * Set options for save.
 	 *
 	 * @since 4.3.5
@@ -61,21 +53,13 @@ class md_featured_image extends md_api {
 
 	public function fields() {
 		return array(
-			'image' => array(
+			'cover_image' => array(
 				'type' => 'upload',
 				'upload_type' => 'media'
-			),
-			'position' => array(
-				'type' => 'select',
-				'options' => array_keys( $this->sanitize->values['featured_image'] )
 			),
 			'cover_position' => array(
 				'type' => 'select',
 				'options' => array_keys( $this->sanitize->values['covers'] )
-			),
-			'cover_image' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
 			),
 			'bg_color' => array( 'type' => 'color' ),
 			'text_color' => array(
@@ -143,46 +127,6 @@ class md_featured_image extends md_api {
 	}
 
 	/**
-	 * Featured Image Position field template.
-	 *
-	 * @since 5.6
-	 */
-
-	public function featured_image_fields() {
-		$screen = get_current_screen();
-		$classes = 'md-sep-small';
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
-		if ( ! $is_post )
-			$classes .= ' md-field-row';
-	?>
-		<?php $this->featured_image_position_field(); ?>
-
-		<?php if ( ! $is_post ) : ?>
-			<div class="md-field-row md-sep-small">
-				<?php $this->fields->field( 'image', array(
-					'type' => 'upload',
-					'upload_type' => 'media',
-					'label' => __( 'Upload Image', 'md' )
-				) ); ?>
-			</div>
-		<?php endif; ?>
-	<?php }
-
-	public function featured_image_position_field() {
-		$screen = get_current_screen();
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
-	?>
-		<div class="md-sep-small<?php echo ! $is_post ? ' md-field-row' : ''; ?>">
-			<?php $this->fields->field( 'position', array(
-				'type' => 'select',
-				'label' => __( 'Featured Image', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'options' => $this->sanitize->values['featured_image']
-			) ); ?>
-		</div>
-	<?php }
-
-	/**
 	 * Toggle scripts for Cover Image admin controls.
 	 *
 	 * @since 4.7
@@ -214,8 +158,6 @@ class md_featured_image extends md_api {
 	 */
 
 	public function template() {
-		add_action( 'md_hook_content_item', array( $this, 'above_headline' ) );
-		add_action( 'md_hook_content_item', array( $this, 'below_headline' ), 30 );
 		add_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
 
 		$cover = md_cover();
@@ -314,25 +256,6 @@ class md_featured_image extends md_api {
 	}
 
 	/**
-	 * Insert featured image above/below headline with in-post check.
-	 *
-	 * @since 4.1
-	 * @since 5.6
-	 */
-
-	public function above_headline() {
-		$position = md_featured_image_position();
-		if ( has_post_thumbnail() && $position == 'above_headline' )
-			md_featured_image();
-	}
-
-	public function below_headline() {
-		$position = md_featured_image_position();
-		if ( has_post_thumbnail() && $position == 'below_headline' )
-			md_featured_image();
-	}
-
-	/**
 	 * Add Overlay HTML to covers.
 	 *
 	 * @since 4.8.6
@@ -347,4 +270,4 @@ class md_featured_image extends md_api {
 
 }
 
-new md_featured_image;
+new md_page_cover;
