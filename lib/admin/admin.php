@@ -33,8 +33,10 @@ class md_admin {
 
 	public function includes() {
 		require_once( 'page-settings.php' );
-		foreach ( array( 'dashboard', 'typography', 'integrations', 'dropins' ) as $file )
-			require_once( MD_DIR . "lib/{$file}/{$file}.php" );
+		require_once( MD_DIR . 'lib/admin/dashboard/dashboard.php' );
+		require_once( MD_DIR . 'lib/design/typography/typography.php' );
+		require_once( MD_DIR . 'lib/integrations/integrations.php' );
+		require_once( MD_DIR . 'lib/dropins/dropins.php' );
 		require_once( MD_DIR . 'lib/upgrade/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
 			require_once( MD_DIR . 'lib/upgrade/upgrade.php' );

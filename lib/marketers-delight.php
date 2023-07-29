@@ -11,6 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 final class marketers_delight {
 
+	/**
+	 * Setup directory constants for ease of use throughout theme.
+	 *
+	 * @since 4.9.4
+	 */
+
 	public function constants() {
 		define( 'MD_VERSION', '5.6' );
 		define( 'MD_THEME_NAME', 'Marketers Delight 4' );
@@ -63,28 +69,21 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/js.php' );
 		require_once( MD_DIR . 'lib/api/files.php' );
 		require_once( MD_DIR . 'lib/api/design.php' );
-		require_once( MD_DIR . 'lib/core-functions.php' );
+		require_once( MD_DIR . 'lib/api/api-functions.php' );
 		require_once( MD_DIR . 'lib/api/sanitize.php' );
 		require_once( MD_DIR . 'lib/api/requests.php' );
 		require_once( MD_DIR . 'lib/api/api.php' );
 		require_once( MD_DIR . 'lib/api/deprecated.php' );
 
 		require_once( MD_DIR . 'lib/design/design.php' );
-		require_once( MD_DIR . 'lib/icons/icons.php' );
 
 
 		if ( is_admin() )
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/api/conditionals.php' );
 
-		require_once( MD_DIR . 'lib/header/header.php' );
-		require_once( MD_DIR . 'lib/sidebars/sidebars.php' );
 		require_once( MD_DIR . 'lib/layout/layout.php' );
-		require_once( MD_DIR . 'lib/loop/loop.php' );
 		require_once( MD_DIR . 'lib/blog/blog.php' );
-		require_once( MD_DIR . 'lib/layout/featured-image/featured-image.php' );
-		require_once( MD_DIR . 'lib/layout/page-cover/page-cover.php' );
-		require_once( MD_DIR . 'lib/featured-video/featured-video.php' );
 		require_once( MD_DIR . 'lib/stream.php' );
 
 
