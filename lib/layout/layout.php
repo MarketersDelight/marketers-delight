@@ -162,6 +162,7 @@ class md_layout extends md_api {
 		$screen = get_current_screen();
 		$post_type = esc_attr( $screen->post_type );
 		$screen_base = esc_attr( $screen->base );
+		$post_base = in_array( $screen_base, array( 'post', 'post-new' ) ) ? 'post' : $screen_base;
 
 		$header = $this->fields->module( 'header' );
 		$main_menu = $this->fields->module( 'main_menu' );

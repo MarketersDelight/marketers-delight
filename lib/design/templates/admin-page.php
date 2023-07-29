@@ -81,7 +81,7 @@
 	<hr class="md-sep-small" />
 
 	<?php
-		foreach ( array( 'header', 'content', 'featured-image' ) as $name )
+		foreach ( array( 'header', 'featured-image', 'content' ) as $name )
 			include( "{$name}-settings.php" );
 	?>
 

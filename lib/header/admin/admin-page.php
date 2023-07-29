@@ -1,10 +1,17 @@
 <div class="md-header-settings md-content-wrap<?php echo $header_layout == 'flyer' ? ' is-flyer' : ''; ?>">
+
 	<h2 class="md-title"><?php echo __( 'Header', 'md' ); ?></h2>
+
 	<p><?php echo __( 'Create a custom header layout with flexible navigation elements.', 'md' ); ?></p>
+
 	<hr class="md-sep-small" />
+
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Layout Settings', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
+
 			<div class="md-header-layout md-radio-fields md-clear md-sep-micro">
 				<?php $this->fields->field( 'layout', array(
 					'type' => 'radio',
@@ -30,6 +37,7 @@
 					)
 				) ); ?>
 			</div>
+
 			<div class="md-radio-fields md-clear md-sep-micro">
 				<?php $this->fields->field( 'layout_mobile', array(
 					'type' => 'radio',
@@ -50,7 +58,9 @@
 					)
 				) ); ?>
 			</div>
+
 			<hr class="md-sep-micro" />
+
 			<div class="columns-2 columns-single md-sep-micro">
 				<div class="col md-sep-micro">
 					<?php $this->fields->field( 'site_title', array(
@@ -67,6 +77,7 @@
 					) ); ?>
 				</div>
 			</div>
+
 			<div class="md-sep-micro">
 				<?php $this->fields->field( 'display', array(
 					'type' => 'checkbox',
@@ -81,7 +92,9 @@
 					)
 				) ); ?>
 			</div>
+
 		</div>
+
 	</div>
 
 	<hr class="md-sep-small" />

@@ -27,7 +27,7 @@ class md_featured_image extends md_api {
 	public function actions() {
 		$this->sanitize = $this->_data( 'sanitize' );
 		add_action( 'wp_head', array( $this, 'inline_css' ) );
-		add_action( 'md_layout_before_content_options', array( $this, 'featured_image_fields' ) );
+		add_action( 'md_layout_post_before_content_options', array( $this, 'featured_image_position_field' ) );
 		add_action( 'md_hook_page_title_fields', array( $this, 'featured_image_fields' ) );
 	}
 
@@ -38,7 +38,7 @@ class md_featured_image extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Page Title', 'md' );
+		$this->name = __( 'Page Cover', 'md' );
 		return array(
 			'meta_box' => array(
 				'name' => $this->name,
@@ -155,14 +155,8 @@ class md_featured_image extends md_api {
 		if ( ! $is_post )
 			$classes .= ' md-field-row';
 	?>
-		<div class="md-sep-small <?php echo ! $is_post ? ' md-field-row' : ''; ?>">
-			<?php $this->fields->field( 'position', array(
-				'type' => 'select',
-				'label' => __( 'Featured Image', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'options' => $this->sanitize->values['featured_image']
-			) ); ?>
-		</div>
+		<?php $this->featured_image_position_field(); ?>
+
 		<?php if ( ! $is_post ) : ?>
 			<div class="md-field-row md-sep-small">
 				<?php $this->fields->field( 'image', array(
@@ -172,6 +166,20 @@ class md_featured_image extends md_api {
 				) ); ?>
 			</div>
 		<?php endif; ?>
+	<?php }
+
+	public function featured_image_position_field() {
+		$screen = get_current_screen();
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+	?>
+		<div class="md-sep-small<?php echo ! $is_post ? ' md-field-row' : ''; ?>">
+			<?php $this->fields->field( 'position', array(
+				'type' => 'select',
+				'label' => __( 'Featured Image', 'md' ),
+				'empty_label' => __( 'Use default position', 'md' ),
+				'options' => $this->sanitize->values['featured_image']
+			) ); ?>
+		</div>
 	<?php }
 
 	/**

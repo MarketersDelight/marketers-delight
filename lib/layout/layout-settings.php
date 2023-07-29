@@ -74,7 +74,7 @@
 
 	<div class="col md-sep-small">
 
-		<?php do_action( 'md_layout_before_content_options' ); ?>
+		<?php do_action( "md_layout_{$post_base}_before_content_options" ); ?>
 
 		<?php $this->fields->field( 'content', array(
 			'type' => 'checkbox',

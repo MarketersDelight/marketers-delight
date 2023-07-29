@@ -1,6 +1,6 @@
 <div class="md-widget md-toggle md-sep-small">
 
-	<h3 class="md-widget-title"><?php echo __( 'Featured Image', 'md' ); ?></h3>
+	<h3 class="md-widget-title"><?php echo __( 'Page Cover', 'md' ); ?></h3>
 
 	<div class="md-widget-item">
 
