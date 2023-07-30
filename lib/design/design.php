@@ -146,21 +146,21 @@ class md_colors extends md_api {
 			'options' => array_keys( $this->sanitize->values['featured_image'] )
 		);
 
-		$fields['featured_image']['cover_position'] = array(
+		$fields['page_cover']['cover_position'] = array(
 			'type' => 'select',
 			'options' => array_keys( $this->sanitize->values['covers'] )
 		);
 
-		$fields['featured_image']['cover_image'] = array(
+		$fields['page_cover']['cover_image'] = array(
 			'type' => 'upload',
 			'upload_type' => 'media'
 		);
 
-		$fields['featured_image']['cover_color'] = array(
+		$fields['page_cover']['cover_color'] = array(
 			'type' => 'color'
 		);
 
-		$fields['featured_image']['cover_styles'] = array(
+		$fields['page_cover']['cover_styles'] = array(
 			'type' => 'checkbox',
 			'options' => array( 'text_color', 'disable_cover' )
 		);
@@ -278,8 +278,8 @@ class md_colors extends md_api {
 		$sanitize = $this->sanitize;
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$layout_spacing = $line_height + round( $line_height / 2 );
-		$cover = $this->fields->module( array( 'featured_image', 'cover_position' ) );
-		$disable_overlay = $this->fields->module( array( 'featured_image', 'cover_styles', 'disable_cover' ) );
+		$cover = $this->fields->module( array( 'page_cover', 'cover_position' ) );
+		$disable_overlay = $this->fields->module( array( 'page_cover', 'cover_styles', 'disable_cover' ) );
 		include( 'templates/admin-page.php' );
 	}
 
@@ -295,10 +295,10 @@ class md_colors extends md_api {
 				jQuery( '.md-header-logo' ).toggleClass( 'md-has-logo-html' );
 			};
 			( function() {
-				document.getElementById( '<?php echo $this->_prefix; ?>_featured_image_cover_position' ).onchange = function() {
+				document.getElementById( '<?php echo $this->_prefix; ?>_page_cover_cover_position' ).onchange = function() {
 					document.getElementById( 'md_cover_settings' ).style.display = this.value !== '' ? 'block' : 'none';
 				}
-				document.getElementById( '<?php echo $this->_prefix; ?>_featured_image_cover_styles_disable_cover' ).onchange = function() {
+				document.getElementById( '<?php echo $this->_prefix; ?>_page_cover_cover_styles_disable_cover' ).onchange = function() {
 					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'none' : 'block';
 				}
 			})();

@@ -71,25 +71,25 @@ function md_cover() {
 	$id = $url = $position = '';
 	$cover = array( 'id' => '', 'position' => '', 'image' => '', 'color' => '', 'text' => '' );
 
-	$default_position = md_setting( array( 'colors', 'featured_image', 'cover_position' ) );
-	$default_cover_id = md_setting( array( 'colors', 'featured_image', 'cover_image', 'id' ) );
-	$default_color = md_setting( array( 'colors', 'featured_image', 'cover_color' ) );
-	$default_text = md_setting( array( 'colors', 'featured_image', 'cover_styles', 'text_color' ) );
-	$disable_overlay = md_setting( array( 'colors', 'featured_image', 'cover_styles', 'disable_cover' ) );
+	$default_position = md_setting( array( 'colors', 'page_cover', 'cover_position' ) );
+	$default_cover_id = md_setting( array( 'colors', 'page_cover', 'cover_image', 'id' ) );
+	$default_color = md_setting( array( 'colors', 'page_cover', 'cover_color' ) );
+	$default_text = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'text_color' ) );
+	$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
 
 	if ( in_the_loop() && ! is_singular() ) {
-		$position = md_meta( array( 'featured_image', 'cover_position' ), null, $default_position );
-		$cover_id = md_meta( array( 'featured_image', 'cover_image', 'id' ), null, $default_cover_id );
-		$color = md_meta( array( 'featured_image', 'bg_color' ), null, $default_color );
-		$single_text = md_meta( array( 'featured_image', 'text_color', 'alternate' ), null, $default_text );
-		$disable_single = md_meta( array( 'featured_image', 'text_color', 'disable_cover' ), null, $disable_overlay );
+		$position = md_meta( array( 'page_cover', 'cover_position' ), null, $default_position );
+		$cover_id = md_meta( array( 'page_cover', 'cover_image', 'id' ), null, $default_cover_id );
+		$color = md_meta( array( 'page_cover', 'bg_color' ), null, $default_color );
+		$single_text = md_meta( array( 'page_cover', 'text_color', 'alternate' ), null, $default_text );
+		$disable_single = md_meta( array( 'page_cover', 'text_color', 'disable_cover' ), null, $disable_overlay );
 	}
 	else {
-		$position = md_module( array( 'featured_image', 'cover_position' ), $default_position );
-		$cover_id = md_module( array( 'featured_image', 'cover_image', 'id' ), $default_cover_id );
-		$color = md_module( array( 'featured_image', 'bg_color' ), $default_color );
-		$single_text = md_module( array( 'featured_image', 'text_color', 'alternate' ), $default_text );
-		$disable_single = md_module( array( 'featured_image', 'text_color', 'disable_cover' ), $disable_overlay );
+		$position = md_module( array( 'page_cover', 'cover_position' ), $default_position );
+		$cover_id = md_module( array( 'page_cover', 'cover_image', 'id' ), $default_cover_id );
+		$color = md_module( array( 'page_cover', 'bg_color' ), $default_color );
+		$single_text = md_module( array( 'page_cover', 'text_color', 'alternate' ), $default_text );
+		$disable_single = md_module( array( 'page_cover', 'text_color', 'disable_cover' ), $disable_overlay );
 	}
 
 	$cover['position'] = $position;

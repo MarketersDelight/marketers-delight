@@ -74,23 +74,14 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/requests.php' );
 		require_once( MD_DIR . 'lib/api/api.php' );
 		require_once( MD_DIR . 'lib/api/deprecated.php' );
-
 		require_once( MD_DIR . 'lib/design/design.php' );
-
-
 		if ( is_admin() )
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/api/conditionals.php' );
-
 		require_once( MD_DIR . 'lib/layout/layout.php' );
 		require_once( MD_DIR . 'lib/blog/blog.php' );
 		require_once( MD_DIR . 'lib/stream.php' );
-
-
-
 		require_once( MD_DIR . 'lib/templates.php' );
-
-
 		$this->dropins();
 		require_once( MD_DIR . 'lib/api/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )

@@ -117,9 +117,9 @@ class md_page_cover extends md_api {
 		$screen = get_current_screen();
 		$values = $this->_data( 'values' );
 		$sanitize = $this->sanitize;
-		$default_position = md_setting( array( 'colors', 'featured_image', 'cover_position' ) );
+		$default_position = md_setting( array( 'colors', 'page_cover', 'cover_position' ) );
 		$cover_position = $this->fields->module( 'cover_position', $default_position );
-		$disable_overlay = md_setting( array( 'colors', 'featured_image', 'cover_styles', 'disable_cover' ) );
+		$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
 		$disable_overlay_single = $this->fields->module( array( 'text_color', 'disable_cover' ) );
 		$overlay_label = $disable_overlay ? __( 'Add overlay', 'md' ) : __( 'Remove overlay', 'md' );
 		include( 'admin-fields.php' );
@@ -133,14 +133,15 @@ class md_page_cover extends md_api {
 	 */
 
 	public function scripts() {
-		$disable_overlay = md_setting( array( 'colors', 'featured_image', 'cover_styles', 'disable_cover' ) );
+		$prefix = $this->_prefix();
+		$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
 	?>
 		<script>
 			( function() {
-				document.getElementById( '<?php echo $this->_prefix; ?>_cover_position' ).onchange = function() {
+				document.getElementById( '<?php echo $prefix; ?>_cover_position' ).onchange = function() {
 					document.getElementById( 'md_cover_settings' ).style.display = this.value !== '' ? 'block' : 'none';
 				}
-				document.getElementById( '<?php echo $this->_prefix; ?>_text_color_disable_cover' ).onchange = function() {
+				document.getElementById( '<?php echo $prefix; ?>_text_color_disable_cover' ).onchange = function() {
 					<?php if ( ! empty( $disable_overlay ) ) : ?>
 					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'block' : 'none';
 					<?php else : ?>

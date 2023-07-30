@@ -70,8 +70,8 @@ function md_the_logo() {
 	else {
 		$logo_id = md_setting( array( 'colors', 'logo', 'id' ) );
 		$secondary_logo = md_setting( array( 'colors', 'logo_alt', 'url' ) );
-		$text_global = md_setting( array( 'content', 'featured_image', 'styles', 'text_color' ) );
-		$text_single = md_post_meta( array( 'featured_image', 'text_color', 'alternate' ) );
+		$text_global = md_setting( array( 'colors', 'page_cover', 'styles', 'text_color' ) );
+		$text_single = md_post_meta( array( 'page_cover', 'text_color', 'alternate' ) );
 		$cover = md_cover();
 		if ( ( ( ( is_singular() || is_category() || is_tax() ) && $cover['position'] == 'header_cover_full' ) || apply_filters( 'md_filter_logo_alt', false ) ) && ! empty( $secondary_logo ) ) {
 			if ( ( ! empty( $logo_id ) && $secondary_logo ) && ( ( empty( $text_global ) && empty( $text_single ) ) || ( ! empty( $text_global ) && ! empty( $text_single ) ) ) )
@@ -186,8 +186,6 @@ function md_breadcrumbs() {
 function md_page_title() {
 	$title = $description = '';
 
-
-
 	if ( is_post_type_archive() ) {
 		$title = post_type_archive_title( '', false );
 		$description = md_post_type_field( 'archives_text' );
@@ -209,11 +207,11 @@ function md_page_title() {
 	elseif ( is_author() )
 		$title = get_the_author();
 	elseif ( is_year() )
-		$title  = get_the_date( _x( 'Y', 'yearly archives date format' ) );
+		$title = get_the_date( _x( 'Y', 'yearly archives date format' ) );
 	elseif ( is_month() )
-		$title  = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+		$title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
 	elseif ( is_day() )
-		$title  = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
+		$title = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
 
 	if ( has_filter( 'md_page_title' ) )
 		$title = do_action( 'md_page_title' );

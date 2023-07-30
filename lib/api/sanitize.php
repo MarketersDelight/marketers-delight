@@ -129,7 +129,6 @@ class md_sanitize {
 	public function values() {
 		return array(
 			'content_box' => array(
-				'content_sidebar' => __( 'Content / Sidebar', 'md' ),
 				'sidebar_content' => __( 'Sidebar / Content', 'md' )
 			),
 			'featured_image' => array(

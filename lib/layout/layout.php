@@ -88,7 +88,7 @@ class md_layout extends md_api {
 			),
 			'content_box' => array(
 				'type' => 'select',
-				'options' => array( 'content_sidebar', 'sidebar_content' )
+				'options' => array( 'sidebar_content' )
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',

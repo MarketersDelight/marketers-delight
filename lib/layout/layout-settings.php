@@ -150,9 +150,8 @@
 
 			<?php $this->fields->field( 'content_box', array(
 				'type' => 'select',
+				'empty_label' => __( 'Content / Sidebar', 'md' ),
 				'options' => array(
-					'' => __( 'Select layout&hellip;', 'md' ),
-					'content_sidebar' => __( 'Content / Sidebar', 'md' ),
 					'sidebar_content' => __( 'Sidebar / Content', 'md' ),
 				)
 			) ); ?>
