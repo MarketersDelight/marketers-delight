@@ -192,7 +192,7 @@ class md_header extends md_api {
 	public function admin_page() {
 		$values = $this->_data( 'values' );
 		$header = $values['header'];
-		$header_layout = $header['layout'];
+		$header_layout = ! empty( $header['layout'] ) ? $header['layout'] : '';
 		$builder_fields = $this->register_builder();
 		include( 'admin/admin-page.php' );
 	}

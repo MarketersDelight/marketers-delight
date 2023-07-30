@@ -317,7 +317,7 @@ class md_sanitize {
 	 */
 
 	public function menus() {
-		$menus = array( 'ids' => '', 'options' => '' );
+		$menus = array( 'ids' => array(), 'options' => array() );
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		if ( ! empty( $nav_menus ) )
