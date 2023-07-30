@@ -317,14 +317,15 @@ class md_sanitize {
 	 */
 
 	public function menus() {
-		$menus = array();
+		$menus = array( 'ids' => '', 'options' => '' );
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
-		foreach ( $nav_menus as $menu ) {
-			$menu_id = esc_attr( $menu->term_id );
-			$menus['ids'][] = $menu_id;
-			$menus['options'][$menu_id] = esc_html( $menu->name );
-		}
+		if ( ! empty( $nav_menus ) )
+			foreach ( $nav_menus as $menu ) {
+				$menu_id = esc_attr( $menu->term_id );
+				$menus['ids'][] = $menu_id;
+				$menus['options'][$menu_id] = esc_html( $menu->name );
+			}
 
 		return $menus;
 	}

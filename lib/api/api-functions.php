@@ -535,6 +535,7 @@ function md_byline_items( $sort = null ) {
 	$byline = array_diff( $items, array_keys( $settings ) );
 
 	if ( isset( $sort ) ) {
+		$data = array();
 		foreach ( $byline as $id => $label )
 			if ( $sort == 'ids' )
 				$data[] = $id;
@@ -551,7 +552,7 @@ function md_byline_items( $sort = null ) {
  */
 
 function md_get_byline() {
-	$byline = md_module( array( 'loop', 'byline' ), array() );
+	$byline = md_module( array( 'loop', 'byline' ), null, array() );
 	return array_keys( $byline );
 }
 
