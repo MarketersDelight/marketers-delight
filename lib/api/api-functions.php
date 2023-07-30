@@ -397,7 +397,7 @@ function md_module( $keys = null, $default = null ) {
 	elseif ( is_singular() )
 		$option = md_post_meta( $keys, null, $default );
 	else
-		$option = md_setting( $keys );
+		$option = md_setting( $keys, $default );
 
 	return $option;
 }
@@ -552,7 +552,7 @@ function md_byline_items( $sort = null ) {
  */
 
 function md_get_byline() {
-	$byline = md_module( array( 'loop', 'byline' ), null, array() );
+	$byline = md_module( array( 'loop', 'byline' ), array() );
 	return array_keys( $byline );
 }
 
