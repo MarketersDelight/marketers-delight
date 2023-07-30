@@ -127,9 +127,20 @@ function md_admin_fields() {
  */
 
 function md_page_settings_fields() {
+	$sanitize = new md_sanitize;
 	return apply_filters( 'md_page_settings_fields', array(
 		'archives_title' => array( 'type' => 'text' ),
 		'archives_text' => array( 'type' => 'textarea' ),
+		'featured_image' => array(
+			'image' => array(
+				'type' => 'upload',
+				'upload_type' => 'media'
+			),
+			'position' => array(
+				'type' => 'select',
+				'options' => array_keys( $sanitize->values['featured_image'] )
+			)
+		),
 		'page_display' => array(
 			'type' => 'checkbox',
 			'options' => array( 'stats', 'category', 'show_on_posts' )

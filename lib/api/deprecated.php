@@ -11,7 +11,8 @@ function md_hook_teaser_top() { do_action( 'md_hook_teaser_top' ); }
 function md_hook_teaser_bottom() { do_action( 'md_hook_teaser_bottom' ); }
 function md_hook_header_triggers() { do_action( 'md_hook_header_triggers' ); }
 function md_author() { md_author_box(); }
-function md_featured_image_style() { return md_featured_image_cover(); }
+function md_featured_image_style() { md_cover_style(); }
+function md_featured_image_cover() { md_cover_style(); }
 function md_featured_image_caption() { md_get_caption(); }
 
 /**

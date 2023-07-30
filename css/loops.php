@@ -196,11 +196,11 @@
 
 @media all and (min-width: 800px) {
 	.post-box:not(:last-child), .post-box.has-cover .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
-	.content-box .headline-wrap, .the-content, .author-box, .comments {
+	.headline-wrap, .the-content, .author-box, .comments {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.content-box .headline-wrap, .the-content, .author-box, .comments { max-width: <?php echo ( ( $post_width / $content_width ) * 100 ); ?>%; }
+	.headline-wrap, .the-content, .author-box, .comments { max-width: <?php echo ( ( $post_width / $content_width ) * 100 ); ?>%; }
 	.content-full .headline-wrap {
 		padding: <?php echo $half; ?>px;
 		text-align: center;

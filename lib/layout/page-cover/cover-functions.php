@@ -7,9 +7,12 @@
  * @since 5.6
  */
 
-function md_cover_classes() {
+function md_cover_classes( $custom = null ) {
 	$classes = array();
 	$cover = md_cover();
+
+	if ( isset( $custom ) )
+		$classes[] = $custom;
 
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'cover';
@@ -36,9 +39,11 @@ function md_has_headline_cover() {
  * image position is set to header cover or headline cover.
  *
  * @since 4.1
+ * @formerly md_featured_image_cover
+ * @changed 5.6
  */
 
-function md_featured_image_cover() {
+function md_cover_style() {
 	$cover = md_cover();
 
 	if ( ! empty( $cover['image'] ) && ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) || ( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) ) )

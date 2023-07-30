@@ -1,4 +1,4 @@
-<div class="<?php echo md_headline_classes(); ?>"<?php echo md_featured_image_cover(); ?>>
+<div class="<?php echo md_headline_classes(); ?>"<?php echo md_cover_style(); ?>>
 
 	<?php md_hook_before_headline(); ?>
 

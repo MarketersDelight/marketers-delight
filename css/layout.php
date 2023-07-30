@@ -4,6 +4,44 @@
 	$LAYOUT
 \*------------------------------*/
 
+
+
+
+
+/* PAGE TITLE */
+
+.page-title {
+	padding-bottom: <?php echo $mid; ?>px;
+	padding-top: <?php echo $triple; ?>px;
+	text-align: center;
+}
+
+.page-title .page-description {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: <?php echo $content_width; ?>px;
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.page-title {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+		padding-top: <?php echo $mid; ?>px;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 .clear:after, .inner:after, .menu:after,
 .post-box:after, .the-content:after, .byline:after, .sidebar:after,
 [class*="columns-"]:after {
