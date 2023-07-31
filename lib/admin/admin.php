@@ -238,7 +238,7 @@ class md_admin {
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
 			foreach ( $post_types as $post_type ) {
 				if (
-					isset( $fields['hide'] ) || isset( $fields['page_settings'] ) ||
+					! isset( $fields['name'] ) || isset( $fields['hide'] ) || isset( $fields['page_settings'] ) ||
 					( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) ||
 					( isset( $fields['post_id'] ) && isset( $_GET['post'] ) && $fields['post_id'] != $_GET['post'] )
 				)

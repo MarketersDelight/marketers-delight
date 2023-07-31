@@ -4,17 +4,16 @@
 	$LAYOUT
 \*------------------------------*/
 
-
-
-
-
 /* PAGE TITLE */
 
 .page-title {
 	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $triple; ?>px;
-	text-align: center;
+	padding-top: <?php echo $mid; ?>px;
 }
+
+.page-title.cover { padding-top: <?php echo $triple; ?>px; }
+
+.page-headline { text-align: center; }
 
 .page-title .page-description {
 	margin-left: auto;

@@ -14,10 +14,8 @@ function md_templates() {
 	if ( md_has_breadcrumbs() )
 		add_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
 
-	$cover = md_cover();
-
-	if ( empty( $cover['position'] ) )
-		add_action( 'md_hook_before_content_box', 'md_page_title' );
+	$page_title = new md_page_title;
+	$page_title->templates();
 
 	add_action( 'md_hook_content', 'md_loop' );
 	add_action( 'md_hook_content', 'md_pagination', 30 );
@@ -175,52 +173,6 @@ function md_breadcrumbs() {
 			$category_title = $terms[0]->name;
 		}
 	include( md_template( 'breadcrumbs', true ) );
-}
-
-/**
- * Render Page/Archives Title text and description.
- *
- * @since 5.6
- */
-
-function md_page_title() {
-	$title = $description = '';
-
-	if ( is_post_type_archive() ) {
-		$title = post_type_archive_title( '', false );
-		$description = md_post_type_field( 'archives_text' );
-	}
-	elseif ( is_home() || is_singular( 'post' ) ) {
-		$title = md_post_type_field( 'archives_title' );
-		$description = md_post_type_field( 'archives_text' );
-	}
-	elseif ( is_tax() && get_queried_object() ) {
-		$title = single_term_title( '', false );
-		$description = md_term_meta( 'archives_text' );
-	}
-	elseif ( is_category() ) {
-		$title = single_cat_title( '', false );
-		$description = category_description();
-	}
-	elseif ( is_tag() )
-		$title = single_tag_title( '', false );
-	elseif ( is_author() )
-		$title = get_the_author();
-	elseif ( is_year() )
-		$title = get_the_date( _x( 'Y', 'yearly archives date format' ) );
-	elseif ( is_month() )
-		$title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
-	elseif ( is_day() )
-		$title = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
-
-	if ( has_filter( 'md_page_title' ) )
-		$title = do_action( 'md_page_title' );
-
-	if ( has_filter( 'md_page_description' ) )
-		$description = do_action( 'md_page_description' );
-
-	if ( $title || $description )
-		include( md_template( 'page-title', true ) );
 }
 
 /**

@@ -176,11 +176,6 @@
 	.header-flyer .header-primary .sub-menu .menu-toggle:after { content: '\e80f'; }
 }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	/* FLYER */
-	.header .header-controls { flex: 0 1 auto; }
-}
-
 @media all and (max-width: 800px) {
 	.header {
 		<?php if ( ! empty( $typography['header']['font_size']['tablet'] ) ) : ?>

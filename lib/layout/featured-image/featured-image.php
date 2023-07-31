@@ -38,6 +38,9 @@ class md_featured_image extends md_api {
 
 	public function register() {
 		return array(
+			'meta_box' => array(
+				'fields' => $this->fields()
+			),
 			'term' => array(
 				'name' => __( 'Featured Image', 'md' ),
 				'position' => 5,
@@ -67,7 +70,7 @@ class md_featured_image extends md_api {
 	}
 
 	/**
-	 * Featured Image Position field template.
+	 * Grouped Featured Image option fields.
 	 *
 	 * @since 5.6
 	 */
@@ -91,6 +94,12 @@ class md_featured_image extends md_api {
 			</div>
 		<?php endif; ?>
 	<?php }
+
+	/**
+	 * Featured Image Position admin field on its own.
+	 *
+	 * @since 5.6
+	 */
 
 	public function featured_image_position() {
 		$screen = get_current_screen();

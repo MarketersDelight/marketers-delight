@@ -135,8 +135,8 @@ class md_sanitize {
 				'right' => __( 'Right, text wrap', 'md' ),
 				'left' => __( 'Left, text wrap', 'md' ),
 				'center' => __( 'Center, no text wrap', 'md' ),
-				'below_headline' => __( 'Full-width, below headline', 'md' ),
-				'above_headline' => __( 'Full-width, above headline', 'md' ),
+				'above_headline' => __( 'Before headline', 'md' ),
+				'below_headline' => __( 'After headline', 'md' ),
 				'remove' => __( 'Hide image', 'md' )
 			),
 			'covers' => array(

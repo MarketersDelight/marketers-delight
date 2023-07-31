@@ -1,4 +1,12 @@
 <?php
+/**
+ * Construct the admin settings and frontend templates for the
+ * Page Cover concept, which is an evolution of MD's classic
+ * Featured Image Position controls that allows for custom design
+ * of Page Title's of any kind of page throughout WordPress.
+ *
+ * @since 5.6
+ */
 
 class md_page_cover extends md_api {
 
@@ -253,7 +261,7 @@ class md_page_cover extends md_api {
 				md_headline();
 			}
 		else
-			md_page_title();
+			do_action( 'md_hook_page_cover_headline' );
 	}
 
 	/**

@@ -1064,9 +1064,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 /* PAGE TITLE */
 .page-title {
 	padding-bottom: 42px;
-	padding-top: 84px;
-	text-align: center;
+	padding-top: 42px;
 }
+.page-title.cover { padding-top: 84px; }
+.page-headline { text-align: center; }
 .page-title .page-description {
 	margin-left: auto;
 	margin-right: auto;
@@ -1847,10 +1848,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 	.header-rtl .sub-menu .menu-toggle:after,
 	.header-flyer .header-primary .sub-menu .menu-toggle:after { content: '\e80f'; }
-}
-@media all and (max-width: 1008px) {
-	/* FLYER */
-	.header .header-controls { flex: 0 1 auto; }
 }
 @media all and (max-width: 800px) {
 	.header {

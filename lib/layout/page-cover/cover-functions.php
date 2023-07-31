@@ -102,12 +102,8 @@ function md_cover() {
 	if ( empty( $cover['position'] ) )
 		return $cover;
 
-//	$featured_image = get_post_thumbnail_id( get_the_ID() );
-
 	if ( ! empty( $cover_id ) )
 		$id = $cover_id;
-//	elseif ( ! empty( $featured_image ) )
-	//	$id = $featured_image;
 
 	if ( empty( $id ) )
 		return $cover;

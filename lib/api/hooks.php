@@ -90,12 +90,8 @@ function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline' );
 }
 
-function md_hook_before_page_title() {
-	do_action( 'md_hook_before_page_title' );
-}
-
-function md_hook_after_page_title() {
-	do_action( 'md_hook_after_page_title' );
+function md_hook_page_title() {
+	do_action( 'md_hook_page_title' );
 }
 
 function md_hook_byline_top() {

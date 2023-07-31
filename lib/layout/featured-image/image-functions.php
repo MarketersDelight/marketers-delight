@@ -44,8 +44,12 @@ function md_featured_image_position( $position = null ) {
 
 	$default = md_setting( array( 'colors', 'featured_image', 'position' ) );
 
-	return md_module( array( 'featured_image', 'position' ), $default );
+	if ( in_the_loop() && ! is_singular() )
+		$position = md_meta( array( 'featured_image', 'position' ), null, $default );
+	else
+		$position = md_module( array( 'featured_image', 'position' ), $default );
 
+	return $position;
 }
 
 /**

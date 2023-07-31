@@ -19,6 +19,7 @@ class md_layout extends md_api {
 		require_once( 'page-cover/page-cover.php' );
 		require_once( 'featured-image/featured-image.php' );
 		require_once( 'featured-video/featured-video.php' );
+		require_once( 'page-title.php' );
 		require_once( 'loop/loop.php' );
 		require_once( 'sidebars/sidebars.php' );
 	}
