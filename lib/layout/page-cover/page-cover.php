@@ -178,7 +178,7 @@ class md_page_cover extends md_api {
 		elseif ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_page_title', array( $this, 'overlay' ), 1 );
 			if ( md_has_headline() )
-				add_action( 'md_hook_before_content_box', array( $this, 'header_cover' ) );
+				add_action( 'md_hook_header_bottom', array( $this, 'header_cover' ) );
 			if ( is_singular() || is_404() ) {
 				add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
 				add_action( 'md_hook_after_headline', 'md_html_close' );

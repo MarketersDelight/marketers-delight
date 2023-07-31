@@ -11,7 +11,10 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.page-headline { text-align: center; }
+.page-headline {
+	margin-bottom: <?php echo $half; ?>px;
+	text-align: center;
+}
 
 .page-description {
 	margin-left: auto;
@@ -23,23 +26,25 @@
 
 .page-description:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 800px) {
 	.page-title {
 		padding-bottom: <?php echo $mid; ?>px;
 		padding-top: <?php echo $mid; ?>px;
 	}
 	.page-title.cover { padding-top: <?php echo $triple; ?>px; }
-	.page-title.layout-left, .page-title.layout-right {
+	.page-title.layout-left, .page-title.layout-right,
+	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: center;
 	}
+	.page-headline { margin-bottom: <?php echo $half; ?>px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
 	.layout-left .page-description, .layout-right .page-description {
 		flex: 0 0 80%;
-		margin-left: inherit;
-		margin-right: inherit;
+		margin-left: 0;
+		margin-right: 0;
 	}
 	.layout-left .page-image, .layout-right .page-image { flex: 0 0 20%; }
 	.layout-left .page-image { margin-right: <?php echo $single; ?>px; }

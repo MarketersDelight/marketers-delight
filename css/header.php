@@ -36,7 +36,7 @@
 	line-height: 1;
 }
 
-.header-simple, .header-cover { text-align: center; }
+.header-simple { text-align: center; }
 
 /* LOGO */
 

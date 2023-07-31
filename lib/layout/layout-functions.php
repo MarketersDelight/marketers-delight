@@ -15,7 +15,7 @@ function md_html( $area ) {
 	if ( $area == 'h' )
 		$html = is_singular() ? 'h1' : 'h2';
 	elseif ( $area == 'article' )
-		$html = is_singular() ? 'article' : 'div';
+		$html = is_singular() ? 'div' : 'article';
 
 	return $html;
 }

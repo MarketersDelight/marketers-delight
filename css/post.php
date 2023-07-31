@@ -203,11 +203,11 @@
 	text-decoration: none;
 }
 
-.author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+.byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
-.has-cover .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+.has-cover .byline .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
 
-.author-link:hover { border-bottom: 0; }
+.byline .author-link:hover { border-bottom: 0; }
 
 .byline-item { display: inline-block; }
 
@@ -270,10 +270,7 @@
 
 .author-link.twitter .md-icon-twitter { color: #fff; }
 
-.author-link.twitter a {
-	border-bottom-color: #1da1f2;
-	color: #1da1f2;
-}
+.author-link.twitter a { color: #1da1f2; }
 
 @media all and (min-width: 900px) {
 	.author-box {

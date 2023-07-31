@@ -6,11 +6,15 @@
 
 		<?php md_hook_content_top(); ?>
 
-		<div id="content" class="<?php echo md_content_classes(); ?>">
+		<main id="content" class="<?php echo md_content_classes(); ?>">
+
 			<?php md_hook_before_content(); ?>
+
 			<?php md_hook_content(); ?>
+
 			<?php md_hook_after_content(); ?>
-		</div>
+
+		</main>
 
 		<?php get_sidebar(); ?>
 

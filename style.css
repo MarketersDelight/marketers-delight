@@ -1066,7 +1066,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding-bottom: 28px;
 	padding-top: 28px;
 }
-.page-headline { text-align: center; }
+.page-headline {
+	margin-bottom: 14px;
+	text-align: center;
+}
 .page-description {
 	margin-left: auto;
 	margin-right: auto;
@@ -1074,23 +1077,25 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .page-image { text-align: center; }
 .page-description:not(:last-child), .page-image:not(:last-child) { margin-bottom: 14px; }
-@media all and (min-width: 900px) {
+@media all and (min-width: 800px) {
 	.page-title {
 		padding-bottom: 42px;
 		padding-top: 42px;
 	}
 	.page-title.cover { padding-top: 84px; }
-	.page-title.layout-left, .page-title.layout-right {
+	.page-title.layout-left, .page-title.layout-right,
+	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: center;
 	}
+	.page-headline { margin-bottom: 14px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
 	.layout-left .page-description, .layout-right .page-description {
 		flex: 0 0 80%;
-		margin-left: inherit;
-		margin-right: inherit;
+		margin-left: 0;
+		margin-right: 0;
 	}
 	.layout-left .page-image, .layout-right .page-image { flex: 0 0 20%; }
 	.layout-left .page-image { margin-right: 28px; }
@@ -1769,7 +1774,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	color: #fff;
 	line-height: 1;
 }
-.header-simple, .header-cover { text-align: center; }
+.header-simple { text-align: center; }
 /* LOGO */
 .header-logo {
 	padding: 14px;
@@ -2088,9 +2093,9 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	color: #777777;
 	text-decoration: none;
 }
-.author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
-.has-cover .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
-.author-link:hover { border-bottom: 0; }
+.byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+.has-cover .byline .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+.byline .author-link:hover { border-bottom: 0; }
 .byline-item { display: inline-block; }
 .byline-item .md-icon-twitter { color: #1da1f2; }
 .byline-author .avatar {
@@ -2133,10 +2138,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	color: #fff;
 }
 .author-link.twitter .md-icon-twitter { color: #fff; }
-.author-link.twitter a {
-	border-bottom-color: #1da1f2;
-	color: #1da1f2;
-}
+.author-link.twitter a { color: #1da1f2; }
 @media all and (min-width: 900px) {
 	.author-box {
 		border-radius: 5px;
