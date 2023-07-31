@@ -31,7 +31,8 @@ class md_page_title {
 
 		add_action( $hook, array( $this, 'html' ) );
 		add_action( 'md_hook_page_title', array( $this, 'title' ) );
-		add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
+		if ( $image['position'] !== 'remove' )
+			add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
 		add_action( 'md_hook_page_title', array( $this, 'description' ) );
 	}
 
@@ -148,7 +149,7 @@ class md_page_title {
 		$image = $this->get( 'image' );
 	?>
 		<div class="page-image">
-			<?php echo wp_get_attachment_image( $image['id'], 'medium' ); ?>
+			<?php echo wp_get_attachment_image( $image['id'], 'full' ); ?>
 		</div>
 	<?php }
 

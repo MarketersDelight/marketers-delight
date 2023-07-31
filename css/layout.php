@@ -13,10 +13,15 @@
 
 .page-headline { text-align: center; }
 
-.page-description { max-width: <?php echo $post_width; ?>px; }
+.page-description {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: <?php echo $post_width; ?>px;
+}
 
 .page-image { text-align: center; }
 
+.page-description:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 @media all and (min-width: 900px) {
 	.page-title {
@@ -24,24 +29,19 @@
 		padding-top: <?php echo $mid; ?>px;
 	}
 	.page-title.cover { padding-top: <?php echo $triple; ?>px; }
-
-	.page-title.layout-left,
-	.page-title.layout-right {
+	.page-title.layout-left, .page-title.layout-right {
 		align-items: center;
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-
-	.layout-left .page-headline,
-	.layout-right .page-headline { flex: 0 0 100%; }
-
-	.layout-left .page-description,
-	.layout-right .page-description { flex: 0 0 80%; }
-
-	.layout-left .page-image,
-	.layout-right .page-image { flex: 0 0 20%; }
-
+	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
+	.layout-left .page-description, .layout-right .page-description {
+		flex: 0 0 80%;
+		margin-left: inherit;
+		margin-right: inherit;
+	}
+	.layout-left .page-image, .layout-right .page-image { flex: 0 0 20%; }
 	.layout-left .page-image { margin-right: <?php echo $single; ?>px; }
 	.layout-right .page-image {
 		order: 1;
