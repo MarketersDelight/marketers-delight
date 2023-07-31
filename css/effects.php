@@ -20,6 +20,61 @@
 	$ICONS & EFFECTS
 \*------------------------------*/
 
+/* OVERLAY */
+
+.image-overlay {
+	background-position: center top;
+	background-size: cover;
+	display: block;
+	position: relative;
+	z-index: 0;
+}
+
+.image-overlay:after { z-index: -1; }
+
+.overlay, .image-overlay:after {
+	background-color: <?php echo $colors['header']['cover_color']; ?>;
+	content: '';
+	display: block;
+	height: 100%;
+	position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+	width: 100%;
+}
+
+/* STYLES */
+
+.circle { border-radius: 50%; }
+
+.shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }
+
+.shadow-large, .wp-block-image.shadow-large img { box-shadow: 0 5px 55px rgba(0, 0, 0, 0.15); }
+
+.shadow-small, .wp-block-image.shadow-small img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
+
+.wp-block-image.shadow, .wp-block-image.shadow-large, .wp-block-image.shadow-small { box-shadow: none; }
+
+.box { background-color: #fff; }
+
+.box-sec, .frame, .note { background-color: #eee; }
+
+.box-dark {
+	background-color: #1e1e1e;
+	color: #fff;
+}
+
+.box-dark .text-sec { color: #ddd; }
+
+.alert { background-color: #fffbcc; }
+
+.avatar {
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 /* COVERS */
 
 .cover, .header.has-cover {

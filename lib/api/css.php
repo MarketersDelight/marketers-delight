@@ -50,6 +50,7 @@ class md_css {
 			'spacers' => locate_template( 'css/spacers.php' ),
 			'columns' => locate_template( 'css/columns.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
+			'elements' => locate_template( 'css/elements.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
 			'loops' => locate_template( 'css/loops.php' ),
