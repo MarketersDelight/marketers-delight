@@ -16,10 +16,10 @@ class md_page_title {
 	 */
 
 	public function templates() {
-		$cover = md_cover();
-		$image = $this->get( 'image' );
 		$image_order = 10;
 		$hook = 'md_hook_before_content_box';
+		$image = $this->get( 'image' );
+		$cover = md_cover();
 
 		if ( ! empty( $cover['position'] ) )
 			$hook = 'md_hook_page_cover_headline';
@@ -30,21 +30,17 @@ class md_page_title {
 			$image_order = 15;
 
 		add_action( $hook, array( $this, 'html' ) );
-
 		add_action( 'md_hook_page_title', array( $this, 'title' ) );
 		add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
 		add_action( 'md_hook_page_title', array( $this, 'description' ) );
-
-/*
-		$cover = md_cover();
-		$image_position = md_featured_image_position();
-		$html_hook = empty( $cover['position'] ) ? 'md_hook_before_content_box' : 'md_hook_page_cover_headline';
-		$image_hook = in_array( $image_position, array( 'right', 'left', 'center', 'above_headline' ) ) ? 'before' : 'after';
-
-		add_action( $html_hook, array( $this, 'html' ) );
-		add_action( "md_hook_{$image_hook}_page_title", array( $this, 'image' ) );
-*/
 	}
+
+	/**
+	 * Return key data of Page Title, including Headline, Description,
+	 * and the Featured Image.
+	 *
+	 * @since 5.6
+	 */
 
 	public function get( $key = null ) {
 		$data = array( 'title' => '', 'description' => '' );
@@ -92,22 +88,47 @@ class md_page_title {
 	}
 
 	/**
-	 * Render Page/Archives Title text and description.
+	 * Populate HTML classes for main HTML wrapper.
+	 *
+	 * @since 5.6
+	 */
+
+	public function classes() {
+		$image = $this->get( 'image' );
+		$classes = array( 'page-title', 'format' );
+		$classes[] = 'layout-' . $image['position'];
+		return md_cover_classes( $classes );
+	}
+
+	/**
+	 * Render Page Title HTML wrapper.
 	 *
 	 * @since 5.6
 	 */
 
 	public function html() { ?>
-		<div class="<?php echo md_cover_classes( 'page-title format' ); ?>"<?php echo md_cover_style(); ?>>
+		<div class="<?php echo esc_attr( $this->classes() ); ?>"<?php echo md_cover_style(); ?>>
 			<?php md_hook_page_title(); ?>
 		</div>
 	<?php }
+
+	/**
+	 * Render the Page Headline.
+	 *
+	 * @since 5.6
+	 */
 
 	public function title() {
 		$title = $this->get( 'title' );
 	?>
 		<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
 	<?php }
+
+	/**
+	 * Render the Page Description.
+	 *
+	 * @since 5.6
+	 */
 
 	public function description() {
 		$description = $this->get( 'description' );
@@ -118,7 +139,7 @@ class md_page_title {
 	<?php }
 
 	/**
-	 * Page Title Featured Image template.
+	 * Render the Page Featured Image.
 	 *
 	 * @since 5.6
 	 */
@@ -126,7 +147,7 @@ class md_page_title {
 	public function image() {
 		$image = $this->get( 'image' );
 	?>
-		<div class="page-image page-image-<?php echo esc_attr( $image['position'] ); ?>">
+		<div class="page-image">
 			<?php echo wp_get_attachment_image( $image['id'], 'medium' ); ?>
 		</div>
 	<?php }

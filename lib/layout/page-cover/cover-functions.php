@@ -7,12 +7,12 @@
  * @since 5.6
  */
 
-function md_cover_classes( $custom = null ) {
+function md_cover_classes( $custom = array() ) {
 	$classes = array();
 	$cover = md_cover();
 
 	if ( isset( $custom ) )
-		$classes[] = $custom;
+		$classes = array_merge( $classes, $custom );
 
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'cover';

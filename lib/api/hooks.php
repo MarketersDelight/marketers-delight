@@ -94,6 +94,10 @@ function md_hook_page_title() {
 	do_action( 'md_hook_page_title' );
 }
 
+function md_hook_page_title_content() {
+	do_action( 'md_hook_page_title_content' );
+}
+
 function md_hook_byline_top() {
 	do_action( 'md_hook_byline_top' );
 }
