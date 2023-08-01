@@ -112,14 +112,19 @@ class md_loop extends md_api {
 	 * @since 5.6
 	 */
 
-	public function admin_fields() { ?>
+	public function admin_fields() {
+		$screen = get_current_screen();
+		$page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
+		$screen_base = ! empty( $page ) ? $page : $screen->base;
+		do_action( "md_layout_{$screen_base}_before_settings" );
+	?>
 		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template(); ?>
 			</div>
 		</div>
-	<?php }
+	<?php do_action( "md_layout_{$screen_base}_after_settings" ); }
 
 	/**
 	 * Call template with required data passed down.

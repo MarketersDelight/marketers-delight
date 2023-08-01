@@ -23,6 +23,8 @@
 	padding: 0;
 }
 
+/* FONT ICONS */
+
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
@@ -30,16 +32,6 @@
 	font-style: normal;
 	font-weight: 400;
 }
-
-body {
-	background-color: <?php echo $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
-	position: relative;
-}
-
-b, strong, .bold { font-weight: <?php echo $bold; ?>; }
-
-i, em, .italic { font-style: italic; }
 
 [class*="md-icon"] { display: inline-block; }
 
@@ -58,6 +50,26 @@ i, em, .italic { font-style: italic; }
 
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 
+#cancel-comment-reply-link:before, .menu-icon a, .list-check li:before {
+	display: inline-block;
+	font-family: md-icon;
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+}
+
+/* ATTRIBUTES */
+
+body {
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
+	color: <?php echo $colors['site']['text']; ?>;
+	position: relative;
+}
+
+b, strong, .bold { font-weight: <?php echo $bold; ?>; }
+
+i, em, .italic { font-style: italic; }
+
 .small {
 	font-size: 0.85em;
 	line-height: 1.5em;
@@ -74,14 +86,6 @@ i, em, .italic { font-style: italic; }
 ?>
 
 .has-text-color.has-white-color { color: #fff; }
-
-#cancel-comment-reply-link:before, .menu-icon a, .list-check li:before {
-	display: inline-block;
-	font-family: md-icon;
-	font-style: normal;
-	font-weight: normal;
-	line-height: 1;
-}
 
 p { position: relative; }
 
@@ -128,4 +132,31 @@ abbr, acronym {
 	border-bottom: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
 	cursor: help;
 	text-decoration: none;
+}
+
+/* TRIGGERS */
+
+.trigger {
+	cursor: pointer;
+	position: relative;
+}
+
+.trigger-icon {
+	color: <?php echo $colors['header']['color']; ?>;
+	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
+	line-height: 1;
+}
+
+.trigger .trigger-text {
+	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
+	margin-left: <?php echo $small; ?>px;
+}
+
+.hide-label .trigger-text { display: none; }
+
+.has-search .trigger-search .trigger-icon:before,
+.has-mobile-menu .trigger-menu .trigger-icon:before {
+	content: '\e810';
+	color: <?php echo $colors['site']['primary']; ?>;
 }

@@ -100,6 +100,49 @@
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
 }
 
+/* VIDEO */
+
+.video-wrap {
+	height: 0;
+	position: relative;
+	padding-bottom: 56.25%;
+	padding-top: 25px;
+}
+
+.video-wrap iframe {
+	height: 100%;
+	position: absolute;
+		left: 0;
+		top: 0;
+	width: 100%;
+}
+
+.play-button {
+	border: 4px solid #fff;
+	border-radius: 50%;
+	cursor: pointer;
+	display: inline-block;
+	height: 75px;
+	padding: 20px 26px 26px;
+	position: relative;
+	text-align: center;
+	width: 75px;
+}
+
+.play-button:after {
+	content: '';
+	display: block;
+	border-style: solid;
+	border-width: 15px 0 15px 22px;
+	border-color: transparent transparent transparent rgba(255, 255, 255, 1);
+}
+
+.play-button-text {
+	font-size: 13px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
 /* WP BLOCKS */
 
 .wp-block-cover[class*="align"] { width: auto; }
