@@ -14,8 +14,10 @@ function md_templates() {
 	if ( md_has_breadcrumbs() )
 		add_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
 
-	$page_title = new md_page_title;
-	$page_title->templates();
+	if ( ! is_singular() ) {
+		$page_title = new md_page_title;
+		$page_title->templates();
+	}
 
 	add_action( 'md_hook_content', 'md_loop' );
 	add_action( 'md_hook_content', 'md_pagination', 30 );
