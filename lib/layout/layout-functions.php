@@ -230,8 +230,10 @@ function md_headline_classes( $custom = null ) {
 
 function md_get_byline() {
 	$byline = md_module( array( 'loop', 'byline' ), array() );
-	if ( is_singular() )
-		$byline = md_setting( array( 'post', 'single', 'byline' ), array() );
+	if ( is_singular() ) {
+		$post_type = get_post_type();
+		$byline = md_setting( array( $post_type, 'single', 'byline' ), array() );
+	}
 	return array_keys( $byline );
 }
 

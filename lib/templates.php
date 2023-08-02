@@ -31,8 +31,10 @@ function md_templates() {
 
 	if ( ! is_404() && md_has_byline() ) {
 		$byline_position = md_module( array( 'loop', 'byline_position' ) );
-		if ( is_singular() )
-			$byline_position = md_setting( array( 'post', 'single', 'byline_position' ) );
+		if ( is_singular() ) {
+			$post_type = get_post_type();
+			$byline_position = md_setting( array( $post_type, 'single', 'byline_position' ) );
+		}
 		$hook_byline = 'md_hook_before_headline';
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_after_headline';
