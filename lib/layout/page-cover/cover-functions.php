@@ -17,6 +17,9 @@ function md_cover_classes( $custom = array() ) {
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'cover';
 
+	if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+		$classes[] = 'format';
+
 	if ( ! empty( $cover['text'] ) )
 		$classes[] = 'text-alt';
 

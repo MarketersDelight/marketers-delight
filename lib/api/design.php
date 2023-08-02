@@ -79,7 +79,7 @@ class md_design {
 		// calculate site widths
 		$cw = md_setting( array( 'colors', 'width', 'content' ) );
 		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
-		$layout_style = md_setting( array( 'content', 'style' ) );
+		$layout_style = md_setting( array( 'colors', 'style' ) );
 		$post_width = ! empty( $cw ) ? $cw : round( 21 * $line_height );
 		$content_width = $post_width;
 		if ( $layout_style == '' )

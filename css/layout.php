@@ -113,10 +113,7 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.page-headline {
-	margin-bottom: <?php echo $half; ?>px;
-	text-align: center;
-}
+.page-headline { text-align: center; }
 
 .page-description {
 	margin-left: auto;
@@ -141,7 +138,7 @@
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-	.page-headline { margin-bottom: <?php echo $single; ?>px; }
+	.page-title .page-headline { margin-bottom: <?php echo $single; ?>px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
 	.layout-left .page-description, .layout-right .page-description {
 		flex: 0 0 80%;

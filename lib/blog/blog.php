@@ -18,7 +18,8 @@ class md_post extends md_api {
 	 */
 
 	public function register() {
-		$fields = array(
+		$fields = array();
+		$fields['single'] = array(
 			'author_box' => array(
 				'type' => 'checkbox',
 				'options' => array( 'enable', 'all_posts' )
@@ -78,7 +79,7 @@ class md_post extends md_api {
 				<h4><?php echo __( 'Byline', 'md' ); ?></h4>
 
 				<div class="md-sep-small">
-					<?php $this->fields->field( 'byline_position', array(
+					<?php $this->fields->field( array( 'single', 'byline_position' ), array(
 						'type' => 'select',
 						'empty_label' => __( 'Select byline position...', 'md' ),
 						'options' => array(
@@ -89,7 +90,7 @@ class md_post extends md_api {
 				</div>
 
 				<div class="md-sep-small">
-					<?php $this->fields->field( 'byline', array(
+					<?php $this->fields->field( array( 'single', 'byline' ), array(
 						'type' => 'checkbox',
 						'multi' => true,
 						'options' => md_byline_items()
@@ -101,7 +102,7 @@ class md_post extends md_api {
 				<h4><?php echo __( 'Author Box', 'md' ); ?></h4>
 
 				<div class="md-sep-small">
-					<?php $this->fields->field( 'author_box', array(
+					<?php $this->fields->field( array( 'single', 'author_box' ), array(
 						'type' => 'checkbox',
 						'options' => array(
 							'enable' => __( 'Enable author box after blog posts', 'md' ),

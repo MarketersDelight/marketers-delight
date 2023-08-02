@@ -80,6 +80,43 @@ function md_body_classes( $classes ) {
 add_filter( 'body_class', 'md_body_classes' );
 
 /**
+ * Outputs the menu name assigned to the specified Menu area.
+ *
+ * @since 4.0
+ */
+
+function md_get_menu_name( $menu ) {
+	$menus = get_nav_menu_locations();
+
+	if ( ! empty( $menus[$menu] ) ) {
+		$menu_object = wp_get_nav_menu_object( $menus[$menu] );
+		$menu_name = isset( $menu_object->name ) ? $menu_object->name : '';
+	}
+
+	if ( empty( $menu_name ) )
+		$menu_name = __( 'Menu', 'md' );
+
+	return esc_html( $menu_name );
+}
+
+/**
+ * Strips pingbacks count from comment count.
+ *
+ * @since 4.0
+ */
+
+function md_real_comment_count( $count ) {
+	if ( ! is_admin() ) {
+		global $id;
+		$status = get_comments( "status=approve&post_id=$id" );
+		$comments_by_type = separate_comments( $status );
+		return count( $comments_by_type['comment'] );
+	}
+	else
+		return $count;
+}
+
+/**
  * A list of classes to add to the content box container.
  *
  * @since 4.1
@@ -94,7 +131,7 @@ function md_content_box_classes( $classes = array() ) {
 		if ( md_meta( array( 'layout', 'content_box' ), get_queried_object_id() ) )
 			$layout = md_meta( array( 'layout', 'content_box' ) );
 		else
-			$layout = md_setting( array( 'content', 'layout' ) );
+			$layout = md_setting( array( 'colors', 'layout' ) );
 
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'sidebar-left';
@@ -102,8 +139,8 @@ function md_content_box_classes( $classes = array() ) {
 	else
 		$classes[] = 'content-full';
 
-	if ( md_setting( array( 'content', 'style' ) ) )
-		$classes[] = 'style-' . md_setting( array( 'content', 'style' ) );
+	if ( md_setting( array( 'colors', 'style' ) ) )
+		$classes[] = 'style-' . md_setting( array( 'colors', 'style' ) );
 	else
 		$classes[] = 'style-default';
 
@@ -186,6 +223,51 @@ function md_headline_classes( $custom = null ) {
 }
 
 /**
+ * Get user byline settings based on page location.
+ *
+ * @since 5.1
+ */
+
+function md_get_byline() {
+	$byline = md_module( array( 'loop', 'byline' ), array() );
+	if ( is_singular() )
+		$byline = md_setting( array( 'post', 'single', 'byline' ), array() );
+	return array_keys( $byline );
+}
+
+/**
+ * Active list of byline items. Compares preset byline items (can
+ * also be filtered in/out) with user settings).
+ *
+ * @since 4.5
+ */
+
+function md_byline_items( $sort = null ) {
+	$items = apply_filters( 'md_filter_byline_items', array(
+		'badge' => __( 'Add <b>New!</b> Badge', 'md' ),
+		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
+		'author' => __( 'Remove <b>Author</b>', 'md' ),
+		'date' => __( 'Remove <b>Date</b>', 'md' ),
+		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
+		'category' => __( 'Add <b>Category</b>', 'md' ),
+		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
+		'edit' => __( 'Remove <b>Edit</b>', 'md' )
+	) );
+	$settings = md_get_byline();
+	$byline = array_diff( $items, array_keys( $settings ) );
+
+	if ( isset( $sort ) ) {
+		$data = array();
+		foreach ( $byline as $id => $label )
+			if ( $sort == 'ids' )
+				$data[] = $id;
+		return $data;
+	}
+
+	return $byline;
+}
+
+/**
  * A list of classes to add to the sidebar.
  *
  * @since 4.5
@@ -207,4 +289,32 @@ function md_byline_classes() {
 function md_footer_classes() {
 	$classes = apply_filters( 'md_filter_footer_classes', array() );
 	return join( ' ', $classes );
+}
+
+/**
+ * Get page data from different page types.
+ *
+ * @since 4.6
+ */
+
+function md_page_data() {
+	if ( is_category() || is_tax() ) {
+		$term = get_queried_object();
+		$id = $term->term_id;
+		return array(
+			'title' => get_cat_name( $id ),
+			'link' => get_category_link( $id ),
+			'image' => md_term_meta( array( 'featured_image', 'image', 'url' ) ),
+			'excerpt' => strip_tags( category_description( $id ) )
+		);
+	}
+	else {
+		$id = get_queried_object_id();
+		return array(
+			'title' => get_the_title( $id ),
+			'link' => get_permalink( $id ),
+			'image' => get_the_post_thumbnail_url( $id ),
+			'excerpt' => get_post_field( 'post_excerpt', $id )
+		);
+	}
 }

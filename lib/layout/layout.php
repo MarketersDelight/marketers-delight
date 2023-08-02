@@ -185,7 +185,7 @@ class md_layout extends md_api {
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
 
-		$author_box = md_setting( array( 'post', 'author_box', 'enable' ) );
+		$author_box = md_setting( array( 'post', 'single', 'author_box', 'enable' ) );
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )
