@@ -1081,6 +1081,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-top: 42px;
 	}
 	.page-title.cover { padding-top: 84px; }
+	.header-cover .page-title.cover { padding-top: 56px; }
 	.page-title.layout-left, .page-title.layout-right,
 	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;

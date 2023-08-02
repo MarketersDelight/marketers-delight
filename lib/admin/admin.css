@@ -1031,7 +1031,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border: 1px solid #ddd;
 	border-radius: 3px;
 	box-shadow: 0 2px 5px #ddd;
-	max-width: 70%;
+	max-width: 80%;
 }
 
 .col .md-upload { max-width: 100%; }

@@ -1,6 +1,6 @@
 <h1><?php echo __( 'Blog Settings', 'md' ); ?></h1>
 
-<hr />
+<hr class="md-sep-small" />
 
 <div class="md-content-wrap-med">
 

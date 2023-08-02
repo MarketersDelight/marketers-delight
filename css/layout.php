@@ -126,6 +126,7 @@
 		padding-top: <?php echo $mid; ?>px;
 	}
 	.page-title.cover { padding-top: <?php echo $triple; ?>px; }
+	.header-cover .page-title.cover { padding-top: <?php echo $double; ?>px; }
 	.page-title.layout-left, .page-title.layout-right,
 	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;
