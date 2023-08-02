@@ -345,8 +345,6 @@ function md_post_type_field( $keys = null, $default = null ) {
 function md_meta( $keys = null, $id = null, $default = null ) {
 	if ( is_string( $id ) || is_int( $id ) )
 		$id = esc_attr( $id );
-//	elseif ( is_home() )
-//		$id = get_queried_object_id();
 
 	if ( is_category() || is_tax() )
 		return md_term_meta( $keys, $id, $default );

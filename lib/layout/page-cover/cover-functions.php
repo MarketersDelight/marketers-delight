@@ -85,12 +85,12 @@ function md_cover() {
 	$default_text = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'text_color' ) );
 	$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
 
-	if ( in_the_loop() && ! is_singular() ) {
-		$position = md_meta( array( 'page_cover', 'cover_position' ), null, $default_position );
-		$cover_id = md_meta( array( 'page_cover', 'cover_image', 'id' ), null, $default_cover_id );
-		$color = md_meta( array( 'page_cover', 'bg_color' ), null, $default_color );
-		$single_text = md_meta( array( 'page_cover', 'text_color', 'alternate' ), null, $default_text );
-		$disable_single = md_meta( array( 'page_cover', 'text_color', 'disable_cover' ), null, $disable_overlay );
+	if ( in_the_loop() ) {
+		$position = md_post_meta( array( 'page_cover', 'cover_position' ), null, $default_position );
+		$cover_id = md_post_meta( array( 'page_cover', 'cover_image', 'id' ), null, $default_cover_id );
+		$color = md_post_meta( array( 'page_cover', 'bg_color' ), null, $default_color );
+		$single_text = md_post_meta( array( 'page_cover', 'text_color', 'alternate' ), null, $default_text );
+		$disable_single = md_post_meta( array( 'page_cover', 'text_color', 'disable_cover' ), null, $disable_overlay );
 	}
 	else {
 		$position = md_module( array( 'page_cover', 'cover_position' ), $default_position );
