@@ -1,10 +1,5 @@
 <style type="text/css">
 
-
-.cta-box.post-box, .post-box .cta-box { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); }
-
-
-
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
@@ -123,7 +118,7 @@
 
 .page-image { text-align: center; }
 
-.page-description:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 @media all and (min-width: 800px) {
 	.page-title {
@@ -138,7 +133,9 @@
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-	.page-title .page-headline { margin-bottom: <?php echo $single; ?>px; }
+	.page-headline:not(:last-child),
+	.layout-center .page-image:not(:last-child),
+	.layout-above_headline .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
 	.layout-left .page-description, .layout-right .page-description {
 		flex: 0 0 80%;
@@ -153,11 +150,14 @@
 	}
 }
 
+@media all and (max-width: 800px) {
+	.page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+}
+
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.page-title {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
-		padding-top: <?php echo $mid; ?>px;
 	}
 }
 

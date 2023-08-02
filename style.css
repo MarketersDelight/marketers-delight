@@ -984,7 +984,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 @media all and (max-width: 700px) {
 	.close-on-mobile { display: none; }
 }
-.cta-box.post-box, .post-box .cta-box { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); }
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
@@ -1075,7 +1074,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	max-width: 588px;
 }
 .page-image { text-align: center; }
-.page-description:not(:last-child), .page-image:not(:last-child) { margin-bottom: 14px; }
+.page-description:not(:last-child) { margin-bottom: 28px; }
 @media all and (min-width: 800px) {
 	.page-title {
 		padding-bottom: 42px;
@@ -1089,7 +1088,9 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-	.page-title .page-headline { margin-bottom: 28px; }
+	.page-headline:not(:last-child),
+	.layout-center .page-image:not(:last-child),
+	.layout-above_headline .page-image:not(:last-child) { margin-bottom: 28px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
 	.layout-left .page-description, .layout-right .page-description {
 		flex: 0 0 80%;
@@ -1103,11 +1104,13 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		margin-left: 28px;
 	}
 }
+@media all and (max-width: 800px) {
+	.page-image:not(:last-child) { margin-bottom: 14px; }
+}
 @media all and (max-width: 1008px) {
 	.page-title {
 		padding-left: 14px;
 		padding-right: 14px;
-		padding-top: 42px;
 	}
 }
 /* AUTHOR BOX */
@@ -2590,6 +2593,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-left: 0;
 	margin-right: 0;
 }
+.cta-box.post-box, .post-box .cta-box { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1); }
 .cta-title { text-align: center; }
 .cta-small .cta-title, .cta-slim .cta-title { margin-bottom: 14px; }
 .cta-image {

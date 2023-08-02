@@ -30,10 +30,15 @@ class md_page_title {
 			$image_order = 15;
 
 		add_action( $hook, array( $this, 'html' ) );
-		add_action( 'md_hook_page_title', array( $this, 'title' ) );
-		if ( $image['position'] !== 'remove' )
+
+		if ( $this->get( 'title' ) )
+			add_action( 'md_hook_page_title', array( $this, 'title' ) );
+
+		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
 			add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
-		add_action( 'md_hook_page_title', array( $this, 'description' ) );
+
+		if ( $this->get( 'description' ) )
+			add_action( 'md_hook_page_title', array( $this, 'description' ) );
 	}
 
 	/**
