@@ -22,6 +22,17 @@ function md_sidebars() {
 }
 
 /**
+ * Outputs main sidebar or custom sidebar.
+ *
+ * @since 4.1
+ */
+
+function md_sidebar() {
+	$name = md_get_sidebar_id();
+	dynamic_sidebar( $name );
+}
+
+/**
  * Return a list of sidebar names by unique IDs.
  *
  * @since 4.6.2
