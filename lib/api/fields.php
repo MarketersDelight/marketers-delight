@@ -842,7 +842,7 @@ class md_fields {
 				'image' => MD_URL . 'lib/admin/images/typekit-small.png'
 			);
 
-		include( MD_DIR . 'lib/typography/typography-fields.php' );
+		include( MD_DIR . 'lib/design/typography/typography-fields.php' );
 	}
 
 	/**
