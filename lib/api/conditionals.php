@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
  */
 
 function md_has_logo() {
-	if ( ( md_has_custom_logo() || md_has_site_title() || md_has_tagline() ) && ! md_meta( array( 'layout', 'header', 'logo' ) ) )
+	if ( ( md_has_custom_logo() || md_has_site_title() || md_has_tagline() ) && ! md_module( array( 'layout', 'header', 'logo' ) ) )
 		return true;
 }
 

@@ -80,7 +80,6 @@ final class marketers_delight {
 		require_once( MD_DIR . 'lib/api/conditionals.php' );
 		require_once( MD_DIR . 'lib/layout/layout.php' );
 		require_once( MD_DIR . 'lib/blog/blog.php' );
-		require_once( MD_DIR . 'lib/stream.php' );
 		require_once( MD_DIR . 'lib/templates.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/api/walker.php' );

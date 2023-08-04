@@ -78,7 +78,7 @@ class md_typography extends md_api {
 
 	public function admin_page() {
 		$defaults = $this->defaults['typography'];
-		include( 'typography-settings.php' );
+		include( 'templates/typography-settings.php' );
 	}
 
 }

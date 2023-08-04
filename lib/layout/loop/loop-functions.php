@@ -19,9 +19,6 @@ function md_loops( $sort = null ) {
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
 		),
-		'stream' => array(
-			'name' => __( 'Stream', 'md' )
-		),
 		'docs' => array(
 			'name' => __( 'Docs', 'md' )
 		)
@@ -74,13 +71,13 @@ function md_loop() {
 	$type = md_get_loop();
 	$byline_position = md_module( array( 'loop', 'byline_position' ) );
 	$content = md_module( array( 'loop', 'content' ) );
-	$path = 'loop' . ( $type == 'default' ? '' : "-{$type}" );
-	if ( $type == 'stream' )
-		$path = "$type/" . $path;
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
 	echo ! is_singular() ? '<div class="loop">' : '';
-	include( md_template( "loops/{$path}", true ) );
+	if ( ! empty( $loops[$type]['dropin'] ) )
+		include( md_template( 'dropins', "{$type}/{$type}-loop", true ) );
+	else
+		include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
 	echo ! is_singular() ? '</div>' : '';
 }
 

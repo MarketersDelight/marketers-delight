@@ -181,7 +181,7 @@ class md_page_cover extends md_api {
 				add_action( 'md_hook_header_bottom', array( $this, 'header_cover' ) );
 			if ( is_singular() || is_404() ) {
 				add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
-				add_action( 'md_hook_after_headline', 'md_html_close' );
+				add_action( 'md_hook_after_headline', 'md_html_close', 90 );
 			}
 		}
 		elseif ( $cover['position'] == 'header_cover_full' ) {

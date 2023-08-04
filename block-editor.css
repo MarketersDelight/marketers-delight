@@ -750,8 +750,7 @@ div.editor-styles-wrapper .md-email-footer {
 	color: #fff;
 }
 .header.has-cover .menu-header > .menu-item:not(:last-child),
-.cover .author-link,
-.header.has-cover .author-link { border-bottom-color: rgba(255, 255, 255, 0.3); }
+.cover .author-link { border-bottom-color: rgba(255, 255, 255, 0.3); }
 .header.has-cover .menu > .menu-item:hover > .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
 .header.has-cover.text-alt,
 .header.has-cover.text-alt .site-title,
@@ -768,8 +767,7 @@ div.editor-styles-wrapper .md-email-footer {
 	color: #1E1E1E;
 }
 .header.has-cover.text-alt .menu-header > .menu-item:not(:last-child),
-.cover.text-alt .author-link,
-.header.has-cover.text-alt .author-link { border-bottom-color: rgba(0, 0, 0, 0.2); }
+.cover.text-alt .author-link { border-bottom-color: rgba(0, 0, 0, 0.2); }
 .header.has-cover.text-alt .menu > .menu-item:hover > .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }
 @media all and (max-width: 800px) {
 	.header.has-cover .sub-menu .toggle-menu,

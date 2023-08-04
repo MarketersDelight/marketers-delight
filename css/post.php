@@ -28,8 +28,6 @@
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
-.has-cover .byline .author-link { border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
-
 .byline .author-link:hover { border-bottom: 0; }
 
 .byline-item { display: inline-block; }

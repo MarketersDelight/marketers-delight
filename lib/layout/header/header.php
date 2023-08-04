@@ -121,9 +121,9 @@ class md_header extends md_api {
 			'type' => 'builder',
 			'wrap_classes' => 'md-tabs',
 			'tabs' => array(
-				'topbar' => __( 'Top Bar', 'md' ),
+//				'topbar' => __( 'Top Bar', 'md' ),
 				'header' => __( 'Header', 'md' ),
-				'main_menu' => __( 'Main Menu', 'md' ),
+//				'main_menu' => __( 'Main Menu', 'md' ),
 			),
 			'active_tab' => 'header',
 			'areas' => array(
@@ -137,16 +137,18 @@ class md_header extends md_api {
 					'description' => __( 'A secondary content area for the header area.', 'md' ),
 					'tab' => 'header'
 				),
+/*
 				'main_menu' => array(
 					'title' => __( 'Main Menu', 'md' ),
 					'description' => __( 'Add an extra navigation area beneath the site header.', 'md' ),
 					'tab' => 'main_menu'
 				),
-				'infobar' => array(
-					'title' => __( 'Info Bar', 'md' ),
-					'description' => __( 'Add a small information bar to the very top of the header.', 'md' ),
+				'topbar' => array(
+					'title' => __( 'Top Bar', 'md' ),
+					'description' => __( 'Add a small information bar to the very top of the website.', 'md' ),
 					'tab' => 'topbar'
 				)
+*/
 			),
 			'elements' => array(
 				'link' => array(
@@ -213,9 +215,9 @@ class md_header extends md_api {
 						var parent = jQuery( this ).parents( '.md-builder-group-link' );
 						parent.removeClass( function( index, className ) {
 							if ( prefix == 'type' ) //wtf
-								var classes = ( className.match( /(^|\s)type-\S+/g) || [] ).join( ' ' );
+								var classes = ( className.match( /(^|\s)type-\S+/g ) || [] ).join( ' ' );
 							else if ( prefix == 'style' )
-								var classes = ( className.match( /(^|\s)style-\S+/g) || [] ).join( ' ' );
+								var classes = ( className.match( /(^|\s)style-\S+/g ) || [] ).join( ' ' );
 							return classes;
 						});
 						if ( this.value )

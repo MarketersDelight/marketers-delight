@@ -24,7 +24,8 @@ class md_header_templates {
 		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) == 'expanded' )
 			$this->header_menu_trigger();
 
-		md_logo();
+		if ( md_has_logo() )
+			md_logo();
 
 		$this->header_triggers();
 

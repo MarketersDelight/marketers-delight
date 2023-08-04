@@ -53,7 +53,6 @@ class md_css {
 			'format' => locate_template( 'css/format.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
 			'loops' => locate_template( 'css/loops.php' ),
-			'stream' => locate_template( 'css/stream.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
 			'post' => locate_template( 'css/post.php' ),

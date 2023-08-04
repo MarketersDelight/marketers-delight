@@ -157,6 +157,6 @@ abbr, acronym {
 
 .has-search .trigger-search .trigger-icon:before,
 .has-mobile-menu .trigger-menu .trigger-icon:before {
-	content: '\e810';
 	color: <?php echo $colors['site']['primary']; ?>;
+	content: '\e810';
 }

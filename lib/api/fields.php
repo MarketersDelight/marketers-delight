@@ -706,7 +706,6 @@ class md_fields {
 	public function builder( $name, $id, $option, $args ) {
 		$areas = $args['areas'];
 		$elements = $args['elements'];
-		$tabs = $args['tabs'];
 		$key = esc_attr( $args['field'] );
 		$active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 	?>
@@ -722,9 +721,9 @@ class md_fields {
 				} ?>
 			</div>
 		</div>
-		<?php if ( isset( $tabs ) ) : ?>
+		<?php if ( isset( $args['tabs'] ) && ( count( $args['tabs'] ) > 1 ) ) : ?>
 			<div class="md-builder-tabs nav-tab-wrapper">
-				<?php $t = 0; foreach ( $tabs as $tab_id => $tab_name ) : ?>
+				<?php $t = 0; foreach ( $args['tabs'] as $tab_id => $tab_name ) : ?>
 					<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>"><?php echo esc_html( $tab_name ); ?></a>
 				<?php $t++; endforeach; ?>
 			</div>
@@ -842,7 +841,7 @@ class md_fields {
 				'image' => MD_URL . 'lib/admin/images/typekit-small.png'
 			);
 
-		include( MD_DIR . 'lib/design/typography/typography-fields.php' );
+		include( MD_DIR . 'lib/design/templates/typography-fields.php' );
 	}
 
 	/**

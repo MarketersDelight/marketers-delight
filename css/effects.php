@@ -114,8 +114,7 @@
 }
 
 .header.has-cover<?php echo $text_class; ?> .menu-header > .menu-item:not(:last-child),
-.cover<?php echo $text_class; ?> .author-link,
-.header.has-cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
+.cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 
 .header.has-cover<?php echo $text_class; ?> .menu > .menu-item:hover > .menu-toggle { background-color: <?php echo $text_atts['border']; ?>; }
 

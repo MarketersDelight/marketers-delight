@@ -22,11 +22,7 @@ function md_header_wrap_classes() {
 function md_header_classes() {
 	$classes = array();
 	$classes[] = 'header';
-
-	if ( ! md_has_menu() || ! md_has_logo() )
-		$classes[] = 'header-simple';
-	else
-		$classes[] =  'header-' . md_setting( array( 'header', 'layout' ), 'standard' );
+	$classes[] =  'header-' . md_setting( array( 'header', 'layout' ), 'standard' );
 
 	if ( md_has_logo() )
 		$classes[] = 'has-logo';
@@ -34,6 +30,17 @@ function md_header_classes() {
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 
 	return join( ' ', $classes );
+}
+
+/**
+ * Checks if header is enabled.
+ *
+ * @since 4.1
+ */
+
+function md_has_header() {
+	if ( ! md_module( array( 'layout', 'header', 'remove' ) ) && ( md_has_logo() || md_has_menu() ) )
+		return apply_filters( 'md_filter_has_header', true );
 }
 
 /**
@@ -63,15 +70,4 @@ function md_has_main_menu() {
 		return false;
 
 	return apply_filters( 'md_filter_has_main_menu', true );
-}
-
-/**
- * Checks if header is enabled.
- *
- * @since 4.1
- */
-
-function md_has_header() {
-	if ( ! md_module( array( 'layout', 'header', 'remove' ) ) && ( md_has_logo() || md_has_menu() ) )
-		return apply_filters( 'md_filter_has_header', true );
 }
