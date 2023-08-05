@@ -29,6 +29,7 @@ class md_header extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Header', 'md' ),
 				'parent' => 'md_settings',
+				'order' => 30,
 				'fields' => array(
 					'display' => array(
 						'type' => 'checkbox',

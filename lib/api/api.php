@@ -184,16 +184,18 @@ class md_api {
 
 	/**
 	 * If this instance creates new admin pages, tabs, meta, or terms
-	 * add it to the full collections below. Supports deprecated data formats.
+	 * add it to the full collections below.
 	 *
 	 * @since 5.0
 	 */
 
 	public function _register( $data ) {
 		$register = $this->register();
+		$order = 10;
 
 		if ( isset( $register['admin_page'] ) ) {
 			$data['admin_pages'][$this->_clean_id] = $register['admin_page'];
+
 			if ( ! isset( $data['admin_pages'][$this->_id]['id'] ) )
 				$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
 		}
@@ -201,22 +203,36 @@ class md_api {
 		if ( isset( $register['meta_box'] ) ) {
 			$data['meta_boxes'][$this->_clean_id] = $register['meta_box'];
 			$data['meta_boxes'][$this->_clean_id]['id'] = $this->_id;
+
 			if ( isset( $data['meta_boxes'][$this->_clean_id]['page_settings'] ) ) {
 				$name = $data['meta_boxes'][$this->_clean_id]['name'];
+
 				if ( isset( $data['meta_boxes'][$this->_clean_id]['tab_name'] ) )
 					$name = $data['meta_boxes'][$this->_clean_id]['tab_name'];
-				$data['post_meta_page_settings'][$this->_clean_id] = $name;
+
+				if ( isset( $data['meta_boxes'][$this->_clean_id]['order'] ) )
+					$order = $data['meta_boxes'][$this->_clean_id]['order'];
+
+				$data['post_meta_page_settings'][$this->_clean_id]['name'] = $name;
+				$data['post_meta_page_settings'][$this->_clean_id]['order'] = $order;
 			}
 		}
 
 		if ( isset( $register['term'] ) ) {
 			$data['terms'][$this->_clean_id] = $register['term'];
 			$data['terms'][$this->_clean_id]['id'] = $this->_id;
+
 			if ( isset( $data['terms'][$this->_clean_id]['page_settings'] ) ) {
 				$name = $data['terms'][$this->_clean_id]['name'];
+
 				if ( isset( $data['terms'][$this->_clean_id]['tab_name'] ) )
 					$name = $data['terms'][$this->_clean_id]['tab_name'];
-				$data['term_meta_page_settings'][$this->_clean_id] = $name;
+
+				if ( isset( $data['terms'][$this->_clean_id]['order'] ) )
+					$order = $data['terms'][$this->_clean_id]['order'];
+
+				$data['term_meta_page_settings'][$this->_clean_id]['name'] = $name;
+				$data['term_meta_page_settings'][$this->_clean_id]['order'] = $order;
 			}
 		}
 
@@ -272,11 +288,17 @@ class md_api {
 		if ( wp_doing_ajax() )
 			return;
 
+		$order = 30;
 		$admin_fields = md_admin_fields();
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
-			foreach ( $admin_fields[$this->_clean_id] as $admin_field )
-				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ) );
+			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
+				if ( $this->_clean_id == 'page_cover' )
+					$order = 10;
+				if ( $this->_clean_id == 'layout' )
+					$order = 20;
+				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );
+			}
 	}
 
 	/**

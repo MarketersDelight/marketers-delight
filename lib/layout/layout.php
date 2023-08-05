@@ -40,11 +40,13 @@ class md_layout extends md_api {
 			'meta_box' => array(
 				'name' => $this->name,
 				'page_settings' => true,
+				'order' => 5,
 				'fields' => $fields
 			),
 			'term' => array(
 				'name' => $this->name,
 				'page_settings' => true,
+				'order' => 5,
 				'fields' => $fields
 			)
 		);

@@ -23,8 +23,10 @@
 
 				<h2 class="md-header-nav md-clear">
 					<?php foreach ( $admin_pages as $admin_page => $fields ) :
-						if ( ( isset( $fields['parent'] ) && $fields['parent'] == $page ) || ( isset( $fields['admin_tab_parent'] ) && $fields['admin_tab_parent'] == $page ) )
+						if ( ( isset( $fields['parent'] ) && $fields['parent'] == $page ) || ( isset( $fields['admin_tab_parent'] ) && $fields['admin_tab_parent'] == $page ) ) {
 							$admin_tabs[$fields['id']] = $fields;
+							$admin_order[$fields['id']] = isset( $fields['order'] ) ? $fields['order'] : 10;
+						}
 						if ( ! isset( $fields['admin_header'] ) )
 							continue;
 						$name = isset( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
@@ -36,9 +38,12 @@
 
 			</div>
 
-			<?php if ( ! empty( $admin_tabs ) ) : ?>
+			<?php if ( ! empty( $admin_tabs ) ) :
+				asort( $admin_order );
+			?>
 				<div class="md-submenu">
-					<?php foreach ( $admin_tabs as $admin_tab => $child ) :
+					<?php foreach ( $admin_order as $admin_tab => $order ) :
+						$child = $admin_tabs[$admin_tab];
 						$tab_url = "&tab=$admin_tab";
 						if ( isset( $child['admin_tab_parent'] ) && ! isset( $_GET['tab'] ) ) {
 							$admin_tab = $tab;

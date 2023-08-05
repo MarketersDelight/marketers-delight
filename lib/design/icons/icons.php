@@ -28,6 +28,7 @@ class md_icons extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Icons', 'md' ),
 				'parent' => 'md_settings',
+				'order' => 20,
 				'fields' => array(
 					'data' => array(
 						'type' => 'group',

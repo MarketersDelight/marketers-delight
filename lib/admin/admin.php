@@ -201,7 +201,7 @@ class md_admin {
 	 */
 
 	public function admin_page() {
-		$admin_tabs = array();
+		$admin_tabs = $admin_order = array();
 		$admin_pages = md_register( 'admin_pages' );
 		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
 		$page_id = md_clean_id( $page );

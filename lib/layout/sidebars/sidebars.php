@@ -62,6 +62,7 @@ class md_sidebars extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Sidebars', 'md' ),
 				'parent' => 'md_settings',
+				'order' => 40,
 				'fields' => $fields
 			)
 		);
