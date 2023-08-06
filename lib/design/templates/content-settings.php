@@ -57,7 +57,7 @@
 					'label' => __( 'Breadcrumbs', 'md' ),
 					'empty_label' => __( 'Show breadcrumbs...', 'md' ),
 					'options' => array(
-						'before_title' => __( 'Before Page Title', 'md' ),
+						'before_page_title' => __( 'Before Page Title', 'md' ),
 						'before_content_box' => __( 'Before Content Box', 'md' )
 					),
 					'style' => 'width:100%'

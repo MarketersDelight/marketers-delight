@@ -1061,9 +1061,13 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	line-height: 26px;
 	padding-top: 14px;
 }
+.header .breadcrumbs, .page-title .breadcrumbs {
+	margin-bottom: 14px;
+	padding: 0;
+}
 .breadcrumbs a { text-decoration: underline; }
 .breadcrumbs a:hover { text-decoration: none; }
-.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: 5px; }
+.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: 9px; }
 @media all and (max-width: 1008px) {
 	.breadcrumbs {
 		padding-left: 14px;
@@ -1071,11 +1075,19 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 /* PAGE TITLE */
+.headline-wrap.cover {
+	padding-bottom: 28px;
+	padding-top: 28px;
+}
+.header .headline-wrap.cover {
+	padding-bottom: 42px;
+	padding-top: 42px;
+}
 .page-title {
 	padding-bottom: 28px;
 	padding-top: 28px;
 }
-.page-headline { text-align: center; }
+.cover .page-headline { text-align: center; }
 .page-description {
 	margin-left: auto;
 	margin-right: auto;
@@ -1084,12 +1096,22 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .page-image { text-align: center; }
 .page-description:not(:last-child) { margin-bottom: 28px; }
 @media all and (min-width: 800px) {
-	.page-title {
-		padding-bottom: 42px;
-		padding-top: 42px;
+	.headline-wrap.cover {
+		margin-left: 0;
+		margin-right: 0;
+		padding: 42px 6.25%;
+		max-width: 100%;
 	}
-	.page-title.cover { padding-top: 84px; }
-	.header-cover .page-title.cover { padding-top: 56px; }
+	.header .headline-wrap.cover {
+		padding-bottom: 56px;
+		padding-top: 84px;
+		text-align: center;
+	}
+	.page-title.cover {
+		padding-bottom: 42px;
+		padding-top: 84px;
+	}
+	.header-cover .page-title.cover, .header-cover .headline-wrap.cover { padding-top: 56px; }
 	.page-title.layout-left, .page-title.layout-right,
 	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;
@@ -1215,14 +1237,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .loop .post-box.has-cover.image-above_headline .featured-image,
 .post-box.has-cover.image-below_headline .headline-wrap { margin-bottom: 0; }
 .byline { margin-bottom: 9px; }
-.headline-wrap.cover {
-	padding-bottom: 28px;
-	padding-top: 28px;
-}
-.header .headline-wrap.cover {
-	padding-bottom: 42px;
-	padding-top: 42px;
-}
 .the-content:first-child { padding-top: 28px; }
 /* DEFAULT */
 .loop-default.style-default .post-box {
@@ -1351,17 +1365,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.headline-wrap, .the-content, .author-box, .comments { max-width: 87.5%; }
 	.content-full .headline-wrap {
 		padding: 14px;
-		text-align: center;
-	}
-	.headline-wrap.cover {
-		margin-left: 0;
-		margin-right: 0;
-		padding: 42px 6.25%;
-		max-width: 100%;
-	}
-	.header .headline-wrap.cover {
-		padding-bottom: 56px;
-		padding-top: 84px;
 		text-align: center;
 	}
 	/* TEASERS */

@@ -100,11 +100,16 @@
 	padding-top: <?php echo $half; ?>px;
 }
 
+.header .breadcrumbs, .page-title .breadcrumbs {
+	margin-bottom: <?php echo $half; ?>px;
+	padding: 0;
+}
+
 .breadcrumbs a { text-decoration: underline; }
 
 .breadcrumbs a:hover { text-decoration: none; }
 
-.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $small; ?>px; }
+.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.breadcrumbs {
@@ -115,12 +120,22 @@
 
 /* PAGE TITLE */
 
+.headline-wrap.cover {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
+.header .headline-wrap.cover {
+	padding-bottom: <?php echo $mid; ?>px;
+	padding-top: <?php echo $mid; ?>px;
+}
+
 .page-title {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-.page-headline { text-align: center; }
+.cover .page-headline { text-align: center; }
 
 .page-description {
 	margin-left: auto;
@@ -133,12 +148,22 @@
 .page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 @media all and (min-width: 800px) {
-	.page-title {
-		padding-bottom: <?php echo $mid; ?>px;
-		padding-top: <?php echo $mid; ?>px;
+	.headline-wrap.cover {
+		margin-left: 0;
+		margin-right: 0;
+		padding: <?php echo $mid; ?>px <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
+		max-width: 100%;
 	}
-	.page-title.cover { padding-top: <?php echo $triple; ?>px; }
-	.header-cover .page-title.cover { padding-top: <?php echo $double; ?>px; }
+	.header .headline-wrap.cover {
+		padding-bottom: <?php echo $double; ?>px;
+		padding-top: <?php echo $triple; ?>px;
+		text-align: center;
+	}
+	.page-title.cover {
+		padding-bottom: <?php echo $mid; ?>px;
+		padding-top: <?php echo $triple; ?>px;
+	}
+	.header-cover .page-title.cover, .header-cover .headline-wrap.cover { padding-top: <?php echo $double; ?>px; }
 	.page-title.layout-left, .page-title.layout-right,
 	.page-title.layout-left .inner, .page-title.layout-right .inner {
 		align-items: center;

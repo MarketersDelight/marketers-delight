@@ -18,16 +18,6 @@
 
 .byline { margin-bottom: <?php echo $third; ?>px; }
 
-.headline-wrap.cover {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
-
-.header .headline-wrap.cover {
-	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $mid; ?>px;
-}
-
 .the-content:first-child { padding-top: <?php echo $single; ?>px; }
 
 /* DEFAULT */
@@ -203,17 +193,6 @@
 	.headline-wrap, .the-content, .author-box, .comments { max-width: <?php echo ( ( $post_width / $content_width ) * 100 ); ?>%; }
 	.content-full .headline-wrap {
 		padding: <?php echo $half; ?>px;
-		text-align: center;
-	}
-	.headline-wrap.cover {
-		margin-left: 0;
-		margin-right: 0;
-		padding: <?php echo $mid; ?>px <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
-		max-width: 100%;
-	}
-	.header .headline-wrap.cover {
-		padding-bottom: <?php echo $double; ?>px;
-		padding-top: <?php echo $triple; ?>px;
 		text-align: center;
 	}
 	/* TEASERS */

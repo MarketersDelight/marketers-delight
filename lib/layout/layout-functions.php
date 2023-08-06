@@ -444,12 +444,12 @@ function md_breadcrumbs() {
 	$post_id = get_the_ID();
 	$post_type = get_post_type();
 	$post_type_obj = get_post_type_object( $post_type );
+	$blog_id = get_option( 'page_for_posts' );
 
 	if ( ! empty( $post_type_obj ) )
 		$post_type_title = md_text_field( $post_type_obj->labels->name );
 
 	if ( $post_type == 'post' ) {
-		$blog_id = get_option( 'page_for_posts' );
 		if ( ! empty( $blog_id ) )
 			$post_type_title = get_the_title( $blog_id );
 		else

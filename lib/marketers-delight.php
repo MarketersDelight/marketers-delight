@@ -274,8 +274,20 @@ final class marketers_delight {
  	*/
 
 	public function templates() {
-		if ( md_has_breadcrumbs() )
-			add_action( 'md_hook_before_content_box', 'md_breadcrumbs' );
+		$breadcrumbs = md_has_breadcrumbs();
+		if ( $breadcrumbs ) {
+			$hook = 'md_hook_before_content_box';
+			if ( $breadcrumbs == 'before_page_title' ) {
+				if ( is_singular() ) {
+					$cover = md_cover();
+					if ( ! empty( $cover['position'] ) )
+						$hook = 'md_hook_before_headline';
+				}
+				else
+					$hook = 'md_hook_page_title';
+			}
+			add_action( $hook, 'md_breadcrumbs' );
+		}
 
 		if ( ! is_singular() ) {
 			$page_title = new md_page_title;

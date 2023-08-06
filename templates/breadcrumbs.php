@@ -5,7 +5,7 @@
 
 		<?php echo md_icon( 'angle-right' ); ?>
 
-		<?php if ( ! empty( $post_type ) && ! is_search() && ! is_page() && ! is_404() ) :
+		<?php if ( ! empty( $post_type ) && ! empty( $blog_id ) && ! is_search() && ! is_page() && ! is_404() ) :
 			$archive_html = ! is_home() && ! is_post_type_archive() ? 'a' : 'span';
 			$archive_href = ! is_home() && ! is_post_type_archive() ? ' href="' . get_post_type_archive_link( $post_type ) . '"' : '';
 		?>
