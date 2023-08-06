@@ -86,7 +86,7 @@
 
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php if ( md_setting( array( 'content', 'post', 'breadcrumbs' ) ) ) : ?>
+			<?php if ( md_setting( array( 'colors', 'breadcrumbs', 'position' ) ) ) : ?>
 				<?php $this->fields->field( 'breadcrumbs', array(
 					'type' => 'checkbox',
 					'options' => array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) )

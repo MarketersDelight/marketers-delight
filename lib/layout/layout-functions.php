@@ -424,13 +424,12 @@ function md_byline() {
 
 function md_has_breadcrumbs() {
 	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ) );
-	if (
-		! is_front_page() && (
-			( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) ) ||
-			( empty( $enable ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
-		)
-	)
-		return $position;
+	if ( ! is_front_page() ) {
+		if ( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) )
+			return $position;
+		elseif ( empty( $position ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
+			return 'before_content_box';
+	}
 }
 
 /**
