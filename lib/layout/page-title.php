@@ -72,11 +72,11 @@ class md_page_title {
 		elseif ( is_author() )
 			$data['title'] = get_the_author();
 		elseif ( is_year() )
-			$data['title'] = get_the_date( _x( 'Y', 'yearly archives date format' ) );
+			$data['title'] = get_the_date( 'Y' );
 		elseif ( is_month() )
-			$data['title'] = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+			$data['title'] = get_the_date( 'F Y' );
 		elseif ( is_day() )
-			$data['title'] = get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
+			$data['title'] = get_the_date( 'F j, Y' );
 
 		if ( has_filter( 'md_page_title' ) )
 			$data['title'] = do_action( 'md_page_title' );

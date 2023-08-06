@@ -175,6 +175,11 @@ class md_colors extends md_api {
 			'options' => array( 'minimal' )
 		);
 
+		$fields['breadcrumbs']['position'] = array(
+			'type' => 'select',
+			'options' => array( 'before_title', 'before_content_box' )
+		);
+
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
 		$fields['width']['sidebar'] = array( 'type' => 'range' );

@@ -88,42 +88,6 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Load MD Drop-ins after theme is setup. Supports old Drop-ins
-	 * locations pre-MD5.3.
-	 *
-	 * @since 4.6
-	 */
-
-	public function dropins() {
-		$dropins = md_get_dropins( 'active' );
-		$old_dropins = md_setting( array( 'dropins', 'features' ), array() ); #EOL
-		if ( ! empty( $dropins ) ) {
-			foreach ( $dropins as $dropin )
-				if ( md_has( $dropin ) )
-					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
-						require_once( $file );
-					else {
-						$option = md_setting();
-						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-						update_option( 'marketers_delight', $option );
-					}
-		}
-		else {
-			$old_dropins['optins'] = true;
-			$old_dropins['share'] = true;
-			$old_dropins['scripts'] = true;
-			$old_dropins['footnotes'] = true;
-			if ( isset( $old_dropins['admin_bar'] ) ) {
-				unset( $old_dropins['admin_bar'] );
-				$old_dropins['admin-bar'] = true;
-			}
-			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
-				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
-					require_once( $old_dropin_file );
-		}
-	}
-
-	/**
 	 * Include some important theme files, register menus and add
 	 * support for other WordPress features.
 	 *
@@ -311,7 +275,7 @@ final class marketers_delight {
 
 	public function templates() {
 		if ( md_has_breadcrumbs() )
-			add_action( 'md_hook_content_box_top', 'md_breadcrumbs' );
+			add_action( 'md_hook_before_content_box', 'md_breadcrumbs' );
 
 		if ( ! is_singular() ) {
 			$page_title = new md_page_title;
@@ -429,6 +393,42 @@ final class marketers_delight {
 			$fields['twitter'] = __( 'Twitter username (without @)', 'md' );
 
 		return $fields;
+	}
+
+	/**
+	 * Load MD Drop-ins after theme is setup. Supports old Drop-ins
+	 * locations pre-MD5.3.
+	 *
+	 * @since 4.6
+	 */
+
+	public function dropins() {
+		$dropins = md_get_dropins( 'active' );
+		$old_dropins = md_setting( array( 'dropins', 'features' ), array() ); #EOL
+		if ( ! empty( $dropins ) ) {
+			foreach ( $dropins as $dropin )
+				if ( md_has( $dropin ) )
+					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+						require_once( $file );
+					else {
+						$option = md_setting();
+						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+						update_option( 'marketers_delight', $option );
+					}
+		}
+		else {
+			$old_dropins['optins'] = true;
+			$old_dropins['share'] = true;
+			$old_dropins['scripts'] = true;
+			$old_dropins['footnotes'] = true;
+			if ( isset( $old_dropins['admin_bar'] ) ) {
+				unset( $old_dropins['admin_bar'] );
+				$old_dropins['admin-bar'] = true;
+			}
+			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
+				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
+					require_once( $old_dropin_file );
+		}
 	}
 
 	/**

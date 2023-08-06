@@ -1055,12 +1055,20 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 /* BREADCRUMBS */
+.breadcrumbs + .content-box .inner { padding-top: 14px; }
 .breadcrumbs {
-	font-size: 0.85em;
-	margin-bottom: 5px;
+	font-size: 16px;
+	line-height: 26px;
+	padding-top: 14px;
 }
-@media all and (min-width: 900px) {
-	.content-full.style-minimal .breadcrumbs { text-align: center; }
+.breadcrumbs a { text-decoration: underline; }
+.breadcrumbs a:hover { text-decoration: none; }
+.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: 5px; }
+@media all and (max-width: 1008px) {
+	.breadcrumbs {
+		padding-left: 14px;
+		padding-right: 14px;
+	}
 }
 /* PAGE TITLE */
 .page-title {

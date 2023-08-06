@@ -419,15 +419,18 @@ function md_byline() {
  * Checks if breadcrumbs are enabled.
  *
  * @since 5.2.2
+ * @changed 5.6, now returns breadcrumbs $position
  */
 
 function md_has_breadcrumbs() {
-	$enable = md_setting( array( 'content', 'post', 'breadcrumbs' ) );
+	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ) );
 	if (
-		( ! empty( $enable ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) ) ||
-		( empty( $enable ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
+		! is_front_page() && (
+			( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) ) ||
+			( empty( $enable ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
+		)
 	)
-		return true;
+		return $position;
 }
 
 /**
@@ -441,9 +444,10 @@ function md_breadcrumbs() {
 	$post_id = get_the_ID();
 	$post_type = get_post_type();
 	$post_type_obj = get_post_type_object( $post_type );
+
 	if ( ! empty( $post_type_obj ) )
 		$post_type_title = md_text_field( $post_type_obj->labels->name );
-	$front_page = get_option( 'show_on_front' );
+
 	if ( $post_type == 'post' ) {
 		$blog_id = get_option( 'page_for_posts' );
 		if ( ! empty( $blog_id ) )
@@ -451,6 +455,7 @@ function md_breadcrumbs() {
 		else
 			$post_type_title = __( 'Blog', 'md' );
 	}
+
 	if ( is_category() )
 		$terms = get_the_category();
 	elseif ( is_tag() )
@@ -459,6 +464,7 @@ function md_breadcrumbs() {
 		$taxonomies = get_taxonomies( array( 'public' => true ) );
 		$terms = wp_get_post_terms( $post_id, $taxonomies );
 	}
+
 	if ( ! empty( $terms ) )
 		if ( is_tag() ) {
 			$category_url = get_term_link( $terms->term_id );
@@ -468,6 +474,7 @@ function md_breadcrumbs() {
 			$category_url = get_term_link( $terms[0]->term_id );
 			$category_title = $terms[0]->name;
 		}
+
 	include( md_template( 'breadcrumbs', true ) );
 }
 

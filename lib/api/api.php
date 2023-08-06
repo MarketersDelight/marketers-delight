@@ -293,7 +293,7 @@ class md_api {
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
 			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
-				if ( $this->_clean_id == 'page_cover' )
+				if ( $this->_clean_id == 'page_cover' ) #weak sauce
 					$order = 10;
 				if ( $this->_clean_id == 'layout' )
 					$order = 20;

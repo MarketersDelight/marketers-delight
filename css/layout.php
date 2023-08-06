@@ -92,13 +92,25 @@
 
 /* BREADCRUMBS */
 
+.breadcrumbs + .content-box .inner { padding-top: <?php echo $half; ?>px; }
+
 .breadcrumbs {
-	font-size: 0.85em;
-	margin-bottom: <?php echo $small; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
 
-@media all and (min-width: 900px) {
-	.content-full.style-minimal .breadcrumbs { text-align: center; }
+.breadcrumbs a { text-decoration: underline; }
+
+.breadcrumbs a:hover { text-decoration: none; }
+
+.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $small; ?>px; }
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.breadcrumbs {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
 }
 
 /* PAGE TITLE */
