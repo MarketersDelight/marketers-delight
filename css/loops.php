@@ -143,44 +143,59 @@
 
 /* BLOCKS */
 
-.content-full.loop-blocks .content {
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $content_width; ?>px;
-}
-
-.loop-blocks.style-default .post-box {
+.loop-blocks .post {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	border-radius: 5px;
 	box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
 }
 
-.loop-blocks .post-box:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-
-.loop-blocks .content-headline { margin-bottom: <?php echo $third; ?>px; }
-
-.loop-blocks .content-text { color: <?php echo $colors['site']['text-sec']; ?>; }
-
-.loop-blocks .content-inner {
-	margin-bottom: <?php echo $half; ?>px;
-	max-width: 100%;
+.loop-blocks .post-inner {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	display: flex;
+	padding: <?php echo $half; ?>px;
 }
 
-.loop-blocks.style-default .content-inner { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.loop-blocks.style-minimal .post-box { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.loop-blocks .wp-post-image {
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
-	transition: 0.4s;
+.loop-blocks .post-content {
+	padding-left: <?php echo $half; ?>px;
 }
 
-.loop-blocks .post-box:hover .wp-post-image { transform: scale(0.97); }
+.loop-blocks .headline {
+	font-size: <?php echo $typography['h2']['font_size']['tablet']; ?>px;
+	line-height: <?php echo $typography['h2']['line_height']['tablet']; ?>px;
+}
 
-.loop-blocks .content .byline { margin-bottom: <?php echo $small; ?>px; }
+.loop-blocks .featured-image { flex-basis: 70%; }
 
-.loop-blocks .content-footer .avatar { top: -5px; }
+.loop-blocks .featured-image img {
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	transition: 0.3s;
+}
 
-.loop-blocks .byline-author-name { font-weight: <?php echo $bold; ?>; }
+.loop-blocks .post:hover .featured-image img { transform: scale(0.97); }
+
+.loop-blocks .post-footer {
+	align-items: center;
+	display: flex;
+	padding: <?php echo $half; ?>px;
+}
+
+.loop-blocks .post-footer-actions {
+	flex: 1 0 auto;
+	margin-right: <?php echo $half; ?>px;
+}
+
+.loop-blocks .post-footer-meta { flex: 0 1 auto; }
+
+.loop-blocks .byline-comments a {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+	text-decoration: none;
+}
+
+.loop-blocks .byline-comments i { color: <?php echo $colors['site']['button']; ?>; }
+
+.loop-blocks .overlay { display: none; }
 
 /* RESETS */
 
@@ -223,34 +238,6 @@
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
 	}
-	/* BLOCKS */
-	.loop-blocks.style-default .post-box .content-inner, .loop-blocks.style-minimal .post-box { padding-bottom: <?php echo $half + $third; ?>px; }
-	.loop-blocks .headline {
-		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
-	}
-	.loop-blocks .featured-image {
-		float: left;
-		width: 40%;
-	}
-	.loop-blocks .featured-image + .post-content {
-		float: left;
-		padding-left: <?php echo $half + $third; ?>px;
-		width: 60%;
-	}
-	.content-full.loop-blocks .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
-	.loop-blocks .content-footer-author { float: right; }
-	.loop-blocks .byline-comments { margin-top: <?php echo $small; ?>px; }
-	.loop-blocks.content-full .byline-comments { margin-top: <?php echo $half; ?>px; }
-}
-
-@media all and (max-width: 900px) {
-	.loop-blocks .featured-image { margin-bottom: <?php echo $half; ?>px; }
-	.loop-blocks .content-footer {
-		padding-bottom: <?php echo $half; ?>px;
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
 }
 
 @media all and (max-width: 800px) {
@@ -264,15 +251,4 @@
 	.single .loop-default.style-default .sidebar { padding: <?php echo $half; ?>px; }
 	/* TEASERS */
 	.loop-teasers .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
-}
-
-@media all and (max-width: 700px) {
-	.loop-blocks .byline-comments { float: left; }
-	.loop-blocks .byline-edit { display: none; }
-	.loop-blocks .content-footer-author { text-align: right; }
-	.loop-blocks .more-link { width: auto; }
-	.loop-blocks .headline {
-		font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
-	}
 }

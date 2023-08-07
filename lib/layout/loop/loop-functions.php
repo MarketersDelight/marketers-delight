@@ -161,7 +161,7 @@ function md_content_text() {
 
 function md_read_more_text() {
 	$read_more = md_module( array( 'loop', 'read_more' ) );
-	return ! empty( $read_more ) ? $read_more : __( 'Continue reading &rarr;', 'md' );
+	return ! empty( $read_more ) ? md_text_field( $read_more ) : __( 'Continue reading &rarr;', 'md' );
 }
 
 /**

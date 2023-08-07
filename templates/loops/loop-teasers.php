@@ -9,7 +9,7 @@
 				$style = md_style( array( 'flex_basis' => round( 100 / $columns ) . '%' ) );
 	?>
 
-		<div id="post_<?php the_ID(); ?>"<?php post_class( $post_classes ); echo $style; ?>>
+		<div id="post_<?php the_ID(); ?>" <?php post_class( $post_classes ); echo $style; ?>>
 
 			<?php if ( has_post_thumbnail() ) : ?>
 				<?php md_featured_image( 'above_headline', 'md-banner', array( 'hide_caption' => true ) ); ?>
@@ -34,6 +34,7 @@
 				<?php endif; ?>
 
 			</div>
+
 		</div>
 
 		<?php md_hook_x_loop( $c ); ?>
