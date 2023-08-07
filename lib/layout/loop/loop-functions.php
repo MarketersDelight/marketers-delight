@@ -73,6 +73,7 @@ function md_loop() {
 	$content = md_module( array( 'loop', 'content' ) );
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
+	$byline = md_get_byline();
 
 	echo ! is_singular() ? '<div class="loop">' : '';
 
@@ -111,6 +112,205 @@ function md_404_template() {
 			md_template( 'content-item-404' );
 		wp_reset_query();
 	}
+}
+
+/**
+ * Add/remove post classes.
+ *
+ * @since 4.1
+ */
+
+function md_post_classes( $classes ) {
+	$classes[] = 'post-box';
+
+	// Remove excess WP classes
+	$classes = array_diff( $classes, array(
+		'hentry',
+		'format-standard',
+		'post-' . get_the_ID(),
+		'type-' . get_post_type(),
+		'status-' . get_post_status(),
+		'format-' . get_post_format()
+	) );
+
+	// Apply classes to certain featured image positions
+	$position = md_featured_image_position();
+	$cover = md_cover();
+
+	if ( ! empty( $cover['position'] ) )
+		$classes[] = 'has-cover';
+
+	if ( ! empty( $position ) )
+		$classes[] = 'image-' . esc_attr( $position );
+
+	return $classes;
+}
+
+add_filter( 'post_class', 'md_post_classes' );
+
+/**
+ * Checks if headline is enabled.
+ *
+ * @since 4.1
+ */
+
+function md_has_headline() {
+	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+		return true;
+}
+
+/**
+ * Determines needed classes for a headline type element. Spacing,
+ * padding, featured image styles, etc.
+ *
+ * @since 4.1
+ */
+
+function md_headline_classes( $custom = null ) {
+	if ( isset( $custom ) )
+		$classes = $custom;
+
+	$classes[] = 'headline-wrap';
+
+	$cover_classes = md_cover_classes();
+
+	if ( ! empty( $cover_classes ) )
+		$classes[] = $cover_classes;
+
+	$classes = join( ' ', $classes );
+
+	return apply_filters( 'md_filter_headline_classes', esc_attr( $classes ) );
+}
+
+/**
+ * Call a page title with or without a URL.
+ *
+ * @since 5.6
+ */
+
+function md_title( $text, $url, $args = null ) {
+	$title = '';
+
+	if ( ! is_singular() )
+		$title .= '<a href="' . esc_url( $url ) . '">';
+
+	$title .= esc_html( $text );
+
+	if ( ! is_singular() )
+		$title .= '</a>';
+
+	return $title;
+}
+
+/**
+ * Displays the headline of any post/page.
+ *
+ * @since 4.1
+ */
+
+function md_headline() {
+	$h = md_html( 'h' );
+	include( md_template( 'headline', true ) );
+}
+
+/**
+ * Checks if byline is enabled.
+ *
+ * @since 4.1
+ */
+
+function md_has_byline() {
+	$add_byline = md_post_meta( array( 'layout', 'content', 'add_byline' ) );
+	$remove_byline = md_post_meta( array( 'layout', 'content', 'byline' ) );
+
+	if ( ( ! is_page() && ! is_404() && ! $remove_byline ) || ( is_page() && $add_byline ) )
+		return true;
+}
+
+/**
+ * Get user byline settings based on page location.
+ *
+ * @since 5.1
+ */
+
+function md_get_byline() {
+	$byline = md_module( array( 'loop', 'byline' ), array() );
+	if ( is_singular() ) {
+		$post_type = get_post_type();
+		$byline = md_setting( array( $post_type, 'single', 'byline' ), array() );
+	}
+	return array_keys( $byline );
+}
+
+/**
+ * Active list of byline items. Compares preset byline items (can
+ * also be filtered in/out) with user settings).
+ *
+ * @since 4.5
+ */
+
+function md_byline_items( $sort = null ) {
+	$items = apply_filters( 'md_filter_byline_items', array(
+		'badge' => __( 'Add <b>New!</b> Badge', 'md' ),
+		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
+		'author' => __( 'Remove <b>Author</b>', 'md' ),
+		'date' => __( 'Remove <b>Date</b>', 'md' ),
+		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
+		'category' => __( 'Add <b>Category</b>', 'md' ),
+		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
+		'edit' => __( 'Remove <b>Edit</b>', 'md' )
+	) );
+	$settings = md_get_byline();
+	$byline = array_diff( $items, array_keys( $settings ) );
+
+	if ( isset( $sort ) ) {
+		$data = array();
+		foreach ( $byline as $id => $label )
+			if ( $sort == 'ids' )
+				$data[] = $id;
+		return $data;
+	}
+
+	return $byline;
+}
+
+/**
+ * Display template of individual byline items with
+ * optional arguments.
+ *
+ * @since 5.1
+ */
+
+function md_byline_item( $item, $args = array() ) {
+	$template = locate_template( "templates/byline/$item.php" );
+	$byline = md_get_byline();
+	if ( $template )
+		include( md_template( "byline/$item", true ) );
+}
+
+/**
+ * A list of classes to add to the sidebar.
+ *
+ * @since 4.5
+ */
+
+function md_byline_classes() {
+	$classes[] = 'byline';
+	$classes = apply_filters( 'md_filter_byline_classes', $classes );
+
+	return join( ' ', $classes );
+}
+
+/**
+ * Output post byline template.
+ *
+ * @since 4.0
+ */
+
+function md_byline() {
+	$classes = md_byline_classes();
+	$byline_items = md_byline_items();
+	include( md_template( 'byline/byline', true ) );
 }
 
 /**

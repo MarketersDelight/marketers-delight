@@ -1334,16 +1334,14 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .loop-blocks .post-inner {
 	border-bottom: 1px solid #CCCCCC;
 	display: flex;
-	padding: 14px;
+	padding: 28px;
 }
-.loop-blocks .post-content {
-	padding-left: 14px;
-}
+.loop-blocks .featured-image + .post-content { padding-left: 28px; }
 .loop-blocks .headline {
 	font-size: 29px;
 	line-height: 41px;
 }
-.loop-blocks .featured-image { flex-basis: 70%; }
+.loop-blocks .featured-image { flex: 0 0 40%; }
 .loop-blocks .featured-image img {
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1353,7 +1351,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .loop-blocks .post-footer {
 	align-items: center;
 	display: flex;
-	padding: 14px;
+	padding: 28px;
 }
 .loop-blocks .post-footer-actions {
 	flex: 1 0 auto;
@@ -1362,7 +1360,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .loop-blocks .post-footer-meta { flex: 0 1 auto; }
 .loop-blocks .byline-comments a {
 	color: #777777;
-	font-size: 20px;
+	font-size: 22px;
 	text-decoration: none;
 }
 .loop-blocks .byline-comments i { color: #22A340; }

@@ -152,19 +152,17 @@
 .loop-blocks .post-inner {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	display: flex;
-	padding: <?php echo $half; ?>px;
+	padding: <?php echo $single; ?>px;
 }
 
-.loop-blocks .post-content {
-	padding-left: <?php echo $half; ?>px;
-}
+.loop-blocks .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
 
 .loop-blocks .headline {
 	font-size: <?php echo $typography['h2']['font_size']['tablet']; ?>px;
 	line-height: <?php echo $typography['h2']['line_height']['tablet']; ?>px;
 }
 
-.loop-blocks .featured-image { flex-basis: 70%; }
+.loop-blocks .featured-image { flex: 0 0 40%; }
 
 .loop-blocks .featured-image img {
 	border-radius: 5px;
@@ -177,7 +175,7 @@
 .loop-blocks .post-footer {
 	align-items: center;
 	display: flex;
-	padding: <?php echo $half; ?>px;
+	padding: <?php echo $single; ?>px;
 }
 
 .loop-blocks .post-footer-actions {
@@ -189,7 +187,7 @@
 
 .loop-blocks .byline-comments a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.3 ); ?>px;
 	text-decoration: none;
 }
 

@@ -13,10 +13,12 @@
 
 				<div class="post-content">
 
-					<div class="byline">
-						<?php md_byline_item( 'badge' ); ?>
-						<?php md_byline_item( 'category' ); ?>
-					</div>
+					<?php if ( in_array( 'category', $byline ) ||  in_array( 'badge', $byline ) ) : ?>
+						<div class="byline">
+							<?php md_byline_item( 'badge' ); ?>
+							<?php md_byline_item( 'category' ); ?>
+						</div>
+					<?php endif; ?>
 
 					<h2 class="headline"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
