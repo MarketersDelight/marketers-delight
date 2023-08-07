@@ -6,7 +6,7 @@
 			if ( $c <= $featured )
 				$post_classes[] = 'featured-col';
 			else
-				$style = md_style( array( 'flex_basis' => '33%' ) );
+				$style = md_style( array( 'flex_basis' => round( 100 / $columns ) . '%' ) );
 	?>
 
 		<div id="post_<?php the_ID(); ?>"<?php post_class( $post_classes ); echo $style; ?>>
