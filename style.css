@@ -1234,7 +1234,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .comments, .comments-area:not(:last-child) { margin-bottom: 28px; }
 .loop .post-box.has-cover.image-above_headline .featured-image,
 .post-box.has-cover.image-below_headline .headline-wrap { margin-bottom: 0; }
-.byline { margin-bottom: 9px; }
 .the-content:first-child { padding-top: 28px; }
 /* DEFAULT */
 .loop-default.style-default .post-box {
@@ -1254,17 +1253,23 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding: 14px;
 	position: relative;
 }
-.teaser.cover {
-	padding-bottom: 19px;
-	padding-top: 19px;
-}
-.teaser .overlay { border-radius: 5px; }
-.featured-image + .teaser, .featured-image + .teaser .overlay { border-radius: 0 0 5px 5px; }
+.loop-teasers .post.featured-col { flex-basis: 100%; }
+.loop-teasers .post, .teaser, .loop-teasers .featured-image { transition: 0.3s; }
+.loop-teasers .post:hover { transform: translateY(-5px); }
+.loop-teasers .post:hover .teaser, .loop-teasers .post:hover .featured-image { box-shadow: 0 1px 9px rgba(0, 0, 0, 0.25); }
+.teaser .overlay { display: none; }
+.featured-image + .teaser { border-radius: 0 0 5px 5px; }
+.loop-teasers .featured-image { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.loop-teasers .featured-image, .loop-teasers .featured-image img { border-radius: 5px 5px 0 0; }
 .teaser .headline {
 	font-size: 26px;
 	line-height: 36px;
+	margin-bottom: 9px;
 }
-.teaser .headline, .teaser .byline { margin-bottom: 5px; }
+.teaser .byline {
+	font-size: 0.9em;
+	margin-bottom: 9px;
+}
 .teaser p { margin-bottom: 9px; }
 /* DOCS */
 .loop-docs.style-default .post-box {
@@ -1412,6 +1417,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 @media all and (max-width: 800px) {
+	.post-box:not(:last-child) { margin-bottom: 14px; }
 	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: 14px;
 		padding-right: 14px;
@@ -1419,6 +1425,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	/* DEFAULT */
 	.single .loop-default.style-default .inner { padding: 0; }
 	.single .loop-default.style-default .sidebar { padding: 14px; }
+	/* TEASERS */
+	.loop-teasers .loop { padding: 14px 14px 0; }
 }
 @media all and (max-width: 700px) {
 	.loop-blocks .byline-comments { float: left; }
@@ -1743,6 +1751,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .byline {
 	color: #777777;
 	font-size: 16px;
+	margin-bottom: 9px;
 	position: relative;
 }
 .byline a {

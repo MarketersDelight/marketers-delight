@@ -1,17 +1,18 @@
 <?php if ( have_posts() ) :
 	while ( have_posts() ) : the_post();
+		$style = '';
 		$post_classes = array();
 		if ( $columns > 1 )
 			if ( $c <= $featured )
 				$post_classes[] = 'featured-col';
 			else
-				$post_classes[] = 'col';
+				$style = md_style( array( 'flex_basis' => '33%' ) );
 	?>
 
-		<div id="post_<?php the_ID(); ?>"<?php post_class( $post_classes ); ?>>
+		<div id="post_<?php the_ID(); ?>"<?php post_class( $post_classes ); echo $style; ?>>
 
 			<?php if ( has_post_thumbnail() ) : ?>
-				<?php md_featured_image( 'above_headline', 'full', array( 'hide_caption' => true ) ); ?>
+				<?php md_featured_image( 'above_headline', 'md-banner', array( 'hide_caption' => true ) ); ?>
 			<?php endif; ?>
 
 			<div class="teaser">

@@ -73,11 +73,14 @@ function md_loop() {
 	$content = md_module( array( 'loop', 'content' ) );
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
+
 	echo ! is_singular() ? '<div class="loop">' : '';
+
 	if ( ! empty( $loops[$type]['dropin'] ) )
 		include( md_template( 'dropins', "{$type}/{$type}-loop", true ) );
 	else
 		include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
+
 	echo ! is_singular() ? '</div>' : '';
 }
 

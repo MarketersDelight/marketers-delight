@@ -29,7 +29,8 @@ class md_page_title {
 		elseif ( $image['position'] == 'below_headline' )
 			$image_order = 15;
 
-		add_action( $hook, array( $this, 'html' ) );
+		if ( $this->get( 'title' ) || $this->get( 'description' ) )
+			add_action( $hook, array( $this, 'html' ) );
 
 		if ( $this->get( 'title' ) )
 			add_action( 'md_hook_page_title', array( $this, 'title' ) );

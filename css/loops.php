@@ -16,8 +16,6 @@
 .loop .post-box.has-cover.image-above_headline .featured-image,
 .post-box.has-cover.image-below_headline .headline-wrap { margin-bottom: 0; }
 
-.byline { margin-bottom: <?php echo $third; ?>px; }
-
 .the-content:first-child { padding-top: <?php echo $single; ?>px; }
 
 /* DEFAULT */
@@ -44,21 +42,32 @@
 	position: relative;
 }
 
-.teaser.cover {
-	padding-bottom: <?php echo $half + $small; ?>px;
-	padding-top: <?php echo $half + $small; ?>px;
-}
+.loop-teasers .post.featured-col { flex-basis: 100%; }
 
-.teaser .overlay { border-radius: 5px; }
+.loop-teasers .post, .teaser, .loop-teasers .featured-image { transition: 0.3s; }
 
-.featured-image + .teaser, .featured-image + .teaser .overlay { border-radius: 0 0 5px 5px; }
+.loop-teasers .post:hover { transform: translateY(-5px); }
+
+.loop-teasers .post:hover .teaser, .loop-teasers .post:hover .featured-image { box-shadow: 0 1px 9px rgba(0, 0, 0, 0.25); }
+
+.teaser .overlay { display: none; }
+
+.featured-image + .teaser { border-radius: 0 0 5px 5px; }
+
+.loop-teasers .featured-image { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+
+.loop-teasers .featured-image, .loop-teasers .featured-image img { border-radius: 5px 5px 0 0; }
 
 .teaser .headline {
 	font-size: <?php echo $typography['h2']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['h2']['line_height']['mobile']; ?>px;
+	margin-bottom: <?php echo $third; ?>px;
 }
 
-.teaser .headline, .teaser .byline { margin-bottom: <?php echo $small; ?>px; }
+.teaser .byline {
+	font-size: 0.9em;
+	margin-bottom: <?php echo $third; ?>px;
+}
 
 .teaser p { margin-bottom: <?php echo $third; ?>px; }
 
@@ -245,6 +254,7 @@
 }
 
 @media all and (max-width: 800px) {
+	.post-box:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
@@ -252,6 +262,8 @@
 	/* DEFAULT */
 	.single .loop-default.style-default .inner { padding: 0; }
 	.single .loop-default.style-default .sidebar { padding: <?php echo $half; ?>px; }
+	/* TEASERS */
+	.loop-teasers .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
 }
 
 @media all and (max-width: 700px) {

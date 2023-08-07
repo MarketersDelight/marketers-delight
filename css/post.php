@@ -18,6 +18,7 @@
 .byline {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	margin-bottom: <?php echo $third; ?>px;
 	position: relative;
 }
 
