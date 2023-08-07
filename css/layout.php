@@ -130,18 +130,16 @@
 	padding-top: <?php echo $mid; ?>px;
 }
 
-.page-title {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
+.page-title { padding-top: <?php echo $single; ?>px; }
 
 .cover .page-headline { text-align: center; }
 
-.page-description {
+.cover .page-description {
 	margin-left: auto;
 	margin-right: auto;
-	max-width: <?php echo $post_width; ?>px;
 }
+
+.page-description { max-width: <?php echo $content_width; ?>px; }
 
 .page-image { text-align: center; }
 
@@ -171,7 +169,7 @@
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-	.page-headline:not(:last-child),
+	.cover .page-headline:not(:last-child),
 	.layout-center .page-image:not(:last-child),
 	.layout-above_headline .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
@@ -189,6 +187,7 @@
 }
 
 @media all and (max-width: 800px) {
+	.page-title { padding-bottom: <?php echo $single; ?>px; }
 	.page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 

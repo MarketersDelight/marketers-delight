@@ -1083,16 +1083,13 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding-bottom: 42px;
 	padding-top: 42px;
 }
-.page-title {
-	padding-bottom: 28px;
-	padding-top: 28px;
-}
+.page-title { padding-top: 28px; }
 .cover .page-headline { text-align: center; }
-.page-description {
+.cover .page-description {
 	margin-left: auto;
 	margin-right: auto;
-	max-width: 588px;
 }
+.page-description { max-width: 672px; }
 .page-image { text-align: center; }
 .page-description:not(:last-child) { margin-bottom: 28px; }
 @media all and (min-width: 800px) {
@@ -1119,7 +1116,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		flex-flow: row wrap;
 		justify-content: center;
 	}
-	.page-headline:not(:last-child),
+	.cover .page-headline:not(:last-child),
 	.layout-center .page-image:not(:last-child),
 	.layout-above_headline .page-image:not(:last-child) { margin-bottom: 28px; }
 	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
@@ -1136,6 +1133,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 @media all and (max-width: 800px) {
+	.page-title { padding-bottom: 28px; }
 	.page-image:not(:last-child) { margin-bottom: 14px; }
 }
 @media all and (max-width: 1008px) {
