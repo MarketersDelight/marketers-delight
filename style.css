@@ -1333,15 +1333,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .loop-blocks .post-inner {
 	border-bottom: 1px solid #CCCCCC;
-	display: flex;
-	padding: 28px;
+	padding: 14px;
 }
-.loop-blocks .featured-image + .post-content { padding-left: 28px; }
-.loop-blocks .headline {
-	font-size: 29px;
-	line-height: 41px;
-}
-.loop-blocks .featured-image { flex: 0 0 40%; }
 .loop-blocks .featured-image img {
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
@@ -1351,13 +1344,13 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .loop-blocks .post-footer {
 	align-items: center;
 	display: flex;
-	padding: 28px;
+	padding: 14px;
 }
 .loop-blocks .post-footer-actions {
-	flex: 1 0 auto;
+	flex: 0 1 auto;
 	margin-right: 14px;
 }
-.loop-blocks .post-footer-meta { flex: 0 1 auto; }
+.loop-blocks .post-footer-meta { flex: 1 0 auto; }
 .loop-blocks .byline-comments a {
 	color: #777777;
 	font-size: 22px;
@@ -1365,6 +1358,37 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .loop-blocks .byline-comments i { color: #22A340; }
 .loop-blocks .overlay { display: none; }
+@media all and (min-width: 600px) {
+	.loop-blocks .post-inner { display: flex; }
+	.loop-blocks .featured-image + .post-content { padding-left: 14px; }
+	.loop-blocks .featured-image { flex: 0 0 40%; }
+}
+@media all and (max-width: 600px) {
+	.loop-blocks .featured-image { margin-bottom: 14px; }
+}
+@media all and (max-width: 900px) {
+	.loop-blocks .loop { padding: 14px 14px 0; }
+}
+@media all and (min-width: 700px) {
+	.loop-blocks .headline {
+		font-size: 29px;
+		line-height: 41px;
+	}
+	.loop-blocks .post-inner, .loop-blocks .post-footer { padding: 28px; }
+	.loop-blocks .featured-image + .post-content { padding-left: 28px; }
+	.loop-blocks .post-footer-meta {
+		margin-right: 14px;
+		text-align: center;
+	}
+}
+@media all and (max-width: 700px) {
+	.loop-blocks .post-footer { flex-flow: row wrap; }
+	.loop-blocks .post-footer-meta { text-align: right; }
+	.loop-blocks .button {
+		margin-top: 14px;
+		width: 100%;
+	}
+}
 /* RESETS */
 .loop-default.style-default .post-box.has-cover, .loop-default.style-default .post-box.has-top-image { padding-top: 0; }
 /* QUERIES */

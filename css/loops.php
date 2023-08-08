@@ -151,18 +151,8 @@
 
 .loop-blocks .post-inner {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	display: flex;
-	padding: <?php echo $single; ?>px;
+	padding: <?php echo $half; ?>px;
 }
-
-.loop-blocks .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
-
-.loop-blocks .headline {
-	font-size: <?php echo $typography['h2']['font_size']['tablet']; ?>px;
-	line-height: <?php echo $typography['h2']['line_height']['tablet']; ?>px;
-}
-
-.loop-blocks .featured-image { flex: 0 0 40%; }
 
 .loop-blocks .featured-image img {
 	border-radius: 5px;
@@ -175,15 +165,15 @@
 .loop-blocks .post-footer {
 	align-items: center;
 	display: flex;
-	padding: <?php echo $single; ?>px;
+	padding: <?php echo $half; ?>px;
 }
 
 .loop-blocks .post-footer-actions {
-	flex: 1 0 auto;
+	flex: 0 1 auto;
 	margin-right: <?php echo $half; ?>px;
 }
 
-.loop-blocks .post-footer-meta { flex: 0 1 auto; }
+.loop-blocks .post-footer-meta { flex: 1 0 auto; }
 
 .loop-blocks .byline-comments a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -194,6 +184,42 @@
 .loop-blocks .byline-comments i { color: <?php echo $colors['site']['button']; ?>; }
 
 .loop-blocks .overlay { display: none; }
+
+@media all and (min-width: 600px) {
+	.loop-blocks .post-inner { display: flex; }
+	.loop-blocks .featured-image + .post-content { padding-left: <?php echo $half; ?>px; }
+	.loop-blocks .featured-image { flex: 0 0 40%; }
+}
+
+@media all and (max-width: 600px) {
+	.loop-blocks .featured-image { margin-bottom: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 900px) {
+	.loop-blocks .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
+}
+
+@media all and (min-width: 700px) {
+	.loop-blocks .headline {
+		font-size: <?php echo $typography['h2']['font_size']['tablet']; ?>px;
+		line-height: <?php echo $typography['h2']['line_height']['tablet']; ?>px;
+	}
+	.loop-blocks .post-inner, .loop-blocks .post-footer { padding: <?php echo $single; ?>px; }
+	.loop-blocks .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
+	.loop-blocks .post-footer-meta {
+		margin-right: <?php echo $half; ?>px;
+		text-align: center;
+	}
+}
+
+@media all and (max-width: 700px) {
+	.loop-blocks .post-footer { flex-flow: row wrap; }
+	.loop-blocks .post-footer-meta { text-align: right; }
+	.loop-blocks .button {
+		margin-top: <?php echo $half; ?>px;
+		width: 100%;
+	}
+}
 
 /* RESETS */
 

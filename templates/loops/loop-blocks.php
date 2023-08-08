@@ -42,8 +42,9 @@
 				<div class="post-footer-meta">
 					<?php md_byline_item( 'author', array( 'avatar_size' => 40 ) ); ?>
 					<?php md_byline_item( 'date' ); ?>
-					<a href="<?php the_permalink(); ?>" class="more-link button button-small"><?php echo md_read_more_text(); ?></a>
 				</div>
+
+				<a href="<?php the_permalink(); ?>" class="more-link button button-small"><?php echo md_read_more_text(); ?></a>
 
 			</div>
 
