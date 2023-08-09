@@ -18,9 +18,6 @@ function md_loops( $sort = null ) {
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
-		),
-		'docs' => array(
-			'name' => __( 'Docs', 'md' )
 		)
 	) );
 
