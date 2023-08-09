@@ -5,7 +5,7 @@
 
 		<?php echo md_icon( 'angle-right' ); ?>
 
-		<?php if ( ! empty( $post_type ) && ! is_search() && ! is_page() && ! is_404() ) :
+		<?php if ( ! empty( $post_type ) && ! is_search() && ! is_page() && ! is_404() && ( ! empty( $blog_id ) || $post_type !== 'post' ) ) :
 			$archive_html = ! is_home() && ! is_post_type_archive() ? 'a' : 'span';
 			$archive_href = ! is_home() && ! is_post_type_archive() ? ' href="' . get_post_type_archive_link( $post_type ) . '"' : '';
 		?>
@@ -53,10 +53,8 @@
 				<?php if ( wp_get_post_parent_id( $post_id ) ) :
 					$parent_id = wp_get_post_parent_id( $post_id );
 				?>
-					<span class="breadcrumb-text"><?php echo get_the_title( $parent_id ); ?></span>
-					<?php echo md_icon( 'angle-right' ); ?>
+					<a href="<?php echo get_permalink( $parent_id ); ?>"><?php echo get_the_title( $parent_id ); ?></a>
 				<?php endif; ?>
-				<?php the_title(); ?>
 			<?php endif; ?>
 			<?php echo md_icon( 'angle-down' ); ?>
 		<?php endif; ?>

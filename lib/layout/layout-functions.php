@@ -225,7 +225,8 @@ function md_content_classes( $classes = array() ) {
 
 function md_has_breadcrumbs() {
 	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ) );
-	if ( ! is_front_page() && ! is_page() ) {
+
+	if ( ( ! is_front_page() && ! is_page() ) || ( is_page() && wp_get_post_parent_id( get_the_ID() ) ) ) {
 		if ( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) )
 			return $position;
 		elseif ( empty( $position ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
