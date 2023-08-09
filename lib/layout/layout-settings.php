@@ -86,16 +86,18 @@
 
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php if ( md_setting( array( 'colors', 'breadcrumbs', 'position' ) ) ) : ?>
-				<?php $this->fields->field( 'breadcrumbs', array(
-					'type' => 'checkbox',
-					'options' => array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) )
-				) ); ?>
-			<?php else : ?>
-				<?php $this->fields->field( 'breadcrumbs', array(
-					'type' => 'checkbox',
-					'options' => array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) )
-				) ); ?>
+			<?php if ( $screen->id !== 'page' ) : ?>
+				<?php if ( md_setting( array( 'colors', 'breadcrumbs', 'position' ) ) ) : ?>
+					<?php $this->fields->field( 'breadcrumbs', array(
+						'type' => 'checkbox',
+						'options' => array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) )
+					) ); ?>
+				<?php else : ?>
+					<?php $this->fields->field( 'breadcrumbs', array(
+						'type' => 'checkbox',
+						'options' => array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) )
+					) ); ?>
+				<?php endif; ?>
 			<?php endif; ?>
 
 			<?php do_action( 'md_layout_content_options' ); ?>
