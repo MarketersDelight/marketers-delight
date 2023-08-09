@@ -5,12 +5,12 @@
 
 		<?php echo md_icon( 'angle-right' ); ?>
 
-		<?php if ( ! empty( $post_type ) && ! empty( $blog_id ) && ! is_search() && ! is_page() && ! is_404() ) :
+		<?php if ( ! empty( $post_type ) && ! is_search() && ! is_page() && ! is_404() ) :
 			$archive_html = ! is_home() && ! is_post_type_archive() ? 'a' : 'span';
 			$archive_href = ! is_home() && ! is_post_type_archive() ? ' href="' . get_post_type_archive_link( $post_type ) . '"' : '';
 		?>
 			<<?php echo $archive_html . $archive_href; ?>><?php echo esc_html( $post_type_title ); ?></<?php echo $archive_html; ?>>
-			<?php if ( ! empty( $category_url ) && ( is_singular() || ( is_tax() || is_category() || is_tag() || is_author() || is_date() ) ) ) : ?>
+			<?php if ( ! empty( $category_url ) && ( is_singular() || is_tax() || is_category() || is_tag() || is_author() || is_date() ) ) : ?>
 				<?php echo md_icon( 'angle-right' ); ?>
 			<?php endif; ?>
 		<?php endif; ?>

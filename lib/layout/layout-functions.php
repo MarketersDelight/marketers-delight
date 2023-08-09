@@ -225,7 +225,7 @@ function md_content_classes( $classes = array() ) {
 
 function md_has_breadcrumbs() {
 	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ) );
-	if ( ! is_front_page() ) {
+	if ( ! is_front_page() && ! is_page() ) {
 		if ( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) )
 			return $position;
 		elseif ( empty( $position ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
