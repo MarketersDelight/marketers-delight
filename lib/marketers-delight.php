@@ -479,7 +479,6 @@ final class marketers_delight {
 	public function post_types_meta( $post_types ) {
 		if ( md_has( 'woocommerce' ) )
 			$post_types[] = 'product';
-		$post_types[] = 'stream';
 		return $post_types;
 	}
 
@@ -490,8 +489,6 @@ final class marketers_delight {
 	 */
 
 	public function taxonomies_meta( $taxonomies ) {
-		if ( md_has( 'stream' ) )
-			$taxonomies[] = 'stream_categories';
 		if ( md_has( 'bookshelf' ) )
 			$taxonomies[] = 'bookshelf_categories';
 		if ( md_has( 'woocommerce' ) )
