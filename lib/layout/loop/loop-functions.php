@@ -45,6 +45,11 @@ function md_loops( $sort = null ) {
 
 function md_get_loop() {
 	$default = 'default';
+	$post_type = get_post_type();
+	$loops = md_loops();
+
+	if ( ! empty( $loops[$post_type] ) )
+		$default = $post_type;
 
 	if ( has_filter( 'md_filter_loop_type' ) )
 		$loop = apply_filters( 'md_filter_loop_type', $default );
@@ -75,7 +80,7 @@ function md_loop() {
 	echo ! is_singular() ? '<div class="loop">' : '';
 
 	if ( ! empty( $loops[$type]['dropin'] ) )
-		include( md_template( 'dropins', "{$type}/{$type}-loop", true ) );
+		include( md_template( 'dropins', "{$type}/loop-{$type}", true ) );
 	else
 		include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
 

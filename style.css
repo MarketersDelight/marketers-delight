@@ -2695,6 +2695,170 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.cta-bar .form-submit { padding: 5px; }
 }
 /*------------------------------*\
+	$SHARE
+\*------------------------------*/
+.share .share-button, .share a.share-button {
+	border-bottom: 0;
+	display: inline-block;
+	font-size: 20px;
+	line-height: 1;
+	text-align: center;
+    transition: 0.3s;
+}
+.share .share-button:hover {
+	transform: scale(1.08);
+	z-index: 95;
+}
+.share .share-like { color: #1e1e1e !important; }
+.share-count, .share-comment-count { font-size: 0.8em; }
+.share-button.liked {
+	color: #F12020 !important;
+	cursor: default;
+	font-weight: bold;
+}
+.share-button.liked .md-icon-heart-empty:before { content: '\e821'; }
+.share-minimal { border-bottom: 1px solid #CCCCCC; }
+.style-minimal .share-minimal { padding-bottom: 14px; }
+.style-minimal .share-minimal:first-child { padding-top: 0; }
+.style-default .post-box .share-minimal { padding: 14px; }
+.loop-teasers .post-box .share-minimal {
+	border-bottom: 0;
+	padding: 0;
+}
+.share-minimal .share-comments, .share-minimal .share-like {
+	float: right;
+	margin-left: 14px;
+}
+.share-minimal .share-button.share-like .share-icon {
+	background-color: transparent;
+	height: auto;
+	width: auto;
+}
+.share-minimal .share-comments .share-icon { color: #777777 }
+.share-minimal .share-button { line-height: 33px; }
+.share-minimal .share-button .share-icon {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	height: 36px;
+	padding-top: 6px;
+	width: 36px;
+}
+.share-minimal .share-button:not(:last-child) { margin-right: 7px; }
+.share-bold {
+	font-size: 0;
+	overflow: hidden;
+	text-align: center;
+	text-transform: uppercase;
+}
+.share-bold .share-button {
+	color: #fff;
+	padding-bottom: 13px;
+	padding-top: 13px;
+	vertical-align: bottom;
+}
+.share-bold .md-icon-twitter:before { color: #fff; }
+.share-sticky {
+	display: block;
+	position: fixed;
+	-o-transition: 0.3s;
+	-ms-transition: 0.3s;
+	-moz-transition: 0.3s;
+	-webkit-transition: 0.3s;
+	transition: 0.3s;
+}
+.share-sticky.side-bottom {
+	bottom: 0;
+	width: 100%;
+}
+@media all and (min-width: 1008px) {
+	.share-sticky { z-index: 90; }
+	.share-sticky .share-icon { display: block; }
+	.share-sticky.side-left {
+		left: 0;
+		top: 40%;
+	}
+	.share-sticky.side-right {
+		top: 40%;
+		right: 0;
+	}
+	.share-sticky.side-v, .share-sticky.side-v .share { width: 50px; }
+	.share-sticky.inline {
+		position: absolute;
+		left: -50px;
+		top: 28px;
+	}
+	.content-sidebar.sidebar-left .share-sticky.inline {
+		left: inherit;
+		right: -50px;
+	}
+	.style-minimal.content-sidebar.sidebar-left .share-sticky.inline {
+		top: 0;
+		right: -84px;
+	}
+	.style-minimal .share-sticky.inline {
+		left: -84px;
+		top: 0;
+	}
+	.share-sticky.inline .share {
+		position: static;
+		top: 28px;
+	}
+	.share-sticky.side-v .share-button {
+		display: block;
+		width: 100% !important;
+	}
+	.share-sticky.inline.sticky { top: 0; }
+	.share-sticky.inline.sticky .share {
+		position: fixed;
+			top: 28px;
+	}
+	.has-md-admin-bar .share-sticky.inline.sticky .share,
+	.admin-bar .share-sticky.inline.sticky .share { top: 60px; }
+	/* inline + right screen */
+	.share-sticky.inline .share-button, .share-sticky.side-right .share-button { box-shadow: inset -3px 0 2px rgba(0, 0, 0, 0.15); }
+	.share-sticky.side-right .share { border-radius: 3px 0 0 3px; }
+	.share-sticky.inline .share-button:first-child, .share-sticky.side-right .share-button:first-child { border-radius: 3px 0 0; }
+	.share-sticky.inline .share-button:last-child, .share-sticky.side-right .share-button:last-child { border-radius: 0 0 0 3px; }
+	/* left screen */
+	.share-sticky.side-left .share { border-radius: 0 3px 3px 0; }
+	.content-sidebar.sidebar-left .share-sticky.inline .share-button, .share-sticky.side-left .share-button { box-shadow: inset 3px 0 2px rgba(0, 0, 0, 0.15); }
+	.content-sidebar.sidebar-left .share-sticky.inline .share-button:first-child, .share-sticky.side-left .share-button:first-child { border-radius: 0 3px 0 0; }
+	.content-sidebar.sidebar-left .share-sticky.inline .share-button:last-child, .share-sticky.side-left .share-button:last-child { border-radius: 0 0 3px 0; }
+}
+@media all and (min-width: 900px) {
+	.content-full .featured-image-cover + .share { margin-top: 0; }
+}
+@media all and (max-width: 1008px) {
+	.style-minimal .post-box .share-minimal {
+		padding-left: 9px;
+		padding-right: 9px;
+	}
+	.share-bold .share-count, .share-bold .share-comment-count {
+		font-size: 13px;
+		line-height: 1;
+		position: relative;
+		top: -3px;
+	}
+	.share-bold .share-icon { font-size: 18px; }
+	.share-sticky.side-v, .share-sticky.side-v .share { width: 100%; }
+	.share-sticky.side-v {
+		bottom: 0;
+		left: 0;
+		top: auto;
+	 }
+ }
+@media all and (max-width: 900px) {
+	.style-minimal .content .share {
+		margin-bottom: 14px;
+		margin-left: -14px;
+		margin-right: -14px;
+	}
+	.style-minimal .content-headline + .share { margin-bottom: 14px; }
+	.content-headline + .share { margin-top: 14px; }
+	.has-md-admin-bar .share-sticky.inline.sticky .share,
+	.admin-bar .share-sticky.inline.sticky .share { top: 74px; }
+}
+/*------------------------------*\
 	$BOOKSHELF
 \*------------------------------*/
 .loop-bookshelf .breadcrumbs { text-align: center; }
