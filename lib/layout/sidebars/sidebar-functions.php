@@ -79,11 +79,15 @@ function md_has_sidebar() {
 	$single_add = md_module( array( 'layout', 'sidebar', 'add' ) );
 	$single_remove = md_module( array( 'layout', 'sidebar', 'remove' ) );
 
-	if ( is_post_type_archive() || is_home() || is_author() || is_tag() )
-		if ( ! empty( $sidebars["{$post_type}_archive_show"]['enable'] ) )
+	if ( is_post_type_archive() || is_home() || is_author() || is_tag() ) {
+		$site_enable = md_setting( array( 'sidebars', "{$post_type}_archive_show", 'enable' ) );
+		$site_disable = md_setting( array( 'sidebars', "{$post_type}_archive_show", 'disable' ) );
+
+		if ( $single_remove )
+			return false;
+		elseif ( ( ! $site_disable && ( $sitewide || $site_enable ) ) || $single_add )
 			return true;
-		elseif ( $sitewide )
-			return true;
+	}
 
 	if ( is_category() || is_tax() ) {
 		$term = get_queried_object();

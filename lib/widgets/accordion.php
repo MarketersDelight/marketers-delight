@@ -37,10 +37,6 @@ class md_accordion_widget extends WP_Widget {
 		$title = $val['title'];
 		$terms = $current = $terms_args = array();
 		$page_id = get_queried_object_id();
-
-		if ( is_home() && get_option( 'page_for_posts' ) )
-			$page_id = get_queried_object_id();
-
 		$tax = ! empty( $val['taxonomy'] ) ? $val['taxonomy'] : 'category';
 		$taxonomy = get_taxonomy( $tax );
 		$post_type = $taxonomy->object_type;
@@ -61,10 +57,16 @@ class md_accordion_widget extends WP_Widget {
 			$terms[$term->term_id] = $term;
 
 		if ( is_tax() || is_singular() ) {
-			$get_terms = get_the_terms( $page_id, $tax );
-			if ( ! empty( $get_terms[0] ) ) {
-				$current = $terms[$get_terms[0]->term_id];
-				unset( $terms[$get_terms[0]->term_id] );
+			if ( is_singular() ) {
+				$get_terms = get_the_terms( $page_id, $tax );
+				$get_terms = $get_terms[0];
+			}
+			else
+				$get_terms = $terms[$page_id];
+
+			if ( ! empty( $get_terms ) ) {
+				$current = $terms[$get_terms->term_id];
+				unset( $terms[$get_terms->term_id] );
 			}
 			array_unshift( $terms, $current );
 		}
