@@ -37,7 +37,13 @@ class md_accordion_widget extends WP_Widget {
 		$title = $val['title'];
 		$terms = $current = $terms_args = array();
 		$page_id = get_queried_object_id();
-		$tax = ! empty( $val['taxonomy'] ) ? $val['taxonomy'] : 'category';
+		$current_post_type = get_post_type();
+		$page_taxonomies = get_object_taxonomies( $current_post_type );
+		$tax = 'category';
+		if ( ! empty( $val['taxonomy'] ) )
+			$tax = $val['taxonomy'];
+		elseif ( ! empty( $page_taxonomies ) )
+			$tax = $page_taxonomies[0];
 		$taxonomy = get_taxonomy( $tax );
 		$post_type = $taxonomy->object_type;
 		$terms_args['taxonomy'] = $tax;
@@ -59,7 +65,7 @@ class md_accordion_widget extends WP_Widget {
 		if ( is_tax() || is_singular() ) {
 			if ( is_singular() ) {
 				$get_terms = get_the_terms( $page_id, $tax );
-				$get_terms = $get_terms[0];
+				$get_terms = ! empty( $get_terms ) ? $get_terms[0] : array();
 			}
 			else
 				$get_terms = $terms[$page_id];
@@ -67,8 +73,8 @@ class md_accordion_widget extends WP_Widget {
 			if ( ! empty( $get_terms ) ) {
 				$current = $terms[$get_terms->term_id];
 				unset( $terms[$get_terms->term_id] );
+				array_unshift( $terms, $current );
 			}
-			array_unshift( $terms, $current );
 		}
 
 		include( md_template( 'widgets/accordion', true ) );
@@ -117,7 +123,7 @@ class md_accordion_widget extends WP_Widget {
 		<p>
 			<label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php echo __( 'Category type', 'md' ); ?>:</label><br />
 			<select id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>">
-				<option value=""><?php echo __( 'Select category type...', 'md' ); ?></option>
+				<option value=""><?php echo __( 'Auto-detect categories', 'md' ); ?></option>
 				<?php foreach ( $taxonomies as $count => $tax ) : ?>
 					<option value="<?php echo esc_attr( $tax ); ?>"<?php echo selected( $val['taxonomy'], esc_attr( $tax ), false ); ?>><?php echo $tax; ?></option>
 				<?php endforeach; ?>

@@ -7,7 +7,6 @@
 <div id="accordion_<?php echo esc_attr( $args['id'] ); ?>" class="accordion">
 	<?php foreach ( $terms as $term ) :
 		$articles = new WP_Query( array(
-			'fields' => 'ids',
 			'post_type' => $post_type,
 			'posts_per_page' => ! empty( $val['posts_per_category'] ) ? (int) $val['posts_per_category'] : 5,
 			'tax_query' => array( array(
