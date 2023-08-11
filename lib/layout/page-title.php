@@ -53,7 +53,8 @@ class md_page_title {
 		$data = array( 'title' => '', 'description' => '' );
 
 		if ( is_post_type_archive() ) {
-			$data['title'] = post_type_archive_title( '', false );
+			$post_type_title = post_type_archive_title( '', false );
+			$data['title'] = md_post_type_field( 'archives_title', $post_type_title );
 			$data['description'] = md_post_type_field( 'archives_text' );
 		}
 		elseif ( is_home() || is_singular( 'post' ) ) {

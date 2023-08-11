@@ -325,8 +325,8 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 function md_post_type_field( $keys = null, $default = null ) {
 	$post_type = get_post_type();
 
-	if ( ! is_post_type_archive( $post_type ) && ! is_home() )
-		return;
+//	if ( ! is_post_type_archive( $post_type ) && ! is_home() )
+//		return;
 
 	if ( is_string( $keys ) )
 		$keys = (array) $keys;

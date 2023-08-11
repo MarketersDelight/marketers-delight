@@ -7,6 +7,12 @@
 
 class md_post extends md_api {
 
+	/**
+	 * Run Blog related actions and filters.
+	 *
+	 * @since 5.6
+	 */
+
 	public function actions() {
 		add_action( "md_layout_{$this->_id}_after_settings", array( $this, 'post_settings' ) );
 	}

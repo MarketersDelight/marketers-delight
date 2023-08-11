@@ -2860,60 +2860,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.has-md-admin-bar .share-sticky.inline.sticky .share,
 	.admin-bar .share-sticky.inline.sticky .share { top: 74px; }
 }
-/*------------------------------*\
-	$BOOKSHELF
-\*------------------------------*/
-.loop-bookshelf .breadcrumbs { text-align: center; }
-.md-popup-bookshelf { background-color: #F9FCE9; }
-.post-type-archive-bookshelf .content, .tax-bookshelf_categories .content { box-shadow: none; }
-.bookshelf-category.is-active { font-weight: bold; }
-.bookshelf-row:after {
-	background-color: rgba(255, 255, 255, 0.15);
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.25);
-	content: '';
-	display: block;
-	height: 13px;
-	width: 100%;
-}
-.book-thumb, .book .book-thumb a {
-	border-bottom: 0;
-	display: block;
-}
-.book-thumb img { box-shadow: 1px 0px 16px rgba(0, 0, 0, 0.1); }
-.bookshelf-grid, .bookshelf-excerpt .book { text-align: center; }
-.bookshelf-grid .book {
-	display: inline-block;
-	float: none;
-	margin-left: -5px;
-	padding-left: 10px;
-	padding-right: 10px;
-	vertical-align: bottom;
-	width: 20%;
-}
-.book-rating {
-	color: #999;
-	font-size: 20px;
-	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-.widget .bookshelf-grid { padding-top: 0; }
-@media all and (min-width: 900px) {
-	.bookshelf-excerpt .book {
-		float: left;
-		position: relative;
-		width: 30%;
-		z-index: 10;
-	}
-	.bookshelf-excerpt .book-text {
-		float: left;
-		width: 70%;
-	}
-}
-@media all and (max-width: 900px) {
-	.bookshelf-grid .book {
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-}
 .loop-docs.style-default .post-box {
 	margin-bottom: 14px;
 	padding: 14px;
@@ -2970,11 +2916,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 /*------------------------------*\
 	$STREAM
 \*------------------------------*/
-.content-full.loop-stream .breadcrumbs { text-align: center; }
-.loop-stream .content-width {
-	margin-left: auto;
-	margin-right: auto;
-}
 .loop-stream .share {
 	border-bottom: 0;
 	border-top: 0;
@@ -2990,8 +2931,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .stream-head .stream-head-title { margin-bottom: 5px; }
 .stream-head-image a { display: block; }
-.stream-loop { position: relative; }
-.stream-loop:before {
+.loop-stream .loop { position: relative; }
+.loop-stream .loop:before {
 	background-color: #AE2525;
 	content: '';
 	display: block;
@@ -3042,7 +2983,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	font-size: 0.95em;
 	line-height: 1.45em;
 }
-.stream-loop .stream-title a {
+.loop-stream .stream-title a {
 	color: #1E1E1E;
 	font-weight: 700;
 }
@@ -3095,7 +3036,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		top: 3px;
 }
 .stream-byline .md-icon-share { color: green; }
-.stream-loop .post-edit-link {
+.loop-stream .post-edit-link {
 	float: right;
 	text-decoration: none;
 }
@@ -3189,7 +3130,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 @media all and (max-width: 900px) {
 	.stream-widget .stream-columns > .col1 { width: 12%; }
 	.stream-widget .stream-columns > .col2 { width: 88%; }
-	.loop-stream { padding: 14px; }
+	.loop-stream .loop { padding: 14px; }
 	.stream-head-text {
 		font-size: 0.85em;
 		line-height: 1.5em;

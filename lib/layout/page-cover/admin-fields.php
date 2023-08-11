@@ -22,7 +22,7 @@
 		<?php $this->fields->field( 'bg_color', array(
 			'type' => 'color',
 			'label' =>  __( 'Cover Overlay', 'md' ),
-			'default' => $values['colors']['header']['cover_color']
+			'default' => md_setting( array( 'colors', 'page_cover', 'cover_color' ), $values['colors']['header']['cover_color'] )
 		) ); ?>
 	</div>
 
@@ -31,6 +31,8 @@
 			'type' => 'checkbox',
 			'label' => __( 'Cover Settings', 'md' ),
 			'options' => array(
+				'categories' => __( 'Apply to all Categories', 'md' ),
+				'posts' => __( 'Apply to all Posts', 'md' ),
 				'alternate' => __( 'Use alternate text color', 'md' ),
 				'disable_cover' => $overlay_label
 			)

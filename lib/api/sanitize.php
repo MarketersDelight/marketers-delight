@@ -195,12 +195,14 @@ class md_sanitize {
 	 */
 
 	public function upload( $input, $upload_type ) {
-		if ( $upload_type == 'media' )
-			$save = array(
-				'id' => esc_attr( $input['id'] ),
-				'url' => esc_url( $input['url'] )
-			);
-		return $save;
+		if ( $upload_type == 'media' ) {
+			if ( ! empty( $input['id'] ) )
+				$save['id'] = esc_attr( $input['id'] );
+			if ( ! empty( $input['url'] ) )
+				$save['url'] = esc_url( $input['url'] );
+			if ( ! empty( $save ) )
+				return $save;
+		}
 	}
 
 	/**
@@ -215,7 +217,9 @@ class md_sanitize {
 				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
 			elseif ( strlen( $input ) == 9 ) // HEXA
 				return preg_match( '/^#[a-f0-9]{8}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+
 		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
+
 		return "rgba({$r}, {$g}, {$b}, {$a})"; // RGBA
 	}
 
@@ -235,6 +239,7 @@ class md_sanitize {
 		}
 		else
 			$save = $input == true ? true : false;
+
 		return $save;
 	}
 
@@ -257,6 +262,7 @@ class md_sanitize {
 	public function customize_select( $input, $setting ) {
 		$input = sanitize_key( $input );
 		$choices = $setting->manager->get_control( $setting->id )->choices;
+
 		return array_key_exists( $input, $choices ) ? $input : $setting->default;
 	}
 
@@ -268,8 +274,10 @@ class md_sanitize {
 
 	public function font_weights( $input ) {
 		$weights = array();
+
 		foreach ( $this->_font_weights as $weight => $label )
 			$weights[] = $weight;
+
 		return in_array( $input, $weights ) ? $input : '';
 	}
 
@@ -292,7 +300,7 @@ class md_sanitize {
 	 */
 
 	public function featured_image_position( $input ) {
-		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'headline_cover', 'header_cover', 'header_cover_full', 'remove' ) ) ? $input : '';
+		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'remove' ) ) ? $input : '';
 	}
 
 	/**
@@ -304,9 +312,11 @@ class md_sanitize {
 	public function terms( $taxonomy = 'category' ) {
 		$cats = array();
 		$terms = get_terms( $taxonomy );
+
 		foreach ( $terms as $term )
 			if ( isset( $term->term_id ) )
 				$cats[] = esc_attr( $term->term_id );
+
 		return $cats;
 	}
 
