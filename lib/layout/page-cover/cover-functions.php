@@ -76,7 +76,7 @@ function md_cover_caption() {
  */
 
 function md_cover() {
-	$id = $url = $position = '';
+	$id = $url = $position = $term_id = '';
 	$cover = array( 'id' => '', 'position' => '', 'image' => '', 'color' => '', 'text' => '' );
 
 	$default_position = md_setting( array( 'colors', 'page_cover', 'cover_position' ) );
@@ -87,9 +87,20 @@ function md_cover() {
 
 	$show_on_posts = md_post_type_field( array( 'page_cover', 'text_color', 'posts' ) );
 	$show_on_categories = md_post_type_field( array( 'page_cover', 'text_color', 'categories' ) );
+	$cover_post_meta = array_filter( md_post_meta( 'page_cover', null, array() ) );
+
+	$taxonomies = get_taxonomies( array( 'public' => true ) );
+	$terms = wp_get_post_terms( get_the_ID(), $taxonomies );
+
+	if ( ! empty( $terms[0] ) ) {
+		$term = $terms[0];
+		$term_id = $term->term_id;
+	}
+
+	$show_on_category_posts = md_term_meta( array( 'page_cover', 'text_color', 'category_posts' ), $term_id );
 
 	if (
-		( is_singular() && $show_on_posts && ! array_filter( md_post_meta( 'page_cover', null, array() ) ) ) ||
+		( is_singular() && $show_on_posts && ! $cover_post_meta && ! $show_on_category_posts ) ||
 		( ( is_category() || is_tax() ) && $show_on_categories && ! array_filter( md_term_meta( 'page_cover', null, array() ) ) )
 	) {
 		$position = md_post_type_field( array( 'page_cover', 'cover_position' ), $default_position );
@@ -97,6 +108,13 @@ function md_cover() {
 		$color = md_post_type_field( array( 'page_cover', 'bg_color' ), $default_color );
 		$single_text = md_post_type_field( array( 'page_cover', 'text_color', 'alternate' ), $default_text );
 		$disable_single = md_post_type_field( array( 'page_cover', 'text_color', 'disable_cover' ), $disable_overlay );
+	}
+	elseif ( is_singular() && $show_on_category_posts && ! $cover_post_meta ) {
+		$position = md_term_meta( array( 'page_cover', 'cover_position' ), $term_id, $default_position );
+		$cover_id = md_term_meta( array( 'page_cover', 'cover_image', 'id' ), $term_id, $default_cover_id );
+		$color = md_term_meta( array( 'page_cover', 'bg_color' ), $term_id, $default_color );
+		$single_text = md_term_meta( array( 'page_cover', 'text_color', 'alternate' ), $term_id, $default_text );
+		$disable_single = md_term_meta( array( 'page_cover', 'text_color', 'disable_cover' ), $term_id, $disable_overlay );
 	}
 	elseif ( in_the_loop() ) {
 		$position = md_post_meta( array( 'page_cover', 'cover_position' ), null, $default_position );

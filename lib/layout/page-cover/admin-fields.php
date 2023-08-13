@@ -30,12 +30,7 @@
 		<?php $this->fields->field( 'text_color', array(
 			'type' => 'checkbox',
 			'label' => __( 'Cover Settings', 'md' ),
-			'options' => array(
-				'categories' => __( 'Apply to all Categories', 'md' ),
-				'posts' => __( 'Apply to all Posts', 'md' ),
-				'alternate' => __( 'Use alternate text color', 'md' ),
-				'disable_cover' => $overlay_label
-			)
+			'options' => $cover_settings
 		) ); ?>
 	</div>
 

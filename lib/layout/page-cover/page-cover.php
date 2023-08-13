@@ -72,7 +72,7 @@ class md_page_cover extends md_api {
 			'bg_color' => array( 'type' => 'color' ),
 			'text_color' => array(
 				'type' => 'checkbox',
-				'options' => array( 'alternate', 'disable_cover', 'categories', 'posts' )
+				'options' => array( 'alternate', 'disable_cover', 'categories', 'posts', 'category_posts' )
 			)
 		);
 	}
@@ -122,6 +122,7 @@ class md_page_cover extends md_api {
 	 */
 
 	public function admin_template( $group = null ) {
+		$cover_settings = array();
 		$screen = get_current_screen();
 		$values = $this->_data( 'values' );
 		$sanitize = $this->sanitize;
@@ -134,9 +135,23 @@ class md_page_cover extends md_api {
 		else
 			$cover_position = $this->fields->module( 'cover_position', $default_position );
 
+		if ( ! in_array( $screen->base, array( 'post', 'post-new' ) ) )
+			if ( $screen->base == 'term' )
+				$cover_settings['category_posts'] = __( 'Apply to all Posts in this Category', 'md' );
+			else {
+				$cover_settings['categories'] = __( 'Apply to all Categories', 'md' );
+				$cover_settings['posts'] = __( 'Apply to all Posts', 'md' );
+			}
+
 		$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
 		$disable_overlay_single = $this->fields->module( array( 'text_color', 'disable_cover' ) );
 		$overlay_label = $disable_overlay ? __( 'Add overlay', 'md' ) : __( 'Remove overlay', 'md' );
+
+		$cover_settings = array_merge( $cover_settings, array(
+			'alternate' => __( 'Use alternate text color', 'md' ),
+			'disable_cover' => $overlay_label
+		) );
+
 		include( 'admin-fields.php' );
 		$this->scripts();
 	}
