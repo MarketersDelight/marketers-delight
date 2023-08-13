@@ -45,9 +45,9 @@ class md_layout extends md_api {
 			),
 			'term' => array(
 				'name' => $this->name,
-				'page_settings' => true,
 				'order' => 5,
-				'fields' => $fields
+				'fields' => $fields,
+				'callback' => array( $this, 'admin_fields' )
 			)
 		);
 	}
@@ -148,16 +148,6 @@ class md_layout extends md_api {
 	 */
 
 	public function meta_box() {
-		$this->admin_template();
-	}
-
-	/**
-	 * Term fields template and scripts callback.
-	 *
-	 * @since 5.0
-	 */
-
-	public function term() {
 		$this->admin_template();
 	}
 

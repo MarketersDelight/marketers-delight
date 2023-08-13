@@ -24,7 +24,7 @@ class md_page_title {
 		if ( ! empty( $cover['position'] ) )
 			$hook = 'md_hook_page_cover_headline';
 
-		if ( $image['position'] == 'above_headline' )
+		if ( in_array( $image['position'], array( '', 'right', 'left', 'above_headline' ) ) )
 			$image_order = 5;
 		elseif ( $image['position'] == 'below_headline' )
 			$image_order = 15;
@@ -81,10 +81,10 @@ class md_page_title {
 			$data['title'] = get_the_date( 'F j, Y' );
 
 		if ( has_filter( 'md_page_title' ) )
-			$data['title'] = do_action( 'md_page_title' );
+			$data['title'] = apply_filters( 'md_page_title' );
 
 		if ( has_filter( 'md_page_description' ) )
-			$data['description'] = do_action( 'md_page_description' );
+			$data['description'] = apply_filters( 'md_page_description' );
 
 		$data['image']['position'] = md_featured_image_position();
 		$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );

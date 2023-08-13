@@ -36,8 +36,8 @@ class md_page_cover extends md_api {
 			),
 			'term' => array(
 				'name' => $this->name,
-				'page_settings' => true,
-				'fields' => $this->fields()
+				'fields' => $this->fields(),
+				'callback' => array( $this, 'admin_fields' )
 			)
 		);
 	}
@@ -88,17 +88,6 @@ class md_page_cover extends md_api {
 		$this->admin_template();
 		echo '</div>';
 	}
-
-	/**
-	 * Term fields template callback.
-	 *
-	 * @since 5.0
-	 */
-
-	public function term() {
-		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
-		$this->admin_template();
-		echo '</div>';	}
 
 	/**
 	 * Add settings template and script to Page Settings sections.

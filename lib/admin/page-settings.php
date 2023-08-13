@@ -17,8 +17,7 @@ class md_page_settings extends md_api {
 	public function register() {
 		$this->name = __( 'Page Settings', 'md' );
 		return array(
-			'meta_box' => array( 'name' => $this->name ),
-			'term' => array( 'name' => $this->name )
+			'meta_box' => array( 'name' => $this->name )
 		);
 	}
 

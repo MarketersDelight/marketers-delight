@@ -132,7 +132,7 @@ class md_sanitize {
 				'sidebar_content' => __( 'Sidebar / Content', 'md' )
 			),
 			'featured_image' => array(
-				'right' => __( 'Right, text wrap', 'md' ),
+				'right' => __( 'Right, text wrap (default)', 'md' ),
 				'left' => __( 'Left, text wrap', 'md' ),
 				'center' => __( 'Center, no text wrap', 'md' ),
 				'above_headline' => __( 'Before headline', 'md' ),

@@ -32,7 +32,6 @@ class md_loop extends md_api {
 		return array(
 			'term' => array(
 				'name' => $this->name,
-				'page_settings' => true,
 				'fields' => $fields
 			),
 			'admin_page' => array(
@@ -101,9 +100,7 @@ class md_loop extends md_api {
 	 */
 
 	public function term() {
-		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
 		$this->admin_template();
-		echo '</div>';
 	}
 
 	/**
@@ -140,11 +137,14 @@ class md_loop extends md_api {
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )
 				$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
-
-		include( 'loop-settings.php' );
-
-		$this->admin_script();
-	}
+	?>
+		<div class="md-widget md-toggle md-sep-small">
+			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
+			<div class="md-widget-item">
+				<?php include( 'loop-settings.php' ); ?>
+			</div>
+		</div>
+	<?php $this->admin_script(); }
 
 	/**
 	 * Admin scripts for Content settings.

@@ -42,7 +42,7 @@ function md_featured_image_position( $position = null ) {
 	if ( has_filter( 'md_filter_featured_image_position' ) )
 		return apply_filters( 'md_filter_featured_image_position', '' );
 
-	$default = md_setting( array( 'colors', 'featured_image', 'position' ) );
+	$default = md_setting( array( 'colors', 'featured_image', 'position' ), 'right' );
 
 	if ( in_the_loop() && ! is_singular() )
 		$position = md_meta( array( 'featured_image', 'position' ), null, $default );
