@@ -65,7 +65,7 @@ class md_typography extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Typography', 'md' ),
 				'parent' => 'md_settings',
-				'order' => 30,
+				'order' => 15,
 				'fields' => $fields
 			)
 		);
