@@ -132,6 +132,13 @@
 
 .page-title { padding-top: <?php echo $single; ?>px; }
 
+.page-title, .page-title .inner {
+	align-items: center;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
 .cover .page-headline { text-align: center; }
 
 .cover .page-description {
@@ -139,7 +146,7 @@
 	margin-right: auto;
 }
 
-.page-description { max-width: <?php echo $content_width; ?>px; }
+.page-description { max-width: <?php echo $post_width; ?>px; }
 
 .page-image { text-align: center; }
 
@@ -162,13 +169,6 @@
 		padding-top: <?php echo $triple; ?>px;
 	}
 	.header-cover .page-title.cover, .header-cover .headline-wrap.cover { padding-top: <?php echo $double; ?>px; }
-	.page-title.layout-left, .page-title.layout-right,
-	.page-title.layout-left .inner, .page-title.layout-right .inner {
-		align-items: center;
-		display: flex;
-		flex-flow: row wrap;
-		justify-content: center;
-	}
 	.cover .page-headline:not(:last-child),
 	.layout-center .page-image:not(:last-child),
 	.layout-above_headline .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }

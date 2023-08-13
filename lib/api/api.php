@@ -288,17 +288,11 @@ class md_api {
 		if ( wp_doing_ajax() )
 			return;
 
-		$order = 30;
 		$admin_fields = md_admin_fields();
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
-			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
-				if ( $this->_clean_id == 'page_cover' ) #weak sauce
-					$order = 10;
-				if ( $this->_clean_id == 'layout' )
-					$order = 20;
-				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );
-			}
+			foreach ( $admin_fields[$this->_clean_id] as $admin_field )
+				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ) );
 	}
 
 	/**

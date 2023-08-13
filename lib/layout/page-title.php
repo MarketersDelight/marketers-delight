@@ -21,10 +21,13 @@ class md_page_title {
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
+		if ( ! empty( $image['size'] ) )
+			add_action( 'wp_head', array( $this, 'inline_css' ) );
+
 		if ( ! empty( $cover['position'] ) )
 			$hook = 'md_hook_page_cover_headline';
 
-		if ( in_array( $image['position'], array( '', 'right', 'left', 'above_headline' ) ) )
+		if ( $image['position'] == 'above_headline' )
 			$image_order = 5;
 		elseif ( $image['position'] == 'below_headline' )
 			$image_order = 15;
@@ -40,6 +43,29 @@ class md_page_title {
 
 		if ( $this->get( 'description' ) )
 			add_action( 'md_hook_page_title', array( $this, 'description' ) );
+	}
+
+	/**
+	 * Print inline CSS to resize featured image across devices.
+	 *
+	 * @since 5.6
+	 */
+
+	public function inline_css() {
+		$image = $this->get( 'image' );
+		$devices = array( 'tablet' => 900, 'mobile' => 700 );
+		$selector = '.page-title .page-image';
+
+		echo "<style type=\"text/css\">\n";
+
+		if ( ! empty( $image['size']['desktop'] ) )
+			echo "$selector { flex-basis: " . esc_attr( $image['size']['desktop'] ) . "px; }\n";
+
+		foreach ( $devices as $device => $width )
+			if ( ! empty( $image['size'][$device] ) )
+				echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { flex-basis: " . esc_attr( $image['size'][$device] ) . "px; } }\n";
+
+		echo "</style>\n";
 	}
 
 	/**
@@ -88,6 +114,7 @@ class md_page_title {
 
 		$data['image']['position'] = md_featured_image_position();
 		$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );
+		$data['image']['size'] = md_module( array( 'featured_image', 'image_width' ) );
 
 		if ( isset( $key ) )
 			$data = $data[$key];

@@ -32,7 +32,8 @@ class md_loop extends md_api {
 		return array(
 			'term' => array(
 				'name' => $this->name,
-				'fields' => $fields
+				'fields' => $fields,
+				'callback' => array( $this, 'admin_template' )
 			),
 			'admin_page' => array(
 				'name' => $this->name,
@@ -94,16 +95,6 @@ class md_loop extends md_api {
 	}
 
 	/**
-	 * Add fields to terms interface.
-	 *
-	 * @since 5.1
-	 */
-
-	public function term() {
-		$this->admin_template();
-	}
-
-	/**
 	 * Add settings template and script to Page Settings sections.
 	 *
 	 * @since 5.6
@@ -114,14 +105,9 @@ class md_loop extends md_api {
 		$page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
 		$screen_base = ! empty( $page ) ? $page : $screen->base;
 		do_action( "md_layout_{$screen_base}_before_settings" );
-	?>
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
-			<div class="md-widget-item">
-				<?php $this->admin_template(); ?>
-			</div>
-		</div>
-	<?php do_action( "md_layout_{$screen_base}_after_settings" ); }
+		$this->admin_template();
+		do_action( "md_layout_{$screen_base}_after_settings" );
+	}
 
 	/**
 	 * Call template with required data passed down.

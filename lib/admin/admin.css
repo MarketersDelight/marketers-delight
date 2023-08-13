@@ -209,6 +209,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 
+
 /*------------------------------*\
 	$ELEMENTS
 \*------------------------------*/
@@ -609,7 +610,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	$FIELDS
 \*------------------------------*/
 
-.md-label-wrap { margin-top: 0; }
+.md-label-wrap, .md-field-row .md-range { margin-top: 0; }
 
 /* ROW */
 
@@ -1249,6 +1250,16 @@ a.md-circle-badge {
 	position: absolute;
 		right: 0;
 		top: 13px;
+}
+
+/* FEATURED IMAGE */
+
+.md-featured-image { position: relative; }
+
+.md-featured-image .md-devices {
+	position: absolute;
+		top: 0;
+		right: 0;
 }
 
 
