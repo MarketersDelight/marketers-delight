@@ -2931,6 +2931,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .stream-head .stream-head-title { margin-bottom: 5px; }
 .stream-head-image a { display: block; }
 .loop-stream .loop { position: relative; }
+.loop-stream .loop:not(:last-child) { padding-bottom: 28px; }
 .loop-stream .loop:before {
 	background-color: #AE2525;
 	content: '';
@@ -2986,6 +2987,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	color: #1E1E1E;
 	font-weight: 700;
 }
+.stream-go-back { margin-bottom: 28px; }
 .stream-excerpt:not(:last-child) { margin-bottom: 14px; }
 .stream-embed-content:not(:last-child) { margin-bottom: 9px; }
 .stream-list li { font-size: 0.9em; }
@@ -3000,11 +3002,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .stream-box {
 	cursor: pointer;
 	position: relative;
-	-moz-transition: 0.2s;
-	-ms-transition: 0.2s;
-	-o-transition: 0.2s;
-	-webkit-transition: 0.2s;
-	transition: 0.2s;
+	transition: 0.3s;
 }
 .stream-box:hover { opacity: 0.8; }
 .stream-icon {

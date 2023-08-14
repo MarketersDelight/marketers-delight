@@ -12,11 +12,13 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 function md_body_classes( $classes ) {
 	// Add custom body classes
 	$custom_classes = md_meta( array( 'scripts', 'body_class' ) );
+
 	if ( ! empty( $custom_classes ) ) {
 		$custom_classes = explode( ' ' , $custom_classes );
 		foreach ( $custom_classes as $custom_class )
 			$classes[] = esc_attr( $custom_class );
 	}
+
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
 		'single-format-standard',
@@ -462,6 +464,10 @@ function md_post_nav() {
 
 function md_pagination() {
 	if ( is_singular() ) return;
+	global $wp_query;
+	$big = 999999999;
+	if ( $wp_query->max_num_pages <= 1 )
+		return;
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
 	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
