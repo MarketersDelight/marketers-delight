@@ -276,7 +276,7 @@ final class marketers_delight {
 	public function templates() {
 		$breadcrumbs = md_has_breadcrumbs();
 		if ( $breadcrumbs ) {
-			$hook = 'md_hook_before_content_box';
+			$hook = 'md_hook_content';
 			if ( $breadcrumbs == 'before_page_title' ) {
 				if ( is_singular() ) {
 					$cover = md_cover();

@@ -41,15 +41,10 @@
 	.content-box .inner {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
-		padding-top: <?php echo $half; ?>px;
 	}
 }
 
 @media all and (min-width: 900px) {
-	.content-box .inner {
-		padding-bottom: <?php echo $single; ?>px;
-		padding-top: <?php echo $single; ?>px;
-	}
 	.content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
@@ -92,17 +87,10 @@
 
 /* BREADCRUMBS */
 
-.breadcrumbs + .content-box .inner { padding-top: <?php echo $half; ?>px; }
-
 .breadcrumbs {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
-
-.header .breadcrumbs, .page-title .breadcrumbs {
-	margin-bottom: <?php echo $half; ?>px;
-	padding: 0;
+	margin-bottom: <?php echo $half; ?>px
 }
 
 .breadcrumbs a { text-decoration: underline; }
@@ -120,75 +108,57 @@
 
 /* PAGE TITLE */
 
-.headline-wrap.cover {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
-
-.header .headline-wrap.cover {
+.header .headline-wrap.cover,
+.page-title.cover {
 	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $mid; ?>px;
+	padding-top: <?php echo $double; ?>px;
 }
 
-.page-title { padding-top: <?php echo $single; ?>px; }
+.header .headline-wrap { text-align: center; }
+
+.header .page-headline {
+	margin-bottom: <?php echo $single; ?>px;
+	text-align: center;
+}
+
+
+.headline-wrap.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
+
+
+
 
 .page-title, .page-title .inner {
 	align-items: center;
 	display: flex;
 	flex-flow: row wrap;
-	justify-content: center;
 }
 
-.cover .page-headline { text-align: center; }
+.page-title.cover, .page-title.cover .inner { justify-content: center; }
 
-.cover .page-description {
-	margin-left: auto;
-	margin-right: auto;
+.content .page-title { margin-bottom: <?php echo $single; ?>px; }
+
+.layout-center .page-image,
+.layout-above_headline .page-image,
+.layout-below_headline .page-description { margin-bottom: <?php echo $half; ?>px; }
+
+.layout-left .page-image, .layout-right .page-image { flex-basis: 25%; }
+
+.page-description {
+	flex: 1;
+	max-width: <?php echo $post_width; ?>px;
 }
 
-.page-description { max-width: <?php echo $post_width; ?>px; }
+.layout-left .page-image + .page-description { margin-left: <?php echo $single; ?>px; }
+.layout-right .page-image + .page-description { margin-right: <?php echo $single; ?>px; }
 
-.page-image { text-align: center; }
-
-.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.layout-right .page-image { order: 2; }
 
 @media all and (min-width: 800px) {
 	.headline-wrap.cover {
-		margin-left: 0;
-		margin-right: 0;
-		padding: <?php echo $mid; ?>px <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
 		max-width: 100%;
+		padding-left: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
+		padding-right: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
 	}
-	.header .headline-wrap.cover {
-		padding-bottom: <?php echo $double; ?>px;
-		padding-top: <?php echo $triple; ?>px;
-		text-align: center;
-	}
-	.page-title.cover {
-		padding-bottom: <?php echo $mid; ?>px;
-		padding-top: <?php echo $triple; ?>px;
-	}
-	.header-cover .page-title.cover, .header-cover .headline-wrap.cover { padding-top: <?php echo $double; ?>px; }
-	.cover .page-headline:not(:last-child),
-	.layout-center .page-image:not(:last-child),
-	.layout-above_headline .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-	.layout-left .page-headline, .layout-right .page-headline { flex: 0 0 100%; }
-	.layout-left .page-description, .layout-right .page-description {
-		flex: 0 0 80%;
-		margin-left: 0;
-		margin-right: 0;
-	}
-	.layout-left .page-image, .layout-right .page-image { flex: 0 0 20%; }
-	.layout-left .page-image { margin-right: <?php echo $single; ?>px; }
-	.layout-right .page-image {
-		order: 1;
-		margin-left: <?php echo $single; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	.page-title { padding-bottom: <?php echo $single; ?>px; }
-	.page-image:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {

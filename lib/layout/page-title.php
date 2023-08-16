@@ -17,14 +17,14 @@ class md_page_title {
 
 	public function templates() {
 		$image_order = 10;
-		$hook = 'md_hook_before_content_box';
+		$hook = 'md_hook_content';
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
 		if ( ! empty( $image['size'] ) )
 			add_action( 'wp_head', array( $this, 'inline_css' ) );
 
-		if ( ! empty( $cover['position'] ) )
+		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_headline';
 
 		if ( $image['position'] == 'above_headline' )

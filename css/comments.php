@@ -7,6 +7,7 @@
 .comments .comments-list {
 	margin-bottom: 0;
 	margin-left: 0;
+	position: relative;
 }
 
 .comments .children {

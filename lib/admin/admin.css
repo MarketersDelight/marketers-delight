@@ -1595,6 +1595,8 @@ a.md-circle-badge {
 
 .md-header-logo-html, .md-has-logo-html .md-header-display { display: none; }
 .md-has-logo-html .md-header-logo-html { display: block; }
+.md-header-logo .md-devices { margin-top: 25px; }
+
 
 
 /*------------------------------------*\

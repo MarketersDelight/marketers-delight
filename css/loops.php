@@ -162,15 +162,14 @@
 
 @media all and (max-width: 800px) {
 	.post-box:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-	.headline-wrap, .the-content, .author-box, .comments {
+	.headline-wrap, .the-content, .author-box, .comments,
+	.loop-teasers .loop {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
 	/* DEFAULT */
 	.single .loop-default.style-default .inner { padding: 0; }
 	.single .loop-default.style-default .sidebar { padding: <?php echo $half; ?>px; }
-	/* TEASERS */
-	.loop-teasers .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
 }
 
 @media all and (min-width: 800px) {
