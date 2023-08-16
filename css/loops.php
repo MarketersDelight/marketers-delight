@@ -167,9 +167,6 @@
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
-	/* DEFAULT */
-	.single .loop-default.style-default .inner { padding: 0; }
-	.single .loop-default.style-default .sidebar { padding: <?php echo $half; ?>px; }
 }
 
 @media all and (min-width: 800px) {

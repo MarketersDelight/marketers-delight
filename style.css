@@ -1314,9 +1314,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-left: 14px;
 		padding-right: 14px;
 	}
-	/* DEFAULT */
-	.single .loop-default.style-default .inner { padding: 0; }
-	.single .loop-default.style-default .sidebar { padding: 14px; }
 }
 @media all and (min-width: 800px) {
 	.post-box:not(:last-child), .post-box.has-cover .headline-wrap { margin-bottom: 28px; }
@@ -3112,13 +3109,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 /* QUERIES */
 @media all and (max-width: 900px) {
-	.loop-stream .content + .sidebar { padding-top: 28px; }
-	.stream-widget .stream-columns > .col1 { width: 12%; }
-	.stream-widget .stream-columns > .col2 { width: 88%; }
-	.loop-stream .loop {
-		padding-left: 14px;
-		padding-right: 14px;
-	}
 	.stream-item { padding: 14px; }
 	.stream-head-text {
 		font-size: 0.85em;

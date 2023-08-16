@@ -7,7 +7,7 @@
 	) ); ?>
 </div>
 
-<div id="md_cover_settings" style="display: <?php echo ! empty( $cover_position ) ? 'block' : 'none'; ?>">
+<div id="md_cover_settings">
 
 	<div class="md-sep-small">
 		<?php $this->fields->field( 'cover_image', array(
@@ -18,7 +18,7 @@
 		) ); ?>
 	</div>
 
-	<div id="md_cover_overlay" class="md-sep-small" style="display: <?php echo ( empty( $disable_overlay ) && empty( $disable_overlay_single ) ) || ( ! empty( $disable_overlay_single ) && ! empty( $disable_overlay ) ) ? 'block' : 'none'; ?>">
+	<div id="md_cover_overlay" class="md-sep-small">
 		<?php $this->fields->field( 'bg_color', array(
 			'type' => 'color',
 			'label' =>  __( 'Cover Overlay', 'md' ),

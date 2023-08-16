@@ -115,14 +115,6 @@ class md_page_cover extends md_api {
 		$screen = get_current_screen();
 		$values = $this->_data( 'values' );
 		$sanitize = $this->sanitize;
-		$default_position = md_setting( array( 'colors', 'page_cover', 'cover_position' ) );
-		$show_on_posts = md_setting( array( $screen->post_type, 'page_cover', 'text_color', 'posts' ) );
-		$show_on_categories = md_setting( array( $screen->post_type, 'page_cover', 'text_color', 'categories' ) );
-
-		if ( ( in_array( $screen->base, array( 'post', 'post-new' ) ) && $show_on_posts ) || $screen->base == 'term' && $show_on_categories )
-			$cover_position = md_setting( array( $screen->post_type, 'page_cover', 'cover_position' ), $default_position );
-		else
-			$cover_position = $this->fields->module( 'cover_position', $default_position );
 
 		if ( ! in_array( $screen->base, array( 'post', 'post-new' ) ) )
 			if ( $screen->base == 'term' )
@@ -133,7 +125,6 @@ class md_page_cover extends md_api {
 			}
 
 		$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
-		$disable_overlay_single = $this->fields->module( array( 'text_color', 'disable_cover' ) );
 		$overlay_label = $disable_overlay ? __( 'Add overlay', 'md' ) : __( 'Remove overlay', 'md' );
 
 		$cover_settings = array_merge( $cover_settings, array(
@@ -157,9 +148,6 @@ class md_page_cover extends md_api {
 	?>
 		<script>
 			( function() {
-				document.getElementById( '<?php echo $prefix; ?>_cover_position' ).onchange = function() {
-					document.getElementById( 'md_cover_settings' ).style.display = this.value !== '' ? 'block' : 'none';
-				}
 				document.getElementById( '<?php echo $prefix; ?>_text_color_disable_cover' ).onchange = function() {
 					<?php if ( ! empty( $disable_overlay ) ) : ?>
 					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'block' : 'none';
