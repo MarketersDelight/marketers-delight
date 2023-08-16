@@ -133,31 +133,7 @@ class md_page_cover extends md_api {
 		) );
 
 		include( 'admin-fields.php' );
-		$this->scripts();
 	}
-
-	/**
-	 * Toggle scripts for Cover Image admin controls.
-	 *
-	 * @since 4.7
-	 */
-
-	public function scripts() {
-		$prefix = $this->_prefix();
-		$disable_overlay = md_setting( array( 'colors', 'page_cover', 'cover_styles', 'disable_cover' ) );
-	?>
-		<script>
-			( function() {
-				document.getElementById( '<?php echo $prefix; ?>_text_color_disable_cover' ).onchange = function() {
-					<?php if ( ! empty( $disable_overlay ) ) : ?>
-					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'block' : 'none';
-					<?php else : ?>
-					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'none' : 'block';
-					<?php endif; ?>
-				}
-			})();
-		</script>
-	<?php }
 
 	/**
 	 * Load featured image in various positions across templates.
