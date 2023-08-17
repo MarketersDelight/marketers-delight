@@ -131,7 +131,10 @@ class md_page_title {
 	public function classes() {
 		$image = $this->get( 'image' );
 		$classes = array( 'page-title' );
-		$classes[] = 'layout-' . $image['position'];
+
+		if ( ! empty( $image['id'] ) )
+			$classes[] = 'layout-' . $image['position'];
+
 		return md_cover_classes( $classes );
 	}
 

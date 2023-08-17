@@ -49,12 +49,6 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
-	/* CONTENT FULL */
-	.content-full .content {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.content-full .content { width: 100%; }
 	/* CONTENT - SIDEBAR */
 	.content-sidebar .content, .content-sidebar .sidebar { float: left; }
 	.content-sidebar .sidebar { padding-left: <?php echo $single; ?>px; }
@@ -73,18 +67,6 @@
 	<?php endif; ?>
 }
 
-@media all and (max-width: 800px) {
-	.content-box .inner {
-		padding-left: 0;
-		padding-right: 0;
-		padding-top: 0;
-	}
-	.sidebar {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
 /* BREADCRUMBS */
 
 .breadcrumbs {
@@ -99,33 +81,17 @@
 
 .breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.breadcrumbs {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
 /* PAGE TITLE */
 
-.header .headline-wrap.cover,
 .page-title.cover {
 	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $double; ?>px;
+	padding-top: <?php echo $mid; ?>px;
 }
-
-.header .headline-wrap { text-align: center; }
 
 .header .page-headline {
 	margin-bottom: <?php echo $single; ?>px;
 	text-align: center;
 }
-
-
-.headline-wrap.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
-
-
-
 
 .page-title, .page-title .inner {
 	align-items: center;
@@ -137,6 +103,8 @@
 
 .content .page-title { margin-bottom: <?php echo $single; ?>px; }
 
+.page-headline { flex-basis: 100%; }
+
 .layout-center .page-image,
 .layout-above_headline .page-image,
 .layout-below_headline .page-description { margin-bottom: <?php echo $half; ?>px; }
@@ -145,7 +113,7 @@
 
 .page-description {
 	flex: 1;
-	max-width: <?php echo $post_width; ?>px;
+	max-width: <?php echo $content_width; ?>px;
 }
 
 .layout-left .page-image + .page-description { margin-left: <?php echo $single; ?>px; }
@@ -154,15 +122,11 @@
 .layout-right .page-image { order: 2; }
 
 @media all and (min-width: 800px) {
-	.headline-wrap.cover {
-		max-width: 100%;
-		padding-left: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
-		padding-right: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
-	}
+	.header .headline-wrap.cover, .page-title.cover { padding-top: <?php echo $double; ?>px; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.page-title {
+	.page-title.cover {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -207,18 +171,21 @@
 
 /* POST NAV */
 
+.post-nav { margin-left: -<?php echo $half; ?>px; }
+
 .post-nav p { margin-bottom: 0; }
 
 .post-nav a {
 	display: block;
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
 	text-decoration: none;
 }
 
 .post-nav-next { text-align: right; }
 
-.post-nav-previous, .post-nav-next { flex: 1; }
+.post-nav-previous, .post-nav-next {
+	flex: 1;
+	margin-left: <?php echo $half; ?>px;
+}
 
 .post-nav-title { color: <?php echo $colors['site']['text']; ?>; }
 
@@ -278,4 +245,3 @@
 
 .page-numbers.prev { margin-right: <?php echo $third; ?>px; }
 .page-numbers.next { margin-left: <?php echo $third; ?>px; }
-

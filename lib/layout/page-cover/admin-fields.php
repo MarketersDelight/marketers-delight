@@ -16,18 +16,22 @@
 	) ); ?>
 </div>
 
-<div class="md-sep-small">
-	<?php $this->fields->field( 'bg_color', array(
-		'type' => 'color',
-		'label' =>  __( 'Cover Overlay', 'md' ),
-		'default' => md_setting( array( 'colors', 'page_cover', 'cover_color' ), $values['colors']['header']['cover_color'] )
-	) ); ?>
-</div>
+<div class="columns-3 columns-single">
 
-<div class="md-sep-small">
-	<?php $this->fields->field( 'text_color', array(
-		'type' => 'checkbox',
-		'label' => __( 'Cover Settings', 'md' ),
-		'options' => $cover_settings
-	) ); ?>
+	<div class="col md-sep-small">
+		<?php $this->fields->field( 'bg_color', array(
+			'type' => 'color',
+			'label' =>  __( 'Cover Overlay', 'md' ),
+			'default' => md_setting( array( 'colors', 'page_cover', 'cover_color' ), $values['colors']['header']['cover_color'] )
+		) ); ?>
+	</div>
+
+	<div class="col md-sep-small">
+		<?php $this->fields->field( 'text_color', array(
+			'type' => 'checkbox',
+			'label' => __( 'Cover Settings', 'md' ),
+			'options' => $cover_settings
+		) ); ?>
+	</div>
+
 </div>

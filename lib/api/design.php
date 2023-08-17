@@ -307,7 +307,7 @@ class md_design {
 					'font_size' => array(
 						'desktop' => round( $df * 0.95 ),
 						'tablet' => round( $df * 0.9 ),
-						'mobile' => round( $df * 0.85 )
+						'mobile' => round( $df * 0.9 )
 					),
 					'line_height' => array(
 						'desktop' => round( $line_height * 0.9 ),

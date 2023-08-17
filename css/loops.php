@@ -8,15 +8,13 @@
 
 .post-box, .headline-wrap { position: relative; }
 
+.headline-wrap.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
+
+.header .headline-wrap { text-align: center; }
+
 .content .headline-wrap { margin-bottom: <?php echo $half; ?>px; }
 
-.the-content, .author-box,
-.comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-
-.loop .post-box.has-cover.image-above_headline .featured-image,
-.post-box.has-cover.image-below_headline .headline-wrap { margin-bottom: 0; }
-
-.the-content:first-child { padding-top: <?php echo $single; ?>px; }
+.the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 /* DEFAULT */
 
@@ -27,10 +25,9 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.loop-default.style-default .featured-image,
-.post-box.image-below_headline .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
+.loop-default.style-default .post-box.has-cover, .loop-default.style-default .post-box.has-top-image { padding-top: 0; }
 
-.loop-default.style-default .post-box.image-above_headline { padding-top: 0; }
+.loop-default .featured-image { margin-bottom: <?php echo $half; ?>px; }
 
 /* TEASERS */
 
@@ -115,10 +112,6 @@
 
 .loop-blocks .overlay { display: none; }
 
-/* RESETS */
-
-.loop-default.style-default .post-box.has-cover, .loop-default.style-default .post-box.has-top-image { padding-top: 0; }
-
 /* QUERIES */
 
 @media all and (min-width: 600px) {
@@ -151,6 +144,10 @@
 }
 
 @media all and (max-width: 700px) {
+	.single .loop-default.style-default .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
 	/* BLOCKS */
 	.loop-blocks .post-footer { flex-flow: row wrap; }
 	.loop-blocks .post-footer-meta { text-align: right; }
@@ -161,24 +158,26 @@
 }
 
 @media all and (max-width: 800px) {
-	.post-box:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-	.headline-wrap, .the-content, .author-box, .comments,
-	.loop-teasers .loop {
+	.content { margin-bottom: <?php echo $single; ?>px; }
+	.post-box { margin-bottom: <?php echo $half; ?>px; }
+	.content .has-image .headline-wrap.cover { margin-bottom: 0; }
+	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
 }
 
 @media all and (min-width: 800px) {
-	.post-box:not(:last-child), .post-box.has-cover .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
+	.post-box, .content .headline-wrap, .loop-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
 	.headline-wrap, .the-content, .author-box, .comments {
 		margin-left: auto;
 		margin-right: auto;
 	}
 	.headline-wrap, .the-content, .author-box, .comments { max-width: <?php echo ( ( $post_width / $content_width ) * 100 ); ?>%; }
-	.content-full .headline-wrap {
-		padding: <?php echo $half; ?>px;
-		text-align: center;
+	.headline-wrap.cover {
+		max-width: 100%;
+		padding-left: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
+		padding-right: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
 	}
 	/* TEASERS */
 	.loop-teasers .loop {
@@ -191,11 +190,6 @@
 		flex: 0 1 50%;
 		padding-left: <?php echo $half; ?>px;
 	}
-}
-
-@media all and (min-width: 900px) {
-	.the-content, .author-box, .comments { max-width: <?php echo ( ( $post_width / $content_width ) * 100 ); ?>%; }
-	.content-full .the-content, .content-full .author-box, .content-full .comments { max-width: <?php echo ( ( $post_width / $site_width ) * 100 ); ?>%; }
 }
 
 @media all and (max-width: 900px) {
