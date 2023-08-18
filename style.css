@@ -1168,6 +1168,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: 28px; }
 .loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay,
 .loop-default.style-default .post-box { border-radius: 5px 5px 0 0; }
+.loop-default.style-default .post-box.has-headline-cover,
+.loop-default.style-default .post-box.has-top-image { padding-top: 0; }
 /* DEFAULT */
 .loop-default.style-default .post-box {
 	background-color: #FFFFFF;
@@ -1176,7 +1178,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding-top: 28px;
 }
 .loop .loop-default.style-default .post-box { border-radius: 5px; }
-.loop-default.style-default .post-box.has-cover,
+.loop-default.style-default .loop .post-box.has-cover,
 .loop-default.style-default .post-box.has-top-image { padding-top: 0; }
 .loop-default .featured-image { margin-bottom: 14px; }
 /* TEASERS */
@@ -1266,11 +1268,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 @media all and (max-width: 700px) {
-	.single .loop-default.style-default .post-box,
-	.page .loop-default.style-default .post-box {
-		margin-left: -14px;
-		margin-right: -14px;
-	}
 	/* BLOCKS */
 	.loop-blocks .post-footer { flex-flow: row wrap; }
 	.loop-blocks .post-footer-meta { text-align: right; }
@@ -1287,7 +1284,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-left: 14px;
 		padding-right: 14px;
 	}
-	.single .has-cover + .content-box.loop-default.style-default .post-box.has-image { padding-top: 0; }
+	.single .has-cover + .content-box.loop-default.style-default .post-box.has-image,
+	.loop-default.style-default .post-box.has-cover.has-inline-image { padding-top: 0; }
 }
 @media all and (min-width: 800px) {
 	.post-box, .loop-default .featured-image { margin-bottom: 28px; }
@@ -1302,7 +1300,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 	.headline-wrap.cover, .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 	.loop-default.style-default .post-box { border-radius: 5px; }
-	.loop-default.style-default .post-box.has-header-cover { padding-top: 28px; }
 	/* CONTENT FULL */
 	.content-full .content { width: 100%; }
 	.content-full .the-content, .content-full .author-box, .content-full .comments {
@@ -1323,6 +1320,11 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 @media all and (max-width: 900px) {
+	.single .loop-default.style-default .post-box,
+	.page .loop-default.style-default .post-box {
+		margin-left: -14px;
+		margin-right: -14px;
+	}
 	/* BLOCKS */
 	.loop-blocks .loop { padding: 14px 14px 0; }
 }

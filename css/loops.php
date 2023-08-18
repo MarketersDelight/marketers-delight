@@ -19,6 +19,9 @@
 .loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay,
 .loop-default.style-default .post-box { border-radius: 5px 5px 0 0; }
 
+.loop-default.style-default .post-box.has-headline-cover,
+.loop-default.style-default .post-box.has-top-image { padding-top: 0; }
+
 /* DEFAULT */
 
 .loop-default.style-default .post-box {
@@ -30,7 +33,7 @@
 
 .loop .loop-default.style-default .post-box { border-radius: 5px; }
 
-.loop-default.style-default .post-box.has-cover,
+.loop-default.style-default .loop .post-box.has-cover,
 .loop-default.style-default .post-box.has-top-image { padding-top: 0; }
 
 .loop-default .featured-image { margin-bottom: <?php echo $half; ?>px; }
@@ -150,11 +153,6 @@
 }
 
 @media all and (max-width: 700px) {
-	.single .loop-default.style-default .post-box,
-	.page .loop-default.style-default .post-box {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
 	/* BLOCKS */
 	.loop-blocks .post-footer { flex-flow: row wrap; }
 	.loop-blocks .post-footer-meta { text-align: right; }
@@ -172,7 +170,8 @@
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
-	.single .has-cover + .content-box.loop-default.style-default .post-box.has-image { padding-top: 0; }
+	.single .has-cover + .content-box.loop-default.style-default .post-box.has-image,
+	.loop-default.style-default .post-box.has-cover.has-inline-image { padding-top: 0; }
 }
 
 @media all and (min-width: 800px) {
@@ -188,7 +187,6 @@
 	}
 	.headline-wrap.cover, .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 	.loop-default.style-default .post-box { border-radius: 5px; }
-	.loop-default.style-default .post-box.has-header-cover { padding-top: <?php echo $single; ?>px; }
 	/* CONTENT FULL */
 	.content-full .content { width: 100%; }
 	.content-full .the-content, .content-full .author-box, .content-full .comments {
@@ -210,6 +208,11 @@
 }
 
 @media all and (max-width: 900px) {
+	.single .loop-default.style-default .post-box,
+	.page .loop-default.style-default .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
 	/* BLOCKS */
 	.loop-blocks .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
 }
