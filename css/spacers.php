@@ -51,7 +51,7 @@
 
 /* WRAPS */
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 800px) {
 	.aligncenter.wrap, .alignleft.wrap, .alignfull { margin-left: -<?php echo $mid; ?>px; }
 	.aligncenter.wrap, .alignright.wrap, .alignfull { margin-right: -<?php echo $mid; ?>px; }
 
@@ -65,7 +65,7 @@
 	.content-full .aligncenter.wrap-small, .content-full .alignright.wrap-small, .content-full .alignwide { margin-right: -<?php echo $quad; ?>px; }
 }
 
-@media all and (max-width: 900px) {
+@media all and (max-width: 800px) {
 	/* TRIPLE */
 	.mt-quad:not(:last-child) { margin-top: <?php echo $triple; ?>px; }
 	.mb-quad:not(:last-child) { margin-bottom: <?php echo $triple; ?>px; }
@@ -73,15 +73,14 @@
 	.mt-triple:not(:last-child) { margin-top: <?php echo $double; ?>px; }
 	.mb-triple:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
 	/* WRAPS */
-	.alignright.wrap { margin-right: -<?php echo $half; ?>px; }
-	.alignleft.wrap { margin-left: -<?php echo $half; ?>px; }
-	.alignfull, .aligncenter.wrap, .alignfull {
+	.alignwide, .alignfull,
+	.alignleft.wrap, .alignright.wrap, .aligncenter.wrap {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
 }
 
-@media all and (max-width: 800px) {
+@media all and (max-width: 700px) {
 	/* DOUBLE */
 	.mt-quad:not(:last-child) { margin-top: <?php echo $double; ?>px; }
 	.mb-quad:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
@@ -89,8 +88,6 @@
 	.mt-triple:not(:last-child) { margin-top: <?php echo $single; ?>px; }
 	.mb-triple:not(:last-child), .mb-double:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	/* ALIGN */
-	.alignright.wrap { margin-left: -<?php echo $half; ?>px; }
-	.alignleft.wrap { margin-right: -<?php echo $half; ?>px; }
 	.alignright, .alignleft {
 		clear: both;
 		display: block;

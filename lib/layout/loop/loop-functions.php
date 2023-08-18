@@ -139,13 +139,19 @@ function md_post_classes( $classes ) {
 	$position = md_featured_image_position();
 	$cover = md_cover();
 
-	if ( ! empty( $cover['position'] ) && $cover['position'] !== 'headline_cover' && ! is_singular() )
+	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = 'has-cover';
+		// silly
+		if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+			$classes = array_diff( $classes, array( 'has-cover' ) );
+	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
 		$classes[] = 'has-image';
 		if ( $position == 'above_headline' )
 			$classes[] = 'has-top-image';
+		elseif ( in_array( $position, array( '', 'left', 'right' ) ) )
+			$classes[] = 'has-inline-image';
 	}
 
 	return $classes;

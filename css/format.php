@@ -132,6 +132,7 @@ body {
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
+	margin-bottom: <?php echo $single; ?>px;
 }
 
 .alignleft {

@@ -31,42 +31,6 @@
 	position: relative;
 }
 
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed !important; }
-}
-
-/* STRUCTURE  */
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.content-box .inner {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
-@media all and (min-width: 900px) {
-	.content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
-	.content-width { max-width: <?php echo $content_width; ?>px; }
-	.post-width { max-width: <?php echo $post_width; ?>px; }
-	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
-	/* CONTENT - SIDEBAR */
-	.content-sidebar .content, .content-sidebar .sidebar { float: left; }
-	.content-sidebar .sidebar { padding-left: <?php echo $single; ?>px; }
-	.content-sidebar.sidebar-left .content { float: right; }
-	<?php if ( ! empty( $colors['sidebar']['bg_color'] ) ) : ?>
-		.content-sidebar .inner { display: flex; }
-		<?php if ( md_setting( array( 'content', 'layout' ) ) == 'sidebar_content' ) : ?>
-			.content-sidebar.sidebar-left .sidebar { order: 1; }
-			.content-sidebar.sidebar-left .content { order: 2; }
-		<?php endif; ?>
-	<?php else : ?>
-		.content-sidebar.sidebar-left .sidebar {
-			padding-left: 0;
-			padding-right: <?php echo $single; ?>px;
-		}
-	<?php endif; ?>
-}
-
 /* BREADCRUMBS */
 
 .breadcrumbs {
@@ -121,17 +85,6 @@
 
 .layout-right .page-image { order: 2; }
 
-@media all and (min-width: 800px) {
-	.header .headline-wrap.cover, .page-title.cover { padding-top: <?php echo $double; ?>px; }
-}
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.page-title.cover {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
 /* AUTHOR BOX */
 
 .author-box {
@@ -160,14 +113,6 @@
 .author-link.twitter .md-icon-twitter { color: #fff; }
 
 .author-link.twitter a { color: #1da1f2; }
-
-@media all and (min-width: 900px) {
-	.author-box {
-		border-radius: 5px;
-		padding-bottom: <?php echo $single; ?>px;
-		padding-top: <?php echo $single; ?>px;
-	}
-}
 
 /* POST NAV */
 
@@ -245,3 +190,52 @@
 
 .page-numbers.prev { margin-right: <?php echo $third; ?>px; }
 .page-numbers.next { margin-left: <?php echo $third; ?>px; }
+
+/* QUERIES */
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.content-box .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+	.page-title.cover {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+}
+
+@media all and (min-width: 900px) {
+	.content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
+	.content-width { max-width: <?php echo $content_width; ?>px; }
+	.post-width { max-width: <?php echo $post_width; ?>px; }
+	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
+	/* CONTENT - SIDEBAR */
+	.content-sidebar .content, .content-sidebar .sidebar { float: left; }
+	.content-sidebar .sidebar { padding-left: <?php echo $single; ?>px; }
+	.content-sidebar.sidebar-left .content { float: right; }
+	<?php if ( ! empty( $colors['sidebar']['bg_color'] ) ) : ?>
+		.content-sidebar .inner { display: flex; }
+		<?php if ( md_setting( array( 'content', 'layout' ) ) == 'sidebar_content' ) : ?>
+			.content-sidebar.sidebar-left .sidebar { order: 1; }
+			.content-sidebar.sidebar-left .content { order: 2; }
+		<?php endif; ?>
+	<?php else : ?>
+		.content-sidebar.sidebar-left .sidebar {
+			padding-left: 0;
+			padding-right: <?php echo $single; ?>px;
+		}
+	<?php endif; ?>
+	/* AUTHOR BOX */
+	.author-box {
+		padding-bottom: <?php echo $single; ?>px;
+		padding-top: <?php echo $single; ?>px;
+	}
+}
+
+@media all and (min-width: 800px) {
+	.header .headline-wrap.cover, .page-title.cover { padding-top: <?php echo $double; ?>px; }
+}
+
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed !important; }
+}
