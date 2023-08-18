@@ -271,12 +271,12 @@ class md_design {
 					'font_size' => array(
 						'desktop' => $df,
 						'tablet' => $tf,
-						'mobile' => $mf
+						'mobile' => $tf
 					),
 					'line_height' => array(
 						'desktop' => $line_height,
 						'tablet' => round( $tablet * $g ),
-						'mobile' => round( $mobile * $g )
+						'mobile' => round( $tablet * $g )
 					)
 				),
 				'site_title' => array(

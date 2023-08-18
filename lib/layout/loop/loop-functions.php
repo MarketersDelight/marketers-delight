@@ -143,7 +143,7 @@ function md_post_classes( $classes ) {
 		$classes[] = 'has-cover';
 		// silly
 		if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
-			$classes = array_diff( $classes, array( 'has-cover' ) );
+			$classes[] = 'has-header-cover';
 	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {

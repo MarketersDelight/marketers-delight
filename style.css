@@ -129,7 +129,7 @@ abbr, acronym {
 }
 .trigger .trigger-text {
 	font-size: 17px;
-	line-height: 24px;
+	line-height: 26px;
 	margin-left: 5px;
 }
 .hide-label .trigger-text { display: none; }
@@ -850,11 +850,9 @@ h6, .micro-title {
 	margin-left: 6px;
 	margin-right: 3px;
 }
-@media all and (min-width: 900px) {
-	.text-intro, .intro, .subtitle, .page-description {
-		font-size: 20px;
-		line-height: 31px;
-	}
+.text-intro, .intro, .subtitle {
+	font-size: 20px;
+	line-height: 31px;
 }
 /* LISTS */
 .list, .list > ul, ul.list-check { list-style: none; }
@@ -1151,6 +1149,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 @media all and (min-width: 800px) {
 	.header .headline-wrap.cover, .page-title.cover { padding-top: 56px; }
+	.page-description {
+		font-size: 20px;
+		line-height: 31px;
+	}
 }
 @media all and (max-width: 600px) {
 	#wpadminbar { position: fixed !important; }
@@ -1164,7 +1166,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .header .headline-wrap { text-align: center; }
 .content .headline-wrap { margin-bottom: 28px; }
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: 28px; }
-.loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
+.loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay,
+.loop-default.style-default .post-box { border-radius: 5px 5px 0 0; }
 /* DEFAULT */
 .loop-default.style-default .post-box {
 	background-color: #FFFFFF;
@@ -1299,6 +1302,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 	.headline-wrap.cover, .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 	.loop-default.style-default .post-box { border-radius: 5px; }
+	.loop-default.style-default .post-box.has-header-cover { padding-top: 28px; }
 	/* CONTENT FULL */
 	.content-full .content { width: 100%; }
 	.content-full .the-content, .content-full .author-box, .content-full .comments {
@@ -1625,8 +1629,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 @media all and (max-width: 700px) {
 	.header {
-					font-size: 15px;
-							line-height: 24px;
+					font-size: 16px;
+							line-height: 26px;
 			}
 	.site-title {
 		font-size: 19px;

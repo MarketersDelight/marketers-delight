@@ -16,7 +16,8 @@
 
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
+.loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay,
+.loop-default.style-default .post-box { border-radius: 5px 5px 0 0; }
 
 /* DEFAULT */
 
@@ -187,6 +188,7 @@
 	}
 	.headline-wrap.cover, .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 	.loop-default.style-default .post-box { border-radius: 5px; }
+	.loop-default.style-default .post-box.has-header-cover { padding-top: <?php echo $single; ?>px; }
 	/* CONTENT FULL */
 	.content-full .content { width: 100%; }
 	.content-full .the-content, .content-full .author-box, .content-full .comments {

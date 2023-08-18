@@ -234,6 +234,10 @@
 
 @media all and (min-width: 800px) {
 	.header .headline-wrap.cover, .page-title.cover { padding-top: <?php echo $double; ?>px; }
+	.page-description {
+		font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+		line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
+	}
 }
 
 @media all and (max-width: 600px) {
