@@ -15,7 +15,7 @@ class md_header_templates {
 	 */
 
 	public function template() {
-		$data = unserialize( md_setting( array( 'header', 'builder_data' ) ) );
+		$data = md_get_builder( 'header', 'data' );
 		$header_center = md_setting( array( 'header', 'layout' ) ) == 'flyer' ? true : false;
 		$fields = md_setting( array( 'header', 'builder' ) );
 
@@ -65,7 +65,7 @@ class md_header_templates {
  	 */
 
 	public function header_triggers( $args = null ) {
-		$elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
+		$elements = md_get_builder( 'header' );
 
 		echo '<div class="header-triggers">';
 
@@ -121,7 +121,7 @@ class md_header_templates {
 	 */
 
 	public function header_menu_trigger() {
-		$elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
+		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['menu'][0] ) ? $elements['menu'][0] : '';
 		$nav_menu_title = md_get_menu_name( 'header' );
 		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), $nav_menu_title );
@@ -166,7 +166,7 @@ class md_header_templates {
 	 */
 
 	public function header_search_trigger() {
-		$elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
+		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['search'][0] ) ? $elements['search'][0] : '';
 		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), __( 'Search', 'md' ) );
 		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );

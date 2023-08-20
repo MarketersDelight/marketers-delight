@@ -20,12 +20,14 @@ function md_header_wrap_classes() {
  */
 
 function md_header_classes() {
+	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
 	$classes = array();
 	$classes[] = 'header';
-	$classes[] =  'header-' . md_setting( array( 'header', 'layout' ), 'standard' );
+	$classes[] =  esc_attr( "header-{$layout}" );
 
 	if ( md_has_logo() )
 		$classes[] = 'has-logo';
+
 
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 
@@ -124,7 +126,7 @@ function md_header_menu() {
  */
 
 function md_has_header_search() {
-	$header_elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
+	$header_elements = md_get_builder( 'header' );
 	return ( ! empty( $header_elements['search'] ) ? true : false );
 }
 

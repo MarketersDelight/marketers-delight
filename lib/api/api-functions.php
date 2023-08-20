@@ -337,22 +337,6 @@ function md_post_type_field( $keys = null, $default = null ) {
 }
 
 /**
- * Get meta field from either single or term pages.
- *
- * @since 4.7
- */
-
-function md_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_string( $id ) || is_int( $id ) )
-		$id = esc_attr( $id );
-
-	if ( is_category() || is_tax() )
-		return md_term_meta( $keys, $id, $default );
-	else
-		return md_post_meta( $keys, $id, $default );
-}
-
-/**
  * Access user meta.
  *
  * @since 5.3.1
@@ -381,6 +365,32 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
+ * Get meta field from either single or term pages.
+ *
+ * @since 4.7
+ */
+
+function md_meta( $keys = null, $id = null, $default = null ) {
+	if ( is_string( $id ) || is_int( $id ) )
+		$id = esc_attr( $id );
+
+	if ( is_category() || is_tax() )
+		return md_term_meta( $keys, $id, $default );
+	else
+		return md_post_meta( $keys, $id, $default );
+}
+
+/**
+ * Safely get Block fields.
+ *
+ * @since 4.9
+ */
+
+function md_block_field( $attributes, $field ) {
+	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
+}
+
+/**
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.
  *
@@ -401,13 +411,14 @@ function md_module( $keys = null, $default = null ) {
 }
 
 /**
- * Safely get Block fields.
+ * Return Builder fields data.
  *
- * @since 4.9
+ * @since 5.6
  */
 
-function md_block_field( $attributes, $field ) {
-	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
+function md_get_builder( $id, $type = null ) {
+	if ( $type == null ) $type = 'elements';
+	return unserialize( md_setting( array( $id, "builder_{$type}" ) ) );
 }
 
 /**
