@@ -45,7 +45,7 @@ class md_header_templates {
 
 		echo $header_center ? '</div>' : '';
 
-		if ( $header_center && ! empty( $data['header_aside'] ) ) {
+		if ( ! empty( $data['header_aside'] ) ) {
 			echo '<div class="header-aside">';
 			foreach ( $data['header_aside'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );

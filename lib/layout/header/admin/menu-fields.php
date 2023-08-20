@@ -4,7 +4,7 @@
 		<?php $this->fields->field( array( 'builder', $group, 'menu' ), array(
 			'type' => 'select',
 			'label' => __( 'Menu', 'md' ),
-			'empty_label' => __( 'Use default menu', 'md' ),
+			'empty_label' => __( 'Use Header menu', 'md' ),
 			'description' => '<a href="' . admin_url( 'nav-menus.php' ) . '">' . __( 'Edit menus &rarr;', 'md' ) . '</a>',
 			'options' => $data['menus']['options']
 		) ); ?>

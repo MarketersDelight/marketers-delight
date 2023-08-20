@@ -137,8 +137,8 @@ function md_get_menu_name( $menu ) {
 
 function md_has_menu() {
 	$header_elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
-
 	if (
+		! empty( $header_elements['menu'] ) &&
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&
 		! md_module( array( 'layout', 'header', 'menu' ) ) &&
 		( has_nav_menu( 'header' ) || ! empty( $header_elements['menu'] ) )
