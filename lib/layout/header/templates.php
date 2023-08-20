@@ -31,16 +31,19 @@ class md_header_templates {
 
 		echo '</div>';
 
-		if ( ! empty( $data['header'] ) ) {
-			echo $header_center ? '<div class="header-primary">' : '';
+		echo $header_center ? '<div class="header-primary">' : '';
+
+		if ( ! empty( $data['header'] ) )
 			foreach ( $data['header'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );
 				$id = esc_attr( $items['id'] );
 				if ( ! empty( $fields[$id] ) )
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 			}
-			echo $header_center ? '</div>' : '';
-		}
+		else
+			$this->menu();
+
+		echo $header_center ? '</div>' : '';
 
 		if ( $header_center && ! empty( $data['header_aside'] ) ) {
 			echo '<div class="header-aside">';
@@ -84,6 +87,34 @@ class md_header_templates {
 	}
 
 	/**
+	 * Frontend markup for Menu.
+	 *
+	 * @since 5.6
+	 */
+
+	public function menu( $fields = null ) {
+		$parent = isset( $fields['area'] ) ? $fields['area'] : 'header';
+		$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
+		$args = array(
+			'menu' => md_module( array( 'layout', 'header_menu' ), $menu_id ),
+			'container' => false,
+			'fallback_cb' => false,
+			'menu_class' => 'menu menu-' . esc_attr( $parent ),
+			'walker' => new md_menu_walker( true, true )
+		);
+
+		if ( empty( $menu_id ) ) {
+			$menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
+			$args['theme_location'] = $menu_location;
+		}
+
+	?>
+		<nav class="<?php echo esc_attr( $parent ); ?>-menu">
+			<?php wp_nav_menu( $args ); ?>
+		</nav>
+	<?php }
+
+	/**
 	 * Header menu trigger template.
 	 *
 	 * @since 5.6
@@ -100,46 +131,6 @@ class md_header_templates {
 			<?php echo md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>
-	<?php }
-
-	/**
-	 * Header search trigger template.
-	 *
-	 * @since 5.6
-	 */
-
-	public function header_search_trigger() {
-		$elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
-		$element_id = ! empty( $elements['search'][0] ) ? $elements['search'][0] : '';
-		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), __( 'Search', 'md' ) );
-		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );
-	?>
-		<span class="trigger trigger-search<?php echo $hide_label ? ' hide-label' : ''; ?>" data-md-parent="header">
-			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
-			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
-		</span>
-	<?php }
-
-	/**
-	 * Frontend markup for Menu.
-	 *
-	 * @since 5.6
-	 */
-
-	public function menu( $fields ) {
-		$parent = $fields['area'];
-		$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
-		$args = array(
-			'menu' => $menu_id,
-			'container' => false,
-			'fallback_cb' => false,
-			'menu_class' => 'menu menu-' . esc_attr( $parent ),
-			'walker' => new md_menu_walker( true, true )
-		);
-	?>
-		<nav class="<?php echo esc_attr( $parent ); ?>-menu">
-			<?php wp_nav_menu( $args ); ?>
-		</nav>
 	<?php }
 
 	/**
@@ -167,6 +158,24 @@ class md_header_templates {
 
 		include( md_template( 'searchform', true ) );
 	}
+
+	/**
+	 * Header search trigger template.
+	 *
+	 * @since 5.6
+	 */
+
+	public function header_search_trigger() {
+		$elements = unserialize( md_setting( array( 'header', 'builder_elements' ) ) );
+		$element_id = ! empty( $elements['search'][0] ) ? $elements['search'][0] : '';
+		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), __( 'Search', 'md' ) );
+		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );
+	?>
+		<span class="trigger trigger-search<?php echo $hide_label ? ' hide-label' : ''; ?>" data-md-parent="header">
+			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
+			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
+		</span>
+	<?php }
 
 	/**
 	 * Frontend markup for Link.
