@@ -416,9 +416,17 @@ function md_module( $keys = null, $default = null ) {
  * @since 5.6
  */
 
-function md_get_builder( $id, $type = null ) {
+function md_get_builder( $id, $type = null, $area = null ) {
+	$builder = array();
+
 	if ( $type == null ) $type = 'elements';
-	return unserialize( md_setting( array( $id, "builder_{$type}" ) ) );
+
+	$builder = unserialize( md_setting( array( $id, "builder_{$type}" ) ) );
+
+	if ( ! empty( $area ) )
+		$builder = ! empty( $builder[$area] ) ? $builder[$area] : array();
+
+	return $builder;
 }
 
 /**

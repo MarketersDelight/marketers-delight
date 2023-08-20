@@ -28,6 +28,11 @@ function md_header_classes() {
 	if ( md_has_logo() )
 		$classes[] = 'has-logo';
 
+	if ( $layout == 'flyer' ) {
+		$header_aside = md_get_builder( 'header', 'data', 'header_aside' );
+		if ( empty( $header_aside ) )
+			$classes[] = 'solo';
+	}
 
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 

@@ -72,16 +72,16 @@ class md_header_templates {
 		if ( md_has_header_search() )
 			$this->header_search_trigger();
 
+		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) !== 'expanded' )
+			$this->header_menu_trigger();
+
+		do_action( 'md_hook_header_triggers' );
+
 		if ( ! empty( $elements['link'] ) )
 			foreach ( $elements['link'] as $c => $link_id ) {
 				$fields = md_setting( array( 'header', 'builder', $link_id ) );
 				$this->link( $fields );
 			}
-
-		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) !== 'expanded' )
-			$this->header_menu_trigger();
-
-		do_action( 'md_hook_header_triggers' );
 
 		echo '</div>';
 	}
@@ -184,7 +184,7 @@ class md_header_templates {
 	 */
 
 	public function link( $fields ) {
-		$classes = array();
+		$parent_classes = $classes = array();
 		$html = 'span';
 		$class = $href = $target = $popup = '';
 		$parent = isset( $fields['area'] ) ? $fields['area'] : '';
@@ -193,6 +193,13 @@ class md_header_templates {
 		$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
 		$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
 		$icon_classes = 'trigger-icon';
+
+		if ( $parent )
+			$parent_classes[] = "{$parent}-link";
+
+		if ( $style )
+			$parent_classes[] = "is-{$style}";
+
 		if ( $type == 'url' && $url ) {
 			$html = 'a';
 			$href = ' href="' . esc_url( $url ) . '"';
@@ -216,11 +223,16 @@ class md_header_templates {
 		}
 		if ( ! empty( $fields['toggle']['hide_label'] ) )
 			$classes[] = 'hide-label';
+
 		$classes = join( ' ', $classes );
+
+		if ( $parent_classes )
+			$parent_classes = join( ' ', $parent_classes );
+
 		if ( $classes )
 			$class = ' class="' . esc_attr( $classes ) . '"';
 	?>
-		<span class="<?php echo "{$parent}-link"; ?>">
+		<span class="<?php echo esc_attr( $parent_classes ); ?>">
 			<<?php echo $html . $href . $target . $popup . $class; ?>>
 				<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
 				<?php echo ( isset( $fields['title'] ) ? '<span class="trigger-text">' . md_text_field( $fields['title'] ) . '</span>' : '' ); ?>
