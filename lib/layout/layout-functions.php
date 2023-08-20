@@ -338,7 +338,7 @@ function md_author_box() {
 	$desc = get_the_author_meta( 'description' );
 	$url = get_the_author_meta( 'url' );
 	$author = get_author_posts_url( get_the_author_meta( 'ID' ) );
-	$archive = md_setting( array( 'content', 'author_box', 'all_posts' ) );
+	$show_posts = md_setting( array( 'post', 'single', 'author_box', 'all_posts' ) );
 	$has_avatar = get_option( 'show_avatars' );
 	include( md_template( 'author-box', true ) );
 }

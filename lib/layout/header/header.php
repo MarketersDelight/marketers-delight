@@ -65,7 +65,7 @@ class md_header extends md_api {
 							),
 							'toggle' => array(
 								'type' => 'checkbox',
-								'options' => array( 'search', 'hide_label' )
+								'options' => array( 'search', 'hide_label', 'hide_label_mobile' )
 							),
 							'link_type' => array(
 								'type' => 'select',

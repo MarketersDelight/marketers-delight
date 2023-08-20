@@ -17,7 +17,7 @@
 ?>
 
 /*------------------------------*\
-	$ICONS & EFFECTS
+	$EFFECTS
 \*------------------------------*/
 
 /* OVERLAY */
@@ -45,9 +45,7 @@
 	width: 100%;
 }
 
-/* STYLES */
-
-.circle { border-radius: 50%; }
+/* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }
 
@@ -57,18 +55,42 @@
 
 .wp-block-image.shadow, .wp-block-image.shadow-large, .wp-block-image.shadow-small { box-shadow: none; }
 
+/* BOXES */
+
 .box { background-color: #fff; }
 
 .box-sec, .frame, .note { background-color: #eee; }
 
 .box-dark {
-	background-color: #1e1e1e;
+	background-color: <?php echo $colors['site']['secondary']; ?>;
 	color: #fff;
 }
 
 .box-dark .text-sec { color: #ddd; }
 
 .alert { background-color: #fffbcc; }
+
+/* CIRCLE ICON */
+
+.circle { border-radius: 50%; }
+
+.circle-icon, a.circle-icon {
+	background-color: rgba(0, 0, 0, 0.15);
+	border-radius: 50%;
+	color: <?php echo $colors['site']['text']; ?>;
+	display: inline-block;
+	line-height: 1;
+	position: relative;
+	text-align: center;
+}
+
+.circle-icon.micro {
+	height: 25px;
+	padding-top: 5px;
+	width: 25px;
+}
+
+/* AVATAR */
 
 .avatar {
 	border-radius: 50%;

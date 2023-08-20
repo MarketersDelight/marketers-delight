@@ -52,6 +52,7 @@ class md_css {
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
+			'page-elements' => locate_template( 'css/page-elements.php' ),
 			'loops' => locate_template( 'css/loops.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),

@@ -63,6 +63,10 @@
 body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
+	font-weight: <?php echo $font_weight; ?>;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
 	position: relative;
 }
 
@@ -134,29 +138,21 @@ abbr, acronym {
 	text-decoration: none;
 }
 
-/* TRIGGERS */
 
-.trigger {
-	cursor: pointer;
-	position: relative;
+/* BODY */
+
+@media all and (max-width: 900px) {
+	body {
+		font-size: <?php echo $font_size['tablet']; ?>px;
+		line-height: <?php echo $line_height['tablet']; ?>px;
+	}
 }
 
-.trigger-icon {
-	color: <?php echo $colors['header']['color']; ?>;
-	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
-	line-height: 1;
+<?php if ( $font_size['tablet'] !== $font_size['mobile'] ) : ?>
+@media all and (max-width: 700px) {
+	body {
+		font-size: <?php echo $font_size['mobile']; ?>px;
+		line-height: <?php echo $line_height['mobile']; ?>px;
+	}
 }
-
-.trigger .trigger-text {
-	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
-	margin-left: <?php echo $small; ?>px;
-}
-
-.hide-label .trigger-text { display: none; }
-
-.has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before {
-	color: <?php echo $colors['site']['primary']; ?>;
-	content: '\e810';
-}
+<?php endif; ?>

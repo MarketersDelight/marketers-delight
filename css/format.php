@@ -4,29 +4,45 @@
 	$FORMATTING
 \*------------------------------*/
 
-/* BODY */
+/* FORMAT */
 
-body {
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-weight: <?php echo $font_weight; ?>;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+.format { word-wrap: break-word; }
+
+.format ul { list-style: square; }
+
+.format a { text-decoration: underline; }
+
+.format a:hover{ text-decoration: none; }
+
+.format .headline, .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
+	margin-bottom: <?php echo $half; ?>px;
+	position: relative;
 }
 
-@media all and (max-width: 900px) {
-	body {
-		font-size: <?php echo $font_size['tablet']; ?>px;
-		line-height: <?php echo $line_height['tablet']; ?>px;
-	}
+.format .headline a, .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
+	color: <?php echo $colors['site']['headline-links']; ?>;
+	text-decoration: none;
 }
 
-<?php if ( $font_size['tablet'] !== $font_size['mobile'] ) : ?>
-@media all and (max-width: 700px) {
-	body {
-		font-size: <?php echo $font_size['mobile']; ?>px;
-		line-height: <?php echo $line_height['mobile']; ?>px;
-	}
+.format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
+
+.format input[type="text"], .format textarea,
+.format input[type="url"], .format input[type="email"],
+.format input[type="password"] { margin-bottom: <?php echo $half; ?>px; }
+
+.format [class*="form-attached"] .form-input, .format [class*="form-attached"] .form-submit { margin-bottom: 0; }
+
+.format ul, .format ol { margin-left: <?php echo $single; ?>px; }
+
+.format li ul, .format li ol { margin-top: <?php echo $third; ?>px; }
+
+.format li, .format dd {
+	margin-bottom: <?php echo $third; ?>px;
+	position: relative;
 }
+
+<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
+	.format *:last-child { margin-bottom: 0; }
 <?php endif; ?>
 
 /* HEADLINES */
@@ -81,47 +97,6 @@ body {
 		echo "}\n";
 	}
 ?>
-
-/* FORMAT */
-
-.format { word-wrap: break-word; }
-
-.format ul { list-style: square; }
-
-.format a { text-decoration: underline; }
-
-.format a:hover{ text-decoration: none; }
-
-.format .headline, .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	margin-bottom: <?php echo $half; ?>px;
-	position: relative;
-}
-
-.format .headline a, .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
-	color: <?php echo $colors['site']['headline-links']; ?>;
-	text-decoration: none;
-}
-
-.format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
-
-.format input[type="text"], .format textarea,
-.format input[type="url"], .format input[type="email"],
-.format input[type="password"] { margin-bottom: <?php echo $half; ?>px; }
-
-.format [class*="form-attached"] .form-input, .format [class*="form-attached"] .form-submit { margin-bottom: 0; }
-
-.format ul, .format ol { margin-left: <?php echo $single; ?>px; }
-
-.format li ul, .format li ol { margin-top: <?php echo $third; ?>px; }
-
-.format li, .format dd {
-	margin-bottom: <?php echo $third; ?>px;
-	position: relative;
-}
-
-<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
-	.format *:last-child { margin-bottom: 0; }
-<?php endif; ?>
 
 .content .headline, .content .headline a, .content-text h1, .content-text h2, .content-text h3, .content-text h4, .content-text h5, .content-text h6 { color: <?php echo $colors['site']['headline']; ?>; }
 
@@ -374,34 +349,12 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	padding-right: <?php echo $double; ?>px;
 }
 
-/* CIRCLE ICON */
-
-.circle-icon, a.circle-icon {
-	background-color: rgba(0, 0, 0, 0.15);
-	border-radius: 50%;
-	color: <?php echo $colors['site']['text']; ?>;
-	display: inline-block;
-	line-height: 1;
-	position: relative;
-	text-align: center;
-}
-
-.circle-icon.micro {
-	bottom: -2px;
-	font-size: 15px;
-	height: 25px;
-	padding-top: 5px;
-	width: 25px;
-}
-
-/* TWITTER */
+/* FIXES */
 
 .twitter-tweet {
 	margin-left: auto;
 	margin-right: auto;
 }
-
-/* FIXES */
 
 @media all and (max-width: 700px) {
 	.close-on-mobile { display: none; }

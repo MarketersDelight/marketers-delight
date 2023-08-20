@@ -22,7 +22,7 @@ class md_header_templates {
 		echo '<div class="header-controls">';
 
 		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) == 'expanded' )
-			$this->header_menu_trigger();
+			$this->menu_trigger();
 
 		if ( md_has_logo() )
 			md_logo();
@@ -73,7 +73,7 @@ class md_header_templates {
 			$this->header_search_trigger();
 
 		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) !== 'expanded' )
-			$this->header_menu_trigger();
+			$this->menu_trigger();
 
 		do_action( 'md_hook_header_triggers' );
 
@@ -120,14 +120,23 @@ class md_header_templates {
 	 * @since 5.6
 	 */
 
-	public function header_menu_trigger() {
+	public function menu_trigger() {
 		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['menu'][0] ) ? $elements['menu'][0] : '';
 		$nav_menu_title = md_get_menu_name( 'header' );
 		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), $nav_menu_title );
 		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );
+		$hide_label_mobile = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label_mobile' ) );
+		$label_classes = array( 'trigger', 'trigger-menu' );
+
+		if ( $hide_label )
+			$label_classes[] = 'hide-label';
+		elseif ( $hide_label_mobile )
+			$label_classes[] = 'hide-label-mobile';
+
+		$label_classes = join( ' ', $label_classes );
 	?>
-		<span id="header_menu_trigger" class="trigger trigger-menu<?php echo $hide_label ? ' hide-label' : ''; ?>">
+		<span id="header_menu_trigger" class="<?php echo esc_attr( $label_classes ); ?>">
 			<?php echo md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>

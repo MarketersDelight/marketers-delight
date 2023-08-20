@@ -23,12 +23,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	-webkit-appearance: none;
 }
 
-button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover, .format .button:hover {
-	-moz-transform: translateY(1px);
-	-ms-transform: translateY(1px);
-	-webkit-transform: translateY(1px);
-	transform: translateY(1px);
-}
+button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover, .format .button:hover { transform: translateY(1px); }
 
 .button-subtext { font-weight: <?php echo $font_weight; ?>; }
 

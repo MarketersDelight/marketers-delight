@@ -156,6 +156,7 @@
 .callout {
 	border: 4px solid rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
+	clear: both;
 	position: relative;
 }
 

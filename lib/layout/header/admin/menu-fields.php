@@ -15,7 +15,8 @@
 			'type' => 'checkbox',
 			'label' => __( 'Display', 'md' ),
 			'options' => array(
-				'hide_label' => __( 'Hide label', 'md' )
+				'hide_label' => __( 'Hide label', 'md' ),
+				'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
 			)
 		) ); ?>
 	</div>
