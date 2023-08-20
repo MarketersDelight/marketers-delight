@@ -159,14 +159,14 @@
 		order: 2;
 	}
 	.header-flyer.solo .header-controls { order: inherit; }
-	.header-primary, .header-flyer .header-aside {
+	.header-primary, .header-aside {
 		align-items: center;
 		display: flex;
 		flex: 1 0 auto;
 	}
+	.header-aside { flex: 0 1 auto; }
 	.header-flyer .header-aside {
 		align-items: center;
-		flex: 0 1 auto;
 		justify-content: end;
 		order: 3;
 	}
@@ -209,10 +209,8 @@
 	.tagline { display: none; }
 	<?php endif; ?>
 	.header-controls .trigger, 	.header-link, .header_aside-link { padding-left: <?php echo $half; ?>px; }
-	.header-rtl .header-controls .trigger,
-	.header-rtl .header-link, .header-rtl .header_aside-link {
+	.header-rtl .header_aside-link.is-button {
 		padding-left: 0;
-		padding-right: <?php echo $half; ?>px;
 	}
 	/* MENU */
 	.header-menu, .header_aside-menu,
