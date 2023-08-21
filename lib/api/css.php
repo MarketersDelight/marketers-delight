@@ -47,7 +47,6 @@ class md_css {
 			'attributes' => locate_template( 'css/attributes.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
 			'spacers' => locate_template( 'css/spacers.php' ),
-			'columns' => locate_template( 'css/columns.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
