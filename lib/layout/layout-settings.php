@@ -47,27 +47,6 @@
 			<?php endif; ?>
 		</div>
 
-		<?php if ( has_nav_menu( 'main' ) ) : ?>
-
-			<div class="md-sep-small">
-				<?php $this->fields->field( 'main_menu', array(
-					'type' => 'checkbox',
-					'label' => __( 'Main Menu', 'md' ),
-					'options' => array(
-						'remove' => __( 'Remove <b>Main Menu</b>', 'md' )
-					)
-				) ); ?>
-				<div id="main_menu_options" style="display: <?php echo empty( $main_menu['remove'] ) ? 'block' : 'none'; ?>; margin-top: 10px;">
-					<?php $this->fields->field( 'main_menu_menu', array(
-						'type' => 'select',
-						'empty_label' => __( 'Select a custom menu...', 'md' ),
-						'options' => $menus
-					) ); ?>
-				</div>
-			</div>
-
-		<?php endif; ?>
-
 	</div>
 
 	<!-- Content Box -->

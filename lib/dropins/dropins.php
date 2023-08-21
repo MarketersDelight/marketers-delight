@@ -57,10 +57,6 @@ class md_dropins extends md_api {
 				)
 			)
 		);
-		$fields['features'] = array(
-			'type' => 'checkbox',
-			'options' => array( 'blocks', 'stream', 'bookshelf', 'optins', 'share', 'main_menu', 'admin_bar', 'footnotes', 'tracking_scripts', 'woocommerce' )
-		);
 		$total_updates = md_setting( array( 'license', 'updates', 'dropins' ), 0 );
 		$updates_badge = ! empty( $total_updates ) && count( $total_updates ) > 0 ? " <span class=\"update-plugins count-" . count( $total_updates ) . "\"><span class=\"plugin-count\">" . count( $total_updates ) . "</span></span>" : '';
 		return array(

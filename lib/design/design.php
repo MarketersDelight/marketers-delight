@@ -65,17 +65,6 @@ class md_colors extends md_api {
 				),
 				'cover_color' => array( 'type' => 'color' )
 			),
-			'main_menu' => array(
-				'bg_color' => array( 'type' => 'color' ),
-				'links' => array( 'type' => 'color' ),
-				'active' => array( 'type' => 'color' ),
-				'subtext' => array( 'type' => 'color' ),
-				'sub_menu' => array( 'type' => 'color' ),
-				'submenu_links' => array( 'type' => 'color' ),
-				'submenu_links_hover' => array( 'type' => 'color' ),
-				'icons' => array( 'type' => 'color' ),
-				'social' => array( 'type' => 'color' )
-			),
 			'content' => array(
 				'bg_color' => array( 'type' => 'color' ),
 				'border_color' => array( 'type' => 'color' )
@@ -239,16 +228,6 @@ class md_colors extends md_api {
 					'links' => __( 'Links', 'md' ),
 					'hover' => __( 'Links Hover', 'md' )
 				)
-			),
-			'main_menu' => array(
-				'bg_color' => __( 'Background', 'md' ),
-				'subtext' => __( 'Text', 'md' ),
-				'links' => __( 'Links', 'md' ),
-				'active' => __( 'Links Active', 'md' ),
-				'sub_menu' => __( 'Background', 'md' ),
-				'submenu_links' => __( 'Color', 'md' ),
-				'icons' => __( 'Icons', 'md' ),
-				'social' => __( 'Social Icons', 'md' )
 			),
 			'content' => array(
 				'bg_color' => __( 'Background', 'md' ),

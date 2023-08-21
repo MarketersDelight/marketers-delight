@@ -16,6 +16,18 @@ function md_featured_image_cover() { md_cover_style(); }
 function md_featured_image_caption() { md_get_caption(); }
 
 /**
+ * Checks if Main Menu is active on page.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
+function md_has_main_menu() {
+	if ( ! has_nav_menu( 'main' ) ) return;
+	$remove = md_module( array( 'layout', 'main_menu', 'remove' ) );
+	if ( ! empty( $remove ) ) return;
+	return apply_filters( 'md_filter_has_main_menu', true );
+}
+/**
  * Load main menu template file.
  *
  * @since 4.1

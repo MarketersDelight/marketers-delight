@@ -67,8 +67,6 @@ function md_image_sizes() {
 function md_filter_register_nav_menus() {
 	$menus['header'] = __( 'Header Menu', 'md' );
 	$menus['header_loggedin'] = __( 'Header Menu (logged-in users only)', 'md' );
-	$menus['main'] = __( 'Main Menu', 'md' );
-	$menus['social'] = __( 'Social Media Menu', 'md' );
 	return apply_filters( 'md_filter_register_nav_menus', $menus );
 }
 

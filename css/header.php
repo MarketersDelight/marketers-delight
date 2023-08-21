@@ -272,16 +272,16 @@
 <?php if ( $header_full_width ) : ?>
 .header.has-search .menu-secondary { display: none; }
 @media all and (max-width: <?php echo $site_width_full; ?>px) {
-	.header .inner, .main-menu .inner {
+	.header .inner {
 		padding-left: <?php echo $single; ?>px;
 		padding-right: <?php echo $single; ?>px;
 	}
 }
 @media all and (max-width: <?php echo $site_width_full; ?>px) {
-	.header .inner, .main-menu .inner { max-width: 100%; }
+	.header .inner { max-width: 100%; }
 }
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.header .inner, .main-menu .inner  {
+	.header .inner {
 		padding-left: 0;
 		padding-right: 0;
 	}

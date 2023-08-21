@@ -138,21 +138,3 @@ function md_has_header_search() {
 	$header_elements = md_get_builder( 'header' );
 	return ( ! empty( $header_elements['search'] ) ? true : false );
 }
-
-/**
- * Checks if Main Menu is active on page.
- *
- * @since 4.1
- */
-
-function md_has_main_menu() {
-	if ( ! has_nav_menu( 'main' ) )
-		return;
-
-	$remove = md_module( array( 'layout', 'main_menu', 'remove' ) );
-
-	if ( ! empty( $remove ) )
-		return false;
-
-	return apply_filters( 'md_filter_has_main_menu', true );
-}

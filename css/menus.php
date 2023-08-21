@@ -132,22 +132,3 @@
 		padding-top: <?php echo $third; ?>px;
 	}
 }
-
-
-
-/*------------------------------*\
-	$MAIN_MENU
-\*------------------------------*/
-
-.main-menu {
-	background-color: <?php echo $colors['main_menu']['bg_color']; ?>;
-	border-top: 1px solid <?php echo $colors['header']['border_color']; ?>;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	color: <?php echo $colors['main_menu']['subtext']; ?>;
-	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['header']['line_height']['desktop']; ?>px;
-}
-
-.menu-main {
-	flex: 1 0 auto;
-}

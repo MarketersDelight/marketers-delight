@@ -111,18 +111,6 @@ class md_layout extends md_api {
 			)
 		);
 
-		if ( has_nav_menu( 'main' ) ) {
-			$fields['main_menu'] = array(
-				'type' => 'checkbox',
-				'options' => array( 'remove' )
-			);
-			if ( ! empty( $nav_menus ) )
-				$fields['main_menu_menu'] = array(
-					'type' => 'select',
-					'options' => $menus
-				);
-		}
-
 		return $fields;
 	}
 
@@ -164,7 +152,6 @@ class md_layout extends md_api {
 		$post_base = in_array( $screen_base, array( 'post', 'post-new' ) ) ? 'post' : $screen_base;
 
 		$header = $this->fields->module( 'header' );
-		$main_menu = $this->fields->module( 'main_menu' );
 		$content = $this->fields->module( 'content' );
 		$footer = $this->fields->module( 'footer' );
 
@@ -210,11 +197,6 @@ class md_layout extends md_api {
 				<?php if ( md_has_menu() ) : ?>
 					document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
 						document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
-					}
-				<?php endif; ?>
-				<?php if ( has_nav_menu( 'main' ) ) : ?>
-					document.getElementById( '<?php echo $prefix; ?>_main_menu_remove' ).onchange = function( e ) {
-						document.getElementById( 'main_menu_options' ).style.display = this.checked ? 'none' : 'block';
 					}
 				<?php endif; ?>
 				document.getElementById( '<?php echo $prefix; ?>_content_remove' ).onchange = function( e ) {

@@ -4,14 +4,14 @@
 
 	<div class="md-widget-item md-tabs">
 
-		<div class="nav-tab-wrapper">
-			<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="header-colors"><?php echo __( 'Colors', 'md' ); ?></a>
-			<?php if ( has_nav_menu( 'main' ) ) : ?>
-			<a href="#" class="md-tab nav-tab" data-md-tab="main-menu"><?php echo __( 'Main Menu', 'md' ); ?></a>
-			<?php endif; ?>
-		</div>
+		<?php if ( has_action( 'md_design_header_tabs' ) ) : ?>
+			<div class="nav-tab-wrapper">
+				<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="header-colors"><?php echo __( 'Colors', 'md' ); ?></a>
+				<?php do_action( 'md_design_header_tabs' ); ?>
+			</div>
+		<?php endif; ?>
 
-		<div class="md-tab-content active header-colors">
+		<div class="header-colors<?php echo has_action( 'md_design_header_tabs' ) ? ' md-tab-content active' : ''; ?>">
 
 			<div class="columns-3 columns-single">
 				<div class="col md-sep-small">
@@ -95,79 +95,7 @@
 
 		</div>
 
-		<?php if ( has_nav_menu( 'main' ) ) : ?>
-			<div class="md-tab-content main-menu">
-
-				<div class="columns-3 columns-half">
-					<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
-						<?php if ( in_array( $field, array( 'bg_color', 'subtext' ) ) ) : ?>
-							<div class="col md-sep-small">
-								<?php $this->fields->field( array( 'main_menu', $field ), array(
-									'type' => 'color',
-									'label' => $label,
-									'default' => ! empty( $defaults['colors']['main_menu'][$field] ) ? $defaults['colors']['main_menu'][$field] : ''
-								) ); ?>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</div>
-
-				<hr class="md-sep-small" />
-
-				<h4><?php echo __( 'Menu', 'md' ); ?></h4>
-
-				<div class="columns-3 columns-half">
-					<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
-						<?php if ( in_array( $field, array( 'links', 'active' ) ) ) : ?>
-							<div class="col md-sep-small">
-								<?php $this->fields->field( array( 'main_menu', $field ), array(
-									'type' => 'color',
-									'label' => $label,
-									'default' => ! empty( $defaults['colors']['main_menu'][$field] ) ? $defaults['colors']['main_menu'][$field] : ''
-								) ); ?>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</div>
-
-				<hr class="md-sep-small" />
-
-				<h4><?php echo __( 'Sub Menu', 'md' ); ?></h4>
-
-				<div class="columns-3 columns-half">
-					<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
-						<?php if ( in_array( $field, array( 'sub_menu', 'submenu_links' ) ) ) : ?>
-							<div class="col md-sep-small">
-								<?php $this->fields->field( array( 'main_menu', $field ), array(
-									'type' => 'color',
-									'label' => $label,
-									'default' => ! empty( $defaults['colors']['main_menu'][$field] ) ? $defaults['colors']['main_menu'][$field] : ''
-								) ); ?>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</div>
-
-				<hr class="md-sep-small" />
-
-				<h4><?php echo __( 'Icons', 'md' ); ?></h4>
-
-				<div class="columns-3 columns-half">
-					<?php foreach ( $options['main_menu'] as $field => $label ) : ?>
-						<?php if ( in_array( $field, array( 'icons', 'social' ) ) ) : ?>
-							<div class="col md-sep-small">
-								<?php $this->fields->field( array( 'main_menu', $field ), array(
-									'type' => 'color',
-									'label' => $label,
-									'default' => ! empty( $defaults['colors']['main_menu'][$field] ) ? $defaults['colors']['main_menu'][$field] : ''
-								) ); ?>
-							</div>
-						<?php endif; ?>
-					<?php endforeach; ?>
-				</div>
-
-			</div>
-		<?php endif; ?>
+		<?php do_action( 'md_design_header_settings' ); ?>
 
 	</div>
 </div>

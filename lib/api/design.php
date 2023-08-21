@@ -134,17 +134,6 @@ class md_design {
 					),
 					'cover_color' => 'rgba(0, 0, 0, 0.5)'
 				),
-				'main_menu' => array(
-					'bg_color' => '#FFFFFF',
-					'links' => $colors['primary'],
-					'links_hover' => $colors['subtext'],
-					'active' => $colors['text'],
-					'subtext' => $colors['text'],
-					'sub_menu' => '#FFFFFF',
-					'submenu_links' => $colors['text'],
-					'submenu_links_hover' => $colors['subtext'],
-					'icons' => $colors['text']
-				),
 				'content' => array(
 					'bg_color' => '#FFFFFF',
 					'border_color' => $colors['border']

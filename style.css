@@ -1041,7 +1041,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	content: '';
 	display: table;
 }
-.header.has-logo .header-logo a, .main-menu-wrap,
+.header.has-logo .header-logo a,
 .header-triggers, .header-controls,
 .page-header,
 .author-title, .comments-title, .comment-details, .post-nav,
@@ -1584,20 +1584,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-bottom: 9px;
 		padding-top: 9px;
 	}
-}
-/*------------------------------*\
-	$MAIN_MENU
-\*------------------------------*/
-.main-menu {
-	background-color: #FFFFFF;
-	border-top: 1px solid #CCCCCC;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	color: #1E1E1E;
-	font-size: 17px;
-	line-height: 28px;
-}
-.menu-main {
-	flex: 1 0 auto;
 }
 /*------------------------------*\
 	$HEADER

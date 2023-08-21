@@ -122,9 +122,7 @@ class md_header extends md_api {
 			'type' => 'builder',
 			'wrap_classes' => 'md-tabs',
 			'tabs' => array(
-//				'topbar' => __( 'Top Bar', 'md' ),
-				'header' => __( 'Header', 'md' ),
-//				'main_menu' => __( 'Main Menu', 'md' ),
+				'header' => __( 'Header', 'md' )
 			),
 			'active_tab' => 'header',
 			'areas' => array(
@@ -138,18 +136,6 @@ class md_header extends md_api {
 					'description' => __( 'A secondary content area for the header area.', 'md' ),
 					'tab' => 'header'
 				),
-/*
-				'main_menu' => array(
-					'title' => __( 'Main Menu', 'md' ),
-					'description' => __( 'Add an extra navigation area beneath the site header.', 'md' ),
-					'tab' => 'main_menu'
-				),
-				'topbar' => array(
-					'title' => __( 'Top Bar', 'md' ),
-					'description' => __( 'Add a small information bar to the very top of the website.', 'md' ),
-					'tab' => 'topbar'
-				)
-*/
 			),
 			'elements' => array(
 				'link' => array(
