@@ -557,6 +557,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
+	line-height: 1;
 	padding: 14px;
 	position: relative;
 	text-align: center;
@@ -1041,6 +1042,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	display: table;
 }
 .header.has-logo .header-logo a, .main-menu-wrap,
+.header-triggers, .header-controls,
 .page-header,
 .author-title, .comments-title, .comment-details, .post-nav,
 .fields-icons .form-field,
@@ -1608,14 +1610,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		margin-bottom: 14px;
 	position: relative;
 }
-.header-wrap a { color: #444444; }
-.header-wrap a:hover { color: #2E2E2E; }
+.header-wrap a:not(.button) { color: #444444; }
+.header-wrap a:not(.button):hover { color: #2E2E2E; }
 .header .menu .current-menu-item > a,
 .header .menu .current-menu-item > .menu-toggle { color: #AE2525; }
-.header .button, .header .button:hover, .header .menu > .current-menu-item.button > a {
-	color: #fff;
-	line-height: 1;
-}
 .header-simple { text-align: center; }
 .header-rtl .header-controls, .header-rtl .header-logo { order: 2; }
 /* LOGO */
@@ -1641,12 +1639,21 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .tagline a { color: #777777; }
 /* TRIGGERS */
+.header-triggers {
+	flex: 1;
+	justify-content: end;
+	padding: 14px;
+}
+.header-rtl .header-triggers {
+	flex-direction: row-reverse;
+	justify-content: start;
+}
 .trigger {
 	cursor: pointer;
 	position: relative;
 }
-.trigger-icon {
-	color: #777777;
+.trigger-icon { color: #777777; }
+.trigger-icon, .link-icon {
 	font-size: 22px;
 	line-height: 1;
 }
@@ -1656,26 +1663,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-left: 5px;
 }
 .hide-label .trigger-text { display: none; }
-.has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before {
+.header .button .link-icon + .trigger-text { margin-left: 5px; }
+.has-search .trigger-search .trigger-icon:before, .has-mobile-menu .trigger-menu .trigger-icon:before {
 	color: #AE2525;
 	content: '\e810';
-}
-@media all and (max-width: 800px) {
-	.hide-label-mobile .trigger-text { display: none; }
-}
-.header-triggers, .header-controls {
-	align-items: center;
-	display: flex;
-}
-.header-triggers {
-	flex: 1;
-	justify-content: end;
-	padding: 14px;
-}
-.header-rtl .header-triggers {
-	flex-direction: row-reverse;
-	justify-content: start;
 }
 /* QUERIES */
 @media all and (min-width: 800px) {
@@ -1708,10 +1699,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.header .search-form .form-submit { min-width: 60px; width: auto; }
 	/* LINK */
 	.header-link, .header_aside-link { padding: 14px 9px; }
-	.header .button .link-icon {
-		font-size: 19px;
-		margin-right: 5px;
-	}
 	/* HEADER FLYER */
 	.header-flyer .header-wrap { justify-content: center; }
 	.header-flyer .header-controls {
@@ -1758,16 +1745,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 			}
 	.logo { width: 50px; }
 			.header-controls .trigger, 	.header-link, .header_aside-link { padding-left: 14px; }
-	.header-rtl .header_aside-link.is-button {
-		padding-left: 0;
-	}
-	/* MENU */
-	.header-menu, .header_aside-menu,
-	.header-link, .header_aside-link,
-	.header .search-form { display: none; }
-	.has-mobile-menu .header-menu,
-	.has-mobile-menu .header_aside-menu,
-	.header-controls .header-link, .header-controls .header_aside-link { display: block; }
+	.header-rtl .header_aside-link.is-button { padding-left: 0; }
+	/* DISPLAYS */
+	.hide-label-mobile .trigger-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }
+	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu, .header-controls .header-link, .header-controls .header_aside-link { display: block; }
 	.header .menu a:hover { color: #2E2E2E; }
 	.header-primary + .header-aside { border-top: 1px solid #CCCCCC; }
 	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid #CCCCCC; }
@@ -3117,7 +3098,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	}
 }
 /*------------------------------*\
-	$EFFECTS
+	$DESIGN
 \*------------------------------*/
 /* OVERLAY */
 .image-overlay {

@@ -70,7 +70,7 @@ class md_header_templates {
 		echo '<div class="header-triggers">';
 
 		if ( md_has_header_search() )
-			$this->header_search_trigger();
+			$this->search_trigger();
 
 		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) !== 'expanded' )
 			$this->menu_trigger();
@@ -174,13 +174,23 @@ class md_header_templates {
 	 * @since 5.6
 	 */
 
-	public function header_search_trigger() {
+	public function search_trigger() {
 		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['search'][0] ) ? $elements['search'][0] : '';
 		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), __( 'Search', 'md' ) );
+
 		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );
+		$hide_label_mobile = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label_mobile' ) );
+		$label_classes = array( 'trigger', 'trigger-search' );
+
+		if ( $hide_label )
+			$label_classes[] = 'hide-label';
+		elseif ( $hide_label_mobile )
+			$label_classes[] = 'hide-label-mobile';
+
+		$label_classes = join( ' ', $label_classes );
 	?>
-		<span class="trigger trigger-search<?php echo $hide_label ? ' hide-label' : ''; ?>" data-md-parent="header">
+		<span class="<?php echo esc_attr( $label_classes ); ?>" data-md-parent="header">
 			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>
@@ -193,7 +203,7 @@ class md_header_templates {
 	 */
 
 	public function link( $fields ) {
-		$parent_classes = $classes = array();
+		$parent_classes = $classes = $styles = array();
 		$html = 'span';
 		$class = $href = $target = $popup = '';
 		$parent = isset( $fields['area'] ) ? $fields['area'] : '';
@@ -221,17 +231,39 @@ class md_header_templates {
 				$fields['title'] = esc_attr( $phone );
 			$fields['icon'] = 'phone';
 		}
+
 		if ( $style == 'button' ) {
+			$button_color = '';
 			$classes[] = 'button';
 			$icon_classes = 'link-icon';
+
+			if ( ! empty( $fields['button_color'] ) )
+				$button_color = $fields['button_color'];
+
+			if ( ! empty( $fields['button_style'] ) ) {
+				if ( $fields['button_style'] == 'outline' ) {
+					$classes[] = 'button-outline';
+					if ( $button_color )
+						$styles['border_color'] = $styles['color'] = esc_attr( $button_color );
+				}
+			}
+			elseif ( $button_color )
+				$styles['bg_color'] = esc_attr( $button_color );
 		}
+
 		if ( $type == 'popup' && isset( $fields['popup'] ) ) {
 			$popup = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
 			$classes[] = 'md-popup-trigger';
 			md_popup( array( 'id' => esc_attr( $fields['popup'] ) ) );
 		}
+
 		if ( ! empty( $fields['toggle']['hide_label'] ) )
 			$classes[] = 'hide-label';
+
+		if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
+			$classes[] = 'hide-label-mobile';
+
+		$style = md_style( $styles );
 
 		$classes = join( ' ', $classes );
 
@@ -242,7 +274,7 @@ class md_header_templates {
 			$class = ' class="' . esc_attr( $classes ) . '"';
 	?>
 		<span class="<?php echo esc_attr( $parent_classes ); ?>">
-			<<?php echo $html . $href . $target . $popup . $class; ?>>
+			<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
 				<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
 				<?php echo ( isset( $fields['title'] ) ? '<span class="trigger-text">' . md_text_field( $fields['title'] ) . '</span>' : '' ); ?>
 			</<?php echo $html; ?>>

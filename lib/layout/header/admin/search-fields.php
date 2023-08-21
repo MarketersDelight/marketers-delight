@@ -5,8 +5,9 @@
 			'type' => 'checkbox',
 			'label' => __( 'Display', 'md' ),
 			'options' => array(
+				'search' => __( 'Enable toggle', 'md' ),
 				'hide_label' => __( 'Hide label', 'md' ),
-				'search' => __( 'Enable toggle', 'md' )
+				'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
 			)
 		) ); ?>
 	</div>

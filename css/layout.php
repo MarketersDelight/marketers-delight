@@ -13,6 +13,7 @@
 }
 
 .header.has-logo .header-logo a, .main-menu-wrap,
+.header-triggers, .header-controls,
 <?php if ( md_setting( array( 'header', 'logo', 'url' ) ) ) : ?>
 .header-logo a,
 <?php endif; ?>
