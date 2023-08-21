@@ -34,7 +34,9 @@
 .header .menu .current-menu-item > a,
 .header .menu .current-menu-item > .menu-toggle { color: <?php echo $colors['header']['menu']['active']; ?>; }
 
-.header-simple { text-align: center; }
+.header-simple .header-wrap, .header-simple .header-controls { justify-content: center; }
+
+.header-simple .header-menu { flex: 0 1 auto; }
 
 .header-rtl .header-controls, .header-rtl .header-logo { order: 2; }
 

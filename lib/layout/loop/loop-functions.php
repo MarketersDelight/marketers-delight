@@ -360,6 +360,7 @@ function md_the_content( $content = null) {
 function md_content_text() {
 	$content = md_module( array( 'loop', 'content' ) );
 	$read_more = md_read_more_text();
+
 	if ( $content !== 'hide' || is_singular() || is_404() )
 		include( md_template( 'text', true ) );
 }
@@ -396,7 +397,7 @@ add_filter( 'excerpt_length', 'md_excerpt_length' );
  */
 
 function md_excerpt_more( $more ) {
-    return md_setting( array( 'loop', 'excerpt_more' ), '[...]' );
+    return md_module( array( 'loop', 'excerpt_more' ), '[...]' );
 }
 
 add_filter( 'excerpt_more', 'md_excerpt_more' );

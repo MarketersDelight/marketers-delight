@@ -23,10 +23,14 @@ function md_header_classes() {
 	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
 	$classes = array();
 	$classes[] = 'header';
-	$classes[] =  esc_attr( "header-{$layout}" );
 
 	if ( md_has_logo() )
 		$classes[] = 'has-logo';
+
+	if ( ! md_has_menu() || ! md_has_logo() )
+		$classes[] = 'header-simple';
+	else
+		$classes[] =  esc_attr( "header-{$layout}" );
 
 	if ( $layout == 'flyer' ) {
 		$header_aside = md_get_builder( 'header', 'data', 'header_aside' );

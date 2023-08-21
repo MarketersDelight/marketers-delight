@@ -120,10 +120,12 @@ class md_admin {
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;
+
+			$parent_slug = null;
+
 			if ( ! isset( $fields['parent'] ) )
 				$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
-			else
-				$parent_slug = null;
+
 			$capability = isset( $fields['capability'] ) ? $fields['capability'] : 'manage_options';
 			$callback = array( $this, 'admin_page' );
 			$menu_slug = 'md_' . ( isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $admin_page );
@@ -137,9 +139,11 @@ class md_admin {
 				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
 				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback );
 			}
+
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
 		}
+
 		add_submenu_page( 'admin.php?page=md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
 
 		if ( is_child_theme() )

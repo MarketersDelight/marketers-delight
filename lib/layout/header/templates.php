@@ -27,9 +27,13 @@ class md_header_templates {
 		if ( md_has_logo() )
 			md_logo();
 
-		$this->header_triggers();
+		if ( md_has_menu() )
+			$this->header_triggers();
 
 		echo '</div>';
+
+		if ( ! md_has_menu() )
+			return;
 
 		echo $header_center ? '<div class="header-primary">' : '';
 
@@ -40,7 +44,7 @@ class md_header_templates {
 				if ( ! empty( $fields[$id] ) )
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 			}
-		else
+		elseif ( md_has_menu() )
 			$this->menu();
 
 		echo $header_center ? '</div>' : '';

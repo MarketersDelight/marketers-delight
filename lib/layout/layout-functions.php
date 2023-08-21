@@ -137,6 +137,7 @@ function md_get_menu_name( $menu ) {
 
 function md_has_menu() {
 	$header_elements = md_get_builder( 'header' );
+
 	if (
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&
 		! md_module( array( 'layout', 'header', 'menu' ) ) &&

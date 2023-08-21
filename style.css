@@ -1614,7 +1614,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .header-wrap a:not(.button):hover { color: #2E2E2E; }
 .header .menu .current-menu-item > a,
 .header .menu .current-menu-item > .menu-toggle { color: #AE2525; }
-.header-simple { text-align: center; }
+.header-simple .header-wrap, .header-simple .header-controls { justify-content: center; }
+.header-simple .header-menu { flex: 0 1 auto; }
 .header-rtl .header-controls, .header-rtl .header-logo { order: 2; }
 /* LOGO */
 .header-logo {
