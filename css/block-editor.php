@@ -1,6 +1,6 @@
 <style type="text/css">
 
-<?php include( md_css( 'blocks', true ) ); ?>
+<?php include( md_css( 'spacers', true ) ); ?>
 
 
 
@@ -337,84 +337,6 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 }
 
 .md-button.md-button-arrow:after { transform: translateX(4px); }
-
-
-
-/*------------------------------*\
-	$SPACERS
-\*------------------------------*/
-
-#editor .mt-none { margin-top: 0 !important; }
-#editor .mr-none { margin-right: 0; }
-#editor .mb-none { margin-bottom: 0 !important; }
-#editor .ml-none { margin-left: 0; }
-
-/* QUAD */
-
-#editor .mt-quad { margin-top: <?php echo $quad; ?>px; }
-#editor .mb-quad { margin-bottom: <?php echo $quad; ?>px; }
-
-/* TRIPLE */
-
-#editor .mt-triple { margin-top: <?php echo $triple; ?>px; }
-#editor .mb-triple { margin-bottom: <?php echo $triple; ?>px; }
-
-/* DOUBLE */
-
-#editor .mt-double { margin-top: <?php echo $double; ?>px; }
-#editor .mr-double { margin-right: <?php echo $double; ?>px; }
-#editor .mb-double { margin-bottom: <?php echo $double; ?>px; }
-
-/* MID */
-
-#editor .mt-mid { margin-top: <?php echo $mid; ?>px; }
-#editor .mb-mid { margin-bottom: <?php echo $mid; ?>px; }
-
-/* SINGLE */
-
-#editor .mt-single { margin-top: <?php echo $single; ?>px; }
-#editor .mr-single { margin-right: <?php echo $single; ?>px; }
-#editor .mb-single { margin-bottom: <?php echo $single; ?>px; }
-
-/* HALF */
-
-#editor .mt-half { margin-top: <?php echo $half; ?>px; }
-#editor .mr-half { margin-right: <?php echo $half; ?>px; }
-#editor .mb-half, .byline { margin-bottom: <?php echo $half; ?>px; }
-
-/* SMALL */
-
-#editor .mt-small { margin-top: <?php echo $small; ?>px; }
-#editor .mr-small { margin-right: <?php echo $small; ?>px; }
-#editor .mb-small { margin-bottom: <?php echo $small; ?>px; }
-#editor .ml-small { margin-left: <?php echo $small; ?>px; }
-
-@media all and (max-width: 900px) {
-	/* TRIPLE */
-	#editor .mt-quad { margin-top: <?php echo $triple; ?>px; }
-	#editor .mb-quad { margin-bottom: <?php echo $triple; ?>px; }
-	/* DOUBLE */
-	#editor .mt-triple { margin-top: <?php echo $double; ?>px; }
-	#editor .mb-triple { margin-bottom: <?php echo $double; ?>px; }
-	#editor .alignright.wrap,
-	#editor .alignleft.wrap,
-	#editor .alignfull,
-	#editor .aligncenter.wrap,
-	#editor .alignleft.wrap,
-	#editor .alignfull {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	/* DOUBLE */
-	#editor .mt-quad { margin-top: <?php echo $double; ?>px; }
-	#editor .mb-quad { margin-bottom: <?php echo $double; ?>px; }
-	/* SINGLE */
-	#editor .mt-triple { margin-top: <?php echo $single; ?>px; }
-	#editor .mb-triple, .mb-double { margin-bottom: <?php echo $single; ?>px; }
-}
 
 
 

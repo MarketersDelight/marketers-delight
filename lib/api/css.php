@@ -46,7 +46,6 @@ class md_css {
 		$templates = array(
 			'attributes' => locate_template( 'css/attributes.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
-			'blocks' => locate_template( 'css/blocks.php' ),
 			'spacers' => locate_template( 'css/spacers.php' ),
 			'columns' => locate_template( 'css/columns.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
@@ -56,7 +55,6 @@ class md_css {
 			'loops' => locate_template( 'css/loops.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
-			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
