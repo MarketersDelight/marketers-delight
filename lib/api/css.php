@@ -64,7 +64,7 @@ class md_css {
 
 		$templates = array_merge( $templates, $dropins );
 
-		$templates['effects'] = MD_CSS_DIR . 'effects.php';
+		$templates['design'] = MD_CSS_DIR . 'design.php';
 
 		$templates = apply_filters( 'md_style_css_templates', $templates );
 
