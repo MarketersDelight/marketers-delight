@@ -557,7 +557,6 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
-	line-height: 1;
 	padding: 14px;
 	position: relative;
 	text-align: center;
@@ -1599,6 +1598,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .header-wrap a:not(.button) { color: #444444; }
 .header-wrap a:not(.button):hover { color: #2E2E2E; }
+.header .button { line-height: 1; }
 .header .menu .current-menu-item > a,
 .header .menu .current-menu-item > .menu-toggle { color: #AE2525; }
 .header-simple .header-wrap, .header-simple .header-controls { justify-content: center; }

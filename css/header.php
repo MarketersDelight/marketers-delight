@@ -31,6 +31,8 @@
 .header-wrap a:not(.button) { color: <?php echo $colors['header']['menu']['links']; ?>; }
 .header-wrap a:not(.button):hover { color: <?php echo $colors['header']['menu']['hover']; ?>; }
 
+.header .button { line-height: 1; }
+
 .header .menu .current-menu-item > a,
 .header .menu .current-menu-item > .menu-toggle { color: <?php echo $colors['header']['menu']['active']; ?>; }
 
