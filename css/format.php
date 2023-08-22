@@ -208,6 +208,8 @@
 
 .byline-comments-label { display: none; }
 
+.byline-edit { float: right; }
+
 /* CAPTION */
 
 .wp-caption {

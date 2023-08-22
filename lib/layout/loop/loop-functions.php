@@ -246,10 +246,12 @@ function md_has_byline() {
 
 function md_get_byline() {
 	$byline = md_module( array( 'loop', 'byline' ), array() );
+
 	if ( is_singular() ) {
 		$post_type = get_post_type();
 		$byline = md_setting( array( $post_type, 'single', 'byline' ), array() );
 	}
+
 	return array_keys( $byline );
 }
 
@@ -276,9 +278,11 @@ function md_byline_items( $sort = null ) {
 
 	if ( isset( $sort ) ) {
 		$data = array();
+
 		foreach ( $byline as $id => $label )
 			if ( $sort == 'ids' )
 				$data[] = $id;
+
 		return $data;
 	}
 
@@ -295,6 +299,15 @@ function md_byline_items( $sort = null ) {
 function md_byline_item( $item, $args = array() ) {
 	$template = locate_template( "templates/byline/$item.php" );
 	$byline = md_get_byline();
+	$post_id = get_the_ID();
+	$author_id = get_the_author_meta( 'ID' );
+
+	if ( isset( $args['post_id'] ) )
+		$post_id = $args['post_id'];
+
+	if ( isset( $args['author_id'] ) )
+		$author_id = $args['author_id'];
+
 	if ( $template )
 		include( md_template( "byline/$item", true ) );
 }
@@ -318,7 +331,7 @@ function md_byline_classes() {
  * @since 4.0
  */
 
-function md_byline() {
+function md_byline( $args = array() ) {
 	$classes = md_byline_classes();
 	$byline_items = md_byline_items();
 	include( md_template( 'byline/byline', true ) );
