@@ -32,6 +32,8 @@
 	position: relative;
 }
 
+.content-box { padding-bottom: <?php echo $mid; ?>px; }
+
 /* QUERIES */
 
 @media all and (max-width: <?php echo $site_width; ?>px) {

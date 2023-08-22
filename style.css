@@ -1056,6 +1056,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	max-width: 1008px;
 	position: relative;
 }
+.content-box { padding-bottom: 42px; }
 /* QUERIES */
 @media all and (max-width: 1008px) {
 	.content-box .inner {
