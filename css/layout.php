@@ -61,6 +61,7 @@
 	#wpadminbar { position: fixed !important; }
 }
 
+
 @media all and (min-width: 800px) {
 	/* CONTENT FULL */
 	.content-full .content { width: 100%; }
@@ -73,12 +74,7 @@
 
 @media all and (max-width: 800px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
-	.post-box { margin-bottom: <?php echo $half; ?>px; }
-	.content .has-image .headline-wrap.cover { margin-bottom: 0; }
-	.headline-wrap, .the-content, .author-box, .comments {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
+	/* DEFAULT STYLE */
 	.single .has-cover + .content-box.style-default.loop-default .post-box.has-image,
 	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
 }
@@ -88,13 +84,6 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
-	/* DEFAULT STYLE */
-	.style-default.loop-default .post-box { border-radius: 5px; }
-	.single .style-default.loop-default .post-box,
-	.page .style-default.loop-default .post-box {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
 	/* CONTENT - SIDEBAR */
 	.content-sidebar .content, .content-sidebar .sidebar { float: left; }
 	.content-sidebar .sidebar { padding-left: <?php echo $single; ?>px; }
@@ -111,6 +100,16 @@
 			padding-right: <?php echo $single; ?>px;
 		}
 	<?php endif; ?>
+}
+
+@media all and (max-width: 900px) {
+	/* DEFAULT STYLE */
+	.style-default.loop-default .post-box { border-radius: 5px; }
+	.single .style-default.loop-default .post-box,
+	.page .style-default.loop-default .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
 }
 
 @media all and (min-width: <?php echo $site_width; ?>px) {

@@ -3,12 +3,13 @@
 <?php echo '/*
 	Theme Name: Marketers Delight
 	Version: ' . MD_VERSION . '
-	Author: Alex Mangini
-		Description: Built on a foundation of typography and a vision to fuel powerful features with lightweight performance, Marketers Delight is your website marketing framework for now and into the future. Capture Leads with MD Optins, write and design beautiful long-form content with interactive tools, curate reading lists with the Bookshelf, and much, much more.
+	Author: Alex, Kolakube
+	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website\'s features with Drop-ins and develop your own layouts with MD development tools.
 	Theme URI: https://marketersdelight.com/
 	Author URI: https://kolakube.com/
 	Text Domain: md
-*/';
+	Table of contents:' . $style_guide .
+'*/';
 ?>
 
 /*------------------------------*\

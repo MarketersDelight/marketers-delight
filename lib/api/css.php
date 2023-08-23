@@ -36,17 +36,16 @@ class md_css {
 	}
 
 	/**
-	 * Core style.css template files to load in order
-	 * with Dropins filter.
+	 * Build list of stylesheets to include in style.css.
 	 *
-	 * @since 4.9.4
+	 * @since 5.6
 	 */
 
-	public function style_css() {
+	protected function css_files() {
+		$dropins = apply_filters( 'md_dropins_css_templates', array() );
 		$templates = array(
 			'attributes' => locate_template( 'css/attributes.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
-			'spacers' => locate_template( 'css/spacers.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
@@ -57,22 +56,30 @@ class md_css {
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
-			'footer' => locate_template( 'css/footer.php' )
+			'footer' => locate_template( 'css/footer.php' ),
+			'spacers' => locate_template( 'css/spacers.php' ),
+			'design' => locate_template( 'css/design.php' )
 		);
-
-		$dropins = apply_filters( 'md_dropins_css_templates', array() );
-
 		$templates = array_merge( $templates, $dropins );
 
-		$templates['design'] = MD_CSS_DIR . 'design.php';
+		return apply_filters( 'md_style_css_templates', $templates );
+	}
 
-		$templates = apply_filters( 'md_style_css_templates', $templates );
+	/**
+	 * Core style.css template files to load in order
+	 * with Dropins filter.
+	 *
+	 * @since 4.9.4
+	 */
 
+	public function style_css() {
+		$templates = $this->css_files();
 		$child = get_stylesheet_directory() . '/style.css';
 
 		if ( is_child_theme() && file_exists( $child ) && md_setting( array( 'settings', 'css', 'child' ) ) ) {
 			$child_dynamic = get_stylesheet_directory() . '/style.php';
 			$templates['child'] = $child;
+
 			if ( file_exists( $child_dynamic ) )
 				$templates['child_dynamic'] = $child_dynamic;
 		}
@@ -88,6 +95,7 @@ class md_css {
 
 	public function compile( $delete = null ) {
 		$inline = md_setting( array( 'settings', 'css', 'inline' ) );
+
 		foreach ( $this->files as $file => $fields ) {
 			if ( empty( $inline ) ) {
 				if ( isset( $delete ) )
@@ -97,6 +105,7 @@ class md_css {
 			else
 				$this->save( $file );
 		}
+
 		wp_cache_flush();
 	}
 
@@ -108,6 +117,7 @@ class md_css {
 
 	public function generate( $file ) {
 		$path = $this->files[$file]['path'];
+
 		if ( file_exists( $path ) ) {
 			ob_start();
 			$this->templates( $file );
@@ -157,6 +167,27 @@ class md_css {
 		$css = str_replace( array( '<style type="text/css">', '<style type=\'text/css\'>', '<style>', '</style>' ), '', $css );
 		$css = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $css );
 		return trim( $css );
+	}
+
+	/**
+	 * Render a list of CSS files to generate a
+	 * table of contents at the top of the stylesheet.
+	 *
+	 * @since 5.6
+	 */
+
+	private function style_guide() {
+		$c = 1;
+		$style_guide = '';
+		$css_files = $this->css_files();
+
+		foreach ( $css_files as $css_group => $css_path ) {
+			$style_group_name = str_replace( '-', ' ', ucwords( $css_group ) );
+			$style_guide .= "\t\t{$c}. $style_group_name\n";
+			$c++;
+		}
+
+		return "\n$style_guide";
 	}
 
 	/**
@@ -216,6 +247,7 @@ class md_css {
 		$admin_bar_height_mobile = 46;
 
 		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
+		$style_guide = $this->style_guide();
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
 			if ( ! file_exists( $path ) ) continue;
