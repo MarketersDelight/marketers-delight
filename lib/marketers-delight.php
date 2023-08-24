@@ -78,7 +78,6 @@ final class marketers_delight {
 		if ( is_admin() )
 			require_once( MD_DIR . 'lib/admin/admin.php' );
 		require_once( MD_DIR . 'lib/layout/layout.php' );
-		require_once( MD_DIR . 'lib/blog/blog.php' );
 		$this->dropins();
 		require_once( MD_DIR . 'lib/api/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )

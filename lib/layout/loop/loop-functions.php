@@ -264,8 +264,6 @@ function md_get_byline() {
 			$byline = $category_byline;
 	}
 
-//		$byline = md_module( array( 'loop', 'byline' ), array() );
-
 	return array_keys( $byline );
 }
 
@@ -311,10 +309,11 @@ function md_byline_items( $sort = null ) {
  */
 
 function md_byline_item( $item, $args = array() ) {
-	$template = locate_template( "templates/byline/$item.php" );
-	$byline = md_get_byline();
+	$post_type = get_post_type();
 	$post_id = get_the_ID();
 	$author_id = get_the_author_meta( 'ID' );
+	$byline = md_get_byline();
+	$template = locate_template( "templates/byline/$item.php" );
 
 	if ( isset( $args['post_id'] ) )
 		$post_id = $args['post_id'];

@@ -40,10 +40,12 @@ class md_accordion_widget extends WP_Widget {
 		$current_post_type = get_post_type();
 		$page_taxonomies = get_object_taxonomies( $current_post_type );
 		$tax = 'category';
+
 		if ( ! empty( $val['taxonomy'] ) )
 			$tax = $val['taxonomy'];
 		elseif ( ! empty( $page_taxonomies ) )
 			$tax = $page_taxonomies[0];
+
 		$taxonomy = get_taxonomy( $tax );
 		$post_type = $taxonomy->object_type;
 		$terms_args['taxonomy'] = $tax;

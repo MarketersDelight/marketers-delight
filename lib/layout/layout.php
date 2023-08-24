@@ -22,6 +22,8 @@ class md_layout extends md_api {
 		require_once( 'page-title.php' );
 		require_once( 'loop/loop.php' );
 		require_once( 'sidebars/sidebars.php' );
+		require_once( 'blog/blog.php' );
+		require_once( 'single/single.php' );
 	}
 
 	/**
