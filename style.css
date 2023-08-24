@@ -1143,7 +1143,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 @media all and (max-width: 800px) {
 	.post-box { margin-bottom: 14px; }
-	.headline-wrap, .the-content, .author-box, .style-default.loop-default .comments {
+	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: 14px;
 		padding-right: 14px;
 	}
@@ -1151,7 +1151,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 @media all and (min-width: 800px) {
 	.post-box, .loop-default .featured-image { margin-bottom: 28px; }
-	.headline-wrap, .the-content, .author-box, .style-default.loop-default .comments {
+	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: 42px;
 		padding-right: 42px;
 	}
@@ -2751,7 +2751,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	border-top: 0;
 }
 /* MEDIA & EMBED */
-.stream-embed:not(:last-child) { margin-bottom: 14px; }
 .stream-embed-content:not(:last-child) { margin-bottom: 9px; }
 .stream-media {
 	float: left;
@@ -2766,9 +2765,11 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .stream-embed {
 	border: 1px solid #CCCCCC;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
 	padding: 14px;
 }
+.stream-embed:not(:last-child) { margin-bottom: 14px; }
 .stream-embed .stream-title,
 .stream-thread .stream-title {
 	font-size: 23px;
@@ -2790,8 +2791,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-bottom: 14px;
 	padding-bottom: 5px;
 }
-.stream .byline .md-icon-plus { color: #22a340; }
-.stream .byline .md-icon-share { color: green; }
 .stream-byline-avatar {
 	position: relative;
 		top: 3px;
@@ -2803,6 +2802,9 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-bottom: 5px;
 	text-transform: uppercase;
 }
+.stream-repost .byline-author { margin-right: 0; }
+.stream-repost .md-icon-plus { color: #22a340; }
+.stream-repost .md-icon-share { color: green; }
 /* POST CONTENT */
 .stream-content:not(:last-child) { margin-bottom: 28px; }
 .stream-title {
@@ -2920,6 +2922,12 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	text-align: right;
 }
 /* QUERIES */
+@media all and (min-width: 800px) {
+	.loop-stream .comments {
+		padding-left: 0;
+		padding-right: 0;
+	}
+}
 @media all and (max-width: 900px) {
 	.stream { padding: 14px; }
 	.stream-head-text {

@@ -105,6 +105,7 @@ function md_404_template() {
 			'post_status' => array( 'publish' ),
 			'fields' => 'ids'
 		) );
+
 		if ( $page404->have_posts() )
 			while ( $page404->have_posts() ) {
 				$page404->the_post();
@@ -112,6 +113,7 @@ function md_404_template() {
 			}
 		else
 			md_template( 'content-item-404' );
+
 		wp_reset_query();
 	}
 }
@@ -141,13 +143,14 @@ function md_post_classes( $classes ) {
 
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = 'has-cover';
-		// silly
+
 		if ( is_singular() && $cover['position'] == 'headline_cover' )
 			$classes[] = 'has-headline-cover';
 	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
 		$classes[] = 'has-image';
+
 		if ( $position == 'above_headline' )
 			$classes[] = 'has-top-image';
 		elseif ( in_array( $position, array( '', 'left', 'right' ) ) )
@@ -245,12 +248,23 @@ function md_has_byline() {
  */
 
 function md_get_byline() {
-	$byline = md_module( array( 'loop', 'byline' ), array() );
+	$byline = md_post_type_field( array( 'loop', 'byline' ), array() );
 
 	if ( is_singular() ) {
-		$post_type = get_post_type();
-		$byline = md_setting( array( $post_type, 'single', 'byline' ), array() );
+		$single_byline = md_post_type_field( array( 'single', 'byline' ), array() );
+
+		if ( ! empty( $single_byline ) )
+			$byline = $single_byline;
 	}
+
+	if ( is_category() || is_tax() ) {
+		$category_byline = md_term_meta( array( 'loop', 'byline' ), null, array() );
+
+		if ( ! empty( $category_byline ) )
+			$byline = $category_byline;
+	}
+
+//		$byline = md_module( array( 'loop', 'byline' ), array() );
 
 	return array_keys( $byline );
 }

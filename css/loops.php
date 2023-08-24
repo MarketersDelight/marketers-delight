@@ -142,7 +142,7 @@
 
 @media all and (max-width: 800px) {
 	.post-box { margin-bottom: <?php echo $half; ?>px; }
-	.headline-wrap, .the-content, .author-box, .style-default.loop-default .comments {
+	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -151,7 +151,7 @@
 
 @media all and (min-width: 800px) {
 	.post-box, .loop-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
-	.headline-wrap, .the-content, .author-box, .style-default.loop-default .comments {
+	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
