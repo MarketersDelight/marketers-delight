@@ -48,7 +48,7 @@
 
 .loop .style-default.loop-default .post-box { border-radius: 5px; }
 
-.style-default.loop-default .loop .post-box.has-cover,
+.style-default .loop .post-box.has-cover,
 .style-default.loop-default .post-box.has-headline-cover,
 .style-default.loop-default .post-box.has-top-image { padding-top: 0; }
 

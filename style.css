@@ -763,7 +763,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding-top: 28px;
 }
 .loop .style-default.loop-default .post-box { border-radius: 5px; }
-.style-default.loop-default .loop .post-box.has-cover,
+.style-default .loop .post-box.has-cover,
 .style-default.loop-default .post-box.has-headline-cover,
 .style-default.loop-default .post-box.has-top-image { padding-top: 0; }
 .loop-default .featured-image { margin-bottom: 14px; }
@@ -2712,7 +2712,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		left: 50%;
 	width: 4px;
 }
-.loop-stream .loop > .stream:first-child:before, .loop-stream .comments-list > .comment:first-child:before {
+.loop-stream .loop > .stream:first-child:before,
+.loop-stream .comments-list > .comment:first-child:before {
 	background-color: #AE2525;
 	border-radius: 50%;
 	content: '';
@@ -2729,11 +2730,11 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	margin-bottom: 28px;
-	padding: 28px;
 	position: relative;
 }
 .stream.sticky { padding-top: 14px; }
 /* LAYOUT ELEMENTS */
+.stream-activity .stream-byline { font-style: italic; }
 .stream-go-back {
 	margin-bottom: 28px;
 	text-align: center;
@@ -2750,43 +2751,8 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	border-bottom: 0;
 	border-top: 0;
 }
-/* MEDIA & EMBED */
-.stream-embed-content:not(:last-child) { margin-bottom: 9px; }
-.stream-media {
-	float: left;
-	position: relative;
-	width: 20%;
-	z-index: 10;
-}
-.stream-media + .stream-text {
-	float: left;
-	padding-left: 16px;
-	width: 80%;
-}
-.stream-embed {
-	border: 1px solid #CCCCCC;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
-	padding: 14px;
-}
-.stream-embed:not(:last-child) { margin-bottom: 14px; }
-.stream-embed .stream-title,
-.stream-thread .stream-title {
-	font-size: 23px;
-	line-height: 35px;
-	margin-bottom: 5px;
-}
-.stream-embed .stream-title a {
-	color: #1E1E1E;
-	font-weight: bold;
-	text-decoration: none;
-}
-.stream-embed .stream-text {
-	font-size: 0.95em;
-	line-height: 1.45em;
-}
 /* BYLINE */
-.stream > .byline {
+.stream .headline-wrap .byline {
 	border-bottom: 1px solid #CCCCCC;
 	margin-bottom: 14px;
 	padding-bottom: 5px;
@@ -2806,7 +2772,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .stream-repost .md-icon-plus { color: #22a340; }
 .stream-repost .md-icon-share { color: green; }
 /* POST CONTENT */
-.stream-content:not(:last-child) { margin-bottom: 28px; }
 .stream-title {
 	font-size: 25px;
 	line-height: 38px;
@@ -2836,8 +2801,49 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	text-align: center;
 	width: 60px;
 }
-/* ACTIVITY */
-.stream-activity .stream-byline { font-style: italic; }
+/* MEDIA & EMBED */
+.stream-media {
+	float: left;
+	position: relative;
+	width: 20%;
+	z-index: 10;
+}
+.stream-media + .stream-text {
+	float: left;
+	padding-left: 16px;
+	width: 80%;
+}
+.stream-embed {
+	border: 1px solid #CCCCCC;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12);
+	margin-left: 14px;
+	margin-right: 14px;
+	padding: 14px;
+}
+.stream-embed:not(:last-child) { margin-bottom: 28px; }
+.stream-embed .stream-title, .stream-thread .stream-title {
+	font-size: 23px;
+	line-height: 35px;
+	margin-bottom: 5px;
+}
+.stream-embed .stream-title a {
+	color: #1E1E1E;
+	font-weight: bold;
+	text-decoration: none;
+}
+.stream-embed .stream-text {
+	font-size: 0.95em;
+	line-height: 1.45em;
+}
+.stream-embed-content:not(:last-child) { margin-bottom: 9px; }
+/* POST BAR */
+.stream-bar {
+	border-top: 1px solid #CCCCCC;
+	border-radius: 0 0 5px 5px;
+	padding: 14px;
+}
+.stream-bar i { margin-left: 5px; }
 /* COMMENTS */
 .loop-stream .comments { max-width: 100%; }
 .loop-stream .comments-list > .comment {
@@ -2921,15 +2927,28 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	padding: 14px;
 	text-align: right;
 }
+/* STYLE DEFAULT */
+.style-default.loop-stream .post-box {
+	padding-bottom: 28px;
+	padding-top: 28px;
+}
+.style-default.loop-stream .post-box.has-thread { padding-bottom: 0; }
 /* QUERIES */
 @media all and (min-width: 800px) {
+	.stream-embed {
+		margin-left: 28px;
+		margin-right: 28px;
+	}
+	.stream-bar {
+		padding-left: 42px;
+		padding-right: 42px;
+	}
 	.loop-stream .comments {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
 @media all and (max-width: 900px) {
-	.stream { padding: 14px; }
 	.stream-head-text {
 		font-size: 0.85em;
 		line-height: 1.5em;

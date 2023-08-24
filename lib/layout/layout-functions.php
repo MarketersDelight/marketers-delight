@@ -316,12 +316,15 @@ add_filter( 'the_password_form', 'md_password_form' );
  */
 
 function md_has_author_box() {
-	$enable = md_setting( array( 'post', 'single', 'author_box', 'enable' ) );
-	if (
-		( is_singular( 'post' ) && ! empty( $enable ) && ! md_post_meta( array( 'layout', 'content', 'author_box' ) ) ) ||
-		( is_singular() && md_post_meta( array( 'layout', 'content', 'add_author_box' ) ) )
-	)
-		return true;
+	$enable = md_post_type_field( array( 'single', 'author_box', 'enable' ) );
+
+	if ( is_singular() ) {
+		$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
+		$remove = md_post_meta( array( 'layout', 'content', 'author_box' ) );
+
+		if ( ( $enable && ! $remove ) || $add )
+			return true;
+	}
 }
 
 /**

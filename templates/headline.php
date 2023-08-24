@@ -2,7 +2,7 @@
 
 	<?php md_hook_before_headline(); ?>
 
-	<<?php echo $h; ?> class="headline">
+	<<?php echo $h; ?> class="<?php echo get_post_type(); ?>-title headline">
 		<?php echo md_title( get_the_title(), get_permalink() ); ?>
 	</<?php echo $h; ?>>
 
