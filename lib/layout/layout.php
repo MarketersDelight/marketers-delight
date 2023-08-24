@@ -47,7 +47,7 @@ class md_layout extends md_api {
 			),
 			'term' => array(
 				'name' => $this->name,
-				'order' => 5,
+				'position' => 30,
 				'fields' => $fields,
 				'callback' => array( $this, 'admin_fields' )
 			)

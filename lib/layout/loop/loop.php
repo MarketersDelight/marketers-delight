@@ -30,15 +30,16 @@ class md_loop extends md_api {
 		$fields = $this->fields();
 
 		return array(
-			'term' => array(
-				'name' => $this->name,
-				'fields' => $fields,
-				'callback' => array( $this, 'admin_template' )
-			),
 			'admin_page' => array(
 				'name' => $this->name,
 				'parent' => 'design',
 				'fields' => $fields
+			),
+			'term' => array(
+				'name' => $this->name,
+				'fields' => $fields,
+				'position' => 40,
+				'callback' => array( $this, 'admin_template' )
 			)
 		);
 	}

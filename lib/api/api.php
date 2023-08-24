@@ -142,7 +142,7 @@ class md_api {
 					$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
 					$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
 					$callback = ! empty( $register['term']['callback'] ) ? $register['term']['callback'] : array( $this, 'term' );
-					$position = ! empty( $register['term']['position'] ) ? $register['term']['position'] : 10;
+					$position = ! empty( $register['term']['position'] ) ? $register['term']['position'] : 100;
 					add_action( "md_{$taxonomy}_{$term}", $callback, $position );
 				}
 			}
@@ -288,11 +288,24 @@ class md_api {
 		if ( wp_doing_ajax() )
 			return;
 
+		$order = 100;
 		$admin_fields = md_admin_fields();
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
-			foreach ( $admin_fields[$this->_clean_id] as $admin_field )
-				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ) );
+			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
+				if ( $this->_clean_id == 'featured_image' )
+					$order = 10;
+				elseif ( $this->_clean_id == 'page_cover' )
+					$order = 20;
+				elseif ( $this->_clean_id == 'layout' )
+					$order = 30;
+				elseif ( $this->_clean_id == 'loop' )
+					$order = 40;
+				elseif ( $this->_clean_id == 'single' )
+					$order = 50;
+
+				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );
+			}
 	}
 
 	/**

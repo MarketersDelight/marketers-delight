@@ -37,6 +37,7 @@ class md_page_cover extends md_api {
 			'term' => array(
 				'name' => $this->name,
 				'fields' => $this->fields(),
+				'position' => 20,
 				'callback' => array( $this, 'admin_fields' )
 			)
 		);

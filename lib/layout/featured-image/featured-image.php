@@ -44,6 +44,7 @@ class md_featured_image extends md_api {
 			'term' => array(
 				'name' => $this->name,
 				'fields' => $this->fields(),
+				'position' => 10,
 				'callback' => array( $this, 'admin_fields' )
 			)
 		);
