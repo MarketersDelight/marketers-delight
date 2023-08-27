@@ -323,7 +323,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
  */
 
 function md_post_type_field( $keys = null, $default = null ) {
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 
 //	if ( ! is_post_type_archive( $post_type ) && ! is_home() )
 //		return;
@@ -437,6 +437,7 @@ function md_get_builder( $id, $type = null, $area = null ) {
 
 function md_has( $dropin ) {
 	$enabled = md_get_dropins( 'active' );
+
 	if ( in_array( $dropin, $enabled ) )
 		return true;
 }
@@ -449,6 +450,23 @@ function md_has( $dropin ) {
 
 function md_clean_id( $id ) {
 	return ( ! empty( $id ) ? preg_replace( '/^' . preg_quote( 'md_', '/' ) . '/', '', $id ) : '' );
+}
+
+/**
+ * Get the current post type of a page. This function exists to cover
+ * up a bug that changes the global Loop ID of the first post in the Loop
+ * when a Loop Query is modified to combine two post types.
+ *
+ * @since 5.6
+ */
+
+function md_get_post_type() {
+	$post_type = get_post_type();
+
+	if ( $post_type == 'stream_activity' )
+		$post_type = 'stream';
+
+	return $post_type;
 }
 
 /**

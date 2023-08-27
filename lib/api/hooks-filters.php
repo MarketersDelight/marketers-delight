@@ -345,7 +345,7 @@ function md_hook_post_actions( $post_id = null, $post_type = null ) {
 	if ( ! $post_id )
 		$post_id = get_queried_object_id();
 	if ( $post_type )
-		$post_type = get_post_type();
+		$post_type = md_get_post_type();
 	do_action( 'md_hook_post_actions', $post_id, $post_type );
 }
 

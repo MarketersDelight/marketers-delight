@@ -73,7 +73,7 @@ function md_has_sidebar() {
 	if ( has_filter( 'md_filter_has_sidebar' ) )
 		return apply_filters( 'md_filter_has_sidebar', '' );
 
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$sidebars = md_setting( 'sidebars' );
 	$sitewide = md_setting( array( 'sidebars', 'display', 'sitewide' ) );
 	$single_add = md_module( array( 'layout', 'sidebar', 'add' ) );
@@ -148,7 +148,7 @@ function md_admin_has_sidebar() {
 
 function md_get_sidebar_id() {
 	$name = 'sidebar-main';
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$global = md_get_global_sidebar_id();
 	$sidebar = md_module( array( 'layout', 'custom_sidebar' ) );
 
@@ -172,7 +172,7 @@ function md_get_global_sidebar_id() {
 	$name = '';
 	$post_types = $term = array();
 	$id = get_queried_object_id();
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$sidebars = md_sidebars();
 	$option = md_setting( 'sidebars' );
 

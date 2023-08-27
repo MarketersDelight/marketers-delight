@@ -182,6 +182,7 @@ function md_content_box_classes( $classes = array() ) {
 
 	if ( md_has_sidebar() ) {
 		$classes[] = 'content-sidebar';
+
 		if ( md_meta( array( 'layout', 'content_box' ), get_queried_object_id() ) )
 			$layout = md_meta( array( 'layout', 'content_box' ) );
 		else
@@ -246,7 +247,7 @@ function md_has_breadcrumbs() {
 function md_breadcrumbs() {
 	$post_type_title = $category_url = $category_title = '';
 	$post_id = get_the_ID();
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$post_type_obj = get_post_type_object( $post_type );
 	$blog_id = get_option( 'page_for_posts' );
 

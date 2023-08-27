@@ -45,7 +45,7 @@ function md_loops( $sort = null ) {
 
 function md_get_loop() {
 	$default = 'default';
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$loops = md_loops();
 
 	if ( ! empty( $loops[$post_type] ) )

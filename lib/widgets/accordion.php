@@ -37,7 +37,7 @@ class md_accordion_widget extends WP_Widget {
 		$title = $val['title'];
 		$terms = $current = $terms_args = array();
 		$page_id = get_queried_object_id();
-		$current_post_type = get_post_type();
+		$current_post_type = md_get_post_type();
 		$page_taxonomies = get_object_taxonomies( $current_post_type );
 		$tax = 'category';
 
