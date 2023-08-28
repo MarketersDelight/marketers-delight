@@ -135,6 +135,7 @@
 	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
 }
 
+.cover<?php echo $text_class; ?> .byline-alt,
 .header.has-cover<?php echo $text_class; ?> .menu-header > .menu-item:not(:last-child),
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 

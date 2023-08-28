@@ -1,8 +1,22 @@
-<?php if ( ! in_array( 'date', $byline ) ) : ?>
+<?php if ( ! in_array( 'date', $byline ) ) :
+	$permalink = get_permalink( $post_id );
+	if ( isset( $args['url_params' ] ) )
+		$permalink .= esc_url( $args['url_params'] );
+?>
 
 	<span class="byline-date byline-item">
 
-		<?php echo md_icon( 'clock' ); ?> <time datetime="<?php echo get_the_date( 'c', $post_id ); ?>" itemprop="datePublished"><a href="<?php echo get_permalink( $post_id ); ?>"><?php echo get_the_time( get_option( 'date_format' ), $post_id ); ?></a></time>
+		<?php if ( ! isset( $args['hide_icon'] ) ) : ?>
+			<?php echo md_icon( 'clock' ); ?>
+		<?php endif; ?>
+
+		<?php if ( isset( $args['prefix'] ) ) : ?>
+			<?php echo md_text_field( $args['prefix'] ); ?>
+		<?php endif; ?>
+
+		<time datetime="<?php echo get_the_date( 'c', $post_id ); ?>" itemprop="datePublished">
+			<a href="<?php echo $permalink; ?>"><?php echo get_the_time( get_option( 'date_format' ), $post_id ); ?></a>
+		</time>
 
 		<?php if ( in_array( 'last-updated', $byline ) ) : ?>
 			(<?php echo __( 'updated ', 'md' ); ?> <?php the_modified_date(); ?>)

@@ -46,7 +46,10 @@ function md_has_headline_cover() {
  * @changed 5.6
  */
 
-function md_cover_style() {
+function md_cover_style( $args = null ) {
+	if ( isset( $args['hide_cover'] ) )
+		return;
+
 	$cover = md_cover();
 
 	if ( ! empty( $cover['image'] ) && ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) || ( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) ) )

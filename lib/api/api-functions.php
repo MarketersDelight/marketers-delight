@@ -460,8 +460,8 @@ function md_clean_id( $id ) {
  * @since 5.6
  */
 
-function md_get_post_type() {
-	$post_type = get_post_type();
+function md_get_post_type( $post_id = null ) {
+	$post_type = get_post_type( $post_id );
 
 	if ( $post_type == 'stream_activity' )
 		$post_type = 'stream';

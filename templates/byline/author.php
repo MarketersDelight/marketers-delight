@@ -4,7 +4,7 @@
 
 	<span class="byline-author byline-item">
 
-		<?php if ( in_array( 'avatar', $byline ) || isset( $args['avatar'] ) ) {
+		<?php if ( in_array( 'avatar', $byline ) || ( isset( $args['avatar'] ) && $args['avatar'] != false ) ) {
 			$avatar_size = isset( $args['avatar_size'] ) ? $args['avatar_size'] : 30;
 			echo get_avatar( $author_id, $avatar_size );
 		} ?>

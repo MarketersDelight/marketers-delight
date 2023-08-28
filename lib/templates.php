@@ -40,14 +40,19 @@ function md_templates() {
 	add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 
 	if ( ! is_404() && md_has_byline() ) {
-		$byline_position = md_module( array( 'loop', 'byline_position' ) );
-		if ( is_singular() ) {
-			$post_type = get_post_type();
-			$byline_position = md_setting( array( $post_type, 'single', 'byline_position' ) );
-		}
 		$hook_byline = 'md_hook_before_headline';
+		$byline_position = md_post_type_field( array( 'loop', 'byline_position' ) );
+
+		if ( is_singular() ) {
+			$single_byline_position = md_post_type_field( array( 'single', 'byline_position' ) );
+
+			if ( ! empty( $single_byline_position ) )
+				$byline_position = $single_byline_position;
+		}
+
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_after_headline';
+
 		add_action( $hook_byline, 'md_byline' );
 	}
 

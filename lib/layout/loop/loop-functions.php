@@ -180,20 +180,32 @@ function md_has_headline() {
  * @since 4.1
  */
 
-function md_headline_classes( $custom = null ) {
-	if ( isset( $custom ) )
-		$classes = $custom;
-
+function md_headline_classes( $args = array() ) {
+	$classes = array();
 	$classes[] = 'headline-wrap';
 
-	$cover_classes = md_cover_classes();
+	if ( ! isset( $args['hide_cover'] ) ) {
+		$cover_classes = md_cover_classes();
 
-	if ( ! empty( $cover_classes ) )
-		$classes[] = $cover_classes;
+		if ( ! empty( $cover_classes ) )
+			$classes[] = $cover_classes;
+	}
 
 	$classes = join( ' ', $classes );
 
 	return apply_filters( 'md_filter_headline_classes', esc_attr( $classes ) );
+}
+
+/**
+ * Displays the headline of any post/page.
+ *
+ * @since 4.1
+ */
+
+function md_headline() {
+	$h = md_html( 'h' );
+
+	include( md_template( 'headline', true ) );
 }
 
 /**
@@ -214,17 +226,6 @@ function md_title( $text, $url, $args = null ) {
 		$title .= '</a>';
 
 	return $title;
-}
-
-/**
- * Displays the headline of any post/page.
- *
- * @since 4.1
- */
-
-function md_headline() {
-	$h = md_html( 'h' );
-	include( md_template( 'headline', true ) );
 }
 
 /**
@@ -347,6 +348,7 @@ function md_byline_classes() {
 function md_byline( $args = array() ) {
 	$classes = md_byline_classes();
 	$byline_items = md_byline_items();
+
 	include( md_template( 'byline/byline', true ) );
 }
 

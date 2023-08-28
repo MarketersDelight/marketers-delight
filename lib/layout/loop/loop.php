@@ -72,7 +72,7 @@ class md_loop extends md_api {
 			),
 			'byline_position' => array(
 				'type' => 'select',
-				'options' => array( 'before_headline', 'after_headline' )
+				'options' => array( 'after_headline' )
 			),
 			'content' => array(
 				'type' => 'select',

@@ -36,7 +36,7 @@
 
 /* DEFAULT STYLE */
 
-.loop .headline-wrap.cover, .loop .headline-wrap.cover .overlay,
+.headline-wrap.cover, .headline-wrap.cover .overlay,
 .style-default.loop-default .post-box { border-radius: 5px 5px 0 0; }
 
 .style-default.loop-default .post-box {

@@ -338,7 +338,7 @@ function md_has_author_box() {
  */
 
 function md_author_box() {
-	$html = is_author() ? 'h1' : 'p';
+	$html = is_author() ? 'h1' : 'h3';
 	$twitter = get_the_author_meta( 'twitter' );
 	$desc = get_the_author_meta( 'description' );
 	$url = get_the_author_meta( 'url' );

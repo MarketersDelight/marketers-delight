@@ -877,6 +877,7 @@ div.editor-styles-wrapper .md-email-footer {
 .cover a {
 	color: #fff;
 }
+.cover .byline-alt,
 .header.has-cover .menu-header > .menu-item:not(:last-child),
 .cover .author-link { border-bottom-color: rgba(255, 255, 255, 0.3); }
 .header.has-cover .menu > .menu-item:hover > .menu-toggle { background-color: rgba(255, 255, 255, 0.3); }
@@ -894,6 +895,7 @@ div.editor-styles-wrapper .md-email-footer {
 .cover.text-alt a {
 	color: #1E1E1E;
 }
+.cover.text-alt .byline-alt,
 .header.has-cover.text-alt .menu-header > .menu-item:not(:last-child),
 .cover.text-alt .author-link { border-bottom-color: rgba(0, 0, 0, 0.2); }
 .header.has-cover.text-alt .menu > .menu-item:hover > .menu-toggle { background-color: rgba(0, 0, 0, 0.2); }

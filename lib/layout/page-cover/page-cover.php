@@ -28,6 +28,7 @@ class md_page_cover extends md_api {
 
 	public function register() {
 		$this->name = __( 'Page Cover', 'md' );
+
 		return array(
 			'meta_box' => array(
 				'name' => $this->name,
@@ -51,6 +52,7 @@ class md_page_cover extends md_api {
 
 	public function actions() {
 		$this->sanitize = $this->_data( 'sanitize' );
+
 		add_action( 'wp_head', array( $this, 'inline_css' ) );
 	}
 

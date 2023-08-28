@@ -13,8 +13,9 @@
 		<div class="md-sep-small">
 			<?php $this->fields->field( 'byline_position', array(
 				'type' => 'select',
-				'empty_label' => __( 'Show before headline', 'md' ),
+				'empty_label' => __( 'Show in default position...', 'md' ),
 				'options' => array(
+					'before_headline' => __( 'Show before headline', 'md' ),
 					'after_headline' => __( 'Show after headline', 'md' )
 				)
 			) ); ?>
