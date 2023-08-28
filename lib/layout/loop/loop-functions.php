@@ -268,6 +268,19 @@ function md_get_byline() {
 	return array_keys( $byline );
 }
 
+function md_get_byline_position() {
+	$byline_position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
+
+	if ( is_singular() ) {
+		$single_byline_position = md_post_type_field( array( 'single', 'byline_position' ) );
+
+		if ( ! empty( $single_byline_position ) )
+			$byline_position = $single_byline_position;
+	}
+
+	return $byline_position;
+}
+
 /**
  * Active list of byline items. Compares preset byline items (can
  * also be filtered in/out) with user settings).

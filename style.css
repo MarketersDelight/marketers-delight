@@ -2736,7 +2736,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .stream.sticky { padding-top: 14px; }
 /* LAYOUT ELEMENTS */
-.stream-thread .overlay { display: none; }
 .stream-bubble, .loop-stream .pagination-wrap {
 	background-color: #FFFFFF;
 	border-radius: 5px;
@@ -2758,7 +2757,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .stream-byline {
 	border-bottom: 1px solid #CCCCCC;
 	font-style: italic;
-	margin-bottom: 14px;
+	margin-bottom: 9px;
 	padding-bottom: 9px;
 	position: relative;
 	z-index: 10;
@@ -2778,6 +2777,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	font-size: 25px;
 	line-height: 38px;
 }
+.stream .stream-title { margin-bottom: 9px; }
 .cover .stream-title {
 	font-size: 31px;
 	line-height: 45px;
@@ -2822,7 +2822,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .stream-embed .stream-title, .stream-thread .stream-title {
 	font-size: 23px;
 	line-height: 35px;
-	margin-bottom: 5px;
 }
 .stream-embed .stream-title a {
 	color: #1E1E1E;
