@@ -100,13 +100,6 @@
 
 .content-text h2:not(:first-child), .content-text h3:not(:first-child), .content-text h4:not(:first-child), .content-text h5:not(:first-child) { margin-top: <?php echo $mid; ?>px; }
 
-.headline .byline-item {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	font-weight: normal;
-	line-height: 1;
-}
-
 /* TEXT STYLES */
 
 .text-center { text-align: center; }

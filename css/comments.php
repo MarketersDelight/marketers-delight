@@ -12,7 +12,7 @@
 
 .comments .children {
 	margin-left: <?php echo $single; ?>px;
-	margin-top: <?php echo $single; ?>px;
+	margin-top: <?php echo $half; ?>px;
 }
 
 /* TITLE */
@@ -108,7 +108,7 @@
 	z-index: 10;
 }
 
-.comment:hover > .comment-details .comment-toggle { display: block; }
+.comment-details:hover > .comment-byline > .comment-toggle { display: block; }
 
 .comment.toggle-comment:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
@@ -117,10 +117,8 @@
 
 .toggle-comment .show-comment { display: inline; }
 
-.comment.toggle-comment{ opacity: 0.4; }
-
 .toggle-comment .comment-content {
-	height: <?php echo $mid; ?>px;
+	height: <?php echo $single; ?>px;
 	overflow: hidden;
 }
 
@@ -128,7 +126,7 @@
 	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%);
 	content: '';
 	display: block;
-	height: <?php echo $mid; ?>px;
+	height: <?php echo $single; ?>px;
 	position: absolute;
 		bottom: 0;
 		left: 0;
@@ -173,6 +171,7 @@
 .comment .comment-respond {
 	margin-bottom: <?php echo $half; ?>px;
 	padding-left: <?php echo $single; ?>px;
+	padding-right: <?php echo $third; ?>px;
 }
 
 .comment-form .comment-form-comment { margin-bottom: <?php echo $half; ?>px; }
