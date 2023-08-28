@@ -21,6 +21,10 @@ class md_single extends md_api {
 			'byline_position' => array(
 				'type' => 'select',
 				'options' => array( 'before_headline', 'after_headline' )
+			),
+			'post_nav' => array(
+				'type' => 'checkbox',
+				'options' => array( 'disable' )
 			)
 		);
 	}

@@ -55,12 +55,16 @@
 
 .loop-default .featured-image { margin-bottom: <?php echo $half; ?>px; }
 
+.loop-default.style-default .author-box {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+}
+
 /* QUERIES */
 
 @media all and (max-width: 600px) {
 	#wpadminbar { position: fixed !important; }
 }
-
 
 @media all and (min-width: 800px) {
 	/* CONTENT FULL */

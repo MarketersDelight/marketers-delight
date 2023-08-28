@@ -85,7 +85,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box' )
+				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav' )
 			),
 			'breadcrumbs' => array(
 				'type' => 'checkbox',
@@ -166,7 +166,8 @@ class md_layout extends md_api {
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
 
-		$author_box = md_setting( array( 'post', 'single', 'author_box', 'enable' ) );
+		$author_box = md_post_type_field( array( 'single', 'author_box', 'enable' ), null, $post_type );
+		$disable_post_nav = md_post_type_field( array( 'single', 'post_nav', 'disable' ), null, $post_type );
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )

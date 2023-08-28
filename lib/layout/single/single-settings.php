@@ -31,16 +31,39 @@
 
 		<hr class="md-sep-small" />
 
-		<h4><?php echo __( 'Author Box', 'md' ); ?></h4>
+		<div class="columns-3 columns-single">
 
-		<div class="md-sep-small">
-			<?php $this->fields->field( 'author_box', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'enable' => __( 'Enable author box after blog posts', 'md' ),
-					'all_posts' => __( 'Link to author archives page', 'md' )
-				)
-			) ); ?>
+			<div class="col md-sep-small">
+
+				<h4><?php echo __( 'Author Box', 'md' ); ?></h4>
+
+				<div class="md-sep-small">
+					<?php $this->fields->field( 'author_box', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'enable' => __( 'Enable author box', 'md' ),
+							'all_posts' => __( 'Hide links to author page', 'md' )
+						)
+					) ); ?>
+				</div>
+
+			</div>
+
+			<div class="col md-sep-small">
+
+				<h4><?php echo __( 'Post Nav', 'md' ); ?></h4>
+
+				<div class="md-sep-small">
+					<?php $this->fields->field( 'post_nav', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'disable' => __( 'Disable <b>Next/Previous</b> Post Nav', 'md' )
+						)
+					) ); ?>
+				</div>
+
+			</div>
+
 		</div>
 
 	</div>

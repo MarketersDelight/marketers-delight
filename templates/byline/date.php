@@ -15,7 +15,7 @@
 		<?php endif; ?>
 
 		<time datetime="<?php echo get_the_date( 'c', $post_id ); ?>" itemprop="datePublished">
-			<a href="<?php echo $permalink; ?>"><?php echo get_the_time( get_option( 'date_format' ), $post_id ); ?></a>
+			<a href="<?php echo esc_url( $permalink ); ?>"><?php echo get_the_time( get_option( 'date_format' ), $post_id ); ?></a>
 		</time>
 
 		<?php if ( in_array( 'last-updated', $byline ) ) : ?>

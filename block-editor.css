@@ -919,7 +919,7 @@ div.editor-styles-wrapper .md-email-footer {
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
-.spin, .md-icon-loading { animation: spin 2s linear infinite; }
+.spin, .button-loading .md-icon-loading { animation: spin 2s linear infinite; }
 .button-loading .md-icon-loading { display: none; }
 .is-loading .md-icon-loading {
 	display: inline-block;

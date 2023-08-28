@@ -169,7 +169,7 @@
 	to { transform: rotate(360deg); }
 }
 
-.spin, .md-icon-loading { animation: spin 2s linear infinite; }
+.spin, .button-loading .md-icon-loading { animation: spin 2s linear infinite; }
 
 .button-loading .md-icon-loading { display: none; }
 

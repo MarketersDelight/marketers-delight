@@ -766,6 +766,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .style-default.loop-default .post-box.has-headline-cover,
 .style-default.loop-default .post-box.has-top-image { padding-top: 0; }
 .loop-default .featured-image { margin-bottom: 14px; }
+.loop-default.style-default .author-box {
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #CCCCCC;
+}
 /* QUERIES */
 @media all and (max-width: 600px) {
 	#wpadminbar { position: fixed !important; }
@@ -927,8 +931,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 /* AUTHOR BOX */
 .author-box {
 	background-color: #EDF6FD;
-	border-bottom: 1px solid #CCCCCC;
-	border-top: 1px solid #CCCCCC;
 	padding: 28px 14px 14px;
 }
 .author-title { margin-bottom: 14px; }
@@ -2299,7 +2301,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	from { transform: rotate(0deg); }
 	to { transform: rotate(360deg); }
 }
-.spin, .md-icon-loading { animation: spin 2s linear infinite; }
+.spin, .button-loading .md-icon-loading { animation: spin 2s linear infinite; }
 .button-loading .md-icon-loading { display: none; }
 .is-loading .md-icon-loading {
 	display: inline-block;
@@ -2922,6 +2924,10 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .style-default.loop-stream .post-box {
 	padding-bottom: 28px;
 	padding-top: 28px;
+}
+.style-default.loop-stream .author-box {
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 /* QUERIES */
 @media all and (min-width: 800px) {

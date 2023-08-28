@@ -132,8 +132,6 @@
 
 .author-box {
 	background-color: <?php echo $colors['site']['action']; ?>;
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding: <?php echo $single; ?>px <?php echo $half; ?>px <?php echo $half; ?>px;
 }
 

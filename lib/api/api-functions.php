@@ -322,8 +322,9 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
  * @since 5.6
  */
 
-function md_post_type_field( $keys = null, $default = null ) {
-	$post_type = md_get_post_type();
+function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
+	if ( ! isset( $post_type ) )
+		$post_type = md_get_post_type();
 
 //	if ( ! is_post_type_archive( $post_type ) && ! is_home() )
 //		return;

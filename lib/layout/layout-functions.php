@@ -340,11 +340,12 @@ function md_has_author_box() {
 function md_author_box() {
 	$html = is_author() ? 'h1' : 'h3';
 	$twitter = get_the_author_meta( 'twitter' );
-	$desc = get_the_author_meta( 'description' );
 	$url = get_the_author_meta( 'url' );
 	$author = get_author_posts_url( get_the_author_meta( 'ID' ) );
-	$show_posts = md_setting( array( 'post', 'single', 'author_box', 'all_posts' ) );
+	$desc = get_the_author_meta( 'description' );
+	$hide_posts = md_post_type_field( array( 'single', 'author_box', 'all_posts' ) );
 	$has_avatar = get_option( 'show_avatars' );
+
 	include( md_template( 'author-box', true ) );
 }
 
@@ -457,8 +458,26 @@ add_filter( 'comment_form_fields', 'md_comment_form_reorder' );
  */
 
 function md_post_nav() {
-	if ( get_previous_post() || get_next_post() )
-		md_template( 'post-nav' );
+	md_template( 'post-nav' );
+}
+
+/**
+ * Check if Post Nav is active on page.
+ *
+ * @since 5.6
+ */
+
+function md_has_post_nav() {
+	$disable = md_post_type_field( array( 'single', 'post_nav', 'disable' ) );
+	$single_remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
+	$single_add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
+
+	if (
+		! is_page() && is_singular() && ( get_previous_post() || get_next_post() ) &&
+		! $single_remove &&
+		( ! $disable || $single_add )
+	)
+		return true;
 }
 
 /**
