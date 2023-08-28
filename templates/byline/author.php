@@ -21,7 +21,7 @@
 
 			<?php if ( ! empty( $args['hide_links'] ) ) : ?>
 				<?php if ( get_the_author_meta( 'twitter', $author_id ) ) : ?>
-					<a href="//twitter.com/<?php echo esc_html( get_the_author_meta( 'twitter', $author_id ) ); ?>/" class="byline-twitter byline-icon" rel="nofollow" target="_blank"><?php echo md_icon( 'twitter' ); ?></a>
+					<a href="//twitter.com/<?php echo esc_html( get_the_author_meta( 'twitter', $author_id ) ); ?>/" class="byline-twitter" rel="nofollow" target="_blank"><?php echo md_icon( 'twitter' ); ?></a>
 				<?php endif; ?>
 			<?php endif; ?>
 

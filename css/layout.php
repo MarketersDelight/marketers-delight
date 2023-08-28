@@ -32,7 +32,7 @@
 	position: relative;
 }
 
-.content-box { padding-bottom: <?php echo $mid; ?>px; }
+.content-box { padding-bottom: <?php echo $single; ?>px; }
 
 /* DEFAULT STYLE */
 

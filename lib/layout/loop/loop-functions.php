@@ -268,13 +268,19 @@ function md_get_byline() {
 	return array_keys( $byline );
 }
 
+/**
+ * Get the general position of the current Page/Item byline.
+ *
+ * @since 5.6
+ */
+
 function md_get_byline_position() {
 	$byline_position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
 
 	if ( is_singular() ) {
 		$single_byline_position = md_post_type_field( array( 'single', 'byline_position' ) );
 
-		if ( ! empty( $single_byline_position ) )
+		if ( $single_byline_position )
 			$byline_position = $single_byline_position;
 	}
 
