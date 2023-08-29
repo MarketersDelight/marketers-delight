@@ -38,6 +38,7 @@ class md_integrations extends md_api {
 			),
 			'message' => __( 'The Google Analytics tracking code is now loading on your site! For best performance the script has been placed at the bottom of every page.', 'md' )
 		);
+
 		return empty( $args ) ? $integrations : $this->sort( $integrations, $args );
 	}
 
@@ -49,16 +50,19 @@ class md_integrations extends md_api {
 
 	public function sort( $integrations, $args ) {
 		$show = array();
+
 		// Show services by 'type'
 		if ( isset( $args['key'] ) )
 			foreach ( $integrations as $id => $fields )
 				if ( $fields['type'] == $args['key'] )
 					$show[$id] = $fields;
+
 		// Show single service
 		if ( isset( $args['service'] ) )
 			foreach ( $integrations as $id => $fields )
 				if ( $args['service'] == $id )
 					$show[$id] = $fields;
+
 		return $show;
 	}
 
@@ -109,7 +113,7 @@ class md_integrations extends md_api {
 	<?php }
 
 	/**
-	 * Return itemplate as individial integration boxes.
+	 * Return template as individual integration boxes.
 	 *
 	 * @since 4.9
 	 */
@@ -118,6 +122,7 @@ class md_integrations extends md_api {
 		$integrations = $this->data( $args );
 		$option = md_setting( array( 'integrations' ) );
 		$error = isset( $args['error'] ) ? true : '';
+
 		include( 'templates/integrations-fields.php' );
 	}
 
@@ -162,6 +167,7 @@ class md_integrations extends md_api {
 		unset( $option['integrations']['services'][$integration] );
 		unset( $option['integrations']['api_keys'][$integration] );
 		unset( $option['integrations']['enabled'][$integration] );
+
 		update_option( 'marketers_delight', $option );
 	}
 
@@ -176,9 +182,12 @@ class md_integrations extends md_api {
 			$this->error( $service );
 
 		$option['integrations']['api_keys'][$service]['key'] = esc_attr( $api_key );
+
 		if ( $api_url )
 			$option['integrations']['api_keys'][$service]['url'] = esc_attr( $api_url );
+
 		$option['integrations']['enabled'][$service] = true;
+
 		update_option( 'marketers_delight', $option );
 	}
 
@@ -190,6 +199,7 @@ class md_integrations extends md_api {
 
 	public function error( $service ) {
 		$this->admin_template( array( 'service' => $service, 'error' => true ) );
+
 		die();
 	}
 

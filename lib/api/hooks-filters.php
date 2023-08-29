@@ -46,14 +46,6 @@ function md_image_sizes() {
 		'md-image' => array(
 			'width'  => 325,
 			'height' => 425
-		),
-		'md-book' => array(
-			'width' => 180,
-			'height' => 270
-		),
-		'md-thumbnail' => array(
-			'width'  => 80,
-			'height' => 80
 		)
 	) );
 }

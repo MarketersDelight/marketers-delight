@@ -256,6 +256,7 @@
 
 @media all and (min-width: 800px) {
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
+	.loop .featured-image.alignleft, .loop .featured-image.alignright { max-width: <?php echo $single * 10; ?>px; }
 }
 
 /* LISTS */

@@ -11,16 +11,16 @@ function md_featured_image( $position = null, $size = null, $args = null ) {
 
 	if ( ! isset( $size ) )
 		if ( in_array( $position, array( '', 'left', 'right' ) ) )
-			$size = 'md-image';
+			$size = 'md-block';
 		else
 			$size = 'full';
 
 	$classes = array( 'featured-image' );
 
 	if ( in_array( $position, array( '', 'right' ) ) )
-		$classes[] = 'alignright wrap';
+		$classes[] = 'alignright wrap-small';
 	elseif ( $position == 'left' )
-		$classes[] = 'alignleft wrap';
+		$classes[] = 'alignleft wrap-small';
 	elseif ( $position == 'center' )
 		$classes[] = 'aligncenter';
 
@@ -45,7 +45,7 @@ function md_featured_image_position( $position = null ) {
 	$default = md_setting( array( 'colors', 'featured_image', 'position' ), 'right' );
 
 	if ( in_the_loop() && ! is_singular() )
-		$position = md_meta( array( 'featured_image', 'position' ), null, $default );
+		$position = md_post_meta( array( 'featured_image', 'position' ), null, $default );
 	else
 		$position = md_module( array( 'featured_image', 'position' ), $default );
 
@@ -60,6 +60,7 @@ function md_featured_image_position( $position = null ) {
 
 function md_has_inline_featured_image() {
 	$position = md_featured_image_position();
+
 	if ( has_post_thumbnail() && in_array( $position, array( '', 'left', 'right', 'center' ) ) )
 		return true;
 }
