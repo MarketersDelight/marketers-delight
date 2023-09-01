@@ -564,31 +564,3 @@ function md_footer_columns_template() {
 function md_footer_copy() {
 	md_template( 'footer-copy' );
 }
-
-/**
- * Get page data from different page types.
- *
- * @since 4.6
- */
-
-function md_page_data() {
-	if ( is_category() || is_tax() ) {
-		$term = get_queried_object();
-		$id = $term->term_id;
-		return array(
-			'title' => get_cat_name( $id ),
-			'link' => get_category_link( $id ),
-			'image' => md_term_meta( array( 'featured_image', 'image', 'url' ) ),
-			'excerpt' => strip_tags( category_description( $id ) )
-		);
-	}
-	else {
-		$id = get_queried_object_id();
-		return array(
-			'title' => get_the_title( $id ),
-			'link' => get_permalink( $id ),
-			'image' => get_the_post_thumbnail_url( $id ),
-			'excerpt' => get_post_field( 'post_excerpt', $id )
-		);
-	}
-}

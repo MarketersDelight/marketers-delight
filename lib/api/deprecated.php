@@ -14,6 +14,7 @@ function md_author() { md_author_box(); }
 function md_featured_image_style() { md_cover_style(); }
 function md_featured_image_cover() { md_cover_style(); }
 function md_featured_image_caption() { md_get_caption(); }
+function md_page_data() { return array(); }
 
 /**
  * Checks if Main Menu is active on page.

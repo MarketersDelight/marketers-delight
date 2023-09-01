@@ -117,6 +117,10 @@ class md_admin {
 	public function add_menu() {
 		add_submenu_page( 'md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
 
+		add_submenu_page( 'admin.php?page=md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
+
+		add_submenu_page( 'md_settings', __( 'Design', 'md' ), __( 'Design', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings&tab=md_colors' );
+
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;
@@ -143,8 +147,6 @@ class md_admin {
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
 		}
-
-		add_submenu_page( 'admin.php?page=md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
 
 		if ( is_child_theme() )
 			add_submenu_page( 'md_settings', __( 'Edit Child Theme', 'md' ), __( 'Edit Child Theme', 'md' ), 'edit_theme_options', 'theme-editor.php' );
