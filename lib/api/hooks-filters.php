@@ -197,6 +197,7 @@ function md_filter_comments_classes() {
 	$classes = array();
 	$classes[] = 'comments';
 	$classes = apply_filters( 'md_filter_comments_classes', $classes );
+
 	return join( ' ', $classes );
 }
 

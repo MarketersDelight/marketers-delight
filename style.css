@@ -11,8 +11,8 @@
 		2. Forms
 		3. Buttons
 		4. Format
-		5. Layout
-		6. Page elements
+		5. Content box
+		6. Layout
 		7. Loops
 		8. Menus
 		9. Header
@@ -853,9 +853,6 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	color: #AE2525;
 	content: '\e810';
 }
-@media all and (max-width: 800px) {
-	.hide-label-mobile .trigger-text { display: none; }
-}
 /* VIDEO */
 .video-wrap {
 	height: 0;
@@ -1039,6 +1036,9 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		font-size: 20px;
 		line-height: 31px;
 	}
+}
+@media all and (max-width: 800px) {
+	.hide-label-mobile .trigger-text { display: none; }
 }
 /*------------------------------*\
 	$LOOPS

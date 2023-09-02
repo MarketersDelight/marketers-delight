@@ -97,7 +97,8 @@ class md_api {
 			$this->_prefix = $this->_prefix();
 			$this->fields = new md_fields( array(
 				'id' => $this->_id,
-				'clean_id' => $this->_clean_id
+				'clean_id' => $this->_clean_id,
+				'prefix' => $this->_prefix
 			) );
 
 			// Register components and fields

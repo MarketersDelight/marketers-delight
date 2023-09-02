@@ -29,6 +29,7 @@ function md_sidebars() {
 
 function md_sidebar() {
 	$name = md_get_sidebar_id();
+
 	dynamic_sidebar( $name );
 }
 

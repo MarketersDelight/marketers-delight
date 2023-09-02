@@ -190,7 +190,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-save { text-align: center; }
 
-.md .submit, .md-share .md-label-wrap { margin-top: 0; }
+.md .submit, .md-share .md-label-wrap, .md-builder-share h3 { margin-top: 0; }
 
 .md .button .dashicons {
 	position: relative;
@@ -294,6 +294,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 		margin-right: 6px;
 		padding: 3px 5px;
 	}
+	.md-tabs .nav-tab-wrapper { border-bottom: 1px solid #c3c4c7; }
 }
 
 
@@ -527,11 +528,17 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-integration.type-email .md-loading, .md-integration.invalid .md-loading { margin-top: 13px; }
 
-.md-sidebar.col-style { padding-bottom: 5px; }
+.md-layout-toggle:not(:last-child) { margin-bottom: 20px;}
 
-.md-sidebar .md-checkboxes .md-checkbox-disable,
+.md-layout-toggle-fields:not(:last-child) {
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
+
+.md-sidebars .md-checkboxes .md-checkbox-disable,
 .md-sidebars.is-sitewide .md-checkbox-enable { display: none; }
-
 .md-sidebars.is-sitewide .md-checkbox-disable { display: block; }
 
 /* LICENSE */
@@ -1078,7 +1085,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	width: 65%;
 }
 
-.md .regular-text, .md-sidebar select { width: 100%; }
+.md .regular-text, .md-layout-toggle select { width: 100%; }
 
 .md .small-text.regular-text { width: 50%; }
 

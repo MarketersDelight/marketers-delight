@@ -21,6 +21,7 @@ class md_fields {
 	public function __construct( $args ) {
 		$this->_id       = $args['id'];
 		$this->_clean_id = $args['clean_id'];
+		$this->_prefix   = $args['prefix'];
 		$this->_option   = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
 	}
 
@@ -64,8 +65,10 @@ class md_fields {
 
 			if ( ! empty( $page_types[$page] ) ) {
 				$children = $page_types[$page];
+
 				if ( in_array( $clean_id, $children ) )
 					$has_parent = true;
+
 				if ( $has_parent ) {
 					$page = md_clean_id( $page );
 					$setting = ! empty( $setting[$page] ) ? $setting[$page] : '';
@@ -83,6 +86,7 @@ class md_fields {
 				$id .= "_{$key}";
 				$group = isset( $group[$key] ) ? $group[$key] : '';
 			}
+
 			$option = $group;
 		}
 		else {
@@ -131,6 +135,7 @@ class md_fields {
 			$page = esc_attr( $_GET['page'] );
 			$page_types = md_admin_settings();
 			$option = md_setting();
+
 			if ( ! empty( $page_types[$page] ) ) {
 				$page = md_clean_id( $page );
 				$option = $option[$page];
@@ -805,6 +810,62 @@ class md_fields {
 				</div>
 			</div>
 		</div>
+	<?php }
+
+	/**
+	 * Render admin group fields for an easy to use feature
+	 * deployment throughout various screen in WP admin.
+	 *
+	 * @since 5.6
+	 */
+
+	public function layout_toggle( $types, $args = null ) { ?>
+
+		<div class="md-layout-toggle">
+
+			<?php foreach ( $types as $type => $pages ) :
+				$name = '';
+				$icon = 'dashicons-admin-post';
+				$post_type = get_post_type_object( $type );
+
+				if ( ! empty( $post_type->labels->name ) )
+					$name = $post_type->labels->name;
+
+				if ( ! empty( $post_type->menu_icon ) )
+					$icon = $post_type->menu_icon;
+			?>
+
+				<div class="col-style md-sep-small">
+
+					<h3 class="md-title normal">
+						<i class="md-title-icon dashicons <?php echo esc_attr( $icon ); ?>"></i>
+						<?php echo esc_html( $name ); ?>
+					</h3>
+
+					<hr class="md-sep-small" />
+
+					<?php foreach ( $pages as $page => $val ) {
+						echo '<div class="md-layout-toggle-fields">';
+						if ( $page )
+							if ( $page === 'single' )
+								$label = $post_type->labels->singular_name;
+							elseif ( $page == 'archive' )
+								$label = sprintf( __( '%s page', 'md' ), $name );
+							else {
+								$page_label = str_replace( "{$type}_", '', $page );
+								$label = "$name $page_label";
+							}
+
+						call_user_func( $args['callback'], $type, $page, $label );
+						echo '</div>';
+					} ?>
+
+				</div>
+
+			<?php endforeach; ?>
+
+		</div>
+
 	<?php }
 
 	/**

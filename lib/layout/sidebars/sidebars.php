@@ -75,16 +75,42 @@ class md_sidebars extends md_api {
 	 */
 
 	public function admin_page() {
-		$classes = '';
 		$types = md_sidebars();
-		$sidebars = md_get_sidebars();
-		$sitewide = $this->fields->module( array( 'display', 'sitewide' ) );
-
-		if ( ! empty( $sitewide ) )
-			$classes = ' is-sitewide';
 
 		include( 'admin-page.php' );
 	}
+
+	/**
+	 * Group callback field for each Post Type's sidebar settings
+	 * on the Sidebars admin page.
+	 *
+	 * @since 5.6
+	 */
+
+	public function layout_fields( $type, $page, $label ) {
+		$sidebars = md_get_sidebars();
+	?>
+		<div class="columns-3 columns-single">
+			<div class="col">
+				<?php $this->fields->field( "{$type}_{$page}", array(
+					'type' => 'select',
+					'label' => $label,
+					'empty_label' => __( 'Use Main sidebar', 'md' ),
+					'options' => $sidebars
+				) ); ?>
+			</div>
+			<div class="col field-no-label">
+				<?php $this->fields->field( "{$type}_{$page}_show", array(
+					'type' => 'checkbox',
+					'inline' => true,
+					'options' => array(
+						'enable' => __( 'Enable', 'md' ),
+						'disable' => __( 'Disable', 'md' )
+					)
+				) ); ?>
+			</div>
+		</div>
+	<?php }
 
 	/**
 	 * Create the admin field that will be repeated in $this->fields().
@@ -101,7 +127,7 @@ class md_sidebars extends md_api {
 	}
 
 	/**
-	 * Popups admin scripts.
+	 * Sidebars admin page scripts.
 	 *
 	 * @since 5.6
 	 */
