@@ -34,8 +34,8 @@
 		)
 	) ); ?>
 
-	<?php $this->fields->layout_toggle( $types, array(
-		'callback' => array( $this, 'layout_fields' )
+	<?php $this->fields->display_fields( $types, array(
+		'callback' => array( $this, 'display_fields' )
 	) ); ?>
 
 	<?php $this->fields->save(); ?>

@@ -528,9 +528,9 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-integration.type-email .md-loading, .md-integration.invalid .md-loading { margin-top: 13px; }
 
-.md-layout-toggle:not(:last-child) { margin-bottom: 20px;}
+.md-display:not(:last-child) { margin-bottom: 20px;}
 
-.md-layout-toggle-fields:not(:last-child) {
+.md-display-fields:not(:last-child) {
 	border-bottom: 1px solid #ccc;
 	margin-bottom: 20px;
 	padding-bottom: 20px;
@@ -1085,7 +1085,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	width: 65%;
 }
 
-.md .regular-text, .md-layout-toggle select { width: 100%; }
+.md .regular-text, .md-display select { width: 100%; }
 
 .md .small-text.regular-text { width: 50%; }
 

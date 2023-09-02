@@ -29,10 +29,6 @@
 					<?php md_the_content(); ?>
 				<?php endif; ?>
 
-				<?php if ( $c <= $featured ) : ?>
-					<?php md_hook_post_actions(); ?>
-				<?php endif; ?>
-
 			</div>
 
 		</div>

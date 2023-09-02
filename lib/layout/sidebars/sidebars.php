@@ -87,7 +87,7 @@ class md_sidebars extends md_api {
 	 * @since 5.6
 	 */
 
-	public function layout_fields( $type, $page, $label ) {
+	public function display_fields( $type, $page, $label ) {
 		$sidebars = md_get_sidebars();
 	?>
 		<div class="columns-3 columns-single">

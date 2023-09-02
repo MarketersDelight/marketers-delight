@@ -819,9 +819,9 @@ class md_fields {
 	 * @since 5.6
 	 */
 
-	public function layout_toggle( $types, $args = null ) { ?>
+	public function display_fields( $types, $args = null ) { ?>
 
-		<div class="md-layout-toggle">
+		<div class="md-display">
 
 			<?php foreach ( $types as $type => $pages ) :
 				$name = '';
@@ -845,7 +845,7 @@ class md_fields {
 					<hr class="md-sep-small" />
 
 					<?php foreach ( $pages as $page => $val ) {
-						echo '<div class="md-layout-toggle-fields">';
+						echo '<div class="md-display-fields">';
 						if ( $page )
 							if ( $page === 'single' )
 								$label = $post_type->labels->singular_name;
