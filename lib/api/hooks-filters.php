@@ -59,6 +59,7 @@ function md_image_sizes() {
 function md_filter_register_nav_menus() {
 	$menus['header'] = __( 'Header Menu', 'md' );
 	$menus['header_loggedin'] = __( 'Header Menu (logged-in users only)', 'md' );
+
 	return apply_filters( 'md_filter_register_nav_menus', $menus );
 }
 
@@ -307,6 +308,10 @@ function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline' );
 }
 
+function md_hook_post_controls() {
+	do_action( 'md_hook_post_controls' );
+}
+
 function md_hook_page_title() {
 	do_action( 'md_hook_page_title' );
 }
@@ -338,6 +343,7 @@ function md_hook_featured_post_bottom() {
 function md_hook_x_loop( $c ) {
 	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
 	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+
 	if ( $c == $x_loop && $paged == 1 )
 		do_action( 'md_hook_x_loop' );
 }
