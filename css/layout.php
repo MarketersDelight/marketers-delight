@@ -104,7 +104,7 @@
 
 .page-title.cover, .page-title.cover .inner { justify-content: center; }
 
-.content .page-title { margin-bottom: <?php echo $single; ?>px; }
+.content .page-title:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .page-headline { flex-basis: 100%; }
 

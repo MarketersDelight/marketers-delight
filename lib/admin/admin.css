@@ -192,6 +192,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md .submit, .md-share .md-label-wrap, .md-builder-share h3 { margin-top: 0; }
 
+.md-builder-share .md-widget-title { color: #fff; }
+
 .md .button .dashicons {
 	position: relative;
 		top: 4px;

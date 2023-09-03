@@ -41,10 +41,10 @@ function md_templates() {
 
 	// Content Box
 
-	add_action( 'md_hook_content', 'md_loop' );
-	add_action( 'md_hook_content', 'md_pagination', 30 );
+	add_action( 'md_hook_content', 'md_loop', 30 );
+	add_action( 'md_hook_content', 'md_pagination', 40 );
 	if ( md_has_post_nav() )
-		add_action( 'md_hook_content', 'md_post_nav', 70 );
+		add_action( 'md_hook_content', 'md_post_nav', 40 );
 
 	// Loop Items
 
@@ -61,7 +61,7 @@ function md_templates() {
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_after_headline';
 
-		add_action( $hook_byline, 'md_byline' );
+		add_action( $hook_byline, 'md_byline', 20 );
 	}
 
 	add_action( 'md_hook_before_headline', 'md_cover_caption', 3 );

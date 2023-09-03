@@ -213,6 +213,7 @@ class md_admin {
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
+
 		include( 'admin-page.php' );
 	}
 
@@ -224,8 +225,10 @@ class md_admin {
 
     public function admin_row( $actions, $post ) {
 	    $user = wp_get_current_user();
+
 	    if ( in_array( $user->roles[0], array( 'administrator', 'editor' ) ) )
 			$actions['md_post_id'] = '<span class="md-action-row-label">ID: ' . get_the_ID() . '</span>';
+
 		return $actions;
     }
 
@@ -237,18 +240,24 @@ class md_admin {
 
 	public function add_meta_boxes() {
 		$screen = get_current_screen();
+		$blog_id = get_option( 'page_for_posts' );
+		$post_id = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : '';
+
 		foreach ( md_register( 'meta_boxes' ) as $meta_box => $fields ) {
 			$post_types = isset( $fields['post_type'] ) ? $fields['post_type'] : md_post_type_meta();
 			$context = isset( $fields['context'] ) ? $fields['context'] : 'normal';
 			$priority = isset( $fields['priority'] ) ? $fields['priority'] : 'default';
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
+
 			foreach ( $post_types as $post_type ) {
 				if (
 					! isset( $fields['name'] ) || isset( $fields['hide'] ) || isset( $fields['page_settings'] ) ||
 					( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) ||
-					( isset( $fields['post_id'] ) && isset( $_GET['post'] ) && $fields['post_id'] != $_GET['post'] )
+					( isset( $fields['post_id'] ) && $fields['post_id'] != $post_id ) ||
+					( $blog_id == $post_id )
 				)
 					continue;
+
 				add_meta_box( $fields['id'], $fields['name'], array( $this, 'meta_box' ), $post_type, $context, $priority, array(
 					'function_callback' => $callback
 				) );
@@ -282,6 +291,7 @@ class md_admin {
 	public function hide_meta_keys( $protected, $meta_key ) {
 		if ( 'marketers_delight' == $meta_key )
 			return true;
+
 		return $protected;
 	}
 

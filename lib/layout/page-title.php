@@ -33,7 +33,7 @@ class md_page_title {
 			$image_order = 15;
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
-			add_action( $hook, array( $this, 'html' ) );
+			add_action( $hook, array( $this, 'html' ), 20 );
 
 		if ( $this->get( 'title' ) )
 			add_action( 'md_hook_page_title', array( $this, 'title' ) );
@@ -78,36 +78,16 @@ class md_page_title {
 	public function get( $key = null ) {
 		$data = array( 'title' => '', 'description' => '' );
 
-		if ( is_post_type_archive() ) {
-			$post_type_title = post_type_archive_title( '', false );
-			$data['title'] = md_post_type_field( 'archives_title', $post_type_title );
-			$data['description'] = md_post_type_field( 'archives_text' );
-		}
-		elseif ( is_home() || is_singular( 'post' ) ) {
-			$data['title'] = md_post_type_field( 'archives_title' );
-			$data['description'] = md_post_type_field( 'archives_text' );
-		}
-		elseif ( is_tax() && get_queried_object() ) {
-			$data['title'] = single_term_title( '', false );
-			$data['description'] = md_term_meta( 'archives_text' );
-		}
-		elseif ( is_category() ) {
-			$data['title'] = single_cat_title( '', false );
-			$data['description'] = category_description();
-		}
-		elseif ( is_tag() )
-			$data['title'] = single_tag_title( '', false );
-		elseif ( is_author() )
-			$data['title'] = get_the_author();
-		elseif ( is_year() )
-			$data['title'] = get_the_date( 'Y' );
-		elseif ( is_month() )
-			$data['title'] = get_the_date( 'F Y' );
-		elseif ( is_day() )
-			$data['title'] = get_the_date( 'F j, Y' );
+		$data['title'] = md_page_title();
 
-		if ( has_filter( 'md_page_title' ) )
-			$data['title'] = apply_filters( 'md_page_title' );
+		if ( is_post_type_archive() )
+			$data['description'] = md_post_type_field( 'archives_text' );
+		elseif ( is_home() || is_singular( 'post' ) )
+			$data['description'] = md_post_type_field( 'archives_text' );
+		elseif ( is_tax() && get_queried_object() )
+			$data['description'] = md_term_meta( 'archives_text' );
+		elseif ( is_category() )
+			$data['description'] = category_description();
 
 		if ( has_filter( 'md_page_description' ) )
 			$data['description'] = apply_filters( 'md_page_description' );
@@ -158,9 +138,11 @@ class md_page_title {
 
 	public function title() {
 		$title = $this->get( 'title' );
+		do_action( 'md_hook_before_page_title' );
 	?>
 		<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
-	<?php }
+	<?php
+		do_action( 'md_hook_after_page_title' ); }
 
 	/**
 	 * Render the Page Description.

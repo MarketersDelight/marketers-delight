@@ -146,11 +146,10 @@
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
-	.content .has-image .headline-wrap.cover { margin-bottom: 0; }
 }
 
 @media all and (min-width: 800px) {
-	.post-box, .loop-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
+	.post-box { margin-bottom: <?php echo $single; ?>px; }
 	.headline-wrap, .the-content, .author-box, .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;

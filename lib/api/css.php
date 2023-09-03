@@ -242,6 +242,7 @@ class md_css {
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 		$breakout = ( $gutter_width / $post_width ) * 100;
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
+		$content_block = ( $mid / $content_width ) * 100;
 
 		$admin_bar_height = 32;
 		$admin_bar_height_mobile = 46;

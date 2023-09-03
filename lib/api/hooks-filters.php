@@ -127,6 +127,7 @@ function md_admin_fields() {
 
 function md_page_settings_fields() {
 	$sanitize = new md_sanitize;
+
 	return apply_filters( 'md_page_settings_fields', array(
 		'archives_title' => array( 'type' => 'text' ),
 		'archives_text' => array( 'type' => 'textarea' ),

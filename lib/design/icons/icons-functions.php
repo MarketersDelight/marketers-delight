@@ -122,6 +122,10 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e812',
 			'label' => __( 'Clock', 'md' )
 		),
+		'location' => array(
+			'unicode' => 'e947',
+			'label' => __( 'Location', 'md' )
+		),
 		'code' => array(
 			'unicode' => 'f121',
 			'label' => __( 'Code', 'md' )

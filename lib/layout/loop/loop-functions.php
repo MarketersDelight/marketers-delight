@@ -209,26 +209,6 @@ function md_headline() {
 }
 
 /**
- * Call a page title with or without a URL.
- *
- * @since 5.6
- */
-
-function md_title( $text, $url, $args = null ) {
-	$title = '';
-
-	if ( ! is_singular() )
-		$title .= '<a href="' . esc_url( $url ) . '">';
-
-	$title .= esc_html( $text );
-
-	if ( ! is_singular() )
-		$title .= '</a>';
-
-	return $title;
-}
-
-/**
  * Checks if byline is enabled.
  *
  * @since 4.1

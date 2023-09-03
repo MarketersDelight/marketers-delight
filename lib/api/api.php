@@ -122,6 +122,7 @@ class md_api {
 
 			if ( method_exists( $this, 'admin_fields' ) ) {
 				add_action( 'admin_init', array( $this, '_admin_init' ) );
+
 				if ( method_exists( $this, 'fields' ) )
 					add_filter( 'md_page_settings_fields', array( $this, '_admin_fields' ) );
 			}
@@ -294,7 +295,7 @@ class md_api {
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
 			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
-				if ( $this->_clean_id == 'featured_image' )
+				if ( $this->_clean_id == 'featured_image' ) #wtf
 					$order = 10;
 				elseif ( $this->_clean_id == 'page_cover' )
 					$order = 20;
