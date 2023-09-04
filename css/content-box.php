@@ -109,8 +109,7 @@
 @media all and (max-width: 900px) {
 	/* DEFAULT STYLE */
 	.style-default.loop-default .post-box { border-radius: 5px; }
-	.single .style-default.loop-default .post-box,
-	.page .style-default.loop-default .post-box {
+	.style-default.loop-default .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}

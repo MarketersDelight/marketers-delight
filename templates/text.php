@@ -7,3 +7,5 @@
 	<?php md_the_content(); ?>
 
 </div>
+
+<?php md_hook_post_controls(); ?>

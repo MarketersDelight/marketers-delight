@@ -359,21 +359,31 @@ function md_byline( $args = array() ) {
 
 function md_the_content( $content = null) {
 	$loop = md_get_loop();
+
 	if ( $content == null )
 		$content = md_module( array( 'loop', 'content' ) );
+
 	$read_more = md_read_more_text();
+
 	md_hook_before_the_content();
 ?>
+
 	<?php if ( ! is_singular() && $content == 'excerpt' ) : ?>
+
 		<?php the_excerpt(); ?>
+
 		<?php if ( $loop == 'default' ) : ?>
 			<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
 		<?php endif; ?>
+
 	<?php else : ?>
+
 		<?php the_content( $read_more ); ?>
+
 		<?php if ( is_singular() ) : ?>
 			<?php wp_link_pages(); ?>
 		<?php endif; ?>
+
 	<?php endif; ?>
 
 <?php }

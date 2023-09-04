@@ -808,8 +808,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 @media all and (max-width: 900px) {
 	/* DEFAULT STYLE */
 	.style-default.loop-default .post-box { border-radius: 5px; }
-	.single .style-default.loop-default .post-box,
-	.page .style-default.loop-default .post-box {
+	.style-default.loop-default .post-box {
 		margin-left: -14px;
 		margin-right: -14px;
 	}
@@ -2919,6 +2918,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .stream-embed-media + .stream-embed-text { padding-left: 14px; }
 /* POST BAR */
+.stream-bar:not(:last-child) { margin-bottom: 14px; }
 .stream-bar i { margin-left: 5px; }
 /* COMMENTS */
 .loop-stream .comments { max-width: 100%; }
