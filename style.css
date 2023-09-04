@@ -2747,6 +2747,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .cover .share:not(:last-child) { margin-bottom: 28px; }
 .page-title .share { flex-basis: 100%; }
+.page-title .share:last-child { margin-top: 28px; }
 /* STYLES */
 .style-default .post-box > .share {
 	padding-left: 14px;

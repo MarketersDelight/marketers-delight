@@ -116,33 +116,6 @@ searchToggle: function() {
 	};
 */
 },
-onScroll: function() {
-	var pos = 0, ticking = false;
-	window.onscroll = function( e ) {
-		pos = window.scrollY;
-		if ( ! ticking ) {
-			window.requestAnimationFrame( function() {
-				var contentBox = document.getElementById( 'content_box' );
-				if ( contentBox == null ) return;
-				var contentBoxOffsetTop = contentBox.offsetTop,
-					content = document.getElementById( 'the_content' );
-				if ( content == null ) return;
-			var share = document.getElementById( 'share_side' );
-			if ( share !== null ) {
-				var shareOffsetTop = share.offsetTop + contentBoxOffsetTop;
-				if ( pos > shareOffsetTop )
-					MD.addClass( share, 'sticky' );
-				else
-					MD.removeClass( share, 'sticky' );
-				if ( pos > content.clientHeight + contentBoxOffsetTop )
-					MD.removeClass( share, 'sticky' );
-			}
-					ticking = false;
-			});
-		}
-		ticking = true;
-	}
-},
 focusInputs: function( id ) {
 	var search = document.querySelector( '#' + id + ' .search-input' ),
 		name = document.querySelector( '#' + id + ' .form-input-name' ),
@@ -364,7 +337,6 @@ popups: {
 },
 share: {
 	init: function() {
-		MD.onScroll();
 		MD.share.window();
 		MD.share.like();
 	},
