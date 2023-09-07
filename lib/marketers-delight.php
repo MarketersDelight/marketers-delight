@@ -262,7 +262,7 @@ final class marketers_delight {
 		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			echo md_webfonts_loader();
 
-		echo '<link rel="preload" href="' . md_font_icons_url() . '" as="font" type="font/woff" crossorigin>' . "\n";
+		echo '<link href="' . md_font_icons_url() . '">' . "\n";
 	}
 
 	/**
