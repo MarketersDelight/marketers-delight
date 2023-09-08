@@ -356,16 +356,19 @@ share: {
 			likes[i].onclick = function( e ) {
 				e.preventDefault();
 				if ( ! MD.hasClass( this, 'liked' ) ) {
-					var post_id = this.getAttribute( 'data-share-id' ),
-						post_type = this.getAttribute( 'data-share-type' ),
+					var post_id = this.getAttribute( 'data-share-id' );
+					if ( post_id == null )
+						return;
+					var post_type = this.getAttribute( 'data-share-type' ),
 						page = this.getAttribute( 'data-share-page' ),
 						counts = document.getElementsByClassName( 'share-count' ),
 						request = new XMLHttpRequest();
 					for ( var l = 0; l < counts.length; l++ ) {
 						var countLike = counts[l].parentElement;
 						if ( countLike.getAttribute( 'data-share-id' ) === post_id ) {
-							counts[l].innerHTML++;
 							MD.addClass( countLike, 'liked' );
+							if ( ! MD.hasClass( countLike, 'share-like-total' ) )
+								counts[l].innerHTML++;
 						}
 					}
 					request.open( 'POST', MDJS.ajaxurl, true );

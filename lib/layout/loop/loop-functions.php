@@ -18,6 +18,9 @@ function md_loops( $sort = null ) {
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
+		),
+		'category-listing' => array(
+			'name' => __( 'Category Listing', 'md' )
 		)
 	) );
 
@@ -48,13 +51,12 @@ function md_get_loop() {
 	$post_type = md_get_post_type();
 	$loops = md_loops();
 
-	if ( ! empty( $loops[$post_type] ) )
+	if ( has_filter( 'md_filter_loop_default' ) )
+		$default = apply_filters( 'md_filter_loop_default', $default );
+	elseif ( ! empty( $loops[$post_type]['post_type'] ) )
 		$default = $post_type;
 
-	if ( has_filter( 'md_filter_loop_type' ) )
-		$loop = apply_filters( 'md_filter_loop_type', $default );
-	else
-		$loop = md_module( array( 'loop', 'archives' ), $default );
+	$loop = md_module( array( 'loop', 'archives' ), $default );
 
 	return $loop;
 }
@@ -71,6 +73,7 @@ function md_loop() {
 	$html = md_html( 'article' );
 	$loops = md_loops();
 	$type = md_get_loop();
+	$post_type = md_get_post_type();
 	$byline_position = md_module( array( 'loop', 'byline_position' ) );
 	$content = md_module( array( 'loop', 'content' ) );
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
