@@ -2,6 +2,7 @@
 	while ( have_posts() ) : the_post();
 		$style = '';
 		$post_classes = array();
+
 		if ( $columns > 1 )
 			if ( $c <= $featured )
 				$post_classes[] = 'featured-col';
@@ -12,7 +13,10 @@
 		<div id="post_<?php the_ID(); ?>" <?php post_class( $post_classes ); echo $style; ?>>
 
 			<?php if ( has_post_thumbnail() ) : ?>
-				<?php md_featured_image( 'above_headline', 'md-banner', array( 'hide_caption' => true ) ); ?>
+				<?php md_featured_image( 'md-banner', array(
+					'position' => 'above_headline',
+					'hide_caption' => true
+				) ); ?>
 			<?php endif; ?>
 
 			<div class="teaser">

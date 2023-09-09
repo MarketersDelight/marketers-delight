@@ -6,8 +6,8 @@
  * @since 4.0
  */
 
-function md_featured_image( $position = null, $size = null, $args = null ) {
-	$position = isset( $position ) ? $position : md_featured_image_position();
+function md_featured_image( $size = null, $args = null ) {
+	$position = isset( $args['position'] ) ? $args['position'] : md_featured_image_position();
 
 	if ( ! isset( $size ) )
 		if ( in_array( $position, array( '', 'left', 'right' ) ) )
@@ -53,7 +53,7 @@ function md_featured_image_position( $position = null ) {
 }
 
 /**
- * Checks for inline Featured Image.
+ * Checks for inline Featured Image within #the_content.
  *
  * @since 4.1
  */

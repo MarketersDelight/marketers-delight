@@ -37,7 +37,7 @@
 /* DEFAULT STYLE */
 
 .headline-wrap.cover, .headline-wrap.cover .overlay,
-.style-default.loop-default .post-box { border-radius: 5px 5px 0 0; }
+.style-default.loop-default .post-box, .style-default.loop-default .post-box.has-top-image .featured-image img { border-radius: 5px 5px 0 0; }
 
 .style-default.loop-default .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;

@@ -76,7 +76,7 @@ class md_loop extends md_api {
 			),
 			'content' => array(
 				'type' => 'select',
-				'options' => array( 'excerpt', 'hide' )
+				'options' => array( 'full', 'excerpt', 'hide' )
 			),
 			'excerpt_length' => array( 'type' => 'number' ),
 			'excerpt_more' => array( 'type' => 'text' ),

@@ -374,7 +374,7 @@ function md_the_content( $content = null) {
 	md_hook_before_the_content();
 ?>
 
-	<?php if ( ! is_singular() && $content == 'excerpt' ) : ?>
+	<?php if ( ! is_singular() && empty( $content ) ) : ?>
 
 		<?php the_excerpt(); ?>
 

@@ -61,9 +61,9 @@
 			'label' => __( 'Post Text', 'md' ),
 			'style' => 'width: 100%',
 			'class' => '',
+			'empty_label' => __( 'Show excerpt', 'md' ),
 			'options' => array(
-				'' => __( 'Show full text', 'md' ),
-				'excerpt' => __( 'Show excerpt', 'md' ),
+				'full' => __( 'Show full text', 'md' ),
 				'hide' => __( 'Hide text', 'md' )
 			)
 		) ); ?>

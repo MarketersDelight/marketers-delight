@@ -241,7 +241,7 @@
 	text-align: center;
 }
 
-.post .image-caption { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.image-caption { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .cover .image-caption {
 	background-color: rgba(0, 0, 0, 0.75);

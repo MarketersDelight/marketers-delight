@@ -570,7 +570,7 @@ h6, .micro-title {
 	padding: 9px;
 	text-align: center;
 }
-.post .image-caption { border-bottom: 1px solid #CCCCCC; }
+.image-caption { border-bottom: 1px solid #CCCCCC; }
 .cover .image-caption {
 	background-color: rgba(0, 0, 0, 0.75);
 	color: #fff;
@@ -757,7 +757,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 .content-box { padding-bottom: 28px; }
 /* DEFAULT STYLE */
 .headline-wrap.cover, .headline-wrap.cover .overlay,
-.style-default.loop-default .post-box { border-radius: 5px 5px 0 0; }
+.style-default.loop-default .post-box, .style-default.loop-default .post-box.has-top-image .featured-image img { border-radius: 5px 5px 0 0; }
 .style-default.loop-default .post-box {
 	background-color: #FFFFFF;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
@@ -1175,14 +1175,20 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 @media all and (max-width: 800px) {
 	.post-box { margin-bottom: 14px; }
-	.headline-wrap, .the-content, .author-box, .comments {
+	.style-default .headline-wrap,
+	.style-default .the-content,
+	.style-default .author-box,
+	.style-default .comments {
 		padding-left: 14px;
 		padding-right: 14px;
 	}
 }
 @media all and (min-width: 800px) {
 	.post-box { margin-bottom: 28px; }
-	.headline-wrap, .the-content, .author-box, .comments {
+	.style-default .headline-wrap,
+	.style-default .the-content,
+	.style-default .author-box,
+	.style-default .comments {
 		padding-left: 42px;
 		padding-right: 42px;
 	}
@@ -2808,6 +2814,22 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.style-default .post-box > .share {
 		padding-left: 6.25%;
 		padding-right: 6.25%;
+	}
+}
+.loop-docs .post-box {
+	align-items: center;
+	display: flex;
+}
+.loop-docs .featured-image {
+	flex-basis: 150px;
+}
+.loop-docs .post-content {
+	flex: 1;
+}
+@media all and (min-width: 800px) {
+	.loop-docs.style-default .headline-wrap {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 /*------------------------------*\
