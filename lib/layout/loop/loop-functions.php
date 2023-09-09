@@ -378,9 +378,7 @@ function md_the_content( $content = null) {
 
 		<?php the_excerpt(); ?>
 
-		<?php if ( $loop == 'default' ) : ?>
-			<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
-		<?php endif; ?>
+		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
 
 	<?php else : ?>
 

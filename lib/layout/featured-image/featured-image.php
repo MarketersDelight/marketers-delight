@@ -98,6 +98,7 @@ class md_featured_image extends md_api {
 	public function featured_image_fields() {
 		$screen = get_current_screen();
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+
 		include( 'admin-fields.php' );
 	}
 
@@ -141,12 +142,14 @@ class md_featured_image extends md_api {
 
 	public function above_headline() {
 		$position = md_featured_image_position();
+
 		if ( has_post_thumbnail() && $position == 'above_headline' )
 			md_featured_image();
 	}
 
 	public function below_headline() {
 		$position = md_featured_image_position();
+
 		if ( has_post_thumbnail() && $position == 'below_headline' )
 			md_featured_image();
 	}

@@ -40,7 +40,7 @@
 				</div>
 
 				<div class="post-footer-meta">
-					<?php md_byline_item( 'author', array( 'avatar_size' => 40 ) ); ?>
+					<?php md_byline_item( 'author', array( 'avatar_size' => 30 ) ); ?>
 					<?php md_byline_item( 'date' ); ?>
 				</div>
 

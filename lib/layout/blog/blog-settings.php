@@ -25,6 +25,8 @@
 
 	<?php do_action( "{$this->_id}_admin_fields" ); ?>
 
+	<hr class="md-sep-small" />
+
 	<?php $this->fields->save(); ?>
 
 </div>

@@ -53,7 +53,7 @@
 .style-default.loop-default .post-box.has-top-image { padding-top: 0; }
 
 
-.loop-default .featured-image { margin-bottom: <?php echo $half; ?>px; }
+.loop-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
 
 .loop-default.style-default .author-box {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
@@ -95,6 +95,7 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
+	.loop-default .loop .has-inline-image .featured-image { margin-bottom: 0; }
 	/* CONTENT FULL */
 	.content-full .content {
 		margin-left: auto;

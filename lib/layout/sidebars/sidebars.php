@@ -75,7 +75,12 @@ class md_sidebars extends md_api {
 	 */
 
 	public function admin_page() {
+		$classes = '';
 		$types = md_sidebars();
+		$sitewide = $this->fields->module( array( 'display', 'sitewide' ) );
+
+		if ( ! empty( $sitewide ) )
+			$classes = ' is-sitewide';
 
 		include( 'admin-page.php' );
 	}

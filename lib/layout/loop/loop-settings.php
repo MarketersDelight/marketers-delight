@@ -2,14 +2,17 @@
 	<?php $this->fields->field( 'archives', array(
 		'type' => 'select',
 		'label' => __( 'Select Loop', 'md' ),
-		'empty_label' => __( 'Use default loop...', 'md' ),
-		'options' => md_loops( 'options' )
+		'empty_label' => __( 'Use default loop', 'md' ),
+		'options' => $loops_options
 	) ); ?>
 </div>
 
 <div id="content_loop_teasers" style="display: <?php echo $archives_loop == 'teasers' ? 'block' : 'none'; ?>">
+
 	<hr class="md-sep-small" />
+
 	<div class="columns-2 columns-single mb-sep-small">
+
 		<div class="col md-sep-micro">
 			<?php $this->fields->field( 'featured', array(
 				'type' => 'number',
@@ -17,6 +20,7 @@
 				'description' => __( 'Enter the number of posts to feature before breaking into the standard loop template.', 'md' )
 			) ); ?>
 		</div>
+
 		<div class="col md-sep-micro">
 			<?php $this->fields->field( 'columns', array(
 				'type' => 'number',
@@ -25,7 +29,9 @@
 				'description' => __( 'Enter the number of columns to list standard posts.', 'md' )
 			) ); ?>
 		</div>
+
 	</div>
+
 </div>
 
 <hr class="md-sep-small" />

@@ -123,7 +123,6 @@
 		line-height: <?php echo $typography['h2']['line_height']['tablet']; ?>px;
 	}
 	.loop-blocks .post-inner, .loop-blocks .post-footer { padding: <?php echo $single; ?>px; }
-	.loop-blocks .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
 	.loop-blocks .post-footer-meta {
 		margin-right: <?php echo $half; ?>px;
 		text-align: center;
@@ -176,9 +175,4 @@
 		flex: 0 1 50%;
 		padding-left: <?php echo $half; ?>px;
 	}
-}
-
-@media all and (max-width: 900px) {
-	/* BLOCKS */
-	.loop-blocks .loop { padding: <?php echo $half; ?>px <?php echo $half; ?>px 0; }
 }

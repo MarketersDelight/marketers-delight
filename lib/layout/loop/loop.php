@@ -105,8 +105,11 @@ class md_loop extends md_api {
 		$screen = get_current_screen();
 		$page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
 		$screen_base = ! empty( $page ) ? $page : $screen->base;
+
 		do_action( "md_layout_{$screen_base}_before_settings" );
+
 		$this->admin_template();
+
 		do_action( "md_layout_{$screen_base}_after_settings" );
 	}
 
@@ -120,6 +123,8 @@ class md_loop extends md_api {
 		$cta_options = array();
 		$cta = md_setting( array( 'cta', 'forms' ) );
 		$archives_loop = $this->fields->module( 'archives' );
+		$loops_options = md_loops( 'options' );
+		unset( $loops_options['default'] );
 
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )

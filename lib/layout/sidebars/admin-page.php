@@ -1,4 +1,4 @@
-<div id="md_sidebars" class="md-sidebars md-content-wrap">
+<div id="md_sidebars" class="md-sidebars md-content-wrap<?php echo esc_attr( $classes ); ?>">
 
 	<h2 class="md-title"><?php echo __( 'Sidebars', 'md' ); ?></h2>
 
