@@ -4,7 +4,7 @@
 
 	<div class="md-widget-item">
 
-		<p class="description md-sep-micro"><span class="dashicons dashicons-editor-help"></span> <?php echo __( 'The settings below will apply to single single posts only.', 'md' ); ?></p>
+		<p class="description md-sep-micro"><span class="dashicons dashicons-editor-help"></span> <?php echo __( 'The settings below will apply to single posts only.', 'md' ); ?></p>
 
 		<hr class="md-sep-small" />
 

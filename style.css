@@ -2812,14 +2812,14 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-right: 6.25%;
 	}
 }
-.loop-docs .doc-head {
+.doc-head {
 	align-items: center;
 	display: flex;
 }
-.doc-head + .doc-content {
-	border-top: 1px solid #CCCCCC;
-	margin-top: 28px;
-	padding-top: 28px;
+.doc-head:not(:last-child) {
+	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 14px;
+	padding-bottom: 14px;
 }
 .doc-content:not(:last-child) { margin-bottom: 28px; }
 .loop-docs .headline-wrap {
@@ -2827,18 +2827,17 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-bottom: 0;
 }
 .loop-docs .featured-image {
-	flex-basis: 112px;
+	flex-basis: 84px;
 	margin: 0;
 }
-.loop-docs .featured-image.alignright {
-	order: 2;
-}
+.loop-docs .byline { flex-basis: 100%; }
+.loop-docs .featured-image.alignright { order: 2; }
 .loop-docs .featured-image img {
 	border-radius: 5px;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 	transition: 0.3s;
 }
-.loop-docs .doc-head:hover .featured-image img { transform: scale(0.97); }
+.doc-head:hover .featured-image img { transform: scale(0.97); }
 .loop .docs-title {
 	font-size: 23px;
 	line-height: 33px;
@@ -2866,11 +2865,22 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 		padding-left: 42px;
 		padding-right: 42px;
 	}
+	.doc-head:not(:last-child) {
+		margin-bottom: 28px;
+		padding-bottom: 28px;
+	}
+	.has-post-thumbnail .doc-head {
+		margin-left: -19px;
+		margin-right: -19px;
+	}
 	.loop-docs .featured-image { flex-basis: 168px; }
 	.loop .docs-title {
 		font-size: 31px;
 		line-height: 45px;
 	}
+}
+@media all and (max-width: 800px) {
+	.loop-docs.style-default .post-box.has-post-thumbnail { padding-top: 14px; }
 }
 /*------------------------------*\
 	$STREAM

@@ -626,14 +626,16 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 @media all and (min-width: 700px) {
 	.md .field-no-label { margin-top: 30px; }
 	.md-field-row-indent { padding-left: 25%; }
-	.md-field-row .md-label-wrap {
+	.md-field-row > .md-label-wrap {
 		float: left;
 		width: 25%;
 	}
-	.md-field-row .md-field {
+	.md-field-row > .md-field {
 		float: left;
 		width: 75%;
 	}
+	[class*="columns-3"] .md-field-row .md-label-wrap { width: 40%; }
+	[class*="columns-3"] .md-field-row .md-field { width: 60%; }
 }
 
 /* TERMS LIST */
