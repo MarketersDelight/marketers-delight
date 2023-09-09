@@ -8,6 +8,10 @@
 
 function md_featured_image( $size = null, $args = null ) {
 	$position = isset( $args['position'] ) ? $args['position'] : md_featured_image_position();
+	$image_id = null;
+
+	if ( isset( $args['image_id'] ) )
+		$image_id = esc_attr( $args['image_id'] );
 
 	if ( ! isset( $size ) )
 		if ( in_array( $position, array( '', 'left', 'right' ) ) )
@@ -27,6 +31,27 @@ function md_featured_image( $size = null, $args = null ) {
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );
+}
+
+/**
+ * Insert featured image above/below headline with in-post check.
+ *
+ * @since 4.1
+ * @moved 5.6
+ */
+
+function md_featured_image_before_headline() {
+	$position = md_featured_image_position();
+
+	if ( has_post_thumbnail() && $position == 'above_headline' )
+		md_featured_image();
+}
+
+function md_featured_image_after_headline() {
+	$position = md_featured_image_position();
+
+	if ( has_post_thumbnail() && $position == 'below_headline' )
+		md_featured_image();
 }
 
 /**

@@ -27,6 +27,7 @@ class md_featured_image extends md_api {
 	public function actions() {
 		$this->name = __( 'Featured Image', 'md' );
 		$this->sanitize = $this->_data( 'sanitize' );
+
 		add_action( 'md_layout_post_before_content_options', array( $this, 'featured_image_position' ) );
 	}
 
@@ -129,29 +130,8 @@ class md_featured_image extends md_api {
 	 */
 
 	public function template() {
-		add_action( 'md_hook_content_item', array( $this, 'above_headline' ) );
-		add_action( 'md_hook_content_item', array( $this, 'below_headline' ), 30 );
-	}
-
-	/**
-	 * Insert featured image above/below headline with in-post check.
-	 *
-	 * @since 4.1
-	 * @moved 5.6
-	 */
-
-	public function above_headline() {
-		$position = md_featured_image_position();
-
-		if ( has_post_thumbnail() && $position == 'above_headline' )
-			md_featured_image();
-	}
-
-	public function below_headline() {
-		$position = md_featured_image_position();
-
-		if ( has_post_thumbnail() && $position == 'below_headline' )
-			md_featured_image();
+		add_action( 'md_hook_content_item', 'md_featured_image_before_headline' );
+		add_action( 'md_hook_content_item', 'md_featured_image_after_headline', 30 );
 	}
 
 }

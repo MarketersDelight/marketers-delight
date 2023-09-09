@@ -72,7 +72,8 @@ function md_loop() {
 	$type = md_get_loop();
 	$post_type = md_get_post_type();
 	$byline_position = md_module( array( 'loop', 'byline_position' ) );
-	$content = md_module( array( 'loop', 'content' ) );
+	$content_default = md_post_type_field( array( 'loop', 'content' ) );
+	$content = md_module( array( 'loop', 'content' ), $content_default );
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
 	$byline = md_get_byline();
@@ -149,12 +150,16 @@ function md_post_classes( $classes ) {
 	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
-		$classes[] = 'has-image';
+		if ( in_array( $position, array( '', 'left', 'right' ) ) )
+			$classes[] = 'has-inline-image';
+		else
+			$classes[] = 'has-image';
 
 		if ( $position == 'above_headline' )
 			$classes[] = 'has-top-image';
-		elseif ( in_array( $position, array( '', 'left', 'right' ) ) )
-			$classes[] = 'has-inline-image';
+
+		if ( $position == 'below_headline' )
+			$classes[] = 'has-below-image';
 	}
 
 	return $classes;
@@ -286,9 +291,9 @@ function md_byline_items( $sort = null ) {
 		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
 		'author' => __( 'Remove <b>Author</b>', 'md' ),
 		'date' => __( 'Remove <b>Date</b>', 'md' ),
-		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
 		'category' => __( 'Add <b>Category</b>', 'md' ),
 		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
+		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
 		'edit' => __( 'Remove <b>Edit</b>', 'md' )
 	) );
 	$settings = md_get_byline();
@@ -366,8 +371,10 @@ function md_byline( $args = array() ) {
 function md_the_content( $content = null) {
 	$loop = md_get_loop();
 
-	if ( $content == null )
-		$content = md_module( array( 'loop', 'content' ) );
+	if ( $content == null ) {
+		$default = md_post_type_field( array( 'loop', 'content' ) );
+		$content = md_module( array( 'loop', 'content' ), $default );
+	}
 
 	$read_more = md_read_more_text();
 
@@ -384,9 +391,7 @@ function md_the_content( $content = null) {
 
 		<?php the_content( $read_more ); ?>
 
-		<?php if ( is_singular() ) : ?>
-			<?php wp_link_pages(); ?>
-		<?php endif; ?>
+		<?php wp_link_pages(); ?>
 
 	<?php endif; ?>
 
@@ -399,7 +404,8 @@ function md_the_content( $content = null) {
  */
 
 function md_content_text() {
-	$content = md_module( array( 'loop', 'content' ) );
+	$default = md_post_type_field( array( 'loop', 'content' ) );
+	$content = md_module( array( 'loop', 'content' ), $default );
 	$read_more = md_read_more_text();
 
 	if ( $content !== 'hide' || is_singular() || is_404() )
@@ -414,6 +420,7 @@ function md_content_text() {
 
 function md_read_more_text() {
 	$read_more = md_module( array( 'loop', 'read_more' ) );
+
 	return ! empty( $read_more ) ? md_text_field( $read_more ) : __( 'Continue reading &rarr;', 'md' );
 }
 
@@ -426,6 +433,7 @@ function md_read_more_text() {
 function md_excerpt_length() {
 	$words = md_module( array( 'loop', 'excerpt_length' ) );
 	$words = ! empty( $words ) ? $words : 55;
+
 	return apply_filters( 'md_filter_excerpt_length', esc_attr( $words ) );
 }
 

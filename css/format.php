@@ -208,6 +208,8 @@
 
 .byline-comments-label { display: none; }
 
+.byline-date-modified { font-style: italic; }
+
 /* CAPTION */
 
 .wp-caption {

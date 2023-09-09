@@ -37,23 +37,28 @@
 /* DEFAULT STYLE */
 
 .headline-wrap.cover, .headline-wrap.cover .overlay,
-.style-default.loop-default .post-box, .style-default.loop-default .post-box.has-top-image .featured-image img { border-radius: 5px 5px 0 0; }
+.style-default .post-box, .style-default .featured-image img { border-radius: 5px 5px 0 0; }
 
-.style-default.loop-default .post-box {
+.style-default .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-.loop .style-default.loop-default .post-box { border-radius: 5px; }
+.loop .style-default .post-box { border-radius: 5px; }
 
 .style-default .loop .post-box.has-cover,
-.style-default.loop-default .post-box.has-headline-cover,
-.style-default.loop-default .post-box.has-top-image { padding-top: 0; }
+.style-default .post-box.has-headline-cover,
+.style-default .post-box.has-top-image,
+.style-default .post-box.has-cover.has-below-image { padding-top: 0; }
 
 
-.loop-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
+.style-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
+
+.style-default .has-cover.has-top-image .featured-image,
+.style-default .has-cover.has-below-image .headline-wrap { margin-bottom: 0; }
+.style-default .has-cover.has-top-image .featured-image .image-caption { border-bottom: 0; }
 
 .loop-default.style-default .author-box {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
@@ -154,7 +159,7 @@
 @media all and (max-width: 800px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
 	/* DEFAULT STYLE */
-	.single .has-cover + .content-box.style-default.loop-default .post-box.has-image,
+	.single .has-cover + .content-box.style-default .post-box.has-image,
 	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
 }
 
