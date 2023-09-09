@@ -261,10 +261,18 @@
 	.aligncenter.wrap, .alignright.wrap, .alignfull { margin-right: -42px; }
 	.aligncenter.wrap-small, .alignleft.wrap-small, .alignwide { margin-left: -14px; }
 	.aligncenter.wrap-small, .alignlright.wrap-small, .alignwide { margin-right: -14px; }
-	.content-full .aligncenter.wrap, .content-full .alignleft.wrap, .content-full .alignfull { margin-left: -35.714285714286%; }
-	.content-full .aligncenter.wrap, .content-full .alignright.wrap, .content-full .alignfull { margin-right: -35.714285714286%; }
-	.content-full .aligncenter.wrap-small, .content-full .alignleft.wrap-small, .content-full .alignwide { margin-left: -168px; }
-	.content-full .aligncenter.wrap-small, .content-full .alignright.wrap-small, .content-full .alignwide { margin-right: -168px; }
+	.content-full.is-article .aligncenter.wrap,
+	.content-full.is-article .alignleft.wrap,
+	.content-full.is-article .alignfull { margin-left: -35.714285714286%; }
+	.content-full.is-article .aligncenter.wrap,
+	.content-full.is-article .alignright.wrap,
+	.content-full.is-article .alignfull { margin-right: -35.714285714286%; }
+	.content-full.is-article .aligncenter.wrap-small,
+	.content-full.is-article .alignleft.wrap-small,
+	.content-full.is-article .alignwide { margin-left: -168px; }
+	.content-full.is-article .aligncenter.wrap-small,
+	.content-full.is-article .alignright.wrap-small,
+	.content-full.is-article .alignwide { margin-right: -168px; }
 }
 @media all and (max-width: 800px) {
 	/* ALIGNMENTS */

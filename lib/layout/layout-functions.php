@@ -247,12 +247,15 @@ function md_content_box_classes( $classes = array() ) {
 	else
 		$classes[] = 'content-full';
 
+	$classes[] = 'loop-' . md_get_loop();
+
 	if ( md_setting( array( 'colors', 'style' ) ) )
 		$classes[] = 'style-' . md_setting( array( 'colors', 'style' ) );
 	else
 		$classes[] = 'style-default';
 
-	$classes[] = 'loop-' . md_get_loop();
+	if ( is_singular() )
+		$classes[] = 'is-article';
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 

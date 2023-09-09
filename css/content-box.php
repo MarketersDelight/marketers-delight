@@ -62,25 +62,32 @@
 
 /* QUERIES */
 
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed !important; }
-}
-
-@media all and (min-width: 800px) {
-	/* CONTENT FULL */
-	.content-full .content { width: 100%; }
-	.content-full .the-content, .content-full .author-box, .content-full .comments {
+@media all and (min-width: <?php echo $site_width; ?>px) {
+	.loop-default.content-full.is-article .headline-wrap {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
-	.content-full .headline-wrap { text-align: center; }
+	.loop-default.content-full.is-article .headline {
+		margin-left: -<?php echo $quad; ?>px;
+		margin-right: -<?php echo $quad; ?>px;
+		text-align: center;
+	}
 }
 
-@media all and (max-width: 800px) {
-	.content { margin-bottom: <?php echo $single; ?>px; }
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.content-box .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
 	/* DEFAULT STYLE */
-	.single .has-cover + .content-box.style-default.loop-default .post-box.has-image,
-	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
+	.content-full.loop-default.style-default .loop {
+		margin-left: -<?php echo $quad; ?>px;
+		margin-right: -<?php echo $quad; ?>px;
+	}
+	.content-full.style-default.loop-default.is-article .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
 }
 
 @media all and (min-width: 900px) {
@@ -88,6 +95,18 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
+	/* CONTENT FULL */
+	.content-full .content {
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.content-full .page-headline-wrap {
+		flex-basis: auto;
+		margin-left: -<?php echo $quad; ?>px;
+		margin-right: -<?php echo $quad; ?>px;
+		text-align: center;
+		width: <?php echo ( $content_width + ( $quad * 2 ) ); ?>px;
+	}
 	/* CONTENT - SIDEBAR */
 	.content-sidebar .content, .content-sidebar .sidebar { float: left; }
 	.content-sidebar .sidebar { padding-left: <?php echo $single; ?>px; }
@@ -108,6 +127,10 @@
 
 @media all and (max-width: 900px) {
 	/* DEFAULT STYLE */
+	.content-full.loop-default.style-default .loop {
+		margin-left: 0;
+		margin-right: 0;
+	}
 	.style-default.loop-default .post-box { border-radius: 5px; }
 	.style-default.loop-default .post-box {
 		margin-left: -<?php echo $half; ?>px;
@@ -115,22 +138,25 @@
 	}
 }
 
-@media all and (min-width: <?php echo $site_width; ?>px) {
-	.content-full .headline-wrap {
+@media all and (min-width: 800px) {
+	/* CONTENT FULL */
+	.content-full.loop-default.is-article .content { width: 100%; }
+	.content-full.loop-default.is-article .the-content,
+	.content-full.loop-default.is-article .author-box,
+	.content-full.loop-default.is-article .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
+	.content-full.loop-default.is-article .headline-wrap { text-align: center; }
 }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.content-box .inner {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
+@media all and (max-width: 800px) {
+	.content { margin-bottom: <?php echo $single; ?>px; }
 	/* DEFAULT STYLE */
-	.single .content-full.style-default.loop-default .post-box,
-	.page .content-full.style-default.loop-default .post-box {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
+	.single .has-cover + .content-box.style-default.loop-default .post-box.has-image,
+	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
+}
+
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed !important; }
 }

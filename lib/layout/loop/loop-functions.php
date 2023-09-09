@@ -18,9 +18,6 @@ function md_loops( $sort = null ) {
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
-		),
-		'category-listing' => array(
-			'name' => __( 'Category Listing', 'md' )
 		)
 	) );
 
@@ -207,6 +204,12 @@ function md_headline_classes( $args = array() ) {
 
 function md_headline() {
 	$h = md_html( 'h' );
+	$type = $post_type = get_post_type();
+
+	if ( $post_type == 'page' )
+		$type = 'post';
+
+	$headline_title = "{$type}-title";
 
 	include( md_template( 'headline', true ) );
 }

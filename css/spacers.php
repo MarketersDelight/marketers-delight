@@ -364,11 +364,19 @@
 	.aligncenter.wrap-small, .alignleft.wrap-small, .alignwide { margin-left: -<?php echo $half; ?>px; }
 	.aligncenter.wrap-small, .alignlright.wrap-small, .alignwide { margin-right: -<?php echo $half; ?>px; }
 
-	.content-full .aligncenter.wrap, .content-full .alignleft.wrap, .content-full .alignfull { margin-left: -<?php echo $breakout; ?>%; }
-	.content-full .aligncenter.wrap, .content-full .alignright.wrap, .content-full .alignfull { margin-right: -<?php echo $breakout; ?>%; }
+	.content-full.is-article .aligncenter.wrap,
+	.content-full.is-article .alignleft.wrap,
+	.content-full.is-article .alignfull { margin-left: -<?php echo $breakout; ?>%; }
+	.content-full.is-article .aligncenter.wrap,
+	.content-full.is-article .alignright.wrap,
+	.content-full.is-article .alignfull { margin-right: -<?php echo $breakout; ?>%; }
 
-	.content-full .aligncenter.wrap-small, .content-full .alignleft.wrap-small, .content-full .alignwide { margin-left: -<?php echo $triple * 2; ?>px; }
-	.content-full .aligncenter.wrap-small, .content-full .alignright.wrap-small, .content-full .alignwide { margin-right: -<?php echo $triple * 2; ?>px; }
+	.content-full.is-article .aligncenter.wrap-small,
+	.content-full.is-article .alignleft.wrap-small,
+	.content-full.is-article .alignwide { margin-left: -<?php echo $triple * 2; ?>px; }
+	.content-full.is-article .aligncenter.wrap-small,
+	.content-full.is-article .alignright.wrap-small,
+	.content-full.is-article .alignwide { margin-right: -<?php echo $triple * 2; ?>px; }
 }
 
 @media all and (max-width: 800px) {

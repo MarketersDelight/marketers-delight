@@ -176,57 +176,61 @@
 
 	<!-- Sidebar -->
 
-	<div class="col md-sep-small">
+	<?php if ( in_array( $screen_base, array( 'post', 'post-new', 'term' ) ) ) : ?>
 
-		<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
+		<div class="col md-sep-small">
 
-		<?php if ( $has_sidebar ) : ?>
+			<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
 
-			<?php $this->fields->field( 'sidebar', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
-				)
-			) ); ?>
+			<?php if ( $has_sidebar ) : ?>
 
-		<?php else : ?>
+				<?php $this->fields->field( 'sidebar', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
+					)
+				) ); ?>
 
-			<?php $this->fields->field( 'sidebar', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
-				)
-			) ); ?>
+			<?php else : ?>
 
-		<?php endif; ?>
+				<?php $this->fields->field( 'sidebar', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
+					)
+				) ); ?>
 
-		<?php if ( ! empty( $sidebars ) ) : ?>
+			<?php endif; ?>
 
-			<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
+			<?php if ( ! empty( $sidebars ) ) : ?>
 
-				<p id="<?php echo $this->_id; ?>_custom_sidebar_option">
-					<?php $this->fields->field( 'custom_sidebar', array(
-						'type' => 'select',
-						'empty_label' => __( 'Choose a sidebar&hellip;', 'md' ),
-						'options' => $sidebars
-					) ); ?>
-				</p>
+				<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
 
-				<?php if ( $screen_base == 'term' ) : ?>
-					<?php $this->fields->field( 'entries_sidebar', array(
-						'type' => 'select',
-						'empty_label' => __( 'Posts in this category...', 'md' ),
-						'options' => $sidebars
-					) ); ?>
-				<?php endif; ?>
+					<p id="<?php echo $this->_id; ?>_custom_sidebar_option">
+						<?php $this->fields->field( 'custom_sidebar', array(
+							'type' => 'select',
+							'empty_label' => __( 'Choose a sidebar&hellip;', 'md' ),
+							'options' => $sidebars
+						) ); ?>
+					</p>
 
-				<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings&tab=md_sidebars' ) ); ?></p>
+					<?php if ( $screen_base == 'term' ) : ?>
+						<?php $this->fields->field( 'entries_sidebar', array(
+							'type' => 'select',
+							'empty_label' => __( 'Posts in this category...', 'md' ),
+							'options' => $sidebars
+						) ); ?>
+					<?php endif; ?>
 
-			</div>
+					<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings&tab=md_sidebars' ) ); ?></p>
 
-		<?php endif; ?>
+				</div>
 
-	</div>
+			<?php endif; ?>
+
+		</div>
+
+	<?php endif; ?>
 
 	<!-- Footer -->
 

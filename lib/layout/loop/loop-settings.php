@@ -2,7 +2,7 @@
 	<?php $this->fields->field( 'archives', array(
 		'type' => 'select',
 		'label' => __( 'Select Loop', 'md' ),
-		'empty_label' => __( 'Select a loop...', 'md' ),
+		'empty_label' => __( 'Use default loop...', 'md' ),
 		'options' => md_loops( 'options' )
 	) ); ?>
 </div>

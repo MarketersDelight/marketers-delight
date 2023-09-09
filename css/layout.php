@@ -91,7 +91,7 @@
 	padding-top: <?php echo $mid; ?>px;
 }
 
-.header .page-headline {
+.header .page-headline-wrap {
 	margin-bottom: <?php echo $single; ?>px;
 	text-align: center;
 }
@@ -106,7 +106,10 @@
 
 .content .page-title:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.page-headline { flex-basis: 100%; }
+.page-headline-wrap {
+	flex-basis: 100%;
+	margin-bottom: <?php echo $half; ?>px;
+}
 
 .layout-center .page-image,
 .layout-above_headline .page-image,

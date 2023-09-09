@@ -140,7 +140,9 @@ class md_page_title {
 		$title = $this->get( 'title' );
 		do_action( 'md_hook_before_page_title' );
 	?>
-		<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
+		<div class="page-headline-wrap">
+			<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
+		</div>
 	<?php
 		do_action( 'md_hook_after_page_title' ); }
 
