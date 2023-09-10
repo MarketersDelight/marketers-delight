@@ -36,8 +36,23 @@
 
 /* DEFAULT STYLE */
 
-.headline-wrap.cover, .headline-wrap.cover .overlay,
-.style-default .featured-image img { border-radius: 5px 5px 0 0; }
+.the-content .featured-image { z-index: 1; }
+
+.the-content .featured-image img,
+.post-inner .featured-image img {
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+	transition: 0.3s;
+}
+
+.post-box:hover .the-content .featured-image img,
+.post-box:hover .post-inner .featured-image img { transform: scale(0.97); }
+
+.page-image img,
+.style-default .post-box, .style-default .featured-image img,
+.headline-wrap.cover, .headline-wrap.cover .overlay { border-radius: 5px; }
+
+.post-box.has-cover.has-below-image .headline-wrap.cover,
+.post-box.has-cover.has-below-image .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 
 .style-default.loop-default .has-below-image .featured-image img { border-radius: 0; }
 
@@ -48,8 +63,6 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.style-default .post-box { border-radius: 5px; }
-
 .style-default .loop .post-box.has-cover,
 .style-default .post-box.has-headline-cover,
 .style-default .post-box.has-top-image,
@@ -58,9 +71,8 @@
 
 .style-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
 
-.style-default .has-cover.has-top-image .featured-image,
+.style-default .loop .has-cover.has-top-image .featured-image,
 .style-default .has-cover.has-below-image .headline-wrap { margin-bottom: 0; }
-.style-default .has-cover.has-top-image .featured-image .image-caption { border-bottom: 0; }
 
 .loop-default.style-default .author-box {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
@@ -139,7 +151,6 @@
 		margin-left: 0;
 		margin-right: 0;
 	}
-	.style-default.loop-default .post-box { border-radius: 5px; }
 	.style-default.loop-default .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
@@ -155,7 +166,7 @@
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
-	.content-full.loop-default.is-article .headline-wrap { text-align: center; }
+	.content-full.loop-default.is-article .headline-wrap, .content-full .breadcrumbs { text-align: center; }
 }
 
 @media all and (max-width: 800px) {

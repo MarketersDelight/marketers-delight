@@ -39,7 +39,7 @@
 					<?php md_byline_item( 'edit' ); ?>
 				</div>
 
-				<div class="post-footer-meta">
+				<div class="post-footer-meta byline">
 					<?php md_byline_item( 'author', array( 'avatar_size' => 30 ) ); ?>
 					<?php md_byline_item( 'date' ); ?>
 				</div>

@@ -62,13 +62,6 @@
 	padding: <?php echo $half; ?>px;
 }
 
-.loop-blocks .featured-image img {
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-	transition: 0.3s;
-}
-
-.loop-blocks .post-box:hover .featured-image img { transform: scale(0.97); }
-
 .loop-blocks .post-footer {
 	align-items: center;
 	display: flex;
@@ -80,7 +73,10 @@
 	margin-right: <?php echo $half; ?>px;
 }
 
-.loop-blocks .post-footer-meta { flex: 1 0 auto; }
+.loop-blocks .post-footer-meta {
+	flex: 1 0 auto;
+	margin-bottom: 0;
+}
 
 .loop-blocks .byline-comments a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -93,6 +89,38 @@
 .loop-blocks .overlay { display: none; }
 
 .loop-blocks.style-default .post-box { padding: 0; }
+
+/* CATEGORY POSTS */
+
+.category-post { margin-bottom: <?php echo $single; ?>px; }
+
+.category-post .list {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	list-style: none;
+	margin-bottom: <?php echo $half; ?>px;
+	margin-left: 0;
+}
+
+.category-post .list > .category-list:not(:last-child) {
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.category-post .category-list a {
+	display: block;
+	padding-bottom: <?php echo $third; ?>px;
+	padding-top: <?php echo $third; ?>px;
+}
+
+.category-list-title {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	font-weight: normal;
+}
+
+.category-list-title .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
+
+.category-list-read-more i { margin-left: <?php echo $third; ?>px; }
 
 /* QUERIES */
 
@@ -121,6 +149,15 @@
 	.loop-blocks .post-footer-meta {
 		margin-right: <?php echo $half; ?>px;
 		text-align: center;
+	}
+	/* CATEGORY POSTS */
+	.category-list-title {
+		font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+		line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+	}
+	.category-post .category-list a {
+		padding-bottom: <?php echo $half; ?>px;
+		padding-top: <?php echo $half; ?>px;
 	}
 }
 

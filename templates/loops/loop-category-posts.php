@@ -1,5 +1,4 @@
 <?php
-	$post_type = md_get_post_type();
 	$taxonomies = get_object_taxonomies( $post_type );
 	$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 	$terms = get_terms( $taxonomy );
@@ -43,14 +42,25 @@
 						<ul class="list">
 
 							<?php while ( $articles->have_posts() ) : $articles->the_post(); ?>
-								<li>
-									<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a> <?php md_byline_item( 'badge' ); ?>
+
+								<li class="category-list">
+
+									<h3 class="category-list-title">
+										<a href="<?php the_permalink(); ?>">
+											<?php the_title(); ?>
+											<?php md_byline_item( 'badge' ); ?>
+										</a>
+									</h3>
+
 								</li>
+
 							<?php endwhile; ?>
 
-							<li><a href="<?php echo get_term_link( $term->term_id ); ?>"><?php echo sprintf( __( 'Browse all (%s)', 'md' ), $term->count ); ?></a></li>
-
 						</ul>
+
+						<div class="category-list-footer">
+							<a href="<?php echo get_term_link( $term->term_id ); ?>" class="category-list-read-more"><?php echo sprintf( __( 'See all (%s)', 'md' ), $term->count ); ?><?php echo md_icon( 'angle-right' ); ?></a>
+						</div>
 
 					</div>
 

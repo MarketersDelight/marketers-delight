@@ -111,21 +111,21 @@
 	margin-bottom: <?php echo $half; ?>px;
 }
 
-.layout-center .page-image,
 .layout-above_headline .page-image,
 .layout-below_headline .page-description { margin-bottom: <?php echo $half; ?>px; }
 
-.layout-left .page-image, .layout-right .page-image { flex-basis: 25%; }
+.layout-left .page-image, .layout-right .page-image { flex-basis: 40%; }
 
 .page-description {
 	flex: 1;
+	margin-bottom: <?php echo $half; ?>px;
 	max-width: <?php echo $content_width; ?>px;
 }
 
-.layout-left .page-image + .page-description { margin-left: <?php echo $single; ?>px; }
-.layout-right .page-image + .page-description { margin-right: <?php echo $single; ?>px; }
+.layout-left .page-description { margin-left: <?php echo $single; ?>px; }
+.layout-right .page-description { margin-right: <?php echo $single; ?>px; }
 
-.layout-right .page-image { order: 2; }
+.layout-left .page-description { order: 2; }
 
 /* AUTHOR BOX */
 

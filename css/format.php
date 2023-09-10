@@ -17,6 +17,11 @@
 	position: relative;
 }
 
+.format h1 .badge, .format h2 .badge {
+	background-color: <?php echo $colors['site']['text-sec']; ?>;
+	top: -4px;
+}
+
 .format .headline a, .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
 	color: <?php echo $colors['site']['headline-links']; ?>;
 	text-decoration: none;
@@ -145,11 +150,12 @@
 
 .badge {
     background-color: #f58f2a;
-    border-radius: 2px;
+    border-radius: 5px;
     color: #fff;
     margin-left: 4px;
-    font-size: 13px;
-    padding: 3px 5px 3px 4px;
+	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
+	font-weight: normal;
+	padding: 4px 7px;
     position: relative;
     text-transform: uppercase;
 }
@@ -201,10 +207,7 @@
 
 .byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
 
-.byline .badge {
-	font-size: inherit;
-	padding: 4px 7px;
-}
+.byline .badge { font-size: inherit; }
 
 .byline-comments-label { display: none; }
 
@@ -268,8 +271,7 @@
 
 .list li, ul.list-check li { position: relative; }
 
-.list > li:not(:last-child),
-.box-style-list ul > li:not(:last-child) {
+.list > li:not(:last-child) {
 	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 	margin-bottom: <?php echo $third; ?>px;
 	padding-bottom: <?php echo $third; ?>px;

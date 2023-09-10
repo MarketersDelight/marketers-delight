@@ -38,11 +38,11 @@ class md_page_title {
 		if ( $this->get( 'title' ) )
 			add_action( 'md_hook_page_title', array( $this, 'title' ) );
 
-		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
-			add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
-
 		if ( $this->get( 'description' ) )
 			add_action( 'md_hook_page_title', array( $this, 'description' ) );
+
+		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
+			add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
 	}
 
 	/**
@@ -84,9 +84,7 @@ class md_page_title {
 			$data['description'] = md_post_type_field( 'archives_text' );
 		elseif ( is_home() || is_singular( 'post' ) )
 			$data['description'] = md_post_type_field( 'archives_text' );
-		elseif ( is_tax() && get_queried_object() )
-			$data['description'] = md_term_meta( 'archives_text' );
-		elseif ( is_category() )
+		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
 			$data['description'] = category_description();
 
 		if ( has_filter( 'md_page_description' ) )
@@ -125,9 +123,11 @@ class md_page_title {
 	 */
 
 	public function html() { ?>
+		<?php md_hook_before_page_title(); ?>
 		<div class="<?php echo esc_attr( $this->classes() ); ?>"<?php echo md_cover_style(); ?>>
 			<?php md_hook_page_title(); ?>
 		</div>
+		<?php md_hook_after_page_title(); ?>
 	<?php }
 
 	/**
@@ -138,13 +138,13 @@ class md_page_title {
 
 	public function title() {
 		$title = $this->get( 'title' );
-		do_action( 'md_hook_before_page_title' );
+		do_action( 'md_hook_before_page_headline' );
 	?>
 		<div class="page-headline-wrap">
 			<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
 		</div>
 	<?php
-		do_action( 'md_hook_after_page_title' ); }
+		do_action( 'md_hook_after_page_headline' ); }
 
 	/**
 	 * Render the Page Description.
