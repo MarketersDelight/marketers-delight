@@ -92,7 +92,29 @@
 
 /* CATEGORY POSTS */
 
-.category-post { margin-bottom: <?php echo $single; ?>px; }
+.category-post {
+	margin-bottom: <?php echo $single; ?>px;
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
+
+.category-post-title.page-title {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	margin-bottom: <?php echo $third; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+}
+
+.category-post-title.layout-above_headline .page-image { order: -1; }
+
+.category-post-title.layout-above_headline .page-description {
+	margin-bottom: 0;
+	order: 2;
+}
+
+.category-post-title .page-description {
+	font-size: inherit;
+	line-height: inherit;
+}
 
 .category-post .list {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
@@ -112,13 +134,18 @@
 	padding-top: <?php echo $third; ?>px;
 }
 
-.category-list-title {
+.category-list-headline {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	font-weight: normal;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.category-list-title .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
+.category-post .category-post-headline {
+	flex-basis: 100%;
+	margin-bottom: 0;
+}
+
+.category-list-headline .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
 .category-list-read-more i { margin-left: <?php echo $third; ?>px; }
 
@@ -151,13 +178,22 @@
 		text-align: center;
 	}
 	/* CATEGORY POSTS */
-	.category-list-title {
+	.category-post {
+		padding-left: <?php echo $mid; ?>px;
+		padding-right: <?php echo $mid; ?>px;
+	}
+	.category-list-headline {
 		font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
 		line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
 	}
 	.category-post .category-list a {
 		padding-bottom: <?php echo $half; ?>px;
 		padding-top: <?php echo $half; ?>px;
+	}
+	.style-default .category-post-title.layout-above_headline .page-image,
+	.style-default .category-post-title.layout-below_headline .page-image {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
 	}
 }
 

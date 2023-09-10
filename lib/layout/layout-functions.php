@@ -544,13 +544,23 @@ function md_has_post_nav() {
 
 function md_pagination() {
 	if ( is_singular() ) return;
+
 	global $wp_query;
+
 	$big = 999999999;
+
 	if ( $wp_query->max_num_pages <= 1 )
 		return;
+
+	$loop = md_get_loop();
+
+	if ( $loop == 'category-posts' )
+		return;
+
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
 	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
+
 	include( md_template( 'pagination', true ) );
 }
 
@@ -584,9 +594,11 @@ function md_has_footer_columns() {
 
 function md_footer_columns() {
 	$columns = array();
+
 	foreach ( array_filter( wp_get_sidebars_widgets() ) as $area => $widgets )
 		if ( substr( $area, 0, 13 ) == 'md-footer-col' )
 			$columns[] = $area;
+
 	return count( $columns );
 }
 
@@ -598,6 +610,7 @@ function md_footer_columns() {
 
 function md_footer_classes() {
 	$classes = apply_filters( 'md_filter_footer_classes', array() );
+
 	return join( ' ', $classes );
 }
 

@@ -68,7 +68,6 @@
 .style-default .post-box.has-top-image,
 .style-default .post-box.has-cover.has-below-image { padding-top: 0; }
 
-
 .style-default .featured-image { margin-bottom: <?php echo $single; ?>px; }
 
 .style-default .loop .has-cover.has-top-image .featured-image,

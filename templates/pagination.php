@@ -14,6 +14,6 @@
 				) );
 				if ( $paginate )
 					echo $paginate;
-			} ?>
+		} ?>
 	</div>
 </div>

@@ -104,21 +104,19 @@
 
 .page-title.cover, .page-title.cover .inner { justify-content: center; }
 
-.content .page-title:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.content .page-title { margin-bottom: <?php echo $single; ?>px; }
 
 .page-headline-wrap {
 	flex-basis: 100%;
 	margin-bottom: <?php echo $half; ?>px;
 }
 
-.layout-above_headline .page-image,
-.layout-below_headline .page-description { margin-bottom: <?php echo $half; ?>px; }
+.layout-above_headline .page-image, .layout-below_headline .page-image { margin-bottom: <?php echo $half; ?>px; }
 
-.layout-left .page-image, .layout-right .page-image { flex-basis: 40%; }
+.layout-left .page-image, .layout-right .page-image { flex-basis: 25%; }
 
 .page-description {
 	flex: 1;
-	margin-bottom: <?php echo $half; ?>px;
 	max-width: <?php echo $content_width; ?>px;
 }
 
