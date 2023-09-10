@@ -57,24 +57,17 @@
 
 /* LOOP BLOCKS */
 
-.loop-blocks .post {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border-radius: 5px;
-	box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
-}
-
 .loop-blocks .post-inner {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding: <?php echo $half; ?>px;
 }
 
 .loop-blocks .featured-image img {
-	border-radius: 5px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 	transition: 0.3s;
 }
 
-.loop-blocks .post:hover .featured-image img { transform: scale(0.97); }
+.loop-blocks .post-box:hover .featured-image img { transform: scale(0.97); }
 
 .loop-blocks .post-footer {
 	align-items: center;
@@ -98,6 +91,8 @@
 .loop-blocks .byline-comments i { color: <?php echo $colors['site']['button']; ?>; }
 
 .loop-blocks .overlay { display: none; }
+
+.loop-blocks.style-default .post-box { padding: 0; }
 
 /* QUERIES */
 

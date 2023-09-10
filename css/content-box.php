@@ -37,7 +37,9 @@
 /* DEFAULT STYLE */
 
 .headline-wrap.cover, .headline-wrap.cover .overlay,
-.style-default .post-box, .style-default .featured-image img { border-radius: 5px 5px 0 0; }
+.style-default .featured-image img { border-radius: 5px 5px 0 0; }
+
+.style-default.loop-default .has-below-image .featured-image img { border-radius: 0; }
 
 .style-default .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
@@ -46,7 +48,7 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.loop .style-default .post-box { border-radius: 5px; }
+.style-default .post-box { border-radius: 5px; }
 
 .style-default .loop .post-box.has-cover,
 .style-default .post-box.has-headline-cover,

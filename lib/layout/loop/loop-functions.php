@@ -18,15 +18,22 @@ function md_loops( $sort = null ) {
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
+		),
+		'category-posts' => array(
+			'name' => __( 'Category Listing', 'md' ),
+			'hide' => true,
 		)
 	) );
 
 	if ( isset( $sort ) ) {
-		foreach ( $loops as $id => $fields )
+		foreach ( $loops as $id => $fields ) {
+			if ( isset( $fields['hide'] ) )
+				continue;
 			if ( $sort == 'ids' )
 				$data[] = $id;
 			elseif ( $sort == 'options' )
 				$data[$id] = $fields['name'];
+		}
 	}
 	else
 		$data = $loops;
@@ -52,8 +59,17 @@ function md_get_loop() {
 		$default = apply_filters( 'md_filter_loop_default', $default );
 	elseif ( ! empty( $loops[$post_type]['post_type'] ) )
 		$default = $post_type;
+	elseif ( $default !== 'default' && ! is_singular() )
+		$default = md_post_type_field( array( 'loop', 'archives' ) );
 
 	$loop = md_module( array( 'loop', 'archives' ), $default );
+
+	if ( is_home() || is_post_type_archive() ) {
+		$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+
+		if ( $category_posts )
+			$loop = 'category-posts';
+	}
 
 	return $loop;
 }

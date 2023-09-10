@@ -7,7 +7,26 @@
 	) ); ?>
 </div>
 
-<div id="content_loop_teasers" style="display: <?php echo $archives_loop == 'teasers' ? 'block' : 'none'; ?>">
+<?php if ( $screen->base !== 'term' ) :
+	$category_posts = $this->fields->module( 'category_posts' );
+?>
+
+	<div class="md-sep-small">
+		<?php $this->fields->field( 'category_posts', array(
+			'type' => 'checkbox',
+			'options' => array(
+				'enable' => __( 'Show posts by category', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<div id="loop_category_posts" style="display: <?php echo $category_posts == 'teasers' ? 'block' : 'none'; ?>">
+
+	</div>
+
+<?php endif; ?>
+
+<div id="loop_teasers" style="display: <?php echo $archives_loop == 'teasers' ? 'block' : 'none'; ?>">
 
 	<hr class="md-sep-small" />
 

@@ -64,6 +64,10 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => md_loops( 'ids' )
 			),
+			'category_posts' => array(
+				'type' => 'checkbox',
+				'options' => array( 'enable' )
+			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
 			'byline' => array(
@@ -120,6 +124,7 @@ class md_loop extends md_api {
 	 */
 
 	public function admin_template() {
+		$screen = get_current_screen();
 		$cta_options = array();
 		$cta = md_setting( array( 'cta', 'forms' ) );
 		$archives_loop = $this->fields->module( 'archives' );
@@ -149,7 +154,7 @@ class md_loop extends md_api {
 	?>
 		<script>
 			document.getElementById( '<?php echo "{$prefix}_archives"; ?>' ).onchange = function( e ) {
-				document.getElementById( 'content_loop_teasers' ).style.display = this.value == 'teasers' ? 'block' : 'none';
+				document.getElementById( 'loop_teasers' ).style.display = this.value == 'teasers' ? 'block' : 'none';
 			}
 		</script>
 	<?php }

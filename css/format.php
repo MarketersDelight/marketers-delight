@@ -247,6 +247,7 @@
 
 .cover .image-caption {
 	background-color: rgba(0, 0, 0, 0.75);
+	border-bottom: 0;
 	color: #fff;
 	margin-bottom: 0;
 	padding: <?php echo $small; ?>px <?php echo $third; ?>px;
