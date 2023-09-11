@@ -1153,7 +1153,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 }
 .category-post-title.page-title {
 	border-bottom: 1px solid #CCCCCC;
-	margin-bottom: 9px;
+	margin-bottom: 14px;
 	padding-bottom: 14px;
 }
 .category-post-title.layout-above_headline .page-image { order: -1; }

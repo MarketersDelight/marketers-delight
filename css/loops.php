@@ -100,7 +100,7 @@
 
 .category-post-title.page-title {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	margin-bottom: <?php echo $third; ?>px;
+	margin-bottom: <?php echo $half; ?>px;
 	padding-bottom: <?php echo $half; ?>px;
 }
 
