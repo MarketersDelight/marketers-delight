@@ -2,12 +2,13 @@
 
 <?php echo '/*
 	Theme Name: Marketers Delight
-	Version: ' . MD_VERSION . '
-	Author: Alex, Kolakube
-	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website\'s features with Drop-ins and develop your own layouts with MD development tools.
 	Theme URI: https://marketersdelight.com/
+	Author: Alex, Kolakube
 	Author URI: https://kolakube.com/
+	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website\'s features with Drop-ins and develop your own layouts with MD development tools.
+	GitHub Theme URI:  https://github.com/MarketersDelight/marketers-delight
 	Text Domain: md
+	Version: ' . MD_VERSION . '
 	Table of contents:' . $style_guide .
 '*/';
 ?>
