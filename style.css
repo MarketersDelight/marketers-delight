@@ -1,11 +1,12 @@
 /*
 	Theme Name: Marketers Delight
-	Version: 5.6
-	Author: Alex, Kolakube
-	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website's features with Drop-ins and develop your own layouts with MD development tools.
 	Theme URI: https://marketersdelight.com/
+	Author: Alex, Kolakube
 	Author URI: https://kolakube.com/
+	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website's features with Drop-ins and develop your own layouts with MD development tools.
+	GitHub Theme URI: https://github.com/MarketersDelight/marketers-delight
 	Text Domain: md
+	Version: 5.6
 	Table of contents:
 		1. Attributes
 		2. Forms
@@ -867,7 +868,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	.content-full.loop-default.is-article .headline-wrap, .content-full .breadcrumbs { text-align: center; }
 }
 @media all and (max-width: 800px) {
-	.content { margin-bottom: 28px; }
+	.content:not(:last-child) { margin-bottom: 28px; }
 	/* DEFAULT STYLE */
 	.single .has-cover + .content-box.style-default .post-box.has-image,
 	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
@@ -2434,7 +2435,7 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 \*------------------------------*/
 .cta {
 	background-size: cover;
-	box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 .content-inner .cta { box-shadow: none; }
 .sidebar .cta-small { border-radius: 4px; }

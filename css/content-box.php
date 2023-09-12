@@ -169,7 +169,7 @@
 }
 
 @media all and (max-width: 800px) {
-	.content { margin-bottom: <?php echo $single; ?>px; }
+	.content:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	/* DEFAULT STYLE */
 	.single .has-cover + .content-box.style-default .post-box.has-image,
 	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
