@@ -161,6 +161,34 @@ function md_google_fonts( $format = null ) {
 }
 
 /**
+ * Return inline CSS for resizing image widths (probably crazy).
+ *
+ * @since 5.6
+ */
+
+ function md_inline_image_css( $image_size, $args = array() ) {
+	if ( empty( $image_size ) )
+		return;
+
+	$selector = '.page-title .page-image';
+	$devices = array( 'tablet' => 900, 'mobile' => 700 );
+
+	if ( isset( $args['selector'] ) )
+		$selector = esc_html( $args['selector'] );
+
+	echo "<style type=\"text/css\">\n";
+
+	if ( ! empty( $image_size['desktop'] ) )
+		echo "$selector { flex-basis: " . esc_attr( $image_size['desktop'] ) . "px; }\n";
+
+	foreach ( $devices as $device => $width )
+		if ( ! empty( $image_size[$device] ) )
+			echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { flex: 1 0 " . esc_attr( $image_size[$device] ) . "px; } }\n";
+
+	echo "</style>\n";
+}
+
+/**
  * Return HTML for Page Lead background color/image.
  *
  * @since 5.0

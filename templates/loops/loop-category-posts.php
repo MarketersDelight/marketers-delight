@@ -21,9 +21,11 @@ foreach ( $terms as $term ) :
 
 	if ( $articles->have_posts() ) :
 		$term_id = $term->term_id;
-		$term_image_id = md_term_meta( array( 'featured_image', 'image', 'id' ), $term_id );
+		$category_id = 'category_posts_' . esc_attr( $term_id );
 		$category_title_classes = array( 'category-post-title', 'page-title' );
+		$term_image_id = md_term_meta( array( 'featured_image', 'image', 'id' ), $term_id );
 		$image_position = md_term_meta( array( 'featured_image', 'position' ), $term_id );
+		$image_size = md_term_meta( array( 'featured_image', 'image_width' ), $term_id );
 
 		if ( $term_image_id && $image_position !== 'remove' )
 			$category_title_classes[] = 'layout-' . esc_attr( $image_position );
@@ -31,7 +33,7 @@ foreach ( $terms as $term ) :
 		$category_title_classes = join( ' ', $category_title_classes );
 	?>
 
-		<div class="category-post post-box">
+		<div id="<?php echo esc_attr( $category_id ); ?>" class="category-post post-box">
 
 			<div class="<?php echo esc_attr( $category_title_classes ); ?>">
 
@@ -51,6 +53,11 @@ foreach ( $terms as $term ) :
 						<a href="<?php echo get_term_link( $term_id ); ?>">
 							<?php echo wp_get_attachment_image( $term_image_id, 'full' ); ?>
 						</a>
+						<?php if ( $image_size )
+							md_inline_image_css( $image_size, array(
+								'selector' => "#$category_id .page-image"
+							) );
+						?>
 					</div>
 				<?php endif; ?>
 

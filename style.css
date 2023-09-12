@@ -2473,6 +2473,12 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	margin-bottom: 9px;
 }
 .cta-description { margin-bottom: 14px; }
+@media all and (min-width: 900px) {
+	.content .cta {
+		padding-left: 42px;
+		padding-right: 42px;
+	}
+}
 /*------------------------------*\
 	$POPUPS
 \*------------------------------*/

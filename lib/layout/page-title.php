@@ -53,19 +53,7 @@ class md_page_title {
 
 	public function inline_css() {
 		$image = $this->get( 'image' );
-		$devices = array( 'tablet' => 900, 'mobile' => 700 );
-		$selector = '.page-title .page-image';
-
-		echo "<style type=\"text/css\">\n";
-
-		if ( ! empty( $image['size']['desktop'] ) )
-			echo "$selector { flex-basis: " . esc_attr( $image['size']['desktop'] ) . "px; }\n";
-
-		foreach ( $devices as $device => $width )
-			if ( ! empty( $image['size'][$device] ) )
-				echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { flex-basis: " . esc_attr( $image['size'][$device] ) . "px; } }\n";
-
-		echo "</style>\n";
+		md_inline_image_css( $image['size'] );
 	}
 
 	/**
