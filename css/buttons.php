@@ -15,6 +15,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
+	line-height: 1;
 	padding: <?php echo $half; ?>px;
 	position: relative;
 	text-align: center;
@@ -80,7 +81,7 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 
 .button.button-small {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
+	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 }
 
 .button.button-large {
