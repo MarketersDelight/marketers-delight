@@ -198,6 +198,9 @@ function md_style( $fields ) {
 	if ( ! empty( $fields['max_width'] ) )
 		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
 
+	if ( ! empty( $fields['flex'] ) )
+		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
+
 	if ( ! empty( $fields['flex_basis'] ) )
 		$attributes['flex_basis'] = 'flex-basis:' . esc_attr( $fields['flex_basis'] ) . ';';
 

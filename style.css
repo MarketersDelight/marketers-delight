@@ -2434,20 +2434,43 @@ blockquote.alignright, blockquote.alignleft { width: 168px; }
 	$CALL_TO_ACTION
 \*------------------------------*/
 .has-header-cta .header { margin-bottom: 0; }
+.cta, .cta .inner {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+}
 .cta {
 	background-color: #AFE1FF;
 	background-size: cover;
 	border-radius: 5px;
 	color: #1E1E1E;
 	margin-bottom: 28px;
-	padding-bottom: 14px;
-	padding-top: 14px;
+	padding-bottom: 28px;
+	padding-top: 28px;
+}
+.content .cta {
+	padding-left: 14px;
+	padding-right: 14px;
+}
+.the-content .featured-image + .cta { clear: both; }
+.cta-content { flex-basis: 588px; }
+.cta-left .cta-image + .cta-content { margin-left: 28px; }
+.cta-right .cta-image {
+	margin-left: 28px;
+	order: 2;
+}
+.cta-center, .cta-center .inner { flex-flow: row wrap; }
+.cta-center .cta-image {
+	display: flex;
+	flex-basis: 100%;
+	justify-content: center;
+	margin-bottom: 14px;
 }
 .cta .cta-title {
 	font-size: 25px;
 	font-weight: bold;
 	line-height: 38px;
-	margin-bottom: 5px;
+	margin-bottom: 9px;
 }
 .cta-description { margin-bottom: 14px; }
 /*------------------------------*\
