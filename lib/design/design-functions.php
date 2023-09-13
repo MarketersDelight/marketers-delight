@@ -171,19 +171,23 @@ function md_google_fonts( $format = null ) {
 		return;
 
 	$selector = '.page-title .page-image';
+	$flex = 'flex-basis: ';
 	$devices = array( 'tablet' => 900, 'mobile' => 700 );
 
 	if ( isset( $args['selector'] ) )
 		$selector = esc_html( $args['selector'] );
 
+	if ( isset( $args['flex'] ) )
+		$flex = 'flex: 1 0 ';
+
 	echo "<style type=\"text/css\">\n";
 
 	if ( ! empty( $image_size['desktop'] ) )
-		echo "$selector { flex-basis: " . esc_attr( $image_size['desktop'] ) . "px; }\n";
+		echo "$selector { $flex " . esc_attr( $image_size['desktop'] ) . "px; }\n";
 
 	foreach ( $devices as $device => $width )
 		if ( ! empty( $image_size[$device] ) )
-			echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { flex: 1 0 " . esc_attr( $image_size[$device] ) . "px; } }\n";
+			echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { $flex " . esc_attr( $image_size[$device] ) . "px; } }\n";
 
 	echo "</style>\n";
 }
