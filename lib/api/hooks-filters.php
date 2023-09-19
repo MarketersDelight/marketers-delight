@@ -256,8 +256,16 @@ function md_hook_after_header_menu() {
 	do_action( 'md_hook_after_header_menu' );
 }
 
+function md_hook_header_details() {
+	do_action( 'md_hook_header_details' );
+}
+
 function md_hook_header_logo_bottom() {
 	do_action( 'md_hook_header_logo_bottom' );
+}
+
+function md_hook_after_site_title() {
+	do_action( 'md_hook_after_site_title' );
 }
 
 function md_hook_before_content_box() {

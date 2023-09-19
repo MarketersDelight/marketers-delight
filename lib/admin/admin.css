@@ -822,16 +822,16 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-builder-group .col select { width: 100%; }
 
-.md-field-builder .is-url,
-.md-field-builder .is-button,
-.md-field-builder .is-popup,
-.md-field-builder .is-phone,
-.type-phone .md-builder-link-icon { display: none; }
+.md-group-link .is-url,
+.md-group-link .is-button,
+.md-group-link .is-popup,
+.md-group-link .is-phone,
+.type-phone .md-link-icon { display: none; }
 
-.md-builder-group-link.type-url .is-url,
-.md-builder-group-link.style-button .is-button,
-.md-builder-group-link.type-popup .is-popup,
-.md-builder-group-link.type-phone .is-phone { display: block; }
+.md-group-link.type-url .is-url,
+.md-group-link.style-button .is-button,
+.md-group-link.type-popup .is-popup,
+.md-group-link.type-phone .is-phone { display: block; }
 
 /* DEVICE FIELDS */
 

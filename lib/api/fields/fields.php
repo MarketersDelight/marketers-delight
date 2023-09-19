@@ -190,7 +190,7 @@ class md_fields {
 		}
 		else {
 			array_unshift( $keys, $this->_clean_id );
-			$fields = md_setting( $keys );
+			$fields = md_setting( $keys, $default );
 		}
 
 		return $fields;
@@ -493,50 +493,9 @@ class md_fields {
 		$accepts = isset( $args['accept'] ) ? $args['accept'] : '';
 		$accept = ! empty( $accepts ) ? " accept=\"$accepts\"" : '';
 		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';
-	?>
-		<?php if ( $type == 'media' ) : ?>
-			<div class="md-upload md-upload-<?php echo $type; ?><?php echo ! empty( $upload_url ) ? ' has-upload' : ''; ?><?php echo esc_attr( $classes ); ?>">
-				<div class="md-uploader">
-					<div class="md-upload-preview md-upload-add">
-						<div class="md-upload-previewer">
-							<span class="dashicons dashicons-upload"></span>
-							<p class="md-upload-preview-text"><?php echo __( 'Click to upload', 'md' ); ?></p>
-						</div>
-						<div class="md-upload-preview-image">
-							<img src="<?php echo $upload_url; ?>" alt="<?php echo __( 'Preview Image', 'md' ); ?>" />
-						</div>
-					</div>
-					<div class="md-upload-controls">
-						<label class="md-label" for="<?php echo $id; ?>_url"><?php echo __( 'Image URL', 'md' ); ?></label>
-						<input type="url" class="md-upload-url regular-text" name="<?php echo $name; ?>[url]" id="<?php echo "{$id}_url"; ?>" value="<?php echo esc_attr( $upload_url ); ?>" placeholder="https://">
-						<input type="hidden" class="md-upload-id regular-text" name="<?php echo $name; ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
-						<?php if ( $upload_id ) : ?>
-							<div class="md-upload-id-label">
-								<?php echo sprintf( __( 'ID: %s', 'md' ), $upload_id ); ?>
-							</div>
-						<?php endif; ?>
-					</div>
-				</div>
-				<div class="md-upload-buttons">
-					<input type="button" class="md-upload-add button" value="<?php echo __( 'Add Image', 'md' ); ?>" />
-					<input type="button" class="md-upload-remove button" value="<?php echo __( 'Remove Image', 'md' ); ?>" />
-				</div>
-			</div>
-			<?php wp_enqueue_media(); ?>
-		<?php elseif ( $type == 'file' ) :
-			$alert = isset( $args['alert'] ) ? $args['alert'] : __( 'You are about to upload a new file. Do you want to proceed?', 'md' );
-			$success_text = isset( $args['success_text'] ) ? $args['success_text'] : __( 'File successfully updated.', 'md' );
-		?>
-			<div class="md-file-upload">
-				<div class="md-file-upload-field">
-					<input type="file" name="<?php echo $name; ?>[url]" id="<?php echo esc_attr( "{$id}_file" ); ?>"<?php echo $accept; ?> />
-					<span class="md-loading md-file-uploading"><i class="dashicons dashicons-update-alt"></i></span>
-					<span class="md-tooltip md-file-upload-success"><i class="dashicons dashicons-yes"></i> <?php echo esc_html( $success_text ); ?></span>
-				</div>
-			</div>
-			<?php wp_add_inline_script( 'marketers-delight', "MD.fileUpload( '" . esc_attr( "{$id}_file" ) . "', '{$upload_action}' );" ); ?>
-		<?php endif; ?>
-	<?php }
+
+		include( 'fields-upload.php' );
+	}
 
 	/**
 	 * Outputs a simple text input field with attributes.
@@ -663,43 +622,9 @@ class md_fields {
 		$empty[$var] = array();
 		$option = array_merge( $empty, $option );
 		$style = isset( $args['style'] ) ? $args['style'] : 'list';
-	?>
 
-		<div class="md-group-head md-clear">
-			<?php if ( isset( $args['label'] ) ) : ?>
-				<?php $this->label( $id, $args ); ?>
-			<?php endif; ?>
-			<?php if ( ! isset( $args['hide_button'] ) ) : ?>
-				<?php $this->clone_button( $args['field'] ); ?>
-			<?php endif; ?>
-		</div>
-
-		<div id="md_group_<?php echo esc_attr( "{$this->_id}_" . $args['field'] ); ?>" class="md-groups md-group-<?php echo $style; ?>">
-			<?php foreach ( $option as $group => $fields ) :
-				$valid = isset( $args['active_key'] ) && ! empty( $fields[$args['active_key']] ) ? ' valid' : '';
-			?>
-				<div class="md-group<?php echo ( $valid ) . ( "$group" == $var ? ' empty' : '' ) . ( $style == 'boxes' ? ' md-widget md-toggle' : '' ); ?>">
-					<div class="md-group-controls<?php echo ( $style == 'boxes' ? ' md-widget-title' : '' ); ?>">
-						<?php if ( $style == 'boxes' ) : ?>
-							<?php $this->field( array( $args['field'], $group, 'name' ), array(
-								'type' => 'text',
-								'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' ),
-								'classes' => 'md-focus'
-							) ); ?>
-						<?php endif; ?>
-						<span class="md-group-controls-inner">
-							<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
-							<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
-						</span>
-					</div>
-					<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-						<?php call_user_func( $args['callback'], $args['field'], $group ); ?>
-					</div>
-				</div>
-			<?php endforeach; ?>
-		</div>
-
-	<?php }
+		include( 'fields-group.php' );
+	}
 
 	/**
 	 * Apply Builder template. Holds Elements tray for dragging new
@@ -713,57 +638,9 @@ class md_fields {
 		$elements = $args['elements'];
 		$key = esc_attr( $args['field'] );
 		$active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
-	?>
-		<div class="md-builder-controls">
-			<?php if ( isset( $args['devices'] ) ) $this->devices(); ?>
-			<h3 class="md-builder-title"><i class="dashicons dashicons-plus-alt"></i> <?php echo isset( $args['title'] ) ? esc_html( $args['title'] ) : __( 'Add Elements', 'md' ); ?></h3>
-			<?php if ( isset( $args['description'] ) ) : ?>
-				<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
-			<?php endif; ?>
-			<div class="md-builder-elements" data-canvas="elements">
-				<?php foreach ( $elements as $element_id => $element ) {
-					$this->builder_fields( $key, '{clone}', $element_id, $element );
-				} ?>
-			</div>
-		</div>
-		<?php if ( isset( $args['tabs'] ) && ( count( $args['tabs'] ) > 1 ) ) : ?>
-			<div class="md-builder-tabs nav-tab-wrapper">
-				<?php $t = 0; foreach ( $args['tabs'] as $tab_id => $tab_name ) : ?>
-					<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>"><?php echo esc_html( $tab_name ); ?></a>
-				<?php $t++; endforeach; ?>
-			</div>
-		<?php endif; ?>
-		<?php foreach ( $areas as $area_id => $area_fields ) :
-			$tab_classes = '';
-			if ( isset( $area_fields['tab'] ) ) {
-				$tab = $area_fields['tab'];
-				$tab_classes .= " md-tab-content md-builder-$tab";
-				if ( $active_tab == $tab )
-					$tab_classes .= ' active';
-			}
-		?>
-			<div class="md-builder-<?php echo esc_attr( $area_id ); ?> md-builder-row<?php echo esc_attr( $tab_classes ); ?>">
-				<div class="md-builder-head">
-					<h3 class="md-builder-title"><i class="dashicons dashicons-admin-page"></i> <?php echo md_text_field( $area_fields['title'] ); ?></h3>
-					<?php if ( $area_fields['description'] ) : ?>
-						<p class="description"><?php echo md_text_field( $area_fields['description'] ); ?></p>
-					<?php endif; ?>
-				</div>
-				<div class="md-builder<?php echo empty( $option ) ? ' empty' : ''; ?>" data-canvas="<?php echo esc_attr( $area_id ); ?>">
-					<?php if ( $option ) : ?>
-						<?php foreach ( $option as $group => $fields ) {
-							$group = esc_attr( $group );
-							$area = ! empty( $fields['area'] ) ? esc_attr( $fields['area'] ) : '';
-							$type = ! empty( $fields['type'] ) ? esc_attr( $fields['type'] ) : '';
-							if ( $area == $area_id )
-								$this->builder_fields( $key, $group, $type, $elements[$type] );
-						} ?>
-					<?php endif; ?>
-					<p class="md-builder-empty"><i class="dashicons dashicons-move"></i> <?php echo __( 'Drag an element here.', 'md' ); ?></p>
-				</div>
-			</div>
-		<?php endforeach; ?>
-	<?php $this->field( "{$key}_data", array( 'type' => 'text', 'hidden' => true ) ); }
+
+		include( 'fields-builder.php' );
+	}
 
 	/**
 	 * Render callback for each Builder Fields Group.
@@ -774,43 +651,9 @@ class md_fields {
 	public function builder_fields( $key, $group, $type, $fields ) {
 		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
 		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
-	?>
-		<div class="md-builder-group">
-			<div class="md-builder-tab md-reorder">
-				<p class="md-builder-tab-icon"<?php echo ! empty( $color ) ? ' style="color: ' . esc_attr( $color ) . ';"' : ''; ?>><i class="dashicons dashicons-<?php echo esc_attr( $icon ); ?>"></i></p>
-				<p class="md-builder-tab-label"><?php echo esc_html( $fields['title'] ); ?></p>
-			</div>
-			<div class="md-widget md-toggle md-group">
-				<h3 class="md-widget-title md-group-controls">
-					<span class="md-badge"<?php echo ! empty( $color ) ? ' style="background-color: ' . esc_attr( $color ) . ';"' : ''; ?>><i class="dashicons dashicons-<?php echo esc_attr( $icon ); ?>"></i> <?php echo esc_html( $fields['title'] ); ?></span>
-					<?php if ( ! isset( $fields['hide_title'] ) || $fields['hide_title'] !== false ) : ?>
-						<?php $this->field( array( $key, $group, 'title' ), array(
-							'type' => 'text',
-							'placeholder' => isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Enter label...', 'md' )
-						) ); ?>
-					<?php endif; ?>
-					<span class="md-group-controls-inner">
-						<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
-						<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
-					</span>
-				</h3>
-				<div class="md-widget-item">
-					<?php $this->field( array( $key, $group, 'type' ), array(
-						'type' => 'text',
-						'hidden' => true,
-						'default' => esc_attr( $type )
-					) ); ?>
-					<?php $this->field( array( $key, $group, 'area' ), array(
-						'type' => 'text',
-						'hidden' => true,
-						'classes' => 'canvas-area',
-						'default' => $group
-					) ); ?>
-					<?php call_user_func( $fields['callback'], $group, $type ); ?>
-				</div>
-			</div>
-		</div>
-	<?php }
+
+		include( 'fields-builder-fields.php' );
+	}
 
 	/**
 	 * Render admin group fields for an easy to use feature
@@ -819,54 +662,9 @@ class md_fields {
 	 * @since 5.6
 	 */
 
-	public function display_fields( $types, $args = null ) { ?>
-
-		<div class="md-display">
-
-			<?php foreach ( $types as $type => $pages ) :
-				$name = '';
-				$icon = 'dashicons-admin-post';
-				$post_type = get_post_type_object( $type );
-
-				if ( ! empty( $post_type->labels->name ) )
-					$name = $post_type->labels->name;
-
-				if ( ! empty( $post_type->menu_icon ) )
-					$icon = $post_type->menu_icon;
-			?>
-
-				<div class="col-style md-sep-small">
-
-					<h3 class="md-title normal">
-						<i class="md-title-icon dashicons <?php echo esc_attr( $icon ); ?>"></i>
-						<?php echo esc_html( $name ); ?>
-					</h3>
-
-					<hr class="md-sep-small" />
-
-					<?php foreach ( $pages as $page => $val ) {
-						echo '<div class="md-display-fields">';
-						if ( $page )
-							if ( $page === 'single' )
-								$label = $post_type->labels->singular_name;
-							elseif ( $page == 'archive' )
-								$label = sprintf( __( '%s page', 'md' ), $name );
-							else {
-								$page_label = str_replace( "{$type}_", '', $page );
-								$label = "$name $page_label";
-							}
-
-						call_user_func( $args['callback'], $type, $page, $label );
-						echo '</div>';
-					} ?>
-
-				</div>
-
-			<?php endforeach; ?>
-
-		</div>
-
-	<?php }
+	public function display_fields( $types, $args = null ) {
+		include( 'fields-display.php' );
+	}
 
 	/**
 	 * Create group typography fields.
@@ -902,7 +700,123 @@ class md_fields {
 				'image' => MD_URL . 'lib/admin/images/typekit-small.png'
 			);
 
-		include( MD_DIR . 'lib/design/templates/typography-fields.php' );
+		include( 'fields-typography.php' );
+	}
+
+	/**
+	 * Organize data about button settings.
+	 *
+	 * @since 5.6
+	 */
+
+	public function link_fields_data( $args ) {
+		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
+		$group = isset( $args['group'] ) ? $args['group'] : array();
+
+		$fields = array(
+			'link_type' => array(
+				'field' => "{$p}link_type",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'url', 'popup', 'phone' )
+				)
+			),
+			'link_style' => array(
+				'field' => "{$p}link_style",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'button' )
+				)
+			),
+			'icon' => array(
+				'field' => "{$p}icon",
+				'save' => array(
+					'type' => 'select',
+					'options' => md_get_icons( 'ids' )
+				)
+			),
+			'url' => array(
+				'field' => "{$p}url",
+				'save' => array( 'type' => 'url' )
+			),
+			'link_target' => array(
+				'field' => "{$p}link_target",
+				'save' => array(
+					'type' => 'checkbox',
+					'options' => array( 'new' )
+				)
+			),
+			'toggle' => array(
+				'field' => "{$p}toggle",
+				'save' => array(
+					'type' => 'checkbox',
+					'options' => array( 'hide_label', 'hide_label_mobile' )
+				)
+			),
+			'phone' => array(
+				'field' => "{$p}phone",
+				'save' => array( 'type' => 'text' )
+			),
+			'popup' => array(
+				'field' => "{$p}popup",
+				'save' => array(
+					'type' => 'select',
+					'options' => md_get_popups( 'ids' )
+				)
+			),
+			'button_style' => array(
+				'field' => "{$p}button_style",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'outline' )
+				)
+			),
+			'button_color' => array(
+				'field' => "{$p}button_color",
+				'save' => array( 'type' => 'color' )
+			)
+		);
+
+		if ( isset( $args['keys'] ) )
+			foreach ( $fields as $key => $settings ) {
+				$field_key = ! empty( $args['keys'][$key] ) ? esc_attr( $args['keys'][$key] ) : '';
+
+				if ( $field_key )
+					$fields[$key]['field'] = str_replace( $key, $field_key, $fields[$key]['field'] );
+			}
+
+		if ( $group )
+			foreach ( $fields as $key => $field ) {
+				$fields[$key]['field'] = (array) $field['field'];
+				$fields[$key]['field'] = array_merge( $group, $fields[$key]['field'] );
+			}
+
+		if ( isset( $args['save'] ) )
+			foreach ( $fields as $key => $options ) {
+				$field_key = $fields[$key]['field'];
+				$fields[$field_key] = $options['save'];
+			}
+
+		return $fields;
+	}
+
+	/**
+	 * Use this Field Group to display Link admin fields.
+	 *
+	 * @since 5.6
+	 */
+
+	public function link_fields( $args ) {
+		$fields = $this->link_fields_data( $args );
+		$link_type = $this->module( $fields['link_type']['field'], 'url' );
+		$link_style = $this->module( $fields['link_style']['field'], 'link' );
+
+		$classes = array( 'md-group-link' );
+		$classes[] = 'type-' . $link_type;
+		$classes[] = 'style-' . $link_style;
+		$classes = join( ' ', $classes );
+
+		include( 'fields-link.php' );
 	}
 
 	/**

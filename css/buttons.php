@@ -98,7 +98,8 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 
 .button.button-outline, .button.button-outline:hover {
 	background-color: transparent;
-	border: 2px solid <?php echo $colors['site']['button']; ?>;
+	border: 3px solid <?php echo $colors['site']['button']; ?>;
+	border-radius: 10px;
 	color: <?php echo $colors['site']['button']; ?>;
 }
 

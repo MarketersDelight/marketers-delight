@@ -41,6 +41,7 @@ class md_header_templates {
 			foreach ( $data['header'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );
 				$id = esc_attr( $items['id'] );
+
 				if ( ! empty( $fields[$id] ) )
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 			}
@@ -51,12 +52,15 @@ class md_header_templates {
 
 		if ( ! empty( $data['header_aside'] ) ) {
 			echo '<div class="header-aside">';
+
 			foreach ( $data['header_aside'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );
 				$id = esc_attr( $items['id'] );
+
 				if ( ! empty( $fields[$id] ) )
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 			}
+
 			echo '</div>';
 		}
 	}
@@ -79,13 +83,13 @@ class md_header_templates {
 		if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) !== 'expanded' )
 			$this->menu_trigger();
 
-		do_action( 'md_hook_header_triggers' );
-
 		if ( ! empty( $elements['link'] ) )
 			foreach ( $elements['link'] as $c => $link_id ) {
 				$fields = md_setting( array( 'header', 'builder', $link_id ) );
 				$this->link( $fields );
 			}
+
+		do_action( 'md_hook_header_triggers' );
 
 		echo '</div>';
 	}
@@ -207,82 +211,7 @@ class md_header_templates {
 	 */
 
 	public function link( $fields ) {
-		$parent_classes = $classes = $styles = array();
-		$html = 'span';
-		$class = $href = $target = $popup = '';
-		$parent = isset( $fields['area'] ) ? $fields['area'] : '';
-		$url = isset( $fields['url'] ) ? $fields['url'] : '';
-		$phone = isset( $fields['phone'] ) ? $fields['phone'] : '';
-		$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
-		$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
-		$icon_classes = 'trigger-icon';
-
-		if ( $parent )
-			$parent_classes[] = "{$parent}-link";
-
-		if ( $style )
-			$parent_classes[] = "is-{$style}";
-
-		if ( $type == 'url' && $url ) {
-			$html = 'a';
-			$href = ' href="' . esc_url( $url ) . '"';
-			$target = ( isset( $fields['link_target']['new'] ) ? ' target="_blank"' : '' );
-		}
-		elseif ( $type == 'phone' && $phone ) {
-			$html = 'a';
-			$href = ' href="tel:' . esc_attr( $phone ) . '"';
-			if ( empty( $fields['title'] ) )
-				$fields['title'] = esc_attr( $phone );
-			$fields['icon'] = 'phone';
-		}
-
-		if ( $style == 'button' ) {
-			$button_color = '';
-			$classes[] = 'button';
-			$icon_classes = 'link-icon';
-
-			if ( ! empty( $fields['button_color'] ) )
-				$button_color = $fields['button_color'];
-
-			if ( ! empty( $fields['button_style'] ) ) {
-				if ( $fields['button_style'] == 'outline' ) {
-					$classes[] = 'button-outline';
-					if ( $button_color )
-						$styles['border_color'] = $styles['color'] = esc_attr( $button_color );
-				}
-			}
-			elseif ( $button_color )
-				$styles['bg_color'] = esc_attr( $button_color );
-		}
-
-		if ( $type == 'popup' && isset( $fields['popup'] ) ) {
-			$popup = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
-			$classes[] = 'md-popup-trigger';
-			md_popup( array( 'id' => esc_attr( $fields['popup'] ) ) );
-		}
-
-		if ( ! empty( $fields['toggle']['hide_label'] ) )
-			$classes[] = 'hide-label';
-
-		if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
-			$classes[] = 'hide-label-mobile';
-
-		$style = md_style( $styles );
-
-		$classes = join( ' ', $classes );
-
-		if ( $parent_classes )
-			$parent_classes = join( ' ', $parent_classes );
-
-		if ( $classes )
-			$class = ' class="' . esc_attr( $classes ) . '"';
-	?>
-		<span class="<?php echo esc_attr( $parent_classes ); ?>">
-			<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
-				<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
-				<?php echo ( isset( $fields['title'] ) ? '<span class="trigger-text">' . md_text_field( $fields['title'] ) . '</span>' : '' ); ?>
-			</<?php echo $html; ?>>
-		</span>
-	<?php }
+		md_button( $fields );
+	}
 
 }

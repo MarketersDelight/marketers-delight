@@ -74,7 +74,7 @@
 	padding: 0;
 }
 
-.menu-item.button a, .menu-item.button a:hover {
+.menu .menu-item.button a, .menu .menu-item.button a:hover {
 	color: #fff;
 	width: 100%;
 }

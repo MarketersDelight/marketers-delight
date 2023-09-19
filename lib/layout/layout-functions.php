@@ -493,7 +493,7 @@ function md_comment_form( $args = array() ) {
 
 function md_comment_form_reorder( $fields ) {
 	$comment = $fields['comment'];
-	$cookies = $fields['cookies'];
+	$cookies = isset( $fields['cookies'] ) ? $fields['cookies'] : '';
 
 	unset( $fields['comment'] );
 	unset( $fields['cookies'] );

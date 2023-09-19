@@ -251,11 +251,88 @@ function md_style( $fields ) {
  * @since 4.3.5
  */
 
-function md_button( $button ) {
-	$classes = '';
-	$button['classes'] = ! empty( $button['classes'] ) ? ' ' . $button['classes'] : '';
-	$button['bg_color'] = ! empty( $button['bg_color'] ) ? ' ' . $button['bg_color'] : '';
-	$button['color'] = ! empty( $button['color'] ) ? ' ' . $button['color'] : '';
+function md_button( $fields ) {
+	$parent_classes = $classes = $styles = array();
+	$html = 'span';
+	$class = $href = $target = $popup = '';
+	$parent = isset( $fields['area'] ) ? $fields['area'] : '';
+	$text = isset( $fields['title'] ) ? $fields['title'] : '';
+	$url = isset( $fields['url'] ) ? $fields['url'] : '';
+	$phone = isset( $fields['phone'] ) ? $fields['phone'] : '';
+	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
+	$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
+	$icon_classes = 'trigger-icon';
 
-	include( md_template( 'button', true ) );
-}
+	if ( $parent )
+		$parent_classes[] = "{$parent}-link";
+
+	if ( $style )
+		$parent_classes[] = "is-{$style}";
+
+	if ( isset( $fields['classes'] ) )
+		$parent_classes[] = esc_attr( $fields['classes'] );
+
+	if ( $type == 'url' && $url ) {
+		$html = 'a';
+		$href = ' href="' . esc_url( $url ) . '"';
+		$target = ( isset( $fields['link_target']['new'] ) ? ' target="_blank"' : '' );
+	}
+	elseif ( $type == 'phone' ) {
+		$html = 'a';
+		$href = ' href="tel:' . esc_attr( $phone ) . '"';
+		if ( ! $text )
+			$text = esc_attr( $phone );
+		$fields['icon'] = 'phone';
+	}
+
+	if ( $style == 'button' ) {
+		$button_color = '';
+		$classes[] = 'button';
+		$icon_classes = 'link-icon';
+
+		if ( ! empty( $fields['button_color'] ) )
+			$button_color = $fields['button_color'];
+
+		if ( ! empty( $fields['button_style'] ) ) {
+			if ( $fields['button_style'] == 'outline' ) {
+				$classes[] = 'button-outline';
+
+				if ( $button_color )
+					$styles['border_color'] = $styles['color'] = esc_attr( $button_color );
+			}
+		}
+		elseif ( $button_color )
+			$styles['bg_color'] = esc_attr( $button_color );
+	}
+
+	if ( $type == 'popup' && isset( $fields['popup'] ) ) {
+		$popup = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
+		$classes[] = 'md-popup-trigger';
+		md_popup( array( 'id' => esc_attr( $fields['popup'] ) ) );
+	}
+
+	if ( ! empty( $fields['toggle']['hide_label'] ) )
+		$classes[] = 'hide-label';
+
+	if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
+		$classes[] = 'hide-label-mobile';
+
+	$style = md_style( $styles );
+
+	$classes = join( ' ', $classes );
+
+	if ( $parent_classes )
+		$parent_classes = join( ' ', $parent_classes );
+
+	if ( $classes )
+		$class = ' class="' . esc_attr( $classes ) . '"';
+?>
+
+	<span class="<?php echo esc_attr( $parent_classes ); ?>">
+		<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
+			<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
+			<?php echo ( $text ? '<span class="trigger-text">' . md_text_field( $text ) . '</span>' : '' ); ?>
+		</<?php echo $html; ?>>
+	</span>
+
+<?php }

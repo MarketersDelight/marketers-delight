@@ -115,6 +115,8 @@
 	line-height: 1;
 }
 
+.button-small .link-icon { font-size: inherit; }
+
 .trigger .trigger-text {
 	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
@@ -287,3 +289,7 @@
 	}
 }
 <?php endif; ?>
+
+@media all and (min-width: <?php echo $site_width; ?>px) {
+	.header-logo { padding-left: 0; }
+}

@@ -91,19 +91,15 @@
 	padding-top: <?php echo $mid; ?>px;
 }
 
-.header .page-headline-wrap {
-	margin-bottom: <?php echo $single; ?>px;
-	text-align: center;
-}
-
 .page-title, .page-title .inner {
 	align-items: center;
 	display: flex;
 	flex-flow: row wrap;
 }
 
+/*
 .page-title.cover, .page-title.cover .inner { justify-content: center; }
-
+*/
 .content .page-title { margin-bottom: <?php echo $single; ?>px; }
 
 .page-headline-wrap {
@@ -119,6 +115,8 @@
 	flex: 1;
 	max-width: <?php echo $content_width; ?>px;
 }
+
+.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .layout-left .page-description { margin-left: <?php echo $single; ?>px; }
 .layout-right .page-description { margin-right: <?php echo $single; ?>px; }

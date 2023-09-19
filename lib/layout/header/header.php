@@ -25,6 +25,25 @@ class md_header extends md_api {
 
 	public function register() {
 		$menus = $this->_data( 'menus' );
+		$link_fields = $this->fields->link_fields_data( array( 'save' => true ) );
+		$builder_fields = array(
+			'type' => array( 'type' => 'text' ),
+			'area' => array( 'type' => 'text' ),
+			'title' => array( 'type' => 'text' ),
+			'placeholder' => array( 'type' => 'text' ),
+			'submenu_width' => array( 'type' => 'number' ),
+			'menu' => array(
+				'type' => 'select',
+				'options' => $menus['ids']
+			),
+			'toggle' => array(
+				'type' => 'checkbox',
+				'options' => array( 'search' )
+			)
+		);
+
+		$builder_fields = array_merge( $builder_fields, $link_fields );
+
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Header', 'md' ),
@@ -43,48 +62,7 @@ class md_header extends md_api {
 					),
 					'builder' => array(
 						'type' => 'builder',
-						'fields' => array(
-							'type' => array( 'type' => 'text' ),
-							'area' => array( 'type' => 'text' ),
-							'title' => array( 'type' => 'text' ),
-							'phone' => array( 'type' => 'text' ),
-							'url' => array( 'type' => 'url' ),
-							'placeholder' => array( 'type' => 'text' ),
-							'submenu_width' => array( 'type' => 'number' ),
-							'icon' => array(
-								'type' => 'select',
-								'options' => md_get_icons( 'ids' )
-							),
-							'menu' => array(
-								'type' => 'select',
-								'options' => $menus['ids']
-							),
-							'popup' => array(
-								'type' => 'select',
-								'options' => md_get_popups( 'ids' )
-							),
-							'toggle' => array(
-								'type' => 'checkbox',
-								'options' => array( 'search', 'hide_label', 'hide_label_mobile' )
-							),
-							'link_type' => array(
-								'type' => 'select',
-								'options' => array( 'url', 'popup', 'phone' )
-							),
-							'link_style' => array(
-								'type' => 'select',
-								'options' => array( 'button' )
-							),
-							'link_target' => array(
-								'type' => 'checkbox',
-								'options' => array( 'new' )
-							),
-							'button_style' => array(
-								'type' => 'select',
-								'options' => array( 'outline' )
-							),
-							'button_color' => array( 'type' => 'color' )
-						)
+						'fields' => $builder_fields
 					),
 					'site_title' => array( 'type' => 'text' ),
 					'site_tagline' => array( 'type' => 'text' ),
@@ -183,6 +161,7 @@ class md_header extends md_api {
 		$header = $values['header'];
 		$header_layout = ! empty( $header['layout'] ) ? $header['layout'] : '';
 		$builder_fields = $this->register_builder();
+
 		include( 'admin/admin-page.php' );
 	}
 
@@ -194,26 +173,6 @@ class md_header extends md_api {
 
 	public function admin_scripts() { ?>
 		<script>
-			var linkTypes = document.getElementsByClassName( 'md-builder-link-type' ),
-				linkStyles = document.getElementsByClassName( 'md-builder-link-style' );
-			function md_link_toggle( fields, prefix ) {
-				for ( var i = 0; i < fields.length; i++ ) {
-					fields[i].onclick = function( e ) {
-						var parent = jQuery( this ).parents( '.md-builder-group-link' );
-						parent.removeClass( function( index, className ) {
-							if ( prefix == 'type' ) //wtf
-								var classes = ( className.match( /(^|\s)type-\S+/g ) || [] ).join( ' ' );
-							else if ( prefix == 'style' )
-								var classes = ( className.match( /(^|\s)style-\S+/g ) || [] ).join( ' ' );
-							return classes;
-						});
-						if ( this.value )
-							parent.addClass( prefix + '-' + this.value );
-					}
-				}
-			}
-			md_link_toggle( linkTypes, 'type' );
-			md_link_toggle( linkStyles, 'style' );
 			jQuery( '.md-header-layout .md-radio-check' ).change( function() {
 				var settings = jQuery( '.md-header-settings' );
 				if ( this.value == 'flyer' )
@@ -251,14 +210,10 @@ class md_header extends md_api {
 	 * @since 5.6
 	 */
 
-	public function link_fields( $group, $type ) {
-		$link_type = $this->fields->get_field( array( 'header', 'builder', $group, 'link_type' ), 'url' );
-		$link_style = $this->fields->get_field( array( 'header', 'builder', $group, 'link_style' ), 'link' );
-		$classes = array( 'md-builder-group-' . esc_attr( $type ) );
-		$classes[] = 'type-' . $link_type;
-		$classes[] = 'style-' . $link_style;
-		$classes = join( ' ', $classes );
-		include( 'admin/link-fields.php' );
+	public function link_fields( $group ) {
+		$this->fields->link_fields( array(
+			'group' => array( 'builder', $group )
+		) );
 	}
 
 }

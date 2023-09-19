@@ -170,7 +170,7 @@ class md_design {
 						'tablet' => round( $tablet * $g ),
 						'mobile' => round( $tablet * $g )
 					),
-					'font_family' => 'Helvetica Neue, Helvetica, Arial, sans-serif'
+					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
 				),
 				'huge' => array(
 					'font_size' => array(

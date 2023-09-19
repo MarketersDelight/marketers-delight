@@ -63,7 +63,7 @@ final class marketers_delight {
 
 	public function includes() {
 		require_once( MD_DIR . 'lib/api/hooks-filters.php' );
-		require_once( MD_DIR . 'lib/api/fields.php' );
+		require_once( MD_DIR . 'lib/api/fields/fields.php' );
 		require_once( MD_DIR . 'lib/api/css.php' );
 		require_once( MD_DIR . 'lib/api/js.php' );
 		require_once( MD_DIR . 'lib/api/files.php' );
