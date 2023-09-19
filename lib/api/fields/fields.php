@@ -794,6 +794,7 @@ class md_fields {
 		if ( isset( $args['save'] ) )
 			foreach ( $fields as $key => $options ) {
 				$field_key = $fields[$key]['field'];
+				unset( $fields[$key] );
 				$fields[$field_key] = $options['save'];
 			}
 
