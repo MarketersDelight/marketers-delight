@@ -12,7 +12,7 @@
 
 .header .headline-wrap { text-align: center; }
 
-.content .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
+.content .loop, .content .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
 
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 

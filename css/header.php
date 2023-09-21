@@ -24,7 +24,6 @@
 	<?php if ( ! empty( $typography['header']['line_height']['desktop'] ) ) : ?>
 		line-height: <?php echo $typography['header']['line_height']['desktop']; ?>px;
 	<?php endif; ?>
-	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -136,7 +135,6 @@
 
 @media all and (min-width: 800px) {
 	/* LAYOUT */
-	.header { margin-bottom: <?php echo $single; ?>px; }
 	.header-wrap {
 		align-items: center;
 		display: flex;

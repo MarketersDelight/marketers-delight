@@ -108,6 +108,7 @@
 }
 
 @media all and (min-width: 900px) {
+	.content-box { padding-top: <?php echo $single; ?>px; }
 	.content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
@@ -144,6 +145,7 @@
 }
 
 @media all and (max-width: 900px) {
+	.content-box { padding-top: <?php echo $half; ?>px; }
 	/* DEFAULT STYLE */
 	.content-full.loop-default.style-default .loop {
 		margin-left: 0;

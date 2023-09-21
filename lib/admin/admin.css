@@ -413,14 +413,13 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md .md-widget-secondary {
-	background-color: #fff;
-	border: 1px solid #ccc;
+	border: 1px solid #ddd;
 	box-shadow: none;
 }
 
 .md .md-widget-secondary .md-widget-title { padding: 10px; }
 
-.md-widget.md-toggle { margin-bottom: 15px; }
+.md-widget.md-toggle:not(:last-child) { margin-bottom: 15px; }
 
 .md-widget-list .md-widget-item { border-bottom: 1px solid #ddd; }
 

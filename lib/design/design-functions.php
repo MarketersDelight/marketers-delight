@@ -170,6 +170,7 @@ function md_google_fonts( $format = null ) {
 	if ( empty( $image_size ) )
 		return;
 
+	$style = '';
 	$selector = '.page-title .page-image';
 	$flex = 'flex-basis: ';
 	$devices = array( 'tablet' => 900, 'mobile' => 700 );
@@ -178,18 +179,26 @@ function md_google_fonts( $format = null ) {
 		$selector = esc_html( $args['selector'] );
 
 	if ( isset( $args['flex'] ) )
-		$flex = 'flex: 1 0 ';
-
-	echo "<style type=\"text/css\">\n";
+		$flex = 'flex: 1 0';
 
 	if ( ! empty( $image_size['desktop'] ) )
-		echo "$selector { $flex " . esc_attr( $image_size['desktop'] ) . "px; }\n";
+		$style .=
+			"$selector { ".
+				"$flex " . esc_attr( $image_size['desktop'] ) . "px; ".
+				'max-width: ' . esc_attr( $image_size['desktop'] ) . 'px;'.
+			" }\n";
 
 	foreach ( $devices as $device => $width )
 		if ( ! empty( $image_size[$device] ) )
-			echo '@media all and (max-width: ' . esc_attr( $width ) . "px) { $selector { $flex " . esc_attr( $image_size[$device] ) . "px; } }\n";
+			$style .=
+				'@media all and (max-width: ' . esc_attr( $width ) . "px) { ".
+					"$selector { ".
+						"$flex " . esc_attr( $image_size[$device] ) . "px; ".
+						'max-width: ' . esc_attr( $image_size[$device] ) . 'px; '.
+					"}".
+				" }\n";
 
-	echo "</style>\n";
+	return $style;
 }
 
 /**
@@ -331,8 +340,7 @@ function md_button( $fields ) {
 	<span class="<?php echo esc_attr( $parent_classes ); ?>">
 		<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
 			<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
-			<?php echo ( $text ? '<span class="trigger-text">' . md_text_field( $text ) . '</span>' : '' ); ?>
-		</<?php echo $html; ?>>
+			<?php echo ( $text ? '<span class="trigger-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
 	</span>
 
 <?php }

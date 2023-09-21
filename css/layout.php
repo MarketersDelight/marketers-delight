@@ -200,8 +200,6 @@
 /* PAGINATION */
 
 .pagination {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
 	position: relative;
 	text-align: center;
 }
