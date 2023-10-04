@@ -335,8 +335,8 @@ div.editor-styles-wrapper .has-primary-background-color { background-color: #C03
 div.editor-styles-wrapper .has-primary-color { color: #C03C34; }
 div.editor-styles-wrapper .has-secondary-background-color { background-color: #171717; }
 div.editor-styles-wrapper .has-secondary-color { color: #171717; }
-div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
-div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
+div.editor-styles-wrapper .has-tertiary-background-color { background-color: #EEEACE; }
+div.editor-styles-wrapper .has-tertiary-color { color: #EEEACE; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
 div.editor-styles-wrapper .has-action-color { color: #EDF6FD; }
 div.editor-styles-wrapper .has-accent-background-color { background-color: #FFFBCC; }
@@ -565,7 +565,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	padding-left: 0;
 }
 /* DESIGN / OVERLAYS / SHADOWS */
-.wp-block.note { background-color: #DDDDDD; }
+.wp-block.note { background-color: #EEEACE; }
 .wp-block.alert { background-color: #FFFBCC; }
 .image-overlay {
 	background-position: center top;
@@ -851,18 +851,22 @@ div.editor-styles-wrapper .md-email-footer {
 /* CIRCLE ICON */
 .circle { border-radius: 50%; }
 .circle-icon, a.circle-icon {
-	background-color: rgba(0, 0, 0, 0.15);
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
 	color: #1E1E1E;
-	display: inline-block;
+	display: inline-flex;
+	font-size: 19px;
+	font-weight: normal;
+	justify-content: center;
 	line-height: 1;
 	position: relative;
 	text-align: center;
 }
 .circle-icon.micro {
-	height: 25px;
+	height: 31px;
 	padding-top: 5px;
-	width: 25px;
+	width: 31px;
 }
 /* AVATAR */
 .avatar {

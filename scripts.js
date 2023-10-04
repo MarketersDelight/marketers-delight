@@ -95,6 +95,7 @@ headerMenu: function() {
 	if ( headerTrigger )
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
+						MD.removeClass( header, 'has-search' );
 					}
 },
 searchToggle: function() {

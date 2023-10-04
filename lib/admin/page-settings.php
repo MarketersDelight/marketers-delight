@@ -16,6 +16,7 @@ class md_page_settings extends md_api {
 
 	public function register() {
 		$this->name = __( 'Page Settings', 'md' );
+
 		return array(
 			'meta_box' => array( 'name' => $this->name )
 		);
@@ -70,8 +71,10 @@ class md_page_settings extends md_api {
 	public function admin_template( $hook ) {
 		$page_order = array();
 		$page_settings = md_register( "{$hook}_page_settings" );
+
 		foreach ( $page_settings as $id => $fields )
 			$page_order[$id] = $fields['order'];
+
 		asort( $page_order );
 	 ?>
 		<div class="md-tabs">

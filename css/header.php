@@ -11,6 +11,7 @@
 
 .header {
 	background-color: <?php echo $colors['header']['bg_color']; ?>;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	color: <?php echo $colors['header']['color']; ?>;
 	<?php if ( ! empty( $typography['header']['font_family'] ) ) : ?>
 		font-family: <?php echo $typography['header']['font_family']; ?>;
@@ -42,7 +43,8 @@
 /* LOGO */
 
 .header-logo {
-	padding: <?php echo $half; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -65,7 +67,8 @@
 }
 
 <?php if ( ! empty( $colors['header']['site_title'] ) ) : ?>
-	.header .site-title, .header .site-title:hover { color: <?php echo $colors['header']['site_title']; ?>; }
+	.header .site-title, .header .site-title:hover,
+	.header .site-title a, .header .site-title a:hover { color: <?php echo $colors['header']['site_title']; ?>; }
 <?php endif; ?>
 
 .tagline {
@@ -287,7 +290,3 @@
 	}
 }
 <?php endif; ?>
-
-@media all and (min-width: <?php echo $site_width; ?>px) {
-	.header-logo { padding-left: 0; }
-}

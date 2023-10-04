@@ -53,7 +53,8 @@
 .post-box.has-cover.has-below-image .headline-wrap.cover,
 .post-box.has-cover.has-below-image .headline-wrap.cover .overlay { border-radius: 5px 5px 0 0; }
 
-.style-default.loop-default .has-below-image .featured-image img { border-radius: 0; }
+.style-default.loop-default .has-below-image .featured-image img,
+.header .headline-wrap.cover .overlay { border-radius: 0; }
 
 .style-default .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;

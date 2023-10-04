@@ -60,8 +60,6 @@ select { max-width: 100%; }
 	border-radius: 5px;
 }
 
-.fields-icons .form-field { margin-bottom: <?php echo $half; ?>px; }
-
 .fields-icons .form-input, .fields-icons .form-input:focus,
 .has-search .form-controls .form-input {
 	border: 0;
@@ -72,8 +70,8 @@ select { max-width: 100%; }
 	color: <?php echo $colors['site']['text']; ?>;
 	font-size: 1.2em;
 	line-height: 1;
-	min-width: 50px;
-	padding: <?php echo $half; ?>px;
+	min-width: <?php echo $mid + $half; ?>px;
+	padding: <?php echo $third; ?>px;
 	text-align: center;
 }
 
@@ -89,18 +87,15 @@ select { max-width: 100%; }
 
 .search-form .form-submit { width: 40%; }
 
-@media all and (min-width: 700px) {
 	[class*="form-attached"] {
+		align-items: center;
 		display: flex;
+		flex-flow: wrap;
 		position: relative;
 	}
 	[class*="form-attached"] .form-field { margin-right: 2%; }
 	.form-multi-fields [class*="form-attached"] .form-field { width: auto; }
-	[class*="form-attached"] .form-submit {
-		align-self: flex-start;
-		width: 40%;
-	}
-}
+
 
 /* SEARCH */
 

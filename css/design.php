@@ -75,19 +75,23 @@
 .circle { border-radius: 50%; }
 
 .circle-icon, a.circle-icon {
-	background-color: rgba(0, 0, 0, 0.15);
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
 	color: <?php echo $colors['site']['text']; ?>;
-	display: inline-block;
+	display: inline-flex;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-weight: normal;
+	justify-content: center;
 	line-height: 1;
 	position: relative;
 	text-align: center;
 }
 
 .circle-icon.micro {
-	height: 25px;
+	height: <?php echo $single; ?>px;
 	padding-top: 5px;
-	width: 25px;
+	width: <?php echo $single; ?>px;
 }
 
 /* AVATAR */

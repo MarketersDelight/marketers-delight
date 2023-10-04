@@ -309,11 +309,11 @@ function md_hook_before_the_content() {
 }
 
 function md_hook_before_headline() {
-	do_action( 'md_hook_before_headline' );
+	do_action( 'md_hook_before_headline', 'before_headline' );
 }
 
 function md_hook_after_headline() {
-	do_action( 'md_hook_after_headline' );
+	do_action( 'md_hook_after_headline', 'after_headline' );
 }
 
 function md_hook_post_controls() {
