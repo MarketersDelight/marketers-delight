@@ -333,8 +333,8 @@
 \*------------------------------*/
 div.editor-styles-wrapper .has-primary-background-color { background-color: #C03C34; }
 div.editor-styles-wrapper .has-primary-color { color: #C03C34; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #171717; }
-div.editor-styles-wrapper .has-secondary-color { color: #171717; }
+div.editor-styles-wrapper .has-secondary-background-color { background-color: #101010; }
+div.editor-styles-wrapper .has-secondary-color { color: #101010; }
 div.editor-styles-wrapper .has-tertiary-background-color { background-color: #EEEACE; }
 div.editor-styles-wrapper .has-tertiary-color { color: #EEEACE; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
@@ -843,7 +843,7 @@ div.editor-styles-wrapper .md-email-footer {
 .box { background-color: #fff; }
 .box-sec, .frame, .note { background-color: #eee; }
 .box-dark {
-	background-color: #171717;
+	background-color: #101010;
 	color: #fff;
 }
 .box-dark .text-sec { color: #ddd; }
@@ -858,10 +858,12 @@ div.editor-styles-wrapper .md-email-footer {
 	display: inline-flex;
 	font-size: 19px;
 	font-weight: normal;
+	height: 47px;
 	justify-content: center;
 	line-height: 1;
 	position: relative;
 	text-align: center;
+	width: 47px;
 }
 .circle-icon.micro {
 	height: 31px;

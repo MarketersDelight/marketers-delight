@@ -54,8 +54,11 @@ foreach ( $terms as $term ) :
 							<?php echo wp_get_attachment_image( $term_image_id, 'full' ); ?>
 						</a>
 						<?php if ( $image_size )
-							md_inline_image_css( $image_size, array(
-								'selector' => "#$category_id .page-image"
+							md_post_css( array(
+								'selector' => "#$category_id .page-image",
+								'image' => array(
+									'size' => $image_size
+								)
 							) );
 						?>
 					</div>

@@ -85,7 +85,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav' )
+				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full' )
 			),
 			'breadcrumbs' => array(
 				'type' => 'checkbox',
@@ -94,6 +94,10 @@ class md_layout extends md_api {
 			'content_box' => array(
 				'type' => 'select',
 				'options' => array( 'sidebar_content' )
+			),
+			'content_box_style' => array(
+				'type' => 'select',
+				'options' => array( 'minimal' )
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
@@ -204,6 +208,7 @@ class md_layout extends md_api {
 				<?php endif; ?>
 				document.getElementById( '<?php echo $prefix; ?>_content_remove' ).onchange = function( e ) {
 					document.getElementById( 'content_options' ).style.display = this.checked ? 'none' : 'block';
+					document.getElementById( 'sidebar_fields' ).style.display = this.checked ? 'none' : 'block';
 				}
 				<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
 					document.getElementById( '<?php echo $prefix; ?>_content_headline' ).onchange = function( e ) {

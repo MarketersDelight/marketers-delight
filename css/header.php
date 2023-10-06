@@ -110,9 +110,8 @@
 	position: relative;
 }
 
-.trigger-icon { color: <?php echo $colors['header']['color']; ?>; }
-
-.trigger-icon, .link-icon {
+.trigger-icon {
+	color: <?php echo $colors['header']['color']; ?>;
 	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
 	line-height: 1;
 }
@@ -168,7 +167,7 @@
 	/* HEADER FLYER */
 	.header-flyer .header-wrap { justify-content: center; }
 	.header-flyer .header-controls {
-		flex: 1 0 auto;
+		flex: 1;
 		order: 2;
 	}
 	.header-flyer.solo .header-controls { order: inherit; }

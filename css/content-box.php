@@ -12,6 +12,7 @@
 	display: table;
 }
 
+.flex,
 .header-triggers, .header-controls,
 <?php if ( md_setting( array( 'header', 'logo', 'url' ) ) ) : ?>
 .header-logo a,
@@ -110,7 +111,7 @@
 
 @media all and (min-width: 900px) {
 	.content-box { padding-top: <?php echo $single; ?>px; }
-	.content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
+	.content-full .content, .content-sidebar .content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }

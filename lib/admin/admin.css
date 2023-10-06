@@ -113,6 +113,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin-top: 10px;
 }
 .md-sep-top { margin-top: 30px; }
+.md-sep-small-top { margin-top: 20px; }
 .mr-half { margin-right: 6px; }
 .mt-half { margin-top: 12px; }
 .mb-half { margin-bottom: 12px; }
@@ -344,6 +345,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-20-60-20 > .col1, .md .columns-20-60-20 > .col3 { width: 20%; }
 	.md .columns-20-60-20 > .col2 { width: 60%; }
 	.md .col.col-right { float: right; }
+	.md .col.col-full { width: 100%; }
 }
 
 @media all and (max-width: 900px) {

@@ -231,6 +231,9 @@ function md_content_box() {
 
 function md_content_box_classes( $classes = array() ) {
 	$position = md_featured_image_position();
+	$default_style = md_setting( array( 'colors', 'style' ) );
+	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
+
 	$classes[] = 'content-box';
 
 	if ( md_has_sidebar() ) {
@@ -244,13 +247,13 @@ function md_content_box_classes( $classes = array() ) {
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'sidebar-left';
 	}
-	else
+	elseif ( ! md_meta( array( 'layout', 'content', 'full' ) ) )
 		$classes[] = 'content-full';
 
 	$classes[] = 'loop-' . md_get_loop();
 
-	if ( md_setting( array( 'colors', 'style' ) ) )
-		$classes[] = 'style-' . md_setting( array( 'colors', 'style' ) );
+	if ( $style )
+		$classes[] = "style-$style";
 	else
 		$classes[] = 'style-default';
 

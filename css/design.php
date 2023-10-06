@@ -82,10 +82,12 @@
 	display: inline-flex;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	font-weight: normal;
+	height: <?php echo $mid; ?>px;
 	justify-content: center;
 	line-height: 1;
 	position: relative;
 	text-align: center;
+	width: <?php echo $mid; ?>px;
 }
 
 .circle-icon.micro {

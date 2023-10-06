@@ -72,6 +72,8 @@ body {
 	position: relative;
 }
 
+.normal { font-weight: <?php echo $font_weight; ?>; }
+
 b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
 i, em, .italic { font-style: italic; }
@@ -80,6 +82,8 @@ i, em, .italic { font-style: italic; }
 	font-size: 0.85em;
 	line-height: 1.5em;
 }
+
+.font-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
 
 <?php
 	foreach ( md_editor_colors() as $color_group => $color_fields ) {

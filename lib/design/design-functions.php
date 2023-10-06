@@ -161,42 +161,49 @@ function md_google_fonts( $format = null ) {
 }
 
 /**
- * Return inline CSS for resizing image widths (probably crazy).
+ * Apply custom inline CSS to inline elements.
  *
  * @since 5.6
  */
 
- function md_inline_image_css( $image_size, $args = array() ) {
-	if ( empty( $image_size ) )
-		return;
-
+ function md_post_css( $args = array() ) {
 	$style = '';
-	$selector = '.page-title .page-image';
 	$flex = 'flex-basis: ';
 	$devices = array( 'tablet' => 900, 'mobile' => 700 );
 
 	if ( isset( $args['selector'] ) )
-		$selector = esc_html( $args['selector'] );
+		$selector = $args['selector'];
 
-	if ( isset( $args['flex'] ) )
-		$flex = 'flex: 1 0';
+	if ( isset( $args['links_color'] ) )
+		$style .= "$selector a { color: " . esc_attr( $args['links_color'] ) . '; }';
 
-	if ( ! empty( $image_size['desktop'] ) )
-		$style .=
-			"$selector { ".
-				"$flex " . esc_attr( $image_size['desktop'] ) . "px; ".
-				'max-width: ' . esc_attr( $image_size['desktop'] ) . 'px;'.
-			" }\n";
+	if ( isset( $args['image'] ) ) {
+		$image = $args['image'];
+		$selector = '.page-title .page-image';
 
-	foreach ( $devices as $device => $width )
-		if ( ! empty( $image_size[$device] ) )
+		if ( isset( $image['selector'] ) )
+			$selector = esc_html( $image['selector'] );
+
+		if ( isset( $image['flex'] ) )
+			$flex = 'flex: 1 0';
+
+		if ( ! empty( $image['size']['desktop'] ) )
 			$style .=
-				'@media all and (max-width: ' . esc_attr( $width ) . "px) { ".
-					"$selector { ".
-						"$flex " . esc_attr( $image_size[$device] ) . "px; ".
-						'max-width: ' . esc_attr( $image_size[$device] ) . 'px; '.
-					"}".
+				"$selector { ".
+					"$flex " . esc_attr( $image['size']['desktop'] ) . "px; ".
+					'max-width: ' . esc_attr( $image['size']['desktop'] ) . 'px;'.
 				" }\n";
+
+		foreach ( $devices as $device => $width )
+			if ( ! empty( $image['size'][$device] ) )
+				$style .=
+					'@media all and (max-width: ' . esc_attr( $width ) . "px) { ".
+						"$selector { ".
+							"$flex " . esc_attr( $image['size'][$device] ) . "px; ".
+							'max-width: ' . esc_attr( $image['size'][$device] ) . 'px; '.
+						"}".
+					" }\n";
+	}
 
 	return $style;
 }
