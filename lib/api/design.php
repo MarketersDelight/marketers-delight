@@ -357,6 +357,7 @@ class md_design {
 		$colors = array();
 		$values = $this->values();
 		$keys = array(
+			'bg_color' => __( 'Background Color', 'md' ),
 			'primary' => __( 'Primary', 'md' ),
 			'secondary' => __( 'Secondary', 'md' ),
 			'tertiary' => __( 'Tertiary', 'md' ),
