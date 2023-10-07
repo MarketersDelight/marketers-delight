@@ -116,6 +116,8 @@
 	max-width: <?php echo $content_width; ?>px;
 }
 
+.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+
 .layout-left .page-description { margin-left: <?php echo $single; ?>px; }
 .layout-right .page-description { margin-right: <?php echo $single; ?>px; }
 

@@ -13,7 +13,7 @@
 }
 
 .flex,
-.header-triggers, .header-controls, .header-logo,
+.header-triggers, .header-controls,
 <?php if ( md_setting( array( 'header', 'logo', 'url' ) ) ) : ?>
 .header-logo a,
 <?php endif; ?>

@@ -223,14 +223,26 @@ function md_headline_classes( $args = array() ) {
  * @since 4.1
  */
 
-function md_headline() {
+function md_headline( $args = null ) {
 	$h = md_html( 'h' );
-	$type = $post_type = get_post_type();
 
-	if ( $post_type == 'page' )
-		$type = 'post';
+	$title = get_the_title();
+	$permalink = null;
 
-	$headline_title = "{$type}-title";
+	if ( isset( $args['title'] ) )
+		$title = $args['title'];
+
+	$classes = 'post-title';
+
+	if ( is_singular() || ! in_the_loop() )
+		$classes = 'page-title';
+
+	if ( ! is_singular() && in_the_loop() ) {
+		if ( md_get_loop() == 'default' )
+			$classes .= ' headline';
+
+		$permalink = get_permalink();
+	}
 
 	include( md_template( 'headline', true ) );
 }
@@ -372,6 +384,9 @@ function md_byline_classes() {
  */
 
 function md_byline( $args = array() ) {
+	if ( ! in_the_loop() )
+		return;
+
 	$classes = md_byline_classes();
 	$byline_items = md_byline_items();
 

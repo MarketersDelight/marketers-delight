@@ -43,28 +43,28 @@ function md_templates() {
 
 	add_action( 'md_hook_content', 'md_loop', 30 );
 
-		if ( ! is_404() && md_has_byline() ) {
-			$hook_byline = 'md_hook_before_headline';
-			$byline_position = md_get_byline_position();
+	if ( ! is_404() && md_has_byline() ) {
+		$hook_byline = 'md_hook_before_headline';
+		$byline_position = md_get_byline_position();
 
-			if ( $byline_position == 'after_headline' )
-				$hook_byline = 'md_hook_after_headline';
+		if ( $byline_position == 'after_headline' )
+			$hook_byline = 'md_hook_after_headline';
 
-			add_action( $hook_byline, 'md_byline', 20 );
-		}
+		add_action( $hook_byline, 'md_byline', 20 );
+	}
 
-		add_action( 'md_hook_before_headline', 'md_cover_caption', 3 );
+	add_action( 'md_hook_before_headline', 'md_cover_caption', 3 );
 
-		if ( md_has_headline() && ! md_has_headline_cover() )
-			add_action( 'md_hook_content_item', 'md_headline', 20 );
+	if ( md_has_headline() && ! md_has_headline_cover() )
+		add_action( 'md_hook_content_item', 'md_headline', 20 );
 
-		add_action( 'md_hook_content_item', 'md_content_text', 40 );
+	add_action( 'md_hook_content_item', 'md_content_text', 40 );
 
-		if ( md_has_author_box() )
-			add_action( 'md_hook_content_item', 'md_author', 50 );
+	if ( md_has_author_box() )
+		add_action( 'md_hook_content_item', 'md_author', 50 );
 
-		add_action( 'md_hook_content_item', 'md_comments', 60 );
-		add_action( 'md_hook_after_comments_list', 'md_comment_form' );
+	add_action( 'md_hook_content_item', 'md_comments', 60 );
+	add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 
 	add_action( 'md_hook_content', 'md_pagination', 40 );
 

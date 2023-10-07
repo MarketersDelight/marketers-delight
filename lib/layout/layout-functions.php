@@ -40,7 +40,7 @@ function md_html( $area ) {
 	$html = 'div';
 
 	if ( $area == 'h' )
-		$html = is_singular() ? 'h1' : 'h2';
+		$html = is_singular() || ! in_the_loop() ? 'h1' : 'h2';
 	elseif ( $area == 'article' )
 		$html = is_singular() ? 'div' : 'article';
 
@@ -115,15 +115,15 @@ function md_has_tagline() {
  * @since 5.6
  */
 
-function md_title( $text, $url ) {
+function md_title( $text, $url = null ) {
 	$title = '';
 
-	if ( ! is_singular() )
+	if ( $url )
 		$title .= '<a href="' . esc_url( $url ) . '">';
 
-	$title .= esc_html( $text );
+	$title .= md_text_field( $text );
 
-	if ( ! is_singular() )
+	if ( $url )
 		$title .= '</a>';
 
 	return $title;
@@ -247,7 +247,7 @@ function md_content_box_classes( $classes = array() ) {
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'sidebar-left';
 	}
-	elseif ( ! md_meta( array( 'layout', 'content', 'full' ) ) )
+	else
 		$classes[] = 'content-full';
 
 	$classes[] = 'loop-' . md_get_loop();

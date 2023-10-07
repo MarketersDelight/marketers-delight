@@ -316,6 +316,14 @@ function md_hook_after_headline() {
 	do_action( 'md_hook_after_headline', 'after_headline' );
 }
 
+function md_hook_before_headline_area() {
+	do_action( 'md_hook_before_headline_area', 'before_headline_area' );
+}
+
+function md_hook_after_headline_area() {
+	do_action( 'md_hook_after_headline_area', 'after_headline_area' );
+}
+
 function md_hook_post_controls() {
 	do_action( 'md_hook_post_controls' );
 }

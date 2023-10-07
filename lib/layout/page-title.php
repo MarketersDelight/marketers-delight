@@ -16,30 +16,29 @@ class md_page_title {
 	 */
 
 	public function templates() {
-		$image_order = 10;
 		$hook = 'md_hook_content';
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
+		if ( ! empty( $image['size'] ) )
+			add_action( 'wp_head', array( $this, 'inline_css' ) );
+
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_headline';
-
-		if ( $image['position'] == 'above_headline' )
-			$image_order = 5;
-		elseif ( $image['position'] == 'below_headline' )
-			$image_order = 15;
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
 
-		if ( $this->get( 'title' ) )
-			add_action( 'md_hook_page_title', array( $this, 'title' ) );
-
 		if ( $this->get( 'description' ) )
-			add_action( 'md_hook_page_title', array( $this, 'description' ) );
+			add_action( 'md_hook_after_headline', array( $this, 'description' ) );
+
+		$image_hook = 'md_hook_before_headline';
+
+		if ( $image['position'] == 'below_headline' )
+			$image_hook = 'md_hook_after_headline';
 
 		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
-			add_action( 'md_hook_page_title', array( $this, 'image' ), $image_order );
+			add_action( $image_hook, array( $this, 'image' ) );
 	}
 
 	/**
@@ -51,18 +50,7 @@ class md_page_title {
 	public function inline_css() {
 		$image = $this->get( 'image' );
 
-		if ( ! empty( $image['id'] ) && ! empty( $image['size'] ) ) {
-			$css = md_post_css( array(
-				'image' => array(
-					'selector' => '.page-title .page-image',
-					'size' => $image['size']
-				)
-			) );
-
-			wp_register_style( 'md-page-title', false );
-			wp_enqueue_style( 'md-page-title' );
-			wp_add_inline_style( 'md-page-title', $css );
-		}
+		md_inline_image_css( $image['size'] );
 	}
 
 	/**
@@ -72,27 +60,33 @@ class md_page_title {
 	 * @since 5.6
 	 */
 
-	public function get( $key = null ) {
-		$data = array( 'title' => '', 'description' => '' );
+	public function get( $key = null, $group = null ) {
+		$data = array( 'title' => md_page_title() );
 
-		$data['title'] = md_page_title();
+		if ( ! in_the_loop() ) {
 
-		if ( is_post_type_archive() )
-			$data['description'] = md_post_type_field( 'archives_text' );
-		elseif ( is_home() || is_singular( 'post' ) )
-			$data['description'] = md_post_type_field( 'archives_text' );
-		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
-			$data['description'] = category_description();
+			if ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
+				$description = md_post_type_field( 'archives_text' );
+			elseif ( ( is_category() || is_tax() ) && get_queried_object() )
+				$description = category_description();
 
-		if ( has_filter( 'md_page_description' ) )
-			$data['description'] = apply_filters( 'md_page_description' );
+			if ( has_filter( 'md_page_description' ) )
+				$description = apply_filters( 'md_page_description' );
 
-		$data['image']['position'] = md_featured_image_position();
-		$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );
-		$data['image']['size'] = md_module( array( 'featured_image', 'image_width' ) );
+			if ( $description )
+				$data['description'] = $description;
+
+			$data['image']['position'] = md_featured_image_position();
+			$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );
+			$data['image']['size'] = md_module( array( 'featured_image', 'image_width' ) );
+
+		}
 
 		if ( isset( $key ) )
-			$data = $data[$key];
+			if ( isset( $group ) )
+				$data = ! empty( $data[$key][$group] ) ? $data[$key][$group] : '';
+			else
+				$data = ! empty( $data[$key] ) ? $data[$key] : '';
 
 		return $data;
 	}
@@ -119,35 +113,13 @@ class md_page_title {
 	 * @since 5.6
 	 */
 
-	public function html() { ?>
-
-		<?php md_hook_before_page_title(); ?>
-
-		<div class="<?php echo esc_attr( $this->classes() ); ?>"<?php echo md_cover_style(); ?>>
-			<?php md_hook_page_title(); ?>
-		</div>
-
-		<?php md_hook_after_page_title(); ?>
-
-		<?php $this->inline_css(); ?>
-
-	<?php }
-
-	/**
-	 * Render the Page Headline.
-	 *
-	 * @since 5.6
-	 */
-
-	public function title() {
+	public function html() {
 		$title = $this->get( 'title' );
-		do_action( 'md_hook_before_page_headline' );
-	?>
-		<div class="page-headline-wrap">
-			<h1 class="page-headline"><?php echo md_text_field( $title ); ?></h1>
-		</div>
-	<?php
-		do_action( 'md_hook_after_page_headline' ); }
+
+		md_headline( array(
+			'title' => $title
+		) );
+	}
 
 	/**
 	 * Render the Page Description.
@@ -157,6 +129,9 @@ class md_page_title {
 
 	public function description() {
 		$description = $this->get( 'description' );
+
+		if ( ! $description )
+			return;
 	?>
 		<div class="page-description">
 			<?php echo wpautop( $description ); ?>
@@ -170,10 +145,10 @@ class md_page_title {
 	 */
 
 	public function image() {
-		$image = $this->get( 'image' );
+		$image_id = $this->get( 'image', 'id' );
 	?>
 		<div class="page-image">
-			<?php echo wp_get_attachment_image( $image['id'], 'full' ); ?>
+			<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
 		</div>
 	<?php }
 

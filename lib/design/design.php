@@ -262,7 +262,6 @@ class md_colors extends md_api {
 		$sanitize = $this->sanitize;
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$layout_spacing = $line_height + round( $line_height / 2 );
-
 		include( 'templates/admin-page.php' );
 	}
 

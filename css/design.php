@@ -134,8 +134,7 @@
 .header.has-cover<?php echo $text_class; ?> .trigger-icon,
 .header.has-cover<?php echo $text_class; ?> .trigger-text,
 .cover<?php echo $text_class; ?>,
-.cover<?php echo $text_class; ?> .headline,
-.cover<?php echo $text_class; ?> .headline a,
+.cover<?php echo $text_class; ?> .post-title a,
 .cover<?php echo $text_class; ?> .byline,
 .cover<?php echo $text_class; ?> a {
 	color: <?php echo esc_attr( $text_atts['color'] ); ?>;

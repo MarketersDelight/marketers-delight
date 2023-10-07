@@ -239,9 +239,9 @@ class md_design {
 						'mobile' => $h5['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.5 ),
-						'tablet' => round( $h5['tablet'] * 1.5 ),
-						'mobile' => round( $h5['mobile'] * 1.5 )
+						'desktop' => round( $h5['desktop'] * 1.4 ),
+						'tablet' => round( $h5['tablet'] * 1.4 ),
+						'mobile' => round( $h5['mobile'] * 1.4 )
 					)
 				),
 				'h6' => array(
@@ -251,9 +251,9 @@ class md_design {
 						'mobile' => $h6['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h6['desktop'] * 1.45 ),
-						'tablet' => round( $h6['tablet'] * 1.45 ),
-						'mobile' => round( $h6['mobile'] * 1.45 )
+						'desktop' => round( $h6['desktop'] * 1.35 ),
+						'tablet' => round( $h6['tablet'] * 1.35 ),
+						'mobile' => round( $h6['mobile'] * 1.35 )
 					)
 				),
 				'header' => array(
@@ -357,7 +357,6 @@ class md_design {
 		$colors = array();
 		$values = $this->values();
 		$keys = array(
-			'bg_color' => __( 'Background Color', 'md' ),
 			'primary' => __( 'Primary', 'md' ),
 			'secondary' => __( 'Secondary', 'md' ),
 			'tertiary' => __( 'Tertiary', 'md' ),
