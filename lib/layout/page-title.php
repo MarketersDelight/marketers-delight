@@ -21,9 +21,6 @@ class md_page_title {
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
-		if ( ! empty( $image['size'] ) )
-			add_action( 'wp_head', array( $this, 'inline_css' ) );
-
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_headline';
 
@@ -53,7 +50,19 @@ class md_page_title {
 
 	public function inline_css() {
 		$image = $this->get( 'image' );
-		md_inline_image_css( $image['size'] );
+
+		if ( ! empty( $image['id'] ) && ! empty( $image['size'] ) ) {
+			$css = md_post_css( array(
+				'image' => array(
+					'selector' => '.page-title .page-image',
+					'size' => $image['size']
+				)
+			) );
+
+			wp_register_style( 'md-page-title', false );
+			wp_enqueue_style( 'md-page-title' );
+			wp_add_inline_style( 'md-page-title', $css );
+		}
 	}
 
 	/**
@@ -111,11 +120,17 @@ class md_page_title {
 	 */
 
 	public function html() { ?>
+
 		<?php md_hook_before_page_title(); ?>
+
 		<div class="<?php echo esc_attr( $this->classes() ); ?>"<?php echo md_cover_style(); ?>>
 			<?php md_hook_page_title(); ?>
 		</div>
+
 		<?php md_hook_after_page_title(); ?>
+
+		<?php $this->inline_css(); ?>
+
 	<?php }
 
 	/**

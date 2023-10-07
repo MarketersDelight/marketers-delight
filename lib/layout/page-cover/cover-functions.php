@@ -34,6 +34,7 @@ function md_cover_classes( $custom = array() ) {
 
 function md_has_headline_cover() {
 	$cover = md_cover();
+
 	return in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) && is_singular() ? true : false;
 }
 
@@ -67,8 +68,18 @@ function md_cover_style( $args = null ) {
 
 function md_cover_caption() {
 	$cover = md_cover();
+
 	if ( is_singular() && ! empty( $cover['position'] ) )
 		md_get_caption( $cover['id'] );
+}
+
+function md_has_cover() {
+	$cover = md_cover();
+
+	if ( ! empty( $cover['id'] && $cover['position'] ) )
+		return true;
+
+	return false;
 }
 
 /**
