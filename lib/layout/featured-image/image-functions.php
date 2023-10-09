@@ -74,7 +74,7 @@ function md_featured_image_position( $position = null ) {
 	else
 		$position = md_module( array( 'featured_image', 'position' ), $default );
 
-	return $position;
+	return esc_attr( $position );
 }
 
 /**

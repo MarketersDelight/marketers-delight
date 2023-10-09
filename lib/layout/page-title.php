@@ -20,37 +20,25 @@ class md_page_title {
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
-		if ( ! empty( $image['size'] ) )
-			add_action( 'wp_head', array( $this, 'inline_css' ) );
-
-		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_headline';
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
 
 		if ( $this->get( 'description' ) )
-			add_action( 'md_hook_after_headline', array( $this, 'description' ) );
+			add_action( 'md_hook_after_title', array( $this, 'description' ), 20 );
 
 		$image_hook = 'md_hook_before_headline';
 
-		if ( $image['position'] == 'below_headline' )
+		if ( in_array( $image['position'], array( 'right', 'center' ) ) )
 			$image_hook = 'md_hook_after_headline';
+
+		if ( $image['position'] == 'below_headline' )
+			$image_hook = 'md_hook_after_title';
 
 		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
 			add_action( $image_hook, array( $this, 'image' ) );
-	}
-
-	/**
-	 * Print inline CSS to resize featured image across devices.
-	 *
-	 * @since 5.6
-	 */
-
-	public function inline_css() {
-		$image = $this->get( 'image' );
-
-		md_inline_image_css( $image['size'] );
 	}
 
 	/**
@@ -92,29 +80,26 @@ class md_page_title {
 	}
 
 	/**
-	 * Populate HTML classes for main HTML wrapper.
-	 *
-	 * @since 5.6
-	 */
-
-	public function classes() {
-		$image = $this->get( 'image' );
-		$classes = array( 'page-title' );
-
-		if ( ! empty( $image['id'] ) )
-			$classes[] = 'layout-' . $image['position'];
-
-		return md_cover_classes( $classes );
-	}
-
-	/**
 	 * Render Page Title HTML wrapper.
 	 *
 	 * @since 5.6
 	 */
 
 	public function html() {
+		$css = array();
 		$title = $this->get( 'title' );
+		$image = $this->get( 'image' );
+
+		if ( $image['size'] )
+			$css['image']['size'] = $image['size'];
+
+		if ( $css ) {
+			$css['selector'] = '.page-header.headline-image .page-image';
+
+			wp_register_style( 'md-page-header', false );
+			wp_enqueue_style( 'md-page-header' );
+			wp_add_inline_style( 'md-page-header', md_post_css( $css ) );
+		}
 
 		md_headline( array(
 			'title' => $title
@@ -146,6 +131,9 @@ class md_page_title {
 
 	public function image() {
 		$image_id = $this->get( 'image', 'id' );
+
+		if ( ! $image_id )
+			return;
 	?>
 		<div class="page-image">
 			<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>

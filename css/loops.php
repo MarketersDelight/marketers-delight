@@ -6,13 +6,13 @@
 
 /* LOOP ELEMENTS */
 
-.post-box, .headline-wrap { position: relative; }
+.post-box, .headline-area { position: relative; }
 
-.headline-wrap.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
+.post-box .headline-area.cover, .content .page-header.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
 
-.header .headline-wrap { text-align: center; }
+.header .headline-area { text-align: center; }
 
-.content .loop, .content .headline-wrap { margin-bottom: <?php echo $single; ?>px; }
+.content .loop, .content .headline-area { margin-bottom: <?php echo $single; ?>px; }
 
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
@@ -209,10 +209,10 @@
 
 @media all and (max-width: 800px) {
 	.post-box { margin-bottom: <?php echo $half; ?>px; }
-	.style-default .headline-wrap,
-	.style-default .the-content,
-	.style-default .author-box,
-	.style-default .comments {
+	.style-default .post-box .headline-area,
+	.style-default.content-sidebar .the-content,
+	.style-default.content-sidebar .author-box,
+	.style-default.content-sidebar .comments {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -220,17 +220,13 @@
 
 @media all and (min-width: 800px) {
 	.post-box { margin-bottom: <?php echo $single; ?>px; }
-	.style-default .headline-wrap,
-	.style-default .the-content,
-	.style-default .author-box,
-	.style-default .comments {
+	.style-default .post-box .headline-area,
+	.style-default.content-sidebar .the-content,
+	.style-default.content-sidebar .author-box,
+	.style-default.content-sidebar .comments,
+	.content .page-header.cover {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
-	}
-	.headline-wrap.cover {
-		max-width: 100%;
-		padding-left: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
-		padding-right: <?php echo ( ( $mid / $content_width ) * 100 ); ?>%;
 	}
 	/* TEASERS */
 	.loop-teasers .loop {

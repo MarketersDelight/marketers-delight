@@ -84,44 +84,53 @@
 
 .breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
-/* PAGE TITLE */
+/* PAGE HEADER */
 
-.page-title.cover {
+.header .page-header {
 	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $mid; ?>px;
+	padding-top: <?php echo $double; ?>px;
 }
 
-.page-title, .page-title .inner {
+.header-cover .page-header { padding-top: <?php echo $mid; ?>px; }
+
+.header .page-header.image-left, .header .page-header.image-right { text-align: left; }
+
+.page-header.headline-image .inner {
 	align-items: center;
 	display: flex;
-	flex-flow: row wrap;
+	justify-content: center;
 }
 
-/*
-.page-title.cover, .page-title.cover .inner { justify-content: center; }
-*/
-.content .page-title { margin-bottom: <?php echo $single; ?>px; }
-
-.page-headline-wrap {
-	flex-basis: 100%;
-	margin-bottom: <?php echo $half; ?>px;
+.page-title {
+	position: relative;
 }
-
-.layout-above_headline .page-image, .layout-below_headline .page-image { margin-bottom: <?php echo $half; ?>px; }
-
-.layout-left .page-image, .layout-right .page-image { flex-basis: 25%; }
 
 .page-description {
-	flex: 1;
-	max-width: <?php echo $content_width; ?>px;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: <?php echo $post_width; ?>px;
 }
 
-.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.page-image {
+	position: relative;
+}
 
-.layout-left .page-description { margin-left: <?php echo $single; ?>px; }
-.layout-right .page-description { margin-right: <?php echo $single; ?>px; }
+.page-image img { width: 100%; }
 
-.layout-left .page-description { order: 2; }
+.page-header.image-right .page-image { margin-left: <?php echo $single; ?>px; }
+.page-header.image-left .page-image { margin-right: <?php echo $single; ?>px; }
+.page-header.image-center .page-description, .page-header.image-above_headline .page-image, .page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
+.page-header.image-below_headline .page-image {
+	margin-left: auto;
+	margin-right: auto;
+}
+.page-header.image-center .inner, .page-header.image-above_headline .inner { flex-flow: wrap; }
+.page-header.image-center .title-area, .page-header.image-above_headline .title-area { flex-basis: 100%; }
+
+@media all and (max-width: 800px) {
+	.page-header.image-left .title-area, .page-header.image-right .title-area { flex: 1; }
+}
 
 /* AUTHOR BOX */
 
@@ -251,21 +260,6 @@
 .page-numbers.next { margin-left: <?php echo $third; ?>px; }
 
 /* QUERIES */
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.page-title.cover {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
-@media all and (min-width: 800px) {
-	.header .headline-wrap.cover, .page-title.cover { padding-top: <?php echo $double; ?>px; }
-	.page-description {
-		font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
-		line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
-	}
-}
 
 @media all and (max-width: 800px) {
 	.hide-label-mobile .trigger-text { display: none; }

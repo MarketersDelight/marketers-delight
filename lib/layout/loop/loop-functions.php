@@ -203,7 +203,13 @@ function md_has_headline() {
 
 function md_headline_classes( $args = array() ) {
 	$classes = array();
-	$classes[] = 'headline-wrap';
+	$class = 'post-header';
+
+	if ( is_singular() || ! in_the_loop() )
+		$class = 'page-header';
+
+	$classes[] = $class;
+	$classes[] = 'headline-area';
 
 	if ( ! isset( $args['hide_cover'] ) ) {
 		$cover_classes = md_cover_classes();
@@ -212,9 +218,12 @@ function md_headline_classes( $args = array() ) {
 			$classes[] = $cover_classes;
 	}
 
+	if ( ! in_the_loop() && md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
+		$classes[] = 'headline-image image-' . md_featured_image_position();
+	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );
 
-	return apply_filters( 'md_filter_headline_classes', esc_attr( $classes ) );
+	return esc_attr( $classes );
 }
 
 /**
@@ -232,14 +241,14 @@ function md_headline( $args = null ) {
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
 
-	$classes = 'post-title';
+	$h_classes = 'post-title';
 
 	if ( is_singular() || ! in_the_loop() )
-		$classes = 'page-title';
+		$h_classes = 'page-title';
 
 	if ( ! is_singular() && in_the_loop() ) {
 		if ( md_get_loop() == 'default' )
-			$classes .= ' headline';
+			$h_classes .= ' headline';
 
 		$permalink = get_permalink();
 	}

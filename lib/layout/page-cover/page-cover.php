@@ -149,24 +149,19 @@ class md_page_cover extends md_api {
 
 		$cover = md_cover();
 
-		if ( $cover['position'] == 'header_cover' ) {
-			add_action( 'md_hook_page_title', array( $this, 'overlay' ), 1 );
-			add_action( 'md_hook_page_title', 'md_inner_html', 5 );
-			add_action( 'md_hook_page_title', 'md_html_close', 100 );
+		if ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) ) {
+			add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
+			add_action( 'md_hook_after_headline', 'md_html_close', 100 );
+
 			if ( md_has_headline() )
 				add_action( 'md_hook_header_bottom', array( $this, 'header_cover' ) );
-			if ( is_singular() || is_404() ) {
-				add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
-				add_action( 'md_hook_after_headline', 'md_html_close', 90 );
-			}
 		}
 		elseif ( $cover['position'] == 'header_cover_full' ) {
 			add_action( 'md_hook_header_top', array( $this, 'overlay' ) );
 			add_filter( 'md_filter_header_classes', array( $this, 'header_classes' ) );
+
 			if ( md_has_headline() )
 				add_action( 'md_hook_after_header', array( $this, 'headline' ) );
-			if ( is_singular() || is_404() )
-				remove_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
 		}
 	}
 

@@ -252,13 +252,15 @@ function md_content_box_classes( $classes = array() ) {
 
 	$classes[] = 'loop-' . md_get_loop();
 
+	if ( is_singular() )
+		$classes[] = 'loop-article';
+	else
+		$classes[] = 'loop-archive';
+
 	if ( $style )
 		$classes[] = "style-$style";
 	else
 		$classes[] = 'style-default';
-
-	if ( is_singular() )
-		$classes[] = 'is-article';
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 

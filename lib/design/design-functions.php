@@ -167,7 +167,7 @@ function md_google_fonts( $format = null ) {
  */
 
  function md_post_css( $args = array() ) {
-	$style = '';
+	$style = $selector = '';
 	$flex = 'flex-basis: ';
 	$devices = array( 'tablet' => 900, 'mobile' => 700 );
 
@@ -179,7 +179,8 @@ function md_google_fonts( $format = null ) {
 
 	if ( isset( $args['image'] ) ) {
 		$image = $args['image'];
-		$selector = '.page-title .page-image';
+		if ( ! isset( $selector ) )
+			$selector = '.page-title .page-image';
 
 		if ( isset( $image['selector'] ) )
 			$selector = esc_html( $image['selector'] );
