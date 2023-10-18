@@ -175,7 +175,7 @@ function md_google_fonts( $format = null ) {
 		$selector = $args['selector'];
 
 	if ( isset( $args['links_color'] ) )
-		$style .= "$selector a { color: " . esc_attr( $args['links_color'] ) . '; }';
+		$style .= "$selector a:not(.button) { color: " . esc_attr( $args['links_color'] ) . '; }';
 
 	if ( isset( $args['image'] ) ) {
 		$image = $args['image'];
@@ -268,7 +268,7 @@ function md_style( $fields ) {
  * @since 4.3.5
  */
 
-function md_button( $fields ) {
+function md_link( $fields ) {
 	$parent_classes = $classes = $styles = array();
 	$html = 'span';
 	$class = $href = $target = $popup = '';
@@ -278,7 +278,7 @@ function md_button( $fields ) {
 	$phone = isset( $fields['phone'] ) ? $fields['phone'] : '';
 	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
 	$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
-	$icon_classes = 'trigger-icon';
+	$icon_classes = 'link-icon';
 
 	if ( $parent )
 		$parent_classes[] = "{$parent}-link";
@@ -305,7 +305,6 @@ function md_button( $fields ) {
 	if ( $style == 'button' ) {
 		$button_color = '';
 		$classes[] = 'button';
-		$icon_classes = 'link-icon';
 
 		if ( ! empty( $fields['button_color'] ) )
 			$button_color = $fields['button_color'];
@@ -348,7 +347,7 @@ function md_button( $fields ) {
 	<span class="<?php echo esc_attr( $parent_classes ); ?>">
 		<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
 			<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
-			<?php echo ( $text ? '<span class="trigger-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
+			<?php echo ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
 	</span>
 
 <?php }

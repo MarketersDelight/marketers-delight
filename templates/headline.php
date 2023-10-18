@@ -5,9 +5,13 @@
 	<?php md_hook_before_headline(); ?>
 
 	<div class="title-area">
+
 		<?php md_hook_before_title(); ?>
+
 		<<?php echo $h; ?> class="<?php echo esc_attr( $h_classes ); ?>"><?php echo md_title( $title, $permalink ); ?></<?php echo $h; ?>>
+
 		<?php md_hook_after_title(); ?>
+
 	</div>
 
 	<?php md_hook_after_headline(); ?>

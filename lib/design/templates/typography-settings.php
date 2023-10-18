@@ -1,10 +1,17 @@
 <div class="md-content-wrap">
+
 	<?php $this->fields->devices(); ?>
+
 	<h2 class="md-title"><?php echo __( 'Fonts & Typography', 'md' ); ?></h2>
+
 	<p><?php echo __( 'Assign custom fonts and fine-tune your website\'s typography.', 'md' ); ?></p>
+
 	<hr class="md-sep" />
+
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Body', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
 			<?php $this->fields->typography( 'body', array(
 				'font_size' => array(
@@ -20,14 +27,20 @@
 				'bold' => true
 			) ); ?>
 		</div>
+
 	</div>
+
 	<hr class="md-sep-small" />
+
 	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5' ) as $h ) :
 		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
 	?>
 		<div class="md-widget md-toggle md-sep-small">
+
 			<h3 class="md-widget-title"><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?></h3>
+
 			<div class="md-widget-item">
+
 				<?php $this->fields->typography( $h, array(
 					'font_size' => array(
 						'desktop' => $defaults[$h]['font_size']['desktop'],
@@ -42,13 +55,21 @@
 					'font_family' => array( 'placeholder' => $label ),
 					'font_weight' => array( 'empty_label' => $label )
 				) ); ?>
+
 			</div>
+
 		</div>
+
 	<?php endforeach; ?>
+
 	<hr class="md-sep-small" />
+
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
+
 			<div class="md-sep-small">
 				<?php $this->fields->typography( 'header', array(
 					'font_size' => array(
@@ -63,40 +84,52 @@
 					)
 				) ); ?>
 			</div>
+
 		</div>
+
 	</div>
+
 	<?php if ( empty( $this->values['header']['display']['site_title'] ) || empty( $this->values['header']['display']['site_tagline'] ) ) : ?>
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo __( 'Site Title & Tagline', 'md' ); ?></h3>
-			<div class="md-widget-item">
-				<?php foreach ( array( 'site_title', 'site_tagline' ) as $font ) : ?>
-					<?php if ( empty( $this->values['header']['display'][$font] ) ) : ?>
-						<?php if ( $font == 'site_tagline' ) : ?>
-							<hr class="md-sep" />
-						<?php endif; ?>
-						<div class="md-sep-small">
-							<h4 class="md-title"><?php echo ucwords( str_replace( '_', ' ', $font ) ); ?></h4>
-							<?php $this->fields->typography( $font, array(
-								'font_size' => array(
-									'desktop' => $defaults[$font]['font_size']['desktop'],
-									'tablet' => $defaults[$font]['font_size']['tablet'],
-									'mobile' => $defaults[$font]['font_size']['mobile']
-								),
-								'line_height' => array(
-									'desktop' => $defaults[$font]['line_height']['desktop'],
-									'tablet' => $defaults[$font]['line_height']['tablet'],
-									'mobile' => $defaults[$font]['line_height']['mobile']
-								)
-							) ); ?>
-						</div>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	<?php endif; ?>
+
 	<div class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
+
+		<h3 class="md-widget-title"><?php echo __( 'Site Title & Tagline', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
+			<?php foreach ( array( 'site_title', 'site_tagline' ) as $font ) : ?>
+				<?php if ( empty( $this->values['header']['display'][$font] ) ) : ?>
+					<?php if ( $font == 'site_tagline' ) : ?>
+						<hr class="md-sep" />
+					<?php endif; ?>
+					<div class="md-sep-small">
+						<h4 class="md-title"><?php echo ucwords( str_replace( '_', ' ', $font ) ); ?></h4>
+						<?php $this->fields->typography( $font, array(
+							'font_size' => array(
+								'desktop' => $defaults[$font]['font_size']['desktop'],
+								'tablet' => $defaults[$font]['font_size']['tablet'],
+								'mobile' => $defaults[$font]['font_size']['mobile']
+							),
+							'line_height' => array(
+								'desktop' => $defaults[$font]['line_height']['desktop'],
+								'tablet' => $defaults[$font]['line_height']['tablet'],
+								'mobile' => $defaults[$font]['line_height']['mobile']
+							)
+						) ); ?>
+					</div>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+
+	</div>
+
+	<?php endif; ?>
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+
 			<div class="md-sep-small">
 				<?php $this->fields->typography( 'sidebar', array(
 					'font_size' => array(
@@ -111,7 +144,9 @@
 					)
 				) ); ?>
 			</div>
+
 			<hr class="md-sep" />
+
 			<div class="md-sep-small">
 				<h4 class="md-title"><?php echo __( 'Sidebar Title', 'md' ); ?></h4>
 				<?php $this->fields->typography( 'sidebar_title', array(
@@ -129,11 +164,17 @@
 					'font_weight' => array( 'empty_label' => __( 'Inherit from <h3>', 'md' ) )
 				) ); ?>
 			</div>
+
 		</div>
+
 	</div>
+
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
+
 			<div class="md-sep-small">
 				<?php $this->fields->typography( 'footer', array(
 					'font_size' => array(
@@ -148,7 +189,9 @@
 					)
 				) ); ?>
 			</div>
+
 			<hr class="md-sep" />
+
 			<div class="md-sep-small">
 				<h4 class="md-title"><?php echo __( 'Footer Title', 'md' ); ?></h4>
 				<?php $this->fields->typography( 'footer_title', array(
@@ -166,12 +209,18 @@
 					'font_weight' => array( 'empty_label' => __( 'Inherit from <h3>', 'md' ) )
 				) ); ?>
 			</div>
+
 		</div>
+
 	</div>
+
 	<?php $this->fields->field( 'google_fonts', array(
 		'type' => 'text',
 		'hidden' => true
 	) ); ?>
+
 	<hr class="md-sep-small" />
+
 	<?php $this->fields->save(); ?>
+
 </div>

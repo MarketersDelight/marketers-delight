@@ -1,4 +1,4 @@
-<div id="the_content" class="the-content">
+<div id="the_content" class="<?php echo esc_attr( $classes ); ?>">
 
 	<?php if ( md_has_inline_featured_image() ) : ?>
 		<?php md_featured_image(); ?>

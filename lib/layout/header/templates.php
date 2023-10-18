@@ -211,7 +211,7 @@ class md_header_templates {
 	 */
 
 	public function link( $fields ) {
-		md_button( $fields );
+		md_link( $fields );
 	}
 
 }

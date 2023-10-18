@@ -32,7 +32,6 @@ class md_fields {
 	 * In its simplest form, field accepts the field name ($field) and an array
 	 * of arguments ($args), but to create different option groups per page
 	 * the argument names get switched up between $parent, $fields, and $args.
-	 * More clear documentation coming soon.
 	 *
 	 * @since 4.0
 	 */
@@ -675,10 +674,12 @@ class md_fields {
 	public function typography( $field, $args = null ) {
 		$g = 1.618;
 		$field = is_array( $field ) ? $field : (array) $field;
+		$field_id = $field[0];
 		$devices = isset( $args['devices'] ) ? $args['devices'] : array( 'desktop', 'tablet', 'mobile' );
 		$sanitize = new md_sanitize;
 		$design = new md_design;
 		$defaults = $design->defaults();
+		$default = ! empty( $defaults[$this->_clean_id] ) ? $defaults[$this->_clean_id] : array();
 		$fonts = array(
 			'font_size' => __( 'Font Size', 'md' ),
 			'line_height' => __( 'Line Height', 'md' )

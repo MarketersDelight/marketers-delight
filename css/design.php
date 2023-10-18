@@ -57,18 +57,17 @@
 
 /* BOXES */
 
-.box { background-color: #fff; }
-
-.box-sec, .frame, .note { background-color: #eee; }
-
-.box-dark {
-	background-color: <?php echo $colors['site']['secondary']; ?>;
-	color: #fff;
-}
-
-.box-dark .text-sec { color: #ddd; }
+.frame, .note { background-color: #eee; }
 
 .alert { background-color: #fffbcc; }
+
+.sep { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+
+.highlight {
+	background-color: #fdd169;
+	padding-left: <?php echo $small; ?>px;
+	padding-right: <?php echo $small; ?>px;
+}
 
 /* CIRCLE ICON */
 

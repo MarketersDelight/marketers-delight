@@ -33,6 +33,15 @@
 
 .content-box { padding-bottom: <?php echo $single; ?>px; }
 
+.extend {
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+}
+
 /* DEFAULT STYLE */
 
 .the-content .featured-image { z-index: 1; }
@@ -46,7 +55,8 @@
 .post-box:hover .post-inner .featured-image img { transform: scale(0.97); }
 
 .page-image img,
-.style-default .post-box, .style-default .featured-image img,
+.style-default .post-box,
+.style-default .featured-image, .style-default .featured-image img,
 .content .headline-area.cover, .content .headline-area.cover .overlay { border-radius: 5px; }
 
 .post-box.has-cover.has-below-image .headline-area.cover,
@@ -79,20 +89,16 @@
 /* QUERIES */
 
 @media all and (min-width: <?php echo $site_width; ?>px) {
-	.loop-default.content-full.loop-article .headline { text-align: center; }
+	.loop-default.full.article .headline { text-align: center; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.content-box .inner, .page-header .inner, .header-cover .headline-area .inner {
+	.content-box .inner {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
-	.post-header .inner {
-		padding-left: 0;
-		padding-right: 0;
-	}
 	/* DEFAULT STYLE */
-	.content-full.style-default.loop-default.loop-article .post-box {
+	.full.style-default.loop-default.article .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
@@ -102,7 +108,7 @@
 	.content-box { padding-top: <?php echo $single; ?>px; }
 	.content-sidebar .content { width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%; }
 	.content-width { max-width: <?php echo $content_width; ?>px; }
-	.post-width { max-width: <?php echo $post_width; ?>px; }
+	.post-width, .post-content { max-width: <?php echo $post_width; ?>px; }
 	.sidebar { width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%; }
 	.loop-default .loop .has-inline-image .featured-image { margin-bottom: 0; }
 	/* CONTENT - SIDEBAR */
@@ -133,24 +139,26 @@
 }
 
 @media all and (min-width: 900px) {
-	.content-full.loop-archive .content {
+	.loop-default.full.archive .content, .full .post-content {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.content-full.loop-archive .content { width: <?php echo $content_width; ?>px; }
-	.content-full.loop-default.loop-article .the-content,
-	.content-full.loop-default.loop-article .author-box,
-	.content-full.loop-default.loop-article .comments {
+	.loop-default.full.archive .content { width: <?php echo $content_width; ?>px; }
+	.full.loop-default.article .the-content:not(.full),
+	.full.loop-default.article .author-box,
+	.full.loop-default.article .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
-	.content-full.loop-article .headline-area, .content-full .breadcrumbs { text-align: center; }
+}
+
+@media all and (min-width: 800px) {
+	.full.article .headline-area { text-align: center; }
 }
 
 @media all and (max-width: 800px) {
 	.content:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	/* DEFAULT STYLE */
-	.single .has-cover + .content-box.style-default .post-box.has-image,
 	.style-default.loop-default .post-box.has-cover.has-inline-image { padding-top: 0; }
 }
 

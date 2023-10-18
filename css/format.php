@@ -166,23 +166,11 @@
 	margin-right: 3px;
 }
 
-.text-intro, .intro, .subtitle {
-	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
-	line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
-}
-
-.entry-subtitle {
-	display: block;
-	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
-	margin-top: <?php echo $half; ?>px;
-}
-
 /* BYLINE */
 
 .byline {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['desktop'] - 2; ?>px;
 	margin-bottom: <?php echo $third; ?>px;
 	position: relative;
 }
@@ -261,6 +249,10 @@
 }
 
 @media all and (min-width: 800px) {
+	.text-intro, .intro, .subtitle {
+		font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+		line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
+	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
 	.loop .featured-image.alignleft, .loop .featured-image.alignright, .content-sidebar .featured-image.alignleft, .content-sidebar .featured-image.alignright { max-width: <?php echo $single * 10; ?>px; }
 }

@@ -18,25 +18,16 @@ class md_design {
 	 */
 
 	public function defaults() {
-		// golden ratio for base calculations
 		$g = 1.618;
-		// default font sizes for desktop $df, tablet $tf, mobile $mf
-		$font_size = md_setting( array( 'typography', 'body', 'font_size' ), array() );
-		$df = ! empty( $font_size['desktop'] ) ? $font_size['desktop'] : 17;
-		$tf = round( $df * 0.95 );
-		$mf = round( $df * 0.9 );
-		// set final font size values based on options or defaults
-		$desktop = ! empty( $font_size['desktop'] ) ? $font_size['desktop'] : $df;
-		$tablet = ! empty( $font_size['tablet'] ) ? $font_size['tablet'] : $tf;
-		$mobile = ! empty( $font_size['mobile'] ) ? $font_size['mobile'] : $mf;
-		// set line height for spacing measurements
-		$line_height = round( $desktop * $g );
-		$half = round( $line_height / 2 );
-		// set headings font sizes
+		$font_size = md_setting( array( 'typography', 'body', 'font_size', 'desktop' ), 17 );
+		$tablet = md_setting( array( 'typography', 'body', 'font_size', 'tablet' ), round( $font_size * 0.95 ) );
+		$mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
+		$line_height = round( $font_size * $g );
+
 		$h1 = array(
-			'desktop' => round( $desktop * ( $g * 1.5 ) ),
-			'tablet' => round( $desktop * ( $g * 1.25 ) ),
-			'mobile' => round( $desktop * ( $g * 1.1 ) )
+			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.5 ) ) ),
+			'tablet' => md_setting( array( 'typography', 'h1', 'font_size', 'tablet' ), round( $font_size * ( $g * 1.25 ) ) ),
+			'mobile' => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $font_size * ( $g * 1.1 ) ) )
 		);
 		$h2 = array(
 			'desktop' => round( $h1['desktop'] * 0.85 ),
@@ -46,7 +37,7 @@ class md_design {
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.75 ),
 			'tablet'  => round( $h1['tablet'] * 0.75 ),
-			'mobile'  => round( $h1['mobile'] * 0.75 )
+			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
@@ -161,9 +152,9 @@ class md_design {
 			'typography' => array(
 				'body' => array(
 					'font_size' => array(
-						'desktop' => $df,
-						'tablet' => $tf,
-						'mobile' => $tf
+						'desktop' => $font_size,
+						'tablet' => $tablet,
+						'mobile' => $mobile
 					),
 					'line_height' => array(
 						'desktop' => $line_height,
@@ -179,9 +170,9 @@ class md_design {
 						'mobile' => round( $h1['mobile'] * 1.5 )
 					),
 					'line_height' => array(
-						'desktop' => round( $h1['desktop'] * 1.85 ),
-						'tablet' => round( $h1['tablet'] * 1.85 ),
-						'mobile' => round( $h1['mobile'] * 1.85 )
+						'desktop' => round( $h1['desktop'] * 2 ),
+						'tablet' => round( $h1['tablet'] * 2 ),
+						'mobile' => round( $h1['mobile'] * 2 )
 					)
 				),
 				'h1' => array(
@@ -258,9 +249,9 @@ class md_design {
 				),
 				'header' => array(
 					'font_size' => array(
-						'desktop' => $df,
-						'tablet' => $tf,
-						'mobile' => $tf
+						'desktop' => $font_size,
+						'tablet' => $tablet,
+						'mobile' => $tablet
 					),
 					'line_height' => array(
 						'desktop' => $line_height,
@@ -282,9 +273,9 @@ class md_design {
 				),
 				'site_tagline' => array(
 					'font_size' => array(
-						'desktop' => $df,
-						'tablet'  => round( $df * 0.8 ),
-						'mobile'  => round( $df * 0.8 )
+						'desktop' => $font_size,
+						'tablet'  => round( $font_size * 0.8 ),
+						'mobile'  => round( $font_size * 0.8 )
 					),
 					'line_height' => array(
 						'desktop' => round( $line_height * 0.8 ),
@@ -294,9 +285,9 @@ class md_design {
 				),
 				'sidebar' => array(
 					'font_size' => array(
-						'desktop' => round( $df * 0.95 ),
-						'tablet' => round( $df * 0.9 ),
-						'mobile' => round( $df * 0.9 )
+						'desktop' => round( $font_size * 0.95 ),
+						'tablet' => round( $font_size * 0.9 ),
+						'mobile' => round( $font_size * 0.9 )
 					),
 					'line_height' => array(
 						'desktop' => round( $line_height * 0.9 ),
@@ -318,9 +309,9 @@ class md_design {
 				),
 				'footer' => array(
 					'font_size' => array(
-						'desktop' => round( $df * 0.95 ),
-						'tablet' => round( $df * 0.9 ),
-						'mobile' => round( $df * 0.85 )
+						'desktop' => round( $font_size * 0.95 ),
+						'tablet' => round( $font_size * 0.9 ),
+						'mobile' => round( $font_size * 0.85 )
 					),
 					'line_height' => array(
 						'desktop' => round( $line_height * 0.9 ),

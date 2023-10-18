@@ -15,10 +15,9 @@ function md_templates() {
 	$breadcrumbs = md_has_breadcrumbs();
 
 	if ( $breadcrumbs ) {
-
 		$hook = 'md_hook_content';
 
-		if ( $breadcrumbs == 'before_page_title' ) {
+		if ( $breadcrumbs == 'before_page_title' )
 			if ( is_singular() ) {
 				$cover = md_cover();
 
@@ -27,7 +26,6 @@ function md_templates() {
 			}
 			else
 				$hook = 'md_hook_page_title';
-		}
 
 		add_action( $hook, 'md_breadcrumbs' );
 	}
@@ -43,6 +41,9 @@ function md_templates() {
 
 	add_action( 'md_hook_content', 'md_loop', 30 );
 
+	if ( is_singular() &&  md_meta( array( 'layout', 'content', 'wpautop' ) ) )
+		remove_filter( 'the_content', 'wpautop' );
+
 	if ( ! is_404() && md_has_byline() ) {
 		$hook_byline = 'md_hook_before_headline';
 		$byline_position = md_get_byline_position();
@@ -50,7 +51,7 @@ function md_templates() {
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_after_headline';
 
-		add_action( $hook_byline, 'md_byline', 20 );
+		add_action( $hook_byline, 'md_byline' );
 	}
 
 	add_action( 'md_hook_before_headline', 'md_cover_caption', 3 );

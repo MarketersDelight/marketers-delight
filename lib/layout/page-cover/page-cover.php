@@ -149,7 +149,7 @@ class md_page_cover extends md_api {
 
 		$cover = md_cover();
 
-		if ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) ) {
+		if ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
 			add_action( 'md_hook_after_headline', 'md_html_close', 100 );
 

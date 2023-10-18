@@ -70,8 +70,7 @@ select { max-width: 100%; }
 	color: <?php echo $colors['site']['text']; ?>;
 	font-size: 1.2em;
 	line-height: 1;
-	min-width: <?php echo $mid + $half; ?>px;
-	padding: <?php echo $third; ?>px;
+	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 	text-align: center;
 }
 
@@ -87,15 +86,17 @@ select { max-width: 100%; }
 
 .search-form .form-submit { width: 40%; }
 
-	[class*="form-attached"] {
-		align-items: center;
-		display: flex;
-		flex-flow: wrap;
-		position: relative;
-	}
-	[class*="form-attached"] .form-field { margin-right: 2%; }
-	.form-multi-fields [class*="form-attached"] .form-field { width: auto; }
+[class*="form-attached"] {
+	align-items: center;
+	display: flex;
+	position: relative;
+}
 
+[class*="form-attached"] .form-field { margin-right: 2%; }
+
+[class*="form-attached"] .form-submit { flex: 1 0 auto; }
+
+.form-multi-fields [class*="form-attached"] .form-field { width: auto; }
 
 /* SEARCH */
 

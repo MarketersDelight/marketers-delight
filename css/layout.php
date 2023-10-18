@@ -91,42 +91,39 @@
 	padding-top: <?php echo $double; ?>px;
 }
 
-.header-cover .page-header { padding-top: <?php echo $mid; ?>px; }
-
 .header .page-header.image-left, .header .page-header.image-right { text-align: left; }
 
-.page-header.headline-image .inner {
+.page-header.headline-image .inner,
+.content .page-header.headline-image {
 	align-items: center;
 	display: flex;
 	justify-content: center;
 }
 
-.page-title {
-	position: relative;
-}
+.page-title, .page-description, .page-image { position: relative; }
 
-.page-description {
-	position: relative;
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $post_width; ?>px;
-}
-
-.page-image {
-	position: relative;
-}
+.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .page-image img { width: 100%; }
 
 .page-header.image-right .page-image { margin-left: <?php echo $single; ?>px; }
 .page-header.image-left .page-image { margin-right: <?php echo $single; ?>px; }
-.page-header.image-center .page-description, .page-header.image-above_headline .page-image, .page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
+.page-header.image-above_headline .page-image, .page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
 .page-header.image-below_headline .page-image {
 	margin-left: auto;
 	margin-right: auto;
 }
 .page-header.image-center .inner, .page-header.image-above_headline .inner { flex-flow: wrap; }
 .page-header.image-center .title-area, .page-header.image-above_headline .title-area { flex-basis: 100%; }
+
+@media all and (min-width: 800px) {
+	.header .page-description,
+	.article.full .page-description {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $post_width; ?>px;
+	}
+}
 
 @media all and (max-width: 800px) {
 	.page-header.image-left .title-area, .page-header.image-right .title-area { flex: 1; }

@@ -30,6 +30,8 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 .button-subtext:empty { display: none; }
 
+.link-icon { margin-right: <?php echo $small; ?>px; }
+
 /* COLORS */
 
 .button.button-sec, a.button.button-sec,

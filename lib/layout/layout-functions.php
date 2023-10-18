@@ -135,31 +135,10 @@ function md_title( $text, $url = null ) {
  * @since 5.6
  */
 
-function md_page_title( $post_id = null ) {
-	$title = '';
+function md_page_title() {
+	$page_title = new md_page_title;
 
-	if ( is_post_type_archive() ) {
-		$post_type_title = post_type_archive_title( '', false );
-		$title = md_post_type_field( 'archives_title', $post_type_title );
-	}
-	elseif ( is_home() || is_singular( 'post' ) )
-		$title = md_post_type_field( 'archives_title' );
-	elseif ( is_tax() && get_queried_object() )
-		$title = single_term_title( '', false );
-	elseif ( is_category() )
-		$title = single_cat_title( '', false );
-	elseif ( is_tag() )
-		$title = single_tag_title( '', false );
-	elseif ( is_author() )
-		$title = get_the_author();
-	elseif ( is_year() )
-		$title = get_the_date( 'Y' );
-	elseif ( is_month() )
-		$title = get_the_date( 'F Y' );
-	elseif ( is_day() )
-		$title = get_the_date( 'F j, Y' );
-
-	return $title;
+	return $page_title->page_title();
 }
 
 /**
@@ -248,17 +227,19 @@ function md_content_box_classes( $classes = array() ) {
 			$classes[] = 'sidebar-left';
 	}
 	else
-		$classes[] = 'content-full';
+		$classes[] = 'full';
+
+	if ( is_singular() )
+		$classes[] = 'article';
+	else
+		$classes[] = 'archive';
 
 	$classes[] = 'loop-' . md_get_loop();
 
-	if ( is_singular() )
-		$classes[] = 'loop-article';
-	else
-		$classes[] = 'loop-archive';
-
-	if ( $style )
-		$classes[] = "style-$style";
+	if ( $style ) {
+		if ( $style !== 'minimal' )
+			$classes[] = "style-$style";
+	}
 	else
 		$classes[] = 'style-default';
 

@@ -317,11 +317,11 @@ function md_hook_after_headline() {
 }
 
 function md_hook_before_title() {
-	do_action( 'md_hook_before_title' );
+	do_action( 'md_hook_before_title', 'before_headline' );
 }
 
 function md_hook_after_title() {
-	do_action( 'md_hook_after_title' );
+	do_action( 'md_hook_after_title', 'after_headline' );
 }
 
 function md_hook_before_headline_area() {

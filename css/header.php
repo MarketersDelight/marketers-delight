@@ -221,6 +221,7 @@
 	.tagline { display: none; }
 	<?php endif; ?>
 	.header-controls .trigger, 	.header-link, .header_aside-link { padding-left: <?php echo $half; ?>px; }
+	.header-controls .trigger { margin-right: <?php echo $third; ?>px; }
 	.header-rtl .header_aside-link.is-button { padding-left: 0; }
 	/* DISPLAYS */
 	.hide-label-mobile .trigger-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }

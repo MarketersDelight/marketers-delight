@@ -6,9 +6,9 @@
 
 /* LOOP ELEMENTS */
 
-.post-box, .headline-area { position: relative; }
+.post-box, .headline-area, .title-area { position: relative; }
 
-.post-box .headline-area.cover, .content .page-header.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
+.cover { padding: <?php echo $mid; ?>px <?php echo $half; ?>px; }
 
 .header .headline-area { text-align: center; }
 
@@ -18,42 +18,34 @@
 
 /* LOOP TEASERS */
 
-.teaser {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border-radius: 5px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	padding: <?php echo $half; ?>px;
-	position: relative;
-}
-
-.loop-teasers .post.featured-col { flex-basis: 100%; }
-
-.loop-teasers .post, .teaser, .loop-teasers .featured-image { transition: 0.3s; }
-
-.loop-teasers .post:hover { transform: translateY(-5px); }
-
-.loop-teasers .post:hover .teaser, .loop-teasers .post:hover .featured-image { box-shadow: 0 1px 9px rgba(0, 0, 0, 0.25); }
+.teaser.featured { flex-basis: 100%; }
 
 .teaser .overlay { display: none; }
 
-.featured-image + .teaser { border-radius: 0 0 5px 5px; }
+.teaser, .teaser .featured-image { transition: 0.3s; }
 
-.loop-teasers .featured-image { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.teaser:not(:last-child), .teaser.standard .featured-image { margin-bottom: <?php echo $half; ?>px; }
 
-.loop-teasers .featured-image, .loop-teasers .featured-image img { border-radius: 5px 5px 0 0; }
+.style-default .teaser:hover { transform: translateY(-5px); }
 
-.teaser .headline {
-	font-size: <?php echo $typography['h2']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['h2']['line_height']['mobile']; ?>px;
+.style-default .teaser .post-box { padding: <?php echo $half; ?>px; }
+
+.style-default .teaser .featured-image { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.style-default .teaser:hover .featured-image { box-shadow: 0 1px 9px rgba(0, 0, 0, 0.25); }
+
+.teaser.featured .post-title {
+	font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h2']['line_height']['desktop']; ?>px;
 	margin-bottom: <?php echo $third; ?>px;
 }
 
-.teaser .byline {
-	font-size: 0.9em;
+.teaser.standard .post-title {
+	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['h3']['line_height']['mobile']; ?>px;
 	margin-bottom: <?php echo $third; ?>px;
 }
 
-.teaser p { margin-bottom: <?php echo $third; ?>px; }
+.teaser-content p:not(:last-child), .teaser.standard .byline { margin-bottom: <?php echo $third; ?>px; }
 
 /* LOOP BLOCKS */
 
@@ -163,9 +155,13 @@
 
 @media all and (min-width: 700px) {
 	/* TEASERS */
-	.teaser {
-		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+	.teaser.standard {
+		font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile'] - 3; ?>px;
+	}
+	.teaser:not(.featured) .byline {
+		font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile'] - 3; ?>px;
 	}
 	/* BLOCKS */
 	.loop-blocks .headline {
@@ -209,8 +205,7 @@
 
 @media all and (max-width: 800px) {
 	.post-box { margin-bottom: <?php echo $half; ?>px; }
-	.style-default .post-box .headline-area,
-	.style-default.content-sidebar .the-content,
+	.style-default .the-content,
 	.style-default.content-sidebar .author-box,
 	.style-default.content-sidebar .comments {
 		padding-left: <?php echo $half; ?>px;
@@ -221,7 +216,7 @@
 @media all and (min-width: 800px) {
 	.post-box { margin-bottom: <?php echo $single; ?>px; }
 	.style-default .post-box .headline-area,
-	.style-default.content-sidebar .the-content,
+	.style-default .the-content,
 	.style-default.content-sidebar .author-box,
 	.style-default.content-sidebar .comments,
 	.content .page-header.cover {
@@ -235,7 +230,7 @@
 		flex-wrap: wrap;
 		margin-left: -<?php echo $half; ?>px;
 	}
-	.loop-teasers .post-box {
+	.teaser {
 		flex: 0 1 50%;
 		padding-left: <?php echo $half; ?>px;
 	}

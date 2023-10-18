@@ -96,7 +96,7 @@
 
 		<div class="columns-2 columns-half">
 
-			<div class="col md-sep-small">
+			<div class="col">
 
 				<?php $this->fields->field( 'content', array(
 					'type' => 'checkbox',
@@ -195,23 +195,9 @@
 
 						<?php endif; ?>
 
+						<?php do_action( 'md_post_layout_content_options' ); ?>
+
 					<?php endif; ?>
-
-					<?php $this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'full' => __( 'Use <b>Full-Width Content</b>', 'md' )
-						)
-					) ); ?>
-
-					<?php $this->fields->field( 'content_box_style', array(
-						'type' => 'select',
-						'empty_label' => __( 'Box style (default)', 'md' ),
-						'wrap_classes' => 'md-sep-micro',
-						'options' => array(
-							'minimal' => __( 'Simple style', 'md' )
-						)
-					) ); ?>
 
 					<?php $this->fields->field( 'content_box', array(
 						'type' => 'select',
@@ -219,6 +205,32 @@
 						'wrap_classes' => 'md-sep-small',
 						'options' => array(
 							'sidebar_content' => __( 'Sidebar / Content', 'md' )
+						)
+					) ); ?>
+
+					<?php $this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'label' => __( 'Page Format', 'md' ),
+						'options' => array(
+							'full' => __( 'Use Full-Width Content', 'md' ),
+						)
+					) ); ?>
+
+					<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
+						<?php $this->fields->field( 'content', array(
+							'type' => 'checkbox',
+							'options' => array(
+								'wpautop' => __( 'Disable WP formatting', 'md' )
+							)
+						) ); ?>
+					<?php endif; ?>
+
+					<?php $this->fields->field( 'content_box_style', array(
+						'type' => 'select',
+						'empty_label' => __( 'Box style (default)', 'md' ),
+						'wrap_classes' => 'md-sep-micro',
+						'options' => array(
+							'minimal' => __( 'Simple style', 'md' )
 						)
 					) ); ?>
 

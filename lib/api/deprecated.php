@@ -4,6 +4,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Deprecated 5.6
+function md_button( $fields ) { md_link( $fields ); }
 function md_hook_headline_top() { do_action( 'md_hook_headline_top' ); }
 function md_hook_headline_bottom() { do_action( 'md_hook_headline_bottom' ); }
 function md_hook_content_item_text_top() { do_action( 'md_hook_content_item_text_top' ); }

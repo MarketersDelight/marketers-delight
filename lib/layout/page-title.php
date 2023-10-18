@@ -27,7 +27,7 @@ class md_page_title {
 			add_action( $hook, array( $this, 'html' ), 20 );
 
 		if ( $this->get( 'description' ) )
-			add_action( 'md_hook_after_title', array( $this, 'description' ), 20 );
+			add_action( 'md_hook_after_title', array( $this, 'description' ) );
 
 		$image_hook = 'md_hook_before_headline';
 
@@ -42,6 +42,42 @@ class md_page_title {
 	}
 
 	/**
+	 * Return the Page Title of the current page/type/term.
+	 * Used in md_page_title() in layout-functions.php
+	 *
+	 * @since 5.6
+	 */
+
+	public function page_title() {
+		$title = '';
+
+		if ( is_post_type_archive() ) {
+			$post_type_title = post_type_archive_title( '', false );
+			$title = md_post_type_field( 'archives_title', $post_type_title );
+		}
+		elseif ( is_home() || is_singular( 'post' ) )
+			$title = md_post_type_field( 'archives_title' );
+		elseif ( is_tax() && get_queried_object() ) {
+			$term_title = single_term_title( '', false );
+			$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
+		}
+		elseif ( is_category() )
+			$title = single_cat_title( '', false );
+		elseif ( is_tag() )
+			$title = single_tag_title( '', false );
+		elseif ( is_author() )
+			$title = get_the_author();
+		elseif ( is_year() )
+			$title = get_the_date( 'Y' );
+		elseif ( is_month() )
+			$title = get_the_date( 'F Y' );
+		elseif ( is_day() )
+			$title = get_the_date( 'F j, Y' );
+
+		return $title;
+	}
+
+	/**
 	 * Return key data of Page Title, including Headline, Description,
 	 * and the Featured Image.
 	 *
@@ -52,7 +88,6 @@ class md_page_title {
 		$data = array( 'title' => md_page_title() );
 
 		if ( ! in_the_loop() ) {
-
 			if ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
 				$description = md_post_type_field( 'archives_text' );
 			elseif ( ( is_category() || is_tax() ) && get_queried_object() )
@@ -67,7 +102,6 @@ class md_page_title {
 			$data['image']['position'] = md_featured_image_position();
 			$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );
 			$data['image']['size'] = md_module( array( 'featured_image', 'image_width' ) );
-
 		}
 
 		if ( isset( $key ) )

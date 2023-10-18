@@ -639,6 +639,7 @@ function md_get_popups( $show = null ) {
 					$popups[] = $popup;
 				elseif ( $show == 'options' )
 					$popups[$popup] = $fields['name'];
+
 		return $popups;
 	}
 

@@ -166,10 +166,8 @@ function md_post_classes( $classes ) {
 	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
-		if ( in_array( $position, array( '', 'left', 'right' ) ) )
+		if ( in_array( $position, array( 'left', 'right' ) ) )
 			$classes[] = 'has-inline-image';
-		else
-			$classes[] = 'has-image';
 
 		if ( $position == 'above_headline' )
 			$classes[] = 'has-top-image';
@@ -220,6 +218,7 @@ function md_headline_classes( $args = array() ) {
 
 	if ( ! in_the_loop() && md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
 		$classes[] = 'headline-image image-' . md_featured_image_position();
+
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );
 
@@ -444,9 +443,17 @@ function md_the_content( $content = null) {
  */
 
 function md_content_text() {
+	$classes = array( 'the-content' );
 	$default = md_post_type_field( array( 'loop', 'content' ) );
 	$content = md_module( array( 'loop', 'content' ), $default );
+	$full = md_meta( array( 'layout', 'content', 'full' ) );
 	$read_more = md_read_more_text();
+
+	if ( $full )
+		$classes[] = 'full';
+
+	$classes = apply_filters( 'md_the_content_classes', $classes );
+	$classes = join( ' ', $classes );
 
 	if ( $content !== 'hide' || is_singular() || is_404() )
 		include( md_template( 'text', true ) );
