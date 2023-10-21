@@ -11,24 +11,8 @@ if ( ! function_exists( 'md_templates' ) ) :
 function md_templates() {
 
 	// Breadcrumbs
-
-	$breadcrumbs = md_has_breadcrumbs();
-
-	if ( $breadcrumbs ) {
-		$hook = 'md_hook_content';
-
-		if ( $breadcrumbs == 'before_page_title' )
-			if ( is_singular() ) {
-				$cover = md_cover();
-
-				if ( ! empty( $cover['position'] ) )
-					$hook = 'md_hook_before_headline';
-			}
-			else
-				$hook = 'md_hook_page_title';
-
-		add_action( $hook, 'md_breadcrumbs' );
-	}
+	if ( md_has_breadcrumbs() )
+		add_action( 'md_hook_content', 'md_breadcrumbs' );
 
 	// Page Title
 

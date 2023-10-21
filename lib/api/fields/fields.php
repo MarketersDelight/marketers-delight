@@ -411,7 +411,7 @@ class md_fields {
 		foreach ( $args['options'] as $val => $label ) {
 			$idval = esc_attr( "{$id}_$val" );
 			$image = is_array( $label ) && isset( $label['image'] ) ? esc_url( $label['image'] ) : '';
-			$bg_image = $layout !== 'banner' ? ' style="background-image: url(\'' . esc_url( $label['image'] ) . '\');"' : '';
+			$bg_image = $layout !== 'banner' ? ' style="background-image: url(\'' . esc_url( $image ) . '\');"' : '';
 			$text = is_array( $label ) ? $label['name'] : $label;
 	?>
 		<label for="<?php echo $idval; ?>" class="md-radio <?php echo ( $layout == 'banner' ? 'md-radio-banner' : 'md-radios' ) . ( ! empty( $image ) ? ' md-radio-has-image' : '' ); ?>"<?php echo md_style( $style ); ?>>

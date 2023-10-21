@@ -4,33 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Filter body classes.
- *
- * @since 4.1
- */
-
-function md_body_classes( $classes ) {
-	// Add custom body classes
-	$custom_classes = md_meta( array( 'scripts', 'body_class' ) );
-
-	if ( ! empty( $custom_classes ) ) {
-		$custom_classes = explode( ' ' , $custom_classes );
-		foreach ( $custom_classes as $custom_class )
-			$classes[] = esc_attr( $custom_class );
-	}
-
-	// Remove excess WP classes
-	$classes = array_diff( $classes, array(
-		'single-format-standard',
-		'single-format-' . get_post_format()
-	) );
-
-	return $classes;
-}
-
-add_filter( 'body_class', 'md_body_classes' );
-
-/**
  * Render dynamic HTML for important structural tags.
  *
  * @since 5.6
@@ -270,7 +243,19 @@ function md_content_classes( $classes = array() ) {
  */
 
 function md_has_breadcrumbs() {
-	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ) );
+	if ( md_meta( array( 'layout', 'breadcrumbs', 'remove' ), get_queried_object_id() ) )
+		return;
+
+	if ( ! md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
+		return;
+
+	if ( is_front_page() || ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )
+		return;
+
+	return true;
+
+/*
+	$position = md_setting( array( 'colors', 'breadcrumbs', 'position' ), 'before_title' );
 
 	if ( ( ! is_front_page() && ! is_page() ) || ( is_page() && wp_get_post_parent_id( get_the_ID() ) ) ) {
 		if ( ! empty( $position ) && ! md_module( array( 'layout', 'breadcrumbs', 'remove' ) ) )
@@ -278,6 +263,7 @@ function md_has_breadcrumbs() {
 		elseif ( empty( $position ) && md_module( array( 'layout', 'breadcrumbs', 'add' ) ) )
 			return 'before_content_box';
 	}
+*/
 }
 
 /**

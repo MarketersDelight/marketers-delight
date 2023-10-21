@@ -188,7 +188,7 @@ add_filter( 'post_class', 'md_post_classes' );
  */
 
 function md_has_headline() {
-	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+	if ( get_the_title() && ! md_meta( array( 'layout', 'content', 'headline' ) ) )
 		return true;
 }
 

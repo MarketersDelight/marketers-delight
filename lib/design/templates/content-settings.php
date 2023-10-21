@@ -50,23 +50,6 @@
 
 		<hr class="md-sep-small" />
 
-		<div class="columns-3 columns-single md-sep-small">
-			<div class="col md-sep-small">
-				<?php $this->fields->field( array( 'breadcrumbs', 'position' ), array(
-					'type' => 'select',
-					'label' => __( 'Breadcrumbs', 'md' ),
-					'empty_label' => __( 'Show breadcrumbs...', 'md' ),
-					'options' => array(
-						'before_page_title' => __( 'Before Page Title', 'md' ),
-						'before_content_box' => __( 'Before Content Box', 'md' )
-					),
-					'style' => 'width:100%'
-				) ); ?>
-			</div>
-		</div>
-
-		<hr class="md-sep-small" />
-
 		<div class="columns-2 columns-single md-sep-micro">
 			<div class="col md-sep-small">
 				<?php $this->fields->field( array( 'width', 'content' ), array(

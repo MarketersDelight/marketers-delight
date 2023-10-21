@@ -23,7 +23,6 @@ class md_design {
 		$tablet = md_setting( array( 'typography', 'body', 'font_size', 'tablet' ), round( $font_size * 0.95 ) );
 		$mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
 		$line_height = round( $font_size * $g );
-
 		$h1 = array(
 			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.5 ) ) ),
 			'tablet' => md_setting( array( 'typography', 'h1', 'font_size', 'tablet' ), round( $font_size * ( $g * 1.25 ) ) ),
@@ -182,9 +181,9 @@ class md_design {
 						'mobile' => $h1['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h1['desktop'] * 1.35 ),
-						'tablet' => round( $h1['tablet'] * 1.35 ),
-						'mobile' => round( $h1['mobile'] * 1.35 )
+						'desktop' => round( $h1['desktop'] * 1.3 ),
+						'tablet' => round( $h1['tablet'] * 1.3 ),
+						'mobile' => round( $h1['mobile'] * 1.3 )
 					)
 				),
 				'h2' => array(
@@ -194,9 +193,9 @@ class md_design {
 						'mobile' => $h2['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h2['desktop'] * 1.4 ),
-						'tablet' => round( $h2['tablet'] * 1.4 ),
-						'mobile' => round( $h2['mobile'] * 1.4 )
+						'desktop' => round( $h2['desktop'] * 1.35 ),
+						'tablet' => round( $h2['tablet'] * 1.35 ),
+						'mobile' => round( $h2['mobile'] * 1.35 )
 					)
 				),
 				'h3' => array(
@@ -206,9 +205,9 @@ class md_design {
 						'mobile' => $h3['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h3['desktop'] * 1.45 ),
-						'tablet' => round( $h3['tablet'] * 1.45 ),
-						'mobile' => round( $h3['mobile'] * 1.45 )
+						'desktop' => round( $h3['desktop'] * 1.4 ),
+						'tablet' => round( $h3['tablet'] * 1.4 ),
+						'mobile' => round( $h3['mobile'] * 1.4 )
 					)
 				),
 				'h4' => array(
@@ -242,9 +241,9 @@ class md_design {
 						'mobile' => $h6['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h6['desktop'] * 1.35 ),
-						'tablet' => round( $h6['tablet'] * 1.35 ),
-						'mobile' => round( $h6['mobile'] * 1.35 )
+						'desktop' => round( $h6['desktop'] * 1.4 ),
+						'tablet' => round( $h6['tablet'] * 1.4 ),
+						'mobile' => round( $h6['mobile'] * 1.4 )
 					)
 				),
 				'header' => array(

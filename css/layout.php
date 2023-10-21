@@ -117,8 +117,9 @@
 .page-header.image-center .title-area, .page-header.image-above_headline .title-area { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
+	.full .page-title, .full .breadcrumbs { text-align: center; }
 	.header .page-description,
-	.article.full .page-description {
+	.full .page-description {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;

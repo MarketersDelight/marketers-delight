@@ -28,7 +28,7 @@ class md_featured_image extends md_api {
 		$this->name = __( 'Featured Image', 'md' );
 		$this->sanitize = $this->_data( 'sanitize' );
 
-		add_action( 'md_layout_post_top', array( $this, 'featured_image_position' ) );
+		add_action( 'md_layout_post_after_header', array( $this, 'featured_image_position' ) );
 	}
 
 	/**
@@ -113,7 +113,7 @@ class md_featured_image extends md_api {
 		$screen = get_current_screen();
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 	?>
-		<div class="md-sep-small <?php echo $is_post ? 'col' : 'md-field-row'; ?>">
+		<div class="md-sep-small md-sep-small-top <?php echo ! $is_post ? 'md-field-row' : ''; ?>">
 			<?php $this->fields->field( 'position', array(
 				'type' => 'select',
 				'label' => __( 'Featured Image', 'md' ),

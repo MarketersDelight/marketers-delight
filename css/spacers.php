@@ -125,6 +125,8 @@
 .mr-small { margin-right: <?php echo $small; ?>px; }
 .mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
 .ml-small { margin-left: <?php echo $small; ?>px; }
+.ml-third { margin-left: <?php echo $third; ?>px; }
+.mr-third { margin-left: <?php echo $third; ?>px; }
 
 
 /*--------------------*\

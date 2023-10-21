@@ -250,8 +250,8 @@
 
 @media all and (min-width: 800px) {
 	.text-intro, .intro, .subtitle {
-		font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
-		line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
+		font-size: <?php echo round( $typography['h6']['font_size']['desktop'] ); ?>px;
+		line-height: <?php echo round( $typography['h6']['line_height']['desktop'] ); ?>px;
 	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
 	.loop .featured-image.alignleft, .loop .featured-image.alignright, .content-sidebar .featured-image.alignleft, .content-sidebar .featured-image.alignright { max-width: <?php echo $single * 10; ?>px; }
