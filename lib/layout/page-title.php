@@ -85,16 +85,19 @@ class md_page_title {
 	 */
 
 	public function get( $key = null, $group = null ) {
-		$data = array( 'title' => md_page_title() );
+		$data = array( 'title' => $this->page_title() );
 
 		if ( ! in_the_loop() ) {
-			if ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
-				$description = md_post_type_field( 'archives_text' );
-			elseif ( ( is_category() || is_tax() ) && get_queried_object() )
-				$description = category_description();
+			$description = '';
 
 			if ( has_filter( 'md_page_description' ) )
 				$description = apply_filters( 'md_page_description' );
+			elseif ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
+				$description = md_post_type_field( 'archives_text' );
+			elseif ( ( is_category() || is_tax() ) && get_queried_object() )
+				$description = category_description();
+			elseif ( is_author() )
+				$description = get_the_author_meta( 'description' );
 
 			if ( $description )
 				$data['description'] = $description;

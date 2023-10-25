@@ -36,12 +36,12 @@ class md_design {
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.75 ),
 			'tablet'  => round( $h1['tablet'] * 0.75 ),
-			'mobile'  => round( $h1['mobile'] * 0.7 )
+			'mobile'  => round( $h1['mobile'] * 0.75 )
 		);
 		$h4 = array(
-			'desktop' => round( $h1['desktop'] * 0.6 ),
-			'tablet'  => round( $h1['tablet'] * 0.6 ),
-			'mobile'  => round( $h1['mobile'] * 0.6 )
+			'desktop' => round( $h1['desktop'] * 0.65 ),
+			'tablet'  => round( $h1['tablet'] * 0.7 ),
+			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h5 = array(
 			'desktop' => round( $h1['desktop'] * 0.55 ),

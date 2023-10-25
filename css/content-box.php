@@ -88,10 +88,6 @@
 
 /* QUERIES */
 
-@media all and (min-width: <?php echo $site_width; ?>px) {
-	.loop-default.full.article .headline { text-align: center; }
-}
-
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.content-box .inner {
 		padding-left: <?php echo $half; ?>px;
@@ -139,11 +135,13 @@
 }
 
 @media all and (min-width: 900px) {
-	.loop-default.full.archive .content, .full .post-content {
+	.loop-default.full .loop, .loop-stream.full .loop,
+	.full .breadcrumbs, .full .post-content {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.loop-default.full.archive .content { width: <?php echo $content_width; ?>px; }
+	.loop-default.full .loop, .loop-stream.full .loop,
+	.full .breadcrumbs { width: <?php echo $content_width; ?>px; }
 	.full.loop-default.article .the-content:not(.full),
 	.full.loop-default.article .author-box,
 	.full.loop-default.article .comments {
@@ -153,7 +151,8 @@
 }
 
 @media all and (min-width: 800px) {
-	.full.article .headline-area { text-align: center; }
+	.full .page-header, .loop-default.article.full .page-header { text-align: center; }
+	.full.article .page-header { text-align: left; }
 }
 
 @media all and (max-width: 800px) {

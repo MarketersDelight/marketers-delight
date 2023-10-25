@@ -60,7 +60,7 @@ tabs: function( parent ) {
 				MD.removeClass( parentTabs[i], 'active' );
 			for ( var i = 0; i < parentContent.length; i++ )
 				MD.removeClass( parentContent[i], 'active' );
-			document.getElementById( parent ).className = parent + ' has-' + tabID;
+			document.getElementById( parent ).className = 'has-' + tabID;
 			MD.addClass( document.getElementById( tabID ), 'active' );
 			MD.addClass( document.getElementById( tabID + '_tab' ), 'active' );
 		}
@@ -95,6 +95,7 @@ headerMenu: function() {
 	if ( headerTrigger )
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
+						MD.removeClass( header, 'has-search' );
 					}
 },
 searchToggle: function() {
@@ -114,36 +115,6 @@ searchToggle: function() {
 			MD.removeClass( wrapper, 'has-search' );
 	};
 */
-},
-onScroll: function() {
-	var pos = 0, ticking = false;
-	window.onscroll = function( e ) {
-		pos = window.scrollY;
-		if ( ! ticking ) {
-			window.requestAnimationFrame( function() {
-				var contentBox = document.getElementById( 'content_box' );
-				if ( contentBox == null ) return;
-				var contentBoxOffsetTop = contentBox.offsetTop,
-					content = document.getElementById( 'the_content' );
-				if ( content == null ) return;
-			var toc = document.getElementById( 'table_of_contents' );
-			if ( toc !== null ) {
-				var tocHeight = toc.clientHeight,
-					tocOffsetTop = toc.offsetTop + contentBoxOffsetTop;
-				if ( pos > tocOffsetTop + tocHeight ) {
-					MD.addClass( toc, 'sticky' );
-					toc.style.height = tocHeight + 'px';
-				}
-				else
-					MD.removeClass( toc, 'sticky' );
-				if ( pos > content.clientHeight + contentBoxOffsetTop )
-					MD.removeClass( toc, 'sticky' );
-			}
-					ticking = false;
-			});
-		}
-		ticking = true;
-	}
 },
 focusInputs: function( id ) {
 	var search = document.querySelector( '#' + id + ' .search-input' ),
@@ -421,51 +392,5 @@ share: {
 			}
 		}
 	},
-},
-footnotes: function() {
-	var footnotes = document.getElementsByClassName( 'footnote' );
-	for ( var i = 0; i < footnotes.length; i++ ) {
-		footnotes[i].onclick = function( e ) {
-			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
-		}
-	}
-},
-tableOfContents: function() {
-	var headings = [], pos = 0, ticking = false,
-		contentBox = document.getElementById( 'content_box' ),
-		contentBoxOffsetTop = contentBox.offsetTop,
-		toc = document.getElementById( 'table_of_contents' ),
-		tocHeight = toc.clientHeight,
-		tocOffsetTop = toc.offsetTop + contentBoxOffsetTop,
-		tocTitle = document.getElementById( 'toc_title' ),
-		content = document.getElementById( 'the_content' ),
-		postContent = content.getElementsByTagName( '*' ),
-		tocItems = document.getElementsByClassName( 'toc-item' ),
-		adminBar = MDJS.hasAdminBar ? 32 : 0;
-	MD.onScroll();
-	for ( var i = 0, n = postContent.length; i < n; i++ )
-		if ( /^h\d{1}$/gi.test( postContent[i].nodeName ) )
-			headings.push( postContent[i] );
-	for ( var i = 0, n = tocItems.length; i < n; i++ ) {
-		var tocItem = tocItems[i],
-			id = tocItem.getAttribute( 'data-toc-id' );
-		headings[i].setAttribute( 'id', id );
-		tocItem.onclick = function( e ) {
-			var id = this.getAttribute( 'data-toc-id' ),
-				order = this.getAttribute( 'data-toc-order' );
-			for ( var c = 0; c < tocItems.length; c++ )
-				MD.removeClass( tocItems[c], 'active' );
-			MD.addClass( this, 'active' );
-			MD.removeClass( toc, 'open' );
-			window.scrollTo({
-				'top' : ( headings[order].offsetTop - headings[order].clientHeight - adminBar ) + contentBoxOffsetTop,
-				'behavior' : 'smooth'
-			});
-			window.history.pushState( {}, '', window.location.pathname + '#' + id );
-		}
-	}
-	tocTitle.onclick = function( e ) {
-		MD.toggleClass( toc, 'open' );
-	}
 },
 }

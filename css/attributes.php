@@ -122,7 +122,7 @@ hr {
 }
 
 pre, code {
-	background-color: <?php echo $colors['site']['tertiary']; ?>;
+	background-color: rgba(0, 0, 0, 0.1);
 	color: #3e3e3e;
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
 	font-size: 0.9em;

@@ -11,8 +11,12 @@ if ( ! function_exists( 'md_templates' ) ) :
 function md_templates() {
 
 	// Breadcrumbs
-	if ( md_has_breadcrumbs() )
-		add_action( 'md_hook_content', 'md_breadcrumbs' );
+	if ( md_has_breadcrumbs() ) {
+		if ( ! is_singular() && md_page_title() )
+			add_action( 'md_hook_before_headline', 'md_breadcrumbs' );
+		else
+			add_action( 'md_hook_content', 'md_breadcrumbs' );
+	}
 
 	// Page Title
 

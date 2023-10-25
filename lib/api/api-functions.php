@@ -582,26 +582,32 @@ function md_email_data( $atts = null ) {
 
 	if ( isset( $atts['show'] ) ) {
 		$ids = array();
+
 		if ( isset( $atts['empty_label' ] ) )
 			$ids[''] = __( 'Use default email list...', 'md' );
+
 		// Return list of IDs
 		if ( $atts['show'] == 'ids' ) {
 			foreach ( $email as $service => $lists )
 				foreach ( $lists as $list => $fields )
 					$ids[] = $list;
+
 			if ( isset( $atts['custom_html'] ) )
 				$ids[] = 'custom_html';
+
 			return $ids;
 		}
 		// Return IDs by name
 		elseif ( $atts['show'] == 'names' ) {
 			$label = '';
+
 			foreach ( $email as $service => $lists )
 				foreach ( $lists as $list => $fields ) {
 					if ( isset( $atts['label'] ) )
 						$label = esc_html( ' (' . $service . ')' );
 					$ids[$list] = $fields['name'] . $label;
 				}
+
 			return $ids;
 		}
 		// Return service by ID
@@ -609,6 +615,7 @@ function md_email_data( $atts = null ) {
 			foreach ( $email as $service => $lists )
 				foreach ( $lists as $list => $fields )
 					$ids[$list] = $service;
+
 			return $ids;
 		}
 	}

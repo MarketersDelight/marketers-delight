@@ -80,8 +80,7 @@
 			"$selector, " . $texts[$attribute] . " {\n".
 				"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
 				"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
-			"}\n";
-		echo
+			"}\n".
 			"$selector {\n".
 				( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_font_family};\n" : '' ).
 				( ! empty( $typography[$attribute]['font_style'] ) ? "\tfont-style: italic;\n" : '' ).

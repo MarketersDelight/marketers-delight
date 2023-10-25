@@ -73,7 +73,7 @@
 
 .circle { border-radius: 50%; }
 
-.circle-icon, a.circle-icon {
+.circle-icon, a.circle-icon, .toc-anchor {
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
@@ -85,13 +85,11 @@
 	justify-content: center;
 	line-height: 1;
 	position: relative;
-	text-align: center;
 	width: <?php echo $mid; ?>px;
 }
 
-.circle-icon.micro {
+.circle-icon.micro, .toc-anchor {
 	height: <?php echo $single; ?>px;
-	padding-top: 5px;
 	width: <?php echo $single; ?>px;
 }
 

@@ -273,6 +273,8 @@ function md_has_breadcrumbs() {
  */
 
 function md_breadcrumbs() {
+	if ( in_the_loop() )
+		return;
 	$post_type_title = $category_url = $category_title = '';
 	$post_id = get_the_ID();
 	$post_type = md_get_post_type();

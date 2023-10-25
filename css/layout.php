@@ -102,13 +102,14 @@
 
 .page-title, .page-description, .page-image { position: relative; }
 
-.page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.page-description:not(:last-child), .title-area:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .page-image img { width: 100%; }
 
 .page-header.image-right .page-image { margin-left: <?php echo $single; ?>px; }
 .page-header.image-left .page-image { margin-right: <?php echo $single; ?>px; }
-.page-header.image-above_headline .page-image, .page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
+.page-header.image-above_headline .page-image,
+.page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
 .page-header.image-below_headline .page-image {
 	margin-left: auto;
 	margin-right: auto;
@@ -117,13 +118,15 @@
 .page-header.image-center .title-area, .page-header.image-above_headline .title-area { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
-	.full .page-title, .full .breadcrumbs { text-align: center; }
-	.header .page-description,
-	.full .page-description {
+/*
+	.full .page-description, .full .breadcrumbs { text-align: center; }
+*/
+	.header .page-description, .full .page-description {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
+	.full .page-description:not(:last-child), .full .title-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 }
 
 @media all and (max-width: 800px) {

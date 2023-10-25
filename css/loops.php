@@ -12,7 +12,7 @@
 
 .header .headline-area { text-align: center; }
 
-.content .loop, .content .headline-area { margin-bottom: <?php echo $single; ?>px; }
+.content .loop, .content .headline-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .the-content, .author-box, .comments, .comments-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
@@ -219,6 +219,7 @@
 		padding-left: <?php echo $half; ?>px;
 	}
 	/* CATEGORY POSTS */
+	.loop-category-posts.full .loop { width: 100%; }
 	.loop-category-posts.full .category-posts {
 		align-items: center;
 		display: flex;

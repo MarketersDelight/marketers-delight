@@ -94,7 +94,7 @@ select { max-width: 100%; }
 
 [class*="form-attached"] .form-field { margin-right: 2%; }
 
-[class*="form-attached"] .form-submit { flex: 1 0 auto; }
+[class*="form-attached-"] .form-submit { flex: 1 0 auto; }
 
 .form-multi-fields [class*="form-attached"] .form-field { width: auto; }
 

@@ -61,7 +61,7 @@ tabs: function( parent ) {
 				MD.removeClass( parentTabs[i], 'active' );
 			for ( var i = 0; i < parentContent.length; i++ )
 				MD.removeClass( parentContent[i], 'active' );
-			document.getElementById( parent ).className = parent + ' has-' + tabID;
+			document.getElementById( parent ).className = 'has-' + tabID;
 			MD.addClass( document.getElementById( tabID ), 'active' );
 			MD.addClass( document.getElementById( tabID + '_tab' ), 'active' );
 		}
