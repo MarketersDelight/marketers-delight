@@ -191,7 +191,9 @@
 	.post-box { margin-bottom: <?php echo $half; ?>px; }
 	.style-default .the-content,
 	.style-default.content-sidebar .author-box,
-	.style-default.content-sidebar .comments {
+	.style-default.content-sidebar .comments,
+	.style-default.content-sidebar .loop .share,
+	.style-default .post-box .headline-area {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -203,6 +205,7 @@
 	.style-default .the-content,
 	.style-default.content-sidebar .author-box,
 	.style-default.content-sidebar .comments,
+	.style-default.content-sidebar .loop .share,
 	.content .page-header.cover {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;

@@ -249,8 +249,8 @@
 
 @media all and (min-width: 800px) {
 	.text-intro, .intro, .subtitle {
-		font-size: <?php echo round( $typography['h6']['font_size']['desktop'] ); ?>px;
-		line-height: <?php echo round( $typography['h6']['line_height']['desktop'] ); ?>px;
+		font-size: <?php echo round( $typography['h5']['font_size']['tablet'] ); ?>px;
+		line-height: <?php echo round( $typography['h5']['line_height']['tablet'] ); ?>px;
 	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
 	.loop .featured-image.alignleft, .loop .featured-image.alignright, .content-sidebar .featured-image.alignleft, .content-sidebar .featured-image.alignright { max-width: <?php echo $single * 10; ?>px; }

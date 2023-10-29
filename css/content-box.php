@@ -134,7 +134,7 @@
 	}
 }
 
-@media all and (min-width: 900px) {
+@media all and (min-width: 800px) {
 	.loop-default.full .loop, .loop-stream.full .loop,
 	.full .breadcrumbs, .full .post-content {
 		margin-left: auto;

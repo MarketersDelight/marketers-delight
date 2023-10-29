@@ -63,9 +63,7 @@ class md_design {
 		);
 		$primary_color = md_setting( array( 'colors', 'site', 'primary' ), $colors['primary'] );
 		$secondary_color = md_setting( array( 'colors', 'site', 'secondary' ), $colors['secondary'] );
-		// site title
-		$site_title = md_setting( array( 'typography', 'site_title', 'font_size', 'desktop' ) );
-		$site_title = $site_title ? $site_title : $h4['desktop'];
+		$site_title = md_setting( array( 'typography', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
 		// calculate site widths
 		$cw = md_setting( array( 'colors', 'width', 'content' ) );
 		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
@@ -107,11 +105,6 @@ class md_design {
 					'color' => $colors['subtext'],
 					'site_title' => $colors['text'],
 					'site_tagline' => $colors['subtext'],
-					'logo_width' => array(
-						'desktop' => 70,
-						'tablet' => 50,
-						'mobile' => 50
-					),
 					'menu' => array(
 						'links' => '#444444',
 						'hover' => '#2E2E2E',
@@ -161,6 +154,14 @@ class md_design {
 						'mobile' => round( $tablet * $g )
 					),
 					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
+				),
+				'header' => array(
+					'font_size' => array(
+						'desktop' => $font_size
+					),
+					'line_height' => array(
+						'desktop' => $line_height
+					)
 				),
 				'huge' => array(
 					'font_size' => array(
@@ -229,9 +230,9 @@ class md_design {
 						'mobile' => $h5['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.4 ),
-						'tablet' => round( $h5['tablet'] * 1.4 ),
-						'mobile' => round( $h5['mobile'] * 1.4 )
+						'desktop' => round( $h5['desktop'] * 1.55 ),
+						'tablet' => round( $h5['tablet'] * 1.55 ),
+						'mobile' => round( $h5['mobile'] * 1.55 )
 					)
 				),
 				'h6' => array(
@@ -246,40 +247,20 @@ class md_design {
 						'mobile' => round( $h6['mobile'] * 1.4 )
 					)
 				),
-				'header' => array(
-					'font_size' => array(
-						'desktop' => $font_size,
-						'tablet' => $tablet,
-						'mobile' => $tablet
-					),
-					'line_height' => array(
-						'desktop' => $line_height,
-						'tablet' => round( $tablet * $g ),
-						'mobile' => round( $tablet * $g )
-					)
-				),
 				'site_title' => array(
 					'font_size' => array(
-						'desktop' => $site_title,
-						'tablet'  => round( $site_title * 0.8 ),
-						'mobile'  => round( $site_title * 0.75 )
+						'desktop' => $site_title
 					),
 					'line_height' => array(
-						'desktop' => round( $site_title * 1.3 ),
-						'tablet' => round( $site_title * 1.2 ),
-						'mobile' => round( $site_title * 1.1 )
+						'desktop' => round( $site_title * 1.1 )
 					)
 				),
 				'site_tagline' => array(
 					'font_size' => array(
-						'desktop' => $font_size,
-						'tablet'  => round( $font_size * 0.8 ),
-						'mobile'  => round( $font_size * 0.8 )
+						'desktop' => round( $font_size * 0.9 ),
 					),
 					'line_height' => array(
-						'desktop' => round( $line_height * 0.8 ),
-						'tablet'  => round( $line_height * 0.7 ),
-						'mobile'  => round( $line_height * 0.6 )
+						'desktop' => round( $line_height * 0.7 )
 					)
 				),
 				'sidebar' => array(

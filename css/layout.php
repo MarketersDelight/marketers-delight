@@ -121,10 +121,11 @@
 /*
 	.full .page-description, .full .breadcrumbs { text-align: center; }
 */
-	.header .page-description, .full .page-description {
+	.header .page-description, .full .page-description, .full .subtitle {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
+		text-align: left;
 	}
 	.full .page-description:not(:last-child), .full .title-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 }

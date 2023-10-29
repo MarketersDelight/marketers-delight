@@ -14,7 +14,7 @@
 
 .sidebar a:not(.button) { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar .sidebar-title, .sidebar h2 {
+.sidebar .sidebar-title {
 	color: <?php echo $colors['sidebar']['title']; ?>;
 	<?php if ( ! empty( $typography['sidebar_title']['font_family'] ) ) : ?>
 		font-family: <?php echo $typography['sidebar_title']['font_family']; ?>;
@@ -31,7 +31,7 @@
 		font-size: <?php echo $typography['sidebar']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['sidebar']['line_height']['tablet']; ?>px;
 	}
-	.sidebar-title, .sidebar h2 {
+	.sidebar-title {
 		font-size: <?php echo $typography['sidebar_title']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['sidebar_title']['line_height']['tablet']; ?>px;
 	}
@@ -42,7 +42,7 @@
 		font-size: <?php echo $typography['sidebar']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['sidebar']['line_height']['mobile']; ?>px;
 	}
-	.sidebar-title, .sidebar h2 {
+	.sidebar-title {
 		font-size: <?php echo $typography['sidebar_title']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['sidebar_title']['line_height']['mobile']; ?>px;
 	}
