@@ -9,6 +9,7 @@
 function md_featured_image( $size = null, $args = null ) {
 	$position = isset( $args['position'] ) ? $args['position'] : md_featured_image_position();
 	$image_id = null;
+	$wrap = 'wrap';
 
 	if ( isset( $args['image_id'] ) )
 		$image_id = esc_attr( $args['image_id'] );
@@ -21,10 +22,13 @@ function md_featured_image( $size = null, $args = null ) {
 
 	$classes = array( 'featured-image' );
 
+	if ( md_has_sidebar() )
+		$wrap = 'wrap-small';
+
 	if ( in_array( $position, array( '', 'right' ) ) )
-		$classes[] = 'alignright wrap-small';
+		$classes[] = "alignright $wrap";
 	elseif ( $position == 'left' )
-		$classes[] = 'alignleft wrap-small';
+		$classes[] = "alignleft $wrap";
 	elseif ( $position == 'center' )
 		$classes[] = 'aligncenter';
 

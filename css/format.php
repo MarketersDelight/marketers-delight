@@ -194,7 +194,11 @@
 
 .byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
 
-.byline .badge { font-size: inherit; }
+.byline .badge {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 3; ?>px;
+	padding-bottom: 2px;
+	padding-top: 2px;
+}
 
 .byline-comments-label { display: none; }
 
@@ -379,6 +383,15 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	text-align: center;
 }
 
+.quote-box-author {
+	color: #444;
+	font-size: 14px;
+	line-height: 21px;
+	font-style: italic;
+	margin-left: <?php echo $single; ?>px;
+	padding-right: <?php echo $double; ?>px;
+}
+
 .callout {
 	border: 4px solid rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
@@ -421,14 +434,22 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	width: 100px;
 }
 
+.callout-button, .content-upgrade .button { width: 100%; }
+
 .content-upgrade { border-radius: 5px; }
 
-.callout-button, .content-upgrade .button { width: 100%; }
-.quote-box-author {
-	color: #444;
-	font-size: 14px;
-	line-height: 21px;
-	font-style: italic;
-	margin-left: <?php echo $single; ?>px;
-	padding-right: <?php echo $double; ?>px;
+@media all and (min-width: 900px) {
+	.box-lr {
+		align-items: center;
+		display: flex;
+	}
+	.box-lr .content-upgrade-text { width: 65%; }
+	.box-lr .content-upgrade-action {
+		padding-left: <?php echo $half; ?>px;
+		width: 35%;
+	}
+}
+
+@media all and (max-width: 900px) {
+	.content-upgrade-text { margin-bottom: <?php echo $half; ?>px; }
 }

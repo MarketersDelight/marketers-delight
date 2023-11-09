@@ -145,9 +145,10 @@ class md_page_cover extends md_api {
 	 */
 
 	public function template() {
-		add_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
-
 		$cover = md_cover();
+
+		if ( $cover['position'] !== 'header_cover_full' )
+			add_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
 
 		if ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_before_headline', 'md_inner_html', 5 );

@@ -122,12 +122,6 @@
 
 .button-small .link-icon { font-size: inherit; }
 
-.trigger .trigger-text {
-	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
-	margin-left: <?php echo $small; ?>px;
-}
-
 .hide-label .trigger-text { display: none; }
 
 .header .button .link-icon + .trigger-text { margin-left: <?php echo $small; ?>px; }
@@ -154,8 +148,6 @@
 		display: flex;
 		flex: 1 0 auto;
 	}
-	.header-standard .header-menu, .header-standard .header_aside-menu { justify-content: end; }
-	.header-standard .header-controls { flex: 1 0 auto; }
 	/* SEARCH */
 	.header-search { padding: <?php echo $half; ?>px; }
 	.header.has-search .header-aside, .header.has-search .header-search { flex: 1 0 auto; }
@@ -208,10 +200,10 @@
 	<?php
 	$header_t_fs = $header_t_lh = '';
 
-	if ( ! empty( $typography['header']['font_size']['tablet'] ) ) 
+	if ( ! empty( $typography['header']['font_size']['tablet'] ) )
 		$header_t_fs = $typography['header']['font_size']['tablet'];
 
-	if ( ! empty( $typography['header']['line_height']['tablet'] ) ) 
+	if ( ! empty( $typography['header']['line_height']['tablet'] ) )
 		$header_t_lh = $typography['header']['line_height']['tablet'];
 
 	if ( $header_t_fs || $header_t_lh ) : ?>
@@ -237,7 +229,7 @@
 	.header-controls .trigger { margin-right: <?php echo $third; ?>px; }
 	.header-rtl .header_aside-link.is-button { padding-left: 0; }
 	/* DISPLAYS */
-	.hide-label-mobile .trigger-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }
+	.hide-label-mobile .link-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu, .header-controls .header-link, .header-controls .header_aside-link { display: block; }
 	.header .menu a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
 	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
@@ -255,10 +247,10 @@
 	<?php
 	$site_title_t_fs = $site_title_t_lh = '';
 
-	if ( ! empty( $typography['site_title']['font_size']['tablet'] ) ) 
+	if ( ! empty( $typography['site_title']['font_size']['tablet'] ) )
 		$site_title_t_fs = $typography['site_title']['font_size']['tablet'];
 
-	if ( ! empty( $typography['site_title']['line_height']['tablet'] ) ) 
+	if ( ! empty( $typography['site_title']['line_height']['tablet'] ) )
 		$site_title_t_lh = $typography['site_title']['line_height']['tablet'];
 
 	if ( $site_title_t_fs || $site_title_t_lh ) : ?>
@@ -274,10 +266,10 @@
 	<?php
 	$site_tagline_t_fs = $site_tagline_t_lh = '';
 
-	if ( ! empty( $typography['site_tagline']['font_size']['tablet'] ) ) 
+	if ( ! empty( $typography['site_tagline']['font_size']['tablet'] ) )
 		$site_tagline_t_fs = $typography['site_tagline']['font_size']['tablet'];
 
-	if ( ! empty( $typography['site_tagline']['line_height']['tablet'] ) ) 
+	if ( ! empty( $typography['site_tagline']['line_height']['tablet'] ) )
 		$site_tagline_t_lh = $typography['site_tagline']['line_height']['tablet'];
 
 	if ( $site_tagline_t_fs || $site_tagline_t_lh ) : ?>
@@ -296,10 +288,10 @@
 	<?php
 	$header_m_fs = $header_m_lh = '';
 
-	if ( ! empty( $typography['header']['font_size']['mobile'] ) ) 
+	if ( ! empty( $typography['header']['font_size']['mobile'] ) )
 		$header_m_fs = $typography['header']['font_size']['mobile'];
 
-	if ( ! empty( $typography['header']['line_height']['mobile'] ) ) 
+	if ( ! empty( $typography['header']['line_height']['mobile'] ) )
 		$header_m_lh = $typography['header']['line_height']['mobile'];
 
 	if ( $header_m_fs || $header_m_lh ) : ?>
@@ -315,10 +307,10 @@
 	<?php
 	$site_title_m_fs = $site_title_m_lh = '';
 
-	if ( ! empty( $typography['site_title']['font_size']['mobile'] ) ) 
+	if ( ! empty( $typography['site_title']['font_size']['mobile'] ) )
 		$site_title_m_fs = $typography['site_title']['font_size']['mobile'];
 
-	if ( ! empty( $typography['site_title']['line_height']['mobile'] ) ) 
+	if ( ! empty( $typography['site_title']['line_height']['mobile'] ) )
 		$site_title_m_lh = $typography['site_title']['line_height']['mobile'];
 
 	if ( $site_title_m_fs || $site_title_m_lh ) : ?>
@@ -334,10 +326,10 @@
 	<?php
 	$site_tagline_m_fs = $site_tagline_m_lh = '';
 
-	if ( ! empty( $typography['site_tagline']['font_size']['mobile'] ) ) 
+	if ( ! empty( $typography['site_tagline']['font_size']['mobile'] ) )
 		$site_tagline_m_fs = $typography['site_tagline']['font_size']['mobile'];
 
-	if ( ! empty( $typography['site_tagline']['line_height']['mobile'] ) ) 
+	if ( ! empty( $typography['site_tagline']['line_height']['mobile'] ) )
 		$site_tagline_m_lh = $typography['site_tagline']['line_height']['mobile'];
 
 	if ( $site_tagline_m_fs || $site_tagline_m_lh ) : ?>

@@ -44,7 +44,6 @@
 						<?php $this->fields->field( array( 'logo_width', $device ), array(
 							'type' => 'range',
 							'label' => sprintf( __( 'Logo Width%s', 'md' ), " ($device)" ),
-							'placeholder' => $defaults['colors']['header']['logo_width']["$device"],
 							'max' => 500
 						) ); ?>
 					</div>

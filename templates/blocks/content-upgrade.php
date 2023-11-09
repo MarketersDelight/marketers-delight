@@ -65,7 +65,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ( $title || $text ) : ?>
-		<div class="content-upgrade-text mb-single">
+		<div class="content-upgrade-text">
 			<?php if ( $title ) : ?>
 				<p class="small-title mb-small"><?php echo md_text_field( $title ); ?></p>
 			<?php endif; ?>

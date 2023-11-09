@@ -7,9 +7,9 @@
 .menu, .menu ul { list-style: none; }
 
 .sub-menu {
-	font-size: <?php echo $typography['header']['font_size']['tablet']; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
 	display: none;
-	line-height: <?php echo $typography['header']['line_height']['tablet']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
 	z-index: 50;
 }
 

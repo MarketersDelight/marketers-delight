@@ -73,14 +73,10 @@
 			<div class="md-sep-small">
 				<?php $this->fields->typography( 'header', array(
 					'font_size' => array(
-						'desktop' => $defaults['header']['font_size']['desktop'],
-						'tablet' => $defaults['header']['font_size']['tablet'],
-						'mobile' => $defaults['header']['font_size']['mobile']
+						'desktop' => $defaults['header']['font_size']['desktop']
 					),
 					'line_height' => array(
-						'desktop' => $defaults['header']['line_height']['desktop'],
-						'tablet' => $defaults['header']['line_height']['tablet'],
-						'mobile' => $defaults['header']['line_height']['mobile']
+						'desktop' => $defaults['header']['line_height']['desktop']
 					)
 				) ); ?>
 			</div>
@@ -105,14 +101,10 @@
 						<h4 class="md-title"><?php echo ucwords( str_replace( '_', ' ', $font ) ); ?></h4>
 						<?php $this->fields->typography( $font, array(
 							'font_size' => array(
-								'desktop' => $defaults[$font]['font_size']['desktop'],
-								'tablet' => $defaults[$font]['font_size']['tablet'],
-								'mobile' => $defaults[$font]['font_size']['mobile']
+								'desktop' => $defaults[$font]['font_size']['desktop']
 							),
 							'line_height' => array(
-								'desktop' => $defaults[$font]['line_height']['desktop'],
-								'tablet' => $defaults[$font]['line_height']['tablet'],
-								'mobile' => $defaults[$font]['line_height']['mobile']
+								'desktop' => $defaults[$font]['line_height']['desktop']
 							)
 						) ); ?>
 					</div>

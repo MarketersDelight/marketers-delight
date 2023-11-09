@@ -127,6 +127,8 @@
 .header.has-cover<?php echo $text_class; ?> .site-title,
 .header.has-cover<?php echo $text_class; ?> .site-title:hover,
 .header.has-cover<?php echo $text_class; ?> .tagline,
+.header.has-cover<?php echo $text_class; ?> .header-aside a,
+.header.has-cover<?php echo $text_class; ?> .header-triggers a,
 .header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
 .header.has-cover<?php echo $text_class; ?> .trigger-icon,
 .header.has-cover<?php echo $text_class; ?> .trigger-text,

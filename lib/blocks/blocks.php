@@ -31,6 +31,7 @@ class md_blocks {
 				'localize' => array( 'block_colors', 'popups', 'icons' )
 			)
 		);
+
 		return apply_filters( 'md_filter_blocks', $blocks );
 	}
 
@@ -42,6 +43,7 @@ class md_blocks {
 
 	public function init() {
 		$this->register();
+
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue' ) );
 		add_filter( 'md_css_files', array( $this, 'css' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 1 );
@@ -81,12 +83,18 @@ class md_blocks {
 	 */
 
 	public function css( $files ) {
+		$templates = array();
+
+		if ( locate_template( 'css/fonts.php' ) )
+			$templates['fonts'] = locate_template( 'css/fonts.php' );
+
+		$templates['blocks'] = MD_CSS_DIR . 'block-editor.php';
+
 		$files['block-editor'] = array(
-			'templates' => array(
-				'blocks' => MD_CSS_DIR . 'block-editor.php'
-			),
+			'templates' => $templates,
 			'path' => MD_DIR . 'block-editor.css'
 		);
+
 		return $files;
 	}
 
@@ -97,10 +105,6 @@ class md_blocks {
 	 */
 
 	public function enqueue() {
-
-		md_compile();
-
-
 		// Load Fonts
 		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			md_enqueue_fonts();
@@ -110,7 +114,9 @@ class md_blocks {
 			$dir_url = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS_URL ) : MD_URL;
 			$dir = isset( $fields['dropins'] ) ? trailingslashit( MD_INSTALLED_DROPINS ) : null;
 			$path = isset( $fields['path'] ) ? $fields['path'] : "lib/blocks/{$block}.js";
+
 			wp_enqueue_script( "md-block-{$block}", "{$dir_url}$path", array( 'marketers-delight', 'wp-editor', 'wp-i18n', 'wp-element' ), md_ver( $path, $dir ) );
+
 			if ( isset( $fields['localize'] ) )
 				wp_localize_script( "md-block-{$block}", 'MDBlocks', md_localize_scripts( $fields['localize'] ) );
 		}
@@ -118,6 +124,7 @@ class md_blocks {
 		// Load Blocks CSS
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) ) {
 			$css = 'block-editor.css';
+
 			wp_enqueue_style( 'md-blocks', MD_URL . $css, array( 'wp-edit-blocks' ), md_ver( $css ) );
 		}
 		else
@@ -132,6 +139,7 @@ class md_blocks {
 
 	public function admin_head() {
 		$screen = get_current_screen();
+
 		if ( $screen->base == 'post' && md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
 			echo md_webfonts_loader();
 	}
@@ -144,7 +152,9 @@ class md_blocks {
 
 	public function content_upgrade( $attributes, $content ) {
 		ob_start();
+
 		include( md_template( 'blocks/content-upgrade', true ) );
+
 		return ob_get_clean();
 	}
 
@@ -156,7 +166,9 @@ class md_blocks {
 
 	public function callout( $attributes, $content ) {
 		ob_start();
+
 		include( md_template( 'blocks/callout', true ) );
+
 		return ob_get_clean();
 	}
 

@@ -171,6 +171,7 @@ function md_has_content_box() {
 function md_content_box() {
 	if ( md_has_content_box() ) {
 		$html = md_html( 'content' );
+
 		include( md_template( 'content-box', true ) );
 	}
 }

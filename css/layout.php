@@ -13,11 +13,7 @@
 	line-height: 1;
 }
 
-.trigger .trigger-text {
-	font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['header']['line_height']['mobile']; ?>px;
-	margin-left: <?php echo $small; ?>px;
-}
+.trigger .trigger-text { margin-left: <?php echo $small; ?>px; }
 
 .hide-label .trigger-text { display: none; }
 

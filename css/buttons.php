@@ -88,7 +88,7 @@ button.dark:hover, button.dark a:hover, .button.dark:hover, .button.dark a:hover
 
 .button.button-large {
 	font-size: 1.4em;
-	padding: <?php echo $single; ?>px <?php echo $mid; ?>px;
+	padding: <?php echo $half + $small; ?>px <?php echo $single; ?>px;
 }
 
 .button-text {

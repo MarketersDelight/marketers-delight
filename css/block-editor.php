@@ -61,7 +61,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 .wp-block { max-width: <?php echo $post_width; ?>px; }
 
 @media all and (min-width: 900px) {
-	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: <?php echo $post_width + $double; ?>px; }
+	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: <?php echo $post_width + $triple; ?>px; }
 }
 
 /* MAIN TYPE */
@@ -336,7 +336,7 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	transition: 0.3s;
 }
 
-.md-button.md-button-arrow:after { transform: translateX(4px); }
+.md-button.md-button-arrow:hover:after { transform: translateX(4px); }
 
 
 
@@ -568,3 +568,5 @@ div.editor-styles-wrapper .md-email-footer {
 .md-callout-action .md-button { width: 100%; }
 
 <?php include( md_css( 'design', true ) ); ?>
+
+<?php md_block_editor_css(); ?>

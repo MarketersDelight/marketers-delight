@@ -43,8 +43,15 @@ class md_css {
 
 	protected function css_files() {
 		$dropins = apply_filters( 'md_dropins_css_templates', array() );
+
 		$templates = array(
-			'attributes' => locate_template( 'css/attributes.php' ),
+			'attributes' => locate_template( 'css/attributes.php' )
+		);
+
+		if ( locate_template( 'css/fonts.php' ) )
+			$templates['fonts'] = locate_template( 'css/fonts.php' );
+
+		$templates = array_merge( $templates, array(
 			'forms' => locate_template( 'css/forms.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'format' => locate_template( 'css/format.php' ),
@@ -59,7 +66,8 @@ class md_css {
 			'footer' => locate_template( 'css/footer.php' ),
 			'spacers' => locate_template( 'css/spacers.php' ),
 			'design' => locate_template( 'css/design.php' )
-		);
+		) );
+
 		$templates = array_merge( $templates, $dropins );
 
 		return apply_filters( 'md_style_css_templates', $templates );
@@ -67,7 +75,7 @@ class md_css {
 
 	/**
 	 * Core style.css template files to load in order
-	 * with Dropins filter.
+	 * with Drop-ins filter.
 	 *
 	 * @since 4.9.4
 	 */
@@ -252,7 +260,9 @@ class md_css {
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
 			if ( ! file_exists( $path ) ) continue;
+
 			include( $path );
+
 			echo "\n\n";
 		}
 	}

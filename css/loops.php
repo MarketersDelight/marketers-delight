@@ -144,10 +144,6 @@
 		font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile'] - 3; ?>px;
 	}
-	.teaser:not(.featured) .byline {
-		font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['mobile'] - 3; ?>px;
-	}
 	.teaser.featured .post-title { margin-bottom: <?php echo $third; ?>px; }
 	/* BLOCKS */
 	.loop-blocks .headline {

@@ -379,10 +379,10 @@
 
 	.full.article .aligncenter.wrap-small,
 	.full.article .alignleft.wrap-small,
-	.full.article .alignwide { margin-left: -<?php echo $triple * 2; ?>px; }
+	.full.article .alignwide { margin-left: -<?php echo $triple; ?>px; }
 	.full.article .aligncenter.wrap-small,
 	.full.article .alignright.wrap-small,
-	.full.article .alignwide { margin-right: -<?php echo $triple * 2; ?>px; }
+	.full.article .alignwide { margin-right: -<?php echo $triple; ?>px; }
 }
 
 @media all and (max-width: 800px) {

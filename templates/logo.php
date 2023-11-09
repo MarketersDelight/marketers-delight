@@ -3,7 +3,7 @@
 	<?php if ( md_has_custom_logo() ) : ?>
 
 		<<?php echo md_logo_html(); ?> class="logo">
-			<?php md_the_logo(); ?>
+			<a href="/"><?php md_the_logo(); ?></a>
 		</<?php echo md_logo_html(); ?>>
 
 	<?php endif; ?>

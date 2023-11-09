@@ -34,9 +34,9 @@ class md_design {
 			'mobile'  => round( $h1['mobile'] * 0.85 )
 		);
 		$h3 = array(
-			'desktop' => round( $h1['desktop'] * 0.75 ),
-			'tablet'  => round( $h1['tablet'] * 0.75 ),
-			'mobile'  => round( $h1['mobile'] * 0.75 )
+			'desktop' => round( $h1['desktop'] * 0.7 ),
+			'tablet'  => round( $h1['tablet'] * 0.7 ),
+			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.65 ),

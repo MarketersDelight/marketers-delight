@@ -186,10 +186,6 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
-
-		md_compile();
-
-
 		// Load styles
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
 			wp_enqueue_style( 'marketers-delight', MD_URL . 'style.css', array(), md_ver( 'style.css' ) );
