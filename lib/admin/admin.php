@@ -13,6 +13,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class md_admin {
 
 	public $requests;
+	public $sanitize;
+	public $files;
 
 	/**
 	 * Run class methods on instantiation.

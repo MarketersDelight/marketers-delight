@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_fields {
 
+	public $_id;
+	public $_clean_id;
+	public $_prefix;
+	public $_option;
+
 	/**
 	 * Set properties of instance.
 	 *

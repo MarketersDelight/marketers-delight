@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_js {
 
+	public $files;
+
 	/**
 	 * Set properties.
 	 *

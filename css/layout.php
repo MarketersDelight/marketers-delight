@@ -123,7 +123,7 @@
 		max-width: <?php echo $post_width; ?>px;
 		text-align: left;
 	}
-	.full .page-description:not(:last-child), .full .title-area:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.full .page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 }
 
 @media all and (max-width: 800px) {

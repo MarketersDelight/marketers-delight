@@ -17,6 +17,8 @@ class md_api {
 	public $_clean_id;
 	public $_option = 'marketers_delight';
 	public $_prefix;
+	public $fields;
+	public $name;
 
 	/**
 	 * Fires class extension actions, filters, and set core properties.
@@ -145,6 +147,7 @@ class md_api {
 					$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
 					$callback = ! empty( $register['term']['callback'] ) ? $register['term']['callback'] : array( $this, 'term' );
 					$position = ! empty( $register['term']['position'] ) ? $register['term']['position'] : 100;
+
 					add_action( "md_{$taxonomy}_{$term}", $callback, $position );
 				}
 			}
@@ -318,6 +321,7 @@ class md_api {
 
 	public function _admin_fields( $settings ) {
 		$settings[$this->_clean_id] = $this->fields();
+
 		return $settings;
 	}
 

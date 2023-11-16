@@ -51,8 +51,6 @@ class md_page_cover extends md_api {
 	 */
 
 	public function actions() {
-		$this->sanitize = $this->_data( 'sanitize' );
-
 		add_action( 'wp_head', array( $this, 'inline_css' ) );
 	}
 
@@ -63,6 +61,8 @@ class md_page_cover extends md_api {
 	 */
 
 	public function fields() {
+		$sanitize = $this->_data( 'sanitize' );
+
 		return array(
 			'cover_image' => array(
 				'type' => 'upload',
@@ -70,7 +70,7 @@ class md_page_cover extends md_api {
 			),
 			'cover_position' => array(
 				'type' => 'select',
-				'options' => array_keys( $this->sanitize->values['covers'] )
+				'options' => array_keys( $sanitize->values['covers'] )
 			),
 			'bg_color' => array( 'type' => 'color' ),
 			'text_color' => array(
@@ -117,7 +117,7 @@ class md_page_cover extends md_api {
 		$cover_settings = array();
 		$screen = get_current_screen();
 		$values = $this->_data( 'values' );
-		$sanitize = $this->sanitize;
+		$sanitize = $this->_data( 'sanitize' );
 
 		if ( ! in_array( $screen->base, array( 'post', 'post-new' ) ) )
 			if ( $screen->base == 'term' )

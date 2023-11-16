@@ -10,6 +10,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_css {
 
+	public $files;
+
 	/**
 	 * Set properties.
 	 *

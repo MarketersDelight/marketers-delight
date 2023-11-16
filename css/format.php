@@ -27,8 +27,9 @@
 	text-decoration: none;
 }
 
-.format ul, .format ol, .format dl, .format p, .format hr, .format blockquote, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
+.format ul, .format ol, .format dl, .format p, .format hr, .format pre, .format table, .format .wp-caption, .format fieldset, .format .gfield, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
 
+.format blockquote,
 .format input[type="text"], .format textarea,
 .format input[type="url"], .format input[type="email"],
 .format input[type="password"] { margin-bottom: <?php echo $half; ?>px; }
@@ -293,83 +294,18 @@
 
 /* LIST CHECK */
 
+ul.list-check { margin-left: <?php echo $single + $small; ?>px; }
+
 ul.list-check li:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
 ul.list-check li:before {
-	color: green;
+	background-color: rgba(0, 0, 0, 0.08);
+	border-radius: 50%;
+	color: #22a340;
+	padding: <?php echo $small; ?>px;
 	position: absolute;
-		left: -<?php echo $single; ?>px;
-		top: 3px;
-}
-
-.list-check.style-bullets {
-	border: 2px solid #21a340;
-	border-radius: 2px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	margin-left: 0;
-}
-
-.list-check.style-bullets li { padding: 7px 7px 7px 48px; }
-
-.list-check.style-bullets li:not(:last-child) {
-	border-bottom: 2px solid #21a340;
-	margin-bottom: 0;
-}
-
-.list-check.style-bullets li:before {
-	background-color: #21a340;
-	border-radius: 5px;
-	color: #fff;
-	left: 7px;
-	top: auto;
-	padding: 6px;
-}
-
-/* QUOTE BOX / BLOCKQUOTE */
-
-blockquote, .quote-box {
-	background-color: #fff;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-left-width: 7px;
-	border-radius: 3px;
-	color: #444;
-	display: block;
-	font-style: italic;
-	padding: <?php echo $single; ?>px;
-	position: relative;
-}
-
-blockquote:before, .quote-box:before {
-	content: "\201C";
-	color: #ddd;
-	font-family: Georgia, serif;
-	font-size: 69px;
-	font-weight: bold;
-	position: absolute;
-		left: 6px;
-		top: 28px;
-}
-
-blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }
-
-.quote-box, .quote-box img.quote-box-image { margin-bottom: <?php echo $half; ?>px; }
-
-.quote-box {
-	border-top: 1px solid #f0f0f0;
-	border-right: 1px solid #eee;
-	filter: drop-shadow(3px 4px 4px rgba(0, 0, 0, 0.07));
-}
-
-.quote-box:after {
-	border-width: <?php echo $single; ?>px <?php echo $single; ?>px 0 0;
-	border-style: solid;
-	border-color: #fff transparent;
-	content: '';
-	display: block;
-	position: absolute;
-		bottom: -<?php echo $single; ?>px;
-		right: <?php echo $single; ?>px;
-	width: 0;
+		left: -<?php echo $single + $small; ?>px;
+		top: 0;
 }
 
 /* WP BLOCKS */

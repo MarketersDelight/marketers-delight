@@ -10,15 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 class md_sanitize {
 
-	/**
-	 * Assign properties.
-	 *
-	 * @since 5.0
-	 */
-
-	public function __construct() {
-		$this->values = $this->values();
-	}
+	public $values;
 
 	/**
 	 * Add needed font weights for design controls.
@@ -119,6 +111,16 @@ class md_sanitize {
 		's' => array(),
 		'code' => array()
 	);
+
+	/**
+	 * Assign properties.
+	 *
+	 * @since 5.0
+	 */
+
+	public function __construct() {
+		$this->values = $this->values();
+	}
 
 	/**
 	 * Settings that are often reused with the same values.

@@ -78,17 +78,18 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
 i, em, .italic { font-style: italic; }
 
-.small {
+.f-small {
 	font-size: 0.85em;
 	line-height: 1.5em;
 }
 
-.font-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
+.f-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
 
 <?php
 	foreach ( md_editor_colors() as $color_group => $color_fields ) {
 		$color_slug = $color_fields['slug'];
 		$color_val = $color_fields['color'];
+
 		echo
 			".has-$color_slug-background-color { background-color: $color_val; }\n".
 			( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
@@ -144,7 +145,6 @@ abbr, acronym {
 	text-decoration: none;
 }
 
-
 /* BODY */
 
 @media all and (max-width: 900px) {
@@ -162,3 +162,53 @@ abbr, acronym {
 	}
 }
 <?php endif; ?>
+
+/* BLOCKQUOTE */
+
+blockquote {
+	background-color: #fff;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-left-width: 7px;
+	border-radius: 5px;
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	display: block;
+	font-style: italic;
+	padding: <?php echo $single; ?>px;
+	position: relative;
+}
+
+blockquote:before, blockquote:after {
+	color: #ddd;
+	font-family: Georgia, serif;
+	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $bold; ?>;
+	position: absolute;
+}
+
+blockquote:before {
+	content: open-quote;
+	left: <?php echo $small; ?>px;
+}
+
+blockquote:after {
+	bottom: <?php echo $small; ?>px;
+	content: close-quote;
+	right: <?php echo $half; ?>px;
+}
+
+blockquote + p {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-style: italic;
+	text-align: right;
+}
+
+blockquote.small {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+
+blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
+
+blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }

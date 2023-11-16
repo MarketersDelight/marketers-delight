@@ -8,6 +8,10 @@
 
 class md_colors extends md_api {
 
+	public $data;
+	public $sanitize;
+	public $colors;
+
 	/**
 	 * Include admin files.
 	 *

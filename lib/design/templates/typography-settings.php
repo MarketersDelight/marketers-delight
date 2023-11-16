@@ -85,7 +85,7 @@
 
 	</div>
 
-	<?php if ( empty( $this->values['header']['display']['site_title'] ) || empty( $this->values['header']['display']['site_tagline'] ) ) : ?>
+	<?php if ( empty( $values['header']['display']['site_title'] ) || empty( $values['header']['display']['site_tagline'] ) ) : ?>
 
 	<div class="md-widget md-toggle md-sep-small">
 
@@ -93,7 +93,7 @@
 
 		<div class="md-widget-item">
 			<?php foreach ( array( 'site_title', 'site_tagline' ) as $font ) : ?>
-				<?php if ( empty( $this->values['header']['display'][$font] ) ) : ?>
+				<?php if ( empty( $values['header']['display'][$font] ) ) : ?>
 					<?php if ( $font == 'site_tagline' ) : ?>
 						<hr class="md-sep" />
 					<?php endif; ?>

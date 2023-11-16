@@ -26,7 +26,6 @@ class md_featured_image extends md_api {
 
 	public function actions() {
 		$this->name = __( 'Featured Image', 'md' );
-		$this->sanitize = $this->_data( 'sanitize' );
 
 		add_action( 'md_layout_post_after_header', array( $this, 'featured_image_position' ) );
 	}
@@ -58,6 +57,8 @@ class md_featured_image extends md_api {
 	 */
 
 	public function fields() {
+		$sanitize = $this->_data( 'sanitize' );
+
 		return array(
 			'image' => array(
 				'type' => 'upload',
@@ -70,7 +71,7 @@ class md_featured_image extends md_api {
 			),
 			'position' => array(
 				'type' => 'select',
-				'options' => array_keys( $this->sanitize->values['featured_image'] )
+				'options' => array_keys( $sanitize->values['featured_image'] )
 			)
 		);
 	}
@@ -112,13 +113,14 @@ class md_featured_image extends md_api {
 	public function featured_image_position() {
 		$screen = get_current_screen();
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+		$sanitize = $this->_data( 'sanitize' );
 	?>
 		<div class="md-sep-small md-sep-small-top <?php echo ! $is_post ? 'md-field-row' : ''; ?>">
 			<?php $this->fields->field( 'position', array(
 				'type' => 'select',
 				'label' => __( 'Featured Image', 'md' ),
 				'empty_label' => __( 'Use default position', 'md' ),
-				'options' => $this->sanitize->values['featured_image']
+				'options' => $sanitize->values['featured_image']
 			) ); ?>
 		</div>
 	<?php }

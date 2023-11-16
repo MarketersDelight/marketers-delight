@@ -40,6 +40,8 @@
 
 .header-rtl .header-controls, .header-rtl .header-logo { order: 2; }
 
+.header-link, .header_aside-link { padding: <?php echo $half; ?>px; }
+
 /* LOGO */
 
 .header-logo {
@@ -101,7 +103,6 @@
 .header-triggers {
 	flex: 1;
 	justify-content: end;
-	padding: <?php echo $half; ?>px;
 }
 
 .header-rtl .header-triggers {
@@ -148,14 +149,16 @@
 		display: flex;
 		flex: 1 0 auto;
 	}
+	.header-standard .header-menu { justify-content: end; }
 	/* SEARCH */
 	.header-search { padding: <?php echo $half; ?>px; }
 	.header.has-search .header-aside, .header.has-search .header-search { flex: 1 0 auto; }
 	.header.has-search .header-menu, .header.has-search .header_aside-menu,
 	.header.has-search .header-link, .header.has-search .header_aside-link { display: none; }
-	.header .search-form .form-submit { min-width: 60px; width: auto; }
-	/* LINK */
-	.header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
+	.header .search-form .form-submit {
+		min-width: 60px;
+		width: auto;
+	}
 	/* HEADER FLYER */
 	.header-flyer .header-wrap { justify-content: center; }
 	.header-flyer .header-controls {
@@ -225,9 +228,7 @@
 	<?php if ( md_setting( array( 'header', 'display', 'hide_tagline_mobile' ) ) ) : ?>
 	.tagline { display: none; }
 	<?php endif; ?>
-	.header-controls .trigger, 	.header-link, .header_aside-link { padding-left: <?php echo $half; ?>px; }
-	.header-controls .trigger { margin-right: <?php echo $third; ?>px; }
-	.header-rtl .header_aside-link.is-button { padding-left: 0; }
+	.header-controls .trigger { margin-left: <?php echo $half; ?>px; }
 	/* DISPLAYS */
 	.hide-label-mobile .link-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu, .header-controls .header-link, .header-controls .header_aside-link { display: block; }
@@ -345,6 +346,10 @@
 	<?php if ( ! empty( $colors['logo_width']['mobile'] ) ) : ?>
 		.logo { width: <?php echo $colors['logo_width']['mobile']; ?>px; }
 	<?php endif; ?>
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.header-logo { padding-left: <?php echo $half; ?>px; }
 }
 
 <?php if ( $header_full_width ) : ?>
