@@ -1,6 +1,6 @@
 <div class="<?php echo esc_attr( $classes ); ?>">
 
-	<div class="columns-4 columns-half">
+	<div class="columns-3 columns-half">
 
 		<div class="col col1 md-sep-micro">
 			<?php $this->field( $fields['link_type']['field'], array(

@@ -28,6 +28,7 @@ class md_featured_image extends md_api {
 		$this->name = __( 'Featured Image', 'md' );
 
 		add_action( 'md_layout_post_after_header', array( $this, 'featured_image_position' ) );
+		add_action( 'md_hook_page_title_fields', array( $this, 'featured_image_fields' ) );
 	}
 
 	/**
@@ -45,7 +46,7 @@ class md_featured_image extends md_api {
 				'name' => $this->name,
 				'fields' => $this->fields(),
 				'position' => 10,
-				'callback' => array( $this, 'admin_fields' )
+				'callback' => array( $this, 'featured_image_fields' )
 			)
 		);
 	}
@@ -77,21 +78,6 @@ class md_featured_image extends md_api {
 	}
 
 	/**
-	 * Featured Image admin fields for use on various admin screens.
-	 *
-	 * @since 5.6
-	 */
-
-	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
-			<div class="md-widget-item md-featured-image wrap">
-				<?php $this->featured_image_fields(); ?>
-			</div>
-		</div>
-	<?php }
-
-	/**
 	 * Grouped Featured Image option fields.
 	 *
 	 * @since 5.6
@@ -101,7 +87,10 @@ class md_featured_image extends md_api {
 		$screen = get_current_screen();
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 
-		include( 'admin-fields.php' );
+		if ( $is_post )
+			$this->featured_image_position();
+		else
+			include( 'admin-fields.php' );
 	}
 
 	/**
@@ -111,14 +100,21 @@ class md_featured_image extends md_api {
 	 */
 
 	public function featured_image_position() {
+		$classes = '';
+		$label = __( 'Position', 'md' );
 		$screen = get_current_screen();
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$sanitize = $this->_data( 'sanitize' );
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+
+		if ( $is_post ) {
+			$label = __( 'Featured image', 'md' );
+			$classes = ' md-sep-small-top';
+		}
 	?>
-		<div class="md-sep-small md-sep-small-top <?php echo ! $is_post ? 'md-field-row' : ''; ?>">
+		<div class="md-sep-small<?php echo $classes; ?>">
 			<?php $this->fields->field( 'position', array(
 				'type' => 'select',
-				'label' => __( 'Featured Image', 'md' ),
+				'label' => $label,
 				'empty_label' => __( 'Use default position', 'md' ),
 				'options' => $sanitize->values['featured_image']
 			) ); ?>

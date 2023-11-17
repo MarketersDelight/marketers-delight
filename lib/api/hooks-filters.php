@@ -142,10 +142,16 @@ function md_page_settings_fields() {
 				'options' => array_keys( $sanitize->values['featured_image'] )
 			)
 		),
+		'page_cta' => array(
+			'type' => 'select',
+			'options' => array( 'buttons' )
+		)
+/*
 		'page_display' => array(
 			'type' => 'checkbox',
 			'options' => array( 'stats', 'category', 'show_on_posts' )
 		)
+*/
 	) );
 }
 

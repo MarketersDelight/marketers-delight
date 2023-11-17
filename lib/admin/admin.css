@@ -426,7 +426,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	box-shadow: none;
 }
 
-.md .md-widget-secondary .md-widget-title { padding: 10px; }
+.md .md-widget-secondary .md-widget-title {
+	background-color: #f9f9f9;
+	padding: 10px;
+}
 
 .md-widget.md-toggle:not(:last-child) { margin-bottom: 15px; }
 
@@ -571,7 +574,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-license.has-updates .badge { background-color: #ff6f06; }
 .md-widget.invalid, .md-license.invalid {
 	border-left-color: #ae2525;
-	border-right-width: 5px;
+	border-left-width: 5px;
 }
 .md-license.invalid .badge { background-color: #ae2525; }
 .md-alert-error, .md-alert-manual-refresh { display: none; }
@@ -650,6 +653,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 @media all and (min-width: 700px) {
 	.md .field-no-label { margin-top: 30px; }
 	.md-field-row-indent { padding-left: 25%; }
+	.md-row-space { margin-left: 25%; }
+	.md-row-space-small { margin-left: 15px; }
 	.md-field-row > .md-label-wrap {
 		float: left;
 		width: 25%;
@@ -1133,9 +1138,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	flex-basis: 20%;
 }
 
-.md-upload-thumbnail .md-upload {
-	max-width: 100%;
-}
+.md-upload-thumbnail .md-upload { max-width: 100%; }
 
 .md-upload-thumbnail .md-upload-controls { display: none; }
 
@@ -1324,13 +1327,7 @@ a.md-circle-badge {
 
 /* FEATURED IMAGE */
 
-.md-featured-image { position: relative; }
-
-.md-featured-image .md-devices {
-	position: absolute;
-		top: 0;
-		right: 0;
-}
+.md-devices { margin-top: 30px; }
 
 
 /*------------------------------*\

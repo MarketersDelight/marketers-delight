@@ -1,28 +1,38 @@
-<?php if ( ! $is_post ) : ?>
-	<?php $this->fields->devices(); ?>
-<?php endif; ?>
+<div class="md-featured-image md-field-row md-sep-small">
 
-<?php $this->featured_image_position(); ?>
+	<label class="md-label-wrap"><label class="md-label"><?php echo __( 'Featured Image', 'md' ); ?></label></label>
 
-<?php if ( ! $is_post ) : ?>
+	<div class="md-field">
+		<div class="columns-2 columns-25-75 columns-single">
 
-	<div class="md-field-row md-sep-small">
-		<?php $this->fields->field( 'image', array(
-			'type' => 'upload',
-			'upload_type' => 'media',
-			'label' => __( 'Upload Image', 'md' )
-		) ); ?>
+			<div class="col col1 md-sep-small">
+				<?php $this->fields->field( 'image', array(
+					'type' => 'upload',
+					'upload_type' => 'media',
+					'wrap_classes' => 'md-upload-thumbnail'
+				) ); ?>
+			</div>
+
+			<div class="col col2">
+
+				<?php $this->fields->devices(); ?>
+
+				<?php $this->featured_image_position(); ?>
+
+				<?php foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) : ?>
+					<div class="md-<?php echo esc_attr( $device ); ?>">
+						<?php $this->fields->field( array( 'image_width', $device ), array(
+							'type' => 'range',
+							'label' => sprintf( __( 'Width (%s)', 'md' ), $device ),
+							'unit' => 'px',
+							'max' => '550'
+						) ); ?>
+					</div>
+				<?php endforeach; ?>
+
+			</div>
+
+		</div>
 	</div>
 
-	<?php foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) : ?>
-		<div class="md-<?php echo esc_attr( $device ); ?> md-field-row">
-			<?php $this->fields->field( array( 'image_width', $device ), array(
-				'type' => 'range',
-				'label' => sprintf( __( 'Image Width (%s)', 'md' ), $device ),
-				'unit' => 'px',
-				'max' => '550'
-			) ); ?>
-		</div>
-	<?php endforeach; ?>
-
-<?php endif; ?>
+</div>

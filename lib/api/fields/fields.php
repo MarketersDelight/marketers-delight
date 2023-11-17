@@ -715,7 +715,7 @@ class md_fields {
 	 * @since 5.6
 	 */
 
-	public function link_fields_data( $args ) {
+	public function link_fields_data( $args = array() ) {
 		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
 		$group = isset( $args['group'] ) ? $args['group'] : array();
 
@@ -799,9 +799,9 @@ class md_fields {
 
 		if ( isset( $args['save'] ) )
 			foreach ( $fields as $key => $options ) {
-				$field_key = $fields[$key]['field'];
+//				$field_val = $fields[$key]['field'];
 				unset( $fields[$key] );
-				$fields[$field_key] = $options['save'];
+				$fields[$key] = $options['save'];
 			}
 
 		return $fields;
@@ -813,7 +813,7 @@ class md_fields {
 	 * @since 5.6
 	 */
 
-	public function link_fields( $args ) {
+	public function link_fields( $args = array() ) {
 		$fields = $this->link_fields_data( $args );
 		$link_type = $this->module( $fields['link_type']['field'], 'url' );
 		$link_style = $this->module( $fields['link_style']['field'], 'link' );
