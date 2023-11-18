@@ -180,7 +180,11 @@ class md_api {
 
 			if ( ! empty( $page_types[$page] ) ) {
 				$page = md_clean_id( $page );
-				$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
+
+				if ( $page !== $this->_clean_id )
+					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
+				else
+					$prefix = "{$this->_option}_{$this->_clean_id}";
 			}
 		}
 

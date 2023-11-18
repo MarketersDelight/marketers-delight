@@ -105,7 +105,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-sep-large { margin-bottom: 60px; }
 .md .md-sep:not(:last-child), .postbox table.form-table.md-sep { margin-bottom: 30px; }
-.md .md-sep-small:not(:last-child) { margin-bottom: 20px; }
+.md .md-sep-small:not(:last-child), .md-page-cta { margin-bottom: 20px; }
 .md .md-spacer { margin-bottom: 15px; }
 .md .md-spacer-small, .md-sep-micro { margin-bottom: 10px; }
 .mb-large {

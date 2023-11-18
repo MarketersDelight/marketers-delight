@@ -47,6 +47,9 @@ class md_post extends md_api {
 	 */
 
 	public function admin_page() {
+		$cta_type = $this->fields->get_field( 'page_cta' );
+		$prefix = $this->_prefix();
+
 		include( 'blog-settings.php' );
 	}
 

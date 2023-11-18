@@ -23,38 +23,47 @@
 
 	<?php do_action( 'md_hook_page_title_fields' ); ?>
 
-	<div class="md-field-row md-sep-small">
-		<?php $this->fields->field( 'page_cta', array(
-			'type' => 'select',
-			'label' => __( 'Call to Action', 'md' ),
-			'description' => __( 'Show a call to action at the top of this page.', 'md' ),
-			'empty_label' => __( 'Select CTA type...', 'md' ),
-			'options' => array(
-				'buttons' => __( 'Links', 'md' )
-			)
-		) ); ?>
-	</div>
+	<div class="md-page-cta md-conditional">
 
-	<div class="md-widget md-widget-secondary md-toggle md-row-space">
-		<div class="md-widget-title">
-			<?php echo __( 'Primary Link', 'md' ); ?>
-		</div>
-		<div class="md-widget-item">
-			<?php $this->fields->link_fields( array(
-				'group' => array( 'link_primary' )
+		<div class="md-field-row md-sep-small">
+			<?php $this->fields->field( 'page_cta', array(
+				'type' => 'select',
+				'label' => __( 'Call to Action', 'md' ),
+				'description' => __( 'Show a call to action at the top of this page.', 'md' ),
+				'empty_label' => __( 'Select CTA type...', 'md' ),
+				'classes' => 'md-conditional-option',
+				'options' => array(
+					'links' => __( 'Links', 'md' )
+				)
 			) ); ?>
 		</div>
-	</div>
 
-	<div class="md-widget md-widget-secondary md-toggle md-row-space">
-		<div class="md-widget-title">
-			<?php echo __( 'Secondary Link', 'md' ); ?>
+		<div id="<?php echo $prefix; ?>_page_cta_links" class="md-conditional-item md-conditional-links" style="display: <?php echo $cta_type == 'links' ? 'block' : 'none'; ?>">
+
+			<div class="md-widget md-widget-secondary md-toggle md-row-space">
+				<div class="md-widget-title">
+					<?php echo __( 'Primary Link', 'md' ); ?>
+				</div>
+				<div class="md-widget-item">
+					<?php $this->fields->link_fields( array(
+						'group' => array( 'link_primary' )
+					) ); ?>
+				</div>
+			</div>
+
+			<div class="md-widget md-widget-secondary md-toggle md-row-space">
+				<div class="md-widget-title">
+					<?php echo __( 'Secondary Link', 'md' ); ?>
+				</div>
+				<div class="md-widget-item">
+					<?php $this->fields->link_fields( array(
+						'group' => array( 'link_secondary' )
+					) ); ?>
+				</div>
+			</div>
+
 		</div>
-		<div class="md-widget-item">
-			<?php $this->fields->link_fields( array(
-				'group' => array( 'link_secondary' )
-			) ); ?>
-		</div>
+
 	</div>
 
 	<?php do_action( "{$this->_id}_admin_fields" ); ?>

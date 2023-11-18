@@ -144,14 +144,8 @@ function md_page_settings_fields() {
 		),
 		'page_cta' => array(
 			'type' => 'select',
-			'options' => array( 'buttons' )
+			'options' => array( 'links' )
 		)
-/*
-		'page_display' => array(
-			'type' => 'checkbox',
-			'options' => array( 'stats', 'category', 'show_on_posts' )
-		)
-*/
 	) );
 }
 
