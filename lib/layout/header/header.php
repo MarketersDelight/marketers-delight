@@ -26,7 +26,7 @@ class md_header extends md_api {
 	public function register() {
 		$menus = $this->_data( 'menus' );
 		$link_fields = $this->fields->link_fields_data( array( 'save' => true ) );
-		$builder_fields = array(
+		$builder_fields = array_merge( array(
 			'type' => array( 'type' => 'text' ),
 			'area' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
@@ -40,9 +40,7 @@ class md_header extends md_api {
 				'type' => 'checkbox',
 				'options' => array( 'search' )
 			)
-		);
-
-		$builder_fields = array_merge( $builder_fields, $link_fields );
+		), $link_fields );
 
 		return array(
 			'admin_page' => array(
@@ -64,8 +62,6 @@ class md_header extends md_api {
 						'type' => 'builder',
 						'fields' => $builder_fields
 					),
-					'site_title' => array( 'type' => 'text' ),
-					'site_tagline' => array( 'type' => 'text' ),
 					'layout' => array(
 						'type' => 'radio',
 						'options' => array( 'standard', 'rtl', 'flyer' )
@@ -159,6 +155,7 @@ class md_header extends md_api {
 	public function admin_page() {
 		$values = $this->_data( 'values' );
 		$header = $values['header'];
+		$defaults = $this->_data( 'defaults' );
 		$header_layout = ! empty( $header['layout'] ) ? $header['layout'] : '';
 		$builder_fields = $this->register_builder();
 
@@ -191,6 +188,7 @@ class md_header extends md_api {
 
 	public function menu_fields( $group ) {
 		$data = $this->_data();
+
 		include( 'admin/menu-fields.php' );
 	}
 

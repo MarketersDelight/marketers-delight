@@ -6,8 +6,6 @@
 
 	<hr class="md-sep" />
 
-	<?php include( 'logo-settings.php' ); ?>
-
 	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Branding', 'md' ); ?></h3>
 		<div class="md-widget-item">

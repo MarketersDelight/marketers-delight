@@ -55,8 +55,6 @@ class md_colors extends md_api {
 				'bg_color' => array( 'type' => 'color' ),
 				'border_color' => array( 'type' => 'color' ),
 				'color' => array( 'type' => 'color' ),
-				'site_title' => array( 'type' => 'color' ),
-				'site_tagline' => array( 'type' => 'color' ),
 				'menu' => array(
 					'links' => array( 'type' => 'color' ),
 					'hover' => array( 'type' => 'color' ),
@@ -111,28 +109,6 @@ class md_colors extends md_api {
 
 	public function register() {
 		$fields = $this->colors;
-		$logo = array(
-			'logo' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
-			),
-			'logo_alt' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
-			),
-			'logo_width' => array(
-				'desktop' => array( 'type' => 'range' ),
-				'tablet' => array( 'type' => 'range' ),
-				'mobile' => array( 'type' => 'range' )
-			),
-			'logo_html' => array( 'type' => 'code' ),
-			'logo_html_display' => array(
-				'type' => 'checkbox',
-				'options' => array( 'enable' )
-			)
-		);
-
-		$fields = array_merge( $fields, $logo );
 
 		$fields['featured_image']['position'] = array(
 			'type' => 'select',
@@ -215,8 +191,6 @@ class md_colors extends md_api {
 				'bg_color' => __( 'Background', 'md' ),
 				'border_color' => __( 'Border', 'md' ),
 				'color' => __( 'Text', 'md' ),
-				'site_title' => __( 'Site Title', 'md' ),
-				'site_tagline' => __( 'Tagline', 'md' ),
 				'menu' => array(
 					'links' => __( 'Links', 'md' ),
 					'hover' => __( 'Links Hover', 'md' ),
@@ -261,6 +235,7 @@ class md_colors extends md_api {
 		$sanitize = $this->sanitize;
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$layout_spacing = $line_height + round( $line_height / 2 );
+
 		include( 'templates/admin-page.php' );
 	}
 
@@ -272,9 +247,6 @@ class md_colors extends md_api {
 
 	public function admin_scripts() { ?>
 		<script>
-			document.getElementById( 'marketers_delight_colors_logo_html_display_enable' ).onchange = function( e ) {
-				jQuery( '.md-header-logo' ).toggleClass( 'md-has-logo-html' );
-			};
 			( function() {
 				document.getElementById( '<?php echo $this->_prefix; ?>_page_cover_cover_position' ).onchange = function() {
 					document.getElementById( 'md_cover_settings' ).style.display = this.value !== '' ? 'block' : 'none';

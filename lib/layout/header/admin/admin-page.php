@@ -2,20 +2,35 @@
 
 	<h2 class="md-title"><?php echo __( 'Header', 'md' ); ?></h2>
 
-	<p><?php echo __( 'Create a custom header layout with flexible navigation elements.', 'md' ); ?></p>
+	<p><?php echo __( 'Customize your website header with specialized navigation elements.', 'md' ); ?></p>
 
 	<hr class="md-sep-small" />
 
 	<div class="md-widget md-toggle md-sep-small">
 
-		<h3 class="md-widget-title"><?php echo __( 'Layout Settings', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><?php echo __( 'Layout', 'md' ); ?></h3>
 
 		<div class="md-widget-item">
+
+			<div class="md-sep-small">
+				<?php $this->fields->field( 'display', array(
+					'type' => 'checkbox',
+					'label' => __( 'Display', 'md' ),
+					'multi' => true,
+					'options' => array(
+						'site_title' => __( 'Remove <strong>Site Title</strong>', 'md' ),
+						'site_tagline' => __( 'Remove <strong>Site Tagline</strong>', 'md' ),
+						'align_tagline' => __( 'Align Title and Tagline in one line', 'md' ),
+						'hide_title_mobile' => __( 'Hide <strong>Site Title</strong> on mobile', 'md' ),
+						'hide_tagline_mobile' => __( 'Hide <strong>Site Tagline</strong> on mobile', 'md' )
+					)
+				) ); ?>
+			</div>
 
 			<div class="md-header-layout md-radio-fields md-clear md-sep-micro">
 				<?php $this->fields->field( 'layout', array(
 					'type' => 'radio',
-					'label' => __( 'Header Layout', 'md' ),
+					'label' => __( 'Layout', 'md' ),
 					'label_icon' => 'dashicons dashicons-desktop',
 					'layout' => 'banner',
 					'options' => array(
@@ -55,40 +70,6 @@
 							'description' => __( 'Moves the main nav control before the Logo, and other controls to the right.', 'md' ),
 							'image' => MD_URL . 'lib/admin/images/header-mobile-expanded.gif'
 						)
-					)
-				) ); ?>
-			</div>
-
-			<hr class="md-sep-micro" />
-
-			<div class="columns-2 columns-single md-sep-micro">
-				<div class="col md-sep-micro">
-					<?php $this->fields->field( 'site_title', array(
-						'type' => 'text',
-						'label' => __( 'Site Title', 'md' ),
-						'placeholder' => get_bloginfo( 'name' ),
-					) ); ?>
-				</div>
-				<div class="col">
-					<?php $this->fields->field( 'site_tagline', array(
-						'type' => 'text',
-						'label' => __( 'Tagline', 'md' ),
-						'placeholder' => get_bloginfo( 'description' )
-					) ); ?>
-				</div>
-			</div>
-
-			<div class="md-sep-micro">
-				<?php $this->fields->field( 'display', array(
-					'type' => 'checkbox',
-					'label' => __( 'Display settings', 'md' ),
-					'multi' => true,
-					'options' => array(
-						'site_title' => __( 'Remove <b>Site Title</b>', 'md' ),
-						'site_tagline' => __( 'Remove <b>Site Tagline</b>', 'md' ),
-						'align_tagline' => __( 'Align Title and Tagline in one line', 'md' ),
-						'hide_title_mobile' => __( 'Hide <b>Site Title</b> on mobile', 'md' ),
-						'hide_tagline_mobile' => __( 'Hide <b>Site Tagline</b> on mobile', 'md' )
 					)
 				) ); ?>
 			</div>
