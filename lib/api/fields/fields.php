@@ -676,10 +676,9 @@ class md_fields {
 	 * @since 5.0
 	 */
 
-	public function typography( $field, $args = null ) {
+	public function typography( $field = array(), $args = null ) {
 		$g = 1.618;
 		$field = is_array( $field ) ? $field : (array) $field;
-		$field_id = $field[0];
 		$devices = isset( $args['devices'] ) ? $args['devices'] : array( 'desktop', 'tablet', 'mobile' );
 		$sanitize = new md_sanitize;
 		$design = new md_design;

@@ -24,7 +24,9 @@ class md_header extends md_api {
 	 */
 
 	public function register() {
+		$typography = array();
 		$menus = $this->_data( 'menus' );
+		$sanitize = new md_sanitize;
 		$link_fields = $this->fields->link_fields_data( array( 'save' => true ) );
 		$builder_fields = array_merge( array(
 			'type' => array( 'type' => 'text' ),
@@ -42,12 +44,27 @@ class md_header extends md_api {
 			)
 		), $link_fields );
 
+		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
+			$typography['font_size'][$device]['type'] = 'range';
+			$typography['line_height'][$device]['type'] = 'range';
+		}
+
+		$typography['font_family']['type'] = 'text';
+		$typography['font_type'] = array(
+			'type' => 'select',
+			'options' => array( 'default', 'google', 'typekit' )
+		);
+		$typography['font_weight'] = array(
+			'type' => 'select',
+			'options' => array_keys( $sanitize->_font_weights )
+		);
+
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Header', 'md' ),
 				'parent' => 'md_settings',
 				'order' => 30,
-				'fields' => array(
+				'fields' => array_merge( array(
 					'display' => array(
 						'type' => 'checkbox',
 						'options' => array(
@@ -80,7 +97,7 @@ class md_header extends md_api {
 							'hide_tagline_mobile'
 						)
 					)
-				)
+				), $typography )
 			)
 		);
 	}

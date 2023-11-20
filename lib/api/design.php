@@ -63,7 +63,7 @@ class md_design {
 		);
 		$primary_color = md_setting( array( 'colors', 'site', 'primary' ), $colors['primary'] );
 		$secondary_color = md_setting( array( 'colors', 'site', 'secondary' ), $colors['secondary'] );
-		$site_title = md_setting( array( 'typography', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
+		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
 		// calculate site widths
 		$cw = md_setting( array( 'colors', 'width', 'content' ) );
 		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
@@ -155,14 +155,6 @@ class md_design {
 					),
 					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
 				),
-				'header' => array(
-					'font_size' => array(
-						'desktop' => $font_size
-					),
-					'line_height' => array(
-						'desktop' => $line_height
-					)
-				),
 				'huge' => array(
 					'font_size' => array(
 						'desktop' => round( $h1['desktop'] * 1.5 ),
@@ -247,22 +239,6 @@ class md_design {
 						'mobile' => round( $h6['mobile'] * 1.4 )
 					)
 				),
-				'site_title' => array(
-					'font_size' => array(
-						'desktop' => $site_title
-					),
-					'line_height' => array(
-						'desktop' => round( $site_title * 1.1 )
-					)
-				),
-				'site_tagline' => array(
-					'font_size' => array(
-						'desktop' => round( $font_size * 0.9 ),
-					),
-					'line_height' => array(
-						'desktop' => round( $line_height * 0.7 )
-					)
-				),
 				'sidebar' => array(
 					'font_size' => array(
 						'desktop' => round( $font_size * 0.95 ),
@@ -310,6 +286,32 @@ class md_design {
 						'tablet' => round( $h5['tablet'] * 1.45 ),
 						'mobile' => round( $h5['mobile'] * 1.45 )
 					)
+				)
+			),
+			'logo' => array(
+				'site_title' => array(
+					'font_size' => array(
+						'desktop' => $site_title
+					),
+					'line_height' => array(
+						'desktop' => round( $site_title * 1.1 )
+					)
+				),
+				'site_tagline' => array(
+					'font_size' => array(
+						'desktop' => round( $font_size * 0.9 ),
+					),
+					'line_height' => array(
+						'desktop' => round( $line_height * 0.7 )
+					)
+				)
+			),
+			'header' => array(
+				'font_size' => array(
+					'desktop' => $font_size
+				),
+				'line_height' => array(
+					'desktop' => $line_height
 				)
 			),
 			'content' => array(
@@ -372,12 +374,13 @@ class md_design {
 	 */
 
 	public function values() {
-		$defaults = $this->defaults();
 		$design = array();
+		$defaults = $this->defaults();
 		$design['colors'] = md_setting( 'colors' );
 		$design['typography'] = md_setting( 'typography' );
 		$design['header'] = md_setting( 'header' );
-		$design['content'] = md_setting( 'content' );
+		$design['logo'] = md_setting( 'logo' );
+
 		return array_replace_recursive( $defaults, $design );
 	}
 

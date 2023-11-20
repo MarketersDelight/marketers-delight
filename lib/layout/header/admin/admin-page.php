@@ -78,6 +78,27 @@
 
 	</div>
 
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Typography', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+
+			<div class="md-sep-small">
+				<?php $this->fields->typography( array(), array(
+					'font_size' => array(
+						'desktop' => $defaults['header']['font_size']['desktop']
+					),
+					'line_height' => array(
+						'desktop' => $defaults['header']['line_height']['desktop']
+					)
+				) ); ?>
+			</div>
+
+		</div>
+
+	</div>
+
 	<hr class="md-sep-small" />
 
 	<?php $this->fields->field( 'builder', $builder_fields ); ?>

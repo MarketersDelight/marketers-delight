@@ -9,7 +9,7 @@
 
 .trigger-icon {
 	color: <?php echo $colors['header']['color']; ?>;
-	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	line-height: 1;
 }
 

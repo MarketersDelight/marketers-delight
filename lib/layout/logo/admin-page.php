@@ -57,43 +57,79 @@
 		) ); ?>
 	</div>
 
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Site Title', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+
+			<div class="columns-2 columns-25-75 columns-half md-sep-micro">
+				<div class="col col1 md-sep-small">
+					<?php $this->fields->field( 'site_title_color', array(
+						'type' => 'color',
+						'label' => __( 'Color', 'md' ),
+						'default' => $defaults['colors']['header']['site_title']
+					) ); ?>
+				</div>
+				<div class="col col2 md-sep-micro">
+					<?php $this->fields->field( 'site_title_text', array(
+						'type' => 'text',
+						'label' => __( 'Site Title', 'md' ),
+						'placeholder' => get_bloginfo( 'name' )
+					) ); ?>
+				</div>
+			</div>
+
+			<?php $this->fields->typography( 'site_title', array(
+				'font_size' => array(
+					'desktop' => $defaults['logo']['site_title']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['logo']['site_title']['line_height']['desktop']
+				)
+			) ); ?>
+
+		</div>
+
+	</div>
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Site Tagline', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+
+			<div class="columns-2 columns-25-75 columns-half md-sep-micro">
+				<div class="col col1 md-sep-small">
+					<?php $this->fields->field( 'site_tagline_color', array(
+						'type' => 'color',
+						'label' => __( 'Color', 'md' ),
+						'default' => $defaults['colors']['header']['site_tagline']
+					) ); ?>
+				</div>
+				<div class="col col2 md-sep-micro">
+					<?php $this->fields->field( 'site_tagline_text', array(
+						'type' => 'text',
+						'label' => __( 'Site Tagline', 'md' ),
+						'placeholder' => get_bloginfo( 'description' )
+					) ); ?>
+				</div>
+			</div>
+
+			<?php $this->fields->typography( 'site_tagline', array(
+				'font_size' => array(
+					'desktop' => $defaults['logo']['site_tagline']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['logo']['site_tagline']['line_height']['desktop']
+				)
+			) ); ?>
+
+		</div>
+
+	</div>
+
 	<hr class="md-sep-small" />
-
-	<h2 class="md-title md-sep-small"><?php echo __( 'Title &amp; Tagline', 'md' ); ?></h2>
-
-	<div class="columns-2 columns-25-75 columns-half md-sep-micro">
-		<div class="col col1 md-sep-small">
-			<?php $this->fields->field( 'site_title_color', array(
-				'type' => 'color',
-				'label' => __( 'Color', 'md' ),
-				'default' => $defaults['colors']['header']['site_title']
-			) ); ?>
-		</div>
-		<div class="col col2 md-sep-micro">
-			<?php $this->fields->field( 'site_title', array(
-				'type' => 'text',
-				'label' => __( 'Site Title', 'md' ),
-				'placeholder' => get_bloginfo( 'name' )
-			) ); ?>
-		</div>
-	</div>
-
-	<div class="columns-2 columns-25-75 columns-half md-sep-small">
-		<div class="col col1 md-sep-small">
-			<?php $this->fields->field( 'site_tagline_color', array(
-				'type' => 'color',
-				'label' => __( 'Color', 'md' ),
-				'default' => $defaults['colors']['header']['site_tagline']
-			) ); ?>
-		</div>
-		<div class="col col2 md-sep-micro">
-			<?php $this->fields->field( 'site_tagline', array(
-				'type' => 'text',
-				'label' => __( 'Site Tagline', 'md' ),
-				'placeholder' => get_bloginfo( 'description' )
-			) ); ?>
-		</div>
-	</div>
 
 	<?php $this->fields->save(); ?>
 

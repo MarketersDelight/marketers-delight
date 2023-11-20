@@ -34,6 +34,7 @@ function md_header_classes() {
 
 	if ( $layout == 'flyer' ) {
 		$header_aside = md_get_builder( 'header', 'data', 'header_aside' );
+
 		if ( empty( $header_aside ) )
 			$classes[] = 'solo';
 	}
@@ -55,69 +56,6 @@ function md_has_header() {
 }
 
 /**
- * Displays the logo, used in header by default.
- *
- * @since 4.1
- */
-
-function md_logo() {
-	include( md_template( 'logo', true ) );
-}
-
-function md_the_logo() {
-	$has_logo_html = md_setting( array( 'colors', 'logo_html_display', 'enable' ) );
-	$logo_html = md_setting( array( 'colors', 'logo_html' ) );
-
-	if ( $has_logo_html && ! empty( $logo_html ) )
-		echo $logo_html;
-	else {
-		$logo_id = md_setting( array( 'colors', 'logo', 'id' ) );
-		$secondary_logo = md_setting( array( 'colors', 'logo_alt', 'url' ) );
-		$text_global = md_setting( array( 'colors', 'page_cover', 'styles', 'text_color' ) );
-		$text_single = md_post_meta( array( 'page_cover', 'text_color', 'alternate' ) );
-		$cover = md_cover();
-		if ( ( ( ( is_singular() || is_category() || is_tax() ) && $cover['position'] == 'header_cover_full' ) || apply_filters( 'md_filter_logo_alt', false ) ) && ! empty( $secondary_logo ) ) {
-			if ( ( ! empty( $logo_id ) && $secondary_logo ) && ( ( empty( $text_global ) && empty( $text_single ) ) || ( ! empty( $text_global ) && ! empty( $text_single ) ) ) )
-				md_secondary_logo();
-			else
-				echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo-link' ) );
-		}
-		else
-			echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo-link' ) );
-	}
-}
-
-function md_secondary_logo() {
-	$secondary_logo_id = md_setting( array( 'header', 'logo_alt', 'id' ) );
-	echo '<span class="custom-logo-link">';
-	if ( ! empty( $secondary_logo_id ) )
-		echo wp_get_attachment_image( $secondary_logo_id, 'full' );
-	echo '</span>';
-}
-
-/**
- * Render Site Title as default WP text or custom title.
- *
- * @since 5.5.8
- */
-
-function md_site_title() {
-	$title = get_bloginfo( 'name' );
-	return md_setting( array( 'header', 'site_title' ), $title );
-}
-
-/**
- * Render Site Tagline as default WP text or custom tagline.
- *
- * @since 5.5.8
- */
-
-function md_site_tagline() {
-	$tagline = get_bloginfo( 'description' );
-	return md_setting( array( 'header', 'site_tagline' ), $tagline );
-}
-
-/**
  * Displays the header menu.
  *
  * @since 4.1
@@ -125,6 +63,7 @@ function md_site_tagline() {
 
 function md_header_menu() {
 	$menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
+
 	include( md_template( 'header-menu', true ) );
 }
 
@@ -136,5 +75,6 @@ function md_header_menu() {
 
 function md_has_header_search() {
 	$header_elements = md_get_builder( 'header' );
+
 	return ( ! empty( $header_elements['search'] ) ? true : false );
 }

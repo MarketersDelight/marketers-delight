@@ -66,58 +66,6 @@
 
 	<div class="md-widget md-toggle md-sep-small">
 
-		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
-
-		<div class="md-widget-item">
-
-			<div class="md-sep-small">
-				<?php $this->fields->typography( 'header', array(
-					'font_size' => array(
-						'desktop' => $defaults['header']['font_size']['desktop']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['header']['line_height']['desktop']
-					)
-				) ); ?>
-			</div>
-
-		</div>
-
-	</div>
-
-	<?php if ( empty( $values['header']['display']['site_title'] ) || empty( $values['header']['display']['site_tagline'] ) ) : ?>
-
-	<div class="md-widget md-toggle md-sep-small">
-
-		<h3 class="md-widget-title"><?php echo __( 'Site Title & Tagline', 'md' ); ?></h3>
-
-		<div class="md-widget-item">
-			<?php foreach ( array( 'site_title', 'site_tagline' ) as $font ) : ?>
-				<?php if ( empty( $values['header']['display'][$font] ) ) : ?>
-					<?php if ( $font == 'site_tagline' ) : ?>
-						<hr class="md-sep" />
-					<?php endif; ?>
-					<div class="md-sep-small">
-						<h4 class="md-title"><?php echo ucwords( str_replace( '_', ' ', $font ) ); ?></h4>
-						<?php $this->fields->typography( $font, array(
-							'font_size' => array(
-								'desktop' => $defaults[$font]['font_size']['desktop']
-							),
-							'line_height' => array(
-								'desktop' => $defaults[$font]['line_height']['desktop']
-							)
-						) ); ?>
-					</div>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</div>
-
-	</div>
-
-	<?php endif; ?>
-
-	<div class="md-widget md-toggle md-sep-small">
-
 		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
 
 		<div class="md-widget-item">

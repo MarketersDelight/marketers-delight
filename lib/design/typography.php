@@ -18,6 +18,7 @@ class md_typography extends md_api {
 		if ( isset( $_GET['settings-updated'] ) && md_web_fonts( 'google' ) ) {
 			$option = md_setting();
 			$option['typography']['google_fonts'] = md_google_fonts();
+
 			update_option( 'marketers_delight', $option );
 		}
 	}
@@ -33,7 +34,6 @@ class md_typography extends md_api {
 		$sanitize = new md_sanitize;
 		$groups = array(
 			'body', 'h1', 'h2', 'h3', 'h4', 'h5',
-			'header', 'site_title', 'site_tagline',
 			'sidebar', 'sidebar_title',
 			'footer', 'footer_title'
 		);
@@ -43,6 +43,7 @@ class md_typography extends md_api {
 				$fields[$group]['font_size'][$device]['type'] = 'range';
 				$fields[$group]['line_height'][$device]['type'] = 'range';
 			}
+
 			$fields[$group]['font_family']['type'] = 'text';
 			$fields[$group]['font_type'] = array(
 				'type' => 'select',
@@ -52,6 +53,7 @@ class md_typography extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $sanitize->_font_weights )
 			);
+
 			if ( $group == 'body' )
 				$fields[$group]['bold'] = array(
 					'type' => 'select',

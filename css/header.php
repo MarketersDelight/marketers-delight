@@ -13,17 +13,17 @@
 	background-color: <?php echo $colors['header']['bg_color']; ?>;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	color: <?php echo $colors['header']['color']; ?>;
-	<?php if ( ! empty( $typography['header']['font_family'] ) ) : ?>
-		font-family: <?php echo $typography['header']['font_family']; ?>;
+	<?php if ( ! empty( $header['font_family'] ) ) : ?>
+		font-family: <?php echo $header['font_family']; ?>;
 	<?php endif; ?>
-	<?php if ( ! empty( $typography['header']['font_size']['desktop'] ) ) : ?>
-		font-size: <?php echo $typography['header']['font_size']['desktop']; ?>px;
+	<?php if ( ! empty( $header['font_size']['desktop'] ) ) : ?>
+		font-size: <?php echo $header['font_size']['desktop']; ?>px;
 	<?php endif; ?>
-	<?php if ( ! empty( $typography['header']['font_weight'] ) ) : ?>
-		font-weight: <?php echo $typography['header']['font_weight']; ?>;
+	<?php if ( ! empty( $header['font_weight'] ) ) : ?>
+		font-weight: <?php echo $header['font_weight']; ?>;
 	<?php endif; ?>
-	<?php if ( ! empty( $typography['header']['line_height']['desktop'] ) ) : ?>
-		line-height: <?php echo $typography['header']['line_height']['desktop']; ?>px;
+	<?php if ( ! empty( $header['line_height']['desktop'] ) ) : ?>
+		line-height: <?php echo $header['line_height']['desktop']; ?>px;
 	<?php endif; ?>
 	position: relative;
 }
@@ -66,10 +66,10 @@
 
 .site-title {
 	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['site_title']['line_height']['desktop']; ?>px;
-	<?php echo ( ! empty( $typography['site_title']['font_family'] ) ? "\tfont-family: " . $typography['site_title']['font_family'] . ";\n" : '' ); ?>
-	<?php echo ( ! empty( $typography['site_title']['font_style'] ) ? "\tfont-style: italic;\n" : '' ); ?>
-	<?php echo ( ! empty( $typography['site_title']['font_weight'] ) ? "\tfont-weight: " . $typography['site_title']['font_weight'] . ";\n" : '' ); ?>
+	line-height: <?php echo $logo['site_title']['line_height']['desktop']; ?>px;
+	<?php echo ( ! empty( $logo['site_title']['font_family'] ) ? "\tfont-family: " . $logo['site_title']['font_family'] . ";\n" : '' ); ?>
+	<?php echo ( ! empty( $logo['site_title']['font_style'] ) ? "\tfont-style: italic;\n" : '' ); ?>
+	<?php echo ( ! empty( $logo['site_title']['font_weight'] ) ? "\tfont-weight: " . $logo['site_title']['font_weight'] . ";\n" : '' ); ?>
 }
 
 <?php if ( ! empty( $colors['header']['site_title'] ) ) : ?>
@@ -79,17 +79,17 @@
 
 .tagline {
 	color: <?php echo $colors['header']['site_tagline']; ?>;
-	<?php if ( ! empty( $typography['site_tagline']['font_family'] ) ) : ?>
-		font-family: <?php echo $typography['site_tagline']['font_family']; ?>;
+	<?php if ( ! empty( $logo['site_tagline']['font_family'] ) ) : ?>
+		font-family: <?php echo $logo['site_tagline']['font_family']; ?>;
 	<?php endif; ?>
-	font-size: <?php echo $typography['site_tagline']['font_size']['desktop']; ?>px;
-	<?php if ( ! empty( $typography['site_tagline']['font_style'] ) ) : ?>
+	font-size: <?php echo $logo['site_tagline']['font_size']['desktop']; ?>px;
+	<?php if ( ! empty( $logo['site_tagline']['font_style'] ) ) : ?>
 		font-style: italic;
 	<?php endif; ?>
-	<?php if ( ! empty( $typography['site_tagline']['font_weight'] ) ) : ?>
-		font-weight: <?php echo $typography['site_tagline']['font_weight']; ?>;
+	<?php if ( ! empty( $logo['site_tagline']['font_weight'] ) ) : ?>
+		font-weight: <?php echo $logo['site_tagline']['font_weight']; ?>;
 	<?php endif; ?>
-	line-height: <?php echo $typography['site_tagline']['line_height']['desktop'] ; ?>px;
+	line-height: <?php echo $logo['site_tagline']['line_height']['desktop'] ; ?>px;
 }
 
 .tagline a { color: <?php echo $colors['header']['site_tagline']; ?>; }
@@ -117,7 +117,7 @@
 
 .trigger-icon {
 	color: <?php echo $colors['header']['color']; ?>;
-	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	line-height: 1;
 }
 
@@ -203,11 +203,11 @@
 	<?php
 	$header_t_fs = $header_t_lh = '';
 
-	if ( ! empty( $typography['header']['font_size']['tablet'] ) )
-		$header_t_fs = $typography['header']['font_size']['tablet'];
+	if ( ! empty( $header['font_size']['tablet'] ) )
+		$header_t_fs = $header['font_size']['tablet'];
 
-	if ( ! empty( $typography['header']['line_height']['tablet'] ) )
-		$header_t_lh = $typography['header']['line_height']['tablet'];
+	if ( ! empty( $header['line_height']['tablet'] ) )
+		$header_t_lh = $header['line_height']['tablet'];
 
 	if ( $header_t_fs || $header_t_lh ) : ?>
 	.header {
@@ -234,7 +234,7 @@
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu, .header-controls .header-link, .header-controls .header_aside-link { display: block; }
 	.header .menu a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
 	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
-	.header-controls [class*="hide-label"] .trigger-icon { font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.7 ); ?>px; }
+	.header-controls [class*="hide-label"] .trigger-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.7 ); ?>px; }
 	/* SEARCH */
 	.header-search { padding: <?php echo $half; ?>px; }
 	.has-search .search-form {
@@ -248,11 +248,11 @@
 	<?php
 	$site_title_t_fs = $site_title_t_lh = '';
 
-	if ( ! empty( $typography['site_title']['font_size']['tablet'] ) )
-		$site_title_t_fs = $typography['site_title']['font_size']['tablet'];
+	if ( ! empty( $logo['site_title']['font_size']['tablet'] ) )
+		$site_title_t_fs = $logo['site_title']['font_size']['tablet'];
 
-	if ( ! empty( $typography['site_title']['line_height']['tablet'] ) )
-		$site_title_t_lh = $typography['site_title']['line_height']['tablet'];
+	if ( ! empty( $logo['site_title']['line_height']['tablet'] ) )
+		$site_title_t_lh = $logo['site_title']['line_height']['tablet'];
 
 	if ( $site_title_t_fs || $site_title_t_lh ) : ?>
 	.site-title {
@@ -267,11 +267,11 @@
 	<?php
 	$site_tagline_t_fs = $site_tagline_t_lh = '';
 
-	if ( ! empty( $typography['site_tagline']['font_size']['tablet'] ) )
-		$site_tagline_t_fs = $typography['site_tagline']['font_size']['tablet'];
+	if ( ! empty( $logo['site_tagline']['font_size']['tablet'] ) )
+		$site_tagline_t_fs = $logo['site_tagline']['font_size']['tablet'];
 
-	if ( ! empty( $typography['site_tagline']['line_height']['tablet'] ) )
-		$site_tagline_t_lh = $typography['site_tagline']['line_height']['tablet'];
+	if ( ! empty( $logo['site_tagline']['line_height']['tablet'] ) )
+		$site_tagline_t_lh = $logo['site_tagline']['line_height']['tablet'];
 
 	if ( $site_tagline_t_fs || $site_tagline_t_lh ) : ?>
 	.tagline {
@@ -289,11 +289,11 @@
 	<?php
 	$header_m_fs = $header_m_lh = '';
 
-	if ( ! empty( $typography['header']['font_size']['mobile'] ) )
-		$header_m_fs = $typography['header']['font_size']['mobile'];
+	if ( ! empty( $header['font_size']['mobile'] ) )
+		$header_m_fs = $header['font_size']['mobile'];
 
-	if ( ! empty( $typography['header']['line_height']['mobile'] ) )
-		$header_m_lh = $typography['header']['line_height']['mobile'];
+	if ( ! empty( $header['line_height']['mobile'] ) )
+		$header_m_lh = $header['line_height']['mobile'];
 
 	if ( $header_m_fs || $header_m_lh ) : ?>
 	.header {
@@ -308,11 +308,11 @@
 	<?php
 	$site_title_m_fs = $site_title_m_lh = '';
 
-	if ( ! empty( $typography['site_title']['font_size']['mobile'] ) )
-		$site_title_m_fs = $typography['site_title']['font_size']['mobile'];
+	if ( ! empty( $logo['site_title']['font_size']['mobile'] ) )
+		$site_title_m_fs = $logo['site_title']['font_size']['mobile'];
 
-	if ( ! empty( $typography['site_title']['line_height']['mobile'] ) )
-		$site_title_m_lh = $typography['site_title']['line_height']['mobile'];
+	if ( ! empty( $logo['site_title']['line_height']['mobile'] ) )
+		$site_title_m_lh = $logo['site_title']['line_height']['mobile'];
 
 	if ( $site_title_m_fs || $site_title_m_lh ) : ?>
 	.site-title {
@@ -327,11 +327,11 @@
 	<?php
 	$site_tagline_m_fs = $site_tagline_m_lh = '';
 
-	if ( ! empty( $typography['site_tagline']['font_size']['mobile'] ) )
-		$site_tagline_m_fs = $typography['site_tagline']['font_size']['mobile'];
+	if ( ! empty( $logo['site_tagline']['font_size']['mobile'] ) )
+		$site_tagline_m_fs = $logo['site_tagline']['font_size']['mobile'];
 
-	if ( ! empty( $typography['site_tagline']['line_height']['mobile'] ) )
-		$site_tagline_m_lh = $typography['site_tagline']['line_height']['mobile'];
+	if ( ! empty( $logo['site_tagline']['line_height']['mobile'] ) )
+		$site_tagline_m_lh = $logo['site_tagline']['line_height']['mobile'];
 
 	if ( $site_tagline_m_fs || $site_tagline_m_lh ) : ?>
 	.tagline {

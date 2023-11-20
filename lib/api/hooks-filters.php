@@ -137,6 +137,11 @@ function md_page_settings_fields() {
 				'type' => 'upload',
 				'upload_type' => 'media'
 			),
+			'image_width' => array(
+				'desktop' => array( 'type' => 'range' ),
+				'tablet' => array( 'type' => 'range' ),
+				'mobile' => array( 'type' => 'range' )
+			),
 			'position' => array(
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )

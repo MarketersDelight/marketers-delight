@@ -33,8 +33,8 @@
 
 .menu-item-desc {
 	display: block;
-	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 0.8 ); ?>px;
-	line-height: <?php echo round( $typography['header']['line_height']['desktop'] * 0.8 ); ?>px;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 0.8 ); ?>px;
+	line-height: <?php echo round( $header['line_height']['desktop'] * 0.8 ); ?>px;
 }
 
 .menu .menu-item.button a { line-height: 1; }
@@ -45,7 +45,7 @@
 
 .menu-toggle {
 	display: inline-block;
-	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.1 ); ?>px;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.1 ); ?>px;
 	line-height: 1;
 	padding-left: <?php echo $small; ?>px;
 	padding-right: <?php echo $small; ?>px;
@@ -115,7 +115,7 @@
 	.menu-item, .menu-item a, .menu .toggle-menu > .sub-menu { display: block; }
 	.menu-secondary:not(:first-child) { border-top: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.menu .menu-item.button {
-		font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.1 ); ?>px;
+		font-size: <?php echo round( $header['font_size']['desktop'] * 1.1 ); ?>px;
 		padding: <?php echo $half; ?>px;
 	}
 	.menu-toggle {
