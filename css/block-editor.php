@@ -263,7 +263,7 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 }
 
 .image-overlay:after {
-	background-color: <?php echo $colors['header']['cover_color']; ?>;
+	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
 	content: '';
 	display: block;
 	height: 100%;

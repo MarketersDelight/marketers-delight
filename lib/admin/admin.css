@@ -908,6 +908,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md .small-text.regular-text { width: 50%; }
 
+.md .regular-text, .md-display select { width: 100%; }
+
 /* CHECKBOX */
 
 .md-multi-checkbox {
@@ -1080,103 +1082,77 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-upload {
 	border: 1px solid #ddd;
-	border-radius: 3px;
+	border-radius: 5px;
 	box-shadow: 0 2px 5px #ddd;
-	max-width: 80%;
+	max-width: 188px;
 }
-
-.col .md-upload { max-width: 100%; }
 
 .md-upload:not(:last-child) { margin-bottom: 15px; }
 
-.md-upload-preview {
+.md-upload-canvas {
 	background-color: #f1f1f1;
 	cursor: pointer;
 	display: block;
-	float: left;
-	height: 110px;
+	height: 100px;
 	overflow-y: auto;
 	position: relative;
 	text-align: center;
-	width: 35%;
 }
 
-.md-upload-preview .dashicons {
+.md-upload-canvas .dashicons {
 	height: auto;
 	font-size: 50px;
 	line-height: 1;
 	margin-bottom: 5px;
-	padding-top: 16px;
+	padding-top: 10px;
 	width: auto;
 }
 
-.md-upload-preview-text {
-	font-weight: bold;
-	margin: 0;
+.md-upload-canvas, .md-upload-preview-image, .md-upload-preview-image img { border-radius: 5px 5px 0 0; }
+
+.md-upload-preview-text { font-weight: bold; }
+
+.md-upload-id-label {
+	background-color: rgba(0, 0, 0, 0.5);
+	border-radius: 0 0 5px;
+	color: #fff;
+	padding: 5px 8px;
+	position: absolute;
+		left: 0;
+		top: 0;
 }
 
-.md-upload-preview-image img { border-radius: 3px 0 0 0; }
+.md-upload .md-clipboard:hover { color: #2271b1; }
 
-.md-upload-controls {
-	background-color: #fff;
-	border-left: 1px solid #ddd;
-	border-radius: 0 3px 0 0;
-	float: left;
-	height: 110px;
-	padding: 30px 15px;
-	position: relative;
-	width: 65%;
-}
-
-.md-field-gallery {
+.md-upload-actions {
 	align-items: center;
+	background-color: #fff;
 	display: flex;
+	padding: 5px 8px;
+	justify-content: center;
 }
 
-.md-field-gallery .md-field-upload {
-	margin-right: 15px;
-	flex-basis: 20%;
-}
-
-.md-upload-thumbnail .md-upload { max-width: 100%; }
-
-.md-upload-thumbnail .md-upload-controls { display: none; }
-
-.md-upload-thumbnail .md-upload-preview {
-	float: none;
-	width: 100%;
-}
-
-.md-upload-thumbnail .md-upload-buttons {
-	padding-left: 0;
-	padding-right: 0;
+.md-upload-action {
+	cursor: pointer;
+	display: none;
+	flex: 1;
+	padding-right: 12px;
 	text-align: center;
 }
 
-.md .regular-text, .md-display select { width: 100%; }
+.md-upload-values,
+.md-upload-action-id,
+.md-upload-preview-image,
+.has-upload .md-upload-preview-action,
+.has-upload .button.md-upload-add,
+.md-upload .md-upload-remove { display: none; }
 
-.md-upload-buttons {
-	background-color: #fdfdfd;
-	border-top: 1px solid #ddd;
-	border-radius: 0 0 3px 3px;
-	padding: 10px;
-	text-align: right;
-}
-
-.md-upload-id-label {
-	font-size: 12px;
-	font-weight: bold;
-	position: absolute;
-		top: 10px;
-		right: 10px;
-	text-transform: uppercase;
-}
-
-.md-upload-preview-image, .has-upload .md-upload-previewer, .has-upload .button.md-upload-add, .md-upload .md-upload-remove, .md-upload-id-label { display: none; }
-
-.has-upload .md-upload-preview-image, .has-upload .md-upload-id-label { display: block; }
+.has-upload .md-upload-preview-image,
+.has-upload .md-upload-action-id, .has-upload .md-upload-action { display: block; }
 
 .has-upload .md-upload-remove { display: inline-block; }
+
+/* FILE UPLOAD */
 
 .md-file-upload-field {
 	display: inline-block;
@@ -1189,32 +1165,38 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 		top: -11px;
 }
 
+/* TOOLTIP */
+
 .md-tooltip {
 	background-color: rgba(0, 0, 0, 0.8);
-	border-bottom: 0;
-	border-radius: 3px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	border-radius: 5px;
 	color: #fff;
+	cursor: default;
 	display: none;
 	font-size: 14px;
-	padding: 5px;
+	margin-left: -80px;
+	padding: 8px 5px;
 	position: absolute;
-		top: -17px;
-		right: -204px;
-	width: 260px;
+		left: 50%;
+		top: -40px;
+	text-align: center;
+	width: 160px;
 }
 
-.md-tooltip:before {
-	border-bottom: 7px solid transparent;
-	border-top: 7px solid transparent;
-	border-right: 7px solid rgba(0, 0, 0, 0.8);
+.md-tooltip:after {
+	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+	border-style: solid;
+	border-width: 5px;
 	content: '';
-	height: 0;
+	margin-left: -5px;
 	position: absolute;
-		left: -7px;
-		top: 9px;
-	width: 0;
+		left: 50%;
+		top: 100%;
 }
+
+.md-tooltip-parent { position: relative; }
+
+.md-tooltip-parent:hover .md-tooltip { display: block; }
 
 /* REPEAT */
 

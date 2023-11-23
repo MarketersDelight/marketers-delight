@@ -5,13 +5,13 @@
 	$header_colors = array(
 		'default' => array(
 			'class' => '',
-			'color' => ( ! empty( $content['page_cover']['styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
-			'border' => ( ! empty( $content['page_cover']['styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+			'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
+			'border' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
 		),
 		'alt' => array(
 			'class' => '.text-alt',
-			'color' => ( empty( $content['page_cover']['styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
-			'border' => ( empty( $content['page_cover']['styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+			'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
+			'border' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
 		)
 	);
 ?>

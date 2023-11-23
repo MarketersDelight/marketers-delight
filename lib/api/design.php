@@ -115,6 +115,8 @@ class md_design {
 						'links' => '#444444',
 						'hover' => '#2E2E2E'
 					),
+				),
+				'page_cover' => array(
 					'cover_color' => 'rgba(0, 0, 0, 0.5)'
 				),
 				'content' => array(

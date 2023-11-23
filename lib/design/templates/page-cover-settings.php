@@ -14,33 +14,40 @@
 			) ); ?>
 		</div>
 
-		<div class="md-sep-micro">
-			<?php $this->fields->field( array( 'page_cover', 'cover_image' ), array(
-				'type' => 'upload',
-				'upload_type' => 'media',
-				'label' => __( 'Cover Image', 'md' ),
-				'description' => __( 'Set a default background image for all Header/Headline cover posts. You can customize this on each page from the editor screen.', 'md' )
-			) ); ?>
+		<div class="columns-2 columns-40-60 columns-half">
+
+			<div class="col col1 md-sep-micro">
+				<?php $this->fields->field( array( 'page_cover', 'cover_image' ), array(
+					'type' => 'upload',
+					'upload_type' => 'media',
+					'label' => __( 'Cover Image', 'md' ),
+				) ); ?>
+			</div>
+
+			<div class="col col2">
+
+				<div class="md-sep-small">
+					<?php $this->fields->field( array( 'page_cover', 'cover_color' ), array(
+						'type' => 'color',
+						'label' => __( 'Cover Overlay', 'md' ),
+						'default' => $defaults['colors']['page_cover']['cover_color']
+					) ); ?>
+				</div>
+
+				<?php $this->fields->field( array( 'page_cover', 'cover_styles' ), array(
+					'type' => 'checkbox',
+					'label' => __( 'Cover Settings', 'md' ),
+					'options' => array(
+						'text_color' => __( 'Use dark text', 'md' ),
+						'disable_cover' => __( 'Remove overlay', 'md' )
+					)
+				) ); ?>
+
+			</div>
+
 		</div>
 
-		<div class="md-sep-small">
-			<?php $this->fields->field( array( 'page_cover', 'cover_color' ), array(
-				'type' => 'color',
-				'label' => __( 'Cover Overlay', 'md' ),
-				'default' => $defaults['colors']['header']['cover_color']
-			) ); ?>
-		</div>
-
-		<div class="md-sep-micro">
-			<?php $this->fields->field( array( 'page_cover', 'cover_styles' ), array(
-				'type' => 'checkbox',
-				'label' => __( 'Cover Settings', 'md' ),
-				'options' => array(
-					'text_color' => __( 'Use dark text', 'md' ),
-					'disable_cover' => __( 'Remove overlay', 'md' )
-				)
-			) ); ?>
-		</div>
+		<?php echo __( 'Set a default background image for all Header/Headline cover posts. You can customize this on each page from the editor screen.', 'md' ); ?>
 
 	</div>
 

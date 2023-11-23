@@ -16,13 +16,13 @@
 	) ); ?>
 </div>
 
-<div class="columns-3 columns-single">
+<div class="columns-3 columns-half">
 
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'bg_color', array(
 			'type' => 'color',
 			'label' =>  __( 'Cover Overlay', 'md' ),
-			'default' => md_setting( array( 'colors', 'page_cover', 'cover_color' ), $values['colors']['header']['cover_color'] )
+			'default' => md_setting( array( 'colors', 'page_cover', 'cover_color' ), $values['colors']['page_cover']['cover_color'] )
 		) ); ?>
 	</div>
 

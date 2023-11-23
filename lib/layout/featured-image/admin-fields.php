@@ -3,7 +3,7 @@
 	<label class="md-label-wrap"><label class="md-label"><?php echo __( 'Featured Image', 'md' ); ?></label></label>
 
 	<div class="md-field">
-		<div class="columns-2 columns-25-75 columns-single">
+		<div class="columns-2 columns-30-70 columns-single">
 
 			<div class="col col1 md-sep-small">
 				<?php $this->fields->field( 'image', array(

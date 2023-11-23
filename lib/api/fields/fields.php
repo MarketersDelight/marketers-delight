@@ -496,7 +496,15 @@ class md_fields {
 		$upload_action = isset( $args['upload_action'] ) ? $args['upload_action'] : '';
 		$accepts = isset( $args['accept'] ) ? $args['accept'] : '';
 		$accept = ! empty( $accepts ) ? " accept=\"$accepts\"" : '';
-		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';
+		$classes = array( 'md-upload', "md-upload-{$type}" );
+
+		if ( isset( $args['classes'] ) )
+			$classes[] = $args['classes'];
+
+		if ( $upload_url )
+			$classes[] = 'has-upload';
+
+		$classes = join( ' ', $classes );
 
 		include( 'fields-upload.php' );
 	}
