@@ -499,7 +499,7 @@ function md_has_footer() {
 
 function md_has_footer_columns() {
 	if ( md_footer_columns() && ! md_module( array( 'layout', 'footer', 'columns' ) ) )
-		return true;
+		return apply_filters( 'md_filter_has_footer_columns', true );
 }
 
 /**

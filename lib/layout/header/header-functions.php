@@ -10,6 +10,7 @@ function md_header_wrap_classes() {
 	$classes = array();
 	$classes[] = 'header-wrap';
 	$classes = apply_filters( 'md_header_wrap_classes', $classes );
+
 	return join( ' ', $classes );
 }
 

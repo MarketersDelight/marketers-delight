@@ -24,7 +24,7 @@ input[type="url"], input[type="email"],
 input[type="search"], input[type="password"] {
 	background-color: #fff;
 	border-radius: 5px;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	line-height: 1;
 	position: relative;
 	width: 100%;
@@ -55,8 +55,8 @@ select { max-width: 100%; }
 
 .fields-icons .form-field,
 .has-search .form-controls .form-inputs {
-	background-color: <?php echo $colors['header']['bg_color']; ?>;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	background-color: #fff;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	border-radius: 5px;
 }
 

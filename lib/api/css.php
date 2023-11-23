@@ -219,7 +219,6 @@ class md_css {
 
 		$site_width = $values['colors']['width']['site'];
 		$site_width_full = $values['colors']['width']['site_full'];
-		$logo_width = $logo['logo_width']['desktop'];
 		$content_width = $values['colors']['width']['content_width'];
 		$post_width = $values['colors']['width']['post'];
 		$sidebar_width = $values['colors']['width']['sidebar'];

@@ -33,7 +33,7 @@
 .image-overlay:after { z-index: -1; }
 
 .overlay, .image-overlay:after {
-	background-color: <?php echo $colors['header']['cover_color']; ?>;
+	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
 	content: '';
 	display: block;
 	height: 100%;

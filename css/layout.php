@@ -82,6 +82,8 @@
 
 /* PAGE HEADER */
 
+.page-header { position: relative; }
+
 .header .page-header {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $double; ?>px;

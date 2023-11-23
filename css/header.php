@@ -53,8 +53,8 @@
 .logo {
 	flex: 1 0 auto;
 	position: relative;
-	<?php if ( $logo_width ) : ?>
-	width: <?php echo $logo_width; ?>px;
+	<?php if ( ! empty( $logo['logo_width']['desktop'] ) ) : ?>
+	width: <?php echo $logo['logo_width']['desktop']; ?>px;
 	<?php endif; ?>
 }
 
@@ -219,8 +219,8 @@
 		<?php endif; ?>
 	}
 	<?php endif; ?>
-	<?php if ( ! empty( $colors['logo_width']['tablet'] ) ) : ?>
-		.logo { width: <?php echo $colors['logo_width']['tablet']; ?>px; }
+	<?php if ( ! empty( $logo['logo_width']['tablet'] ) ) : ?>
+		.logo { width: <?php echo $logo['logo_width']['tablet']; ?>px; }
 	<?php endif; ?>
 	<?php if ( md_setting( array( 'header', 'display', 'hide_title_mobile' ) ) ) : ?>
 	.site-title { display: none; }
@@ -343,8 +343,8 @@
 		<?php endif; ?>
 	}
 	<?php endif; ?>
-	<?php if ( ! empty( $colors['logo_width']['mobile'] ) ) : ?>
-		.logo { width: <?php echo $colors['logo_width']['mobile']; ?>px; }
+	<?php if ( ! empty( $logo['logo_width']['mobile'] ) ) : ?>
+		.logo { width: <?php echo $logo['logo_width']['mobile']; ?>px; }
 	<?php endif; ?>
 }
 

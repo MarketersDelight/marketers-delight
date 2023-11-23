@@ -174,6 +174,7 @@ class md_page_cover extends md_api {
 
 	public function inline_css() {
 		$cover = md_cover();
+
 		if ( $cover['position'] == 'header_cover_full' ) {
 			if ( ! empty( $cover['image'][0] ) )
 				echo
@@ -238,10 +239,14 @@ class md_page_cover extends md_api {
 	 */
 
 	public function overlay() {
+		$style = array();
 		$cover = md_cover();
 
+		if ( ! empty( $cover['color'] ) )
+			$style['bg_color'] = $cover['color'];
+
 		if ( ! empty( $cover['position'] ) && empty( $cover['disable_overlay'] ) )
-			echo '<div class="overlay"' . md_style( array( 'bg_color' => $cover['color'] ) ) . '></div>';
+			echo '<div class="overlay"' . md_style( $style ) . '></div>';
 	}
 
 }
