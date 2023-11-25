@@ -877,7 +877,7 @@ ul.list-check li:before {
 	position: relative;
 }
 .trigger-icon {
-	color: #777777;
+	color: #FFFFFF;
 	font-size: 23px;
 	line-height: 1;
 }
@@ -1374,9 +1374,9 @@ ul.list-check li:before {
 	$HEADER
 \*------------------------------*/
 .header {
-	background-color: #FFFFFF;
+	background-color: #3E3E3E;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	color: #777777;
+	color: #FFFFFF;
 				font-size: 18px;
 					line-height: 29px;
 		position: relative;
@@ -1429,7 +1429,7 @@ ul.list-check li:before {
 	position: relative;
 }
 .trigger-icon {
-	color: #777777;
+	color: #FFFFFF;
 	font-size: 23px;
 	line-height: 1;
 }

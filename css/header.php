@@ -10,9 +10,9 @@
 \*------------------------------*/
 
 .header {
-	background-color: <?php echo $colors['header']['bg_color']; ?>;
+	background-color: <?php echo $header['bg_color']; ?>;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	color: <?php echo $colors['header']['color']; ?>;
+	color: <?php echo $header['color']; ?>;
 	<?php if ( ! empty( $header['font_family'] ) ) : ?>
 		font-family: <?php echo $header['font_family']; ?>;
 	<?php endif; ?>
@@ -28,11 +28,11 @@
 	position: relative;
 }
 
-.header-wrap a:not(.button) { color: <?php echo $colors['header']['menu']['links']; ?>; }
-.header-wrap a:not(.button):hover { color: <?php echo $colors['header']['menu']['hover']; ?>; }
+.header-wrap a:not(.button) { color: <?php echo $header['menu']['links']; ?>; }
+.header-wrap a:not(.button):hover { color: <?php echo $header['menu']['hover']; ?>; }
 
 .header .menu .current-menu-item > a,
-.header .menu .current-menu-item > .menu-toggle { color: <?php echo $colors['header']['menu']['active']; ?>; }
+.header .menu .current-menu-item > .menu-toggle { color: <?php echo $header['menu']['active']; ?>; }
 
 .header-simple .header-wrap, .header-simple .header-controls { justify-content: center; }
 
@@ -72,13 +72,13 @@
 	<?php echo ( ! empty( $logo['site_title']['font_weight'] ) ? "\tfont-weight: " . $logo['site_title']['font_weight'] . ";\n" : '' ); ?>
 }
 
-<?php if ( ! empty( $colors['header']['site_title'] ) ) : ?>
+<?php if ( ! empty( $header['site_title'] ) ) : ?>
 	.header .site-title, .header .site-title:hover,
-	.header .site-title a, .header .site-title a:hover { color: <?php echo $colors['header']['site_title']; ?>; }
+	.header .site-title a, .header .site-title a:hover { color: <?php echo $header['site_title']; ?>; }
 <?php endif; ?>
 
 .tagline {
-	color: <?php echo $colors['header']['site_tagline']; ?>;
+	color: <?php echo $header['site_tagline']; ?>;
 	<?php if ( ! empty( $logo['site_tagline']['font_family'] ) ) : ?>
 		font-family: <?php echo $logo['site_tagline']['font_family']; ?>;
 	<?php endif; ?>
@@ -92,7 +92,7 @@
 	line-height: <?php echo $logo['site_tagline']['line_height']['desktop'] ; ?>px;
 }
 
-.tagline a { color: <?php echo $colors['header']['site_tagline']; ?>; }
+.tagline a { color: <?php echo $header['site_tagline']; ?>; }
 
 <?php if ( md_setting( array( 'header', 'display', 'tagline_same_line' ) ) ) : ?>
 .site-title + .tagline { margin-left: <?php echo $third; ?>px; }
@@ -116,7 +116,7 @@
 }
 
 .trigger-icon {
-	color: <?php echo $colors['header']['color']; ?>;
+	color: <?php echo $header['color']; ?>;
 	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	line-height: 1;
 }
@@ -232,8 +232,8 @@
 	/* DISPLAYS */
 	.hide-label-mobile .link-text, .header-menu, .header_aside-menu, .header-link, .header_aside-link, .header .search-form { display: none; }
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu, .header-controls .header-link, .header-controls .header_aside-link { display: block; }
-	.header .menu a:hover { color: <?php echo $colors['header']['submenu']['hover']; ?>; }
-	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.header .menu a:hover { color: <?php echo $header['submenu']['hover']; ?>; }
+	.header .menu > .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
 	.header-controls [class*="hide-label"] .trigger-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.7 ); ?>px; }
 	/* SEARCH */
 	.header-search { padding: <?php echo $half; ?>px; }

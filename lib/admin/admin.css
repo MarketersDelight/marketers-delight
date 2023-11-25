@@ -1127,6 +1127,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-upload-actions {
 	align-items: center;
 	background-color: #fff;
+	border-radius: 0 0 5px 5px;
 	display: flex;
 	padding: 5px 8px;
 	justify-content: center;

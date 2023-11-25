@@ -33,7 +33,8 @@
 				'empty_label' => __( 'Select CTA type...', 'md' ),
 				'classes' => 'md-conditional-option',
 				'options' => array(
-					'links' => __( 'Links', 'md' )
+					'links' => __( 'Links', 'md' ),
+					'custom' => __( 'Custom HTML', 'md' )
 				)
 			) ); ?>
 		</div>
@@ -61,6 +62,15 @@
 					) ); ?>
 				</div>
 			</div>
+
+		</div>
+
+		<div id="<?php echo $prefix; ?>_page_cta_custom" class="md-conditional-item md-conditional-custom md-row-space" style="display: <?php echo $cta_type == 'custom' ? 'block' : 'none'; ?>">
+
+			<?php $this->fields->field( 'custom_html', array(
+				'type' => 'code',
+				'label' => __( 'Custom HTML', 'md' ),
+			) ); ?>
 
 		</div>
 

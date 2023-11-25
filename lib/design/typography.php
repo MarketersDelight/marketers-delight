@@ -32,11 +32,7 @@ class md_typography extends md_api {
 	public function register() {
 		$fields = array();
 		$sanitize = new md_sanitize;
-		$groups = array(
-			'body', 'h1', 'h2', 'h3', 'h4', 'h5',
-			'sidebar', 'sidebar_title',
-			'footer', 'footer_title'
-		);
+		$groups = array( 'body', 'h1', 'h2', 'h3', 'h4', 'h5', 'footer', 'footer_title' );
 
 		foreach ( $groups as $group ) {
 			foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {

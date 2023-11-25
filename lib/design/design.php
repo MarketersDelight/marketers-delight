@@ -51,31 +51,9 @@ class md_colors extends md_api {
 				'button-sec' => array( 'type' => 'color' ),
 				'button-sec-text' => array( 'type' => 'color' )
 			),
-			'header' => array(
-				'bg_color' => array( 'type' => 'color' ),
-				'border_color' => array( 'type' => 'color' ),
-				'color' => array( 'type' => 'color' ),
-				'menu' => array(
-					'links' => array( 'type' => 'color' ),
-					'hover' => array( 'type' => 'color' ),
-					'active' => array( 'type' => 'color' )
-				),
-				'submenu' => array(
-					'bg_color' => array( 'type' => 'color' ),
-					'links' => array( 'type' => 'color' ),
-					'hover' => array( 'type' => 'color' )
-				),
-				'cover_color' => array( 'type' => 'color' )
-			),
 			'content' => array(
 				'bg_color' => array( 'type' => 'color' ),
 				'border_color' => array( 'type' => 'color' )
-			),
-			'sidebar' => array(
-				'bg_color' => array( 'type' => 'color' ),
-				'text' => array( 'type' => 'color' ),
-				'title' => array( 'type' => 'color' ),
-				'links' => array( 'type' => 'color' )
 			),
 			'footer' => array(
 				'bg_color' => array( 'type' => 'color' ),
@@ -87,10 +65,12 @@ class md_colors extends md_api {
 		);
 
 		// Add default colors
+
 		foreach ( $this->colors as $group => $options ) {
 			foreach ( $options as $field => $fields ) {
 				if ( ! empty( $this->data['defaults']['colors'][$group][$field] ) ) {
 					$default_value = $this->data['defaults']['colors'][$group][$field];
+
 					if ( is_array( $default_value ) )
 						foreach ( $default_value as $sub => $sub_value )
 							$this->colors[$group][$field][$sub]['default'] = esc_attr( $sub_value );
@@ -187,30 +167,9 @@ class md_colors extends md_api {
 				'button-sec' => __( 'Background color', 'md' ),
 				'button-sec-text' => __( 'Text color', 'md' )
 			),
-			'header' => array(
-				'bg_color' => __( 'Background', 'md' ),
-				'border_color' => __( 'Border', 'md' ),
-				'color' => __( 'Text', 'md' ),
-				'menu' => array(
-					'links' => __( 'Links', 'md' ),
-					'hover' => __( 'Links Hover', 'md' ),
-					'active' => __( 'Links Active', 'md' )
-				),
-				'submenu' => array(
-					'bg_color' => __( 'Background', 'md' ),
-					'links' => __( 'Links', 'md' ),
-					'hover' => __( 'Links Hover', 'md' )
-				)
-			),
 			'content' => array(
 				'bg_color' => __( 'Background', 'md' ),
 				'border_color' => __( 'Border', 'md' )
-			),
-			'sidebar' => array(
-				'bg_color' => __( 'Background', 'md' ),
-				'text' => __( 'Text', 'md' ),
-				'title' => __( 'Title', 'md' ),
-				'links' => __( 'Links', 'md' )
 			),
 			'footer' => array(
 				'bg_color' => __( 'Background', 'md' ),

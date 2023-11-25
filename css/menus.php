@@ -27,7 +27,7 @@
 	position: relative;
 }
 
-.menu > .menu-item:hover .menu-toggle, .sub-menu .menu-toggle { background-color: <?php echo $colors['header']['border_color']; ?>; }
+.menu > .menu-item:hover .menu-toggle, .sub-menu .menu-toggle { background-color: <?php echo $header['border_color']; ?>; }
 
 .menu-item-title { position: relative; }
 
@@ -87,23 +87,23 @@
 	.menu-item-has-children a { padding-right: <?php echo $small; ?>px; }
 	.menu-item-has-children:hover > .sub-menu { display: block; }
 	.sub-menu {
-		background-color: <?php echo $colors['header']['submenu']['bg_color']; ?>;
+		background-color: <?php echo $header['submenu']['bg_color']; ?>;
 		border-radius: 5px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		position: absolute;
 			right: -<?php echo $single; ?>px;
 		width: <?php echo $submenu_width; ?>px;
 	}
-	.sub-menu a, .sub-menu .menu-toggle { color: <?php echo $colors['header']['submenu']['links']; ?>; }
+	.sub-menu a, .sub-menu .menu-toggle { color: <?php echo $header['submenu']['links']; ?>; }
 	.sub-menu a:hover {
 		background-color: rgba(0, 0, 0, 0.08);
-		color: <?php echo $colors['header']['submenu']['hover']; ?>;
+		color: <?php echo $header['submenu']['hover']; ?>;
 	}
 	.sub-menu .sub-menu {
 		right: <?php echo $submenu_width; ?>px;
 		top: 0;
 	}
-	.sub-menu .menu-item:not(:last-child) a { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.sub-menu .menu-item:not(:last-child) a { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
 	.sub-menu > .menu-item:first-child > a:hover { border-radius: 5px 5px 0 0; }
 	.sub-menu > .menu-item:last-child > a:hover { border-radius: 0 0 5px 5px; }
 	.sub-menu .menu-item, .sub-menu .menu-item a { display: block; }
@@ -113,13 +113,13 @@
 
 @media all and (max-width: 800px) {
 	.menu-item, .menu-item a, .menu .toggle-menu > .sub-menu { display: block; }
-	.menu-secondary:not(:first-child) { border-top: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.menu-secondary:not(:first-child) { border-top: 1px solid <?php echo $header['border_color']; ?>; }
 	.menu .menu-item.button {
 		font-size: <?php echo round( $header['font_size']['desktop'] * 1.1 ); ?>px;
 		padding: <?php echo $half; ?>px;
 	}
 	.menu-toggle {
-		background-color: <?php echo $colors['header']['border_color']; ?>;
+		background-color: <?php echo $header['border_color']; ?>;
 		padding: 2px <?php echo $third; ?>px;
 		position: absolute;
 			left: inherit;

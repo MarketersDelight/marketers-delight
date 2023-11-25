@@ -1,8 +1,12 @@
 <div id="md_sidebars" class="md-sidebars md-content-wrap<?php echo esc_attr( $classes ); ?>">
 
+	<?php $this->fields->devices(); ?>
+
 	<h2 class="md-title"><?php echo __( 'Sidebars', 'md' ); ?></h2>
 
-	<p class="md-sep-small"><?php echo sprintf( __( 'Create and manage custom sidebars and apply them throughout your website. <a href="%s">Edit widgets &rarr;</a>', 'md' ), admin_url( 'widgets.php' ) ); ?></p>
+	<p class="md-sep-small"><?php echo sprintf( __( 'Create and manage custom sidebars and apply them throughout your website.<br /><a href="%s">Edit widgets &rarr;</a>', 'md' ), admin_url( 'widgets.php' ) ); ?></p>
+
+	<?php include( 'design-fields.php' ); ?>
 
 	<div class="md-widget md-toggle md-sep-small">
 

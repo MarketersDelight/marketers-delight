@@ -121,40 +121,6 @@ function md_admin_fields() {
 }
 
 /**
- * A collection of save fields to be pre-grouped for Page Settings.
- *
- * @since 5.6
- */
-
-function md_page_settings_fields() {
-	$sanitize = new md_sanitize;
-
-	return apply_filters( 'md_page_settings_fields', array(
-		'archives_title' => array( 'type' => 'text' ),
-		'archives_text' => array( 'type' => 'textarea' ),
-		'featured_image' => array(
-			'image' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
-			),
-			'image_width' => array(
-				'desktop' => array( 'type' => 'range' ),
-				'tablet' => array( 'type' => 'range' ),
-				'mobile' => array( 'type' => 'range' )
-			),
-			'position' => array(
-				'type' => 'select',
-				'options' => array_keys( $sanitize->values['featured_image'] )
-			)
-		),
-		'page_cta' => array(
-			'type' => 'select',
-			'options' => array( 'links' )
-		)
-	) );
-}
-
-/**
  * Checks if page template is active.
  *
  * @since 4.9.4

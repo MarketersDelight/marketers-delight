@@ -4,17 +4,32 @@
 
 	<div class="md-widget-item">
 
-		<div class="md-sep-micro">
-			<?php $this->fields->field( array( 'page_cover', 'cover_position' ), array(
-				'type' => 'select',
-				'label' => __( 'Cover Photo', 'md' ),
-				'empty_label' => __( 'Set cover photo...', 'md' ),
-				'description' => __( 'A cover photo is a decorative image that displays behind the main title of any page.', 'md' ),
-				'options' => $this->sanitize->values['covers']
-			) ); ?>
+		<p class="description"><?php echo __( 'Set a full-width background color and/or image to your site\'s page header. Apply sitewide and customize on a post and term basis. <strong>Recommended image size: 1280x720px</strong>', 'md' ); ?></p>
+
+		<hr class="md-sep-small" />
+
+		<div class="columns-2 columns-30-70 columns-single md-sep-small">
+
+			<div class="col col1">
+				<?php $this->fields->field( array( 'page_cover', 'cover_position' ), array(
+					'type' => 'select',
+					'label' => __( 'Cover Photo', 'md' ),
+					'empty_label' => __( 'Set cover photo...', 'md' ),
+					'options' => $this->sanitize->values['covers']
+				) ); ?>
+			</div>
+
+			<div class="col col2">
+				<?php $this->fields->field( array( 'page_cover', 'cover_color' ), array(
+					'type' => 'color',
+					'label' => __( 'Cover Overlay', 'md' ),
+					'default' => $defaults['colors']['page_cover']['cover_color']
+				) ); ?>
+			</div>
+
 		</div>
 
-		<div class="columns-2 columns-40-60 columns-half">
+		<div class="columns-2 columns-30-70 columns-single">
 
 			<div class="col col1 md-sep-micro">
 				<?php $this->fields->field( array( 'page_cover', 'cover_image' ), array(
@@ -26,19 +41,11 @@
 
 			<div class="col col2">
 
-				<div class="md-sep-small">
-					<?php $this->fields->field( array( 'page_cover', 'cover_color' ), array(
-						'type' => 'color',
-						'label' => __( 'Cover Overlay', 'md' ),
-						'default' => $defaults['colors']['page_cover']['cover_color']
-					) ); ?>
-				</div>
-
 				<?php $this->fields->field( array( 'page_cover', 'cover_styles' ), array(
 					'type' => 'checkbox',
 					'label' => __( 'Cover Settings', 'md' ),
 					'options' => array(
-						'text_color' => __( 'Use dark text', 'md' ),
+						'text_color' => __( 'Use alternate text color', 'md' ),
 						'disable_cover' => __( 'Remove overlay', 'md' )
 					)
 				) ); ?>
@@ -46,8 +53,6 @@
 			</div>
 
 		</div>
-
-		<?php echo __( 'Set a default background image for all Header/Headline cover posts. You can customize this on each page from the editor screen.', 'md' ); ?>
 
 	</div>
 

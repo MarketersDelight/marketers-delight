@@ -62,53 +62,6 @@
 
 	<?php endforeach; ?>
 
-	<hr class="md-sep-small" />
-
-	<div class="md-widget md-toggle md-sep-small">
-
-		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
-
-		<div class="md-widget-item">
-
-			<div class="md-sep-small">
-				<?php $this->fields->typography( 'sidebar', array(
-					'font_size' => array(
-						'desktop' => $defaults['sidebar']['font_size']['desktop'],
-						'tablet' => $defaults['sidebar']['font_size']['tablet'],
-						'mobile' => $defaults['sidebar']['font_size']['mobile']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['sidebar']['line_height']['desktop'],
-						'tablet' => $defaults['sidebar']['line_height']['tablet'],
-						'mobile' => $defaults['sidebar']['line_height']['mobile']
-					)
-				) ); ?>
-			</div>
-
-			<hr class="md-sep" />
-
-			<div class="md-sep-small">
-				<h4 class="md-title"><?php echo __( 'Sidebar Title', 'md' ); ?></h4>
-				<?php $this->fields->typography( 'sidebar_title', array(
-					'font_size' => array(
-						'desktop' => $defaults['sidebar_title']['font_size']['desktop'],
-						'tablet' => $defaults['sidebar_title']['font_size']['tablet'],
-						'mobile' => $defaults['sidebar_title']['font_size']['mobile']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['sidebar_title']['line_height']['desktop'],
-						'tablet' => $defaults['sidebar_title']['line_height']['tablet'],
-						'mobile' => $defaults['sidebar_title']['line_height']['mobile']
-					),
-					'font_family' => array( 'placeholder' => __( 'Inherit from <h3>', 'md' ) ),
-					'font_weight' => array( 'empty_label' => __( 'Inherit from <h3>', 'md' ) )
-				) ); ?>
-			</div>
-
-		</div>
-
-	</div>
-
 	<div class="md-widget md-toggle md-sep-small">
 
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>

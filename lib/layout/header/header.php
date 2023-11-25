@@ -27,7 +27,7 @@ class md_header extends md_api {
 		$typography = array();
 		$menus = $this->_data( 'menus' );
 		$sanitize = new md_sanitize;
-		$link_fields = $this->fields->link_fields_data( array( 'save' => true ) );
+		$link_fields = $this->fields->data->links( array( 'save' => true ) );
 		$builder_fields = array_merge( array(
 			'type' => array( 'type' => 'text' ),
 			'area' => array( 'type' => 'text' ),
@@ -65,16 +65,6 @@ class md_header extends md_api {
 				'parent' => 'md_settings',
 				'order' => 30,
 				'fields' => array_merge( array(
-					'display' => array(
-						'type' => 'checkbox',
-						'options' => array(
-							'site_title',
-							'site_tagline',
-							'align_tagline',
-							'hide_title_mobile',
-							'hide_tagline_mobile'
-						)
-					),
 					'builder' => array(
 						'type' => 'builder',
 						'fields' => $builder_fields
@@ -90,12 +80,21 @@ class md_header extends md_api {
 					'display' => array(
 						'type' => 'checkbox',
 						'options' => array(
-							'site_title',
-							'site_tagline',
-							'align_tagline',
-							'hide_title_mobile',
-							'hide_tagline_mobile'
+							'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile'
 						)
+					),
+					'bg_color' => array( 'type' => 'color' ),
+					'border_color' => array( 'type' => 'color' ),
+					'color' => array( 'type' => 'color' ),
+					'menu' => array(
+						'links' => array( 'type' => 'color' ),
+						'hover' => array( 'type' => 'color' ),
+						'active' => array( 'type' => 'color' )
+					),
+					'submenu' => array(
+						'bg_color' => array( 'type' => 'color' ),
+						'links' => array( 'type' => 'color' ),
+						'hover' => array( 'type' => 'color' )
 					)
 				), $typography )
 			)

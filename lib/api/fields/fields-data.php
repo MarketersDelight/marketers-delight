@@ -1,0 +1,143 @@
+<?php
+/**
+ * Holds frequently used data of more complex fields.
+ *
+ * @since 5.6
+ */
+
+class md_fields_data {
+
+	/**
+     * A collection of save fields to be pre-grouped for Page Settings.
+ 	 *
+ 	 * @since 5.6
+ 	 */
+
+	public function page_settings() {
+		$sanitize = new md_sanitize;
+
+		return apply_filters( 'md_page_settings_fields', array(
+			'archives_title' => array( 'type' => 'text' ),
+			'archives_text' => array( 'type' => 'textarea' ),
+			'featured_image' => array(
+				'image' => array(
+					'type' => 'upload',
+					'upload_type' => 'media'
+				),
+				'image_width' => array(
+					'desktop' => array( 'type' => 'range' ),
+					'tablet' => array( 'type' => 'range' ),
+					'mobile' => array( 'type' => 'range' )
+				),
+				'position' => array(
+					'type' => 'select',
+					'options' => array_keys( $sanitize->values['featured_image'] )
+				)
+			),
+			'page_cta' => array(
+				'type' => 'select',
+				'options' => array( 'links', 'custom' )
+			),
+			'custom_html' => array( 'type' => 'code' )
+		) );
+	}
+
+	/**
+	 * Collect a list of fields in a Links Group.
+	 *
+	 * @since 5.6
+	 */
+
+	public function links( $args = array() ) {
+		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
+		$group = isset( $args['group'] ) ? $args['group'] : array();
+
+		$fields = array(
+			'link_type' => array(
+				'field' => "{$p}link_type",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'url', 'popup', 'phone' )
+				)
+			),
+			'link_style' => array(
+				'field' => "{$p}link_style",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'button' )
+				)
+			),
+			'icon' => array(
+				'field' => "{$p}icon",
+				'save' => array(
+					'type' => 'select',
+					'options' => md_get_icons( 'ids' )
+				)
+			),
+			'url' => array(
+				'field' => "{$p}url",
+				'save' => array( 'type' => 'url' )
+			),
+			'link_target' => array(
+				'field' => "{$p}link_target",
+				'save' => array(
+					'type' => 'checkbox',
+					'options' => array( 'new' )
+				)
+			),
+			'toggle' => array(
+				'field' => "{$p}toggle",
+				'save' => array(
+					'type' => 'checkbox',
+					'options' => array( 'hide_label', 'hide_label_mobile' )
+				)
+			),
+			'phone' => array(
+				'field' => "{$p}phone",
+				'save' => array( 'type' => 'text' )
+			),
+			'popup' => array(
+				'field' => "{$p}popup",
+				'save' => array(
+					'type' => 'select',
+					'options' => md_get_popups( 'ids' )
+				)
+			),
+			'button_style' => array(
+				'field' => "{$p}button_style",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'outline' )
+				)
+			),
+			'button_color' => array(
+				'field' => "{$p}button_color",
+				'save' => array( 'type' => 'color' )
+			)
+		);
+
+		if ( isset( $args['keys'] ) )
+			foreach ( $fields as $key => $settings ) {
+				$field_key = ! empty( $args['keys'][$key] ) ? esc_attr( $args['keys'][$key] ) : '';
+
+				if ( $field_key )
+					$fields[$key]['field'] = str_replace( $key, $field_key, $fields[$key]['field'] );
+			}
+
+		if ( $group )
+			foreach ( $fields as $key => $field ) {
+				$fields[$key]['field'] = (array) $field['field'];
+				$fields[$key]['field'] = array_merge( $group, $fields[$key]['field'] );
+			}
+
+		if ( isset( $args['save'] ) )
+			foreach ( $fields as $key => $options ) {
+//				$field_val = $fields[$key]['field'];
+				unset( $fields[$key] );
+				$fields[$key] = $options['save'];
+			}
+
+		return $fields;
+	}
+
+}

@@ -79,24 +79,9 @@
 	<hr class="md-sep-small" />
 
 	<?php
-		foreach ( array( 'header', 'page-cover', 'content' ) as $name )
+		foreach ( array( 'page-cover', 'content' ) as $name )
 			include( "{$name}-settings.php" );
 	?>
-
-	<div class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
-		<div class="md-widget-item columns-3 columns-single">
-			<?php foreach ( $options['sidebar'] as $field => $label ) : ?>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'sidebar', $field ), array(
-						'type' => 'color',
-						'label' => $label,
-						'default' => ! empty( $defaults['colors']['sidebar'][$field] ) ? $defaults['colors']['sidebar'][$field] : ''
-					) ); ?>
-				</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>

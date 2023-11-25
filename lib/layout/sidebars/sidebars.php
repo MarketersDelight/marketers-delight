@@ -26,7 +26,8 @@ class md_sidebars extends md_api {
 	 */
 
 	public function register() {
-		$options = array();
+		$options = $typography = array();
+		$sanitize = new md_sanitize;
 		$types = md_sidebars();
 		$sidebars = md_get_sidebars();
 		$fields = array(
@@ -40,8 +41,31 @@ class md_sidebars extends md_api {
 				'fields' => array(
 					'name' => array( 'type' => 'text' )
 				)
-			)
+			),
+			'bg_color' => array( 'type' => 'color' ),
+			'text' => array( 'type' => 'color' ),
+			'title' => array( 'type' => 'color' ),
+			'links' => array( 'type' => 'color' )
 		);
+
+		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
+			$typography['font_size'][$device]['type'] = 'range';
+			$typography['line_height'][$device]['type'] = 'range';
+		}
+
+		$typography['font_family']['type'] = 'text';
+		$typography['font_type'] = array(
+			'type' => 'select',
+			'options' => array( 'default', 'google', 'typekit' )
+		);
+		$typography['font_weight'] = array(
+			'type' => 'select',
+			'options' => array_keys( $sanitize->_font_weights )
+		);
+
+		$fields = array_merge( $fields, $typography );
+
+		$fields['sidebar_title'] = $typography;
 
 		foreach ( $sidebars as $id => $name )
 			$options[] = $id;
@@ -78,6 +102,7 @@ class md_sidebars extends md_api {
 		$classes = '';
 		$types = md_sidebars();
 		$sitewide = $this->fields->module( array( 'display', 'sitewide' ) );
+		$defaults = $this->_data( 'defaults' );
 
 		if ( ! empty( $sitewide ) )
 			$classes = ' is-sitewide';

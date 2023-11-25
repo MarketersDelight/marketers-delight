@@ -216,6 +216,7 @@ class md_css {
 		$typography = $values['typography'];
 		$header = $values['header'];
 		$logo = $values['logo'];
+		$sidebar = $values['sidebar'];
 
 		$site_width = $values['colors']['width']['site'];
 		$site_width_full = $values['colors']['width']['site_full'];

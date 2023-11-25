@@ -16,6 +16,7 @@ class md_fields {
 	public $_clean_id;
 	public $_prefix;
 	public $_option;
+	public $data;
 
 	/**
 	 * Set properties of instance.
@@ -28,6 +29,7 @@ class md_fields {
 		$this->_clean_id = $args['clean_id'];
 		$this->_prefix   = $args['prefix'];
 		$this->_option   = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
+		$this->data      = new md_fields_data;
 	}
 
 	/**
@@ -348,7 +350,7 @@ class md_fields {
 	 */
 
 	public function code( $name, $id, $option, $args ) {
-		$rows = isset( $args['rows'] ) ? $args['rows'] : 10;
+		$rows = isset( $args['rows'] ) ? $args['rows'] : 7;
 	?>
 		<div class="md-code-editor">
 			<textarea name="<?php echo $name; ?>" id="<?php echo esc_attr( $id ); ?>" class="large-text" rows="<?php echo esc_attr( $rows ); ?>"><?php echo stripslashes( $option ); ?></textarea>
@@ -717,111 +719,13 @@ class md_fields {
 	}
 
 	/**
-	 * Organize data about button settings.
-	 *
-	 * @since 5.6
-	 */
-
-	public function link_fields_data( $args = array() ) {
-		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
-		$group = isset( $args['group'] ) ? $args['group'] : array();
-
-		$fields = array(
-			'link_type' => array(
-				'field' => "{$p}link_type",
-				'save' => array(
-					'type' => 'select',
-					'options' => array( 'url', 'popup', 'phone' )
-				)
-			),
-			'link_style' => array(
-				'field' => "{$p}link_style",
-				'save' => array(
-					'type' => 'select',
-					'options' => array( 'button' )
-				)
-			),
-			'icon' => array(
-				'field' => "{$p}icon",
-				'save' => array(
-					'type' => 'select',
-					'options' => md_get_icons( 'ids' )
-				)
-			),
-			'url' => array(
-				'field' => "{$p}url",
-				'save' => array( 'type' => 'url' )
-			),
-			'link_target' => array(
-				'field' => "{$p}link_target",
-				'save' => array(
-					'type' => 'checkbox',
-					'options' => array( 'new' )
-				)
-			),
-			'toggle' => array(
-				'field' => "{$p}toggle",
-				'save' => array(
-					'type' => 'checkbox',
-					'options' => array( 'hide_label', 'hide_label_mobile' )
-				)
-			),
-			'phone' => array(
-				'field' => "{$p}phone",
-				'save' => array( 'type' => 'text' )
-			),
-			'popup' => array(
-				'field' => "{$p}popup",
-				'save' => array(
-					'type' => 'select',
-					'options' => md_get_popups( 'ids' )
-				)
-			),
-			'button_style' => array(
-				'field' => "{$p}button_style",
-				'save' => array(
-					'type' => 'select',
-					'options' => array( 'outline' )
-				)
-			),
-			'button_color' => array(
-				'field' => "{$p}button_color",
-				'save' => array( 'type' => 'color' )
-			)
-		);
-
-		if ( isset( $args['keys'] ) )
-			foreach ( $fields as $key => $settings ) {
-				$field_key = ! empty( $args['keys'][$key] ) ? esc_attr( $args['keys'][$key] ) : '';
-
-				if ( $field_key )
-					$fields[$key]['field'] = str_replace( $key, $field_key, $fields[$key]['field'] );
-			}
-
-		if ( $group )
-			foreach ( $fields as $key => $field ) {
-				$fields[$key]['field'] = (array) $field['field'];
-				$fields[$key]['field'] = array_merge( $group, $fields[$key]['field'] );
-			}
-
-		if ( isset( $args['save'] ) )
-			foreach ( $fields as $key => $options ) {
-//				$field_val = $fields[$key]['field'];
-				unset( $fields[$key] );
-				$fields[$key] = $options['save'];
-			}
-
-		return $fields;
-	}
-
-	/**
 	 * Use this Field Group to display Link admin fields.
 	 *
 	 * @since 5.6
 	 */
 
 	public function link_fields( $args = array() ) {
-		$fields = $this->link_fields_data( $args );
+		$fields = $this->data->links( $args );
 		$link_type = $this->get_field( $fields['link_type']['field'], 'url' );
 		$link_style = $this->get_field( $fields['link_style']['field'], 'link' );
 

@@ -8,7 +8,7 @@
 }
 
 .trigger-icon {
-	color: <?php echo $colors['header']['color']; ?>;
+	color: <?php echo $header['color']; ?>;
 	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	line-height: 1;
 }
