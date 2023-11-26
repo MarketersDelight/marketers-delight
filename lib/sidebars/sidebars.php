@@ -26,10 +26,10 @@ class md_sidebars extends md_api {
 	 */
 
 	public function register() {
-		$options = $typography = array();
-		$sanitize = new md_sanitize;
+		$options = array();
 		$types = md_sidebars();
 		$sidebars = md_get_sidebars();
+		$typography = $this->fields->data->typography();
 		$fields = array(
 			'display' => array(
 				'type' => 'checkbox',
@@ -46,21 +46,6 @@ class md_sidebars extends md_api {
 			'text' => array( 'type' => 'color' ),
 			'title' => array( 'type' => 'color' ),
 			'links' => array( 'type' => 'color' )
-		);
-
-		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
-			$typography['font_size'][$device]['type'] = 'range';
-			$typography['line_height'][$device]['type'] = 'range';
-		}
-
-		$typography['font_family']['type'] = 'text';
-		$typography['font_type'] = array(
-			'type' => 'select',
-			'options' => array( 'default', 'google', 'typekit' )
-		);
-		$typography['font_weight'] = array(
-			'type' => 'select',
-			'options' => array_keys( $sanitize->_font_weights )
 		);
 
 		$fields = array_merge( $fields, $typography );

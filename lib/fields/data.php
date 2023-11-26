@@ -7,6 +7,47 @@
 
 class md_fields_data {
 
+	public $sanitize;
+
+	/**
+     * Assign shared class data and other setup actions.
+ 	 *
+ 	 * @since 5.6
+ 	 */
+
+	public function __construct() {
+		$this->sanitize = new md_sanitize;
+	}
+
+	/**
+     * A common fields structure for deploying Fonts & Typography options.
+ 	 *
+ 	 * @since 5.6
+ 	 */
+
+	public function typography() {
+		$fields = array();
+
+		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
+			$fields['font_size'][$device]['type'] = 'range';
+			$fields['line_height'][$device]['type'] = 'range';
+		}
+
+		$fields['font_family']['type'] = 'text';
+
+		$fields['font_type'] = array(
+			'type' => 'select',
+			'options' => array( 'default', 'google', 'typekit' )
+		);
+
+		$fields['font_weight'] = array(
+			'type' => 'select',
+			'options' => array_keys( $this->sanitize->_font_weights )
+		);
+
+		return $fields;
+	}
+
 	/**
      * A collection of save fields to be pre-grouped for Page Settings.
  	 *
@@ -14,31 +55,16 @@ class md_fields_data {
  	 */
 
 	public function page_settings() {
-		$sanitize = new md_sanitize;
-
 		return apply_filters( 'md_page_settings_fields', array(
-			'archives_title' => array( 'type' => 'text' ),
-			'archives_text' => array( 'type' => 'textarea' ),
-			'featured_image' => array(
-				'image' => array(
-					'type' => 'upload',
-					'upload_type' => 'media'
-				),
-				'image_width' => array(
-					'desktop' => array( 'type' => 'range' ),
-					'tablet' => array( 'type' => 'range' ),
-					'mobile' => array( 'type' => 'range' )
-				),
-				'position' => array(
+			'page' => array(
+				'title' => array( 'type' => 'text' ),
+				'description' => array( 'type' => 'textarea' ),
+				'cta' => array(
 					'type' => 'select',
-					'options' => array_keys( $sanitize->values['featured_image'] )
-				)
-			),
-			'page_cta' => array(
-				'type' => 'select',
-				'options' => array( 'links', 'custom' )
-			),
-			'custom_html' => array( 'type' => 'code' )
+					'options' => array( 'links', 'custom' )
+				),
+				'custom_html' => array( 'type' => 'code' )
+			)
 		) );
 	}
 

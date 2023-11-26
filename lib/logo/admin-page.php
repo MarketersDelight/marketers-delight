@@ -1,4 +1,4 @@
-<div class="md-content-wrap md-header-logo<?php echo ! empty( $values['header']['logo_html_display']['enable'] ) ? ' md-has-logo-html' : ''; ?>">
+<div class="md-content-wrap md-header-logo<?php echo ! empty( $values['logo']['logo_html_display']['enable'] ) ? ' md-has-logo-html' : ''; ?>">
 
 	<?php $this->fields->devices(); ?>
 
@@ -65,14 +65,14 @@
 
 			<div class="columns-2 columns-25-75 columns-half md-sep-micro">
 				<div class="col col1 md-sep-small">
-					<?php $this->fields->field( 'site_title_color', array(
+					<?php $this->fields->field( array( 'site_title', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'default' => $defaults['colors']['header']['site_title']
+						'default' => $defaults['logo']['site_title']['color']
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">
-					<?php $this->fields->field( 'site_title_text', array(
+					<?php $this->fields->field( array( 'site_title', 'text' ), array(
 						'type' => 'text',
 						'label' => __( 'Site Title', 'md' ),
 						'placeholder' => get_bloginfo( 'name' )
@@ -101,14 +101,14 @@
 
 			<div class="columns-2 columns-25-75 columns-half md-sep-micro">
 				<div class="col col1 md-sep-small">
-					<?php $this->fields->field( 'site_tagline_color', array(
+					<?php $this->fields->field( array( 'site_tagline', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'default' => $defaults['colors']['header']['site_tagline']
+						'default' => $defaults['logo']['site_tagline']['color']
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">
-					<?php $this->fields->field( 'site_tagline_text', array(
+					<?php $this->fields->field( array( 'site_title', 'text' ), array(
 						'type' => 'text',
 						'label' => __( 'Site Tagline', 'md' ),
 						'placeholder' => get_bloginfo( 'description' )

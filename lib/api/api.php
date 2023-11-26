@@ -301,8 +301,8 @@ class md_api {
 		$admin_fields = md_admin_fields();
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
-			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) {
-				if ( $this->_clean_id == 'featured_image' ) #wtf
+			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) { #wtf
+				if ( $this->_clean_id == 'featured_image' )
 					$order = 10;
 				elseif ( $this->_clean_id == 'page_cover' )
 					$order = 20;

@@ -72,13 +72,13 @@
 	<?php echo ( ! empty( $logo['site_title']['font_weight'] ) ? "\tfont-weight: " . $logo['site_title']['font_weight'] . ";\n" : '' ); ?>
 }
 
-<?php if ( ! empty( $header['site_title'] ) ) : ?>
+<?php if ( ! empty( $logo['site_title']['color'] ) ) : ?>
 	.header .site-title, .header .site-title:hover,
-	.header .site-title a, .header .site-title a:hover { color: <?php echo $header['site_title']; ?>; }
+	.header .site-title a, .header .site-title a:hover { color: <?php echo $logo['site_title']['color']; ?>; }
 <?php endif; ?>
 
 .tagline {
-	color: <?php echo $header['site_tagline']; ?>;
+	color: <?php echo $logo['site_tagline']['color']; ?>;
 	<?php if ( ! empty( $logo['site_tagline']['font_family'] ) ) : ?>
 		font-family: <?php echo $logo['site_tagline']['font_family']; ?>;
 	<?php endif; ?>
@@ -92,7 +92,7 @@
 	line-height: <?php echo $logo['site_tagline']['line_height']['desktop'] ; ?>px;
 }
 
-.tagline a { color: <?php echo $header['site_tagline']; ?>; }
+.tagline a { color: <?php echo $logo['site_tagline']['color']; ?>; }
 
 <?php if ( md_setting( array( 'header', 'display', 'tagline_same_line' ) ) ) : ?>
 .site-title + .tagline { margin-left: <?php echo $third; ?>px; }

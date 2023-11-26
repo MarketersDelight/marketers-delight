@@ -135,7 +135,7 @@ class md_page_cover extends md_api {
 			'disable_cover' => $overlay_label
 		) );
 
-		include( 'admin-fields.php' );
+		include( 'admin/cover-fields.php' );
 	}
 
 	/**

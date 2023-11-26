@@ -246,6 +246,7 @@ class md_design {
 			),
 			'logo' => array(
 				'site_title' => array(
+					'color' => $colors['text'],
 					'font_size' => array(
 						'desktop' => $site_title
 					),
@@ -254,6 +255,7 @@ class md_design {
 					)
 				),
 				'site_tagline' => array(
+					'color' => $colors['subtext'],
 					'font_size' => array(
 						'desktop' => round( $font_size * 0.9 ),
 					),
@@ -272,8 +274,6 @@ class md_design {
 				'bg_color' => '#FFFFFF',
 				'border_color' => $colors['border'],
 				'color' => $colors['subtext'],
-				'site_title' => $colors['text'],
-				'site_tagline' => $colors['subtext'],
 				'menu' => array(
 					'links' => '#444444',
 					'hover' => '#2E2E2E',

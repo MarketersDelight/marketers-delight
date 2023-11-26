@@ -24,9 +24,7 @@ class md_loop extends md_api {
 	 */
 
 	public function register() {
-		$this->_id = 'md_loop';
 		$this->name = __( 'Loop', 'md' );
-		$save = new md_sanitize;
 		$fields = $this->fields();
 
 		return array(

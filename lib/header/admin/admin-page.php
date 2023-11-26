@@ -1,5 +1,7 @@
 <div class="md-header-settings md-content-wrap<?php echo $header_layout == 'flyer' ? ' is-flyer' : ''; ?>">
 
+	<?php $this->fields->devices(); ?>
+
 	<h2 class="md-title"><?php echo __( 'Header', 'md' ); ?></h2>
 
 	<p><?php echo __( 'Customize your website header with specialized navigation elements.', 'md' ); ?></p>

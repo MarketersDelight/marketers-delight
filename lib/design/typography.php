@@ -31,30 +31,18 @@ class md_typography extends md_api {
 
 	public function register() {
 		$fields = array();
-		$sanitize = new md_sanitize;
 		$groups = array( 'body', 'h1', 'h2', 'h3', 'h4', 'h5', 'footer', 'footer_title' );
 
 		foreach ( $groups as $group ) {
-			foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
-				$fields[$group]['font_size'][$device]['type'] = 'range';
-				$fields[$group]['line_height'][$device]['type'] = 'range';
-			}
+			$fields[$group] = $this->fields->data->typography();
 
-			$fields[$group]['font_family']['type'] = 'text';
-			$fields[$group]['font_type'] = array(
-				'type' => 'select',
-				'options' => array( 'default', 'google', 'typekit' )
-			);
-			$fields[$group]['font_weight'] = array(
-				'type' => 'select',
-				'options' => array_keys( $sanitize->_font_weights )
-			);
-
-			if ( $group == 'body' )
+			if ( $group == 'body' ) {
+				$sanitize = new md_sanitize;
 				$fields[$group]['bold'] = array(
 					'type' => 'select',
 					'options' => array_keys( $sanitize->_font_weights )
 				);
+			}
 		}
 
 		$fields['google_fonts']['type'] = 'text';

@@ -24,7 +24,7 @@ final class marketers_delight {
 		define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
 		define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
-		define( 'MD_PLUGIN_DIR', MD_DIR . 'lib/' );
+		define( 'MD_PLUGIN_DIR', '' );
 		define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 		define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
 		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
@@ -62,28 +62,38 @@ final class marketers_delight {
 	 */
 
 	public function includes() {
-		require_once( MD_DIR . 'lib/api/hooks-filters.php' );
-		require_once( MD_DIR . 'lib/api/fields/fields-data.php' );
-		require_once( MD_DIR . 'lib/api/fields/fields.php' );
-		require_once( MD_DIR . 'lib/api/css.php' );
-		require_once( MD_DIR . 'lib/api/js.php' );
-		require_once( MD_DIR . 'lib/api/files.php' );
-		require_once( MD_DIR . 'lib/api/design.php' );
-		require_once( MD_DIR . 'lib/api/api-functions.php' );
-		require_once( MD_DIR . 'lib/api/sanitize.php' );
-		require_once( MD_DIR . 'lib/api/requests.php' );
-		require_once( MD_DIR . 'lib/api/api.php' );
-		require_once( MD_DIR . 'lib/api/deprecated.php' );
-		require_once( MD_DIR . 'lib/design/design.php' );
+		require_once( 'api/hooks-filters.php' );
+		require_once( 'fields/data.php' );
+		require_once( 'fields/fields.php' );
+		require_once( 'api/css.php' );
+		require_once( 'api/js.php' );
+		require_once( 'api/files.php' );
+		require_once( 'api/design.php' );
+		require_once( 'api/api-functions.php' );
+		require_once( 'api/sanitize.php' );
+		require_once( 'api/requests.php' );
+		require_once( 'api/api.php' );
+		require_once( 'api/deprecated.php' );
+		require_once( 'design/design.php' );
 		if ( is_admin() )
-			require_once( MD_DIR . 'lib/admin/admin.php' );
-		require_once( MD_DIR . 'lib/layout/layout.php' );
-		require_once( MD_DIR . 'lib/templates.php' );
-		require_once( MD_DIR . 'lib/api/walker.php' );
+			require_once( 'admin/admin.php' );
+		require_once( 'header/header.php' );
+		require_once( 'logo/logo.php' );
+		require_once( 'page/page-cover.php' );
+		require_once( 'featured-image/featured-image.php' );
+		require_once( 'featured-video/featured-video.php' );
+		require_once( 'page/page-title.php' );
+		require_once( 'loop/loop.php' );
+		require_once( 'sidebars/sidebars.php' );
+		require_once( 'blog/blog.php' );
+		require_once( 'single/single.php' );
+		require_once( 'layout/layout.php' );
+		require_once( 'templates.php' );
+		require_once( 'api/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
-			include_once( MD_DIR . "lib/widgets/$widget.php" );
+			include_once( "widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
-			require_once( MD_DIR . 'lib/blocks/blocks.php' );
+			require_once( 'blocks/blocks.php' );
 		$this->dropins();
 	}
 

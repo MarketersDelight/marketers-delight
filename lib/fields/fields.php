@@ -508,7 +508,7 @@ class md_fields {
 
 		$classes = join( ' ', $classes );
 
-		include( 'fields-upload.php' );
+		include( 'uploader.php' );
 	}
 
 	/**
@@ -637,7 +637,7 @@ class md_fields {
 		$option = array_merge( $empty, $option );
 		$style = isset( $args['style'] ) ? $args['style'] : 'list';
 
-		include( 'fields-group.php' );
+		include( 'group.php' );
 	}
 
 	/**
@@ -653,7 +653,7 @@ class md_fields {
 		$key = esc_attr( $args['field'] );
 		$active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
-		include( 'fields-builder.php' );
+		include( 'builder.php' );
 	}
 
 	/**
@@ -666,7 +666,7 @@ class md_fields {
 		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
 		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
 
-		include( 'fields-builder-fields.php' );
+		include( 'builder-fields.php' );
 	}
 
 	/**
@@ -677,7 +677,7 @@ class md_fields {
 	 */
 
 	public function display_fields( $types, $args = null ) {
-		include( 'fields-display.php' );
+		include( 'display.php' );
 	}
 
 	/**
@@ -715,7 +715,7 @@ class md_fields {
 				'image' => MD_URL . 'lib/admin/images/typekit-small.png'
 			);
 
-		include( 'fields-typography.php' );
+		include( 'typography.php' );
 	}
 
 	/**
@@ -734,7 +734,7 @@ class md_fields {
 		$classes[] = 'style-' . $link_style;
 		$classes = join( ' ', $classes );
 
-		include( 'fields-link.php' );
+		include( 'link-fields.php' );
 	}
 
 	/**

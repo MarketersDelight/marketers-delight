@@ -1,7 +1,6 @@
 <?php
 /**
- * A unified settings group to compile various page
- * settings into a tabbed interface.
+ * A unified settings group to compile various page settings into a joined interface.
  *
  * @since 5.6
  */

@@ -62,6 +62,8 @@
 
 	<?php endforeach; ?>
 
+	<hr class="md-sep-small" />
+
 	<div class="md-widget md-toggle md-sep-small">
 
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
