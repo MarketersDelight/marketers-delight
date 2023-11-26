@@ -29,6 +29,7 @@ class md_featured_image extends md_api {
 
 		add_action( 'md_layout_post_after_header', array( $this, 'featured_image_position' ) );
 		add_action( 'md_hook_page_title_fields', array( $this, 'featured_image_fields' ) );
+		add_filter( 'md_page_settings_fields', array( $this, 'save' ) );
 	}
 
 	/**
@@ -75,6 +76,18 @@ class md_featured_image extends md_api {
 				'options' => array_keys( $sanitize->values['featured_image'] )
 			)
 		);
+	}
+
+	/**
+	 * Filter featured image fields to be saved in other settings geoups.
+	 *
+	 * @since 5.6
+	 */
+
+	public function save( $save ) {
+		$save[$this->_clean_id] = $this->fields();
+
+		return $save;
 	}
 
 	/**

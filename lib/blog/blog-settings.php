@@ -4,6 +4,8 @@
 
 <div class="md-content-wrap-med">
 
+	<?php $this->fields->page_fields(); ?>
+
 	<?php do_action( "{$this->_id}_admin_fields" ); ?>
 
 	<hr class="md-sep-small" />

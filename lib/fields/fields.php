@@ -738,6 +738,19 @@ class md_fields {
 	}
 
 	/**
+	 * Build generic Page fields for standard components of a web page.
+	 *
+	 * @since 5.6
+	 */
+
+	public function page_fields( ){
+		$cta_type = $this->get_field( 'page_cta' );
+		$prefix = $this->_prefix;
+
+		include( 'page-fields.php' );
+	}
+
+	/**
 	 * Devices toggle controls, adds device classes to .md.wrap
 	 * to toggle controls for different screen sizes.
 	 *

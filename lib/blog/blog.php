@@ -35,7 +35,7 @@ class md_post extends md_api {
 	 */
 
 	public function admin_settings( $settings ) {
-		$settings[$this->_id] = array( 'page_cover', 'featured_image', 'layout', 'loop', 'single', 'share', 'optins', 'scripts' );
+		$settings[$this->_id] = array( 'page_cover', 'layout', 'featured_image', 'loop', 'single', 'share', 'optins', 'scripts' );
 
 		return $settings;
 	}

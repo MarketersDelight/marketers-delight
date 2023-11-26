@@ -1,5 +1,5 @@
 <div class="md-field-row md-sep">
-	<?php $this->fields->field( 'archives_title', array(
+	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
 		'description' => __( 'Add an <code>h1</code> title tag to the top of the page.', 'md' )
@@ -7,7 +7,7 @@
 </div>
 
 <div class="md-field-row md-sep">
-	<?php $this->fields->field( 'archives_text', array(
+	<?php $this->field( 'archives_text', array(
 		'type' => 'textarea',
 		'label' => __( 'Description', 'md' ),
 		'description' => __( 'Write a short description to show below the page title.', 'md' ),
@@ -20,7 +20,7 @@
 <div class="md-page-cta md-conditional">
 
 	<div class="md-field-row md-sep-small">
-		<?php $this->fields->field( 'page_cta', array(
+		<?php $this->field( 'page_cta', array(
 			'type' => 'select',
 			'label' => __( 'Call to Action', 'md' ),
 			'description' => __( 'Show a call to action at the top of this page.', 'md' ),
@@ -40,7 +40,7 @@
 				<?php echo __( 'Primary Link', 'md' ); ?>
 			</div>
 			<div class="md-widget-item">
-				<?php $this->fields->link_fields( array(
+				<?php $this->link_fields( array(
 					'group' => array( 'link_primary' )
 				) ); ?>
 			</div>
@@ -51,7 +51,7 @@
 				<?php echo __( 'Secondary Link', 'md' ); ?>
 			</div>
 			<div class="md-widget-item">
-				<?php $this->fields->link_fields( array(
+				<?php $this->link_fields( array(
 					'group' => array( 'link_secondary' )
 				) ); ?>
 			</div>
@@ -61,7 +61,7 @@
 
 	<div id="<?php echo $prefix; ?>_page_cta_custom" class="md-conditional-item md-conditional-custom md-row-space" style="display: <?php echo $cta_type == 'custom' ? 'block' : 'none'; ?>">
 
-		<?php $this->fields->field( 'custom_html', array(
+		<?php $this->field( 'custom_html', array(
 			'type' => 'code',
 			'label' => __( 'Custom HTML', 'md' ),
 		) ); ?>

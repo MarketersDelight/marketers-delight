@@ -56,15 +56,13 @@ class md_fields_data {
 
 	public function page_settings() {
 		return apply_filters( 'md_page_settings_fields', array(
-			'page' => array(
-				'title' => array( 'type' => 'text' ),
-				'description' => array( 'type' => 'textarea' ),
-				'cta' => array(
-					'type' => 'select',
-					'options' => array( 'links', 'custom' )
-				),
-				'custom_html' => array( 'type' => 'code' )
-			)
+			'archives_title' => array( 'type' => 'text' ),
+			'archives_text' => array( 'type' => 'textarea' ),
+			'page_cta' => array(
+				'type' => 'select',
+				'options' => array( 'links', 'custom' )
+			),
+			'custom_html' => array( 'type' => 'code' )
 		) );
 	}
 
