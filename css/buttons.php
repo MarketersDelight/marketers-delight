@@ -4,7 +4,8 @@
 	$BUTTONS
 \*------------------------------*/
 
-button, .button, a.button, .button a, input[type="submit"], .format .button {
+button, .button, a.button, .button a, input[type="submit"],
+.format .button, .header .button, .header .button:hover {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
 	border-radius: 5px;
@@ -24,7 +25,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	-webkit-appearance: none;
 }
 
-button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover, .format .button:hover { transform: translateY(1px); }
+button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
 
 .button-subtext { font-weight: <?php echo $font_weight; ?>; }
 

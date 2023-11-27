@@ -131,16 +131,6 @@ function md_filter_template() {
 }
 
 /**
- * Determine the logo HTML tag.
- *
- * @since 4.1
- */
-
-function md_logo_html() {
-	return apply_filters( 'md_filter_logo_html', 'div' );
-}
-
-/**
  * Compile Popups to load on any given page.
  *
  * @since 5.0

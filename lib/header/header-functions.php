@@ -25,9 +25,6 @@ function md_header_classes() {
 	$classes = array();
 	$classes[] = 'header';
 
-	if ( md_has_logo() )
-		$classes[] = 'has-logo';
-
 	if ( ! md_has_menu() || ! md_has_logo() )
 		$classes[] = 'header-simple';
 	else

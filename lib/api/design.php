@@ -273,16 +273,14 @@ class md_design {
 				),
 				'bg_color' => '#FFFFFF',
 				'border_color' => $colors['border'],
-				'color' => $colors['subtext'],
 				'menu' => array(
 					'links' => '#444444',
-					'hover' => '#2E2E2E',
+					'hover' => $primary_color,
 					'active' => $primary_color
 				),
 				'submenu' => array(
 					'bg_color' => '#FFFFFF',
-					'links' => '#444444',
-					'hover' => '#2E2E2E'
+					'links' => '#444444'
 				)
 			),
 			'content' => array(

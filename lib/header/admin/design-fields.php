@@ -15,8 +15,7 @@
 			<div class="col md-sep-small">
 				<?php $this->fields->field( 'color', array(
 					'type' => 'color',
-					'label' => __( 'Text', 'md' ),
-					'default' => $defaults['header']['color']
+					'label' => __( 'Text', 'md' )
 				) ); ?>
 			</div>
 			<div class="col md-sep-small">
@@ -78,8 +77,7 @@
 			<div class="col md-sep-small">
 				<?php $this->fields->field( array( 'submenu', 'hover' ), array(
 					'type' => 'color',
-					'label' => __( 'Links Hover', 'md' ),
-					'default' => $defaults['header']['submenu']['hover']
+					'label' => __( 'Links Hover', 'md' )
 				) ); ?>
 			</div>
 		</div>

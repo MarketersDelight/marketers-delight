@@ -35,7 +35,7 @@ class md_header_templates {
 		if ( ! md_has_menu() )
 			return;
 
-		echo $header_center ? '<div class="header-primary">' : '';
+		echo '<div class="header-primary">';
 
 		if ( ! empty( $data['header'] ) )
 			foreach ( $data['header'] as $order => $items ) {
@@ -48,7 +48,7 @@ class md_header_templates {
 		elseif ( md_has_menu() )
 			$this->menu();
 
-		echo $header_center ? '</div>' : '';
+		echo '</div>';
 
 		if ( ! empty( $data['header_aside'] ) ) {
 			echo '<div class="header-aside">';

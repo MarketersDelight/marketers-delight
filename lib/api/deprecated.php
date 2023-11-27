@@ -4,6 +4,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Deprecated 5.6
+function md_logo_html() { return apply_filters( 'md_filter_logo_html', 'div' ); }
 function md_button( $fields ) { md_link( $fields ); }
 function md_hook_headline_top() { do_action( 'md_hook_headline_top' ); }
 function md_hook_headline_bottom() { do_action( 'md_hook_headline_bottom' ); }
@@ -16,6 +17,64 @@ function md_featured_image_style() { md_cover_style(); }
 function md_featured_image_cover() { md_cover_style(); }
 function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
+
+/**
+ * Final logo logic and rendering.
+ *
+ * @since 4.5.4
+ * @deprecated 6.0
+ */
+
+function md_the_logo() {
+	$has_custom_logo = md_has_custom_logo();
+	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );
+	$logo_html = md_setting( array( 'logo', 'logo_html' ) );
+	if ( $has_logo_html && ! empty( $logo_html ) )
+		echo $logo_html;
+	else {
+		$logo_id = md_setting( array( 'logo', 'logo', 'id' ) );
+		$secondary_logo = md_setting( array( 'logo', 'logo_alt', 'url' ) );
+		$text_global = md_setting( array( 'colors', 'page_cover', 'styles', 'text_color' ) );
+		$text_single = md_post_meta( array( 'colors', 'text_color', 'alternate' ) );
+		$cover = md_cover();
+		if ( ( ( ( is_singular() || is_category() || is_tax() ) && $cover['position'] == 'header_cover_full' ) || apply_filters( 'md_filter_logo_alt', false ) ) && ! empty( $secondary_logo ) ) {
+			if ( ( ! empty( $logo_id ) && $secondary_logo ) && ( ( empty( $text_global ) && empty( $text_single ) ) || ( ! empty( $text_global ) && ! empty( $text_single ) ) ) )
+				md_secondary_logo();
+			else
+				echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo-link' ) );
+		}
+		else
+			echo wp_get_attachment_image( $logo_id, 'full', false, array( 'class' => 'custom-logo-link' ) );
+	}
+}
+
+/**
+ * Checks for WordPress' custom logo.
+ *
+ * @since 4.5.4
+ * @deprecated 6.0
+ */
+function md_has_custom_logo() {
+	$logo_image = md_setting( array( 'logo', 'logo', 'url' ) );
+	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );
+	$logo_html = md_setting( array( 'logo', 'logo_html' ) );
+	if ( $logo_image || ( $has_logo_html && ! empty( $logo_html ) ) )
+		return true;
+}
+
+/**
+ * Render secondary logo for dark mode.
+ *
+ * @since 4.5.4
+ * @deprecated 6.0
+ */
+function md_secondary_logo() {
+	$secondary_logo_id = md_setting( array( 'logo', 'logo_alt', 'id' ) );
+	echo '<span class="custom-logo-link">';
+	if ( ! empty( $secondary_logo_id ) )
+		echo wp_get_attachment_image( $secondary_logo_id, 'full' );
+	echo '</span>';
+}
 
 /**
  * Checks if Main Menu is active on page.
