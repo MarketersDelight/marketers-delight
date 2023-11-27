@@ -7,7 +7,7 @@
 		<div class="site-details">
 
 			<?php if ( md_has_site_title() ) : ?>
-				<p class="site-name"><a href="<?php echo esc_url( home_url( '/' ) ); ?>"><?php echo md_site_title(); ?></a></p>
+				<p class="site-name"><a href="<?php echo home_url( '/' ); ?>"><?php echo md_site_title(); ?></a></p>
 				<?php md_hook_after_site_title(); ?>
 			<?php endif; ?>
 

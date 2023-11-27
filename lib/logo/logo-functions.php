@@ -72,8 +72,7 @@ function md_custom_logo() {
 
 	if ( $has_logo_html && $logo_html )
 		$logo = $logo_html;
-
-	if ( $logo_id ) {
+	elseif ( $logo_id ) {
 		$secondary_logo_id = md_setting( array( 'logo', 'logo_alt', 'id' ) );
 		$cover = md_cover();
 

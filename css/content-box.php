@@ -13,10 +13,6 @@
 }
 
 .flex,
-.header-triggers, .header-controls, .header-logo,
-<?php if ( md_setting( array( 'header', 'logo', 'url' ) ) ) : ?>
-.header-logo a,
-<?php endif; ?>
 .author-title, .comments-title, .comment-details, .post-nav,
 .fields-icons .form-field,
 .form-inputs, .search-form, .wp-block-search__inside-wrapper {
