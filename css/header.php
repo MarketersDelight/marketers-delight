@@ -84,10 +84,6 @@
 
 /* SEARCH */
 
-.header-search { padding: <?php echo $half; ?>px; }
-
-.trigger-search { display: none; }
-
 .form-toggle .trigger-search { display: block; }
 
 /* QUERIES */
@@ -100,8 +96,9 @@
 		justify-content: space-between;
 	}
 	/* SEARCH */
-	.header-triggers,
+	.header-triggers, .trigger-search,
 	.has-search .header-link, .has-search .header_aside-link, .has-search .header-menu { display: none; }
+	.header-search { padding: <?php echo $half; ?>px; }
 	.has-search .header-primary { flex: 1; }
 	.has-search .header-search { width: 100%; }
 }
@@ -113,6 +110,7 @@
 	.hide-label-mobile .link-text { display: none; }
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu,
 	.header-controls .header-link, .header-controls .header_aside-link { display: block; }
+	.has-search .search-form { display: flex; }
 	/* LAYOUT */
 	.header-controls, .header-triggers {
 		align-items: center;
@@ -122,11 +120,15 @@
 		flex: 1;
 		justify-content: space-between;
 	}
+	.header-triggers .trigger { margin-left: <?php echo $half; ?>px; }
+	.header .trigger-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px; }
 	/* MENU */
 	.header .menu {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
+	/* SEARCH */
+	.header-search { padding-bottom: <?php echo $half; ?>px; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
