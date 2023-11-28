@@ -76,14 +76,6 @@
 
 .logo img { width: 100%; }
 
-/* TRIGGERS */
-
-.trigger-icon {
-	color: <?php echo $header['color']; ?>;
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px;
-	line-height: 1;
-}
-
 /* MENU */
 
 .header .current-menu-item > a, .header .current-menu-item > .menu-toggle { color: <?php echo $header['menu']['active']; ?>; }

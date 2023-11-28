@@ -13,57 +13,68 @@
 .menu-item a {
 	padding: <?php echo $half; ?>px;
 	position: relative;
+	width: 100%;
 }
 
 /* TOGGLE */
 
-.menu-toggle {
-	cursor: pointer;
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px;
-}
-
-.menu-toggle:before, .menu-toggle:after {
+.menu .trigger-icon:before,
+.menu .trigger-icon:after {
 	font-family: md-icon;
 	line-height: 1;
 }
 
-.menu-toggle:after { content: '\e80e'; }
+.menu .trigger-icon:after { content: '\e80e'; }
 
 /* SUB MENU */
 
+.menu-item-has-children > a { flex-basis: 90%; }
+
+.menu-item-has-children > .trigger { flex-basis: 10%; }
+
 .sub-menu {
-	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
 	display: none;
-	line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
 	z-index: 50;
+}
+
+.sub-menu .menu-item {
+	align-items: center;
+	display: flex;
+}
+
+.sub-menu .menu-item a {
+	color: <?php echo $header['submenu']['links']; ?>;
+	display: block;
 }
 
 @media all and (min-width: 800px) {
 	.menu { display: flex; }
+	.menu > .menu-item-has-children { margin-right: <?php echo $half; ?>px; }
+	.menu-item-has-children a { padding-right: <?php echo $third; ?>px; }
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $header['submenu']['bg_color']; ?>;
 		border-radius: 5px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
 		position: absolute;
-			right: -<?php echo $single; ?>px;
+			right: -<?php echo $half; ?>px;
 		width: <?php echo $submenu_width; ?>px;
 	}
 	.menu-item-has-children:hover > .sub-menu { display: block; }
+	.sub-menu .menu-item-has-children a { order: 2; }
 	.sub-menu .sub-menu {
-		right: <?php echo $submenu_width; ?>px;
 		top: 0;
-	}
-    .sub-menu .menu-item a {
-		color: <?php echo $header['submenu']['links']; ?>;
-		display: block;
+		right: <?php echo $submenu_width; ?>px;
 	}
 	<?php if ( ! empty( $header['submenu']['hover'] ) ) : ?>
 	.sub-menu .menu-item a:hover { color: <?php echo $header['submenu']['hover']; ?>; }
 	<?php endif; ?>
-	.sub-menu .menu-item:not(:last-child) a { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
-	.menu-item-has-children { margin-right: <?php echo $half; ?>px; }
-	.menu-item-has-children a { padding-right: <?php echo $third; ?>px; }
+	.sub-menu .menu-item:not(:last-child) a,
+	.sub-menu .menu-item:not(:last-child) .trigger { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
+	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
+	.sub-menu .trigger-icon:after { content: '\e816'; }
 }
 
 @media all and (max-width: 800px) {
@@ -74,15 +85,10 @@
 		flex-flow: wrap;
 	}
 	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
-	.menu-item a { width: 100%; }
-	.toggle-menu > .sub-menu { display: block; }
 	/* TOGGLE */
-	.menu-toggle {
-		padding: <?php echo $half; ?>px;
-		text-align: center;
-	}
+	.menu .trigger { padding: <?php echo $half; ?>px; }
+	.toggle-menu > .trigger .trigger-icon:after { content: '\e817'; }
 	/* SUB MENU */
 	.sub-menu { flex-basis: 100%; }
-	.menu-item-has-children > a { flex-basis: 90%; }
-	.menu-item-has-children > .menu-toggle { flex-basis: 10%; }
+	.toggle-menu > .sub-menu { display: block; }
 }

@@ -5,10 +5,12 @@
 .trigger {
 	cursor: pointer;
 	position: relative;
+	text-align: center;
 }
 
 .trigger-icon {
 	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
+	font-style: normal;
 	line-height: 1;
 }
 
