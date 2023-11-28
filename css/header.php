@@ -28,14 +28,6 @@
 
 .header a:hover { color: <?php echo $header['menu']['hover']; ?>; }
 
-/* LAYOUT */
-
-.header-wrap, .header-primary, .header-aside {
-	align-items: center;
-	display: flex;
-	justify-content: space-between;
-}
-
 /* SITE TITLE + TAGLINE */
 
 .site-title {
@@ -77,10 +69,26 @@
 	flex-basis: <?php echo $logo['logo_width']['desktop']; ?>px;
 	<?php endif; ?>
 	margin-right: <?php echo $half; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 	position: relative;
 }
 
 .logo img { width: 100%; }
+
+/* TRIGGERS */
+
+.trigger-icon {
+	color: <?php echo $header['color']; ?>;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px;
+	line-height: 1;
+}
+
+/* MENU */
+
+.header .current-menu-item > a, .header .current-menu-item > .menu-toggle { color: <?php echo $header['menu']['active']; ?>; }
+
+.header-link, .header_aside-link { margin-left: <?php echo $half; ?>px; }
 
 /* SEARCH */
 
@@ -93,5 +101,45 @@
 /* QUERIES */
 
 @media all and (min-width: 800px) {
-	.header-triggers { display: none; }
+	/* LAYOUT */
+	.header-wrap, .header-primary, .header-aside {
+		align-items: center;
+		display: flex;
+		justify-content: space-between;
+	}
+	/* SEARCH */
+	.header-triggers,
+	.has-search .header-link, .has-search .header_aside-link, .has-search .header-menu { display: none; }
+	.has-search .header-primary { flex: 1; }
+	.has-search .header-search { width: 100%; }
+}
+
+@media all and (max-width: 800px) {
+	/* DISPLAY */
+	.header-menu, .header_aside-menu,
+	.header-link, .header_aside-link, .header .search-form,
+	.hide-label-mobile .link-text { display: none; }
+	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu,
+	.header-controls .header-link, .header-controls .header_aside-link { display: block; }
+	/* LAYOUT */
+	.header-controls, .header-triggers {
+		align-items: center;
+		display: flex;
+	}
+	.header-controls {
+		flex: 1;
+		justify-content: space-between;
+	}
+	/* MENU */
+	.header .menu {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.header .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
 }

@@ -15,7 +15,8 @@
 			<div class="col md-sep-small">
 				<?php $this->fields->field( 'color', array(
 					'type' => 'color',
-					'label' => __( 'Text', 'md' )
+					'label' => __( 'Text', 'md' ),
+					'default' => $defaults['header']['color']
 				) ); ?>
 			</div>
 			<div class="col md-sep-small">

@@ -273,6 +273,7 @@ class md_design {
 				),
 				'bg_color' => '#FFFFFF',
 				'border_color' => $colors['border'],
+				'color' => $colors['text'],
 				'menu' => array(
 					'links' => '#444444',
 					'hover' => $primary_color,

@@ -4,12 +4,7 @@
 	$MENUS
 \*------------------------------*/
 
-.menu {
-	display: flex;
-	list-style: none;
-}
-
-.menu ul { list-style: none; }
+.menu, .menu ul { list-style: none; }
 
 /* MENU ITEM */
 
@@ -20,17 +15,11 @@
 	position: relative;
 }
 
-.menu .current-menu-item > a,
-.current-menu-item > .menu-toggle {
-	color: <?php echo $header['menu']['active']; ?>;
-	font-weight: <?php echo $bold; ?>;
-}
-
 /* TOGGLE */
 
 .menu-toggle {
 	cursor: pointer;
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.1 ); ?>px;
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px;
 }
 
 .menu-toggle:before, .menu-toggle:after {
@@ -50,6 +39,8 @@
 }
 
 @media all and (min-width: 800px) {
+	.menu { display: flex; }
+	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $header['submenu']['bg_color']; ?>;
 		border-radius: 5px;
@@ -72,9 +63,26 @@
 	<?php endif; ?>
 	.sub-menu .menu-item:not(:last-child) a { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
 	.menu-item-has-children { margin-right: <?php echo $half; ?>px; }
-	.menu-item-has-children a { padding-right: <?php echo $small; ?>px; }
+	.menu-item-has-children a { padding-right: <?php echo $third; ?>px; }
 }
 
 @media all and (max-width: 800px) {
+	/* MENU ITEM */
+	.menu-item {
+		align-items: center;
+		display: flex;
+		flex-flow: wrap;
+	}
+	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
+	.menu-item a { width: 100%; }
 	.toggle-menu > .sub-menu { display: block; }
+	/* TOGGLE */
+	.menu-toggle {
+		padding: <?php echo $half; ?>px;
+		text-align: center;
+	}
+	/* SUB MENU */
+	.sub-menu { flex-basis: 100%; }
+	.menu-item-has-children > a { flex-basis: 90%; }
+	.menu-item-has-children > .menu-toggle { flex-basis: 10%; }
 }
