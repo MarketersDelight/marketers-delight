@@ -32,9 +32,6 @@ class md_header_templates {
 
 		echo '</div>';
 
-		if ( ! md_has_menu() )
-			return;
-
 		echo '<div class="header-primary">';
 
 		if ( ! empty( $data['header'] ) )
@@ -45,8 +42,6 @@ class md_header_templates {
 				if ( ! empty( $fields[$id] ) )
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 			}
-		elseif ( md_has_menu() )
-			$this->menu();
 
 		echo '</div>';
 
@@ -63,6 +58,9 @@ class md_header_templates {
 
 			echo '</div>';
 		}
+
+		if ( empty( $data ) && md_has_menu() )
+			$this->menu();
 	}
 
 	/**

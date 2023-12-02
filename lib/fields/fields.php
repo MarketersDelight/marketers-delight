@@ -726,8 +726,8 @@ class md_fields {
 
 	public function link_fields( $args = array() ) {
 		$fields = $this->data->links( $args );
-		$link_type = $this->get_field( $fields['link_type']['field'], 'url' );
-		$link_style = $this->get_field( $fields['link_style']['field'], 'link' );
+		$link_type = $this->module( $fields['link_type']['field'], 'url' );
+		$link_style = $this->module( $fields['link_style']['field'], 'link' );
 
 		$classes = array( 'md-group-link' );
 		$classes[] = 'type-' . $link_type;
