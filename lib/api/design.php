@@ -255,13 +255,7 @@ class md_design {
 					)
 				),
 				'site_tagline' => array(
-					'color' => $colors['subtext'],
-					'font_size' => array(
-						'desktop' => round( $font_size * 0.9 ),
-					),
-					'line_height' => array(
-						'desktop' => round( $line_height * 0.7 )
-					)
+					'color' => $colors['subtext']
 				)
 			),
 			'header' => array(

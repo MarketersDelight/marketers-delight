@@ -116,14 +116,7 @@
 				</div>
 			</div>
 
-			<?php $this->fields->typography( 'site_tagline', array(
-				'font_size' => array(
-					'desktop' => $defaults['logo']['site_tagline']['font_size']['desktop']
-				),
-				'line_height' => array(
-					'desktop' => $defaults['logo']['site_tagline']['line_height']['desktop']
-				)
-			) ); ?>
+			<?php $this->fields->typography( 'site_tagline' ); ?>
 
 		</div>
 

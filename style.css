@@ -1359,10 +1359,9 @@ ul.list-check li:before {
 .site-name, .site-name a, .site-name a:hover { color: #1E1E1E; }
 .tagline {
 	color: #777777;
-		font-size: 15px;
-		line-height: 20px;
-}
+				}
 .tagline a { color: #777777; }
+.header-rtl .site-title { justify-content: end; }
 /* LOGO */
 .logo {
 		flex-basis: 75px;
@@ -1372,6 +1371,11 @@ ul.list-check li:before {
 	position: relative;
 }
 .logo img { width: 100%; }
+.header-rtl .logo {
+	order: 2;
+	margin-right: 0;
+	margin-left: 14px;
+}
 /* MENU */
 .header .current-menu-item > a, .header .current-menu-item > .menu-toggle { color: #AE2525; }
 .header-link, .header_aside-link { margin-left: 14px; }
@@ -1385,11 +1389,21 @@ ul.list-check li:before {
 		display: flex;
 		justify-content: space-between;
 	}
+	/* FLYER */
+	.header-flyer .header-controls { order: 2; }
+	.header-flyer .header-aside { order: 3; }
+	/* RTL */
+	.header-rtl .header-controls { order: 3; }
+	/* SUB MENU */
+	.header-flyer .header-primary .sub-menu, .header-rtl .sub-menu { right: inherit; }
+	.header-flyer .header-primary .sub-menu .sub-menu, .header-rtl .sub-menu .sub-menu { right: -280px; }
+	.header-flyer .header-primary .sub-menu .menu-item-has-children a, .header-rtl .sub-menu .menu-item-has-children a { order: inherit; }
+	.header-flyer .header-primary .sub-menu .trigger-icon:after, .header-rtl .sub-menu .trigger-icon:after { content: '\e80f'; }
 	/* SEARCH */
-	.header-triggers, .trigger-search,
-	.has-search .header-link, .has-search .header_aside-link, .has-search .header-menu { display: none; }
+	.header-triggers, .header-controls .trigger, .trigger-search,
+	.has-search .header-link, .has-search .header_aside-link, .has-search .header-menu, .has-search .header_aside-menu { display: none; }
 	.header-search { padding: 14px; }
-	.has-search .header-primary { flex: 1; }
+	.has-search .header-primary, .has-search .header-aside { flex: 1; }
 	.has-search .header-search { width: 100%; }
 }
 @media all and (max-width: 800px) {
@@ -1410,7 +1424,15 @@ ul.list-check li:before {
 		justify-content: space-between;
 	}
 	.header-triggers .trigger { margin-left: 14px; }
+	.header-controls > .trigger-menu { margin-right: 14px; }
 	.header .trigger-icon { font-size: 26px; }
+	.site-title { flex: 1; }
+	/* RTL */
+	.header-rtl .site-title { order: 2; }
+	.header-rtl .header-triggers {
+		flex-direction: row-reverse;
+		order: 1;
+	}
 	/* MENU */
 	.header .menu {
 		margin-left: -14px;
