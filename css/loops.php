@@ -9,7 +9,7 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.post-header, .the-content {
+.post-box .post-header, .the-content {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
@@ -19,9 +19,14 @@
 .post-header.cover { padding-bottom: <?php echo $single; ?>px; }
 
 @media all and (min-width: 900px) {
-	.post-header, .the-content {
+	.full .post-header, .header .post-header { text-align: center; }
+	.post-box .post-header, .content-sidebar .the-content, .content-sidebar .author-box, .content-sidebar .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
+	}
+	.full .the-content, .full .author-box, .full .comments {
+		padding-left: <?php echo $breakout_full; ?>%;
+		padding-right: <?php echo $breakout_full; ?>%;
 	}
 }
 
@@ -34,7 +39,22 @@
 	margin-bottom: <?php echo $single; ?>px;
 }
 
+.box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
+
+/* HEADER COVER */
+
+.header-cover #content { padding-top: 0; }
+
+.header-cover .post-header { margin-bottom: <?php echo $single; ?>px; }
+
 /* QUERIES */
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	#content .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+}
 
 @media all and (min-width: 900px) {
 	.content-width { max-width: <?php echo $content_width; ?>px; }
@@ -52,7 +72,16 @@
 	.content-sidebar.left .content { float: right; }
 }
 
+@media all and (max-width: 900px) {
+	#content.loop-default .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
+}
 
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed; }
+}
 
 
 

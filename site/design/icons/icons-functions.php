@@ -60,7 +60,7 @@ function md_get_icons( $sort = null, $show_defaults = null, $prefix = null ) {
  */
 
 function md_font_icons_url() {
-	$file = MD_URL . 'lib/design/icons/md.woff';
+	$file = MD_URL . 'site/design/icons/md.woff';
 
 	if ( file_exists( get_stylesheet_directory() . '/md.woff' ) )
 		$file = get_stylesheet_directory_uri() . '/md.woff';

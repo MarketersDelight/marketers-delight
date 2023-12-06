@@ -2,11 +2,11 @@
 
 	<?php while ( have_posts() ) : the_post(); ?>
 
-		<<?php echo $html; ?> id="post_<?php the_ID(); ?>" <?php post_class(); ?>>
+		<article id="post_<?php the_ID(); ?>" <?php post_class(); ?>>
 
 			<?php md_hook_content_item(); ?>
 
-		</<?php echo $html; ?>>
+		</article>
 
 		<?php md_hook_x_loop( $c ); ?>
 

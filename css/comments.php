@@ -4,6 +4,8 @@
 	$COMMENTS
 \*------------------------------*/
 
+.comments { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+
 .comments .comments-list {
 	margin-bottom: 0;
 	margin-left: 0;
@@ -18,7 +20,9 @@
 /* TITLE */
 
 .comments-title {
+	align-items: center;
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	display: flex;
 	margin-bottom: <?php echo $single; ?>px;
 	padding-bottom: <?php echo $half; ?>px;
 }
@@ -44,7 +48,9 @@
 .comment:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .comment-details {
+	align-items: center;
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	display: flex;
 	padding-bottom: <?php echo $half; ?>px;
 	position: relative;
 	z-index: 10;

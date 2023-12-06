@@ -4,6 +4,24 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Clean up Body classes.
+ *
+ * @since 5.6
+ */
+
+function md_body_class( $classes = array() ) {
+	$classes = array_diff( $classes, array( 'wp-custom-logo' ) );
+	$cover = md_cover();
+
+	if ( $cover['position'] == 'header_cover' )
+		$classes[] = 'header-cover';
+
+	return $classes;
+}
+
+add_filter( 'body_class', 'md_body_class', 999, 2 );
+
+/**
  * Render dynamic HTML for important structural tags.
  *
  * @since 5.6
@@ -14,8 +32,6 @@ function md_html( $area ) {
 
 	if ( $area == 'h' )
 		$html = is_singular() || ! in_the_loop() ? 'h1' : 'h2';
-	elseif ( $area == 'article' )
-		$html = is_singular() ? 'div' : 'article';
 
 	return $html;
 }

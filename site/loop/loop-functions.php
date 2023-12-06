@@ -83,7 +83,6 @@ function md_get_loop() {
 function md_loop() {
 	$c = 1;
 	$h = md_html( 'h' );
-	$html = md_html( 'article' );
 	$loops = md_loops();
 	$type = md_get_loop();
 	$post_type = md_get_post_type();

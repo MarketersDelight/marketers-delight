@@ -56,8 +56,6 @@
 	$DESIGN
 \*------------------------------*/
 
-.sep { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
-
 .avatar {
 	border-radius: 50%;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -97,56 +95,21 @@
 	width: <?php echo $single; ?>px;
 }
 
+/* LAYOUT */
 
-
-/*------------------------------*\
-	$ALIGNMENTS
-\*------------------------------*/
-
-.alignleft, .alignright, .aligncenter, .alignnone {
-	display: block;
-	position: relative;
-	margin-bottom: <?php echo $single; ?>px;
-}
-
-.alignleft {
-	float: left;
-	margin-right: <?php echo $half; ?>px;
-}
-
-.alignright {
-	float: right;
-	margin-left: <?php echo $half; ?>px;
-}
-
-.alignwide, .alignfull { max-width: initial; }
-
-.alignwide img, .alignfull img { width: 100%; }
-
-.aligncenter {
-	clear: both;
-	float: none;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-.alignnone {
-	clear: both;
-	float: none;
-}
-
-.width-full {
-	clear: both;
-	display: block;
-	width: 100%;
-}
+.sep { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
 
 .display-block { display: block; }
 
 .auto {
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.width-full {
+	clear: both;
+	display: block;
+	width: 100%;
 }
 
 .extend {
@@ -157,6 +120,7 @@
 	margin-left: -50vw;
 	margin-right: -50vw;
 }
+
 
 
 /*------------------------------*\
@@ -264,7 +228,7 @@
 
 .mb-single:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.block-single, .tagcloud, .note, .alert { padding: <?php echo $single; ?>px; }
+.block-single, .tagcloud { padding: <?php echo $single; ?>px; }
 
 .block-single-tb {
 	padding-bottom: <?php echo $single; ?>px;
@@ -390,13 +354,6 @@
 
 /* QUERIES */
 
-@media all and (min-width: 900px) {
-	[class*="block-full"] {
-		padding-left: <?php echo $breakout_full; ?>%;
-		padding-right: <?php echo $breakout_full; ?>%;
-	}
-}
-
 @media all and (max-width: 900px) {
 	/* TRIPLE */
 	.block-quad { padding: <?php echo $triple; ?>px; }
@@ -406,7 +363,7 @@
 	}
 	.block-quad-top { padding-top: <?php echo $triple; ?>px; }
 	.block-quad-bot { padding-bottom: <?php echo $triple; ?>px; }
-	[class*="block-full"], .block-quad-lr {
+	.block-quad-lr {
 		padding-left: <?php echo $triple; ?>px;
 		padding-right: <?php echo $triple; ?>px;
 	}
@@ -424,51 +381,13 @@
 	.block-triple-bot { padding-bottom: <?php echo $double; ?>px; }
 }
 
-@media all and (min-width: 800px) {
-	.aligncenter.wrap, .alignleft.wrap, .alignfull { margin-left: -<?php echo $mid; ?>px; }
-	.aligncenter.wrap, .alignright.wrap, .alignfull { margin-right: -<?php echo $mid; ?>px; }
-
-	.aligncenter.wrap-small, .alignleft.wrap-small, .alignwide { margin-left: -<?php echo $half; ?>px; }
-	.aligncenter.wrap-small, .alignlright.wrap-small, .alignwide { margin-right: -<?php echo $half; ?>px; }
-
-	.full.article .aligncenter.wrap,
-	.full.article .alignleft.wrap,
-	.full.article .alignfull { margin-left: -<?php echo $breakout; ?>%; }
-	.full.article .aligncenter.wrap,
-	.full.article .alignright.wrap,
-	.full.article .alignfull { margin-right: -<?php echo $breakout; ?>%; }
-
-	.full.article .aligncenter.wrap-small,
-	.full.article .alignleft.wrap-small,
-	.full.article .alignwide { margin-left: -<?php echo $triple; ?>px; }
-	.full.article .aligncenter.wrap-small,
-	.full.article .alignright.wrap-small,
-	.full.article .alignwide { margin-right: -<?php echo $triple; ?>px; }
-}
-
 @media all and (max-width: 800px) {
-	/* ALIGNMENTS */
-	.alignright, .alignleft, .wp-block-image .alignleft, .wp-block-image .alignright {
-		clear: both;
-		display: block;
-		float: none;
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-	}
-	.wp-block-image .aligncenter > figcaption, .wp-block-image .alignleft > figcaption, .wp-block-image .alignright > figcaption { display: block; }
 	/* TRIPLE */
 	.mt-quad:not(:last-child) { margin-top: <?php echo $triple; ?>px; }
 	.mb-quad:not(:last-child) { margin-bottom: <?php echo $triple; ?>px; }
 	/* DOUBLE */
 	.mt-triple:not(:last-child) { margin-top: <?php echo $double; ?>px; }
 	.mb-triple:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
-	/* WRAPS */
-	.alignwide, .alignfull,
-	.alignleft.wrap, .alignright.wrap, .aligncenter.wrap {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
 }
 
 @media all and (max-width: 700px) {
@@ -479,7 +398,7 @@
 		padding-bottom: <?php echo $single; ?>px;
 		padding-top: <?php echo $single; ?>px;
 	}
-	[class*="block-full"], .block-quad-lr, .block-triple, .block-triple-lr, .block-double, .block-double-lr, .block-single-lr, .block-single, .tagcloud, .note, .alert {
+	.block-quad-lr, .block-triple, .block-triple-lr, .block-double, .block-double-lr, .block-single-lr, .block-single, .tagcloud {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -491,13 +410,4 @@
 	/* SINGLE */
 	.mt-triple:not(:last-child) { margin-top: <?php echo $single; ?>px; }
 	.mb-triple:not(:last-child), .mb-double:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-	/* ALIGN */
-	.alignright, .alignleft {
-		clear: both;
-		display: block;
-		float: none;
-		margin-left: auto;
-		margin-right: auto;
-		text-align: center;
-	}
 }

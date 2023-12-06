@@ -4,6 +4,63 @@
 	$POST
 \*------------------------------*/
 
+/* ALIGNMENTS */
+
+.alignfull, .alignwide { max-width: initial; }
+
+.alignleft, .alignright, .aligncenter, .alignnone {
+	display: block;
+	position: relative;
+	margin-bottom: <?php echo $single; ?>px;
+	z-index: 10;
+}
+
+.alignwide img, .alignfull img { width: 100%; }
+
+.aligncenter {
+	clear: both;
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+.alignnone {
+	clear: both;
+	float: none;
+}
+
+@media all and (min-width: 900px) {
+	.full .alignfull, .full .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
+	.full .alignfull, .full .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
+	.full .alignwide, .content-sidebar .alignfull, .content-sidebar .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
+	.full .alignwide, .content-sidebar .alignfull, .content-sidebar .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
+	.content-sidebar .alignwide, .content-sidebar .alignright.wrap-small { margin-right: -<?php echo $half; ?>px; }
+	.content-sidebar .alignwide, .content-sidebar .alignleft.wrap-small { margin-left: -<?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 900px) {
+	.alignfull, .alignleft.wrap { margin-left: -<?php echo $half; ?>px; }
+	.alignfull, .alignright.wrap { margin-right: -<?php echo $half; ?>px; }
+}
+
+@media all and (min-width: 700px) {
+	.alignleft {
+		float: left;
+		margin-right: <?php echo $half; ?>px;
+	}
+	.alignright {
+		float: right;
+		margin-left: <?php echo $half; ?>px;
+	}
+	.featured-image[class*="align"] { max-width: <?php echo $sidebar_width; ?>px; }
+}
+
+@media all and (max-width: 700px) {
+	.alignleft.wrap { margin-right: -<?php echo $half; ?>px; }
+	.alignright.wrap { margin-left: -<?php echo $half; ?>px; }
+}
+
 /* HEADLINES */
 
 .the-content .headline, .the-content .headline a, .the-content h1, .the-content h2, .the-content h3, .the-content h4, .the-content h5, .the-content h6 { color: <?php echo $colors['site']['headline']; ?>; }
@@ -21,7 +78,7 @@
 	width: 100%;
 }
 
-.image-after-title .featured-image img { border-radius: 0; }
+.loop .image-after-title .featured-image img { border-radius: 0; }
 
 .wp-caption {
 	height: auto;

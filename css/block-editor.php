@@ -567,6 +567,4 @@ div.editor-styles-wrapper .md-email-footer {
 
 .md-callout-action .md-button { width: 100%; }
 
-<?php include( md_css( 'design', true ) ); ?>
-
 <?php md_block_editor_css(); ?>

@@ -16,7 +16,7 @@
 		$classes = join( ' ', $classes );
 	?>
 
-	<<?php echo $html; ?> id="post_<?php the_ID(); ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
+	<article id="post_<?php the_ID(); ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
 		<div class="post-box">
 
 			<?php if ( has_post_thumbnail() ) : ?>
@@ -43,7 +43,7 @@
 			</div>
 
 		</div>
-	</<?php echo $html; ?>>
+	</article>
 
 	<?php md_hook_x_loop( $c ); ?>
 

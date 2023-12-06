@@ -60,7 +60,11 @@
 	padding: <?php echo $single; ?>px <?php echo $half; ?>px <?php echo $half; ?>px;
 }
 
-.author-title { margin-bottom: <?php echo $half; ?>px; }
+.author-title {
+	align-items: center;
+	display: flex;
+	margin-bottom: <?php echo $half; ?>px;
+}
 
 .author-box .circle-icon { margin-right: <?php echo $third; ?>px; }
 
@@ -107,7 +111,11 @@
 
 /* POST NAV */
 
-.post-nav { margin-left: -<?php echo $half; ?>px; }
+.post-nav {
+	align-items: center;
+	display: flex;
+	margin-left: -<?php echo $half; ?>px;
+}
 
 .post-nav p { margin-bottom: 0; }
 
