@@ -99,9 +99,29 @@
 	margin-right: <?php echo $half; ?>px;
 }
 
-/* SEARCH */
+/* TRIGGERS */
 
-.form-toggle .trigger-search { display: block; }
+.trigger {
+	cursor: pointer;
+	position: relative;
+	text-align: center;
+}
+
+.trigger-icon {
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
+	font-style: normal;
+	line-height: 1;
+}
+
+.trigger .trigger-text { margin-left: <?php echo $small; ?>px; }
+
+.hide-label .trigger-text { display: none; }
+
+.has-search .trigger-search .trigger-icon:before,
+.has-mobile-menu .trigger-menu .trigger-icon:before {
+	color: <?php echo $colors['site']['primary']; ?>;
+	content: '\e810';
+}
 
 /* QUERIES */
 

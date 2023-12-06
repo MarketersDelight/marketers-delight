@@ -20,7 +20,6 @@ class md_design {
 	public function defaults() {
 		$g = 1.618;
 		$font_size = md_setting( array( 'typography', 'body', 'font_size', 'desktop' ), 17 );
-		$tablet = md_setting( array( 'typography', 'body', 'font_size', 'tablet' ), round( $font_size * 0.95 ) );
 		$mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
 		$line_height = round( $font_size * $g );
 		$h1 = array(
@@ -125,13 +124,13 @@ class md_design {
 				'body' => array(
 					'font_size' => array(
 						'desktop' => $font_size,
-						'tablet' => $tablet,
+						'tablet' => $font_size,
 						'mobile' => $mobile
 					),
 					'line_height' => array(
 						'desktop' => $line_height,
-						'tablet' => round( $tablet * $g ),
-						'mobile' => round( $tablet * $g )
+						'tablet' => $line_height,
+						'mobile' => round( $mobile * $g )
 					),
 					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
 				),

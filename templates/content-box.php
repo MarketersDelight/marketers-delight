@@ -1,4 +1,4 @@
-<div id="content_box" class="<?php echo md_content_box_classes(); ?>">
+<div id="content" class="<?php echo md_content_box_classes(); ?>">
 
 	<?php md_hook_content_box_top(); ?>
 
@@ -6,7 +6,7 @@
 
 		<?php md_hook_content_top(); ?>
 
-		<main id="content" class="<?php echo md_content_classes(); ?>">
+		<div class="<?php echo md_content_classes(); ?>">
 
 			<?php md_hook_before_content(); ?>
 
@@ -14,7 +14,7 @@
 
 			<?php md_hook_after_content(); ?>
 
-		</main>
+		</div>
 
 		<?php get_sidebar(); ?>
 

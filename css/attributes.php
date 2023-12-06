@@ -25,7 +25,31 @@
 	padding: 0;
 }
 
-/* FONT ICONS */
+body {
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
+	color: <?php echo $colors['site']['text']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
+	font-weight: <?php echo $font_weight; ?>;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+	position: relative;
+}
+
+.inner {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: <?php echo $site_width; ?>px;
+	position: relative;
+}
+
+.clear:after, .inner:after, .menu:after,
+.post-box:after, .the-content:after, .byline:after, .sidebar:after, [class*="columns-"]:after {
+	clear: both;
+	content: '';
+	display: table;
+}
+
+/* ICONS */
 
 @font-face {
 	font-family: md-icon;
@@ -62,41 +86,11 @@
 
 /* ATTRIBUTES */
 
-body {
-	background-color: <?php echo $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-weight: <?php echo $font_weight; ?>;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
-	position: relative;
-}
-
 .normal { font-weight: <?php echo $font_weight; ?>; }
 
 b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
 i, em, .italic { font-style: italic; }
-
-.f-small {
-	font-size: 0.85em;
-	line-height: 1.5em;
-}
-
-.f-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
-
-<?php
-	foreach ( md_editor_colors() as $color_group => $color_fields ) {
-		$color_slug = $color_fields['slug'];
-		$color_val = $color_fields['color'];
-
-		echo
-			".has-$color_slug-background-color { background-color: $color_val; }\n".
-			( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
-	}
-?>
-
-.has-text-color.has-white-color { color: #fff; }
 
 p { position: relative; }
 
@@ -145,70 +139,81 @@ abbr, acronym {
 	text-decoration: none;
 }
 
-/* BODY */
+/* TYPOGRAPHY */
 
-@media all and (max-width: 900px) {
-	body {
-		font-size: <?php echo $font_size['tablet']; ?>px;
-		line-height: <?php echo $line_height['tablet']; ?>px;
-	}
-}
+.format { word-wrap: break-word; }
 
-<?php if ( $font_size['tablet'] !== $font_size['mobile'] ) : ?>
-@media all and (max-width: 700px) {
-	body {
-		font-size: <?php echo $font_size['mobile']; ?>px;
-		line-height: <?php echo $line_height['mobile']; ?>px;
-	}
-}
+.format a { text-decoration: underline; }
+
+.format a:hover { text-decoration: none; }
+
+.format ul, .format ol, .format p, .format hr, .format pre, .format table, .format .wp-caption, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
+
+<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
+.format *:last-child { margin-bottom: 0; }
 <?php endif; ?>
 
-/* BLOCKQUOTE */
+<?php
+	$queries = array( 900 => 'tablet', 700 => 'mobile' );
+	$titles = array(
+		'huge' => '.huge-title',
+		'h1' => 'h1, .large-title',
+		'h2' => 'h2, .main-title',
+		'h3' => 'h3, .med-title',
+		'h4' => 'h4, .mid-title',
+		'h5' => 'h5, .small-title',
+		'h6' => 'h6, .micro-title'
+	);
+	$texts = array(
+		'huge' => '.huge-text',
+		'h1' => '.large-text',
+		'h2' => '.main-text',
+		'h3' => '.med-text',
+		'h4' => '.mid-text',
+		'h5' => '.small-text',
+		'h6' => '.micro-text'
+	);
+	$h1_ff = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
+	$h1_fw = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
 
-blockquote {
-	background-color: #fff;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-left-width: 7px;
-	border-radius: 5px;
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	display: block;
-	font-style: italic;
-	padding: <?php echo $single; ?>px;
+	foreach ( $titles as $attribute => $selector ) {
+		$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_ff;
+		$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_fw;
+
+		echo
+			"$selector, " . $texts[$attribute] . " {\n".
+				"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
+				"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
+			"}\n".
+			"$selector {\n".
+				( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
+				( ! empty( $typography[$attribute]['font_style'] ) ? "\tfont-style: italic;\n" : '' ).
+				"\tfont-weight: {$h_fw};\n".
+			"}\n";
+	}
+ ?>
+
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
+	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
-blockquote:before, blockquote:after {
-	color: #ddd;
-	font-family: Georgia, serif;
-	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
-	font-weight: <?php echo $bold; ?>;
-	position: absolute;
+.format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
+	color: <?php echo $colors['site']['headline-links']; ?>;
+	text-decoration: none;
 }
 
-blockquote:before {
-	content: open-quote;
-	left: <?php echo $small; ?>px;
-}
-
-blockquote:after {
-	bottom: <?php echo $small; ?>px;
-	content: close-quote;
-	right: <?php echo $half; ?>px;
-}
-
-blockquote + p {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	font-style: italic;
-	text-align: right;
-}
-
-blockquote.small {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
-
-blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
-
-blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }
+<?php foreach ( $queries as $w => $d ) {
+	echo "@media all and (max-width: {$w}px) {\n".
+		 "\tbody { ".
+		 	'font-size: ' . $font_size[$d] . 'px; '.
+			'line-height: ' . $line_height[$d] . 'px; '.
+		"}\n";
+	foreach ( $titles as $h => $selector ) {
+		echo "\t$selector, " . $texts[$h] . " { ".
+			 	'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '.
+			 	'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '.
+			 "}\n";
+	}
+	echo "}\n";
+} ?>

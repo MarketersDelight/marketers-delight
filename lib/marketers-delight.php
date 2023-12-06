@@ -77,18 +77,18 @@ final class marketers_delight {
 		require_once( 'design/design.php' );
 		if ( is_admin() )
 			require_once( 'admin/admin.php' );
-		require_once( 'header/header.php' );
-		require_once( 'logo/logo.php' );
-		require_once( 'page-cover/page-cover.php' );
-		require_once( 'featured-image/featured-image.php' );
-		require_once( 'featured-video/featured-video.php' );
-		require_once( 'page-cover/page-title.php' );
-		require_once( 'loop/loop.php' );
-		require_once( 'sidebars/sidebars.php' );
-		require_once( 'blog/blog.php' );
-		require_once( 'single/single.php' );
-		require_once( 'layout/layout.php' );
-		require_once( 'templates.php' );
+		require_once( MD_DIR . 'site/header/header.php' );
+		require_once( MD_DIR . 'site/logo/logo.php' );
+		require_once( MD_DIR . 'site/page-cover/page-cover.php' );
+		require_once( MD_DIR . 'site/featured-image/featured-image.php' );
+		require_once( MD_DIR . 'site/featured-video/featured-video.php' );
+		require_once( MD_DIR . 'site/page-cover/page-title.php' );
+		require_once( MD_DIR . 'site/loop/loop.php' );
+		require_once( MD_DIR . 'site/sidebars/sidebars.php' );
+		require_once( MD_DIR . 'site/blog/blog.php' );
+		require_once( MD_DIR . 'site/single/single.php' );
+		require_once( MD_DIR . 'site/layout/layout.php' );
+		require_once( MD_DIR . 'site/templates.php' );
 		require_once( 'api/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( "widgets/$widget.php" );

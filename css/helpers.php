@@ -1,72 +1,67 @@
 <style type="text/css">
 
 /*------------------------------*\
-	$SPACERS
+	$TEXT_STYLES
 \*------------------------------*/
 
-/*--------------------*\
-	$COLUMNS
-\*--------------------*/
+.text-center { text-align: center; }
 
-.col { position: relative; }
+.text-left { text-align: left; }
 
-@media all and (min-width: 700px) {
-	.col { float: left; }
-	.columns-flex:not([class*="block-"]) {
-		padding-left: 5px;
-		padding-right: 5px;
-	}
-	.columns-flex > .col {
-		display: inline-block;
-		float: none;
-		margin-left: -5px;
-		vertical-align: middle;
-	}
-	[class*="columns-"] .col-right { float: right; }
-	.w-50, .columns-2 > .col { width: 50%; }
-	.columns-3 > .col { width: 33.333333333%; }
-	.w-25, .columns-4 > .col { width: 25%; }
-	.w-20, .columns-5 > .col { width: 20%; }
-	.columns-6 > .col { width: 16.666666667%; }
-	.columns-10-90 > .col2 { width: 90%; }
-	.w-80, .columns-80-20 > .col1,	.columns-20-80 > .col2 { width: 80%; }
-	.w-75, .columns-25-75 > .col2 { width: 75%; }
-	.w-70, .columns-70-30 > .col1, .columns-30-70 > .col2 { width: 70%; }
-	.w-65, .columns-65-35 > .col1, .columns-35-65 > .col2 { width: 65%; }
-	.w-60, .columns-60-40 > .col1, .columns-40-60 > .col2 { width: 60%; }
-	.w-55, .columns-55-45 > .col1, .columns-45-55 > .col2 { width: 55%; }
-	.w-45, .columns-55-45 > .col2, .columns-45-55 > .col1 { width: 45%; }
-	.w-40, .columns-60-40 > .col2, .columns-40-60 > .col1 { width: 40%; }
-	.w-35, .columns-65-35 > .col2, .columns-35-65 > .col1 { width: 35%; }
-	.w-30, .columns-70-30 > .col2, .columns-30-70 > .col1 { width: 30%; }
-	.w-25, .columns-25-75 > .col1 { width: 25%; }
-	.w-20, .columns-80-20 > .col2, .columns-20-80 > .col1 { width: 20%; }
-	.columns-10-90 > .col1 { width: 10%; }
-	.f-33 { flex-basis: 33.3333333333%; }
-	.f-50 { flex-basis: 50%; }
+.text-right { text-align: right; }
+
+.caps { text-transform: uppercase; }
+
+.text-dark { color: #1e1e1e; }
+
+.text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
+
+.text-white { color: #fff; }
+
+.has-drop-cap:first-letter, .drop {
+	color: <?php echo $colors['site']['links']; ?>;
+	float: left;
+	font-size: 4.5em;
+	line-height: 1;
+	margin-bottom: 0.1em;
+	margin-right: 0.1em;
 }
 
-@media all and (min-width: 700px) {
-	.columns-half { margin-left: -<?php echo $half; ?>px; }
-	.columns-half > .col { padding-left: <?php echo $half; ?>px; }
-	.columns-single { margin-left: -<?php echo $single; ?>px; }
-	.columns-single > .col { padding-left: <?php echo $single; ?>px; }
-	.columns-mid { margin-left: -<?php echo $mid; ?>px; }
-	.columns-mid > .col { padding-left: <?php echo $mid; ?>px; }
-	.columns-double { margin-left: -<?php echo $double; ?>px; }
-	.columns-double > .col { padding-left: <?php echo $double; ?>px; }
-	.columns-triple { margin-left: -<?php echo $triple; ?>px; }
-	.columns-triple > .col { padding-left: <?php echo $triple; ?>px; }
+.f-small {
+	font-size: 0.85em;
+	line-height: 1.5em;
 }
 
-@media all and (max-width: 700px) {
-	.col.mt-single { margin-top: 0; }
+.f-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
+
+<?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
+	$color_slug = $color_fields['slug'];
+	$color_val = $color_fields['color'];
+
+	echo
+		".has-$color_slug-background-color { background-color: $color_val; }\n".
+		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
+} ?>
+
+.has-text-color.has-white-color { color: #fff; }
+
+.badge {
+    background-color: #f58f2a;
+    border-radius: 5px;
+    color: #fff;
+    margin-left: 4px;
+	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
+	font-weight: normal;
+	padding: 4px 7px;
+    position: relative;
+    text-transform: uppercase;
 }
 
 
-/*--------------------*\
+
+/*------------------------------*\
 	$ALIGNMENTS
-\*--------------------*/
+\*------------------------------*/
 
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
@@ -114,26 +109,88 @@
 	margin-right: auto;
 }
 
+.extend {
+	width: 100vw;
+	position: relative;
+	left: 50%;
+	right: 50%;
+	margin-left: -50vw;
+	margin-right: -50vw;
+}
 
-/*--------------------*\
-	$SMALL
-\*--------------------*/
 
-/* SPACERS */
+/*------------------------------*\
+	$COLUMNS
+\*------------------------------*/
+
+.col { position: relative; }
+
+@media all and (min-width: 700px) {
+	.col { float: left; }
+	.columns-flex:not([class*="block-"]) {
+		padding-left: 5px;
+		padding-right: 5px;
+	}
+	.columns-flex > .col {
+		display: inline-block;
+		float: none;
+		margin-left: -5px;
+		vertical-align: middle;
+	}
+	[class*="columns-"] .col-right { float: right; }
+	.columns-2 > .col { width: 50%; }
+	.columns-3 > .col { width: 33.333333333%; }
+	.columns-4 > .col { width: 25%; }
+	.columns-5 > .col { width: 20%; }
+	.columns-6 > .col { width: 16.666666667%; }
+	.columns-10-90 > .col2 { width: 90%; }
+	.columns-80-20 > .col1,	.columns-20-80 > .col2 { width: 80%; }
+	.columns-25-75 > .col2 { width: 75%; }
+	.columns-70-30 > .col1, .columns-30-70 > .col2 { width: 70%; }
+	.columns-65-35 > .col1, .columns-35-65 > .col2 { width: 65%; }
+	.columns-60-40 > .col1, .columns-40-60 > .col2 { width: 60%; }
+	.columns-55-45 > .col1, .columns-45-55 > .col2 { width: 55%; }
+	.columns-55-45 > .col2, .columns-45-55 > .col1 { width: 45%; }
+	.columns-60-40 > .col2, .columns-40-60 > .col1 { width: 40%; }
+	.columns-65-35 > .col2, .columns-35-65 > .col1 { width: 35%; }
+	.columns-70-30 > .col2, .columns-30-70 > .col1 { width: 30%; }
+	.columns-25-75 > .col1 { width: 25%; }
+	.columns-80-20 > .col2, .columns-20-80 > .col1 { width: 20%; }
+	.columns-10-90 > .col1 { width: 10%; }
+
+	.columns-half { margin-left: -<?php echo $half; ?>px; }
+	.columns-half > .col { padding-left: <?php echo $half; ?>px; }
+	.columns-single { margin-left: -<?php echo $single; ?>px; }
+	.columns-single > .col { padding-left: <?php echo $single; ?>px; }
+	.columns-mid { margin-left: -<?php echo $mid; ?>px; }
+	.columns-mid > .col { padding-left: <?php echo $mid; ?>px; }
+	.columns-double { margin-left: -<?php echo $double; ?>px; }
+	.columns-double > .col { padding-left: <?php echo $double; ?>px; }
+	.columns-triple { margin-left: -<?php echo $triple; ?>px; }
+	.columns-triple > .col { padding-left: <?php echo $triple; ?>px; }
+}
+
+
+
+/*------------------------------*\
+	$SPACERS
+\*------------------------------*/
+
+/* SMALL */
 
 .mt-small { margin-top: <?php echo $small; ?>px; }
+
 .mr-small { margin-right: <?php echo $small; ?>px; }
+
 .mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+
 .ml-small { margin-left: <?php echo $small; ?>px; }
+
 .ml-third { margin-left: <?php echo $third; ?>px; }
+
 .mr-third { margin-left: <?php echo $third; ?>px; }
 
-
-/*--------------------*\
-	$HALF
-\*--------------------*/
-
-/* SPACERS */
+/* HALF */
 
 .mt-half { margin-top: <?php echo $half; ?>px; }
 
@@ -142,8 +199,6 @@
 .mb-half:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .ml-half { margin-left: <?php echo $half; ?>px; }
-
-/* BLOCKS */
 
 .block-half { padding: <?php echo $half; ?>px; }
 
@@ -161,20 +216,13 @@
 	padding-right: <?php echo $half; ?>px;
 }
 
-
-/*--------------------*\
-	$SINGLE
-\*--------------------*/
-
-/* SPACERS */
+/* SINGLE */
 
 .mt-single { margin-top: <?php echo $single; ?>px; }
 
 .mr-single { margin-right: <?php echo $single; ?>px; }
 
 .mb-single:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-
-/* BLOCKS */
 
 .block-single, .tagcloud, .note, .alert { padding: <?php echo $single; ?>px; }
 
@@ -192,12 +240,11 @@
 
 .block-single-bot { padding-bottom: <?php echo $single; ?>px; }
 
+/* MID */
 
-/*--------------------*\
-	$MID
-\*--------------------*/
+.mt-mid { margin-top: <?php echo $mid; ?>px; }
 
-/* BLOCKS */
+.mb-mid:not(:last-child) { margin-bottom: <?php echo $mid; ?>px; }
 
 .block-mid { padding: <?php echo $mid; ?>px; }
 
@@ -215,17 +262,13 @@
 
 .block-mid-bot { padding-bottom: <?php echo $mid; ?>px; }
 
-/* SPACERS */
+/* DOUBLE */
 
-.mt-mid { margin-top: <?php echo $mid; ?>px; }
-.mb-mid:not(:last-child) { margin-bottom: <?php echo $mid; ?>px; }
+.mt-double { margin-top: <?php echo $double; ?>px; }
 
+.mr-double { margin-right: <?php echo $double; ?>px; }
 
-/*--------------------*\
-	$DOUBLE
-\*--------------------*/
-
-/* BLOCKS */
+.mb-double:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
 
 .block-double { padding: <?php echo $double; ?>px; }
 
@@ -243,18 +286,11 @@
 
 .block-double-bot { padding-bottom: <?php echo $double; ?>px; }
 
-/* SPACERS */
+/* TRIPLE */
 
-.mt-double { margin-top: <?php echo $double; ?>px; }
-.mr-double { margin-right: <?php echo $double; ?>px; }
-.mb-double:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
+.mt-triple:not(:last-child) { margin-top: <?php echo $triple; ?>px; }
 
-
-/*--------------------*\
-	$TRIPLE
-\*--------------------*/
-
-/* BLOCKS */
+.mb-triple:not(:last-child) { margin-bottom: <?php echo $triple; ?>px; }
 
 .block-triple { padding: <?php echo $triple; ?>px; }
 
@@ -272,17 +308,11 @@
 
 .block-triple-bot { padding-bottom: <?php echo $triple; ?>px; }
 
-/* SPACERS */
+/* QUAD */
 
-.mt-triple:not(:last-child) { margin-top: <?php echo $triple; ?>px; }
-.mb-triple:not(:last-child) { margin-bottom: <?php echo $triple; ?>px; }
+.mt-quad:not(:last-child) { margin-top: <?php echo $quad; ?>px; }
 
-
-/*--------------------*\
-	$QUAD
-\*--------------------*/
-
-/* BLOCKS */
+.mb-quad:not(:last-child) { margin-bottom: <?php echo $quad; ?>px; }
 
 .block-quad { padding: <?php echo $quad; ?>px; }
 
@@ -300,34 +330,25 @@
 
 .block-quad-bot { padding-bottom: <?php echo $quad; ?>px; }
 
-/* SPACERS */
-
-.mt-quad:not(:last-child) { margin-top: <?php echo $quad; ?>px; }
-.mb-quad:not(:last-child) { margin-bottom: <?php echo $quad; ?>px; }
-
-
-/*--------------------*\
-	$NONE
-\*--------------------*/
-
-/* BLOCKS */
-
-.pt-none { padding-top: 0; }
-.pr-none { padding-right: 0; }
-.pb-none { padding-bottom: 0; }
-.pl-none { padding-left: 0; }
-
-/* SPACERS */
+/* NONE */
 
 .mt-none { margin-top: 0 !important; }
+
 .mr-none { margin-right: 0; }
+
 .mb-none { margin-bottom: 0 !important; }
+
 .ml-none { margin-left: 0; }
 
+.pt-none { padding-top: 0; }
 
+.pr-none { padding-right: 0; }
 
+.pb-none { padding-bottom: 0; }
 
+.pl-none { padding-left: 0; }
 
+/* QUERIES */
 
 @media all and (min-width: 900px) {
 	[class*="block-full"] {

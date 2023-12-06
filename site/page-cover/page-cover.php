@@ -155,7 +155,7 @@ class md_page_cover extends md_api {
 			add_action( 'md_hook_after_headline', 'md_html_close', 100 );
 
 			if ( md_has_headline() )
-				add_action( 'md_hook_header_bottom', array( $this, 'header_cover' ) );
+				add_action( 'md_hook_content_box_top', array( $this, 'headline' ) );
 		}
 		elseif ( $cover['position'] == 'header_cover_full' ) {
 			add_action( 'md_hook_header_top', array( $this, 'overlay' ) );
@@ -201,19 +201,6 @@ class md_page_cover extends md_api {
 			$classes[] = 'text-alt';
 
 		return $classes;
-	}
-
-	/**
- 	 * Dedicated template for Header Cover Cover position.
- 	 *
- 	 * @since 4.1
-	 * @moved 5.6
- 	 */
-
-	public function header_cover() {
-		echo '<div class="header-cover has-cover">';
-		$this->headline();
-		echo '</div>';
 	}
 
 	/**

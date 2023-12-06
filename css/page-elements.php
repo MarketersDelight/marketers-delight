@@ -1,71 +1,43 @@
 <style type="text/css">
 
-/* TRIGGERS */
+/* BYLINE */
 
-.trigger {
-	cursor: pointer;
+.byline {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['desktop'] - 2; ?>px;
+	margin-bottom: <?php echo $third; ?>px;
 	position: relative;
-	text-align: center;
 }
 
-.trigger-icon {
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
-	font-style: normal;
-	line-height: 1;
+.byline a {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	text-decoration: none;
 }
 
-.trigger .trigger-text { margin-left: <?php echo $small; ?>px; }
+.byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
-.hide-label .trigger-text { display: none; }
+.byline .author-link:hover { border-bottom: 0; }
 
-.has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before {
-	color: <?php echo $colors['site']['primary']; ?>;
-	content: '\e810';
-}
+.byline-item { display: inline-block; }
 
-/* VIDEO */
+.byline-item .md-icon-twitter { color: #1da1f2; }
 
-.video-wrap {
-	height: 0;
+.byline-author .avatar {
+	margin-right: <?php echo $small; ?>px;
 	position: relative;
-	padding-bottom: 56.25%;
-	padding-top: 25px;
 }
 
-.video-wrap iframe {
-	height: 100%;
-	position: absolute;
-		left: 0;
-		top: 0;
-	width: 100%;
+.byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
+
+.byline .badge {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 3; ?>px;
+	padding-bottom: 2px;
+	padding-top: 2px;
 }
 
-.play-button {
-	border: 4px solid #fff;
-	border-radius: 50%;
-	cursor: pointer;
-	display: inline-block;
-	height: 75px;
-	padding: 20px 26px 26px;
-	position: relative;
-	text-align: center;
-	width: 75px;
-}
+.byline-comments-label { display: none; }
 
-.play-button:after {
-	content: '';
-	display: block;
-	border-style: solid;
-	border-width: 15px 0 15px 22px;
-	border-color: transparent transparent transparent rgba(255, 255, 255, 1);
-}
-
-.play-button-text {
-	font-size: 13px;
-	font-weight: bold;
-	text-transform: uppercase;
-}
+.byline-date-modified { font-style: italic; }
 
 /* BREADCRUMBS */
 
@@ -80,58 +52,6 @@
 .breadcrumbs a:hover { text-decoration: none; }
 
 .breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
-
-/* PAGE HEADER */
-
-.page-header { position: relative; }
-
-.header .page-header {
-	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $double; ?>px;
-}
-
-.header .page-header.image-left, .header .page-header.image-right { text-align: left; }
-
-.page-header.headline-image .inner,
-.content .page-header.headline-image {
-	align-items: center;
-	display: flex;
-	justify-content: center;
-}
-
-.page-title, .page-description, .page-image { position: relative; }
-
-.page-description:not(:last-child), .title-area:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-
-.page-image img { width: 100%; }
-
-.page-header.image-right .page-image { margin-left: <?php echo $single; ?>px; }
-.page-header.image-left .page-image { margin-right: <?php echo $single; ?>px; }
-.page-header.image-above_headline .page-image,
-.page-header.image-below_headline .page-image { margin-bottom: <?php echo $single; ?>px; }
-.page-header.image-below_headline .page-image {
-	margin-left: auto;
-	margin-right: auto;
-}
-.page-header.image-center .inner, .page-header.image-above_headline .inner { flex-flow: wrap; }
-.page-header.image-center .title-area, .page-header.image-above_headline .title-area { flex-basis: 100%; }
-
-@media all and (min-width: 800px) {
-/*
-	.full .page-description, .full .breadcrumbs { text-align: center; }
-*/
-	.header .page-description, .full .page-description, .full .subtitle {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $post_width; ?>px;
-		text-align: left;
-	}
-	.full .page-description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-}
-
-@media all and (max-width: 800px) {
-	.page-header.image-left .title-area, .page-header.image-right .title-area { flex: 1; }
-}
 
 /* AUTHOR BOX */
 
@@ -259,9 +179,3 @@
 
 .page-numbers.prev { margin-right: <?php echo $third; ?>px; }
 .page-numbers.next { margin-left: <?php echo $third; ?>px; }
-
-/* QUERIES */
-
-@media all and (max-width: 800px) {
-	.hide-label-mobile .trigger-text { display: none; }
-}

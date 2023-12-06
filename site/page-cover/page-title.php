@@ -131,7 +131,7 @@ class md_page_title {
 			$css['image']['size'] = $image['size'];
 
 		if ( $css ) {
-			$css['selector'] = '.page-header.headline-image .page-image';
+			$css['selector'] = '.page-header .page-image';
 
 			wp_register_style( 'md-page-header', false );
 			wp_enqueue_style( 'md-page-header' );
@@ -155,7 +155,7 @@ class md_page_title {
 		if ( ! $description )
 			return;
 	?>
-		<div class="page-description">
+		<div class="description">
 			<?php echo wpautop( $description ); ?>
 		</div>
 	<?php }

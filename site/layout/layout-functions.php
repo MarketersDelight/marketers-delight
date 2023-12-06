@@ -139,8 +139,6 @@ function md_content_box_classes( $classes = array() ) {
 	$default_style = md_setting( array( 'colors', 'style' ) );
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
 
-	$classes[] = 'content-box';
-
 	if ( md_has_sidebar() ) {
 		$classes[] = 'content-sidebar';
 
@@ -167,7 +165,9 @@ function md_content_box_classes( $classes = array() ) {
 			$classes[] = "style-$style";
 	}
 	else
-		$classes[] = 'style-default';
+		$classes[] = 'box-style';
+
+	$classes[] = 'format';
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
@@ -182,7 +182,6 @@ function md_content_box_classes( $classes = array() ) {
 
 function md_content_classes( $classes = array() ) {
 	$classes[] = 'content';
-	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_classes', $classes );
 
 	return join( ' ', $classes );

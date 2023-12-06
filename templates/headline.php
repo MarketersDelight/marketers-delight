@@ -4,7 +4,7 @@
 
 	<?php md_hook_before_headline(); ?>
 
-	<div class="title-area">
+	<div class="title-wrap">
 
 		<?php md_hook_before_title(); ?>
 
