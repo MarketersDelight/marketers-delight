@@ -12,13 +12,20 @@
 
 .caps { text-transform: uppercase; }
 
-.text-dark { color: #1e1e1e; }
+.f-small {
+	font-size: 0.85em;
+	line-height: 1.5em;
+}
+
+.f-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
 
 .text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 .text-white { color: #fff; }
 
-.has-drop-cap:first-letter, .drop {
+.text-dark { color: #1e1e1e; }
+
+.has-drop-cap:first-letter {
 	color: <?php echo $colors['site']['links']; ?>;
 	float: left;
 	font-size: 4.5em;
@@ -27,17 +34,9 @@
 	margin-right: 0.1em;
 }
 
-.f-small {
-	font-size: 0.85em;
-	line-height: 1.5em;
-}
-
-.f-normal { font-family: <?php echo $typography['body']['font_family']; ?>; }
-
 <?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
 	$color_slug = $color_fields['slug'];
 	$color_val = $color_fields['color'];
-
 	echo
 		".has-$color_slug-background-color { background-color: $color_val; }\n".
 		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
@@ -45,16 +44,57 @@
 
 .has-text-color.has-white-color { color: #fff; }
 
-.badge {
-    background-color: #f58f2a;
-    border-radius: 5px;
-    color: #fff;
-    margin-left: 4px;
-	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
+.highlight {
+	background-color: #fdd169;
+	padding-left: <?php echo $small; ?>px;
+	padding-right: <?php echo $small; ?>px;
+}
+
+
+
+/*------------------------------*\
+	$DESIGN
+\*------------------------------*/
+
+.sep { border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+
+.avatar {
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* SHADOWS */
+
+.shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }
+
+.shadow-large, .wp-block-image.shadow-large img { box-shadow: 0 5px 55px rgba(0, 0, 0, 0.15); }
+
+.shadow-small, .wp-block-image.shadow-small img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
+
+.wp-block-image.shadow, .wp-block-image.shadow-large, .wp-block-image.shadow-small { box-shadow: none; }
+
+/* CIRCLE ICON */
+
+.circle { border-radius: 50%; }
+
+.circle-icon, a.circle-icon, .toc-anchor {
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	color: <?php echo $colors['site']['text']; ?>;
+	display: inline-flex;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	font-weight: normal;
-	padding: 4px 7px;
-    position: relative;
-    text-transform: uppercase;
+	height: <?php echo $mid; ?>px;
+	justify-content: center;
+	line-height: 1;
+	position: relative;
+	width: <?php echo $mid; ?>px;
+}
+
+.circle-icon.micro, .toc-anchor {
+	height: <?php echo $single; ?>px;
+	width: <?php echo $single; ?>px;
 }
 
 

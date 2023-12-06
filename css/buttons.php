@@ -33,6 +33,20 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 .link-icon { margin-right: <?php echo $small; ?>px; }
 
+/* BADGE */
+
+.badge {
+    background-color: #f58f2a;
+    border-radius: 5px;
+    color: #fff;
+    margin-left: 4px;
+	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
+	font-weight: normal;
+	padding: 4px 7px;
+    position: relative;
+    text-transform: uppercase;
+}
+
 /* COLORS */
 
 .button.button-sec, a.button.button-sec,

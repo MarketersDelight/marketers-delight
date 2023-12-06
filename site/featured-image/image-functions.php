@@ -107,5 +107,5 @@ function md_get_caption( $id = null ) {
 	$caption = wp_get_attachment_caption( $id );
 
 	if ( ! empty( $caption ) )
-		echo '<p class="image-caption">' . $caption . '</p>';
+		echo '<p class="wp-caption-text">' . $caption . '</p>';
 }

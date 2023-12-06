@@ -16,9 +16,19 @@
 
 .featured-image a { display: block; }
 
-.featured-image img { width: 100%; }
+.featured-image img {
+	border-radius: 5px;
+	width: 100%;
+}
 
-.image-caption {
+.image-after-title .featured-image img { border-radius: 0; }
+
+.wp-caption {
+	height: auto;
+	max-width: 100%;
+}
+
+.wp-caption-text {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
@@ -28,7 +38,7 @@
 	text-align: center;
 }
 
-.cover .image-caption {
+.cover .wp-caption-text {
 	background-color: rgba(0, 0, 0, 0.75);
 	border-bottom: 0;
 	color: #fff;
@@ -38,29 +48,6 @@
 		bottom: 0;
 		right: 0;
 	z-index: 10;
-}
-
-.wp-caption {
-	height: auto;
-	max-width: 100%;
-}
-
-.wp-caption-text {
-	border-bottom: 1px solid #ccc;
-	color: #444;
-	font-size: 14px;
-	font-style: italic;
-	line-height: 22px;
-	padding: 13px;
-}
-
-@media all and (min-width: 800px) {
-	.intro, .subtitle {
-		font-size: <?php echo round( $typography['h5']['font_size']['tablet'] ); ?>px;
-		line-height: <?php echo round( $typography['h5']['line_height']['tablet'] ); ?>px;
-	}
-	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $single * 13; ?>px; }
-	.loop .featured-image.alignleft, .loop .featured-image.alignright, .content-sidebar .featured-image.alignleft, .content-sidebar .featured-image.alignright { max-width: <?php echo $single * 10; ?>px; }
 }
 
 /* LISTS */

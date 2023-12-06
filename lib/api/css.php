@@ -65,8 +65,7 @@ class md_css {
 			'sidebar' => locate_template( 'css/sidebar.php' ),
 			'loops' => locate_template( 'css/loops.php' ),
 			'footer' => locate_template( 'css/footer.php' ),
-			'helpers' => locate_template( 'css/helpers.php' ),
-			'design' => locate_template( 'css/design.php' )
+			'helpers' => locate_template( 'css/helpers.php' )
 		) );
 
 		$templates = array_merge( $templates, $dropins );
@@ -266,6 +265,8 @@ class md_css {
 
 			echo "\n\n";
 		}
+
+		md_icons_css();
 	}
 
 }

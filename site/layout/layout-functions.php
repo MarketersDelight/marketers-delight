@@ -148,7 +148,7 @@ function md_content_box_classes( $classes = array() ) {
 			$layout = md_setting( array( 'colors', 'layout' ) );
 
 		if ( $layout == 'sidebar_content' )
-			$classes[] = 'sidebar-left';
+			$classes[] = 'left';
 	}
 	else
 		$classes[] = 'full';

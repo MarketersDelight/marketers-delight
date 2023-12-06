@@ -69,6 +69,23 @@ function md_font_icons_url() {
 }
 
 /**
+ * Print icons CSS styles by class names.
+ *
+ * @since 5.6
+ */
+
+function md_icons_css() {
+	foreach ( md_icons() as $icon => $fields ) {
+		if ( ! isset( $fields['unicode'] ) ) continue;
+		$selectors = '';
+		if ( isset( $fields['classes'] ) )
+			foreach ( $fields['classes'] as $selector )
+				$selectors .= ",{$selector}:before";
+		echo '.md-icon-' . $icon . ":before{$selectors}{content:'\\" . $fields['unicode'] . '\'}';
+	}
+}
+
+/**
  * Return a list of MD icons. Read documentation and see how to
  * filter in your own icons:
  * https://marketersdelight.com/font-icons/

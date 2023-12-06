@@ -17,9 +17,6 @@ function md_cover_classes( $custom = array() ) {
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'cover';
 
-	if ( ! empty( $cover['image'] ) )
-		$classes[] = 'cover-image';
-
 	if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 		$classes[] = 'format';
 

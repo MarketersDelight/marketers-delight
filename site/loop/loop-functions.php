@@ -166,14 +166,14 @@ function md_post_classes( $classes ) {
 	}
 
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
-		if ( in_array( $position, array( 'left', 'right' ) ) )
-			$classes[] = 'has-inline-image';
+//		if ( in_array( $position, array( 'left', 'right' ) ) )
+	//		$classes[] = 'has-inline-image';
 
 		if ( $position == 'above_headline' )
-			$classes[] = 'has-top-image';
+			$classes[] = 'image-before-title';
 
 		if ( $position == 'below_headline' )
-			$classes[] = 'has-below-image';
+			$classes[] = 'image-after-title';
 	}
 
 	return $classes;
