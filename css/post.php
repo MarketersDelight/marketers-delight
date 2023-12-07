@@ -175,12 +175,6 @@ blockquote:after {
 	right: <?php echo $half; ?>px;
 }
 
-blockquote + p {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	font-style: italic;
-	text-align: right;
-}
-
 blockquote.small {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;

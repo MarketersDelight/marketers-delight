@@ -7,10 +7,9 @@
 label {
 	cursor: pointer;
 	display: inline-block;
-	margin-bottom: <?php echo $half; ?>px;
 }
 
-label.required, .required { color: #ae2525; }
+.required { color: #ae2525; }
 
 input, textarea {
 	font-family: inherit;
@@ -50,9 +49,9 @@ select { max-width: 100%; }
 	display: flex;
 }
 
-.form-full .form-field { display: block; }
-
 .form-inputs, .form-full .form-submit { width: 100%; }
+
+.form-full .form-field:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 [class*="form-attached"] {
 	align-items: center;
@@ -63,8 +62,6 @@ select { max-width: 100%; }
 [class*="form-attached"] .form-field { margin-right: 2%; }
 
 [class*="form-attached-"] .form-submit { flex: 1 0 auto; }
-
-.form-multi-fields [class*="form-attached"] .form-field { width: auto; }
 
 /* SEARCH */
 
@@ -88,7 +85,8 @@ select { max-width: 100%; }
 	border-radius: 5px;
 }
 
-.fields-icons .form-input, .fields-icons .form-input:focus, .has-search .form-input, .has-search .form-input:focus {
+.fields-icons .form-input, .fields-icons .form-input:focus,
+.has-search .form-input, .has-search .form-input:focus {
 	border: 0;
 	box-shadow: none;
 }
@@ -97,8 +95,8 @@ select { max-width: 100%; }
 	color: <?php echo $colors['site']['text']; ?>;
 	font-size: 1.2em;
 	line-height: 1;
-	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 	text-align: center;
+	width: <?php echo $double; ?>px;
 }
 
 .form-field-icon + .form-input { padding-left: 0; }

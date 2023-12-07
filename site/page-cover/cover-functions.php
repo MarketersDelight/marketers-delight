@@ -18,7 +18,7 @@ function md_cover_classes( $custom = array() ) {
 		$classes[] = 'cover';
 
 	if ( ! empty( $cover['text'] ) )
-		$classes[] = 'text-alt';
+		$classes[] = 'alt';
 
 	return join( ' ', $classes );
 }

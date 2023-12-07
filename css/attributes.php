@@ -76,7 +76,7 @@ body {
 
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 
-#cancel-comment-reply-link:before, .menu-icon a, .list-check li:before {
+#cancel-comment-reply-link:before, .menu .trigger-icon:before, .menu .trigger-icon:after, .list-check li:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -147,7 +147,7 @@ abbr, acronym {
 
 .format a:hover { text-decoration: none; }
 
-.format ul, .format ol, .format p, .format hr, .format pre, .format table, .format .wp-caption, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
+.format ul, .format ol, .format p, .format hr, .format pre, .format table, .format blockquote, .format .wp-caption, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
 .format *:last-child { margin-bottom: 0; }

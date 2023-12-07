@@ -73,6 +73,7 @@
 }
 
 @media all and (max-width: 900px) {
+	.content { margin-bottom: <?php echo $single; ?>px; }
 	#content.loop-default .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
@@ -89,15 +90,15 @@
 
 <?php
 	$cover_image_id = md_setting( array( 'colors', 'header', 'cover_image', 'id' ) );
-	$header_colors = array(
+	$cover_colors = array(
 		'default' => array(
 			'class' => '',
-			'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
+			'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
 			'border' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
 		),
 		'alt' => array(
-			'class' => '.text-alt',
-			'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $colors['site']['headline'] : '#fff' ),
+			'class' => '.alt',
+			'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
 			'border' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
 		)
 	);
@@ -117,10 +118,9 @@
 	position: relative;
 }
 
-.header.has-cover {
-	<?php echo ( ! empty( $colors['header']['cover_image']['url'] ) ? 'background-image: url(\'' . esc_url( $colors['header']['cover_image']['url'] ) . '\'); ': '' ); ?>
-	padding-bottom: 0;
-}
+<?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
+.header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
+<?php endif; ?>
 
 .overlay {
 	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
@@ -135,37 +135,25 @@
 	width: 100%;
 }
 
-<?php foreach ( $header_colors as $text_class => $text_atts ) :
+<?php foreach ( $cover_colors as $text_class => $text_atts ) :
 	$text_class = $text_atts['class'];
 ?>
 
 .header.has-cover<?php echo $text_class; ?>,
-.header.has-cover<?php echo $text_class; ?> .site-name,
-.header.has-cover<?php echo $text_class; ?> .site-name a,
+.header.has-cover<?php echo $text_class; ?> .site-name, .header.has-cover<?php echo $text_class; ?> .site-name a,
 .header.has-cover<?php echo $text_class; ?> .tagline,
-.header.has-cover<?php echo $text_class; ?> .header-aside a,
 .header.has-cover<?php echo $text_class; ?> .header-triggers a,
 .header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-.header.has-cover<?php echo $text_class; ?> .trigger-icon,
-.header.has-cover<?php echo $text_class; ?> .trigger-text,
-.cover<?php echo $text_class; ?>,
-.cover<?php echo $text_class; ?> .title a,
-.cover<?php echo $text_class; ?> .byline,
-.cover<?php echo $text_class; ?> a {
+.cover<?php echo $text_class; ?>, .cover<?php echo $text_class; ?> a,
+.cover<?php echo $text_class; ?> .title a, .cover<?php echo $text_class; ?> .byline {
 	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
 }
 
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 
-.header.has-cover<?php echo $text_class; ?> .menu > .menu-item:hover > .menu-toggle { background-color: <?php echo $text_atts['border']; ?>; }
-
 <?php endforeach; ?>
 
 @media all and (max-width: 800px) {
-	.header.has-cover<?php echo $header_colors['default']['class']; ?> .sub-menu .toggle-menu,
-	.header.has-cover<?php echo $header_colors['default']['class']; ?> .menu .menu-toggle { background-color: <?php echo $header_colors['default']['border']; ?>; }
-	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .sub-menu .toggle-menu,
-	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .menu .menu-toggle { background-color: <?php echo $header_colors['alt']['border']; ?>; }
-	.header.has-cover<?php echo $header_colors['default']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo $header_colors['default']['color']; ?>; }
-	.header.has-cover<?php echo $header_colors['alt']['class']; ?> .sub-menu > .menu-item > a { color: <?php echo $header_colors['alt']['color']; ?>; }
+	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
+	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 }

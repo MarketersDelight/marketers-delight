@@ -198,7 +198,7 @@ class md_page_cover extends md_api {
 		$cover = md_cover();
 
 		if ( ! empty( $cover['text'] ) )
-			$classes[] = 'text-alt';
+			$classes[] = 'alt';
 
 		return $classes;
 	}

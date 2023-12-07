@@ -24,9 +24,9 @@
 	position: relative;
 }
 
-.header a { color: <?php echo $header['menu']['links']; ?>; }
+.header-wrap a { color: <?php echo $header['menu']['links']; ?>; }
 
-.header a:hover { color: <?php echo $header['menu']['hover']; ?>; }
+.header-wrap a:hover { color: <?php echo $header['menu']['hover']; ?>; }
 
 /* SITE TITLE + TAGLINE */
 
@@ -113,7 +113,7 @@
 	line-height: 1;
 }
 
-.trigger .trigger-text { margin-left: <?php echo $small; ?>px; }
+.trigger-text { margin-left: <?php echo $third; ?>px; }
 
 .hide-label .trigger-text { display: none; }
 
