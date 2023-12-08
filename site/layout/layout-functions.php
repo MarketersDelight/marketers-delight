@@ -14,7 +14,7 @@ function md_body_class( $classes = array() ) {
 	$cover = md_cover();
 
 	if ( $cover['position'] == 'header_cover' )
-		$classes[] = 'header-cover';
+		$classes[] = 'layout-full';
 
 	return $classes;
 }

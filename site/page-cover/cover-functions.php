@@ -14,8 +14,12 @@ function md_cover_classes( $custom = array() ) {
 	if ( isset( $custom ) )
 		$classes = array_merge( $classes, $custom );
 
-	if ( ! empty( $cover['position'] ) )
+	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = 'cover';
+
+		if ( is_singular() )
+			$classes[] = str_replace( '_', '-', $cover['position'] );
+	}
 
 	if ( ! empty( $cover['text'] ) )
 		$classes[] = 'alt';

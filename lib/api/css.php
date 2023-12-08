@@ -63,7 +63,7 @@ class md_css {
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
-			'loops' => locate_template( 'css/loops.php' ),
+			'layout' => locate_template( 'css/layout.php' ),
 			'footer' => locate_template( 'css/footer.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		) );

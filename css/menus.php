@@ -41,8 +41,12 @@
 
 @media all and (min-width: 800px) {
 	.menu { display: flex; }
-	.menu > .menu-item-has-children { margin-right: <?php echo $half; ?>px; }
+	.menu > .menu-item-has-children {
+		flex: 1 0 auto;
+		margin-right: <?php echo $half; ?>px;
+	}
 	.menu-item-has-children a { padding-right: <?php echo $third; ?>px; }
+	.menu-item-has-children .menu-toggle { display: inline-block; }
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $header['submenu']['bg_color']; ?>;

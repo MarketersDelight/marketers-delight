@@ -61,6 +61,19 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.overlay {
+	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
+	content: '';
+	display: block;
+	height: 100%;
+	position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+	width: 100%;
+}
+
 /* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }

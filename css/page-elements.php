@@ -1,5 +1,18 @@
 <style type="text/css">
 
+/* PAGE TITLE */
+
+.page-header { margin-bottom: <?php echo $single; ?>px; }
+
+.page-header.image {
+	align-items: center;
+	display: flex;
+}
+
+.page-header.image .title-wrap {
+	flex: 1;
+}
+
 /* BYLINE */
 
 .byline {

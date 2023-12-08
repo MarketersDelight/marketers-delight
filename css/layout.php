@@ -1,26 +1,39 @@
 <style type="text/css">
 
 /*------------------------------*\
-	$LOOPS
+	$LAYOUT
 \*------------------------------*/
+
+/* POST HEADER */
+
+.post-header { padding-top: <?php echo $single; ?>px; }
+
+.post-header.cover { padding-bottom: <?php echo $single; ?>px; }
+
+.post-header.header-cover, .post-header.header-cover-full {
+	padding-bottom: <?php echo $mid; ?>px;
+	padding-top: <?php echo $mid; ?>px;
+}
+
+.layout-full .post-header { margin-bottom: <?php echo $single; ?>px; }
+
+.post-box .post-header,
+.the-content {
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
 
 #content, .the-content {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-.post-box .post-header, .the-content {
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
-}
-
-.post-header { padding-top: <?php echo $single; ?>px; }
-
-.post-header.cover { padding-bottom: <?php echo $single; ?>px; }
+.layout-full #content { padding-top: 0; }
 
 @media all and (min-width: 900px) {
-	.full .post-header, .header .post-header { text-align: center; }
-	.post-box .post-header, .content-sidebar .the-content, .content-sidebar .author-box, .content-sidebar .comments {
+	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
+	.post-box .post-header,
+	.content-sidebar .the-content, .content-sidebar .author-box, .content-sidebar .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
@@ -30,63 +43,7 @@
 	}
 }
 
-/* BOX STYLE */
-
-.box-style .post-box {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border-radius: 5px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	margin-bottom: <?php echo $single; ?>px;
-}
-
-.box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
-
-/* HEADER COVER */
-
-.header-cover #content { padding-top: 0; }
-
-.header-cover .post-header { margin-bottom: <?php echo $single; ?>px; }
-
-/* QUERIES */
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	#content .inner {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
-@media all and (min-width: 900px) {
-	.content-width { max-width: <?php echo $content_width; ?>px; }
-	.post-content { max-width: <?php echo $post_width; ?>px; }
-	/* CONTENT - SIDEBAR */
-	.content-sidebar .content {
-		float: left;
-		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
-	}
-	.content-sidebar .sidebar {
-		float: left;
-		padding-left: <?php echo $single; ?>px;
-		width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
-	}
-	.content-sidebar.left .content { float: right; }
-}
-
-@media all and (max-width: 900px) {
-	.content { margin-bottom: <?php echo $single; ?>px; }
-	#content.loop-default .post-box {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed; }
-}
-
-
-
-
+/* HEADER COVERS */
 
 <?php
 	$cover_image_id = md_setting( array( 'colors', 'header', 'cover_image', 'id' ) );
@@ -104,8 +61,6 @@
 	);
 ?>
 
-/* COVERS */
-
 .cover, .header.has-cover {
 	background-position: center center;
 	<?php if ( ! empty( $cover_image_id ) ) :
@@ -121,19 +76,6 @@
 <?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
 .header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
 <?php endif; ?>
-
-.overlay {
-	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
-	content: '';
-	display: block;
-	height: 100%;
-	position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		top: 0;
-	width: 100%;
-}
 
 <?php foreach ( $cover_colors as $text_class => $text_atts ) :
 	$text_class = $text_atts['class'];
@@ -156,4 +98,51 @@
 @media all and (max-width: 800px) {
 	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
 	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: <?php echo $text_atts['border']; ?>; }
+}
+
+/* BOX STYLE */
+
+.box-style .post-box {
+	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+	margin-bottom: <?php echo $single; ?>px;
+}
+
+.box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
+
+/* QUERIES */
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	#content .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+}
+
+@media all and (min-width: 900px) {
+	.content-width { max-width: <?php echo $content_width; ?>px; }
+	.post-content { max-width: <?php echo $post_width; ?>px; }
+	.content-sidebar .content {
+		float: left;
+		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
+	}
+	.content-sidebar .sidebar {
+		float: left;
+		padding-left: <?php echo $single; ?>px;
+		width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
+	}
+	.content-sidebar.left .content { float: right; }
+}
+
+@media all and (max-width: 900px) {
+	.content { margin-bottom: <?php echo $single; ?>px; }
+	#content.loop-default .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
+}
+
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed; }
 }

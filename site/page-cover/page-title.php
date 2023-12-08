@@ -16,7 +16,7 @@ class md_page_title {
 	 */
 
 	public function templates() {
-		$hook = 'md_hook_content';
+		$hook = 'md_hook_content_top';
 		$image = $this->get( 'image' );
 		$cover = md_cover();
 
@@ -128,15 +128,14 @@ class md_page_title {
 		$image = $this->get( 'image' );
 
 		if ( $image['size'] )
-			$css['image']['size'] = $image['size'];
-
-		if ( $css ) {
-			$css['selector'] = '.page-header .page-image';
-
-			wp_register_style( 'md-page-header', false );
-			wp_enqueue_style( 'md-page-header' );
-			wp_add_inline_style( 'md-page-header', md_post_css( $css ) );
-		}
+			md_inline_css( 'md-page-header', array(
+				'.page-header .page-image' => array(
+					'flex-basis' => array(
+						'query' => $image['size'],
+						'unit' => 'px'
+					)
+				)
+			) );
 
 		md_headline( array(
 			'title' => $title

@@ -161,52 +161,64 @@ function md_google_fonts( $format = null ) {
 }
 
 /**
- * Apply custom inline CSS to inline elements.
+ * Build custom inline CSS on the fly with data from
+ * custom values and disperse into media queries.
+ *
+ * Uses a "hack" to auto print styles to head.
  *
  * @since 5.6
  */
 
- function md_post_css( $args = array() ) {
-	$style = $selector = '';
-	$flex = 'flex-basis: ';
-	$devices = array( 'tablet' => 900, 'mobile' => 700 );
+function md_post_css( $args = array() ) {  }
 
-	if ( isset( $args['selector'] ) )
-		$selector = $args['selector'];
+function md_inline_css( $handle, $args ) {
+	$css = '';
+	$queries = array();
 
-	if ( isset( $args['links_color'] ) )
-		$style .= "$selector a:not(.button) { color: " . esc_attr( $args['links_color'] ) . '; }';
+	foreach ( $args as $selector => $properties ) {
+		$css .= "$selector { ";
 
-	if ( isset( $args['image'] ) ) {
-		$image = $args['image'];
-		if ( ! isset( $selector ) )
-			$selector = '.page-title .page-image';
+		foreach ( $properties as $property => $value ) {
+			if ( isset( $value['query'] ) ) {
+				$unit = isset( $value['unit'] ) ? $value['unit'] : '';
 
-		if ( isset( $image['selector'] ) )
-			$selector = esc_html( $image['selector'] );
+				foreach ( $value['query'] as $query_device => $query_val ) {
+					if ( $query_device == 'desktop' )
+						continue;
 
-		if ( isset( $image['flex'] ) )
-			$flex = 'flex: 1 0';
+					$queries[$query_device][] = "$selector { {$property}: " . $value['query'][$query_device] . $unit . "; }";
+				}
+			}
 
-		if ( ! empty( $image['size']['desktop'] ) )
-			$style .=
-				"$selector { ".
-					"$flex " . esc_attr( $image['size']['desktop'] ) . "px; ".
-					'max-width: ' . esc_attr( $image['size']['desktop'] ) . 'px;'.
-				" }\n";
+			$css .= "{$property}: ";
 
-		foreach ( $devices as $device => $width )
-			if ( ! empty( $image['size'][$device] ) )
-				$style .=
-					'@media all and (max-width: ' . esc_attr( $width ) . "px) { ".
-						"$selector { ".
-							"$flex " . esc_attr( $image['size'][$device] ) . "px; ".
-							'max-width: ' . esc_attr( $image['size'][$device] ) . 'px; '.
-						"}".
-					" }\n";
+			if ( isset( $value['query']['desktop'] ) )
+				$css .= $value['query']['desktop'] . $unit;
+			else
+				$css .= $value;
+
+			$css .= ';';
+		}
+
+		$css .= " }\n";
 	}
 
-	return $style;
+	if ( ! empty( $queries ) ) {
+		$devices = array( 'tablet' => 900, 'mobile' => 700 );
+
+		foreach ( $queries as $device => $selectors ) {
+			$css .= '@media all and (max-width: ' . $devices[$device] . "px) {\n";
+
+			foreach ( $selectors as $key => $print )
+				$css .= "\t$print\n";
+
+			$css .= "}\n";
+		}
+	}
+
+	wp_register_style( $handle, false );
+	wp_enqueue_style( $handle );
+	wp_add_inline_style( $handle, $css );
 }
 
 /**

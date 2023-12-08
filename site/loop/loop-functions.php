@@ -157,17 +157,10 @@ function md_post_classes( $classes ) {
 	$position = md_featured_image_position();
 	$cover = md_cover();
 
-	if ( ! empty( $cover['position'] ) ) {
+	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'has-cover';
 
-		if ( is_singular() && $cover['position'] == 'headline_cover' )
-			$classes[] = 'has-headline-cover';
-	}
-
 	if ( has_post_thumbnail() && ! empty( $position ) ) {
-//		if ( in_array( $position, array( 'left', 'right' ) ) )
-	//		$classes[] = 'has-inline-image';
-
 		if ( $position == 'above_headline' )
 			$classes[] = 'image-before-title';
 
@@ -214,8 +207,10 @@ function md_headline_classes( $args = array() ) {
 			$classes[] = $cover_classes;
 	}
 
-	if ( ! in_the_loop() && md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
+	if ( ! in_the_loop() && md_post_type_field( array( 'featured_image', 'image', 'id' ) ) ) {
+		$classes[] = 'image';
 		$classes[] = 'image-' . md_featured_image_position();
+	}
 
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );

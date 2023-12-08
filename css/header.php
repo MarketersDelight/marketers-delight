@@ -102,7 +102,10 @@
 /* TRIGGERS */
 
 .trigger {
+	align-items: center;
 	cursor: pointer;
+	display: flex;
+	justify-content: center;
 	position: relative;
 	text-align: center;
 }
