@@ -4,13 +4,18 @@
 
 .page-header { margin-bottom: <?php echo $single; ?>px; }
 
-.page-header.image {
+.page-header.image,
+.page-header.image .inner {
 	align-items: center;
 	display: flex;
 }
 
 .page-header.image .title-wrap {
 	flex: 1;
+}
+
+.page-header .page-image {
+	margin-left: <?php echo $single; ?>px;
 }
 
 /* BYLINE */

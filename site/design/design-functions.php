@@ -286,6 +286,7 @@ function md_link( $fields ) {
 	$class = $href = $target = $popup = '';
 	$parent = isset( $fields['area'] ) ? $fields['area'] : '';
 	$text = isset( $fields['title'] ) ? $fields['title'] : '';
+	$text = isset( $fields['link_text'] ) ? $fields['link_text'] : $text;
 	$url = isset( $fields['url'] ) ? $fields['url'] : '';
 	$phone = isset( $fields['phone'] ) ? $fields['phone'] : '';
 	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';

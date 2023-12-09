@@ -115,7 +115,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-sep-top { margin-top: 30px; }
 .md-sep-small-top { margin-top: 20px; }
 .mr-half { margin-right: 6px; }
-.mt-half { margin-top: 12px; }
+.mt-half { margin-top: 15px; }
 .mb-half { margin-bottom: 12px; }
 
 /* TYPOGRAPHY */
@@ -1065,7 +1065,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 @media all and (min-width: 782px) {
 	.md-color-picker-reset {
 		top: 6px;
-		right: 6px;
+		right: 10px;
 	}
 	.md-color-picker-reset .dashicons { font-size: 17px; }
 }
@@ -1110,7 +1110,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-upload-canvas, .md-upload-preview-image, .md-upload-preview-image img { border-radius: 5px 5px 0 0; }
 
-.md-upload-preview-text { font-weight: bold; }
+.md-upload-preview-text {
+	font-weight: bold;
+	margin: 0;
+}
 
 .md-upload-id-label {
 	background-color: rgba(0, 0, 0, 0.5);

@@ -1,11 +1,19 @@
 <div class="<?php echo esc_attr( $classes ); ?>">
 
+	<?php if ( empty( $args['disable_text'] ) ) : ?>
+		<?php $this->field( $fields['link_text']['field'], array(
+			'type' => 'text',
+			'label' => __( 'Text', 'md' ),
+			'wrap_classes' => 'md-sep-micro'
+		) ); ?>
+	<?php endif; ?>
+
 	<div class="columns-3 columns-half">
 
 		<div class="col col1 md-sep-micro">
 			<?php $this->field( $fields['link_type']['field'], array(
 				'type' => 'select',
-				'label' => __( 'Link Type', 'md' ),
+				'label' => __( 'Type', 'md' ),
 				'classes' => 'md-link-type',
 				'options' => array(
 					'url' => __( 'Page URL', 'md' ),
@@ -18,7 +26,7 @@
 		<div class="col col2">
 			<?php $this->field( $fields['link_style']['field'], array(
 				'type' => 'select',
-				'label' => __( 'Link Style', 'md' ),
+				'label' => __( 'Style', 'md' ),
 				'empty_label' => __( 'Text link', 'md' ),
 				'classes' => 'md-link-style',
 				'options' => array(
@@ -54,7 +62,7 @@
 		<div class="col col2 is-url">
 			<?php $this->field( $fields['url']['field'], array(
 				'type' => 'url',
-				'label' => __( 'Link URL', 'md' )
+				'label' => __( 'URL', 'md' )
 			) ); ?>
 		</div>
 

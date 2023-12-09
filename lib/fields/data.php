@@ -77,6 +77,12 @@ class md_fields_data {
 		$group = isset( $args['group'] ) ? $args['group'] : array();
 
 		$fields = array(
+			'link_text' => array(
+				'field' => "{$p}link_text",
+				'save' => array(
+					'type' => 'text'
+				)
+			),
 			'link_type' => array(
 				'field' => "{$p}link_type",
 				'save' => array(

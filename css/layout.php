@@ -15,7 +15,9 @@
 	padding-top: <?php echo $mid; ?>px;
 }
 
-.layout-full .post-header { margin-bottom: <?php echo $single; ?>px; }
+.layout-full #content > .post-header { margin-bottom: <?php echo $single; ?>px; }
+
+.layout-full #content { padding-top: 0; }
 
 .post-box .post-header,
 .the-content {
@@ -27,8 +29,6 @@
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
-
-.layout-full #content { padding-top: 0; }
 
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }

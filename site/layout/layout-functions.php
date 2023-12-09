@@ -77,9 +77,32 @@ function md_title( $text, $url = null ) {
  */
 
 function md_page_title() {
-	$page_title = new md_page_title;
+	$title = '';
 
-	return $page_title->page_title();
+	if ( is_post_type_archive() ) {
+		$post_type_title = post_type_archive_title( '', false );
+		$title = md_post_type_field( 'archives_title', $post_type_title );
+	}
+	elseif ( is_home() || is_singular( 'post' ) )
+		$title = md_post_type_field( 'archives_title' );
+	elseif ( is_tax() && get_queried_object() ) {
+		$term_title = single_term_title( '', false );
+		$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
+	}
+	elseif ( is_category() )
+		$title = single_cat_title( '', false );
+	elseif ( is_tag() )
+		$title = single_tag_title( '', false );
+	elseif ( is_author() )
+		$title = get_the_author();
+	elseif ( is_year() )
+		$title = get_the_date( 'Y' );
+	elseif ( is_month() )
+		$title = get_the_date( 'F Y' );
+	elseif ( is_day() )
+		$title = get_the_date( 'F j, Y' );
+
+	return $title;
 }
 
 /**

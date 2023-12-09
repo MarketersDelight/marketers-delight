@@ -37,22 +37,22 @@
 
 		<div class="md-widget md-widget-secondary md-toggle md-row-space">
 			<div class="md-widget-title">
-				<?php echo __( 'Primary Link', 'md' ); ?>
+				<?php echo __( 'Secondary Link', 'md' ); ?>
 			</div>
 			<div class="md-widget-item">
 				<?php $this->link_fields( array(
-					'group' => array( 'link_primary' )
+					'group' => array( 'link_secondary' )
 				) ); ?>
 			</div>
 		</div>
 
 		<div class="md-widget md-widget-secondary md-toggle md-row-space">
 			<div class="md-widget-title">
-				<?php echo __( 'Secondary Link', 'md' ); ?>
+				<?php echo __( 'Primary Link', 'md' ); ?>
 			</div>
 			<div class="md-widget-item">
 				<?php $this->link_fields( array(
-					'group' => array( 'link_secondary' )
+					'group' => array( 'link_primary' )
 				) ); ?>
 			</div>
 		</div>

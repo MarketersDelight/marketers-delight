@@ -17,7 +17,8 @@ class md_page_title {
 
 	public function templates() {
 		$hook = 'md_hook_content_top';
-		$image = $this->get( 'image' );
+		$image_id = $this->get( 'image_id' );
+		$image_position = $this->get( 'image_position' );
 		$cover = md_cover();
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
@@ -31,50 +32,16 @@ class md_page_title {
 
 		$image_hook = 'md_hook_before_headline';
 
-		if ( in_array( $image['position'], array( 'right', 'center' ) ) )
+		if ( in_array( $image_position, array( 'right', 'center' ) ) )
 			$image_hook = 'md_hook_after_headline';
 
-		if ( $image['position'] == 'below_headline' )
+		if ( $image_position == 'below_headline' )
 			$image_hook = 'md_hook_after_title';
 
-		if ( ! empty( $image['id'] ) && $image['position'] !== 'remove' )
+		if ( ! empty( $image_id ) && $image_position !== 'remove' )
 			add_action( $image_hook, array( $this, 'image' ) );
-	}
 
-	/**
-	 * Return the Page Title of the current page/type/term.
-	 * Used in md_page_title() in layout-functions.php
-	 *
-	 * @since 5.6
-	 */
-
-	public function page_title() {
-		$title = '';
-
-		if ( is_post_type_archive() ) {
-			$post_type_title = post_type_archive_title( '', false );
-			$title = md_post_type_field( 'archives_title', $post_type_title );
-		}
-		elseif ( is_home() || is_singular( 'post' ) )
-			$title = md_post_type_field( 'archives_title' );
-		elseif ( is_tax() && get_queried_object() ) {
-			$term_title = single_term_title( '', false );
-			$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
-		}
-		elseif ( is_category() )
-			$title = single_cat_title( '', false );
-		elseif ( is_tag() )
-			$title = single_tag_title( '', false );
-		elseif ( is_author() )
-			$title = get_the_author();
-		elseif ( is_year() )
-			$title = get_the_date( 'Y' );
-		elseif ( is_month() )
-			$title = get_the_date( 'F Y' );
-		elseif ( is_day() )
-			$title = get_the_date( 'F j, Y' );
-
-		return $title;
+		add_action( 'md_hook_after_headline', array( $this, 'cta' ) );
 	}
 
 	/**
@@ -84,8 +51,9 @@ class md_page_title {
 	 * @since 5.6
 	 */
 
-	public function get( $key = null, $group = null ) {
-		$data = array( 'title' => $this->page_title() );
+	public function get( $key = null ) {
+		$title = md_page_title();
+		$data = array( 'title' => $title );
 
 		if ( ! in_the_loop() ) {
 			$description = '';
@@ -102,16 +70,15 @@ class md_page_title {
 			if ( $description )
 				$data['description'] = $description;
 
-			$data['image']['position'] = md_featured_image_position();
-			$data['image']['id'] = md_module( array( 'featured_image', 'image', 'id' ) );
-			$data['image']['size'] = md_module( array( 'featured_image', 'image_width' ) );
+			$data['image_position'] = md_featured_image_position();
+			$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
+			$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
 		}
 
+
+
 		if ( isset( $key ) )
-			if ( isset( $group ) )
-				$data = ! empty( $data[$key][$group] ) ? $data[$key][$group] : '';
-			else
-				$data = ! empty( $data[$key] ) ? $data[$key] : '';
+			$data = ! empty( $data[$key] ) ? $data[$key] : '';
 
 		return $data;
 	}
@@ -123,23 +90,19 @@ class md_page_title {
 	 */
 
 	public function html() {
-		$css = array();
-		$title = $this->get( 'title' );
-		$image = $this->get( 'image' );
+		$image_size = $this->get( 'image_size' );
 
-		if ( $image['size'] )
+		md_headline( array( 'title' => $this->get( 'title' ) ) );
+
+		if ( $image_size )
 			md_inline_css( 'md-page-header', array(
 				'.page-header .page-image' => array(
 					'flex-basis' => array(
-						'query' => $image['size'],
+						'query' => $image_size,
 						'unit' => 'px'
 					)
 				)
 			) );
-
-		md_headline( array(
-			'title' => $title
-		) );
 	}
 
 	/**
@@ -166,7 +129,7 @@ class md_page_title {
 	 */
 
 	public function image() {
-		$image_id = $this->get( 'image', 'id' );
+		$image_id = $this->get( 'image_id' );
 
 		if ( ! $image_id )
 			return;
@@ -175,5 +138,16 @@ class md_page_title {
 			<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
 		</div>
 	<?php }
+
+	public function cta() {
+		$primary = md_module( 'link_primary' );
+		$secondary = md_module( 'link_secondary' );
+
+		if ( $secondary )
+			echo md_link( $secondary );
+
+		if ( $primary )
+			echo md_link( $primary );
+	}
 
 }

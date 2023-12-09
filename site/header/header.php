@@ -208,7 +208,8 @@ class md_header extends md_api {
 
 	public function link_fields( $group ) {
 		$this->fields->link_fields( array(
-			'group' => array( 'builder', $group )
+			'group' => array( 'builder', $group ),
+			'disable_text' => true
 		) );
 	}
 

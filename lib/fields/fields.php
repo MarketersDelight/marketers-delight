@@ -191,7 +191,10 @@ class md_fields {
 		}
 		elseif ( ! empty( $page_types[$page] ) ) {
 			$page_id = md_clean_id( $page );
-			array_unshift( $keys, $page_id, $this->_clean_id );
+			if ( $page_id == $this->_clean_id )
+				array_unshift( $keys, $page_id );
+			else
+				array_unshift( $keys, $page_id, $this->_clean_id );
 			$fields = md_setting( $keys, $default );
 		}
 		else {
