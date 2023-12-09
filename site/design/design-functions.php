@@ -281,7 +281,7 @@ function md_style( $fields ) {
  */
 
 function md_link( $fields ) {
-	$parent_classes = $classes = $styles = array();
+	$classes = $styles = array();
 	$html = 'span';
 	$class = $href = $target = $popup = '';
 	$parent = isset( $fields['area'] ) ? $fields['area'] : '';
@@ -294,13 +294,10 @@ function md_link( $fields ) {
 	$icon_classes = 'link-icon';
 
 	if ( $parent )
-		$parent_classes[] = "{$parent}-link";
-
-	if ( $style )
-		$parent_classes[] = "is-{$style}";
+		$classes[] = "{$parent}-link";
 
 	if ( isset( $fields['classes'] ) )
-		$parent_classes[] = esc_attr( $fields['classes'] );
+		$classes[] = esc_attr( $fields['classes'] );
 
 	if ( $type == 'url' && $url ) {
 		$html = 'a';
@@ -310,9 +307,10 @@ function md_link( $fields ) {
 	elseif ( $type == 'phone' ) {
 		$html = 'a';
 		$href = ' href="tel:' . esc_attr( $phone ) . '"';
+		$classes[] = $fields['icon'] = 'phone';
+
 		if ( ! $text )
 			$text = esc_attr( $phone );
-		$fields['icon'] = 'phone';
 	}
 
 	if ( $style == 'button' ) {
@@ -333,6 +331,8 @@ function md_link( $fields ) {
 		elseif ( $button_color )
 			$styles['bg_color'] = esc_attr( $button_color );
 	}
+	else
+		$classes[] = 'link';
 
 	if ( $type == 'popup' && isset( $fields['popup'] ) ) {
 		$popup = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
@@ -350,17 +350,12 @@ function md_link( $fields ) {
 
 	$classes = join( ' ', $classes );
 
-	if ( $parent_classes )
-		$parent_classes = join( ' ', $parent_classes );
-
 	if ( $classes )
 		$class = ' class="' . esc_attr( $classes ) . '"';
 ?>
 
-	<span class="<?php echo esc_attr( $parent_classes ); ?>">
-		<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
-			<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
-			<?php echo ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
-	</span>
+	<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
+		<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
+		<?php echo ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
 
 <?php }

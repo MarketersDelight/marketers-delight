@@ -19,6 +19,7 @@ class md_page_title {
 		$hook = 'md_hook_content_top';
 		$image_id = $this->get( 'image_id' );
 		$image_position = $this->get( 'image_position' );
+		$image_order = 10;
 		$cover = md_cover();
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
@@ -35,13 +36,15 @@ class md_page_title {
 		if ( in_array( $image_position, array( 'right', 'center' ) ) )
 			$image_hook = 'md_hook_after_headline';
 
-		if ( $image_position == 'below_headline' )
+		if ( $image_position == 'below_headline' ) {
 			$image_hook = 'md_hook_after_title';
+			$image_order = 20;
+		}
 
 		if ( ! empty( $image_id ) && $image_position !== 'remove' )
-			add_action( $image_hook, array( $this, 'image' ) );
+			add_action( $image_hook, array( $this, 'image' ), $image_order );
 
-		add_action( 'md_hook_after_headline', array( $this, 'cta' ) );
+		add_action( 'md_hook_after_title', array( $this, 'cta' ) );
 	}
 
 	/**
@@ -73,9 +76,10 @@ class md_page_title {
 			$data['image_position'] = md_featured_image_position();
 			$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
 			$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
+
+			$data['link_primary'] = md_module( 'link_primary' );
+			$data['link_secondary'] = md_module( 'link_secondary' );
 		}
-
-
 
 		if ( isset( $key ) )
 			$data = ! empty( $data[$key] ) ? $data[$key] : '';
@@ -90,9 +94,19 @@ class md_page_title {
 	 */
 
 	public function html() {
+		$classes = array();
 		$image_size = $this->get( 'image_size' );
+		$image_position = $this->get( 'image_position' );
 
-		md_headline( array( 'title' => $this->get( 'title' ) ) );
+		if ( in_array( $image_position, array( 'left', 'right' ) ) )
+			$classes[] = 'layout-columns';
+		else
+			$classes[] = 'layout-slim';
+
+		md_headline( array(
+			'title' => $this->get( 'title' ),
+			'classes' => $classes
+		) );
 
 		if ( $image_size )
 			md_inline_css( 'md-page-header', array(
@@ -140,14 +154,23 @@ class md_page_title {
 	<?php }
 
 	public function cta() {
-		$primary = md_module( 'link_primary' );
-		$secondary = md_module( 'link_secondary' );
+		$primary = $this->get( 'link_primary' );
+		$secondary = $this->get( 'link_secondary' );
+
+		if ( empty( $primary ) && empty( $secondary ) )
+			return;
+
+		$primary['classes'] = $secondary['classes'] = 'page-cta-link';
+
+		echo '<div class="page-cta">';
 
 		if ( $secondary )
 			echo md_link( $secondary );
 
 		if ( $primary )
 			echo md_link( $primary );
+
+		echo '</div>';
 	}
 
 }

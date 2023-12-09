@@ -22,21 +22,6 @@ function md_body_class( $classes = array() ) {
 add_filter( 'body_class', 'md_body_class', 999, 2 );
 
 /**
- * Render dynamic HTML for important structural tags.
- *
- * @since 5.6
- */
-
-function md_html( $area ) {
-	$html = 'div';
-
-	if ( $area == 'h' )
-		$html = is_singular() || ! in_the_loop() ? 'h1' : 'h2';
-
-	return $html;
-}
-
-/**
  * Inner HTML element and closing div.
  *
  * @since 5.6
@@ -160,11 +145,8 @@ function md_has_content_box() {
  */
 
 function md_content_box() {
-	if ( md_has_content_box() ) {
-		$html = md_html( 'content' );
-
+	if ( md_has_content_box() )
 		include( md_template( 'content-box', true ) );
-	}
 }
 
 /**

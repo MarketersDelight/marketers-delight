@@ -82,7 +82,6 @@ function md_get_loop() {
 
 function md_loop() {
 	$c = 1;
-	$h = md_html( 'h' );
 	$loops = md_loops();
 	$type = md_get_loop();
 	$post_type = md_get_post_type();
@@ -160,13 +159,8 @@ function md_post_classes( $classes ) {
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'has-cover';
 
-	if ( has_post_thumbnail() && ! empty( $position ) ) {
-		if ( $position == 'above_headline' )
-			$classes[] = 'image-before-title';
-
-		if ( $position == 'below_headline' )
-			$classes[] = 'image-after-title';
-	}
+	if ( has_post_thumbnail() && in_array( $position, array( 'above_headline', 'below_headline' ) ) )
+		$classes[] = 'image-' . str_replace( '_', '-', $position );
 
 	return $classes;
 }
@@ -191,8 +185,7 @@ function md_has_headline() {
  * @since 4.1
  */
 
-function md_headline_classes( $args = array() ) {
-	$classes = array();
+function md_headline_classes( $classes = array(), $args = array() ) {
 	$class = 'post-header';
 
 	if ( ! in_the_loop() )
@@ -207,10 +200,8 @@ function md_headline_classes( $args = array() ) {
 			$classes[] = $cover_classes;
 	}
 
-	if ( ! in_the_loop() && md_post_type_field( array( 'featured_image', 'image', 'id' ) ) ) {
-		$classes[] = 'image';
-		$classes[] = 'image-' . md_featured_image_position();
-	}
+	if ( md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
+		$classes[] = 'image-' . str_replace( '_', '-', md_featured_image_position() );
 
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );
@@ -225,22 +216,16 @@ function md_headline_classes( $args = array() ) {
  */
 
 function md_headline( $args = null ) {
-	$h = md_html( 'h' );
-
+	$h_classes = isset( $args['classes'] ) ? $args['classes'] : array();
+	$h = is_singular() || ! in_the_loop() ? 'h1' : 'h2';
 	$title = get_the_title();
 	$permalink = null;
 
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
 
-	$h_classes = 'title';
-
-	if ( ! is_singular() && in_the_loop() ) {
-//		if ( md_get_loop() == 'default' )
-//			$h_classes .= ' headline';
-
+	if ( ! is_singular() && in_the_loop() )
 		$permalink = get_permalink();
-	}
 
 	include( md_template( 'headline', true ) );
 }

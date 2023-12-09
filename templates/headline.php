@@ -1,6 +1,6 @@
 <?php md_hook_before_headline_area(); ?>
 
-<div class="<?php echo md_headline_classes(); ?>"<?php echo md_cover_style(); ?>>
+<div class="<?php echo md_headline_classes( $h_classes ); ?>"<?php echo md_cover_style(); ?>>
 
 	<?php md_hook_before_headline(); ?>
 
@@ -8,7 +8,7 @@
 
 		<?php md_hook_before_title(); ?>
 
-		<<?php echo $h; ?> class="<?php echo esc_attr( $h_classes ); ?>"><?php echo md_title( $title, $permalink ); ?></<?php echo $h; ?>>
+		<<?php echo $h; ?> class="title"><?php echo md_title( $title, $permalink ); ?></<?php echo $h; ?>>
 
 		<?php md_hook_after_title(); ?>
 

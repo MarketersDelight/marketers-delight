@@ -181,7 +181,7 @@
 	<?php endif; ?>
 	/* DISPLAY */
 	.header-menu, .header_aside-menu,
-	.header-link, .header_aside-link, .header .search-form,
+	.header .header-link, .header .header_aside-link, .header .search-form,
 	.hide-label-mobile .link-text { display: none; }
 	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu,
 	.header-controls .header-link, .header-controls .header_aside-link { display: block; }

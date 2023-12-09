@@ -30,9 +30,7 @@
 
 				<?php md_hook_before_headline(); ?>
 
-				<<?php echo $h; ?> class="post-title">
-					<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-				</<?php echo $h; ?>>
+				<h2 class="post-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
 				<?php md_hook_after_headline(); ?>
 

@@ -78,7 +78,7 @@
 	width: 100%;
 }
 
-.loop .image-after-title .featured-image img { border-radius: 0; }
+.loop .image-below-headline .featured-image img { border-radius: 0; }
 
 .wp-caption {
 	height: auto;
