@@ -17,34 +17,43 @@ class md_page_title {
 
 	public function templates() {
 		$hook = 'md_hook_content_top';
+		$description_hook = $cta_hook = 'md_hook_after_title';
 		$image_id = $this->get( 'image_id' );
-		$image_position = $this->get( 'image_position' );
-		$image_order = 10;
 		$cover = md_cover();
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
-			$hook = 'md_hook_page_cover_headline';
-
+			$hook = 'md_hook_page_cover_title';
+/*
+		elseif ( md_has_sidebar() ) {
+			$hook = 'md_hook_content';
+			$description_hook = 'md_hook_after_headline';
+			$cta_hook = 'md_hook_after_description';
+		}
+*/
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
 
-		if ( $this->get( 'description' ) )
-			add_action( 'md_hook_after_title', array( $this, 'description' ) );
-
-		$image_hook = 'md_hook_before_headline';
-
-		if ( in_array( $image_position, array( 'right', 'center' ) ) )
+		if ( $image_id ) {
 			$image_hook = 'md_hook_after_headline';
+			$image_order = 10;
+			$image_position = $this->get( 'image_position' );
 
-		if ( $image_position == 'below_headline' ) {
-			$image_hook = 'md_hook_after_title';
-			$image_order = 20;
+			if ( $image_position == 'center' )
+				$image_hook = 'md_hook_after_headline';
+			elseif ( $image_position == 'above_headline' )
+				$image_hook = 'md_hook_before_title';
+			elseif ( $image_position == 'below_headline' ) {
+				$image_hook = 'md_hook_after_title';
+			}
+
+			if ( $image_position !== 'remove' )
+				add_action( $image_hook, array( $this, 'image' ), $image_order );
 		}
 
-		if ( ! empty( $image_id ) && $image_position !== 'remove' )
-			add_action( $image_hook, array( $this, 'image' ), $image_order );
+		if ( $this->get( 'description' ) )
+			add_action( $description_hook, array( $this, 'description' ) );
 
-		add_action( 'md_hook_after_title', array( $this, 'cta' ) );
+		add_action( $cta_hook, array( $this, 'cta' ) );
 	}
 
 	/**
@@ -76,7 +85,7 @@ class md_page_title {
 			$data['image_position'] = md_featured_image_position();
 			$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
 			$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
-
+			$data['page_cta'] = md_module( 'page_cta' );
 			$data['link_primary'] = md_module( 'link_primary' );
 			$data['link_secondary'] = md_module( 'link_secondary' );
 		}
@@ -95,10 +104,11 @@ class md_page_title {
 
 	public function html() {
 		$classes = array();
+		$image_id = $this->get( 'image_id' );
 		$image_size = $this->get( 'image_size' );
 		$image_position = $this->get( 'image_position' );
 
-		if ( in_array( $image_position, array( 'left', 'right' ) ) )
+		if ( $image_id && in_array( $image_position, array( 'left', 'right' ) ) )
 			$classes[] = 'layout-columns';
 		else
 			$classes[] = 'layout-slim';
@@ -133,6 +143,7 @@ class md_page_title {
 	?>
 		<div class="description">
 			<?php echo wpautop( $description ); ?>
+			<?php do_action( 'md_hook_after_description' ); ?>
 		</div>
 	<?php }
 
@@ -153,22 +164,36 @@ class md_page_title {
 		</div>
 	<?php }
 
+	/**
+	 * Render the Page CTA.
+	 *
+	 * @since 5.6
+	 */
+
 	public function cta() {
-		$primary = $this->get( 'link_primary' );
-		$secondary = $this->get( 'link_secondary' );
+		$cta = $this->get( 'page_cta' );
 
-		if ( empty( $primary ) && empty( $secondary ) )
+		if ( ! $cta )
 			return;
-
-		$primary['classes'] = $secondary['classes'] = 'page-cta-link';
 
 		echo '<div class="page-cta">';
 
-		if ( $secondary )
-			echo md_link( $secondary );
+		if ( $cta == 'links' ) {
+			$secondary = $this->get( 'link_secondary' );
+			$primary = $this->get( 'link_primary' );
 
-		if ( $primary )
-			echo md_link( $primary );
+			if ( $secondary ) {
+				$secondary['classes'] = 'page-cta-link';
+				echo md_link( $secondary );
+			}
+
+			if ( $primary ) {
+				$primary['classes'] = 'page-cta-link';
+				echo md_link( $primary );
+			}
+		}
+		elseif ( $cta == 'custom' )
+			echo md_module( 'custom_html' );
 
 		echo '</div>';
 	}

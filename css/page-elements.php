@@ -20,17 +20,20 @@
 	.page-header.image-left .page-image { margin-right: <?php echo $single; ?>px; }
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-columns, .layout-columns .inner { flex-flow: inherit; }
-	.layout-columns .title-wrap { flex: 1; }
 	.layout-slim { text-align: center; }
 	.layout-slim .title-wrap {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
-	.layout-slim .description, .layout-slim .page-cta {
+	.layout-slim .description,
+	.layout-slim .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
+	.content .layout-columns { flex-flow: wrap; }
+	.content .description, .layout-columns .title-wrap { flex: 1; }
+	.content .title-wrap { flex-basis: 100%; }
 }
 
 @media all and (max-width: 800px) {

@@ -216,7 +216,7 @@ class md_page_cover extends md_api {
 				md_headline();
 			}
 		else
-			do_action( 'md_hook_page_cover_headline' );
+			do_action( 'md_hook_page_cover_title' );
 	}
 
 	/**

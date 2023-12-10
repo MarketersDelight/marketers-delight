@@ -74,6 +74,12 @@ function md_cover_caption() {
 		md_get_caption( $cover['id'] );
 }
 
+/**
+ * A simple and thorough check to detect Page Cover.
+ *
+ * @since 5.6
+ */
+
 function md_has_cover() {
 	$cover = md_cover();
 

@@ -668,17 +668,20 @@ select { max-width: 100%; }
 	.page-header.image-left .page-image { margin-right: 29px; }
 	.page-cta-link + .page-cta-link { margin-left: 15px; }
 	.layout-columns, .layout-columns .inner { flex-flow: inherit; }
-	.layout-columns .title-wrap { flex: 1; }
 	.layout-slim { text-align: center; }
 	.layout-slim .title-wrap {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: 697px;
 	}
-	.layout-slim .description, .layout-slim .page-cta {
+	.layout-slim .description,
+	.layout-slim .page-cta {
 		padding-left: 44px;
 		padding-right: 44px;
 	}
+	.content .layout-columns { flex-flow: wrap; }
+	.content .description, .layout-columns .title-wrap { flex: 1; }
+	.content .title-wrap { flex-basis: 100%; }
 }
 @media all and (max-width: 800px) {
 	.page-cta-link {
