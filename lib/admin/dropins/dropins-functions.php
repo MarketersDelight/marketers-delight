@@ -39,6 +39,7 @@ function md_get_dropin_data( $dropin_file ) {
 	// If no text domain is defined fall back to the plugin slug.
 	if ( ! $dropin_data['TextDomain'] ) {
 		$dropin_slug = $dropin_data['Slug'];
+
 		if ( '.' !== $dropin_slug && false === strpos( $dropin_slug, '/' ) )
 			$dropin_data['TextDomain'] = $dropin_slug;
 	}

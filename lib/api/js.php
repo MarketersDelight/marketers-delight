@@ -46,9 +46,10 @@ class md_js {
 	public function script_js() {
 		$child_js = locate_template( 'scripts.php' );
 		$templates = array(
-			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'lib/js.php'
+			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'site/js.php'
 		);
 		$templates = apply_filters( 'md_js_templates', $templates );
+
 		return $templates;
 	}
 
@@ -60,6 +61,7 @@ class md_js {
 
 	public function compile( $delete = null ) {
 		$inline = md_setting( array( 'settings', 'js', 'inline' ) );
+
 		foreach ( $this->files as $file => $fields ) {
 			if ( empty( $inline ) ) {
 				if ( isset( $delete ) )
@@ -69,6 +71,7 @@ class md_js {
 			else
 				$this->save( $file );
 		}
+
 		wp_cache_flush();
 	}
 
@@ -80,6 +83,7 @@ class md_js {
 
 	public function generate( $file ) {
 		$path = $this->files[$file]['path'];
+
 		if ( file_exists( $path ) ) {
 			ob_start();
 			$js = '';
@@ -101,6 +105,7 @@ class md_js {
 	public function clean( $js ) {
 		$js = str_replace( array( '<script type="text/javascript">', '<script type=\'text/javascript\'>', '<script>', '</script>' ), '', $js );
 		$js = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $js );
+
 		return trim( $js );
 	}
 

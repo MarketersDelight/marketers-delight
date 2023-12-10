@@ -14,6 +14,7 @@ class md_settings extends md_api {
 
 	public function actions() {
 		$requests = new md_requests;
+
 		$this->license = $requests->license();
 	}
 
@@ -116,7 +117,8 @@ class md_settings extends md_api {
 		$slug = $this->license['theme_slug'];
 		$theme = ! empty( $option['license']['updates']['theme'] ) ? $option['license']['updates']['theme'] : array();
 		$dropins = ! empty( $option['license']['updates']['dropins'] ) ? $option['license']['updates']['dropins'] : array();
-		include( 'templates/update-fields.php' );
+
+		include( 'update-fields.php' );
 	}
 
 	/**
@@ -127,7 +129,8 @@ class md_settings extends md_api {
 
 	public function admin_page() {
 		$page404 = $this->fields->get_field( array( 'settings', '404_page' ) );
-		include( 'templates/admin-page.php' );
+
+		include( 'admin-page.php' );
 	}
 
 }

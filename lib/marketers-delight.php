@@ -91,9 +91,9 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/templates.php' );
 		require_once( 'api/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
-			include_once( "widgets/$widget.php" );
+			include_once( MD_DIR . "site/widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
-			require_once( 'blocks/blocks.php' );
+			require_once( MD_DIR . 'site/blocks/blocks.php' );
 		$this->dropins();
 	}
 

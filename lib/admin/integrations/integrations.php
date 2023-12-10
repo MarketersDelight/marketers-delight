@@ -99,7 +99,7 @@ class md_integrations extends md_api {
 	 */
 
 	public function admin_page() {
-		include( 'templates/integrations-settings.php' );
+		include( 'admin-page.php' );
 	}
 
 	/**
@@ -123,7 +123,7 @@ class md_integrations extends md_api {
 		$option = md_setting( array( 'integrations' ) );
 		$error = isset( $args['error'] ) ? true : '';
 
-		include( 'templates/integrations-fields.php' );
+		include( 'integration-fields.php' );
 	}
 
 	/**

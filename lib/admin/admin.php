@@ -37,11 +37,13 @@ class md_admin {
 		require_once( 'dashboard/dashboard.php' );
 		require_once( 'page-settings.php' );
 		require_once( MD_DIR . 'site/design/typography.php' );
-		require_once( MD_DIR . 'lib/integrations/integrations.php' );
-		require_once( MD_DIR . 'lib/dropins/dropins.php' );
-		require_once( MD_DIR . 'lib/upgrade/md-upgrader.php' );
+		require_once( 'integrations/integrations.php' );
+		require_once( 'dropins/dropins-functions.php' );
+		require_once( 'dropins/dropins.php' );
+		require_once( 'dropins/upgraders/dropin-upgrader.php' );
+		require_once( 'upgrade/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-			require_once( MD_DIR . 'lib/upgrade/upgrade.php' );
+			require_once( 'upgrade/upgrade.php' );
 	}
 
 	/**

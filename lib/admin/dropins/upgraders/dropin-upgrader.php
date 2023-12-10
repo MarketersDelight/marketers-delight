@@ -228,7 +228,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 					break;
 				}
 			}
-		
+
 		if ( empty( $this->new_dropin_data ) )
 			return new WP_Error( 'incompatible_archive_no_dropins', $this->strings['incompatible_archive'], __( 'No valid drop-ins were found.' ) );
 

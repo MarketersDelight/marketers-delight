@@ -12,17 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class md_dropins extends md_api {
 
 	/**
-	 * Include related files.
-	 *
-	 * @since 5.6
-	 */
-
-	public function includes() {
-		include_once( 'dropins-functions.php' );
-		include_once( 'upgraders/dropin-upgrader.php' );
-	}
-
-	/**
 	 * Register admin page.
 	 *
 	 * @since 5.2.1
@@ -59,6 +48,7 @@ class md_dropins extends md_api {
 		);
 		$total_updates = md_setting( array( 'license', 'updates', 'dropins' ), 0 );
 		$updates_badge = ! empty( $total_updates ) && count( $total_updates ) > 0 ? " <span class=\"update-plugins count-" . count( $total_updates ) . "\"><span class=\"plugin-count\">" . count( $total_updates ) . "</span></span>" : '';
+
 		return array(
 			'admin_page' => array(
 				'name' => "$name{$updates_badge}",
@@ -96,7 +86,9 @@ class md_dropins extends md_api {
 	public function admin_page() {
 		$installed = md_setting( array( 'dropins', 'installed' ), array() );
 		$updates = md_setting( array( 'license', 'updates', 'dropins' ) );
+
 		ksort( $installed );
+
 		include( 'admin-page.php' );
 	}
 
