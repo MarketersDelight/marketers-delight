@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_editor_colors() {
 	$design = new md_design;
+
 	return $design->editor_colors();
 }
 
@@ -171,54 +172,55 @@ function md_google_fonts( $format = null ) {
 
 function md_post_css( $args = array() ) {  }
 
-function md_inline_css( $handle, $args ) {
+function md_inline_css( $args ) {
 	$css = '';
-	$queries = array();
+	$selectors = array();
 
 	foreach ( $args as $selector => $properties ) {
-		$css .= "$selector { ";
+		foreach ( $properties as $property => $fields ) {
+			$val = $fallback = '';
+			$group = array();
+			$unit = isset( $fields['unit'] ) ? $fields['unit'] : '';
 
-		foreach ( $properties as $property => $value ) {
-			if ( isset( $value['query'] ) ) {
-				$unit = isset( $value['unit'] ) ? $value['unit'] : '';
+			if ( isset( $fields['query'] ) ) {
+				foreach ( $fields['query'] as $query_device => $query_val ) {
+					$val = $fields['query'][$query_device];
 
-				foreach ( $value['query'] as $query_device => $query_val ) {
-					if ( $query_device == 'desktop' )
-						continue;
+					if ( isset( $fields['fallback'] ) )
+						$fallback = ' ' . $fields['fallback'] . ': ' . "$val{$unit};";
 
-					$queries[$query_device][] = "$selector { {$property}: " . $value['query'][$query_device] . $unit . "; }";
+					$selectors[$query_device][] = "$selector { {$property}: $val{$unit};{$fallback} }";
 				}
 			}
+			elseif ( isset( $fields['value'] ) ) {
+				$val = $fields['value'];
 
-			$css .= "{$property}: ";
+				if ( isset( $fields['fallback'] ) )
+					$fallback = ' ' . $fields['fallback'] . ': ' . "$val{$unit};";
 
-			if ( isset( $value['query']['desktop'] ) )
-				$css .= $value['query']['desktop'] . $unit;
-			else
-				$css .= $value;
-
-			$css .= ';';
+				$selectors['desktop'][] = "$selector { {$property}: $val{$unit};{$fallback} }";
+			}
 		}
-
-		$css .= " }\n";
 	}
 
-	if ( ! empty( $queries ) ) {
+	if ( ! empty( $selectors ) ) {
 		$devices = array( 'tablet' => 900, 'mobile' => 700 );
 
-		foreach ( $queries as $device => $selectors ) {
-			$css .= '@media all and (max-width: ' . $devices[$device] . "px) {\n";
+		foreach ( $selectors as $device => $list ) {
+			$t = $device !== 'desktop' ? "\t" : '';
 
-			foreach ( $selectors as $key => $print )
-				$css .= "\t$print\n";
+			if ( $device !== 'desktop' )
+				$css .= '@media all and (max-width: ' . $devices[$device] . "px) {\n";
 
-			$css .= "}\n";
+			foreach ( $list as $key => $print )
+				$css .= "{$t}$print\n";
+
+			if ( $device !== 'desktop' )
+				$css .= "}\n";
 		}
 	}
 
-	wp_register_style( $handle, false );
-	wp_enqueue_style( $handle );
-	wp_add_inline_style( $handle, $css );
+	echo "\n<style type=\"text/css\">\n" . $css . "</style>\n";
 }
 
 /**

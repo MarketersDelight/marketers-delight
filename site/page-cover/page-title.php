@@ -115,24 +115,11 @@ class md_page_title {
 
 	public function html() {
 		$classes = $this->get( 'classes' );
-		$image_id = $this->get( 'image_id' );
-		$image_size = $this->get( 'image_size' );
-		$image_position = $this->get( 'image_position' );
 
 		md_headline( array(
 			'title' => $this->get( 'title' ),
 			'classes' => $classes
 		) );
-
-		if ( $image_size )
-			md_inline_css( 'md-page-header', array(
-				'.page-header .page-image' => array(
-					'flex-basis' => array(
-						'query' => $image_size,
-						'unit' => 'px'
-					)
-				)
-			) );
 	}
 
 	/**
@@ -164,9 +151,22 @@ class md_page_title {
 
 		if ( ! $image_id )
 			return;
+
+		$image_size = $this->get( 'image_size' );
 	?>
 		<div class="page-image">
 			<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
+			<?php if ( $image_size ) :
+				md_inline_css( array(
+					'.page-header .page-image' => array(
+						'flex-basis' => array(
+							'query' => $image_size,
+							'unit' => 'px',
+							'fallback' => 'max-width'
+						)
+					)
+				) );
+			endif; ?>
 		</div>
 	<?php }
 
