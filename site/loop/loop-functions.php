@@ -1,6 +1,20 @@
 <?php
 
 /**
+ * Hook custom content after Loop Item X.
+ *
+ * @since 5.1
+ */
+
+function md_hook_x_loop( $c ) {
+	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
+	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+
+	if ( $c == $x_loop && $paged == 1 )
+		do_action( 'md_hook_x_loop' );
+}
+
+/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1

@@ -4,6 +4,7 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Deprecated 5.6
+function md_filter_css_values() { return apply_filters( 'md_filter_css_values', array() ); }
 function md_logo_html() { return apply_filters( 'md_filter_logo_html', 'div' ); }
 function md_button( $fields ) { md_link( $fields ); }
 function md_hook_headline_top() { do_action( 'md_hook_headline_top' ); }
@@ -24,7 +25,6 @@ function md_page_data() { return array(); }
  * @since 4.5.4
  * @deprecated 6.0
  */
-
 function md_the_logo() {
 	$has_custom_logo = md_has_custom_logo();
 	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );

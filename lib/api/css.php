@@ -255,7 +255,6 @@ class md_css {
 		$admin_bar_height = 32;
 		$admin_bar_height_mobile = 46;
 
-		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
 		$style_guide = $this->style_guide();
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {

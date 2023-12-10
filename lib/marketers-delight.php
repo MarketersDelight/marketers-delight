@@ -62,7 +62,8 @@ final class marketers_delight {
 	 */
 
 	public function includes() {
-		require_once( 'api/hooks-filters.php' );
+		require_once( MD_DIR . 'site/hooks.php' );
+		require_once( MD_DIR . 'site/filters.php' );
 		require_once( 'fields/data.php' );
 		require_once( 'fields/fields.php' );
 		require_once( 'api/css.php' );
@@ -89,7 +90,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/single/single.php' );
 		require_once( MD_DIR . 'site/layout/layout.php' );
 		require_once( MD_DIR . 'site/templates.php' );
-		require_once( 'api/walker.php' );
+		require_once( MD_DIR . 'site/walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "site/widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
