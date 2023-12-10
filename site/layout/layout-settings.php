@@ -72,23 +72,10 @@
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<?php if ( $screen->id !== 'page' ) : ?>
-
-				<?php if ( in_array( $screen->id, array( 'post', 'post-new', 'term' ) ) && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) ) : ?>
-
-					<?php $this->fields->field( 'breadcrumbs', array(
-						'type' => 'checkbox',
-						'options' => array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) )
-					) ); ?>
-
-				<?php else : ?>
-
-					<?php $this->fields->field( 'breadcrumbs', array(
-						'type' => 'checkbox',
-						'options' => array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) )
-					) ); ?>
-
-				<?php endif; ?>
-
+				<?php $this->fields->field( 'breadcrumbs', array(
+					'type' => 'checkbox',
+					'options' => $breadcrumbs_options
+				) ); ?>
 			<?php endif; ?>
 
 			<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
@@ -131,29 +118,20 @@
 
 					<?php endif; ?>
 
-					<?php
-						$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
-
-						if ( $disable_post_nav )
-							$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
-
-						$this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => $post_nav_options
-						) );
-					?>
+					<?php $this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => $post_nav_options
+					) ); ?>
 
 				<?php else : ?>
 
 					<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
-
 						<?php $this->fields->field( 'content', array(
 							'type' => 'checkbox',
 							'options' => array(
 								'add_byline' => __( 'Add <b>Byline</b>', 'md' ),
 							)
 						) ); ?>
-
 					</div>
 
 				<?php endif; ?>
@@ -161,24 +139,6 @@
 			<?php endif; ?>
 
 			<?php do_action( 'md_post_layout_content_options' ); ?>
-
-			<hr />
-
-			<?php $this->fields->field( 'content', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'full' => __( 'Show Full-Width', 'md' ),
-				)
-			) ); ?>
-
-			<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
-				<?php $this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'wpautop' => __( 'Disable WP format', 'md' )
-					)
-				) ); ?>
-			<?php endif; ?>
 
 			<?php $this->fields->field( 'content_box', array(
 				'type' => 'select',
@@ -191,12 +151,31 @@
 
 			<?php $this->fields->field( 'content_box_style', array(
 				'type' => 'select',
-				'empty_label' => __( 'Box style (default)', 'md' ),
+				'empty_label' => __( 'Use default style', 'md' ),
 				'wrap_classes' => 'md-sep-micro',
 				'options' => array(
+					'box_style' => __( 'Box style', 'md' ),
 					'minimal' => __( 'Simple style', 'md' )
 				)
 			) ); ?>
+
+			<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
+
+				<?php $this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'full' => __( 'Show Full-Width', 'md' ),
+					)
+				) ); ?>
+
+				<?php $this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'wpautop' => __( 'Disable WP format', 'md' )
+					)
+				) ); ?>
+
+			<?php endif; ?>
 
 		</div>
 

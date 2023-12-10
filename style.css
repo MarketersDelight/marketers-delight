@@ -653,19 +653,25 @@ select { max-width: 100%; }
 	}
 }
 /* PAGE TITLE */
-.page-header, .page-header .description:not(:last-child), .page-header .page-cta:not(:last-child) { margin-bottom: 29px; }
-.page-header, .page-header .inner {
+.page-header,
+.description:not(:last-child),
+.page-cta:not(:last-child) { margin-bottom: 29px; }
+.page-header,
+.page-header .inner {
 	align-items: center;
 	display: flex;
 	flex-flow: wrap;
 }
-.page-header .page-image {
+.page-image {
 	margin-left: auto;
 	margin-right: auto;
 }
 @media all and (min-width: 800px) {
-	.page-header.image-right .page-image { margin-left: 29px; }
-	.page-header.image-left .page-image { margin-right: 29px; }
+	.image-right .page-image {
+		order: 2;
+		margin-left: 29px;
+	}
+	.image-left .page-image { margin-right: 29px; }
 	.page-cta-link + .page-cta-link { margin-left: 15px; }
 	.layout-columns, .layout-columns .inner { flex-flow: inherit; }
 	.layout-slim { text-align: center; }
@@ -681,7 +687,7 @@ select { max-width: 100%; }
 	}
 	.content .layout-columns { flex-flow: wrap; }
 	.content .description, .layout-columns .title-wrap { flex: 1; }
-	.content .title-wrap { flex-basis: 100%; }
+	.content .title-wrap, .content .image-center .description { flex-basis: 100%; }
 }
 @media all and (max-width: 800px) {
 	.page-cta-link {
@@ -1405,7 +1411,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /* POST HEADER */
 .post-header { padding-top: 29px; }
 .post-header.cover { padding-bottom: 29px; }
-.post-header.header-cover, .post-header.header-cover-full {
+.post-header.header-cover,
+.post-header.header-cover-full {
 	padding-bottom: 44px;
 	padding-top: 44px;
 }
@@ -1420,10 +1427,16 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	padding-bottom: 29px;
 	padding-top: 29px;
 }
+.content .the-content.full {
+	padding-left: 0;
+	padding-right: 0;
+}
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.post-box .post-header,
-	.content-sidebar .the-content, .content-sidebar .author-box, .content-sidebar .comments {
+	.content-sidebar .the-content,
+	.content-sidebar .author-box,
+	.content-sidebar .comments {
 		padding-left: 44px;
 		padding-right: 44px;
 	}

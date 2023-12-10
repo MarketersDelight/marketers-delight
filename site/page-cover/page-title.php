@@ -18,28 +18,29 @@ class md_page_title {
 	public function templates() {
 		$hook = 'md_hook_content_top';
 		$description_hook = $cta_hook = 'md_hook_after_title';
+		$image_hook = 'md_hook_after_headline';
 		$image_id = $this->get( 'image_id' );
 		$cover = md_cover();
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
-/*
 		elseif ( md_has_sidebar() ) {
 			$hook = 'md_hook_content';
 			$description_hook = 'md_hook_after_headline';
 			$cta_hook = 'md_hook_after_description';
 		}
-*/
+
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
 
 		if ( $image_id ) {
-			$image_hook = 'md_hook_after_headline';
 			$image_order = 10;
 			$image_position = $this->get( 'image_position' );
 
-			if ( $image_position == 'center' )
+			if ( $image_position == 'center' ) {
 				$image_hook = 'md_hook_after_headline';
+				$image_order = 20;
+			}
 			elseif ( $image_position == 'above_headline' )
 				$image_hook = 'md_hook_before_title';
 			elseif ( $image_position == 'below_headline' ) {

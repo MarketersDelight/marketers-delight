@@ -10,7 +10,8 @@
 
 .post-header.cover { padding-bottom: <?php echo $single; ?>px; }
 
-.post-header.header-cover, .post-header.header-cover-full {
+.post-header.header-cover,
+.post-header.header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
 }
@@ -30,10 +31,17 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
+.content .the-content.full {
+	padding-left: 0;
+	padding-right: 0;
+}
+
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.post-box .post-header,
-	.content-sidebar .the-content, .content-sidebar .author-box, .content-sidebar .comments {
+	.content-sidebar .the-content,
+	.content-sidebar .author-box,
+	.content-sidebar .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}

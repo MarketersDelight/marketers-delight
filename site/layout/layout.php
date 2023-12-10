@@ -88,7 +88,7 @@ class md_layout extends md_api {
 			),
 			'content_box_style' => array(
 				'type' => 'select',
-				'options' => array( 'minimal' )
+				'options' => array( 'box_style', 'minimal' )
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
@@ -161,10 +161,18 @@ class md_layout extends md_api {
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
 
+		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
+		if ( in_array( $screen->id, array( 'post', 'post-new', 'term' ) ) && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
+			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
+
 		$author_box = md_post_type_field( array( 'single', 'author_box', 'enable' ), null, $post_type );
 		$disable_post_nav = md_post_type_field( array( 'single', 'post_nav', 'disable' ), null, $post_type );
-		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+		$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
 
+		if ( $disable_post_nav )
+			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
+
+		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 		foreach ( $nav_menus as $menu )
 			$menus[$menu->slug] = $menu->name;
 
