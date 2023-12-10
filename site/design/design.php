@@ -19,7 +19,7 @@ class md_colors extends md_api {
 	 */
 
 	public function includes() {
-		require_once( 'icons/icons.php' );
+		require_once( 'icons-functions.php' );
 		require_once( 'design-functions.php' );
 	}
 

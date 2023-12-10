@@ -35,6 +35,7 @@ class md_admin {
 
 	public function includes() {
 		require_once( 'dashboard/dashboard.php' );
+		require_once( 'icons/icons.php' );
 		require_once( MD_DIR . 'lib/fields/page-settings.php' );
 		require_once( MD_DIR . 'site/design/typography.php' );
 		require_once( 'integrations/integrations.php' );

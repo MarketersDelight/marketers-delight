@@ -8,16 +8,6 @@
 class md_icons extends md_api {
 
 	/**
-	 * Include related files.
-	 *
-	 * @since 5.6
-	 */
-
-	public function includes() {
-		include_once( 'icons-functions.php' );
-	}
-
-	/**
 	 * Register admin page.
 	 *
 	 * @since 5.2.3
@@ -94,6 +84,7 @@ class md_icons extends md_api {
 		$icons = md_icons();
 		$icons_count = count( $icons );
 		$default_icons_ids = md_get_icons( 'ids', true );
+
 		include( 'admin-page.php' );
 	}
 

@@ -216,14 +216,16 @@ class md_layout extends md_api {
 						document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
 					}
 				<?php endif; ?>
-				<?php if ( md_admin_has_sidebar() ) : ?>
-					document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
-						document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
-					}
-				<?php else : ?>
-					document.getElementById( '<?php echo $prefix; ?>_sidebar_add' ).onchange = function( e ) {
-						document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'block' : 'none';
-					}
+				<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
+					<?php if ( md_admin_has_sidebar() ) : ?>
+						document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
+							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
+						}
+					<?php else : ?>
+						document.getElementById( '<?php echo $prefix; ?>_sidebar_add' ).onchange = function( e ) {
+							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'block' : 'none';
+						}
+					<?php endif; ?>
 				<?php endif; ?>
 				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {
 					document.getElementById( 'footer_options' ).style.display = this.checked ? 'none' : 'block';

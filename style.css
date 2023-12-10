@@ -61,7 +61,7 @@ body {
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('http://localhost:8888/wp/wp-content/themes/marketers-delight/site/design/icons/md.woff') format('woff');
+	src: url('http://localhost:8888/wp/wp-content/themes/marketers-delight/site/md.woff') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
