@@ -195,6 +195,7 @@ class md_fields {
 				array_unshift( $keys, $page_id );
 			else
 				array_unshift( $keys, $page_id, $this->_clean_id );
+
 			$fields = md_setting( $keys, $default );
 		}
 		else {

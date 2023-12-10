@@ -19,7 +19,7 @@ class md_integrations extends md_api {
 	public function data( $args = null ) {
 		$integrations = apply_filters( 'md_integrations', array() );
 		$integrations['typekit'] = array(
-			'name' => __( 'Typekit', 'md' ),
+			'name' => __( 'Adobe Fonts', 'md' ),
 			'url' => '#',
 			'type' => 'site',
 			'refresh' => false,
