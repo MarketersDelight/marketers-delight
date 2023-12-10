@@ -120,7 +120,7 @@ class md_featured_image extends md_api {
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 
 		if ( $is_post ) {
-			$label = __( 'Featured image', 'md' );
+			$label = $this->name;
 			$classes = ' md-sep-small-top';
 		}
 	?>

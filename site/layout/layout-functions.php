@@ -157,7 +157,7 @@ function md_content_box() {
 
 function md_content_box_classes( $classes = array() ) {
 	$position = md_featured_image_position();
-	$default_style = md_setting( array( 'colors', 'style' ) );
+	$default_style = md_setting( array( 'colors', 'style' ), 'box_style' );
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
 
 	if ( md_has_sidebar() ) {
@@ -181,12 +181,8 @@ function md_content_box_classes( $classes = array() ) {
 
 	$classes[] = 'loop-' . md_get_loop();
 
-	if ( $style ) {
-		if ( $style !== 'minimal' )
-			$classes[] = "style-$style";
-	}
-	else
-		$classes[] = 'box-style';
+	if ( $style !== 'minimal' )
+		$classes[] = str_replace( '_', '-', $style );
 
 	$classes[] = 'format';
 

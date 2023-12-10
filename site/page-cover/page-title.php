@@ -24,7 +24,7 @@ class md_page_title {
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
-		elseif ( md_has_sidebar() ) {
+		elseif ( md_module( array( 'layout', 'content', 'page_title' ) ) && md_has_sidebar() ) {
 			$hook = 'md_hook_content';
 			$description_hook = 'md_hook_after_headline';
 			$cta_hook = 'md_hook_after_description';
@@ -33,26 +33,26 @@ class md_page_title {
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
 
+		if ( $this->get( 'description' ) )
+			add_action( $description_hook, array( $this, 'description' ) );
+
 		if ( $image_id ) {
 			$image_order = 10;
 			$image_position = $this->get( 'image_position' );
 
 			if ( $image_position == 'center' ) {
-				$image_hook = 'md_hook_after_headline';
-				$image_order = 20;
+//				$image_order = 20;
 			}
 			elseif ( $image_position == 'above_headline' )
-				$image_hook = 'md_hook_before_title';
+				$image_hook = 'md_hook_before_headline';
 			elseif ( $image_position == 'below_headline' ) {
 				$image_hook = 'md_hook_after_title';
+				$image_order = 5;
 			}
 
 			if ( $image_position !== 'remove' )
 				add_action( $image_hook, array( $this, 'image' ), $image_order );
 		}
-
-		if ( $this->get( 'description' ) )
-			add_action( $description_hook, array( $this, 'description' ) );
 
 		add_action( $cta_hook, array( $this, 'cta' ) );
 	}
@@ -89,6 +89,16 @@ class md_page_title {
 			$data['page_cta'] = md_module( 'page_cta' );
 			$data['link_primary'] = md_module( 'link_primary' );
 			$data['link_secondary'] = md_module( 'link_secondary' );
+
+			if ( $data['image_id'] && in_array( $data['image_position'], array( 'left', 'right' ) ) )
+				$data['classes'][] = 'layout-columns';
+			else
+				$data['classes'][] = 'layout-slim';
+
+			if ( md_module( array( 'layout', 'content', 'page_title' ) ) && md_has_sidebar() )
+				$data['classes'][] = 'inline';
+			else
+				$data['classes'][] = 'outer';
 		}
 
 		if ( isset( $key ) )
@@ -104,15 +114,10 @@ class md_page_title {
 	 */
 
 	public function html() {
-		$classes = array();
+		$classes = $this->get( 'classes' );
 		$image_id = $this->get( 'image_id' );
 		$image_size = $this->get( 'image_size' );
 		$image_position = $this->get( 'image_position' );
-
-		if ( $image_id && in_array( $image_position, array( 'left', 'right' ) ) )
-			$classes[] = 'layout-columns';
-		else
-			$classes[] = 'layout-slim';
 
 		md_headline( array(
 			'title' => $this->get( 'title' ),

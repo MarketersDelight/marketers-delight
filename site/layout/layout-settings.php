@@ -53,7 +53,7 @@
 
 		</div>
 
-		<?php do_action( "md_layout_{$post_base}_after_header" ); ?>
+		<?php do_action( "md_layout_{$hook}_after_header" ); ?>
 
 	</div>
 
@@ -61,9 +61,19 @@
 
 	<div class="col">
 
+		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content Box', 'md' ); ?></label></p>
+
+		<?php if ( $is_admin ) : ?>
+			<?php $this->fields->field( 'content', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'page_title' => __( 'Show <strong>Page Title</strong> inline', 'md' ),
+				)
+			) ); ?>
+		<?php endif; ?>
+
 		<?php $this->fields->field( 'content', array(
 			'type' => 'checkbox',
-			'label' => __( 'Content Box', 'md' ),
 			'options' => array(
 				'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
 			)
@@ -71,14 +81,14 @@
 
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php if ( $screen->id !== 'page' ) : ?>
+			<?php if ( $post_type !== 'page' ) : ?>
 				<?php $this->fields->field( 'breadcrumbs', array(
 					'type' => 'checkbox',
 					'options' => $breadcrumbs_options
 				) ); ?>
 			<?php endif; ?>
 
-			<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
+			<?php if ( $is_edit ) : ?>
 
 				<?php $this->fields->field( 'content', array(
 					'type' => 'checkbox',
@@ -87,7 +97,7 @@
 					)
 				) ); ?>
 
-				<?php if ( $screen->post_type !== 'page' ) : ?>
+				<?php if ( $post_type !== 'page' ) : ?>
 
 					<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
 						<?php $this->fields->field( 'content', array(
@@ -98,7 +108,7 @@
 						) ); ?>
 					</div>
 
-					<?php if ( ! empty( $author_box ) ) : ?>
+					<?php if ( $author_box ) : ?>
 
 						<?php $this->fields->field( 'content', array(
 							'type' => 'checkbox',
@@ -138,7 +148,9 @@
 
 			<?php endif; ?>
 
-			<?php do_action( 'md_post_layout_content_options' ); ?>
+			<div class="md-sep-micro">
+				<?php do_action( 'md_post_layout_content_options' ); ?>
+			</div>
 
 			<?php $this->fields->field( 'content_box', array(
 				'type' => 'select',
@@ -159,27 +171,20 @@
 				)
 			) ); ?>
 
-			<?php if ( in_array( $screen_base, array( 'post', 'post-new' ) ) ) : ?>
-
+			<?php if ( $is_edit ) : ?>
 				<?php $this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
 						'full' => __( 'Show Full-Width', 'md' ),
 					)
 				) ); ?>
-
-				<?php $this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'wpautop' => __( 'Disable WP format', 'md' )
-					)
-				) ); ?>
-
 			<?php endif; ?>
 
 		</div>
 
 	</div>
+
+	<?php if ( ! $is_admin ) : ?>
 
 	<!-- Sidebar -->
 
@@ -236,6 +241,8 @@
 		<?php endif; ?>
 
 	</div>
+
+	<?php endif; ?>
 
 	<!-- Footer -->
 

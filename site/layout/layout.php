@@ -76,7 +76,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'wpautop' )
+				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'page_title' )
 			),
 			'breadcrumbs' => array(
 				'type' => 'checkbox',
@@ -146,7 +146,9 @@ class md_layout extends md_api {
 		$screen = get_current_screen();
 		$post_type = esc_attr( $screen->post_type );
 		$screen_base = esc_attr( $screen->base );
-		$post_base = in_array( $screen_base, array( 'post', 'post-new' ) ) ? 'post' : $screen_base;
+		$is_edit = in_array( $screen_base, array( 'post', 'post-new' ) ) ? true : false;
+		$is_admin = ! in_array( $screen_base, array( 'post', 'post-new', 'term' ) ) ? true : false;
+		$hook = $is_edit ? 'post' : $screen_base;
 
 		$header = $this->fields->module( 'header' );
 		$content = $this->fields->module( 'content' );

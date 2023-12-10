@@ -20,8 +20,9 @@
 
 .layout-full #content { padding-top: 0; }
 
-.post-box .post-header,
-.the-content {
+.post-box .cover.post-header,
+.box-style .post-box .post-header,
+.box-style .the-content {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
@@ -31,21 +32,24 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.content .the-content.full {
+#content .full.the-content {
 	padding-left: 0;
 	padding-right: 0;
 }
 
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.post-box .post-header,
-	.content-sidebar .the-content,
+	.post-box .cover.post-header,
+	.box-style .post-box .post-header,
+	.box-style.content-sidebar .the-content,
 	.content-sidebar .author-box,
-	.content-sidebar .comments {
+	.box-style.content-sidebar .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.full .the-content, .full .author-box, .full .comments {
+	.box-style.full .the-content,
+	.full .author-box,
+	.box-style.full .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}

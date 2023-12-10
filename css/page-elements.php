@@ -4,42 +4,47 @@
 
 .page-header,
 .description:not(:last-child),
-.page-cta:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.page-cta:not(:last-child),
+.layout-slim.outer .title-wrap:not(:last-child),
+.layout-slim .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.page-header,
-.page-header .inner {
+.page-header, .page-header .inner,
+.layout-slim .title-wrap {
 	align-items: center;
 	display: flex;
 	flex-flow: wrap;
 }
 
-.page-image {
+.page-image, .layout-slim .page-cta {
 	margin-left: auto;
 	margin-right: auto;
 }
 
 @media all and (min-width: 800px) {
-	.image-right .page-image {
-		order: 2;
-		margin-left: <?php echo $single; ?>px;
-	}
-	.image-left .page-image { margin-right: <?php echo $single; ?>px; }
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
+	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
+	.image-left .page-image { margin-right: <?php echo $single; ?>px; }
+	.image-left.outer .page-image { order: -1; }
+	.image-left.inline .page-image { order: 1; }
+	.image-left.inline .description { order: 2; }
 	.layout-columns, .layout-columns .inner { flex-flow: inherit; }
-	.layout-slim { text-align: center; }
-	.layout-slim .title-wrap {
+	.layout-slim.outer { text-align: center; }
+	.layout-slim.outer .title,
+	.layout-slim.outer .description,
+	.layout-slim.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
-	.layout-slim .description,
-	.layout-slim .page-cta {
+	.layout-slim.outer .description,
+	.layout-slim.outer .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.content .layout-columns { flex-flow: wrap; }
-	.content .description, .layout-columns .title-wrap { flex: 1; }
-	.content .title-wrap, .content .image-center .description { flex-basis: 100%; }
+	.layout-columns.inline { flex-flow: wrap; }
+	.inline .description, .layout-columns .title-wrap { flex: 1; }
+	.inline .title-wrap, .image-center.inline .description { flex-basis: 100%; }
+	.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 800px) {
@@ -48,6 +53,7 @@
 		text-align: center;
 		width: 100%;
 	}
+	.title-wrap:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 

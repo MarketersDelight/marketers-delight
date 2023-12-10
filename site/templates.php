@@ -29,9 +29,6 @@ function md_templates() {
 
 	add_action( 'md_hook_content', 'md_loop', 30 );
 
-	if ( is_singular() &&  md_meta( array( 'layout', 'content', 'wpautop' ) ) )
-		remove_filter( 'the_content', 'wpautop' );
-
 	if ( ! is_404() && md_has_byline() ) {
 		$hook_byline = 'md_hook_before_headline';
 		$byline_position = md_get_byline_position();
