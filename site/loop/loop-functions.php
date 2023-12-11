@@ -1,20 +1,6 @@
 <?php
 
 /**
- * Hook custom content after Loop Item X.
- *
- * @since 5.1
- */
-
-function md_hook_x_loop( $c ) {
-	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
-	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-
-	if ( $c == $x_loop && $paged == 1 )
-		do_action( 'md_hook_x_loop' );
-}
-
-/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -65,27 +51,21 @@ function md_loops( $sort = null ) {
  */
 
 function md_get_loop() {
-	$default = 'default';
+	$loop = 'default';
 	$post_type = md_get_post_type();
+	$settings = md_module( array( 'loop', 'archives' ) );
 	$loops = md_loops();
 
-	if ( has_filter( 'md_filter_loop_default' ) )
-		$default = apply_filters( 'md_filter_loop_default', $default );
-	elseif ( ! empty( $loops[$post_type]['post_type'] ) )
-		$default = $post_type;
-	elseif ( $default !== 'default' && ! is_singular() )
-		$default = md_post_type_field( array( 'loop', 'archives' ) );
-
-	$loop = md_module( array( 'loop', 'archives' ), $default );
-
-	if ( is_home() || is_post_type_archive() ) {
-		$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
-
-		if ( $category_posts )
-			$loop = 'category-posts';
+	if ( ! empty( $settings ) )
+		$loop = $settings;
+	elseif ( ! empty( $loops[$post_type]['post_type'] ) ) {
+		if ( ( is_category() || is_tax() ) && md_term_meta( array( 'loop', 'archives' ) ) == '' )
+			$loop = md_post_type_field( array( 'loop', 'archives' ), $post_type );
+		else
+			$loop = $post_type;
 	}
 
-	return $loop;
+	return apply_filters( 'md_filter_loop', $loop );
 }
 
 /**
@@ -106,14 +86,39 @@ function md_loop() {
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
 	$byline = md_get_byline();
 
-	echo ! is_singular() ? '<div class="loop">' : '';
+	if ( have_posts() ) {
+		echo ! is_singular() ? '<div class="loop">' : '';
 
-	if ( ! empty( $loops[$type]['dropin'] ) )
-		include( md_template( 'dropins', "{$type}/loop-{$type}", true ) );
+		while ( have_posts() ) {
+			the_post();
+
+			if ( ! empty( $loops[$type]['dropin'] ) )
+				include( md_template( 'dropins', "{$type}/loop-{$type}", true ) );
+			else
+				include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
+
+			md_hook_x_loop( $c );
+			$c++;
+		}
+
+		echo ! is_singular() ? '</div>' : '';
+	}
 	else
-		include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
+		md_404_template();
+}
 
-	echo ! is_singular() ? '</div>' : '';
+/**
+ * Hook custom content after Loop Item X.
+ *
+ * @since 5.1
+ */
+
+function md_hook_x_loop( $c ) {
+	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
+	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+
+	if ( $c == $x_loop && $paged == 1 )
+		do_action( 'md_hook_x_loop' );
 }
 
 /**

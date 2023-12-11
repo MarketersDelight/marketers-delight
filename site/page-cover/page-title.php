@@ -16,19 +16,21 @@ class md_page_title {
 	 */
 
 	public function templates() {
-		$hook = 'md_hook_content_top';
+		$hook = 'md_hook_content';
 		$description_hook = $cta_hook = 'md_hook_after_title';
 		$image_hook = 'md_hook_after_headline';
+		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 		$image_id = $this->get( 'image_id' );
 		$cover = md_cover();
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
-		elseif ( md_module( array( 'layout', 'content', 'page_title' ) ) && md_has_sidebar() ) {
-			$hook = 'md_hook_content';
+		elseif ( $inline && md_has_sidebar() ) {
 			$description_hook = 'md_hook_after_headline';
 			$cta_hook = 'md_hook_after_description';
 		}
+		elseif ( ! $inline )
+			$hook = 'md_hook_content_top';
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
 			add_action( $hook, array( $this, 'html' ), 20 );
@@ -95,7 +97,9 @@ class md_page_title {
 			else
 				$data['classes'][] = 'layout-slim';
 
-			if ( md_module( array( 'layout', 'content', 'page_title' ) ) && md_has_sidebar() )
+			$inline = md_module( array( 'layout', 'content', 'page_title' ) );
+
+			if ( $inline && md_has_sidebar() )
 				$data['classes'][] = 'inline';
 			else
 				$data['classes'][] = 'outer';
