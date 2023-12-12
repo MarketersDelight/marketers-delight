@@ -396,7 +396,7 @@ function md_block_field( $attributes, $field ) {
  */
 
 function md_module( $keys = null, $default = null ) {
-	if ( is_home() || is_post_type_archive() )
+	if ( is_home() || is_post_type_archive() || is_author() )
 		$option = md_post_type_field( $keys, $default );
 	elseif ( is_category() || is_tax() )
 		$option = md_term_meta( $keys, null, $default );

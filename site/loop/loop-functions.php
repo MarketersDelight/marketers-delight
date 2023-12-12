@@ -246,30 +246,6 @@ function md_has_headline() {
 }
 
 /**
- * Determines needed classes for a headline type element. Spacing,
- * padding, featured image styles, etc.
- *
- * @since 4.1
- */
-
-function md_headline_classes( $classes = array(), $args = array() ) {
-	$class = 'post-header';
-
-	if ( ! in_the_loop() )
-		$class = 'page-header';
-
-	$classes[] = $class;
-
-	if ( md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
-		$classes[] = 'image-' . str_replace( '_', '-', md_featured_image_position() );
-
-	$classes = apply_filters( 'md_filter_headline_classes', $classes );
-	$classes = join( ' ', $classes );
-
-	return esc_attr( $classes );
-}
-
-/**
  * Displays the headline of any post/page.
  *
  * @since 4.1
@@ -284,6 +260,7 @@ function md_headline( $args = array() ) {
 	$permalink = null;
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
+	$classes[] = "$context-header";
 
 	if ( empty( $cover['hide_cover'] ) && ! empty( $cover['position'] ) ) {
 		$classes[] = 'cover';
@@ -293,7 +270,8 @@ function md_headline( $args = array() ) {
 			$classes[] = 'alt';
 	}
 
-	$classes = md_headline_classes( $classes );
+	$classes = apply_filters( 'md_filter_headline_classes', $classes );
+	$classes = join( ' ' , $classes );
 
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
@@ -350,7 +328,7 @@ function md_cover( $context = 'post' ) {
 function md_has_headline_cover() {
 	$cover = md_cover();
 
-	return in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) && is_singular() ? true : false;
+	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**
@@ -363,7 +341,7 @@ function md_cover_caption() {
 	$cover = md_cover();
 
 	if ( is_singular() && ! empty( $cover['position'] ) )
-		md_get_caption( $cover['id'] );
+		md_get_caption( $cover['image']['id'] );
 }
 
 /**

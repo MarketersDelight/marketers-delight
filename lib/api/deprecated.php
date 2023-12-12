@@ -4,6 +4,11 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 // Deprecated 5.6
+function md_headline_classes( $classes = array() ) {
+	$classes = apply_filters( 'md_filter_headline_classes', $classes );
+	$classes = join( ' ', $classes );
+	return esc_attr( $classes );
+}
 function md_filter_css_values() { return apply_filters( 'md_filter_css_values', array() ); }
 function md_logo_html() { return apply_filters( 'md_filter_logo_html', 'div' ); }
 function md_button( $fields ) { md_link( $fields ); }

@@ -35,15 +35,6 @@ class md_page_cover extends md_api {
 	}
 
 	/**
-	 * Run actions and filters.
-	 *
-	 * @since 4.3.5
-	 */
-
-	public function actions() {
-	}
-
-	/**
 	 * Set options for save.
 	 *
 	 * @since 4.3.5

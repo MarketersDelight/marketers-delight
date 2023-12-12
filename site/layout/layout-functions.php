@@ -4,24 +4,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Clean up Body classes.
- *
- * @since 5.6
- */
-
-function md_body_class( $classes = array() ) {
-	$classes = array_diff( $classes, array( 'wp-custom-logo' ) );
-//	$cover = md_cover();
-
-//	if ( $cover['position'] == 'header_cover' )
-//		$classes[] = 'layout-full';
-
-	return $classes;
-}
-
-add_filter( 'body_class', 'md_body_class', 999, 2 );
-
-/**
  * Inner HTML element and closing div.
  *
  * @since 5.6

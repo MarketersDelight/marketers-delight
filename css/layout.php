@@ -6,10 +6,11 @@
 
 /* POST HEADER */
 
-.post-header { padding-top: <?php echo $single; ?>px; }
+.post-header, .content .page-header.cover { padding-top: <?php echo $single; ?>px; }
 
 .post-header.cover,
-.image-below-headline .post-header { padding-bottom: <?php echo $single; ?>px; }
+.image-below-headline .post-header,
+.content .page-header.cover { padding-bottom: <?php echo $single; ?>px; }
 
 .post-header.header-cover,
 .post-header.header-cover-full {
@@ -23,24 +24,25 @@
 
 .post-box .cover.post-header,
 .box-style .post-box .post-header,
-.box-style .the-content {
+.box-style .the-content,
+.content .page-header.cover {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
 
-#content, .the-content {
+#content > .inner, .the-content {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-#content .full.the-content {
+.content .the-content.full {
 	padding-left: 0;
 	padding-right: 0;
 }
 
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.post-box .cover.post-header,
+	.post-box .post-header.cover, .content .page-header.cover,
 	.box-style .post-box .post-header,
 	.box-style.content-sidebar .the-content,
 	.content-sidebar .author-box,
@@ -123,6 +125,8 @@
 }
 
 .box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
+
+.content .page-header.cover { border-radius: 5px; }
 
 /* QUERIES */
 

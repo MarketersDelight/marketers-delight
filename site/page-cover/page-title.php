@@ -23,7 +23,7 @@ class md_page_title {
 		$image_id = $this->get( 'image_id' );
 		$cover = md_cover( 'page' );
 
-		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
 		elseif ( $inline && md_has_sidebar() ) {
 			$description_hook = 'md_hook_page_header_bottom';
@@ -67,42 +67,43 @@ class md_page_title {
 	 */
 
 	public function get( $key = null ) {
+		$description = '';
 		$data = array();
 
-		if ( ! in_the_loop() ) {
-			$description = '';
+		if ( has_filter( 'md_page_description' ) )
+			$description = apply_filters( 'md_page_description' );
+		elseif ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
+			$description = md_post_type_field( 'archives_text' );
+		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
+			$description = category_description();
+		elseif ( is_author() )
+			$description = get_the_author_meta( 'description' );
 
-			if ( has_filter( 'md_page_description' ) )
-				$description = apply_filters( 'md_page_description' );
-			elseif ( is_post_type_archive() || is_home() || is_singular( 'post' ) )
-				$description = md_post_type_field( 'archives_text' );
-			elseif ( ( is_category() || is_tax() ) && get_queried_object() )
-				$description = category_description();
-			elseif ( is_author() )
-				$description = get_the_author_meta( 'description' );
+		if ( $description )
+			$data['description'] = $description;
 
-			if ( $description )
-				$data['description'] = $description;
+		$data['image_position'] = md_featured_image_position();
+		$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
+		$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
+		$data['page_cta'] = md_module( 'page_cta' );
+		$data['link_primary'] = md_module( 'link_primary' );
+		$data['link_secondary'] = md_module( 'link_secondary' );
 
-			$data['image_position'] = md_featured_image_position();
-			$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
-			$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
-			$data['page_cta'] = md_module( 'page_cta' );
-			$data['link_primary'] = md_module( 'link_primary' );
-			$data['link_secondary'] = md_module( 'link_secondary' );
-
-			if ( $data['image_id'] && in_array( $data['image_position'], array( 'left', 'right' ) ) )
+		if ( ! empty( $data['image_id'] ) ) {
+			if ( in_array( $data['image_position'], array( 'left', 'right' ) ) )
 				$data['classes'][] = 'layout-columns';
 			else
 				$data['classes'][] = 'layout-slim';
 
-			$inline = md_module( array( 'layout', 'content', 'page_title' ) );
-
-			if ( $inline && md_has_sidebar() )
-				$data['classes'][] = 'inline';
-			else
-				$data['classes'][] = 'outer';
+			$data['classes'][] = 'image-' . str_replace( '_', '-', $data['image_position'] );
 		}
+
+		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
+
+		if ( $inline && md_has_sidebar() )
+			$data['classes'][] = 'inline';
+		else
+			$data['classes'][] = 'outer';
 
 		if ( isset( $key ) )
 			$data = ! empty( $data[$key] ) ? $data[$key] : '';
