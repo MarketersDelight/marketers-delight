@@ -54,13 +54,13 @@ foreach ( $terms as $term ) :
 							<a href="<?php echo get_term_link( $term_id ); ?>">
 								<?php echo wp_get_attachment_image( $term_image_id, 'full' ); ?>
 							</a>
-							<?php if ( $image_size )
+							<?php /* if ( $image_size )
 								md_post_css( array(
 									'selector' => "#$category_id .page-image",
 									'image' => array(
 										'size' => $image_size
 									)
-								) );
+								) ); */
 							?>
 						</div>
 					<?php endif; ?>

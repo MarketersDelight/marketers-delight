@@ -11,16 +11,6 @@
 class md_page_cover extends md_api {
 
 	/**
-	 * Include related files.
-	 *
-	 * @since 5.6
-	 */
-
-	public function includes() {
-		include_once( 'cover-functions.php' );
-	}
-
-	/**
 	 * Register meta box and term.
 	 *
 	 * @since 4.3.5
@@ -51,7 +41,6 @@ class md_page_cover extends md_api {
 	 */
 
 	public function actions() {
-		add_action( 'wp_head', array( $this, 'inline_css' ) );
 	}
 
 	/**
@@ -138,6 +127,37 @@ class md_page_cover extends md_api {
 		include( 'cover-fields.php' );
 	}
 
+	/**
+	 * Load featured image in various positions across templates.
+	 *
+	 * @since 4.8.3
+	 */
+
+	public function template() {
+		$cover = $this->cover();
+
+		if ( empty( $cover['position'] ) )
+			return;
+
+		if ( $cover['position'] == 'header_cover' ) {
+			add_action( 'md_hook_post_header_top', 'md_inner_html', 5 );
+			add_action( 'md_hook_page_header_top', 'md_inner_html', 5 );
+			add_action( 'md_hook_post_header_bottom', 'md_html_close', 100 );
+			add_action( 'md_hook_page_header_bottom', 'md_html_close', 100 );
+
+			if ( md_has_headline() )
+				add_action( 'md_hook_content_box_top', array( $this, 'headline' ) );
+		}
+		elseif ( $cover['position'] == 'header_cover_full' ) {
+			add_action( 'wp_head', array( $this, 'inline_css' ) );
+			add_action( 'md_hook_header_top', array( $this, 'overlay' ) );
+			add_filter( 'md_filter_header_classes', array( $this, 'header_classes' ) );
+
+			if ( md_has_headline() )
+				add_action( 'md_hook_after_header', array( $this, 'headline' ) );
+		}
+	}
+
 	public function cover() {
 		$context = is_singular() ? 'post' : 'page';
 
@@ -155,33 +175,6 @@ class md_page_cover extends md_api {
 	}
 
 	/**
-	 * Load featured image in various positions across templates.
-	 *
-	 * @since 4.8.3
-	 */
-
-	public function template() {
-		$cover = $this->cover();
-
-		if ( $cover['position'] == 'header_cover' ) {
-			add_action( 'md_hook_post_header_top', 'md_inner_html', 5 );
-			add_action( 'md_hook_page_header_top', 'md_inner_html', 5 );
-			add_action( 'md_hook_post_header_bottom', 'md_html_close', 100 );
-			add_action( 'md_hook_page_header_bottom', 'md_html_close', 100 );
-
-			if ( md_has_headline() )
-				add_action( 'md_hook_content_box_top', array( $this, 'headline' ) );
-		}
-		elseif ( $cover['position'] == 'header_cover_full' ) {
-			add_action( 'md_hook_header_top', array( $this, 'overlay' ) );
-			add_filter( 'md_filter_header_classes', array( $this, 'header_classes' ) );
-
-			if ( md_has_headline() )
-				add_action( 'md_hook_after_header', array( $this, 'headline' ) );
-		}
-	}
-
-	/**
 	 * Print inline CSS to wp_head when needed.
 	 *
 	 * @since 4.8.3
@@ -190,16 +183,14 @@ class md_page_cover extends md_api {
 	public function inline_css() {
 		$cover = $this->cover();
 
-		if ( $cover['position'] == 'header_cover_full' ) {
-			if ( ! empty( $cover['image'] ) )
-				echo
-					"\n<style type=\"text/css\">\n".
-					"\t.header.has-cover {\n".
-					"\t\tbackground-image: url('" . esc_url( $cover['image']['url'] ) . "');\n".
-					"\t\tbackground-size: " . 'auto' . ";\n".
-					"\t}\n".
-					"</style>\n";
-		}
+		if ( ! empty( $cover['image'] ) )
+			md_inline_css( array(
+				'.header.has-cover' => array(
+					'background-image' => "url('" . esc_url( $cover['image']['url'] ) . "')",
+					'background-size' => 'cover'
+				)
+			) );
+// //					"\t\tbackground-size: " . ( $cover['image'][1] < 500 ? 'auto' : 'cover' ) . ";\n".
 	}
 
 	/**

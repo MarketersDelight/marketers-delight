@@ -170,8 +170,6 @@ function md_google_fonts( $format = null ) {
  * @since 5.6
  */
 
-function md_post_css( $args = array() ) {  }
-
 function md_inline_css( $args ) {
 	$css = '';
 	$selectors = array();
@@ -200,6 +198,8 @@ function md_inline_css( $args ) {
 
 				$selectors['desktop'][] = "$selector { {$property}: $val{$unit};{$fallback} }";
 			}
+			else
+				$selectors['desktop'][] = "$selector { {$property}: $fields }";
 		}
 	}
 

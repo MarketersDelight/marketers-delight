@@ -333,12 +333,52 @@ function md_cover( $context = 'post' ) {
 			'bg_size' => 'auto'
 		);
 
-	if ( $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
+	if ( ! empty( $cover['position'] ) && $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
 		unset( $cover['style'] );
 		$cover['disable_overlay'] = true;
 	}
 
 	return $cover;
+}
+
+/**
+ * Checks for content headline.
+ *
+ * @since 4.1
+ */
+
+function md_has_headline_cover() {
+	$cover = md_cover();
+
+	return in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) && is_singular() ? true : false;
+}
+
+/**
+ * Show image caption from Cover image.
+ *
+ * @since 5.6
+ */
+
+function md_cover_caption() {
+	$cover = md_cover();
+
+	if ( is_singular() && ! empty( $cover['position'] ) )
+		md_get_caption( $cover['id'] );
+}
+
+/**
+ * A simple and thorough check to detect Page Cover.
+ *
+ * @since 5.6
+ */
+
+function md_has_cover() {
+	$cover = md_cover();
+
+	if ( ! empty( $cover['id'] && $cover['position'] ) )
+		return true;
+
+	return false;
 }
 
 /**

@@ -652,10 +652,9 @@ select { max-width: 100%; }
 		padding-right: 15px;
 	}
 }
-/* PAGE TITLE */
+/* PAGE HEADER */
 .page-header,
-.description:not(:last-child),
-.page-cta:not(:last-child),
+.description:not(:last-child), .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
 .layout-slim .page-image:not(:last-child) { margin-bottom: 29px; }
 .page-header, .page-header .inner,
@@ -668,6 +667,7 @@ select { max-width: 100%; }
 	margin-left: auto;
 	margin-right: auto;
 }
+.title-wrap, .description, .page-cta { position: relative; }
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
 	.page-cta-link + .page-cta-link { margin-left: 15px; }

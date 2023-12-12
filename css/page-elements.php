@@ -1,10 +1,9 @@
 <style type="text/css">
 
-/* PAGE TITLE */
+/* PAGE HEADER */
 
 .page-header,
-.description:not(:last-child),
-.page-cta:not(:last-child),
+.description:not(:last-child), .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
 .layout-slim .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
@@ -19,6 +18,8 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+.title-wrap, .description, .page-cta { position: relative; }
 
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
