@@ -36,7 +36,6 @@ function md_templates() {
 		add_action( $hook_byline, 'md_byline' );
 	}
 
-
 	if ( md_has_headline() && ! md_has_headline_cover() )
 		add_action( 'md_hook_content_item', 'md_headline', 20 );
 

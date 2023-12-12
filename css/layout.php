@@ -6,26 +6,20 @@
 
 /* POST HEADER */
 
-.post-header, .content .page-header.cover { padding-top: <?php echo $single; ?>px; }
+.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 
 .post-header.cover,
 .image-below-headline .post-header,
-.content .page-header.cover { padding-bottom: <?php echo $single; ?>px; }
+.cover { padding-bottom: <?php echo $single; ?>px; }
 
-.post-header.header-cover,
-.post-header.header-cover-full {
+.post-header.header-cover, .post-header.header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
 }
 
-.layout-full #content > .post-header { margin-bottom: <?php echo $single; ?>px; }
-
-.layout-full #content { padding-top: 0; }
-
-.post-box .cover.post-header,
+.cover,
 .box-style .post-box .post-header,
-.box-style .the-content,
-.content .page-header.cover {
+.box-style .the-content {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
@@ -35,14 +29,15 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.content .the-content.full {
+.content .the-content.full,
+.header .cover, #content > .cover {
 	padding-left: 0;
 	padding-right: 0;
 }
 
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.post-box .post-header.cover, .content .page-header.cover,
+	.cover,
 	.box-style .post-box .post-header,
 	.box-style.content-sidebar .the-content,
 	.content-sidebar .author-box,
@@ -124,9 +119,12 @@
 	margin-bottom: <?php echo $single; ?>px;
 }
 
-.box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
+.cover, .cover .overlay { border-radius: 5px; }
 
-.content .page-header.cover { border-radius: 5px; }
+.box-style .post-box .cover, .box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
+
+.box-style .image-above-headline .cover,
+.box-style .image-above-headline .overlay { border-radius: 0; }
 
 /* QUERIES */
 

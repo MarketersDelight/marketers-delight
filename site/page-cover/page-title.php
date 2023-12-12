@@ -29,7 +29,7 @@ class md_page_title {
 			$description_hook = 'md_hook_page_header_bottom';
 			$cta_hook = 'md_hook_after_description';
 		}
-		elseif ( ! $inline )
+		elseif ( ! $inline && md_has_sidebar() )
 			$hook = 'md_hook_content_top';
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )

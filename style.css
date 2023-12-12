@@ -665,7 +665,7 @@ select { max-width: 100%; }
 	margin-left: auto;
 	margin-right: auto;
 }
-.title-wrap, .description, .page-cta { position: relative; }
+.title-wrap, .description, .page-image, .page-cta { position: relative; }
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
 	.page-cta-link + .page-cta-link { margin-left: 15px; }
@@ -689,8 +689,7 @@ select { max-width: 100%; }
 		max-width: 697px;
 	}
 	.layout-columns.outer .title-wrap { flex: 1; }
-	.outer .description,
-	.layout-slim.outer .page-cta {
+	.outer .description, .layout-slim.outer .page-cta {
 		padding-left: 44px;
 		padding-right: 44px;
 	}
@@ -1418,21 +1417,17 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	$LAYOUT
 \*------------------------------*/
 /* POST HEADER */
-.post-header, .content .page-header.cover { padding-top: 29px; }
+.post-header, .cover { padding-top: 29px; }
 .post-header.cover,
 .image-below-headline .post-header,
-.content .page-header.cover { padding-bottom: 29px; }
-.post-header.header-cover,
-.post-header.header-cover-full {
+.cover { padding-bottom: 29px; }
+.post-header.header-cover, .post-header.header-cover-full {
 	padding-bottom: 44px;
 	padding-top: 44px;
 }
-.layout-full #content > .post-header { margin-bottom: 29px; }
-.layout-full #content { padding-top: 0; }
-.post-box .cover.post-header,
+.cover,
 .box-style .post-box .post-header,
-.box-style .the-content,
-.content .page-header.cover {
+.box-style .the-content {
 	padding-left: 15px;
 	padding-right: 15px;
 }
@@ -1440,13 +1435,14 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	padding-bottom: 29px;
 	padding-top: 29px;
 }
-.content .the-content.full {
+.content .the-content.full,
+.header .cover, #content > .cover {
 	padding-left: 0;
 	padding-right: 0;
 }
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.post-box .post-header.cover, .content .page-header.cover,
+	.cover,
 	.box-style .post-box .post-header,
 	.box-style.content-sidebar .the-content,
 	.content-sidebar .author-box,
@@ -1498,8 +1494,10 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	margin-bottom: 29px;
 }
-.box-style .post-box .post-header, .post-box .overlay { border-radius: 5px 5px 0 0; }
-.content .page-header.cover { border-radius: 5px; }
+.cover, .cover .overlay { border-radius: 5px; }
+.box-style .post-box .cover, .box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
+.box-style .image-above-headline .cover,
+.box-style .image-above-headline .overlay { border-radius: 0; }
 /* QUERIES */
 @media all and (max-width: 1045px) {
 	#content .inner {

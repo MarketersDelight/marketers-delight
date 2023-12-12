@@ -19,7 +19,7 @@
 	margin-right: auto;
 }
 
-.title-wrap, .description, .page-cta { position: relative; }
+.title-wrap, .description, .page-image, .page-cta { position: relative; }
 
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
@@ -44,8 +44,7 @@
 		max-width: <?php echo $content_width; ?>px;
 	}
 	.layout-columns.outer .title-wrap { flex: 1; }
-	.outer .description,
-	.layout-slim.outer .page-cta {
+	.outer .description, .layout-slim.outer .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
