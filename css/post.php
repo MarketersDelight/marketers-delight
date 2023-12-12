@@ -85,7 +85,7 @@
 	max-width: 100%;
 }
 
-.wp-caption-text {
+.post-box .wp-caption-text {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
@@ -97,9 +97,7 @@
 
 .cover .wp-caption-text {
 	background-color: rgba(0, 0, 0, 0.75);
-	border-bottom: 0;
 	color: #fff;
-	margin-bottom: 0;
 	padding: <?php echo $small; ?>px <?php echo $third; ?>px;
 	position: absolute;
 		bottom: 0;

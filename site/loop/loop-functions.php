@@ -256,18 +256,24 @@ function md_headline( $args = array() ) {
 	$cover = md_cover( $context );
 
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
+	$caption = '';
 	$title = get_the_title();
 	$permalink = null;
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes[] = "$context-header";
 
-	if ( empty( $cover['hide_cover'] ) && ! empty( $cover['position'] ) ) {
-		$classes[] = 'cover';
-		$classes[] = str_replace( '_', '-', $cover['position'] );
+	if ( ! empty( $cover['position'] ) ) {
+		if ( empty( $cover['hide_cover'] ) ) {
+			$classes[] = 'cover';
+			$classes[] = str_replace( '_', '-', $cover['position'] );
 
-		if ( ! empty( $cover['text'] ) )
-			$classes[] = 'alt';
+			if ( ! empty( $cover['text'] ) )
+				$classes[] = 'alt';
+		}
+
+		if ( is_singular() && ! empty( $cover['image']['id'] ) )
+			$caption = md_get_caption( $cover['image']['id'] );
 	}
 
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
@@ -320,31 +326,6 @@ function md_cover( $context = 'post' ) {
 }
 
 /**
- * Checks for content headline.
- *
- * @since 4.1
- */
-
-function md_has_headline_cover() {
-	$cover = md_cover();
-
-	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
-}
-
-/**
- * Show image caption from Cover image.
- *
- * @since 5.6
- */
-
-function md_cover_caption() {
-	$cover = md_cover();
-
-	if ( is_singular() && ! empty( $cover['position'] ) )
-		md_get_caption( $cover['image']['id'] );
-}
-
-/**
  * A simple and thorough check to detect Page Cover.
  *
  * @since 5.6
@@ -375,6 +356,18 @@ function md_overlay( $cover ) {
 		$style['bg_color'] = $cover['bg_color'];
 
 	echo '<div class="overlay"' . md_style( $style ) . '></div>';
+}
+
+/**
+ * Checks for content headline.
+ *
+ * @since 4.1
+ */
+
+function md_has_headline_cover() {
+	$cover = md_cover();
+
+	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**

@@ -101,11 +101,15 @@ function md_has_inline_featured_image() {
  */
 
 function md_get_caption( $id = null ) {
+	$caption = '';
+
 	if ( empty( $id ) )
 		$id = get_post_thumbnail_id();
 
 	$caption = wp_get_attachment_caption( $id );
 
 	if ( ! empty( $caption ) )
-		echo '<p class="wp-caption-text">' . $caption . '</p>';
+		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
+
+	return $caption;
 }

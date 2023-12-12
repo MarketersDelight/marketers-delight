@@ -911,7 +911,7 @@ select { max-width: 100%; }
 	height: auto;
 	max-width: 100%;
 }
-.wp-caption-text {
+.post-box .wp-caption-text {
 	border-bottom: 1px solid #CCCCCC;
 	color: #777777;
 	font-size: 16px;
@@ -922,9 +922,7 @@ select { max-width: 100%; }
 }
 .cover .wp-caption-text {
 	background-color: rgba(0, 0, 0, 0.75);
-	border-bottom: 0;
 	color: #fff;
-	margin-bottom: 0;
 	padding: 5px 10px;
 	position: absolute;
 		bottom: 0;
