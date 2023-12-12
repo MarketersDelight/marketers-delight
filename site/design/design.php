@@ -9,7 +9,6 @@
 class md_colors extends md_api {
 
 	public $data;
-	public $sanitize;
 	public $colors;
 
 	/**
@@ -31,7 +30,6 @@ class md_colors extends md_api {
 
 	public function actions() {
 		$this->data = $this->_data();
-		$this->sanitize = new md_sanitize;
 		$this->colors = array(
 			'site' => array(
 				'bg_color' => array( 'type' => 'color' ),
@@ -156,7 +154,6 @@ class md_colors extends md_api {
 		$options = $this->options();
 		$defaults = $this->data['defaults'];
 		$values = $this->data['values'];
-		$sanitize = $this->sanitize;
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$layout_spacing = $line_height + round( $line_height / 2 );
 
