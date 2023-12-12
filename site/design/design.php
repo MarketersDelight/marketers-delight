@@ -89,41 +89,6 @@ class md_colors extends md_api {
 
 	public function register() {
 		$fields = $this->colors;
-
-		$fields['featured_image']['position'] = array(
-			'type' => 'select',
-			'options' => array_keys( $this->sanitize->values['featured_image'] )
-		);
-
-		$fields['page_cover']['cover_position'] = array(
-			'type' => 'select',
-			'options' => array_keys( $this->sanitize->values['covers'] )
-		);
-
-		$fields['page_cover']['cover_image'] = array(
-			'type' => 'upload',
-			'upload_type' => 'media'
-		);
-
-		$fields['page_cover']['cover_color'] = array(
-			'type' => 'color'
-		);
-
-		$fields['page_cover']['cover_styles'] = array(
-			'type' => 'checkbox',
-			'options' => array( 'text_color', 'disable_cover' )
-		);
-
-		$fields['layout'] = array(
-			'type' => 'select',
-			'options' => array_keys( $this->sanitize->values['content_box'] )
-		);
-
-		$fields['style'] = array(
-			'type' => 'select',
-			'options' => array( 'minimal' )
-		);
-
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
 		$fields['width']['sidebar'] = array( 'type' => 'range' );

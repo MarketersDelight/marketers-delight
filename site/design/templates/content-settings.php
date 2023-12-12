@@ -18,38 +18,6 @@
 
 		<hr class="md-sep-small" />
 
-		<div class="columns-3 columns-single">
-			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( 'featured_image', 'position' ), array(
-					'type' => 'select',
-					'label' => __( 'Featured Image', 'md' ),
-					'empty_label' => __( 'Set image position...', 'md' ),
-					'options' => $this->sanitize->values['featured_image'],
-					'style' => 'max-width: 100%;'
-				) ); ?>
-			</div>
-			<div class="col md-sep-small">
-				<?php $this->fields->field( 'style', array(
-					'type' => 'select',
-					'label' => __( 'Style', 'md' ),
-					'empty_label' => __( 'Box style (default)', 'md' ),
-					'options' => array(
-						'minimal' => __( 'Simple style', 'md' )
-					)
-				) ); ?>
-			</div>
-			<div class="col md-sep-small">
-				<?php $this->fields->field( 'layout', array(
-					'type' => 'select',
-					'label' => __( 'Layout', 'md' ),
-					'empty_label' => __( 'Content / Sidebar', 'md' ),
-					'options' => $sanitize->values['content_box']
-				) ); ?>
-			</div>
-		</div>
-
-		<hr class="md-sep-small" />
-
 		<div class="columns-2 columns-single md-sep-micro">
 			<div class="col md-sep-small">
 				<?php $this->fields->field( array( 'width', 'content' ), array(

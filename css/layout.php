@@ -142,12 +142,16 @@
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
 	}
+	.content-sidebar.left .content { float: right; }
 	.content-sidebar .sidebar {
 		float: left;
 		padding-left: <?php echo $single; ?>px;
 		width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
-	.content-sidebar.left .content { float: right; }
+	.content-sidebar.left .sidebar {
+		padding-left: 0;
+		padding-right: <?php echo $single; ?>px;
+	}
 }
 
 @media all and (max-width: 900px) {

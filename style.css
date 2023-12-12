@@ -1513,12 +1513,16 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		float: left;
 		width: 66.698564593301%;
 	}
+	.content-sidebar.left .content { float: right; }
 	.content-sidebar .sidebar {
 		float: left;
 		padding-left: 29px;
 		width: 33.301435406699%;
 	}
-	.content-sidebar.left .content { float: right; }
+	.content-sidebar.left .sidebar {
+		padding-left: 0;
+		padding-right: 29px;
+	}
 }
 @media all and (max-width: 900px) {
 	.content { margin-bottom: 29px; }

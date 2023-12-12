@@ -1,6 +1,6 @@
 <article id="post_404" <?php post_class( array( 'post-box' ) ); ?>>
 
-	<div class="<?php echo md_headline_classes(); ?>"<?php echo md_cover_style(); ?>>
+	<div class="<?php echo md_headline_classes(); ?>">
 
 		<?php md_hook_before_headline(); ?>
 
