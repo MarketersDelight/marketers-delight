@@ -18,10 +18,6 @@ function md_loops( $sort = null ) {
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
-		),
-		'category-posts' => array(
-			'name' => __( 'Category Listing', 'md' ),
-			'hide' => true,
 		)
 	) );
 
@@ -42,10 +38,10 @@ function md_loops( $sort = null ) {
 }
 
 /**
- * Get the Loop on the current page.
- *
- * Simplified in 5.6 to no longer pull setting values and
- * strictly return loop type of current page only.
+ * Get the Loop of the current page. If post_type parameter
+ * is set in $loops, all views will be set according to the
+ * loop being registered. Unless set, categories will use the
+ * same loop as archives.
  *
  * @since 4.6.4
  */
@@ -77,7 +73,7 @@ function md_get_loop() {
 function md_loop() {
 	$c = 1;
 	$loops = md_loops();
-	$type = md_get_loop();
+	$loop = md_get_loop();
 	$post_type = md_get_post_type();
 	$byline_position = md_module( array( 'loop', 'byline_position' ) );
 	$content_default = md_post_type_field( array( 'loop', 'content' ) );
@@ -86,18 +82,23 @@ function md_loop() {
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
 	$byline = md_get_byline();
 
-	if ( have_posts() ) {
+	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+
+	if ( $category_posts )
+		md_category_posts();
+	elseif ( have_posts() ) {
 		echo ! is_singular() ? '<div class="loop">' : '';
 
 		while ( have_posts() ) {
 			the_post();
 
-			if ( ! empty( $loops[$type]['dropin'] ) )
-				include( md_template( 'dropins', "{$type}/loop-{$type}", true ) );
+			if ( ! empty( $loops[$loop]['dropin'] ) )
+				include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
 			else
-				include( md_template( 'loops/loop' . ( $type == 'default' ? '' : "-{$type}" ), true ) );
+				include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
 
 			md_hook_x_loop( $c );
+
 			$c++;
 		}
 
@@ -105,6 +106,53 @@ function md_loop() {
 	}
 	else
 		md_404_template();
+}
+
+function md_category_posts() {
+	$post_type = md_get_post_type();
+	$loops = md_loops();
+	$loop = md_get_loop();
+	$taxonomies = get_object_taxonomies( $post_type );
+	$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+	$categories = get_terms( $taxonomy );
+
+	if ( empty( $categories ) )
+		md_404_template();
+
+	echo '<div class="category-posts">';
+
+	foreach ( $categories as $category ) {
+		$posts = new WP_Query( array(
+			'post_type' => $post_type,
+			'posts_per_page' => 5,
+			'tax_query' => array( array(
+				'taxonomy' => $taxonomy,
+				'field' => 'slug',
+				'terms' => $category->slug
+			) )
+		) );
+
+		if ( $posts->have_posts() ) {
+			$category_id = $category->term_id;
+			$category_name = $category->name;
+
+			echo '<h2>' . $category_name . '</h2>';
+
+			while ( $posts->have_posts() ) {
+				$posts->the_post();
+
+				if ( ! empty( $loops[$loop]['dropin'] ) )
+					include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
+				else
+					include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
+			}
+
+		}
+
+		wp_reset_query();
+	}
+
+	echo '</div>';
 }
 
 /**
@@ -212,13 +260,6 @@ function md_headline_classes( $classes = array(), $args = array() ) {
 
 	$classes[] = $class;
 
-	if ( ! isset( $args['hide_cover'] ) ) {
-		$cover_classes = md_cover_classes();
-
-		if ( ! empty( $cover_classes ) )
-			$classes[] = $cover_classes;
-	}
-
 	if ( md_post_type_field( array( 'featured_image', 'image', 'id' ) ) )
 		$classes[] = 'image-' . str_replace( '_', '-', md_featured_image_position() );
 
@@ -234,19 +275,88 @@ function md_headline_classes( $classes = array(), $args = array() ) {
  * @since 4.1
  */
 
-function md_headline( $args = null ) {
-	$h_classes = isset( $args['classes'] ) ? $args['classes'] : array();
-	$h = is_singular() || ! in_the_loop() ? 'h1' : 'h2';
+function md_headline( $args = array() ) {
+	$context = isset( $args['context'] ) ? $args['context'] : 'post';
+	$cover = md_cover( $context );
+
+	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 	$title = get_the_title();
 	$permalink = null;
+
+	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
+
+	if ( empty( $cover['hide_cover'] ) && ! empty( $cover['position'] ) ) {
+		$classes[] = 'cover';
+		$classes[] = str_replace( '_', '-', $cover['position'] );
+
+		if ( ! empty( $cover['text'] ) )
+			$classes[] = 'alt';
+	}
+
+	$classes = md_headline_classes( $classes );
+
+	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
 
-	if ( ! is_singular() && in_the_loop() )
+	if ( ! is_singular() && $context == 'post' )
 		$permalink = get_permalink();
 
 	include( md_template( 'headline', true ) );
+}
+
+/**
+ * Get Cover attributes for any given page.
+ *
+ * @since 4.1
+ * @renamed 5.6 (md_featured_image_style)
+ */
+
+function md_cover( $context = 'post' ) {
+	$cover = array();
+	$archive = md_post_type_field( 'page_cover' );
+	$single = md_post_meta( 'page_cover' );
+
+	if ( $context == 'page' )
+		if ( is_category() || is_tax() )
+			$cover = md_term_meta( 'page_cover' );
+		else
+			$cover = md_post_type_field( 'page_cover' );
+	else
+		$cover = md_post_meta( 'page_cover' );
+
+	if ( ! empty( $cover['image'] ) )
+		$cover['style'] = array(
+			'bg_image' => esc_url( $cover['image']['url'] ),
+//			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
+			'bg_size' => 'auto'
+		);
+
+	if ( $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
+		unset( $cover['style'] );
+		$cover['disable_overlay'] = true;
+	}
+
+	return $cover;
+}
+
+/**
+ * Add Overlay HTML to covers.
+ *
+ * @since 4.8.6
+ */
+
+function md_overlay( $cover ) {
+	if ( empty( $cover['position'] ) || ! empty( $cover['disable_overlay'] ) )
+		return;
+
+	$style = array();
+
+	if ( ! empty( $cover['bg_color'] ) )
+		$style['bg_color'] = $cover['bg_color'];
+
+	echo '<div class="overlay"' . md_style( $style ) . '></div>';
 }
 
 /**

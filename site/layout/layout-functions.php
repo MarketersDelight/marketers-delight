@@ -11,10 +11,10 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 
 function md_body_class( $classes = array() ) {
 	$classes = array_diff( $classes, array( 'wp-custom-logo' ) );
-	$cover = md_cover();
+//	$cover = md_cover();
 
-	if ( $cover['position'] == 'header_cover' )
-		$classes[] = 'layout-full';
+//	if ( $cover['position'] == 'header_cover' )
+//		$classes[] = 'layout-full';
 
 	return $classes;
 }
@@ -231,8 +231,6 @@ function md_has_breadcrumbs() {
  */
 
 function md_breadcrumbs() {
-	if ( in_the_loop() )
-		return;
 	$post_type_title = $category_url = $category_title = '';
 	$post_id = get_the_ID();
 	$post_type = md_get_post_type();
@@ -475,20 +473,15 @@ function md_has_post_nav() {
  */
 
 function md_pagination() {
-	if ( is_singular() ) return;
+	if ( is_singular() )
+		return;
 
 	global $wp_query;
-
-	$big = 999999999;
 
 	if ( $wp_query->max_num_pages <= 1 )
 		return;
 
-	$loop = md_get_loop();
-
-	if ( $loop == 'category-posts' )
-		return;
-
+	$big = 999999999;
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
 	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );

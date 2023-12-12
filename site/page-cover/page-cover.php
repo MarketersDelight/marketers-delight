@@ -64,16 +64,16 @@ class md_page_cover extends md_api {
 		$sanitize = $this->_data( 'sanitize' );
 
 		return array(
-			'cover_image' => array(
+			'image' => array(
 				'type' => 'upload',
 				'upload_type' => 'media'
 			),
-			'cover_position' => array(
+			'position' => array(
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['covers'] )
 			),
 			'bg_color' => array( 'type' => 'color' ),
-			'text_color' => array(
+			'display' => array(
 				'type' => 'checkbox',
 				'options' => array( 'alternate', 'disable_cover', 'categories', 'posts', 'category_posts' )
 			)
@@ -138,6 +138,22 @@ class md_page_cover extends md_api {
 		include( 'cover-fields.php' );
 	}
 
+	public function cover() {
+		$context = is_singular() ? 'post' : 'page';
+
+		return md_cover( $context );
+	}
+
+	public function overlay() {
+		$style = array();
+		$cover = $this->cover();
+
+		if ( ! empty( $cover['bg_color'] ) )
+			$style['bg_color'] = $cover['bg_color'];
+
+		echo '<div class="overlay"' . md_style( $style ) . '></div>';
+	}
+
 	/**
 	 * Load featured image in various positions across templates.
 	 *
@@ -145,14 +161,13 @@ class md_page_cover extends md_api {
 	 */
 
 	public function template() {
-		$cover = md_cover();
-
-		if ( $cover['position'] !== 'header_cover_full' )
-			add_action( 'md_hook_before_headline', array( $this, 'overlay' ), 1 );
+		$cover = $this->cover();
 
 		if ( $cover['position'] == 'header_cover' ) {
-			add_action( 'md_hook_before_headline', 'md_inner_html', 5 );
-			add_action( 'md_hook_after_headline', 'md_html_close', 100 );
+			add_action( 'md_hook_post_header_top', 'md_inner_html', 5 );
+			add_action( 'md_hook_page_header_top', 'md_inner_html', 5 );
+			add_action( 'md_hook_post_header_bottom', 'md_html_close', 100 );
+			add_action( 'md_hook_page_header_bottom', 'md_html_close', 100 );
 
 			if ( md_has_headline() )
 				add_action( 'md_hook_content_box_top', array( $this, 'headline' ) );
@@ -173,15 +188,15 @@ class md_page_cover extends md_api {
 	 */
 
 	public function inline_css() {
-		$cover = md_cover();
+		$cover = $this->cover();
 
 		if ( $cover['position'] == 'header_cover_full' ) {
-			if ( ! empty( $cover['image'][0] ) )
+			if ( ! empty( $cover['image'] ) )
 				echo
 					"\n<style type=\"text/css\">\n".
 					"\t.header.has-cover {\n".
-					"\t\tbackground-image: url('" . esc_url( $cover['image'][0] ) . "');\n".
-					"\t\tbackground-size: " . ( $cover['image'][1] < 500 ? 'auto' : 'cover' ) . ";\n".
+					"\t\tbackground-image: url('" . esc_url( $cover['image']['url'] ) . "');\n".
+					"\t\tbackground-size: " . 'auto' . ";\n".
 					"\t}\n".
 					"</style>\n";
 		}
@@ -217,23 +232,6 @@ class md_page_cover extends md_api {
 			}
 		else
 			do_action( 'md_hook_page_cover_title' );
-	}
-
-	/**
-	 * Add Overlay HTML to covers.
-	 *
-	 * @since 4.8.6
-	 */
-
-	public function overlay() {
-		$style = array();
-		$cover = md_cover();
-
-		if ( ! empty( $cover['color'] ) )
-			$style['bg_color'] = $cover['color'];
-
-		if ( ! empty( $cover['position'] ) && empty( $cover['disable_overlay'] ) )
-			echo '<div class="overlay"' . md_style( $style ) . '></div>';
 	}
 
 }

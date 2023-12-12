@@ -2,19 +2,19 @@
 
 <hr class="md-sep-small" />
 
-<div class="columns-2 columns-30-70 columns-half md-sep-small">
+<div class="columns-3 columns-half">
 
-	<div class="col col1">
-		<?php $this->fields->field( 'cover_image', array(
+	<div class="col">
+		<?php $this->fields->field( 'image', array(
 			'type' => 'upload',
 			'upload_type' => 'media',
 			'label' => __( 'Cover Photo', 'md' ),
 		) ); ?>
 	</div>
 
-	<div class="col col2 mt-half">
+	<div class="col">
 
-		<?php $this->fields->field( 'cover_position', array(
+		<?php $this->fields->field( 'position', array(
 			'type' => 'select',
 			'label' => __( 'Cover Type', 'md' ),
 			'empty_label' => __( 'Use default cover image', 'md' ),
@@ -31,11 +31,12 @@
 
 	</div>
 
-</div>
+	<div class="col">
+		<?php $this->fields->field( 'display', array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'options' => $cover_settings
+		) ); ?>
+	</div>
 
-<?php $this->fields->field( 'text_color', array(
-	'type' => 'checkbox',
-	'label' => __( 'Settings', 'md' ),
-	'options' => $cover_settings,
-	'inline' => true
-) ); ?>
+</div>

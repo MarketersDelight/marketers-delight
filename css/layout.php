@@ -8,7 +8,8 @@
 
 .post-header { padding-top: <?php echo $single; ?>px; }
 
-.post-header.cover { padding-bottom: <?php echo $single; ?>px; }
+.post-header.cover,
+.image-below-headline .post-header { padding-bottom: <?php echo $single; ?>px; }
 
 .post-header.header-cover,
 .post-header.header-cover-full {

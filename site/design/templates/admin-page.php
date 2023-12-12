@@ -78,10 +78,7 @@
 
 	<hr class="md-sep-small" />
 
-	<?php
-		foreach ( array( 'page-cover', 'content' ) as $name )
-			include( "{$name}-settings.php" );
-	?>
+	<?php include( 'content-settings.php' ); ?>
 
 	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>

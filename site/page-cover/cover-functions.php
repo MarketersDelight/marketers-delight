@@ -1,33 +1,6 @@
 <?php
 
 /**
- * A collection of classes used to turn an element into
- * a background cover.
- *
- * @since 5.6
- */
-
-function md_cover_classes( $custom = array() ) {
-	$classes = array();
-	$cover = md_cover();
-
-	if ( isset( $custom ) )
-		$classes = array_merge( $classes, $custom );
-
-	if ( ! empty( $cover['position'] ) ) {
-		$classes[] = 'cover';
-
-		if ( is_singular() )
-			$classes[] = str_replace( '_', '-', $cover['position'] );
-	}
-
-	if ( ! empty( $cover['text'] ) )
-		$classes[] = 'alt';
-
-	return join( ' ', $classes );
-}
-
-/**
  * Checks for content headline.
  *
  * @since 4.1
@@ -37,28 +10,6 @@ function md_has_headline_cover() {
 	$cover = md_cover();
 
 	return in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) && is_singular() ? true : false;
-}
-
-/**
- * Outputs inline style CSS to add featured image to element if
- * image position is set to header cover or headline cover.
- *
- * @since 4.1
- * @formerly md_featured_image_cover
- * @changed 5.6
- */
-
-function md_cover_style( $args = null ) {
-	if ( isset( $args['hide_cover'] ) )
-		return;
-
-	$cover = md_cover();
-
-	if ( ! empty( $cover['image'] ) && ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) || ( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) ) )
-		return md_style( array(
-			'bg_image' => esc_url( $cover['image'][0] ),
-			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
-		) );
 }
 
 /**
@@ -94,9 +45,35 @@ function md_has_cover() {
  *
  * @since 4.1
  * @renamed 5.6 (md_featured_image_style)
- */
 
-function md_cover() {
+
+function md_cover( $context = 'post' ) {
+	$cover = array();
+	$archive = md_post_type_field( 'page_cover' );
+	$single = md_post_meta( 'page_cover' );
+
+	if ( $context == 'page' ) {
+		if ( is_category() || is_tax() )
+			$cover = md_term_meta( 'page_cover' );
+		else
+			$cover = md_post_type_field( 'page_cover' );
+	}
+	else
+		$cover = md_post_meta( 'page_cover' );
+
+	if ( ! empty( $cover['image'] ) )
+		$cover['style'] = array(
+			'bg_image' => esc_url( $cover['image']['url'] ),
+//			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
+			'bg_size' => 'auto'
+		);
+
+	if ( ! is_singular() && $cover['position'] == 'header_cover_full' )
+		$cover['style'] = array();
+
+	return $cover;
+
+
 	$id = $url = $position = $term_id = '';
 	$cover = array( 'id' => '', 'position' => '', 'image' => '', 'color' => '', 'text' => '' );
 
@@ -177,4 +154,78 @@ function md_cover() {
 		$cover['disable_overlay'] = true;
 
 	return $cover;
+
+	return $cover;
+
+}
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * A collection of classes used to turn an element into
+ * a background cover.
+ *
+ * @since 5.6
+ */
+
+function md_cover_classes( $custom = array() ) {
+	$classes = array();
+	$cover = md_cover();
+
+	if ( isset( $custom ) )
+		$classes = array_merge( $classes, $custom );
+
+	if ( ! empty( $cover['position'] ) ) {
+		$classes[] = 'cover';
+
+		if ( is_singular() )
+			$classes[] = str_replace( '_', '-', $cover['position'] );
+	}
+
+	if ( ! empty( $cover['text'] ) )
+		$classes[] = 'alt';
+
+	return join( ' ', $classes );
+}
+
+/**
+ * Outputs inline style CSS to add featured image to element if
+ * image position is set to header cover or headline cover.
+ *
+ * @since 4.1
+ * @formerly md_featured_image_cover
+ * @changed 5.6
+ */
+
+function md_cover_style( $args = null ) {
+	if ( isset( $args['hide_cover'] ) )
+		return;
+
+	$cover = md_cover();
+
+	if (
+		( ! empty( $cover['image'] ) && ( in_array( $cover['position'], array( 'headline_cover', 'header_cover' ) ) ) ||
+		( in_the_loop() && ! is_singular() && $cover['position'] == 'header_cover_full' ) )
+	)
+		return md_style( array(
+			'bg_image' => esc_url( $cover['image'][0] ),
+			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
+		) );
 }

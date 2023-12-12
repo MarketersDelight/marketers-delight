@@ -11,12 +11,9 @@ if ( ! function_exists( 'md_templates' ) ) :
 function md_templates() {
 
 	// Breadcrumbs
-	if ( md_has_breadcrumbs() ) {
-		if ( ! is_singular() && md_page_title() )
-			add_action( 'md_hook_before_headline', 'md_breadcrumbs' );
-		else
-			add_action( 'md_hook_content', 'md_breadcrumbs' );
-	}
+
+	if ( md_has_breadcrumbs() )
+		add_action( 'md_hook_content', 'md_breadcrumbs' );
 
 	// Page Title
 
@@ -30,16 +27,16 @@ function md_templates() {
 	add_action( 'md_hook_content', 'md_loop', 30 );
 
 	if ( ! is_404() && md_has_byline() ) {
-		$hook_byline = 'md_hook_before_headline';
+		$hook_byline = 'md_hook_post_header_top';
 		$byline_position = md_get_byline_position();
 
 		if ( $byline_position == 'after_headline' )
-			$hook_byline = 'md_hook_after_headline';
+			$hook_byline = 'md_hook_post_header_bottom';
 
 		add_action( $hook_byline, 'md_byline' );
 	}
 
-	add_action( 'md_hook_before_headline', 'md_cover_caption', 3 );
+	add_action( 'md_hook_before_post_title', 'md_cover_caption', 3 );
 
 	if ( md_has_headline() && ! md_has_headline_cover() )
 		add_action( 'md_hook_content_item', 'md_headline', 20 );

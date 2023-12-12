@@ -17,16 +17,16 @@ class md_page_title {
 
 	public function templates() {
 		$hook = 'md_hook_content';
-		$description_hook = $cta_hook = 'md_hook_after_title';
-		$image_hook = 'md_hook_after_headline';
+		$description_hook = $cta_hook = 'md_hook_after_page_title';
+		$image_hook = 'md_hook_page_header_bottom';
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 		$image_id = $this->get( 'image_id' );
-		$cover = md_cover();
+		$cover = md_cover( 'page' );
 
 		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
 		elseif ( $inline && md_has_sidebar() ) {
-			$description_hook = 'md_hook_after_headline';
+			$description_hook = 'md_hook_page_header_bottom';
 			$cta_hook = 'md_hook_after_description';
 		}
 		elseif ( ! $inline )
@@ -46,9 +46,9 @@ class md_page_title {
 //				$image_order = 20;
 			}
 			elseif ( $image_position == 'above_headline' )
-				$image_hook = 'md_hook_before_headline';
+				$image_hook = 'md_hook_page_header_top';
 			elseif ( $image_position == 'below_headline' ) {
-				$image_hook = 'md_hook_after_title';
+				$image_hook = 'md_hook_after_page_title';
 				$image_order = 5;
 			}
 
@@ -67,8 +67,7 @@ class md_page_title {
 	 */
 
 	public function get( $key = null ) {
-		$title = md_page_title();
-		$data = array( 'title' => $title );
+		$data = array();
 
 		if ( ! in_the_loop() ) {
 			$description = '';
@@ -121,7 +120,8 @@ class md_page_title {
 		$classes = $this->get( 'classes' );
 
 		md_headline( array(
-			'title' => $this->get( 'title' ),
+			'title' => md_page_title(),
+			'context' => 'page',
 			'classes' => $classes
 		) );
 	}

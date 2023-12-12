@@ -1423,7 +1423,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 \*------------------------------*/
 /* POST HEADER */
 .post-header { padding-top: 29px; }
-.post-header.cover { padding-bottom: 29px; }
+.post-header.cover,
+.image-below-headline .post-header { padding-bottom: 29px; }
 .post-header.header-cover,
 .post-header.header-cover-full {
 	padding-bottom: 44px;

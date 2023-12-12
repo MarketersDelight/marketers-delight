@@ -1,21 +1,23 @@
-<?php md_hook_before_headline_area(); ?>
+<?php do_action( "md_hook_before_{$context}_header" ); ?>
 
-<div class="<?php echo md_headline_classes( $h_classes ); ?>"<?php echo md_cover_style(); ?>>
+<div class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
 
-	<?php md_hook_before_headline(); ?>
+	<?php md_overlay( $cover ); ?>
+
+	<?php do_action( "md_hook_{$context}_header_top" ); ?>
 
 	<div class="title-wrap">
 
-		<?php md_hook_before_title(); ?>
+		<?php do_action( "md_hook_before_{$context}_title" ); ?>
 
 		<<?php echo $h; ?> class="title"><?php echo md_title( $title, $permalink ); ?></<?php echo $h; ?>>
 
-		<?php md_hook_after_title(); ?>
+		<?php do_action( "md_hook_after_{$context}_title" ); ?>
 
 	</div>
 
-	<?php md_hook_after_headline(); ?>
+	<?php do_action( "md_hook_{$context}_header_bottom" ); ?>
 
 </div>
 
-<?php md_hook_after_headline_area(); ?>
+<?php do_action( "md_hook_after_{$context}_header" ); ?>
