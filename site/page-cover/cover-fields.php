@@ -35,7 +35,10 @@
 		<?php $this->fields->field( 'display', array(
 			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
-			'options' => $cover_settings
+			'options' => array(
+				'alternate' => __( 'Use alternate text color', 'md' ),
+				'disable_cover' => $disable_overlay ? __( 'Add overlay', 'md' ) : __( 'Remove overlay', 'md' )
+			)
 		) ); ?>
 	</div>
 

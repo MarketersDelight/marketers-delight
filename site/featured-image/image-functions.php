@@ -64,21 +64,29 @@ function md_featured_image_after_headline() {
  * @since 4.1
  */
 
-function md_featured_image_position( $position = null ) {
-	if ( isset( $position ) )
-		return $position;
+function md_featured_image_position( $args = null ) {
+	if ( isset( $args['position'] ) )
+		return $args['position'];
 
 	if ( has_filter( 'md_filter_featured_image_position' ) )
 		return apply_filters( 'md_filter_featured_image_position', '' );
 
-	$default = md_setting( array( 'colors', 'featured_image', 'position' ), 'right' );
+	$context = isset( $args['context'] ) ? $args['context'] : 'post';
+	$post_type = md_post_type_field( array( 'loop', 'featured_image' ) );
 
-	if ( in_the_loop() && ! is_singular() )
-		$position = md_post_meta( array( 'featured_image', 'position' ), null, $default );
-	else
-		$position = md_module( array( 'featured_image', 'position' ), $default );
+	if ( $context == 'page' )
+		if ( is_category() || is_tax() )
+			$position = md_term_meta( array( 'featured_image', 'position' ) );
+		else
+			$position = md_post_type_field( array( 'featured_image', 'position' ) );
+	else {
+		$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );
 
-	return esc_attr( $position );
+		if ( ( is_category() || is_tax() ) && empty( $position ) )
+			$position = md_term_meta( array( 'loop', 'featured_image' ), null, $post_type );
+	}
+
+	return $position;
 }
 
 /**

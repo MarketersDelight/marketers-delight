@@ -52,6 +52,7 @@ class md_loop extends md_api {
 	public function fields() {
 		$cta_ids = array();
 		$cta = md_setting( array( 'cta', 'forms' ) );
+		$sanitize = new md_sanitize;
 
 		if ( ! empty( $cta ) )
 			foreach ( $cta as $cta_id => $cta_fields )
@@ -68,6 +69,10 @@ class md_loop extends md_api {
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
+			'featured_image' => array(
+				'type' => 'select',
+				'options' => array_keys( $sanitize->values['featured_image'] )
+			),
 			'byline' => array(
 				'type' => 'checkbox',
 				'options' => md_byline_items( 'ids' )
@@ -122,8 +127,9 @@ class md_loop extends md_api {
 	 */
 
 	public function admin_template() {
-		$screen = get_current_screen();
 		$cta_options = array();
+		$screen = get_current_screen();
+		$sanitize = new md_sanitize;
 		$cta = md_setting( array( 'cta', 'forms' ) );
 		$archives_loop = $this->fields->module( 'archives' );
 		$loops_options = md_loops( 'options' );

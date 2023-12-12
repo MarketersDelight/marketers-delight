@@ -53,7 +53,7 @@
 		float: right;
 		margin-left: <?php echo $half; ?>px;
 	}
-	.featured-image[class*="align"] { max-width: <?php echo $sidebar_width; ?>px; }
+	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $sidebar_width; ?>px; }
 }
 
 @media all and (max-width: 700px) {

@@ -21,6 +21,8 @@
 
 .title-wrap, .description, .page-image, .page-cta { position: relative; }
 
+.image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
+
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }

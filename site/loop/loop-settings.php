@@ -79,6 +79,14 @@
 
 <h4><?php echo __( 'Post Content', 'md' ); ?></h4>
 
+<?php $this->fields->field( 'featured_image', array(
+	'type' => 'select',
+	'label' => __( 'Featured Image', 'md' ),
+	'empty_label' => __( 'Set image position...', 'md' ),
+	'options' => $sanitize->values['featured_image'],
+	'wrap_classes' => 'md-sep-small'
+) ); ?>
+
 <div class="columns-4 columns-half">
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'content', array(

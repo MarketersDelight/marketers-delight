@@ -268,7 +268,7 @@ function md_headline( $args = array() ) {
 			$classes[] = 'cover';
 			$classes[] = str_replace( '_', '-', $cover['position'] );
 
-			if ( ! empty( $cover['text'] ) )
+			if ( ! empty( $cover['display']['alternate'] ) )
 				$classes[] = 'alt';
 		}
 
@@ -299,8 +299,6 @@ function md_headline( $args = array() ) {
 
 function md_cover( $context = 'post' ) {
 	$cover = array();
-	$archive = md_post_type_field( 'page_cover' );
-	$single = md_post_meta( 'page_cover' );
 
 	if ( $context == 'page' )
 		if ( is_category() || is_tax() )
@@ -319,7 +317,7 @@ function md_cover( $context = 'post' ) {
 
 	if ( ! empty( $cover['position'] ) && $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
 		unset( $cover['style'] );
-		$cover['disable_overlay'] = true;
+		$cover['display']['disable_cover'] = true;
 	}
 
 	return $cover;
@@ -347,7 +345,7 @@ function md_has_cover() {
  */
 
 function md_overlay( $cover ) {
-	if ( empty( $cover['position'] ) || ! empty( $cover['disable_overlay'] ) )
+	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_cover'] ) )
 		return;
 
 	$style = array();
@@ -507,9 +505,6 @@ function md_byline_classes() {
  */
 
 function md_byline( $args = array() ) {
-	if ( ! in_the_loop() )
-		return;
-
 	$classes = md_byline_classes();
 	$byline_items = md_byline_items();
 

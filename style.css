@@ -666,6 +666,7 @@ select { max-width: 100%; }
 	margin-right: auto;
 }
 .title-wrap, .description, .page-image, .page-cta { position: relative; }
+.image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
 @media all and (min-width: 800px) {
 	.page-header.outer { text-align: center; }
 	.page-cta-link + .page-cta-link { margin-left: 15px; }
@@ -889,7 +890,7 @@ select { max-width: 100%; }
 		float: right;
 		margin-left: 15px;
 	}
-	.featured-image[class*="align"] { max-width: 348px; }
+	.featured-image.alignleft, .featured-image.alignright { max-width: 348px; }
 }
 @media all and (max-width: 700px) {
 	.alignleft.wrap { margin-right: -15px; }
