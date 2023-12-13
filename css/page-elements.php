@@ -21,6 +21,7 @@
 
 .title-wrap, .description, .page-image, .page-cta { position: relative; }
 
+.category-header,
 .image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {

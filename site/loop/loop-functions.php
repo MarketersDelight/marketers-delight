@@ -68,7 +68,7 @@ function md_get_loop() {
 
 function md_loop() {
 	$c = 1;
-	$wrap_classes = array( 'loop' );
+	$wrap_classes = array();
 	$post_type = md_get_post_type();
 	$loop = md_get_loop();
 	$loops = md_loops();
@@ -80,13 +80,13 @@ function md_loop() {
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
-		if ( $columns >= 2 )
+		if ( $columns == 2 )
 			$wrap_classes[] = 'wide';
 		elseif ( $columns >= 3 )
 			$wrap_classes[] = 'slim';
 	}
 
-	$wrap_classes = join( ' ', $wrap_classes );
+	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 
 	if ( $category_posts ) {
 		$taxonomies = get_object_taxonomies( $post_type );
@@ -99,7 +99,7 @@ function md_loop() {
 			md_404_template();
 	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? "<div class=\"$wrap_classes\">" : '';
+		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 
 		while ( have_posts() ) {
 			the_post();
