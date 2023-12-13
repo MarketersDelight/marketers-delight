@@ -891,6 +891,7 @@ select { max-width: 100%; }
 		margin-left: 15px;
 	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: 348px; }
+	.columns .featured-image.alignleft, .columns .featured-image.alignright { max-width: 174px; }
 }
 @media all and (max-width: 700px) {
 	.alignleft.wrap { margin-right: -15px; }
@@ -1715,6 +1716,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 .col { position: relative; }
 @media all and (min-width: 900px) {
 	.columns {
+		align-items: center;
 		display: flex;
 		flex-flow: wrap;
 	}

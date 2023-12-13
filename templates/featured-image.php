@@ -6,10 +6,6 @@
 
 	<?php if ( ! is_singular() ) : ?></a><?php endif; ?>
 
-	<?php if ( ! isset( $args['hide_caption'] ) ) : ?>
-		<?php echo md_get_caption(); ?>
-	<?php endif; ?>
-
 	<?php md_hook_featured_image_bottom(); ?>
 
 </div>

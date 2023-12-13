@@ -18,10 +18,6 @@
 
 	<?php do_action( "md_hook_{$context}_header_bottom" ); ?>
 
-	<?php if ( $caption ) : ?>
-		<?php echo md_text_field( $caption ); ?>
-	<?php endif; ?>
-
 </div>
 
 <?php do_action( "md_hook_after_{$context}_header" ); ?>

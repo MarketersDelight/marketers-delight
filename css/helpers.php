@@ -144,6 +144,7 @@
 
 @media all and (min-width: 900px) {
 	.columns {
+		align-items: center;
 		display: flex;
 		flex-flow: wrap;
 	}

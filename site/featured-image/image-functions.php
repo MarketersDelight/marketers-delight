@@ -103,7 +103,8 @@ function md_has_inline_featured_image() {
  */
 
 function md_get_caption( $id = null ) {
-	$caption = '';
+	if ( ! is_singular() )
+		return;
 
 	if ( empty( $id ) )
 		$id = get_post_thumbnail_id();
@@ -113,5 +114,5 @@ function md_get_caption( $id = null ) {
 	if ( ! empty( $caption ) )
 		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
 
-	return $caption;
+	echo $caption;
 }

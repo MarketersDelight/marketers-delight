@@ -25,6 +25,7 @@ function md_templates() {
 	// Content Box
 
 	add_action( 'md_hook_content', 'md_loop', 30 );
+	add_action( 'md_hook_featured_image_bottom', 'md_get_caption' );
 
 	if ( ! is_404() && md_has_byline() ) {
 		$hook_byline = 'md_hook_post_header_top';

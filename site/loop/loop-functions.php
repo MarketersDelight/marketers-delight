@@ -213,24 +213,18 @@ function md_headline( $args = array() ) {
 	$cover = md_cover( $context );
 
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
-	$caption = '';
 	$title = get_the_title();
 	$permalink = null;
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes[] = "$context-header";
 
-	if ( ! empty( $cover['position'] ) ) {
-		if ( empty( $cover['hide_cover'] ) ) {
-			$classes[] = 'cover';
-			$classes[] = str_replace( '_', '-', $cover['position'] );
+	if ( ! empty( $cover['position'] ) && empty( $cover['hide_cover'] ) ) {
+		$classes[] = 'cover';
+		$classes[] = str_replace( '_', '-', $cover['position'] );
 
-			if ( ! empty( $cover['display']['alternate'] ) )
-				$classes[] = 'alt';
-		}
-
-		if ( is_singular() && ! empty( $cover['image']['id'] ) )
-			$caption = md_get_caption( $cover['image']['id'] );
+		if ( ! empty( $cover['display']['alternate'] ) )
+			$classes[] = 'alt';
 	}
 
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );

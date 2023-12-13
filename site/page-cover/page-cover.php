@@ -131,6 +131,16 @@ class md_page_cover extends md_api {
 			if ( md_has_headline() )
 				add_action( 'md_hook_after_header', array( $this, 'headline' ) );
 		}
+
+		add_action( 'md_hook_post_header_bottom', array( $this, 'caption' ), 100 );
+		add_action( 'md_hook_page_header_bottom', array( $this, 'caption' ), 100 );
+	}
+
+	public function caption() {
+		$cover = $this->cover();
+
+		if ( ! empty( $cover['image']['id'] ) )
+			echo md_get_caption( $cover['image']['id'] );
 	}
 
 	public function cover() {
