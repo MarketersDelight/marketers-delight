@@ -8,12 +8,9 @@
 
 .post-header, .cover { padding-top: <?php echo $single; ?>px; }
 
-.post-header.cover,
-.image-below-headline .post-header,
-.cover { padding-bottom: <?php echo $single; ?>px; }
+.cover, .image-below-headline .post-header { padding-bottom: <?php echo $single; ?>px; }
 
-.post-header.header-cover,
-.post-header.header-cover-full {
+.article .header-cover, .header .header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
 }
@@ -155,10 +152,29 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-	.columns { margin-left: -<?php echo $single; ?>px; }
-	.columns > .entry { padding-left: <?php echo $single; ?>px; }
+
+
+
+	.content .columns { margin-left: -<?php echo $single; ?>px; }
+	.content .columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
+	.columns.slim .post-header { padding-top: <?php echo $half; ?>px; }
+	.columns.slim .cover, .columns.slim .image-below-headline .post-header { padding-bottom: <?php echo $half; ?>px; }
+	.columns.wide .post-box .title {
+		font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
+		line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;
+	}
+	.columns.slim .post-box .title {
+		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
+	}
+	.columns.slim .the-content {
+		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+		padding-bottom: <?php echo $half; ?>px;
+		padding-top: <?php echo $half; ?>px;
+	}
 }
 
 @media all and (max-width: 900px) {

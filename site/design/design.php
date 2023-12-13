@@ -160,25 +160,6 @@ class md_colors extends md_api {
 		include( 'templates/admin-page.php' );
 	}
 
-	/**
-	 * Popups admin scripts.
-	 *
-	 * @since 5.0
-	 */
-
-	public function admin_scripts() { ?>
-		<script>
-			( function() {
-				document.getElementById( '<?php echo $this->_prefix; ?>_page_cover_cover_position' ).onchange = function() {
-					document.getElementById( 'md_cover_settings' ).style.display = this.value !== '' ? 'block' : 'none';
-				}
-				document.getElementById( '<?php echo $this->_prefix; ?>_page_cover_cover_styles_disable_cover' ).onchange = function() {
-					document.getElementById( 'md_cover_overlay' ).style.display = this.checked ? 'none' : 'block';
-				}
-			})();
-		</script>
-	<?php }
-
 }
 
 new md_colors;

@@ -211,10 +211,15 @@ function md_has_headline() {
 function md_headline( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 	$cover = md_cover( $context );
+	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
-	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 	$title = get_the_title();
 	$permalink = null;
+
+	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
+
+	if ( $context == 'post' && $category_posts )
+		$h = 'h3';
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes[] = "$context-header";

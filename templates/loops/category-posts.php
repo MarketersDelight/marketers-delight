@@ -16,7 +16,7 @@ foreach ( $categories as $category ) {
 		$category_name = $category->name;
 
 		echo '<div class="category-row">'.
-			 '<h2>' . $category_name . '</h2>'.
+			 '<h2 class="title">' . $category_name . '</h2>'.
 			 "<div class=\"category-posts$wrap_classes\">";
 
 		while ( $posts->have_posts() ) {
