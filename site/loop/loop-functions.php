@@ -68,6 +68,7 @@ function md_get_loop() {
 
 function md_loop() {
 	$c = 1;
+	$wrap_classes = array( 'loop' );
 	$post_type = md_get_post_type();
 	$loop = md_get_loop();
 	$loops = md_loops();
@@ -76,10 +77,14 @@ function md_loop() {
 	$columns = md_module( array( 'loop', 'columns' ), 1 );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
-	$wrap_classes = array( 'loop' );
-
-	if ( $columns > 1 )
+	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
+
+		if ( $columns >= 2 )
+			$wrap_classes[] = 'wide';
+		elseif ( $columns >= 3 )
+			$wrap_classes[] = 'slim';
+	}
 
 	$wrap_classes = join( ' ', $wrap_classes );
 
@@ -159,6 +164,8 @@ function md_404_template() {
  */
 
 function md_post_classes( $classes ) {
+	$classes[] = 'entry';
+
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
 		'hentry',

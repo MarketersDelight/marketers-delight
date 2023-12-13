@@ -16,11 +16,11 @@
 
 	</div>
 
+	<?php do_action( "md_hook_{$context}_header_bottom" ); ?>
+
 	<?php if ( $caption ) : ?>
 		<?php echo md_text_field( $caption ); ?>
 	<?php endif; ?>
-
-	<?php do_action( "md_hook_{$context}_header_bottom" ); ?>
 
 </div>
 

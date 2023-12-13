@@ -119,11 +119,6 @@ final class marketers_delight {
 		// Register Nav Menus
 		register_nav_menus( md_filter_register_nav_menus() );
 
-		// Add Image Sizes
-		$image_sizes = md_image_sizes();
-		foreach ( $image_sizes as $image_size_name => $image_size )
-			add_image_size( $image_size_name, $image_size['width'], $image_size['height'], true );
-
 		// Enable shortcodes in widgets
 		add_filter( 'widget_text', 'do_shortcode' );
 

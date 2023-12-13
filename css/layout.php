@@ -12,7 +12,8 @@
 .image-below-headline .post-header,
 .cover { padding-bottom: <?php echo $single; ?>px; }
 
-.post-header.header-cover, .post-header.header-cover-full {
+.post-header.header-cover,
+.post-header.header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
 }
@@ -38,16 +39,17 @@
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.cover,
-	.box-style .post-box .post-header,
-	.box-style.content-sidebar .the-content,
+	.content-sidebar.box-style .post-box .post-header,
+	.full.box-style .post-box .post-header,
+	.content-sidebar.box-style .the-content,
 	.content-sidebar .author-box,
-	.box-style.content-sidebar .comments {
+	.content-sidebar.box-style .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.box-style.full .the-content,
+	.full.box-style .the-content,
 	.full .author-box,
-	.box-style.full .comments {
+	.full.box-style .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
@@ -112,11 +114,12 @@
 
 /* BOX STYLE */
 
+.box-style .entry { margin-bottom: <?php echo $single; ?>px; }
+
 .box-style .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	margin-bottom: <?php echo $single; ?>px;
 }
 
 .cover, .cover .overlay { border-radius: 5px; }
@@ -152,9 +155,10 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-
-	.loop.columns { margin-left: -<?php echo $single; ?>px; }
-	.loop.columns > .post-box { margin-left: <?php echo $single; ?>px; }
+	.columns { margin-left: -<?php echo $single; ?>px; }
+	.columns > .entry { padding-left: <?php echo $single; ?>px; }
+	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }
+	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {

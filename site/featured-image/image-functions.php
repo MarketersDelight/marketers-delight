@@ -6,19 +6,13 @@
  * @since 4.0
  */
 
-function md_featured_image( $size = null, $args = null ) {
+function md_featured_image( $size = 'full', $args = null ) {
 	$position = isset( $args['position'] ) ? $args['position'] : md_featured_image_position();
 	$image_id = null;
 	$wrap = 'wrap';
 
 	if ( isset( $args['image_id'] ) )
 		$image_id = esc_attr( $args['image_id'] );
-
-	if ( ! isset( $size ) )
-		if ( in_array( $position, array( '', 'left', 'right' ) ) )
-			$size = 'md-block';
-		else
-			$size = 'full';
 
 	$classes = array( 'featured-image' );
 

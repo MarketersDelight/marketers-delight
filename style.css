@@ -1422,7 +1422,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 .post-header.cover,
 .image-below-headline .post-header,
 .cover { padding-bottom: 29px; }
-.post-header.header-cover, .post-header.header-cover-full {
+.post-header.header-cover,
+.post-header.header-cover-full {
 	padding-bottom: 44px;
 	padding-top: 44px;
 }
@@ -1444,16 +1445,17 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.cover,
-	.box-style .post-box .post-header,
-	.box-style.content-sidebar .the-content,
+	.content-sidebar.box-style .post-box .post-header,
+	.full.box-style .post-box .post-header,
+	.content-sidebar.box-style .the-content,
 	.content-sidebar .author-box,
-	.box-style.content-sidebar .comments {
+	.content-sidebar.box-style .comments {
 		padding-left: 44px;
 		padding-right: 44px;
 	}
-	.box-style.full .the-content,
+	.full.box-style .the-content,
 	.full .author-box,
-	.box-style.full .comments {
+	.full.box-style .comments {
 		padding-left: 20.861244019139%;
 		padding-right: 20.861244019139%;
 	}
@@ -1489,11 +1491,11 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: rgba(0, 0, 0, 0.2); }
 }
 /* BOX STYLE */
+.box-style .entry { margin-bottom: 29px; }
 .box-style .post-box {
 	background-color: #FFFFFF;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	margin-bottom: 29px;
 }
 .cover, .cover .overlay { border-radius: 5px; }
 .box-style .post-box .cover, .box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
@@ -1523,8 +1525,10 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		padding-left: 0;
 		padding-right: 29px;
 	}
-	.loop.columns { margin-left: -29px; }
-	.loop.columns > .post-box { margin-left: 29px; }
+	.columns { margin-left: -29px; }
+	.columns > .entry { padding-left: 29px; }
+	.content-sidebar .columns, .columns.slim { margin-left: -15px; }
+	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: 15px; }
 }
 @media all and (max-width: 900px) {
 	.content { margin-bottom: 29px; }

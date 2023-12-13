@@ -9,29 +9,6 @@
 if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
- * Filter the default image sizes of MD.
- *
- * @since 4.7.4.4
- */
-
-function md_image_sizes() {
-	return apply_filters( 'md_filter_image_sizes', array(
-		'md-banner' => array(
-			'width'  => 600,
-			'height' => 250
-		),
-		'md-block' => array(
-			'width'  => 550,
-			'height' => 550
-		),
-		'md-image' => array(
-			'width'  => 325,
-			'height' => 425
-		)
-	) );
-}
-
-/**
  * Default nav menus.
  *
  * @since 4.1

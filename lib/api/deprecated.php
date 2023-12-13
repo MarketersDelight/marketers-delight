@@ -25,6 +25,25 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Filter the default image sizes of MD.
+ *
+ * @since 4.7.4.4
+ * @deprecated 5.6
+ */
+function md_image_sizes() {
+	return apply_filters( 'md_filter_image_sizes', array(
+		'md-banner' => array(
+			'width'  => 600,
+			'height' => 250
+		),
+		'md-image' => array(
+			'width'  => 325,
+			'height' => 425
+		)
+	) );
+}
+
+/**
  * Final logo logic and rendering.
  *
  * @since 4.5.4
