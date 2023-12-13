@@ -142,6 +142,17 @@
 
 .col { position: relative; }
 
+@media all and (min-width: 900px) {
+	.columns {
+		display: flex;
+		flex-flow: wrap;
+	}
+	.f2 { flex-basis: 50%; }
+	.f3 { flex-basis: 33.3333333333%; }
+	.f4 { flex-basis: 2%; }
+	.f5 { flex-basis: 20%; }
+}
+
 @media all and (min-width: 700px) {
 	.col { float: left; }
 	.columns-flex:not([class*="block-"]) {
@@ -174,7 +185,6 @@
 	.columns-25-75 > .col1 { width: 25%; }
 	.columns-80-20 > .col2, .columns-20-80 > .col1 { width: 20%; }
 	.columns-10-90 > .col1 { width: 10%; }
-
 	.columns-half { margin-left: -<?php echo $half; ?>px; }
 	.columns-half > .col { padding-left: <?php echo $half; ?>px; }
 	.columns-single { margin-left: -<?php echo $single; ?>px; }

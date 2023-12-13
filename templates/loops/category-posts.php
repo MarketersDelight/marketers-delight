@@ -19,11 +19,7 @@
 
 		while ( $posts->have_posts() ) {
 			$posts->the_post();
-
-			if ( ! empty( $loops[$loop]['dropin'] ) )
-				include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
-			else
-				include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
+			include( md_template( 'loops/the-post', true ) );
 		}
 
 	}

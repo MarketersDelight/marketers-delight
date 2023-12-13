@@ -152,11 +152,14 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
+
+	.loop.columns { margin-left: -<?php echo $single; ?>px; }
+	.loop.columns > .post-box { margin-left: <?php echo $single; ?>px; }
 }
 
 @media all and (max-width: 900px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
-	#content.loop-default .post-box {
+	.loop-default.article .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}

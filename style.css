@@ -1523,10 +1523,12 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		padding-left: 0;
 		padding-right: 29px;
 	}
+	.loop.columns { margin-left: -29px; }
+	.loop.columns > .post-box { margin-left: 29px; }
 }
 @media all and (max-width: 900px) {
 	.content { margin-bottom: 29px; }
-	#content.loop-default .post-box {
+	.loop-default.article .post-box {
 		margin-left: -15px;
 		margin-right: -15px;
 	}
@@ -1707,6 +1709,16 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	$COLUMNS
 \*------------------------------*/
 .col { position: relative; }
+@media all and (min-width: 900px) {
+	.columns {
+		display: flex;
+		flex-flow: wrap;
+	}
+	.f2 { flex-basis: 50%; }
+	.f3 { flex-basis: 33.3333333333%; }
+	.f4 { flex-basis: 2%; }
+	.f5 { flex-basis: 20%; }
+}
 @media all and (min-width: 700px) {
 	.col { float: left; }
 	.columns-flex:not([class*="block-"]) {

@@ -12,10 +12,6 @@ function md_loops( $sort = null ) {
 		'default' => array(
 			'name' => __( 'Default', 'md' )
 		),
-		'cards' => array(
-			'name' => __( 'Cards', 'md' ),
-			'columns' => true
-		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' )
 		)
@@ -73,13 +69,19 @@ function md_get_loop() {
 function md_loop() {
 	$c = 1;
 	$post_type = md_get_post_type();
-	$loops = md_loops();
 	$loop = md_get_loop();
+	$loops = md_loops();
 	$byline = md_get_byline();
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
-	$columns = md_module( array( 'loop', 'columns' ), 2 );
-
+	$columns = md_module( array( 'loop', 'columns' ), 1 );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+
+	$wrap_classes = array( 'loop' );
+
+	if ( $columns > 1 )
+		$wrap_classes[] = 'columns';
+
+	$wrap_classes = join( ' ', $wrap_classes );
 
 	if ( $category_posts ) {
 		$taxonomies = get_object_taxonomies( $post_type );
@@ -92,21 +94,11 @@ function md_loop() {
 			md_404_template();
 	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? '<div class="loop">' : '';
+		echo ! is_singular() ? "<div class=\"$wrap_classes\">" : '';
 
 		while ( have_posts() ) {
 			the_post();
-
-			if ( ! empty( $loops[$loop]['dropin'] ) )
-				include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
-			elseif ( ! empty( $loops[$loop] ) )
-				include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
-			else
-				include( md_template( 'loops/loop', true ) );
-
-			md_hook_x_loop( $c );
-
-			$c++;
+			include( md_template( 'loops/the-post', true ) );
 		}
 
 		echo ! is_singular() ? '</div>' : '';
@@ -167,8 +159,6 @@ function md_404_template() {
  */
 
 function md_post_classes( $classes ) {
-	$classes[] = 'post-box';
-
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
 		'hentry',

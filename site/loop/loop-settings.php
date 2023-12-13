@@ -11,44 +11,40 @@
 	$category_posts = $this->fields->module( 'category_posts' );
 ?>
 
-	<div class="md-sep-small">
-		<?php $this->fields->field( 'category_posts', array(
-			'type' => 'checkbox',
-			'options' => array(
-				'enable' => __( 'Show posts by category', 'md' )
-			)
-		) ); ?>
-	</div>
+<div class="md-sep-small">
+	<?php $this->fields->field( 'category_posts', array(
+		'type' => 'checkbox',
+		'options' => array(
+			'enable' => __( 'Show posts by category', 'md' )
+		)
+	) ); ?>
+</div>
 
-	<div id="loop_category_posts" style="display: <?php echo $category_posts == 'cards' ? 'block' : 'none'; ?>">
+<div id="loop_category_posts" style="display: <?php echo $category_posts ? 'block' : 'none'; ?>">
 
-	</div>
+</div>
 
 <?php endif; ?>
 
-<div id="loop_cards" style="display: <?php echo $archives_loop == 'cards' ? 'block' : 'none'; ?>">
+<hr class="md-sep-small" />
 
-	<hr class="md-sep-small" />
+<div class="columns-2 columns-single mb-sep-small">
 
-	<div class="columns-2 columns-single mb-sep-small">
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'featured', array(
+			'type' => 'number',
+			'label' => __( 'Featured Posts', 'md' ),
+			'description' => __( 'Enter the number of posts to feature before breaking into the standard loop template.', 'md' )
+		) ); ?>
+	</div>
 
-		<div class="col md-sep-micro">
-			<?php $this->fields->field( 'featured', array(
-				'type' => 'number',
-				'label' => __( 'Featured Posts', 'md' ),
-				'description' => __( 'Enter the number of posts to feature before breaking into the standard loop template.', 'md' )
-			) ); ?>
-		</div>
-
-		<div class="col md-sep-micro">
-			<?php $this->fields->field( 'columns', array(
-				'type' => 'number',
-				'label' => __( 'Columns', 'md' ),
-				'placeholder' => '2',
-				'description' => __( 'Enter the number of columns to list standard posts.', 'md' )
-			) ); ?>
-		</div>
-
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'columns', array(
+			'type' => 'number',
+			'label' => __( 'Columns', 'md' ),
+			'placeholder' => '1',
+			'description' => __( 'Enter the number of columns to list standard posts.', 'md' )
+		) ); ?>
 	</div>
 
 </div>
@@ -88,12 +84,12 @@
 ) ); ?>
 
 <div class="columns-4 columns-half">
+
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'content', array(
 			'type' => 'select',
 			'label' => __( 'Post Text', 'md' ),
 			'style' => 'width: 100%',
-			'class' => '',
 			'empty_label' => __( 'Show default', 'md' ),
 			'options' => array(
 				'excerpt' => __( 'Show excerpt', 'md' ),
@@ -102,6 +98,7 @@
 			)
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'read_more', array(
 			'type' => 'text',
@@ -109,6 +106,7 @@
 			'placeholder' => __( 'Continue reading &rarr;', 'md' )
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'excerpt_more', array(
 			'type' => 'text',
@@ -116,6 +114,7 @@
 			'placeholder' => '[...]'
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-small">
 		<?php $this->fields->field( 'excerpt_length', array(
 			'type' => 'number',
@@ -124,11 +123,13 @@
 			'placeholder' => __( '55', 'md' )
 		) ); ?>
 	</div>
+
 </div>
 
 <h4><?php echo __( 'Pagination', 'md' ); ?></h4>
 
 <div class="columns-3 columns-half md-sep-small">
+
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'pagination', array(
 			'type' => 'select',
@@ -138,18 +139,21 @@
 			)
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'previous_label', array(
 			'type' => 'text',
 			'placeholder' => __( 'Previous', 'md' )
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'next_label', array(
 			'type' => 'text',
 			'placeholder' => __( 'Next', 'md' )
 		) ); ?>
 	</div>
+
 </div>
 
 <hr class="md-sep-small" />
@@ -157,6 +161,7 @@
 <h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
 
 <div class="columns-2 columns-single">
+
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'cta_x_loop', array(
 			'type' => 'number',
@@ -164,6 +169,7 @@
 			'description' => __( 'Enter the post number to show a call to action after.', 'md' )
 		) ); ?>
 	</div>
+
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'x_cta', array(
 			'type' => 'select',
@@ -173,4 +179,5 @@
 			'options' => $cta_options
 		) ); ?>
 	</div>
+
 </div>

@@ -116,6 +116,16 @@
 	$COLUMNS
 \*------------------------------*/
 .col { position: relative; }
+@media all and (min-width: 900px) {
+	.columns {
+		display: flex;
+		flex-flow: wrap;
+	}
+	.f2 { flex-basis: 50%; }
+	.f3 { flex-basis: 33.3333333333%; }
+	.f4 { flex-basis: 2%; }
+	.f5 { flex-basis: 20%; }
+}
 @media all and (min-width: 700px) {
 	.col { float: left; }
 	.columns-flex:not([class*="block-"]) {

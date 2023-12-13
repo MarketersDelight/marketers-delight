@@ -130,14 +130,12 @@ class md_loop extends md_api {
 		$cta_options = array();
 		$screen = get_current_screen();
 		$sanitize = new md_sanitize;
-		$cta = md_setting( array( 'cta', 'forms' ) );
-		$archives_loop = $this->fields->module( 'archives' );
+		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
 
-		if ( ! empty( $cta ) )
-			foreach ( $cta as $cta_id => $cta_fields )
-				$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
+		foreach ( $cta as $cta_id => $cta_fields )
+			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 	?>
 		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
@@ -145,22 +143,6 @@ class md_loop extends md_api {
 				<?php include( 'loop-settings.php' ); ?>
 			</div>
 		</div>
-	<?php $this->admin_script(); }
-
-	/**
-	 * Admin scripts for Content settings.
-	 *
-	 * @since 5.1
-	 */
-
-	public function admin_script() {
-		$prefix = $this->_prefix();
-	?>
-		<script>
-			document.getElementById( '<?php echo "{$prefix}_archives"; ?>' ).onchange = function( e ) {
-				document.getElementById( 'loop_cards' ).style.display = this.value == 'cards' ? 'block' : 'none';
-			}
-		</script>
 	<?php }
 
 }
