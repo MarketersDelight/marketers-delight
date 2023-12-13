@@ -20,13 +20,13 @@
 		) ); ?>
 	</div>
 
-	<div id="loop_category_posts" style="display: <?php echo $category_posts == 'teasers' ? 'block' : 'none'; ?>">
+	<div id="loop_category_posts" style="display: <?php echo $category_posts == 'cards' ? 'block' : 'none'; ?>">
 
 	</div>
 
 <?php endif; ?>
 
-<div id="loop_teasers" style="display: <?php echo $archives_loop == 'teasers' ? 'block' : 'none'; ?>">
+<div id="loop_cards" style="display: <?php echo $archives_loop == 'cards' ? 'block' : 'none'; ?>">
 
 	<hr class="md-sep-small" />
 

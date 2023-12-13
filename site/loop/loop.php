@@ -158,7 +158,7 @@ class md_loop extends md_api {
 	?>
 		<script>
 			document.getElementById( '<?php echo "{$prefix}_archives"; ?>' ).onchange = function( e ) {
-				document.getElementById( 'loop_teasers' ).style.display = this.value == 'teasers' ? 'block' : 'none';
+				document.getElementById( 'loop_cards' ).style.display = this.value == 'cards' ? 'block' : 'none';
 			}
 		</script>
 	<?php }

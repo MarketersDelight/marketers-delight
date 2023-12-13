@@ -57,7 +57,7 @@
 					<?php $this->fields->field( 'post_nav', array(
 						'type' => 'checkbox',
 						'options' => array(
-							'disable' => __( 'Disable <b>Next/Previous</b> Post Nav', 'md' )
+							'disable' => __( 'Disable <strong>Post Nav</strong>', 'md' )
 						)
 					) ); ?>
 				</div>

@@ -33,9 +33,7 @@
 
 			<?php md_hook_after_headline(); ?>
 
-			<?php if ( $content !== 'hide' ) : ?>
-				<?php md_the_content(); ?>
-			<?php endif; ?>
+			<?php md_the_content(); ?>
 
 		</div>
 

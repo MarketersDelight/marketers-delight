@@ -12,8 +12,8 @@ function md_loops( $sort = null ) {
 		'default' => array(
 			'name' => __( 'Default', 'md' )
 		),
-		'teasers' => array(
-			'name' => __( 'Teasers', 'md' ),
+		'cards' => array(
+			'name' => __( 'Cards', 'md' ),
 			'columns' => true
 		),
 		'blocks' => array(
@@ -72,20 +72,25 @@ function md_get_loop() {
 
 function md_loop() {
 	$c = 1;
+	$post_type = md_get_post_type();
 	$loops = md_loops();
 	$loop = md_get_loop();
-	$post_type = md_get_post_type();
-	$byline_position = md_module( array( 'loop', 'byline_position' ) );
-	$content_default = md_post_type_field( array( 'loop', 'content' ) );
-	$content = md_module( array( 'loop', 'content' ), $content_default );
+	$byline = md_get_byline();
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 2 );
-	$byline = md_get_byline();
 
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
-	if ( $category_posts )
-		md_category_posts();
+	if ( $category_posts ) {
+		$taxonomies = get_object_taxonomies( $post_type );
+		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+		$categories = get_terms( $taxonomy );
+
+		if ( ! empty( $categories ) )
+			include( md_template( 'loops/category-posts', true ) );
+		else
+			md_404_template();
+	}
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? '<div class="loop">' : '';
 
@@ -94,8 +99,10 @@ function md_loop() {
 
 			if ( ! empty( $loops[$loop]['dropin'] ) )
 				include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
-			else
+			elseif ( ! empty( $loops[$loop] ) )
 				include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
+			else
+				include( md_template( 'loops/loop', true ) );
 
 			md_hook_x_loop( $c );
 
@@ -106,53 +113,6 @@ function md_loop() {
 	}
 	else
 		md_404_template();
-}
-
-function md_category_posts() {
-	$post_type = md_get_post_type();
-	$loops = md_loops();
-	$loop = md_get_loop();
-	$taxonomies = get_object_taxonomies( $post_type );
-	$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-	$categories = get_terms( $taxonomy );
-
-	if ( empty( $categories ) )
-		md_404_template();
-
-	echo '<div class="category-posts">';
-
-	foreach ( $categories as $category ) {
-		$posts = new WP_Query( array(
-			'post_type' => $post_type,
-			'posts_per_page' => 5,
-			'tax_query' => array( array(
-				'taxonomy' => $taxonomy,
-				'field' => 'slug',
-				'terms' => $category->slug
-			) )
-		) );
-
-		if ( $posts->have_posts() ) {
-			$category_id = $category->term_id;
-			$category_name = $category->name;
-
-			echo '<h2>' . $category_name . '</h2>';
-
-			while ( $posts->have_posts() ) {
-				$posts->the_post();
-
-				if ( ! empty( $loops[$loop]['dropin'] ) )
-					include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
-				else
-					include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
-			}
-
-		}
-
-		wp_reset_query();
-	}
-
-	echo '</div>';
 }
 
 /**
