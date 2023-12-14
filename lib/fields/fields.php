@@ -674,17 +674,6 @@ class md_fields {
 	}
 
 	/**
-	 * Render admin group fields for an easy to use feature
-	 * deployment throughout various screen in WP admin.
-	 *
-	 * @since 5.6
-	 */
-
-	public function display_fields( $types, $args = null ) {
-		include( 'display.php' );
-	}
-
-	/**
 	 * Create group typography fields.
 	 *
 	 * @since 5.0

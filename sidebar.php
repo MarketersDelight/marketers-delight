@@ -4,7 +4,7 @@
 
 		<?php md_hook_before_sidebar(); ?>
 
-		<?php md_sidebar(); ?>
+		<?php dynamic_sidebar( md_get_sidebar_id() ); ?>
 
 		<?php md_hook_after_sidebar(); ?>
 

@@ -25,6 +25,48 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Outputs main sidebar or custom sidebar.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
+function md_sidebar() {
+	$name = md_get_sidebar_id();
+	dynamic_sidebar( $name );
+}
+
+/**
+ * A list of classes to add to the sidebar.
+ *
+ * @since 4.5
+ * @deprecated 5.6
+ */
+function md_sidebar_classes() {
+	echo apply_filters( 'md_filter_sidebar_classes', '' );
+}
+
+/**
+ * Collect sidebar data to load custom sidebars across
+ * various post type screens (filter in your own CPTs
+ * to add to the Sidebars Manager).
+ *
+ * @since 4.6.2
+ * @deprecated 5.6
+ */
+function md_sidebars() {
+	return apply_filters( 'md_filter_sidebars_post_types', array(
+		'post' => array(
+			'archive' => true,
+			'category' => true,
+			'single' => true
+		),
+		'page' => array(
+			'single' => true
+		)
+	) );
+}
+
+/**
  * Filter the default image sizes of MD.
  *
  * @since 4.7.4.4
