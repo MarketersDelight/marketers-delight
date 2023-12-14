@@ -36,9 +36,11 @@
 @media all and (min-width: 900px) {
 	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.cover,
-	.content-sidebar.box-style .post-box .post-header,
 	.full.box-style .post-box .post-header,
-	.content-sidebar.box-style .the-content,
+	.content-sidebar.article.box-style .post-header,
+	.content-sidebar.box-style .standard .post-header,
+	.content-sidebar.article.box-style .the-content,
+	.content-sidebar.box-style .standard .the-content,
 	.content-sidebar .author-box,
 	.content-sidebar.box-style .comments {
 		padding-left: <?php echo $mid; ?>px;
@@ -152,9 +154,6 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-
-
-
 	.content .columns { margin-left: -<?php echo $single; ?>px; }
 	.content .columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }

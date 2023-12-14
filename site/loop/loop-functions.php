@@ -80,11 +80,13 @@ function md_loop() {
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
-		if ( $columns == 2 )
-			$wrap_classes[] = 'wide';
-		elseif ( $columns >= 3 )
+		if ( md_has_sidebar() || $columns >= 3 )
 			$wrap_classes[] = 'slim';
+		elseif ( $columns == 2 )
+			$wrap_classes[] = 'wide';
 	}
+	else
+		$wrap_classes[] = 'standard';
 
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 

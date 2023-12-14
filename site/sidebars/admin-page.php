@@ -1,4 +1,4 @@
-<div id="md_sidebars" class="md-sidebars md-content-wrap<?php echo esc_attr( $classes ); ?>">
+<div id="md_sidebars" class="md-sidebars md-content-wrap">
 
 	<?php $this->fields->devices(); ?>
 
@@ -26,21 +26,6 @@
 		</div>
 
 	</div>
-
-	<hr class="md-sep-small" />
-
-	<?php $this->fields->field( 'display', array(
-		'type' => 'checkbox',
-		'description' => __( 'Customize the sidebar on any page by going to the Edit Post and Edit Category screens.', 'md' ),
-		'wrap_classes' => 'md-sep-small',
-		'options' => array(
-			'sitewide' => __( 'Add sidebar to all pages', 'md' )
-		)
-	) ); ?>
-
-	<?php $this->fields->display_fields( $types, array(
-		'callback' => array( $this, 'display_fields' )
-	) ); ?>
 
 	<?php $this->fields->save(); ?>
 

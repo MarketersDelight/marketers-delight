@@ -335,7 +335,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 @media all and (min-width: 900px) {
 	.md .col { float: left; }
-	.md .columns-2 .col, .md .columns-25-50-25 .col2 { width: 50%; }
+	.md .columns-2 .col, .md .columns-25-50-25 .col2, .md [class*="columns-"] .col.col-50 { width: 50%; }
 	.md .columns-3 > .col { width: 33.333333333%; }
 	.md .columns-4 > .col, .md .columns-25-75 > .col1, .md .columns-25-50-25 .col1, .md .columns-25-50-25 .col3 { width: 25%; }
 	.md .columns-5 > .col, .md .columns-20-80 > .col1, .md .columns-80-20 > .col2 { width: 20%; }
@@ -561,8 +561,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-sidebars .md-checkboxes .md-checkbox-disable,
-.md-sidebars.is-sitewide .md-checkbox-enable { display: none; }
-.md-sidebars.is-sitewide .md-checkbox-disable { display: block; }
+.md-sidebars.is-global .md-checkbox-enable { display: none; }
+.md-sidebars.is-global .md-checkbox-disable { display: block; }
 
 /* LICENSE */
 

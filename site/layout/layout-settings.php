@@ -12,7 +12,7 @@
 			)
 		) ); ?>
 
-		<div id="header_options" style="display: <?php echo ! empty( $header['remove'] ) ? 'none' : 'block'; ?>;">
+		<div id="header_options" class="md-sep-small" style="display: <?php echo ! empty( $header['remove'] ) ? 'none' : 'block'; ?>;">
 
 			<?php $this->fields->field( 'header', array(
 				'type' => 'checkbox',
@@ -55,13 +55,17 @@
 
 		<?php do_action( "md_layout_{$hook}_after_header" ); ?>
 
+		<?php if ( $is_admin ) : ?>
+			<?php $this->footer_fields(); ?>
+		<?php endif; ?>
+
 	</div>
 
-	<!-- Content Box -->
+	<!-- Content -->
 
 	<div class="col">
 
-		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content Box', 'md' ); ?></label></p>
+		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
 		<?php if ( $is_admin ) : ?>
 			<?php $this->fields->field( 'content', array(
@@ -184,13 +188,45 @@
 
 	</div>
 
-	<?php if ( ! $is_admin ) : ?>
-
 	<!-- Sidebar -->
 
-	<div id="sidebar_fields" class="col md-sep-small" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
+	<div id="sidebar_fields" class="<?php echo esc_attr( $sidebar_classes ); ?>" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 		<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
+
+		<?php if ( $is_admin ) : ?>
+
+			<?php $this->fields->field( 'sidebar', array(
+				'type' => 'checkbox',
+				'wrap_classes' => 'md-sep-micro',
+				'options' => array(
+					'global' => __( 'Enable on all pages', 'md' )
+				)
+			) ); ?>
+
+			<?php foreach ( $page_types as $type => $label ) : ?>
+				<div class="columns-2 md-sep-micro">
+					<div class="col">
+						<?php $this->fields->field( "sidebar_{$type}_show", array(
+							'type' => 'checkbox',
+							'inline' => true,
+							'options' => array(
+								'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
+								'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
+							)
+						) ); ?>
+					</div>
+					<div class="col">
+						<?php $this->fields->field( "sidebar_$type", array(
+							'type' => 'select',
+							'empty_label' => __( 'Use Main sidebar', 'md' ),
+							'options' => $sidebars
+						) ); ?>
+					</div>
+				</div>
+			<?php endforeach; ?>
+
+		<?php else : ?>
 
 		<?php if ( $has_sidebar ) : ?>
 
@@ -240,33 +276,14 @@
 
 		<?php endif; ?>
 
+		<?php endif; ?>
+
 	</div>
 
-	<?php endif; ?>
-
-	<!-- Footer -->
-
-	<div class="col">
-
-		<?php $this->fields->field( 'footer', array(
-			'type' => 'checkbox',
-			'label' => __( 'Footer', 'md' ),
-			'options' => array(
-				'remove' => __( 'Remove <b>Footer</b>', 'md' )
-			)
-		) ); ?>
-
-		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
-
-			<?php $this->fields->field( 'footer', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'columns' => __( 'Remove <b>Columns</b>', 'md' )
-				)
-			) ); ?>
-
+	<?php if ( ! $is_admin ) : ?>
+		<div class="col">
+			<?php $this->footer_fields(); ?>
 		</div>
-
-	</div>
+	<?php endif; ?>
 
 </div>

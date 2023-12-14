@@ -53,12 +53,10 @@ class md_layout extends md_api {
 	 */
 
 	public function fields() {
-		$menus = $sidebar_options = array();
+		$menus = $custom_sidebars = array();
 
-		$sidebars = md_get_sidebars();
-
-		foreach ( $sidebars as $custom_sidebar => $custom_sidebar_name )
-			$sidebar_options[] = esc_attr( $custom_sidebar );
+		foreach ( md_get_sidebars() as $custom_sidebar => $custom_sidebar_name )
+			$custom_sidebars[] = esc_attr( $custom_sidebar );
 
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
@@ -92,21 +90,32 @@ class md_layout extends md_api {
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
-				'options' => array( 'add', 'remove' )
+				'options' => array( 'add', 'remove', 'global' )
 			),
 			'custom_sidebar' => array(
 				'type' => 'select',
-				'options' => $sidebar_options
+				'options' => $custom_sidebars
 			),
 			'entries_sidebar' => array(
 				'type' => 'select',
-				'options' => $sidebar_options
+				'options' => $custom_sidebars
 			),
 			'footer' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'columns' )
 			)
 		);
+
+		foreach ( array( 'archive', 'term', 'single' ) as $type ) {
+			$fields["sidebar_$type"] = array(
+				'type' => 'select',
+				'options' => $custom_sidebars
+			);
+			$fields["sidebar_{$type}_show"] = array(
+				'type' => 'checkbox',
+				'options' => array( 'enable', 'disable' )
+			);
+		}
 
 		return $fields;
 	}
@@ -118,7 +127,7 @@ class md_layout extends md_api {
 	 */
 
 	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-toggle open md-sep-small">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template(); ?>
@@ -147,12 +156,17 @@ class md_layout extends md_api {
 		$post_type = esc_attr( $screen->post_type );
 		$screen_base = esc_attr( $screen->base );
 		$is_edit = in_array( $screen_base, array( 'post', 'post-new' ) ) ? true : false;
+		$is_term = $screen_base == 'term' ? true : false;
 		$is_admin = ! in_array( $screen_base, array( 'post', 'post-new', 'term' ) ) ? true : false;
 		$hook = $is_edit ? 'post' : $screen_base;
+		$page_types = array(
+			'archive' => __( 'Archive', 'md' ),
+			'term' => __( 'Categories', 'md' ),
+			'single' => __( 'Single', 'md' )
+		);
 
 		$header = $this->fields->module( 'header' );
 		$content = $this->fields->module( 'content' );
-		$footer = $this->fields->module( 'footer' );
 
 		$sidebar_display = 'none';
 		$sidebars = md_get_sidebars();
@@ -163,8 +177,20 @@ class md_layout extends md_api {
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
 
+		$sidebar_classes = array( 'md-sidebars', 'col', 'md-sep-small' );
+
+		if ( $is_admin ) {
+			$global = $this->fields->module( array( 'sidebar', 'global' ) );
+			if ( $global )
+				$sidebar_classes[] = 'is-global';
+			$sidebar_classes[] = 'col-50';
+		}
+
+		$sidebar_classes = join( ' ', $sidebar_classes );
+
 		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
-		if ( in_array( $screen->id, array( 'post', 'post-new', 'term' ) ) && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
+
+		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
 			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
 
 		$author_box = md_post_type_field( array( 'single', 'author_box', 'enable' ), null, $post_type );
@@ -175,15 +201,38 @@ class md_layout extends md_api {
 			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
 
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+
 		foreach ( $nav_menus as $menu )
 			$menus[$menu->slug] = $menu->name;
 
 		echo "<div class=\"md-$this->_clean_id md-tab-content active\">";
+
 		include( 'layout-settings.php' );
+
 		echo '</div>';
 
 		$this->scripts();
 	}
+
+	public function footer_fields() {
+		$footer = $this->fields->module( 'footer' );
+	?>
+		<?php $this->fields->field( 'footer', array(
+			'type' => 'checkbox',
+			'label' => __( 'Footer', 'md' ),
+			'options' => array(
+				'remove' => __( 'Remove <b>Footer</b>', 'md' )
+			)
+		) ); ?>
+		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
+			<?php $this->fields->field( 'footer', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'columns' => __( 'Remove <b>Columns</b>', 'md' )
+				)
+			) ); ?>
+		</div>
+	<?php }
 
 	/**
 	 * Print footer scripts to admin screens to toggle options.
@@ -226,6 +275,10 @@ class md_layout extends md_api {
 							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'block' : 'none';
 						}
 					<?php endif; ?>
+				<?php else : ?>
+					document.getElementById( '<?php echo $this->_prefix; ?>_sidebar_global' ).onchange = function() {
+						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
+					}
 				<?php endif; ?>
 				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {
 					document.getElementById( 'footer_options' ).style.display = this.checked ? 'none' : 'block';

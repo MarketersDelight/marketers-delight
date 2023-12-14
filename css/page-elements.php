@@ -58,6 +58,11 @@
 }
 
 @media all and (max-width: 800px) {
+	.title-wrap { flex-basis: 100%; }
+	.author .page-image {
+		order: -1;
+		margin-bottom: <?php echo $single; ?>px;
+	}
 	.page-cta-link {
 		display: block;
 		text-align: center;

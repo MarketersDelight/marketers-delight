@@ -130,7 +130,7 @@ class md_admin {
 			if ( ! isset( $fields['name'] ) )
 				continue;
 
-			$parent_slug = null;
+			$parent_slug = '';
 
 			if ( ! isset( $fields['parent'] ) )
 				$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';

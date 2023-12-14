@@ -21,6 +21,7 @@ class md_page_title {
 		$image_hook = 'md_hook_page_header_bottom';
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 		$image_id = $this->get( 'image_id' );
+		$image_src = $this->get( 'image_src' );
 		$cover = md_cover( 'page' );
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
@@ -38,14 +39,11 @@ class md_page_title {
 		if ( $this->get( 'description' ) )
 			add_action( $description_hook, array( $this, 'description' ) );
 
-		if ( $image_id ) {
+		if ( $image_id || $image_src ) {
 			$image_order = 10;
 			$image_position = $this->get( 'image_position' );
 
-			if ( $image_position == 'center' ) {
-//				$image_order = 20;
-			}
-			elseif ( $image_position == 'above_headline' )
+			if ( $image_position == 'above_headline' )
 				$image_hook = 'md_hook_page_header_top';
 			elseif ( $image_position == 'below_headline' ) {
 				$image_hook = 'md_hook_after_page_title';
@@ -83,13 +81,21 @@ class md_page_title {
 			$data['description'] = $description;
 
 		$data['image_position'] = md_featured_image_position( array( 'context' => 'page' ) );
-		$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
 		$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
+		$data['image_style'] = true;
+
+		if ( is_author() ) {
+			$data['image_src'] = get_avatar( get_the_author_meta( 'ID' ), 250 );
+			$data['image_style'] = false;
+		}
+		else
+			$data['image_id'] = md_module( array( 'featured_image', 'image', 'id' ) );
+
 		$data['page_cta'] = md_module( 'page_cta' );
 		$data['link_primary'] = md_module( 'link_primary' );
 		$data['link_secondary'] = md_module( 'link_secondary' );
 
-		if ( ! empty( $data['image_id'] ) ) {
+		if ( ! empty( $data['image_id'] ) || ! empty( $data['image_src'] ) ) {
 			if ( in_array( $data['image_position'], array( 'left', 'right' ) ) )
 				$data['classes'][] = 'layout-columns';
 			else
@@ -153,15 +159,24 @@ class md_page_title {
 
 	public function image() {
 		$image_id = $this->get( 'image_id' );
+		$image_src = $this->get( 'image_src' );
 
-		if ( ! $image_id )
+		if ( ! $image_id && ! $image_src )
 			return;
 
+		$image_style = $this->get( 'image_style' );
 		$image_size = $this->get( 'image_size' );
 	?>
+
 		<div class="page-image">
-			<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
-			<?php if ( $image_size ) :
+
+			<?php if ( $image_id ) : ?>
+				<?php echo wp_get_attachment_image( $image_id, 'full' ); ?>
+			<?php elseif ( $image_src ) : ?>
+				<?php echo $image_src; ?>
+			<?php endif; ?>
+
+			<?php if ( $image_size && $image_style == true ) :
 				md_inline_css( array(
 					'.page-header .page-image' => array(
 						'flex-basis' => array(
@@ -172,7 +187,9 @@ class md_page_title {
 					)
 				) );
 			endif; ?>
+
 		</div>
+
 	<?php }
 
 	/**
