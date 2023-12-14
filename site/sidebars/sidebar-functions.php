@@ -22,7 +22,7 @@ function md_get_sidebars() {
  * @since 4.1
  */
 
-function md_has_sidebar() {
+function md_has_sidebar( $args = array() ) {
 	$show = false;
 
 	if ( has_filter( 'md_filter_has_sidebar' ) )
@@ -31,18 +31,21 @@ function md_has_sidebar() {
 	if ( ! is_active_sidebar( md_get_sidebar_id() ) )
 		return $show;
 
-	$page = 'single';
+	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
+	$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_queried_object_id();
 
-	if ( is_home() || is_post_type_archive() )
+	if ( isset( $args['page'] ) )
+		$page = $args['page'];
+	elseif ( is_home() || is_post_type_archive() )
 		$page = 'archive';
 	elseif ( is_category() || is_tax() )
 		$page = 'term';
+	else
+		$page = 'single';
 
-	$post_type = md_get_post_type();
-	$global = md_post_type_field( array( 'layout', 'sidebar', 'global' ) );
-	$single = md_module( array( 'layout', 'sidebar' ) );
-
-	$display = md_post_type_field( array( 'layout', "sidebar_{$page}_show" ) );
+	$display = md_post_type_field( array( 'layout', "sidebar_{$page}_show" ), null, $post_type );
+	$global = md_post_type_field( array( 'layout', 'sidebar', 'global' ), null, $post_type );
+	$single = md_meta( array( 'layout', 'sidebar' ), $post_id );
 
 	if ( $global ) {
 		if ( empty( $display['disable'] ) && empty( $single['remove'] ) )
@@ -54,6 +57,11 @@ function md_has_sidebar() {
 	return $show;
 }
 
+/**
+ * Check if current admin page has sidebar enabled on frontend.
+ *
+ * @since 5.6
+ */
 /**
  * Get active sidebar ID for current page.
  *
@@ -74,32 +82,4 @@ function md_get_sidebar_id() {
 	}
 
 	return $sidebar;
-}
-
-/**
- * Check if current admin page has sidebar enabled on frontend.
- *
- * @since 5.6
- */
-
-function md_admin_has_sidebar() {
-	$screen = get_current_screen();
-	$post_type = esc_attr( $screen->post_type );
-	$screen_base = esc_attr( $screen->base );
-	$sitewide = md_setting( array( 'sidebars', 'display', 'sitewide' ) );
-
-	if ( in_array( $screen_base, array( 'post', 'post-new' ) ) )
-		$key = "{$post_type}_single_show";
-	elseif ( $screen_base == 'term' )
-		$key = "{$post_type}_{$screen->taxonomy}_show";
-	elseif ( ! empty( $_GET['page'] ) ) {
-		$page = md_clean_id( esc_attr( $_GET['page'] ) );
-		$key = "{$page}_archive_show";
-	}
-
-	$site_enable = md_setting( array( 'sidebars', $key, 'enable' ) );
-	$site_disable = md_setting( array( 'sidebars', $key, 'disable' ) );
-
-	if ( ! $site_disable && ( $sitewide || $site_enable ) )
-		return true;
 }

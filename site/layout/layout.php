@@ -152,13 +152,19 @@ class md_layout extends md_api {
 	 */
 
 	public function admin_template() {
+		$screen_id = '';
 		$screen = get_current_screen();
 		$post_type = esc_attr( $screen->post_type );
 		$screen_base = esc_attr( $screen->base );
-		$is_edit = in_array( $screen_base, array( 'post', 'post-new' ) ) ? true : false;
+		$is_post = in_array( $screen_base, array( 'post', 'post-new' ) ) ? true : false;
 		$is_term = $screen_base == 'term' ? true : false;
 		$is_admin = ! in_array( $screen_base, array( 'post', 'post-new', 'term' ) ) ? true : false;
-		$hook = $is_edit ? 'post' : $screen_base;
+
+		if ( $is_post )
+			$screen_id = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : '';
+		elseif ( $is_term )
+			$screen_id = isset( $_GET['tag_ID'] ) ? esc_attr( $_GET['tag_ID'] ) : '';
+
 		$page_types = array(
 			'archive' => __( 'Archive', 'md' ),
 			'term' => __( 'Categories', 'md' ),
@@ -170,7 +176,11 @@ class md_layout extends md_api {
 
 		$sidebar_display = 'none';
 		$sidebars = md_get_sidebars();
-		$has_sidebar = md_admin_has_sidebar();
+		$has_sidebar = md_has_sidebar( array(
+			'page' => ( $is_post ? 'single' : 'term' ),
+			'post_type' => $screen->post_type,
+			'post_id' => $screen_id
+		) );
 		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
 		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );
 
@@ -181,8 +191,10 @@ class md_layout extends md_api {
 
 		if ( $is_admin ) {
 			$global = $this->fields->module( array( 'sidebar', 'global' ) );
+
 			if ( $global )
 				$sidebar_classes[] = 'is-global';
+
 			$sidebar_classes[] = 'col-50';
 		}
 
@@ -211,7 +223,7 @@ class md_layout extends md_api {
 
 		echo '</div>';
 
-		$this->scripts();
+		$this->scripts( $has_sidebar );
 	}
 
 	public function footer_fields() {
@@ -240,9 +252,8 @@ class md_layout extends md_api {
 	 * @since 4.7
 	 */
 
-	public function scripts() {
+	public function scripts( $has_sidebar ) {
 		$screen = get_current_screen();
-		$post_type = esc_attr( $screen->post_type );
 		$prefix = $this->_prefix();
 	?>
 
@@ -265,8 +276,9 @@ class md_layout extends md_api {
 						document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
 					}
 				<?php endif; ?>
+
 				<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
-					<?php if ( md_admin_has_sidebar() ) : ?>
+					<?php if ( $has_sidebar ) : ?>
 						document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
 							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
 						}
@@ -280,6 +292,7 @@ class md_layout extends md_api {
 						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
 					}
 				<?php endif; ?>
+
 				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {
 					document.getElementById( 'footer_options' ).style.display = this.checked ? 'none' : 'block';
 				}

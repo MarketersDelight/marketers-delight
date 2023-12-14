@@ -53,7 +53,7 @@
 
 		</div>
 
-		<?php do_action( "md_layout_{$hook}_after_header" ); ?>
+		<?php do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' ); ?>
 
 		<?php if ( $is_admin ) : ?>
 			<?php $this->footer_fields(); ?>
@@ -92,7 +92,7 @@
 				) ); ?>
 			<?php endif; ?>
 
-			<?php if ( $is_edit ) : ?>
+			<?php if ( $is_post ) : ?>
 
 				<?php $this->fields->field( 'content', array(
 					'type' => 'checkbox',
@@ -175,7 +175,7 @@
 				)
 			) ); ?>
 
-			<?php if ( $is_edit ) : ?>
+			<?php if ( $is_post ) : ?>
 				<?php $this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
