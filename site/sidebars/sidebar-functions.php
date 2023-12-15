@@ -58,11 +58,6 @@ function md_has_sidebar( $args = array() ) {
 }
 
 /**
- * Check if current admin page has sidebar enabled on frontend.
- *
- * @since 5.6
- */
-/**
  * Get active sidebar ID for current page.
  *
  * @since 4.6.2.1
@@ -75,10 +70,12 @@ function md_get_sidebar_id() {
 		$sidebar = md_post_type_field( array( 'layout', 'sidebar_archive' ), $sidebar );
 	}
 	elseif ( is_category() || is_tax() ) {
-		$sidebar = md_post_type_field( array( 'layout', 'sidebar_term' ), $sidebar );
+		$global = md_post_type_field( array( 'layout', 'sidebar_term' ), $sidebar );
+		$sidebar = md_term_meta( array( 'layout', 'custom_sidebar' ), null, $global );
 	}
 	elseif ( is_singular() ) {
-		$sidebar = md_post_type_field( array( 'layout', 'sidebar_single' ), $sidebar );
+		$global = md_post_type_field( array( 'layout', 'sidebar_single' ), $sidebar );
+		$sidebar = md_post_meta( array( 'layout', 'custom_sidebar' ), null, $global );
 	}
 
 	return $sidebar;

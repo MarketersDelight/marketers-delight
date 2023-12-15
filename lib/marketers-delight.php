@@ -289,6 +289,18 @@ final class marketers_delight {
 			'after_title' => '</h3>'
 		) );
 
+		// Custom Sidebars
+		foreach ( md_get_sidebars() as $id => $name ) {
+			register_sidebar( array(
+				'name' => esc_html( $name ),
+				'id' => $id,
+				'before_widget' => '<section id="%1$s" class="widget %2$s">',
+				'after_widget' => '</section>',
+				'before_title' => '<h3 class="sidebar-title">',
+				'after_title' => '</h3>'
+			) );
+		}
+
 		// Footer Columns
 		foreach ( md_filter_footer_columns() as $w ) {
 			register_sidebar( array(
@@ -312,20 +324,6 @@ final class marketers_delight {
 			'before_title' => '<h3 class="footer-title">',
 			'after_title' => '</h3>'
 		) );
-
-		// Custom Sidebars
-		$sidebars = md_get_sidebars();
-		if ( ! empty( $sidebars ) )
-			foreach ( $sidebars as $id => $name ) {
-				register_sidebar( array(
-					'name' => esc_html( $name ),
-					'id' => $id,
-					'before_widget' => '<section id="%1$s" class="widget %2$s">',
-					'after_widget' => '</section>',
-					'before_title' => '<h3 class="sidebar-title">',
-					'after_title' => '</h3>'
-				) );
-			}
 	}
 
 	/**
