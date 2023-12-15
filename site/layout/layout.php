@@ -179,7 +179,8 @@ class md_layout extends md_api {
 		$has_sidebar = md_has_sidebar( array(
 			'page' => ( $is_post ? 'single' : 'term' ),
 			'post_type' => $screen->post_type,
-			'post_id' => $screen_id
+			'post_id' => $screen_id,
+			'exclude_single' => true
 		) );
 		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
 		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );

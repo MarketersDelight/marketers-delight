@@ -28,8 +28,8 @@ function md_has_sidebar( $args = array() ) {
 	if ( has_filter( 'md_filter_has_sidebar' ) )
 		return apply_filters( 'md_filter_has_sidebar', $show );
 
-	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
 	$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_queried_object_id();
+	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
 
 	if ( isset( $args['page'] ) )
 		$page = $args['page'];
@@ -44,8 +44,12 @@ function md_has_sidebar( $args = array() ) {
 	$global = md_post_type_field( array( 'layout', 'sidebar', 'global' ), null, $post_type );
 	$single = md_meta( array( 'layout', 'sidebar' ), $post_id );
 
-	if ( $global ) {
-		if ( ( empty( $display['disable'] ) && ! empty( $single['add'] ) ) || empty( $single['remove'] ) )
+	if ( isset( $args['exclude_single'] ) ) { // for checking admin contexts
+		if ( ( $global && empty( $display['disable'] ) ) || ( ! $global && ! empty( $display['enable'] ) ) )
+			$show = true;
+	}
+	elseif ( $global ) {
+		if ( ( empty( $display['disable'] ) && empty( $single['add'] ) ) && empty( $single['remove'] ) )
 			$show = true;
 	}
 	elseif ( ( ! empty( $display['enable'] ) && empty( $single['remove'] ) ) || ! empty( $single['add'] ) )
