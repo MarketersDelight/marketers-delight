@@ -12,6 +12,12 @@ class md_settings extends md_api {
 
 	public $license;
 
+	/**
+	 * Run dashboard actions.
+	 *
+	 * @since 4.7
+	 */
+
 	public function actions() {
 		$requests = new md_requests;
 
@@ -48,6 +54,13 @@ class md_settings extends md_api {
 					'webfonts' => array(
 						'type' => 'checkbox',
 						'options' => array( 'loader' )
+					),
+					'sidebars' => array(
+						'type' => 'group',
+						'group_key_lowercase' => true, // widgets must save all lowercase
+						'fields' => array(
+							'name' => array( 'type' => 'text' )
+						)
 					)
 				)
 			)
@@ -131,6 +144,20 @@ class md_settings extends md_api {
 		$page404 = $this->fields->get_field( array( 'settings', '404_page' ) );
 
 		include( 'admin-page.php' );
+	}
+
+	/**
+	 * Widget areas for new sidebar areas.
+	 *
+	 * @since 4.6.2
+	 */
+
+	public function sidebars( $group, $field ) {
+		$this->fields->field( array( $group, $field, 'name' ), array(
+			'type' => 'text',
+			'placeholder' => __( 'Enter sidebar name...', 'md' ),
+			'classes' => 'md-focus'
+		) );
 	}
 
 }

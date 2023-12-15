@@ -85,7 +85,6 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/featured-video/featured-video.php' );
 		require_once( MD_DIR . 'site/page-cover/page-title.php' );
 		require_once( MD_DIR . 'site/loop/loop.php' );
-		require_once( MD_DIR . 'site/sidebars/sidebars.php' );
 		require_once( MD_DIR . 'site/blog/blog.php' );
 		require_once( MD_DIR . 'site/single/single.php' );
 		require_once( MD_DIR . 'site/layout/layout.php' );

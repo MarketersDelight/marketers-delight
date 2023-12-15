@@ -1386,7 +1386,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	text-decoration: none;
 }
 /*------------------------------*\
-	$SIDEBAR
+	$typography['sidebar']
 \*------------------------------*/
 .sidebar {
 		color: #777777;

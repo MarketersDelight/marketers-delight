@@ -255,7 +255,7 @@
 				<div id="<?php echo $this->_id; ?>_custom_sidebar_option">
 					<?php $this->fields->field( 'custom_sidebar', array(
 						'type' => 'select',
-						'empty_label' => __( 'Choose a sidebar&hellip;', 'md' ),
+						'empty_label' => __( 'Use default sidebar', 'md' ),
 						'wrap_classes' => 'md-sep-micro',
 						'options' => $sidebars
 					) ); ?>

@@ -1,13 +1,21 @@
 <div class="md-dashboard md-content-wrap-med">
+
 	<div class="columns-70-30 columns-single">
+
 		<div class="col col1 md-sep-small">
+
 			<?php do_action( 'md_hook_settings_col2_top' ); ?>
+
 			<div id="md_update" class="md-sep-small">
 				<?php $this->updater(); ?>
 			</div>
+
 			<div class="md-widget md-toggle md-sep-small">
+
 				<h3 class="md-widget-title"><?php echo __( 'Site Tools', 'md' ); ?></h3>
+
 				<div class="md-widget-item">
+
 					<div class="md-sep-small">
 						<?php $this->fields->field( 'css', array(
 							'type' => 'checkbox',
@@ -19,17 +27,22 @@
 							)
 						) ); ?>
 					</div>
+
 					<div class="md-sep-small">
+
 						<?php $this->fields->field( '404_page', array(
 							'type' => 'number',
 							'label' => __( '404 Page ID', 'md' )
 						) ); ?>
+
 						<?php if ( $page404 ) : ?>
 							<?php $this->fields->description( sprintf( __( 'Success! You can <a href="%s">edit your 404 page here</a>.', 'md' ), admin_url( 'post.php?post=' . esc_attr( $page404 ) . '&action=edit' ) ) ); ?>
 						<?php else : ?>
 							<?php echo $this->fields->description( sprintf( __( 'Create a custom 404 page by attaching a new <a href="%s">Page ID</a> here.', 'md' ), admin_url( 'edit.php?post_type=page' ) ) ); ?>
 						<?php endif; ?>
+
 					</div>
+
 					<div class="md-sep-small">
 						<?php $this->fields->field( 'webfonts', array(
 							'type' => 'checkbox',
@@ -40,6 +53,7 @@
 							)
 						) ); ?>
 					</div>
+
 					<div class="md-sep-small">
 						<?php $this->fields->field( 'head', array(
 							'type' => 'checkbox',
@@ -53,8 +67,26 @@
 							)
 						) ); ?>
 					</div>
+
 				</div>
+
 			</div>
+
+			<div class="md-widget md-toggle md-sep-small">
+
+				<h3 class="md-widget-title"><?php echo __( 'Sidebars', 'md' ); ?></h3>
+
+				<div class="md-widget-item">
+					<?php $this->fields->field( 'sidebars', array(
+						'type' => 'group',
+						'wrap_classes' => 'md-sep-micro',
+						'description' => sprintf( __( 'Create custom sidebars and assign them to post types in the settings below.', 'md' ), admin_url( 'widgets.php' ) ),
+						'callback' => array( $this, 'sidebars' )
+					) ); ?>
+				</div>
+
+			</div>
+
 			<?php if ( md_has( 'scripts' ) ) :
 				$scripts = new md_scripts( $this->_id );
 			?>
@@ -65,10 +97,15 @@
 					</div>
 				</div>
 			<?php endif; ?>
+
 			<?php do_action( 'md_hook_admin_settings_groups' ); ?>
+
 		</div>
+
 		<div class="col col2">
 			<?php $this->fields->save( __( 'Save Settings', 'md' ) ); ?>
 		</div>
+
 	</div>
+
 </div>

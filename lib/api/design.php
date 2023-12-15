@@ -105,6 +105,11 @@ class md_design {
 					'bg_color' => '#FFFFFF',
 					'border_color' => $colors['border']
 				),
+				'sidebar' => array(
+					'text' => '#777777',
+					'title' => $colors['text'],
+					'links' => '#444444',
+				),
 				'footer' => array(
 					'bg_color' => '#FFFFFF',
 					'border_color' => $colors['border'],
@@ -218,6 +223,30 @@ class md_design {
 						'mobile' => round( $h6['mobile'] * 1.4 )
 					)
 				),
+				'sidebar' => array(
+					'font_size' => array(
+						'desktop' => round( $font_size * 0.95 ),
+						'tablet' => round( $font_size * 0.9 ),
+						'mobile' => round( $font_size * 0.9 )
+					),
+					'line_height' => array(
+						'desktop' => round( $line_height * 0.9 ),
+						'tablet' => round( $line_height * 0.85 ),
+						'mobile' => round( $line_height * 0.8 )
+					)
+				),
+				'sidebar_title' => array(
+					'font_size' => array(
+						'desktop' => $h5['desktop'],
+						'tablet' => $h5['tablet'],
+						'mobile' => $h5['mobile']
+					),
+					'line_height' => array(
+						'desktop' => round( $h5['desktop'] * 1.45 ),
+						'tablet' => round( $h5['tablet'] * 1.45 ),
+						'mobile' => round( $h5['mobile'] * 1.45 )
+					)
+				),
 				'footer' => array(
 					'font_size' => array(
 						'desktop' => round( $font_size * 0.95 ),
@@ -279,33 +308,6 @@ class md_design {
 			),
 			'content' => array(
 				'style' => ''
-			),
-			'sidebar' => array(
-				'text' => '#777777',
-				'title' => $colors['text'],
-				'links' => '#444444',
-				'font_size' => array(
-					'desktop' => round( $font_size * 0.95 ),
-					'tablet' => round( $font_size * 0.9 ),
-					'mobile' => round( $font_size * 0.9 )
-				),
-				'line_height' => array(
-					'desktop' => round( $line_height * 0.9 ),
-					'tablet' => round( $line_height * 0.85 ),
-					'mobile' => round( $line_height * 0.8 )
-				),
-				'sidebar_title' => array(
-					'font_size' => array(
-						'desktop' => $h5['desktop'],
-						'tablet' => $h5['tablet'],
-						'mobile' => $h5['mobile']
-					),
-					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.45 ),
-						'tablet' => round( $h5['tablet'] * 1.45 ),
-						'mobile' => round( $h5['mobile'] * 1.45 )
-					)
-				)
 			)
 		);
 	}

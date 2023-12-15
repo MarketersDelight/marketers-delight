@@ -53,15 +53,13 @@ class md_layout extends md_api {
 	 */
 
 	public function fields() {
-		$menus = $custom_sidebars = array();
-
-		foreach ( md_get_sidebars() as $custom_sidebar => $custom_sidebar_name )
-			$custom_sidebars[] = esc_attr( $custom_sidebar );
-
+		$menus = array();
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )
 			$menus[] = esc_attr( $menu->slug );
+
+		$custom_sidebars = md_get_sidebars( true );
 
 		$fields = array(
 			'header' => array(

@@ -81,16 +81,33 @@
 	<?php include( 'content-settings.php' ); ?>
 
 	<div class="md-widget md-toggle md-sep-small">
+		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
+		<div class="md-widget-item columns-3 columns-single">
+			<?php foreach ( $options['sidebar'] as $field => $label ) :
+				$default = $field !== 'bg_color' ? $defaults['colors']['sidebar'][$field] : '';
+			?>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'sidebar', $field ), array(
+					'type' => 'color',
+					'label' => $label,
+					'default' => $default
+				) ); ?>
+			</div>
+			<?php endforeach; ?>
+		</div>
+	</div>
+
+	<div class="md-widget md-toggle md-sep-small">
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
 		<div class="md-widget-item columns-3 columns-single">
 			<?php foreach ( $options['footer'] as $field => $label ) : ?>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'footer', $field ), array(
-						'type' => 'color',
-						'label' => $label,
-						'default' => $defaults['colors']['footer'][$field]
-					) ); ?>
-				</div>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'footer', $field ), array(
+					'type' => 'color',
+					'label' => $label,
+					'default' => $defaults['colors']['footer'][$field]
+				) ); ?>
+			</div>
 			<?php endforeach; ?>
 		</div>
 	</div>

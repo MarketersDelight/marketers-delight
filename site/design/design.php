@@ -3,7 +3,6 @@
  * Create Site Design admin page.
  *
  * @since 5.0
- * TODO 5.6: Needs rework to be less Colors oriented.
  */
 
 class md_colors extends md_api {
@@ -52,6 +51,12 @@ class md_colors extends md_api {
 			'content' => array(
 				'bg_color' => array( 'type' => 'color' ),
 				'border_color' => array( 'type' => 'color' )
+			),
+			'sidebar' => array(
+				'bg_color' => array( 'type' => 'color' ),
+				'text' => array( 'type' => 'color' ),
+				'title' => array( 'type' => 'color' ),
+				'links' => array( 'type' => 'color' )
 			),
 			'footer' => array(
 				'bg_color' => array( 'type' => 'color' ),
@@ -133,6 +138,12 @@ class md_colors extends md_api {
 			'content' => array(
 				'bg_color' => __( 'Background', 'md' ),
 				'border_color' => __( 'Border', 'md' )
+			),
+			'sidebar' => array(
+				'bg_color' => __( 'Background', 'md' ),
+				'text' => __( 'Text', 'md' ),
+				'title' => __( 'Title', 'md' ),
+				'links' => __( 'Links', 'md' )
 			),
 			'footer' => array(
 				'bg_color' => __( 'Background', 'md' ),
