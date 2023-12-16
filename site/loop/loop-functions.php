@@ -337,7 +337,7 @@ function md_has_byline() {
 	$add_byline = md_post_meta( array( 'layout', 'content', 'add_byline' ) );
 	$remove_byline = md_post_meta( array( 'layout', 'content', 'byline' ) );
 
-	if ( ( ! is_page() && ! is_404() && ! $remove_byline ) || ( is_page() && $add_byline ) )
+	if ( ( get_post_type() !== 'page' && ! is_404() && ! $remove_byline ) || ( is_page() && $add_byline ) )
 		return true;
 }
 
@@ -478,6 +478,7 @@ function md_byline( $args = array() ) {
 
 function md_the_content( $content ) {
 	$read_more = md_read_more_text();
+
 	md_hook_before_the_content();
 
 	if ( ! is_singular() && empty( $content ) ) {
@@ -506,7 +507,7 @@ function md_content_text() {
 	$classes = apply_filters( 'md_the_content_classes', $classes );
 	$classes = join( ' ', $classes );
 
-	if ( $content !== 'hide' || is_singular() || is_404() )
+	if ( get_the_content() && ( $content !== 'hide' || is_singular() || is_404() ) )
 		include( md_template( 'text', true ) );
 }
 
