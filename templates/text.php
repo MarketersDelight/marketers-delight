@@ -4,7 +4,7 @@
 		<?php md_featured_image(); ?>
 	<?php endif; ?>
 
-	<?php md_the_content(); ?>
+	<?php md_the_content( $content ); ?>
 
 </div>
 

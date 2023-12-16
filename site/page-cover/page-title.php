@@ -66,7 +66,7 @@ class md_page_title {
 
 	public function get( $key = null ) {
 		$description = '';
-		$data = array();
+		$data = array( 'title' => md_page_title() );
 
 		if ( has_filter( 'md_page_description' ) )
 			$description = apply_filters( 'md_page_description' );

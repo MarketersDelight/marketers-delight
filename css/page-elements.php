@@ -77,7 +77,7 @@
 .byline {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop'] - 2; ?>px;
-	margin-bottom: <?php echo $third; ?>px;
+	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 

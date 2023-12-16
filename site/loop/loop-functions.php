@@ -476,34 +476,18 @@ function md_byline( $args = array() ) {
  * @since 5.1
  */
 
-function md_the_content( $content = null) {
-	$loop = md_get_loop();
-
-	if ( $content == null ) {
-		$default = md_post_type_field( array( 'loop', 'content' ) );
-		$content = md_module( array( 'loop', 'content' ), $default );
-	}
-
+function md_the_content( $content ) {
 	$read_more = md_read_more_text();
-
 	md_hook_before_the_content();
-?>
 
-	<?php if ( ! is_singular() && empty( $content ) ) : ?>
-
-		<?php the_excerpt(); ?>
-
+	if ( ! is_singular() && empty( $content ) ) {
+		the_excerpt(); ?>
 		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
-
-	<?php else : ?>
-
-		<?php the_content( $read_more ); ?>
-
-		<?php wp_link_pages(); ?>
-
-	<?php endif; ?>
-
-<?php }
+	<?php } else {
+		the_content( $read_more );
+		wp_link_pages();
+	}
+}
 
 /**
  * Displays post/page content text.
@@ -515,10 +499,8 @@ function md_content_text() {
 	$classes = array( 'the-content' );
 	$default = md_post_type_field( array( 'loop', 'content' ) );
 	$content = md_module( array( 'loop', 'content' ), $default );
-	$full = md_meta( array( 'layout', 'content', 'full' ) );
-	$read_more = md_read_more_text();
 
-	if ( $full )
+	if ( md_meta( array( 'layout', 'content', 'full' ) ) )
 		$classes[] = 'full';
 
 	$classes = apply_filters( 'md_the_content_classes', $classes );
