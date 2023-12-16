@@ -88,6 +88,7 @@ function md_loop() {
 	else
 		$wrap_classes[] = 'standard';
 
+	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 
 	if ( $category_posts ) {
@@ -200,7 +201,7 @@ add_filter( 'post_class', 'md_post_classes' );
  */
 
 function md_has_headline() {
-	if ( get_the_title() && ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
 		return true;
 }
 

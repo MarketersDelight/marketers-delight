@@ -4,11 +4,15 @@
 	$LAYOUT
 \*------------------------------*/
 
+.entry, .post-box { position: relative; }
+
 /* POST HEADER */
 
-.post-header, .cover { padding-top: <?php echo $single; ?>px; }
+.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: <?php echo $single; ?>px; }
 
-.cover, .image-below-headline .post-header { padding-bottom: <?php echo $single; ?>px; }
+.image-below-headline .post-header.cover + .featured-image { padding-top: 0; }
+
+.cover { padding-bottom: <?php echo $single; ?>px; }
 
 .article .header-cover, .header .header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
@@ -113,7 +117,7 @@
 
 /* BOX STYLE */
 
-.box-style .entry { margin-bottom: <?php echo $single; ?>px; }
+.box-style .entry:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
 .box-style .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
@@ -158,8 +162,8 @@
 	.content .columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
-	.columns.slim .post-header { padding-top: <?php echo $half; ?>px; }
-	.columns.slim .cover, .columns.slim .image-below-headline .post-header { padding-bottom: <?php echo $half; ?>px; }
+	.columns.slim .post-header, .columns.slim .image-below-headline .post-header + .featured-image { padding-top: <?php echo $half; ?>px; }
+	.columns.slim .cover { padding-bottom: <?php echo $half; ?>px; }
 	.columns.wide .post-box .title {
 		font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 		line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;

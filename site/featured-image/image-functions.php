@@ -6,15 +6,10 @@
  * @since 4.0
  */
 
-function md_featured_image( $size = 'full', $args = null ) {
-	$position = isset( $args['position'] ) ? $args['position'] : md_featured_image_position();
-	$image_id = null;
+function md_featured_image() {
 	$wrap = 'wrap';
-
-	if ( isset( $args['image_id'] ) )
-		$image_id = esc_attr( $args['image_id'] );
-
 	$classes = array( 'featured-image' );
+	$position = md_featured_image_position();
 
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
@@ -58,21 +53,15 @@ function md_featured_image_after_headline() {
  * @since 4.1
  */
 
-function md_featured_image_position( $args = null ) {
-	if ( isset( $args['position'] ) )
-		return $args['position'];
+function md_featured_image_position( $context = 'post' ) {
+	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), 'right' );
 
-	if ( has_filter( 'md_filter_featured_image_position' ) )
-		return apply_filters( 'md_filter_featured_image_position', '' );
-
-	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-	$post_type = md_post_type_field( array( 'loop', 'featured_image' ) );
-
-	if ( $context == 'page' )
+	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
 			$position = md_term_meta( array( 'featured_image', 'position' ) );
 		else
 			$position = md_post_type_field( array( 'featured_image', 'position' ) );
+	}
 	else {
 		$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );
 

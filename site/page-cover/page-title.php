@@ -80,7 +80,7 @@ class md_page_title {
 		if ( $description )
 			$data['description'] = $description;
 
-		$data['image_position'] = md_featured_image_position( array( 'context' => 'page' ) );
+		$data['image_position'] = md_featured_image_position( 'page' );
 		$data['image_size'] = md_module( array( 'featured_image', 'image_width' ) );
 		$data['image_style'] = true;
 

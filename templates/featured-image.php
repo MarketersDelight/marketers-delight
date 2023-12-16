@@ -2,7 +2,7 @@
 
 	<?php if ( ! is_singular() ) : ?><a href="<?php the_permalink(); ?>"><?php endif; ?>
 
-		<?php the_post_thumbnail( $size ); ?>
+		<?php the_post_thumbnail(); ?>
 
 	<?php if ( ! is_singular() ) : ?></a><?php endif; ?>
 

@@ -21,6 +21,7 @@
 		11. Layout
 		12. Footer
 		13. Helpers
+		14. Stream
 */
 /*------------------------------*\
 	$ATTRIBUTES
@@ -911,7 +912,7 @@ select { max-width: 100%; }
 	border-radius: 5px;
 	width: 100%;
 }
-.loop .image-below-headline .featured-image img { border-radius: 0; }
+.image-below-headline .featured-image img { border-radius: 0; }
 .wp-caption {
 	height: auto;
 	max-width: 100%;
@@ -1422,9 +1423,11 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
+.entry, .post-box { position: relative; }
 /* POST HEADER */
-.post-header, .cover { padding-top: 29px; }
-.cover, .image-below-headline .post-header { padding-bottom: 29px; }
+.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: 29px; }
+.image-below-headline .post-header.cover + .featured-image { padding-top: 0; }
+.cover { padding-bottom: 29px; }
 .article .header-cover, .header .header-cover-full {
 	padding-bottom: 44px;
 	padding-top: 44px;
@@ -1495,7 +1498,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: rgba(0, 0, 0, 0.2); }
 }
 /* BOX STYLE */
-.box-style .entry { margin-bottom: 29px; }
+.box-style .entry:not(:last-child) { margin-bottom: 29px; }
 .box-style .post-box {
 	background-color: #FFFFFF;
 	border-radius: 5px;
@@ -1533,8 +1536,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.content .columns > .entry { padding-left: 29px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -15px; }
 	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: 15px; }
-	.columns.slim .post-header { padding-top: 15px; }
-	.columns.slim .cover, .columns.slim .image-below-headline .post-header { padding-bottom: 15px; }
+	.columns.slim .post-header, .columns.slim .image-below-headline .post-header + .featured-image { padding-top: 15px; }
+	.columns.slim .cover { padding-bottom: 15px; }
 	.columns.wide .post-box .title {
 		font-size: 31px;
 		line-height: 43px;
@@ -1949,5 +1952,81 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	/* SINGLE */
 	.mt-triple:not(:last-child) { margin-top: 29px; }
 	.mb-triple:not(:last-child), .mb-double:not(:last-child) { margin-bottom: 29px; }
+}
+/*------------------------------*\
+	$STREAM
+\*------------------------------*/
+/* TIMELINE */
+.timeline { position: relative; }
+.timeline:before {
+	background-color: #AE2525;
+	content: '';
+	display: block;
+	height: 100%;
+	margin-left: -2px;
+	position: absolute;
+		bottom: 0;
+		left: 50%;
+	width: 5px;
+}
+.thread:after, .timeline.loop .entry:first-child:before  {
+	background-color: #AE2525;
+	border-radius: 50%;
+	content: '';
+	display: block;
+	height: 20px;
+	margin-left: -10px;
+	position: absolute;
+		bottom: -10px;
+		left: 50%;
+	width: 20px;
+	z-index: 10;
+}
+.thread:after { top: -15px; }
+/* BUBBLE */
+.entry-bubble { text-align: center; }
+.bubble {
+	background-color: #FFFFFF;
+	border-radius: 5px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	display: inline-block;
+	font-weight: bold;
+	padding: 15px;
+}
+.thread-title i {
+	color: #AE2525;
+	font-size: 0.85em;
+	margin-right: 10px;
+}
+/* THREAD */
+.thread {
+	background-color: #F0F0F0;
+	padding-bottom: 29px;
+	padding-top: 29px;
+}
+.content-sidebar.box-style .thread {
+	margin-left: -4px;
+	margin-right: -4px;
+}
+.content-sidebar.box-style .thread {
+	padding-left: 4px;
+	padding-right: 4px;
+}
+.thread .thread-title {
+	margin-bottom: 29px;
+	text-align: center;
+}
+.thread-image { text-align: center; }
+@media all and (max-width: 900px) {
+	.loop-default.article .post-box {
+		margin-left: 0;
+		margin-right: 0;
+	}
+}
+@media all and (min-width: 700px) {
+	.thread-title {
+		font-size: 24px;
+		line-height: 1;
+	}
 }
 .md-icon-angle-down:before{content:'\e80e'}.md-icon-angle-left:before{content:'\e816'}.md-icon-angle-right:before{content:'\e80f'}.md-icon-angle-up:before{content:'\e817'}.md-icon-bell:before{content:'\f0f3'}.md-icon-bolt:before{content:'\e823'}.md-icon-book:before{content:'\e828'}.md-icon-cancel:before{content:'\e810'}.md-icon-cart:before{content:'\e825'}.md-icon-chat:before{content:'\e811'}.md-icon-clock:before{content:'\e812'}.md-icon-location:before{content:'\e947'}.md-icon-code:before{content:'\f121'}.md-icon-download:before{content:'\e822'}.md-icon-dribbble:before{content:'\e80c'}.md-icon-exclamation:before{content:'\f12a'}.md-icon-eye:before{content:'\e81e'}.md-icon-facebook:before,.md-icon-facebook-squared:before{content:'\f09a'}.md-icon-flickr:before{content:'\e80a'}.md-icon-github:before,.md-icon-github-squared:before{content:'\e802'}.md-icon-hand:before{content:'\f256'}.md-icon-heart:before{content:'\e821'}.md-icon-heart-empty:before{content:'\e801'}.md-icon-instagram:before{content:'\e805'}.md-icon-key:before{content:'\e82a'}.md-icon-like:before{content:'\e820'}.md-icon-url:before{content:'\e827'}.md-icon-linkedin:before,.md-icon-linkedin-squared:before{content:'\f0e1'}.md-icon-loading:before{content:'\e832'}.md-icon-mail-alt:before{content:'\e814'}.md-icon-medium:before{content:'\f23a'}.md-icon-menu:before{content:'\e815'}.md-icon-ok:before,.md-icon-ok-circled:before,.list-check li:before{content:'\e804'}.md-icon-pencil:before{content:'\e80d'}.md-icon-phone:before{content:'\e806'}.md-icon-pin:before{content:'\e803'}.md-icon-pinterest:before,.md-icon-pinterest-squared:before{content:'\f231'}.md-icon-plus:before{content:'\ea0a'}.md-icon-quote:before{content:'\f10e'}.md-icon-reply:before{content:'\f112'}.md-icon-rss:before{content:'\f09e'}.md-icon-search:before{content:'\e813'}.md-icon-share:before{content:'\e81c'}.md-icon-skype:before{content:'\f17e'}.md-icon-slack:before{content:'\e83c'}.md-icon-speakerdeck:before{content:'\e81f'}.md-icon-star:before{content:'\e81b'}.md-icon-tags:before{content:'\e829'}.md-icon-telegram:before{content:'\e839'}.md-icon-tiktok:before{content:'\e83a'}.md-icon-trophy:before{content:'\e824'}.md-icon-tumblr:before,.md-icon-tumblr-squared:before{content:'\e808'}.md-icon-twitter:before{content:'\e800'}.md-icon-user:before{content:'\e819'}.md-icon-user-add:before{content:'\e818'}.md-icon-vimeo:before,.md-icon-vimeo-squared:before{content:'\e809'}.md-icon-volume-up:before{content:'\e826'}.md-icon-whatsapp:before{content:'\f232'}.md-icon-wordpress:before{content:'\e80b'}.md-icon-youtube:before,.md-icon-youtube-play:before{content:'\e807'}

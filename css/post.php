@@ -79,7 +79,7 @@
 	width: 100%;
 }
 
-.loop .image-below-headline .featured-image img { border-radius: 0; }
+.image-below-headline .featured-image img { border-radius: 0; }
 
 .wp-caption {
 	height: auto;
