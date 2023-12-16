@@ -374,16 +374,12 @@ function md_get_byline() {
  */
 
 function md_get_byline_position() {
-	$byline_position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
+	$position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
 
-	if ( is_singular() ) {
-		$single_byline_position = md_post_type_field( array( 'single', 'byline_position' ) );
+	if ( is_singular() )
+		$position = md_post_type_field( array( 'single', 'byline_position' ), $position );
 
-		if ( $single_byline_position )
-			$byline_position = $single_byline_position;
-	}
-
-	return $byline_position;
+	return $position;
 }
 
 /**
@@ -399,9 +395,9 @@ function md_byline_items( $sort = null ) {
 		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
 		'author' => __( 'Remove <b>Author</b>', 'md' ),
 		'date' => __( 'Remove <b>Date</b>', 'md' ),
+		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
 		'category' => __( 'Add <b>Category</b>', 'md' ),
 		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
-		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
 		'edit' => __( 'Remove <b>Edit</b>', 'md' )
 	) );
 	$settings = md_get_byline();
@@ -428,11 +424,15 @@ function md_byline_items( $sort = null ) {
  */
 
 function md_byline_item( $item, $args = array() ) {
-	$post_type = get_post_type();
 	$post_id = get_the_ID();
+	$post_type = get_post_type();
 	$author_id = get_the_author_meta( 'ID' );
 	$byline = md_get_byline();
 	$template = locate_template( "templates/byline/$item.php" );
+	$settings = md_post_type_field( array( 'loop', 'byline_settings' ), 'before_headline' );
+
+	if ( is_singular() )
+		$settings = md_post_type_field( array( 'single', 'byline_settings' ) );
 
 	if ( isset( $args['post_id'] ) )
 		$post_id = $args['post_id'];

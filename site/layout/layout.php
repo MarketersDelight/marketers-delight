@@ -125,7 +125,7 @@ class md_layout extends md_api {
 	 */
 
 	public function admin_fields() { ?>
-		<div class="md-widget md-toggle open md-sep-small">
+		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template(); ?>

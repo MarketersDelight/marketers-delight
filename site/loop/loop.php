@@ -81,6 +81,10 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array( 'after_headline' )
 			),
+			'byline_settings' => array(
+				'type' => 'checkbox',
+				'options' => array( 'relative_date', 'author_first_name' )
+			),
 			'content' => array(
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )

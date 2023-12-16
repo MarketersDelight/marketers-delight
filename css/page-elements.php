@@ -101,11 +101,7 @@
 
 .byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
 
-.byline .badge {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 3; ?>px;
-	padding-bottom: 2px;
-	padding-top: 2px;
-}
+.byline .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
 .byline-comments-label { display: none; }
 

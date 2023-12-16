@@ -733,11 +733,7 @@ select { max-width: 100%; }
 	position: relative;
 }
 .byline-item:not(:last-child) { margin-right: 10px; }
-.byline .badge {
-	font-size: 13px;
-	padding-bottom: 2px;
-	padding-top: 2px;
-}
+.byline .badge { font-size: 15px; }
 .byline-comments-label { display: none; }
 .byline-date-modified { font-style: italic; }
 /* BREADCRUMBS */

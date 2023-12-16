@@ -1,10 +1,13 @@
 <?php if ( ! in_array( 'author', $byline ) || in_array( 'avatar', $byline ) ) :
-	$name = isset( $args['name'] ) ? $args['name'] : 'display_name';
+	if ( ! empty( $settings['author_first_name'] ) )
+		$name = 'first_name';
+	else
+		$name = isset( $args['name'] ) ? $args['name'] : 'display_name';
 ?>
 
 	<span class="byline-author byline-item">
 
-		<?php if ( in_array( 'avatar', $byline ) || ( isset( $args['avatar'] ) && $args['avatar'] != false ) ) {
+		<?php if ( in_array( 'avatar', $byline ) || ( isset( $args['avatar'] ) && $args['avatar'] !== false ) ) {
 			$avatar_size = isset( $args['avatar_size'] ) ? $args['avatar_size'] : 30;
 			echo get_avatar( $author_id, $avatar_size );
 		} ?>

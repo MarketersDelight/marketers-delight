@@ -21,13 +21,22 @@
 			) ); ?>
 		</div>
 
-		<div class="md-sep-small">
+		<div class="md-sep-micro">
 			<?php $this->fields->field( 'byline', array(
 				'type' => 'checkbox',
 				'multi' => true,
 				'options' => md_byline_items()
 			) ); ?>
 		</div>
+
+		<?php $this->fields->field( 'byline_settings', array(
+			'type' => 'checkbox',
+			'inline' => true,
+			'options' => array(
+				'relative_date' => __( 'Show relative dates', 'md' ),
+				'author_first_name' => __( 'Show author first name', 'md' )
+			)
+		) ); ?>
 
 		<hr class="md-sep-small" />
 
