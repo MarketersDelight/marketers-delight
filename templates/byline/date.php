@@ -13,21 +13,21 @@
 		$date = get_the_time( get_option( 'date_format' ), $post_id );
 ?>
 
-	<span class="byline-date byline-item">
+<span class="byline-date byline-item">
 
-		<?php if ( ! isset( $args['hide_icon'] ) ) : ?>
-			<?php echo md_icon( 'clock' ); ?>
-		<?php endif; ?>
+	<?php if ( ! isset( $args['hide_icon'] ) ) : ?>
+		<?php echo md_icon( 'clock' ); ?>
+	<?php endif; ?>
 
-		<?php if ( isset( $args['prefix'] ) ) : ?>
-			<?php echo md_text_field( $args['prefix'] ); ?>
-		<?php endif; ?>
+	<?php if ( isset( $args['prefix'] ) ) : ?>
+		<?php echo md_text_field( $args['prefix'] ); ?>
+	<?php endif; ?>
 
-		<time datetime="<?php echo get_the_date( 'c', $post_id ); ?>">
-			<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
-		</time>
+	<time datetime="<?php echo get_the_date( 'c', $post_id ); ?>">
+		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
+	</time>
 
-	</span>
+</span>
 
 <?php endif; ?>
 

@@ -1962,11 +1962,15 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	border: 1px solid #CCCCCC;
 	padding: 15px;
 }
+.content-sidebar.box-style .embed { margin: 15px; }
+.content-sidebar.box-style .the-content + .embed { margin-top: 0; }
 .embed-wrap {
 	align-items: center;
 	display: flex;
 	margin-bottom: 15px;
 }
+.embed-header { flex: 1; }
+.embed-image + .embed-header { padding-left: 15px; }
 .embed-image { flex-basis: 75px; }
 .embed .embed-title {
 	font-size: 24px;
@@ -1977,10 +1981,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	color: #1E1E1E;
 	text-decoration: none;
 }
-.embed-header { flex: 1; }
-.embed-image + .embed-header { padding-left: 15px; }
-.content-sidebar.box-style .embed { margin: 15px; }
-.content-sidebar.box-style .the-content + .embed { margin-top: 0; }
 /* BUBBLE */
 .entry-bubble { text-align: center; }
 .bubble {
@@ -1999,16 +1999,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /* THREAD */
 .thread {
 	background-color: #F0F0F0;
-	padding-bottom: 29px;
-	padding-top: 29px;
-}
-.content-sidebar.box-style .thread {
-	margin-left: -4px;
-	margin-right: -4px;
-}
-.content-sidebar.box-style .thread {
-	padding-left: 4px;
-	padding-right: 4px;
+	padding: 29px 15px;
 }
 .thread .thread-title {
 	margin-bottom: 29px;
@@ -2046,8 +2037,18 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 @media all and (min-width: 700px) {
 	.embed { padding: 29px; }
 }
+@media all and (min-width: 900px) {
+		.content-sidebar.box-style .thread {
+		margin-left: -4px;
+		margin-right: -4px;
+	}
+	.content-sidebar.box-style .thread {
+		padding-left: 4px;
+		padding-right: 4px;
+	}
+}
 @media all and (max-width: 900px) {
-	.loop-default.article .stream .post-box {
+	.stream .thread .post-box {
 		margin-left: 0;
 		margin-right: 0;
 	}

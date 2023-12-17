@@ -334,10 +334,11 @@ function md_has_headline_cover() {
  */
 
 function md_has_byline() {
+	$post_type = get_post_type();
 	$add_byline = md_post_meta( array( 'layout', 'content', 'add_byline' ) );
 	$remove_byline = md_post_meta( array( 'layout', 'content', 'byline' ) );
 
-	if ( ( get_post_type() !== 'page' && ! is_404() && ! $remove_byline ) || ( is_page() && $add_byline ) )
+	if ( ( $post_type !== 'page' && ! is_404() && ! $remove_byline ) || ( $post_type == 'page' && $add_byline ) )
 		return true;
 }
 
@@ -350,36 +351,13 @@ function md_has_byline() {
 function md_get_byline() {
 	$byline = md_post_type_field( array( 'loop', 'byline' ), array() );
 
-	if ( is_singular() ) {
-		$single_byline = md_post_type_field( array( 'single', 'byline' ), array() );
+	if ( is_singular() )
+		$byline = md_post_type_field( array( 'single', 'byline' ), $byline );
 
-		if ( ! empty( $single_byline ) )
-			$byline = $single_byline;
-	}
-
-	if ( is_category() || is_tax() ) {
-		$category_byline = md_term_meta( array( 'loop', 'byline' ), null, array() );
-
-		if ( ! empty( $category_byline ) )
-			$byline = $category_byline;
-	}
+	if ( is_category() || is_tax() )
+		$byline = md_term_meta( array( 'loop', 'byline' ), null, $byline );
 
 	return array_keys( $byline );
-}
-
-/**
- * Get the general position of the current Page/Item byline.
- *
- * @since 5.6
- */
-
-function md_get_byline_position() {
-	$position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
-
-	if ( is_singular() )
-		$position = md_post_type_field( array( 'single', 'byline_position' ), $position );
-
-	return $position;
 }
 
 /**
@@ -390,7 +368,7 @@ function md_get_byline_position() {
  */
 
 function md_byline_items( $sort = null ) {
-	$items = apply_filters( 'md_filter_byline_items', array(
+	$byline = apply_filters( 'md_filter_byline_items', array(
 		'badge' => __( 'Add <b>New!</b> Badge', 'md' ),
 		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
 		'author' => __( 'Remove <b>Author</b>', 'md' ),
@@ -400,8 +378,6 @@ function md_byline_items( $sort = null ) {
 		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
 		'edit' => __( 'Remove <b>Edit</b>', 'md' )
 	) );
-	$settings = md_get_byline();
-	$byline = array_diff( $items, array_keys( $settings ) );
 
 	if ( isset( $sort ) ) {
 		$data = array();
@@ -428,11 +404,10 @@ function md_byline_item( $item, $args = array() ) {
 	$post_type = get_post_type();
 	$author_id = get_the_author_meta( 'ID' );
 	$byline = md_get_byline();
-	$template = locate_template( "templates/byline/$item.php" );
 	$settings = md_post_type_field( array( 'loop', 'byline_settings' ), 'before_headline' );
 
 	if ( is_singular() )
-		$settings = md_post_type_field( array( 'single', 'byline_settings' ) );
+		$settings = md_post_type_field( array( 'single', 'byline_settings' ), $settings );
 
 	if ( isset( $args['post_id'] ) )
 		$post_id = $args['post_id'];
@@ -440,21 +415,8 @@ function md_byline_item( $item, $args = array() ) {
 	if ( isset( $args['author_id'] ) )
 		$author_id = $args['author_id'];
 
-	if ( $template )
+	if ( locate_template( "templates/byline/$item.php" ) )
 		include( md_template( "byline/$item", true ) );
-}
-
-/**
- * A list of classes to add to the sidebar.
- *
- * @since 4.5
- */
-
-function md_byline_classes() {
-	$classes[] = 'byline';
-	$classes = apply_filters( 'md_filter_byline_classes', $classes );
-
-	return join( ' ', $classes );
 }
 
 /**
@@ -463,12 +425,28 @@ function md_byline_classes() {
  * @since 4.0
  */
 
-function md_byline( $args = array() ) {
-	$classes = md_byline_classes();
-	$byline_items = md_byline_items();
+if ( ! function_exists( 'md_byline' ) ) :
 
-	include( md_template( 'byline/byline', true ) );
+function md_byline() {
+	$post_type = md_get_post_type();
+	$byline_items = array_diff( md_byline_items(), array_keys( md_get_byline() ) );
+
+	echo '<div class="byline">';
+
+	md_hook_byline_top();
+
+	if ( has_action( "md_hook_{$post_type}_byline" ) )
+		do_action( "md_hook_{$post_type}_byline", $byline_items );
+	else
+		foreach ( $byline_items as $item => $label )
+			md_byline_item( $item );
+
+	md_hook_byline_bottom();
+
+	echo '</div>';
 }
+
+endif;
 
 /**
  * Show full content or excerpt of any given page.

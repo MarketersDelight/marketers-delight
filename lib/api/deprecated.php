@@ -25,6 +25,18 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * A list of classes to add to the sidebar.
+ *
+ * @since 4.5
+ * @deprecated 5.6
+ */
+function md_byline_classes() {
+	$classes[] = 'byline';
+	$classes = apply_filters( 'md_filter_byline_classes', $classes );
+	return join( ' ', $classes );
+}
+
+/**
  * Outputs main sidebar or custom sidebar.
  *
  * @since 4.1

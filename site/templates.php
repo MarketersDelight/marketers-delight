@@ -29,7 +29,10 @@ function md_templates() {
 
 	if ( ! is_404() && md_has_byline() ) {
 		$hook_byline = 'md_hook_post_header_top';
-		$byline_position = md_get_byline_position();
+		$byline_position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
+
+		if ( is_singular() )
+			$byline_position = md_post_type_field( array( 'single', 'byline_position' ), $byline_position );
 
 		if ( $byline_position == 'after_headline' )
 			$hook_byline = 'md_hook_post_header_bottom';
