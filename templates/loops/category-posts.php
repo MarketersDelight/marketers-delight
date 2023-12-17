@@ -30,5 +30,4 @@ foreach ( $categories as $category ) {
 	}
 
 	wp_reset_query();
-
 }

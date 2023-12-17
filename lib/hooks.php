@@ -84,12 +84,20 @@ function md_hook_after_content() {
 	do_action( 'md_hook_after_content', 'after_content' );
 }
 
+function md_hook_loop_top() {
+	do_action( 'md_hook_loop_top' );
+}
+
 function md_hook_content_item() {
 	do_action( 'md_hook_content_item', 'content' );
 }
 
 function md_hook_before_the_content() {
 	do_action( 'md_hook_before_the_content', '' );
+}
+
+function md_hook_after_the_content() {
+	do_action( 'md_hook_after_the_content', '' );
 }
 
 function md_hook_before_headline() {

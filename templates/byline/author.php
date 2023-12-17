@@ -1,8 +1,10 @@
 <?php if ( ! in_array( 'author', $byline ) || in_array( 'avatar', $byline ) ) :
-	if ( ! empty( $settings['author_first_name'] ) )
-		$name = 'first_name';
-	else
-		$name = isset( $args['name'] ) ? $args['name'] : 'display_name';
+	$author_name = get_the_author_meta( 'display_name', $author_id );
+
+	if ( ! empty( $settings['author_first_name'] ) ) {
+		$first_name = get_the_author_meta( 'first_name', $author_id );
+		$author_name = ! empty( $first_name ) ? $first_name : $author_name;
+	}
 ?>
 
 <span class="byline-author byline-item">
@@ -19,7 +21,7 @@
 		<?php endif; ?>
 
 		<a href="<?php echo get_author_posts_url( $author_id ); ?>" class="author-link">
-			<?php echo get_the_author_meta( $name, $author_id ); ?>
+			<?php echo esc_html( $author_name ); ?>
 		</a>
 
 		<?php if ( ! empty( $args['hide_links'] ) ) : ?>

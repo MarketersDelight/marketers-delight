@@ -736,6 +736,12 @@ select { max-width: 100%; }
 .byline .badge { font-size: 15px; }
 .byline-comments-label { display: none; }
 .byline-date-modified { font-style: italic; }
+.byline-sticky {
+	color: #22a340;
+	display: block;
+	font-weight: bold;
+	margin-bottom: 15px;
+}
 /* BREADCRUMBS */
 .breadcrumbs {
 	font-size: 16px;
@@ -1957,6 +1963,13 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	border-bottom: 1px solid #CCCCCC;
 	padding-bottom: 15px;
 }
+.stream-icon {
+	color: #22a340;
+	font-size: 18px;
+	margin-right: 5px;
+}
+.stream_activity .stream-icon { color: #ff6000; }
+.thread-link i { margin-left: 10px; }
 /* EMBED */
 .embed {
 	border: 1px solid #CCCCCC;

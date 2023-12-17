@@ -66,7 +66,7 @@ function md_get_loop() {
  * @since 4.1
  */
 
-function md_loop() {
+function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
 	$post_type = md_get_post_type();
@@ -91,7 +91,9 @@ function md_loop() {
 	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 
-	if ( $category_posts ) {
+	if ( isset( $args['sticky'] ) )
+		include( md_template( 'loops/the-post', true ) );
+	elseif ( $category_posts ) {
 		$taxonomies = get_object_taxonomies( $post_type );
 		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 		$categories = get_terms( $taxonomy );
@@ -103,6 +105,8 @@ function md_loop() {
 	}
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
+
+		md_hook_loop_top();
 
 		while ( have_posts() ) {
 			the_post();
@@ -427,7 +431,7 @@ function md_byline_item( $item, $args = array() ) {
 
 if ( ! function_exists( 'md_byline' ) ) :
 
-function md_byline() {
+function md_byline( $args = array() ) {
 	$post_type = md_get_post_type();
 	$byline_items = array_diff( md_byline_items(), array_keys( md_get_byline() ) );
 
@@ -435,7 +439,12 @@ function md_byline() {
 
 	md_hook_byline_top();
 
-	if ( has_action( "md_hook_{$post_type}_byline" ) )
+	if ( is_sticky() ) {
+		$pin = md_icon( 'pin' );
+		echo '<span class="byline-sticky byline-item">' . "$pin " . __( 'Pinned', 'md' ) . '</span>';
+	}
+
+	if ( has_action( "md_hook_{$post_type}_byline" ) && ! isset( $args['ignore_hook'] ) )
 		do_action( "md_hook_{$post_type}_byline", $byline_items );
 	else
 		foreach ( $byline_items as $item => $label )
@@ -466,6 +475,8 @@ function md_the_content( $content ) {
 		the_content( $read_more );
 		wp_link_pages();
 	}
+
+	md_hook_after_the_content();
 }
 
 /**

@@ -107,6 +107,13 @@
 
 .byline-date-modified { font-style: italic; }
 
+.byline-sticky {
+	color: #22a340;
+	display: block;
+	font-weight: <?php echo $bold; ?>;
+	margin-bottom: <?php echo $half; ?>px;
+}
+
 /* BREADCRUMBS */
 
 .breadcrumbs {
