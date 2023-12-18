@@ -1,30 +1,37 @@
-<div class="md-sep-small">
-	<?php $this->fields->field( 'archives', array(
-		'type' => 'select',
-		'label' => __( 'Select Loop', 'md' ),
-		'empty_label' => __( 'Use default loop', 'md' ),
-		'options' => $loops_options
-	) ); ?>
+<div class="columns-25-75">
+
+	<div class="col col1 md-sep-small">
+		<?php $this->fields->field( 'archives', array(
+			'type' => 'select',
+			'label' => __( 'Select Loop', 'md' ),
+			'empty_label' => __( 'Use default loop', 'md' ),
+			'options' => $loops_options
+		) ); ?>
+	</div>
+
+	<?php if ( $screen->base !== 'term' ) :
+		$category_posts = $this->fields->module( 'category_posts' );
+	?>
+
+	<div class="col col2 md-sep-small field-no-label">
+		<?php $this->fields->field( 'category_posts', array(
+			'type' => 'checkbox',
+			'options' => array(
+				'enable' => __( 'Show posts by category', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<?php endif; ?>
+
 </div>
 
-<?php if ( $screen->base !== 'term' ) :
-	$category_posts = $this->fields->module( 'category_posts' );
-?>
-
-<div class="md-sep-small">
-	<?php $this->fields->field( 'category_posts', array(
-		'type' => 'checkbox',
-		'options' => array(
-			'enable' => __( 'Show posts by category', 'md' )
-		)
-	) ); ?>
-</div>
+<!--
 
 <div id="loop_category_posts" style="display: <?php echo $category_posts ? 'block' : 'none'; ?>">
 
 </div>
-
-<?php endif; ?>
+-->
 
 <hr class="md-sep-small" />
 
@@ -53,32 +60,38 @@
 
 <h4><?php echo __( 'Byline', 'md' ); ?></h4>
 
-<div class="md-sep-small">
-	<?php $this->fields->field( 'byline_position', array(
-		'type' => 'select',
-		'empty_label' => __( 'Show before headline', 'md' ),
-		'options' => array(
-			'after_headline' => __( 'Show after headline', 'md' )
-		)
-	) ); ?>
+<div class="columns-2 columns-25-75 columns-single md-sep-micro">
+
+	<div class="col col1 md-sep-micro">
+		<?php $this->fields->field( 'byline_position', array(
+			'type' => 'select',
+			'empty_label' => __( 'Show before headline', 'md' ),
+			'options' => array(
+				'after_headline' => __( 'Show after headline', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<div class="col col2">
+		<?php $this->fields->field( 'byline_settings', array(
+			'type' => 'checkbox',
+			'inline' => true,
+			'options' => array(
+				'relative_date' => __( 'Show relative dates', 'md' ),
+				'author_first_name' => __( 'Show author first name', 'md' )
+			)
+		) ); ?>
+	</div>
+
 </div>
 
-<div class="md-sep-micro">
+<div class="md-sep-small">
 	<?php $this->fields->field( 'byline', array(
 		'type' => 'checkbox',
 		'multi' => true,
 		'options' => md_byline_items()
 	) ); ?>
 </div>
-
-<?php $this->fields->field( 'byline_settings', array(
-	'type' => 'checkbox',
-	'inline' => true,
-	'options' => array(
-		'relative_date' => __( 'Show relative dates', 'md' ),
-		'author_first_name' => __( 'Show author first name', 'md' )
-	)
-) ); ?>
 
 <hr class="md-sep-small" />
 
@@ -165,6 +178,8 @@
 
 </div>
 
+<?php if ( md_has( 'optins' ) ) : ?>
+
 <hr class="md-sep-small" />
 
 <h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
@@ -190,3 +205,5 @@
 	</div>
 
 </div>
+
+<?php endif; ?>
