@@ -287,7 +287,7 @@ class md_layout extends md_api {
 						}
 					<?php endif; ?>
 				<?php else : ?>
-					document.getElementById( '<?php echo $this->_prefix; ?>_sidebar_global' ).onchange = function() {
+					document.getElementById( '<?php echo $prefix; ?>_sidebar_global' ).onchange = function() {
 						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
 					}
 				<?php endif; ?>

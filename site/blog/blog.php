@@ -28,6 +28,21 @@ class md_post extends md_api {
 	}
 
 	/**
+	 * A simple way to override the post count loop for archive.
+	 *
+	 * @since 5.6
+	 */
+
+	public function parse_query( $wp ) {
+		if ( ! is_admin() && $wp->is_main_query() && ( $wp->is_home || $wp->is_category ) ) {
+			$posts_per_page = get_option( 'posts_per_page' );
+			$wp->query_vars['posts_per_page'] = md_post_type_field( array( 'loop', 'posts_per_page' ), $posts_per_page, 'post' );
+		}
+
+		return $wp;
+	}
+
+	/**
 	 * Pull admin settings from various parts of MD for use
 	 * on this settings page.
 	 *

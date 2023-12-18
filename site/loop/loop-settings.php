@@ -35,13 +35,22 @@
 
 <hr class="md-sep-small" />
 
-<div class="columns-2 columns-single mb-sep-small">
+<div class="columns-3 columns-single mb-sep-small">
+
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'posts_per_page', array(
+			'type' => 'number',
+			'label' => __( 'Posts Per Page', 'md' ),
+			'placeholder' => get_option( 'posts_per_page' ),
+			'description' => __( 'Number of posts to display per page.', 'md' )
+		) ); ?>
+	</div>
 
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'featured', array(
 			'type' => 'number',
 			'label' => __( 'Featured Posts', 'md' ),
-			'description' => __( 'Enter the number of posts to feature before breaking into the standard loop template.', 'md' )
+			'description' => __( 'Number of posts to feature per page.', 'md' )
 		) ); ?>
 	</div>
 
@@ -50,7 +59,7 @@
 			'type' => 'number',
 			'label' => __( 'Columns', 'md' ),
 			'placeholder' => '1',
-			'description' => __( 'Enter the number of columns to list standard posts.', 'md' )
+			'description' => __( 'Break posts into a number of columns.', 'md' )
 		) ); ?>
 	</div>
 
