@@ -21,7 +21,8 @@
 		11. Layout
 		12. Footer
 		13. Helpers
-		14. Stream
+		14. Share
+		15. Stream
 */
 /*------------------------------*\
 	$ATTRIBUTES
@@ -1427,9 +1428,9 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 \*------------------------------*/
 .entry, .post-box { position: relative; }
 /* POST HEADER */
-.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: 29px; }
+.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: 15px; }
 .image-below-headline .post-header.cover + .featured-image { padding-top: 0; }
-.cover { padding-bottom: 29px; }
+.cover { padding-bottom: 15px; }
 .article .header-cover, .header .header-cover-full {
 	padding-bottom: 44px;
 	padding-top: 44px;
@@ -1538,6 +1539,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.content .columns > .entry { padding-left: 29px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -15px; }
 	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: 15px; }
+	.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: 29px; }
+	.cover { padding-bottom: 29px; }
 	.columns.slim .post-header, .columns.slim .image-below-headline .post-header + .featured-image { padding-top: 15px; }
 	.columns.slim .cover { padding-bottom: 15px; }
 	.columns.wide .post-box .title {
@@ -1954,6 +1957,67 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	/* SINGLE */
 	.mt-triple:not(:last-child) { margin-top: 29px; }
 	.mb-triple:not(:last-child), .mb-double:not(:last-child) { margin-bottom: 29px; }
+}
+/*------------------------------*\
+	$SHARE
+\*------------------------------*/
+.share, .share-button, .share-bubble {
+	align-items: center;
+	display: flex;
+}
+.share { position: relative; }
+.cover .share a { color: #fff; }
+.share .share-button { text-decoration: none; }
+.share .share-button:not(:first-child) { margin-left: 15px; }
+.share-button:hover .share-bubble { transform: scale(1.1); }
+.share-button.liked:hover .share-bubble { transform: none; }
+.share-bubble {
+	background-color: #FFFFFF;
+	border-radius: 50%;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+	height: 34px;
+	justify-content: center;
+	transition: 0.3s;
+	width: 34px;
+}
+.share-icon {
+	font-size: 20px;
+	line-height: 1;
+}
+.share-text {
+	font-size: 20px;
+	margin-right: 10px;
+}
+/* LIKE */
+.share-button.liked {
+	color: #E60177 !important;
+	cursor: default;
+	font-weight: bold;
+}
+.share-button.liked .md-icon-heart-empty:before { content: '\e821'; }
+.share .share-button.share-comments:nth-last-child(2),
+.share .share-button.share-like:nth-last-child(2) { margin-left: auto; }
+/* AREAS */
+.cover .share:not(:last-child) { margin-bottom: 29px; }
+.header .share:not(:last-child) { margin-bottom: 44px; }
+.content-sidebar.box-style .share {
+	padding-left: 15px;
+	padding-right: 15px;
+	padding-top: 15px;
+}
+/* STYLES */
+@media all and (min-width: 900px) {
+	.share-bubble {
+		height: 44px;
+		width: 44px;
+	}
+	.share-icon { font-size: 24px; }
+	.share-text { font-size: 22px; }
+	.content-sidebar.box-style .share {
+		padding-left: 44px;
+		padding-right: 44px;
+		padding-top: 29px;
+	}
 }
 /*------------------------------*\
 	$STREAM

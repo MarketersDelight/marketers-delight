@@ -142,7 +142,7 @@ class md_loop extends md_api {
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 	?>
-		<div class="md-widget md-toggle md-sep-small open">
+		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php include( 'loop-settings.php' ); ?>
