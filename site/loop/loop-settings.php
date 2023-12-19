@@ -21,17 +21,17 @@
 			)
 		) ); ?>
 	</div>
-
-	<?php endif; ?>
-
-</div>
-
 <!--
 
 <div id="loop_category_posts" style="display: <?php echo $category_posts ? 'block' : 'none'; ?>">
 
 </div>
 -->
+	<?php endif; ?>
+
+</div>
+
+
 
 <hr class="md-sep-small" />
 

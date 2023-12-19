@@ -124,10 +124,6 @@ function md_hook_after_headline_area() {
 	do_action( 'md_hook_after_headline_area', 'after_headline_area' );
 }
 
-function md_hook_post_controls() {
-	do_action( 'md_hook_post_controls' );
-}
-
 function md_hook_byline_top() {
 	do_action( 'md_hook_byline_top' );
 }

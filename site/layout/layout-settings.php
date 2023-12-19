@@ -67,7 +67,7 @@
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
-		<?php if ( $is_admin ) : ?>
+		<?php if ( ! $is_post ) : ?>
 			<?php $this->fields->field( 'content', array(
 				'type' => 'checkbox',
 				'options' => array(

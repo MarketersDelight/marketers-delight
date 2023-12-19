@@ -54,13 +54,14 @@ function md_featured_image_after_headline() {
  */
 
 function md_featured_image_position( $context = 'post' ) {
-	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), 'right' );
+	$default = 'right';
+	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), $default );
 
 	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
-			$position = md_term_meta( array( 'featured_image', 'position' ) );
+			$position = md_term_meta( array( 'featured_image', 'position' ), null, $default );
 		else
-			$position = md_post_type_field( array( 'featured_image', 'position' ) );
+			$position = md_post_type_field( array( 'featured_image', 'position' ), $default );
 	}
 	else {
 		$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );

@@ -258,7 +258,7 @@ function md_get_sidebar_id() {
 	$default = 'sidebar-main';
 	$sidebars = md_get_sidebars();
 
-	if ( is_home() || is_post_type_archive() )
+	if ( is_home() || is_post_type_archive() || is_author() )
 		$sidebar = md_post_type_field( array( 'layout', 'sidebar_archive' ), $default );
 	elseif ( is_category() || is_tax() ) {
 		$global = md_post_type_field( array( 'layout', 'sidebar_term' ), $default );
@@ -268,7 +268,7 @@ function md_get_sidebar_id() {
 		$global = md_post_type_field( array( 'layout', 'sidebar_single' ), $default );
 		$single = md_post_meta( array( 'layout', 'custom_sidebar' ) );
 
-		if ( md_has_sidebar() && ! $single ) {
+		if ( md_has_sidebar() && ! $single ) { // Must be a better way...
 			$taxonomies = get_taxonomies( array( 'public' => true ) );
 			$terms = wp_get_post_terms( get_queried_object_id(), $taxonomies );
 

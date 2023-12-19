@@ -85,7 +85,8 @@ class md_page_title {
 		$data['image_style'] = true;
 
 		if ( is_author() ) {
-			$data['image_src'] = get_avatar( get_the_author_meta( 'ID' ), 250 );
+			$avatar_size = md_has_sidebar() ? 200 : 250;
+			$data['image_src'] = get_avatar( get_the_author_meta( 'ID' ), $avatar_size );
 			$data['image_style'] = false;
 		}
 		else
@@ -103,6 +104,8 @@ class md_page_title {
 
 			$data['classes'][] = 'image-' . str_replace( '_', '-', $data['image_position'] );
 		}
+		else
+			$data['classes'][] = 'layout-standard';
 
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 

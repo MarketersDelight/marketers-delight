@@ -25,6 +25,15 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * A list of post types to show Share buttons on.
+ * @since 5.0
+ * @deprecated 5.6
+ */
+function md_share_post_types() {
+	return array_merge( apply_filters( 'md_share_show_on', array() ), md_post_type_meta() );
+}
+
+/**
  * A list of classes to add to the sidebar.
  *
  * @since 4.5

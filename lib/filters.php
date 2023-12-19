@@ -104,16 +104,6 @@ function md_filter_popups() {
 }
 
 /**
- * A list of post types to show Share buttons on.
- *
- * @since 5.0
- */
-
-function md_share_post_types() {
-	return array_merge( apply_filters( 'md_share_show_on', array() ), md_post_type_meta() );
-}
-
-/**
  * Filter comments classes.
  *
  * @since 5.0.9

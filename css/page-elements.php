@@ -7,7 +7,10 @@
 .layout-slim.outer .title-wrap:not(:last-child),
 .layout-slim .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.page-header, .page-header .inner,
+.post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+
+.page-header,
+.page-header .inner,
 .layout-slim .title-wrap {
 	align-items: center;
 	display: flex;
@@ -25,8 +28,14 @@
 .image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
-	.page-header.outer { text-align: center; }
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
+	.layout-standard.outer, .layout-slim.outer { text-align: center; }
+	.layout-standard.outer .description,
+	.layout-standard.outer .page-cta {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $content_width; ?>px;
+	}
 	.layout-columns.inline .description:not(:last-child) { margin-bottom: 0; }
 	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
 	.image-left .page-image { margin-right: <?php echo $single; ?>px; }
@@ -38,16 +47,18 @@
 		display: block;
 		width: 100%;
 	}
+	.layout-standard.outer .title-wrap,
 	.layout-columns.outer .title-wrap,
-	.layout-slim.outer .title,
-	.layout-slim.outer .description,
-	.layout-slim.outer .page-cta {
+	.outer .title,
+	.outer .description,
+	.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
 	.layout-columns.outer .title-wrap { flex: 1; }
-	.outer .description, .layout-slim.outer .page-cta {
+	.layout-slim.outer .description,
+	.layout-slim.outer .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
@@ -71,6 +82,20 @@
 	.title-wrap:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
+
+/* BREADCRUMBS */
+
+.breadcrumbs {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	margin-bottom: <?php echo $half; ?>px
+}
+
+.breadcrumbs a { text-decoration: underline; }
+
+.breadcrumbs a:hover { text-decoration: none; }
+
+.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
 /* BYLINE */
 
@@ -113,20 +138,6 @@
 	font-weight: <?php echo $bold; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 }
-
-/* BREADCRUMBS */
-
-.breadcrumbs {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	margin-bottom: <?php echo $half; ?>px
-}
-
-.breadcrumbs a { text-decoration: underline; }
-
-.breadcrumbs a:hover { text-decoration: none; }
-
-.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
 /* AUTHOR BOX */
 
