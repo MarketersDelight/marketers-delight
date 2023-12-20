@@ -297,14 +297,17 @@ function md_get_sidebar_id() {
  * Checks if breadcrumbs are enabled.
  *
  * @since 5.2.2
- * @changed 5.6, now returns breadcrumbs $position
  */
 
 function md_has_breadcrumbs() {
-	if ( md_meta( array( 'layout', 'breadcrumbs', 'remove' ), get_queried_object_id() ) )
+	$global_add = md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) );
+	$single_add = md_meta( array( 'layout', 'breadcrumbs', 'add' ) );
+	$single_remove = md_meta( array( 'layout', 'breadcrumbs', 'remove' ) );
+
+	if ( $single_remove )
 		return;
 
-	if ( ! md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
+	if ( ! $global_add && ! $single_add )
 		return;
 
 	if ( is_front_page() || ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )

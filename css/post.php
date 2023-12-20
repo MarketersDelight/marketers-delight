@@ -31,12 +31,12 @@
 }
 
 @media all and (min-width: 900px) {
-	.full .alignfull, .full .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
-	.full .alignfull, .full .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
-	.full .alignwide, .content-sidebar .alignfull, .content-sidebar .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
-	.full .alignwide, .content-sidebar .alignfull, .content-sidebar .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
-	.content-sidebar .alignwide, .content-sidebar .alignright.wrap-small { margin-right: -<?php echo $half; ?>px; }
-	.content-sidebar .alignwide, .content-sidebar .alignleft.wrap-small { margin-left: -<?php echo $half; ?>px; }
+	.article.full .alignfull, .article.full .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
+	.article.full .alignfull, .article.full .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
+	.article.full .alignwide, .alignfull, .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
+	.article.full .alignwide, .alignfull, .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
+	.alignwide, .alignright.wrap-small { margin-right: -<?php echo $half; ?>px; }
+	.alignwide, .alignleft.wrap-small { margin-left: -<?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
@@ -54,7 +54,14 @@
 		margin-left: <?php echo $half; ?>px;
 	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $sidebar_width; ?>px; }
-	.columns .featured-image.alignleft, .columns .featured-image.alignright { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
+	.columns .featured-image.alignleft {
+		margin-left: -<?php echo $half; ?>px;
+		max-width: <?php echo round( $sidebar_width / 2 ); ?>px;
+	}
+	.columns .featured-image.alignright {
+		margin-right: -<?php echo $half; ?>px;
+		max-width: <?php echo round( $sidebar_width / 2 ); ?>px;
+	}
 }
 
 @media all and (max-width: 700px) {

@@ -257,6 +257,20 @@ class md_css {
 
 		$style_guide = $this->style_guide();
 
+		$cover_image_id = md_setting( array( 'colors', 'header', 'cover_image', 'id' ) );
+		$cover_colors = array(
+			'default' => array(
+				'class' => '',
+				'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
+				'border' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+			),
+			'alt' => array(
+				'class' => '.alt',
+				'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
+				'border' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+			)
+		);
+
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
 			if ( ! file_exists( $path ) ) continue;
 

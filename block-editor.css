@@ -122,10 +122,22 @@
 		display: flex;
 		flex-flow: wrap;
 	}
-	.f2 { flex-basis: 50%; }
-	.f3 { flex-basis: 33.3333333333%; }
-	.f4 { flex-basis: 2%; }
-	.f5 { flex-basis: 20%; }
+	.f2 {
+		flex-basis: 50%;
+		max-width: 50%;
+	}
+	.f3 {
+		flex-basis: 33.3333333333%;
+		max-width: 33.3333333333%;
+	}
+	.f4 {
+		flex-basis: 25%;
+		max-width: 25%;
+	}
+	.f5 {
+		flex-basis: 20%;
+		max-width: 20%;
+	}
 }
 @media all and (min-width: 700px) {
 	.col { float: left; }

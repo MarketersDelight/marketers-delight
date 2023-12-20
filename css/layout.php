@@ -4,13 +4,15 @@
 	$LAYOUT
 \*------------------------------*/
 
+/* POST STRUCTURE */
+
 .entry, .post-box { position: relative; }
 
-/* POST HEADER */
+.post-header, .cover { padding-top: <?php echo $half; ?>px; }
 
-.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: <?php echo $half; ?>px; }
+.post-header:not(.cover) + .featured-image { padding-top: <?php echo $single; ?>px; }
 
-.image-below-headline .post-header.cover + .featured-image { padding-top: 0; }
+.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
 
 .cover { padding-bottom: <?php echo $half; ?>px; }
 
@@ -20,8 +22,8 @@
 }
 
 .cover,
-.box-style .post-box .post-header,
-.box-style .the-content {
+.post-box .post-header,
+.the-content {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
@@ -38,43 +40,20 @@
 }
 
 @media all and (min-width: 900px) {
-	.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.cover,
-	.full.box-style .post-box .post-header,
-	.content-sidebar.article.box-style .post-header,
-	.content-sidebar.box-style .standard .post-header,
-	.content-sidebar.article.box-style .the-content,
-	.content-sidebar.box-style .standard .the-content,
-	.content-sidebar .author-box,
-	.content-sidebar.box-style .comments {
+	.article.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
+	.cover, .post-box .post-header, .the-content, .author-box, .comments {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.full.box-style .the-content,
-	.full .author-box,
-	.full.box-style .comments {
+	.article.full .the-content,
+	.article.full .author-box,
+	.article.full .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
 }
 
-/* HEADER COVERS */
-
-<?php
-	$cover_image_id = md_setting( array( 'colors', 'header', 'cover_image', 'id' ) );
-	$cover_colors = array(
-		'default' => array(
-			'class' => '',
-			'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
-			'border' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
-		),
-		'alt' => array(
-			'class' => '.alt',
-			'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
-			'border' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
-		)
-	);
-?>
+/* COVERS */
 
 .cover, .header.has-cover {
 	background-position: center center;
@@ -144,6 +123,13 @@
 @media all and (min-width: 900px) {
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-content { max-width: <?php echo $post_width; ?>px; }
+	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
+	.cover { padding-bottom: <?php echo $single; ?>px; }
+	.full .loop {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $content_width; ?>px;
+	}
 	.content-sidebar .content {
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
@@ -162,10 +148,12 @@
 	.content .columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
-	.post-header, .cover, .image-below-headline .post-header + .featured-image { padding-top: <?php echo $single; ?>px; }
-	.cover { padding-bottom: <?php echo $single; ?>px; }
-	.columns.slim .post-header, .columns.slim .image-below-headline .post-header + .featured-image { padding-top: <?php echo $half; ?>px; }
+	.columns.slim .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns.slim .cover { padding-bottom: <?php echo $half; ?>px; }
+	.columns .cover, .columns .post-header, .columns .the-content {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
 	.columns.wide .post-box .title {
 		font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 		line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;

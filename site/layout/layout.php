@@ -201,7 +201,7 @@ class md_layout extends md_api {
 
 		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
 
-		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) ) )
+		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
 			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
 
 		$author_box = md_post_type_field( array( 'single', 'author_box', 'enable' ), null, $post_type );

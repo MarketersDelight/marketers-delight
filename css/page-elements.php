@@ -2,16 +2,17 @@
 
 /* PAGE HEADER */
 
+.category-row { margin-bottom: <?php echo $mid; ?>px; }
+
 .page-header,
 .description:not(:last-child), .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
-.layout-slim .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.layout-slim .page-image:not(:last-child),
+.category-header { margin-bottom: <?php echo $single; ?>px; }
 
 .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
-.page-header,
-.page-header .inner,
-.layout-slim .title-wrap {
+.page-header, .page-header .inner, .layout-slim .title-wrap {
 	align-items: center;
 	display: flex;
 	flex-flow: wrap;
@@ -24,14 +25,12 @@
 
 .title-wrap, .description, .page-image, .page-cta { position: relative; }
 
-.category-header,
 .image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-standard.outer, .layout-slim.outer { text-align: center; }
-	.layout-standard.outer .description,
-	.layout-standard.outer .page-cta {
+	.layout-standard.outer .description, .layout-standard.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
@@ -47,18 +46,14 @@
 		display: block;
 		width: 100%;
 	}
-	.layout-standard.outer .title-wrap,
-	.layout-columns.outer .title-wrap,
-	.outer .title,
-	.outer .description,
-	.outer .page-cta {
+	.layout-standard.outer .title-wrap, .layout-columns.outer .title-wrap,
+	.outer .title, .outer .description, .outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
 	.layout-columns.outer .title-wrap { flex: 1; }
-	.layout-slim.outer .description,
-	.layout-slim.outer .page-cta {
+	.layout-slim.outer .description, .layout-slim.outer .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
@@ -84,6 +79,8 @@
 }
 
 /* BREADCRUMBS */
+
+.full .breadcrumbs { text-align: center; }
 
 .breadcrumbs {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
