@@ -77,6 +77,8 @@ function md_loop( $args = array() ) {
 	$columns = md_module( array( 'loop', 'columns' ), 1 );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
+	$wrap_classes[] = "loop-{$post_type}";
+
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 

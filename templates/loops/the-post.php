@@ -2,10 +2,14 @@
 
 $classes = $style = array();
 
-if ( $columns > 1 && $columns <= 5 )
-	$classes[] = "f{$columns}";
-elseif ( $classes > 5 )
-	$style['flex_basis'] = ( 100 / $columns ) . '%';
+if ( $columns > 1 ) {
+	if ( $columns <= 5 )
+		$classes[] = "f{$columns}";
+	elseif ( $columns > 5 )
+		$style['flex_basis'] = ( 100 / $columns ) . '%';
+
+	$classes[] = $c % 2 == 0 ? 'even' : 'odd';
+}
 
 $classes = join( ' ', $classes );
 

@@ -156,7 +156,7 @@ function md_content_box_classes( $classes = array() ) {
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'left';
 	}
-	elseif ( $columns <= 1 )
+	else
 		$classes[] = 'full';
 
 	if ( is_singular() )

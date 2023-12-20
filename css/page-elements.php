@@ -29,8 +29,10 @@
 
 @media all and (min-width: 800px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
-	.layout-standard.outer, .layout-slim.outer { text-align: center; }
-	.layout-standard.outer .description, .layout-standard.outer .page-cta {
+	.layout-standard.outer, .layout-slim.outer, .full .category-header { text-align: center; }
+	.layout-standard.outer .description,
+	.layout-standard.outer .page-cta,
+	.full .category-header {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
@@ -53,7 +55,8 @@
 		max-width: <?php echo $content_width; ?>px;
 	}
 	.layout-columns.outer .title-wrap { flex: 1; }
-	.layout-slim.outer .description, .layout-slim.outer .page-cta {
+	.layout-slim.outer .description,
+	.layout-slim.outer .page-cta {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}

@@ -147,6 +147,7 @@
 		align-items: center;
 		display: flex;
 		flex-flow: wrap;
+		justify-content: center;
 	}
 	.f2 {
 		flex-basis: 50%;

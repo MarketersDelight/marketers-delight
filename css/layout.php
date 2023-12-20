@@ -21,16 +21,16 @@
 	padding-top: <?php echo $mid; ?>px;
 }
 
+#content > .inner, .the-content {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
 .cover,
 .post-box .post-header,
 .the-content {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
-}
-
-#content > .inner, .the-content {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
 }
 
 .content .the-content.full,
@@ -51,6 +51,13 @@
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
+}
+
+/* POST COLUMNS */
+
+.columns .the-content {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
 
 /* COVERS */
@@ -125,7 +132,7 @@
 	.post-content { max-width: <?php echo $post_width; ?>px; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 	.cover { padding-bottom: <?php echo $single; ?>px; }
-	.full .loop {
+	.full .loop.standard {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
@@ -144,15 +151,19 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-	.content .columns { margin-left: -<?php echo $single; ?>px; }
-	.content .columns > .entry { padding-left: <?php echo $single; ?>px; }
-	.content-sidebar .columns, .columns.slim { margin-left: -<?php echo $half; ?>px; }
-	.content-sidebar .columns > .entry, .columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
-	.columns.slim .post-header { padding-top: <?php echo $half; ?>px; }
-	.columns.slim .cover { padding-bottom: <?php echo $half; ?>px; }
+	.columns { margin-left: -<?php echo $single; ?>px; }
+	.columns > .entry { padding-left: <?php echo $single; ?>px; }
+	.columns.slim { margin-left: -<?php echo $half; ?>px; }
+	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
+	.columns .post-header { padding-top: <?php echo $half; ?>px; }
+	.columns .cover { padding-bottom: <?php echo $half; ?>px; }
 	.columns .cover, .columns .post-header, .columns .the-content {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
+	}
+	.columns .the-content {
+		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
 	.columns.wide .post-box .title {
 		font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
@@ -165,8 +176,6 @@
 	.columns.slim .the-content {
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-		padding-bottom: <?php echo $half; ?>px;
-		padding-top: <?php echo $half; ?>px;
 	}
 }
 
