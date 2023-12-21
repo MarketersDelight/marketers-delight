@@ -1,11 +1,11 @@
-<?php if ( ! in_array( 'date', $byline ) ) :
-	$date = $post_date = get_the_time( get_option( 'date_format' ), $post_id );
-	$permalink = get_permalink( $post_id );
+<?php
+	$permalink = get_permalink();
+	$date = $post_date = get_the_time( get_option( 'date_format' ) );
 
-	if ( isset( $args['url_params' ] ) )
+	if ( isset( $args['url_params'] ) )
 		$permalink .= $args['url_params'];
 
-	if ( ! empty( $settings['relative_date'] ) || isset( $args['relative'] ) ) {
+	if ( ! empty( $fields['settings']['relative'] ) || isset( $args['relative'] ) ) {
 		$relative = isset( $args['relative'] ) ? $args['relative'] : get_the_time( 'U' );
 		$time = human_time_diff( $relative, current_time( 'U' ) );
 		$date = sprintf( __( '%s ago', 'md' ), $time );
@@ -14,20 +14,12 @@
 
 <span class="byline-date byline-item">
 
-	<?php if ( ! isset( $args['hide_icon'] ) ) : ?>
-		<?php echo md_icon( 'clock' ); ?>
-	<?php endif; ?>
+	<?php echo md_icon( 'clock' ); ?>
 
-	<?php if ( isset( $args['prefix'] ) ) : ?>
-		<?php echo md_text_field( $args['prefix'] ); ?>
-	<?php endif; ?>
-
-	<time datetime="<?php echo get_the_date( 'c', $post_id ); ?>" title="<?php echo esc_attr( $post_date ); ?>">
+	<time datetime="<?php echo get_the_date( 'c' ); ?>" title="<?php echo esc_attr( $post_date ); ?>">
 		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
 	</time>
 
 </span>
-
-<?php endif; ?>
 
 <?php do_action( 'md_hook_byline_after_date' ); ?>

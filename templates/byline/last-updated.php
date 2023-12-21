@@ -1,7 +1,5 @@
-<?php if ( in_array( 'last-updated', $byline ) ) : ?>
+<?php $label = ! empty( $fields['title'] ) ? $fields['title'] : __( 'Last updated:', 'md' ); ?>
 
 <span class="byline-item byline-date-modified">
-	<?php echo md_icon( 'clock' ); ?> <?php echo sprintf( __( 'Last updated: %s', 'md' ), get_the_modified_date( '', $post_id ) ); ?>
+	<?php echo md_icon( 'clock' ) . ' ' . esc_html( $label ) . ' ' . get_the_modified_date(); ?>
 </span>
-
-<?php endif; ?>
