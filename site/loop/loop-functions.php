@@ -17,8 +17,10 @@ function md_get_byline( $position ) {
 		$context = 'archives';
 
 	foreach ( $builder as $id => $fields )
-		if ( $fields['area'] == $context && $position == $fields['position'] )
-			$byline[] = $fields['type'];
+		if ( $context == $fields['area'] && $position == $fields['position'] ) {
+			$type = $fields['type'];
+			$byline[$type] = $fields;
+		}
 
 	return $byline;
 }

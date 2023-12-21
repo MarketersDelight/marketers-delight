@@ -128,8 +128,6 @@
 
 .byline .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
-.byline-comments-label { display: none; }
-
 .byline-date-modified { font-style: italic; }
 
 .byline-sticky {
@@ -154,7 +152,7 @@
 
 .author-box .circle-icon { margin-right: <?php echo $third; ?>px; }
 
-.author-link:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+.author-link:not(:last-child) { margin-right: <?php echo $small; ?>px; }
 
 .author-headline { margin-bottom: <?php echo $small; ?>px; }
 

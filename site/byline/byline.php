@@ -18,10 +18,18 @@ class md_byline extends md_api {
 		return array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
+				'hide_title' => false,
 				'color' => '#2772af',
 				'icon' => 'admin-users',
 				'callback' => array( $this, 'author' )
-			)
+			),
+			'comments' => array(
+				'title' => __( 'Comments', 'md' ),
+				'hide_title' => false,
+				'color' => '#2772af',
+				'icon' => 'admin-comments',
+				'callback' => array( $this, 'comments' )
+			),
 		);
 	}
 
@@ -45,8 +53,17 @@ class md_byline extends md_api {
 	public function before_headline() {
 		$items = md_get_byline( 'before_headline' );
 
-		foreach ( $items as $item )
+		if ( empty( $items ) )
+			return;
+
+		$post_id = get_the_ID();
+
+		echo '<div class="byline">';
+
+		foreach ( $items as $item => $fields )
 			include( md_template( "byline/$item", true ) );
+
+		echo '</div>';
 	}
 
 	/**
@@ -66,7 +83,12 @@ class md_byline extends md_api {
 					'position' => array(
 						'type' => 'select',
 						'options' => array( 'before_headline', 'after_headline', 'after_post' )
-					)
+					),
+					'settings' => array(
+						'type' => 'checkbox',
+						'options' => array( 'label', 'avatar', 'first_name', 'hide' )
+					),
+					'image_size' => array( 'type' => 'number' )
 				)
 			)
 		);
@@ -82,6 +104,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'position' ), array(
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
 				'before_headline' => __( 'Before Headline', 'md' ),
 				'after_headline' =>  __( 'After Headline', 'md' ),
@@ -98,12 +121,49 @@ class md_byline extends md_api {
 
 	public function author( $group ) {
 		$this->position( $group );
-/*
-		$this->fields->field( array( 'builder', $group, 'author' ), array(
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'first_name' => __( 'Show author first name', 'md' ),
+				'avatar' => __( 'Show avatar', 'md' )
+			)
+		) );
+
+		$this->fields->field( array( 'builder', $group, 'image_size' ), array(
+			'type' => 'number',
+			'label' => __( 'Avatar size', 'md' ),
+			'unit' => 'px',
+			'placeholder' => 30
+		) );
+	}
+
+	/**
+	 * Author fields.
+	 *
+	 * @since 5.6
+	 */
+
+	public function comments( $group ) {
+		$this->position( $group );
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'label' => __( 'Show comments label', 'md' ),
+				'hide' => __( 'Hide if zero comments', 'md' )
+			)
+		) );
+
+		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',
-			'label' => __( 'Author', 'md' )
-		) ); ?>
-*/
+			'label' => __( 'Label for zero comments', 'md' ),
+			'style' => 'width: 30%'
+		) );
 	}
 
 	/**

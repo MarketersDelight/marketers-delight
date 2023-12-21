@@ -752,7 +752,6 @@ select { max-width: 100%; }
 }
 .byline-item:not(:last-child) { margin-right: 10px; }
 .byline .badge { font-size: 15px; }
-.byline-comments-label { display: none; }
 .byline-date-modified { font-style: italic; }
 .byline-sticky {
 	color: #22a340;
@@ -771,7 +770,7 @@ select { max-width: 100%; }
 	margin-bottom: 15px;
 }
 .author-box .circle-icon { margin-right: 10px; }
-.author-link:not(:last-child) { margin-right: 15px; }
+.author-link:not(:last-child) { margin-right: 5px; }
 .author-headline { margin-bottom: 5px; }
 .author-headline {
 	font-size: 26px;
