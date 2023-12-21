@@ -50,7 +50,6 @@ class md_fields {
 		$name = "{$this->_option}[$clean_id]";
 		$id = "{$this->_option}_{$clean_id}";
 		$screen = get_current_screen();
-		$register = md_register();
 		$args['field'] = $field;
 
 		if ( wp_doing_ajax() || in_array( $screen->base, array( 'post', 'post-new' ) ) )
