@@ -1,6 +1,37 @@
 <?php
 
 /**
+ * Get byline items based on a specified position.
+ *
+ * Accepts: before_headline | after_headline | after_post
+ *
+ * @since 5.6
+ */
+
+function md_get_byline( $position ) {
+	$byline = array();
+	$context = 'single';
+	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
+
+	if ( is_home() || is_archive() )
+		$context = 'archives';
+
+	foreach ( $builder as $id => $fields )
+		if ( $fields['area'] == $context && $position == $fields['position'] )
+			$byline[] = $fields['type'];
+
+	return $byline;
+}
+
+
+
+
+
+
+
+
+
+/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -72,7 +103,7 @@ function md_loop( $args = array() ) {
 	$post_type = md_get_post_type();
 	$loop = md_get_loop();
 	$loops = md_loops();
-	$byline = md_get_byline();
+//	$byline = md_get_byline();
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 1 );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
@@ -332,132 +363,6 @@ function md_has_headline_cover() {
 
 	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
-
-/**
- * Checks if byline is enabled.
- *
- * @since 4.1
- */
-
-function md_has_byline() {
-	$post_type = get_post_type();
-	$add_byline = md_post_meta( array( 'layout', 'content', 'add_byline' ) );
-	$remove_byline = md_post_meta( array( 'layout', 'content', 'byline' ) );
-
-	if ( ( $post_type !== 'page' && ! is_404() && ! $remove_byline ) || ( $post_type == 'page' && $add_byline ) )
-		return true;
-}
-
-/**
- * Get user byline settings based on page location.
- *
- * @since 5.1
- */
-
-function md_get_byline() {
-	$byline = md_post_type_field( array( 'loop', 'byline' ), array() );
-
-	if ( is_singular() )
-		$byline = md_post_type_field( array( 'single', 'byline' ), $byline );
-
-	if ( is_category() || is_tax() )
-		$byline = md_term_meta( array( 'loop', 'byline' ), null, $byline );
-
-	return array_keys( $byline );
-}
-
-/**
- * Active list of byline items. Compares preset byline items (can
- * also be filtered in/out) with user settings).
- *
- * @since 4.5
- */
-
-function md_byline_items( $sort = null ) {
-	$byline = apply_filters( 'md_filter_byline_items', array(
-		'badge' => __( 'Add <b>New!</b> Badge', 'md' ),
-		'avatar' => __( 'Add <b>Avatar</b>', 'md' ),
-		'author' => __( 'Remove <b>Author</b>', 'md' ),
-		'date' => __( 'Remove <b>Date</b>', 'md' ),
-		'last-updated' => __( 'Add <b>Last Updated</b>', 'md' ),
-		'category' => __( 'Add <b>Category</b>', 'md' ),
-		'comments' => __( 'Remove <b>Comments</b>', 'md' ),
-		'edit' => __( 'Remove <b>Edit</b>', 'md' )
-	) );
-
-	if ( isset( $sort ) ) {
-		$data = array();
-
-		foreach ( $byline as $id => $label )
-			if ( $sort == 'ids' )
-				$data[] = $id;
-
-		return $data;
-	}
-
-	return $byline;
-}
-
-/**
- * Display template of individual byline items with
- * optional arguments.
- *
- * @since 5.1
- */
-
-function md_byline_item( $item, $args = array() ) {
-	$post_id = get_the_ID();
-	$post_type = get_post_type();
-	$author_id = get_the_author_meta( 'ID' );
-	$byline = md_get_byline();
-	$settings = md_post_type_field( array( 'loop', 'byline_settings' ), 'before_headline' );
-
-	if ( is_singular() )
-		$settings = md_post_type_field( array( 'single', 'byline_settings' ), $settings );
-
-	if ( isset( $args['post_id'] ) )
-		$post_id = $args['post_id'];
-
-	if ( isset( $args['author_id'] ) )
-		$author_id = $args['author_id'];
-
-	if ( locate_template( "templates/byline/$item.php" ) )
-		include( md_template( "byline/$item", true ) );
-}
-
-/**
- * Output post byline template.
- *
- * @since 4.0
- */
-
-if ( ! function_exists( 'md_byline' ) ) :
-
-function md_byline( $args = array() ) {
-	$post_type = md_get_post_type();
-	$byline_items = array_diff( md_byline_items(), array_keys( md_get_byline() ) );
-
-	echo '<div class="byline">';
-
-	md_hook_byline_top();
-
-	if ( is_sticky() ) {
-		$pin = md_icon( 'pin' );
-		echo '<span class="byline-sticky byline-item">' . "$pin " . __( 'Pinned', 'md' ) . '</span>';
-	}
-
-	if ( has_action( "md_hook_{$post_type}_byline" ) && ! isset( $args['ignore_hook'] ) )
-		do_action( "md_hook_{$post_type}_byline", $byline_items );
-	else
-		foreach ( $byline_items as $item => $label )
-			md_byline_item( $item );
-
-	md_hook_byline_bottom();
-
-	echo '</div>';
-}
-
-endif;
 
 /**
  * Show full content or excerpt of any given page.

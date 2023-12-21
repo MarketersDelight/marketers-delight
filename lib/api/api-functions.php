@@ -417,7 +417,8 @@ function md_module( $keys = null, $default = null ) {
 function md_get_builder( $id, $type = null, $area = null ) {
 	$builder = array();
 
-	if ( $type == null ) $type = 'elements';
+	if ( $type == null )
+		$type = 'elements';
 
 	$builder = unserialize( md_setting( array( $id, "builder_{$type}" ) ) );
 
