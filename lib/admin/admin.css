@@ -766,10 +766,9 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-builder { position: relative; }
 
-.md .md-builder-row {
-	margin-bottom: 30px;
-	padding-top: 0;
-}
+.md .md-builder-row { padding-top: 0; }
+
+.md .md-builder-row + .md .md-builder-row { margin-top: 30px; }
 
 .md-field-builder .md-builder-title {
 	font-size: 21px;
@@ -779,9 +778,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin-top: 0;
 }
 
-.md-builder-tabs { margin-bottom: 30px; }
-
-.md-builder-controls, .md-builder-head, .md-builder-controls .md-builder-title { margin-bottom: 15px; }
+.md-builder-tabs, .md-builder-controls, .md-builder-head, .md-builder-controls .md-builder-title { margin-bottom: 15px; }
 
 .md-builder-title .dashicons {
 	position: relative;
@@ -843,8 +840,9 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-builder-empty {
 	background-color: #fff;
+	border: 1px solid #ccc;
 	border-radius: 5px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	cursor: default;
 	padding: 15px;
 	width: 100%;

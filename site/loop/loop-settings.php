@@ -67,43 +67,6 @@
 
 <hr class="md-sep-small" />
 
-<h4><?php echo __( 'Byline', 'md' ); ?></h4>
-
-<div class="columns-2 columns-25-75 columns-single md-sep-micro">
-
-	<div class="col col1 md-sep-micro">
-		<?php $this->fields->field( 'byline_position', array(
-			'type' => 'select',
-			'empty_label' => __( 'Show before headline', 'md' ),
-			'options' => array(
-				'after_headline' => __( 'Show after headline', 'md' )
-			)
-		) ); ?>
-	</div>
-
-	<div class="col col2">
-		<?php $this->fields->field( 'byline_settings', array(
-			'type' => 'checkbox',
-			'inline' => true,
-			'options' => array(
-				'relative_date' => __( 'Show relative dates', 'md' ),
-				'author_first_name' => __( 'Show author first name', 'md' )
-			)
-		) ); ?>
-	</div>
-
-</div>
-
-<div class="md-sep-small">
-	<?php $this->fields->field( 'byline', array(
-		'type' => 'checkbox',
-		'multi' => true,
-		'options' => md_byline_items()
-	) ); ?>
-</div>
-
-<hr class="md-sep-small" />
-
 <h4><?php echo __( 'Post Content', 'md' ); ?></h4>
 
 <?php $this->fields->field( 'featured_image', array(

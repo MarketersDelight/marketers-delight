@@ -72,7 +72,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'headline', 'byline', 'add_byline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'page_title' )
+				'options' => array( 'remove', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'page_title' )
 			),
 			'breadcrumbs' => array(
 				'type' => 'checkbox',
@@ -204,8 +204,8 @@ class md_layout extends md_api {
 		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
 			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
 
-		$author_box = md_post_type_field( array( 'single', 'author_box', 'enable' ), null, $post_type );
-		$disable_post_nav = md_post_type_field( array( 'single', 'post_nav', 'disable' ), null, $post_type );
+		$author_box = md_post_type_field( array( 'layout', 'content', 'add_author_box' ), null, $post_type );
+		$disable_post_nav = md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type );
 		$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
 
 		if ( $disable_post_nav )

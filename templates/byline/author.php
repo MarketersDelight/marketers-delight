@@ -1,37 +1,9 @@
-<?php if ( ! in_array( 'author', $byline ) || in_array( 'avatar', $byline ) ) :
-	$author_name = get_the_author_meta( 'display_name', $author_id );
-
-	if ( ! empty( $settings['author_first_name'] ) ) {
-		$first_name = get_the_author_meta( 'first_name', $author_id );
-		$author_name = ! empty( $first_name ) ? $first_name : $author_name;
-	}
-?>
-
 <span class="byline-author byline-item">
 
-	<?php if ( in_array( 'avatar', $byline ) || ( isset( $args['avatar'] ) && $args['avatar'] !== false ) ) {
-		$avatar_size = isset( $args['avatar_size'] ) ? $args['avatar_size'] : 30;
-		echo get_avatar( $author_id, $avatar_size );
-	} ?>
+	<em><?php echo __( 'by', 'md' ); ?></em>
 
-	<?php if ( ! in_array( 'author', $byline ) ) : ?>
-
-		<?php if ( ! isset( $args['prefix'] ) ) : ?>
-			<em><?php echo __( 'by', 'md' ); ?></em>
-		<?php endif; ?>
-
-		<a href="<?php echo get_author_posts_url( $author_id ); ?>" class="author-link">
-			<?php echo esc_html( $author_name ); ?>
-		</a>
-
-		<?php if ( ! empty( $args['hide_links'] ) ) : ?>
-			<?php if ( get_the_author_meta( 'twitter', $author_id ) ) : ?>
-				<a href="//twitter.com/<?php echo esc_html( get_the_author_meta( 'twitter', $author_id ) ); ?>/" class="byline-twitter" rel="nofollow" target="_blank"><?php echo md_icon( 'twitter' ); ?></a>
-			<?php endif; ?>
-		<?php endif; ?>
-
-	<?php endif; ?>
+	<a href="<?php echo get_author_posts_url( get_the_author_meta( 'ID' ) ); ?>" class="author-link">
+		<?php echo esc_html( get_the_author_meta( 'display_name', get_the_author_meta( 'ID' ) ) ); ?>
+	</a>
 
 </span>
-
-<?php endif; ?>

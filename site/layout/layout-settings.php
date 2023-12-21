@@ -103,15 +103,6 @@
 
 				<?php if ( $post_type !== 'page' ) : ?>
 
-					<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
-						<?php $this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => array(
-								'byline' => __( 'Remove <b>Byline</b>', 'md' ),
-							)
-						) ); ?>
-					</div>
-
 					<?php if ( $author_box ) : ?>
 
 						<?php $this->fields->field( 'content', array(
@@ -136,17 +127,6 @@
 						'type' => 'checkbox',
 						'options' => $post_nav_options
 					) ); ?>
-
-				<?php else : ?>
-
-					<div id="headline_options" style="display: <?php echo empty( $content['headline'] ) ? 'block' : 'none'; ?>;">
-						<?php $this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => array(
-								'add_byline' => __( 'Add <b>Byline</b>', 'md' ),
-							)
-						) ); ?>
-					</div>
 
 				<?php endif; ?>
 
@@ -185,6 +165,19 @@
 			<?php endif; ?>
 
 		</div>
+
+		<?php if ( $is_admin ) : ?>
+
+			<?php $this->fields->field( 'content', array(
+				'type' => 'checkbox',
+				'label' => __( 'Single', 'md' ),
+				'options' => array(
+					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
+					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ),
+				)
+			) ); ?>
+
+		<?php endif; ?>
 
 	</div>
 

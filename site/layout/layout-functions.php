@@ -395,7 +395,7 @@ add_filter( 'the_password_form', 'md_password_form' );
  */
 
 function md_has_author_box() {
-	$enable = md_post_type_field( array( 'single', 'author_box', 'enable' ) );
+	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );
 
 	if ( is_singular() ) {
 		$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
@@ -421,7 +421,6 @@ function md_author_box() {
 	$url = get_the_author_meta( 'url' );
 	$author = get_author_posts_url( get_the_author_meta( 'ID' ) );
 	$desc = get_the_author_meta( 'description' );
-	$hide_posts = md_post_type_field( array( 'single', 'author_box', 'all_posts' ) );
 	$has_avatar = get_option( 'show_avatars' );
 
 	include( md_template( 'author-box', true ) );
@@ -546,7 +545,7 @@ function md_post_nav() {
  */
 
 function md_has_post_nav() {
-	$disable = md_post_type_field( array( 'single', 'post_nav', 'disable' ) );
+	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );
 	$single_remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
 	$single_add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
 

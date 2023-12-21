@@ -307,7 +307,7 @@ class md_api {
 					$order = 30;
 				elseif ( $this->_clean_id == 'loop' )
 					$order = 40;
-				elseif ( $this->_clean_id == 'single' )
+				elseif ( $this->_clean_id == 'byline' )
 					$order = 50;
 
 				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );

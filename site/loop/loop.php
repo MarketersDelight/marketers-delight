@@ -74,18 +74,6 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )
 			),
-			'byline' => array(
-				'type' => 'checkbox',
-				'options' => md_byline_items( 'ids' )
-			),
-			'byline_position' => array(
-				'type' => 'select',
-				'options' => array( 'after_headline' )
-			),
-			'byline_settings' => array(
-				'type' => 'checkbox',
-				'options' => array( 'relative_date', 'author_first_name' )
-			),
 			'content' => array(
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )

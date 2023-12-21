@@ -30,6 +30,7 @@
 	if ( isset( $area_fields['tab'] ) ) {
 		$tab = $area_fields['tab'];
 		$tab_classes .= " md-tab-content md-builder-$tab";
+
 		if ( $active_tab == $tab )
 			$tab_classes .= ' active';
 	}
@@ -41,7 +42,7 @@
 
 			<h3 class="md-builder-title"><i class="dashicons dashicons-admin-page"></i> <?php echo md_text_field( $area_fields['title'] ); ?></h3>
 
-			<?php if ( $area_fields['description'] ) : ?>
+			<?php if ( isset( $area_fields['description'] ) ) : ?>
 				<p class="description"><?php echo md_text_field( $area_fields['description'] ); ?></p>
 			<?php endif; ?>
 
@@ -54,6 +55,7 @@
 					$group = esc_attr( $group );
 					$area = ! empty( $fields['area'] ) ? esc_attr( $fields['area'] ) : '';
 					$type = ! empty( $fields['type'] ) ? esc_attr( $fields['type'] ) : '';
+
 					if ( $area == $area_id )
 						$this->builder_fields( $key, $group, $type, $elements[$type] );
 				} ?>
