@@ -85,8 +85,6 @@
 
 /* BREADCRUMBS */
 
-.full .breadcrumbs { text-align: center; }
-
 .breadcrumbs {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;

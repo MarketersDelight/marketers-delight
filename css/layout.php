@@ -22,11 +22,6 @@
 	padding-top: <?php echo $half; ?>px;
 }
 
-.article .header-cover, .header .header-cover-full {
-	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $mid; ?>px;
-}
-
 #content > .inner, .the-content {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
@@ -46,15 +41,19 @@
 }
 
 @media all and (min-width: 900px) {
-	.article.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
+	.expanded .post-header, .header .post-header, #content > .post-header, .full .breadcrumbs { text-align: center; }
+	.article .header-cover, .header .header-cover-full {
+		padding-bottom: <?php echo $mid; ?>px;
+		padding-top: <?php echo $mid; ?>px;
+	}
 	.cover, .post-box .post-header, .the-content, .author-box, .comments, .post-footer {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.article.full .the-content,
-	.article.full .author-box,
-	.article.full .post-footer,
-	.article.full .comments {
+	.expanded .the-content,
+	.expanded .post-footer,
+	.expanded .author-box,
+	.expanded .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}

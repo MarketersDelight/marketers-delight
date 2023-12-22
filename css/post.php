@@ -31,10 +31,10 @@
 }
 
 @media all and (min-width: 900px) {
-	.article.full .alignfull, .article.full .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
-	.article.full .alignfull, .article.full .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
-	.article.full .alignwide, .alignfull, .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
-	.article.full .alignwide, .alignfull, .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
+	.expanded .alignfull, .expanded .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
+	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
+	.expanded .alignwide, .alignfull, .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
+	.expanded .alignwide, .alignfull, .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
 	.alignwide, .alignright.wrap-small { margin-right: -<?php echo $half; ?>px; }
 	.alignwide, .alignleft.wrap-small { margin-left: -<?php echo $half; ?>px; }
 }

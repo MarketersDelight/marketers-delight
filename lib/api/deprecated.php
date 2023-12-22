@@ -25,6 +25,17 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Checks for content headline.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
+function md_has_headline_cover() {
+	$cover = md_cover();
+	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
+}
+
+/**
  * A list of post types to show Share buttons on.
  * @since 5.0
  * @deprecated 5.6

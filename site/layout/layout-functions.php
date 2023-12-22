@@ -142,7 +142,9 @@ function md_content_box_classes( $classes = array() ) {
 	$default_style = md_post_type_field( array( 'layout', 'content_box_style' ), 'box_style' );
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
 
-	if ( ! is_singular() )
+	if ( is_singular() )
+		$classes[] = 'article';
+	else
 		$columns = md_post_type_field( array( 'loop', 'columns' ), $columns );
 
 	if ( md_has_sidebar() ) {
@@ -156,11 +158,12 @@ function md_content_box_classes( $classes = array() ) {
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'left';
 	}
-	else
+	else {
 		$classes[] = 'full';
 
-	if ( is_singular() )
-		$classes[] = 'article';
+		if ( is_singular() )
+			$classes[] = 'expanded';
+	}
 
 	$classes[] = 'loop-' . md_get_loop();
 

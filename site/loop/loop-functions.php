@@ -1,85 +1,6 @@
 <?php
 
 /**
- * Get byline items based on a specified position.
- *
- * Accepts: before_headline | after_headline | after_post
- *
- * @since 5.6
- */
-
-function md_get_byline( $position ) {
-	$byline = array();
-	$context = 'single';
-	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
-
-	if ( is_home() || is_archive() )
-		$context = 'archives';
-
-	foreach ( $builder as $id => $fields )
-		if ( $context == $fields['area'] && $position == $fields['position'] ) {
-			$type = $fields['type'];
-			$byline[$type] = $fields;
-		}
-
-	return $byline;
-}
-
-/**
- * Render the byline template with designated items.
- *
- * @since 5.6
- */
-
-function md_byline( $location = 'before_headline', $args = array() ) {
-	if ( has_action( 'md_hook_byline_' . get_post_type() ) )
-		return do_action( 'md_hook_byline_' . get_post_type(), true );
-
-	if ( isset( $args['items'] ) )
-		$items = $args['items'];
-	else
-		$items = md_get_byline( $location );
-
-	if ( empty( $items ) )
-		return;
-
-	$classes = 'byline';
-
-	if ( isset( $args['classes'] ) )
-		$classes .= ' ' . $args['classes'];
-
-	echo '<div class="' .  esc_attr( $classes ) . '">';
-
-	foreach ( $items as $item => $fields )
-		include( md_template( "byline/$item", true ) );
-
-	echo '</div>';
-}
-
-/**
- * Location hooks.
- *
- * @since 5.6
- */
-
-function md_byline_before_headline() {
-	md_byline();
-}
-
-function md_byline_after_headline() {
-	md_byline( 'after_headline' );
-}
-
-function md_byline_after_post() {
-	md_byline( 'after_post', array(
-		'classes' => 'post-footer'
-	) );
-}
-
-
-
-
-/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -286,7 +207,12 @@ add_filter( 'post_class', 'md_post_classes' );
  */
 
 function md_has_headline() {
-	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+	$cover = md_cover();
+
+	if (
+		( ! md_meta( array( 'layout', 'content', 'headline' ) ) ) ||
+		( is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+	)
 		return true;
 }
 
@@ -332,6 +258,82 @@ function md_headline( $args = array() ) {
 		$permalink = get_permalink();
 
 	include( md_template( 'headline', true ) );
+}
+
+/**
+ * Get byline items based on a specified position.
+ *
+ * Accepts: before_headline | after_headline | after_post
+ *
+ * @since 5.6
+ */
+
+function md_get_byline( $position ) {
+	$byline = array();
+	$context = 'single';
+	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
+
+	if ( is_home() || is_archive() )
+		$context = 'archives';
+
+	foreach ( $builder as $id => $fields )
+		if ( $context == $fields['area'] && $position == $fields['position'] ) {
+			$type = $fields['type'];
+			$byline[$type] = $fields;
+		}
+
+	return $byline;
+}
+
+/**
+ * Render the byline template with designated items.
+ *
+ * @since 5.6
+ */
+
+function md_byline( $location = 'before_headline', $args = array() ) {
+	if ( has_action( 'md_hook_byline_' . get_post_type() ) )
+		return do_action( 'md_hook_byline_' . get_post_type(), true );
+
+	if ( isset( $args['items'] ) )
+		$items = $args['items'];
+	else
+		$items = md_get_byline( $location );
+
+	if ( empty( $items ) )
+		return;
+
+	$classes = 'byline';
+
+	if ( isset( $args['classes'] ) )
+		$classes .= ' ' . $args['classes'];
+
+	echo '<div class="' .  esc_attr( $classes ) . '">';
+
+	foreach ( $items as $item => $fields )
+		include( md_template( "byline/$item", true ) );
+
+	echo '</div>';
+}
+
+/**
+ * Byline location hooks. A little silly, but keeps flexible.
+ *
+ * @since 5.6
+ */
+
+function md_byline_before_headline() {
+	md_byline();
+}
+
+function md_byline_after_headline() {
+	md_byline( 'after_headline' );
+}
+
+function md_byline_after_post() {
+	md_byline( 'after_post', array(
+		'classes' => 'post-footer'
+	) );
 }
 
 /**
@@ -398,18 +400,6 @@ function md_overlay( $cover ) {
 		$style['bg_color'] = $cover['bg_color'];
 
 	echo '<div class="overlay"' . md_style( $style ) . '></div>';
-}
-
-/**
- * Checks for content headline.
- *
- * @since 4.1
- */
-
-function md_has_headline_cover() {
-	$cover = md_cover();
-
-	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**

@@ -721,7 +721,6 @@ select { max-width: 100%; }
 	.page-cta-link:not(:last-child) { margin-bottom: 15px; }
 }
 /* BREADCRUMBS */
-.full .breadcrumbs { text-align: center; }
 .breadcrumbs {
 	font-size: 16px;
 	line-height: 26px;
@@ -885,10 +884,10 @@ select { max-width: 100%; }
 	float: none;
 }
 @media all and (min-width: 900px) {
-	.article.full .alignfull, .article.full .alignleft.wrap { margin-left: -35.796387520525%; }
-	.article.full .alignfull, .article.full .alignright.wrap { margin-right: -35.796387520525%; }
-	.article.full .alignwide, .alignfull, .alignright.wrap { margin-right: -44px; }
-	.article.full .alignwide, .alignfull, .alignleft.wrap { margin-left: -44px; }
+	.expanded .alignfull, .expanded .alignleft.wrap { margin-left: -35.796387520525%; }
+	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -35.796387520525%; }
+	.expanded .alignwide, .alignfull, .alignright.wrap { margin-right: -44px; }
+	.expanded .alignwide, .alignfull, .alignleft.wrap { margin-left: -44px; }
 	.alignwide, .alignright.wrap-small { margin-right: -15px; }
 	.alignwide, .alignleft.wrap-small { margin-left: -15px; }
 }
@@ -1451,10 +1450,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
-.article .header-cover, .header .header-cover-full {
-	padding-bottom: 44px;
-	padding-top: 44px;
-}
 #content > .inner, .the-content {
 	padding-bottom: 29px;
 	padding-top: 29px;
@@ -1471,15 +1466,19 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	padding-right: 0;
 }
 @media all and (min-width: 900px) {
-	.article.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
+	.expanded .post-header, .header .post-header, #content > .post-header, .full .breadcrumbs { text-align: center; }
+	.article .header-cover, .header .header-cover-full {
+		padding-bottom: 44px;
+		padding-top: 44px;
+	}
 	.cover, .post-box .post-header, .the-content, .author-box, .comments, .post-footer {
 		padding-left: 44px;
 		padding-right: 44px;
 	}
-	.article.full .the-content,
-	.article.full .author-box,
-	.article.full .post-footer,
-	.article.full .comments {
+	.expanded .the-content,
+	.expanded .post-footer,
+	.expanded .author-box,
+	.expanded .comments {
 		padding-left: 20.861244019139%;
 		padding-right: 20.861244019139%;
 	}
@@ -2001,6 +2000,11 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	$STREAM
 \*------------------------------*/
 .loop-stream.columns { padding-top: 29px; }
+.article.full .stream {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 697px;
+}
 /* BYLINE */
 .embed-header, /*.stream .post-header .byline*/ {
 	border-bottom: 1px solid #CCCCCC;
