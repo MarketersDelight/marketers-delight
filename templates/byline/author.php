@@ -1,5 +1,5 @@
 <?php
-	$author_id = get_the_author_meta( 'ID' );
+	$author_id = isset( $fields['user_id'] ) ? $fields['user_id'] : get_the_author_meta( 'ID' );
 	$author_name = get_the_author_meta( 'display_name', $author_id );
 
 	if ( ! empty( $fields['settings']['first_name'] ) ) {

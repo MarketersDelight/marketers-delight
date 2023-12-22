@@ -25,10 +25,56 @@ function md_get_byline( $position ) {
 	return $byline;
 }
 
+/**
+ * Render the byline template with designated items.
+ *
+ * @since 5.6
+ */
 
+function md_byline( $location = 'before_headline', $args = array() ) {
+	if ( has_action( 'md_hook_byline_' . get_post_type() ) )
+		return do_action( 'md_hook_byline_' . get_post_type(), true );
 
+	if ( isset( $args['items'] ) )
+		$items = $args['items'];
+	else
+		$items = md_get_byline( $location );
 
+	if ( empty( $items ) )
+		return;
 
+	$classes = 'byline';
+
+	if ( isset( $args['classes'] ) )
+		$classes .= ' ' . $args['classes'];
+
+	echo '<div class="' .  esc_attr( $classes ) . '">';
+
+	foreach ( $items as $item => $fields )
+		include( md_template( "byline/$item", true ) );
+
+	echo '</div>';
+}
+
+/**
+ * Location hooks.
+ *
+ * @since 5.6
+ */
+
+function md_byline_before_headline() {
+	md_byline();
+}
+
+function md_byline_after_headline() {
+	md_byline( 'after_headline' );
+}
+
+function md_byline_after_post() {
+	md_byline( 'after_post', array(
+		'classes' => 'post-footer'
+	) );
+}
 
 
 

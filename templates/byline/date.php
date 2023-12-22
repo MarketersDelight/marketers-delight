@@ -2,11 +2,11 @@
 	$permalink = get_permalink();
 	$date = $post_date = get_the_time( get_option( 'date_format' ) );
 
-	if ( isset( $args['url_params'] ) )
-		$permalink .= $args['url_params'];
+	if ( isset( $fields['url_params'] ) )
+		$permalink .= $fields['url_params'];
 
-	if ( ! empty( $fields['settings']['relative'] ) || isset( $args['relative'] ) ) {
-		$relative = isset( $args['relative'] ) ? $args['relative'] : get_the_time( 'U' );
+	if ( ! empty( $fields['settings']['relative'] ) || isset( $fields['relative_date'] ) ) {
+		$relative = isset( $fields['relative_date'] ) ? $fields['relative_date'] : get_the_time( 'U' );
 		$time = human_time_diff( $relative, current_time( 'U' ) );
 		$date = sprintf( __( '%s ago', 'md' ), $time );
 	}

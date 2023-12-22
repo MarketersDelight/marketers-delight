@@ -799,13 +799,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-radius: 5px;
 	box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.1);
 	display: flex;
+	overflow-x: scroll;
 	padding: 10px;
+	white-space: nowrap;
 }
 
 .md-builder-elements .md-builder-group {
 	margin-bottom: 0;
 	margin-right: 10px;
-	min-width: 100px;
 }
 
 .md-builder-elements .md-widget, .sortable-ghost .md-widget { display: none; }
@@ -823,7 +824,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-radius: 5px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
 	display: none;
-	padding: 15px;
+	padding: 15px 20px;
 	text-align: center;
 }
 
@@ -835,7 +836,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md p.md-builder-tab-label {
-	font-size: 16px;
+	font-size: 15px;
 	line-height: 23px;
 	margin-bottom: 0;
 }

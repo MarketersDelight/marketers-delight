@@ -19,42 +19,42 @@ class md_byline extends md_api {
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#a424ec',
 				'icon' => 'admin-users',
 				'callback' => array( $this, 'author' )
 			),
 			'date' => array(
 				'title' => __( 'Date', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#d44c3c',
 				'icon' => 'calendar',
 				'callback' => array( $this, 'date' )
 			),
 			'last-updated' => array(
 				'title' => __( 'Last Updated', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#8c7310',
 				'icon' => 'clock',
 				'callback' => array( $this, 'last_updated' )
 			),
 			'comments' => array(
 				'title' => __( 'Comments', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#ff6000',
 				'icon' => 'admin-comments',
 				'callback' => array( $this, 'comments' )
 			),
 			'category' => array(
 				'title' => __( 'Category', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#7d695c',
 				'icon' => 'category',
 				'callback' => array( $this, 'category' )
 			),
 			'badge' => array(
 				'title' => __( 'Badge', 'md' ),
 				'hide_title' => false,
-				'color' => '#2772af',
+				'color' => '#1eb54b',
 				'icon' => 'warning',
 				'callback' => array( $this, 'badge' )
 			),
@@ -75,54 +75,9 @@ class md_byline extends md_api {
 	 */
 
 	public function template() {
-		add_action( 'md_hook_post_header_top', array( $this, 'before_headline' ) );
-		add_action( 'md_hook_post_header_bottom', array( $this, 'after_headline' ) );
-		add_action( 'md_hook_content_item', array( $this, 'after_post' ), 50 );
-	}
-
-	/**
-	 * Render byline items per location.
-	 *
-	 * @since 5.6
-	 */
-
-	public function html( $location, $args = array() ) {
-		$items = md_get_byline( $location );
-
-		if ( empty( $items ) )
-			return;
-
-		$classes = 'byline';
-
-		if ( isset( $args['classes'] ) )
-			$classes .= ' ' . $args['classes'];
-
-		echo '<div class="' .  esc_attr( $classes ) . '">';
-
-		foreach ( $items as $item => $fields )
-			include( md_template( "byline/$item", true ) );
-
-		echo '</div>';
-	}
-
-	/**
-	 * Location hooks.
-	 *
-	 * @since 5.6
-	 */
-
-	public function before_headline() {
-		$this->html( 'before_headline' );
-	}
-
-	public function after_headline() {
-		$this->html( 'after_headline' );
-	}
-
-	public function after_post() {
-		$this->html( 'after_post', array(
-			'classes' => 'post-footer'
-		) );
+		add_action( 'md_hook_post_header_top', 'md_byline_before_headline' );
+		add_action( 'md_hook_post_header_bottom', 'md_byline_after_headline' );
+		add_action( 'md_hook_content_item', 'md_byline_after_post', 50 );
 	}
 
 	/**

@@ -12,6 +12,8 @@
 
 .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
+.columns .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+
 .page-header, .page-header .inner, .layout-slim .title-wrap {
 	align-items: center;
 	display: flex;
@@ -107,7 +109,7 @@
 
 .columns .byline { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
-.post-header .byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
+.post-header .byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .byline a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
