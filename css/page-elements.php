@@ -10,7 +10,7 @@
 .layout-slim .page-image:not(:last-child),
 .category-header { margin-bottom: <?php echo $single; ?>px; }
 
-.post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
 .page-header, .page-header .inner, .layout-slim .title-wrap {
 	align-items: center;
@@ -101,10 +101,13 @@
 
 .byline {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['desktop'] - 2; ?>px;
-	margin-bottom: <?php echo $half; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	position: relative;
 }
+
+.columns .byline { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
+
+.post-header .byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
 .byline a {
 	color: <?php echo $colors['site']['text-sec']; ?>;

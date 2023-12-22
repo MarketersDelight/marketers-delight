@@ -16,6 +16,12 @@
 
 .cover { padding-bottom: <?php echo $half; ?>px; }
 
+.post-footer {
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+
 .article .header-cover, .header .header-cover-full {
 	padding-bottom: <?php echo $mid; ?>px;
 	padding-top: <?php echo $mid; ?>px;
@@ -28,7 +34,7 @@
 
 .cover,
 .post-box .post-header,
-.the-content {
+.the-content, .post-footer {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
@@ -41,12 +47,13 @@
 
 @media all and (min-width: 900px) {
 	.article.full .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.cover, .post-box .post-header, .the-content, .author-box, .comments {
+	.cover, .post-box .post-header, .the-content, .author-box, .comments, .post-footer {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
 	.article.full .the-content,
 	.article.full .author-box,
+	.article.full .post-footer,
 	.article.full .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
@@ -157,13 +164,9 @@
 	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
 	.columns .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns .cover { padding-bottom: <?php echo $half; ?>px; }
-	.columns .cover, .columns .post-header, .columns .the-content {
+	.columns .cover, .columns .post-header, .columns .the-content, .columns .post-footer {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
-	}
-	.columns .the-content {
-		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
 	.columns.wide .post-box .title {
 		font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;

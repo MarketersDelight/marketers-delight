@@ -76,27 +76,53 @@ class md_byline extends md_api {
 
 	public function template() {
 		add_action( 'md_hook_post_header_top', array( $this, 'before_headline' ) );
-//		add_action( 'md_hook_header', array( $templates, 'template' ) );
+		add_action( 'md_hook_post_header_bottom', array( $this, 'after_headline' ) );
+		add_action( 'md_hook_content_item', array( $this, 'after_post' ), 50 );
 	}
 
 	/**
-	 * Render byline items added before the headline.
+	 * Render byline items per location.
 	 *
 	 * @since 5.6
 	 */
 
-	public function before_headline() {
-		$items = md_get_byline( 'before_headline' );
+	public function html( $location, $args = array() ) {
+		$items = md_get_byline( $location );
 
 		if ( empty( $items ) )
 			return;
 
-		echo '<div class="byline">';
+		$classes = 'byline';
+
+		if ( isset( $args['classes'] ) )
+			$classes .= ' ' . $args['classes'];
+
+		echo '<div class="' .  esc_attr( $classes ) . '">';
 
 		foreach ( $items as $item => $fields )
 			include( md_template( "byline/$item", true ) );
 
 		echo '</div>';
+	}
+
+	/**
+	 * Location hooks.
+	 *
+	 * @since 5.6
+	 */
+
+	public function before_headline() {
+		$this->html( 'before_headline' );
+	}
+
+	public function after_headline() {
+		$this->html( 'after_headline' );
+	}
+
+	public function after_post() {
+		$this->html( 'after_post', array(
+			'classes' => 'post-footer'
+		) );
 	}
 
 	/**
