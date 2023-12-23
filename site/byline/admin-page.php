@@ -1,4 +1,4 @@
-<div class="md-widget md-toggle open md-sep-small">
+<div class="md-widget md-toggle md-sep-small">
 
 	<h3 class="md-widget-title"><?php echo __( 'Byline', 'md' ); ?></h3>
 

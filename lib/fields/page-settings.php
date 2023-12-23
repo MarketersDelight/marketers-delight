@@ -68,6 +68,7 @@ class md_page_settings extends md_api {
 	 */
 
 	public function admin_template( $hook ) {
+		$c = 0;
 		$page_order = array();
 		$page_settings = md_register( "{$hook}_page_settings" );
 
@@ -78,7 +79,7 @@ class md_page_settings extends md_api {
 	 ?>
 		<div class="md-tabs">
 			<div class="nav-tab-wrapper">
-				<?php $c = 0; foreach ( $page_order as $id => $order ) :
+				<?php foreach ( $page_order as $id => $order ) :
 					$fields = $page_settings[$id];
 				?>
 					<a href="#" class="md-tab nav-tab<?php echo $c == 0 ? ' nav-tab-active' : ''; ?>" data-md-tab="md-<?php echo esc_attr( $id ); ?>"><?php echo esc_html( $fields['name'] ); ?></a>
