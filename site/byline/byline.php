@@ -9,13 +9,26 @@
 class md_byline extends md_api {
 
 	/**
+	 * Load byline action hooks and filters.
+	 *
+	 * @since 5.6
+	 */
+
+	public function actions() {
+		add_filter( 'md_byline', array( $this, 'byline_items' ) );
+		add_action( 'md_hook_post_header_top', 'md_byline_before_headline' );
+		add_action( 'md_hook_post_header_bottom', 'md_byline_after_headline' );
+		add_action( 'md_hook_content_item', 'md_byline_after_post', 50 );
+	}
+
+	/**
 	 * A list of elements that can be added to Byline areas.
 	 *
 	 * @since 5.6
 	 */
 
-	public function elements() {
-		return apply_filters( 'md_byline', array(
+	public function byline_items() {
+		return array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
 				'hide_title' => false,
@@ -65,19 +78,7 @@ class md_byline extends md_api {
 				'icon' => 'edit',
 				'callback' => array( $this, 'edit' )
 			)
-		) );
-	}
-
-	/**
-	 * Load templates to frontend.
-	 *
-	 * @since 5.6
-	 */
-
-	public function template() {
-		add_action( 'md_hook_post_header_top', 'md_byline_before_headline' );
-		add_action( 'md_hook_post_header_bottom', 'md_byline_after_headline' );
-		add_action( 'md_hook_content_item', 'md_byline_after_post', 50 );
+		);
 	}
 
 	/**
@@ -87,25 +88,31 @@ class md_byline extends md_api {
 	 */
 
 	public function fields() {
+		$fields = array(
+			'type' => array( 'type' => 'text' ),
+			'area' => array( 'type' => 'text' ),
+			'dropin' => array( 'type' => 'text' ),
+			'title' => array( 'type' => 'text' ),
+			'position' => array(
+				'type' => 'select',
+				'options' => array( 'before_headline', 'after_headline', 'after_post' )
+			),
+			'settings' => array(
+				'type' => 'checkbox',
+				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative' )
+			),
+			'time' => array( 'type' => 'number' ),
+			'image_size' => array( 'type' => 'number' )
+		);
+
+		foreach ( md_byline_items() as $byline_id => $byline_fields )
+			if ( isset( $byline_fields['fields'] ) )
+				$fields = array_merge( $fields, $byline_fields['fields'] );
+
 		return array(
 			'builder' => array(
 				'type' => 'builder',
-				'fields' => array(
-					'type' => array( 'type' => 'text' ),
-					'area' => array( 'type' => 'text' ),
-					'dropin' => array( 'type' => 'text' ),
-					'title' => array( 'type' => 'text' ),
-					'position' => array(
-						'type' => 'select',
-						'options' => array( 'before_headline', 'after_headline', 'after_post' )
-					),
-					'settings' => array(
-						'type' => 'checkbox',
-						'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative' )
-					),
-					'time' => array( 'type' => 'number' ),
-					'image_size' => array( 'type' => 'number' )
-				)
+				'fields' => $fields
 			)
 		);
 	}

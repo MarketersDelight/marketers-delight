@@ -312,7 +312,10 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 	foreach ( $items as $item => $fields )
 		if ( isset( $fields['dropin'] ) ) {
 			$path = $fields['dropin'];
-			include( md_template( 'dropins', "$path/$path", true ) );
+			$items = md_byline_items();
+
+			if ( isset( $items[$path]['template'] ) )
+				call_user_func( $items[$path]['template'] );
 		}
 		else
 			include( md_template( "byline/$item", true ) );

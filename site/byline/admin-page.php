@@ -23,7 +23,7 @@
 				'tab' => 'single'
 			)
 		),
-		'elements' => $this->elements()
+		'elements' => md_byline_items()
 	) ); ?>
 
 </div>

@@ -2000,59 +2000,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /*------------------------------*\
 	$SHARE
 \*------------------------------*/
-.share, .share-button, .share-bubble {
-	align-items: center;
-	display: flex;
-}
-.share { position: relative; }
-.cover .share a { color: #fff; }
-.share .share-button { text-decoration: none; }
-.share .share-button:not(:first-child) { margin-left: 15px; }
-.share-button:hover .share-bubble { transform: scale(1.1); }
-.share-button.liked:hover .share-bubble { transform: none; }
-.share-bubble {
-	background-color: #FFFFFF;
-	border-radius: 50%;
-	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
-	height: 34px;
-	justify-content: center;
-	transition: 0.3s;
-	width: 34px;
-}
-.share-icon {
-	font-size: 20px;
-	line-height: 1;
-}
-.share-text {
-	font-size: 20px;
-	margin-right: 10px;
-}
-/* LIKE */
-.share-button.liked {
-	color: #E60177 !important;
-	cursor: default;
-	font-weight: bold;
-}
-.share-button.liked .md-icon-heart-empty:before { content: '\e821'; }
-.share .share-button.share-comments:nth-last-child(2),
-.share .share-button.share-like:nth-last-child(2) { margin-left: auto; }
-/* AREAS */
-.loop .share { padding-bottom: 15px; }
-.post-box > .share {
-	padding-left: 15px;
-	padding-right: 15px;
-}
-.embed .share { padding: 0; }
-.embed .share { margin-top: 15px; }
-/* STYLES */
-@media all and (min-width: 900px) {
-	.share-bubble {
-		height: 44px;
-		width: 44px;
-	}
-	.share-icon { font-size: 24px; }
-	.share-text { font-size: 22px; }
-}
 /*------------------------------*\
 	$STREAM
 \*------------------------------*/

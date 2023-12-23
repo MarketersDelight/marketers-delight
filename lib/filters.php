@@ -94,6 +94,16 @@ function md_filter_template() {
 }
 
 /**
+ * Get list of items that can be used in a Byline.
+ *
+ * @since 5.6
+ */
+
+function md_byline_items() {
+	return apply_filters( 'md_byline', array() );
+}
+
+/**
  * Compile Popups to load on any given page.
  *
  * @since 5.0
