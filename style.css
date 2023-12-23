@@ -2000,6 +2000,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /*------------------------------*\
 	$SHARE
 \*------------------------------*/
+.share { position: relative; }
+/* SHARE MENU */
 /*------------------------------*\
 	$STREAM
 \*------------------------------*/

@@ -118,32 +118,13 @@ class md_byline extends md_api {
 	}
 
 	/**
-	 * Display position field across various groups.
-	 *
-	 * @since 5.6
-	 */
-
-	public function position( $group ) {
-		$this->fields->field( array( 'builder', $group, 'position' ), array(
-			'type' => 'select',
-			'label' => __( 'Position', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
-			'options' => array(
-				'before_headline' => __( 'Before Headline', 'md' ),
-				'after_headline' =>  __( 'After Headline', 'md' ),
-				'after_post' =>  __( 'After Post', 'md' )
-			)
-		) );
-	}
-
-	/**
 	 * Author fields.
 	 *
 	 * @since 5.6
 	 */
 
 	public function author( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
@@ -170,7 +151,7 @@ class md_byline extends md_api {
 	 */
 
 	public function date( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
@@ -189,7 +170,7 @@ class md_byline extends md_api {
 	 */
 
 	public function last_updated( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',
@@ -206,7 +187,7 @@ class md_byline extends md_api {
 	 */
 
 	public function comments( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
@@ -232,7 +213,7 @@ class md_byline extends md_api {
 	 */
 
 	public function category( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 	}
 
 	/**
@@ -242,7 +223,7 @@ class md_byline extends md_api {
 	 */
 
 	public function badge( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',
@@ -267,7 +248,7 @@ class md_byline extends md_api {
 	 */
 
 	public function edit( $group ) {
-		$this->position( $group );
+		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',

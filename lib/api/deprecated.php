@@ -25,6 +25,18 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Filter comments classes.
+ *
+ * @since 5.0.9
+ */
+function md_filter_comments_classes() {
+	$classes = array();
+	$classes[] = 'comments';
+	$classes = apply_filters( 'md_filter_comments_classes', $classes );
+	return join( ' ', $classes );
+}
+
+/**
  * Checks for content headline.
  *
  * @since 4.1

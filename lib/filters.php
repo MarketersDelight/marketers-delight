@@ -2,7 +2,7 @@
 /**
  * This file contains most actions and filters registered
  * throughout Marketers Delight. For use in Drop-ins and
- * Child Themes. Search FILTERS or HOOKS
+ * Child Themes.
  */
 
 // Exit if accessed directly
@@ -111,20 +111,6 @@ function md_byline_items() {
 
 function md_filter_popups() {
 	return apply_filters( 'md_filter_popups', array() );
-}
-
-/**
- * Filter comments classes.
- *
- * @since 5.0.9
- */
-
-function md_filter_comments_classes() {
-	$classes = array();
-	$classes[] = 'comments';
-	$classes = apply_filters( 'md_filter_comments_classes', $classes );
-
-	return join( ' ', $classes );
 }
 
 /**

@@ -737,11 +737,40 @@ class md_fields {
 	 * @since 5.6
 	 */
 
-	public function page_fields( ){
+	public function page_fields() {
 		$cta_type = $this->get_field( 'page_cta' );
 		$prefix = $this->_prefix;
 
 		include( 'page-fields.php' );
+	}
+
+	/**
+	 * A valet method to render the Byline Position field
+	 * when adding custom byline items.
+	 *
+	 * @since 5.6
+	 */
+
+	public function byline_fields( $group, $args = array() ) {
+		if ( isset( $args['dropin'] ) )
+			$this->field( array( 'builder', $group, 'dropin' ), array(
+				'id' => 'byline',
+				'type' => 'text',
+				'hidden' => true,
+				'default' => $args['dropin']
+			) );
+
+		$this->field( array( 'builder', $group, 'position' ), array(
+			'id' => 'byline',
+			'type' => 'select',
+			'label' => __( 'Position', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'before_headline' => __( 'Before Headline', 'md' ),
+				'after_headline' =>  __( 'After Headline', 'md' ),
+				'after_post' =>  __( 'After Post', 'md' )
+			)
+		) );
 	}
 
 	/**
