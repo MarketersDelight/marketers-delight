@@ -59,11 +59,6 @@ class md_api {
 		if ( method_exists( $this, 'onscroll' ) ) #since 5.4.2
 			add_filter( 'md_js_onscroll', array( $this, 'onscroll' ) );
 
-		// Utilities
-
-		if ( method_exists( $this, 'after_setup_theme' ) )
-			add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) );
-
 		// Frontend
 
 		if ( method_exists( $this, 'template' ) )
@@ -81,10 +76,13 @@ class md_api {
 		// Filters
 
 		if ( method_exists( $this, 'post_type_meta' ) )
-			add_filter( 'md_post_type_meta', array( $this, 'post_type_meta' ) );
+			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 
 		if ( method_exists( $this, 'taxonomy_meta' ) )
-			add_filter( 'md_taxonomy_meta', array( $this, 'taxonomy_meta' ) );
+			add_filter( 'md_taxonomy_meta', array( $this, 'term_meta' ) );
+
+		if ( method_exists( $this, 'byline' ) )
+			add_filter( 'md_byline', array( $this, 'byline' ) );
 
 		// Admin
 

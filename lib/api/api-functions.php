@@ -58,7 +58,7 @@ function md_template( $file, $path = null, $include = null ) {
 	if ( ( isset( $path ) && ! is_string( $path ) ) || isset( $include ) )
 		return $template;
 
-	return load_template( $template, false );
+	return load_template( esc_attr( $template ), false );
 }
 
 /**

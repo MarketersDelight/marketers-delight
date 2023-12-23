@@ -15,7 +15,7 @@ class md_byline extends md_api {
 	 */
 
 	public function elements() {
-		return array(
+		return apply_filters( 'md_byline', array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
 				'hide_title' => false,
@@ -65,7 +65,7 @@ class md_byline extends md_api {
 				'icon' => 'edit',
 				'callback' => array( $this, 'edit' )
 			)
-		);
+		) );
 	}
 
 	/**
@@ -93,6 +93,7 @@ class md_byline extends md_api {
 				'fields' => array(
 					'type' => array( 'type' => 'text' ),
 					'area' => array( 'type' => 'text' ),
+					'dropin' => array( 'type' => 'text' ),
 					'title' => array( 'type' => 'text' ),
 					'position' => array(
 						'type' => 'select',

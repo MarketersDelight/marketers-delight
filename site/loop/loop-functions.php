@@ -72,7 +72,6 @@ function md_loop( $args = array() ) {
 	$post_type = md_get_post_type();
 	$loop = md_get_loop();
 	$loops = md_loops();
-//	$byline = md_get_byline();
 	$featured = md_module( array( 'loop', 'featured' ), '0' );
 	$columns = md_module( array( 'loop', 'columns' ), 1 );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
@@ -311,7 +310,12 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 	echo '<div class="' .  esc_attr( $classes ) . '">';
 
 	foreach ( $items as $item => $fields )
-		include( md_template( "byline/$item", true ) );
+		if ( isset( $fields['dropin'] ) ) {
+			$path = $fields['dropin'];
+			include( md_template( 'dropins', "$path/$path", true ) );
+		}
+		else
+			include( md_template( "byline/$item", true ) );
 
 	echo '</div>';
 }
