@@ -315,7 +315,7 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 			$items = md_byline_items();
 
 			if ( isset( $items[$path]['template'] ) )
-				call_user_func( $items[$path]['template'] );
+				call_user_func( $items[$path]['template'], $fields );
 		}
 		else
 			include( md_template( "byline/$item", true ) );

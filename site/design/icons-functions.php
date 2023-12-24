@@ -272,6 +272,10 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e81c',
 			'label' => __( 'Share', 'md' )
 		),
+		'social' => array(
+			'unicode' => 'e900',
+			'label' => __( 'Social', 'md' )
+		),
 		'skype' => array(
 			'unicode' => 'f17e',
 			'label' => __( 'Skype', 'md' )
