@@ -9,6 +9,16 @@
 class md_byline extends md_api {
 
 	/**
+	 * Include additional files.
+	 *
+	 * @since 5.6
+	 */
+
+	public function includes() {
+		require_once( 'byline-functions.php' );
+	}
+
+	/**
 	 * Load byline action hooks and filters.
 	 *
 	 * @since 5.6

@@ -32,6 +32,7 @@
 @media all and (min-width: 800px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-standard.outer, .layout-slim.outer, .full .category-header { text-align: center; }
+	.expanded .byline { justify-content: center; }
 	.layout-standard.outer .description,
 	.layout-standard.outer .page-cta,
 	.full .category-header {
@@ -100,7 +101,9 @@
 /* BYLINE */
 
 .byline {
+	align-items: center;
 	color: <?php echo $colors['site']['text-sec']; ?>;
+	display: flex;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	position: relative;
 }
@@ -117,8 +120,6 @@
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
 .byline .author-link:hover { border-bottom: 0; }
-
-.byline-item { display: inline-block; }
 
 .byline-item .md-icon-twitter { color: #1da1f2; }
 
