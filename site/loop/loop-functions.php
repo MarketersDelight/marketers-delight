@@ -279,6 +279,7 @@ function md_get_byline( $position ) {
 		if ( $context == $fields['area'] && $position == $fields['position'] ) {
 			$type = $fields['type'];
 			$byline[$type] = $fields;
+			$byline[$type]['id'] = $id;
 		}
 
 	return $byline;

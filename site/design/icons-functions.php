@@ -139,6 +139,10 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e812',
 			'label' => __( 'Clock', 'md' )
 		),
+		'copy' => array(
+			'unicode' => 'e901',
+			'label' => __( 'Copy', 'md' )
+		),
 		'location' => array(
 			'unicode' => 'e947',
 			'label' => __( 'Location', 'md' )
