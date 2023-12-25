@@ -79,6 +79,15 @@ accordion: function( parent ) {
 		}
 	}
 },
+clipboard: function() {
+	var copy = document.getElementsByClassName( 'copy' );
+	for ( var i = 0; i < copy.length; i++ ) {
+		copy[i].onclick = function( e ) {
+			var val = this.getAttribute( 'data-md-copy' );
+			navigator.clipboard.writeText( val );
+		}
+	}
+},
 toggle: function( item, closeOut = false ) {
 	var toggles = document.getElementsByClassName( item + '-toggle' );
 	for ( var i = 0; i < toggles.length; i++ ) {

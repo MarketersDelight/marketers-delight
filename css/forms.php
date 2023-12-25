@@ -66,6 +66,40 @@ select { max-width: 100%; }
 	content: '\e810';
 }
 
+/* TOOLTIP */
+
+.tooltip {
+	background-color: rgba(0, 0, 0, 0.8);
+	border-radius: 5px;
+	color: #fff;
+	cursor: default;
+	display: none;
+	font-size: 14px;
+	line-height: 1;
+	margin-left: -80px;
+	padding: <?php echo $third; ?>px;
+	position: absolute;
+		left: 50%;
+		top: -40px;
+	text-align: center;
+	width: 160px;
+}
+
+.tooltip:after {
+	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+	border-style: solid;
+	border-width: 5px;
+	content: '';
+	margin-left: -5px;
+	position: absolute;
+		left: 50%;
+		top: 100%;
+}
+
+.tooltip-parent { position: relative; }
+
+.tooltip-parent:hover .tooltip { display: block; }
+
 /* LAYOUT */
 
 .inline-form { display: flex; }

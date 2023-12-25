@@ -103,6 +103,7 @@ class md_byline extends md_api {
 			'area' => array( 'type' => 'text' ),
 			'dropin' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
+			'label' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
 				'options' => array( 'before_headline', 'after_headline', 'after_post' )

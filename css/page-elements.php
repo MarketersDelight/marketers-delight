@@ -32,7 +32,9 @@
 @media all and (min-width: 800px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-standard.outer, .layout-slim.outer, .full .category-header { text-align: center; }
-	.expanded .byline { justify-content: center; }
+	.expanded .byline,
+	.header-cover .byline,
+	.header .byline { justify-content: center; }
 	.layout-standard.outer .description,
 	.layout-standard.outer .page-cta,
 	.full .category-header {
@@ -107,7 +109,7 @@
 	position: relative;
 }
 
-.byline a {
+.byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	text-decoration: none;
 }
