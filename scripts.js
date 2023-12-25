@@ -79,12 +79,19 @@ accordion: function( parent ) {
 		}
 	}
 },
-toggle: function( item ) {
+toggle: function( item, closeOut = false ) {
 	var toggles = document.getElementsByClassName( item + '-toggle' );
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
-			var toggleID = this.getAttribute( 'data-' + item + '-toggle' );
-			MD.toggleClass( document.getElementById( toggleID ), 'toggle-' + item );
+			var toggleID = this.getAttribute( 'data-' + item + '-toggle' ),
+				parent = document.getElementById( toggleID );
+			MD.toggleClass( parent, 'toggle-' + item );
+			if ( closeOut == true ) {
+				document.onclick = function( e ) {
+					if ( ! parent.contains( e.target ) )
+						MD.removeClass( parent, 'toggle-' + item );
+				}
+			}
 		}
 	}
 },
@@ -335,59 +342,44 @@ popups: {
 	        video.pause();
 	}
 },
-share: {
-	init: function() {
-		MD.share.window();
-		MD.share.like();
-	},
-	window: function() {
-		shares = document.querySelectorAll( '[data-share]' );
-		for ( var i = 0; i < shares.length; i++ ) {
-			shares[i].onclick = function() {
-				window.open( this.getAttribute( 'href' ), 'newWindow','left=100, top=150, width=600, height=300, toolbar=0, resizable=1' );
-				return false;
-			}
-		}
-	},
-	like: function() {
-		var name = 'md_likes',
-			likes = document.getElementsByClassName( 'share-like' );
-		for ( var i = 0; i < likes.length; i++ ) {
-			likes[i].onclick = function( e ) {
-				e.preventDefault();
-				if ( ! MD.hasClass( this, 'liked' ) ) {
-					var post_id = this.getAttribute( 'data-share-id' );
-					if ( post_id == null )
-						return;
-					var post_type = this.getAttribute( 'data-share-type' ),
-						counts = document.getElementsByClassName( 'share-count' ),
-						request = new XMLHttpRequest();
-					for ( var l = 0; l < counts.length; l++ ) {
-						var countLike = counts[l].parentElement;
-						if ( countLike.getAttribute( 'data-share-id' ) === post_id ) {
-							MD.addClass( countLike, 'liked' );
-							if ( ! MD.hasClass( countLike, 'share-like-total' ) )
-								counts[l].innerHTML++;
-						}
+like: function() {
+	var name = 'md_likes',
+		likes = document.getElementsByClassName( 'share-like' );
+	for ( var i = 0; i < likes.length; i++ ) {
+		likes[i].onclick = function( e ) {
+			e.preventDefault();
+			if ( ! MD.hasClass( this, 'liked' ) ) {
+				var post_id = this.getAttribute( 'data-share-id' );
+				if ( post_id == null )
+					return;
+				var post_type = this.getAttribute( 'data-share-type' ),
+					counts = document.getElementsByClassName( 'share-count' ),
+					request = new XMLHttpRequest();
+				for ( var l = 0; l < counts.length; l++ ) {
+					var countLike = counts[l].parentElement;
+					if ( countLike.getAttribute( 'data-share-id' ) === post_id ) {
+						MD.addClass( countLike, 'liked' );
+						if ( ! MD.hasClass( countLike, 'share-like-total' ) )
+							counts[l].innerHTML++;
 					}
-					request.open( 'POST', MDJS.ajaxurl, true );
-					request.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' );
-					request.onreadystatechange = function() {
-						if ( request.readyState === 4 && request.status === 200 ) {
-							var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [],
-								totals = document.getElementsByClassName( 'share-total' );
-							liked.push( post_id );
-							if ( totals )
-								for ( var t = 0; t < totals.length; t++ ) {
-									var totalLikes = totals[t].parentElement;
-									if ( totalLikes.getAttribute( 'data-share-type' ) === post_type )
-										totals[t].innerHTML++;
-								}
-							MD.cookie.create( name, JSON.stringify( liked ), 365 );
-						}
-					};
-					request.send( 'action=md_like&post_id=' + post_id + '&type=' + post_type + '&nonce=' + MDJS.nonce );
 				}
+				request.open( 'POST', MDJS.ajaxurl, true );
+				request.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' );
+				request.onreadystatechange = function() {
+					if ( request.readyState === 4 && request.status === 200 ) {
+						var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [],
+							totals = document.getElementsByClassName( 'share-total' );
+						liked.push( post_id );
+						if ( totals )
+							for ( var t = 0; t < totals.length; t++ ) {
+								var totalLikes = totals[t].parentElement;
+								if ( totalLikes.getAttribute( 'data-share-type' ) === post_type )
+									totals[t].innerHTML++;
+							}
+						MD.cookie.create( name, JSON.stringify( liked ), 365 );
+					}
+				};
+				request.send( 'action=md_like&post_id=' + post_id + '&type=' + post_type + '&nonce=' + MDJS.nonce );
 			}
 		}
 	}

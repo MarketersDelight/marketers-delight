@@ -64,14 +64,22 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 	elseif ( empty( $items ) )
 		return;
 
-	$classes = 'byline';
+	$c = 1;
+	$total = count( $items );
+	$classes = array( 'byline' );
 
 	if ( isset( $args['classes'] ) )
-		$classes .= ' ' . $args['classes'];
+		$classes[] = $args['classes'];
+
+	$classes[] = 'items-' . $total;
+
+	$classes = join( ' ', $classes );
 
 	echo '<div class="' .  esc_attr( $classes ) . '">';
 
-	foreach ( $items as $item => $fields )
+	foreach ( $items as $item => $fields ) {
+		$fields['c'] = $c;
+
 		if ( isset( $fields['dropin'] ) ) {
 			$path = $fields['dropin'];
 			$items = md_byline_items();
@@ -81,6 +89,9 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 		}
 		else
 			include( md_template( "byline/$item", true ) );
+
+		$c++;
+	}
 
 	echo '</div>';
 }

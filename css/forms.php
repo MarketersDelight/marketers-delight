@@ -108,3 +108,15 @@ select { max-width: 100%; }
 
 .has-search .search-input, .has-search .search-submit,
 .form-toggle .trigger-search { display: block; }
+
+/* STYLES */
+
+.form-small .input {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	padding: <?php echo $third; ?>px;
+}
+
+.form-small .input-icon label {
+	padding-bottom: <?php echo $small; ?>px;
+	padding-top: <?php echo $small; ?>px;
+}

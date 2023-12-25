@@ -80,12 +80,19 @@ accordion: function( parent ) {
 		}
 	}
 },
-toggle: function( item ) {
+toggle: function( item, closeOut = false ) {
 	var toggles = document.getElementsByClassName( item + '-toggle' );
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
-			var toggleID = this.getAttribute( 'data-' + item + '-toggle' );
-			MD.toggleClass( document.getElementById( toggleID ), 'toggle-' + item );
+			var toggleID = this.getAttribute( 'data-' + item + '-toggle' ),
+				parent = document.getElementById( toggleID );
+			MD.toggleClass( parent, 'toggle-' + item );
+			if ( closeOut == true ) {
+				document.onclick = function( e ) {
+					if ( ! parent.contains( e.target ) )
+						MD.removeClass( parent, 'toggle-' + item );
+				}
+			}
 		}
 	}
 },

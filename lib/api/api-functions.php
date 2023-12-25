@@ -230,9 +230,9 @@ function md_js_object( $args ) {
 if ( ! function_exists( 'md_inline_js' ) ) :
 	function md_inline_js() {
 		if ( md_has_menu() )
-			wp_add_inline_script( 'marketers-delight', "\tMD.headerMenu();" );
+			wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
 		if ( is_singular() && md_has_comments() )
-			wp_add_inline_script( 'marketers-delight', "\tMD.toggle( 'comment' );" );
+			wp_add_inline_script( 'marketers-delight', "MD.toggle('comment');" );
 	}
 endif;
 

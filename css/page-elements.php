@@ -104,17 +104,17 @@
 	align-items: center;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: flex;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	position: relative;
 }
-
-.columns .byline { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
-
-.post-header .byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .byline a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	text-decoration: none;
+}
+
+.byline-item {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 }
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
@@ -128,7 +128,7 @@
 	position: relative;
 }
 
-.byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
+.byline-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 
 .byline .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
@@ -140,6 +140,10 @@
 	font-weight: <?php echo $bold; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 }
+
+.columns .byline { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
+
+.post-header .byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 /* AUTHOR BOX */
 

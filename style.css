@@ -440,6 +440,15 @@ select { max-width: 100%; }
 .has-search .search-form .trigger-text { display: none; }
 .has-search .search-input, .has-search .search-submit,
 .form-toggle .trigger-search { display: block; }
+/* STYLES */
+.form-small .input {
+	font-size: 14px;
+	padding: 10px;
+}
+.form-small .input-icon label {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
 /*------------------------------*\
 	$MENUS
 \*------------------------------*/
@@ -722,14 +731,15 @@ select { max-width: 100%; }
 	align-items: center;
 	color: #777777;
 	display: flex;
-	font-size: 16px;
 	position: relative;
 }
-.columns .byline { font-size: 15px; }
-.post-header .byline:not(:last-child) { margin-bottom: 15px; }
 .byline a {
 	color: #777777;
 	text-decoration: none;
+}
+.byline-item {
+	color: #777777;
+	font-size: 16px;
 }
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 .byline .author-link:hover { border-bottom: 0; }
@@ -738,7 +748,7 @@ select { max-width: 100%; }
 	margin-right: 5px;
 	position: relative;
 }
-.byline-item:not(:last-child) { margin-right: 10px; }
+.byline-item:not(:last-child) { margin-right: 15px; }
 .byline .badge { font-size: 15px; }
 .byline-date-modified { font-style: italic; }
 .byline-sticky {
@@ -747,6 +757,8 @@ select { max-width: 100%; }
 	font-weight: bold;
 	margin-bottom: 15px;
 }
+.columns .byline { font-size: 15px; }
+.post-header .byline:not(:last-child) { margin-bottom: 15px; }
 /* AUTHOR BOX */
 .author-box {
 	background-color: #EDF6FD;
@@ -2421,7 +2433,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /*------------------------------*\
 	$SHARE
 \*------------------------------*/
-.byline .share:last-child { margin-left: auto; }
+.byline .byline-item + .share:last-child { margin-left: auto; }
 .byline .share:not(:last-child) { margin-right: 15px; }
 .share-wrap, .share-links, .share-link, .share-icon {
 	align-items: center;
@@ -2429,26 +2441,25 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	justify-content: center;
 }
 .share-link:not(:first-child), .share-menu + .share-links { margin-left: 15px; }
+.items-1 .share { flex: 1; }
+.items-1 .share-links { margin-left: auto; }
+.items-1 .share-menu-wrap { left: -15px; }
 /* ICONS */
 .share-icon {
 	background-color: #FFFFFF;
 	border-radius: 50%;
 	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
 	color: #fff;
-	font-size: 20px;
-	height: 39px;
+	height: 34px;
 	line-height: 1;
 	transition: 0.3s;
-	width: 39px;
+	width: 34px;
 }
 .share-link:not(.liked):hover .share-icon { transform: scale(1.1); }
-.share-text {
-	font-size: 22px;
-	margin-right: 10px;
-}
+.share-text { margin-right: 10px; }
+.share-number { font-size: 22px; }
 .share-toggle { cursor: pointer; }
 .share-toggle .share-icon { color: #22a340; }
-.share-toggle .share-text { font-size: 18px; }
 .share-like.liked {
 	color: #E60177 !important;
 	cursor: default;
@@ -2462,42 +2473,59 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	border: 1px solid #CCCCCC;
 	border-radius: 5px;
 	box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-	color: #1E1E1E;
 	display: none;
 	min-width: 348px;
+	margin-top: 15px;
 	padding: 15px;
 	position: absolute;
-		top: 59px;
 		right: -10px;
 	z-index: 100;
 }
 .toggle-share .share-menu-wrap { display: block; }
-.share-menu-wrap:before, .share-menu-wrap:after {
+.share-toggle { position: relative; }
+.share-toggle:before, .share-toggle:after {
 	border-bottom: 10px solid #fff;
 	border-left: 10px solid transparent;
 	border-right: 10px solid transparent;
 	content: '';
+	display: none;
 	height: 0;
 	position: absolute;
-		top: -10px;
-		right: 20px;
+		bottom: -16px;
+		right: 44px;
 	width: 0;
-	z-index: 2;
+	z-index: 102;
 }
-.share-menu-wrap:after {
+.share-toggle:after {
 	border-bottom-color: #CCCCCC;
-	top: -11px;
-	z-index: 1;
+	bottom: -15px;
+	z-index: 101;
 }
+.toggle-share .share-toggle:before, .toggle-share .share-toggle:after { display: block; }
 .share-menu .share-menu-title {
 	font-weight: bold;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
+	text-align: center;
 }
 .share-menu .share-links { justify-content: space-evenly; }
 .share-menu .share-links:not(:last-child) {
 	border-bottom: 1px solid #CCCCCC;
 	margin-bottom: 15px;
 	padding-bottom: 15px;
+}
+.share-menu-wrap .share-icon {
+	font-size: 20px;
+	height: 44px;
+	width: 44px;
+}
+/* QUERIES */
+@media all and (max-width: 700px) {
+	.share-menu { position: static; }
+	.share-menu-wrap {
+		min-width: 100%;
+		right: 0;
+		width: 100%;
+	}
 }
 /*------------------------------*\
 	$STREAM
