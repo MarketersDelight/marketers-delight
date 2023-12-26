@@ -12,6 +12,8 @@ function md_headline_classes( $classes = array() ) {
 function md_filter_css_values() { return apply_filters( 'md_filter_css_values', array() ); }
 function md_logo_html() { return apply_filters( 'md_filter_logo_html', 'div' ); }
 function md_button( $fields ) { md_link( $fields ); }
+function md_hook_before_headline() { do_action( 'md_hook_before_headline' ); }
+function md_hook_after_headline() { do_action( 'md_hook_after_headline' ); }
 function md_hook_headline_top() { do_action( 'md_hook_headline_top' ); }
 function md_hook_headline_bottom() { do_action( 'md_hook_headline_bottom' ); }
 function md_hook_content_item_text_top() { do_action( 'md_hook_content_item_text_top' ); }
