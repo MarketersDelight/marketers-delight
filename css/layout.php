@@ -41,7 +41,7 @@
 }
 
 @media all and (min-width: 900px) {
-	.expanded .post-header, .header .post-header, #content > .post-header, .full .breadcrumbs { text-align: center; }
+	.expanded .post-header, .header .post-header, #content > .post-header { text-align: center; }
 	.article .header-cover, .header .header-cover-full {
 		padding-bottom: <?php echo $mid; ?>px;
 		padding-top: <?php echo $mid; ?>px;

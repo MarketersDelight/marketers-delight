@@ -33,7 +33,7 @@
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-standard.outer, .layout-slim.outer, .full .category-header { text-align: center; }
 	.expanded .byline,
-	.header-cover .byline,
+	.article .header-cover .byline,
 	.header .byline { justify-content: center; }
 	.layout-standard.outer .description,
 	.layout-standard.outer .page-cta,
