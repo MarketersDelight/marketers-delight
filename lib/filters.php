@@ -114,6 +114,39 @@ function md_filter_popups() {
 }
 
 /**
+ * A list of post types and taxonomies to enable MD Optins features to.
+ *
+ * @since 5.0
+ */
+
+function md_optins_locations( $sort = null ) {
+	$locations = array();
+	$data = apply_filters( 'md_optins_locations', array(
+		'sitewide' => __( 'Sitewide', 'md' ),
+		'front' => __( 'Front Page', 'md' ),
+		'home' => __( 'Blog Page', 'md' ),
+		'post' => __( 'All Posts', 'md' ),
+		'category' => __( 'All Categories', 'md' ),
+		'page' => __( 'All Pages', 'md' ),
+		'author' => __( 'All Author Pages', 'md' ),
+		'search' => __( 'Search Results', 'md' )
+	) );
+
+	if ( isset( $sort ) ) {
+		foreach ( $data as $id => $label ) {
+			if ( $sort == 'ids' )
+				$locations[] = $id;
+			elseif ( $sort == 'options' )
+				$locations[$id] = $label;
+		}
+	}
+	else
+		$locations = $data;
+
+	return $locations;
+}
+
+/**
  * Manage number of footer columns with an array of digits.
  *
  * @since 4.5

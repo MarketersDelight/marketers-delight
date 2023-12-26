@@ -383,51 +383,6 @@ class md_site_design extends md_api {
 new md_site_design;
 
 /**
- * A list of post types and taxonomies to enable MD Optins features to.
- *
- * @since 5.0
- * @moved to /md-dropins/optins/
- */
-function md_optins_locations( $sort = null ) {
-	$defaults = array(
-		'sitewide' => __( 'Sitewide', 'md' ),
-		'front' => __( 'Front Page', 'md' ),
-		'home' => __( 'Blog Page', 'md' ),
-		'post' => __( 'All Posts', 'md' ),
-		'category' => __( 'All Categories', 'md' ),
-		'page' => __( 'All Pages', 'md' ),
-		'author' => __( 'All Author Pages', 'md' ),
-		'search' => __( 'Search Results', 'md' ),
-	);
-	$filter = apply_filters( 'md_optins_locations', array() );
-	if ( isset( $sort ) ) {
-		if ( $sort == 'ids' ) {
-			foreach ( $defaults as $id => $label )
-				$locations[] = $id;
-			foreach ( $filter as $group => $fields )
-				foreach ( $fields as $key => $label )
-					if ( ! in_array( $key, array( 'archive', 'single' ) ) )
-						$locations[] = $key;
-					else
-						$locations[] = "{$group}_{$key}";
-		}
-		elseif ( $sort == 'options' ) {
-			$locations = $defaults;
-			foreach ( $filter as $group => $fields )
-				foreach ( $fields as $key => $label )
-					if ( ! in_array( $key, array( 'archive', 'single' ) ) )
-						$locations[$key] = $label;
-					else
-						$locations["{$group}_{$key}"] = $label;
-
-		}
-	}
-	else
-		$locations = array_merge( $defaults, $filter );
-	return $locations;
-}
-
-/**
  * Returns custom page nav menu.
  *
  * @since 4.1
