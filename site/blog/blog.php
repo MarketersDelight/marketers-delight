@@ -15,8 +15,8 @@ class md_post extends md_api {
 
 	public function register() {
 		$page_settings = $this->fields->data->page_settings();
-		$page_settings['link_primary'] = $this->fields->data->links( array( 'save' => true ) );
-		$page_settings['link_secondary'] = $this->fields->data->links( array( 'save' => true ) );
+		$page_settings['link_primary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
+		$page_settings['link_secondary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
 
 		return array(
 			'admin_page' => array(

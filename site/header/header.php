@@ -25,7 +25,7 @@ class md_header extends md_api {
 
 	public function register() {
 		$menus = $this->_data( 'menus' );
-		$links = $this->fields->data->links( array( 'save' => true ) );
+		$links = $this->fields->data->links( array( 'sort' => 'save' ) );
 		$typography = $this->fields->data->typography();
 		$builder = array_merge( array(
 			'type' => array( 'type' => 'text' ),

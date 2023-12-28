@@ -27,17 +27,14 @@
 
 .title-wrap, .description, .page-image, .page-cta { position: relative; }
 
-.image-below-headline .title-wrap, .image-below-headline .title { flex-basis: 100%; }
+.image-below-headline .title-wrap, .image-below-headline .title,
+.image-center .title, .image-center .description,
+.image-above-headline .title, .image-above-headline .description { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
-	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 	.layout-standard.outer, .layout-slim.outer, .full .category-header { text-align: center; }
-	.expanded .byline,
-	.article .header-cover .byline,
-	.header .byline { justify-content: center; }
-	.layout-standard.outer .description,
-	.layout-standard.outer .page-cta,
-	.full .category-header {
+	.expanded .byline, .article .header-cover .byline, .header .byline { justify-content: center; }
+	.layout-standard.outer .description, .layout-standard.outer .page-cta, .full .category-header {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
@@ -77,12 +74,19 @@
 		order: -1;
 		margin-bottom: <?php echo $single; ?>px;
 	}
+	.title-wrap:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+}
+
+@media all and (min-width: 700px) {
+	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 700px) {
 	.page-cta-link {
 		display: block;
 		text-align: center;
 		width: 100%;
 	}
-	.title-wrap:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 

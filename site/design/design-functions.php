@@ -165,8 +165,6 @@ function md_google_fonts( $format = null ) {
  * Build custom inline CSS on the fly with data from
  * custom values and disperse into media queries.
  *
- * Uses a "hack" to auto print styles to head.
- *
  * @since 5.6
  */
 
@@ -290,7 +288,7 @@ function md_link( $fields ) {
 	$text = isset( $fields['title'] ) ? $fields['title'] : '';
 	$text = isset( $fields['link_text'] ) ? $fields['link_text'] : $text;
 	$url = isset( $fields['link_url'] ) ? $fields['link_url'] : '';
-	$phone = isset( $fields['plink_hone'] ) ? $fields['link_phone'] : '';
+	$phone = isset( $fields['link_phone'] ) ? $fields['link_phone'] : '';
 	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
 	$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
 	$icon_classes = 'link-icon';
@@ -354,10 +352,6 @@ function md_link( $fields ) {
 
 	if ( $classes )
 		$class = ' class="' . esc_attr( $classes ) . '"';
-?>
 
-	<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
-		<?php echo ( isset( $fields['link_icon'] ) ? md_icon( $fields['link_icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
-		<?php echo ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
-
-<?php }
+	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields['link_icon'] ) ? md_icon( $fields['link_icon'], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . "</$html>";
+}

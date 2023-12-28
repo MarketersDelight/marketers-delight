@@ -83,68 +83,68 @@ class md_fields_data {
 		$group = isset( $args['group'] ) ? $args['group'] : array();
 		$fields = array(
 			'link_text' => array(
-				'field' => "{$p}link_text",
+				'field' => "link{$p}_text",
 				'save' => array( 'type' => 'text' )
 			),
 			'link_type' => array(
-				'field' => "{$p}link_type",
+				'field' => "link{$p}_type",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'url', 'popup', 'phone' )
 				)
 			),
 			'link_style' => array(
-				'field' => "{$p}link_style",
+				'field' => "link{$p}_style",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'button' )
 				)
 			),
 			'link_icon' => array(
-				'field' => "{$p}link_icon",
+				'field' => "link{$p}_icon",
 				'save' => array(
 					'type' => 'select',
 					'options' => md_get_icons( 'ids' )
 				)
 			),
 			'link_url' => array(
-				'field' => "{$p}link_url",
+				'field' => "link{$p}_url",
 				'save' => array( 'type' => 'url' )
 			),
 			'link_target' => array(
-				'field' => "{$p}link_target",
+				'field' => "link{$p}_target",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'new' )
 				)
 			),
 			'link_toggle' => array(
-				'field' => "{$p}link_toggle",
+				'field' => "link{$p}_toggle",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'hide_label', 'hide_label_mobile' )
 				)
 			),
 			'link_phone' => array(
-				'field' => "{$p}link_phone",
+				'field' => "link{$p}_phone",
 				'save' => array( 'type' => 'text' )
 			),
 			'link_popup' => array(
-				'field' => "{$p}link_popup",
+				'field' => "link{$p}_popup",
 				'save' => array(
 					'type' => 'select',
 					'options' => md_get_popups( 'ids' )
 				)
 			),
 			'link_button_style' => array(
-				'field' => "{$p}link_button_style",
+				'field' => "link{$p}_button_style",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'outline' )
 				)
 			),
 			'link_button_color' => array(
-				'field' => "{$p}link_button_color",
+				'field' => "link{$p}_button_color",
 				'save' => array( 'type' => 'color' )
 			)
 		);
@@ -159,13 +159,17 @@ class md_fields_data {
 				$fields[$key]['field'] = array_merge( $group, $fields[$key]['field'] );
 			}
 
-		if ( isset( $args['save'] ) ) {
-			foreach ( $fields as $key => $options ) {
-				$field_key = $options['field'];
-				$save[$field_key] = $options['save'];
+		if ( isset( $args['sort'] ) ) {
+			$sort = array();
+
+			if ( $args['sort'] =='save' ) {
+				foreach ( $fields as $key => $options ) {
+					$field_key = $options['field'];
+					$sort[$field_key] = $options['save'];
+				}
 			}
 
-			$fields = $save;
+			$fields = $sort;
 		}
 
 		return $fields;

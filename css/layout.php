@@ -34,8 +34,7 @@
 	padding-right: <?php echo $half; ?>px;
 }
 
-.content .the-content.full,
-.header .cover, #content > .cover {
+.content .the-content.full, .header .cover, #content > .cover {
 	padding-left: 0;
 	padding-right: 0;
 }
@@ -50,10 +49,7 @@
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.expanded .the-content,
-	.expanded .post-footer,
-	.expanded .author-box,
-	.expanded .comments {
+	.expanded .the-content, .expanded .post-footer, .expanded .author-box, .expanded .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
