@@ -72,10 +72,15 @@ class md_fields_data {
 	 * @since 5.6
 	 */
 
+	/**
+	 * Collect a list of fields in a Links Group.
+	 *
+	 * @since 5.6
+	 */
+
 	public function links( $args = array() ) {
 		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
 		$group = isset( $args['group'] ) ? $args['group'] : array();
-
 		$fields = array(
 			'link_text' => array(
 				'field' => "{$p}link_text",
@@ -145,12 +150,8 @@ class md_fields_data {
 		);
 
 		if ( isset( $args['keys'] ) )
-			foreach ( $fields as $key => $settings ) {
-				$field_key = ! empty( $args['keys'][$key] ) ? esc_attr( $args['keys'][$key] ) : '';
-
-				if ( $field_key )
-					$fields[$key]['field'] = str_replace( $key, $field_key, $fields[$key]['field'] );
-			}
+			foreach ( $args['keys'] as $old => $new )
+				$fields[$old]['field'] = "{$p}$new";
 
 		if ( $group )
 			foreach ( $fields as $key => $field ) {
@@ -158,12 +159,14 @@ class md_fields_data {
 				$fields[$key]['field'] = array_merge( $group, $fields[$key]['field'] );
 			}
 
-		if ( isset( $args['save'] ) )
+		if ( isset( $args['save'] ) ) {
 			foreach ( $fields as $key => $options ) {
-//				$field_val = $fields[$key]['field'];
-				unset( $fields[$key] );
-				$fields[$key] = $options['save'];
+				$field_key = $options['field'];
+				$save[$field_key] = $options['save'];
 			}
+
+			$fields = $save;
+		}
 
 		return $fields;
 	}
