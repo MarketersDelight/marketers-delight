@@ -36,7 +36,7 @@
 		</div>
 
 		<div class="col md-sep-micro">
-			<?php $this->field( $fields['toggle']['field'], array(
+			<?php $this->field( $fields['link_toggle']['field'], array(
 				'type' => 'checkbox',
 				'classes' => 'field-no-label',
 				'options' => array(
@@ -51,7 +51,7 @@
 	<div class="columns-2 columns-25-50-25 columns-half md-sep-micro">
 
 		<div class="md-link-icon col col1">
-			<?php $this->field( $fields['icon']['field'], array(
+			<?php $this->field( $fields['link_icon']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Icon', 'md' ),
 				'empty_label' => __( 'Select icon', 'md' ),
@@ -60,14 +60,14 @@
 		</div>
 
 		<div class="col col2 is-url">
-			<?php $this->field( $fields['url']['field'], array(
+			<?php $this->field( $fields['link_url']['field'], array(
 				'type' => 'url',
 				'label' => __( 'URL', 'md' )
 			) ); ?>
 		</div>
 
 		<div class="col col2 is-phone">
-			<?php $this->field( $fields['phone']['field'], array(
+			<?php $this->field( $fields['link_phone']['field'], array(
 				'type' => 'text',
 				'label' => __( 'Phone Number', 'md' ),
 				'placeholder' => __( '(999) 999-9999', 'md' )
@@ -75,7 +75,7 @@
 		</div>
 
 		<div class="col col2 is-popup">
-			<?php $this->field( $fields['popup']['field'], array(
+			<?php $this->field( $fields['link_popup']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Open popup', 'md' ),
 				'empty_label' => __( 'Select a popup...', 'md' ),
@@ -96,7 +96,7 @@
 	<div class="is-button columns-25-50-25 columns-half">
 
 		<div class="col col1">
-			<?php $this->field( $fields['button_color']['field'], array(
+			<?php $this->field( $fields['link_button_color']['field'], array(
 				'type' => 'color',
 				'label' => __( 'Button Color', 'md' ),
 				'default' => md_setting( array( 'colors', 'site', 'button' ), '#22A340' )
@@ -104,7 +104,7 @@
 		</div>
 
 		<div class="col col2">
-			<?php $this->field( $fields['button_style']['field'], array(
+			<?php $this->field( $fields['link_button_style']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Button Style', 'md' ),
 				'empty_label' => __( 'Default', 'md' ),

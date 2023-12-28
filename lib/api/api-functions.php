@@ -645,7 +645,7 @@ function md_get_popups( $show = null ) {
 				if ( $show == 'ids' )
 					$popups[] = $popup;
 				elseif ( $show == 'options' )
-					$popups[$popup] = $fields['name'];
+					$popups[$popup] = isset( $fields['name'] ) ? $fields['name'] : __( 'Untitled', 'md' );
 
 		return $popups;
 	}

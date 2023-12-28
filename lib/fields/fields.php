@@ -780,8 +780,8 @@ class md_fields {
 	 * @since 5.0
 	 */
 
-	public function devices() { ?>
-		<div class="md-devices alignright">
+	public function devices( $spacing = true ) { ?>
+		<div class="md-devices alignright<?php echo $spacing == false ? ' mt-none' : ''; ?>">
 			<span id="desktop" class="md-device desktop active" title="<?php echo __( 'Switch to Desktop controls', 'md' ); ?>">
 				<i class="dashicons dashicons-desktop"></i>
 			</span>

@@ -289,8 +289,8 @@ function md_link( $fields ) {
 	$parent = isset( $fields['area'] ) ? $fields['area'] : '';
 	$text = isset( $fields['title'] ) ? $fields['title'] : '';
 	$text = isset( $fields['link_text'] ) ? $fields['link_text'] : $text;
-	$url = isset( $fields['url'] ) ? $fields['url'] : '';
-	$phone = isset( $fields['phone'] ) ? $fields['phone'] : '';
+	$url = isset( $fields['link_url'] ) ? $fields['link_url'] : '';
+	$phone = isset( $fields['plink_hone'] ) ? $fields['link_phone'] : '';
 	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
 	$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
 	$icon_classes = 'link-icon';
@@ -309,7 +309,7 @@ function md_link( $fields ) {
 	elseif ( $type == 'phone' ) {
 		$html = 'a';
 		$href = ' href="tel:' . esc_attr( $phone ) . '"';
-		$classes[] = $fields['icon'] = 'phone';
+		$classes[] = $fields['link_icon'] = 'phone';
 
 		if ( ! $text )
 			$text = esc_attr( $phone );
@@ -319,11 +319,11 @@ function md_link( $fields ) {
 		$button_color = '';
 		$classes[] = 'button';
 
-		if ( ! empty( $fields['button_color'] ) )
-			$button_color = $fields['button_color'];
+		if ( ! empty( $fields['link_button_color'] ) )
+			$button_color = $fields['link_button_color'];
 
-		if ( ! empty( $fields['button_style'] ) ) {
-			if ( $fields['button_style'] == 'outline' ) {
+		if ( ! empty( $fields['link_button_style'] ) ) {
+			if ( $fields['link_button_style'] == 'outline' ) {
 				$classes[] = 'button-outline';
 
 				if ( $button_color )
@@ -336,16 +336,16 @@ function md_link( $fields ) {
 	else
 		$classes[] = 'link';
 
-	if ( $type == 'popup' && isset( $fields['popup'] ) ) {
-		$popup = ' data-popup="md_popup_' . esc_attr( $fields['popup'] ) . '"';
+	if ( $type == 'popup' && isset( $fields['link_popup'] ) ) {
+		$popup = ' data-popup="md_popup_' . esc_attr( $fields['link_popup'] ) . '"';
 		$classes[] = 'md-popup-trigger';
-		md_popup( array( 'id' => esc_attr( $fields['popup'] ) ) );
+		md_popup( array( 'id' => esc_attr( $fields['link_popup'] ) ) );
 	}
 
-	if ( ! empty( $fields['toggle']['hide_label'] ) )
+	if ( ! empty( $fields['link_toggle']['hide_label'] ) )
 		$classes[] = 'hide-label';
 
-	if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
+	if ( ! empty( $fields['link_toggle']['hide_label_mobile'] ) )
 		$classes[] = 'hide-label-mobile';
 
 	$style = md_style( $styles );
@@ -357,7 +357,7 @@ function md_link( $fields ) {
 ?>
 
 	<<?php echo $html . $href . $popup . $class . $target . $style; ?>>
-		<?php echo ( isset( $fields['icon'] ) ? md_icon( $fields['icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
+		<?php echo ( isset( $fields['link_icon'] ) ? md_icon( $fields['link_icon'], array( 'classes' => $icon_classes ) ) : '' ); ?>
 		<?php echo ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ); ?></<?php echo $html; ?>>
 
 <?php }
