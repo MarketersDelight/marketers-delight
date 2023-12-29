@@ -46,7 +46,7 @@ function md_templates() {
 	add_action( 'md_hook_content_item', 'md_content_text', 40 );
 
 	if ( md_has_author_box() )
-		add_action( 'md_hook_content_item', 'md_author', 50 );
+		add_action( 'md_hook_content_item', 'md_author', 60 );
 
 	add_action( 'md_hook_content_item', 'md_comments', 60 );
 	add_action( 'md_hook_after_comments_list', 'md_comment_form' );

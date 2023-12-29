@@ -64,6 +64,7 @@
 	.inline .description, .author .inline .title-wrap { flex: 1; }
 	.inline .title-wrap, .image-center.inline .description { flex-basis: 100%; }
 	.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
+	.layout-columns .description:not(:last-child) { margin-bottom: 0; }
 }
 
 @media all and (max-width: 800px) {

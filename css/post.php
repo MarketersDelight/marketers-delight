@@ -35,8 +35,8 @@
 	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
 	.expanded .alignwide, .alignfull, .alignright.wrap { margin-right: -<?php echo $mid; ?>px; }
 	.expanded .alignwide, .alignfull, .alignleft.wrap { margin-left: -<?php echo $mid; ?>px; }
-	.alignwide, .alignright.wrap-small { margin-right: -<?php echo $half; ?>px; }
-	.alignwide, .alignleft.wrap-small { margin-left: -<?php echo $half; ?>px; }
+	.alignwide, .alignright.wrap-small { margin-right: -<?php echo $single; ?>px; }
+	.alignwide, .alignleft.wrap-small { margin-left: -<?php echo $single; ?>px; }
 }
 
 @media all and (max-width: 900px) {
