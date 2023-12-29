@@ -26,7 +26,7 @@ class md_page_title {
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 			$hook = 'md_hook_page_cover_title';
-		elseif ( $inline && md_has_sidebar() ) {
+		elseif ( $inline && md_has_sidebar() && ! is_author() ) {
 			$description_hook = 'md_hook_page_header_bottom';
 			$cta_hook = 'md_hook_after_description';
 		}
@@ -54,7 +54,8 @@ class md_page_title {
 				add_action( $image_hook, array( $this, 'image' ), $image_order );
 		}
 
-		add_action( $cta_hook, array( $this, 'cta' ) );
+		if ( ! is_author() )
+			add_action( $cta_hook, array( $this, 'cta' ) );
 	}
 
 	/**

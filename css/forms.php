@@ -130,12 +130,14 @@ select { max-width: 100%; }
 /* SEARCH */
 
 .search-submit {
-	flex-basis: 40%;
+	flex-basis: 25%;
 	margin-left: <?php echo $third; ?>px;
 }
 /*
 .has-search .form-controls .form-inputs { padding-left: <?php echo $half; ?>px; }
 */
+
+.has-search .form-inputs { flex: 1; }
 
 .form-toggle .search-input, .form-toggle .search-submit,
 .has-search .search-form .trigger-text { display: none; }

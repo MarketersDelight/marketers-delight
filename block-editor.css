@@ -463,7 +463,6 @@ div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
 	line-height: 88px;
 }
 div.editor-styles-wrapper .huge-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
@@ -471,7 +470,6 @@ div.editor-styles-wrapper .huge-title {
 	line-height: 57px;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
@@ -479,7 +477,6 @@ div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor
 	line-height: 50px;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
@@ -487,7 +484,6 @@ div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-s
 	line-height: 43px;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
@@ -495,7 +491,6 @@ div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-s
 	line-height: 39px;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
@@ -503,7 +498,6 @@ div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor
 	line-height: 37px;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
@@ -511,7 +505,6 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor
 	line-height: 28px;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-family: Merriweather;
 	font-weight: bold;
 }
 @media all and (max-width: 900px) {

@@ -81,7 +81,7 @@ function md_hook_before_content() {
 }
 
 function md_hook_after_content() {
-	do_action( 'md_hook_after_content' );
+	do_action( 'md_hook_after_content', 'content' );
 }
 
 function md_hook_loop_top() {

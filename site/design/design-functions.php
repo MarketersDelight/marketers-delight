@@ -169,6 +169,9 @@ function md_google_fonts( $format = null ) {
  */
 
 function md_inline_css( $args ) {
+	if ( empty( $args ) )
+		return;
+
 	$css = '';
 	$selectors = array();
 
