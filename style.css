@@ -2098,6 +2098,49 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	}
 }
 /*------------------------------*\
+	$FLOATING_BARS
+\*------------------------------*/
+.floating-bar {
+	background-color: #3E3E3E;
+	color: #fff;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	position: sticky;
+		bottom: 0;
+	transition: all 0.2s ease-in-out;
+	width: 100%;
+	z-index: 100;
+}
+.floating-bar a { color: #fffbcc; }
+.bar-wrap {
+	align-items: center;
+	display: flex;
+}
+.bar-content { flex: 1; }
+.bar-content .title {
+	font-size: 24px;
+	line-height: 37px;
+	margin-bottom: 0;
+}
+.bar-content .description {
+	font-size: 16px;
+	line-height: 26px;
+}
+.bar-media { margin-right: 29px; }
+.bar-icon {
+	background-color: rgba(255, 255, 255, 0.4);
+	color: inherit;
+	font-size: 26px;
+	line-height: 1;
+}
+.bar-cta { margin-left: 29px; }
+@media all and (max-width: 1045px) {
+	.bar-wrap {
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+}
+/*------------------------------*\
 	$SHARE
 \*------------------------------*/
 .byline-item + .share:last-child { margin-left: auto; }

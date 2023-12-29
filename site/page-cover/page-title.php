@@ -215,12 +215,12 @@ class md_page_title {
 			$primary = $this->get( 'link_primary' );
 
 			if ( $secondary ) {
-				$secondary['classes'] = 'page-cta-link';
+				$secondary['link_classes'] = 'page-cta-link';
 				echo md_link( $secondary );
 			}
 
 			if ( $primary ) {
-				$primary['classes'] = 'page-cta-link';
+				$primary['link_classes'] = 'page-cta-link';
 				echo md_link( $primary );
 			}
 		}

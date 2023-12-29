@@ -283,34 +283,34 @@ function md_style( $fields ) {
  * @since 4.3.5
  */
 
-function md_link( $fields ) {
+function md_link( $fields, $p = '' ) {
 	$classes = $styles = array();
 	$html = 'span';
 	$class = $href = $target = $popup = '';
-	$parent = isset( $fields['area'] ) ? $fields['area'] : '';
-	$text = isset( $fields['title'] ) ? $fields['title'] : '';
-	$text = isset( $fields['link_text'] ) ? $fields['link_text'] : $text;
-	$url = isset( $fields['link_url'] ) ? $fields['link_url'] : '';
-	$phone = isset( $fields['link_phone'] ) ? $fields['link_phone'] : '';
-	$style = isset( $fields['link_style'] ) ? $fields['link_style'] : 'link';
-	$type = isset( $fields['link_type'] ) ? $fields['link_type'] : 'url';
+	$parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
+	$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
+	$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
+	$url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
+	$phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
+	$style = isset( $fields["link{$p}_style"] ) ? $fields["link{$p}_style"] : 'link';
+	$type = isset( $fields["link{$p}_type"] ) ? $fields["link{$p}_type"] : 'url';
 	$icon_classes = 'link-icon';
 
 	if ( $parent )
 		$classes[] = "{$parent}-link";
 
-	if ( isset( $fields['classes'] ) )
-		$classes[] = esc_attr( $fields['classes'] );
+	if ( isset( $fields["link{$p}_classes"] ) )
+		$classes[] = esc_attr( $fields["link{$p}_classes"] );
 
 	if ( $type == 'url' && $url ) {
 		$html = 'a';
 		$href = ' href="' . esc_url( $url ) . '"';
-		$target = ( isset( $fields['link_target']['new'] ) ? ' target="_blank"' : '' );
+		$target = ( isset( $fields["link{$p}_target"]['new'] ) ? ' target="_blank"' : '' );
 	}
 	elseif ( $type == 'phone' ) {
 		$html = 'a';
 		$href = ' href="tel:' . esc_attr( $phone ) . '"';
-		$classes[] = $fields['link_icon'] = 'phone';
+		$classes[] = $fields["link{$p}_icon"] = 'phone';
 
 		if ( ! $text )
 			$text = esc_attr( $phone );
@@ -320,11 +320,11 @@ function md_link( $fields ) {
 		$button_color = '';
 		$classes[] = 'button';
 
-		if ( ! empty( $fields['link_button_color'] ) )
-			$button_color = $fields['link_button_color'];
+		if ( ! empty( $fields["link{$p}_button_color"] ) )
+			$button_color = $fields["link{$p}_button_color"];
 
-		if ( ! empty( $fields['link_button_style'] ) ) {
-			if ( $fields['link_button_style'] == 'outline' ) {
+		if ( ! empty( $fields["link{$p}_button_style"] ) ) {
+			if ( $fields["link{$p}_button_style"] == 'outline' ) {
 				$classes[] = 'button-outline';
 
 				if ( $button_color )
@@ -337,16 +337,16 @@ function md_link( $fields ) {
 	else
 		$classes[] = 'link';
 
-	if ( $type == 'popup' && isset( $fields['link_popup'] ) ) {
-		$popup = ' data-popup="md_popup_' . esc_attr( $fields['link_popup'] ) . '"';
+	if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
+		$popup = ' data-popup="md_popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
 		$classes[] = 'md-popup-trigger';
-		md_popup( array( 'id' => esc_attr( $fields['link_popup'] ) ) );
+		md_popup( array( 'id' => esc_attr( $fields["link{$p}_popup"] ) ) );
 	}
 
-	if ( ! empty( $fields['link_toggle']['hide_label'] ) )
+	if ( ! empty( $fields["link{$p}_toggle"]['hide_label'] ) )
 		$classes[] = 'hide-label';
 
-	if ( ! empty( $fields['link_toggle']['hide_label_mobile'] ) )
+	if ( ! empty( $fields["link{$p}_toggle"]['hide_label_mobile'] ) )
 		$classes[] = 'hide-label-mobile';
 
 	$style = md_style( $styles );
@@ -356,5 +356,5 @@ function md_link( $fields ) {
 	if ( $classes )
 		$class = ' class="' . esc_attr( $classes ) . '"';
 
-	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields['link_icon'] ) ? md_icon( $fields['link_icon'], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . "</$html>";
+	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . "</$html>";
 }
