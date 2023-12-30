@@ -186,10 +186,6 @@ floatingBars: {
 			MD.addClass( element, 'active' );
 			if ( ! MD.hasClass( element, 'top static' ) )
 				setTimeout( function() { MD.focusInputs( MD.floatingBar.id ); }, 100 );
-			if ( MD.floatingBar.position === 'top' ) {
-				var adminBar = MDJS.hasAdminBar ? 32 : 0;
-				document.getElementsByTagName( 'body' )[0].style.paddingTop = ( element.clientHeight + adminBar ) + 'px';
-			}
 		}
 	},
 	close: {

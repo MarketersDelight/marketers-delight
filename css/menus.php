@@ -18,6 +18,12 @@
 
 .menu .trigger-icon:after { content: '\e80e'; }
 
+.menu .button, .menu .button:hover {
+	background-color: transparent;
+	box-shadow: none;
+	padding: 0;
+}
+
 /* SUB MENU */
 
 .menu-item-has-children > a { flex-basis: 90%; }
@@ -40,7 +46,10 @@
 }
 
 @media all and (min-width: 800px) {
-	.menu { display: flex; }
+	.menu {
+		align-items: center;
+		display: flex;
+	}
 	.menu > .menu-item-has-children {
 		flex: 1 0 auto;
 		margin-right: <?php echo $half; ?>px;
@@ -82,6 +91,10 @@
 		flex-flow: wrap;
 	}
 	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
+	.menu .button, .menu .button:hover {
+		padding: <?php echo $half; ?>px;
+		width: 100%;
+	}
 	/* TOGGLE */
 	.toggle-menu > .trigger .trigger-icon:after { content: '\e817'; }
 	/* SUB MENU */
