@@ -205,19 +205,26 @@ function md_js_object( $args ) {
 	$string = '';
 	$g = 1;
 	$g_total = count( $args );
+
 	foreach ( $args as $group => $fields ) {
 		$f = 1;
 		$string .= "$group:{";
 		$f_total = count( $fields );
+
 		foreach ( $fields as $key => $value ) {
 			$string .= "$key:'$value'";
+
 			if ( $f < $f_total )
 				$string .= ',';
+
 			$f++;
 		}
+
 		$string .= '}' . ( $g < $g_total ? ',' : '' );
+
 		$g++;
 	}
+
 	return $string;
 }
 

@@ -20,9 +20,10 @@
 		10. Sidebar
 		11. Layout
 		12. Footer
-		13. Optins
-		14. Share
-		15. Stream
+		13. Cta
+		14. Floating_bars
+		15. Share
+		16. Stream
 */
 /*------------------------------*\
 	$ATTRIBUTES
@@ -1780,6 +1781,18 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	width: 100%;
 	z-index: 100;
 }
+.floating-bar.hide {
+	height: 0;
+	opacity: 0;
+	padding: 0;
+	visibility: hidden;
+}
+.floating-bar.hide .inner, .floating-bar.hide .bar-wrap, .floating-bar.hide .bar-close { display: none; }
+.floating-bar.active {
+	height: auto;
+	opacity: 1;
+	visibility: visible;
+}
 .floating-bar.sticky { position: sticky; }
 .floating-bar.sticky.top { top: 0; }
 .admin-bar .floating-bar.sticky.top { top: 46px; }
@@ -1805,12 +1818,26 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	font-size: 26px;
 	line-height: 1;
 }
-@media all and (min-width: 700px) {
-	.bar-media { margin-right: 29px; }
-	.bar-content { flex: 1; }
+.bar-close {
+	background-color: transparent;
+	color: #fff;
+	cursor: pointer;
+	font-size: 20px;
+	flex-shrink: 0;
+	margin-left: 15px;
+}
+.standard .bar-close { margin-right: 15px; }
+.bar-close:hover { background-color: rgba(255, 255, 255, 0.3); }
+@media all and (min-width: 800px) {
+	.floating-bar {
+		align-items: center;
+		display: flex;
+	}
+	.bar-media, .standard .bar-close { margin-right: 29px; }
+	.bar-wrap, .bar-content { flex: 1; }
 	.bar-cta, .bar-cta-link + .bar-cta-link { margin-left: 29px; }
 }
-@media all and (max-width: 700px) {
+@media all and (max-width: 800px) {
 	.bar-wrap {
 		flex-flow: wrap;
 		justify-content: center;
@@ -1829,6 +1856,11 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		text-align: center;
 	}
 	.bar-cta-link + .bar-cta-link { margin-left: 15px; }
+	.bar-close {
+		position: absolute;
+			top: 15px;
+			right: 0;
+	}
 }
 @media all and (min-width: 782px) {
 	.admin-bar .floating-bar.sticky.top { top: 32px; }
