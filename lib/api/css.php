@@ -64,8 +64,7 @@ class md_css {
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
-			'footer' => locate_template( 'css/footer.php' ),
-			'helpers' => locate_template( 'css/helpers.php' )
+			'footer' => locate_template( 'css/footer.php' )
 		) );
 
 		$templates = array_merge( $templates, $dropins );

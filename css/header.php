@@ -35,6 +35,9 @@
 	display: flex;
 }
 
+.header-rtl .site-title { justify-content: end; }
+.header-flyer .site-title { justify-content: center; }
+
 .site-name {
 	<?php if ( ! empty( $logo['site_title']['font_family'] ) ) : ?>
 	font-family: <?php echo $logo['site_title']['font_family']; ?>;
@@ -66,27 +69,26 @@
 
 .tagline a { color: <?php echo $logo['site_tagline']['color']; ?>; }
 
-.header-rtl .site-title { justify-content: end; }
-
 /* LOGO */
 
 .logo {
 	<?php if ( ! empty( $logo['logo_width']['desktop'] ) ) : ?>
 	flex-basis: <?php echo $logo['logo_width']['desktop']; ?>px;
 	<?php endif; ?>
-	margin-right: <?php echo $half; ?>px;
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 	position: relative;
 }
-
-.logo img { width: 100%; }
 
 .header-rtl .logo {
 	order: 2;
 	margin-right: 0;
 	margin-left: <?php echo $half; ?>px;
 }
+
+.logo img { width: 100%; }
+
+.logo + .site-details { margin-left: <?php echo $half; ?>px; }
 
 /* MENU */
 

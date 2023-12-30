@@ -1,7 +1,7 @@
 <style type="text/css">
 
 /*------------------------------*\
-	$typography['sidebar']
+	$SIDEBARS
 \*------------------------------*/
 
 .sidebar {

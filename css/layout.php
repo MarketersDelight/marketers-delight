@@ -153,7 +153,17 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-	.columns { margin-left: -<?php echo $single; ?>px; }
+	.columns {
+		align-items: center;
+		display: flex;
+		flex-flow: wrap;
+		justify-content: center;
+		margin-left: -<?php echo $single; ?>px;
+	}
+	.f2 { flex-basis: 50%; max-width: 50%; }
+	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
+	.f4 { flex-basis: 25%; max-width: 25%; }
+	.f5 { flex-basis: 20%; max-width: 20%; }
 	.columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }

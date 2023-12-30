@@ -1,9 +1,5 @@
 <style type="text/css">
 
-<?php include( md_css( 'helpers', true ) ); ?>
-
-
-
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/

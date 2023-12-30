@@ -217,3 +217,74 @@ abbr, acronym {
 	}
 	echo "}\n";
 } ?>
+
+/* HELPER CLASSES */
+
+.text-center { text-align: center; }
+
+.text-left { text-align: left; }
+
+.text-right { text-align: right; }
+
+.caps { text-transform: uppercase; }
+
+.avatar {
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.highlight {
+	background-color: #fdd169;
+	padding-left: <?php echo $small; ?>px;
+	padding-right: <?php echo $small; ?>px;
+}
+
+.shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+
+.wp-block-image.shadow { box-shadow: none; }
+
+.overlay {
+	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
+	content: '';
+	display: block;
+	height: 100%;
+	position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		top: 0;
+	width: 100%;
+}
+
+<?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
+	$color_slug = $color_fields['slug'];
+	$color_val = $color_fields['color'];
+
+	echo
+		".has-$color_slug-background-color { background-color: $color_val; }\n".
+		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
+} ?>
+
+.has-text-color.has-white-color { color: #fff; }
+
+.circle { border-radius: 50%; }
+
+.circle-icon, a.circle-icon, .toc-anchor {
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	color: <?php echo $colors['site']['text']; ?>;
+	display: inline-flex;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-weight: normal;
+	height: <?php echo $mid; ?>px;
+	justify-content: center;
+	line-height: 1;
+	position: relative;
+	width: <?php echo $mid; ?>px;
+}
+
+.circle-icon.micro, .toc-anchor {
+	height: <?php echo $single; ?>px;
+	width: <?php echo $single; ?>px;
+}
