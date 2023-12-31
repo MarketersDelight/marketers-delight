@@ -357,5 +357,10 @@ function md_link( $fields, $p = '' ) {
 	if ( $classes )
 		$class = ' class="' . esc_attr( $classes ) . '"';
 
-	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . ( $subtext ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) . "</$html>";
+	echo
+		"<$html{$href}{$popup}{$class}{$target}{$style}>".
+		( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ).
+		( $text || is_customize_preview() ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ).
+		( $subtext || is_customize_preview() ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) .
+		"</$html>";
 }

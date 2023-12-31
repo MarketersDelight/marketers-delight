@@ -5,7 +5,8 @@
 .category-row { margin-bottom: <?php echo $mid; ?>px; }
 
 .page-header,
-.description:not(:last-child), .page-cta:not(:last-child),
+.description:not(:last-child),
+.page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
 .layout-slim .page-image:not(:last-child),
 .category-header { margin-bottom: <?php echo $single; ?>px; }
@@ -64,7 +65,6 @@
 	.inline .description, .author .inline .title-wrap { flex: 1; }
 	.inline .title-wrap, .image-center.inline .description { flex-basis: 100%; }
 	.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
-	.layout-columns .description:not(:last-child) { margin-bottom: 0; }
 }
 
 @media all and (max-width: 800px) {
@@ -86,7 +86,7 @@
 		text-align: center;
 		width: 100%;
 	}
-	.page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+	.page-cta:not(:last-child), .page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 
 /* BREADCRUMBS */

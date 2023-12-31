@@ -4,8 +4,8 @@
 	$BUTTONS
 \*------------------------------*/
 
-button, .button, a.button, .button a, input[type="submit"],
-.format .button, .header .button, .header .button:hover, .header .button a, .header .button a:hover {
+button, .button, a.button, .button a, input[type="submit"], .format .button,
+.header .button, .header .button:hover, .header .button a, .header .button a:hover {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
 	border-radius: 5px;
@@ -26,10 +26,6 @@ button, .button, a.button, .button a, input[type="submit"],
 }
 
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
-
-.link-subtext { display: block; }
-
-.link-icon { margin-right: <?php echo $third; ?>px; }
 
 /* STYLES */
 
@@ -65,6 +61,18 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 .button.button-arrow:hover:after { transform: translateX(4px); }
 
+/* ELEMENTS */
+
+.link-icon { margin-right: <?php echo $third; ?>px; }
+
+.link-subtext {
+	display: block;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+}
+
+.link-subtext:not(:empty) { margin-top: <?php echo $small; ?>px; }
+
 /* BADGE */
 
 .badge {
@@ -76,14 +84,4 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	padding: 4px 7px;
     position: relative;
     text-transform: uppercase;
-}
-
-/* QUERIES */
-
-@media all and (min-width: 700px) {
-	.button + .button { margin-left: <?php echo $half; ?>px; }
-}
-
-@media all and (max-width: 700px) {
-	.button + .button { margin-top: <?php echo $half; ?>px; }
 }
