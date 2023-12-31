@@ -290,6 +290,7 @@ function md_link( $fields, $p = '' ) {
 	$parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
 	$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
 	$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
+	$subtext = isset( $fields["link{$p}_subtext"] ) ? $fields["link{$p}_subtext"] : '';
 	$url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
 	$phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
 	$style = isset( $fields["link{$p}_style"] ) ? $fields["link{$p}_style"] : 'link';
@@ -302,7 +303,7 @@ function md_link( $fields, $p = '' ) {
 	if ( isset( $fields["link{$p}_classes"] ) )
 		$classes[] = esc_attr( $fields["link{$p}_classes"] );
 
-	if ( $type == 'url' && $url ) {
+	if ( in_array( $type, array( 'url', 'link' ) ) && $url ) {
 		$html = 'a';
 		$href = ' href="' . esc_url( $url ) . '"';
 		$target = ( isset( $fields["link{$p}_target"]['new'] ) ? ' target="_blank"' : '' );
@@ -338,8 +339,8 @@ function md_link( $fields, $p = '' ) {
 		$classes[] = 'link';
 
 	if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
-		$popup = ' data-popup="md_popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
-		$classes[] = 'md-popup-trigger';
+		$popup = ' data-popup="popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
+		$classes[] = 'popup-trigger';
 		md_popup( array( 'id' => esc_attr( $fields["link{$p}_popup"] ) ) );
 	}
 
@@ -356,5 +357,5 @@ function md_link( $fields, $p = '' ) {
 	if ( $classes )
 		$class = ' class="' . esc_attr( $classes ) . '"';
 
-	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . "</$html>";
+	echo "<$html{$href}{$popup}{$class}{$target}{$style}>" . ( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ) . ( $text ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ) . ( $subtext ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) . "</$html>";
 }

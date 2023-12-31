@@ -22,8 +22,9 @@
 		12. Footer
 		13. Cta
 		14. Floating_bars
-		15. Share
-		16. Stream
+		15. Popups
+		16. Share
+		17. Stream
 */
 /*------------------------------*\
 	$ATTRIBUTES
@@ -302,6 +303,7 @@ button, .button, a.button, .button a, input[type="submit"],
 	-webkit-appearance: none;
 }
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
+.link-subtext { display: block; }
 .link-icon { margin-right: 10px; }
 /* STYLES */
 .button.button-sec, a.button.button-sec, .button.button-sec a {
@@ -1645,7 +1647,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	font-size: 17px;
 	line-height: 26px;
 	position: relative;
-	z-index: 150;
 }
 .footer-columns {
 	padding-bottom: 29px;
@@ -1818,6 +1819,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	font-size: 26px;
 	line-height: 1;
 }
+.media-image .bar-media, .bar-close { margin-right: 15px; }
 .bar-close {
 	background-color: transparent;
 	color: #fff;
@@ -1826,24 +1828,23 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	flex-shrink: 0;
 	margin-left: 15px;
 }
-.standard .bar-close { margin-right: 15px; }
 .bar-close:hover { background-color: rgba(255, 255, 255, 0.3); }
 @media all and (min-width: 800px) {
 	.floating-bar {
 		align-items: center;
 		display: flex;
 	}
-	.bar-media, .standard .bar-close { margin-right: 29px; }
+	.bar-media, .bar-close { margin-right: 29px; }
 	.bar-wrap, .bar-content { flex: 1; }
 	.bar-cta, .bar-cta-link + .bar-cta-link { margin-left: 29px; }
 }
 @media all and (max-width: 800px) {
-	.bar-wrap {
-		flex-flow: wrap;
+	.bar-wrap { flex-flow: wrap; }
+	.media-icon .bar-wrap {
 		justify-content: center;
 		text-align: center;
 	}
-	.bar-media {
+	.media-icon .bar-media {
 		flex-basis: 100%;
 		margin-bottom: 15px;
 	}
@@ -1876,6 +1877,54 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		padding-left: 15px;
 		padding-right: 15px;
 	}
+}
+/*------------------------------*\
+	$POPUPS
+\*------------------------------*/
+.popups {
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	overflow: scroll;
+	position: fixed;
+		left: 0;
+		top: 0;
+	transition: opacity 0.2s ease-in-out;
+	width: 100%;
+	z-index: 100;
+}
+.popup-bg {
+	background-color: rgba(0, 0, 0, 0.8);
+	height: 100%;
+	position: absolute; /* fixed; */
+		left: 0;
+		top: 0;
+	transition: opacity 0.15s ease-in-out;
+	width: 100%;
+}
+/* STYLES */
+.popup-wrap:not(:last-child) { margin-bottom: 29px; }
+.popup {
+	background-color: #fff;
+	border-radius: 5px;
+	box-shadow: 0 29px 52px rgba(0, 0, 0, 0.4), 0 25px 16px rgba(0, 0, 0, 0.2);
+	position: relative;
+	width: 697px;
+	z-index: 10;
+}
+.popup .subtitle {
+	margin-bottom: 10px;
+}
+.popup .title {
+	font-size: 37px;
+	font-weight: bold;
+	line-height: 50px;
+	margin-bottom: 15px;
+}
+/* STANDARD */
+.popup.standard {
+	padding: 29px;
 }
 /*------------------------------*\
 	$SHARE

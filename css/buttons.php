@@ -27,6 +27,8 @@ button, .button, a.button, .button a, input[type="submit"],
 
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
 
+.link-subtext { display: block; }
+
 .link-icon { margin-right: <?php echo $third; ?>px; }
 
 /* STYLES */

@@ -10,7 +10,6 @@
 	font-size: <?php echo $typography['footer']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['footer']['line_height']['desktop']; ?>px;
 	position: relative;
-	z-index: 150;
 }
 
 .footer-columns {
