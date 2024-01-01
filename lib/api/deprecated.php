@@ -27,6 +27,16 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * If no service is connected, display this message.
+ *
+ * @since 4.5
+ * @deprecated 5.6
+ */
+function md_popup_connect_notice() {
+	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md-optins' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
+}
+
+/**
  * Filter comments classes.
  *
  * @since 5.0.9
