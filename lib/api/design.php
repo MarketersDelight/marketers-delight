@@ -55,7 +55,7 @@ class md_design {
 		// colors
 		$colors = array(
 			'primary' => '#AE2525',
-			'secondary' => '#3E3E3E',
+			'secondary' => '#2E2E2E',
 			'text' => '#1E1E1E',
 			'subtext' => '#777777',
 			'border' => '#CCCCCC'
