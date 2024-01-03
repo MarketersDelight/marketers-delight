@@ -75,6 +75,7 @@
 	<?php if ( ! empty( $logo['logo_width']['desktop'] ) ) : ?>
 	flex-basis: <?php echo $logo['logo_width']['desktop']; ?>px;
 	<?php endif; ?>
+	flex-shrink: 0;
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 	position: relative;
@@ -93,13 +94,6 @@
 /* MENU */
 
 .header .current-menu-item > a, .header .current-menu-item > .menu-toggle { color: <?php echo $header['menu']['active']; ?>; }
-
-.header-link, .header_aside-link { margin-left: <?php echo $half; ?>px; }
-
-.header-rtl .header-link, .header-rtl .header_aside-link {
-	margin-left: 0;
-	margin-right: <?php echo $half; ?>px;
-}
 
 /* QUERIES */
 
@@ -170,11 +164,7 @@
 		flex: 1;
 		justify-content: space-between;
 	}
-	.header-triggers .trigger { margin-left: <?php echo $half; ?>px; }
-	.header-rtl .header-triggers .trigger {
-		margin-left: 0;
-		margin-right: <?php echo $half; ?>px;
-	}
+	.header-triggers .trigger { padding: <?php echo $half; ?>px; }
 	.header-controls > .trigger-menu { margin-right: <?php echo $half; ?>px; }
 	.header .trigger-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px; }
 	/* LOGO */

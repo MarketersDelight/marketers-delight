@@ -120,7 +120,7 @@ searchToggle: function() {
 		searchTriggers[i].onclick = function( e ) {
 			var parent = this.getAttribute( 'data-md-parent' );
 			MD.toggleClass( document.getElementById( parent ), 'has-search' );
-			this.closest( '#' + parent ).querySelector( '.search-input' ).focus();
+			this.closest( '#' + parent ).querySelector( '.input' ).focus();
 			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
 		}
 	}

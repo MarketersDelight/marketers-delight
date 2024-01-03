@@ -120,59 +120,35 @@ select { max-width: 100%; }
 
 .input-field { display: flex; }
 
-.inline-form .input-field { margin-right: <?php echo $half; ?>px; }
+.inline-form .inputs, .inline-form .input-field:not(:last-child), .has-search .triggers { margin-right: <?php echo $half; ?>px; }
 
 /* FORM ICONS */
 
 .form-icons .input {
 	background-color: transparent;
 	border: 0;
+	padding-left: 0;
 }
 
 .form-icons .input:focus { box-shadow: none; }
 
 .input-icon {
 	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
 	justify-content: center;
 }
 
-
-
-/*
-.icon-fields .input {
-	background-color: rgba(0, 0, 0, 0.02);
-	border: 0;
-}
-
-.icon-fields .input:focus { box-shadow: none; }
-
-.input-icon {
-	background-color: rgba(0, 0, 0, 0.1);
+.form-style .input-icon {
+	background-color: rgba(0, 0, 0, 0.15);
 	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
-	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	border-radius: 5px 0 0 5px;
 }
-
-.input-icon label { padding: <?php echo $third; ?>px <?php echo $half; ?>px; }
-*/
-/* SEARCH */
-
-.search-submit {
-	flex-basis: 25%;
-	margin-left: <?php echo $third; ?>px;
-}
-
-.has-search .form-inputs { flex: 1; }
-
-.form-toggle .search-input,
-.form-toggle .search-submit,
-.has-search .search-form .trigger-text { display: none; }
-
-.has-search .search-input,
-.has-search .search-submit,
-.form-toggle .trigger-search { display: block; }
 
 /* STYLES */
+
+.form-full .input-field { margin-bottom: <?php echo $half; ?>px; }
+
+.form-full .submit { width: 100%; }
 
 .form-small .input {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
@@ -183,3 +159,13 @@ select { max-width: 100%; }
 	padding-bottom: <?php echo $small; ?>px;
 	padding-top: <?php echo $small; ?>px;
 }
+
+/* SEARCH */
+
+.has-search .inputs, .has-search .input-field { flex: 1; }
+
+.form-toggle .input, .form-toggle .submit,
+.has-search .search-form .trigger-text { display: none; }
+
+.has-search .input, .has-search .submit,
+.form-toggle .trigger-search { display: block; }
