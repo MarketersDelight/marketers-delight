@@ -15,7 +15,13 @@ input, textarea {
 	padding: <?php echo $half; ?>px;
 }
 
-input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea, .icon-fields {
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="search"],
+input[type="password"],
+textarea,
+.form-icons .input-field {
 	background-color: #fff;
 	border-radius: 5px;
 	border: 1px solid rgba(0, 0, 0, 0.2);
@@ -30,7 +36,12 @@ textarea {
 	-webkit-appearance: none;
 }
 
-input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus,
+input[type="password"]:focus,
+textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
@@ -102,15 +113,32 @@ select { max-width: 100%; }
 
 /* LAYOUT */
 
-.inline-form { display: flex; }
-
-.form-inputs, .inline-form .input-icon {
+.inline-form, .inline-form .inputs, .input-icon {
 	align-items: center;
 	display: flex;
 }
 
-/* ICON FIELDS */
+.input-field { display: flex; }
 
+.inline-form .input-field { margin-right: <?php echo $half; ?>px; }
+
+/* FORM ICONS */
+
+.form-icons .input {
+	background-color: transparent;
+	border: 0;
+}
+
+.form-icons .input:focus { box-shadow: none; }
+
+.input-icon {
+	padding-left: <?php echo $half; ?>px;
+	justify-content: center;
+}
+
+
+
+/*
 .icon-fields .input {
 	background-color: rgba(0, 0, 0, 0.02);
 	border: 0;
@@ -126,23 +154,22 @@ select { max-width: 100%; }
 }
 
 .input-icon label { padding: <?php echo $third; ?>px <?php echo $half; ?>px; }
-
+*/
 /* SEARCH */
 
 .search-submit {
 	flex-basis: 25%;
 	margin-left: <?php echo $third; ?>px;
 }
-/*
-.has-search .form-controls .form-inputs { padding-left: <?php echo $half; ?>px; }
-*/
 
 .has-search .form-inputs { flex: 1; }
 
-.form-toggle .search-input, .form-toggle .search-submit,
+.form-toggle .search-input,
+.form-toggle .search-submit,
 .has-search .search-form .trigger-text { display: none; }
 
-.has-search .search-input, .has-search .search-submit,
+.has-search .search-input,
+.has-search .search-submit,
 .form-toggle .trigger-search { display: block; }
 
 /* STYLES */

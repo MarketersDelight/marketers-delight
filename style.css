@@ -291,6 +291,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 	color: #FFFFFF;
 	cursor: pointer;
 	display: inline-block;
+	flex-shrink: 0;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
@@ -360,7 +361,13 @@ input, textarea {
 	line-height: 1;
 	padding: 15px;
 }
-input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea, .icon-fields {
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="search"],
+input[type="password"],
+textarea,
+.form-icons .input-field {
 	background-color: #fff;
 	border-radius: 5px;
 	border: 1px solid rgba(0, 0, 0, 0.2);
@@ -373,7 +380,12 @@ textarea {
 	width: 100%;
 	-webkit-appearance: none;
 }
-input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus,
+input[type="password"]:focus,
+textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
@@ -430,12 +442,23 @@ select { max-width: 100%; }
 .tooltip-parent { position: relative; }
 .tooltip-parent:hover .tooltip { display: block; }
 /* LAYOUT */
-.inline-form { display: flex; }
-.form-inputs, .inline-form .input-icon {
+.inline-form, .inline-form .inputs, .input-icon {
 	align-items: center;
 	display: flex;
 }
-/* ICON FIELDS */
+.input-field { display: flex; }
+.inline-form .input-field { margin-right: 15px; }
+/* FORM ICONS */
+.form-icons .input {
+	background-color: transparent;
+	border: 0;
+}
+.form-icons .input:focus { box-shadow: none; }
+.input-icon {
+	padding-left: 15px;
+	justify-content: center;
+}
+/*
 .icon-fields .input {
 	background-color: rgba(0, 0, 0, 0.02);
 	border: 0;
@@ -448,18 +471,18 @@ select { max-width: 100%; }
 	font-size: 20px;
 }
 .input-icon label { padding: 10px 15px; }
+*/
 /* SEARCH */
 .search-submit {
 	flex-basis: 25%;
 	margin-left: 10px;
 }
-/*
-.has-search .form-controls .form-inputs { padding-left: 15px; }
-*/
 .has-search .form-inputs { flex: 1; }
-.form-toggle .search-input, .form-toggle .search-submit,
+.form-toggle .search-input,
+.form-toggle .search-submit,
 .has-search .search-form .trigger-text { display: none; }
-.has-search .search-input, .has-search .search-submit,
+.has-search .search-input,
+.has-search .search-submit,
 .form-toggle .trigger-search { display: block; }
 /* STYLES */
 .form-small .input {
@@ -1881,19 +1904,20 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	$POPUPS
 \*------------------------------*/
 .popups {
-	align-items: center;
+	align-items: flex-start;
 	display: flex;
-	height: 100%;
+	height: 0;
 	justify-content: center;
+	opacity: 0;
 	overflow: scroll;
 	position: fixed;
 		left: 0;
 		top: 0;
 	transition: opacity 0.2s ease-in-out;
+	visibility: hidden;
 	width: 100%;
 	z-index: 100;
 }
-.popup { width: 100%; }
 .popup-bg {
 	background-color: rgba(0, 0, 0, 0.8);
 	height: 100%;
@@ -1902,6 +1926,17 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		top: 0;
 	transition: opacity 0.15s ease-in-out;
 	width: 100%;
+}
+.popup {
+	display: none;
+	width: 100%;
+}
+.has-popup { overflow: hidden; }
+.has-popup .popups { height: 100%; }
+.has-popup .popup.active { display: block; }
+.has-popup .popups, .has-popup .popup-bg {
+	opacity: 1;
+	visibility: visible;
 }
 /* STYLES */
 .popup-bg-color { background-color: #2E2E2E; }
@@ -1917,6 +1952,16 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	border-style: solid;
 	border-width: 6px;
 }
+.popup-close {
+	background-color: transparent;
+	cursor: pointer;
+	font-size: 20px;
+	position: absolute;
+		top: 15px;
+		right: 15px;
+	z-index: 10;
+}
+.popup-close:hover { background-color: rgba(0, 0, 0, 0.2); }
 .popup .subtitle { margin-bottom: 10px; }
 .popup .title {
 	font-size: 37px;
@@ -1965,6 +2010,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 }
 /* QUERIES */
 @media all and (min-width: 700px) {
+	.popups { align-items: center; }
 	.popup .page-cta {
 		align-items: center;
 		display: flex;

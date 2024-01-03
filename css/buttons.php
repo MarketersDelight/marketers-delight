@@ -13,6 +13,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
 	display: inline-block;
+	flex-shrink: 0;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;

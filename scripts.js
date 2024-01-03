@@ -111,6 +111,7 @@ headerMenu: function() {
 	if ( headerTrigger )
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
+						MD.removeClass( header, 'has-search' );
 					}
 },
 searchToggle: function() {
@@ -202,6 +203,154 @@ floatingBars: {
 			delete MD.floatingBars.data[bar_id];
 			MD.floatingBars.open.events();
 		}
+	}
+},
+focusInputs: function( id ) {
+	var search = document.querySelector( '#' + id + ' .search-input' ),
+		name = document.querySelector( '#' + id + ' .form-input-name' ),
+		email = document.querySelector( '#' + id + ' .form-input-email' );
+	if ( search )
+		search.focus();
+	else if ( name )
+		name.focus();
+	else if ( email )
+		email.focus();
+},
+popups: {
+	init: function( popups ) {
+		this.opened = this.showing = false;
+		this.data = popups;
+		MD.popups.open.events();
+	},
+	open: {
+		events: function() {
+			this.triggers();
+			for ( var id in MD.popups.data ) {
+				if ( MD.popups.opened )
+					break;
+				MD.popup = MD.popups.data[id];
+				if ( MD.popup.show === 'seconds' )
+					this.timer();
+				else if ( MD.popup.show === 'percent' )
+					this.percent();
+				else if ( MD.popup.show === 'exit' )
+					this.exit();
+				MD.popups.opened = MD.popup.id;
+			}
+		},
+		triggers: function() {
+			var triggers = document.getElementsByClassName( 'popup-trigger' );
+			for ( var i = 0; i < triggers.length; i++ ) {
+				triggers[i].onclick = function() {
+					MD.popups.trigger = this.getAttribute( 'data-popup' );
+					MD.popups.open.show();
+					return false;
+				}
+			}
+		},
+		percent: function() {
+			var shown = false;
+			window.onscroll = function() {
+				if ( shown || MD.popups.trigger )
+					return;
+				var pos = window.scrollY,
+					el = document.getElementById( MD.popup.id );
+				if ( el !== null )
+					window.requestAnimationFrame( function() {
+						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
+						if ( MD.popup.delay <= percent ) {
+							shown = true;
+							MD.popups.open.show();
+						}
+					});
+			}
+		},
+		timer: function() {
+			setTimeout( function() {
+				if ( ! MD.popups.trigger )
+					MD.popups.open.show();
+			}, MD.popup.delay * 1000 );
+		},
+		exit: function() {
+			var shown = false;
+			window.document.onmousemove = function( e ) {
+				if ( shown || MD.popups.trigger )
+					return;
+				var scroll = window.pageYOffset || document.documentElement.scrollTop;
+				if ( ( e.pageY - scroll ) < 7 ) {
+					shown = true;
+					MD.popups.open.show();
+				}
+			}
+		},
+		show: function() {
+			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
+			MD.addClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
+			if ( MD.popups.showing && MD.popups.trigger )
+				MD.removeClass( document.getElementById( MD.popups.showing ), 'active' );
+			MD.addClass( document.getElementById( id ), 'active' );
+			MD.focusInputs( id );
+			MD.popups.showing = id;
+			if ( ! MD.popups.trigger )
+				delete MD.popups.data[MD.popup.id];
+			MD.popups.close.events();
+		}
+	},
+	close: {
+		events: function() {
+			this.trigger();
+			this.bg();
+			this.esc();
+		},
+		trigger: function() {
+			var triggers = document.getElementsByClassName( 'popup-close' );
+			for ( var i = 0; i < triggers.length; i++ ) {
+				triggers[i].onclick = function() {
+					MD.popups.close.close();
+				}
+			}
+		},
+		bg: function() {
+			document.getElementById( 'popup_bg' ).onclick = function() {
+				MD.popups.close.close();
+			}
+		},
+		esc: function() {
+			window.document.onkeydown = function( e ) {
+				e = e || window.event;
+				if ( e.keyCode == 27 )
+					MD.popups.close.close();
+			};
+		},
+		close: function() {
+			MD.removeClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
+			if ( MD.popups.trigger ) {
+				var id = MD.popups.trigger;
+				delete MD.popups.trigger;
+			}
+			else {
+				if ( ! MD.popup )
+					return;
+				var id = MD.popup.id;
+				if ( MD.popup.cookieExp && ! MD.cookie.get( id ) )
+					MD.cookie.create( id, true, MD.popup.cookieExp );
+			}
+			delete MD.popups.opened;
+			delete MD.popups.showing;
+			MD.removeClass( document.getElementById( id ), 'active' );
+			MD.popups.toggleVideo( id );
+			MD.popups.open.events();
+		}
+	},
+	toggleVideo: function( id ) {
+		var iframe = document.querySelector( '#' + id + ' iframe' ),
+			video = document.querySelector( '#' + id + ' video' );
+	    if ( iframe !== null ) {
+	        var iframeSrc = iframe.src;
+	        iframe.src = iframeSrc;
+	    }
+	    if ( video !== null )
+	        video.pause();
 	}
 },
 like: function() {
