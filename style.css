@@ -445,9 +445,12 @@ select { max-width: 100%; }
 .inline-form, .inline-form .inputs, .input-icon {
 	align-items: center;
 	display: flex;
+	flex: 1;
 }
 .input-field { display: flex; }
-.inline-form .inputs, .inline-form .input-field:not(:last-child), .has-search .triggers { margin-right: 15px; }
+.inline-form .inputs,
+.inline-form .input-field:not(:last-child),
+.has-search .triggers { margin-right: 15px; }
 /* FORM ICONS */
 .form-icons .input {
 	background-color: transparent;
@@ -456,6 +459,7 @@ select { max-width: 100%; }
 }
 .form-icons .input:focus { box-shadow: none; }
 .input-icon {
+	color: #1E1E1E;
 	padding-left: 15px;
 	padding-right: 15px;
 	justify-content: center;
@@ -1824,23 +1828,21 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	font-size: 26px;
 	line-height: 1;
 }
-.media-image .bar-media, .bar-close { margin-right: 15px; }
+.media-image .bar-media { padding-right: 15px; }
 .bar-close {
 	background-color: transparent;
 	color: #fff;
 	cursor: pointer;
 	font-size: 20px;
 	flex-shrink: 0;
-	margin-left: 15px;
 }
 .bar-close:hover { background-color: rgba(255, 255, 255, 0.3); }
 @media all and (min-width: 800px) {
-	.floating-bar {
+	.floating-bar, .floating-bar .inner {
 		align-items: center;
 		display: flex;
 	}
-	.bar-media, .bar-close { margin-right: 29px; }
-	.bar-wrap, .bar-content { flex: 1; }
+	.bar-media { padding-right: 29px; }
 	.bar-cta, .bar-cta-link + .bar-cta-link { margin-left: 29px; }
 }
 @media all and (max-width: 800px) {
@@ -1853,6 +1855,8 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		flex-basis: 100%;
 		margin-bottom: 15px;
 	}
+	.media-image .bar-media { flex-basis: 20%; }
+	.media-image .bar-content { flex-basis: 80%; }
 	.bar-cta {
 		flex-basis: 100%;
 		margin-top: 15px;
@@ -1864,24 +1868,28 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.bar-cta-link + .bar-cta-link { margin-left: 15px; }
 	.bar-close {
 		position: absolute;
-			top: 15px;
+			top: 0;
 			right: 0;
 	}
+	.floating-bar.full .bar-close { top: 15px; }
 }
 @media all and (min-width: 782px) {
 	.admin-bar .floating-bar.sticky.top { top: 32px; }
 }
 @media all and (min-width: 1045px) {
 	.floating-bar.full {
-		padding-left: 29px;
-		padding-right: 29px;
+		justify-content: center;
+		padding-left: 15px;
+		padding-right: 15px;
 	}
+	.bar-close { margin-left: 15px; }
 }
 @media all and (max-width: 1045px) {
 	.bar-wrap {
 		padding-left: 15px;
 		padding-right: 15px;
 	}
+	.bar-close { margin-right: 15px; }
 }
 /*------------------------------*\
 	$POPUPS
@@ -2120,6 +2128,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 }
 .toggle-share .share-toggle:before, .toggle-share .share-toggle:after { display: block; }
 .share-menu .share-menu-title {
+	color: #1E1E1E;
 	font-weight: bold;
 	margin-bottom: 15px;
 	text-align: center;

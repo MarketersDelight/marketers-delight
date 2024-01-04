@@ -116,11 +116,14 @@ select { max-width: 100%; }
 .inline-form, .inline-form .inputs, .input-icon {
 	align-items: center;
 	display: flex;
+	flex: 1;
 }
 
 .input-field { display: flex; }
 
-.inline-form .inputs, .inline-form .input-field:not(:last-child), .has-search .triggers { margin-right: <?php echo $half; ?>px; }
+.inline-form .inputs,
+.inline-form .input-field:not(:last-child),
+.has-search .triggers { margin-right: <?php echo $half; ?>px; }
 
 /* FORM ICONS */
 
@@ -133,6 +136,7 @@ select { max-width: 100%; }
 .form-icons .input:focus { box-shadow: none; }
 
 .input-icon {
+	color: <?php echo $colors['site']['text']; ?>;
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 	justify-content: center;
