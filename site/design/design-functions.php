@@ -1,8 +1,5 @@
 <?php
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * A procedural function to access Block Editor colors.
  *
@@ -341,7 +338,7 @@ function md_link( $fields, $p = '' ) {
 	if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
 		$popup = ' data-popup="popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
 		$classes[] = 'popup-trigger';
-		md_popup( array( 'id' => esc_attr( $fields["link{$p}_popup"] ) ) );
+		md_popup( array( 'id' => $fields["link{$p}_popup"] ) );
 	}
 
 	if ( ! empty( $fields["link{$p}_toggle"]['hide_label'] ) )

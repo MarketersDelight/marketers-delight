@@ -42,8 +42,7 @@ body {
 	position: relative;
 }
 
-.clear:after, .inner:after, .menu:after,
-.post-box:after, .the-content:after, .byline:after, .sidebar:after, [class*="columns-"]:after {
+.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -237,6 +236,13 @@ abbr, acronym {
 	background-color: #fdd169;
 	padding-left: <?php echo $small; ?>px;
 	padding-right: <?php echo $small; ?>px;
+}
+
+.foot {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-style: italic;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }

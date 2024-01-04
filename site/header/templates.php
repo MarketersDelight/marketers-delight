@@ -161,7 +161,6 @@ class md_header_templates {
 
 		$fields['classes'][] = "{$parent}-search";
 		$fields['classes'][] = 'search-form';
-		$fields['classes'][] = 'inline-form';
 
 		if ( ! empty( $fields['toggle']['search'] ) )
 			$fields['classes'][] = 'form-toggle';

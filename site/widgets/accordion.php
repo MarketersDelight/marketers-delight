@@ -97,6 +97,7 @@ class md_accordion_widget extends WP_Widget {
 		$val['direction'] = $sanitize->select( $new['direction'], array( 'DESC' ) );
 		$val['order'] = $sanitize->select( $new['order'], array_keys( $this->terms_order ) );
 		$val['exclude'] = esc_html( $new['exclude'] );
+
 		return $val;
 	}
 

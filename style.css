@@ -51,8 +51,7 @@ body {
 	max-width: 1045px;
 	position: relative;
 }
-.clear:after, .inner:after, .menu:after,
-.post-box:after, .the-content:after, .byline:after, .sidebar:after, [class*="columns-"]:after {
+.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -224,6 +223,12 @@ h6, .micro-title {
 	padding-left: 5px;
 	padding-right: 5px;
 }
+.foot {
+	color: #777777;
+	font-size: 16px;
+	font-style: italic;
+	line-height: 26px;
+}
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
 .wp-block-image.shadow { box-shadow: none; }
 .overlay {
@@ -375,11 +380,6 @@ textarea,
 	width: 100%;
 	-webkit-appearance: none;
 }
-textarea {
-	padding: 29px;
-	width: 100%;
-	-webkit-appearance: none;
-}
 input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="email"]:focus,
@@ -389,6 +389,7 @@ textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
+textarea { padding: 29px; }
 select { max-width: 100%; }
 .required { color: #ae2525; }
 /* TRIGGERS */
@@ -441,49 +442,57 @@ select { max-width: 100%; }
 }
 .tooltip-parent { position: relative; }
 .tooltip-parent:hover .tooltip { display: block; }
-/* LAYOUT */
-.inline-form, .inline-form .inputs, .input-icon {
+/* STRUCTURES */
+.input-icon, .search-form {
 	align-items: center;
 	display: flex;
-	flex: 1;
 }
+.has-search .triggers, .search-form .inputs { margin-right: 15px; }
 .input-field { display: flex; }
-.inline-form .inputs,
-.inline-form .input-field:not(:last-child),
-.has-search .triggers { margin-right: 15px; }
-/* FORM ICONS */
+.form-full, .inline-form, .form-full .input-field { margin-bottom: 15px; }
 .form-icons .input {
 	background-color: transparent;
 	border: 0;
 	padding-left: 0;
 }
+.form-style .input { padding-left: 15px; }
+.form-small .input { font-size: 14px; }
 .form-icons .input:focus { box-shadow: none; }
+.form-small .input, .form-small .input-icon {
+	padding-bottom: 5px;
+	padding-top: 5px;
+}
 .input-icon {
 	color: #1E1E1E;
 	padding-left: 15px;
 	padding-right: 15px;
 	justify-content: center;
 }
-.form-style .input { padding-left: 15px; }
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
 	border-right: 1px solid #CCCCCC;
 	border-radius: 5px 0 0 5px;
 }
-/* STYLES */
-.form-full .input-field { margin-bottom: 15px; }
 .form-full .submit { width: 100%; }
-.form-small .input { font-size: 14px; }
-.form-small .input, .form-small .input-icon {
-	padding-bottom: 5px;
-	padding-top: 5px;
-}
 /* SEARCH */
 .has-search .inputs, .has-search .input-field { flex: 1; }
 .form-toggle .input, .form-toggle .submit,
 .has-search .search-form .trigger-text { display: none; }
 .has-search .input, .has-search .submit,
 .form-toggle .trigger-search { display: block; }
+/* QUERIES */
+@media all and (min-width: 700px) {
+	.inline-form, .inline-form .inputs {
+		align-items: center;
+		display: flex;
+		flex: 1;
+	}
+	.inline-form .inputs, .inline-form .input-field:not(:last-child) { margin-right: 15px; }
+}
+@media all and (max-width: 700px) {
+	.inline-form .submit { width: 100%; }
+	.inline-form .input-field, .inline-form .inputs { margin-bottom: 15px; }
+}
 /*------------------------------*\
 	$MENUS
 \*------------------------------*/
@@ -690,7 +699,6 @@ select { max-width: 100%; }
 }
 /* PAGE HEADER */
 .category-row { margin-bottom: 44px; }
-.page-header,
 .description:not(:last-child),
 .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
@@ -1685,7 +1693,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		font-size: 16px;
 		line-height: 25px;
 	}
-	.footer .col:not(:first-child) { margin-top: 29px; }
 	.footer-title {
 		font-size: 20px;
 		line-height: 29px;
@@ -1724,12 +1731,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 .cta-slim .title {
 		font-size: 18px;
 	font-weight: bold;
-	line-height: 26px;
-}
-.cta-footer-text {
-	color: #777777;
-	font-size: 16px;
-	font-style: italic;
 	line-height: 26px;
 }
 @media all and (min-width: 800px) {
@@ -1829,6 +1830,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	line-height: 1;
 }
 .media-image .bar-media { padding-right: 15px; }
+.bar-cta .email-form { flex: 1; }
 .bar-close {
 	background-color: transparent;
 	color: #fff;
@@ -1843,6 +1845,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 		display: flex;
 	}
 	.bar-media { padding-right: 29px; }
+	.bar-cta { min-width: 40%; }
 	.bar-cta, .bar-cta-link + .bar-cta-link { margin-left: 29px; }
 }
 @media all and (max-width: 800px) {

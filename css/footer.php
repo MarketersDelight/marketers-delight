@@ -52,7 +52,6 @@
 		font-size: <?php echo $typography['footer']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['footer']['line_height']['tablet']; ?>px;
 	}
-	.footer .col:not(:first-child) { margin-top: <?php echo $single; ?>px; }
 	.footer-title {
 		font-size: <?php echo $typography['footer_title']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['footer_title']['line_height']['tablet']; ?>px;

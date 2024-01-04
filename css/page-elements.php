@@ -4,7 +4,6 @@
 
 .category-row { margin-bottom: <?php echo $mid; ?>px; }
 
-.page-header,
 .description:not(:last-child),
 .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),

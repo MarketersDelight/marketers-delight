@@ -30,12 +30,6 @@ textarea,
 	-webkit-appearance: none;
 }
 
-textarea {
-	padding: <?php echo $single; ?>px;
-	width: 100%;
-	-webkit-appearance: none;
-}
-
 input[type="text"]:focus,
 input[type="url"]:focus,
 input[type="email"]:focus,
@@ -45,6 +39,8 @@ textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
+
+textarea { padding: <?php echo $single; ?>px; }
 
 select { max-width: 100%; }
 
@@ -111,21 +107,18 @@ select { max-width: 100%; }
 
 .tooltip-parent:hover .tooltip { display: block; }
 
-/* LAYOUT */
+/* STRUCTURES */
 
-.inline-form, .inline-form .inputs, .input-icon {
+.input-icon, .search-form {
 	align-items: center;
 	display: flex;
-	flex: 1;
 }
+
+.has-search .triggers, .search-form .inputs { margin-right: <?php echo $half; ?>px; }
 
 .input-field { display: flex; }
 
-.inline-form .inputs,
-.inline-form .input-field:not(:last-child),
-.has-search .triggers { margin-right: <?php echo $half; ?>px; }
-
-/* FORM ICONS */
+.form-full, .inline-form, .form-full .input-field { margin-bottom: <?php echo $half; ?>px; }
 
 .form-icons .input {
 	background-color: transparent;
@@ -133,7 +126,16 @@ select { max-width: 100%; }
 	padding-left: 0;
 }
 
+.form-style .input { padding-left: <?php echo $half; ?>px; }
+
+.form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
+
 .form-icons .input:focus { box-shadow: none; }
+
+.form-small .input, .form-small .input-icon {
+	padding-bottom: <?php echo $small; ?>px;
+	padding-top: <?php echo $small; ?>px;
+}
 
 .input-icon {
 	color: <?php echo $colors['site']['text']; ?>;
@@ -142,26 +144,13 @@ select { max-width: 100%; }
 	justify-content: center;
 }
 
-.form-style .input { padding-left: <?php echo $half; ?>px; }
-
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
 	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px 0 0 5px;
 }
 
-/* STYLES */
-
-.form-full .input-field { margin-bottom: <?php echo $half; ?>px; }
-
 .form-full .submit { width: 100%; }
-
-.form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
-
-.form-small .input, .form-small .input-icon {
-	padding-bottom: <?php echo $small; ?>px;
-	padding-top: <?php echo $small; ?>px;
-}
 
 /* SEARCH */
 
@@ -172,3 +161,19 @@ select { max-width: 100%; }
 
 .has-search .input, .has-search .submit,
 .form-toggle .trigger-search { display: block; }
+
+/* QUERIES */
+
+@media all and (min-width: 700px) {
+	.inline-form, .inline-form .inputs {
+		align-items: center;
+		display: flex;
+		flex: 1;
+	}
+	.inline-form .inputs, .inline-form .input-field:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 700px) {
+	.inline-form .submit { width: 100%; }
+	.inline-form .input-field, .inline-form .inputs { margin-bottom: <?php echo $half; ?>px; }
+}
