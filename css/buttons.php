@@ -64,7 +64,7 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 /* ELEMENTS */
 
-.link-icon { margin-right: <?php echo $third; ?>px; }
+.link-icon + .link-text { margin-left: <?php echo $third; ?>px; }
 
 .link-subtext {
 	display: block;

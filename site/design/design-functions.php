@@ -351,7 +351,6 @@ function md_link( $fields, $p = '' ) {
 		$classes[] = 'hide-label-mobile';
 
 	$style = md_style( $styles );
-
 	$classes = join( ' ', $classes );
 
 	if ( $classes )

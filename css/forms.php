@@ -67,9 +67,9 @@ select { max-width: 100%; }
 	line-height: 1;
 }
 
-.trigger-text { margin-left: <?php echo $third; ?>px; }
+.trigger-text { margin-left: <?php echo $small; ?>px; }
 
-.hide-label .trigger-text { display: none; }
+.hide-label .link-text, .hide-label .trigger-text { display: none; }
 
 .has-search .trigger-search .trigger-icon:before,
 .has-mobile-menu .trigger-menu .trigger-icon:before {
@@ -138,6 +138,8 @@ select { max-width: 100%; }
 	justify-content: center;
 }
 
+.form-style .input { padding-left: <?php echo $half; ?>px; }
+
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
 	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
@@ -150,12 +152,9 @@ select { max-width: 100%; }
 
 .form-full .submit { width: 100%; }
 
-.form-small .input {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-	padding: <?php echo $third; ?>px;
-}
+.form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
 
-.form-small .input-icon label {
+.form-small .input, .form-small .input-icon {
 	padding-bottom: <?php echo $small; ?>px;
 	padding-top: <?php echo $small; ?>px;
 }

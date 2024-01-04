@@ -169,6 +169,9 @@ class md_header_templates {
 		if ( ! empty( $fields['toggle']['hide_label'] ) )
 			$fields['classes'][] = 'hide-label';
 
+		if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
+			$fields['classes'][] = 'hide-label-mobile';
+
 		$classes = join( ' ', $fields['classes'] );
 
 		include( md_template( 'searchform', true ) );
