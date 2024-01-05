@@ -1711,7 +1711,10 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /*------------------------------*\
 	$CALL_TO_ACTION
 \*------------------------------*/
-.cta { color: #1E1E1E; }
+.cta {
+	color: #1E1E1E;
+	position: relative;
+}
 .cta.outer, .cta.inline.bg {
 	padding-bottom: 29px;
 	padding-top: 29px;
@@ -1741,6 +1744,16 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 }
 .widget_md_email .overlay { border-radius: 5px; }
 /* QUERIES */
+@media all and (min-width: 700px) {
+	.cta-wide .title {
+		font-size: 37px;
+		line-height: 50px;
+	}
+	.cta-slim .title {
+		font-size: 24px;
+		line-height: 35px;
+	}
+}
 @media all and (min-width: 800px) {
 	.cta-slim .page-image {
 		margin-left: auto;
@@ -1772,14 +1785,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	.post-box > .cta-wide.inline.bg {
 		padding-left: 20.861244019139%;
 		padding-right: 20.861244019139%;
-	}
-	.cta-wide .title {
-		font-size: 37px;
-		line-height: 50px;
-	}
-	.cta-slim .title {
-		font-size: 24px;
-		line-height: 35px;
 	}
 }
 @media all and (max-width: 1045px) {

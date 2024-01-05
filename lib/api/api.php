@@ -300,6 +300,9 @@ class md_api {
 
 		if ( ! empty( $admin_fields[$this->_clean_id] ) )
 			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) { #wtf
+				if ( in_array( $this->_clean_id, array( 'cta', 'floating_bars', 'popups' ) ) )
+					continue;
+
 				if ( $this->_clean_id == 'featured_image' )
 					$order = 10;
 				elseif ( $this->_clean_id == 'page_cover' )
