@@ -1467,7 +1467,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	line-height: 26px;
 	}
 .sidebar a:not(.button) { color: #444444; }
-.sidebar .sidebar-title {
+.sidebar-title {
 	color: #1E1E1E;
 		font-size: 24px;
 		line-height: 35px;
@@ -1733,6 +1733,14 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	font-weight: bold;
 	line-height: 26px;
 }
+/* EMAIL WIDGET */
+.widget_md_email .bg {
+	border-radius: 5px;
+	padding: 29px;
+	position: relative;
+}
+.widget_md_email .overlay { border-radius: 5px; }
+/* QUERIES */
 @media all and (min-width: 800px) {
 	.cta-slim .page-image {
 		margin-left: auto;
@@ -2005,7 +2013,7 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 /* QUERIES */
 @media all and (min-width: 700px) {
 	.popups { align-items: center; }
-	.popup .page-cta {
+	.popup-buttons {
 		align-items: center;
 		display: flex;
 	}

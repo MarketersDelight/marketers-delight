@@ -14,7 +14,7 @@
 
 .sidebar a:not(.button) { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar .sidebar-title {
+.sidebar-title {
 	color: <?php echo $colors['sidebar']['title']; ?>;
 	<?php if ( ! empty( $typography['sidebar_title']['font_family'] ) ) : ?>
 	font-family: <?php echo $typography['sidebar_title']['font_family']; ?>;
