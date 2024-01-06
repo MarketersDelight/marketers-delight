@@ -1803,7 +1803,6 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	padding-top: 15px;
 	transition: all 0.2s ease-in-out;
 	width: 100%;
-	z-index: 100;
 }
 .floating-bar.hide {
 	height: 0;
@@ -1817,7 +1816,10 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 	opacity: 1;
 	visibility: visible;
 }
-.floating-bar.sticky { position: sticky; }
+.floating-bar.sticky {
+	position: sticky;
+	z-index: 100;
+}
 .floating-bar.sticky.top { top: 0; }
 .admin-bar .floating-bar.sticky.top { top: 46px; }
 .floating-bar.sticky.bottom { bottom: 0; }

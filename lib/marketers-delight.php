@@ -51,8 +51,6 @@ final class marketers_delight {
 		add_action( 'wp_footer', 'md_inline_js' );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
-		add_filter( 'md_post_type_meta', array( $this, 'post_types_meta' ) );
-		add_filter( 'md_taxonomy_meta', array( $this, 'taxonomies_meta' ) );
 	}
 
 	/**
@@ -158,9 +156,6 @@ final class marketers_delight {
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
-
-		if ( class_exists( 'WooCommerce' ) && md_has( 'woocommerce' ) )
-			add_theme_support( 'woocommerce' );
 	}
 
 	/**
@@ -402,32 +397,6 @@ final class marketers_delight {
 		wp_redirect( self_admin_url( "admin.php?page=md_dropins&dropin=$dropin&dropin_status=activated" ) );
 
 		exit;
-	}
-
-	/**
-	 * Add MD meta options to various custom post type.
-	 *
-	 * @since 4.9.4
-	 */
-
-	public function post_types_meta( $post_types ) {
-		if ( md_has( 'woocommerce' ) )
-			$post_types[] = 'product';
-		return $post_types;
-	}
-
-	/**
-	 * Add MD meta options to various custom taxonomies.
-	 *
-	 * @since 5.0
-	 */
-
-	public function taxonomies_meta( $taxonomies ) {
-		if ( md_has( 'bookshelf' ) )
-			$taxonomies[] = 'bookshelf_categories';
-		if ( md_has( 'woocommerce' ) )
-			$taxonomies[] = 'product_cat';
-		return $taxonomies;
 	}
 
 	/**

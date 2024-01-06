@@ -134,7 +134,7 @@ searchToggle: function() {
 },
 floatingBars: {
 	init: function( floatingBars ) {
-		this.opened = false;
+		this.opened = this.showing = false;
 		this.data = floatingBars;
 		MD.floatingBars.open.events();
 		MD.floatingBars.close.events();
@@ -149,13 +149,17 @@ floatingBars: {
 					this.timer();
 				if ( MD.floatingBar.show === 'percent' )
 					this.percent();
-				MD.floatingBars.opened = true;
+				MD.floatingBars.opened = MD.floatingBar.id;
 			}
 		},
 		show: function() {
-			var element = document.getElementById( MD.floatingBar.id );
-			MD.removeClass( element, 'hide' );
-			MD.addClass( element, 'active' );
+			var id = MD.floatingBar.id,
+				el = document.getElementById( id );
+			MD.removeClass( el, 'hide' );
+			MD.addClass( el, 'active' );
+			MD.floatingBars.showing = id;
+			delete MD.floatingBars.data[id];
+			MD.floatingBars.close.events();
 		},
 		percent: function() {
 			window.onscroll = function() {
@@ -197,10 +201,12 @@ floatingBars: {
 		},
 		close: function( bar_id, expires ) {
 			MD.addClass( document.getElementById( bar_id ), 'closed' );
-			MD.floatingBars.opened = false;
 			if ( ! MD.cookie.get( bar_id ) && expires !== '0' )
 				MD.cookie.create( bar_id, true, expires );
-			delete MD.floatingBars.data[bar_id];
+//			delete MD.floatingBars.data[bar_id];
+			delete MD.floatingBars.opened;
+			delete MD.floatingBars.showing;
+			MD.removeClass( document.getElementById( bar_id ), 'active' );
 			MD.floatingBars.open.events();
 		}
 	}
