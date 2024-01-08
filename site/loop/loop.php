@@ -70,6 +70,7 @@ class md_loop extends md_api {
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
 			'posts_per_page' => array( 'type' => 'number' ),
+			'category_per_page' => array( 'type' => 'number' ),
 			'featured_image' => array(
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )

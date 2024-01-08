@@ -31,7 +31,10 @@
 .menu-item-has-children > .trigger { flex-basis: 10%; }
 
 .sub-menu {
-	display: none;
+	height: 0;
+	opacity: 0;
+	transform: translateY(-10px);
+	visibility: hidden;
 	z-index: 50;
 }
 
@@ -67,7 +70,13 @@
 			right: -<?php echo $half; ?>px;
 		width: <?php echo $submenu_width; ?>px;
 	}
-	.menu-item-has-children:hover > .sub-menu { display: block; }
+	.menu-item-has-children:hover > .sub-menu {
+		height: auto;
+		opacity: 1;
+		transition: opacity 200ms linear,transform 200ms ease-out;
+		transform: translateY(0);
+		visibility: visible;
+	}
 	.sub-menu .menu-item-has-children a { order: 2; }
 	.sub-menu .sub-menu {
 		top: 0;
@@ -99,5 +108,11 @@
 	.toggle-menu > .trigger .trigger-icon:after { content: '\e817'; }
 	/* SUB MENU */
 	.sub-menu { flex-basis: 100%; }
-	.toggle-menu > .sub-menu { display: block; }
+	.toggle-menu > .sub-menu {
+		height: auto;
+		opacity: 1;
+		transition: opacity 200ms linear,transform 200ms ease-out;
+		transform: translateY(0);
+		visibility: visible;
+	}
 }

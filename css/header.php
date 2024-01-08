@@ -26,7 +26,7 @@
 
 .header-wrap a { color: <?php echo $header['menu']['links']; ?>; }
 
-.header-wrap a:hover { color: <?php echo $header['menu']['hover']; ?>; }
+.header-wrap a:hover, .header-wrap a:hover + .menu-toggle { color: <?php echo $header['menu']['hover']; ?>; }
 
 /* SITE TITLE + TAGLINE */
 

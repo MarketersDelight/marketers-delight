@@ -21,17 +21,23 @@
 			)
 		) ); ?>
 	</div>
-<!--
 
-<div id="loop_category_posts" style="display: <?php echo $category_posts ? 'block' : 'none'; ?>">
+	<div id="loop_category_posts" style="width: 100%; clear: both; display: <?php echo $category_posts ? 'block' : 'none'; ?>">
 
-</div>
--->
+		<div class="col md-sep-micro">
+			<?php $this->fields->field( 'category_per_page', array(
+				'type' => 'number',
+				'label' => __( 'Categories Per Page', 'md' ),
+				'placeholder' => 5,
+				'description' => __( 'Number of categories to show.', 'md' )
+			) ); ?>
+		</div>
+
+	</div>
+
 	<?php endif; ?>
 
 </div>
-
-
 
 <hr class="md-sep-small" />
 
@@ -47,19 +53,19 @@
 	</div>
 
 	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'featured', array(
+		<?php $this->fields->field( 'columns', array(
 			'type' => 'number',
-			'label' => __( 'Featured Posts', 'md' ),
-			'description' => __( 'Number of posts to feature per page.', 'md' )
+			'label' => __( 'Post Columns', 'md' ),
+			'placeholder' => '1',
+			'description' => __( 'Break posts into a number of columns.', 'md' )
 		) ); ?>
 	</div>
 
 	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'columns', array(
+		<?php $this->fields->field( 'featured', array(
 			'type' => 'number',
-			'label' => __( 'Columns', 'md' ),
-			'placeholder' => '1',
-			'description' => __( 'Break posts into a number of columns.', 'md' )
+			'label' => __( 'Featured Posts', 'md' ),
+			'description' => __( 'Number of posts to feature per page.', 'md' )
 		) ); ?>
 	</div>
 
@@ -128,6 +134,7 @@
 		<?php $this->fields->field( 'pagination', array(
 			'type' => 'select',
 			'empty_label' => __( 'Page Numbers', 'md' ),
+			'style' => 'width: 100%',
 			'options' => array(
 				'prev_next' => __( 'Previous/Next Links', 'md' )
 			)
@@ -162,7 +169,7 @@
 		<?php $this->fields->field( 'cta_x_loop', array(
 			'type' => 'number',
 			'label' => __( 'Show After X Post', 'md' ),
-			'description' => __( 'Enter the post number to show a call to action after.', 'md' )
+			'description' => __( 'Show CTA after post number in Loop.', 'md' )
 		) ); ?>
 	</div>
 
@@ -170,7 +177,7 @@
 		<?php $this->fields->field( 'x_cta', array(
 			'type' => 'select',
 			'label' => __( 'Call to Action', 'md' ),
-			'description' => sprintf( __( 'Choose one of your pre-made <a href="%s">call to actions</a> from MD Optins to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
+			'description' => sprintf( __( 'Choose a pre-made <a href="%s">call to action</a> to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
 			'empty_label' => __( 'Select call to action...', 'md' ),
 			'options' => $cta_options
 		) ); ?>

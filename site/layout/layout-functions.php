@@ -570,15 +570,27 @@ function md_pagination() {
 	if ( is_singular() )
 		return;
 
-	global $wp_query;
-
-	if ( $wp_query->max_num_pages <= 1 )
-		return;
-
 	$big = 999999999;
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
 	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
+	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+
+	if ( $category_posts ) {
+		$taxonomies = get_object_taxonomies( md_get_post_type() );
+		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+		$category_per_page = md_module( array( 'loop', 'category_per_page' ), 5 );
+		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
+		$total = ceil( $total_terms / $category_per_page );
+	}
+	else {
+		global $wp_query;
+
+		$total = $wp_query->max_num_pages;
+	}
+
+	if ( $total <= 1 )
+		return;
 
 	include( md_template( 'pagination', true ) );
 }

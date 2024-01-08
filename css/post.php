@@ -54,14 +54,6 @@
 		margin-left: <?php echo $half; ?>px;
 	}
 	.featured-image.alignleft, .featured-image.alignright { max-width: <?php echo $sidebar_width; ?>px; }
-	.columns .featured-image.alignleft {
-		margin-left: -<?php echo $half; ?>px;
-		max-width: <?php echo round( $sidebar_width / 2 ); ?>px;
-	}
-	.columns .featured-image.alignright {
-		margin-right: -<?php echo $half; ?>px;
-		max-width: <?php echo round( $sidebar_width / 2 ); ?>px;
-	}
 }
 
 @media all and (max-width: 700px) {

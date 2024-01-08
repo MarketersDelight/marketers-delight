@@ -4,6 +4,7 @@
 
 .category-row { margin-bottom: <?php echo $mid; ?>px; }
 
+.page-header,
 .description:not(:last-child),
 .page-cta:not(:last-child),
 .layout-slim.outer .title-wrap:not(:last-child),
@@ -77,6 +78,14 @@
 
 @media all and (min-width: 700px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
+	.columns .featured-image.alignleft {
+		margin-left: 0;
+		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
+	}
+	.columns .featured-image.alignright {
+		margin-right: 0;
+		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
+	}
 }
 
 @media all and (max-width: 700px) {
@@ -144,8 +153,6 @@
 	font-weight: <?php echo $bold; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 }
-
-.columns .byline { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
 .post-header .byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
@@ -230,6 +237,9 @@
 .post-nav-title { color: <?php echo $colors['site']['text']; ?>; }
 
 .post-nav-previous:hover .post-nav-title, .post-nav-next:hover .post-nav-title { text-decoration: underline; }
+
+.post-nav-previous .post-nav-subtitle i { margin-right: <?php echo $third; ?>px; }
+.post-nav-next .post-nav-subtitle i { margin-left: <?php echo $third; ?>px; }
 
 /* PAGINATION */
 

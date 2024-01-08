@@ -2,6 +2,12 @@
 
 $classes = $style = array();
 
+if ( ! is_singular() )
+	if ( $featured && $c <= $featured )
+		$classes[] = 'featured';
+	else
+		$classes[] = 'standard';
+
 if ( $columns > 1 ) {
 	if ( $columns <= 5 )
 		$classes[] = "f{$columns}";

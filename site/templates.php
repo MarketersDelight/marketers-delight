@@ -26,20 +26,7 @@ function md_templates() {
 
 	add_action( 'md_hook_content', 'md_loop', 30 );
 	add_action( 'md_hook_featured_image_bottom', 'md_get_caption' );
-/*
-	if ( ! is_404() && md_has_byline() ) {
-		$hook_byline = 'md_hook_post_header_top';
-		$byline_position = md_post_type_field( array( 'loop', 'byline_position' ), 'before_headline' );
 
-		if ( is_singular() )
-			$byline_position = md_post_type_field( array( 'single', 'byline_position' ), $byline_position );
-
-		if ( $byline_position == 'after_headline' )
-			$hook_byline = 'md_hook_post_header_bottom';
-
-		add_action( $hook_byline, 'md_byline' );
-	}
-*/
 	if ( md_has_headline() && ! md_has_headline_cover() )
 		add_action( 'md_hook_content_item', 'md_headline', 20 );
 

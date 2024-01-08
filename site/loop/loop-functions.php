@@ -94,16 +94,8 @@ function md_loop( $args = array() ) {
 
 	if ( isset( $args['sticky'] ) )
 		include( md_template( 'loops/the-post', true ) );
-	elseif ( $category_posts ) {
-		$taxonomies = get_object_taxonomies( $post_type );
-		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-		$categories = get_terms( $taxonomy );
-
-		if ( ! empty( $categories ) )
-			include( md_template( 'loops/category-posts', true ) );
-		else
-			md_404_template();
-	}
+	elseif ( $category_posts )
+		include( md_template( 'loops/category-posts', true ) );
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 
@@ -111,6 +103,7 @@ function md_loop( $args = array() ) {
 
 		while ( have_posts() ) {
 			the_post();
+
 			include( md_template( 'loops/the-post', true ) );
 		}
 
