@@ -2,99 +2,63 @@
 
 /* PAGE HEADER */
 
-.category-row { margin-bottom: <?php echo $mid; ?>px; }
+.layout-slim .title-wrap, .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
 
-.page-header,
-.description:not(:last-child),
-.page-cta:not(:last-child),
-.layout-slim.outer .title-wrap:not(:last-child),
-.layout-slim .page-image:not(:last-child),
-.category-header { margin-bottom: <?php echo $single; ?>px; }
+.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
 
-.post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
-
-.columns .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
-
-.page-header, .page-header .inner, .layout-slim .title-wrap {
-	align-items: center;
-	display: flex;
-	flex-flow: wrap;
-}
-
-.page-image, .layout-slim .page-cta {
+.page-image {
+	margin-bottom: <?php echo $single; ?>px;
 	margin-left: auto;
 	margin-right: auto;
+	text-align: center;
 }
-
-.title-wrap, .description, .page-image, .page-cta { position: relative; }
-
-.image-below-headline .title-wrap, .image-below-headline .title,
-.image-center .title, .image-center .description,
-.image-above-headline .title, .image-above-headline .description { flex-basis: 100%; }
 
 @media all and (min-width: 800px) {
-	.layout-standard.outer, .layout-slim.outer, .full .category-header, .full:not(.expanded) .breadcrumbs { text-align: center; }
-	.expanded .byline, .article .header-cover .byline, .header .byline { justify-content: center; }
-	.layout-standard.outer .description, .layout-standard.outer .page-cta, .full .category-header {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
+	/* GENERIC */
+	.layout-columns.inline .title-wrap { order: -1; }
 	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
-	.image-left .page-image { margin-right: <?php echo $single; ?>px; }
-	.image-left.outer .page-image { order: -1; }
-	.image-left.inline .page-image { order: 1; }
-	.image-left.inline .description { order: 2; }
-	.layout-columns, .layout-columns .inner { flex-flow: inherit; }
-	.layout-slim.outer.image-below-headline .title-wrap {
-		display: block;
-		width: 100%;
+	.image-left .page-image {
+		margin-right: <?php echo $single; ?>px;
+		order: -1;
 	}
-	.layout-standard.outer .title-wrap, .layout-columns.outer .title-wrap,
-	.outer .title, .outer .description, .outer .page-cta {
+	/* COLUMNS */
+	.layout-columns, .layout-columns.outer .inner {
+		align-items: center;
+		display: flex;
+	}
+	.layout-columns.outer .title-wrap {
+		flex: 1;
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
-	}
-	.layout-columns.outer .title-wrap { flex: 1; }
-	.layout-slim.outer .description, .layout-slim.outer .page-cta {
-		padding-left: <?php echo $mid; ?>px;
-		padding-right: <?php echo $mid; ?>px;
 	}
 	.layout-columns.inline { flex-flow: wrap; }
-	.inline .description, .author .inline .title-wrap { flex: 1; }
-	.inline .title-wrap, .image-center.inline .description { flex-basis: 100%; }
-	.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
+	.layout-columns.inline .description { flex: 1; }
+	/* SLIM */
+	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
+	.layout-slim.outer .description, .layout-slim.outer .page-cta {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $post_width; ?>px;
+	}
 }
 
+
 @media all and (max-width: 800px) {
-	.title-wrap { flex-basis: 100%; }
-	.author .page-image {
-		order: -1;
-		margin-bottom: <?php echo $single; ?>px;
-	}
-	.title-wrap:not(:last-child), .page-image:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.layout-columns.outer .title-wrap { margin-bottom: <?php echo $single; ?>px; }
 }
 
 @media all and (min-width: 700px) {
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
-	.columns .featured-image.alignleft {
-		margin-left: 0;
-		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
-	}
-	.columns .featured-image.alignright {
-		margin-right: 0;
-		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
-	}
 }
 
 @media all and (max-width: 700px) {
 	.page-cta-link {
 		display: block;
+		margin-bottom: <?php echo $half; ?>px;
 		text-align: center;
 		width: 100%;
 	}
-	.page-cta:not(:last-child), .page-cta-link:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 }
 
 /* BREADCRUMBS */
@@ -244,16 +208,17 @@
 /* PAGINATION */
 
 .pagination {
+	justify-content: space-between;
 	position: relative;
 	text-align: center;
 }
 
-.pagination a { text-decoration: none; }
-
-.pagination-sep {
-	margin-left: <?php echo $small; ?>px;
-	margin-right: <?php echo $small; ?>px;
+.pagination.prev-next .pagination-wrap {
+	display: flex;
+	justify-content: space-between;
 }
+
+.pagination a { text-decoration: none; }
 
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);

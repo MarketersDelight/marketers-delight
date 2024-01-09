@@ -1,4 +1,4 @@
-<div class="pagination">
+<div class="pagination <?php echo esc_attr( $class ); ?>">
 
 	<div class="pagination-wrap">
 

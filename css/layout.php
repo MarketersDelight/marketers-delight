@@ -6,57 +6,6 @@
 
 .loop { margin-bottom: <?php echo $single; ?>px; }
 
-/* POST STRUCTURE */
-
-.entry, .post-box { position: relative; }
-
-.post-header, .cover { padding-top: <?php echo $half; ?>px; }
-
-.post-header:not(.cover) + .featured-image { padding-top: <?php echo $single; ?>px; }
-
-.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
-
-.cover { padding-bottom: <?php echo $half; ?>px; }
-
-.post-footer {
-	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
-
-.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-#content > .inner, .the-content {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
-
-.cover, .post-box .post-header, .the-content, .post-footer {
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
-}
-
-.content .the-content.full, .header .cover, #content > .cover {
-	padding-left: 0;
-	padding-right: 0;
-}
-
-@media all and (min-width: 900px) {
-	.expanded .post-header, .header .post-header, #content > .post-header { text-align: center; }
-	.article .header-cover, .header .header-cover-full {
-		padding-bottom: <?php echo $mid; ?>px;
-		padding-top: <?php echo $mid; ?>px;
-	}
-	.cover, .post-box .post-header, .the-content, .author-box, .comments, .post-footer {
-		padding-left: <?php echo $mid; ?>px;
-		padding-right: <?php echo $mid; ?>px;
-	}
-	.expanded .the-content, .expanded .post-footer, .expanded .author-box, .expanded .comments {
-		padding-left: <?php echo $breakout_full; ?>%;
-		padding-right: <?php echo $breakout_full; ?>%;
-	}
-}
-
 /* POST COLUMNS */
 
 .columns .standard .the-content {
@@ -65,47 +14,6 @@
 }
 
 .columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
-
-/* COVERS */
-
-.cover, .header.has-cover {
-	background-position: center center;
-	<?php if ( ! empty( $cover_image_id ) ) :
-		$cover_image = wp_get_attachment_image_src( $cover_image_id );
-	?>
-	background-size: <?php echo $cover_image[1] < 500 ? 'auto' : 'cover'; ?>;
-	<?php else : ?>
-	background-size: cover;
-	<?php endif; ?>
-	position: relative;
-}
-
-<?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
-.header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
-<?php endif; ?>
-
-<?php foreach ( $cover_colors as $text_class => $text_atts ) :
-	$text_class = $text_atts['class'];
-?>
-
-.header.has-cover<?php echo $text_class; ?>,
-.header.has-cover<?php echo $text_class; ?> .site-name, .header.has-cover<?php echo $text_class; ?> .site-name a,
-.header.has-cover<?php echo $text_class; ?> .tagline,
-.header.has-cover<?php echo $text_class; ?> .header-triggers a,
-.header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-.cover<?php echo $text_class; ?>, .cover<?php echo $text_class; ?> a,
-.cover<?php echo $text_class; ?> .title a, .cover<?php echo $text_class; ?> .byline-item {
-	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
-}
-
-.cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
-
-<?php endforeach; ?>
-
-@media all and (max-width: 800px) {
-	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
-	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: <?php echo $text_atts['border']; ?>; }
-}
 
 /* BOX STYLE */
 
@@ -119,7 +27,8 @@
 
 .cover, .cover .overlay { border-radius: 5px; }
 
-.box-style .post-box .cover, .box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
+.box-style .post-box .cover,
+.box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
 
 .box-style .image-above-headline .cover,
 .box-style .image-above-headline .overlay { border-radius: 0; }
@@ -174,7 +83,10 @@
 	.columns.slim > .entry.standard { padding-left: <?php echo $half; ?>px; }
 	.columns .standard .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
-	.columns .standard .cover, .columns .standard .post-header, .columns .standard .the-content, .columns .standard .post-footer {
+	.columns .standard .cover,
+	.columns .standard .post-header,
+	.columns .standard .the-content,
+	.columns .standard .post-footer {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}

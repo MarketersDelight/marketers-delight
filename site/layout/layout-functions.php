@@ -575,6 +575,7 @@ function md_pagination() {
 	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
 	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+	$class = $type == 'prev_next' ? 'prev-next' : 'numbers';
 
 	if ( $category_posts ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
