@@ -93,9 +93,9 @@ function md_loop( $args = array() ) {
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 
 	if ( isset( $args['sticky'] ) )
-		include( md_template( 'loops/the-post', true ) );
+		include( md_template( 'loop/the-post', true ) );
 	elseif ( $category_posts )
-		include( md_template( 'loops/category-posts', true ) );
+		include( md_template( 'loop/category-posts', true ) );
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 
@@ -104,7 +104,7 @@ function md_loop( $args = array() ) {
 		while ( have_posts() ) {
 			the_post();
 
-			include( md_template( 'loops/the-post', true ) );
+			include( md_template( 'loop/the-post', true ) );
 		}
 
 		echo ! is_singular() ? '</div>' : '';

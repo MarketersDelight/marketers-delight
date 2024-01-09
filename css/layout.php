@@ -17,69 +17,9 @@
 	display: table;
 }
 
-/* CONTENT BLOCK */
-
-.layout-slim .title-wrap, .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
-
-.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
-
-.page-image {
-	margin-bottom: <?php echo $single; ?>px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-@media all and (min-width: 800px) {
-	/* GENERIC */
-	.layout-columns.inline .title-wrap { order: -1; }
-	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
-	.image-left .page-image {
-		margin-right: <?php echo $single; ?>px;
-		order: -1;
-	}
-	/* COLUMNS */
-	.layout-columns, .layout-columns.outer .inner {
-		align-items: center;
-		display: flex;
-	}
-	.layout-columns.outer .title-wrap {
-		flex: 1;
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
-	.layout-columns.inline { flex-flow: wrap; }
-	.layout-columns.inline .description { flex: 1; }
-	/* SLIM */
-	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
-	.layout-slim.outer .description, .layout-slim.outer .page-cta {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $post_width; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	.layout-columns.outer .title-wrap { margin-bottom: <?php echo $single; ?>px; }
-}
-
-@media all and (min-width: 700px) {
-	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
-}
-
-@media all and (max-width: 700px) {
-	.page-cta-link {
-		display: block;
-		margin-bottom: <?php echo $half; ?>px;
-		text-align: center;
-		width: 100%;
-	}
-}
-
 /* PAGE STRUCTURE */
 
-.loop { margin-bottom: <?php echo $single; ?>px; }
+.loop, .page-header, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
 
 .entry, .post-box { position: relative; }
 
@@ -141,6 +81,7 @@
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
+	#content > .post-header .byline, .header .byline { justify-content: center; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 	.cover { padding-bottom: <?php echo $single; ?>px; }
 	.article .header-cover,
@@ -226,8 +167,8 @@
 		margin-left: -<?php echo $single; ?>px;
 	}
 	.columns.slim { margin-left: -<?php echo $half; ?>px; }
-	.columns > .entry.standard { padding-left: <?php echo $single; ?>px; }
-	.columns.slim > .entry.standard { padding-left: <?php echo $half; ?>px; }
+	.columns > .entry { padding-left: <?php echo $single; ?>px; }
+	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
 	.columns .standard .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
 	.columns .standard .cover,
@@ -248,6 +189,14 @@
 	.columns.slim .standard .the-content {
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	}
+	.columns .standard .featured-image.alignleft {
+		margin-left: 0;
+		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
+	}
+	.columns .standard .featured-image.alignright {
+		margin-right: 0;
+		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
 	}
 	.f2 { flex-basis: 50%; max-width: 50%; }
 	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }

@@ -22,9 +22,9 @@ $classes = join( ' ', $classes );
 if ( ! empty( $loops[$loop]['dropin'] ) )
 	include( md_template( 'dropins', "{$loop}/loop-{$loop}", true ) );
 elseif ( ! empty( $loops[$loop] ) )
-	include( md_template( 'loops/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
+	include( md_template( 'loop/loop' . ( $loop == 'default' ? '' : "-{$loop}" ), true ) );
 else
-	include( md_template( 'loops/loop', true ) );
+	include( md_template( 'loop/loop', true ) );
 
 md_hook_x_loop( $c );
 

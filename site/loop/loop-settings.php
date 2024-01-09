@@ -9,9 +9,7 @@
 		) ); ?>
 	</div>
 
-	<?php if ( $screen->base !== 'term' ) :
-		$category_posts = $this->fields->module( 'category_posts' );
-	?>
+	<?php if ( $screen->base !== 'term' ) : ?>
 
 	<div class="col col2 md-sep-small field-no-label">
 		<?php $this->fields->field( 'category_posts', array(
@@ -22,19 +20,6 @@
 		) ); ?>
 	</div>
 
-	<div id="loop_category_posts" style="width: 100%; clear: both; display: <?php echo $category_posts ? 'block' : 'none'; ?>">
-
-		<div class="col md-sep-micro">
-			<?php $this->fields->field( 'category_per_page', array(
-				'type' => 'number',
-				'label' => __( 'Categories Per Page', 'md' ),
-				'placeholder' => 5,
-				'description' => __( 'Number of categories to show.', 'md' )
-			) ); ?>
-		</div>
-
-	</div>
-
 	<?php endif; ?>
 
 </div>
@@ -42,6 +27,19 @@
 <hr class="md-sep-small" />
 
 <div class="columns-3 columns-single mb-sep-small">
+
+	<?php if ( $screen->base !== 'term' ) : ?>
+
+	<div id="loop_category_posts" class="col md-sep-micro" style="display: <?php echo $category_posts ? 'inline-block' : 'none'; ?>">
+		<?php $this->fields->field( 'category_per_page', array(
+			'type' => 'number',
+			'label' => __( 'Categories Per Page', 'md' ),
+			'placeholder' => 5,
+			'description' => __( 'Number of categories to show.', 'md' )
+		) ); ?>
+	</div>
+
+	<?php endif; ?>
 
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'posts_per_page', array(
@@ -69,11 +67,33 @@
 		) ); ?>
 	</div>
 
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'orderby', array(
+			'type' => 'select',
+			'label' => __( 'Orderby', 'md' ),
+			'description' => __( 'Sort order of posts.', 'md' ),
+			'options' => array(
+				'' => __( 'Date', 'md' ),
+				'title' => __( 'Title', 'md' ),
+				'modified' => __( 'Last Modified', 'md' ),
+				'comment_count' => __( 'Comment Count', 'md' ),
+				'rand' => __( 'Random', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'order', array(
+			'type' => 'select',
+			'label' => __( 'Order', 'md' ),
+			'description' => __( 'Order by lowest/highest value.', 'md' ),
+			'options' => $order
+		) ); ?>
+	</div>
+
 </div>
 
 <hr class="md-sep-small" />
-
-<h4><?php echo __( 'Post Content', 'md' ); ?></h4>
 
 <?php $this->fields->field( 'featured_image', array(
 	'type' => 'select',

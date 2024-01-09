@@ -27,7 +27,7 @@ function md_templates() {
 	add_action( 'md_hook_content', 'md_loop', 30 );
 	add_action( 'md_hook_featured_image_bottom', 'md_get_caption' );
 
-	if ( md_has_headline() && ! md_has_headline_cover() )
+	if ( md_has_headline() )
 		add_action( 'md_hook_content_item', 'md_headline', 20 );
 
 	add_action( 'md_hook_content_item', 'md_content_text', 40 );

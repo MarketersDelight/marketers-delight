@@ -35,8 +35,17 @@ class md_post extends md_api {
 
 	public function parse_query( $wp ) {
 		if ( ! is_admin() && $wp->is_main_query() && ( $wp->is_home || $wp->is_category ) ) {
-			$posts_per_page = get_option( 'posts_per_page' );
-			$wp->query_vars['posts_per_page'] = md_post_type_field( array( 'loop', 'posts_per_page' ), $posts_per_page, 'post' );
+			$per_page = md_post_type_field( array( 'loop', 'posts_per_page' ), get_option( 'posts_per_page' ), 'post' );
+			$order = md_post_type_field( array( 'loop', 'order' ), null, 'post' );
+			$orderby = md_post_type_field( array( 'loop', 'orderby' ), null, 'post' );
+
+			$wp->query_vars['posts_per_page'] = esc_attr( $per_page );
+
+			if ( $order )
+				$wp->query_vars['order'] = esc_attr( $order );
+
+			if ( $orderby )
+				$wp->query_vars['orderby'] = esc_attr( $orderby );
 		}
 
 		return $wp;

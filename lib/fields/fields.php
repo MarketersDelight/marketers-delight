@@ -564,10 +564,12 @@ class md_fields {
 	 */
 
 	public function terms( $name, $id, $option, $args ) {
+		$post_type = isset( $args['post_type'] ) ? $args['post_type'] : 'post';
+		$taxonomy = isset( $args['taxonomy'] ) ? $args['taxonomy'] : 'category';
 		$defaults = array(
 			'description' => '',
-			'post_type' => 'post',
-			'taxonomy' => 'category',
+			'post_type' => $post_type,
+			'taxonomy' => $taxonomy,
 			'depth' => 0,
 			'hide_empty' => false,
 			'hierarchical' => true,

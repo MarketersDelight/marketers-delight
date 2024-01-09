@@ -46,17 +46,15 @@ class md_loop extends md_api {
 	 * Register fields for save.
 	 *
 	 * @since 5.1
-	 * @moved 5.6
 	 */
 
 	public function fields() {
 		$cta_ids = array();
-		$cta = md_setting( array( 'cta', 'forms' ) );
+		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		$sanitize = new md_sanitize;
 
-		if ( ! empty( $cta ) )
-			foreach ( $cta as $cta_id => $cta_fields )
-				$cta_ids[] = $cta_id;
+		foreach ( $cta as $cta_id => $cta_fields )
+			$cta_ids[] = $cta_id;
 
 		return array(
 			'archives' => array(
@@ -71,6 +69,14 @@ class md_loop extends md_api {
 			'columns' => array( 'type' => 'number' ),
 			'posts_per_page' => array( 'type' => 'number' ),
 			'category_per_page' => array( 'type' => 'number' ),
+			'orderby' => array(
+				'type' => 'select',
+				'options' => array( 'title', 'modified', 'comment_count', 'rand' )
+			),
+			'order' => array(
+				'type' => 'select',
+				'options' => array( 'ASC' )
+			),
 			'featured_image' => array(
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )
@@ -127,6 +133,11 @@ class md_loop extends md_api {
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
+		$category_posts = $this->fields->module( 'category_posts' );
+		$order = array(
+			'' => __( 'Descending', 'md' ),
+			'ASC' => __( 'Ascending', 'md' )
+		);
 
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
