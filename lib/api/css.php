@@ -54,17 +54,18 @@ class md_css {
 			$templates['fonts'] = locate_template( 'css/fonts.php' );
 
 		$templates = array_merge( $templates, array(
+			'typography' => locate_template( 'css/typography.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
 			'page-elements' => locate_template( 'css/page-elements.php' ),
-			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
-			'footer' => locate_template( 'css/footer.php' )
+			'footer' => locate_template( 'css/footer.php' ),
+			'helpers' => locate_template( 'css/helpers.php' )
 		) );
 
 		$templates = array_merge( $templates, $dropins );

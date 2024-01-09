@@ -35,19 +35,6 @@ body {
 	position: relative;
 }
 
-.inner {
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $site_width; ?>px;
-	position: relative;
-}
-
-.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
-	clear: both;
-	content: '';
-	display: table;
-}
-
 /* ICONS */
 
 @font-face {
@@ -138,159 +125,52 @@ abbr, acronym {
 	text-decoration: none;
 }
 
-/* TYPOGRAPHY */
-
-.format { word-wrap: break-word; }
-
-.format a { text-decoration: underline; }
-
-.format a:hover { text-decoration: none; }
-
-.format ul, .format ol, .format p, .format hr, .format pre, .format table, .format blockquote, .format .wp-caption, .format .alert, .format .note, .format .wp-block-image, .format .email-form-wrap { margin-bottom: <?php echo $single; ?>px; }
-
-<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
-.format *:last-child { margin-bottom: 0; }
-<?php endif; ?>
-
-<?php
-	$queries = array( 900 => 'tablet', 700 => 'mobile' );
-	$titles = array(
-		'huge' => '.huge-title',
-		'h1' => 'h1, .large-title',
-		'h2' => 'h2, .main-title',
-		'h3' => 'h3, .med-title',
-		'h4' => 'h4, .mid-title',
-		'h5' => 'h5, .small-title',
-		'h6' => 'h6, .micro-title'
-	);
-	$texts = array(
-		'huge' => '.huge-text',
-		'h1' => '.large-text',
-		'h2' => '.main-text',
-		'h3' => '.med-text',
-		'h4' => '.mid-text',
-		'h5' => '.small-text',
-		'h6' => '.micro-text'
-	);
-	$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
-	$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
-
-	foreach ( $titles as $attribute => $selector ) {
-		$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family;
-		$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight;
-
-		echo
-			"$selector, " . $texts[$attribute] . " {\n".
-				"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
-				"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
-			"}\n".
-			"$selector {\n".
-				( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
-				( ! empty( $typography[$attribute]['font_style'] ) ? "\tfont-style: italic;\n" : '' ).
-				"\tfont-weight: {$h_fw};\n".
-			"}\n";
-	}
- ?>
-
-.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	margin-bottom: <?php echo $half; ?>px;
-	position: relative;
-}
-
-.format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
-	color: <?php echo $colors['site']['headline-links']; ?>;
-	text-decoration: none;
-}
-
-<?php foreach ( $queries as $w => $d ) {
-	echo "@media all and (max-width: {$w}px) {\n".
-		 "\tbody { ".
-		 	'font-size: ' . $font_size[$d] . 'px; '.
-			'line-height: ' . $line_height[$d] . 'px; '.
-		"}\n";
-	foreach ( $titles as $h => $selector ) {
-		echo "\t$selector, " . $texts[$h] . " { ".
-			 	'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '.
-			 	'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '.
-			 "}\n";
-	}
-	echo "}\n";
-} ?>
-
-/* HELPER CLASSES */
-
 .text-center { text-align: center; }
-
 .text-left { text-align: left; }
-
 .text-right { text-align: right; }
 
 .caps { text-transform: uppercase; }
 
-.avatar {
-	border-radius: 50%;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+/* BLOCKQUOTE */
 
-.highlight {
-	background-color: #fdd169;
-	padding-left: <?php echo $small; ?>px;
-	padding-right: <?php echo $small; ?>px;
-}
-
-.foot {
+blockquote {
+	background-color: #fff;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-left-width: 7px;
+	border-radius: 5px;
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	font-style: italic;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-}
-
-.shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
-
-.wp-block-image.shadow { box-shadow: none; }
-
-.overlay {
-	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
-	content: '';
 	display: block;
-	height: 100%;
-	position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		top: 0;
-	width: 100%;
-}
-
-<?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
-	$color_slug = $color_fields['slug'];
-	$color_val = $color_fields['color'];
-
-	echo
-		".has-$color_slug-background-color { background-color: $color_val; }\n".
-		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
-} ?>
-
-.has-text-color.has-white-color { color: #fff; }
-
-.circle { border-radius: 50%; }
-
-.circle-icon, a.circle-icon, .toc-anchor {
-	align-items: center;
-	background-color: rgba(0, 0, 0, 0.1);
-	border-radius: 50%;
-	color: <?php echo $colors['site']['text']; ?>;
-	display: inline-flex;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	font-weight: normal;
-	height: <?php echo $mid; ?>px;
-	justify-content: center;
-	line-height: 1;
+	font-style: italic;
+	padding: <?php echo $single; ?>px;
 	position: relative;
-	width: <?php echo $mid; ?>px;
 }
 
-.circle-icon.micro, .toc-anchor {
-	height: <?php echo $single; ?>px;
-	width: <?php echo $single; ?>px;
+blockquote:before, blockquote:after {
+	color: #ddd;
+	font-family: Georgia, serif;
+	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $bold; ?>;
+	position: absolute;
 }
+
+blockquote:before {
+	content: open-quote;
+	left: <?php echo $small; ?>px;
+}
+
+blockquote:after {
+	bottom: <?php echo $small; ?>px;
+	content: close-quote;
+	right: <?php echo $half; ?>px;
+}
+
+blockquote.small {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+
+blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
+
+blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }

@@ -4,16 +4,58 @@
 	$LAYOUT
 \*------------------------------*/
 
+.inner {
+	margin-left: auto;
+	margin-right: auto;
+	max-width: <?php echo $site_width; ?>px;
+	position: relative;
+}
+
+.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
+	clear: both;
+	content: '';
+	display: table;
+}
+
 .loop { margin-bottom: <?php echo $single; ?>px; }
 
-/* POST COLUMNS */
+/* STRUCTURE */
 
-.columns .standard .the-content {
+.entry, .post-box { position: relative; }
+
+.cover, .post-header { padding-top: <?php echo $half; ?>px; }
+
+.post-header:not(.cover) + .featured-image { padding-top: <?php echo $single; ?>px; }
+
+.cover { padding-bottom: <?php echo $half; ?>px; }
+
+.the-content, #content > .inner {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
+.cover,
+.post-box .post-header,
+.the-content,
+.post-footer {
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
+
+.content .the-content.full,
+.header .cover,
+#content > .cover {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.post-footer {
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
 
-.columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
+.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 /* BOX STYLE */
 
@@ -33,20 +75,50 @@
 .box-style .image-above-headline .cover,
 .box-style .image-above-headline .overlay { border-radius: 0; }
 
-/* QUERIES */
+/* COLUMNS */
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	#content .inner {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
+.columns .standard .the-content {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
 
+.columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
+
+.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
+
+/* QUERIES */
+
 @media all and (min-width: 900px) {
-	.content-width { max-width: <?php echo $content_width; ?>px; }
-	.post-content { max-width: <?php echo $post_width; ?>px; }
+	.expanded .post-header,
+	.header .post-header,
+	#content > .post-header { text-align: center; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 	.cover { padding-bottom: <?php echo $single; ?>px; }
+	.article .header-cover,
+	.header .header-cover-full {
+		padding-bottom: <?php echo $mid; ?>px;
+		padding-top: <?php echo $mid; ?>px;
+	}
+	.cover,
+	.post-box .post-header,
+	.the-content,
+	.author-box,
+	.comments,
+	.post-footer {
+		padding-left: <?php echo $mid; ?>px;
+		padding-right: <?php echo $mid; ?>px;
+	}
+	.expanded .the-content,
+	.expanded .post-footer,
+	.expanded .author-box,
+	.expanded .comments {
+		padding-left: <?php echo $breakout_full; ?>%;
+		padding-right: <?php echo $breakout_full; ?>%;
+	}
+
+
+	.content-width { max-width: <?php echo $content_width; ?>px; }
+	.post-content { max-width: <?php echo $post_width; ?>px; }
 	.full .loop.standard {
 		margin-left: auto;
 		margin-right: auto;
@@ -66,6 +138,11 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
+	.f2 { flex-basis: 50%; max-width: 50%; }
+	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
+	.f4 { flex-basis: 25%; max-width: 25%; }
+	.f5 { flex-basis: 20%; max-width: 20%; }
+	.entry.featured { flex-basis: 100%; max-width: 100%; }
 	.columns {
 		align-items: center;
 		display: flex;
@@ -73,11 +150,6 @@
 		justify-content: center;
 		margin-left: -<?php echo $single; ?>px;
 	}
-	.f2 { flex-basis: 50%; max-width: 50%; }
-	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
-	.f4 { flex-basis: 25%; max-width: 25%; }
-	.f5 { flex-basis: 20%; max-width: 20%; }
-	.entry.featured { flex-basis: 100%; max-width: 100%; }
 	.columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.columns > .entry.standard { padding-left: <?php echo $single; ?>px; }
 	.columns.slim > .entry.standard { padding-left: <?php echo $half; ?>px; }
@@ -109,6 +181,13 @@
 	.loop-default.article .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
+	}
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	#content .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
 	}
 }
 
