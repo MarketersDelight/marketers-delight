@@ -106,7 +106,7 @@ class md_page_title {
 			$data['classes'][] = 'image-' . str_replace( '_', '-', $data['image_position'] );
 		}
 		else
-			$data['classes'][] = 'layout-standard';
+			$data['classes'][] = 'layout-slim';
 
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 

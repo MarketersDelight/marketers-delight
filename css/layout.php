@@ -17,9 +17,69 @@
 	display: table;
 }
 
-.loop { margin-bottom: <?php echo $single; ?>px; }
+/* CONTENT BLOCK */
 
-/* STRUCTURE */
+.layout-slim .title-wrap, .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
+
+.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
+
+.page-image {
+	margin-bottom: <?php echo $single; ?>px;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: center;
+}
+
+@media all and (min-width: 800px) {
+	/* GENERIC */
+	.layout-columns.inline .title-wrap { order: -1; }
+	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
+	.image-left .page-image {
+		margin-right: <?php echo $single; ?>px;
+		order: -1;
+	}
+	/* COLUMNS */
+	.layout-columns, .layout-columns.outer .inner {
+		align-items: center;
+		display: flex;
+	}
+	.layout-columns.outer .title-wrap {
+		flex: 1;
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $content_width; ?>px;
+	}
+	.layout-columns.inline { flex-flow: wrap; }
+	.layout-columns.inline .description { flex: 1; }
+	/* SLIM */
+	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
+	.layout-slim.outer .description, .layout-slim.outer .page-cta {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $post_width; ?>px;
+	}
+}
+
+@media all and (max-width: 800px) {
+	.layout-columns.outer .title-wrap { margin-bottom: <?php echo $single; ?>px; }
+}
+
+@media all and (min-width: 700px) {
+	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 700px) {
+	.page-cta-link {
+		display: block;
+		margin-bottom: <?php echo $half; ?>px;
+		text-align: center;
+		width: 100%;
+	}
+}
+
+/* PAGE STRUCTURE */
+
+.loop { margin-bottom: <?php echo $single; ?>px; }
 
 .entry, .post-box { position: relative; }
 
@@ -75,17 +135,6 @@
 .box-style .image-above-headline .cover,
 .box-style .image-above-headline .overlay { border-radius: 0; }
 
-/* COLUMNS */
-
-.columns .standard .the-content {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
-
-.columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
-
-.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
-
 /* QUERIES */
 
 @media all and (min-width: 900px) {
@@ -115,8 +164,6 @@
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
-
-
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-content { max-width: <?php echo $post_width; ?>px; }
 	.full .loop.standard {
@@ -138,11 +185,39 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-	.f2 { flex-basis: 50%; max-width: 50%; }
-	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
-	.f4 { flex-basis: 25%; max-width: 25%; }
-	.f5 { flex-basis: 20%; max-width: 20%; }
-	.entry.featured { flex-basis: 100%; max-width: 100%; }
+}
+
+@media all and (max-width: 900px) {
+	.content { margin-bottom: <?php echo $single; ?>px; }
+	.loop-default.article .post-box {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	#content .inner {
+		padding-left: <?php echo $half; ?>px;
+		padding-right: <?php echo $half; ?>px;
+	}
+}
+
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed; }
+}
+
+/* COLUMNS */
+
+.columns .standard .the-content {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+
+.columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
+
+.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
+
+@media all and (min-width: 900px) {
 	.columns {
 		align-items: center;
 		display: flex;
@@ -174,23 +249,9 @@
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
-}
-
-@media all and (max-width: 900px) {
-	.content { margin-bottom: <?php echo $single; ?>px; }
-	.loop-default.article .post-box {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	#content .inner {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed; }
+	.f2 { flex-basis: 50%; max-width: 50%; }
+	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
+	.f4 { flex-basis: 25%; max-width: 25%; }
+	.f5 { flex-basis: 20%; max-width: 20%; }
+	.entry.featured { flex-basis: 100%; max-width: 100%; }
 }

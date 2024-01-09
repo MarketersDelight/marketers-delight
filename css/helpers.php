@@ -138,7 +138,7 @@ ul.list-check li:before {
 		top: 0;
 }
 
-/* HELPERS */
+/* GENERAL */
 
 .avatar {
 	border-radius: 50%;

@@ -1,64 +1,6 @@
 <style type="text/css">
 
-/* PAGE HEADER */
-
-.layout-slim .title-wrap, .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
-
-.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
-
-.page-image {
-	margin-bottom: <?php echo $single; ?>px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-
-@media all and (min-width: 800px) {
-	/* GENERIC */
-	.layout-columns.inline .title-wrap { order: -1; }
-	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
-	.image-left .page-image {
-		margin-right: <?php echo $single; ?>px;
-		order: -1;
-	}
-	/* COLUMNS */
-	.layout-columns, .layout-columns.outer .inner {
-		align-items: center;
-		display: flex;
-	}
-	.layout-columns.outer .title-wrap {
-		flex: 1;
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
-	.layout-columns.inline { flex-flow: wrap; }
-	.layout-columns.inline .description { flex: 1; }
-	/* SLIM */
-	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
-	.layout-slim.outer .description, .layout-slim.outer .page-cta {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $post_width; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	.layout-columns.outer .title-wrap { margin-bottom: <?php echo $single; ?>px; }
-}
-
-@media all and (min-width: 700px) {
-	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
-}
-
-@media all and (max-width: 700px) {
-	.page-cta-link {
-		display: block;
-		margin-bottom: <?php echo $half; ?>px;
-		text-align: center;
-		width: 100%;
-	}
-}
+.page-header { margin-bottom: <?php echo $single; ?>px; }
 
 /* BREADCRUMBS */
 
