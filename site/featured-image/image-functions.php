@@ -6,10 +6,25 @@
  * @since 4.0
  */
 
-function md_featured_image() {
+function md_featured_image( $args = array() ) {
+	if ( ! has_post_thumbnail() )
+		return;
+
+	$pos_args = array();
+
+	if ( isset( $args['position'] ) )
+		$position = $args['position'];
+	else
+		$position = md_featured_image_position();
+
+	if ( isset( $args['inline'] ) && ! in_array( $position, array( '', 'left', 'right', 'center' ) ) )
+		return;
+
+	if ( isset( $args['show'] ) && $position !== $args['show'] )
+		return;
+
 	$wrap = 'wrap';
 	$classes = array( 'featured-image' );
-	$position = md_featured_image_position();
 
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
@@ -27,35 +42,15 @@ function md_featured_image() {
 }
 
 /**
- * Insert featured image above/below headline with in-post check.
- *
- * @since 4.1
- * @moved 5.6
- */
-
-function md_featured_image_before_headline() {
-	$position = md_featured_image_position();
-
-	if ( has_post_thumbnail() && $position == 'above_headline' )
-		md_featured_image();
-}
-
-function md_featured_image_after_headline() {
-	$position = md_featured_image_position();
-
-	if ( has_post_thumbnail() && $position == 'below_headline' )
-		md_featured_image();
-}
-
-/**
  * Returns position meta value.
  *
  * @since 4.1
  */
 
-function md_featured_image_position( $context = 'post' ) {
-	$default = 'right';
+function md_featured_image_position( $args = array() ) {
+	$default = isset( $args['position'] ) ? $args['position'] : 'right';
 	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), $default );
+	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
 	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
@@ -71,19 +66,6 @@ function md_featured_image_position( $context = 'post' ) {
 	}
 
 	return $position;
-}
-
-/**
- * Checks for inline Featured Image within #the_content.
- *
- * @since 4.1
- */
-
-function md_has_inline_featured_image() {
-	$position = md_featured_image_position();
-
-	if ( has_post_thumbnail() && in_array( $position, array( '', 'left', 'right', 'center' ) ) )
-		return true;
 }
 
 /**

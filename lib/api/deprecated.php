@@ -27,6 +27,37 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Insert featured image above/below headline with in-post check.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
+
+function md_featured_image_before_headline() {
+	$position = md_featured_image_position();
+	if ( $position == 'above_headline' )
+		md_featured_image();
+}
+function md_featured_image_after_headline() {
+	$position = md_featured_image_position();
+	if ( $position == 'below_headline' )
+		md_featured_image();
+}
+
+/**
+ * Checks for inline Featured Image within #the_content.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
+
+function md_has_inline_featured_image() {
+	$position = md_featured_image_position();
+	if ( has_post_thumbnail() && in_array( $position, array( '', 'left', 'right', 'center' ) ) )
+		return true;
+}
+
+/**
  * Filter length of excerpts + more text of loops.
  *
  * @since 4.5

@@ -144,7 +144,7 @@
 		<?php $this->fields->field( array( $group, $field, 'featured_image' ), array(
 			'type' => 'select',
 			'label' => __( 'Featured Image', 'md' ),
-			'empty_label' => __( 'Set image position...', 'md' ),
+			'empty_label' => __( 'Use default position', 'md' ),
 			'options' => $sanitize->values['featured_image'],
 			'wrap_classes' => 'md-sep-small'
 		) ); ?>

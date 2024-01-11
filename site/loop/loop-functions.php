@@ -77,7 +77,7 @@ function md_query() {
 
 function md_loop( $args = array() ) {
 	$c = 1;
-	$wrap_classes = array();
+	$wrap_classes = $headline_args = array();
 	$post_type = md_get_post_type();
 	$loop_id = md_get_loop();
 	$loops = md_loops();
@@ -97,6 +97,9 @@ function md_loop( $args = array() ) {
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
 	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
+
+	if ( isset( $loop['featured_image'] ) )
+		$headline_args['image_position'] = $loop['featured_image'];
 
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
@@ -244,6 +247,9 @@ function md_has_headline_cover() {
  */
 
 function md_headline( $args = array() ) {
+	if ( ! md_has_headline() )
+		return;
+
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 	$cover = md_cover( $context );
 	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
@@ -278,7 +284,24 @@ function md_headline( $args = array() ) {
 	if ( ! is_singular() && $context == 'post' )
 		$permalink = get_permalink();
 
+	$image_args = array();
+
+	if ( isset( $args['image_position'] ) )
+		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $args['image_position'] );
+
+	if ( $context == 'post' ) {
+		$image_args['show'] = 'above_headline';
+
+		md_featured_image( $image_args );
+	}
+
 	include( md_template( 'headline', true ) );
+
+	if ( $context == 'post' ) {
+		$image_args['show'] = 'below_headline';
+
+		md_featured_image( $image_args );
+	}
 }
 
 /**
@@ -402,12 +425,16 @@ function md_the_excerpt( $loop ) {
 
 function md_content_text( $loop = array() ) {
 	$classes = array( 'the-content' );
+	$image_args = array( 'inline' => true );
 
 	if ( empty( $loop ) )
 		$loop = md_module( 'loop' );
 
 	if ( empty( $loop['content'] ) )
 		$loop['content'] = md_post_type_field( array( 'loop', 'content' ) );
+
+	if ( ! empty( $loop['featured_image'] ) )
+		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
 
 	if ( md_meta( array( 'layout', 'content', 'full' ) ) )
 		$classes[] = 'full';

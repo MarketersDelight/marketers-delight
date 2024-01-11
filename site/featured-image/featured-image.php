@@ -79,7 +79,7 @@ class md_featured_image extends md_api {
 	}
 
 	/**
-	 * Filter featured image fields to be saved in other settings geoups.
+	 * Filter featured image fields to be saved in other settings groups.
 	 *
 	 * @since 5.6
 	 */
@@ -133,17 +133,6 @@ class md_featured_image extends md_api {
 			) ); ?>
 		</div>
 	<?php }
-
-	/**
-	 * Load featured image in various positions across templates.
-	 *
-	 * @since 4.8.3
-	 */
-
-	public function template() {
-		add_action( 'md_hook_before_post_header', 'md_featured_image_before_headline' );
-		add_action( 'md_hook_after_post_header', 'md_featured_image_after_headline', 30 );
-	}
 
 }
 
