@@ -445,10 +445,20 @@ class md_fields {
 	 */
 
 	public function select( $name, $id, $option, $args ) {
-		$classes = isset( $args['classes'] ) ? ' class="' . $args['classes'] . '"' : '';
+		$classes = array( 'md-select' );
 		$style = isset( $args['style'] ) ? ' style="' . esc_attr( $args['style'] ) . '"' : '';
+		$multiple = isset( $args['multiple'] ) ? ' multiple' : '';
+		$b = isset( $args['multiple'] ) ? '[]' : '';
+
+		if ( isset( $args['classes'] ) )
+			$classes[] = $args['classes'];
+
+		if ( isset( $args['select2'] ) )
+			$classes[] = 'md-select2';
+
+		$classes = join( ' ' , $classes );
 	?>
-		<select name="<?php echo $name; ?>" id="<?php echo $id; ?>"<?php echo $classes; ?><?php echo $style; ?>>
+		<select name="<?php echo $name . $b; ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple; ?><?php echo $style; ?>>
 			<?php if ( isset( $args['empty_label'] ) ) : ?>
 				<option value=""><?php echo esc_html( $args['empty_label'] ); ?></option>
 			<?php endif; ?>
@@ -460,13 +470,23 @@ class md_fields {
 					<?php endforeach; ?>
 					</optgroup>
 				<?php endforeach; ?>
-			<?php elseif ( ! empty( $args['options'] ) ) : ?>
-				<?php foreach ( $args['options'] as $val => $label ) : ?>
-					<option value="<?php echo esc_attr( $val ); ?>"<?php echo selected( $option, $val, false ); ?>><?php echo esc_html( $label ); ?></option>
-				<?php endforeach; ?>
-			<?php endif; ?>
+			<?php elseif ( ! empty( $args['options'] ) ) :
+				foreach ( $args['options'] as $val => $label ) :
+					if ( is_array( $option ) )
+						$selected = in_array( $val, $option ) ? ' selected="selected"' : '';
+					else
+						$selected = selected( $option, $val, false );
+				?>
+					<option value="<?php echo esc_attr( $val ); ?>"<?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
+				<?php endforeach;
+			endif; ?>
 		</select>
-	<?php }
+	<?php
+		if ( isset( $args['select2'] ) ) {
+			wp_enqueue_style( 'md-select2' );
+			wp_enqueue_script( 'md-select2' );
+		}
+	}
 
 	/**
 	 * Create a range field with reset value.
@@ -643,6 +663,7 @@ class md_fields {
 		$empty[$var] = array();
 		$option = array_merge( $empty, $option );
 		$style = isset( $args['style'] ) ? $args['style'] : 'list';
+		$callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null;
 
 		include( 'group.php' );
 	}

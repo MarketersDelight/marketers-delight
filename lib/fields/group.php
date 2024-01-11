@@ -36,7 +36,7 @@
 			</div>
 
 			<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-				<?php call_user_func( $args['callback'], $args['field'], $group ); ?>
+				<?php call_user_func( $args['callback'], $args['field'], $group, $callback_args ); ?>
 			</div>
 
 		</div>

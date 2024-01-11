@@ -81,7 +81,8 @@
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	#content > .post-header .byline, .header .byline { justify-content: center; }
+	.byline { justify-content: center; }
+	.content-sidebar .post-box .byline { justify-content: flex-start; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 	.cover { padding-bottom: <?php echo $single; ?>px; }
 	.article .header-cover,

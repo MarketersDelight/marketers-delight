@@ -66,16 +66,36 @@ function md_get_loop() {
  * @since 4.1
  */
 
+function md_query() {
+	$queries = md_module( array( 'loop', 'query' ) );
+
+	foreach ( $queries as $query_id => $fields )
+		md_loop( array(
+			'query' => $fields
+		) );
+}
+
 function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
 	$post_type = md_get_post_type();
-	$loop = md_get_loop();
+	$loop_id = md_get_loop();
 	$loops = md_loops();
-	$featured = md_module( array( 'loop', 'featured' ), '0' );
-	$columns = md_module( array( 'loop', 'columns' ), 1 );
-	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
+	if ( isset( $args['query'] ) ) {
+		$loop = $args['query'];
+
+		if ( isset( $loop['post_type'] ) )
+			$post_type = $loop['post_type'];
+
+		if ( isset( $loop['archives'] ) )
+			$loop_id = $loop['archives'];
+	}
+	else
+		$loop = md_module( 'loop' );
+
+	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
+	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
 
 	if ( $columns > 1 ) {
@@ -94,8 +114,10 @@ function md_loop( $args = array() ) {
 
 	if ( isset( $args['sticky'] ) )
 		include( md_template( 'loop/the-post', true ) );
-	elseif ( $category_posts )
+	elseif ( ! empty( $loop['category_posts']['enable'] ) )
 		include( md_template( 'loop/category-posts', true ) );
+	elseif ( isset( $args['query'] ) )
+		include( md_template( 'loop/query', true ) );
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 
@@ -199,13 +221,20 @@ add_filter( 'post_class', 'md_post_classes' );
  */
 
 function md_has_headline() {
+	if ( ! md_meta( array( 'layout', 'content', 'headline' ) ) )
+		return true;
+}
+
+/**
+ * Checks for headline with cover.
+ *
+ * @since 4.1
+ */
+
+function md_has_headline_cover() {
 	$cover = md_cover();
 
-	if (
-		( ! md_meta( array( 'layout', 'content', 'headline' ) ) ) ||
-		( is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
-	)
-		return true;
+	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**
@@ -324,20 +353,45 @@ function md_overlay( $cover ) {
  * @since 5.1
  */
 
-function md_the_content( $content ) {
-	$read_more = md_read_more_text();
+function md_the_content( $loop ) {
+	if ( empty( $loop['read_more'] ) )
+		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
 
 	md_hook_before_the_content();
 
-	if ( ! is_singular() && empty( $content ) ) {
-		the_excerpt(); ?>
-		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $read_more ); ?></a>
+	if ( ! is_singular() && empty( $loop['content'] ) ) {
+		md_the_excerpt( $loop );
+	?>
+		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $loop['read_more'] ); ?></a>
 	<?php } else {
-		the_content( $read_more );
+		the_content( $loop['read_more'] );
 		wp_link_pages();
 	}
 
 	md_hook_after_the_content();
+}
+
+/**
+ * Create our own Excerpt with native WP functions so
+ * we can modify length and more without use of filters.
+ *
+ * @since 5.6
+ */
+
+function md_the_excerpt( $loop ) {
+	$excerpt = get_the_excerpt();
+	$num_words = 55;
+	$more = '[...]';
+
+	if ( isset( $loop['excerpt_more'] ) )
+		$more = $loop['excerpt_more'];
+
+	if ( isset( $loop['excerpt_length'] ) )
+		$num_words = $loop['excerpt_length'];
+
+	$excerpt = wp_trim_words( $excerpt, $num_words, $more );
+
+	echo wpautop( $excerpt );
 }
 
 /**
@@ -346,10 +400,14 @@ function md_the_content( $content ) {
  * @since 4.1
  */
 
-function md_content_text() {
+function md_content_text( $loop = array() ) {
 	$classes = array( 'the-content' );
-	$default = md_post_type_field( array( 'loop', 'content' ) );
-	$content = md_module( array( 'loop', 'content' ), $default );
+
+	if ( empty( $loop ) )
+		$loop = md_module( 'loop' );
+
+	if ( empty( $loop['content'] ) )
+		$loop['content'] = md_post_type_field( array( 'loop', 'content' ) );
 
 	if ( md_meta( array( 'layout', 'content', 'full' ) ) )
 		$classes[] = 'full';
@@ -357,45 +415,6 @@ function md_content_text() {
 	$classes = apply_filters( 'md_the_content_classes', $classes );
 	$classes = join( ' ', $classes );
 
-	if ( get_the_content() && ( $content !== 'hide' || is_singular() || is_404() ) )
+	if ( get_the_content() && ( $loop['content'] !== 'hide' || is_singular() || is_404() ) )
 		include( md_template( 'text', true ) );
 }
-
-/**
- * Change Read More text to user settings.
- *
- * @since 5.1
- */
-
-function md_read_more_text() {
-	$read_more = md_module( array( 'loop', 'read_more' ) );
-
-	return ! empty( $read_more ) ? md_text_field( $read_more ) : __( 'Continue reading &rarr;', 'md' );
-}
-
-/**
- * Filter length of excerpts + more text of loops.
- *
- * @since 4.5
- */
-
-function md_excerpt_length() {
-	$words = md_module( array( 'loop', 'excerpt_length' ) );
-	$words = ! empty( $words ) ? $words : 55;
-
-	return apply_filters( 'md_filter_excerpt_length', esc_attr( $words ) );
-}
-
-add_filter( 'excerpt_length', 'md_excerpt_length' );
-
-/**
- * Filter trailing excerpt more text.
- *
- * @since 4.5
- */
-
-function md_excerpt_more( $more ) {
-    return md_module( array( 'loop', 'excerpt_more' ), '[...]' );
-}
-
-add_filter( 'excerpt_more', 'md_excerpt_more' );

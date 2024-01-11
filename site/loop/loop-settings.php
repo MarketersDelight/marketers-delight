@@ -87,7 +87,10 @@
 			'type' => 'select',
 			'label' => __( 'Order', 'md' ),
 			'description' => __( 'Order by lowest/highest value.', 'md' ),
-			'options' => $order
+			'empty_label' => __( 'Descending', 'md' ),
+			'options' => array(
+				'ASC' => __( 'Ascending', 'md' )
+			)
 		) ); ?>
 	</div>
 

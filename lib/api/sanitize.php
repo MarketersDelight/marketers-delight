@@ -5,9 +5,6 @@
  * @since 4.5
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_sanitize {
 
 	public $values;
@@ -252,7 +249,17 @@ class md_sanitize {
 	 */
 
 	public function select( $input, $options ) {
-		return in_array( $input, $options ) ? $input : '';
+		if ( is_array( $input ) ) {
+			$values = array();
+
+			foreach ( $input as $key )
+				if ( in_array( $key, $options ) )
+					$values[] = $key;
+
+			return $values;
+		}
+		else
+			return in_array( $input, $options ) ? $input : '';
 	}
 
 	/**
@@ -350,6 +357,7 @@ class md_sanitize {
 
 	public function admin_save( $input ) {
 		$save = $this->validate( 'admin_pages', $input );
+
 		return array_merge( md_setting(), $save );
 	}
 
@@ -361,9 +369,12 @@ class md_sanitize {
 
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
+
 		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
 			return;
+
 		$save = $this->validate( 'user_meta', $_POST[$option] );
+
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );
 		elseif ( empty( $save ) )
@@ -378,8 +389,10 @@ class md_sanitize {
 
 	public function term_save( $term_id ) {
 		$option = 'marketers_delight';
+
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
 			$save = $this->validate( 'terms', $_POST[$option] );
+
 			if ( $save )
 				update_term_meta( $term_id, $option, $save );
 			elseif ( empty( $save ) )
@@ -527,6 +540,7 @@ class md_sanitize {
 
 		if ( $type == 'color' ) {
 			$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
+
 			if ( $default !== $val )
 				$field = $this->color( $val );
 		}

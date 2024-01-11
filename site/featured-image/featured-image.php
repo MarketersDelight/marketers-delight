@@ -141,8 +141,8 @@ class md_featured_image extends md_api {
 	 */
 
 	public function template() {
-		add_action( 'md_hook_content_item', 'md_featured_image_before_headline' );
-		add_action( 'md_hook_content_item', 'md_featured_image_after_headline', 30 );
+		add_action( 'md_hook_before_post_header', 'md_featured_image_before_headline' );
+		add_action( 'md_hook_after_post_header', 'md_featured_image_after_headline', 30 );
 	}
 
 }

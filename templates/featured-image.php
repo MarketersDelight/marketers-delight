@@ -6,7 +6,7 @@
 
 	<?php if ( ! is_singular() ) : ?></a><?php endif; ?>
 
-	<?php md_hook_featured_image_bottom(); ?>
+	<?php echo md_get_caption(); ?>
 
 </div>
 

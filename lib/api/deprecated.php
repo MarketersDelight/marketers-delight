@@ -27,6 +27,39 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Filter length of excerpts + more text of loops.
+ *
+ * @since 4.5
+ * @deprecated 5.6
+ */
+function md_excerpt_length() {
+	$words = md_module( array( 'loop', 'excerpt_length' ) );
+	$words = ! empty( $words ) ? $words : 55;
+	return apply_filters( 'md_filter_excerpt_length', esc_attr( $words ) );
+}
+
+/**
+ * Filter trailing excerpt more text.
+ *
+ * @since 4.5
+ * @deprecated 5.6
+ */
+function md_excerpt_more( $more ) {
+    return md_module( array( 'loop', 'excerpt_more' ), '[...]' );
+}
+
+/**
+ * Change Read More text to user settings.
+ *
+ * @since 5.1
+ * @deprecated 5.6
+ */
+function md_read_more_text() {
+	$read_more = md_module( array( 'loop', 'read_more' ) );
+	return ! empty( $read_more ) ? md_text_field( $read_more ) : __( 'Continue reading &rarr;', 'md' );
+}
+
+/**
  * If no service is connected, display this message.
  *
  * @since 4.5
@@ -46,17 +79,6 @@ function md_filter_comments_classes() {
 	$classes[] = 'comments';
 	$classes = apply_filters( 'md_filter_comments_classes', $classes );
 	return join( ' ', $classes );
-}
-
-/**
- * Checks for content headline.
- *
- * @since 4.1
- * @deprecated 5.6
- */
-function md_has_headline_cover() {
-	$cover = md_cover();
-	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**

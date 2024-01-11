@@ -14,6 +14,7 @@
 
 	<?php while ( $posts->have_posts() ) {
 		$posts->the_post();
+
 		include( md_template( 'loop/the-post', true ) );
 	} ?>
 

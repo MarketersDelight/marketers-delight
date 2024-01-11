@@ -673,12 +673,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	background-color: #fff;
 	border: 1px solid #c5c5c5;
 	border-radius: 5px;
-	height: 250px;
+	height: 175px;
 	overflow-y: auto;
 	margin-bottom: 0;
 	margin-top: 0;
 	padding: 15px;
-	max-width: 350px;
 }
 
 .md-terms-list .children { margin-left: 20px; }

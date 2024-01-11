@@ -1,5 +1,29 @@
 <?php
 
+/*
+	if ( ! is_singular() ) {
+		$page_title = new md_page_title;
+		$page_title->templates();
+	}
+*/
+
+add_action( 'md_hook_content', 'md_breadcrumbs' );
+
+//add_action( 'md_hook_content', 'md_loop', 30 );
+add_action( 'md_hook_content', 'md_query', 30 );
+
+add_filter( 'excerpt_more', '__return_empty_string' );
+add_action( 'md_hook_content_item', 'md_author', 60 );
+add_action( 'md_hook_content_item', 'md_comments', 60 );
+add_action( 'md_hook_after_comments_list', 'md_comment_form' );
+add_action( 'md_hook_content', 'md_pagination', 40 );
+add_action( 'md_hook_content', 'md_post_nav', 40 );
+
+// Footer
+
+add_action( 'md_hook_footer', 'md_footer_columns_template' );
+add_action( 'md_hook_footer_bottom', 'md_footer_copy' );
+
 /**
  * Inner HTML element and closing div.
  *
@@ -323,6 +347,8 @@ function md_has_breadcrumbs() {
  */
 
 function md_breadcrumbs() {
+	if ( ! md_has_breadcrumbs() )
+		return;
 	$post_type_title = $category_url = $category_title = '';
 	$post_id = get_the_ID();
 	$post_type = md_get_post_type();
@@ -416,6 +442,9 @@ function md_has_author_box() {
  */
 
 function md_author_box() {
+	if ( ! md_has_author_box() )
+		return;
+
 	$html = is_author() ? 'h1' : 'h3';
 	$twitter = get_the_author_meta( 'twitter' );
 	$url = get_the_author_meta( 'url' );
@@ -535,7 +564,8 @@ add_filter( 'comment_form_fields', 'md_comment_form_reorder' );
  */
 
 function md_post_nav() {
-	md_template( 'post-nav' );
+	if ( md_has_post_nav() )
+		md_template( 'post-nav' );
 }
 
 /**

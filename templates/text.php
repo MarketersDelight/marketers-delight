@@ -4,6 +4,6 @@
 		<?php md_featured_image(); ?>
 	<?php endif; ?>
 
-	<?php md_the_content( $content ); ?>
+	<?php md_the_content( $loop ); ?>
 
 </div>

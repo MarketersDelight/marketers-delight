@@ -76,6 +76,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/design/design.php' );
 		if ( is_admin() )
 			require_once( 'admin/admin.php' );
+		require_once( MD_DIR . 'site/layout/layout.php' );
 		require_once( MD_DIR . 'site/header/header.php' );
 		require_once( MD_DIR . 'site/logo/logo.php' );
 		require_once( MD_DIR . 'site/page-cover/page-cover.php' );
@@ -84,9 +85,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/page-cover/page-title.php' );
 		require_once( MD_DIR . 'site/loop/loop.php' );
 		require_once( MD_DIR . 'site/byline/byline.php' );
-		require_once( MD_DIR . 'site/layout/layout.php' );
 		require_once( MD_DIR . 'site/blog/blog.php' );
-		require_once( MD_DIR . 'site/templates.php' );
 		require_once( 'walker.php' );
 		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "site/widgets/$widget.php" );

@@ -1347,7 +1347,8 @@ select { max-width: 100%; }
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	#content > .post-header .byline, .header .byline { justify-content: center; }
+	.byline { justify-content: center; }
+	.content-sidebar .post-box .byline { justify-content: flex-start; }
 	.post-header, .cover { padding-top: 29px; }
 	.cover { padding-bottom: 29px; }
 	.article .header-cover,
