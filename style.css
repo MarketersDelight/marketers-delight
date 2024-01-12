@@ -677,7 +677,7 @@ select { max-width: 100%; }
 }
 /* CONTENT BLOCK */
 .layout-slim .title-wrap, .description, .page-cta { margin-bottom: 29px; }
-.inline .title-wrap { margin-bottom: 15px; }
+.inline .title-wrap, .post-header .title-wrap:not(:last-child) { margin-bottom: 15px; }
 .page-image {
 	margin-bottom: 29px;
 	margin-left: auto;
@@ -1296,14 +1296,14 @@ select { max-width: 100%; }
 	max-width: 1045px;
 	position: relative;
 }
-.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
+.clear:after, .inner:after, .menu:after, .content-sidebar:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
 	clear: both;
 	content: '';
 	display: table;
 }
 /* PAGE STRUCTURE */
 .loop, .page-header, .category-row, .category-header { margin-bottom: 29px; }
-.entry, .post-box { position: relative; }
+.query, .entry, .post-box { position: relative; }
 .cover, .post-header { padding-top: 15px; }
 .post-header:not(.cover) + .featured-image { padding-top: 29px; }
 .cover { padding-bottom: 15px; }
@@ -1347,8 +1347,7 @@ select { max-width: 100%; }
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	.byline { justify-content: center; }
-	.content-sidebar .post-box .byline { justify-content: flex-start; }
+	.expanded .byline { justify-content: center; }
 	.post-header, .cover { padding-top: 29px; }
 	.cover { padding-bottom: 29px; }
 	.article .header-cover,
@@ -1393,6 +1392,11 @@ select { max-width: 100%; }
 		padding-left: 0;
 		padding-right: 29px;
 	}
+	.sticky {
+		position: sticky;
+			top: 15px;
+	}
+	.admin-bar .sticky { top: 47px; }
 }
 @media all and (max-width: 900px) {
 	.content { margin-bottom: 29px; }
@@ -1449,14 +1453,12 @@ select { max-width: 100%; }
 		font-size: 16px;
 		line-height: 26px;
 	}
-	.columns .standard .featured-image.alignleft {
-		margin-left: 0;
-		max-width: 116px;
-	}
-	.columns .standard .featured-image.alignright {
-		margin-right: 0;
-		max-width: 116px;
-	}
+	.columns .featured-image.alignleft { margin-left: 0; }
+	.columns .featured-image.alignright { margin-right: 0; }
+	.columns.slim .standard .featured-image.alignleft,
+	.columns.slim .standard .featured-image.alignright { max-width: 116px; }
+	.columns.wide .standard .featured-image.alignleft,
+	.columns.wide .standard .featured-image.alignright { max-width: 174px; }
 	.f2 { flex-basis: 50%; max-width: 50%; }
 	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
 	.f4 { flex-basis: 25%; max-width: 25%; }

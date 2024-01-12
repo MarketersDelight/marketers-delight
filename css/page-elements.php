@@ -4,7 +4,7 @@
 
 .layout-slim .title-wrap, .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
 
-.inline .title-wrap { margin-bottom: <?php echo $half; ?>px; }
+.inline .title-wrap, .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .page-image {
 	margin-bottom: <?php echo $single; ?>px;

@@ -11,7 +11,7 @@
 	position: relative;
 }
 
-.clear:after, .inner:after, .menu:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
+.clear:after, .inner:after, .menu:after, .content-sidebar:after, .post-box:after, .the-content:after, .byline:after, .sidebar:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -21,7 +21,7 @@
 
 .loop, .page-header, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
 
-.entry, .post-box { position: relative; }
+.query, .entry, .post-box { position: relative; }
 
 .cover, .post-header { padding-top: <?php echo $half; ?>px; }
 
@@ -81,8 +81,7 @@
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	.byline { justify-content: center; }
-	.content-sidebar .post-box .byline { justify-content: flex-start; }
+	.expanded .byline { justify-content: center; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
 	.cover { padding-bottom: <?php echo $single; ?>px; }
 	.article .header-cover,
@@ -127,6 +126,11 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
+	.sticky {
+		position: sticky;
+			top: <?php echo $half; ?>px;
+	}
+	.admin-bar .sticky { top: <?php echo $admin_bar_height + $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
@@ -191,14 +195,12 @@
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
-	.columns .standard .featured-image.alignleft {
-		margin-left: 0;
-		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
-	}
-	.columns .standard .featured-image.alignright {
-		margin-right: 0;
-		max-width: <?php echo round( $sidebar_width / 3 ); ?>px;
-	}
+	.columns .featured-image.alignleft { margin-left: 0; }
+	.columns .featured-image.alignright { margin-right: 0; }
+	.columns.slim .standard .featured-image.alignleft,
+	.columns.slim .standard .featured-image.alignright { max-width: <?php echo round( $sidebar_width / 3 ); ?>px; }
+	.columns.wide .standard .featured-image.alignleft,
+	.columns.wide .standard .featured-image.alignright { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
 	.f2 { flex-basis: 50%; max-width: 50%; }
 	.f3 { flex-basis: 33.3333333333%; max-width: 33.3333333333%; }
 	.f4 { flex-basis: 25%; max-width: 25%; }

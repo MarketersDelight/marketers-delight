@@ -69,10 +69,37 @@ function md_get_loop() {
 function md_query() {
 	$queries = md_module( array( 'loop', 'query' ) );
 
-	foreach ( $queries as $query_id => $fields )
-		md_loop( array(
-			'query' => $fields
-		) );
+	foreach ( $queries as $query_id => $fields ) {
+		$args = array( 'query' => $fields );
+		$query_classes = array( 'query' );
+		$has_sidebar = ! empty( $fields['sidebar']['enable'] ) ? true : false;
+
+		if ( $has_sidebar )
+			$query_classes[] = 'content-sidebar';
+
+		$query_classes = join( ' ', $query_classes );
+
+		echo '<div class="' . $query_classes . '">';
+
+		if ( $has_sidebar ) {
+			$args['has_sidebar'] = true;
+
+			echo '<div class="content">';
+		}
+
+		md_loop( $args );
+
+		if ( $has_sidebar ) {
+			echo
+				'</div>'.
+				'<div class="sidebar' . ( isset( $fields['sidebar']['sticky'] ) ? ' sticky' : '' ) . '">'.
+				'<p>sidebar here</p>'.
+				'</div>';
+		}
+
+		echo '</div>';
+
+	}
 }
 
 function md_loop( $args = array() ) {
@@ -104,7 +131,7 @@ function md_loop( $args = array() ) {
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
-		if ( md_has_sidebar() || $columns >= 3 )
+		if ( ( md_has_sidebar() || isset( $args['has_sidebar'] ) ) || $columns >= 3 )
 			$wrap_classes[] = 'slim';
 		elseif ( $columns == 2 )
 			$wrap_classes[] = 'wide';
@@ -119,8 +146,11 @@ function md_loop( $args = array() ) {
 		include( md_template( 'loop/the-post', true ) );
 	elseif ( ! empty( $loop['category_posts']['enable'] ) )
 		include( md_template( 'loop/category-posts', true ) );
-	elseif ( isset( $args['query'] ) )
+	elseif ( isset( $args['query'] ) ) {
+		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 		include( md_template( 'loop/query', true ) );
+		echo ! is_singular() ? '</div>' : '';
+	}
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
 
@@ -132,7 +162,12 @@ function md_loop( $args = array() ) {
 			include( md_template( 'loop/the-post', true ) );
 		}
 
-		echo ! is_singular() ? '</div>' : '';
+		if ( ! is_singular() ) {
+			echo '</div>';
+			md_pagination();
+		}
+		else
+			md_post_nav();
 	}
 	else
 		md_404_template();

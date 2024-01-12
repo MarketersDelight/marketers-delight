@@ -9,15 +9,13 @@
 
 add_action( 'md_hook_content', 'md_breadcrumbs' );
 
-add_action( 'md_hook_content', 'md_loop', 30 );
-//add_action( 'md_hook_content', 'md_query', 30 );
+//add_action( 'md_hook_content', 'md_loop', 30 );
+add_action( 'md_hook_content', 'md_query', 30 );
 
 add_filter( 'excerpt_more', '__return_empty_string' );
 add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
-add_action( 'md_hook_content', 'md_pagination', 40 );
-add_action( 'md_hook_content', 'md_post_nav', 40 );
 
 // Footer
 
