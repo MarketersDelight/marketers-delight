@@ -24,6 +24,6 @@ elseif ( ! empty( $loops[$loop_id] ) )
 else
 	include( md_template( 'loop/loop', true ) );
 
-md_hook_x_loop( $c );
+md_hook_x_loop( $loop, $c );
 
 $c++;

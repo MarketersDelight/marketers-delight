@@ -69,37 +69,8 @@ function md_get_loop() {
 function md_query() {
 	$queries = md_module( array( 'loop', 'query' ) );
 
-	foreach ( $queries as $query_id => $fields ) {
-		$args = array( 'query' => $fields );
-		$query_classes = array( 'query' );
-		$has_sidebar = ! empty( $fields['sidebar']['enable'] ) ? true : false;
-
-		if ( $has_sidebar )
-			$query_classes[] = 'content-sidebar';
-
-		$query_classes = join( ' ', $query_classes );
-
-		echo '<div class="' . $query_classes . '">';
-
-		if ( $has_sidebar ) {
-			$args['has_sidebar'] = true;
-
-			echo '<div class="content">';
-		}
-
-		md_loop( $args );
-
-		if ( $has_sidebar ) {
-			echo
-				'</div>'.
-				'<div class="sidebar' . ( isset( $fields['sidebar']['sticky'] ) ? ' sticky' : '' ) . '">'.
-				'<p>sidebar here</p>'.
-				'</div>';
-		}
-
-		echo '</div>';
-
-	}
+	foreach ( $queries as $query_id => $fields )
+		include( md_template( 'loop/query', true ) );
 }
 
 function md_loop( $args = array() ) {
@@ -121,6 +92,7 @@ function md_loop( $args = array() ) {
 	else
 		$loop = md_module( 'loop' );
 
+	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
 	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
@@ -148,7 +120,7 @@ function md_loop( $args = array() ) {
 		include( md_template( 'loop/category-posts', true ) );
 	elseif ( isset( $args['query'] ) ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
-		include( md_template( 'loop/query', true ) );
+		include( md_template( 'loop/the-query', true ) );
 		echo ! is_singular() ? '</div>' : '';
 	}
 	elseif ( have_posts() ) {
@@ -179,12 +151,9 @@ function md_loop( $args = array() ) {
  * @since 5.1
  */
 
-function md_hook_x_loop( $c ) {
-	$x_loop = md_module( array( 'loop', 'cta_x_loop' ) );
-	$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-
-	if ( $c == $x_loop && $paged == 1 )
-		do_action( 'md_hook_x_loop' );
+function md_hook_x_loop( $loop, $c ) {
+	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
+		do_action( 'md_hook_x_loop', $loop );
 }
 
 /**

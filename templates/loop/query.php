@@ -1,47 +1,41 @@
 <?php
 
-$query_args = array(
-	'post_type' => $post_type,
-	'posts_per_page' => $posts_per_page,
-	'no_found_rows' => true,
-);
+$args = array( 'query' => $fields );
+$query_classes = array( 'query' );
+$has_sidebar = ! empty( $fields['sidebar']['enable'] ) ? true : false;
 
-if ( isset( $loop['orderby'] ) )
-	$query_args['orderby'] = esc_attr( $loop['orderby'] );
+if ( $has_sidebar ) {
+	$query_classes[] = 'content-sidebar';
 
-if ( isset( $loop['order'] ) )
-	$query_args['order'] = esc_attr( $loop['order'] );
-
-if ( isset( $loop['tags'] ) )
-	$query_args['tag'] = $loop['tags'];
-
-if ( isset( $loop['author'] ) )
-	$query_args['author__in'] = $loop['author'];
-
-if ( isset( $loop['include_cats'] ) ) {
-	$taxonomies = get_object_taxonomies( $post_type );
-	$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-
-	$query_args['tax_query'] = array(
-		array(
-			'taxonomy' => $taxonomy,
-			'field' => 'term_id',
-			'terms' => array_keys( $loop['include_cats'] )
-		)
-	);
+	if ( isset( $fields['content_layout'] ) && $fields['content_layout'] == 'sidebar_content' )
+		$query_classes[] = 'left';
 }
 
-$query = new WP_Query( $query_args );
+$query_classes = join( ' ', $query_classes );
 
-if ( $query->have_posts() )
+echo '<div class="' . $query_classes . '">';
 
-while ( $query->have_posts() ) {
-	$query->the_post();
+if ( $has_sidebar ) {
+	$args['has_sidebar'] = true;
 
-	include( md_template( 'loop/the-post', true ) );
+	echo '<div class="content">';
 }
 
-else
-	md_404_template();
+md_loop( $args );
 
-wp_reset_postdata();
+if ( $has_sidebar ) {
+	$index = 'sidebar-main';
+
+	echo
+		'</div>'.
+		'<div class="sidebar' . ( isset( $fields['sidebar']['sticky'] ) ? ' sticky' : '' ) . '">';
+
+	if ( ! empty( $fields['custom_sidebar'] ) )
+		$index = $fields['custom_sidebar'];
+
+	dynamic_sidebar( $index );
+
+	echo '</div>';
+}
+
+echo '</div>';

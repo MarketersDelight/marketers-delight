@@ -68,12 +68,12 @@ class md_loop extends md_api {
 	}
 
 	public function query_fields() {
-		$post_types = array_keys( get_post_types( array( 'public' => true ) ) );
+		$block_ids = $cta_ids = array();
 		$sidebars = md_get_sidebars( true );
+		$cta = md_setting( array( 'cta', 'forms' ), array() );
+		$post_types = array_keys( get_post_types( array( 'public' => true ) ) );
 		$sanitize = new md_sanitize;
 
-		$cta_ids = array();
-		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_ids[] = $cta_id;
 
@@ -229,19 +229,19 @@ class md_loop extends md_api {
 	<?php }
 
 	public function query_settings( $group, $field, $args ) {
+		$post_types = $cta_options = array();
 		$sanitize = new md_sanitize;
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
 		$category_posts = true;
 		$sidebars = md_get_sidebars();
 
-		$post_types = array();
 		$types = get_post_types( array( 'public' => true ), 'objects' );
 		foreach ( $types as $type )
 			$post_types[$type->name] = $type->labels->singular_name;
 
-		$cta_options = array();
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
+
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 

@@ -3,11 +3,10 @@
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 $category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
-$paged = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 $categories = new WP_Term_Query( array(
 	'taxonomy' => $taxonomy,
 	'number' => $category_per_page,
-	'offset' => ( $paged > 0 ) ?  $category_per_page * ( $paged - 1 ) : 1
+	'offset' => ( $loop['paged'] > 0 ) ?  $category_per_page * ( $loop['paged'] - 1 ) : 1
 ) );
 
 if ( empty( $categories->terms ) )

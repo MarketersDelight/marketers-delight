@@ -35,7 +35,7 @@
 	.layout-columns.inline { flex-flow: wrap; }
 	.layout-columns.inline .description { flex: 1; }
 	/* SLIM */
-	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
+	.layout-slim.outer .title, .layout-slim.outer .page-cta, .foot { text-align: center; }
 	.layout-slim.outer .description, .layout-slim.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;

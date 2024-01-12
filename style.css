@@ -706,7 +706,7 @@ select { max-width: 100%; }
 	.layout-columns.inline { flex-flow: wrap; }
 	.layout-columns.inline .description { flex: 1; }
 	/* SLIM */
-	.layout-slim.outer .title, .layout-slim.outer .page-cta, .layout-slim.outer .foot { text-align: center; }
+	.layout-slim.outer .title, .layout-slim.outer .page-cta, .foot { text-align: center; }
 	.layout-slim.outer .description, .layout-slim.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;
@@ -1707,8 +1707,9 @@ ul.list-check li:before {
 .cta-wide .title {
 	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-weight: bold;
-	font-size: 22px;
-	line-height: 31px;
+	font-size: 26px;
+	line-height: 39px;
+	text-align: center;
 }
 .cta-slim .title {
 		font-size: 18px;
