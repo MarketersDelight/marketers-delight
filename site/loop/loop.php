@@ -230,12 +230,18 @@ class md_loop extends md_api {
 
 	<?php $this->scripts(); }
 
+	/**
+	 * Call template with required data passed down.
+	 *
+	 * @since 5.1
+	 */
+
 	public function query_settings( $group, $field, $args ) {
 		$post_types = $cta_options = array();
 		$sanitize = new md_sanitize;
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
-		$category_posts = true;
+		$category_posts = $this->fields->module( array( $group, $field, 'category_posts' ) );
 		$sidebars = md_get_sidebars();
 
 		$types = get_post_types( array( 'public' => true ), 'objects' );
@@ -265,6 +271,11 @@ class md_loop extends md_api {
 					document.getElementById( 'loop_category_posts' ).style.display = this.checked ? 'block' : 'none';
 				}
 			} )();
+			jQuery( document ).ready( function( $ ) {
+				$( '.md-check-val' ).on( 'change', function( e ) {
+					$( this ).parents( '.md-loop-query' ).toggleClass( 'md-has-category-posts' );
+				} );
+			} );
 		</script>
 	<?php }
 

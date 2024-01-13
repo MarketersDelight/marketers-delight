@@ -1158,12 +1158,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-upload-preview-image,
 .has-upload .md-upload-preview-action,
 .has-upload .button.md-upload-add,
-.md-upload .md-upload-remove { display: none; }
+.md-upload .md-upload-remove,
+.query-category-field { display: none; }
 
 .has-upload .md-upload-preview-image,
 .has-upload .md-upload-action-id, .has-upload .md-upload-action { display: block; }
 
-.has-upload .md-upload-remove { display: inline-block; }
+.has-upload .md-upload-remove,
+.md-has-category-posts .query-category-field { display: inline-block; }
 
 /* FILE UPLOAD */
 

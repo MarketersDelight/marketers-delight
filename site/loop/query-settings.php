@@ -33,11 +33,12 @@
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-layout"><?php echo __( 'Layout', 'md' ); ?></a>
 	</div>
 
-	<div class="md-loop-query md-tab-content active">
+	<div class="md-loop-query md-tab-content active<?php echo $category_posts ? ' md-has-category-posts' : ''; ?>">
 
 		<?php $this->fields->field( array( $group, $field, 'category_posts' ), array(
 			'type' => 'checkbox',
 			'wrap_classes' => 'md-sep-micro',
+			'check_class' => 'md-check-val',
 			'options' => array(
 				'enable' => __( 'List posts by category', 'md' )
 			)
@@ -90,7 +91,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro" style="display: <?php echo $category_posts ? 'inline-block' : 'none'; ?>">
+			<div class="query-category-field col md-sep-micro">
 				<?php $this->fields->field( array( $group, $field, 'category_per_page' ), array(
 					'type' => 'number',
 					'label' => __( 'Categories Per Page', 'md' ),
