@@ -103,13 +103,7 @@ function md_byline( $location = 'before_headline', $args = array() ) {
  */
 
 function md_byline_before_headline() {
-	md_byline( 'before_headline', array(
-		'default' => array(
-			'author' => array(),
-			'date' => array(),
-			'edit' => array()
-		)
-	) );
+	md_byline( 'before_headline' );
 }
 
 function md_byline_after_headline() {

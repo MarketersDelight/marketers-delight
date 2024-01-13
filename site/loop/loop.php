@@ -127,6 +127,10 @@ class md_loop extends md_api {
 				'options' => $cta_ids
 			),
 
+			'show_query' => array(
+				'type' => 'select',
+				'options' => array( 'before_loop', 'after_loop' )
+			),
 			'post_type' => array(
 				'type' => 'select',
 				'options' => $post_types
@@ -185,32 +189,35 @@ class md_loop extends md_api {
 	 */
 
 	public function admin_template() {
-		$cta_options = array();
 		$screen = get_current_screen();
 		$sanitize = new md_sanitize;
-		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
 		$category_posts = $this->fields->module( 'category_posts' );
-		$order = array(
-			'' => __( 'Descending', 'md' ),
-			'ASC' => __( 'Ascending', 'md' )
-		);
 		$authors = get_users( array(
 			'fields' => array( 'ID', 'display_name' ),
 			'has_published_posts' => true
 		) );
 
+		$cta_options = array();
+		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 	?>
 
-		<div id="query" class="md-widget md-toggle md-sep-small open">
-			<h3 class="md-widget-title"><?php echo __( 'Query Builder', 'md' ); ?></h3>
+		<div class="md-widget md-toggle md-sep-small">
+			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
+			<div class="md-widget-item">
+				<?php include( 'loop-settings.php' ); ?>
+			</div>
+		</div>
+
+		<div id="query" class="md-widget md-toggle md-sep-small">
+			<h3 class="md-widget-title"><?php echo __( 'Query Loops', 'md' ); ?></h3>
 			<div class="md-widget-item">
 				<?php $this->fields->field( 'query', array(
 					'type' => 'group',
-					'label' => __( 'Query Builder', 'md' ),
+					'label' => __( 'Add Queries', 'md' ),
 					'style' => 'boxes',
 					'callback' => array( $this, 'query_settings' ),
 					'callback_args' => array(
@@ -220,13 +227,7 @@ class md_loop extends md_api {
 			</div>
 		</div>
 
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
-			<div class="md-widget-item">
-				<?php include( 'loop-settings.php' ); ?>
-			</div>
-		</div>
-	<?php }
+	<?php $this->scripts(); }
 
 	public function query_settings( $group, $field, $args ) {
 		$post_types = $cta_options = array();
@@ -247,6 +248,24 @@ class md_loop extends md_api {
 
 		include( 'query-settings.php' );
 	}
+
+	/**
+	 * Print footer scripts to admin screens to toggle options.
+	 *
+	 * @since 5.6
+	 */
+
+	public function scripts() {
+		$prefix = $this->_prefix();
+	?>
+		<script>
+			( function() {
+				document.getElementById( '<?php echo $prefix; ?>_category_posts_enable' ).onchange = function( e ) {
+					document.getElementById( 'loop_category_posts' ).style.display = this.checked ? 'block' : 'none';
+				}
+			} )();
+		</script>
+	<?php }
 
 }
 

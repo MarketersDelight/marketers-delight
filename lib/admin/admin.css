@@ -352,7 +352,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-60-40 > .col2, .md .columns-40-60 > .col1 { width: 40%; }
 	.md .columns-20-60-20 > .col1, .md .columns-20-60-20 > .col3 { width: 20%; }
 	.md .columns-20-60-20 > .col2 { width: 60%; }
-	.md .col.col-right { float: right; }
+	.md .col.col-right{ float: right; }
 	.md .col.col-full { width: 100%; }
 }
 
@@ -647,6 +647,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 \*------------------------------*/
 
 .md-label-wrap, .md-field-row .md-range { margin-top: 0; }
+
+.md-label-svg {
+	position: relative;
+		bottom: -7px;
+}
 
 /* ROW */
 
@@ -957,22 +962,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-radio { margin-right: 5px; }
 
-.md-field .md-radio .description {
-	border-top: 1px solid #ddd;
-	font-style: italic;
-	line-height: 20px;
-	margin-bottom: 0;
-	margin-top: 5px;
-	padding-top: 5px;
-}
-
 .md-radios.md-radio-has-image .md-radio-check:checked + .md-radio-label, .md-radios.md-radio-has-image .md-radio-label:hover { background-position: 0 -21px; }
 
 .md-radios.md-radio-has-image .md-radio-text, .md-radios.md-radio-has-image .md-radio-check { display: none; }
 
 .md-radio-banner .md-radio-image {
 	border-radius: 3px;
-	margin-bottom: 5px;
 }
 
 .md-radio-banner {
@@ -982,7 +977,21 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	box-shadow: 1px 2px 3px #ddd;
 	display: block;
 	margin-bottom: 11px;
-	padding: 6px;
+}
+
+.md-radio-banner .md-radio-input {
+	display: block;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px 6px 8px;
+}
+
+.md-radio-banner .description {
+	font-size: 13px;
+	font-style: italic;
+	line-height: 19px;
+	padding-left: 6px;
+	padding-right: 6px;
 }
 
 @media all and (min-width: 650px) {

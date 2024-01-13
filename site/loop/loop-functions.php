@@ -67,7 +67,7 @@ function md_get_loop() {
  */
 
 function md_query() {
-	$queries = md_module( array( 'loop', 'query' ) );
+	$queries = md_module( array( 'loop', 'query' ), array() );
 
 	foreach ( $queries as $query_id => $fields )
 		include( md_template( 'loop/query', true ) );
@@ -138,8 +138,6 @@ function md_loop( $args = array() ) {
 			echo '</div>';
 			md_pagination();
 		}
-		else
-			md_post_nav();
 	}
 	else
 		md_404_template();

@@ -45,7 +45,7 @@
 				) ); ?>
 			</div>
 
-			<div id="loop_category_posts" class="col md-sep-micro" style="display: <?php echo $category_posts ? 'inline-block' : 'none'; ?>">
+			<div class="col md-sep-micro" style="display: <?php echo $category_posts ? 'inline-block' : 'none'; ?>">
 				<?php $this->fields->field( array( $group, $field, 'category_per_page' ), array(
 					'type' => 'number',
 					'label' => __( 'Categories Per Page', 'md' ),
@@ -55,11 +55,10 @@
 			</div>
 
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( $group, $field, 'posts_per_page' ), array(
+				<?php $this->fields->field( array( $group, $field, 'featured' ), array(
 					'type' => 'number',
-					'label' => __( 'Posts Per Page', 'md' ),
-					'placeholder' => get_option( 'posts_per_page' ),
-					'description' => __( 'Number of posts to display per page.', 'md' )
+					'label' => __( 'Featured Posts', 'md' ),
+					'description' => __( 'Number of posts to feature per page.', 'md' )
 				) ); ?>
 			</div>
 
@@ -73,10 +72,11 @@
 			</div>
 
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( array( $group, $field, 'featured' ), array(
+				<?php $this->fields->field( array( $group, $field, 'posts_per_page' ), array(
 					'type' => 'number',
-					'label' => __( 'Featured Posts', 'md' ),
-					'description' => __( 'Number of posts to feature per page.', 'md' )
+					'label' => __( 'Posts Per Page', 'md' ),
+					'placeholder' => get_option( 'posts_per_page' ),
+					'description' => __( 'Number of posts to display per page.', 'md' )
 				) ); ?>
 			</div>
 
@@ -105,8 +105,9 @@
 			<div class="col">
 				<?php $this->fields->field( array( $group, $field, 'tags' ), array(
 					'type' => 'text',
-					'label' => __( 'Include tags...', 'md' ),
+					'label' => __( 'Include tags', 'md' ),
 					'description' => __( 'Separate tags by a comma <code>,</code>', 'md' ),
+					'placeholder' => 'tag1, tag2, tag3',
 					'wrap_classes' => 'md-sep-micro'
 				) ); ?>
 

@@ -24,6 +24,7 @@ elseif ( ! empty( $loops[$loop_id] ) )
 else
 	include( md_template( 'loop/loop', true ) );
 
-md_hook_x_loop( $loop, $c );
+if ( empty( $loop['category_posts']['enable'] ) )
+	md_hook_x_loop( $loop, $c );
 
 $c++;

@@ -8,7 +8,7 @@
 				next_posts_link( $nxtlabel, $total );
 			}
 			else {
-				$paginate = paginate_links( array(
+				echo paginate_links( array(
 					'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 					'format' => '?paged=%#%',
 					'current' => max( 1, get_query_var( 'paged' ) ),
@@ -16,9 +16,6 @@
 					'next_text' => $nxtlabel . ' <i class="' . md_icon( 'angle-right', true ) . '"></i>',
 					'total' => $total
 				) );
-
-				if ( $paginate )
-					echo $paginate;
 		} ?>
 
 	</div>

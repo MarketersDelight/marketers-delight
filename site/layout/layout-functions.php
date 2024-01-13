@@ -7,15 +7,16 @@
 	}
 */
 
-add_action( 'md_hook_content', 'md_breadcrumbs' );
+add_action( 'md_hook_content_top', 'md_breadcrumbs' );
 
-//add_action( 'md_hook_content', 'md_loop', 30 );
-add_action( 'md_hook_content', 'md_query', 30 );
+add_action( 'md_hook_content', 'md_loop', 30 );
+//add_action( 'md_hook_content', 'md_query', 30 );
 
 add_filter( 'excerpt_more', '__return_empty_string' );
 add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
+add_action( 'md_hook_content', 'md_post_nav', 70 );
 
 // Footer
 
@@ -596,16 +597,16 @@ function md_pagination() {
 		return;
 
 	$big = 999999999;
+
 	$type = md_module( array( 'loop', 'pagination' ) );
-	$prelabel = md_module( array( 'loop', 'previous_label' ), __( 'Previous', 'md' ) );
-	$nxtlabel = md_module( array( 'loop', 'next_label' ), __( 'Next', 'md' ) );
-	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+	$prelabel = ! empty( $loop['previous_label'] ) ? $loop['previous_label'] : __( 'Previous', 'md' );
+	$nxtlabel = ! empty( $loop['next_label'] ) ? $loop['next_label'] : __( 'Next', 'md' );
 	$class = $type == 'prev_next' ? 'prev-next' : 'numbers';
 
-	if ( $category_posts ) {
+	if ( ! empty( $loop['category_posts']['enable'] ) ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
 		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-		$category_per_page = md_module( array( 'loop', 'category_per_page' ), 5 );
+		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
 		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
 		$total = ceil( $total_terms / $category_per_page );
 	}

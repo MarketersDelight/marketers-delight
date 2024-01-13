@@ -19,7 +19,7 @@
 
 /* PAGE STRUCTURE */
 
-.loop, .page-header, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
+.page-header, .loop, .query, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
 
 .query, .entry, .post-box { position: relative; }
 
@@ -27,12 +27,14 @@
 
 .post-header:not(.cover) + .featured-image { padding-top: <?php echo $single; ?>px; }
 
-.cover { padding-bottom: <?php echo $half; ?>px; }
+.cover, .post-header { padding-bottom: <?php echo $half; ?>px; }
 
 .the-content, #content > .inner {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
+
+.post-header:not(.cover) + .the-content { padding-top: 0; }
 
 .cover,
 .post-box .post-header,
@@ -81,9 +83,9 @@
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	.expanded .byline { justify-content: center; }
+	.header .byline, #content > .header-cover .byline, .expanded .byline { justify-content: center; }
 	.post-header, .cover { padding-top: <?php echo $single; ?>px; }
-	.cover { padding-bottom: <?php echo $single; ?>px; }
+	.post-header, .cover { padding-bottom: <?php echo $single; ?>px; }
 	.article .header-cover,
 	.header .header-cover-full {
 		padding-bottom: <?php echo $mid; ?>px;
@@ -154,6 +156,7 @@
 
 /* COLUMNS */
 
+.columns .standard .post-header,
 .columns .standard .the-content {
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;

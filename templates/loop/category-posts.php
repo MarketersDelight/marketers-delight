@@ -1,5 +1,6 @@
 <?php
 
+$t = 1;
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 $category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
@@ -34,5 +35,12 @@ foreach ( $categories->terms as $category ) {
 		include( md_template( 'loop/category-post', true ) );
 	}
 
+	md_hook_x_loop( $loop, $t );
+
+	$t++;
+
 	wp_reset_postdata();
 }
+
+if ( ! isset( $args['query'] ) )
+	md_pagination();

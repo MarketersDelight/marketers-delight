@@ -2,9 +2,8 @@
 
 	<div class="post-box">
 
-		<?php
-			if ( ! md_has_headline_cover() )
-				md_headline( $headline_args );
+		<?php if ( ! md_has_headline_cover() )
+			md_headline( $headline_args );
 		?>
 
 		<?php md_content_text( $loop ); ?>
