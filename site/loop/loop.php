@@ -84,9 +84,9 @@ class md_loop extends md_api {
 
 		return array(
 			'name' => array( 'type' => 'text' ),
-			'archives' => array(
-				'type' => 'select',
-				'options' => md_loops( 'ids' )
+			'loop' => array(
+				'type' => 'radio',
+				'options' => array( 'fluid', 'list', 'icons' )
 			),
 			'category_posts' => array(
 				'type' => 'checkbox',
@@ -127,6 +127,7 @@ class md_loop extends md_api {
 				'options' => $cta_ids
 			),
 
+			'offset' => array( 'type' => 'number' ),
 			'show_query' => array(
 				'type' => 'select',
 				'options' => array( 'before_loop', 'after_loop' )

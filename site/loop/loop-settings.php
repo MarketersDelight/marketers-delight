@@ -37,9 +37,7 @@
 
 <?php endif; ?>
 
-<hr class="md-sep-small" />
-
-<div class="columns-3 columns-single mb-sep-small">
+<div class="columns-4 columns-half mb-sep-small">
 
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'orderby', array(
@@ -60,37 +58,11 @@
 		<?php $this->fields->field( 'order', array(
 			'type' => 'select',
 			'label' => __( 'Order', 'md' ),
-			'description' => __( 'Order by lowest/highest value.', 'md' ),
+			'description' => __( 'Order lowest/highest value.', 'md' ),
 			'empty_label' => __( 'Descending', 'md' ),
 			'options' => array(
 				'ASC' => __( 'Ascending', 'md' )
 			)
-		) ); ?>
-	</div>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'featured', array(
-			'type' => 'number',
-			'label' => __( 'Featured Posts', 'md' ),
-			'description' => __( 'Number of posts to feature per page.', 'md' )
-		) ); ?>
-	</div>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'columns', array(
-			'type' => 'number',
-			'label' => __( 'Post Columns', 'md' ),
-			'placeholder' => '1',
-			'description' => __( 'Break posts into a number of columns.', 'md' )
-		) ); ?>
-	</div>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'posts_per_page', array(
-			'type' => 'number',
-			'label' => __( 'Posts Per Page', 'md' ),
-			'placeholder' => get_option( 'posts_per_page' ),
-			'description' => __( 'Number of posts to display per page.', 'md' )
 		) ); ?>
 	</div>
 
@@ -101,11 +73,37 @@
 			'type' => 'number',
 			'label' => __( 'Categories Per Page', 'md' ),
 			'placeholder' => 5,
-			'description' => __( 'Number of categories to show.', 'md' )
+			'description' => __( 'Category sections to show.', 'md' )
 		) ); ?>
 	</div>
 
 	<?php endif; ?>
+
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'posts_per_page', array(
+			'type' => 'number',
+			'label' => __( 'Posts Per Page', 'md' ),
+			'placeholder' => get_option( 'posts_per_page' ),
+			'description' => __( 'Number of posts to show.', 'md' )
+		) ); ?>
+	</div>
+
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'featured', array(
+			'type' => 'number',
+			'label' => __( 'Featured Posts', 'md' ),
+			'description' => __( 'Feature the first X posts.', 'md' )
+		) ); ?>
+	</div>
+
+	<div class="col md-sep-micro">
+		<?php $this->fields->field( 'columns', array(
+			'type' => 'number',
+			'label' => __( 'Post Columns', 'md' ),
+			'placeholder' => '1',
+			'description' => __( 'Break posts into columns.', 'md' )
+		) ); ?>
+	</div>
 
 </div>
 
@@ -161,6 +159,8 @@
 	</div>
 
 </div>
+
+<hr class="md-sep-small" />
 
 <h4><?php echo __( 'Pagination', 'md' ); ?></h4>
 
