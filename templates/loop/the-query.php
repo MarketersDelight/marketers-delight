@@ -12,6 +12,9 @@ if ( isset( $loop['orderby'] ) )
 if ( isset( $loop['order'] ) )
 	$query_args['order'] = esc_attr( $loop['order'] );
 
+if ( isset( $loop['offset'] ) )
+	$query_args['offset'] = esc_attr( $loop['offset'] );
+
 if ( isset( $loop['tags'] ) )
 	$query_args['tag'] = $loop['tags'];
 
