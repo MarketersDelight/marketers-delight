@@ -65,13 +65,57 @@ function md_get_loop() {
  *
  * @since 5.6
  */
-
-function md_query() {
+/*
+function md_query( $position = null ) {
 	$queries = md_module( array( 'loop', 'query' ), array() );
 
-	foreach ( $queries as $query_id => $fields )
+	if ( empty( $queries ) )
+		return $queries;
+
+	foreach ( $queries as $query_id => $fields ) {
+		if ( isset( $position ) && $fields['position'] !== $position )
+			continue;
+
 		include( md_template( 'loop/query', true ) );
+	}
 }
+
+add_action( 'template_redirect', 'md_query' );
+*/
+
+function md_query_before_loop() {
+	$queries = md_module( array( 'loop', 'query' ), array() );
+
+	foreach ( $queries as $query_id => $fields ) {
+		if ( $fields['position'] !== 'before_loop' )
+			continue;
+
+		echo '<div class="inner">';
+
+		include( md_template( 'loop/query', true ) );
+
+		echo '</div>';
+	}
+}
+
+add_action( 'md_hook_content_box_top', 'md_query_before_loop' );
+
+function md_query_after_loop() {
+	$queries = md_module( array( 'loop', 'query' ), array() );
+
+	foreach ( $queries as $query_id => $fields ) {
+		if ( $fields['position'] !== 'after_loop' )
+			continue;
+
+		echo '<div class="inner">';
+
+		include( md_template( 'loop/query', true ) );
+
+		echo '</div>';
+	}
+}
+
+add_action( 'md_hook_content_box_bottom', 'md_query_after_loop' );
 
 /**
  * The Main Loop used on all posts, pages, and archives.
@@ -294,7 +338,9 @@ function md_headline( $args = array() ) {
 
 	$image_args = array();
 
-	if ( isset( $args['image_position'] ) )
+	if ( isset( $args['is_featured'] ) )
+		$image_args['position'] = $args['is_featured'];
+	elseif ( isset( $args['image_position'] ) )
 		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $args['image_position'] );
 
 	if ( $context == 'post' ) {
@@ -390,7 +436,7 @@ function md_the_content( $loop ) {
 
 	md_hook_before_the_content();
 
-	if ( ! is_singular() && empty( $loop['content'] ) ) {
+	if ( ! is_singular() && ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) ) {
 		md_the_excerpt( $loop );
 	?>
 		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $loop['read_more'] ); ?></a>
@@ -431,12 +477,26 @@ function md_the_excerpt( $loop ) {
  * @since 4.1
  */
 
-function md_content_text( $loop = array() ) {
+function md_content_text( $loop ) {
 	$classes = array( 'the-content' );
 	$image_args = array( 'inline' => true );
 
-	if ( empty( $loop ) )
-		$loop = md_module( 'loop' );
+	if ( isset( $loop['is_featured'] ) ) {
+		if ( ! empty( $loop['featured_content'] ) )
+			$loop['content'] = $loop['featured_content'];
+
+		if ( ! empty( $loop['featured_featured_image'] ) )
+			$loop['featured_image'] = $loop['featured_featured_image'];
+
+		if ( ! empty( $loop['featured_read_more'] ) )
+			$loop['read_more'] = $loop['featured_read_more'];
+
+		if ( ! empty( $loop['featured_excerpt_more'] ) )
+			$loop['excerpt_more'] = $loop['featured_excerpt_more'];
+
+		if ( ! empty( $loop['featured_excerpt_length'] ) )
+			$loop['excerpt_length'] = $loop['featured_excerpt_length'];
+	}
 
 	if ( empty( $loop['content'] ) )
 		$loop['content'] = md_post_type_field( array( 'loop', 'content' ) );

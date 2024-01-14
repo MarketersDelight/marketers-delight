@@ -25,8 +25,6 @@
 
 .cover, .post-header { padding-top: <?php echo $half; ?>px; }
 
-.post-header:not(.cover) + .featured-image { padding-top: <?php echo $single; ?>px; }
-
 .cover, .post-header { padding-bottom: <?php echo $half; ?>px; }
 
 .the-content, #content > .inner {
@@ -61,7 +59,7 @@
 
 /* BOX STYLE */
 
-.box-style .entry:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.box-style .entry { margin-bottom: <?php echo $single; ?>px; }
 
 .box-style .post-box {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
@@ -163,8 +161,6 @@
 }
 
 .columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
-
-.columns.slim .post-header:not(.cover) + .featured-image { padding-top: <?php echo $half; ?>px; }
 
 @media all and (min-width: 900px) {
 	.columns {

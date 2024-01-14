@@ -133,6 +133,10 @@ class md_loop extends md_api {
 				'options' => $cta_ids
 			),
 
+			'position' => array(
+				'type' => 'select',
+				'options' => array( 'before_loop', 'after_loop' )
+			),
 			'offset' => array( 'type' => 'number' ),
 			'show_query' => array(
 				'type' => 'select',

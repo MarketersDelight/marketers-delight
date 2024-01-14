@@ -1,7 +1,4 @@
 <?php
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * The main Marketers Delight Class that activates all WP, MD
  * and other features throughout this WordPress website.

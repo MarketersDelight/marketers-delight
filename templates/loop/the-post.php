@@ -2,11 +2,21 @@
 
 $classes = $style = array();
 
-if ( ! is_singular() )
-	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
+if ( ! is_singular() ) {
+	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
 		$classes[] = 'featured';
-	else
+		$loop['is_featured'] = true;
+
+		if ( ! empty( $loop['featured_featured_image'] ) )
+			$headline_args['is_featured'] = $loop['featured_featured_image'];
+	}
+	else {
 		$classes[] = 'standard';
+		unset( $loop['is_featured'] );
+		unset( $headline_args['is_featured'] );
+	}
+
+}
 
 if ( $columns > 1 )
 	if ( $columns <= 5 )

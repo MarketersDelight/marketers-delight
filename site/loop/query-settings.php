@@ -185,16 +185,12 @@
 
 	<div class="md-loop-post loop-post-inline md-loop-post-content md-tab-content">
 
-		<?php foreach ( array( 'standard', 'featured' ) as $post ) :
+		<?php foreach ( array( 'featured', 'standard' ) as $post ) :
 			$p = $post == 'featured' ? "{$post}_" : '';
 			$active = $post == 'standard' ? ' active' : '';
 		?>
 
 		<div class="md-loop-post-<?php echo esc_attr( $post ); ?>">
-
-			<?php if ( $post == 'featured' ) : ?>
-				<hr class="md-sep-small md-sep-small-top" />
-			<?php endif; ?>
 
 			<h4><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
 
@@ -250,6 +246,10 @@
 			</div>
 
 		</div>
+
+		<?php if ( $post == 'featured' ) : ?>
+			<hr class="md-sep-small md-sep-small-top" />
+		<?php endif; ?>
 
 		<?php endforeach; ?>
 

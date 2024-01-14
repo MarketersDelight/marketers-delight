@@ -16,6 +16,9 @@ class md_page_title {
 	 */
 
 	public function templates() {
+		if ( is_singular() )
+			return;
+
 		$hook = 'md_hook_content';
 		$description_hook = $cta_hook = 'md_hook_after_page_title';
 		$image_hook = 'md_hook_page_header_bottom';
@@ -231,3 +234,6 @@ class md_page_title {
 	}
 
 }
+
+$md_page_title = new md_page_title;
+add_action( 'template_redirect', array( $md_page_title, 'templates' ) );
