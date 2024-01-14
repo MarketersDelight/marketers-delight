@@ -82,7 +82,24 @@ class md_loop extends md_api {
 			'has_published_posts' => true
 		) );
 
-		return array(
+		$post_content = array(
+			'featured_image' => array(
+				'type' => 'select',
+				'options' => array_keys( $sanitize->values['featured_image'] )
+			),
+			'content' => array(
+				'type' => 'select',
+				'options' => array( 'full', 'excerpt', 'hide' )
+			),
+			'excerpt_length' => array( 'type' => 'number' ),
+			'excerpt_more' => array( 'type' => 'text' ),
+			'read_more' => array( 'type' => 'text' )
+		);
+
+		foreach ( $post_content as $content_id => $content_fields )
+			$post_content["featured_{$content_id}"] = $content_fields;
+
+		return array_merge( array(
 			'name' => array( 'type' => 'text' ),
 			'loop' => array(
 				'type' => 'radio',
@@ -104,17 +121,6 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array( 'ASC' )
 			),
-			'featured_image' => array(
-				'type' => 'select',
-				'options' => array_keys( $sanitize->values['featured_image'] )
-			),
-			'content' => array(
-				'type' => 'select',
-				'options' => array( 'full', 'excerpt', 'hide' )
-			),
-			'excerpt_length' => array( 'type' => 'number' ),
-			'excerpt_more' => array( 'type' => 'text' ),
-			'read_more' => array( 'type' => 'text' ),
 			'pagination' => array(
 				'type' => 'select',
 				'options' => array( 'page_numbers', 'prev_next' )
@@ -162,7 +168,7 @@ class md_loop extends md_api {
 				'type' => 'checkbox',
 				'options' => $sanitize->terms()
 			)
-		);
+		), $post_content );
 	}
 
 	/**
@@ -195,6 +201,7 @@ class md_loop extends md_api {
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
 		$category_posts = $this->fields->module( 'category_posts' );
+		$featured = $this->fields->module( 'featured' );
 		$authors = get_users( array(
 			'fields' => array( 'ID', 'display_name' ),
 			'has_published_posts' => true
@@ -206,7 +213,7 @@ class md_loop extends md_api {
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 	?>
 
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo $category_posts ? ' has-category-posts' : ''; ?>">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php include( 'loop-settings.php' ); ?>
@@ -242,6 +249,7 @@ class md_loop extends md_api {
 		$loops_options = md_loops( 'options' );
 		unset( $loops_options['default'] );
 		$category_posts = $this->fields->module( array( $group, $field, 'category_posts' ) );
+		$featured = $this->fields->module( array( $group, $field, 'featured' ) );
 		$sidebars = md_get_sidebars();
 
 		$types = get_post_types( array( 'public' => true ), 'objects' );
@@ -253,7 +261,9 @@ class md_loop extends md_api {
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 
+		echo '<div class="md-loop' . ( $featured >= 1 ? ' has-featured' : '' ) . ( $category_posts ? ' has-category-posts' : '' ) . '">';
 		include( 'query-settings.php' );
+		echo '</div>';
 	}
 
 	/**
@@ -272,9 +282,20 @@ class md_loop extends md_api {
 				}
 			} )();
 			jQuery( document ).ready( function( $ ) {
+
 				$( '.md-check-val' ).on( 'change', function( e ) {
 					$( this ).parents( '.md-loop-query' ).toggleClass( 'md-has-category-posts' );
 				} );
+
+				$( '.md-num-val' ).on( 'change', function( e ) {
+					var loop = $( this ).parents( '.md-loop' );
+
+					if ( this.value >= 1 )
+						loop.addClass( 'has-featured' );
+					else
+						loop.removeClass( 'has-featured' );
+				});
+
 			} );
 		</script>
 	<?php }

@@ -341,13 +341,14 @@ class md_fields {
 	 */
 
 	public function number( $name, $id, $option, $args ) {
+		$classes = isset( $args['classes'] ) ? ' ' . $args['classes'] : '';
 		$class_size  = isset( $args['size'] ) ? 'size="' . $args['size'] . '"' : '';
 		$placeholder = isset( $args['placeholder'] ) ? ' placeholder="' . esc_attr( $args['placeholder'] ) . '"' : '';
 		$width = isset( $args['width'] ) ? $args['width'] : 70;
 		$max = isset( $args['max'] ) ? ' max="' . esc_attr( $args['max'] ) . '"' : '';
 		$unit = isset( $args['unit'] ) ? ' <label for="' . $id . '" class="description">' . $args['unit'] . '</label>' : '';
 	?>
-		<input type="number" class="regular-text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $option ); ?>"<?php echo $placeholder; ?> style="width: <?php echo $width; ?>px;"<?php echo $max; ?> /><?php echo $unit; ?>
+		<input type="number" class="regular-text<?php echo esc_attr( $classes ); ?>" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" value="<?php echo esc_attr( $option ); ?>"<?php echo $placeholder; ?> style="width: <?php echo $width; ?>px;"<?php echo $max; ?> /><?php echo $unit; ?>
 	<?php }
 
 	/**
@@ -436,7 +437,7 @@ class md_fields {
 			$bg_image = $layout !== 'banner' ? ' style="background-image: url(\'' . esc_url( $image ) . '\');"' : '';
 			$text = is_array( $label ) ? $label['name'] : $label;
 	?>
-		<label for="<?php echo $idval; ?>" class="md-radio <?php echo ( $layout == 'banner' ? 'md-radio-banner' : 'md-radios' ) . ( ! empty( $image ) ? ' md-radio-has-image' : '' ); ?>"<?php echo md_style( $style ); ?>>
+		<label for="<?php echo $idval; ?>" class="md-radio <?php echo ( $layout == 'banner' ? 'md-radio-banner md-tooltip-parent' : 'md-radios' ) . ( ! empty( $image ) ? ' md-radio-has-image' : '' ); ?>"<?php echo md_style( $style ); ?>>
 			<?php if ( $layout == 'banner' && ! empty( $image ) ) : ?>
 				<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_html( $text ); ?>" class="md-radio-image" />
 			<?php endif; ?>
@@ -446,9 +447,9 @@ class md_fields {
 					<span class="md-radio-text"><?php echo esc_html( $text ); ?></span>
 				</span>
 			</span>
-				<?php if ( ! empty( $label['description'] ) ) : ?>
-				<p class="description"><?php echo esc_html( $label['description'] ); ?></p>
-				<?php endif; ?>
+			<?php if ( ! empty( $label['description'] ) ) : ?>
+			<span class="description<?php echo ( $layout == 'banner' ? ' md-tooltip large' : '' ); ?>"><?php echo esc_html( $label['description'] ); ?></span>
+			<?php endif; ?>
 		</label>
 	<?php } }
 

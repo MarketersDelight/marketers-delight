@@ -353,8 +353,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-20-60-20 > .col1, .md .columns-20-60-20 > .col3 { width: 20%; }
 	.md .columns-20-60-20 > .col2 { width: 60%; }
 	.md .col.col-right{ float: right; }
-	.md .col.col-full { width: 100%; }
+	.md .col.col-full { width: 100%; },
 }
+
+.md-alignright { float: right; }
 
 @media all and (max-width: 900px) {
 	.md.wrap { margin-right: 10px; }
@@ -651,6 +653,16 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-label-svg {
 	position: relative;
 		bottom: -7px;
+}
+
+.md-label-inline {
+	align-items: center;
+	display: flex;
+}
+
+.md .md-label-inline .md-label-wrap {
+	margin-bottom: 0;
+	margin-right: 10px;
 }
 
 /* ROW */
@@ -1159,13 +1171,17 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .has-upload .md-upload-preview-action,
 .has-upload .button.md-upload-add,
 .md-upload .md-upload-remove,
-.query-category-field { display: none; }
+.query-category-field,
+.md-loop-post .nav-tab-wrapper,
+.md-loop-post-featured { display: none; }
 
 .has-upload .md-upload-preview-image,
-.has-upload .md-upload-action-id, .has-upload .md-upload-action { display: block; }
+.has-upload .md-upload-action-id, .has-upload .md-upload-action,
+.md-loop.has-featured .md-loop-post .nav-tab-wrapper,
+.md-loop.has-featured .loop-post-inline .md-loop-post-featured { display: block; }
 
 .has-upload .md-upload-remove,
-.md-has-category-posts .query-category-field { display: inline-block; }
+.has-category-posts .query-category-field { display: inline-block; }
 
 /* FILE UPLOAD */
 
@@ -1182,7 +1198,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 /* TOOLTIP */
 
-.md-tooltip {
+.md-tooltip-parent .md-tooltip {
 	background-color: rgba(0, 0, 0, 0.8);
 	border-radius: 5px;
 	color: #fff;
@@ -1196,6 +1212,13 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 		top: -40px;
 	text-align: center;
 	width: 160px;
+	z-index: 100;
+}
+
+.md-tooltip.large {
+	margin-left: -120px;
+	top: -60px;
+	width: 240px;
 }
 
 .md-tooltip:after {

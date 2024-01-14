@@ -34,7 +34,7 @@ function md_loops( $sort = null ) {
 }
 
 /**
- * Get the Loop of the current page. If post_type parameter
+ * Get the current page Loop. If post_type parameter
  * is set in $loops, all views will be set according to the
  * loop being registered. Unless set, categories will use the
  * same loop as archives.
@@ -61,9 +61,9 @@ function md_get_loop() {
 }
 
 /**
- * The Main Loop used on all posts, pages, and archives.
+ * Render custom built queries with passed settings data.
  *
- * @since 4.1
+ * @since 5.6
  */
 
 function md_query() {
@@ -72,6 +72,12 @@ function md_query() {
 	foreach ( $queries as $query_id => $fields )
 		include( md_template( 'loop/query', true ) );
 }
+
+/**
+ * The Main Loop used on all posts, pages, and archives.
+ *
+ * @since 4.1
+ */
 
 function md_loop( $args = array() ) {
 	$c = 1;
