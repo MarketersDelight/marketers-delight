@@ -82,6 +82,13 @@ class md_fields_data {
 		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
 		$group = isset( $args['group'] ) ? $args['group'] : array();
 		$fields = array(
+			'link_display' => array(
+				'field' => "link{$p}_display",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'mobile', 'desktop' )
+				)
+			),
 			'link_text' => array(
 				'field' => "link{$p}_text",
 				'save' => array( 'type' => 'text' )

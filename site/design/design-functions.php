@@ -300,6 +300,9 @@ function md_link( $fields, $p = '' ) {
 	if ( isset( $fields["link{$p}_classes"] ) )
 		$classes[] = esc_attr( $fields["link{$p}_classes"] );
 
+	if ( ! empty( $fields["link{$p}_display"] ) )
+		$classes[] = 'show-' . esc_attr( $fields["link{$p}_display"] );
+
 	if ( in_array( $type, array( 'url', 'link' ) ) && $url ) {
 		$html = 'a';
 		$href = ' href="' . esc_url( $url ) . '"';

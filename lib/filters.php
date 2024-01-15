@@ -5,22 +5,6 @@
  * Child Themes.
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
-/**
- * Default nav menus.
- *
- * @since 4.1
- */
-
-function md_filter_register_nav_menus() {
-	$menus['header'] = __( 'Header Menu', 'md' );
-	$menus['header_loggedin'] = __( 'Header Menu (logged-in users only)', 'md' );
-
-	return apply_filters( 'md_filter_register_nav_menus', $menus );
-}
-
 /**
  * A collection of all registered components and fields for build and save.
  *

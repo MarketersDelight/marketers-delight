@@ -64,6 +64,7 @@
  ?>
 
 .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
+	color: <?php echo $colors['site']['headline']; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }

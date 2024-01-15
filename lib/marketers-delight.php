@@ -110,7 +110,11 @@ final class marketers_delight {
 		add_theme_support( 'editor-color-palette', md_editor_colors() );
 
 		// Register Nav Menus
-		register_nav_menus( md_filter_register_nav_menus() );
+		register_nav_menus( array(
+			'header' => __( 'Header Menu', 'md' ),
+			'header_loggedin' => __( 'Header Menu (logged-in users only)', 'md' ),
+			'main_menu' => __( 'Main Menu', 'md' )
+		) );
 
 		// Enable shortcodes in widgets
 		add_filter( 'widget_text', 'do_shortcode' );

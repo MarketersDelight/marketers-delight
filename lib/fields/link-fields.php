@@ -1,5 +1,16 @@
 <div class="<?php echo esc_attr( $classes ); ?>">
 
+	<?php $this->field( $fields['link_display']['field'], array(
+		'type' => 'select',
+		'label' => __( 'Display', 'md' ),
+		'wrap_classes' => 'md-sep-micro',
+		'empty_label' => __( 'Always show', 'md' ),
+		'options' => array(
+			'desktop' => __( 'Show on desktop only', 'md' ),
+			'mobile' => __( 'Show on mobile only', 'md' )
+		)
+	) ); ?>
+
 	<?php if ( empty( $args['disable_text'] ) ) : ?>
 		<?php $this->field( $fields['link_text']['field'], array(
 			'type' => 'text',
@@ -35,7 +46,7 @@
 			) ); ?>
 		</div>
 
-		<div class="col md-sep-micro">
+		<div class="col">
 			<?php $this->field( $fields['link_toggle']['field'], array(
 				'type' => 'checkbox',
 				'classes' => 'field-no-label',

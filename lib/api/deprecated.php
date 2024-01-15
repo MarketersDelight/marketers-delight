@@ -27,12 +27,24 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
- * Insert featured image above/below headline with in-post check.
+ * Default nav menus.
  *
  * @since 4.1
  * @deprecated 5.6
  */
 
+function md_filter_register_nav_menus() {
+	$menus['header'] = __( 'Header Menu', 'md' );
+	$menus['header_loggedin'] = __( 'Header Menu (logged-in users only)', 'md' );
+	return apply_filters( 'md_filter_register_nav_menus', $menus );
+}
+
+/**
+ * Insert featured image above/below headline with in-post check.
+ *
+ * @since 4.1
+ * @deprecated 5.6
+ */
 function md_featured_image_before_headline() {
 	$position = md_featured_image_position();
 	if ( $position == 'above_headline' )

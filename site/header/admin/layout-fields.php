@@ -19,7 +19,7 @@
 			) ); ?>
 		</div>
 
-		<div class="md-header-layout md-radio-fields md-clear md-sep-micro">
+		<div class="md-header-layout md-radio-fields md-clear md-sep-small">
 			<?php $this->fields->field( 'layout', array(
 				'type' => 'radio',
 				'label' => __( 'Layout', 'md' ),
@@ -38,7 +38,7 @@
 					),
 					'flyer' => array(
 						'name' => __( 'Header Center', 'md' ),
-						'description' => __( 'A logo aligned to the center between two outer navigation areas.', 'md' ),
+						'description' => __( 'A logo aligned to the center between two outer nav areas.', 'md' ),
 						'image' => MD_URL . 'lib/admin/images/header-flyer.gif'
 					)
 				)

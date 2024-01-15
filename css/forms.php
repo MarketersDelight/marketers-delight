@@ -57,7 +57,7 @@ select { max-width: 100%; }
 	text-align: center;
 }
 
-.trigger-icon {
+.trigger-icon, .hide-label .link-icon {
 	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	font-style: normal;
 	line-height: 1;
@@ -164,7 +164,8 @@ select { max-width: 100%; }
 
 /* QUERIES */
 
-@media all and (min-width: 700px) {
+@media all and (min-width: 800px) {
+	.show-mobile { display: none !important; }
 	.inline-form, .inline-form .inputs {
 		align-items: center;
 		display: flex;
@@ -173,7 +174,10 @@ select { max-width: 100%; }
 	.inline-form .inputs, .inline-form .input-field:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 800px) {
+	.show-desktop { display: none !important; }
 	.inline-form .submit { width: 100%; }
 	.inline-form .input-field, .inline-form .inputs { margin-bottom: <?php echo $half; ?>px; }
+	.trigger-icon, .hide-label .link-icon,
+	.hide-label-mobile .link-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px; }
 }

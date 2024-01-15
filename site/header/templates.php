@@ -16,8 +16,10 @@ class md_header_templates {
 
 	public function template() {
 		$data = md_get_builder( 'header', 'data' );
-		$header_center = md_setting( array( 'header', 'layout' ) ) == 'flyer' ? true : false;
-		$fields = md_setting( array( 'header', 'builder' ) );
+		$fields = md_setting( array( 'header', 'builder' ), array() );
+		$fields_args = array(
+			'layout' => md_setting( array( 'header', 'layout' ), 'standard' )
+		);
 
 		echo '<div class="header-controls">';
 
@@ -39,8 +41,11 @@ class md_header_templates {
 				$type = esc_attr( $items['type'] );
 				$id = esc_attr( $items['id'] );
 
-				if ( ! empty( $fields[$id] ) )
+				if ( ! empty( $fields[$id] ) ) {
+					$fields_args['location'] = 'header';
+					$fields[$id]['args'] = $fields_args;
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
+				}
 			}
 
 		echo '</div>';
@@ -52,8 +57,11 @@ class md_header_templates {
 				$type = esc_attr( $items['type'] );
 				$id = esc_attr( $items['id'] );
 
-				if ( ! empty( $fields[$id] ) )
+				if ( ! empty( $fields[$id] ) ) {
+					$fields_args['location'] = 'header_aside';
+					$fields[$id]['args'] = $fields_args;
 					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
+				}
 			}
 
 			echo '</div>';
@@ -84,6 +92,7 @@ class md_header_templates {
 		if ( ! empty( $elements['link'] ) )
 			foreach ( $elements['link'] as $c => $link_id ) {
 				$fields = md_setting( array( 'header', 'builder', $link_id ) );
+
 				$this->link( $fields );
 			}
 
@@ -98,14 +107,19 @@ class md_header_templates {
 	 * @since 5.6
 	 */
 
-	public function menu( $fields = null ) {
+	public function menu( $fields = array() ) {
 		$parent = isset( $fields['area'] ) ? $fields['area'] : 'header';
 		$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
+		$menu_class = 'menu menu-' . esc_attr( $parent );
+
+		if ( $fields['args']['layout'] == 'rtl' || ( $fields['args']['layout'] == 'flyer' && $fields['args']['location'] == 'header' ) )
+			$menu_class .= ' sub-alt';
+
 		$args = array(
 			'menu' => md_module( array( 'layout', 'header_menu' ), $menu_id ),
 			'container' => false,
 			'fallback_cb' => false,
-			'menu_class' => 'menu menu-' . esc_attr( $parent ),
+			'menu_class' => esc_attr( $menu_class ),
 			'walker' => new md_menu_walker( true, true )
 		);
 
@@ -113,7 +127,6 @@ class md_header_templates {
 			$menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
 			$args['theme_location'] = $menu_location;
 		}
-
 	?>
 		<nav class="<?php echo esc_attr( $parent ); ?>-menu">
 			<?php wp_nav_menu( $args ); ?>

@@ -145,7 +145,7 @@ class md_fields {
 
 			if ( ! empty( $page_types[$page] ) ) {
 				$page = md_clean_id( $page );
-				$option = $option[$page];
+				$option = ! empty( $option[$page] ) ? $option[$page] : array();
 			}
 		}
 

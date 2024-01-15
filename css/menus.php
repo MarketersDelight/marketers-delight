@@ -8,7 +8,11 @@
 
 /* MENU ITEM */
 
-.menu-item { position: relative; }
+.menu-item {
+	align-items: center;
+	display: flex;
+	position: relative;
+}
 
 .menu-item a {
 	padding: <?php echo $half; ?>px;
@@ -38,10 +42,7 @@
 	z-index: 50;
 }
 
-.sub-menu .menu-item {
-	align-items: center;
-	display: flex;
-}
+.sub-menu .menu-item { align-items: end; }
 
 .sub-menu .menu-item a {
 	color: <?php echo $header['submenu']['links']; ?>;
@@ -53,12 +54,8 @@
 		align-items: center;
 		display: flex;
 	}
-	.menu > .menu-item-has-children {
-		flex: 1 0 auto;
-		margin-right: <?php echo $half; ?>px;
-	}
+	.menu > .menu-item-has-children { margin-right: <?php echo $half; ?>px; }
 	.menu-item-has-children a { padding-right: <?php echo $third; ?>px; }
-	.menu-item-has-children .menu-toggle { display: inline-block; }
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $header['submenu']['bg_color']; ?>;
@@ -75,10 +72,11 @@
 		opacity: 1;
 		transition: opacity 200ms linear,transform 200ms ease-out;
 		transform: translateY(0);
+		top: <?php echo $mid + $third; ?>px;
 		visibility: visible;
 	}
 	.sub-menu .menu-item-has-children a { order: 2; }
-	.sub-menu .sub-menu {
+	.menu-item .sub-menu .sub-menu {
 		top: 0;
 		right: <?php echo $submenu_width; ?>px;
 	}
@@ -90,15 +88,16 @@
 	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
 	.sub-menu .trigger-icon { color: <?php echo $header['submenu']['links']; ?>; }
 	.sub-menu .trigger-icon:after { content: '\e816'; }
+	/* SUB MENU ALT DIRECTION */
+	.sub-alt .sub-menu { right: inherit; }
+	.sub-alt .sub-menu .sub-menu { right: -<?php echo $submenu_width; ?>px; }
+	.sub-alt .sub-menu .menu-item-has-children a { order: inherit; }
+	.sub-alt .sub-menu .trigger-icon:after { content: '\e80f'; }
 }
 
 @media all and (max-width: 800px) {
 	/* MENU ITEM */
-	.menu-item {
-		align-items: center;
-		display: flex;
-		flex-flow: wrap;
-	}
+	.menu-item { flex-flow: wrap; }
 	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $header['border_color']; ?>; }
 	.menu .button, .menu .button:hover {
 		padding: <?php echo $half; ?>px;
@@ -116,3 +115,21 @@
 		visibility: visible;
 	}
 }
+
+
+
+/* MAIN MENU */
+
+.main-menu {
+	background-color: #fff;
+	color: <?php echo $header['color']; ?>;
+}
+
+.main-menu a {
+	color: <?php echo $header['color']; ?>;
+}
+
+
+
+
+
