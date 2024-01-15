@@ -39,7 +39,7 @@ class md_post extends md_api {
 			$order = md_post_type_field( array( 'loop', 'order' ), null, 'post' );
 			$orderby = md_post_type_field( array( 'loop', 'orderby' ), null, 'post' );
 
-			$wp->query_vars['posts_per_page'] = esc_attr( $per_page );
+//			$wp->query_vars['posts_per_page'] = esc_attr( $per_page );
 
 			if ( $order )
 				$wp->query_vars['order'] = esc_attr( $order );

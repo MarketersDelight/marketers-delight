@@ -8,7 +8,8 @@
 
 <div class="md-field-row md-sep">
 	<?php $this->field( 'archives_text', array(
-		'type' => 'textarea',
+		'type' => 'editor',
+		'init' => true,
 		'label' => __( 'Description', 'md' ),
 		'description' => __( 'Write a short description to show below the page title.', 'md' ),
 		'rows' => 4

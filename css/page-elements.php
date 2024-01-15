@@ -15,9 +15,16 @@
 
 @media all and (min-width: 800px) {
 	/* GENERIC */
-	.layout-columns.inline .title-wrap { order: -1; }
-	.image-right .page-image { margin-left: <?php echo $single; ?>px; }
+	.layout-columns.inline .title-wrap {
+		flex-basis: 100%;
+		order: -1;
+	}
+	.image-right .page-image {
+		margin-left: <?php echo $single; ?>px;
+		margin-right: 0;
+	}
 	.image-left .page-image {
+		margin-left: 0;
 		margin-right: <?php echo $single; ?>px;
 		order: -1;
 	}
@@ -34,8 +41,13 @@
 	}
 	.layout-columns.inline { flex-flow: wrap; }
 	.layout-columns.inline .description { flex: 1; }
+	.inline .page-cta {
+		flex-basis: 100%;
+		margin-bottom: 0;
+		text-align: center;
+	}
 	/* SLIM */
-	.layout-slim.outer .title, .layout-slim.outer .page-cta, .foot { text-align: center; }
+	.layout-slim.outer .title, .layout-slim.outer .page-cta, .outer .foot { text-align: center; }
 	.layout-slim.outer .description, .layout-slim.outer .page-cta {
 		margin-left: auto;
 		margin-right: auto;

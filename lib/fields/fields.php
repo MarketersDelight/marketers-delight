@@ -578,8 +578,8 @@ class md_fields {
 	 */
 
 	public function editor( $name, $id, $option, $args ) {
-		if ( is_array( $args['field'] ) && empty( $option ) ) {
-			$args['classes'] = 'md-group-wp-editor';
+		if ( isset( $args['init'] ) ) {
+			$args['classes'] = 'md-toggle-wp-editor';
 			$this->textarea( $name, $id, $option, $args );
 		}
 		else {
@@ -588,8 +588,9 @@ class md_fields {
 				'textarea_rows' => 10
 			) );
 			wp_editor( $option, $id, $settings );
-			wp_enqueue_editor();
 		}
+
+		wp_enqueue_editor();
 	}
 
 	/**

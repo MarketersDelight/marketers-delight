@@ -1,33 +1,5 @@
 <div class="md-tabs md-conditional">
 
-	<div class="md-radio-fields md-clear md-sep-micro">
-		<?php $this->fields->field( array( $group, $field, 'loop' ), array(
-			'type' => 'radio',
-			'label' => __( 'Select Loop', 'md' ),
-			'svg' => md_svg( 'query' ),
-			'layout' => 'banner',
-			'columns' => 4,
-			'tooltip' => 'large',
-			'options' => array(
-				'fluid' => array(
-					'name' => __( 'Fluid (default)', 'md' ),
-					'description' => __( 'A traditional blog layout with adaptable image and post title formats.', 'md' ),
-					'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
-				),
-				'list' => array(
-					'name' => __( 'Simple List', 'md' ),
-					'description' => __( 'A minimalist posts list with room for extra details.', 'md' ),
-					'image' => MD_URL . 'lib/admin/images/loop-list.png'
-				),
-				'icons' => array(
-					'name' => __( 'Icon Cards', 'md' ),
-					'description' => __( 'A grid of cards with a centered image layout and small post title. ', 'md' ),
-					'image' => MD_URL . 'lib/admin/images/loop-icons.png'
-				)
-			)
-		) ); ?>
-	</div>
-
 	<div class="md-alignright md-label-inline">
 		<?php $this->fields->field( array( $group, $field, 'position' ), array(
 			'type' => 'select',
@@ -139,6 +111,17 @@
 				) ); ?>
 			</div>
 
+			<?php if ( $cta_options ) : ?>
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( array( $group, $field, 'cta_x_loop' ), array(
+					'type' => 'number',
+					'label' => __( 'Call to Action', 'md' ),
+					'description' => __( 'Show CTA after the Xth post.', 'md' ),
+					'wrap_classes' => 'md-sep-micro'
+				) ); ?>
+			</div>
+			<?php endif; ?>
+
 		</div>
 
 		<hr class="md-sep-small" />
@@ -190,7 +173,7 @@
 			$active = $post == 'standard' ? ' active' : '';
 		?>
 
-		<div class="md-loop-post-<?php echo esc_attr( $post ); ?>">
+		<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-sep-small">
 
 			<h4><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
 
@@ -245,65 +228,102 @@
 
 			</div>
 
-		</div>
+			<?php if ( $post == 'featured' ) : ?>
+				<hr class="md-sep-small-top" />
+			<?php endif; ?>
 
-		<?php if ( $post == 'featured' ) : ?>
-			<hr class="md-sep-small md-sep-small-top" />
-		<?php endif; ?>
+		</div>
 
 		<?php endforeach; ?>
 
 	</div>
 
-	<div class="md-loop-layout md-tab-content columns-3 columns-half">
+	<div class="md-loop-layout md-tab-content">
 
-		<div class="col">
-
-			<h4><?php echo __( 'Sidebar', 'md' ); ?></h4>
-
-			<?php $this->fields->field( array( $group, $field, 'sidebar' ), array(
-				'type' => 'checkbox',
-				'wrap_classes' => 'md-sep-micro',
+		<div class="md-radio-fields md-clear md-sep-small">
+			<?php $this->fields->field( array( $group, $field, 'loop' ), array(
+				'type' => 'radio',
+				'label' => __( 'Select Loop', 'md' ),
+				'svg' => md_svg( 'query' ),
+				'layout' => 'banner',
+				'columns' => 5,
+				'tooltip' => 'large',
 				'options' => array(
-					'enable' => __( '<strong>Add</strong> sidebar', 'md' ),
-					'sticky' => __( 'Sticky sidebar', 'md' )
+					'fluid' => array(
+						'name' => __( 'Fluid', 'md' ),
+						'description' => __( 'A traditional blog layout with adaptable image and post title formats.', 'md' ),
+						'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
+					),
+					'list' => array(
+						'name' => __( 'Simple List', 'md' ),
+						'description' => __( 'A minimalist posts list with room for extra details.', 'md' ),
+						'image' => MD_URL . 'lib/admin/images/loop-list.png'
+					),
+					'icons' => array(
+						'name' => __( 'Icon Cards', 'md' ),
+						'description' => __( 'A grid of cards with a centered image layout and small post title. ', 'md' ),
+						'image' => MD_URL . 'lib/admin/images/loop-icons.png'
+					)
 				)
 			) ); ?>
-
-			<?php $this->fields->field( array( $group, $field, 'custom_sidebar' ), array(
-				'type' => 'select',
-				'empty_label' => __( 'Use Main sidebar', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => $sidebars
-			) ); ?>
-
-			<?php $this->fields->field( array( $group, $field, 'content_layout' ), array(
-				'type' => 'select',
-				'empty_label' => __( 'Content / Sidebar', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'sidebar_content' => __( 'Sidebar / Content', 'md' )
-				)
-			) ); ?>
-
 		</div>
 
-		<div class="col">
+		<div class="columns-2 columns-65-35 columns-double">
 
-			<h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
+			<div class="col col1">
 
-			<?php $this->fields->field( array( $group, $field, 'cta_x_loop' ), array(
-				'type' => 'number',
-				'label' => __( 'Show After X Post', 'md' ),
-				'description' => __( 'Show CTA after post number in Loop.', 'md' ),
-				'wrap_classes' => 'md-sep-micro'
-			) ); ?>
+				<?php $this->fields->field( array( $group, $field, 'title' ), array(
+					'type' => 'text',
+					'label' => __( 'Title', 'md' ),
+					'wrap_classes' => 'md-sep-small'
+				) ); ?>
 
-			<?php $this->fields->field( array( $group, $field, 'x_cta' ), array(
-				'type' => 'select',
-				'empty_label' => __( 'Select call to action...', 'md' ),
-				'options' => $cta_options
-			) ); ?>
+				<?php $this->fields->field( array( $group, $field, 'description' ), array(
+					'type' => 'editor',
+					'init' => true,
+					'label' => __( 'Description', 'md' )
+				) ); ?>
+
+			</div>
+
+			<div class="col col2 md-full-select">
+
+				<?php if ( $cta_options )
+					$this->fields->field( array( $group, $field, 'x_cta' ), array(
+						'type' => 'select',
+						'label' => __( 'Call to Action', 'md' ),
+						'description' => __( 'The CTA to show after the Xth post.', 'md' ),
+						'wrap_classes' => 'md-sep-micro',
+						'options' => $cta_options
+					) ); ?>
+
+				<?php $this->fields->field( array( $group, $field, 'sidebar' ), array(
+					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro',
+					'label' => __( 'Sidebar', 'md' ),
+					'inline' => true,
+					'options' => array(
+						'enable' => __( '<strong>Add</strong> sidebar', 'md' ),
+						'sticky' => __( 'Sticky', 'md' )
+					)
+				) ); ?>
+
+				<?php $this->fields->field( array( $group, $field, 'custom_sidebar' ), array(
+					'type' => 'select',
+					'empty_label' => __( 'Use Main sidebar', 'md' ),
+					'wrap_classes' => 'md-sep-micro',
+					'options' => $sidebars
+				) ); ?>
+
+				<?php $this->fields->field( array( $group, $field, 'content_layout' ), array(
+					'type' => 'select',
+					'empty_label' => __( 'Content / Sidebar', 'md' ),
+					'options' => array(
+						'sidebar_content' => __( 'Sidebar / Content', 'md' )
+					)
+				) ); ?>
+
+			</div>
 
 		</div>
 

@@ -47,4 +47,4 @@ while ( $query->have_posts() ) {
 else
 	md_404_template();
 
-wp_reset_postdata();
+wp_reset_query();

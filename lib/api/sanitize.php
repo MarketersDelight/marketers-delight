@@ -42,6 +42,20 @@ class md_sanitize {
 			'id' => array(),
 			'style' => array()
 		),
+		'svg' => array(
+			'xmlns' => array(),
+			'fill' => array(),
+			'viewbox' => array(),
+			'role' => array(),
+			'aria-hidden' => array(),
+			'focusable' => array(),
+			'height' => array(),
+			'width' => array()
+		),
+		'path' => array(
+			'd' => array(),
+			'fill' => array(),
+		),
 		'p' => array(
 			'class' => array(),
 			'id' => array(),

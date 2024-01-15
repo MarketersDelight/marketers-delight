@@ -4,11 +4,11 @@
 		'label' => __( 'Select Loop', 'md' ),
 		'svg' => md_svg( 'query' ),
 		'layout' => 'banner',
-		'columns' => 4,
+		'columns' => 5,
 		'options' => array(
 			'fluid' => array(
-				'name' => __( 'Fluid (default)', 'md' ),
-				'description' => __( 'A traditional blog with a flexible layout.', 'md' ),
+				'name' => __( 'Fluid', 'md' ),
+				'description' => __( 'The default blog style with a flexible layout.', 'md' ),
 				'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
 			),
 			'list' => array(

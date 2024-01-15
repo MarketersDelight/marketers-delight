@@ -65,57 +65,32 @@ function md_get_loop() {
  *
  * @since 5.6
  */
-/*
-function md_query( $position = null ) {
-	$queries = md_module( array( 'loop', 'query' ), array() );
-
-	if ( empty( $queries ) )
-		return $queries;
-
-	foreach ( $queries as $query_id => $fields ) {
-		if ( isset( $position ) && $fields['position'] !== $position )
-			continue;
-
-		include( md_template( 'loop/query', true ) );
-	}
-}
-
-add_action( 'template_redirect', 'md_query' );
-*/
 
 function md_query_before_loop() {
 	$queries = md_module( array( 'loop', 'query' ), array() );
 
-	foreach ( $queries as $query_id => $fields ) {
-		if ( $fields['position'] !== 'before_loop' )
+	foreach ( $queries as $query_id => $loop ) {
+		if ( $loop['position'] !== 'before_loop' )
 			continue;
 
-		echo '<div class="inner">';
-
 		include( md_template( 'loop/query', true ) );
-
-		echo '</div>';
 	}
 }
 
-add_action( 'md_hook_content_box_top', 'md_query_before_loop' );
+add_action( 'md_hook_before_content_box', 'md_query_before_loop', 20 );
 
 function md_query_after_loop() {
 	$queries = md_module( array( 'loop', 'query' ), array() );
 
-	foreach ( $queries as $query_id => $fields ) {
-		if ( $fields['position'] !== 'after_loop' )
+	foreach ( $queries as $query_id => $loop ) {
+		if ( $loop['position'] !== 'after_loop' )
 			continue;
 
-		echo '<div class="inner">';
-
 		include( md_template( 'loop/query', true ) );
-
-		echo '</div>';
 	}
 }
 
-add_action( 'md_hook_content_box_bottom', 'md_query_after_loop' );
+add_action( 'md_hook_before_footer', 'md_query_after_loop' );
 
 /**
  * The Main Loop used on all posts, pages, and archives.
@@ -144,6 +119,7 @@ function md_loop( $args = array() ) {
 
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
+
 	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
 
@@ -153,7 +129,7 @@ function md_loop( $args = array() ) {
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
-		if ( ( md_has_sidebar() || isset( $args['has_sidebar'] ) ) || $columns >= 3 )
+		if ( ( md_has_sidebar() && ! isset( $args['has_sidebar'] ) || isset( $args['has_sidebar'] ) ) || $columns >= 3 )
 			$wrap_classes[] = 'slim';
 		elseif ( $columns == 2 )
 			$wrap_classes[] = 'wide';

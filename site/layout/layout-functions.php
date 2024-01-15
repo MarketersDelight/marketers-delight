@@ -150,17 +150,23 @@ function md_content_box() {
  * @since 4.1
  */
 
-function md_content_box_classes( $classes = array() ) {
-	$columns = 1;
+function md_content_box_classes( $classes = array(), $loop = array() ) {
 	$default_style = md_post_type_field( array( 'layout', 'content_box_style' ), 'box_style' );
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
+
+	if ( ! empty( $loop ) )
+		$has_sidebar = isset( $loop['sidebar']['enable'] ) ? true : false;
+	else
+		$has_sidebar = md_has_sidebar();
+
+	$loop['columns'] = 1;
 
 	if ( is_singular() )
 		$classes[] = 'article';
 	else
-		$columns = md_post_type_field( array( 'loop', 'columns' ), $columns );
+		$loop['columns'] = md_post_type_field( array( 'loop', 'columns' ), $loop['columns'] );
 
-	if ( md_has_sidebar() ) {
+	if ( $has_sidebar ) {
 		$classes[] = 'content-sidebar';
 
 		if ( md_meta( array( 'layout', 'content_box' ), get_queried_object_id() ) )

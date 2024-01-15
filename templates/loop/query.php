@@ -1,41 +1,53 @@
 <?php
+	$args = array( 'query' => $loop );
+	$query_classes = md_content_box_classes( array( 'query' ), $loop );
+	$has_sidebar = ! empty( $loop['sidebar']['enable'] ) ? true : false;
+?>
 
-$args = array( 'query' => $fields );
-$query_classes = array( 'query' );
-$has_sidebar = ! empty( $fields['sidebar']['enable'] ) ? true : false;
+<div class="<?php echo esc_attr( $query_classes ); ?>">
 
-if ( $has_sidebar ) {
-	$query_classes[] = 'content-sidebar';
+	<div class="inner">
 
-	if ( isset( $fields['content_layout'] ) && $fields['content_layout'] == 'sidebar_content' )
-		$query_classes[] = 'left';
-}
+		<?php if ( ! empty( $loop['title'] ) || ! empty( $loop['description'] ) ) : ?>
 
-$query_classes = join( ' ', $query_classes );
+		<div class="loop-header outer layout-slim">
 
-echo '<div class="' . $query_classes . '">';
+			<?php if ( ! empty( $loop['title'] ) ) : ?>
+				<h3 class="title"><?php echo md_text_field( $loop['title'] ); ?></h3>
+			<?php endif; ?>
 
-if ( $has_sidebar ) {
-	$args['has_sidebar'] = true;
+			<?php if ( ! empty( $loop['description'] ) ) : ?>
+				<div class="description">
+					<?php echo wpautop( $loop['description'] ); ?>
+				</div>
+			<?php endif; ?>
 
-	echo '<div class="content">';
-}
+		</div>
 
-md_loop( $args );
+		<?php endif; ?>
 
-if ( $has_sidebar ) {
-	$index = 'sidebar-main';
+		<?php if ( $has_sidebar ) {
+			$args['has_sidebar'] = true;
+			$index = 'sidebar-main';
+			$sidebar_class = isset( $loop['sidebar']['sticky'] ) ? ' sticky' : '';
+		?>
 
-	echo
-		'</div>'.
-		'<div class="sidebar' . ( isset( $fields['sidebar']['sticky'] ) ? ' sticky' : '' ) . '">';
+			<div class="content">
+				<?php md_loop( $args ); ?>
+			</div>
 
-	if ( ! empty( $fields['custom_sidebar'] ) )
-		$index = $fields['custom_sidebar'];
+			<div class="sidebar<?php echo esc_attr( $sidebar_class ); ?>">
 
-	dynamic_sidebar( $index );
+				<?php dynamic_sidebar( $index ); ?>
 
-	echo '</div>';
-}
+			</div>
 
-echo '</div>';
+		<?php }
+
+			else md_loop( $args );
+
+		?>
+
+	</div>
+
+</div>
