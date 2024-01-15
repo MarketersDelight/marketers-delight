@@ -27,8 +27,7 @@
 
 .cover, .post-header, .loop-header { padding-bottom: <?php echo $half; ?>px; }
 
-.the-content,
-#content > .inner {
+.the-content, #content > .inner {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
@@ -51,12 +50,13 @@
 }
 
 .post-footer {
-	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
 
-.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.box-style .post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 /* BOX STYLE */
 
@@ -91,11 +91,11 @@
 		padding-top: <?php echo $mid; ?>px;
 	}
 	.cover,
-	.post-box .post-header,
-	.the-content,
+	.box-style .post-box .post-header,
+	.box-style .the-content,
 	.author-box,
-	.comments,
-	.post-footer {
+	.box-style .comments,
+	.box-style .post-footer {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
@@ -105,6 +105,12 @@
 	.expanded .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
+	}
+	.content-sidebar.minimal .post-box .post-header,
+	.content-sidebar.minimal .the-content,
+	.content-sidebar.minimal .post-footer {
+		padding-left: 0;
+		padding-right: 0;
 	}
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-content { max-width: <?php echo $post_width; ?>px; }
@@ -178,9 +184,9 @@
 	.columns .standard .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
 	.columns .standard .cover,
-	.columns .standard .post-header,
-	.columns .standard .the-content,
-	.columns .standard .post-footer {
+	.box-style .columns .standard .post-header,
+	.box-style .columns .standard .the-content,
+	.box-style .columns .standard .post-footer {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}

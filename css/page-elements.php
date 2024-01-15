@@ -40,7 +40,10 @@
 		max-width: <?php echo $content_width; ?>px;
 	}
 	.layout-columns.inline { flex-flow: wrap; }
-	.layout-columns.inline .description { flex: 1; }
+	.layout-columns.inline .description {
+		flex: 1;
+		margin-bottom: 0;
+	}
 	.inline .page-cta {
 		flex-basis: 100%;
 		margin-bottom: 0;
@@ -77,7 +80,8 @@
 .breadcrumbs {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	margin-bottom: <?php echo $half; ?>px
+	margin-bottom: <?php echo $half; ?>px;
+	text-align: center;
 }
 
 .breadcrumbs a { text-decoration: underline; }

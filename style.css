@@ -711,7 +711,10 @@ select { max-width: 100%; }
 		max-width: 697px;
 	}
 	.layout-columns.inline { flex-flow: wrap; }
-	.layout-columns.inline .description { flex: 1; }
+	.layout-columns.inline .description {
+		flex: 1;
+		margin-bottom: 0;
+	}
 	.inline .page-cta {
 		flex-basis: 100%;
 		margin-bottom: 0;
@@ -743,7 +746,8 @@ select { max-width: 100%; }
 .breadcrumbs {
 	font-size: 16px;
 	line-height: 26px;
-	margin-bottom: 15px
+	margin-bottom: 15px;
+	text-align: center;
 }
 .breadcrumbs a { text-decoration: underline; }
 .breadcrumbs a:hover { text-decoration: none; }
@@ -1009,12 +1013,13 @@ select { max-width: 100%; }
 .comment:not(:last-child) { margin-bottom: 29px; }
 .comment-details {
 	align-items: center;
-	background-color: #FFFFFF;
+	background-color: #F0F0F0;
 	display: flex;
 	padding-bottom: 15px;
 	position: relative;
 	z-index: 10;
 }
+.box-style .comment-details { background-color: #FFFFFF; }
 .comment-details a { text-decoration: none; }
 .comment-author, .comment-author a {
 	color: #1E1E1E;
@@ -1040,6 +1045,7 @@ select { max-width: 100%; }
 .comment-controls { padding-left: 29px; }
 .comment-respond + .comment-controls { display: none; }
 .comment-controls a {
+	background-color: #FFFFFF;
 	border: 1px solid #CCCCCC;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
@@ -1071,7 +1077,7 @@ select { max-width: 100%; }
 	overflow: hidden;
 }
 .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%);
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #F0F0F0 80%);
 	content: '';
 	display: block;
 	height: 29px;
@@ -1080,6 +1086,7 @@ select { max-width: 100%; }
 		left: 0;
 	width: 100%;
 }
+.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 /* TIMELINE */
 .comment-timeline {
 	background-color: rgba(0, 0, 0, 0.1);
@@ -1318,8 +1325,7 @@ select { max-width: 100%; }
 .query, .entry, .post-box { position: relative; }
 .cover, .post-header, .loop-header { padding-top: 15px; }
 .cover, .post-header, .loop-header { padding-bottom: 15px; }
-.the-content,
-#content > .inner {
+.the-content, #content > .inner {
 	padding-bottom: 29px;
 	padding-top: 29px;
 }
@@ -1338,11 +1344,11 @@ select { max-width: 100%; }
 	padding-right: 0;
 }
 .post-footer {
-	border-top: 1px solid #CCCCCC;
 	padding-bottom: 15px;
 	padding-top: 15px;
 }
-.post-footer:not(:last-child) { border-bottom: 1px solid #CCCCCC; }
+.box-style .post-footer { border-top: 1px solid #CCCCCC; }
+.box-style .post-footer:not(:last-child) { border-bottom: 1px solid #CCCCCC; }
 /* BOX STYLE */
 .box-style .entry:not(:last-child) { margin-bottom: 29px; }
 .box-style .post-box {
@@ -1369,11 +1375,11 @@ select { max-width: 100%; }
 		padding-top: 44px;
 	}
 	.cover,
-	.post-box .post-header,
-	.the-content,
+	.box-style .post-box .post-header,
+	.box-style .the-content,
 	.author-box,
-	.comments,
-	.post-footer {
+	.box-style .comments,
+	.box-style .post-footer {
 		padding-left: 44px;
 		padding-right: 44px;
 	}
@@ -1383,6 +1389,12 @@ select { max-width: 100%; }
 	.expanded .comments {
 		padding-left: 20.861244019139%;
 		padding-right: 20.861244019139%;
+	}
+	.content-sidebar.minimal .post-box .post-header,
+	.content-sidebar.minimal .the-content,
+	.content-sidebar.minimal .post-footer {
+		padding-left: 0;
+		padding-right: 0;
 	}
 	.content-width { max-width: 697px; }
 	.post-content { max-width: 609px; }
@@ -1449,9 +1461,9 @@ select { max-width: 100%; }
 	.columns .standard .post-header { padding-top: 15px; }
 	.columns .standard .cover { padding-bottom: 15px; }
 	.columns .standard .cover,
-	.columns .standard .post-header,
-	.columns .standard .the-content,
-	.columns .standard .post-footer {
+	.box-style .columns .standard .post-header,
+	.box-style .columns .standard .the-content,
+	.box-style .columns .standard .post-footer {
 		padding-left: 15px;
 		padding-right: 15px;
 	}
@@ -1713,7 +1725,7 @@ ul.list-check li:before {
 	color: #1E1E1E;
 	position: relative;
 }
-.cta:not(:last-child) { margin-bottom: 29px; }
+#content .cta:not(:last-child) { margin-bottom: 29px; }
 .cta.outer, .cta.inline.bg {
 	padding-bottom: 29px;
 	padding-top: 29px;

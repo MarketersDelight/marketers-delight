@@ -186,8 +186,7 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 
 	$classes[] = 'loop-' . md_get_loop();
 
-	if ( $style !== 'minimal' )
-		$classes[] = str_replace( '_', '-', $style );
+	$classes[] = str_replace( '_', '-', $style );
 
 	$classes[] = 'format';
 

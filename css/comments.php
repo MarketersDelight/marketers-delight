@@ -49,12 +49,14 @@
 
 .comment-details {
 	align-items: center;
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	display: flex;
 	padding-bottom: <?php echo $half; ?>px;
 	position: relative;
 	z-index: 10;
 }
+
+.box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
 
 .comment-details a { text-decoration: none; }
 
@@ -89,6 +91,7 @@
 .comment-respond + .comment-controls { display: none; }
 
 .comment-controls a {
+	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
@@ -129,7 +132,7 @@
 }
 
 .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%);
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['site']['bg_color']; ?> 80%);
 	content: '';
 	display: block;
 	height: <?php echo $single; ?>px;
@@ -138,6 +141,8 @@
 		left: 0;
 	width: 100%;
 }
+
+.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 
 /* TIMELINE */
 
