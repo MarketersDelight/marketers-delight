@@ -17,6 +17,27 @@ add_action( 'md_hook_footer', 'md_footer_columns_template' );
 add_action( 'md_hook_footer_bottom', 'md_footer_copy' );
 
 /**
+ * Outputs inline JavaScript to footer.
+ *
+ * @since 4.0
+ */
+
+if ( ! function_exists( 'md_inline_js' ) ) :
+
+function md_inline_js() {
+	if ( md_has_menu() )
+		wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
+
+	if ( has_nav_menu( 'main_menu' ) )
+		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
+
+	if ( is_singular() && md_has_comments() )
+		wp_add_inline_script( 'marketers-delight', "MD.toggle('comment');" );
+}
+
+endif;
+
+/**
  * Inner HTML element and closing div.
  *
  * @since 5.6
@@ -665,9 +686,11 @@ function md_footer_columns() {
  */
 
 function md_footer_classes() {
-	$classes = apply_filters( 'md_filter_footer_classes', array() );
+	$classes = array( 'footer', 'format' );
+	$classes = apply_filters( 'md_filter_footer_classes', $classes );
+	$classes = join( ' ', $classes );
 
-	return join( ' ', $classes );
+	return $classes;
 }
 
 /**
@@ -677,7 +700,12 @@ function md_footer_classes() {
  */
 
 function md_footer_columns_template() {
-	md_template( 'footer-columns' );
+	$columns = md_footer_columns();
+	$classes = "entry f{$columns}";
+	// <div class="footer-columns<?php echo $columns > 1 ? " columns-double columns-$columns" : ''; mb-single">
+
+	if ( md_has_footer_columns() )
+		include( md_template( 'footer-columns', true ) );
 }
 
 /**
@@ -687,5 +715,6 @@ function md_footer_columns_template() {
  */
 
 function md_footer_copy() {
-	md_template( 'footer-copy' );
+	if ( is_active_sidebar( 'footer-copy' ) )
+		include( md_template( 'footer-copy', true ) );
 }

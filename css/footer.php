@@ -12,12 +12,10 @@
 	position: relative;
 }
 
-.footer-columns {
+.footer .columns {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
-
-.footer-columns + .footer-copy { background-color: rgba(0, 0, 0, 0.2); }
 
 .footer-copy {
 	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
@@ -30,18 +28,18 @@
 .footer .footer-title {
 	color: <?php echo $colors['footer']['title']; ?>;
 	<?php if ( ! empty( $typography['footer_title']['font_family'] ) ) : ?>
-		font-family: <?php echo $typography['footer_title']['font_family']; ?>;
+	font-family: <?php echo $typography['footer_title']['font_family']; ?>;
 	<?php endif; ?>
 	font-size: <?php echo $typography['footer_title']['font_size']['desktop']; ?>px;
 	<?php if ( ! empty( $typography['footer_title']['font_weight'] ) ) : ?>
-		font-weight: <?php echo $typography['footer_title']['font_weight']; ?>;
+	font-weight: <?php echo $typography['footer_title']['font_weight']; ?>;
 	<?php endif; ?>
 	line-height: <?php echo $typography['footer_title']['line_height']['desktop']; ?>px;
 	margin-bottom: <?php echo $half; ?>px;
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.footer-columns, .footer-copy {
+	.footer .columns, .footer-copy {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -56,6 +54,7 @@
 		font-size: <?php echo $typography['footer_title']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['footer_title']['line_height']['tablet']; ?>px;
 	}
+	.footer .entry:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 }
 
 @media all and (max-width: 700px) {

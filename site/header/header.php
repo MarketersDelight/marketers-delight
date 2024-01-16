@@ -145,11 +145,7 @@ class md_header extends md_api {
 		add_action( 'md_hook_header', array( $templates, 'template' ) );
 
 		if ( has_nav_menu( 'main_menu' ) )
-			add_action( 'md_hook_before_content_box', array( $this, 'main_menu' ) );
-	}
-
-	public function main_menu() {
-		include( md_template( 'main-menu', true ) );
+			add_action( 'md_hook_before_content_box', array( $templates, 'main_menu' ) );
 	}
 
 	/**

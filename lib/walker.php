@@ -1,14 +1,4 @@
 <?php
-/**
- * The one Walker to rule them all. This adds 2 arguments that lets
- * any menu using it determine whether or not to show the title and
- * description of each menu item.
- *
- * @since 4.0
- */
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
 
 /**
  * Custom Category Walker for displaying terms/categories
@@ -56,10 +46,10 @@ class md_category_options_walker extends Walker_Category {
 }
 
 /**
- * Custom Category Walker for displaying terms/categories
- * checkbox options with MD API.
+ * This adds 2 arguments that lets any menu using it determine
+ * whether or not to show the title and description of each menu item.
  *
- * @since 5.0
+ * @since 4.0
  */
 
 class md_menu_walker extends Walker_Nav_Menu {

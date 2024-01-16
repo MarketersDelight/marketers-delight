@@ -2,9 +2,10 @@
 
 /* CONTENT BLOCK */
 
-.layout-slim .title-wrap:not(:last-child), .description, .page-cta { margin-bottom: <?php echo $single; ?>px; }
+.layout-slim.outer .title-wrap:not(:last-child),
+.description { margin-bottom: <?php echo $single; ?>px; }
 
-.inline .title-wrap, .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.page-cta, .inline .title-wrap, .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .page-image {
 	margin-bottom: <?php echo $single; ?>px;
@@ -47,7 +48,6 @@
 	.inline .page-cta {
 		flex-basis: 100%;
 		margin-bottom: 0;
-		text-align: center;
 	}
 	/* SLIM */
 	.layout-slim.outer .title, .layout-slim.outer .page-cta, .outer .foot { text-align: center; }
@@ -83,6 +83,8 @@
 	margin-bottom: <?php echo $half; ?>px;
 	text-align: center;
 }
+
+.article.content-sidebar .breadcrumbs { text-align: left; }
 
 .breadcrumbs a { text-decoration: underline; }
 

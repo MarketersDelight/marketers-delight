@@ -58,6 +58,8 @@
 
 .box-style .post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
+.box-style .post-footer + .post-footer { border-top: 0; }
+
 /* BOX STYLE */
 
 .box-style .entry:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
@@ -167,6 +169,8 @@
 	padding-top: <?php echo $half; ?>px;
 }
 
+.columns .standard .post-header:not(.cover) + .the-content { padding-top: 0; }
+
 .columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
 
 @media all and (min-width: 900px) {
@@ -180,9 +184,9 @@
 	.columns.slim { margin-left: -<?php echo $half; ?>px; }
 	.columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
-	.box-style .columns .entry:not(:last-child) { margin-bottom: 0; }
-	.columns .standard .post-header { padding-top: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
+	.post-header .byline:not(:last-child),
+	.columns .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 	.columns .standard .cover,
 	.box-style .columns .standard .post-header,
 	.box-style .columns .standard .the-content,
@@ -196,7 +200,7 @@
 	}
 	.columns.slim .standard .post-box .title {
 		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
+		line-height: <?php echo $typography['h4']['line_height']['tablet']; ?>px;
 	}
 	.columns.slim .standard .the-content {
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;

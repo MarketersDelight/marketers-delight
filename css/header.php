@@ -77,9 +77,12 @@
 	flex-basis: <?php echo $logo['logo_width']['desktop']; ?>px;
 	<?php endif; ?>
 	flex-shrink: 0;
+	position: relative;
+}
+
+.header .logo {
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
-	position: relative;
 }
 
 .header-rtl .logo {

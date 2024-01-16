@@ -112,7 +112,7 @@ class md_header_templates {
 		$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
 		$menu_class = 'menu menu-' . esc_attr( $parent );
 
-		if ( $fields['args']['layout'] == 'rtl' || ( $fields['args']['layout'] == 'flyer' && $fields['args']['location'] == 'header' ) )
+		if ( isset( $fields['args'] ) && ( $fields['args']['layout'] == 'rtl' || ( $fields['args']['layout'] == 'flyer' && $fields['args']['location'] == 'header' ) ) )
 			$menu_class .= ' sub-alt';
 
 		$args = array(
@@ -133,6 +133,13 @@ class md_header_templates {
 		</nav>
 	<?php }
 
+	public function main_menu() {
+		$menus = md_get_builder( 'header', null, 'menu' );
+		$header = md_setting( array( 'header', 'builder' ), array() );
+
+		include( md_template( 'main-menu', true ) );
+	}
+
 	/**
 	 * Header menu trigger template.
 	 *
@@ -140,22 +147,24 @@ class md_header_templates {
 	 */
 
 	public function menu_trigger() {
+		$menu_id = 'header_menu';
+		if ( has_nav_menu( 'main_menu' ) )
+			$menu_id = 'main_menu';
 		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['menu'][0] ) ? $elements['menu'][0] : '';
 		$nav_menu_title = md_get_menu_name( 'header' );
-		$title = md_setting( array( 'header', 'builder', $element_id, 'title' ), $nav_menu_title );
-		$hide_label = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label' ) );
-		$hide_label_mobile = md_setting( array( 'header', 'builder', $element_id, 'toggle', 'hide_label_mobile' ) );
-		$label_classes = array( 'trigger', 'trigger-menu' );
+		$header = md_setting( array( 'header', 'builder', $element_id ) );
+		$title = ! empty( $header['title'] ) ? $header['title'] : $nav_menu_title;
+		$classes = array( 'trigger', 'trigger-menu' );
 
-		if ( $hide_label )
-			$label_classes[] = 'hide-label';
-		elseif ( $hide_label_mobile )
-			$label_classes[] = 'hide-label-mobile';
+		if ( ! empty( $header['toggle']['hide_label'] ) )
+			$classes[] = 'hide-label';
+		elseif ( ! empty( $header['toggle']['hide_label_mobile'] ) )
+			$classes[] = 'hide-label-mobile';
 
-		$label_classes = join( ' ', $label_classes );
+		$classes = join( ' ', $classes );
 	?>
-		<span id="header_menu_trigger" class="<?php echo esc_attr( $label_classes ); ?>">
+		<span id="<?php echo esc_attr( $menu_id ); ?>_trigger" class="<?php echo esc_attr( $classes ); ?>">
 			<?php echo md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>

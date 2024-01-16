@@ -1,8 +1,5 @@
 <?php
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 // Deprecated 5.6
 function md_headline_classes( $classes = array() ) {
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );

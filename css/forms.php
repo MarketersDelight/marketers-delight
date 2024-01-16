@@ -42,7 +42,12 @@ textarea:focus {
 
 textarea { padding: <?php echo $single; ?>px; }
 
-select { max-width: 100%; }
+select {
+	font-size: inherit;
+	max-width: 100%;
+	padding: <?php echo $third; ?>px;
+	width: 100%;
+}
 
 .required { color: #ae2525; }
 

@@ -94,7 +94,7 @@ toggle: function( item, closeOut = false ) {
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
 			var toggleID = this.getAttribute( 'data-' + item + '-toggle' ),
-				parent = document.getElementById( toggleID );
+				parent = this.closest( '.' + toggleID );
 			MD.toggleClass( parent, 'toggle-' + item );
 			if ( closeOut == true ) {
 				document.onclick = function( e ) {
@@ -109,19 +109,38 @@ toggle: function( item, closeOut = false ) {
 <?php if ( md_has_menu() ) : ?>
 
 headerMenu: function() {
-	this.toggle( 'menu' );
 	var header = document.getElementById( 'header' ),
 		headerTrigger = document.getElementById( 'header_menu_trigger' );
-	if ( headerTrigger )
+
+	if ( headerTrigger ) {
+		this.toggle( 'menu' );
+
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
 			<?php if ( md_has_header_search() ) : ?>
 			MD.removeClass( header, 'has-search' );
 			<?php endif; ?>
 		}
+	}
 },
 
 <?php endif; ?>
+
+mainMenu: function() {
+	var menuTrigger = document.getElementById( 'main_menu_trigger' );
+
+	if ( menuTrigger ) {
+		var html = document.getElementsByTagName( 'html' )[0];
+		this.toggle( 'menu' );
+
+		menuTrigger.onclick = function( e ) {
+			MD.addClass( html, 'has-main-menu' );
+		}
+		document.getElementById( 'main_menu_close' ).onclick = document.getElementById( 'main_menu_overlay' ).onclick = function( e ) {
+			MD.removeClass( html, 'has-main-menu' );
+		}
+	}
+},
 
 searchToggle: function() {
 	var searchTriggers = document.getElementsByClassName( 'trigger-search' );
@@ -133,13 +152,6 @@ searchToggle: function() {
 			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
 		}
 	}
-/*
-	window.document.onkeydown = function( e ) {
-		e = e || window.event;
-		if ( e.keyCode == 27 )
-			MD.removeClass( wrapper, 'has-search' );
-	};
-*/
 },
 
 <?php if ( has_action( 'md_js_onscroll' ) ) : ?>

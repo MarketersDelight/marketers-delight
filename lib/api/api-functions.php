@@ -226,23 +226,6 @@ function md_js_object( $args ) {
 }
 
 /**
- * Outputs inline JavaScript to footer.
- *
- * @since 4.0
- */
-
-if ( ! function_exists( 'md_inline_js' ) ) :
-
-function md_inline_js() {
-	if ( md_has_menu() )
-		wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
-	if ( is_singular() && md_has_comments() )
-		wp_add_inline_script( 'marketers-delight', "MD.toggle('comment');" );
-}
-
-endif;
-
-/**
  * Pull data from the Marketers Delight options array. For
  * best performance, always pull MD settings from here.
  *

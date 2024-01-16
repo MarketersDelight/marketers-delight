@@ -47,10 +47,10 @@ div.editor-styles-wrapper .has-text-sec-background-color { background-color: #77
 div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
 div.editor-styles-wrapper .has-links-background-color { background-color: #1993C9; }
 div.editor-styles-wrapper .has-links-color { color: #1993C9; }
-div.editor-styles-wrapper .has-button-background-color { background-color: #22A340; }
-div.editor-styles-wrapper .has-button-color { color: #22A340; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
-div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
+div.editor-styles-wrapper .has-button-background-color { background-color: #1993C9; }
+div.editor-styles-wrapper .has-button-color { color: #1993C9; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #242424; }
+div.editor-styles-wrapper .has-button-sec-color { color: #242424; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
@@ -286,7 +286,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	$BUTTONS
 \*------------------------------*/
 .md-button, .md-submit {
-	background-color: #22A340;
+	background-color: #1993C9;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -311,9 +311,9 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* OUTLINE */
 .md-submit.md-submit-outline {
 	background-color: transparent;
-	border: 3px solid #22A340;
+	border: 3px solid #1993C9;
 	border-radius: 5px;
-	color: #22A340;
+	color: #1993C9;
 }
 /* ARROW */
 .md-button.md-button-arrow:after {

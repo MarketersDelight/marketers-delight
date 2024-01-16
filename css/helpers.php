@@ -57,6 +57,15 @@
 	.alignright.wrap { margin-left: -<?php echo $half; ?>px; }
 }
 
+/* SPACERS */
+
+.mb-double:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
+.mb-mid:not(:last-child) { margin-bottom: <?php echo $mid; ?>px; }
+.mb-single:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.mb-half:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+.mb-none { margin-bottom: 0 !important; }
+
 /* COVERS / OVERLAY */
 
 .cover, .header.has-cover {
@@ -183,14 +192,18 @@ ul.list-check li:before {
 	display: inline-flex;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	font-weight: normal;
-	height: <?php echo $mid; ?>px;
+	height: <?php echo $single + $small; ?>px;
 	justify-content: center;
 	line-height: 1;
 	position: relative;
-	width: <?php echo $mid; ?>px;
+	width: <?php echo $single + $small; ?>px;
 }
 
-.circle-icon.micro, .toc-anchor {
-	height: <?php echo $single; ?>px;
-	width: <?php echo $single; ?>px;
+.close {
+	background-color: transparent;
+	color: #ae2525;
+	cursor: pointer;
+	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
 }
+
+.close:hover { background-color: rgba(0, 0, 0, 0.2); }
