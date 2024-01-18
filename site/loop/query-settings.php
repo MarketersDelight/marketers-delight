@@ -166,7 +166,7 @@
 
 	</div>
 
-	<div class="md-loop-post loop-post-inline md-loop-post-content md-tab-content">
+	<div class="md-loop-post md-loop-post-inline md-loop-post-content md-tab-content">
 
 		<?php foreach ( array( 'featured', 'standard' ) as $post ) :
 			$p = $post == 'featured' ? "{$post}_" : '';
@@ -175,37 +175,54 @@
 
 		<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-sep-small">
 
-			<h4><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
+			<h4 class="md-loop-post-title"><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
 
-			<?php $this->fields->field( array( $group, $field, "{$p}featured_image" ), array(
-				'type' => 'select',
-				'label' => __( 'Featured Image', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'options' => $sanitize->values['featured_image'],
-				'wrap_classes' => 'md-sep-small'
-			) ); ?>
+			<div class="columns-4 columns-half md-sep-small">
 
-			<div class="columns-4 columns-half">
+				<div class="col">
+					<?php $this->fields->field( array( $group, $field, "{$p}featured_image" ), array(
+						'type' => 'select',
+						'label' => __( 'Featured Image', 'md' ),
+						'empty_label' => __( 'Use default position', 'md' ),
+						'options' => $sanitize->values['featured_image'],
+						'wrap_classes' => 'md-sep-small'
+					) ); ?>
+				</div>
 
 				<div class="col">
 					<?php $this->fields->field( array( $group, $field, "{$p}content" ), array(
 						'type' => 'select',
-						'label' => __( 'Post Text', 'md' ),
+						'label' => __( 'Post Content', 'md' ),
 						'style' => 'width: 100%',
-						'empty_label' => __( 'Show default', 'md' ),
+						'empty_label' => __( 'Show excerpt', 'md' ),
 						'options' => array(
-							'excerpt' => __( 'Show excerpt', 'md' ),
 							'full' => __( 'Show full text', 'md' ),
 							'hide' => __( 'Hide text', 'md' )
 						)
 					) ); ?>
 				</div>
 
+			</div>
+
+			<div class="columns-4 columns-half">
+
 				<div class="col">
 					<?php $this->fields->field( array( $group, $field, "{$p}read_more" ), array(
 						'type' => 'text',
 						'label' => __( 'Read More Text', 'md' ),
 						'placeholder' => __( 'Continue reading &rarr;', 'md' )
+					) ); ?>
+				</div>
+
+				<div class="col">
+					<?php $this->fields->field( array( $group, $field, "{$p}read_more_style" ), array(
+						'type' => 'select',
+						'label' => __( 'Text Style', 'md' ),
+						'style' => 'width: 100%',
+						'empty_label' => __( 'Text link', 'md' ),
+						'options' => array(
+							'button' => __( 'Button', 'md' )
+						)
 					) ); ?>
 				</div>
 
@@ -248,27 +265,11 @@
 				'layout' => 'banner',
 				'columns' => 5,
 				'tooltip' => 'large',
-				'options' => array(
-					'fluid' => array(
-						'name' => __( 'Fluid', 'md' ),
-						'description' => __( 'A traditional blog layout with adaptable image and post title formats.', 'md' ),
-						'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
-					),
-					'list' => array(
-						'name' => __( 'Simple List', 'md' ),
-						'description' => __( 'A minimalist posts list with room for extra details.', 'md' ),
-						'image' => MD_URL . 'lib/admin/images/loop-list.png'
-					),
-					'icons' => array(
-						'name' => __( 'Icon Cards', 'md' ),
-						'description' => __( 'A grid of cards with a centered image layout and small post title. ', 'md' ),
-						'image' => MD_URL . 'lib/admin/images/loop-icons.png'
-					)
-				)
+				'options' => md_loops()
 			) ); ?>
 		</div>
 
-		<div class="columns-2 columns-65-35 columns-double">
+		<div class="columns-2 columns-65-35 columns-single">
 
 			<div class="col col1">
 
@@ -293,6 +294,7 @@
 						'type' => 'select',
 						'label' => __( 'Call to Action', 'md' ),
 						'description' => __( 'The CTA to show after the Xth post.', 'md' ),
+						'empty_label' => __( 'Select call to action...', 'md' ),
 						'wrap_classes' => 'md-sep-micro',
 						'options' => $cta_options
 					) ); ?>

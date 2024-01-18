@@ -17,17 +17,30 @@
 	display: table;
 }
 
+.sticky {
+	position: sticky;
+		top: -1px;
+	transition: 0.3s;
+	z-index: 50;
+}
+
+.admin-bar .stuck {
+	padding-top: <?php echo $admin_bar_height; ?>px;
+}
+
 /* PAGE STRUCTURE */
 
 .page-header, .loop, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
 
 .query, .entry, .post-box { position: relative; }
 
-.cover, .post-header, .loop-header { padding-top: <?php echo $half; ?>px; }
+.cover, .post-header, .loop-header,
+.post-box .post-footer {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
 
-.cover, .post-header, .loop-header { padding-bottom: <?php echo $half; ?>px; }
-
-.the-content, #content > .inner {
+.post-box .the-content, #content > .inner {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
@@ -36,29 +49,24 @@
 
 .cover,
 .post-box .post-header,
-.the-content,
-.post-footer {
+.post-box .the-content,
+.post-box .post-footer {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
 
-.content .the-content.full,
+.post-box .the-content.full,
 .header .cover,
 #content > .cover {
 	padding-left: 0;
 	padding-right: 0;
 }
 
-.post-footer {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
+.box-style .post-box .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style .post-box .post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.box-style .post-footer + .post-footer { border-top: 0; }
+.box-style .post-box .post-footer + .post-footer { border-top: 0; }
 
 /* BOX STYLE */
 
@@ -72,11 +80,7 @@
 
 .cover, .cover .overlay { border-radius: 5px; }
 
-.box-style .post-box .cover,
-.box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
-
-.box-style .image-above-headline .cover,
-.box-style .image-above-headline .overlay { border-radius: 0; }
+.box-style .post-box .cover, .box-style .post-box .overlay { border-radius: 5px 5px 0 0; }
 
 /* QUERIES */
 
@@ -84,33 +88,33 @@
 	.expanded .post-header,
 	.header .post-header,
 	#content > .post-header { text-align: center; }
-	.header .byline, #content > .header-cover .byline, .expanded .byline { justify-content: center; }
-	.post-header, .cover, .loop-header { padding-top: <?php echo $single; ?>px; }
-	.post-header, .cover, .loop-header { padding-bottom: <?php echo $single; ?>px; }
-	.article .header-cover,
-	.header .header-cover-full {
+	.post-header, .cover, .loop-header {
+		padding-bottom: <?php echo $single; ?>px;
+		padding-top: <?php echo $single; ?>px;
+	}
+	.article .header-cover, .header .header-cover-full {
 		padding-bottom: <?php echo $mid; ?>px;
 		padding-top: <?php echo $mid; ?>px;
 	}
 	.cover,
 	.box-style .post-box .post-header,
-	.box-style .the-content,
+	.box-style .post-box .the-content,
 	.author-box,
-	.box-style .comments,
-	.box-style .post-footer {
+	.box-style .post-box .comments,
+	.box-style .post-box .post-footer {
 		padding-left: <?php echo $mid; ?>px;
 		padding-right: <?php echo $mid; ?>px;
 	}
-	.expanded .the-content,
-	.expanded .post-footer,
+	.expanded .post-box .the-content,
+	.expanded .post-box .post-footer,
 	.expanded .author-box,
-	.expanded .comments {
+	.expanded .post-box .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
 	.content-sidebar.minimal .post-box .post-header,
-	.content-sidebar.minimal .the-content,
-	.content-sidebar.minimal .post-footer {
+	.content-sidebar.minimal .post-box.the-content,
+	.content-sidebar.minimal .post-box .post-footer {
 		padding-left: 0;
 		padding-right: 0;
 	}
@@ -135,16 +139,11 @@
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
-	.sticky {
-		position: sticky;
-			top: <?php echo $half; ?>px;
-	}
-	.admin-bar .sticky { top: <?php echo $admin_bar_height + $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
-	.loop-default.article .post-box {
+	.article .post-box {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
@@ -155,6 +154,10 @@
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
+}
+
+@media all and (max-width: 782px) {
+	.admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
 }
 
 @media all and (max-width: 600px) {
@@ -171,8 +174,6 @@
 
 .columns .standard .post-header:not(.cover) + .the-content { padding-top: 0; }
 
-.columns .standard .post-header .byline { margin-bottom: <?php echo $small; ?>px; }
-
 @media all and (min-width: 900px) {
 	.columns {
 		align-items: center;
@@ -185,8 +186,7 @@
 	.columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
-	.post-header .byline:not(:last-child),
-	.columns .post-header .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
+	.columns .byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 	.columns .standard .cover,
 	.box-style .columns .standard .post-header,
 	.box-style .columns .standard .the-content,

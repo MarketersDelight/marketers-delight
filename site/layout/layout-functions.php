@@ -14,7 +14,7 @@ add_action( 'md_hook_content', 'md_post_nav', 70 );
 // Footer
 
 add_action( 'md_hook_footer', 'md_footer_columns_template' );
-add_action( 'md_hook_footer_bottom', 'md_footer_copy' );
+add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 
 /**
  * Outputs inline JavaScript to footer.
@@ -31,8 +31,8 @@ function md_inline_js() {
 	if ( has_nav_menu( 'main_menu' ) )
 		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
 
-	if ( is_singular() && md_has_comments() )
-		wp_add_inline_script( 'marketers-delight', "MD.toggle('comment');" );
+	wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
+	wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
 }
 
 endif;
@@ -175,10 +175,14 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 	$default_style = md_post_type_field( array( 'layout', 'content_box_style' ), 'box_style' );
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
 
-	if ( ! empty( $loop ) )
+	if ( ! empty( $loop ) ) {
+		$loop_style = ! empty( $loop['loop'] ) ? $loop['loop'] : '';
 		$has_sidebar = isset( $loop['sidebar']['enable'] ) ? true : false;
-	else
+	}
+	else {
+		$loop_style = md_module( array( 'loop', 'loop' ) );
 		$has_sidebar = md_has_sidebar();
+	}
 
 	$loop['columns'] = 1;
 
@@ -205,12 +209,10 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 			$classes[] = 'expanded';
 	}
 
-	$classes[] = 'loop-' . md_get_loop();
-
+	if ( $loop_style )
+		$classes[] = 'loop-' . $loop_style;
 	$classes[] = str_replace( '_', '-', $style );
-
 	$classes[] = 'format';
-
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );

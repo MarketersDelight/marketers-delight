@@ -63,16 +63,16 @@
 	}
  ?>
 
+h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
+
 .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	color: <?php echo $colors['site']['headline']; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
-.format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a {
-	color: <?php echo $colors['site']['headline-links']; ?>;
-	text-decoration: none;
-}
+.format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a { text-decoration: none; }
 
 .the-content .headline, .the-content .headline a, .the-content h1, .the-content h2, .the-content h3, .the-content h4, .the-content h5, .the-content h6 { color: <?php echo $colors['site']['headline']; ?>; }
 

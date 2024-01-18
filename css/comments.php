@@ -105,7 +105,7 @@
 
 /* TOGGLE */
 
-.comment-toggle {
+.comment .toggle {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	cursor: pointer;
 	display: none;
@@ -117,7 +117,7 @@
 	z-index: 10;
 }
 
-.comment-details:hover > .comment-byline > .comment-toggle { display: block; }
+.comment-details:hover > .comment-byline > .toggle { display: block; }
 
 .comment.toggle-comment:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 

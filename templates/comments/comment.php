@@ -13,7 +13,7 @@
 		<?php endif; ?>
 
 		<div class="comment-byline">
-			<span class="comment-toggle" data-comment-toggle="comment"><?php echo __( '<span class="show-comment">Show</span><span class="hide-comment">Hide</span> comment' ); ?></span>
+			<span class="toggle" data-toggle="comment"><?php echo __( '<span class="show-comment">Show</span><span class="hide-comment">Hide</span> comment' ); ?></span>
 			<p class="comment-author"><?php echo get_comment_author_link(); ?></p>
 			<p class="comment-date byline-item"><a href="<?php echo esc_url( $comment_link ); ?>"><?php comment_date(); ?></a></p>
 		</div>

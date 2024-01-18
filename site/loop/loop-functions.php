@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A list of Loops registered to MD's settings.
  *
@@ -9,11 +8,26 @@
 function md_loops( $sort = null ) {
 	$data = array();
 	$loops = apply_filters( 'md_filter_loops', array(
-		'default' => array(
-			'name' => __( 'Default', 'md' )
+		'fluid' => array(
+			'name' => __( 'Fluid', 'md' ),
+			'description' => __( 'The default blog style with a flexible layout.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
 		),
-		'blocks' => array(
-			'name' => __( 'Blocks', 'md' )
+		'list' => array(
+			'name' => __( 'Simple List', 'md' ),
+			'description' => __( 'A simplified list with compact images.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-list.png'
+		),
+		'icons' => array(
+			'name' => __( 'Icon Cards', 'md' ),
+			'description' => __( 'Small cards with a focus on the image thumbnail.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-icons.png'
+		),
+		'covers' => array(
+			'name' => __( 'Post Covers', 'md' ),
+			'description' => __( 'Posts list with full-width background image covers.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
+			'template' => md_template( 'loop/loop-covers', true )
 		)
 	) );
 
@@ -66,30 +80,25 @@ function md_get_loop() {
  * @since 5.6
  */
 
-function md_query_before_loop() {
+function md_query( $position = null ) {
 	$queries = md_module( array( 'loop', 'query' ), array() );
 
 	foreach ( $queries as $query_id => $loop ) {
-		if ( $loop['position'] !== 'before_loop' )
+		if ( isset( $position ) && $loop['position'] !== $position )
 			continue;
 
 		include( md_template( 'loop/query', true ) );
 	}
 }
 
+function md_query_before_loop() {
+	md_query( 'before_loop' );
+}
 add_action( 'md_hook_before_content_box', 'md_query_before_loop', 20 );
 
 function md_query_after_loop() {
-	$queries = md_module( array( 'loop', 'query' ), array() );
-
-	foreach ( $queries as $query_id => $loop ) {
-		if ( $loop['position'] !== 'after_loop' )
-			continue;
-
-		include( md_template( 'loop/query', true ) );
-	}
+	md_query( 'after_loop' );
 }
-
 add_action( 'md_hook_before_footer', 'md_query_after_loop' );
 
 /**
@@ -102,7 +111,6 @@ function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = $headline_args = array();
 	$post_type = md_get_post_type();
-	$loop_id = md_get_loop();
 	$loops = md_loops();
 
 	if ( isset( $args['query'] ) ) {
@@ -218,27 +226,23 @@ function md_404_template() {
  */
 
 function md_post_classes( $classes ) {
-	$classes[] = 'entry';
-
 	// Remove excess WP classes
 	$classes = array_diff( $classes, array(
-		'hentry',
 		'format-standard',
+		'hentry',
 		'post-' . get_the_ID(),
 		'type-' . get_post_type(),
 		'status-' . get_post_status(),
 		'format-' . get_post_format()
 	) );
 
+	$classes[] = 'entry';
+
 	// Apply classes to certain featured image positions
-	$position = md_featured_image_position();
 	$cover = md_cover();
 
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'has-cover';
-
-	if ( has_post_thumbnail() && in_array( $position, array( 'above_headline', 'below_headline' ) ) )
-		$classes[] = 'image-' . str_replace( '_', '-', $position );
 
 	return $classes;
 }
@@ -293,14 +297,7 @@ function md_headline( $args = array() ) {
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes[] = "$context-header";
 
-	if ( ! empty( $cover['position'] ) && empty( $cover['hide_cover'] ) ) {
-		$classes[] = 'cover';
-		$classes[] = str_replace( '_', '-', $cover['position'] );
-
-		if ( ! empty( $cover['display']['alternate'] ) )
-			$classes[] = 'alt';
-	}
-
+	$classes = array_merge( md_cover_classes( $cover ), $classes );
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ' , $classes );
 
@@ -335,87 +332,26 @@ function md_headline( $args = array() ) {
 }
 
 /**
- * Get Cover attributes for any given page.
- *
- * @since 4.1
- * @renamed 5.6 (md_featured_image_style)
- */
-
-function md_cover( $context = 'post' ) {
-	$cover = array();
-
-	if ( $context == 'page' )
-		if ( is_category() || is_tax() )
-			$cover = md_term_meta( 'page_cover' );
-		else
-			$cover = md_post_type_field( 'page_cover' );
-	else
-		$cover = md_post_meta( 'page_cover' );
-
-	if ( ! empty( $cover['image'] ) )
-		$cover['style'] = array(
-			'bg_image' => esc_url( $cover['image']['url'] ),
-//			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
-			'bg_size' => 'auto'
-		);
-
-	if ( ! empty( $cover['position'] ) && $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
-		unset( $cover['style'] );
-		$cover['display']['disable_cover'] = true;
-	}
-
-	return $cover;
-}
-
-/**
- * A simple and thorough check to detect Page Cover.
- *
- * @since 5.6
- */
-
-function md_has_cover() {
-	$cover = md_cover();
-
-	if ( ! empty( $cover['id'] && $cover['position'] ) )
-		return true;
-
-	return false;
-}
-
-/**
- * Add Overlay HTML to covers.
- *
- * @since 4.8.6
- */
-
-function md_overlay( $cover ) {
-	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_cover'] ) )
-		return;
-
-	$style = array();
-
-	if ( ! empty( $cover['bg_color'] ) )
-		$style['bg_color'] = $cover['bg_color'];
-
-	echo '<div class="overlay"' . md_style( $style ) . '></div>';
-}
-
-/**
  * Show full content or excerpt of any given page.
  *
  * @since 5.1
  */
 
 function md_the_content( $loop ) {
+	$class = '';
+
 	if ( empty( $loop['read_more'] ) )
 		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
+
+	if ( ! empty( $loop['read_more_style'] ) )
+		$class = ' button';
 
 	md_hook_before_the_content();
 
 	if ( ! is_singular() && ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) ) {
 		md_the_excerpt( $loop );
 	?>
-		<a href="<?php the_permalink(); ?>" class="more-link"><?php echo esc_html( $loop['read_more'] ); ?></a>
+		<p class="read-more"><a href="<?php the_permalink(); ?>" class="more-link<?php echo $class; ?>"><?php echo esc_html( $loop['read_more'] ); ?></a></p>
 	<?php } else {
 		the_content( $loop['read_more'] );
 		wp_link_pages();
@@ -458,14 +394,16 @@ function md_content_text( $loop ) {
 	$image_args = array( 'inline' => true );
 
 	if ( isset( $loop['is_featured'] ) ) {
-		if ( ! empty( $loop['featured_content'] ) )
-			$loop['content'] = $loop['featured_content'];
+		$loop['content'] = ! empty( $loop['featured_content'] ) ? $loop['featured_content'] : 'excerpt';
 
 		if ( ! empty( $loop['featured_featured_image'] ) )
 			$loop['featured_image'] = $loop['featured_featured_image'];
 
 		if ( ! empty( $loop['featured_read_more'] ) )
 			$loop['read_more'] = $loop['featured_read_more'];
+
+		if ( ! empty( $loop['featured_read_more_style'] ) )
+			$loop['read_more_style'] = $loop['featured_read_more_style'];
 
 		if ( ! empty( $loop['featured_excerpt_more'] ) )
 			$loop['excerpt_more'] = $loop['featured_excerpt_more'];
@@ -475,7 +413,7 @@ function md_content_text( $loop ) {
 	}
 
 	if ( empty( $loop['content'] ) )
-		$loop['content'] = md_post_type_field( array( 'loop', 'content' ) );
+		$loop['content'] = md_post_type_field( array( 'loop', 'content' ), 'excerpt' );
 
 	if ( ! empty( $loop['featured_image'] ) )
 		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );

@@ -17,7 +17,7 @@
 		<?php $this->fields->field( 'position', array(
 			'type' => 'select',
 			'label' => __( 'Cover Type', 'md' ),
-			'empty_label' => __( 'Use default cover image', 'md' ),
+			'empty_label' => __( 'Do not show cover', 'md' ),
 			'options' => $sanitize->values['covers'],
 			'wrap_classes' => 'md-sep-small'
 		) ); ?>

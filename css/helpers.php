@@ -88,13 +88,8 @@
 	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
 	content: '';
 	display: block;
-	height: 100%;
+	inset: 0;
 	position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		top: 0;
-	width: 100%;
 }
 
 <?php foreach ( $cover_colors as $text_class => $text_atts ) :
@@ -108,7 +103,7 @@
 .header.has-cover<?php echo $text_class; ?> .header-triggers a,
 .header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
 .cover<?php echo $text_class; ?>, .cover<?php echo $text_class; ?> a,
-.cover<?php echo $text_class; ?> .title a, .cover<?php echo $text_class; ?> .byline-item {
+.cover<?php echo $text_class; ?> .byline-item {
 	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
 }
 

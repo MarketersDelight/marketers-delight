@@ -29,10 +29,10 @@
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #1993C9; }
-div.editor-styles-wrapper .has-primary-color { color: #1993C9; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #71D59E; }
-div.editor-styles-wrapper .has-secondary-color { color: #71D59E; }
+div.editor-styles-wrapper .has-primary-background-color { background-color: #008BD0; }
+div.editor-styles-wrapper .has-primary-color { color: #008BD0; }
+div.editor-styles-wrapper .has-secondary-background-color { background-color: #21C0A9; }
+div.editor-styles-wrapper .has-secondary-color { color: #21C0A9; }
 div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
 div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
@@ -45,17 +45,17 @@ div.editor-styles-wrapper .has-text-background-color { background-color: #666666
 div.editor-styles-wrapper .has-text-color { color: #666666; }
 div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
 div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #1993C9; }
-div.editor-styles-wrapper .has-links-color { color: #1993C9; }
+div.editor-styles-wrapper .has-links-background-color { background-color: #008BD0; }
+div.editor-styles-wrapper .has-links-color { color: #008BD0; }
 div.editor-styles-wrapper .has-button-background-color { background-color: #1993C9; }
 div.editor-styles-wrapper .has-button-color { color: #1993C9; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #242424; }
-div.editor-styles-wrapper .has-button-sec-color { color: #242424; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #282828; }
+div.editor-styles-wrapper .has-button-sec-color { color: #282828; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #1993C9;
+	color: #008BD0;
 	text-decoration: underline;
 }
 div.editor-styles-wrapper a:hover { text-decoration: none; }

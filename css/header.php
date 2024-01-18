@@ -26,7 +26,7 @@
 
 .header-wrap a { color: <?php echo $header['menu']['links']; ?>; }
 
-.header-wrap a:hover, .header-wrap a:hover + .menu-toggle { color: <?php echo $header['menu']['hover']; ?>; }
+.header-wrap a:hover, .header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
 
 .header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
 
@@ -78,6 +78,7 @@
 	<?php endif; ?>
 	flex-shrink: 0;
 	position: relative;
+	transition: 0.3s;
 }
 
 .header .logo {
@@ -97,7 +98,7 @@
 
 /* MENU */
 
-.header .current-menu-item > a, .header .current-menu-item > .menu-toggle { color: <?php echo $header['menu']['active']; ?>; }
+.header .current-menu-item > a, .header .current-menu-item > .toggle { color: <?php echo $header['menu']['active']; ?>; }
 
 /* QUERIES */
 

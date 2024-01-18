@@ -76,9 +76,9 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/layout/layout.php' );
 		require_once( MD_DIR . 'site/header/header.php' );
 		require_once( MD_DIR . 'site/logo/logo.php' );
-		require_once( MD_DIR . 'site/page-cover/page-cover.php' );
 		require_once( MD_DIR . 'site/featured-image/featured-image.php' );
 		require_once( MD_DIR . 'site/featured-video/featured-video.php' );
+		require_once( MD_DIR . 'site/page-cover/page-cover.php' );
 		require_once( MD_DIR . 'site/page-cover/page-title.php' );
 		require_once( MD_DIR . 'site/loop/loop.php' );
 		require_once( MD_DIR . 'site/byline/byline.php' );

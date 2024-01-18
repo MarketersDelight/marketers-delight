@@ -89,7 +89,7 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$item_output .= $this->md_title ? $args->link_before . md_text_field( $item->title, $item->ID ) . $args->link_after : '';
 		$item_output .= $desc . '</a>';
 		if ( in_array( 'menu-item-has-children', $item->classes ) )
-			$item_output .= '<span class="menu-toggle trigger" data-menu-toggle="menu-item-' . esc_attr( $item->ID ) . '"><i class="trigger-icon"></i></span>';
+			$item_output .= '<span class="toggle trigger" data-toggle="menu-item"><i class="trigger-icon"></i></span>';
 		$item_output .= $args->after;
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}

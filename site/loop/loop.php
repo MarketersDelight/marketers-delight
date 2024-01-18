@@ -93,7 +93,11 @@ class md_loop extends md_api {
 			),
 			'excerpt_length' => array( 'type' => 'number' ),
 			'excerpt_more' => array( 'type' => 'text' ),
-			'read_more' => array( 'type' => 'text' )
+			'read_more' => array( 'type' => 'text' ),
+			'read_more_style' => array(
+				'type' => 'select',
+				'options' => array( 'button' )
+			)
 		);
 
 		foreach ( $post_content as $content_id => $content_fields )
@@ -103,7 +107,7 @@ class md_loop extends md_api {
 			'name' => array( 'type' => 'text' ),
 			'loop' => array(
 				'type' => 'radio',
-				'options' => array( 'fluid', 'list', 'icons' )
+				'options' => array_keys( md_loops() )
 			),
 			'category_posts' => array(
 				'type' => 'checkbox',
@@ -205,19 +209,14 @@ class md_loop extends md_api {
 	public function admin_template() {
 		$screen = get_current_screen();
 		$sanitize = new md_sanitize;
-		$loops_options = md_loops( 'options' );
-		unset( $loops_options['default'] );
 		$category_posts = $this->fields->module( 'category_posts' );
 		$featured = $this->fields->module( 'featured' );
+		$cta = md_setting( array( 'cta', 'forms' ), array() );
+		$cta_options = wp_list_pluck( $cta, 'name' );
 		$authors = get_users( array(
 			'fields' => array( 'ID', 'display_name' ),
 			'has_published_posts' => true
 		) );
-
-		$cta_options = array();
-		$cta = md_setting( array( 'cta', 'forms' ), array() );
-		foreach ( $cta as $cta_id => $cta_fields )
-			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
 	?>
 
 		<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo $category_posts ? ' has-category-posts' : ''; ?>">
@@ -253,20 +252,13 @@ class md_loop extends md_api {
 	public function query_settings( $group, $field, $args ) {
 		$post_types = $cta_options = array();
 		$sanitize = new md_sanitize;
-		$loops_options = md_loops( 'options' );
-		unset( $loops_options['default'] );
 		$category_posts = $this->fields->module( array( $group, $field, 'category_posts' ) );
 		$featured = $this->fields->module( array( $group, $field, 'featured' ) );
 		$sidebars = md_get_sidebars();
-
-		$types = get_post_types( array( 'public' => true ), 'objects' );
-		foreach ( $types as $type )
-			$post_types[$type->name] = $type->labels->singular_name;
-
+		$post_types = get_post_types( array( 'public' => true ), 'objects' );
+		$post_types = wp_list_pluck( $post_types, 'label' );
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
-
-		foreach ( $cta as $cta_id => $cta_fields )
-			$cta_options[$cta_id] = ! empty( $cta_fields['name'] ) ? $cta_fields['name'] : __( 'Untitled', 'md' );
+		$cta_options = wp_list_pluck( $cta, 'name' );
 
 		echo '<div class="md-loop' . ( $featured >= 1 ? ' has-featured' : '' ) . ( $category_posts ? ' has-category-posts' : '' ) . '">';
 		include( 'query-settings.php' );

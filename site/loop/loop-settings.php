@@ -5,23 +5,7 @@
 		'svg' => md_svg( 'query' ),
 		'layout' => 'banner',
 		'columns' => 5,
-		'options' => array(
-			'fluid' => array(
-				'name' => __( 'Fluid', 'md' ),
-				'description' => __( 'The default blog style with a flexible layout.', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
-			),
-			'list' => array(
-				'name' => __( 'Simple List', 'md' ),
-				'description' => __( 'A simplified list with compact images.', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/loop-list.png'
-			),
-			'icons' => array(
-				'name' => __( 'Icon Cards', 'md' ),
-				'description' => __( 'Small cards with a focus on the image thumbnail.', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/loop-icons.png'
-			)
-		)
+		'options' => md_loops()
 	) ); ?>
 </div>
 
@@ -126,35 +110,52 @@
 
 	<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-tab-content<?php echo $active; ?>">
 
-		<?php $this->fields->field( "{$p}featured_image", array(
-			'type' => 'select',
-			'label' => __( 'Featured Image', 'md' ),
-			'empty_label' => __( 'Use default position', 'md' ),
-			'options' => $sanitize->values['featured_image'],
-			'wrap_classes' => 'md-sep-small'
-		) ); ?>
-
 		<div class="columns-4 columns-half">
+
+			<div class="col md-sep-small">
+				<?php $this->fields->field( "{$p}featured_image", array(
+					'type' => 'select',
+					'label' => __( 'Featured Image', 'md' ),
+					'empty_label' => __( 'Use default position', 'md' ),
+					'options' => $sanitize->values['featured_image'],
+					'wrap_classes' => 'md-sep-small'
+				) ); ?>
+			</div>
 
 			<div class="col md-sep-small">
 				<?php $this->fields->field( "{$p}content", array(
 					'type' => 'select',
-					'label' => __( 'Post Text', 'md' ),
+					'label' => __( 'Post Content', 'md' ),
 					'style' => 'width: 100%',
-					'empty_label' => __( 'Show default', 'md' ),
+					'empty_label' => __( 'Show excerpt', 'md' ),
 					'options' => array(
-						'excerpt' => __( 'Show excerpt', 'md' ),
 						'full' => __( 'Show full text', 'md' ),
 						'hide' => __( 'Hide text', 'md' )
 					)
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-small">
+		</div>
+
+		<div class="columns-4 columns-half md-sep-small">
+
+			<div class="col">
 				<?php $this->fields->field( "{$p}read_more", array(
 					'type' => 'text',
 					'label' => __( 'Read More Text', 'md' ),
 					'placeholder' => __( 'Continue reading &rarr;', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( "{$p}read_more_style", array(
+					'type' => 'select',
+					'label' => __( 'Text Style', 'md' ),
+					'style' => 'width: 100%',
+					'empty_label' => __( 'Text link', 'md' ),
+					'options' => array(
+						'button' => __( 'Button', 'md' )
+					)
 				) ); ?>
 			</div>
 

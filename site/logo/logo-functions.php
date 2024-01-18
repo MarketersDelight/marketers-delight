@@ -65,27 +65,25 @@ function md_has_logo() {
  */
 
 function md_custom_logo() {
-	$logo = false;
-	$logo_id = md_setting( array( 'logo', 'logo', 'id' ) );
-	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );
-	$logo_html = md_setting( array( 'logo', 'logo_html' ) );
+	$custom_logo = false;
+	$logo = md_setting( 'logo' );
 
-	if ( $has_logo_html && $logo_html )
-		$logo = $logo_html;
-	elseif ( $logo_id ) {
-		$secondary_logo_id = md_setting( array( 'logo', 'logo_alt', 'id' ) );
+	if ( ! empty( $logo['logo_html_display']['enable'] ) && ! empty( $logo['logo_html'] ) )
+		$custom_logo = $logo['logo_html'];
+	elseif ( ! empty( $logo['logo']['id'] ) ) {
+        $logo_id = $logo['logo']['id'];
 		$cover = md_cover();
 
-		if ( $secondary_logo_id && $cover['position'] == 'header_cover_full' )
-			$logo_id = $secondary_logo_id;
+		if ( ! empty( $logo['logo_alt']['id'] ) && $cover['position'] == 'header_cover_full' )
+			$logo_id = $logo['logo_alt']['id'];
 
-		$logo = wp_get_attachment_image( $logo_id, 'full' );
+		$custom_logo = wp_get_attachment_image( $logo_id, 'full' );
 	}
 
-	if ( $logo )
-		$logo = '<div class="logo"><a href="' . home_url( '/' ) . '">' . $logo . '</a></div>';
+	if ( $custom_logo )
+		$custom_logo = '<div class="logo"><a href="' . home_url( '/' ) . '">' . $custom_logo . '</a></div>';
 
-	return $logo;
+	return $custom_logo;
 }
 
 /**

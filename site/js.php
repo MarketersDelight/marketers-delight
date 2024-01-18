@@ -89,17 +89,17 @@ clipboard: function() {
 		}
 	}
 },
-toggle: function( item, closeOut = false ) {
-	var toggles = document.getElementsByClassName( item + '-toggle' );
+toggle: function() {
+	var toggles = document.getElementsByClassName( 'toggle' );
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
-			var toggleID = this.getAttribute( 'data-' + item + '-toggle' ),
-				parent = this.closest( '.' + toggleID );
-			MD.toggleClass( parent, 'toggle-' + item );
-			if ( closeOut == true ) {
+			var toggle = this.getAttribute( 'data-toggle' ),
+				parent = this.closest( '.' + toggle );
+			MD.toggleClass( parent, 'toggle-' + toggle );
+			if ( this.getAttribute( 'data-toggle-close' ) ) {
 				document.onclick = function( e ) {
 					if ( ! parent.contains( e.target ) )
-						MD.removeClass( parent, 'toggle-' + item );
+						MD.removeClass( parent, 'toggle-' + toggle );
 				}
 			}
 		}
@@ -125,6 +125,17 @@ headerMenu: function() {
 },
 
 <?php endif; ?>
+
+sticky: function() {
+	const el = document.querySelector( '.sticky' );
+
+	const observer = new IntersectionObserver(
+		( [e] ) => e.target.classList.toggle( 'stuck', e.intersectionRatio < 1 ),
+		{ threshold: [1] }
+	);
+
+	observer.observe( el );
+},
 
 mainMenu: function() {
 	var menuTrigger = document.getElementById( 'main_menu_trigger' );

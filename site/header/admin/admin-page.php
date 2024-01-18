@@ -33,8 +33,6 @@
 
 	</div>
 
-	<hr class="md-sep-small" />
-
 	<?php $this->fields->field( 'builder', $builder_fields ); ?>
 
 	<?php $this->fields->save(); ?>

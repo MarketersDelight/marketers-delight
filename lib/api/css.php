@@ -5,9 +5,6 @@
  * @since 4.9.4
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_css {
 
 	public $files;
@@ -44,8 +41,6 @@ class md_css {
 	 */
 
 	protected function css_files() {
-		$dropins = apply_filters( 'md_dropins_css_templates', array() );
-
 		$templates = array(
 			'attributes' => locate_template( 'css/attributes.php' )
 		);
@@ -68,6 +63,9 @@ class md_css {
 			'helpers' => locate_template( 'css/helpers.php' )
 		) );
 
+		$templates['main-menu'] = locate_template( 'css/main-menu.php' );
+
+		$dropins = apply_filters( 'md_dropins_css_templates', array() );
 		$templates = array_merge( $templates, $dropins );
 
 		return apply_filters( 'md_style_css_templates', $templates );
