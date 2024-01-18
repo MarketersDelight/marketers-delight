@@ -135,6 +135,29 @@
 				) ); ?>
 			</div>
 
+			<div class="col md-sep-small">
+				<?php $this->fields->field( "{$p}remove_byline", array(
+					'type' => 'select',
+					'label' => __( 'Byline', 'md' ),
+					'empty_label' => __( 'Show full byline', 'md' ),
+					'options' => array(
+						'before_headline' => __( 'Remove Before Headline', 'md' ),
+						'after_headline' => __( 'Remove After Headline', 'md' ),
+						'remove' => __( 'Remove Byline', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-small">
+				<?php $this->fields->field( "{$p}post_footer", array(
+					'type' => 'checkbox',
+					'classes' => 'field-no-label',
+					'options' => array(
+						'remove' => __( 'Remove Post Footer', 'md' )
+					)
+				) ); ?>
+			</div>
+
 		</div>
 
 		<div class="columns-4 columns-half md-sep-small">

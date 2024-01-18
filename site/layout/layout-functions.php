@@ -1,18 +1,12 @@
 <?php
 
 add_action( 'md_hook_content_top', 'md_breadcrumbs' );
-
 add_action( 'md_hook_content', 'md_loop', 30 );
-//add_action( 'md_hook_content', 'md_query', 30 );
-
 add_filter( 'excerpt_more', '__return_empty_string' );
 add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 add_action( 'md_hook_content', 'md_post_nav', 70 );
-
-// Footer
-
 add_action( 'md_hook_footer', 'md_footer_columns_template' );
 add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 
@@ -52,23 +46,62 @@ function md_html_close() {
 }
 
 /**
- * Call a page title with or without a URL.
+ * Render the Post/Page Title with title wrap classes,
+ * optional permalink, byline, hooks, and $loop flexibility.
  *
  * @since 5.6
  */
 
-function md_title( $text, $url = null ) {
-	$title = '';
+function md_title( $args = array() ) {
+	$context = isset( $args['context'] ) ? esc_attr( $args['context'] ) : 'post';
+	$title = get_the_title();
+	$permalink = null;
+	$byline_args = array();
+	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 
-	if ( $url )
-		$title .= '<a href="' . esc_url( $url ) . '">';
+	if ( isset( $args['loop'] ) )
+		$byline_args['loop'] = $args['loop'];
 
-	$title .= md_text_field( $text );
+	if ( isset( $args['title'] ) )
+		$title = $args['title'];
 
-	if ( $url )
-		$title .= '</a>';
+	if ( ! is_singular() && $context == 'post' )
+		$permalink = get_permalink();
 
-	return $title;
+	if ( $context == 'post' && md_module( array( 'loop', 'category_posts', 'enable' ) ) )
+		$h = 'h3';
+
+	do_action( "md_hook_{$context}_header_top" );
+
+	if ( $context == 'post' )
+		md_byline( 'before_headline', $byline_args );
+
+	if ( $title ) {
+		$title_html = '';
+
+		if ( $permalink )
+			$title_html .= '<a href="' . esc_url( $permalink ) . '">';
+
+		$title_html .= md_text_field( $title );
+
+		if ( $permalink )
+			$title_html .= '</a>';
+
+		echo '<div class="title-wrap">';
+
+		do_action( "md_hook_before_{$context}_title" );
+
+		echo "<$h class=\"title\">$title_html</$h>";
+
+		do_action( "md_hook_after_{$context}_title" );
+
+		echo '</div>';
+	}
+
+	if ( $context == 'post' )
+		md_byline( 'after_headline', $byline_args );
+
+	do_action( "md_hook_{$context}_header_bottom" );
 }
 
 /**

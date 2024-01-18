@@ -26,9 +26,6 @@ class md_byline extends md_api {
 
 	public function actions() {
 		add_filter( 'md_byline', array( $this, 'byline_items' ) );
-		add_action( 'md_hook_post_header_top', 'md_byline_before_headline' );
-		add_action( 'md_hook_post_header_bottom', 'md_byline_after_headline' );
-		add_action( 'md_hook_content_item', 'md_byline_after_post', 50 );
 	}
 
 	/**

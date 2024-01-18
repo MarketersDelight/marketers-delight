@@ -91,6 +91,14 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )
 			),
+			'remove_byline' => array(
+				'type' => 'select',
+				'options' => array( 'before_headline', 'after_headline', 'remove' )
+			),
+			'post_footer' => array(
+				'type' => 'checkbox',
+				'options' => array( 'remove' )
+			),
 			'excerpt_length' => array( 'type' => 'number' ),
 			'excerpt_more' => array( 'type' => 'text' ),
 			'read_more' => array( 'type' => 'text' ),

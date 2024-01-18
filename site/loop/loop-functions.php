@@ -109,18 +109,16 @@ add_action( 'md_hook_before_footer', 'md_query_after_loop' );
 
 function md_loop( $args = array() ) {
 	$c = 1;
-	$wrap_classes = $headline_args = array();
+	$wrap_classes = array();
 	$post_type = md_get_post_type();
 	$loops = md_loops();
 
 	if ( isset( $args['query'] ) ) {
 		$loop = $args['query'];
+		$loop['is_query'] = true;
 
 		if ( isset( $loop['post_type'] ) )
 			$post_type = $loop['post_type'];
-
-		if ( isset( $loop['archives'] ) )
-			$loop_id = $loop['archives'];
 	}
 	else
 		$loop = md_module( 'loop' );
@@ -131,9 +129,6 @@ function md_loop( $args = array() ) {
 	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
 
-	if ( isset( $loop['featured_image'] ) )
-		$headline_args['image_position'] = $loop['featured_image'];
-
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
@@ -142,8 +137,6 @@ function md_loop( $args = array() ) {
 		elseif ( $columns == 2 )
 			$wrap_classes[] = 'wide';
 	}
-	else
-		$wrap_classes[] = 'standard';
 
 	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
@@ -282,39 +275,23 @@ function md_headline( $args = array() ) {
 	if ( ! md_has_headline() )
 		return;
 
+	$image_args = array();
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-	$cover = md_cover( $context );
-	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
-
-	$title = get_the_title();
-	$permalink = null;
-
-	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
-
-	if ( $context == 'post' && $category_posts )
-		$h = 'h3';
-
+	$loop = isset( $args['loop'] ) ? $args['loop'] : array();
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
-	$classes[] = "$context-header";
 
+	$cover = md_cover( $context );
+	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
+
+	$classes[] = "$context-header";
 	$classes = array_merge( md_cover_classes( $cover ), $classes );
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ' , $classes );
 
-	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
-
-	if ( isset( $args['title'] ) )
-		$title = $args['title'];
-
-	if ( ! is_singular() && $context == 'post' )
-		$permalink = get_permalink();
-
-	$image_args = array();
-
-	if ( isset( $args['is_featured'] ) )
-		$image_args['position'] = $args['is_featured'];
-	elseif ( isset( $args['image_position'] ) )
-		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $args['image_position'] );
+	if ( isset( $loop['is_featured'] ) )
+		$image_args['position'] = $loop['is_featured'];
+	elseif ( isset( $args['featured_image'] ) )
+		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $args['featured_image'] );
 
 	if ( $context == 'post' ) {
 		$image_args['show'] = 'above_headline';
@@ -413,7 +390,10 @@ function md_content_text( $loop ) {
 	}
 
 	if ( empty( $loop['content'] ) )
-		$loop['content'] = md_post_type_field( array( 'loop', 'content' ), 'excerpt' );
+		if ( isset( $loop['is_query'] ) )
+			$loop['content'] = 'excerpt';
+		else
+			$loop['content'] = md_post_type_field( array( 'loop', 'content' ), 'excerpt' );
 
 	if ( ! empty( $loop['featured_image'] ) )
 		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
@@ -426,4 +406,9 @@ function md_content_text( $loop ) {
 
 	if ( get_the_content() && ( $loop['content'] !== 'hide' || is_singular() || is_404() ) )
 		include( md_template( 'text', true ) );
+
+	md_byline( 'after_post', array(
+		'classes' => 'post-footer',
+		'loop' => $loop
+	) );
 }

@@ -24,6 +24,19 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Check if current page has byline.
+ *
+ * @since 4.0
+ * @deprecated 5.6
+ */
+function md_has_byline() {
+	$show = true;
+	if ( get_post_type() == 'page' )
+		$show = false;
+	return apply_filters( 'md_filter_has_byline', $show );
+}
+
+/**
  * Default nav menus.
  *
  * @since 4.1

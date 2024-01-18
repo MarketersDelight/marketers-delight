@@ -4,23 +4,7 @@
 
 	<?php md_overlay( $cover ); ?>
 
-	<?php do_action( "md_hook_{$context}_header_top" ); ?>
-
-	<?php if ( $title ) : ?>
-
-	<div class="title-wrap">
-
-		<?php do_action( "md_hook_before_{$context}_title" ); ?>
-
-		<<?php echo $h; ?> class="title"><?php echo md_title( $title, $permalink ); ?></<?php echo $h; ?>>
-
-		<?php do_action( "md_hook_after_{$context}_title" ); ?>
-
-	</div>
-
-	<?php endif; ?>
-
-	<?php do_action( "md_hook_{$context}_header_bottom" ); ?>
+	<?php md_title( $args ); ?>
 
 </div>
 

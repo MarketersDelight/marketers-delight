@@ -86,19 +86,20 @@ function md_cover( $context = 'post' ) {
 	else
 		$cover = md_post_meta( 'page_cover' );
 
-	if ( ! empty( $cover['image'] ) )
-		$cover['style'] = array(
-			'bg_image' => esc_url( $cover['image']['url'] ),
-//			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
-			'bg_size' => 'auto'
-		);
+	if ( ! empty( $cover['position'] ) ) {
+		if ( ! empty( $cover['image'] ) )
+			$cover['style'] = array(
+				'bg_image' => esc_url( $cover['image']['url'] ),
+	//			'bg_size' => $cover['image'][1] < 500 ? 'auto' : 'cover'
+				'bg_size' => 'auto'
+			);
 
-	if ( ! empty( $cover['position'] ) && $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
-		unset( $cover['style'] );
-		$cover['display']['disable_cover'] = true;
+		if ( $cover['position'] == 'header_cover_full' && ( $context !== 'post' || $context == 'post' && is_singular() ) ) {
+			unset( $cover['style'] );
+			$cover['display']['disable_cover'] = true;
+		}
 	}
-
-	if ( ! isset( $cover['position'] ) )
+	else
 		$cover['position'] = '';
 
 	return $cover;

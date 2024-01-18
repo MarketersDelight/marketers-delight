@@ -69,7 +69,7 @@ final class marketers_delight {
 		require_once( 'api/sanitize.php' );
 		require_once( 'api/requests.php' );
 		require_once( 'api/api.php' );
-		require_once( 'api/deprecated.php' );
+		require_once( 'deprecated.php' );
 		require_once( MD_DIR . 'site/design/design.php' );
 		if ( is_admin() )
 			require_once( 'admin/admin.php' );

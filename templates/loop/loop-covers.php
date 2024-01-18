@@ -7,7 +7,7 @@
 	}
 	else {
 		$cover['position'] = 'headline_cover';
-		$style['bg_image'] = $cover['style']['bg_image'];
+		$style['bg_image'] = $cover['image']['url'];
 		$style['bg_size'] = 'auto';
 	}
 
@@ -21,13 +21,7 @@
 		md_overlay( $cover );
 	?>
 
-	<?php do_action( 'md_hook_post_header_top' ); ?>
-
-	<div class="title-wrap">
-		<h2 class="title"><a href="<?php echo get_permalink(); ?>"><?php echo get_the_title(); ?></a></h2>
-	</div>
-
-	<?php do_action( 'md_hook_post_header_bottom' ); ?>
+	<?php md_title( array( 'loop' => $loop ) ); ?>
 
 	<?php md_content_text( $loop ); ?>
 

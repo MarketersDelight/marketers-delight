@@ -102,7 +102,9 @@
 .header.has-cover<?php echo $text_class; ?> .tagline,
 .header.has-cover<?php echo $text_class; ?> .header-triggers a,
 .header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-.cover<?php echo $text_class; ?>, .cover<?php echo $text_class; ?> a,
+.cover<?php echo $text_class; ?>,
+.cover<?php echo $text_class; ?> a,
+.cover<?php echo $text_class; ?> .title,
 .cover<?php echo $text_class; ?> .byline-item {
 	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
 }

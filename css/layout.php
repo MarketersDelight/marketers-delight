@@ -34,8 +34,7 @@
 
 .query, .entry, .post-box { position: relative; }
 
-.cover, .post-header, .loop-header,
-.post-box .post-footer {
+.cover, .post-header, .loop-header, .post-box .post-footer {
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
@@ -47,20 +46,17 @@
 
 .post-header:not(.cover) + .the-content { padding-top: 0; }
 
-.cover,
-.post-box .post-header,
-.post-box .the-content,
-.post-box .post-footer {
+.cover, .post-box .post-header, .post-box .the-content, .post-box .post-footer {
 	padding-left: <?php echo $half; ?>px;
 	padding-right: <?php echo $half; ?>px;
 }
 
-.post-box .the-content.full,
-.header .cover,
-#content > .cover {
+.header .cover, #content > .cover, .post-box .the-content.full {
 	padding-left: 0;
 	padding-right: 0;
 }
+
+.post-footer.byline:not(:last-child) { margin-bottom: 0; }
 
 .box-style .post-box .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
@@ -120,11 +116,6 @@
 	}
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-content { max-width: <?php echo $post_width; ?>px; }
-	.full .loop.standard {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
 	.content-sidebar .content {
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
@@ -166,8 +157,7 @@
 
 /* COLUMNS */
 
-.columns .standard .post-header,
-.columns .standard .the-content {
+.columns .standard .post-header, .columns .standard .the-content {
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
@@ -217,7 +207,7 @@
 	.f4 { flex-basis: 25%; max-width: 25%; }
 	.f5 { flex-basis: 20%; max-width: 20%; }
 	.entry.featured { flex-basis: 100%; max-width: 100%; }
-	.full .entry.featured .post-box {
+	.full .loop .post-box {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
