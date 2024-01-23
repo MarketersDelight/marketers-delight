@@ -16,7 +16,8 @@ function md_loops( $sort = null ) {
 		'list' => array(
 			'name' => __( 'Simple List', 'md' ),
 			'description' => __( 'A simplified list with compact images.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-list.png'
+			'image' => MD_URL . 'lib/admin/images/loop-list.png',
+			'template' => md_template( 'loop/loop-list', true )
 		),
 		'icons' => array(
 			'name' => __( 'Icon Cards', 'md' ),
@@ -80,11 +81,11 @@ function md_get_loop() {
  * @since 5.6
  */
 
-function md_query( $position = null ) {
+function md_query( $position ) {
 	$queries = md_module( array( 'loop', 'query' ), array() );
 
 	foreach ( $queries as $query_id => $loop ) {
-		if ( isset( $position ) && $loop['position'] !== $position )
+		if ( ! isset( $loop['position'] ) || $loop['position'] !== $position )
 			continue;
 
 		include( md_template( 'loop/query', true ) );
@@ -290,8 +291,8 @@ function md_headline( $args = array() ) {
 
 	if ( isset( $loop['is_featured'] ) )
 		$image_args['position'] = $loop['is_featured'];
-	elseif ( isset( $args['featured_image'] ) )
-		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $args['featured_image'] );
+	elseif ( isset( $loop['featured_image'] ) )
+		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
 
 	if ( $context == 'post' ) {
 		$image_args['show'] = 'above_headline';
@@ -317,6 +318,17 @@ function md_headline( $args = array() ) {
 function md_the_content( $loop ) {
 	$class = '';
 
+	if ( ! is_singular() && isset( $loop['content'] ) && $loop['content'] == 'hide' )
+		return;
+
+	if ( isset( $loop['is_featured'] ) ) {
+		if ( ! empty( $loop['featured_read_more'] ) )
+			$loop['read_more'] = $loop['featured_read_more'];
+
+		if ( ! empty( $loop['featured_read_more_style'] ) )
+			$loop['read_more_style'] = $loop['featured_read_more_style'];
+	}
+
 	if ( empty( $loop['read_more'] ) )
 		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
 
@@ -325,14 +337,17 @@ function md_the_content( $loop ) {
 
 	md_hook_before_the_content();
 
-	if ( ! is_singular() && ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) ) {
-		md_the_excerpt( $loop );
-	?>
-		<p class="read-more"><a href="<?php the_permalink(); ?>" class="more-link<?php echo $class; ?>"><?php echo esc_html( $loop['read_more'] ); ?></a></p>
-	<?php } else {
+	if ( is_singular() ) {
 		the_content( $loop['read_more'] );
 		wp_link_pages();
 	}
+	elseif ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) {
+		md_the_excerpt( $loop );
+	?>
+		<p class="read-more">
+			<a href="<?php the_permalink(); ?>" class="more-link<?php echo $class; ?>"><?php echo esc_html( $loop['read_more'] ); ?></a>
+		</p>
+	<?php }
 
 	md_hook_after_the_content();
 }
@@ -345,17 +360,24 @@ function md_the_content( $loop ) {
  */
 
 function md_the_excerpt( $loop ) {
-	$excerpt = get_the_excerpt();
-	$num_words = 55;
-	$more = '[...]';
+	if ( isset( $loop['content'] ) && $loop['content'] == 'hide' )
+		return;
 
-	if ( isset( $loop['excerpt_more'] ) )
-		$more = $loop['excerpt_more'];
+	if ( isset( $loop['is_featured'] ) ) {
+		if ( ! empty( $loop['featured_excerpt_more'] ) )
+			$loop['excerpt_more'] = $loop['featured_excerpt_more'];
 
-	if ( isset( $loop['excerpt_length'] ) )
-		$num_words = $loop['excerpt_length'];
+		if ( ! empty( $loop['featured_excerpt_length'] ) )
+			$loop['excerpt_length'] = $loop['featured_excerpt_length'];
+	}
 
-	$excerpt = wp_trim_words( $excerpt, $num_words, $more );
+	if ( empty( $loop['excerpt_more'] ) )
+		$more = '[...]';
+
+	if ( empty( $loop['excerpt_length'] ) )
+		$num_words = 55;
+
+	$excerpt = wp_trim_words( get_the_excerpt(), $num_words, $more );
 
 	echo wpautop( $excerpt );
 }
@@ -368,25 +390,12 @@ function md_the_excerpt( $loop ) {
 
 function md_content_text( $loop ) {
 	$classes = array( 'the-content' );
-	$image_args = array( 'inline' => true );
 
 	if ( isset( $loop['is_featured'] ) ) {
 		$loop['content'] = ! empty( $loop['featured_content'] ) ? $loop['featured_content'] : 'excerpt';
 
 		if ( ! empty( $loop['featured_featured_image'] ) )
 			$loop['featured_image'] = $loop['featured_featured_image'];
-
-		if ( ! empty( $loop['featured_read_more'] ) )
-			$loop['read_more'] = $loop['featured_read_more'];
-
-		if ( ! empty( $loop['featured_read_more_style'] ) )
-			$loop['read_more_style'] = $loop['featured_read_more_style'];
-
-		if ( ! empty( $loop['featured_excerpt_more'] ) )
-			$loop['excerpt_more'] = $loop['featured_excerpt_more'];
-
-		if ( ! empty( $loop['featured_excerpt_length'] ) )
-			$loop['excerpt_length'] = $loop['featured_excerpt_length'];
 	}
 
 	if ( empty( $loop['content'] ) )
@@ -395,8 +404,8 @@ function md_content_text( $loop ) {
 		else
 			$loop['content'] = md_post_type_field( array( 'loop', 'content' ), 'excerpt' );
 
-	if ( ! empty( $loop['featured_image'] ) )
-		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
+//	if ( ! empty( $loop['featured_image'] ) )
+	//	$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
 
 	if ( md_meta( array( 'layout', 'content', 'full' ) ) )
 		$classes[] = 'full';
@@ -404,8 +413,23 @@ function md_content_text( $loop ) {
 	$classes = apply_filters( 'md_the_content_classes', $classes );
 	$classes = join( ' ', $classes );
 
-	if ( get_the_content() && ( $loop['content'] !== 'hide' || is_singular() || is_404() ) )
-		include( md_template( 'text', true ) );
+	if ( get_the_content() && ( $loop['content'] !== 'hide' || is_singular() || is_404() ) ) {
+		$image_args = array(
+			'inline' => true,
+			'loop' => $loop
+		);
+
+		if ( isset( $loop['featured_image'] ) )
+			$image_args['position'] = $loop['featured_image'];
+
+		echo '<div class="' . esc_attr( $classes ) . '">';
+
+		md_featured_image( $image_args );
+
+		md_the_content( $loop );
+
+		echo '</div>';
+	}
 
 	md_byline( 'after_post', array(
 		'classes' => 'post-footer',

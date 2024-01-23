@@ -7,9 +7,6 @@
  * @since 4.7
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_fields {
 
 	public $_id;
@@ -472,31 +469,9 @@ class md_fields {
 			$classes[] = 'md-select2';
 
 		$classes = join( ' ' , $classes );
-	?>
-		<select name="<?php echo $name . $b; ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple; ?><?php echo $style; ?>>
-			<?php if ( isset( $args['empty_label'] ) ) : ?>
-				<option value=""><?php echo esc_html( $args['empty_label'] ); ?></option>
-			<?php endif; ?>
-			<?php if ( isset( $args['optgroup'] ) ) : ?>
-				<?php foreach ( $args['options'] as $group => $items ) : ?>
-					<optgroup label="<?php echo esc_html( ucwords( str_replace( '_', ' ', $group ) ) ); ?>">
-					<?php foreach ( $items as $list => $fields ) : ?>
-						<option value="<?php echo esc_attr( $list ); ?>"<?php echo selected( $option, $list, false ); ?>><?php echo esc_html( $fields['name'] ); ?></option>
-					<?php endforeach; ?>
-					</optgroup>
-				<?php endforeach; ?>
-			<?php elseif ( ! empty( $args['options'] ) ) :
-				foreach ( $args['options'] as $val => $label ) :
-					if ( is_array( $option ) )
-						$selected = in_array( $val, $option ) ? ' selected="selected"' : '';
-					else
-						$selected = selected( $option, $val, false );
-				?>
-					<option value="<?php echo esc_attr( $val ); ?>"<?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
-				<?php endforeach;
-			endif; ?>
-		</select>
-	<?php
+
+		include( 'select.php' );
+
 		if ( isset( $args['select2'] ) ) {
 			wp_enqueue_style( 'md-select2' );
 			wp_enqueue_script( 'md-select2' );

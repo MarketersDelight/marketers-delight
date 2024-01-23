@@ -1,38 +1,34 @@
 @font-face {
-	font-display: swap;
-	font-family: 'Roboto';
+	font-family: 'Mantra';
 	font-style: normal;
-	font-weight: 400;
-	src: url('https://dz.kolakube.com/wp-content/themes/dzsat//fonts/Roboto-Regular.woff2') format('woff2');
+	font-weight: normal;
+	src: url('https://agxdesigns.com/wp-content/themes/agxdesigns//fonts/ffad_matro-webfont.woff') format('woff');
 }
 @font-face {
-	font-display: swap;
-	font-family: 'Roboto';
-	font-style: italic;
-	font-weight: 400;
-	src: url('https://dz.kolakube.com/wp-content/themes/dzsat//fonts/Roboto-Italic.woff2') format('woff2');
-}
-@font-face {
-	font-display: swap;
-	font-family: 'Roboto';
+	font-family: 'Bebas';
 	font-style: normal;
-	font-weight: 600;
-	src: url('https://dz.kolakube.com/wp-content/themes/dzsat//fonts/Roboto-Bold.woff2') format('woff2');
+	font-weight: normal;
+	src: url('https://agxdesigns.com/wp-content/themes/agxdesigns//fonts/BebasNeue-webfont.woff') format('woff');
 }
 @font-face {
-	font-display: swap;
-	font-family: 'Roboto';
-	font-style: italic;
-	font-weight: 600;
-	src: url('https://dz.kolakube.com/wp-content/themes/dzsat//fonts/Roboto-BoldItalic.woff2') format('woff2');
+	font-family: 'stateface';
+	src: url('https://agxdesigns.com/wp-content/themes/agxdesigns//fonts/stateface.woff') format('woff');
+	font-style: normal;
+	font-weight: normal;
+}
+.stateface-nj:before {
+	content: 'e';
+	font-family: 'stateface';
+	font-style: normal;
+	line-height: 1;
 }
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #008BD0; }
-div.editor-styles-wrapper .has-primary-color { color: #008BD0; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #21C0A9; }
-div.editor-styles-wrapper .has-secondary-color { color: #21C0A9; }
+div.editor-styles-wrapper .has-primary-background-color { background-color: #1E1E1E; }
+div.editor-styles-wrapper .has-primary-color { color: #1E1E1E; }
+div.editor-styles-wrapper .has-secondary-background-color { background-color: #2E2E2E; }
+div.editor-styles-wrapper .has-secondary-color { color: #2E2E2E; }
 div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
 div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
@@ -41,21 +37,21 @@ div.editor-styles-wrapper .has-accent-background-color { background-color: #FFFB
 div.editor-styles-wrapper .has-accent-color { color: #FFFBCC; }
 div.editor-styles-wrapper .has-white-background-color { background-color: #FFFFFF; }
 div.editor-styles-wrapper .has-white-color { color: #FFFFFF; }
-div.editor-styles-wrapper .has-text-background-color { background-color: #666666; }
-div.editor-styles-wrapper .has-text-color { color: #666666; }
+div.editor-styles-wrapper .has-text-background-color { background-color: #1E1E1E; }
+div.editor-styles-wrapper .has-text-color { color: #1E1E1E; }
 div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
 div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #008BD0; }
-div.editor-styles-wrapper .has-links-color { color: #008BD0; }
-div.editor-styles-wrapper .has-button-background-color { background-color: #1993C9; }
-div.editor-styles-wrapper .has-button-color { color: #1993C9; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #282828; }
-div.editor-styles-wrapper .has-button-sec-color { color: #282828; }
+div.editor-styles-wrapper .has-links-background-color { background-color: #69BD05; }
+div.editor-styles-wrapper .has-links-color { color: #69BD05; }
+div.editor-styles-wrapper .has-button-background-color { background-color: #69BD05; }
+div.editor-styles-wrapper .has-button-color { color: #69BD05; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
+div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #008BD0;
+	color: #69BD05;
 	text-decoration: underline;
 }
 div.editor-styles-wrapper a:hover { text-decoration: none; }
@@ -63,7 +59,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://dz.kolakube.com/wp-content/themes/marketers-delight/site/md.woff') format('woff');
+	src: url('https://agxdesigns.com/wp-content/themes/marketers-delight/site/md.woff') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -88,7 +84,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 /* MAIN TYPE */
 div.editor-styles-wrapper {
 			background-color: #FFFFFF;
-		color: #666666;
+		color: #1E1E1E;
 }
 #editor .editor-post-title__block .editor-post-title__input,
 div.editor-styles-wrapper h1,
@@ -96,7 +92,7 @@ div.editor-styles-wrapper h2,
 div.editor-styles-wrapper h3,
 div.editor-styles-wrapper h4,
 div.editor-styles-wrapper h5,
-div.editor-styles-wrapper h6 { color: #404040; }
+div.editor-styles-wrapper h6 { color: #1E1E1E; }
 div.editor-styles-wrapper h2:not(:first-child),
 div.editor-styles-wrapper h3:not(:first-child),
 div.editor-styles-wrapper h4:not(:first-child),
@@ -131,61 +127,68 @@ div.editor-styles-wrapper,
 div.editor-styles-wrapper p,
 .editor-post-title__block .editor-post-title__input {
 	font-size: 19px;
-	font-family: 'Roboto', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-	 font-weight: 400;	line-height: 31px;
+	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+		line-height: 31px;
 }
 div.editor-styles-wrapper .has-huge-font-size,
 div.editor-styles-wrapper .has-large-font-size,
 div.editor-styles-wrapper .has-medium-font-size,
 div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
-	font-size: 69px;
-	line-height: 92px;
+	font-size: 105px;
+	line-height: 140px;
 }
 div.editor-styles-wrapper .huge-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 46px;
-	line-height: 60px;
+	font-size: 70px;
+	line-height: 85px;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 39px;
-	line-height: 53px;
+	font-size: 60px;
+	line-height: 81px;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
-	font-size: 32px;
-	line-height: 45px;
+	font-size: 49px;
+	line-height: 69px;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
-	font-size: 28px;
-	line-height: 42px;
+	font-size: 42px;
+	line-height: 63px;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
-	font-size: 25px;
-	line-height: 39px;
+	font-size: 39px;
+	line-height: 60px;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
-	font-size: 21px;
-	line-height: 29px;
+	font-size: 29px;
+	line-height: 35px;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-weight: 600;
+	font-family: Bebas;
+	font-weight: bold;
 }
 @media all and (max-width: 900px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 57px; line-height: 76px; }
@@ -194,7 +197,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 27px; line-height: 38px; }
 	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 23px; line-height: 35px; }
 	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { font-size: 21px; line-height: 33px; }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 21px; line-height: 29px; }
+	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 32px; line-height: 45px; }
 }
 @media all and (max-width: 700px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 51px; line-height: 68px; }
@@ -203,7 +206,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 24px; line-height: 34px; }
 	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 20px; line-height: 30px; }
 	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { font-size: 19px; line-height: 29px; }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 21px; line-height: 29px; }
+	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 26px; line-height: 32px; }
 }
 /* SPACERS */
 .editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,
@@ -286,7 +289,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	$BUTTONS
 \*------------------------------*/
 .md-button, .md-submit {
-	background-color: #1993C9;
+	background-color: #69BD05;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -311,9 +314,9 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* OUTLINE */
 .md-submit.md-submit-outline {
 	background-color: transparent;
-	border: 3px solid #1993C9;
+	border: 3px solid #69BD05;
 	border-radius: 5px;
-	color: #1993C9;
+	color: #69BD05;
 }
 /* ARROW */
 .md-button.md-button-arrow:after {
@@ -343,7 +346,7 @@ input.md-input, button.md-submit {
 	display: flex;
 }
 .md-form-field-icon {
-	color: #666666;
+	color: #1E1E1E;
 	font-size: 1.2em;
 	line-height: 1;
 	min-width: 34px;

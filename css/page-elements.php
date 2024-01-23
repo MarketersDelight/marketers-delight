@@ -78,10 +78,7 @@
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	margin-bottom: <?php echo $half; ?>px;
-	text-align: center;
 }
-
-.article.content-sidebar .breadcrumbs { text-align: left; }
 
 .breadcrumbs a { text-decoration: underline; }
 
@@ -89,14 +86,19 @@
 
 .breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
 
+@media all and (min-width: 900px) {
+	.breadcrumbs { text-align: center; }
+	.article.content-sidebar .breadcrumbs { text-align: left; }
+}
+
 /* BYLINE */
 
 .byline {
-	align-items: center;
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	display: flex;
 	position: relative;
 }
+
+.byline.post-footer:not(:last-child) { margin-bottom: 0; }
 
 .byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
@@ -135,7 +137,10 @@
 }
 
 @media all and (min-width: 900px) {
-	.byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+	.byline {
+		align-items: center;
+		display: flex;
+	}
 	.header .byline, #content > .header-cover .byline, .expanded .byline { justify-content: center; }
 }
 

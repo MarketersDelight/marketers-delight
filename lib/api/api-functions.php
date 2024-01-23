@@ -561,64 +561,6 @@ function md_get_dropins( $status = null, $key = null ) {
 }
 
 /**
- * Organize array of lists for use in options.
- *
- * @since 4.9
- */
-
-function md_email_data( $atts = null ) {
-	$email = md_setting( array( 'integrations', 'services' ) );
-
-	if ( empty( $email ) )
-		return array();
-
-	if ( isset( $atts['show'] ) ) {
-		$ids = array();
-
-		if ( isset( $atts['empty_label' ] ) )
-			$ids[''] = __( 'Use default email list...', 'md' );
-
-		// Return list of IDs
-		if ( $atts['show'] == 'ids' ) {
-			foreach ( $email as $service => $lists )
-				foreach ( $lists as $list => $fields )
-					$ids[] = $list;
-
-			if ( isset( $atts['custom_html'] ) )
-				$ids[] = 'custom_html';
-
-			return $ids;
-		}
-		// Return IDs by name
-		elseif ( $atts['show'] == 'names' ) {
-			$label = '';
-
-			foreach ( $email as $service => $lists )
-				foreach ( $lists as $list => $fields ) {
-					if ( isset( $atts['label'] ) )
-						$label = esc_html( ' (' . $service . ')' );
-					$ids[$list] = $fields['name'] . $label;
-				}
-
-			return $ids;
-		}
-		// Return service by ID
-		elseif ( $atts['show'] == 'service' ) {
-			foreach ( $email as $service => $lists )
-				foreach ( $lists as $list => $fields )
-					$ids[$list] = $service;
-
-			return $ids;
-		}
-	}
-
-	if ( isset( $atts['custom_html' ] ) )
-		$email['other']['custom_html']['name'] = __( 'Custom HTML', 'md' );
-
-	return $email;
-}
-
-/**
  * Get MD Popups data in various formats.
  *
  * @since 5.0

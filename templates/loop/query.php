@@ -1,5 +1,5 @@
 <?php
-	$args = array( 'query' => $loop );
+	$query_args = array( 'query' => $loop );
 	$query_classes = md_content_box_classes( array( 'query' ), $loop );
 	$has_sidebar = ! empty( $loop['sidebar']['enable'] ) ? true : false;
 ?>
@@ -27,13 +27,13 @@
 		<?php endif; ?>
 
 		<?php if ( $has_sidebar ) {
-			$args['has_sidebar'] = true;
+			$query_args['has_sidebar'] = true;
 			$index = 'sidebar-main';
 			$sidebar_class = isset( $loop['sidebar']['sticky'] ) ? ' sticky' : '';
 		?>
 
 			<div class="content">
-				<?php md_loop( $args ); ?>
+				<?php md_loop( $query_args ); ?>
 			</div>
 
 			<div class="sidebar<?php echo esc_attr( $sidebar_class ); ?>">
@@ -44,7 +44,7 @@
 
 		<?php }
 
-			else md_loop( $args );
+			else md_loop( $query_args );
 
 		?>
 

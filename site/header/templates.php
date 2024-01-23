@@ -36,6 +36,8 @@ class md_header_templates {
 
 		echo '<div class="header-primary">';
 
+		do_action( 'md_hook_header_primary_top' );
+		
 		if ( ! empty( $data['header'] ) )
 			foreach ( $data['header'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );
@@ -48,6 +50,8 @@ class md_header_templates {
 				}
 			}
 
+		do_action( 'md_hook_header_primary_bottom' );		
+		
 		echo '</div>';
 
 		if ( ! empty( $data['header_aside'] ) ) {

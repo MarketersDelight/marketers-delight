@@ -7,7 +7,7 @@ add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 add_action( 'md_hook_content', 'md_post_nav', 70 );
-add_action( 'md_hook_footer', 'md_footer_columns_template' );
+add_action( 'md_hook_footer', 'md_footer_columns_template', 20 );
 add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 
 /**
@@ -26,7 +26,9 @@ function md_inline_js() {
 		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
 
 	wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
-	wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
+
+	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
+		wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
 }
 
 endif;
@@ -715,7 +717,7 @@ function md_footer_columns() {
 }
 
 /**
- * A list of classes to add to the header.
+ * A list of classes to add to the footer.
  *
  * @since 4.5
  */
@@ -735,10 +737,6 @@ function md_footer_classes() {
  */
 
 function md_footer_columns_template() {
-	$columns = md_footer_columns();
-	$classes = "entry f{$columns}";
-	// <div class="footer-columns<?php echo $columns > 1 ? " columns-double columns-$columns" : ''; mb-single">
-
 	if ( md_has_footer_columns() )
 		include( md_template( 'footer-columns', true ) );
 }

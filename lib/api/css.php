@@ -54,11 +54,12 @@ class md_css {
 			'forms' => locate_template( 'css/forms.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
+			'layout' => locate_template( 'css/layout.php' ),
+			'loop' => locate_template( 'css/loop.php' ),
 			'page-elements' => locate_template( 'css/page-elements.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
-			'layout' => locate_template( 'css/layout.php' ),
 			'footer' => locate_template( 'css/footer.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		) );

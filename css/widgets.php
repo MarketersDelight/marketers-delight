@@ -15,24 +15,17 @@
 
 /* MENU */
 
-.format .widget_nav_menu .menu, .format .widget_nav_menu .sub-menu {
+.widget_nav_menu .menu {
+	align-items: inherit;
+	flex-direction: column;
 	margin-left: 0;
-	margin-top: 0;
 }
 
-.widget_nav_menu .sub-menu { display: none !important /*temporary*/; }
-
-.widget_nav_menu .menu-item {
-	display: block;
-	margin-bottom: 0;
-}
-
-.widget_nav_menu .menu-item a {
-	padding: <?php echo $third; ?>px 0;
-	width: 100%;
-}
+.widget_nav_menu .menu-item { margin-bottom: 0; }
 
 .widget_nav_menu .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.footer .widget_nav_menu .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
 
 /* SEARCH */
 

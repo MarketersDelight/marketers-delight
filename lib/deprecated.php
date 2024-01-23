@@ -24,6 +24,16 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
+ * Organize array of lists for use in options.
+ *
+ * @since 4.9
+ * @deprecated 5.6 | use md_email() from /dropins/optins/
+ */
+function md_email_data( $atts = null ) {
+	return array();
+}
+
+/**
  * Check if current page has byline.
  *
  * @since 4.0

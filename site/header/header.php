@@ -63,7 +63,7 @@ class md_header extends md_api {
 					),
 					'display' => array(
 						'type' => 'checkbox',
-						'options' => array( 'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile' )
+						'options' => array( 'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile', 'sticky' )
 					),
 					'bg_color' => array( 'type' => 'color' ),
 					'border_color' => array( 'type' => 'color' ),

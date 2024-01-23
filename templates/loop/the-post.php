@@ -3,6 +3,7 @@
 $classes = $style = array();
 $cover = md_cover();
 $featured_image_id = get_post_thumbnail_id();
+$featured_image_position = md_featured_image_position();
 
 if ( ! is_singular() )
 	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
@@ -14,8 +15,15 @@ if ( ! is_singular() )
 	}
 	else {
 		$classes[] = 'standard';
-		unset( $loop['is_featured'] );
+
+		if ( isset( $loop['featured'] ) )
+			unset( $loop['is_featured'] );
 	}
+
+if ( $featured_image_id && isset( $loop['featured_image'] ) ) {
+	$featured_image_position = $loop['featured_image'];
+	$classes[] = 'image-' . str_replace( '_', '-', $featured_image_position );
+}
 
 if ( $columns > 1 )
 	if ( $columns <= 5 )

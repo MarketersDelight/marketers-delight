@@ -4,6 +4,7 @@
 		<?php $this->fields->field( array( $group, $field, 'position' ), array(
 			'type' => 'select',
 			'label' => __( 'Position on page', 'md' ),
+			'empty_label' => __( 'Do not show', 'md' ),
 			'options' => array(
 				'before_loop' => __( 'Top of page (default)', 'md' ),
 				'after_loop' => __( 'After the Main Loop', 'md' )

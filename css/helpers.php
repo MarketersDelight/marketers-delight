@@ -146,6 +146,12 @@ ul.list-check li:before {
 
 /* GENERAL */
 
+.clickable:after {
+	content: '';
+	inset: 0;
+	position: absolute;
+}
+
 .avatar {
 	border-radius: 50%;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);

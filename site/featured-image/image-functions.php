@@ -17,25 +17,32 @@ function md_featured_image( $args = array() ) {
 	else
 		$position = md_featured_image_position();
 
+	if ( $position == 'remove' )
+		return;
+
 	if ( isset( $args['inline'] ) && ! in_array( $position, array( '', 'left', 'right', 'center' ) ) )
 		return;
 
 	if ( isset( $args['show'] ) && $position !== $args['show'] )
 		return;
 
+	if ( isset( $args['hide'] ) && $position == $args['hide'] )
+		return;
+
 	$wrap = 'wrap';
+	$size = isset( $args['size'] ) ? $args['size'] : 'post-thumbnail';
 	$classes = array( 'featured-image' );
 
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
-
+/*
 	if ( in_array( $position, array( '', 'right' ) ) )
 		$classes[] = "alignright $wrap";
 	elseif ( $position == 'left' )
 		$classes[] = "alignleft $wrap";
 	elseif ( $position == 'center' )
 		$classes[] = 'aligncenter';
-
+*/
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );

@@ -881,12 +881,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-group-link .is-button,
 .md-group-link .is-popup,
 .md-group-link .is-phone,
-.type-phone .md-link-icon { display: none; }
+.type-phone .md-link-icon,
+.md-select2, .has-select2 .md-select2-init { display: none; }
 
 .md-group-link.type-url .is-url,
 .md-group-link.style-button .is-button,
 .md-group-link.type-popup .is-popup,
-.md-group-link.type-phone .is-phone { display: block; }
+.md-group-link.type-phone .is-phone,
+.has-select2 .md-select2 { display: block; }
 
 /* DEVICE FIELDS */
 
@@ -925,6 +927,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .desktop .md-desktop.col, .tablet .md-tablet.col, .mobile .md-mobile.col { display: inline-block; }
 
 /* BASIC FIELDS */
+
+.md-select2-init { cursor: pointer; }
 
 .md-field-select select { max-width: 100%; }
 
