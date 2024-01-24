@@ -14,16 +14,18 @@ function md_loops( $sort = null ) {
 			'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
 		),
 		'list' => array(
-			'name' => __( 'Simple List', 'md' ),
+			'name' => __( 'List', 'md' ),
 			'description' => __( 'A simplified list with compact images.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-list.png',
 			'template' => md_template( 'loop/loop-list', true )
 		),
+/*
 		'icons' => array(
 			'name' => __( 'Icon Cards', 'md' ),
 			'description' => __( 'Small cards with a focus on the image thumbnail.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-icons.png'
 		),
+*/
 		'covers' => array(
 			'name' => __( 'Post Covers', 'md' ),
 			'description' => __( 'Posts list with full-width background image covers.', 'md' ),

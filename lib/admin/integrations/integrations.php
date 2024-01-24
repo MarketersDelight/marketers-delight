@@ -88,6 +88,7 @@ class md_integrations extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Site Integrations', 'md' ),
 				'tab_name' => __( 'Integrations', 'md' ),
+				'position' => 4,
 				'parent_slug' => 'tools.php',
 				'admin_header' => true
 			)

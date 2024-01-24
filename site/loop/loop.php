@@ -291,18 +291,21 @@ class md_loop extends md_api {
 	 */
 
 	public function scripts() {
+		$screen = get_current_screen();
 		$prefix = $this->_prefix();
 	?>
 		<script>
+			<?php if ( $screen->base !== 'term' ) : ?>
 			( function() {
 				document.getElementById( '<?php echo $prefix; ?>_category_posts_enable' ).onchange = function( e ) {
 					document.getElementById( 'loop_category_posts' ).style.display = this.checked ? 'block' : 'none';
 				}
 			} )();
+			<?php endif; ?>
 			jQuery( document ).ready( function( $ ) {
 
 				$( '.md-check-val' ).on( 'change', function( e ) {
-					$( this ).parents( '.md-loop-query' ).toggleClass( 'md-has-category-posts' );
+					$( this ).parents( '.md-loop' ).toggleClass( 'has-category-posts' );
 				} );
 
 				$( '.md-num-val' ).on( 'change', function( e ) {

@@ -42,7 +42,7 @@
 		<?php $this->fields->field( 'order', array(
 			'type' => 'select',
 			'label' => __( 'Order', 'md' ),
-			'description' => __( 'Order lowest/highest value.', 'md' ),
+			'description' => __( 'Lowest/highest value.', 'md' ),
 			'empty_label' => __( 'Descending', 'md' ),
 			'options' => array(
 				'ASC' => __( 'Ascending', 'md' )

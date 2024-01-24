@@ -79,8 +79,7 @@
 				<div class="md-widget-item">
 					<?php $this->fields->field( 'sidebars', array(
 						'type' => 'group',
-						'wrap_classes' => 'md-sep-micro',
-						'description' => sprintf( __( 'Create custom sidebars and assign them to post types in the settings below.', 'md' ), admin_url( 'widgets.php' ) ),
+						'description' => sprintf( __( 'Create new sidebar areas to use in the <a href="%s">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens.', 'md' ), admin_url( 'widgets.php' ) ),
 						'callback' => array( $this, 'sidebars' )
 					) ); ?>
 				</div>

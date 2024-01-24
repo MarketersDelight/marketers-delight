@@ -38,7 +38,6 @@
 					'type' => 'select',
 					'label' => __( 'Post Type', 'md' ),
 					'empty_label' => __( 'Detect post type', 'md' ),
-					'wrap_classes' => 'md-sep-small',
 					'options' => $post_types
 				) ); ?>
 			</div>
@@ -62,7 +61,7 @@
 				<?php $this->fields->field( array( $group, $field, 'order' ), array(
 					'type' => 'select',
 					'label' => __( 'Order', 'md' ),
-					'description' => __( 'Order lowest/highest value.', 'md' ),
+					'description' => __( 'Lowest/highest value.', 'md' ),
 					'empty_label' => __( 'Descending', 'md' ),
 					'options' => array(
 						'ASC' => __( 'Ascending', 'md' )
@@ -120,7 +119,6 @@
 					'type' => 'number',
 					'label' => __( 'Call to Action', 'md' ),
 					'description' => __( 'Show CTA after the Xth post.', 'md' ),
-					'wrap_classes' => 'md-sep-micro'
 				) ); ?>
 			</div>
 			<?php endif; ?>
