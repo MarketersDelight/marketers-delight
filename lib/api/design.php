@@ -40,17 +40,17 @@ class md_design {
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
 			'tablet'  => round( $h1['tablet'] * 0.6 ),
-			'mobile'  => round( $h1['mobile'] * 0.6 )
+			'mobile'  => round( $h1['mobile'] * 0.65 )
 		);
 		$h5 = array(
 			'desktop' => round( $h1['desktop'] * 0.55 ),
 			'tablet'  => round( $h1['tablet'] * 0.55 ),
-			'mobile'  => round( $h1['mobile'] * 0.55 )
+			'mobile'  => round( $h1['mobile'] * 0.6 )
 		);
 		$h6 = array(
 			'desktop' => round( $h1['desktop'] * 0.45 ),
 			'tablet'  => round( $h1['desktop'] * 0.45 ),
-			'mobile'  => round( $h1['desktop'] * 0.45 )
+			'mobile'  => round( $h1['desktop'] * 0.5 )
 		);
 		// colors
 		$colors = array(
@@ -108,6 +108,7 @@ class md_design {
 				'sidebar' => array(
 					'text' => '#777777',
 					'title' => $colors['text'],
+					'title_link' => $colors['text'],
 					'links' => '#444444',
 				),
 				'footer' => array(
@@ -194,9 +195,9 @@ class md_design {
 						'mobile' => $h4['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h4['desktop'] * 1.5 ),
-						'tablet' => round( $h4['tablet'] * 1.5 ),
-						'mobile' => round( $h4['mobile'] * 1.5 )
+						'desktop' => round( $h4['desktop'] * 1.4 ),
+						'tablet' => round( $h4['tablet'] * 1.4 ),
+						'mobile' => round( $h4['mobile'] * 1.45 )
 					)
 				),
 				'h5' => array(
@@ -207,8 +208,8 @@ class md_design {
 					),
 					'line_height' => array(
 						'desktop' => round( $h5['desktop'] * 1.55 ),
-						'tablet' => round( $h5['tablet'] * 1.55 ),
-						'mobile' => round( $h5['mobile'] * 1.55 )
+						'tablet' => round( $h5['tablet'] * 1.5 ),
+						'mobile' => round( $h5['mobile'] * 1.5 )
 					)
 				),
 				'h6' => array(

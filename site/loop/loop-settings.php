@@ -110,27 +110,34 @@
 
 	<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-tab-content<?php echo $active; ?>">
 
-		<div class="columns-4 columns-half">
+		<div class="columns-3 columns-half md-sep-small">
 
-			<div class="col md-sep-small">
+			<div class="col">
 				<?php $this->fields->field( "{$p}featured_image", array(
 					'type' => 'select',
 					'label' => __( 'Featured Image', 'md' ),
 					'empty_label' => __( 'Use default position', 'md' ),
 					'options' => $sanitize->values['featured_image'],
-					'wrap_classes' => 'md-sep-small'
+					'wrap_classes' => 'md-sep-micro',
+				) ); ?>
+				<?php $this->fields->field( "{$p}featured_image_size", array(
+					'type' => 'select',
+					'empty_label' => __( 'Show full size image', 'md' ),
+					'options' => array(
+						'thumbnail' => __( 'Post Thumbnail 150x150)', 'md' )
+					)
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-small">
+			<div class="col">
 				<?php $this->fields->field( "{$p}content", array(
 					'type' => 'select',
 					'label' => __( 'Post Content', 'md' ),
-					'style' => 'width: 100%',
+					'style' => 'width: 75%',
 					'empty_label' => __( 'Show excerpt', 'md' ),
 					'options' => array(
-						'full' => __( 'Show full text', 'md' ),
-						'hide' => __( 'Hide text', 'md' )
+						'full' => __( 'Show full content', 'md' ),
+						'hide' => __( 'Hide content', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -140,18 +147,15 @@
 					'type' => 'select',
 					'label' => __( 'Byline', 'md' ),
 					'empty_label' => __( 'Show full byline', 'md' ),
+					'wrap_classes' => 'md-sep-micro',
 					'options' => array(
 						'before_headline' => __( 'Remove Before Headline', 'md' ),
 						'after_headline' => __( 'Remove After Headline', 'md' ),
 						'remove' => __( 'Remove Byline', 'md' )
 					)
 				) ); ?>
-			</div>
-
-			<div class="col md-sep-small">
 				<?php $this->fields->field( "{$p}post_footer", array(
 					'type' => 'checkbox',
-					'classes' => 'field-no-label',
 					'options' => array(
 						'remove' => __( 'Remove Post Footer', 'md' )
 					)

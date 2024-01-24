@@ -26,9 +26,7 @@ function md_inline_js() {
 		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
 
 	wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
-
-	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
-		wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
+	wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
 }
 
 endif;
@@ -67,11 +65,14 @@ function md_title( $args = array() ) {
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
 
-	if ( ! is_singular() && $context == 'post' )
+	if ( ( ! is_singular() && $context == 'post' ) || ! empty( $args['loop']['is_query'] ) )
 		$permalink = get_permalink();
 
 	if ( $context == 'post' && md_module( array( 'loop', 'category_posts', 'enable' ) ) )
 		$h = 'h3';
+
+	if ( isset( $args['loop']['is_query'] ) )
+		$h = 'h4';
 
 	do_action( "md_hook_{$context}_header_top" );
 
@@ -203,6 +204,7 @@ function md_content_box() {
 /**
  * A list of classes to add to the content box container.
  *
+ * @todo Probably worth splitting between Loops & Queries post-6.0.
  * @since 4.1
  */
 
@@ -211,43 +213,50 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
 
 	if ( ! empty( $loop ) ) {
-		$loop_style = ! empty( $loop['loop'] ) ? $loop['loop'] : '';
+		$loop_type = ! empty( $loop['loop'] ) ? $loop['loop'] : '';
 		$has_sidebar = isset( $loop['sidebar']['enable'] ) ? true : false;
 	}
 	else {
-		$loop_style = md_module( array( 'loop', 'loop' ) );
+		$loop_type = md_module( array( 'loop', 'loop' ) );
 		$has_sidebar = md_has_sidebar();
 	}
 
 	$loop['columns'] = 1;
 
-	if ( is_singular() )
+	if ( is_singular() && ! isset( $loop['is_query'] ) )
 		$classes[] = 'article';
 	else
 		$loop['columns'] = md_post_type_field( array( 'loop', 'columns' ), $loop['columns'] );
 
+	if ( $loop_type )
+		$classes[] = 'loop-' . $loop_type;
+
 	if ( $has_sidebar ) {
 		$classes[] = 'content-sidebar';
-
-		if ( md_meta( array( 'layout', 'content_box' ), get_queried_object_id() ) )
-			$layout = md_meta( array( 'layout', 'content_box' ) );
-		else
-			$layout = md_post_type_field( array( 'layout', 'content_box' ) );
+		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
+		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
 
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'left';
 	}
+	elseif ( isset( $loop['is_inline'] ) )
+		$classes[] = 'inline';
 	else {
 		$classes[] = 'full';
 
-		if ( is_singular() )
+		if ( is_singular() && ! isset( $loop['is_query'] ) )
 			$classes[] = 'expanded';
 	}
 
-	if ( $loop_style )
-		$classes[] = 'loop-' . $loop_style;
-	$classes[] = str_replace( '_', '-', $style );
-	$classes[] = 'format';
+	if ( ! isset( $loop['is_query'] ) )
+		$classes[] = str_replace( '_', '-', $style );
+
+	if ( ! isset( $loop['is_inline'] ) )
+		$classes[] = 'format';
+
+	if ( isset( $loop['size'] ) )
+		$classes[] = 'size-' . esc_attr( $loop['size'] );
+
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );
@@ -717,7 +726,7 @@ function md_footer_columns() {
 }
 
 /**
- * A list of classes to add to the footer.
+ * A list of classes to add to the header.
  *
  * @since 4.5
  */
@@ -737,6 +746,10 @@ function md_footer_classes() {
  */
 
 function md_footer_columns_template() {
+	$columns = md_footer_columns();
+	$classes = "entry f{$columns}";
+	// <div class="footer-columns<?php echo $columns > 1 ? " columns-double columns-$columns" : ''; mb-single">
+
 	if ( md_has_footer_columns() )
 		include( md_template( 'footer-columns', true ) );
 }

@@ -84,7 +84,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/byline/byline.php' );
 		require_once( MD_DIR . 'site/blog/blog.php' );
 		require_once( 'walker.php' );
-		foreach ( array( 'accordion', 'content-spotlight', 'text-image', 'quote' ) as $widget )
+		foreach ( array( 'accordion', 'loop-query', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "site/widgets/$widget.php" );
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
 			require_once( MD_DIR . 'site/blocks/blocks.php' );
@@ -268,6 +268,7 @@ final class marketers_delight {
 	public function widgets() {
 		// Register custom Widgets
 		register_widget( 'md_accordion_widget' );
+		register_widget( 'md_loop_query_widget' );
 		register_widget( 'md_content_spotlight' );
 		register_widget( 'md_text_image' );
 		register_widget( 'md_quote_widget' );

@@ -78,29 +78,54 @@ function md_get_loop() {
 /**
  * Render custom built queries with passed settings data.
  *
+ * The $position variable is set from the hook md_query() is hooked to.
+ *
  * @since 5.6
  */
 
-function md_query( $position ) {
-	$queries = md_module( array( 'loop', 'query' ), array() );
+function md_query( $position = null ) {
+	$queries = md_post_type_field( array( 'loop', 'query' ), array() );
 
 	foreach ( $queries as $query_id => $loop ) {
 		if ( ! isset( $loop['position'] ) || $loop['position'] !== $position )
 			continue;
 
+		$loop['is_query'] = true;
+
 		include( md_template( 'loop/query', true ) );
 	}
 }
 
-function md_query_before_loop() {
-	md_query( 'before_loop' );
-}
-add_action( 'md_hook_before_content_box', 'md_query_before_loop', 20 );
+/**
+ * Load Queries to hook areas when auto-inserted.
+ *
+ * @since 5.6
+ */
 
-function md_query_after_loop() {
-	md_query( 'after_loop' );
+function md_query_template() {
+	if ( ! is_post_type_archive() && ! is_home() )
+		return;
+
+	$queries = md_post_type_field( array( 'loop', 'query' ), array() );
+	$hooks = array(
+		'before_content_box' => 'md_hook_before_content_box',
+		'before_content' => 'md_hook_before_content',
+		'content' => 'md_hook_after_content',
+		'before_footer' => 'md_hook_before_footer'
+	);
+
+	foreach ( $queries as $query_id => $loop ) {
+		if ( isset( $loop['position'] ) )
+			$position = $loop['position'];
+
+		if ( empty( $hooks[$position] ) )
+			continue;
+
+		add_action( $hooks[$position], 'md_query' );
+	}
 }
-add_action( 'md_hook_before_footer', 'md_query_after_loop' );
+
+add_action( 'template_redirect', 'md_query_template' );
 
 /**
  * The Main Loop used on all posts, pages, and archives.
@@ -130,6 +155,9 @@ function md_loop( $args = array() ) {
 	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
 	$wrap_classes[] = "loop-{$post_type}";
 
+	if ( isset( $loop['position'] ) && in_array( $loop['position'], array( 'before_content', 'content' ) ) )
+		$loop['is_inline'] = true;
+
 	if ( $columns > 1 ) {
 		$wrap_classes[] = 'columns';
 
@@ -147,9 +175,9 @@ function md_loop( $args = array() ) {
 	elseif ( ! empty( $loop['category_posts']['enable'] ) )
 		include( md_template( 'loop/category-posts', true ) );
 	elseif ( isset( $args['query'] ) ) {
-		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
+		echo "<div class=\"loop$wrap_classes\">";
 		include( md_template( 'loop/the-query', true ) );
-		echo ! is_singular() ? '</div>' : '';
+		echo '</div>';
 	}
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
@@ -297,7 +325,10 @@ function md_headline( $args = array() ) {
 	if ( $context == 'post' ) {
 		$image_args['show'] = 'above_headline';
 
-		md_featured_image( $image_args );
+		if ( isset( $loop['featured_image_size'] ) )
+			$image_args['size'] = $loop['featured_image_size'];
+
+			md_featured_image( $image_args );
 	}
 
 	include( md_template( 'headline', true ) );
@@ -337,7 +368,7 @@ function md_the_content( $loop ) {
 
 	md_hook_before_the_content();
 
-	if ( is_singular() ) {
+	if ( is_singular() && ! isset( $loop['is_query'] ) ) {
 		the_content( $loop['read_more'] );
 		wp_link_pages();
 	}
@@ -375,9 +406,9 @@ function md_the_excerpt( $loop ) {
 		$more = '[...]';
 
 	if ( empty( $loop['excerpt_length'] ) )
-		$num_words = 55;
+		$loop['excerpt_length'] = 55;
 
-	$excerpt = wp_trim_words( get_the_excerpt(), $num_words, $more );
+	$excerpt = wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $more );
 
 	echo wpautop( $excerpt );
 }

@@ -23,16 +23,22 @@
 
 				<h2 class="md-header-nav md-clear">
 					<?php foreach ( $admin_pages as $admin_page => $fields ) :
-						if ( ( isset( $fields['parent'] ) && $fields['parent'] == $page ) || ( isset( $fields['admin_tab_parent'] ) && $fields['admin_tab_parent'] == $page ) ) {
+						if (
+							( isset( $fields['parent'] ) && $fields['parent'] == $page ) ||
+							( isset( $fields['admin_tab_parent'] ) && $fields['admin_tab_parent'] == $page )
+						) {
 							$admin_tabs[$fields['id']] = $fields;
 							$admin_order[$fields['id']] = isset( $fields['order'] ) ? $fields['order'] : 10;
 						}
-						if ( ! isset( $fields['admin_header'] ) )
+
+						if ( ! isset( $fields['admin_header'] ) || isset( $fields['hide_tab'] ) )
 							continue;
+
 						$name = isset( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
 						$slug = isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $fields['id'];
+						$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'admin.php';
 					?>
-						<a href="<?php echo admin_url( "admin.php?page={$slug}" ); ?>" class="nav-tab<?php echo $page == $fields['id'] ? ' nav-tab-active' : ''; ?>"><?php echo esc_html( $name ); ?></a>
+						<a href="<?php echo admin_url( "{$parent_slug}?page={$slug}" ); ?>" class="nav-tab<?php echo $page == $fields['id'] ? ' nav-tab-active' : ''; ?>"><?php echo esc_html( $name ); ?></a>
 					<?php endforeach; ?>
 				</h2>
 

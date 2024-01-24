@@ -6,7 +6,7 @@
 
 <div class="<?php echo esc_attr( $query_classes ); ?>">
 
-	<div class="inner">
+	<?php echo ! isset( $loop['is_inline'] ) ? '<div class="inner">' : ''; ?>
 
 		<?php if ( ! empty( $loop['title'] ) || ! empty( $loop['description'] ) ) : ?>
 
@@ -48,6 +48,6 @@
 
 		?>
 
-	</div>
+	<?php echo ! isset( $loop['is_inline'] ) ? '</div>' : ''; ?>
 
 </div>

@@ -14,7 +14,6 @@
 
 <span class="byline-category byline-item">
 	<a href="<?php echo get_term_link( $term->term_id ); ?>">
-		<?php echo md_icon( 'tags' ); ?>
 		<?php echo esc_html( $term->name ); ?>
 	</a>
 </span>

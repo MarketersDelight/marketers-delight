@@ -78,7 +78,6 @@
 	<?php endif; ?>
 	flex-shrink: 0;
 	position: relative;
-	transition: all 0.2s ease-in-out;
 }
 
 .header .logo {

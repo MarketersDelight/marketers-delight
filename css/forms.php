@@ -62,7 +62,7 @@ select {
 	text-align: center;
 }
 
-.trigger-icon, .hide-label .link-icon {
+.trigger-icon, .hide-label .link-icon, .link-icon:first-child {
 	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
 	font-style: normal;
 	line-height: 1;
@@ -161,10 +161,10 @@ select {
 
 .has-search .inputs, .has-search .input-field { flex: 1; }
 
-.form-toggle .input, .form-toggle .submit,
+.form-toggle .inputs, .form-toggle .submit,
 .has-search .search-form .trigger-text { display: none; }
 
-.has-search .input, .has-search .submit,
+.has-search .inputs, .has-search .submit,
 .form-toggle .trigger-search { display: block; }
 
 /* QUERIES */

@@ -14,6 +14,9 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 	cursor: pointer;
 	display: inline-block;
 	flex-shrink: 0;
+	font-size: inherit;
+	font-family: inherit;
+	font-style: normal;
 	line-height: 1;
 	padding: <?php echo $half; ?>px;
 	position: relative;
@@ -77,7 +80,6 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
     background-color: #f58f2a;
     border-radius: 5px;
     color: #fff;
-	font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
 	font-weight: normal;
 	padding: 4px 7px;
     position: relative;

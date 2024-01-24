@@ -4,7 +4,10 @@
 
 .title-wrap:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
-.page-cta { margin-bottom: <?php echo $half; ?>px; }
+.page-cta {
+	margin-bottom: <?php echo $half; ?>px;
+	position: relative;
+}
 
 .layout-slim.outer .title-wrap:not(:last-child), .description { margin-bottom: <?php echo $single; ?>px; }
 
@@ -94,13 +97,16 @@
 /* BYLINE */
 
 .byline {
+	align-items: center;
 	color: <?php echo $colors['site']['text-sec']; ?>;
+	display: flex;
+	flex-flow: wrap;
 	position: relative;
 }
 
 .byline.post-footer:not(:last-child) { margin-bottom: 0; }
 
-.byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
+.byline:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -125,8 +131,6 @@
 
 .byline-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 
-.byline .badge { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
-
 .byline-date-modified { font-style: italic; }
 
 .byline-sticky {
@@ -137,16 +141,16 @@
 }
 
 @media all and (min-width: 900px) {
-	.byline {
-		align-items: center;
-		display: flex;
-	}
-	.header .byline, #content > .header-cover .byline, .expanded .byline { justify-content: center; }
+	.header .byline,
+	#content > .header-cover .byline,
+	.expanded .byline { justify-content: center; }
 }
 
 /* FEATURED IMAGE + CAPTIONS */
 
 .featured-image { position: relative; }
+
+.image-center .featured-image { margin-bottom: <?php echo $single; ?>px; }
 
 .featured-image a { display: block; }
 

@@ -25,7 +25,7 @@
 			'loop' => $loop
 		) ); ?>
 
-		<?php md_content_text( $loop ); ?>
+		<?php md_the_content( $loop ); ?>
 
 	</div>
 

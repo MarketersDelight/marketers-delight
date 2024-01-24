@@ -20,7 +20,6 @@
 .sticky {
 	position: sticky;
 		top: -1px;
-	transition: all 0.2s ease-in-out;
 	z-index: 50;
 }
 
@@ -30,11 +29,9 @@
 
 .loop, .entry, .page-header, .category-row, .category-header { margin-bottom: <?php echo $single; ?>px; }
 
-.loop-header { margin-bottom: <?php echo $half; ?>px; }
-
 .query, .entry, .post-box { position: relative; }
 
-.query, .cover, .post-header, .post-box .post-footer {
+.cover, .post-header, .post-box .post-footer {
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }

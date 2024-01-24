@@ -14,8 +14,7 @@
 					'site_tagline' => __( 'Remove <strong>Site Tagline</strong>', 'md' ),
 					'align_tagline' => __( 'Align Title and Tagline in one line', 'md' ),
 					'hide_title_mobile' => __( 'Hide <strong>Site Title</strong> on mobile', 'md' ),
-					'hide_tagline_mobile' => __( 'Hide <strong>Site Tagline</strong> on mobile', 'md' ),
-					'sticky' => __( 'Make <strong>sticky</strong>', 'md' )
+					'hide_tagline_mobile' => __( 'Hide <strong>Site Tagline</strong> on mobile', 'md' )
 				)
 			) ); ?>
 		</div>

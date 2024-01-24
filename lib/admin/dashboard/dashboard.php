@@ -5,9 +5,6 @@
  * @since 4.3
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_settings extends md_api {
 
 	public $license;
@@ -33,10 +30,10 @@ class md_settings extends md_api {
 	public function register() {
 		return array(
 			'admin_page' => array(
-				'toplevel' => true,
-				'name' => __( 'Marketers Delight', 'md' ),
-				'admin_header' => true,
+				'name' => __( 'Theme Settings', 'md' ),
 				'tab_name' => __( 'Settings', 'md' ),
+				'admin_header' => true,
+				'parent_slug' => 'themes.php',
 				'icon' => 'dashicons-marketers-delight',
 				'fields' => array(
 					'license_key' => array( 'type' => 'text' ),

@@ -86,7 +86,9 @@ class md_integrations extends md_api {
 	public function register() {
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Integrations', 'md' ),
+				'name' => __( 'Site Integrations', 'md' ),
+				'tab_name' => __( 'Integrations', 'md' ),
+				'parent_slug' => 'tools.php',
 				'admin_header' => true
 			)
 		);

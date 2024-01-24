@@ -26,6 +26,8 @@
 	line-height: <?php echo $typography['sidebar_title']['line_height']['desktop']; ?>px;
 }
 
+.sidebar .title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+
 @media all and (max-width: 900px) {
 	.sidebar {
 		font-size: <?php echo $typography['sidebar']['font_size']['tablet']; ?>px;

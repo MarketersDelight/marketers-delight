@@ -1,8 +1,5 @@
 <?php
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * Create Drop-ins settings panel.
  *
@@ -52,6 +49,9 @@ class md_dropins extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => "$name{$updates_badge}",
+				'toplevel' => true,
+				'icon' => 'dashicons-marketers-delight',
+				'position' => 65,
 				'admin_header' => true,
 				'admin_tab' => $name,
 				'tab_name' => $name,

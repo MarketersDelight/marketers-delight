@@ -63,11 +63,6 @@
 	}
  ?>
 
-.font-title {
-	font-family: <?php echo $h1_font_family; ?>;
-	font-weight: <?php echo $h1_font_weight; ?>;
-}
-
 h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }

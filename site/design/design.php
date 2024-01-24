@@ -2,6 +2,7 @@
 /**
  * Create Site Design admin page.
  *
+ * @todo Merge $this->colors lists and phase out $this->options
  * @since 5.0
  */
 
@@ -56,6 +57,7 @@ class md_colors extends md_api {
 				'bg_color' => array( 'type' => 'color' ),
 				'text' => array( 'type' => 'color' ),
 				'title' => array( 'type' => 'color' ),
+				'title_link' => array( 'type' => 'color' ),
 				'links' => array( 'type' => 'color' )
 			),
 			'footer' => array(
@@ -100,6 +102,8 @@ class md_colors extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Design', 'md' ),
 				'parent' => 'md_settings',
+				'admin_header' => true,
+				'hide_tab' => true,
 				'fields' => $fields
 			)
 		);
@@ -143,6 +147,7 @@ class md_colors extends md_api {
 				'bg_color' => __( 'Background', 'md' ),
 				'text' => __( 'Text', 'md' ),
 				'title' => __( 'Title', 'md' ),
+				'title_link' => __( 'Title Link', 'md' ),
 				'links' => __( 'Links', 'md' )
 			),
 			'footer' => array(

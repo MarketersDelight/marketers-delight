@@ -5,23 +5,26 @@ $cover = md_cover();
 $featured_image_id = get_post_thumbnail_id();
 $featured_image_position = md_featured_image_position();
 
-if ( ! is_singular() )
-	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
-		$classes[] = 'featured';
-		$loop['is_featured'] = true;
+if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
+	$classes[] = 'featured';
+	$loop['is_featured'] = true;
 
-		if ( ! empty( $loop['featured_featured_image'] ) )
-			$loop['is_featured'] = $loop['featured_featured_image'];
-	}
-	else {
-		$classes[] = 'standard';
+	if ( ! empty( $loop['featured_featured_image'] ) )
+		$loop['is_featured'] = $loop['featured_featured_image'];
+}
+else {
+	$classes[] = 'standard';
 
-		if ( isset( $loop['featured'] ) )
-			unset( $loop['is_featured'] );
-	}
+	if ( isset( $loop['is_featured'] ) )
+		unset( $loop['is_featured'] );
+}
 
-if ( $featured_image_id && isset( $loop['featured_image'] ) ) {
-	$featured_image_position = $loop['featured_image'];
+if ( $featured_image_id ) {
+	if ( isset( $loop['is_featured'] ) )
+		$featured_image_position = $loop['is_featured'];
+	elseif ( ! empty( $loop['featured_image'] ) )
+		$featured_image_position = $loop['featured_image'];
+
 	$classes[] = 'image-' . str_replace( '_', '-', $featured_image_position );
 }
 

@@ -32,7 +32,7 @@
 
 	<hr class="md-sep-small" />
 
-	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $h ) :
+	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5' ) as $h ) :
 		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
 	?>
 		<div class="md-widget md-toggle md-sep-small">

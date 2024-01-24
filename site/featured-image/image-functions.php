@@ -29,9 +29,25 @@ function md_featured_image( $args = array() ) {
 	if ( isset( $args['hide'] ) && $position == $args['hide'] )
 		return;
 
+	$permalink = '';
+	$loop = array();
 	$wrap = 'wrap';
-	$size = isset( $args['size'] ) ? $args['size'] : 'post-thumbnail';
+	$size = 'full';
+
+	if ( in_the_loop() && ! is_singular() )
+		$permalink = get_permalink();
+
+	if ( isset( $args['loop'] ) ) {
+		$permalink = get_permalink();
+		$loop = $args['loop'];
+
+		if ( isset( $args['loop']['featured_image_size'] ) )
+			$size = $args['loop']['featured_image_size'];
+	}
+
 	$classes = array( 'featured-image' );
+
+	if ( isset( $args['loop']))
 
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
@@ -57,6 +73,7 @@ function md_featured_image( $args = array() ) {
 function md_featured_image_position( $args = array() ) {
 	$default = isset( $args['position'] ) ? $args['position'] : 'right';
 	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), $default );
+	$single = md_post_type_field( array( 'layout', 'featured_image' ) );
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
 	if ( $context == 'page' ) {
@@ -66,7 +83,10 @@ function md_featured_image_position( $args = array() ) {
 			$position = md_post_type_field( array( 'featured_image', 'position' ), $default );
 	}
 	else {
-		$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );
+		if ( is_singular() && $single )
+			$position = md_post_meta( array( 'featured_image', 'position' ), null, $single );
+		else
+			$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );
 
 		if ( ( is_category() || is_tax() ) && empty( $position ) )
 			$position = md_term_meta( array( 'loop', 'featured_image' ), null, $post_type );

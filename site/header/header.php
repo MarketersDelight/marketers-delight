@@ -46,8 +46,10 @@ class md_header extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Header', 'md' ),
-				'parent' => 'md_settings',
-				'order' => 30,
+				'parent_slug' => 'themes.php',
+				'hide_tab' => true,
+				'admin_header' => true,
+				'position' => 4,
 				'fields' => array_merge( array(
 					'builder' => array(
 						'type' => 'builder',
@@ -63,7 +65,7 @@ class md_header extends md_api {
 					),
 					'display' => array(
 						'type' => 'checkbox',
-						'options' => array( 'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile', 'sticky' )
+						'options' => array( 'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile' )
 					),
 					'bg_color' => array( 'type' => 'color' ),
 					'border_color' => array( 'type' => 'color' ),

@@ -202,6 +202,10 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e80a',
 			'label' => __( 'Flickr', 'md' )
 		),
+		'forum' => array(
+			'unicode' => 'e902',
+			'label' => __( 'Forum', 'md' )
+		),
 		'github' => array(
 			'unicode' => 'e802',
 			'label' => __( 'GitHub', 'md' ),

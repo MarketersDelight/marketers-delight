@@ -57,6 +57,7 @@ class md_admin {
 		$this->sanitize = new md_sanitize;
 		$this->files = new md_files;
 		$this->requests = new md_requests;
+
 		add_action( 'wp_update_nav_menu', 'md_compile' );
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
@@ -120,41 +121,29 @@ class md_admin {
 	 */
 
 	public function add_menu() {
-		add_submenu_page( 'md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
-
-		add_submenu_page( 'admin.php?page=md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
-
-		add_submenu_page( 'md_settings', __( 'Design', 'md' ), __( 'Design', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings&tab=md_colors' );
-
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;
 
-			$parent_slug = '';
-
-			if ( ! isset( $fields['parent'] ) )
-				$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
-
+			$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
 			$capability = isset( $fields['capability'] ) ? $fields['capability'] : 'manage_options';
 			$callback = array( $this, 'admin_page' );
 			$menu_slug = 'md_' . ( isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $admin_page );
 			$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';
-			$position = isset( $fields['position'] ) ? $fields['position'] : 30;
+			$position = isset( $fields['position'] ) ? $fields['position'] : null;
 			$menu_title = isset( $fields['menu_title'] ) ? $fields['menu_title'] : $fields['name'];
 
 			if ( ! empty( $fields['toplevel'] ) )
 				add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
 			else {
 				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
-				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback );
+
+				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback, $position );
 			}
 
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
 		}
-
-		if ( is_child_theme() )
-			add_submenu_page( 'md_settings', __( 'Edit Child Theme', 'md' ), __( 'Edit Child Theme', 'md' ), 'edit_theme_options', 'theme-editor.php' );
 	}
 
 	/**

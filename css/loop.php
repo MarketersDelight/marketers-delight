@@ -1,20 +1,47 @@
 <style type="text/css">
 
-/* LOOP: LIST */
-/*
-.loop-list.full .loop {
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $content_width; ?>px;
+.loop-header { margin-bottom: <?php echo $half; ?>px; }
+
+.query { position: relative; }
+
+.query.full {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
-*/
 
-.loop-list .entry { display: flex; }
+.query.inline { margin-bottom: <?php echo $single; ?>px; }
 
-.loop-list .image-right .featured-image,
-.loop-list .image-left .featured-image {
-	flex-basis: <?php echo $quad; ?>px;
-	max-width: <?php echo $quad; ?>px;
+.query.inline .title-wrap:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+
+.query .byline-item {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+}
+
+.size-small .byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
+
+/* SIZES */
+
+.size-normal .title {
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.size-small .title {
+	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h6']['line_height']['tablet']; ?>px;
+}
+
+.size-small .the-content, .size-normal .the-content {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+}
+
+/* LOOP - LIST */
+
+.loop-list .entry {
+	display: flex;
+	gap: <?php echo $half; ?>px;
 }
 
 .loop-list .image-right .post-content,
@@ -23,34 +50,51 @@
 	max-width: <?php echo $post_width; ?>px;
 }
 
-.loop-list .image-right .featured-image + .post-content { padding-right: <?php echo $half; ?>px; }
-.loop-list .image-left .featured-image + .post-content { padding-left: <?php echo $half; ?>px; }
+.loop-list .image-right .post-content,
+.loop-list .image-center .post-content { order: -1; }
 
-.loop-list .image-right .post-content, .loop-list .image-center .post-content { order: -1; }
+.loop-list .image-center,
+.loop-list .image-above-headline { flex-flow: wrap; }
 
-.loop-list .image-center, .loop-list .image-above-headline { flex-flow: wrap; }
+.loop-list .image-right .featured-image,
+.loop-list .image-left .featured-image {
+	flex-basis: <?php echo $triple; ?>px;
+	max-width: <?php echo $triple; ?>px;
+}
 
 .loop-list .image-center .featured-image + .post-content,
 .loop-list .image-above-headline .featured-image,
 .loop-list .image-below-headline .featured-image { margin-bottom: <?php echo $single; ?>px; }
 
+.loop-list .the-content p:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
+
 @media all and (min-width: 800px) {
-	.loop-list.full .entry { align-items: center; }
-	.loop-list .image-right .featured-image + .post-content { padding-right: <?php echo $single; ?>px; }
-	.loop-list .image-left .featured-image + .post-content { padding-left: <?php echo $single; ?>px; }
-	.loop-list .image-left .featured-image,
-	.loop-list .image-right .featured-image {
+	.loop-list.full .loop {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $content_width; ?>px;
+	}
+	.loop-list.full.size-large .loop { max-width: 100%; }
+	.loop-list.full.size-medium .entry,
+	.loop-list.full.size-large .entry { gap: <?php echo $single; ?>px; }
+	.loop-list.full.size-medium .image-right .featured-image,
+	.loop-list.full.size-medium .image-left .featured-image {
+		flex-basis: 150px;
+		max-width: 150px;
+	}
+	.loop-list.full.size-large .title {
+		font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
+		line-height: <?php echo $typography['h2']['line_height']['desktop']; ?>px;
+	}
+	.loop-list.full.size-large .entry, .loop-list.size-normal .entry { align-items: center; }
+	.loop-list.full.size-large .image-right .featured-image,
+	.loop-list.full.size-large .image-left .featured-image {
 		flex-basis: <?php echo $sidebar_width; ?>px;
 		max-width: <?php echo $sidebar_width; ?>px;
 	}
-	.loop-list.content-sidebar .image-left .featured-image,
-	.loop-list.content-sidebar .image-right .featured-image {
-		flex-basis: <?php echo round( $sidebar_width / 2); ?>px;
-		max-width: <?php echo round( $sidebar_width / 2); ?>px;
-	}
 }
 
-/* LOOP: COVERS */
+/* LOOP - COVERS */
 
 .loop-covers .entry {
 	background-size: 100%;
@@ -74,16 +118,10 @@
 
 .loop-covers .entry:hover { background-size: 125%; }
 
-.loop-covers .loop .title { text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8); }
-
-.loop-covers .featured .title {
-	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['h3']['line_height']['mobile']; ?>px;
-}
-
-.loop-covers .standard .title {
-	font-size: <?php echo $typography['h6']['font_size']['mobile'] - 2; ?>px;
-	line-height: <?php echo $typography['h6']['line_height']['mobile'] - 1; ?>px;
+.loop-covers .loop .title {
+	font-size: inherit;
+	line-height: inherit;
+	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8);
 }
 
 .loop-covers .post-header {
@@ -96,12 +134,7 @@
 
 .loop-covers .entry:hover .post-header { transform: translateY(-<?php echo $small; ?>px); }
 
-.loop-covers .byline { margin-bottom: <?php echo $third; ?>px; }
-
-.loop-covers .byline-item {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
-}
+.loop-covers .standard .byline-badge { display: none; }
 
 .loop-covers .clickable:after { z-index: 5; }
 
@@ -149,7 +182,6 @@
 	.columns > .entry { padding-left: <?php echo $single; ?>px; }
 	.columns.slim > .entry { padding-left: <?php echo $half; ?>px; }
 	.columns .standard .cover { padding-bottom: <?php echo $half; ?>px; }
-	.columns .byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 	.columns .standard .cover,
 	.box-style .columns .standard .post-header,
 	.box-style .columns .standard .the-content,
@@ -163,7 +195,7 @@
 	}
 	.columns.slim .standard .post-box .title {
 		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h4']['line_height']['tablet']; ?>px;
+		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
 	}
 	.columns.slim .standard .the-content {
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;

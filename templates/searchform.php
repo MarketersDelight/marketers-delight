@@ -2,7 +2,7 @@
 
 	<div class="triggers">
 
-		<span class="trigger trigger-search" data-md-parent="<?php echo esc_attr( $parent ); ?>">
+		<span class="trigger trigger-search" title="<?php echo esc_attr( $title ); ?>" data-md-parent="<?php echo esc_attr( $parent ); ?>">
 			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>

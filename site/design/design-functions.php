@@ -287,6 +287,7 @@ function md_link( $fields, $p = '' ) {
 	$parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
 	$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
 	$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
+	$title = $text ? ' title="' . $text . '"' : '';
 	$subtext = isset( $fields["link{$p}_subtext"] ) ? $fields["link{$p}_subtext"] : '';
 	$url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
 	$phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
@@ -357,7 +358,7 @@ function md_link( $fields, $p = '' ) {
 		$class = ' class="' . esc_attr( $classes ) . '"';
 
 	echo
-		"<$html{$href}{$popup}{$class}{$target}{$style}>".
+		"<$html{$href}{$popup}{$class}{$target}{$style}{$title}>".
 		( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ).
 		( $text || is_customize_preview() ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ).
 		( $subtext || is_customize_preview() ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) .

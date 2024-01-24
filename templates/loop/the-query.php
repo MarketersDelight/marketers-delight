@@ -37,13 +37,11 @@ if ( isset( $loop['include_cats'] ) ) {
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() )
+	while ( $query->have_posts() ) {
+		$query->the_post();
 
-while ( $query->have_posts() ) {
-	$query->the_post();
-
-	include( md_template( 'loop/the-post', true ) );
-}
-
+		include( md_template( 'loop/the-post', true ) );
+	}
 else
 	md_404_template();
 

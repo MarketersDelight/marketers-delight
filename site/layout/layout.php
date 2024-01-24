@@ -54,6 +54,7 @@ class md_layout extends md_api {
 
 	public function fields() {
 		$menus = array();
+		$sanitize = new md_sanitize;
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )
@@ -85,6 +86,10 @@ class md_layout extends md_api {
 			'content_box_style' => array(
 				'type' => 'select',
 				'options' => array( 'box_style', 'minimal' )
+			),
+			'featured_image' => array(
+				'type' => 'select',
+				'options' => array_keys( $sanitize->values['featured_image'] )
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
@@ -152,6 +157,7 @@ class md_layout extends md_api {
 	public function admin_template() {
 		$screen_id = '';
 		$screen = get_current_screen();
+		$sanitize = new md_sanitize;
 		$post_type = esc_attr( $screen->post_type );
 		$screen_base = esc_attr( $screen->base );
 		$is_post = in_array( $screen_base, array( 'post', 'post-new' ) ) ? true : false;

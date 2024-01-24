@@ -6,8 +6,10 @@
 			'label' => __( 'Position on page', 'md' ),
 			'empty_label' => __( 'Do not show', 'md' ),
 			'options' => array(
-				'before_loop' => __( 'Top of page (default)', 'md' ),
-				'after_loop' => __( 'After the Main Loop', 'md' )
+				'before_content_box' => __( 'After Header', 'md' ),
+				'before_content' => __( 'Before Content', 'md' ),
+				'content' => __( 'After Content', 'md' ),
+				'before_footer' => __( 'Before Footer', 'md' )
 			)
 		) ); ?>
 	</div>
@@ -178,7 +180,7 @@
 
 			<h4 class="md-loop-post-title"><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
 
-			<div class="columns-4 columns-half md-sep-small">
+			<div class="columns-3 columns-half md-sep-small">
 
 				<div class="col">
 					<?php $this->fields->field( array( $group, $field, "{$p}featured_image" ), array(
@@ -186,7 +188,14 @@
 						'label' => __( 'Featured Image', 'md' ),
 						'empty_label' => __( 'Use default position', 'md' ),
 						'options' => $sanitize->values['featured_image'],
-						'wrap_classes' => 'md-sep-small'
+						'wrap_classes' => 'md-sep-micro'
+					) ); ?>
+					<?php $this->fields->field( array( $group, $field, "{$p}featured_image_size" ), array(
+						'type' => 'select',
+						'empty_label' => __( 'Show full size image', 'md' ),
+						'options' => array(
+							'thumbnail' => __( 'Post Thumbnail 150x150)', 'md' )
+						)
 					) ); ?>
 				</div>
 
@@ -194,32 +203,29 @@
 					<?php $this->fields->field( array( $group, $field, "{$p}content" ), array(
 						'type' => 'select',
 						'label' => __( 'Post Content', 'md' ),
-						'style' => 'width: 100%',
 						'empty_label' => __( 'Show excerpt', 'md' ),
+						'style' => 'width: 75%',
 						'options' => array(
-							'full' => __( 'Show full text', 'md' ),
-							'hide' => __( 'Hide text', 'md' )
+							'full' => __( 'Show full content', 'md' ),
+							'hide' => __( 'Hide content', 'md' )
 						)
 					) ); ?>
 				</div>
 
-				<div class="col md-sep-small">
+				<div class="col">
 					<?php $this->fields->field( array( $group, $field, "{$p}remove_byline" ), array(
 						'type' => 'select',
 						'label' => __( 'Byline', 'md' ),
 						'empty_label' => __( 'Show full byline', 'md' ),
+						'wrap_classes' => 'md-sep-micro',
 						'options' => array(
 							'before_headline' => __( 'Remove Before Headline', 'md' ),
 							'after_headline' => __( 'Remove After Headline', 'md' ),
 							'remove' => __( 'Remove Byline', 'md' )
 						)
 					) ); ?>
-				</div>
-
-				<div class="col md-sep-small">
 					<?php $this->fields->field( array( $group, $field, "{$p}post_footer" ), array(
 						'type' => 'checkbox',
-						'classes' => 'field-no-label',
 						'options' => array(
 							'remove' => __( 'Remove Post Footer', 'md' )
 						)
@@ -313,15 +319,34 @@
 
 			<div class="col col2 md-full-select">
 
-				<?php if ( $cta_options )
-					$this->fields->field( array( $group, $field, 'x_cta' ), array(
-						'type' => 'select',
-						'label' => __( 'Call to Action', 'md' ),
-						'description' => __( 'The CTA to show after the Xth post.', 'md' ),
-						'empty_label' => __( 'Select call to action...', 'md' ),
-						'wrap_classes' => 'md-sep-micro',
-						'options' => $cta_options
-					) ); ?>
+				<div class="columns-2 columns-half md-sep-micro">
+					<div class="col">
+						<?php $this->fields->field( array( $group, $field, 'style' ), array(
+							'type' => 'select',
+							'label' => __( 'Style', 'md' ),
+							'empty_label' => __( 'Standard', 'md' ),
+							'options' => array(
+								'timeline' => __( 'Timeline', 'md' ),
+								'numbers' => __( 'Numbered', 'md' )
+							)
+						) ); ?>
+					</div>
+					<div class="col">
+						<?php $this->fields->field( array( $group, $field, 'size' ), array(
+							'type' => 'select',
+							'label' => __( 'Font Size', 'md' ),
+							'empty_label' => __( 'Inherit', 'md' ),
+							'options' => array(
+								'large' => __( 'Large', 'md' ),
+								'medium' => __( 'Medium', 'md' ),
+								'small' => __( 'Small', 'md' ),
+								'normal' => __( 'Normal', 'md' )
+							)
+						) ); ?>
+					</div>
+				</div>
+
+				<p class="description"><?php echo __( 'Some styles may not apply to all Loops.', 'md' ); ?></p>
 
 				<?php $this->fields->field( array( $group, $field, 'sidebar' ), array(
 					'type' => 'checkbox',
@@ -344,10 +369,20 @@
 				<?php $this->fields->field( array( $group, $field, 'content_layout' ), array(
 					'type' => 'select',
 					'empty_label' => __( 'Content / Sidebar', 'md' ),
+					'wrap_classes' => 'md-sep-micro',
 					'options' => array(
 						'sidebar_content' => __( 'Sidebar / Content', 'md' )
 					)
 				) ); ?>
+
+				<?php if ( $cta_options )
+					$this->fields->field( array( $group, $field, 'x_cta' ), array(
+						'type' => 'select',
+						'label' => __( 'Call to Action', 'md' ),
+						'description' => __( 'The CTA to show after the Xth post.', 'md' ),
+						'empty_label' => __( 'Select call to action...', 'md' ),
+						'options' => $cta_options
+					) ); ?>
 
 			</div>
 

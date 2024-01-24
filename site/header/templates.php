@@ -36,8 +36,6 @@ class md_header_templates {
 
 		echo '<div class="header-primary">';
 
-		do_action( 'md_hook_header_primary_top' );
-		
 		if ( ! empty( $data['header'] ) )
 			foreach ( $data['header'] as $order => $items ) {
 				$type = esc_attr( $items['type'] );
@@ -50,8 +48,6 @@ class md_header_templates {
 				}
 			}
 
-		do_action( 'md_hook_header_primary_bottom' );		
-		
 		echo '</div>';
 
 		if ( ! empty( $data['header_aside'] ) ) {
@@ -168,7 +164,7 @@ class md_header_templates {
 
 		$classes = join( ' ', $classes );
 	?>
-		<span id="<?php echo esc_attr( $menu_id ); ?>_trigger" class="<?php echo esc_attr( $classes ); ?>">
+		<span id="<?php echo esc_attr( $menu_id ); ?>_trigger" class="<?php echo esc_attr( $classes ); ?>" title="<?php echo esc_attr( $title ); ?>">
 			<?php echo md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>
@@ -224,7 +220,7 @@ class md_header_templates {
 
 		$label_classes = join( ' ', $label_classes );
 	?>
-		<span class="<?php echo esc_attr( $label_classes ); ?>" data-md-parent="header">
+		<span class="<?php echo esc_attr( $label_classes ); ?>" title="<?php echo esc_attr( $title ); ?>" data-md-parent="header">
 			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
 			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
 		</span>

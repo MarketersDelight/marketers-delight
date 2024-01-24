@@ -177,6 +177,13 @@
 				)
 			) ); ?>
 
+			<?php $this->fields->field( 'featured_image', array(
+				'type' => 'select',
+				'empty_label' => __( 'Featured Image', 'md' ),
+				'options' => $sanitize->values['featured_image'],
+				'description' => __( 'Set the default featured image position.', 'md' )
+			) ); ?>
+
 		<?php endif; ?>
 
 	</div>

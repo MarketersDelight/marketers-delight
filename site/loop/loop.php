@@ -87,6 +87,10 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )
 			),
+			'featured_image_size' => array(
+				'type' => 'select',
+				'options' => array( 'thumbnail')
+			),
 			'content' => array(
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )
@@ -145,12 +149,11 @@ class md_loop extends md_api {
 				'options' => $cta_ids
 			),
 
-
 			'title' => array( 'type' => 'text' ),
 			'description' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
-				'options' => array( 'before_loop', 'after_loop' )
+				'options' => array( 'before_content_box', 'before_content', 'content', 'before_footer' )
 			),
 			'offset' => array( 'type' => 'number' ),
 			'show_query' => array(
@@ -172,6 +175,14 @@ class md_loop extends md_api {
 			'content_layout' => array(
 				'type' => 'select',
 				'options' => array( 'sidebar_content' )
+			),
+			'size' => array(
+				'type' => 'select',
+				'options' => array( 'large', 'medium', 'small', 'normal' )
+			),
+			'style' => array(
+				'type' => 'select',
+				'options' => array( 'timeline', 'numbers' )
 			),
 			'tags' => array( 'type' => 'text' ),
 			'author' => array(
