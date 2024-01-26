@@ -2,7 +2,7 @@
 /**
  * Register email form widget.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_loop_query_widget extends WP_Widget {
@@ -10,7 +10,7 @@ class md_loop_query_widget extends WP_Widget {
 	/**
  	 * Assign widget constructors and run Widget actions.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function __construct() {
@@ -23,7 +23,7 @@ class md_loop_query_widget extends WP_Widget {
 	/**
  	 * Get Query data in various formats.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function get_queries( $sort ) {
@@ -49,7 +49,7 @@ class md_loop_query_widget extends WP_Widget {
 	/**
  	 * Render Widget HTML on the frontend.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function widget( $args, $val ) {
@@ -76,7 +76,7 @@ class md_loop_query_widget extends WP_Widget {
 	/**
  	 * Sanitize data on save.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function update( $new, $val ) {
@@ -93,7 +93,7 @@ class md_loop_query_widget extends WP_Widget {
 	/**
  	 * Build Widget Admin Form.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function form( $val ) {

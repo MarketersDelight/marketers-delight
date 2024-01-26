@@ -100,7 +100,7 @@ function md_featured_image_position( $args = array() ) {
  * Get Cover attributes for any given page.
  *
  * @since 4.1
- * @renamed 5.6 (md_featured_image_style)
+ * @renamed 6.0 (md_featured_image_style)
  */
 
 function md_cover( $context = 'post' ) {
@@ -136,7 +136,7 @@ function md_cover( $context = 'post' ) {
 /**
  * Return an array of class names related to a Cover.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_cover_classes( $cover, $string = false ) {
@@ -159,7 +159,7 @@ function md_cover_classes( $cover, $string = false ) {
 /**
  * A simple and thorough check to detect Page Cover.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_has_cover() {

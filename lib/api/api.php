@@ -115,7 +115,7 @@ class md_api {
 			if ( method_exists( $this, 'admin_page_before' ) ) #MD5.4, drop-ins page
 				add_action( "{$this->_id}_admin_page_before_form", array( $this, 'admin_page_before' ) );
 
-			// Admin Settings #5.6
+			// Admin Settings #6.0
 
 			if ( method_exists( $this, 'admin_settings' ) )
 				add_filter( 'md_admin_settings', array( $this, 'admin_settings' ) );
@@ -166,7 +166,7 @@ class md_api {
 	/**
 	 * Get a prefix for option names and values across different contexts.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function _prefix() {
@@ -254,7 +254,7 @@ class md_api {
 	/**
 	 * Get API design data a little easier.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	protected function _data( $key = null ) {
@@ -288,7 +288,7 @@ class md_api {
 	 * Fire all-purpose admin actions. Currently restricted to adding
 	 * page settings to Admin Pages when called from Drop-ins.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function _admin_init() {
@@ -321,7 +321,7 @@ class md_api {
 	/**
 	 * Add class extensions field data to shared array.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function _admin_fields( $settings ) {

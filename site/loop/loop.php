@@ -10,7 +10,7 @@ class md_loop extends md_api {
 	/**
 	 * Include related files.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function includes() {
@@ -204,7 +204,7 @@ class md_loop extends md_api {
 	/**
 	 * Add settings template and script to Page Settings sections.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_fields() {
@@ -287,7 +287,7 @@ class md_loop extends md_api {
 	/**
 	 * Print footer scripts to admin screens to toggle options.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function scripts() {

@@ -11,7 +11,7 @@ class md_featured_image extends md_api {
 	/**
 	 * Include related files.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function includes() {
@@ -81,7 +81,7 @@ class md_featured_image extends md_api {
 	/**
 	 * Filter featured image fields to be saved in other settings groups.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function save( $save ) {
@@ -93,7 +93,7 @@ class md_featured_image extends md_api {
 	/**
 	 * Grouped Featured Image option fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function featured_image_fields() {
@@ -109,7 +109,7 @@ class md_featured_image extends md_api {
 	/**
 	 * Featured Image Position admin field on its own.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function featured_image_position() {

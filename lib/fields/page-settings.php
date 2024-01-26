@@ -2,7 +2,7 @@
 /**
  * A unified settings group to compile various page settings into a joined interface.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_page_settings extends md_api {
@@ -10,7 +10,7 @@ class md_page_settings extends md_api {
 	/**
 	 * Register custom meta box and terms.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function register() {
@@ -24,7 +24,7 @@ class md_page_settings extends md_api {
 	/**
 	 * Render Post meta box template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function meta_box() {
@@ -34,7 +34,7 @@ class md_page_settings extends md_api {
 	/**
 	 * Render meta box template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function term() { ?>
@@ -49,7 +49,7 @@ class md_page_settings extends md_api {
 	/**
 	 * Render admin fields when registered as Page Settings.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_fields() { ?>
@@ -64,7 +64,7 @@ class md_page_settings extends md_api {
 	/**
 	 * Generic template for Meta Box & Term Meta.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_template( $hook ) {

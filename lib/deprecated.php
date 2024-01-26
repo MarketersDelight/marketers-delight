@@ -1,6 +1,6 @@
 <?php
 
-// Deprecated 5.6
+// Deprecated 6.0
 function md_headline_classes( $classes = array() ) {
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );
@@ -27,7 +27,7 @@ function md_page_data() { return array(); }
  * Organize array of lists for use in options.
  *
  * @since 4.9
- * @deprecated 5.6 | use md_email() from /dropins/optins/
+ * @deprecated 6.0 | use md_email() from /dropins/optins/
  */
 function md_email_data( $atts = null ) {
 	return array();
@@ -37,7 +37,7 @@ function md_email_data( $atts = null ) {
  * Check if current page has byline.
  *
  * @since 4.0
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_has_byline() {
 	$show = true;
@@ -50,7 +50,7 @@ function md_has_byline() {
  * Default nav menus.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 
 function md_filter_register_nav_menus() {
@@ -63,7 +63,7 @@ function md_filter_register_nav_menus() {
  * Insert featured image above/below headline with in-post check.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_featured_image_before_headline() {
 	$position = md_featured_image_position();
@@ -80,7 +80,7 @@ function md_featured_image_after_headline() {
  * Checks for inline Featured Image within #the_content.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 
 function md_has_inline_featured_image() {
@@ -93,7 +93,7 @@ function md_has_inline_featured_image() {
  * Filter length of excerpts + more text of loops.
  *
  * @since 4.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_excerpt_length() {
 	$words = md_module( array( 'loop', 'excerpt_length' ) );
@@ -105,7 +105,7 @@ function md_excerpt_length() {
  * Filter trailing excerpt more text.
  *
  * @since 4.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_excerpt_more( $more ) {
     return md_module( array( 'loop', 'excerpt_more' ), '[...]' );
@@ -115,7 +115,7 @@ function md_excerpt_more( $more ) {
  * Change Read More text to user settings.
  *
  * @since 5.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_read_more_text() {
 	$read_more = md_module( array( 'loop', 'read_more' ) );
@@ -126,7 +126,7 @@ function md_read_more_text() {
  * If no service is connected, display this message.
  *
  * @since 4.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_popup_connect_notice() {
 	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md-optins' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
@@ -147,7 +147,7 @@ function md_filter_comments_classes() {
 /**
  * A list of post types to show Share buttons on.
  * @since 5.0
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_share_post_types() {
 	return array_merge( apply_filters( 'md_share_show_on', array() ), md_post_type_meta() );
@@ -157,7 +157,7 @@ function md_share_post_types() {
  * A list of classes to add to the sidebar.
  *
  * @since 4.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_byline_classes() {
 	$classes[] = 'byline';
@@ -169,7 +169,7 @@ function md_byline_classes() {
  * Outputs main sidebar or custom sidebar.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_sidebar() {
 	$name = md_get_sidebar_id();
@@ -180,7 +180,7 @@ function md_sidebar() {
  * A list of classes to add to the sidebar.
  *
  * @since 4.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_sidebar_classes() {
 	echo apply_filters( 'md_filter_sidebar_classes', '' );
@@ -192,7 +192,7 @@ function md_sidebar_classes() {
  * to add to the Sidebars Manager).
  *
  * @since 4.6.2
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_sidebars() {
 	return apply_filters( 'md_filter_sidebars_post_types', array(
@@ -211,7 +211,7 @@ function md_sidebars() {
  * Filter the default image sizes of MD.
  *
  * @since 4.7.4.4
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_image_sizes() {
 	return apply_filters( 'md_filter_image_sizes', array(
@@ -287,7 +287,7 @@ function md_secondary_logo() {
  * Checks if Main Menu is active on page.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_has_main_menu() {
 	if ( ! has_nav_menu( 'main' ) ) return;
@@ -299,7 +299,7 @@ function md_has_main_menu() {
  * Load main menu template file.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_main_menu() {
 	$menu = md_meta( array( 'layout', 'main_menu_menu' ) );
@@ -310,7 +310,7 @@ function md_main_menu() {
  * Counts how many fields are active in Main menu. Minimum to show = 2.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_main_menu_items() {
 	return count( array_filter( array( has_nav_menu( 'main' ), md_main_menu_has_search(), has_nav_menu( 'social' ), apply_filters( 'md_filter_main_menu_items', '' ) ) ) );
@@ -323,7 +323,7 @@ function md_main_menu_has_search() {
  * HTML for MD featured image on taxonomy pages.
  *
  * @since 4.3.5
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_featured_image_tax( $location ) {
 	$position = md_term_meta( array( 'featured_image', 'position' ) );
@@ -347,7 +347,7 @@ function md_featured_image_tax( $location ) {
  * Featured Image position class.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_featured_image_alignment_classes( $position ) {
 	$wrap = ! isset( $atts['wrap'] ) ? ' wrap' : '';
@@ -363,7 +363,7 @@ function md_featured_image_alignment_classes( $position ) {
  * Returns image size. Use anywhere you need to set a the_post_thumbnail size.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_featured_image_size( $pos = null, $thumb = null ) {
 	$position = md_featured_image_position( $pos );
@@ -378,7 +378,7 @@ function md_featured_image_size( $pos = null, $thumb = null ) {
  * If image is set above or below headline, add Featured Image.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_featured_image_above_headline() {
 	if ( has_post_thumbnail() && md_featured_image_position() == 'above_headline' )
@@ -393,7 +393,7 @@ function md_featured_image_below_headline() {
  * Filter classes to teaser boxes.
  *
  * @since 4.9.2
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_teaser_classes( $classes = array() ) {
 	$classes[] = 'blog-teaser';
@@ -404,7 +404,7 @@ function md_teaser_classes( $classes = array() ) {
  * Returns content item HTML container.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_content_item_headline_html() {
 	return md_has_headline_cover() ? 'div' : 'header';
@@ -414,7 +414,7 @@ function md_content_item_headline_html() {
  * Displays header aside content.
  *
  * @since 4.8
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_header_aside() { }
 function md_hook_header_aside() { do_action( 'md_hook_header_aside' ); }
@@ -423,7 +423,7 @@ function md_hook_header_aside() { do_action( 'md_hook_header_aside' ); }
  * Add classes to specified WordPress Widgets (saves sooo much CSS).
  *
  * @since 4.0
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_widget_classes( $params ) {
 	global $wp_registered_widgets;
@@ -451,7 +451,7 @@ function md_widget_classes( $params ) {
  * Returns HTML classes for different layouts.
  *
  * @since 4.1
- * @deprecated 5.6
+ * @deprecated 6.0
  */
 function md_content_block() {
 	if ( md_has_sidebar() ) return 'block-double';

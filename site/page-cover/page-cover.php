@@ -5,7 +5,7 @@
  * Featured Image Position controls that allows for custom design
  * of Page Title's of any kind of page throughout WordPress.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_page_cover extends md_api {
@@ -75,7 +75,7 @@ class md_page_cover extends md_api {
 	/**
 	 * Add settings template and script to Page Settings sections.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_fields() { ?>
@@ -197,7 +197,7 @@ class md_page_cover extends md_api {
 	/**
  	 * Call the Headline template within the Loop.
  	 *
-	 * @since 5.6
+	 * @since 6.0
  	 */
 
 	public function headline() {

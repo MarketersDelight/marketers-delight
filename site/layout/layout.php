@@ -10,7 +10,7 @@ class md_layout extends md_api {
 	/**
 	 * Include additional files for Layout rendering.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function includes() {
@@ -49,7 +49,7 @@ class md_layout extends md_api {
 	 * Register Layout settings for save.
 	 *
 	 * @since 4.7
-	 * @moved 5.6
+	 * @moved 6.0
 	 */
 
 	public function fields() {
@@ -126,7 +126,7 @@ class md_layout extends md_api {
 	/**
 	 * Add settings template and script to Page Settings sections.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_fields() { ?>

@@ -10,7 +10,7 @@ class md_header extends md_api {
 	/**
 	 * Include related files.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function includes() {
@@ -88,7 +88,7 @@ class md_header extends md_api {
 	/**
 	 * Register Builder field data to admin.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function register_builder() {
@@ -137,7 +137,7 @@ class md_header extends md_api {
 	/**
 	 * Load header hooks to template_redirect.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function template() {
@@ -169,7 +169,7 @@ class md_header extends md_api {
 	/**
 	 * Extra JS for radio toggle fields on this page.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_scripts() { ?>
@@ -187,7 +187,7 @@ class md_header extends md_api {
 	/**
 	 * Menu admin fields template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function menu_fields( $group ) {
@@ -199,7 +199,7 @@ class md_header extends md_api {
 	/**
 	 * Search admin fields template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function search_fields( $group ) {
@@ -209,7 +209,7 @@ class md_header extends md_api {
 	/**
 	 * Link admin fields template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function link_fields( $group ) {

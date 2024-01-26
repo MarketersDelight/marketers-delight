@@ -43,7 +43,7 @@ function md_taxonomy_meta() {
 /**
  * A list of page settings modules to add across various page types.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_admin_settings() {
@@ -53,7 +53,7 @@ function md_admin_settings() {
 /**
  * A reverse list of admin settings locations by fields.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_admin_fields() {
@@ -80,7 +80,7 @@ function md_filter_template() {
 /**
  * Get list of items that can be used in a Byline.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_byline_items() {

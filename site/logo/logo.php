@@ -82,7 +82,7 @@ class md_logo extends md_api {
 	/**
 	 * Extra JS for radio toggle fields on this page.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_scripts() { ?>

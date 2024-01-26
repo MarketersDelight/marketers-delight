@@ -346,7 +346,7 @@ class md_sanitize {
 	/**
 	 * Return a save ready list of WP menus.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function menus() {

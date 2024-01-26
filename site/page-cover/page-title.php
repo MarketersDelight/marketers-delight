@@ -4,7 +4,7 @@
  * a main Page Headline, Page Description, and Featured Image
  * with various locations within the markup.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_page_title {
@@ -12,7 +12,7 @@ class md_page_title {
 	/**
 	 * Load Page Title templates.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function templates() {
@@ -65,7 +65,7 @@ class md_page_title {
 	 * Return key data of Page Title, including Headline, Description,
 	 * and the Featured Image.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function get( $key = null ) {
@@ -127,7 +127,7 @@ class md_page_title {
 	/**
 	 * Render Page Title HTML wrapper.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function html() {
@@ -143,7 +143,7 @@ class md_page_title {
 	/**
 	 * Render the Page Description.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function description() {
@@ -161,7 +161,7 @@ class md_page_title {
 	/**
 	 * Render the Page Featured Image.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function image() {
@@ -202,7 +202,7 @@ class md_page_title {
 	/**
 	 * Render the Page CTA.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function cta() {

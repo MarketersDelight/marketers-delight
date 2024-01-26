@@ -36,7 +36,7 @@ endif;
 /**
  * Inner HTML element and closing div.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_inner_html() {
@@ -51,7 +51,7 @@ function md_html_close() {
  * Render the Post/Page Title with title wrap classes,
  * optional permalink, byline, hooks, and $loop flexibility.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_title( $args = array() ) {
@@ -112,7 +112,7 @@ function md_title( $args = array() ) {
 /**
  * Show Page Title of current page/type.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_page_title() {
@@ -604,7 +604,7 @@ function md_comment_form( $args = array() ) {
 /**
  * Move Name, Email, and Website fields back to top of Comment Form.
  *
- * @since 5.6
+ * @since 6.0
 */
 
 function md_comment_form_reorder( $fields ) {
@@ -637,7 +637,7 @@ function md_post_nav() {
 /**
  * Check if Post Nav is active on page.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_has_post_nav() {

@@ -71,7 +71,7 @@ function md_header_menu() {
 /**
  * Checks if has header search.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_has_header_search() {

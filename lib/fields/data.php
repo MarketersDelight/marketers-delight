@@ -2,7 +2,7 @@
 /**
  * Holds frequently used data of more complex fields.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_fields_data {
@@ -12,7 +12,7 @@ class md_fields_data {
 	/**
      * Assign shared class data and other setup actions.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function __construct() {
@@ -22,7 +22,7 @@ class md_fields_data {
 	/**
      * A common fields structure for deploying Fonts & Typography options.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function typography() {
@@ -51,7 +51,7 @@ class md_fields_data {
 	/**
      * A collection of save fields to be pre-grouped for Page Settings.
  	 *
- 	 * @since 5.6
+ 	 * @since 6.0
  	 */
 
 	public function page_settings() {
@@ -69,13 +69,13 @@ class md_fields_data {
 	/**
 	 * Collect a list of fields in a Links Group.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	/**
 	 * Collect a list of fields in a Links Group.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function links( $args = array() ) {

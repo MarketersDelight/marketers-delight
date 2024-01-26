@@ -3,7 +3,7 @@
  * A settings area to create versatile bylines across post
  * types and their various screens.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_byline extends md_api {
@@ -11,7 +11,7 @@ class md_byline extends md_api {
 	/**
 	 * Include additional files.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function includes() {
@@ -21,7 +21,7 @@ class md_byline extends md_api {
 	/**
 	 * Load byline action hooks and filters.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function actions() {
@@ -31,7 +31,7 @@ class md_byline extends md_api {
 	/**
 	 * A list of elements that can be added to Byline areas.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function byline_items() {
@@ -91,7 +91,7 @@ class md_byline extends md_api {
 	/**
 	 * Create admin page and meta box.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function fields() {
@@ -128,7 +128,7 @@ class md_byline extends md_api {
 	/**
 	 * Author fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function author( $group ) {
@@ -155,7 +155,7 @@ class md_byline extends md_api {
 	/**
 	 * Post date fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function date( $group ) {
@@ -174,7 +174,7 @@ class md_byline extends md_api {
 	/**
 	 * Last Updated date fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function last_updated( $group ) {
@@ -191,7 +191,7 @@ class md_byline extends md_api {
 	/**
 	 * Comments fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function comments( $group ) {
@@ -217,7 +217,7 @@ class md_byline extends md_api {
 	/**
 	 * Category fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function category( $group ) {
@@ -227,7 +227,7 @@ class md_byline extends md_api {
 	/**
 	 * Badge fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function badge( $group ) {
@@ -252,7 +252,7 @@ class md_byline extends md_api {
 	/**
 	 * Edit fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function edit( $group ) {
@@ -268,7 +268,7 @@ class md_byline extends md_api {
 	/**
 	 * Single Post Settings fields template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_fields() {

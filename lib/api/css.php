@@ -37,7 +37,7 @@ class md_css {
 	/**
 	 * Build list of stylesheets to include in style.css.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	protected function css_files() {
@@ -180,7 +180,7 @@ class md_css {
 	 * Render a list of CSS files to generate a
 	 * table of contents at the top of the stylesheet.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	private function style_guide() {

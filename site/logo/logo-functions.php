@@ -61,7 +61,7 @@ function md_has_logo() {
  * Render custom logo image/markup.
  *
  * @since 4.5.4
- * @renamed 5.6 (formerly md_has_custom_logo)
+ * @renamed 6.0 (formerly md_has_custom_logo)
  */
 
 function md_custom_logo() {

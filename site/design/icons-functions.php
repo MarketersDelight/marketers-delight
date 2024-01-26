@@ -69,7 +69,7 @@ function md_font_icons_url() {
 /**
  * Print icons CSS styles by class names.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_icons_css() {
@@ -86,7 +86,7 @@ function md_icons_css() {
 /**
  * Get an SVG by icon name.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_svg( $name ) {
@@ -96,7 +96,7 @@ function md_svg( $name ) {
 /**
  * A collection of SVGs accessible by array keys.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_svgs( $name = null ) {

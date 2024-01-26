@@ -3,7 +3,7 @@
  * This class holds all frontend templates and routes
  * for the Header area.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_header_templates {
@@ -11,7 +11,7 @@ class md_header_templates {
 	/**
 	 * Build Header template with flexible Builder fields data.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function template() {
@@ -75,7 +75,7 @@ class md_header_templates {
  	 * Displays the header menu and other triggers.
  	 *
  	 * @since 4.8
-	 * Formerly md_header_triggers() #5.6
+	 * Formerly md_header_triggers() #6.0
  	 */
 
 	public function header_triggers( $args = null ) {
@@ -104,7 +104,7 @@ class md_header_templates {
 	/**
 	 * Frontend markup for Menu.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function menu( $fields = array() ) {
@@ -143,7 +143,7 @@ class md_header_templates {
 	/**
 	 * Header menu trigger template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function menu_trigger() {
@@ -173,7 +173,7 @@ class md_header_templates {
 	/**
 	 * Frontend markup for Search.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function search( $fields ) {
@@ -201,7 +201,7 @@ class md_header_templates {
 	/**
 	 * Header search trigger template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function search_trigger() {
@@ -229,7 +229,7 @@ class md_header_templates {
 	/**
 	 * Frontend markup for Link.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function link( $fields ) {

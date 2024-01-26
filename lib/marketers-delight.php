@@ -15,7 +15,7 @@ final class marketers_delight {
 	 */
 
 	public function constants() {
-		define( 'MD_VERSION', '5.6' );
+		define( 'MD_VERSION', '6.0' );
 		define( 'MD_THEME_NAME', 'Marketers Delight 4' );
 		define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 		define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -225,7 +225,7 @@ final class marketers_delight {
 	/**
 	 * Enqueue prioritized scripts and styles.
 	 *
-	 * @since 5.5.6
+	 * @since 5.6.0
 	 */
 
 	public function enqueue_priority() {

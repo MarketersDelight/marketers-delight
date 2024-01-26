@@ -9,7 +9,7 @@
  * This is to be used for Core Drop-in functions, but will probably be changed
  * as of the creation of md_dropin_template() in MD5.3.
  *
- * As of MD5.6, this function no longer looks for the deprecated /content/ folder.
+ * As of MD6.0, this function no longer looks for the deprecated /content/ folder.
  *
  * Set $path to true to return the file path instead.
  *
@@ -308,7 +308,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 /**
  * Get Post Type specific admin fields.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
@@ -400,7 +400,7 @@ function md_module( $keys = null, $default = null ) {
 /**
  * Return Builder fields data.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_get_builder( $id, $type = null, $area = null ) {
@@ -445,7 +445,7 @@ function md_clean_id( $id ) {
  * up a bug that changes the global Loop ID of the first post in the Loop
  * when a Loop Query is modified to combine two post types.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_get_post_type( $post_id = null ) {

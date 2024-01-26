@@ -663,7 +663,7 @@ class md_fields {
 	 * Apply Builder template. Holds Elements tray for dragging new
 	 * elements and programmatically display drop areas.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function builder( $name, $id, $option, $args ) {
@@ -678,7 +678,7 @@ class md_fields {
 	/**
 	 * Render callback for each Builder Fields Group.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function builder_fields( $key, $group, $type, $fields ) {
@@ -729,7 +729,7 @@ class md_fields {
 	/**
 	 * Use this Field Group to display Link admin fields.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function link_fields( $args = array() ) {
@@ -748,7 +748,7 @@ class md_fields {
 	/**
 	 * Build generic Page fields for standard components of a web page.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function page_fields() {
@@ -762,7 +762,7 @@ class md_fields {
 	 * A valet method to render the Byline Position field
 	 * when adding custom byline items.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function byline_fields( $group, $args = array() ) {

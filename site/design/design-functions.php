@@ -162,7 +162,7 @@ function md_google_fonts( $format = null ) {
  * Build custom inline CSS on the fly with data from
  * custom values and disperse into media queries.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_inline_css( $args ) {

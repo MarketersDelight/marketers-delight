@@ -2,7 +2,7 @@
 /**
  * Create Post Settings admin pages.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 class md_post extends md_api {
@@ -10,7 +10,7 @@ class md_post extends md_api {
 	/**
 	 * Create admin page and meta box.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function register() {
@@ -30,7 +30,7 @@ class md_post extends md_api {
 	/**
 	 * A simple way to override the post count loop for archive.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function parse_query( $wp ) {
@@ -55,7 +55,7 @@ class md_post extends md_api {
 	 * Pull admin settings from various parts of MD for use
 	 * on this settings page.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_settings( $settings ) {
@@ -67,7 +67,7 @@ class md_post extends md_api {
 	/**
 	 * Admin page template.
 	 *
-	 * @since 5.6
+	 * @since 6.0
 	 */
 
 	public function admin_page() {

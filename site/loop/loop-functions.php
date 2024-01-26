@@ -82,7 +82,7 @@ function md_get_loop() {
  *
  * The $position variable is set from the hook md_query() is hooked to.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_query( $position = null ) {
@@ -101,7 +101,7 @@ function md_query( $position = null ) {
 /**
  * Load Queries to hook areas when auto-inserted.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_query_template() {
@@ -396,7 +396,7 @@ function md_the_content( $loop ) {
  * Create our own Excerpt with native WP functions so
  * we can modify length and more without use of filters.
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_the_excerpt( $loop ) {

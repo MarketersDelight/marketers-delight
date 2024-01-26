@@ -5,7 +5,7 @@
  *
  * Accepts: before_headline | after_headline | after_post
  *
- * @since 5.6
+ * @since 6.0
  */
 
 function md_get_byline( $position, $loop = array() ) {
