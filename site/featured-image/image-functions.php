@@ -51,14 +51,15 @@ function md_featured_image( $args = array() ) {
 
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
-/*
-	if ( in_array( $position, array( '', 'right' ) ) )
-		$classes[] = "alignright $wrap";
-	elseif ( $position == 'left' )
-		$classes[] = "alignleft $wrap";
-	elseif ( $position == 'center' )
-		$classes[] = 'aligncenter';
-*/
+
+	if ( isset( $args['inline'] ) )
+		if ( in_array( $position, array( '', 'right' ) ) )
+			$classes[] = "alignright $wrap";
+		elseif ( $position == 'left' )
+			$classes[] = "alignleft $wrap";
+		elseif ( $position == 'center' )
+			$classes[] = 'aligncenter';
+
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );
@@ -86,7 +87,7 @@ function md_featured_image_position( $args = array() ) {
 		if ( is_singular() && $single )
 			$position = md_post_meta( array( 'featured_image', 'position' ), null, $single );
 		else
-			$position = md_post_meta( array( 'featured_image', 'position' ), null, $post_type );
+			$position = $post_type;
 
 		if ( ( is_category() || is_tax() ) && empty( $position ) )
 			$position = md_term_meta( array( 'loop', 'featured_image' ), null, $post_type );
@@ -177,7 +178,7 @@ function md_has_cover() {
  */
 
 function md_get_caption( $id = null ) {
-	if ( ! is_singular() )
+	if ( ! is_singular() || ! in_the_loop() )
 		return;
 
 	if ( empty( $id ) )

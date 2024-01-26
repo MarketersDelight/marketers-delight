@@ -38,6 +38,7 @@ final class marketers_delight {
 	public function init() {
 		$this->constants();
 		$this->includes();
+
 		add_action( 'init', array( $this, 'wp_init' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile' );

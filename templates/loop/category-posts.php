@@ -43,4 +43,4 @@ foreach ( $categories->terms as $category ) {
 }
 
 if ( ! isset( $args['query'] ) )
-	md_pagination();
+	md_pagination( $loop );

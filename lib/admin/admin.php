@@ -121,6 +121,8 @@ class md_admin {
 	 */
 
 	public function add_menu() {
+		add_submenu_page( 'index.php', __( 'Edit MD', 'md' ), __( 'Marketers Delight', 'md' ), 'edit_theme_options', 'themes.php?page=md_settings', null );
+
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;

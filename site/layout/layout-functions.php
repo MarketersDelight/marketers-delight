@@ -26,7 +26,9 @@ function md_inline_js() {
 		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
 
 	wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
-	wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
+
+	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
+		wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
 }
 
 endif;
@@ -657,12 +659,11 @@ function md_has_post_nav() {
  * @since 4.0
  */
 
-function md_pagination() {
+function md_pagination( $loop = array() ) {
 	if ( is_singular() )
 		return;
 
 	$big = 999999999;
-
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$prelabel = ! empty( $loop['previous_label'] ) ? $loop['previous_label'] : __( 'Previous', 'md' );
 	$nxtlabel = ! empty( $loop['next_label'] ) ? $loop['next_label'] : __( 'Next', 'md' );
@@ -746,10 +747,6 @@ function md_footer_classes() {
  */
 
 function md_footer_columns_template() {
-	$columns = md_footer_columns();
-	$classes = "entry f{$columns}";
-	// <div class="footer-columns<?php echo $columns > 1 ? " columns-double columns-$columns" : ''; mb-single">
-
 	if ( md_has_footer_columns() )
 		include( md_template( 'footer-columns', true ) );
 }

@@ -24,7 +24,9 @@ function md_header_classes() {
 	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
 	$classes = array();
 	$classes[] = 'header';
-	$classes[] = 'sticky';
+
+	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
+		$classes[] = 'sticky';
 
 	if ( ! md_has_menu() || ! md_has_logo() )
 		$classes[] = 'header-simple';

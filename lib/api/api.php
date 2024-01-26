@@ -72,7 +72,7 @@ class md_api {
 
 		// Filters
 
-		if ( method_exists( $this, 'post_type_meta' ) )
+		if ( method_exists( $this, 'post_meta' ) )
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 
 		if ( method_exists( $this, 'taxonomy_meta' ) )

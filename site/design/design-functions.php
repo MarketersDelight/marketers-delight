@@ -342,6 +342,7 @@ function md_link( $fields, $p = '' ) {
 	if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
 		$popup = ' data-popup="popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
 		$classes[] = 'popup-trigger';
+
 		md_popup( array( 'id' => $fields["link{$p}_popup"] ) );
 	}
 
@@ -359,7 +360,7 @@ function md_link( $fields, $p = '' ) {
 
 	echo
 		"<$html{$href}{$popup}{$class}{$target}{$style}{$title}>".
-		( isset( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ).
+		( ! empty( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ).
 		( $text || is_customize_preview() ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ).
 		( $subtext || is_customize_preview() ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) .
 		"</$html>";

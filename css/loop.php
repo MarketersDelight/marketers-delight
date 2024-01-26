@@ -69,11 +69,6 @@
 .loop-list .the-content p:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
 @media all and (min-width: 800px) {
-	.loop-list.full .loop {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
 	.loop-list.full.size-large .loop { max-width: 100%; }
 	.loop-list.full.size-medium .entry,
 	.loop-list.full.size-large .entry { gap: <?php echo $single; ?>px; }
@@ -175,7 +170,6 @@
 		align-items: center;
 		display: flex;
 		flex-flow: wrap;
-		justify-content: center;
 		margin-left: -<?php echo $single; ?>px;
 	}
 	.columns.slim { margin-left: -<?php echo $half; ?>px; }

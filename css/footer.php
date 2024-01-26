@@ -13,6 +13,7 @@
 }
 
 .footer .columns {
+	justify-content: center;
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
@@ -21,6 +22,7 @@
 	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
+	text-align: center;
 }
 
 .footer a:not(.button) { color: <?php echo $colors['footer']['links']; ?> }

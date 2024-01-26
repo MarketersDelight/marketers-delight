@@ -18,12 +18,14 @@ function md_get_byline( $position, $loop = array() ) {
 	if ( isset( $loop['is_featured'] ) ) {
 		if ( isset( $loop['featured_remove_byline'] ) )
 			$remove = $loop['featured_remove_byline'];
+
 		if ( ! empty( $loop['featured_post_footer']['remove'] ) )
 			$remove_footer = true;
 	}
 	else {
 		if ( isset( $loop['remove_byline'] ) )
 			$remove = $loop['remove_byline'];
+
 		if ( ! empty( $loop['post_footer']['remove'] ) )
 			$remove_footer = true;
 	}
@@ -31,7 +33,7 @@ function md_get_byline( $position, $loop = array() ) {
 	if ( $position == $remove || $remove == 'remove' || ( $position == 'after_post' && $remove_footer ) )
 		return;
 
-	if ( is_home() || is_archive() )
+	if ( is_home() || is_archive() || isset( $loop['is_query'] ) )
 		$context = 'archives';
 
 	foreach ( $builder as $id => $fields )

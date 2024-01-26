@@ -89,7 +89,7 @@ function md_query( $position = null ) {
 	$queries = md_post_type_field( array( 'loop', 'query' ), array() );
 
 	foreach ( $queries as $query_id => $loop ) {
-		if ( ! isset( $loop['position'] ) || $loop['position'] !== $position )
+		if ( $loop['position'] !== $position )
 			continue;
 
 		$loop['is_query'] = true;
@@ -117,8 +117,10 @@ function md_query_template() {
 	);
 
 	foreach ( $queries as $query_id => $loop ) {
-		if ( isset( $loop['position'] ) )
-			$position = $loop['position'];
+		if ( ! isset( $loop['position'] ) )
+			continue;
+
+		$position = $loop['position'];
 
 		if ( empty( $hooks[$position] ) )
 			continue;
@@ -194,7 +196,8 @@ function md_loop( $args = array() ) {
 
 		if ( ! is_singular() ) {
 			echo '</div>';
-			md_pagination();
+
+			md_pagination( $loop );
 		}
 	}
 	else
@@ -321,8 +324,12 @@ function md_headline( $args = array() ) {
 
 	if ( isset( $loop['is_featured'] ) )
 		$image_args['position'] = $loop['is_featured'];
-	elseif ( isset( $loop['featured_image'] ) )
-		$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
+	elseif ( isset( $loop['featured_image'] ) ) {
+		$image_args['position'] = $loop['featured_image'];
+
+		if ( is_singular() )
+			$image_args['position'] = md_post_meta( array( 'featured_image', 'position' ), null, $loop['featured_image'] );
+	}
 
 	if ( $context == 'post' ) {
 		$image_args['show'] = 'above_headline';
