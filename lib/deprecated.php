@@ -1,6 +1,7 @@
 <?php
 
 // Deprecated 6.0
+function md_content_text() { md_content( array() ); }
 function md_headline_classes( $classes = array() ) {
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );
 	$classes = join( ' ', $classes );

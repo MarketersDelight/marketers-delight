@@ -57,7 +57,7 @@ function md_hook_before_content_box() {
 }
 
 function md_hook_content_box_top() {
-	do_action( 'md_hook_content_box_top' );
+	do_action( 'md_hook_content_box_top', 'content_box_top' );
 }
 
 function md_hook_content_box_bottom() {

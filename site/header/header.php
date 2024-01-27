@@ -46,10 +46,9 @@ class md_header extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Header', 'md' ),
-				'parent_slug' => 'themes.php',
+				'parent' => 'md_settings',
 				'hide_tab' => true,
 				'admin_header' => true,
-				'position' => 4,
 				'fields' => array_merge( array(
 					'builder' => array(
 						'type' => 'builder',

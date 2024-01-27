@@ -63,7 +63,12 @@ class md_loop_query_widget extends WP_Widget {
 
 		if ( $val['query'] ) {
 			$query_attrs = explode( '_', $val['query'] );
-			$loop = md_setting( array( $query_attrs[0], 'loop', 'query', $query_attrs[1] ), array() );
+			$query = md_setting( array( $query_attrs[0], 'loop', 'query' ), array() );
+
+			if ( empty( $query[$query_attrs[1]] ) ) // is selection a Query?
+				return;
+
+			$loop = $query[$query_attrs[1]];
 			$loop['is_query'] = true;
 			$loop['is_inline'] = true;
 

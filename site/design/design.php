@@ -104,7 +104,14 @@ class md_colors extends md_api {
 				'parent' => 'md_settings',
 				'admin_header' => true,
 				'hide_tab' => true,
-				'fields' => $fields
+				'fields' => array_merge( array(
+					'content' => array(
+						'design' => array(
+							'type' => 'checkbox',
+							'options' => array( 'enable' )
+						), $fields )
+					)
+				)
 			)
 		);
 	}
@@ -138,10 +145,6 @@ class md_colors extends md_api {
 				'button-text' => __( 'Text color', 'md' ),
 				'button-sec' => __( 'Background color', 'md' ),
 				'button-sec-text' => __( 'Text color', 'md' )
-			),
-			'content' => array(
-				'bg_color' => __( 'Background', 'md' ),
-				'border_color' => __( 'Border', 'md' )
 			),
 			'sidebar' => array(
 				'bg_color' => __( 'Background', 'md' ),

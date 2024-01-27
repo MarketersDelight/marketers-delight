@@ -1,28 +1,29 @@
 <article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?><?php echo md_style( $style ); ?>>
 
-	<?php md_featured_image( array(
-		'hide' => 'below_headline',
-		'position' => $featured_image_position,
-		'loop' => $loop
-	) ); ?>
-
-	<div class="post-content">
-
-		<?php md_title( array(
-			'loop' => $loop
-		) ); ?>
+	<div class="post-box">
 
 		<?php md_featured_image( array(
-			'position' => $featured_image_position,
-			'show' => 'below_headline',
+			'show' => array( 'above_headline' ),
 			'loop' => $loop
 		) ); ?>
 
-		<div class="the-content">
+		<div class="post-header">
 
-			<?php md_the_content( $loop ); ?>
+			<?php md_title( array(
+				'loop' => $loop,
+				'image' => array(
+					'hide' => array( 'above_headline', 'below_headline' )
+				)
+			) ); ?>
 
 		</div>
+
+		<?php md_featured_image( array(
+			'show' => array( 'below_headline' ),
+			'loop' => $loop
+		) ); ?>
+
+		<?php md_content( $loop ); ?>
 
 	</div>
 

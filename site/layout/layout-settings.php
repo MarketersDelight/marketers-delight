@@ -145,24 +145,14 @@
 				)
 			) ); ?>
 
-			<?php $this->fields->field( 'content_box_style', array(
-				'type' => 'select',
-				'empty_label' => __( 'Use default style', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'box_style' => __( 'Box style', 'md' ),
-					'minimal' => __( 'Simple style', 'md' )
-				)
-			) ); ?>
-
-			<?php if ( $is_post ) : ?>
-				<?php $this->fields->field( 'content', array(
+			<?php if ( $is_post )
+				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
 						'full' => __( 'Show Full-Width', 'md' ),
 					)
-				) ); ?>
-			<?php endif; ?>
+				) );
+			?>
 
 		</div>
 

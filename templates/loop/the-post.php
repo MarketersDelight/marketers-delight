@@ -7,22 +7,24 @@ $featured_image_position = md_featured_image_position();
 
 if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
 	$classes[] = 'featured';
-	$loop['is_featured'] = true;
-
-	if ( ! empty( $loop['featured_featured_image'] ) )
-		$loop['is_featured'] = $loop['featured_featured_image'];
+	$loop = md_loop_featured( $loop );
 }
 else {
 	$classes[] = 'standard';
-
-	if ( isset( $loop['is_featured'] ) )
-		unset( $loop['is_featured'] );
+	$loop = $looped;
 }
 
+if ( empty( $loop['read_more'] ) )
+	$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
+
+if ( empty( $loop['excerpt_length'] ) )
+	$loop['excerpt_length'] = 55;
+
+if ( empty( $loop['excerpt_more'] ) )
+	$loop['excerpt_more'] = '[...]';
+
 if ( $featured_image_id ) {
-	if ( isset( $loop['is_featured'] ) )
-		$featured_image_position = $loop['is_featured'];
-	elseif ( ! empty( $loop['featured_image'] ) )
+	if ( isset( $loop['featured_image'] ) )
 		$featured_image_position = $loop['featured_image'];
 
 	$classes[] = 'image-' . str_replace( '_', '-', $featured_image_position );
@@ -33,8 +35,6 @@ if ( $columns > 1 )
 		$classes[] = "f{$columns}";
 	else
 		$style['flex_basis'] = ( 100 / $columns ) . '%';
-
-$title_args['loop'] = $loop;
 
 $classes[] = $c % 2 == 0 ? 'even' : 'odd';
 $classes = join( ' ', $classes );

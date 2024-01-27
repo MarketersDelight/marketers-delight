@@ -153,7 +153,7 @@ class md_loop extends md_api {
 			'description' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
-				'options' => array( 'before_content_box', 'before_content', 'content', 'before_footer' )
+				'options' => array( 'content_box_top', 'before_content', 'content', 'before_footer' )
 			),
 			'offset' => array( 'type' => 'number' ),
 			'show_query' => array(

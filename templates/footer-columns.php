@@ -1,10 +1,10 @@
 <div class="columns wide">
 
-<?php foreach ( md_filter_footer_columns() as $col ) : ?>
+<?php foreach ( $columns as $col ) : ?>
 
 <?php if ( is_active_sidebar( "md-footer-col-$col" ) ) : ?>
 
-	<div class="entry f3">
+	<div class="entry f<?php echo esc_attr( count( $columns ) ); ?>">
 
 		<?php dynamic_sidebar( "md-footer-col-$col" ); ?>
 

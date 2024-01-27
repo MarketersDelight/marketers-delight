@@ -6,7 +6,7 @@
 			'label' => __( 'Position on page', 'md' ),
 			'empty_label' => __( 'Do not show', 'md' ),
 			'options' => array(
-				'before_content_box' => __( 'After Header', 'md' ),
+				'content_box_top' => __( 'After Header', 'md' ),
 				'before_content' => __( 'Before Content', 'md' ),
 				'content' => __( 'After Content', 'md' ),
 				'before_footer' => __( 'Before Footer', 'md' )

@@ -6,7 +6,7 @@
 			if ( ! md_has_headline_cover() )
 				md_headline( array( 'loop' => $loop ) );
 
-			md_content_text( $loop );
+			md_content( $loop );
 
 			md_hook_content_item();
 		?>

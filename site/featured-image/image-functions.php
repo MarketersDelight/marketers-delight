@@ -12,8 +12,8 @@ function md_featured_image( $args = array() ) {
 
 	$pos_args = array();
 
-	if ( isset( $args['position'] ) )
-		$position = $args['position'];
+	if ( isset( $args['loop']['featured_image'] ) )
+		$position = $args['loop']['featured_image'];
 	else
 		$position = md_featured_image_position();
 
@@ -23,10 +23,10 @@ function md_featured_image( $args = array() ) {
 	if ( isset( $args['inline'] ) && ! in_array( $position, array( '', 'left', 'right', 'center' ) ) )
 		return;
 
-	if ( isset( $args['show'] ) && $position !== $args['show'] )
+	if ( isset( $args['show'] ) && ! in_array( $position, $args['show'] ) )
 		return;
 
-	if ( isset( $args['hide'] ) && $position == $args['hide'] )
+	if ( isset( $args['hide'] ) && in_array( $position, $args['hide'] ) )
 		return;
 
 	$permalink = '';
@@ -74,7 +74,7 @@ function md_featured_image( $args = array() ) {
 function md_featured_image_position( $args = array() ) {
 	$default = isset( $args['position'] ) ? $args['position'] : 'right';
 	$post_type = md_post_type_field( array( 'loop', 'featured_image' ), $default );
-	$single = md_post_type_field( array( 'layout', 'featured_image' ) );
+	$single = md_post_type_field( array( 'layout', 'featured_image' ), $post_type );
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
 	if ( $context == 'page' ) {
@@ -84,7 +84,7 @@ function md_featured_image_position( $args = array() ) {
 			$position = md_post_type_field( array( 'featured_image', 'position' ), $default );
 	}
 	else {
-		if ( is_singular() && $single )
+		if ( is_singular() )
 			$position = md_post_meta( array( 'featured_image', 'position' ), null, $single );
 		else
 			$position = $post_type;

@@ -83,10 +83,6 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => array( 'sidebar_content' )
 			),
-			'content_box_style' => array(
-				'type' => 'select',
-				'options' => array( 'box_style', 'minimal' )
-			),
 			'featured_image' => array(
 				'type' => 'select',
 				'options' => array_keys( $sanitize->values['featured_image'] )

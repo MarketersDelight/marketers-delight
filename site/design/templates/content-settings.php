@@ -5,15 +5,30 @@
 	<div class="md-widget-item">
 
 		<div class="columns-3 columns-single">
-			<?php foreach ( $options['content'] as $field => $label ) : ?>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'content', $field ), array(
-						'type' => 'color',
-						'label' => $label,
-						'default' => $defaults['colors']['content'][$field]
-					) ); ?>
-				</div>
-			<?php endforeach; ?>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'content', 'bg_color' ), array(
+					'type' => 'color',
+					'label' => __( 'Background', 'md' ),
+					'default' => $defaults['colors']['content']['bg_color']
+				) ); ?>
+			</div>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'content', 'border_color' ), array(
+					'type' => 'color',
+					'label' => __( 'Border', 'md' ),
+					'default' => $defaults['colors']['content']['border_color']
+				) ); ?>
+			</div>
+		</div>
+
+		<div class="md-sep-small">
+			<?php $this->fields->field( array( 'content', 'design' ), array(
+				'type' => 'checkbox',
+				'description' => __( 'Removes background color and extra spacing from posts.', 'md' ),
+				'options' => array(
+					'enable' => __( 'Minimal style', 'md' )
+				)
+			) ); ?>
 		</div>
 
 		<hr class="md-sep-small" />

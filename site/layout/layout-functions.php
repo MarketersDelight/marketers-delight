@@ -58,11 +58,11 @@ function md_title( $args = array() ) {
 	$context = isset( $args['context'] ) ? esc_attr( $args['context'] ) : 'post';
 	$title = get_the_title();
 	$permalink = null;
-	$byline_args = array();
+	$byline_args = $image_args = array();
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 
 	if ( isset( $args['loop'] ) )
-		$byline_args['loop'] = $args['loop'];
+		$byline_args['loop'] = $image_args['loop'] = $args['loop'];
 
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
@@ -95,6 +95,11 @@ function md_title( $args = array() ) {
 		echo '<div class="title-wrap">';
 
 		do_action( "md_hook_before_{$context}_title" );
+
+		if ( isset( $args['image'] ) ) {
+			$image_args = array_merge( $args['image'], $image_args );
+			md_featured_image( $image_args );
+		}
 
 		echo "<$h class=\"title\">$title_html</$h>";
 
@@ -211,8 +216,7 @@ function md_content_box() {
  */
 
 function md_content_box_classes( $classes = array(), $loop = array() ) {
-	$default_style = md_post_type_field( array( 'layout', 'content_box_style' ), 'box_style' );
-	$style = md_meta( array( 'layout', 'content_box_style' ), null, $default_style );
+	$minimal_style = md_setting( array( 'colors', 'content', 'design', 'enable' ) );
 
 	if ( ! empty( $loop ) ) {
 		$loop_type = ! empty( $loop['loop'] ) ? $loop['loop'] : '';
@@ -250,8 +254,8 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 			$classes[] = 'expanded';
 	}
 
-	if ( ! isset( $loop['is_query'] ) )
-		$classes[] = str_replace( '_', '-', $style );
+	if ( ! isset( $loop['is_query'] ) && ! $minimal_style )
+		$classes[] = 'box-style';
 
 	if ( ! isset( $loop['is_inline'] ) )
 		$classes[] = 'format';
@@ -747,6 +751,8 @@ function md_footer_classes() {
  */
 
 function md_footer_columns_template() {
+	$columns = md_filter_footer_columns();
+
 	if ( md_has_footer_columns() )
 		include( md_template( 'footer-columns', true ) );
 }

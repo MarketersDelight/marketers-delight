@@ -39,55 +39,31 @@
 
 /* LOOP - LIST */
 
-.loop-list .entry {
+.loop-list .title-wrap {
+	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px;
 }
 
-.loop-list .image-right .post-content,
-.loop-list .image-left .post-content {
-	flex: 1;
-	max-width: <?php echo $post_width; ?>px;
-}
-
-.loop-list .image-right .post-content,
-.loop-list .image-center .post-content { order: -1; }
-
-.loop-list .image-center,
-.loop-list .image-above-headline { flex-flow: wrap; }
+.loop-list .title { flex: 1; }
 
 .loop-list .image-right .featured-image,
 .loop-list .image-left .featured-image {
-	flex-basis: <?php echo $triple; ?>px;
-	max-width: <?php echo $triple; ?>px;
+	flex-basis: <?php echo $triple + $half; ?>px;
+	max-width: <?php echo $triple + $half; ?>px;
 }
 
-.loop-list .image-center .featured-image + .post-content,
-.loop-list .image-above-headline .featured-image,
-.loop-list .image-below-headline .featured-image { margin-bottom: <?php echo $single; ?>px; }
+.loop-list .image-left .featured-image { padding-right: <?php echo $half; ?>px; }
 
-.loop-list .the-content p:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
-
-@media all and (min-width: 800px) {
-	.loop-list.full.size-large .loop { max-width: 100%; }
-	.loop-list.full.size-medium .entry,
-	.loop-list.full.size-large .entry { gap: <?php echo $single; ?>px; }
-	.loop-list.full.size-medium .image-right .featured-image,
-	.loop-list.full.size-medium .image-left .featured-image {
-		flex-basis: 150px;
-		max-width: 150px;
-	}
-	.loop-list.full.size-large .title {
-		font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h2']['line_height']['desktop']; ?>px;
-	}
-	.loop-list.full.size-large .entry, .loop-list.size-normal .entry { align-items: center; }
-	.loop-list.full.size-large .image-right .featured-image,
-	.loop-list.full.size-large .image-left .featured-image {
-		flex-basis: <?php echo $sidebar_width; ?>px;
-		max-width: <?php echo $sidebar_width; ?>px;
-	}
+.loop-list .image-right .featured-image {
+	order: 1;
+	padding-left: <?php echo $half; ?>px;
 }
+
+.loop-list .image-center .title-wrap { flex-flow: wrap; }
+
+.loop-list .image-center .title { margin-bottom: <?php echo $half; ?>px; }
+
+.loop-list .image-center .featured-image { order: 1; }
 
 /* LOOP - COVERS */
 

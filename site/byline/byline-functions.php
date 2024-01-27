@@ -15,20 +15,11 @@ function md_get_byline( $position, $loop = array() ) {
 	$remove = '';
 	$remove_footer = false;
 
-	if ( isset( $loop['is_featured'] ) ) {
-		if ( isset( $loop['featured_remove_byline'] ) )
-			$remove = $loop['featured_remove_byline'];
+	if ( isset( $loop['remove_byline'] ) )
+		$remove = true;
 
-		if ( ! empty( $loop['featured_post_footer']['remove'] ) )
-			$remove_footer = true;
-	}
-	else {
-		if ( isset( $loop['remove_byline'] ) )
-			$remove = $loop['remove_byline'];
-
-		if ( ! empty( $loop['post_footer']['remove'] ) )
-			$remove_footer = true;
-	}
+	if ( isset( $loop['post_footer']['remove'] ) )
+		$remove_footer = true;
 
 	if ( $position == $remove || $remove == 'remove' || ( $position == 'after_post' && $remove_footer ) )
 		return;

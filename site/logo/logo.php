@@ -57,9 +57,8 @@ class md_logo extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Logo', 'md' ),
-				'parent_slug' => 'themes.php',
+				'parent' => 'md_settings',
 				'admin_header' => true,
-				'position' => 4,
 				'hide_tab' => true,
 				'fields' => $fields
 			)
