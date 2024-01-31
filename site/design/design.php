@@ -105,12 +105,10 @@ class md_colors extends md_api {
 				'admin_header' => true,
 				'hide_tab' => true,
 				'fields' => array_merge( array(
-					'content' => array(
-						'design' => array(
-							'type' => 'checkbox',
-							'options' => array( 'enable' )
-						), $fields )
-					)
+					'design' => array(
+						'type' => 'checkbox',
+						'options' => array( 'box_style' )
+					), $fields )
 				)
 			)
 		);

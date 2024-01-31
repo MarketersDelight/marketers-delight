@@ -48,7 +48,7 @@
 	padding-right: <?php echo $half; ?>px;
 }
 
-.header .cover, #content > .cover, .post-box .the-content.full {
+.header .cover, #content > .cover {
 	padding-left: 0;
 	padding-right: 0;
 }

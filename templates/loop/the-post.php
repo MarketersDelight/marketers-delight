@@ -1,18 +1,11 @@
 <?php
 
-$classes = $style = array();
+$style = array();
 $cover = md_cover();
-$featured_image_id = get_post_thumbnail_id();
-$featured_image_position = md_featured_image_position();
+$loop = $looped;
 
-if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] ) {
-	$classes[] = 'featured';
+if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
 	$loop = md_loop_featured( $loop );
-}
-else {
-	$classes[] = 'standard';
-	$loop = $looped;
-}
 
 if ( empty( $loop['read_more'] ) )
 	$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
@@ -23,21 +16,17 @@ if ( empty( $loop['excerpt_length'] ) )
 if ( empty( $loop['excerpt_more'] ) )
 	$loop['excerpt_more'] = '[...]';
 
-if ( $featured_image_id ) {
-	if ( isset( $loop['featured_image'] ) )
-		$featured_image_position = $loop['featured_image'];
+if ( get_post_thumbnail_id() ) {
+	$loop['featured_image_id'] = get_post_thumbnail_id();
 
-	$classes[] = 'image-' . str_replace( '_', '-', $featured_image_position );
+	if ( ! isset( $loop['featured_image'] ) )
+		$loop['featured_image'] = md_featured_image_position();
 }
 
-if ( $columns > 1 )
-	if ( $columns <= 5 )
-		$classes[] = "f{$columns}";
-	else
-		$style['flex_basis'] = ( 100 / $columns ) . '%';
+$classes = md_loop_classes( $loop, $c );
 
-$classes[] = $c % 2 == 0 ? 'even' : 'odd';
-$classes = join( ' ', $classes );
+if ( $loop['columns'] > 5 )
+	$style['flex_basis'] = ( 100 / $loop['columns'] ) . '%';
 
 if ( isset( $loop['loop'] ) && ! empty( $loops[$loop['loop']]['template'] ) )
 	include( esc_attr( $loops[$loop['loop']]['template'] ) );

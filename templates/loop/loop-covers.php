@@ -1,5 +1,5 @@
 <?php
-	if ( empty( $cover['image'] ) && $featured_image_id ) {
+	if ( empty( $cover['image'] ) && isset( $loop['featured_image_id'] ) ) {
 		$cover['position'] = 'headline_cover';
 		$cover['image']['id'] = $featured_image_id;
 		$cover['image']['url'] = $cover['style']['bg_image'] = $style['bg_image'] = wp_get_attachment_image_url( $featured_image_id, 'full' );

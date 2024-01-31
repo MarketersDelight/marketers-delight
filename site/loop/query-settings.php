@@ -6,7 +6,7 @@
 			'label' => __( 'Position on page', 'md' ),
 			'empty_label' => __( 'Do not show', 'md' ),
 			'options' => array(
-				'content_box_top' => __( 'After Header', 'md' ),
+				'before_content_box' => __( 'After Header', 'md' ),
 				'before_content' => __( 'Before Content', 'md' ),
 				'content' => __( 'After Content', 'md' ),
 				'before_footer' => __( 'Before Footer', 'md' )
@@ -285,7 +285,7 @@
 
 	<div class="md-loop-layout md-tab-content">
 
-		<div class="md-radio-fields md-clear md-sep-small">
+		<div class="md-radio-fields md-clear md-sep-micro">
 			<?php $this->fields->field( array( $group, $field, 'loop' ), array(
 				'type' => 'radio',
 				'label' => __( 'Select Loop', 'md' ),
@@ -296,6 +296,50 @@
 				'options' => md_loops()
 			) ); ?>
 		</div>
+
+		<div class="columns-4 columns-half md-sep-small md-full-select">
+
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'style' ), array(
+					'type' => 'select',
+					'label' => __( 'Style', 'md' ),
+					'empty_label' => __( 'Use default style', 'md' ),
+					'options' => array(
+						'box_style' => __( 'Box Style', 'md' ),
+						'minimal' => __( 'Minimal Style', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'size' ), array(
+					'type' => 'select',
+					'label' => __( 'Font Size', 'md' ),
+					'empty_label' => __( 'Inherit', 'md' ),
+					'options' => array(
+						'large' => __( 'Large', 'md' ),
+						'medium' => __( 'Medium', 'md' ),
+						'small' => __( 'Small', 'md' ),
+						'normal' => __( 'Normal', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'list' ), array(
+					'type' => 'select',
+					'label' => __( 'List', 'md' ),
+					'empty_label' => __( 'Post list', 'md' ),
+					'options' => array(
+						'timeline' => __( 'Timeline', 'md' ),
+						'numbers' => __( 'Numbered', 'md' )
+					)
+				) ); ?>
+			</div>
+
+		</div>
+
+		<hr class="md-sep-small" />
 
 		<div class="columns-2 columns-65-35 columns-single">
 
@@ -316,35 +360,6 @@
 			</div>
 
 			<div class="col col2 md-full-select">
-
-				<div class="columns-2 columns-half md-sep-micro">
-					<div class="col">
-						<?php $this->fields->field( array( $group, $field, 'style' ), array(
-							'type' => 'select',
-							'label' => __( 'Style', 'md' ),
-							'empty_label' => __( 'Standard', 'md' ),
-							'options' => array(
-								'timeline' => __( 'Timeline', 'md' ),
-								'numbers' => __( 'Numbered', 'md' )
-							)
-						) ); ?>
-					</div>
-					<div class="col">
-						<?php $this->fields->field( array( $group, $field, 'size' ), array(
-							'type' => 'select',
-							'label' => __( 'Font Size', 'md' ),
-							'empty_label' => __( 'Inherit', 'md' ),
-							'options' => array(
-								'large' => __( 'Large', 'md' ),
-								'medium' => __( 'Medium', 'md' ),
-								'small' => __( 'Small', 'md' ),
-								'normal' => __( 'Normal', 'md' )
-							)
-						) ); ?>
-					</div>
-				</div>
-
-				<p class="description"><?php echo __( 'Some styles may not apply to all Loops.', 'md' ); ?></p>
 
 				<?php $this->fields->field( array( $group, $field, 'sidebar' ), array(
 					'type' => 'checkbox',

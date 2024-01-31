@@ -145,15 +145,6 @@
 				)
 			) ); ?>
 
-			<?php if ( $is_post )
-				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'full' => __( 'Show Full-Width', 'md' ),
-					)
-				) );
-			?>
-
 		</div>
 
 		<?php if ( $is_admin ) : ?>

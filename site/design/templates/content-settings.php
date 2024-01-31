@@ -22,11 +22,11 @@
 		</div>
 
 		<div class="md-sep-small">
-			<?php $this->fields->field( array( 'content', 'design' ), array(
+			<?php $this->fields->field( 'design', array(
 				'type' => 'checkbox',
-				'description' => __( 'Removes background color and extra spacing from posts.', 'md' ),
+				'description' => __( 'Removes background color and extra spacing from page content.', 'md' ),
 				'options' => array(
-					'enable' => __( 'Minimal style', 'md' )
+					'box_style' => __( 'Disable box style', 'md' )
 				)
 			) ); ?>
 		</div>

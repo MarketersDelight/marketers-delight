@@ -216,28 +216,23 @@ function md_content_box() {
  */
 
 function md_content_box_classes( $classes = array(), $loop = array() ) {
-	$minimal_style = md_setting( array( 'colors', 'content', 'design', 'enable' ) );
+	if ( empty( $loop['loop'] ) )
+		$loop['loop'] = md_module( array( 'loop', 'loop' ), 'fluid' );
 
-	if ( ! empty( $loop ) ) {
-		$loop_type = ! empty( $loop['loop'] ) ? $loop['loop'] : '';
-		$has_sidebar = isset( $loop['sidebar']['enable'] ) ? true : false;
-	}
-	else {
-		$loop_type = md_module( array( 'loop', 'loop' ) );
-		$has_sidebar = md_has_sidebar();
-	}
+	if ( ! isset( $loop['is_query'] ) && md_has_sidebar() )
+		$loop['sidebar']['enable'] = true;
 
-	$loop['columns'] = 1;
+	if ( empty( $loop['columns'] ) )
+		$loop['columns'] = 1;
 
 	if ( is_singular() && ! isset( $loop['is_query'] ) )
 		$classes[] = 'article';
 	else
 		$loop['columns'] = md_post_type_field( array( 'loop', 'columns' ), $loop['columns'] );
 
-	if ( $loop_type )
-		$classes[] = 'loop-' . $loop_type;
+	$classes[] = 'loop-' . $loop['loop'];
 
-	if ( $has_sidebar ) {
+	if ( isset( $loop['sidebar']['enable'] ) ) {
 		$classes[] = 'content-sidebar';
 		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
 		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
@@ -253,9 +248,6 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 		if ( is_singular() && ! isset( $loop['is_query'] ) )
 			$classes[] = 'expanded';
 	}
-
-	if ( ! isset( $loop['is_query'] ) && ! $minimal_style )
-		$classes[] = 'box-style';
 
 	if ( ! isset( $loop['is_inline'] ) )
 		$classes[] = 'format';

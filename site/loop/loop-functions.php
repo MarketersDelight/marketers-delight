@@ -110,7 +110,7 @@ function md_query_template() {
 
 	$queries = md_post_type_field( array( 'loop', 'query' ), array() );
 	$hooks = array(
-		'content_box_top' => 'md_hook_content_box_top',
+		'before_content_box' => 'md_hook_before_content_box',
 		'before_content' => 'md_hook_before_content',
 		'content' => 'md_hook_after_content',
 		'before_footer' => 'md_hook_before_footer'
@@ -158,18 +158,20 @@ function md_loop( $args = array() ) {
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
 
-	$columns = ! empty( $loop['columns'] ) ? $loop['columns'] : 1;
+	if ( empty( $loop['columns'] ) )
+		$loop['columns'] = 1;
+
 	$wrap_classes[] = "loop-{$post_type}";
 
 	if ( isset( $loop['position'] ) && in_array( $loop['position'], array( 'before_content', 'content' ) ) )
 		$loop['is_inline'] = true;
 
-	if ( $columns > 1 ) {
+	if ( $loop['columns'] > 1 ) {
 		$wrap_classes[] = 'columns';
 
-		if ( ( md_has_sidebar() && ! isset( $args['has_sidebar'] ) || isset( $args['has_sidebar'] ) ) || $columns >= 3 )
+		if ( ( md_has_sidebar() && ! isset( $args['has_sidebar'] ) || isset( $args['has_sidebar'] ) ) || $loop['columns'] >= 3 )
 			$wrap_classes[] = 'slim';
-		elseif ( $columns == 2 )
+		elseif ( $loop['columns'] == 2 )
 			$wrap_classes[] = 'wide';
 	}
 
@@ -265,8 +267,6 @@ function md_post_classes( $classes ) {
 		'status-' . get_post_status(),
 		'format-' . get_post_format()
 	) );
-
-	$classes[] = 'entry';
 
 	// Apply classes to certain featured image positions
 	$cover = md_cover();
@@ -393,20 +393,13 @@ function md_the_excerpt( $loop ) {
  */
 
 function md_content( $loop ) {
-	$classes = array( 'the-content' );
-
-	if ( md_meta( array( 'layout', 'content', 'full' ) ) )
-		$classes[] = 'full';
-
-	$classes = join( ' ', $classes );
-
 	if ( get_the_content() ) {
 		$image_args = array(
 			'inline' => true,
 			'loop' => $loop
 		);
 
-		echo '<div class="' . esc_attr( $classes ) . '">';
+		echo '<div class="the-content">';
 
 		if ( in_the_loop() )
 			md_featured_image( $image_args );
@@ -423,6 +416,41 @@ function md_content( $loop ) {
 		'classes' => 'post-footer',
 		'loop' => $loop
 	) );
+}
+
+function md_loop_classes( $loop, $c ) {
+	$classes = array( 'entry' );
+	$loop_style = 'box-style';
+	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
+
+	if ( isset( $loop['is_featured'] ) )
+		$classes[] = 'featured';
+	else
+		$classes[] = 'standard';
+
+	if ( $loop['columns'] > 1 )
+		if ( $loop['columns'] <= 5 )
+			$classes[] = 'f' . $loop['columns'];
+
+	if ( $disable_box_style )
+		$loop_style = '';
+
+	if ( isset( $loop['style'] ) )
+		if ( $loop['style'] !== 'minimal' )
+			$loop_style = str_replace( '_', '-', $loop['style'] );
+		else
+			$loop_style = '';
+
+	if ( $loop_style )
+		$classes[] = $loop_style;
+
+	if ( isset( $loop['featured_image_id'] ) )
+		$classes[] = 'image-' . str_replace( '_', '-', $loop['featured_image'] );
+
+	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
+		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
+
+	return join( ' ', $classes );
 }
 
 /**
