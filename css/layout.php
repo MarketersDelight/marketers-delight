@@ -67,9 +67,7 @@
 }
 
 @media all and (min-width: 700px) {
-	.columns {
-		display: flex;
-	}
+	.columns { display: flex; }
 	.columns.loop { flex-flow: wrap; }
 	.layout { column-gap: <?php echo $single; ?>px; }
 	.layout:not(.inline) { row-gap: <?php echo $single; ?>px; }

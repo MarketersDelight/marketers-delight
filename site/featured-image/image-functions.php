@@ -6,12 +6,12 @@
  * @since 4.0
  */
 
-function md_featured_image( $args = array() ) {
+function md_featured_image( $loop = array() ) {
 	if ( ! has_post_thumbnail() )
 		return;
 
-	if ( isset( $args['loop']['featured_image'] ) )
-		$position = $args['loop']['featured_image'];
+	if ( isset( $loop['featured_image'] ) )
+		$position = $loop['featured_image'];
 	else
 		$position = md_featured_image_position();
 
@@ -20,7 +20,17 @@ function md_featured_image( $args = array() ) {
 
 	$inline = array( '', 'left', 'right', 'center' );
 
-	if ( isset( $args['inline'] ) && ! in_array( $position, $inline ) )
+	if ( isset( $loop['show_image'] ) && ! in_array( $position, $loop['show_image'] ) )
+		return;
+
+	if ( isset( $loop['image_inline'] ) && ! in_array( $position, $inline ) )
+		return;
+
+/*
+	if ( isset( $args['show_inline'] ) && ! in_array( $position, $inline ) )
+		return;
+
+	if ( isset( $args['hide_inline'] ) && in_array( $position, $inline ) )
 		return;
 
 	if ( isset( $args['show'] ) && ! in_array( $position, $args['show'] ) )
@@ -31,21 +41,20 @@ function md_featured_image( $args = array() ) {
 
 //	if ( isset( $args['hide'] ) && $args['hide'] == 'inline' && in_array( $position, $inline ) )
 //		return;
-
-	$permalink = '';
+*/
+	$permalink = get_permalink();
 	$loop = array();
 	$wrap = 'wrap';
 	$size = 'full';
 
-	if ( in_the_loop() && ! is_singular() )
-		$permalink = get_permalink();
+	if ( is_singular() && in_the_loop() )
+		$permalink = '';
 
 	if ( isset( $args['loop'] ) ) {
-		$permalink = get_permalink();
 		$loop = $args['loop'];
 
-		if ( isset( $args['loop']['featured_image_size'] ) )
-			$size = $args['loop']['featured_image_size'];
+		if ( isset( $loop['featured_image_size'] ) )
+			$size = $loop['featured_image_size'];
 	}
 
 	$classes = array( 'featured-image' );
@@ -55,6 +64,7 @@ function md_featured_image( $args = array() ) {
 	if ( md_has_sidebar() )
 		$wrap = 'wrap-small';
 
+/*
 	if ( isset( $args['inline'] ) )
 		if ( in_array( $position, array( '', 'right' ) ) )
 			$classes[] = "alignright $wrap";
@@ -62,7 +72,7 @@ function md_featured_image( $args = array() ) {
 			$classes[] = "alignleft $wrap";
 		elseif ( $position == 'center' )
 			$classes[] = 'aligncenter';
-
+*/
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );

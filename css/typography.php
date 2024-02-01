@@ -32,7 +32,7 @@
 		'h3' => 'h3, .med-title',
 		'h4' => 'h4, .mid-title, .medium .title',
 		'h5' => 'h5, .small-title',
-		'h6' => 'h6, .micro-title'
+		'h6' => 'h6, .micro-title, .small .title'
 	);
 	$texts = array(
 		'huge' => '.huge-text',

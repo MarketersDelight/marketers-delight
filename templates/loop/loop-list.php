@@ -2,28 +2,22 @@
 
 	<div class="post-box">
 
-		<?php md_featured_image( array(
-			'show' => array( 'above_headline' ),
-			'loop' => $loop
-		) ); ?>
+		<?php
+			$loop['show_image'] = array( 'above_headline' );
+			md_featured_image( $loop );
+		?>
 
 		<div class="post-header">
-
-			<?php md_title( array(
-				'loop' => $loop,
-				'image' => array(
-					'hide' => array( 'above_headline', 'below_headline' )
-				)
-			) ); ?>
-
+			<?php
+				$loop['show_image'] = array( '', 'right', 'left' );
+				md_title( array( 'loop' => $loop ) );
+			?>
 		</div>
 
-		<?php md_featured_image( array(
-			'show' => array( 'below_headline' ),
-			'loop' => $loop
-		) ); ?>
-
-		<?php md_content( $loop ); ?>
+		<?php
+			$loop['show_image'] = array( 'center', 'below_headline' );
+			md_content( $loop );
+		?>
 
 	</div>
 

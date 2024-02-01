@@ -213,11 +213,11 @@ h5, .small-title, .small-text {
 h5, .small-title {
 	font-weight: bold;
 }
-h6, .micro-title, .micro-text {
+h6, .micro-title, .small .title, .micro-text {
 	font-size: 20px;
 	line-height: 28px;
 }
-h6, .micro-title {
+h6, .micro-title, .small .title {
 	font-weight: bold;
 }
 h1, h2, h3, h4, h5, h6 { color: #1E1E1E; }
@@ -237,7 +237,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #1E1E1E; }
 	h3, .med-title, .med-text { font-size: 25px; line-height: 35px; }
 	h4, .mid-title, .medium .title, .mid-text { font-size: 22px; line-height: 31px; }
 	h5, .small-title, .small-text { font-size: 20px; line-height: 30px; }
-	h6, .micro-title, .micro-text { font-size: 20px; line-height: 28px; }
+	h6, .micro-title, .small .title, .micro-text { font-size: 20px; line-height: 28px; }
 }
 @media all and (max-width: 700px) {
 	body { font-size: 16px; line-height: 26px; }
@@ -247,7 +247,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #1E1E1E; }
 	h3, .med-title, .med-text { font-size: 22px; line-height: 31px; }
 	h4, .mid-title, .medium .title, .mid-text { font-size: 21px; line-height: 30px; }
 	h5, .small-title, .small-text { font-size: 19px; line-height: 29px; }
-	h6, .micro-title, .micro-text { font-size: 22px; line-height: 31px; }
+	h6, .micro-title, .small .title, .micro-text { font-size: 22px; line-height: 31px; }
 }
 /*------------------------------*\
 	$BUTTONS
@@ -746,9 +746,7 @@ select {
 	.layout { flex-flow: wrap; }
 }
 @media all and (min-width: 700px) {
-	.columns {
-		display: flex;
-	}
+	.columns { display: flex; }
 	.columns.loop { flex-flow: wrap; }
 	.layout { column-gap: 29px; }
 	.layout:not(.inline) { row-gap: 29px; }
@@ -781,9 +779,12 @@ select {
 }
 .box-style .cover,
 .box-style .post-header,
-.box-style .the-content {
-	padding: 15px;
-}
+.box-style .the-content { padding: 15px; }
+.box-style .cover { border-radius: 5px; }
+.box-style.image-above-headline .overlay, .box-style.image-above-headline .cover,
+.box-style.image-below-headline .featured-image img { border-radius: 0 0 5px 5px; }
+.box-style.image-below-headline .overlay, .box-style.image-below-headline .cover,
+.box-style.image-above-headline .featured-image img { border-radius: 5px 5px 0 0; }
 .box-style .comment-details { background-color: #FFFFFF; }
 .box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 @media all and (max-width: 1045px) {
@@ -801,6 +802,21 @@ select {
 	.columns .box-style .the-content { padding: 15px; }
 }
 .box-style .post-header:not(.cover) + .the-content { padding-top: 0; }
+/* LOOP LIST */
+.loop-list .post-header { margin-bottom: 15px; }
+.loop-list .title-wrap {
+	align-items: center;
+	display: flex;
+	flex-flow: wrap;
+	gap: 15px;
+}
+.loop-list .image-left .title-wrap,
+.loop-list .image-right .title-wrap { flex-flow: inherit; }
+.loop-list .image-center .title { order: -1; }
+.loop-list .image-right .featured-image,
+.loop-list .image-left .featured-image {
+	max-width: 116px;
+}
 /* SIZES */
 /* PAGE TITLE */
 .description { margin-bottom: 29px; }
@@ -810,8 +826,19 @@ select {
 	margin-left: auto;
 	margin-right: auto;
 }
+.the-content .featured-image,
 .image-above-headline .page-image,
 .image-below-headline .page-image { margin-bottom: 15px; }
+.image-left .the-content .featured-image {
+	float: left;
+	margin-right: 15px;
+}
+.image-right .the-content .featured-image {
+	float: right;
+	margin-left: 15px;
+}
+.image-left .the-content .featured-image,
+.image-right .the-content .featured-image { max-width: 174px; }
 @media all and (min-width: 700px) {
 	.title-wrap {
 		flex-basis: 697px;
@@ -824,8 +851,10 @@ select {
 	.image-left .title-wrap { margin-bottom: 0; }
 	.image-right.inline .title-wrap,
 	.image-right.inline .page-image,
-	.image-left .page-image { order: -1; }
+	.image-left .page-image, .image-right .title { order: -1; }
 	.image-center, .image-above-headline { flex-direction: column; }
+	.image-left .the-content .featured-image,
+	.image-right .the-content .featured-image { max-width: 348px; }
 	/* PAGE CTA */
 	.page-cta-link + .page-cta-link { margin-left: 15px; }
 }
@@ -885,13 +914,15 @@ select {
 	.expanded .byline { justify-content: center; }
 }
 /* FEATURED IMAGE + CAPTIONS */
-.featured-image { position: relative; }
+.featured-image {
+	position: relative;
+	z-index: 5;
+}
 .featured-image a { display: block; }
 .featured-image img {
 	border-radius: 5px;
 	width: 100%;
 }
-.image-above-headline .featured-image img { border-radius: 0 0 5px 5px; }
 .wp-caption {
 	height: auto;
 	max-width: 100%;
@@ -1486,7 +1517,6 @@ select {
 		float: right;
 		margin-left: 15px;
 	}
-	.featured-image.alignleft, .featured-image.alignright { max-width: 348px; }
 }
 @media all and (max-width: 700px) {
 	.alignleft.wrap { margin-right: -15px; }

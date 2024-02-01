@@ -79,10 +79,10 @@ function md_headline( $args = array() ) {
 		return;
 
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-	$image_args = array();
+	$loop = array();
 
 	if ( isset( $args['loop'] ) )
-		$image_args['loop'] = $args['loop'];
+		$loop = $args['loop'];
 
 	$cover = md_cover( $context );
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
@@ -91,18 +91,16 @@ function md_headline( $args = array() ) {
 	$classes = array_merge( array( "$context-header" ), $classes, md_cover_classes( $cover ) );
 	$classes = join( ' ' , $classes );
 
-	if ( $context == 'post' ) {
-		$image_args['show'] = array( 'above_headline' );
-
-		md_featured_image( $image_args );
+	if ( $context == 'post' ) { // Above Title Featured Image position
+		$loop['show_image'] = array( 'above_headline' );
+		md_featured_image( $loop );
 	}
 
 	include( md_template( 'headline', true ) );
 
-	if ( $context == 'post' ) {
-		$image_args['show'] = array( 'below_headline' );
-
-		md_featured_image( $image_args );
+	if ( $context == 'post' ) { // Below Title Featured Image position
+		$loop['show_image'] = array( 'below_headline' );
+		md_featured_image( $loop );
 	}
 }
 
@@ -118,11 +116,10 @@ function md_title( $args = array() ) {
 	$title = get_the_title();
 	$permalink = null;
 	$byline_args = array();
-	$image_args = array( 'hide' => 'inline' );
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 
 	if ( isset( $args['loop'] ) )
-		$byline_args['loop'] = $image_args['loop'] = $args['loop'];
+		$loop = $byline_args['loop'] = $args['loop'];
 
 	if ( isset( $args['title'] ) )
 		$title = $args['title'];
@@ -156,11 +153,8 @@ function md_title( $args = array() ) {
 
 		do_action( "md_hook_before_{$context}_title" );
 
-		if ( isset( $args['image'] ) ) {
-			$image_args = array_merge( $args['image'], $image_args );
-
-			md_featured_image( $image_args );
-		}
+		if ( isset( $loop['show_image'] ) )
+			md_featured_image( $loop );
 
 		echo "<$h class=\"title\">$title_html</$h>";
 
@@ -227,14 +221,9 @@ function md_the_excerpt( $loop ) {
 
 function md_content( $loop ) {
 	if ( get_the_content() ) {
-		$image_args = array(
-			'inline' => true,
-			'loop' => $loop
-		);
-
 		echo '<div class="the-content">';
 
-		md_featured_image( $image_args );
+		md_featured_image( $loop );
 
 		if ( ( is_singular() && in_the_loop() ) || isset( $loop['content'] ) && $loop['content'] == 'full' )
 			md_the_content( $loop );
