@@ -100,16 +100,15 @@ class md_page_title {
 		$data['link_primary'] = md_module( 'link_primary' );
 		$data['link_secondary'] = md_module( 'link_secondary' );
 
+		if ( ! in_array( $data['image_position'], array( 'below_headline', 'above_headline' ) ) )
+			$data['classes'][] = 'layout';
+
 		if ( ! empty( $data['image_id'] ) || ! empty( $data['image_src'] ) ) {
 			if ( in_array( $data['image_position'], array( 'left', 'right' ) ) )
-				$data['classes'][] = 'layout-columns';
-			else
-				$data['classes'][] = 'layout-slim';
+				$data['classes'][] = 'columns';
 
 			$data['classes'][] = 'image-' . str_replace( '_', '-', $data['image_position'] );
 		}
-		else
-			$data['classes'][] = 'layout-slim';
 
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );
 
@@ -131,12 +130,10 @@ class md_page_title {
 	 */
 
 	public function html() {
-		$classes = $this->get( 'classes' );
-
 		md_headline( array(
 			'title' => md_page_title(),
 			'context' => 'page',
-			'classes' => $classes
+			'classes' => $this->get( 'classes' )
 		) );
 	}
 
@@ -186,10 +183,9 @@ class md_page_title {
 			<?php if ( $image_size && $image_style == true ) :
 				md_inline_css( array(
 					'.page-header .page-image' => array(
-						'flex-basis' => array(
+						'max-width' => array(
 							'query' => $image_size,
-							'unit' => 'px',
-							'fallback' => 'max-width'
+							'unit' => 'px'
 						)
 					)
 				) );

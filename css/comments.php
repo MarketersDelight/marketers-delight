@@ -56,8 +56,6 @@
 	z-index: 10;
 }
 
-.box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
-
 .comment-details a { text-decoration: none; }
 
 .comment-author, .comment-author a {
@@ -141,8 +139,6 @@
 		left: 0;
 	width: 100%;
 }
-
-.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 
 /* TIMELINE */
 

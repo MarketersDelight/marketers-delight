@@ -17,7 +17,8 @@
 	<div class="nav-tab-wrapper">
 		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-query"><?php echo __( 'Query', 'md' ); ?></a>
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-post-content"><?php echo __( 'Post', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-layout"><?php echo __( 'Layout', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-style"><?php echo __( 'Style', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-content"><?php echo __( 'Content', 'md' ); ?></a>
 	</div>
 
 	<div class="md-loop-query md-tab-content active">
@@ -169,7 +170,7 @@
 
 	<div class="md-loop-post md-loop-post-inline md-loop-post-content md-tab-content">
 
-		<?php foreach ( array( 'featured', 'standard' ) as $post ) :
+		<?php foreach ( array( 'standard', 'featured' ) as $post ) :
 			$p = $post == 'featured' ? "{$post}_" : '';
 			$active = $post == 'standard' ? ' active' : '';
 		?>
@@ -283,7 +284,7 @@
 
 	</div>
 
-	<div class="md-loop-layout md-tab-content">
+	<div class="md-loop-style md-tab-content">
 
 		<div class="md-radio-fields md-clear md-sep-micro">
 			<?php $this->fields->field( array( $group, $field, 'loop' ), array(
@@ -303,10 +304,10 @@
 				<?php $this->fields->field( array( $group, $field, 'style' ), array(
 					'type' => 'select',
 					'label' => __( 'Style', 'md' ),
-					'empty_label' => __( 'Use default style', 'md' ),
+					'empty_label' => __( 'Default style', 'md' ),
 					'options' => array(
-						'box_style' => __( 'Box Style', 'md' ),
-						'minimal' => __( 'Minimal Style', 'md' )
+						'box_style' => __( 'Box style', 'md' ),
+						'simple' => __( 'Simple style', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -329,7 +330,7 @@
 				<?php $this->fields->field( array( $group, $field, 'list' ), array(
 					'type' => 'select',
 					'label' => __( 'List', 'md' ),
-					'empty_label' => __( 'Post list', 'md' ),
+					'empty_label' => __( 'Post Listing', 'md' ),
 					'options' => array(
 						'timeline' => __( 'Timeline', 'md' ),
 						'numbers' => __( 'Numbered', 'md' )
@@ -339,7 +340,9 @@
 
 		</div>
 
-		<hr class="md-sep-small" />
+	</div>
+
+	<div class="md-loop-content md-tab-content">
 
 		<div class="columns-2 columns-65-35 columns-single">
 

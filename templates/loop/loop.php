@@ -1,4 +1,4 @@
-<article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?><?php echo md_style( $style ); ?>>
+<article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
 
 	<div class="post-box">
 

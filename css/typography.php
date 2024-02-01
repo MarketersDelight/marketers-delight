@@ -30,7 +30,7 @@
 		'h1' => 'h1, .large-title',
 		'h2' => 'h2, .main-title',
 		'h3' => 'h3, .med-title',
-		'h4' => 'h4, .mid-title',
+		'h4' => 'h4, .mid-title, .medium .title',
 		'h5' => 'h5, .small-title',
 		'h6' => 'h6, .micro-title'
 	);

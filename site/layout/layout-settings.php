@@ -132,10 +132,6 @@
 
 			<?php endif; ?>
 
-			<div class="md-sep-micro">
-				<?php do_action( 'md_post_layout_content_options' ); ?>
-			</div>
-
 			<?php $this->fields->field( 'content_box', array(
 				'type' => 'select',
 				'empty_label' => __( 'Content / Sidebar', 'md' ),
@@ -144,6 +140,10 @@
 					'sidebar_content' => __( 'Sidebar / Content', 'md' )
 				)
 			) ); ?>
+
+			<div class="md-sep-micro">
+				<?php do_action( 'md_post_layout_content_options' ); ?>
+			</div>
 
 		</div>
 
@@ -209,27 +209,27 @@
 
 		<?php else : ?>
 
-		<?php if ( $has_sidebar ) : ?>
+			<?php if ( $has_sidebar ) : ?>
 
-			<?php $this->fields->field( 'sidebar', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
-				)
-			) ); ?>
+				<?php $this->fields->field( 'sidebar', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
+					)
+				) ); ?>
 
-		<?php else : ?>
+			<?php else : ?>
 
-			<?php $this->fields->field( 'sidebar', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
-				)
-			) ); ?>
+				<?php $this->fields->field( 'sidebar', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
+					)
+				) ); ?>
 
-		<?php endif; ?>
+			<?php endif; ?>
 
-		<?php if ( ! empty( $sidebars ) ) : ?>
+			<?php if ( ! empty( $sidebars ) ) : ?>
 
 			<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
 
@@ -255,7 +255,7 @@
 
 			</div>
 
-		<?php endif; ?>
+			<?php endif; ?>
 
 		<?php endif; ?>
 

@@ -10,7 +10,7 @@
 
 		<?php if ( ! empty( $loop['title'] ) || ! empty( $loop['description'] ) ) : ?>
 
-		<div class="loop-header outer layout-slim">
+		<div class="loop-header layout">
 
 			<?php if ( ! empty( $loop['title'] ) ) : ?>
 				<h3 class="title"><?php echo md_text_field( $loop['title'] ); ?></h3>

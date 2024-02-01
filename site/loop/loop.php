@@ -15,6 +15,38 @@ class md_loop extends md_api {
 
 	public function includes() {
 		include_once( 'loop-functions.php' );
+		include_once( 'post-functions.php' );
+	}
+
+	/**
+ 	* Load Queries to hook areas when auto-inserted.
+ 	*
+ 	* @since 6.0
+ 	*/
+
+	public function template() {
+		if ( ! is_post_type_archive() && ! is_home() )
+			return;
+
+		$queries = md_post_type_field( array( 'loop', 'query' ), array() );
+		$hooks = array(
+			'before_content_box' => 'md_hook_before_content_box',
+			'before_content' => 'md_hook_before_content',
+			'content' => 'md_hook_after_content',
+			'before_footer' => 'md_hook_before_footer'
+		);
+
+		foreach ( $queries as $query_id => $loop ) {
+			if ( ! isset( $loop['position'] ) )
+				continue;
+
+			$position = $loop['position'];
+
+			if ( empty( $hooks[$position] ) )
+				continue;
+
+			add_action( $hooks[$position], 'md_query' );
+		}
 	}
 
 	/**
@@ -43,31 +75,28 @@ class md_loop extends md_api {
 	}
 
 	/**
-	 * Fields used across all admin interface screens to be saved.
+	 * Send admin fields to sanitize and save.
 	 *
 	 * @since 5.1
 	 */
 
 	public function fields() {
-		$query = $this->query_fields();
-		$fields = array(
-			'pagination' => array(
-				'type' => 'select',
-				'options' => array( 'page_numbers', 'prev_next' )
-			),
-			'previous_label' => array( 'type' => 'text' ),
-			'next_label' => array( 'type' => 'text' ),
-			'query' => array(
-				'type' => 'group',
-				'fields' => $query
-			)
+		$fields = $this->loop_fields();
+		$fields['query'] = array(
+			'type' => 'group',
+			'fields' => $fields
 		);
-		$fields = array_merge( $fields, $query );
 
 		return $fields;
 	}
 
-	public function query_fields() {
+	/**
+	 * Register list of Loop admin fields to save.
+	 *
+	 * @since 6.0
+	 */
+
+	public function loop_fields() {
 		$block_ids = $cta_ids = array();
 		$sidebars = md_get_sidebars( true );
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
@@ -117,6 +146,8 @@ class md_loop extends md_api {
 
 		return array_merge( array(
 			'name' => array( 'type' => 'text' ),
+			'title' => array( 'type' => 'text' ),
+			'description' => array( 'type' => 'text' ),
 			'loop' => array(
 				'type' => 'radio',
 				'options' => array_keys( md_loops() )
@@ -148,9 +179,6 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => $cta_ids
 			),
-
-			'title' => array( 'type' => 'text' ),
-			'description' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
 				'options' => array( 'before_content_box', 'before_content', 'content', 'before_footer' )
@@ -182,7 +210,7 @@ class md_loop extends md_api {
 			),
 			'style' => array(
 				'type' => 'select',
-				'options' => array( 'box_style', 'minimal' )
+				'options' => array( 'box_style', 'simple' )
 			),
 			'list' => array(
 				'type' => 'select',
@@ -267,9 +295,9 @@ class md_loop extends md_api {
 	<?php $this->scripts(); }
 
 	/**
-	 * Call template with required data passed down.
+	 * Call admin template for repeatable fields.
 	 *
-	 * @since 5.1
+	 * @since 6.0
 	 */
 
 	public function query_settings( $group, $field, $args ) {
@@ -307,20 +335,16 @@ class md_loop extends md_api {
 			} )();
 			<?php endif; ?>
 			jQuery( document ).ready( function( $ ) {
-
 				$( '.md-check-val' ).on( 'change', function( e ) {
 					$( this ).parents( '.md-loop' ).toggleClass( 'has-category-posts' );
 				} );
-
 				$( '.md-num-val' ).on( 'change', function( e ) {
 					var loop = $( this ).parents( '.md-loop' );
-
 					if ( this.value >= 1 )
 						loop.addClass( 'has-featured' );
 					else
 						loop.removeClass( 'has-featured' );
 				});
-
 			} );
 		</script>
 	<?php }

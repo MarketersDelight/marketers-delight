@@ -88,6 +88,41 @@ function md_byline_items() {
 }
 
 /**
+ * Master list of available Loop templates from Themes & Drop-ins.
+ *
+ * @since 6.0
+ */
+
+function md_filter_loops() {
+	return apply_filters( 'md_filter_loops', array(
+		'fluid' => array(
+			'name' => __( 'Fluid', 'md' ),
+			'description' => __( 'The default blog style with a flexible layout.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
+		),
+		'list' => array(
+			'name' => __( 'List', 'md' ),
+			'description' => __( 'A simplified list with compact images.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-list.png',
+			'template' => md_template( 'loop/loop-list', true )
+		),
+/*
+		'icons' => array(
+			'name' => __( 'Icon Cards', 'md' ),
+			'description' => __( 'Small cards with a focus on the image thumbnail.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-icons.png'
+		),
+*/
+		'covers' => array(
+			'name' => __( 'Post Covers', 'md' ),
+			'description' => __( 'Posts list with full-width background image covers.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
+			'template' => md_template( 'loop/loop-covers', true )
+		)
+	) );
+}
+
+/**
  * Compile Popups to load on any given page.
  *
  * @since 5.0

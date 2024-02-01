@@ -122,6 +122,7 @@ final class marketers_delight {
 
 		// Random WP junk
 		if ( ! md_setting( array( 'settings', 'head', 'optimize' ) ) ) {
+			add_filter( 'post_class', array( $this, 'post_class' ) );
 			remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 			remove_action( 'wp_print_styles', 'print_emoji_styles' );
 			remove_action( 'wp_head', 'wp_generator' );
@@ -424,6 +425,26 @@ final class marketers_delight {
 
 	public function add_rss_link() {
 		echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo( 'sitename' ) . ' Feed" href="' . get_bloginfo( 'rss2_url' ) . '">';
+	}
+
+	/**
+ 	 * Clean out unneeded CSS post classes.
+ 	 *
+ 	 * @since 4.1
+ 	 */
+
+	public function post_class( $classes ) {
+		// Remove excess WP classes
+		$classes = array_diff( $classes, array(
+			'format-standard',
+			'hentry',
+			'post-' . get_the_ID(),
+			'type-' . get_post_type(),
+			'status-' . get_post_status(),
+			'format-' . get_post_format()
+		) );
+
+		return $classes;
 	}
 
 }

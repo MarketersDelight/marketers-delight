@@ -10,8 +10,6 @@ function md_featured_image( $args = array() ) {
 	if ( ! has_post_thumbnail() )
 		return;
 
-	$pos_args = array();
-
 	if ( isset( $args['loop']['featured_image'] ) )
 		$position = $args['loop']['featured_image'];
 	else
@@ -20,14 +18,19 @@ function md_featured_image( $args = array() ) {
 	if ( $position == 'remove' )
 		return;
 
-	if ( isset( $args['inline'] ) && ! in_array( $position, array( '', 'left', 'right', 'center' ) ) )
+	$inline = array( '', 'left', 'right', 'center' );
+
+	if ( isset( $args['inline'] ) && ! in_array( $position, $inline ) )
 		return;
 
 	if ( isset( $args['show'] ) && ! in_array( $position, $args['show'] ) )
 		return;
 
-	if ( isset( $args['hide'] ) && in_array( $position, $args['hide'] ) )
+	if ( isset( $args['hide'] ) && is_array( $args['hide'] ) && in_array( $position, $args['hide'] ) )
 		return;
+
+//	if ( isset( $args['hide'] ) && $args['hide'] == 'inline' && in_array( $position, $inline ) )
+//		return;
 
 	$permalink = '';
 	$loop = array();

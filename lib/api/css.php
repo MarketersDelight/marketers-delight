@@ -56,7 +56,7 @@ class md_css {
 			'header' => locate_template( 'css/header.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
 			'loop' => locate_template( 'css/loop.php' ),
-			'page-elements' => locate_template( 'css/page-elements.php' ),
+			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'sidebar' => locate_template( 'css/sidebar.php' ),
