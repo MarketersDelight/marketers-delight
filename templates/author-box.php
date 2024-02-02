@@ -1,24 +1,24 @@
 <div class="author-box">
 
-	<div class="author-title">
+	<div class="author-meta">
 
 		<?php if ( $has_avatar ) : ?>
-			<div class="author-avatar">
-				<?php echo get_avatar( get_the_author_meta( 'user_email' ), 150 ); ?>
-			</div>
+		<div class="author-avatar">
+			<?php echo get_avatar( get_the_author_meta( 'user_email' ), 150 ); ?>
+		</div>
 		<?php endif; ?>
 
-		<<?php echo $html; ?> class="author-headline"><?php the_author_meta( 'display_name' ); ?></<?php echo $html; ?>>
+		<<?php echo $h; ?> class="author-title"><?php the_author_meta( 'display_name' ); ?></<?php echo $h; ?>>
 
 	</div>
 
 	<?php if ( ! empty( $desc ) ) : ?>
-		<div class="author-bio">
+		<div class="author-description">
 			<?php echo wpautop( $desc ); ?>
 		</div>
 	<?php endif; ?>
 
-	<div class="author-meta">
+	<div class="author-links">
 
 		<?php if ( ! empty( $twitter ) ) : ?>
 			<a href="https://twitter.com/<?php echo esc_attr( $twitter ); ?>" class="author-link twitter" rel="nofollow" target="_blank">

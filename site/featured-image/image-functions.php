@@ -18,30 +18,19 @@ function md_featured_image( $loop = array() ) {
 	if ( $position == 'remove' )
 		return;
 
-	$inline = array( '', 'left', 'right', 'center' );
+	if ( is_singular() ) { // Posts with Covers
+		$cover = md_cover();
+
+		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+			$position = 'center';
+	}
 
 	if ( isset( $loop['show_image'] ) && ! in_array( $position, $loop['show_image'] ) )
 		return;
 
-	if ( isset( $loop['image_inline'] ) && ! in_array( $position, $inline ) )
+	if ( isset( $loop['image_inline'] ) && ! in_array( $position, array( '', 'left', 'right', 'center' ) ) )
 		return;
 
-/*
-	if ( isset( $args['show_inline'] ) && ! in_array( $position, $inline ) )
-		return;
-
-	if ( isset( $args['hide_inline'] ) && in_array( $position, $inline ) )
-		return;
-
-	if ( isset( $args['show'] ) && ! in_array( $position, $args['show'] ) )
-		return;
-
-	if ( isset( $args['hide'] ) && is_array( $args['hide'] ) && in_array( $position, $args['hide'] ) )
-		return;
-
-//	if ( isset( $args['hide'] ) && $args['hide'] == 'inline' && in_array( $position, $inline ) )
-//		return;
-*/
 	$permalink = get_permalink();
 	$loop = array();
 	$wrap = 'wrap';
@@ -56,24 +45,6 @@ function md_featured_image( $loop = array() ) {
 		if ( isset( $loop['featured_image_size'] ) )
 			$size = $loop['featured_image_size'];
 	}
-
-	$classes = array( 'featured-image' );
-
-	if ( isset( $args['loop']))
-
-	if ( md_has_sidebar() )
-		$wrap = 'wrap-small';
-
-/*
-	if ( isset( $args['inline'] ) )
-		if ( in_array( $position, array( '', 'right' ) ) )
-			$classes[] = "alignright $wrap";
-		elseif ( $position == 'left' )
-			$classes[] = "alignleft $wrap";
-		elseif ( $position == 'center' )
-			$classes[] = 'aligncenter';
-*/
-	$classes = join( ' ', $classes );
 
 	include( md_template( 'featured-image', true ) );
 }

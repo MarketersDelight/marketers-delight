@@ -24,17 +24,21 @@
 	row-gap: <?php echo $half; ?>px;
 }
 
-.columns {
-	gap: <?php echo $half; ?>px;
-}
+.columns { gap: <?php echo $half; ?>px; }
 
 /* SPACING */
 
-.header + .main { padding-top: <?php echo $single; ?>px; }
+.main > .inner {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
 
-.main { padding-bottom: <?php echo $single; ?>px; }
+.query > .inner {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
 
-.loop, .query, .page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
+.loop, .page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
 
 /* LAYOUT */
 
@@ -62,11 +66,12 @@
 	}
 }
 
-@media all and (max-width: 700px) {
+@media all and (max-width: 800px) {
 	.layout { flex-flow: wrap; }
+	.content { margin-bottom: <?php echo $single; ?>px; }
 }
 
-@media all and (min-width: 700px) {
+@media all and (min-width: 800px) {
 	.columns { display: flex; }
 	.columns.loop { flex-flow: wrap; }
 	.layout { column-gap: <?php echo $single; ?>px; }

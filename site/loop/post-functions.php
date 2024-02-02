@@ -13,6 +13,10 @@ function md_post_class( $loop, $c ) {
 	$cover = md_cover();
 	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
 
+	// Posts with Covers
+	if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+		$loop['featured_image'] = 'center';
+
 	if ( isset( $loop['is_featured'] ) )
 		$classes[] = 'featured';
 	else
@@ -85,20 +89,21 @@ function md_headline( $args = array() ) {
 		$loop = $args['loop'];
 
 	$cover = md_cover( $context );
+	$has_cover = is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) );
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes = array_merge( array( "$context-header" ), $classes, md_cover_classes( $cover ) );
 	$classes = join( ' ' , $classes );
 
-	if ( $context == 'post' ) { // Above Title Featured Image position
+	if ( $context == 'post' && ! $has_cover ) { // Above Title Featured Image position
 		$loop['show_image'] = array( 'above_headline' );
 		md_featured_image( $loop );
 	}
 
 	include( md_template( 'headline', true ) );
 
-	if ( $context == 'post' ) { // Below Title Featured Image position
+	if ( $context == 'post' && ! $has_cover ) { // Below Title Featured Image position
 		$loop['show_image'] = array( 'below_headline' );
 		md_featured_image( $loop );
 	}
@@ -176,8 +181,8 @@ function md_title( $args = array() ) {
  */
 
 function md_the_content( $loop ) {
-//	if ( isset( $loop['content'] ) && $loop['content'] == 'hide' )
-//		return;
+	if ( isset( $loop['content'] ) && $loop['content'] == 'hide' )
+		return;
 
 	md_hook_before_the_content();
 
@@ -270,7 +275,7 @@ function md_author_box() {
 	if ( ! md_has_author_box() )
 		return;
 
-	$html = is_author() ? 'h1' : 'h3';
+	$h = is_author() ? 'h1' : 'h3';
 	$twitter = get_the_author_meta( 'twitter' );
 	$url = get_the_author_meta( 'url' );
 	$author = get_author_posts_url( get_the_author_meta( 'ID' ) );

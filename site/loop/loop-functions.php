@@ -140,37 +140,6 @@ function md_query( $position = null ) {
 }
 
 /**
- * Call custom 404 content box template.
- *
- * @since 5.1
- */
-
-function md_404_template() {
-	$page_id = md_setting( array( 'settings', '404_page' ) );
-
-	if ( empty( $page_id ) )
-		md_template( 'content-item-404' );
-	else {
-		$page404 = new WP_Query( array(
-			'post_type' => 'page',
-			'p' => $page_id,
-			'post_status' => array( 'publish' ),
-			'fields' => 'ids'
-		) );
-
-		if ( $page404->have_posts() )
-			while ( $page404->have_posts() ) {
-				$page404->the_post();
-				md_template( 'content-item' );
-			}
-		else
-			md_template( 'content-item-404' );
-
-		wp_reset_query();
-	}
-}
-
-/**
  * Override portions of $loop when post is set to Featured.
  *
  * @since 6.0
@@ -303,6 +272,37 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );
+}
+
+/**
+ * Call custom 404 content box template.
+ *
+ * @since 5.1
+ */
+
+function md_404_template() {
+	$page_id = md_setting( array( 'settings', '404_page' ) );
+
+	if ( empty( $page_id ) )
+		md_template( 'content-item-404' );
+	else {
+		$page404 = new WP_Query( array(
+			'post_type' => 'page',
+			'p' => $page_id,
+			'post_status' => array( 'publish' ),
+			'fields' => 'ids'
+		) );
+
+		if ( $page404->have_posts() )
+			while ( $page404->have_posts() ) {
+				$page404->the_post();
+				md_template( 'content-item' );
+			}
+		else
+			md_template( 'content-item-404' );
+
+		wp_reset_query();
+	}
 }
 
 /**

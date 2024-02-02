@@ -51,58 +51,6 @@
 .mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
 .mb-none { margin-bottom: 0 !important; }
 
-/* COVERS / OVERLAY */
-
-.cover, .header.has-cover {
-	background-position: center center;
-	<?php if ( ! empty( $cover_image_id ) ) :
-		$cover_image = wp_get_attachment_image_src( $cover_image_id );
-	?>
-	background-size: <?php echo $cover_image[1] < 500 ? 'auto' : 'cover'; ?>;
-	<?php else : ?>
-	background-size: cover;
-	<?php endif; ?>
-	position: relative;
-}
-
-<?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
-.header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
-<?php endif; ?>
-
-.overlay {
-	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
-	content: '';
-	display: block;
-	inset: 0;
-	position: absolute;
-}
-
-<?php foreach ( $cover_colors as $text_class => $text_atts ) :
-	$text_class = $text_atts['class'];
-?>
-
-.header.has-cover<?php echo $text_class; ?>,
-.header.has-cover<?php echo $text_class; ?> .site-name,
-.header.has-cover<?php echo $text_class; ?> .site-name a,
-.header.has-cover<?php echo $text_class; ?> .tagline,
-.header.has-cover<?php echo $text_class; ?> .header-triggers a,
-.header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-.cover<?php echo $text_class; ?>,
-.cover<?php echo $text_class; ?> a,
-.cover<?php echo $text_class; ?> .title,
-.cover<?php echo $text_class; ?> .byline-item {
-	color: <?php echo esc_attr( $text_atts['color'] ); ?>;
-}
-
-.cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
-
-<?php endforeach; ?>
-
-@media all and (max-width: 800px) {
-	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
-	.header.has-cover .menu-item:not(:last-child) { border-bottom-color: <?php echo $text_atts['border']; ?>; }
-}
-
 /* LISTS */
 
 .list, .list > ul, ul.list-check { list-style: none; }
@@ -195,3 +143,11 @@ ul.list-check li:before {
 }
 
 .close:hover { background-color: rgba(0, 0, 0, 0.2); }
+
+.overlay {
+	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
+	content: '';
+	display: block;
+	inset: 0;
+	position: absolute;
+}

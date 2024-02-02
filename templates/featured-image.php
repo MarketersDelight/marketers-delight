@@ -1,4 +1,4 @@
-<div class="<?php echo esc_attr( $classes ); ?>">
+<div class="featured-image">
 
 	<?php if ( $permalink ) : ?><a href="<?php echo esc_url( $permalink ); ?>"><?php endif; ?>
 
