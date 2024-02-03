@@ -29,7 +29,6 @@
 /* SPACING */
 
 .main > .inner {
-	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
 
@@ -38,7 +37,7 @@
 	padding-top: <?php echo $half; ?>px;
 }
 
-.loop, .page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
+.page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
 
 /* LAYOUT */
 
@@ -50,6 +49,8 @@
 }
 
 @media all and (min-width: 900px) {
+	.content-width { max-width: <?php echo $content_width; ?>px; }
+	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.content-sidebar .content {
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;

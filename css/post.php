@@ -1,7 +1,5 @@
 <style type="text/css">
 
-.author-box, .post-footer, .comments { padding: <?php echo $half; ?>px; }
-
 /* BREADCRUMBS */
 
 .breadcrumbs {
@@ -23,8 +21,6 @@
 .description { margin-bottom: <?php echo $single; ?>px; }
 
 .inline .description { margin-bottom: 0; }
-
-.page-cta { text-align: center; }
 
 .page-image {
 	margin-bottom: <?php echo $half; ?>px;
@@ -54,7 +50,9 @@
 	}
 	.layout .title-wrap, .layout .page-image { flex: 1; }
 	.image-left.inline, .image-right.inline { flex-flow: wrap; }
+/*
 	.image-left .title-wrap { margin-bottom: 0; }
+*/
 	.image-right.inline .title-wrap,
 	.image-right.inline .page-image,
 	.image-left .page-image, .image-right .title { order: -1; }
@@ -99,7 +97,7 @@
 	position: relative;
 }
 
-.byline:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+.byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -135,16 +133,21 @@
 
 /* POST FOOTER */
 
-.post-box .post-footer {
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-width: 1px 0 0;
+.post-footer {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
 }
 
-.post-footer.byline:not(:last-child) { margin-bottom: 0; }
+.post-box .post-footer.byline { margin-bottom: 0; }
 
-.post-box .post-footer + .post-footer { border-top: 0; }
+.post-footer.byline {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
 
-.post-box .post-footer:not(:last-child) { border-bottom-width: 1px; }
+.post-footer + .post-footer { border-top: 0; }
 
 /* CAPTIONS */
 
@@ -296,7 +299,10 @@
 
 /* AUTHOR BOX */
 
-.author-box { background-color: <?php echo $colors['site']['action']; ?>; }
+.author-box {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
 
 .author-meta {
 	align-items: center;
@@ -325,17 +331,13 @@
 
 .author-links {
 	align-items: center;
-	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	display: flex;
 	font-size: <?php echo round( $typography['body']['font_size']['mobile'] - 1 ); ?>px;
 	gap: <?php echo $half; ?>px;
 	line-height: <?php echo round( $typography['body']['line_height']['mobile'] - 1 ); ?>px;
-	padding-top: <?php echo $half; ?>px;
 }
 
-.author-link {
-	color: <?php echo $colors['site']['links_sec']; ?>;
-}
+.author-link { color: <?php echo $colors['site']['links_sec']; ?>; }
 
 .author-link:not(:last-child) { margin-right: <?php echo $small; ?>px; }
 

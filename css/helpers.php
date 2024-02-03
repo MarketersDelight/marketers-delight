@@ -4,6 +4,11 @@
 
 .alignfull, .alignwide { max-width: initial; }
 
+.alignfull {
+	margin-left: -<?php echo $half; ?>px;
+	margin-right: -<?php echo $half; ?>px;
+}
+
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
@@ -26,6 +31,52 @@
 	float: none;
 }
 
+.extend {
+	margin-left: -50vw;
+	margin-right: -50vw;
+	position: relative;
+		left: 50%;
+		right: 50%;
+	width: 100vw;
+}
+
+@media all and (min-width: <?php echo $site_width; ?>px) {
+	.expanded .alignfull, .expanded .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
+	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
+}
+
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.expanded .alignfull {
+		margin-left: -50vw;
+		margin-right: -50vw;
+		position: relative;
+			left: 50%;
+			right: 50%;
+		width: 100vw;
+	}
+}
+
+@media all and (min-width: 900px) {
+	.alignfull {
+		margin-left: -<?php echo $mid; ?>px;
+		margin-right: -<?php echo $mid; ?>px;
+	}
+	.alignwide, .alignright.wrap { margin-right: -<?php echo $single; ?>px; }
+	.alignwide, .alignleft.wrap { margin-left: -<?php echo $single; ?>px; }
+}
+
+@media all and (min-width: <?php echo $content_width + ( $mid * 2 ); ?>px) {
+	.expanded .alignwide, .expanded .alignright.wrap { margin-right: -<?php echo $triple; ?>px; }
+	.expanded .alignwide, .expanded .alignleft.wrap { margin-left: -<?php echo $triple; ?>px; }
+}
+
+@media all and (max-width: <?php echo $content_width + ( $mid * 2 ); ?>px) {
+	.alignwide {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+	}
+}
+
 @media all and (min-width: 700px) {
 	.alignleft {
 		float: left;
@@ -35,11 +86,6 @@
 		float: right;
 		margin-left: <?php echo $half; ?>px;
 	}
-}
-
-@media all and (max-width: 700px) {
-	.alignleft.wrap { margin-right: -<?php echo $half; ?>px; }
-	.alignright.wrap { margin-left: -<?php echo $half; ?>px; }
 }
 
 /* SPACERS */

@@ -1,22 +1,38 @@
 <style type="text/css">
 
+.loop .entry:not(:last-child), .the-content { margin-bottom: <?php echo $single; ?>px; }
+
+.post-header:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+
+.post-box .cover {
+	border-radius: 5px;
+	padding: <?php echo $half; ?>px;
+}
+
+.post-box .overlay { border-radius: 5px; }
+
 /* BOX STYLE */
 
 .box-style {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
-	margin-bottom: <?php echo $half; ?>px;
 }
 
-.box-style .cover,
 .box-style .post-header,
-.box-style .the-content { padding: <?php echo $half; ?>px; }
+.box-style .the-content,
+.box-style .post-box .post-footer.byline { padding: <?php echo $half; ?>px; }
 
+.box-style .author-box,
+.box-style .comments {
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
+
+.box-style .post-header,
+.box-style .the-content,
 .box-style.image-above-headline .featured-image,
 .box-style.image-above-headline .page-image { margin-bottom: 0; }
-
-.box-style .cover { border-radius: 5px; }
 
 .box-style.image-above-headline .overlay,
 .box-style.image-above-headline .cover,
@@ -38,9 +54,8 @@
 }
 
 @media all and (min-width: 900px) {
-	.box-style { margin-bottom: <?php echo $single; ?>px; }
-	.columns .box-style { margin-bottom: 0; }
-	.box-style .cover,
+	.loop.columns .entry { margin-bottom: 0; }
+	.post-box .cover,
 	.box-style .post-header,
 	.box-style .the-content,
 	.box-style .author-box,
@@ -59,14 +74,14 @@
 
 /* LOOP LIST */
 
-.loop-list .post-header { margin-bottom: <?php echo $half; ?>px; }
-
 .loop-list .title-wrap {
 	align-items: center;
 	display: flex;
 	flex-flow: wrap;
 	gap: <?php echo $half; ?>px;
 }
+
+.loop-list .title { flex: 1; }
 
 .loop-list .image-left .title-wrap,
 .loop-list .image-right .title-wrap { flex-flow: inherit; }
@@ -75,6 +90,7 @@
 
 .loop-list .image-right .featured-image,
 .loop-list .image-left .featured-image {
+	margin-bottom: 0;
 	max-width: <?php echo $quad; ?>px;
 }
 
@@ -91,6 +107,12 @@
 		padding-left: 0;
 		padding-right: 0;
 	}
+	.expanded .author-box, .expanded .post-footer, .expanded .comments {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $content_width; ?>px;
+	}
+	.expanded .box-style .post-footer, .expanded .box-style .author-box, .expanded .box-style .comments { max-width: 100%; }
 }
 
 
@@ -101,6 +123,8 @@
 /* PAGINATION */
 
 .pagination {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
 	justify-content: space-between;
 	position: relative;
 	text-align: center;
@@ -161,6 +185,8 @@
 
 .post-nav a {
 	display: block;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
 	text-decoration: none;
 }
 

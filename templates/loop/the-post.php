@@ -1,6 +1,5 @@
 <?php
 
-$cover = md_cover();
 $loop = $looped;
 $loop = md_the_loop( $loop, $c );
 $classes = md_post_class( $loop, $c );

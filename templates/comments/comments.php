@@ -1,4 +1,4 @@
-<div id="comments" class="comments">
+<div id="comments" class="comments post-footer">
 
 	<?php if ( have_comments() ) : ?>
 		<div class="comments-title">
