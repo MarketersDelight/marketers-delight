@@ -1,6 +1,6 @@
 <?php
 
-add_action( 'md_hook_content_top', 'md_breadcrumbs' );
+add_action( 'md_hook_content_top', 'md_breadcrumbs', 20 );
 add_action( 'md_hook_content', 'md_loop', 30 );
 add_filter( 'excerpt_more', '__return_empty_string' );
 add_action( 'md_hook_content_item', 'md_author', 60 );

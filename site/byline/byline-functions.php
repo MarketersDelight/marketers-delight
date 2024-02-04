@@ -60,13 +60,17 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 		return;
 
 	$c = 1;
-	$total = count( $items );
 	$classes = array( 'byline' );
+	$total = count( $items );
+	$data = md_byline_items();
 
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
 
 	$classes[] = 'items-' . $total;
+
+	if ( ! empty( $items['share'] ) )
+		$classes[] = 'has-share';
 
 	$classes = join( ' ', $classes );
 
@@ -75,13 +79,8 @@ function md_byline( $location = 'before_headline', $args = array() ) {
 	foreach ( $items as $item => $fields ) {
 		$fields['c'] = $c;
 
-		if ( isset( $fields['dropin'] ) ) {
-			$path = $fields['dropin'];
-			$items = md_byline_items();
-
-			if ( isset( $items[$path]['template'] ) )
-				call_user_func( $items[$path]['template'], $fields );
-		}
+		if ( isset( $data[$item]['template'] ) )
+			call_user_func( $data[$item]['template'], $fields );
 		else
 			include( md_template( "byline/$item", true ) );
 

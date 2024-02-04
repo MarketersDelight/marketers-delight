@@ -6,9 +6,6 @@
  * @since 4.8
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_design {
 
 	/**
@@ -25,32 +22,32 @@ class md_design {
 		$h1 = array(
 			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.5 ) ) ),
 			'tablet' => md_setting( array( 'typography', 'h1', 'font_size', 'tablet' ), round( $font_size * ( $g * 1.25 ) ) ),
-			'mobile' => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $font_size * ( $g * 1.1 ) ) )
+			'mobile' => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $font_size * ( $g * 1.2 ) ) )
 		);
 		$h2 = array(
 			'desktop' => round( $h1['desktop'] * 0.85 ),
 			'tablet'  => round( $h1['tablet'] * 0.85 ),
-			'mobile'  => round( $h1['mobile'] * 0.85 )
+			'mobile'  => round( $h1['mobile'] * 0.9 )
 		);
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.7 ),
 			'tablet'  => round( $h1['tablet'] * 0.7 ),
-			'mobile'  => round( $h1['mobile'] * 0.7 )
+			'mobile'  => round( $h1['mobile'] * 0.75 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
 			'tablet'  => round( $h1['tablet'] * 0.6 ),
-			'mobile'  => round( $h1['mobile'] * 0.65 )
+			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h5 = array(
 			'desktop' => round( $h1['desktop'] * 0.55 ),
 			'tablet'  => round( $h1['tablet'] * 0.55 ),
-			'mobile'  => round( $h1['mobile'] * 0.6 )
+			'mobile'  => round( $h1['mobile'] * 0.65 )
 		);
 		$h6 = array(
 			'desktop' => round( $h1['desktop'] * 0.45 ),
 			'tablet'  => round( $h1['desktop'] * 0.45 ),
-			'mobile'  => round( $h1['desktop'] * 0.5 )
+			'mobile'  => round( $h1['desktop'] * 0.55 )
 		);
 		// colors
 		$colors = array(

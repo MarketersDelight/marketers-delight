@@ -1,5 +1,7 @@
 <style type="text/css">
 
+.entry { position: relative; }
+
 .loop .entry:not(:last-child), .the-content { margin-bottom: <?php echo $single; ?>px; }
 
 .post-header:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
@@ -47,7 +49,7 @@
 .box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.article .box-style {
+	.article .box-style.entry {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
@@ -114,11 +116,6 @@
 	}
 	.expanded .box-style .post-footer, .expanded .box-style .author-box, .expanded .box-style .comments { max-width: 100%; }
 }
-
-
-
-
-
 
 /* PAGINATION */
 

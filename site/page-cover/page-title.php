@@ -37,7 +37,7 @@ class md_page_title {
 			$hook = 'md_hook_content_top';
 
 		if ( $this->get( 'title' ) || $this->get( 'description' ) )
-			add_action( $hook, array( $this, 'html' ), 20 );
+			add_action( $hook, array( $this, 'html' ) );
 
 		if ( $this->get( 'description' ) )
 			add_action( $description_hook, array( $this, 'description' ) );

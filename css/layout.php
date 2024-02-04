@@ -28,9 +28,7 @@
 
 /* SPACING */
 
-.main > .inner {
-	padding-top: <?php echo $half; ?>px;
-}
+.main > .inner { padding-top: <?php echo $half; ?>px; }
 
 .query > .inner {
 	padding-bottom: <?php echo $half; ?>px;
@@ -38,8 +36,6 @@
 }
 
 .page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
-
-/* LAYOUT */
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.main .inner, .query .inner {

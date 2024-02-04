@@ -7,7 +7,7 @@
  * @since 6.0
  */
 
-function md_post_class( $loop, $c ) {
+function md_post_class( $loop, $c = 0 ) {
 	$classes = array( 'entry' );
 	$loop_style = 'box-style';
 	$cover = md_cover();
@@ -184,14 +184,10 @@ function md_the_content( $loop ) {
 	if ( isset( $loop['content'] ) && $loop['content'] == 'hide' )
 		return;
 
-	md_hook_before_the_content();
-
 	the_content( $loop['read_more'] );
 
 	if ( ! isset( $loop['is_query'] ) )
 		wp_link_pages();
-
-	md_hook_after_the_content();
 }
 
 /**
@@ -225,6 +221,8 @@ function md_the_excerpt( $loop ) {
  */
 
 function md_content( $loop ) {
+	md_hook_before_the_content();
+
 	if ( get_the_content() ) {
 		echo '<div class="the-content">';
 
@@ -237,6 +235,8 @@ function md_content( $loop ) {
 
 		echo '</div>';
 	}
+
+	md_hook_after_the_content();
 
 	md_byline( 'after_post', array(
 		'classes' => 'post-footer',

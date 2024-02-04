@@ -14,6 +14,7 @@ function md_loops( $sort = null ) {
 		foreach ( $loops as $id => $fields ) {
 			if ( isset( $fields['hide'] ) )
 				continue;
+
 			if ( $sort == 'ids' )
 				$data[] = $id;
 			elseif ( $sort == 'options' )

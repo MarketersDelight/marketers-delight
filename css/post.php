@@ -43,7 +43,6 @@
 
 @media all and (min-width: 700px) {
 	.layout .title-wrap {
-		flex-basis: <?php echo $content_width; ?>px;
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
@@ -94,6 +93,7 @@
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: flex;
 	flex-flow: wrap;
+	gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -108,8 +108,6 @@
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 }
-
-.byline-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
@@ -134,20 +132,22 @@
 /* POST FOOTER */
 
 .post-footer {
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
-.post-box .post-footer.byline { margin-bottom: 0; }
-
-.post-footer.byline {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
+.post-footer:not(:last-child) {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	padding-bottom: <?php echo $single; ?>px;
 }
 
 .post-footer + .post-footer { border-top: 0; }
+
+.post-box .post-footer.byline { margin-bottom: 0; }
+
+.post-footer.byline { padding-top: <?php echo $half; ?>px; }
+
+.post-footer.byline:not(:last-child) { padding-bottom: <?php echo $half; ?>px; }
 
 /* CAPTIONS */
 

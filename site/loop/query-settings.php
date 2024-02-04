@@ -17,8 +17,8 @@
 	<div class="nav-tab-wrapper">
 		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-query"><?php echo __( 'Query', 'md' ); ?></a>
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-post-content"><?php echo __( 'Post', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-style"><?php echo __( 'Style', 'md' ); ?></a>
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-content"><?php echo __( 'Content', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-style"><?php echo __( 'Style', 'md' ); ?></a>
 	</div>
 
 	<div class="md-loop-query md-tab-content active">
@@ -330,8 +330,9 @@
 				<?php $this->fields->field( array( $group, $field, 'list' ), array(
 					'type' => 'select',
 					'label' => __( 'List', 'md' ),
-					'empty_label' => __( 'Post Listing', 'md' ),
+					'empty_label' => __( 'Use default', 'md' ),
 					'options' => array(
+						'list' => __( 'Post Listing', 'md' ),
 						'timeline' => __( 'Timeline', 'md' ),
 						'numbers' => __( 'Numbered', 'md' )
 					)
