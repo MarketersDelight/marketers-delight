@@ -6,7 +6,7 @@
 
 		<?php md_hook_content_top(); ?>
 
-		<main class="<?php echo md_content_classes(); ?>">
+		<main class="content">
 
 			<?php md_hook_before_content(); ?>
 

@@ -18,8 +18,6 @@
 	<?php
 		if ( ! empty( $style['bg_image'] ) )
 			md_overlay( $cover );
-
-		md_loop_list( $loop );
 	?>
 
 	<div class="post-header">

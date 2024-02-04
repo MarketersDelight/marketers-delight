@@ -334,6 +334,7 @@
 					'options' => array(
 						'list' => __( 'Post Listing', 'md' ),
 						'timeline' => __( 'Timeline', 'md' ),
+						'timeline-left' => __( 'Timeline (left)', 'md' ),
 						'numbers' => __( 'Numbered', 'md' )
 					)
 				) ); ?>

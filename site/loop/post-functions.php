@@ -9,9 +9,7 @@
 
 function md_post_class( $loop, $c = 0 ) {
 	$classes = array( 'entry' );
-	$loop_style = 'box-style';
 	$cover = md_cover();
-	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
 
 	// Posts with Covers
 	if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
@@ -28,14 +26,7 @@ function md_post_class( $loop, $c = 0 ) {
 	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
-	if ( $disable_box_style )
-		$loop_style = '';
-
-	if ( isset( $loop['style'] ) )
-		if ( $loop['style'] !== 'simple' )
-			$loop_style = str_replace( '_', '-', $loop['style'] );
-		else
-			$loop_style = '';
+	$loop_style = md_loop_style( $loop );
 
 	if ( $loop_style )
 		$classes[] = $loop_style;
@@ -292,7 +283,7 @@ function md_author_box() {
  */
 
 function md_has_comments() {
-	if ( ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
+	if ( in_the_loop() && is_singular() && ! is_404() && ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
 		return true;
 }
 
@@ -320,7 +311,7 @@ function md_real_comment_count( $count ) {
  */
 
 function md_comments() {
-	if ( ! is_404() && md_has_comments() && is_singular() )
+	if ( md_has_comments() )
 		comments_template( '/templates/comments/comments.php' );
 }
 

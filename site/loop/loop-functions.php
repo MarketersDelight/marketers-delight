@@ -37,7 +37,6 @@ function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
 	$post_type = md_get_post_type();
-	$defaults = md_post_type_loop_defaults();
 	$loops = md_loops();
 
 	if ( isset( $args['query'] ) ) {
@@ -52,9 +51,7 @@ function md_loop( $args = array() ) {
 		unset( $loop['query'] );
 	}
 
-	if ( ! empty( $defaults[$post_type] ) )
-		$loop = array_merge( $defaults[$post_type], $loop );
-
+	$loop = apply_filters( 'md_filter_loop_defaults', $loop );
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
 
@@ -77,6 +74,11 @@ function md_loop( $args = array() ) {
 		else
 			$loop['size'] = 'medium';
 	}
+
+	$loop_style = md_loop_style( $loop );
+
+	if ( $loop_style )
+		$wrap_classes[] = "has-$loop_style";
 
 	if ( isset( $loop['size'] ) )
 		$wrap_classes[] = esc_attr( $loop['size'] );
@@ -145,22 +147,6 @@ function md_query( $position = null ) {
 
 		include( md_template( 'loop/query', true ) );
 	}
-}
-
-/**
- * Outputs markup related to $loop['list'] List styles.
- *
- * @since 6.0
- */
-
-function md_loop_list( $loop ) {
-	if ( is_singular() || ! isset( $loop['list'] ) )
-		return;
-
-	$list = $loop['list'];
-
-	if ( $list == 'timeline' )
-		echo '<div class="timeline-item"></div>';
 }
 
 /**
@@ -296,6 +282,28 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );
+}
+
+/**
+ * Determine the style class applied to any given Loop.
+ *
+ * @since 5.1
+ */
+
+function md_loop_style( $loop ) {
+	$style = 'box-style';
+	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
+
+	if ( $disable_box_style )
+		$style = '';
+
+	if ( isset( $loop['style'] ) )
+		if ( $loop['style'] !== 'simple' )
+			$style = str_replace( '_', '-', $loop['style'] );
+		else
+			$style = '';
+
+	return $style;
 }
 
 /**

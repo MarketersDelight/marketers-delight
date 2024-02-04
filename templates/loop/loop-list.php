@@ -1,7 +1,5 @@
 <article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
 
-	<?php md_loop_list( $loop ); ?>
-
 	<div class="post-box">
 
 		<?php

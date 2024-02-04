@@ -13,9 +13,54 @@
 
 .post-box .overlay { border-radius: 5px; }
 
+/* LIST: TIMELINE */
+
+.timeline, .timeline-left { position: relative; }
+
+.timeline:before, .timeline-left:before {
+	background-color: <?php echo $colors['site']['links']; ?>;
+	content: '';
+	display: block;
+	height: 100%;
+	margin-left: -2px;
+	position: absolute;
+		bottom: 0;
+		left: 50%;
+	width: 4px;
+}
+
+.timeline-left:before, .timeline-left > .entry:after { z-index: 10; }
+
+.timeline > .entry:not(:last-child):after,
+.timeline-left > .entry:after,
+.thread:after {
+	background-color: <?php echo $colors['site']['links']; ?>;
+	border-radius: 50%;
+	content: '';
+	display: block;
+	height: 24px;
+	margin-left: -12px;
+	position: absolute;
+		bottom: -12px;
+		left: 50%;
+	width: 24px;
+}
+
+.timeline .entry:not(.box-style) { background-color: <?php echo $colors['site']['bg_color']; ?>; }
+
+.timeline-left .entry { padding-left: <?php echo $single; ?>px; }
+
+.timeline-left:before { left: 0; }
+
+.timeline-left > .entry:after {
+	margin-left: 0;
+	left: -12px;
+	top: 0;
+}
+
 /* BOX STYLE */
 
-.box-style {
+.box-style, .timeline-left.has-box-style {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
@@ -48,7 +93,24 @@
 
 .box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
+.has-box-style.timeline-left:before { left: <?php echo $half; ?>px; }
+
+.has-box-style.timeline-left .entry {
+	background-color: transparent;
+	border-radius: 0;
+	box-shadow: none;
+	margin-bottom: 0;
+	padding-left: <?php echo $half; ?>px;
+}
+
+.timeline-left .box-style:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.has-box-style.timeline-left .entry:after {
+	left: 2px;
+	top: <?php echo $half; ?>px;
+}
+
+@media all and (max-width: 900px) {
 	.article .box-style.entry {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
@@ -58,8 +120,8 @@
 @media all and (min-width: 900px) {
 	.loop.columns .entry { margin-bottom: 0; }
 	.post-box .cover,
-	.box-style .post-header,
-	.box-style .the-content,
+	.content .box-style .post-header,
+	.content .box-style .the-content,
 	.box-style .author-box,
 	.box-style .comments { padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
 	.expanded .box-style .author-box,
