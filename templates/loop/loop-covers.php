@@ -15,8 +15,11 @@
 
 <article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?><?php echo md_style( $style ); ?>>
 
-	<?php if ( ! empty( $style['bg_image'] ) )
-		md_overlay( $cover );
+	<?php
+		if ( ! empty( $style['bg_image'] ) )
+			md_overlay( $cover );
+
+		md_loop_list( $loop );
 	?>
 
 	<div class="post-header">

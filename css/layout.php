@@ -28,11 +28,13 @@
 
 /* SPACING */
 
-.main > .inner { padding-top: <?php echo $half; ?>px; }
+.main > .inner { padding-top: <?php echo $single; ?>px; }
+
+.main.full + .footer { margin-top: <?php echo $single; ?>px; }
 
 .query > .inner {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
 }
 
 .page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }

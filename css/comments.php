@@ -22,23 +22,9 @@
 
 /* TITLE */
 
-.comments-title {
-	align-items: center;
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	display: flex;
-	margin-bottom: <?php echo $single; ?>px;
-	padding-bottom: <?php echo $half; ?>px;
-}
-
-.comments-title .comments-title-text {
-	flex: 1;
-	margin-bottom: 0;
-	margin-right: <?php echo $small; ?>px;
-}
-
-.comments-title i, .comment-controls i {
-	font-size: 0.85em;
-	margin-right: <?php echo $small; ?>px;
+.comment-reply-title {
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
 }
 
 /* COMMENT */
@@ -103,6 +89,11 @@
 }
 
 .comment-controls a:hover { background-color: rgba(0, 0, 0, 0.05); }
+
+ .comment-controls i {
+	font-size: 0.85em;
+	margin-right: <?php echo $small; ?>px;
+}
 
 /* TOGGLE */
 
@@ -201,10 +192,6 @@
 .comment-form .form-submit { margin-bottom: 0; }
 
 @media all and (min-width: 700px) {
-	.comment-reply-title, .comments-title-text {
-		font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
-	}
 	.comment-content {
 		font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;

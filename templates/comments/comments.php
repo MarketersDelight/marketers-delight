@@ -1,8 +1,8 @@
 <div id="comments" class="comments post-footer">
 
 	<?php if ( have_comments() ) : ?>
-		<div class="comments-title">
-			<h3 class="comments-title-text"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?></h3>
+		<div class="content-title">
+			<h3 class="title"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?></h3>
 			<a href="#respond" class="button button-small gray"><?php echo md_icon( 'plus' ) . __( 'add comment', 'md' ); ?></a>
 		</div>
 	<?php endif; ?>

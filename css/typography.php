@@ -78,6 +78,27 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline
 
 .the-content h2:not(:first-child), .the-content h3:not(:first-child), .the-content h4:not(:first-child), .the-content h5:not(:first-child) { margin-top: <?php echo $mid; ?>px; }
 
+.content-title {
+	align-items: center;
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	margin-bottom: <?php echo $single; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+}
+
+.content-title .title {
+	flex: 1;
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
+	margin-bottom: 0;
+}
+
+.content-title i {
+	font-size: 0.85em;
+	margin-right: <?php echo $small; ?>px;
+}
+
 <?php foreach ( $queries as $w => $d ) {
 	echo "@media all and (max-width: {$w}px) {\n".
 		 "\tbody { ".

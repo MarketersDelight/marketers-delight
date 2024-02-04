@@ -37,6 +37,7 @@ function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
 	$post_type = md_get_post_type();
+	$defaults = md_post_type_loop_defaults();
 	$loops = md_loops();
 
 	if ( isset( $args['query'] ) ) {
@@ -47,9 +48,12 @@ function md_loop( $args = array() ) {
 			$post_type = $loop['post_type'];
 	}
 	else {
-		$loop = md_module( 'loop' );
+		$loop = md_module( 'loop', array() );
 		unset( $loop['query'] );
 	}
+
+	if ( ! empty( $defaults[$post_type] ) )
+		$loop = array_merge( $defaults[$post_type], $loop );
 
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
@@ -58,6 +62,9 @@ function md_loop( $args = array() ) {
 		$loop['columns'] = 1;
 
 	$wrap_classes[] = "loop-{$post_type}";
+
+	if ( isset( $loop['list'] ) )
+		$wrap_classes[] = esc_attr( $loop['list'] );
 
 	if ( isset( $loop['position'] ) && in_array( $loop['position'], array( 'before_content', 'content' ) ) )
 		$loop['is_inline'] = true;
@@ -138,6 +145,22 @@ function md_query( $position = null ) {
 
 		include( md_template( 'loop/query', true ) );
 	}
+}
+
+/**
+ * Outputs markup related to $loop['list'] List styles.
+ *
+ * @since 6.0
+ */
+
+function md_loop_list( $loop ) {
+	if ( is_singular() || ! isset( $loop['list'] ) )
+		return;
+
+	$list = $loop['list'];
+
+	if ( $list == 'timeline' )
+		echo '<div class="timeline-item"></div>';
 }
 
 /**

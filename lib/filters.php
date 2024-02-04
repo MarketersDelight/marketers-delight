@@ -123,6 +123,16 @@ function md_filter_loops() {
 }
 
 /**
+ * Get a list of default values for loops based on post type.
+ *
+ * @since 6.0
+ */
+
+function md_post_type_loop_defaults() {
+	return apply_filters( 'md_filter_post_type_loop_defaults', array() );
+}
+
+/**
  * Compile Popups to load on any given page.
  *
  * @since 5.0
