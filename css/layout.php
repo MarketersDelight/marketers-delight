@@ -24,13 +24,14 @@
 	row-gap: <?php echo $half; ?>px;
 }
 
-.columns { gap: <?php echo $half; ?>px; }
+.columns {
+	gap: <?php echo $half; ?>px;
+	justify-content: space-between;
+}
 
 /* SPACING */
 
 .main > .inner { padding-top: <?php echo $single; ?>px; }
-
-.main.full + .footer { margin-top: <?php echo $single; ?>px; }
 
 .query > .inner {
 	padding-bottom: <?php echo $single; ?>px;
