@@ -96,23 +96,21 @@ function md_byline_items() {
 function md_filter_loops() {
 	return apply_filters( 'md_filter_loops', array(
 		'fluid' => array(
-			'name' => __( 'Fluid', 'md' ),
-			'description' => __( 'The default blog style with a flexible layout.', 'md' ),
+			'name' => __( 'Default', 'md' ),
+			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
 		),
 		'list' => array(
-			'name' => __( 'List', 'md' ),
-			'description' => __( 'A simplified list with compact images.', 'md' ),
+			'name' => __( 'Plain List', 'md' ),
+			'description' => __( 'A condensed list of posts with a small image.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-list.png',
 			'template' => md_template( 'loop/loop-list', true )
 		),
-/*
-		'icons' => array(
-			'name' => __( 'Icon Cards', 'md' ),
-			'description' => __( 'Small cards with a focus on the image thumbnail.', 'md' ),
+		'blocks' => array(
+			'name' => __( 'Blocks', 'md' ),
+			'description' => __( 'Highlights the featured image.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-icons.png'
 		),
-*/
 		'covers' => array(
 			'name' => __( 'Post Covers', 'md' ),
 			'description' => __( 'Posts list with full-width background image covers.', 'md' ),

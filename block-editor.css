@@ -166,16 +166,16 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 24px; line-height: 34px; }
 	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 20px; line-height: 28px; }
 	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { font-size: 19px; line-height: 29px; }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 18px; line-height: 25px; }
+	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
 @media all and (max-width: 700px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 50px; line-height: 66px; }
 	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 33px; line-height: 43px; }
-	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 30px; line-height: 41px; }
-	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 25px; line-height: 35px; }
-	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 23px; line-height: 33px; }
-	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { font-size: 21px; line-height: 32px; }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { font-size: 23px; line-height: 32px; }
+	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 28px; line-height: 38px; }
+	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 23px; line-height: 32px; }
+	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 20px; line-height: 29px; }
+	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { font-size: 18px; line-height: 27px; }
+	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
 /* SPACERS */
 .editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,

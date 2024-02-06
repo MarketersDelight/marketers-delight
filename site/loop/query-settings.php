@@ -78,12 +78,21 @@
 				) ); ?>
 			</div>
 
-			<div class="query-category-field col md-sep-micro">
+			<div class="loop-category-field col md-sep-micro">
 				<?php $this->fields->field( array( $group, $field, 'category_per_page' ), array(
 					'type' => 'number',
 					'label' => __( 'Categories Per Page', 'md' ),
 					'placeholder' => 5,
 					'description' => __( 'Category sections to show.', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="loop-category-field col md-sep-micro">
+				<?php $this->fields->field( array( $group, $field, 'category_columns' ), array(
+					'type' => 'number',
+					'label' => __( 'Category Columns', 'md' ),
+					'description' => __( 'Categories into columns.', 'md' ),
+					'placeholder' => 1
 				) ); ?>
 			</div>
 
@@ -307,7 +316,7 @@
 					'empty_label' => __( 'Default style', 'md' ),
 					'options' => array(
 						'box_style' => __( 'Box style', 'md' ),
-						'simple' => __( 'Simple style', 'md' )
+						'simple' => __( 'No style', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -320,8 +329,7 @@
 					'options' => array(
 						'large' => __( 'Large', 'md' ),
 						'medium' => __( 'Medium', 'md' ),
-						'small' => __( 'Small', 'md' ),
-						'normal' => __( 'Normal', 'md' )
+						'small' => __( 'Small', 'md' )
 					)
 				) ); ?>
 			</div>

@@ -9,17 +9,59 @@
 	) ); ?>
 </div>
 
-<?php if ( $screen->base !== 'term' ) : ?>
+<div class="columns-4 columns-half md-sep-small md-full-select">
 
-<?php $this->fields->field( 'category_posts', array(
-	'type' => 'checkbox',
-	'wrap_classes' => 'md-sep-micro',
-	'options' => array(
-		'enable' => __( 'Show posts by category', 'md' )
-	)
-) ); ?>
+	<div class="col">
+		<?php $this->fields->field( 'style', array(
+			'type' => 'select',
+			'label' => __( 'Style', 'md' ),
+			'empty_label' => __( 'Default style', 'md' ),
+			'options' => array(
+				'box_style' => __( 'Box style', 'md' ),
+				'simple' => __( 'No style', 'md' )
+			)
+		) ); ?>
+	</div>
 
-<?php endif; ?>
+	<div class="col">
+		<?php $this->fields->field( 'size', array(
+			'type' => 'select',
+			'label' => __( 'Font Size', 'md' ),
+			'empty_label' => __( 'Inherit', 'md' ),
+			'options' => array(
+				'large' => __( 'Large', 'md' ),
+				'medium' => __( 'Medium', 'md' ),
+				'small' => __( 'Small', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<div class="col">
+		<?php $this->fields->field( 'list', array(
+			'type' => 'select',
+			'label' => __( 'List', 'md' ),
+			'empty_label' => __( 'Use default', 'md' ),
+			'options' => array(
+				'list' => __( 'Post Listing', 'md' ),
+				'timeline' => __( 'Timeline', 'md' ),
+				'timeline-left' => __( 'Timeline (left)', 'md' ),
+				'numbers' => __( 'Numbered', 'md' )
+			)
+		) ); ?>
+	</div>
+
+</div>
+
+<?php if ( $screen->base !== 'term' )
+	$this->fields->field( 'category_posts', array(
+		'type' => 'checkbox',
+		'wrap_classes' => 'md-sep-micro',
+		'check_class' => 'md-check-val',
+		'options' => array(
+			'enable' => __( 'Show posts by category', 'md' )
+		)
+	) );
+?>
 
 <div class="columns-4 columns-half mb-sep-small">
 
@@ -52,12 +94,21 @@
 
 	<?php if ( $screen->base !== 'term' ) : ?>
 
-	<div id="loop_category_posts" class="col md-sep-micro" style="display: <?php echo $category_posts ? 'inline-block' : 'none'; ?>">
+	<div class="loop-category-field col md-sep-micro">
 		<?php $this->fields->field( 'category_per_page', array(
 			'type' => 'number',
 			'label' => __( 'Categories Per Page', 'md' ),
 			'placeholder' => 5,
 			'description' => __( 'Category sections to show.', 'md' )
+		) ); ?>
+	</div>
+
+	<div class="loop-category-field col md-sep-micro">
+		<?php $this->fields->field( 'category_columns', array(
+			'type' => 'number',
+			'label' => __( 'Category Columns', 'md' ),
+			'placeholder' => 1,
+			'description' => __( 'Categories into columns.', 'md' )
 		) ); ?>
 	</div>
 

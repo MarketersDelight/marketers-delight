@@ -114,8 +114,6 @@ class md_page_title {
 
 		if ( $inline && md_has_sidebar() )
 			$data['classes'][] = 'inline';
-		else
-			$data['classes'][] = 'outer';
 
 		if ( isset( $key ) )
 			$data = ! empty( $data[$key] ) ? $data[$key] : '';

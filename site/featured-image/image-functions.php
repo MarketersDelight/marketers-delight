@@ -32,19 +32,14 @@ function md_featured_image( $loop = array() ) {
 		return;
 
 	$permalink = get_permalink();
-	$loop = array();
 	$wrap = 'wrap';
 	$size = 'full';
 
 	if ( is_singular() && in_the_loop() )
 		$permalink = '';
 
-	if ( isset( $args['loop'] ) ) {
-		$loop = $args['loop'];
-
-		if ( isset( $loop['featured_image_size'] ) )
-			$size = $loop['featured_image_size'];
-	}
+	if ( isset( $loop['featured_image_size'] ) )
+		$size = $loop['featured_image_size'];
 
 	include( md_template( 'featured-image', true ) );
 }
@@ -126,12 +121,17 @@ function md_cover( $context = 'post' ) {
 function md_cover_classes( $cover, $string = false ) {
 	$classes = array();
 
-	if ( ! empty( $cover['position'] ) && empty( $cover['hide_cover'] ) ) {
-		$classes[] = 'cover';
-		$classes[] = str_replace( '_', '-', $cover['position'] );
+	if ( ! empty( $cover['position'] ) ) {
+		if ( $cover['position'] == 'header_cover_full' )
+			$classes[] = 'format';
 
-		if ( ! empty( $cover['display']['alternate'] ) )
-			$classes[] = 'alt';
+		if ( empty( $cover['hide_cover'] ) ) {
+			$classes[] = 'cover';
+			$classes[] = str_replace( '_', '-', $cover['position'] );
+
+			if ( ! empty( $cover['display']['alternate'] ) )
+				$classes[] = 'alt';
+		}
 	}
 
 	if ( ! empty( $string ) )

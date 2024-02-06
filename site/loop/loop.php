@@ -160,6 +160,7 @@ class md_loop extends md_api {
 			'columns' => array( 'type' => 'number' ),
 			'posts_per_page' => array( 'type' => 'number' ),
 			'category_per_page' => array( 'type' => 'number' ),
+			'category_columns' => array( 'type' => 'number' ),
 			'orderby' => array(
 				'type' => 'select',
 				'options' => array( 'title', 'modified', 'comment_count', 'rand' )
@@ -206,7 +207,7 @@ class md_loop extends md_api {
 			),
 			'size' => array(
 				'type' => 'select',
-				'options' => array( 'large', 'medium', 'small', 'normal' )
+				'options' => array( 'large', 'medium', 'small' )
 			),
 			'style' => array(
 				'type' => 'select',
@@ -327,13 +328,6 @@ class md_loop extends md_api {
 		$prefix = $this->_prefix();
 	?>
 		<script>
-			<?php if ( $screen->base !== 'term' ) : ?>
-			( function() {
-				document.getElementById( '<?php echo $prefix; ?>_category_posts_enable' ).onchange = function( e ) {
-					document.getElementById( 'loop_category_posts' ).style.display = this.checked ? 'block' : 'none';
-				}
-			} )();
-			<?php endif; ?>
 			jQuery( document ).ready( function( $ ) {
 				$( '.md-check-val' ).on( 'change', function( e ) {
 					$( this ).parents( '.md-loop' ).toggleClass( 'has-category-posts' );

@@ -36,6 +36,8 @@ function md_loops( $sort = null ) {
 function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
+	$categories_classes = array( 'categories' );
+	$category_classes = array( 'category-row' );
 	$post_type = md_get_post_type();
 	$loops = md_loops();
 
@@ -66,22 +68,19 @@ function md_loop( $args = array() ) {
 	if ( isset( $loop['position'] ) && in_array( $loop['position'], array( 'before_content', 'content' ) ) )
 		$loop['is_inline'] = true;
 
-	if ( $loop['columns'] > 1 ) {
+	if ( $loop['columns'] > 1 )
 		$wrap_classes[] = 'columns';
-
-		if ( $loop['columns'] > 3 )
-			$loop['size'] = 'small';
-		else
-			$loop['size'] = 'medium';
-	}
 
 	$loop_style = md_loop_style( $loop );
 
-	if ( $loop_style )
-		$wrap_classes[] = "has-$loop_style";
+	if ( $loop_style ) {
+		if ( ! empty( $loop['category_posts'] ) )
+			$categories_classes[] = "has-$loop_style";
+		else
+			$wrap_classes[] = "has-$loop_style";
 
-	if ( isset( $loop['size'] ) )
-		$wrap_classes[] = esc_attr( $loop['size'] );
+		$category_classes[] = $loop_style;
+	}
 
 	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
@@ -254,8 +253,6 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 
 	if ( is_singular() && ! isset( $loop['is_query'] ) )
 		$classes[] = 'article';
-	else
-		$loop['columns'] = md_post_type_field( array( 'loop', 'columns' ), $loop['columns'] );
 
 	$classes[] = 'loop-' . $loop['loop'];
 
@@ -278,6 +275,9 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 
 	if ( ! isset( $loop['is_inline'] ) )
 		$classes[] = 'format';
+
+	if ( isset( $loop['size'] ) && empty( $loop['category_posts'] ) )
+		$classes[] = esc_attr( $loop['size'] );
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 

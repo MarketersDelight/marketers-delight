@@ -37,10 +37,10 @@
 	float: right;
 	margin-left: <?php echo $half; ?>px;
 }
-
+/*
 .image-left .the-content .featured-image,
 .image-right .the-content .featured-image { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
-
+*/
 @media all and (min-width: 700px) {
 	.layout .title-wrap {
 		margin-left: auto;
@@ -56,8 +56,10 @@
 	.image-right.inline .page-image,
 	.image-left .page-image, .image-right .title { order: -1; }
 	.image-center, .image-above-headline { flex-direction: column; }
+/*
 	.image-left .the-content .featured-image,
 	.image-right .the-content .featured-image { max-width: <?php echo $sidebar_width; ?>px; }
+*/
 	/* PAGE CTA */
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 }
@@ -75,9 +77,14 @@
 
 .featured-image {
 	position: relative;
-	margin-bottom: <?php echo $half; ?>px;
 	z-index: 5;
 }
+
+.the-content .featured-image,
+.image-above-headline .featured-image,
+.image-below-headline .featured-image { margin-bottom: <?php echo $half; ?>px; }
+
+.has-cover.image-above-headline .featured-image { margin-bottom: 0; }
 
 .featured-image a { display: block; }
 
@@ -199,6 +206,8 @@
 	padding-bottom: <?php echo $double; ?>px;
 	padding-top: <?php echo $double; ?>px;
 }
+
+.main > .header-cover { margin-bottom: 0; }
 
 <?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
 .header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }

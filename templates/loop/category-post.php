@@ -1,11 +1,15 @@
-<div class="category-row">
+<div class="<?php echo esc_attr( $category_classes ); ?>">
 
-	<div class="category-header">
+	<div class="section-header layout">
 
-		<h2 class="title"><?php echo esc_html( $category->name ); ?></h2>
+		<div class="title-wrap">
 
-		<div class="description">
-			<?php echo term_description( $category_id ); ?>
+			<h2 class="title"><?php echo esc_html( $category->name ); ?></h2>
+
+			<div class="description">
+				<?php echo term_description( $category_id ); ?>
+			</div>
+
 		</div>
 
 	</div>

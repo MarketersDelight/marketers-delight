@@ -175,14 +175,17 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	foreach ( $queries as $w => $d ) {
 		echo "@media all and (max-width: {$w}px) {\n";
 		foreach ( $titles as $h => $selector ) {
+			if ( ! empty( $typography[$h] ) )
 			echo "\t$selector, " . $texts[$h] . " { ".
-				 	'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '.
-				 	'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '.
-				 "}\n";
+					( ! empty( $typography[$h]['font_size'][$d] ) ? 'font-size: ' . $typography[$h]['font_size'][$d] . 'px; ' : '' ).
+					( ! empty( $typography[$h]['line_height'][$d] ) ? 'line-height: ' . $typography[$h]['line_height'][$d] . 'px; ' : '' ).
+				"}\n";
 		}
 		echo "}\n";
 	}
 ?>
+
+
 
 /* SPACERS */
 

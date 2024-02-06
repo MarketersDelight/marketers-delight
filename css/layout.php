@@ -25,8 +25,8 @@
 }
 
 .columns {
-	gap: <?php echo $half; ?>px;
 	justify-content: space-between;
+	row-gap: <?php echo $single; ?>px;
 }
 
 /* SPACING */
@@ -38,7 +38,7 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.page-header, .loop-header { margin-bottom: <?php echo $single; ?>px; }
+.page-header:not(:last-child), .section-header { margin-bottom: <?php echo $single; ?>px; }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.main .inner, .query .inner {
@@ -73,11 +73,14 @@
 
 @media all and (min-width: 800px) {
 	.columns { display: flex; }
-	.columns.loop { flex-flow: wrap; }
+	.loop.columns, .categories.columns { flex-flow: wrap; }
 	.layout { column-gap: <?php echo $single; ?>px; }
 	.layout:not(.inline) { row-gap: <?php echo $single; ?>px; }
 	<?php for ( $f = 2; $f <= 8; $f++ ) : ?>
-	.f<?php echo $f; ?> { max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
+	.f<?php echo $f; ?> {
+		flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px);
+		max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px);
+	}
 	<?php endfor; ?>
 }
 

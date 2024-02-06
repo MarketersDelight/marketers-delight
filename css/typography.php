@@ -27,12 +27,12 @@
 	$queries = array( 900 => 'tablet', 700 => 'mobile' );
 	$titles = array(
 		'huge' => '.huge-title',
-		'h1' => 'h1, .large-title',
-		'h2' => 'h2, .main-title',
-		'h3' => 'h3, .med-title',
-		'h4' => 'h4, .mid-title, .medium .title',
-		'h5' => 'h5, .small-title',
-		'h6' => 'h6, .micro-title, .small .title'
+		'h1' => 'h1, .large-title, .large .section-header .title',
+		'h2' => 'h2, .main-title, .large .loop .title',
+		'h3' => 'h3, .med-title, .medium .section-header .title',
+		'h4' => 'h4, .mid-title, .medium .loop .title',
+		'h5' => 'h5, .small-title, .small .section-header .title',
+		'h6' => 'h6, .micro-title, .small .loop .title'
 	);
 	$texts = array(
 		'huge' => '.huge-text',
@@ -106,10 +106,11 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline
 			'line-height: ' . $line_height[$d] . 'px; '.
 		"}\n";
 	foreach ( $titles as $h => $selector ) {
+		if ( ! empty( $typography[$h]['font_size'][$d] ) || ! empty( $typography[$h]['line_height'][$d] ) )
 		echo "\t$selector, " . $texts[$h] . " { ".
-			 	'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '.
-			 	'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '.
-			 "}\n";
+				( ! empty( $typography[$h]['font_size'][$d] ) ? 'font-size: ' . $typography[$h]['font_size'][$d] . 'px; ' : '' ).
+				( ! empty( $typography[$h]['line_height'][$d] ) ? 'line-height: ' . $typography[$h]['line_height'][$d] . 'px; ' : '' ).
+			"}\n";
 	}
 	echo "}\n";
 } ?>

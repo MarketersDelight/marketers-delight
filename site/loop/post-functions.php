@@ -22,16 +22,18 @@ function md_post_class( $loop, $c = 0 ) {
 
 	if ( $loop['columns'] > 1 && $loop['columns'] <= 5 )
 		$classes[] = 'f' . $loop['columns'];
+	else
+		$classes[] = 'row';
 
 	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
 	$loop_style = md_loop_style( $loop );
 
-	if ( $loop_style )
+	if ( $loop_style && empty( $loop['category_posts'] ) )
 		$classes[] = $loop_style;
 
-	if ( isset( $loop['featured_image_id'] ) )
+	if ( isset( $loop['featured_image_id'] ) && $loop['featured_image'] !== 'remove' )
 		$classes[] = 'image-' . str_replace( '_', '-', $loop['featured_image'] );
 
 	if ( ! empty( $cover['position'] ) )
@@ -214,12 +216,14 @@ function md_the_excerpt( $loop ) {
 function md_content( $loop ) {
 	md_hook_before_the_content();
 
-	if ( get_the_content() ) {
+	$loop['content'] = isset( $loop['content'] ) ? $loop['content'] : '';
+
+	if ( get_the_content() && $loop['content'] !== 'hide' ) {
 		echo '<div class="the-content">';
 
 		md_featured_image( $loop );
 
-		if ( ( is_singular() && in_the_loop() ) || isset( $loop['content'] ) && $loop['content'] == 'full' )
+		if ( ( is_singular() && in_the_loop() ) || $loop['content'] == 'full' )
 			md_the_content( $loop );
 		else
 			md_the_excerpt( $loop );

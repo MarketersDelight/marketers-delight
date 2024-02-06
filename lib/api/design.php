@@ -27,27 +27,25 @@ class md_design {
 		$h2 = array(
 			'desktop' => round( $h1['desktop'] * 0.85 ),
 			'tablet'  => round( $h1['tablet'] * 0.85 ),
-			'mobile'  => round( $h1['mobile'] * 0.9 )
+			'mobile'  => round( $h1['mobile'] * 0.85 )
 		);
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.7 ),
 			'tablet'  => round( $h1['tablet'] * 0.7 ),
-			'mobile'  => round( $h1['mobile'] * 0.75 )
+			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
 			'tablet'  => round( $h1['tablet'] * 0.6 ),
-			'mobile'  => round( $h1['mobile'] * 0.7 )
+			'mobile'  => round( $h1['mobile'] * 0.6 )
 		);
 		$h5 = array(
 			'desktop' => round( $h1['desktop'] * 0.55 ),
 			'tablet'  => round( $h1['tablet'] * 0.55 ),
-			'mobile'  => round( $h1['mobile'] * 0.65 )
+			'mobile'  => round( $h1['mobile'] * 0.55 )
 		);
 		$h6 = array(
-			'desktop' => round( $h1['desktop'] * 0.45 ),
-			'tablet'  => round( $h1['desktop'] * 0.45 ),
-			'mobile'  => round( $h1['desktop'] * 0.55 )
+			'desktop' => round( $h1['desktop'] * 0.45 )
 		);
 		// colors
 		$colors = array(
@@ -211,14 +209,10 @@ class md_design {
 				),
 				'h6' => array(
 					'font_size' => array(
-						'desktop' => $h6['desktop'],
-						'tablet' => $h6['tablet'],
-						'mobile' => $h6['mobile']
+						'desktop' => $h6['desktop']
 					),
 					'line_height' => array(
-						'desktop' => round( $h6['desktop'] * 1.4 ),
-						'tablet' => round( $h6['tablet'] * 1.4 ),
-						'mobile' => round( $h6['mobile'] * 1.4 )
+						'desktop' => round( $h6['desktop'] * 1.4 )
 					)
 				),
 				'sidebar' => array(
