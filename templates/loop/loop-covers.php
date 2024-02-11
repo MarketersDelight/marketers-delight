@@ -1,13 +1,13 @@
 <?php
+	$cover = md_cover();
+	$cover['position'] = 'headline_cover';
+
 	if ( empty( $cover['image'] ) && isset( $loop['featured_image_id'] ) ) {
-		$cover['position'] = 'headline_cover';
-		$cover['image']['id'] = $featured_image_id;
-		$cover['image']['url'] = $cover['style']['bg_image'] = $style['bg_image'] = wp_get_attachment_image_url( $featured_image_id, 'full' );
+		$cover['image']['id'] = get_post_thumbnail_id();
+		$cover['image']['url'] = $cover['style']['bg_image'] = $style['bg_image'] = get_the_post_thumbnail_url( null, 'full' );
 	}
-	else {
-		$cover['position'] = 'headline_cover';
+	else
 		$style['bg_image'] = $cover['image']['url'];
-	}
 
 	if ( $cover )
 		$classes .= ' ' . md_cover_classes( $cover, true );

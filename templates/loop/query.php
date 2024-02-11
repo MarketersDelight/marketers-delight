@@ -13,13 +13,13 @@
 		<div class="section-header">
 
 			<?php if ( ! empty( $loop['title'] ) ) : ?>
-				<h3 class="title"><?php echo md_text_field( $loop['title'] ); ?></h3>
+			<h3 class="title"><?php echo md_text_field( $loop['title'] ); ?></h3>
 			<?php endif; ?>
 
 			<?php if ( ! empty( $loop['description'] ) ) : ?>
-				<div class="description">
-					<?php echo wpautop( $loop['description'] ); ?>
-				</div>
+			<div class="description">
+				<?php echo wpautop( $loop['description'] ); ?>
+			</div>
 			<?php endif; ?>
 
 		</div>

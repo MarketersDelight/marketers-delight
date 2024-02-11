@@ -16,7 +16,7 @@ function md_get_byline( $position, $loop = array() ) {
 	$remove_footer = false;
 
 	if ( isset( $loop['remove_byline'] ) )
-		$remove = true;
+		$remove = $loop['remove_byline'];
 
 	if ( isset( $loop['post_footer']['remove'] ) )
 		$remove_footer = true;

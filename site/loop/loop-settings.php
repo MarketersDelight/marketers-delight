@@ -26,12 +26,13 @@
 	<div class="col">
 		<?php $this->fields->field( 'size', array(
 			'type' => 'select',
-			'label' => __( 'Font Size', 'md' ),
-			'empty_label' => __( 'Inherit', 'md' ),
+			'label' => __( 'Size', 'md' ),
+			'empty_label' => __( 'Default size', 'md' ),
 			'options' => array(
 				'large' => __( 'Large', 'md' ),
 				'medium' => __( 'Medium', 'md' ),
-				'small' => __( 'Small', 'md' )
+				'small' => __( 'Small', 'md' ),
+				'normal' => __( 'Normal', 'md' ),
 			)
 		) ); ?>
 	</div>

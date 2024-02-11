@@ -20,7 +20,7 @@
 
 .description { margin-bottom: <?php echo $single; ?>px; }
 
-.inline .description { margin-bottom: 0; }
+.inline .description { margin-bottom: <?php echo $half; ?>px; }
 
 .page-image {
 	margin-bottom: <?php echo $half; ?>px;
@@ -28,19 +28,8 @@
 	margin-right: auto;
 }
 
-.image-left .the-content .featured-image {
-	float: left;
-	margin-right: <?php echo $half; ?>px;
-}
+.page-cta { position: relative; }
 
-.image-right .the-content .featured-image {
-	float: right;
-	margin-left: <?php echo $half; ?>px;
-}
-/*
-.image-left .the-content .featured-image,
-.image-right .the-content .featured-image { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
-*/
 @media all and (min-width: 700px) {
 	.layout .title-wrap {
 		margin-left: auto;
@@ -55,11 +44,7 @@
 	.image-right.inline .title-wrap,
 	.image-right.inline .page-image,
 	.image-left .page-image, .image-right .title { order: -1; }
-	.image-center, .image-above-headline { flex-direction: column; }
-/*
-	.image-left .the-content .featured-image,
-	.image-right .the-content .featured-image { max-width: <?php echo $sidebar_width; ?>px; }
-*/
+	.image-center, .image-before { flex-direction: column; }
 	/* PAGE CTA */
 	.page-cta-link + .page-cta-link { margin-left: <?php echo $half; ?>px; }
 }
@@ -80,11 +65,9 @@
 	z-index: 5;
 }
 
-.the-content .featured-image,
-.image-above-headline .featured-image,
-.image-below-headline .featured-image { margin-bottom: <?php echo $half; ?>px; }
+.the-content .featured-image, .image-before .featured-image, .image-after .featured-image { margin-bottom: <?php echo $half; ?>px; }
 
-.has-cover.image-above-headline .featured-image { margin-bottom: 0; }
+.has-cover.image-before .featured-image { margin-bottom: 0; }
 
 .featured-image a { display: block; }
 
@@ -100,11 +83,11 @@
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: flex;
 	flex-flow: wrap;
-	gap: <?php echo $half; ?>px;
+	column-gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
-.byline:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
+.byline:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -113,7 +96,7 @@
 
 .byline-item {
 	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
 }
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
@@ -307,11 +290,6 @@
 }
 
 /* AUTHOR BOX */
-
-.author-box {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
 
 .author-meta {
 	align-items: center;

@@ -207,7 +207,7 @@ class md_loop extends md_api {
 			),
 			'size' => array(
 				'type' => 'select',
-				'options' => array( 'large', 'medium', 'small' )
+				'options' => array( 'large', 'medium', 'small', 'normal' )
 			),
 			'style' => array(
 				'type' => 'select',
@@ -230,7 +230,8 @@ class md_loop extends md_api {
 			'exclude_cats' => array(
 				'type' => 'checkbox',
 				'options' => $sanitize->terms()
-			)
+			),
+			'classes' => array( 'type' => 'text' )
 		), $post_content );
 	}
 

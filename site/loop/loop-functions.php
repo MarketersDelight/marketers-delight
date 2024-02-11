@@ -37,7 +37,7 @@ function md_loop( $args = array() ) {
 	$c = 1;
 	$wrap_classes = array();
 	$categories_classes = array( 'categories' );
-	$category_classes = array( 'category-row' );
+	$category_classes = array( 'entry' );
 	$post_type = md_get_post_type();
 	$loops = md_loops();
 
@@ -53,7 +53,12 @@ function md_loop( $args = array() ) {
 		unset( $loop['query'] );
 	}
 
-	$loop = apply_filters( 'md_filter_loop_defaults', $loop );
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'fluid';
+
+	if ( ! empty( $loops[$loop_type]['defaults'] ) )
+		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
+
+	$loop = apply_filters( 'md_filter_set_loop', $loop );
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
 
@@ -82,8 +87,12 @@ function md_loop( $args = array() ) {
 		$category_classes[] = $loop_style;
 	}
 
+	if ( ! isset( $loop['is_query'] ) && isset( $loop['size'] ) && empty( $loop['category_posts'] ) )
+		$wrap_classes[] = $loop['size'];
+
 	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
+
 	$looped = $loop;
 
 	if ( isset( $args['sticky'] ) )
@@ -238,23 +247,27 @@ function md_the_loop( $loop, $c ) {
  */
 
 function md_content_box_classes( $classes = array(), $loop = array() ) {
-	if ( empty( $loop['loop'] ) )
-		$loop['loop'] = md_module( array( 'loop', 'loop' ), 'fluid' );
-
 	if ( ! isset( $loop['is_query'] ) ) {
 		$classes[] = 'main';
+
+		if ( is_singular() )
+			$classes[] = 'article';
+
+		if ( empty( $loop['loop'] ) )
+			$loop['loop'] = md_module( array( 'loop', 'loop' ), 'fluid' );
 
 		if ( md_has_sidebar() )
 			$loop['sidebar']['enable'] = true;
 	}
 
+	if ( empty( $loop['loop'] ) )
+		$loop['loop'] = 'fluid';
+
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
-	if ( is_singular() && ! isset( $loop['is_query'] ) )
-		$classes[] = 'article';
-
-	$classes[] = 'loop-' . $loop['loop'];
+	$loop_type = $loop['loop'];
+	$classes[] = "loop-$loop_type";
 
 	if ( isset( $loop['sidebar']['enable'] ) ) {
 		$classes[] = 'content-sidebar';
@@ -276,8 +289,15 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
 	if ( ! isset( $loop['is_inline'] ) )
 		$classes[] = 'format';
 
+	$loops = md_loops();
+	if ( isset( $loop['is_query'] ) && ! empty( $loops[$loop_type]['defaults'] ) )
+		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
+
 	if ( isset( $loop['size'] ) && empty( $loop['category_posts'] ) )
 		$classes[] = esc_attr( $loop['size'] );
+
+	if ( isset( $loop['classes'] ) )
+		$classes[] = $loop['classes'];
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 

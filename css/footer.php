@@ -13,7 +13,6 @@
 }
 
 .footer .columns {
-	justify-content: center;
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }

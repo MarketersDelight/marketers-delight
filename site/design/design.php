@@ -97,6 +97,12 @@ class md_colors extends md_api {
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
 		$fields['width']['sidebar'] = array( 'type' => 'range' );
+		$fields = array_merge( $fields, array(
+			'design' => array(
+				'type' => 'checkbox',
+				'options' => array( 'box_style' )
+			)
+		) );
 
 		return array(
 			'admin_page' => array(
@@ -104,12 +110,7 @@ class md_colors extends md_api {
 				'parent' => 'md_settings',
 				'admin_header' => true,
 				'hide_tab' => true,
-				'fields' => array_merge( array(
-					'design' => array(
-						'type' => 'checkbox',
-						'options' => array( 'box_style' )
-					), $fields )
-				)
+				'fields' => $fields
 			)
 		);
 	}

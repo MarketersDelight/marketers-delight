@@ -107,7 +107,14 @@ class md_page_title {
 			if ( in_array( $data['image_position'], array( 'left', 'right' ) ) )
 				$data['classes'][] = 'columns';
 
-			$data['classes'][] = 'image-' . str_replace( '_', '-', $data['image_position'] );
+			$image_class = $data['image_position'];
+
+			if ( $data['featured_image'] == 'above_headline' )
+				$image_class = 'before';
+			elseif ( $data['featured_image'] == 'below_headline' )
+				$image_class = 'after';
+
+			$data['classes'][] = 'image-' . str_replace( '_', '-', $image_class );
 		}
 
 		$inline = md_module( array( 'layout', 'content', 'page_title' ) );

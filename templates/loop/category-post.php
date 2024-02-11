@@ -1,14 +1,16 @@
 <div class="<?php echo esc_attr( $category_classes ); ?>">
 
-	<div class="section-header layout">
+	<div class="section-header post-header layout">
 
 		<div class="title-wrap">
 
 			<h2 class="title"><?php echo esc_html( $category->name ); ?></h2>
 
+			<?php if ( $category_description ) : ?>
 			<div class="description">
-				<?php echo term_description( $category_id ); ?>
+				<?php echo wpautop( $category_description ); ?>
 			</div>
+			<?php endif; ?>
 
 		</div>
 

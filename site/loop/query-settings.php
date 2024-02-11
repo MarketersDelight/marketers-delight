@@ -324,12 +324,13 @@
 			<div class="col">
 				<?php $this->fields->field( array( $group, $field, 'size' ), array(
 					'type' => 'select',
-					'label' => __( 'Font Size', 'md' ),
-					'empty_label' => __( 'Inherit', 'md' ),
+					'label' => __( 'Size', 'md' ),
+					'empty_label' => __( 'Default size', 'md' ),
 					'options' => array(
 						'large' => __( 'Large', 'md' ),
 						'medium' => __( 'Medium', 'md' ),
-						'small' => __( 'Small', 'md' )
+						'small' => __( 'Small', 'md' ),
+						'normal' => __( 'Normal', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -349,6 +350,12 @@
 			</div>
 
 		</div>
+
+		<?php $this->fields->field( array( $group, $field, 'classes' ), array(
+			'type' => 'text',
+			'label' => __( 'Custom Classes', 'md' ),
+			'description' => __( 'Add your own custom CSS classes to the container of this Loop.', 'md' )
+		) ); ?>
 
 	</div>
 

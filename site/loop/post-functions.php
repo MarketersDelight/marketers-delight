@@ -11,19 +11,18 @@ function md_post_class( $loop, $c = 0 ) {
 	$classes = array( 'entry' );
 	$cover = md_cover();
 
-	// Posts with Covers
+	// Posts with Covers outside of content box add image to post content center
 	if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
 		$loop['featured_image'] = 'center';
 
-	if ( isset( $loop['is_featured'] ) )
-		$classes[] = 'featured';
-	else
-		$classes[] = 'standard';
+	if ( isset( $loop['featured'] ) )
+		if ( isset( $loop['is_featured'] ) )
+			$classes[] = 'featured';
+		else
+			$classes[] = 'standard';
 
 	if ( $loop['columns'] > 1 && $loop['columns'] <= 5 )
 		$classes[] = 'f' . $loop['columns'];
-	else
-		$classes[] = 'row';
 
 	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
@@ -33,8 +32,18 @@ function md_post_class( $loop, $c = 0 ) {
 	if ( $loop_style && empty( $loop['category_posts'] ) )
 		$classes[] = $loop_style;
 
-	if ( isset( $loop['featured_image_id'] ) && $loop['featured_image'] !== 'remove' )
-		$classes[] = 'image-' . str_replace( '_', '-', $loop['featured_image'] );
+	if ( isset( $loop['featured_image_id'] ) && $loop['featured_image'] !== 'remove' ) {
+		$image_class = $loop['featured_image'];
+
+		if ( $loop['featured_image'] == 'above_headline' )
+			$image_class = 'before';
+		elseif ( $loop['featured_image'] == 'below_headline' )
+			$image_class = 'after';
+
+		$data['classes'][] = 'image-' . str_replace( '_', '-', $image_class );
+
+		$classes[] = 'image-' . str_replace( '_', '-', $image_class );
+	}
 
 	if ( ! empty( $cover['position'] ) )
 		$classes[] = 'has-cover';
@@ -233,10 +242,11 @@ function md_content( $loop ) {
 
 	md_hook_after_the_content();
 
-	md_byline( 'after_post', array(
-		'classes' => 'post-footer',
-		'loop' => $loop
-	) );
+	if ( ! isset( $loop['post_footer']['remove'] ) )
+		md_byline( 'after_post', array(
+			'classes' => 'post-footer',
+			'loop' => $loop
+		) );
 }
 
 /**

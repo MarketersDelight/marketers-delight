@@ -27,12 +27,12 @@
 	$queries = array( 900 => 'tablet', 700 => 'mobile' );
 	$titles = array(
 		'huge' => '.huge-title',
-		'h1' => 'h1, .large-title, .large .section-header .title',
-		'h2' => 'h2, .main-title, .large .loop .title',
+		'h1' => 'h1, .large-title',
+		'h2' => 'h2, .main-title, .large .title',
 		'h3' => 'h3, .med-title, .medium .section-header .title',
-		'h4' => 'h4, .mid-title, .medium .loop .title',
+		'h4' => 'h4, .mid-title, .medium .title',
 		'h5' => 'h5, .small-title, .small .section-header .title',
-		'h6' => 'h6, .micro-title, .small .loop .title'
+		'h6' => 'h6, .micro-title, .small .title, .normal .section-header .title'
 	);
 	$texts = array(
 		'huge' => '.huge-text',
@@ -63,14 +63,14 @@
 	}
  ?>
 
-h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
+h1, h2, h3, h4, h5, h6 {
+	color: <?php echo $colors['site']['headline']; ?>;
+	position: relative;
+}
 
 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
 
-.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 {
-	margin-bottom: <?php echo $half; ?>px;
-	position: relative;
-}
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-bottom: <?php echo $third; ?>px; }
 
 .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a { text-decoration: none; }
 

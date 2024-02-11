@@ -4,11 +4,6 @@
 	$COMMENTS
 \*------------------------------*/
 
-.comments {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
-
 .comments .comments-list {
 	margin-bottom: 0;
 	margin-left: 0;

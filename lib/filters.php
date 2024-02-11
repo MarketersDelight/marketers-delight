@@ -98,22 +98,32 @@ function md_filter_loops() {
 		'fluid' => array(
 			'name' => __( 'Default', 'md' ),
 			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-fluid.png'
+			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
+			'defaults' => array(
+				'size' => 'large'
+			)
 		),
 		'list' => array(
 			'name' => __( 'Plain List', 'md' ),
 			'description' => __( 'A condensed list of posts with a small image.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-list.png',
-			'template' => md_template( 'loop/loop-list', true )
+			'template' => md_template( 'loop/loop-list', true ),
+			'defaults' => array(
+				'size' => 'medium'
+			)
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' ),
-			'description' => __( 'Highlights the featured image.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-icons.png'
+			'description' => __( 'A featured image aligned next to the post content.', 'md' ),
+			'image' => MD_URL . 'lib/admin/images/loop-icons.png',
+			'template' => md_template( 'loop/loop-blocks', true ),
+			'defaults' => array(
+				'size' => 'medium'
+			)
 		),
 		'covers' => array(
 			'name' => __( 'Post Covers', 'md' ),
-			'description' => __( 'Posts list with full-width background image covers.', 'md' ),
+			'description' => __( 'Posts list with full-width background covers.', 'md' ),
 			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
 			'template' => md_template( 'loop/loop-covers', true )
 		)

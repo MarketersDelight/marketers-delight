@@ -2,20 +2,14 @@
 
 	<div class="post-box">
 
-		<?php
-			$loop['show_image'] = array( 'above_headline' );
-			md_featured_image( $loop );
-		?>
+		<?php md_featured_image( $loop ); ?>
 
 		<div class="post-header">
-			<?php
-				$loop['show_image'] = array( '', 'right', 'left' );
-				md_title( array( 'loop' => $loop ) );
-			?>
+			<?php md_title( array( 'loop' => $loop ) ); ?>
 		</div>
 
 		<?php
-			$loop['show_image'] = array( 'center', 'below_headline' );
+			$loop['featured_image'] = 'remove';
 			md_content( $loop );
 		?>
 

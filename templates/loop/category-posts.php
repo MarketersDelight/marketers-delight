@@ -51,6 +51,7 @@ foreach ( $categories->terms as $category ) {
 
 	if ( $posts->have_posts() ) {
 		$category_id = $category->term_id;
+		$category_description = term_description( $category_id );
 
 		include( md_template( 'loop/category-post', true ) );
 	}

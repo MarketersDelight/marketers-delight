@@ -2,7 +2,7 @@
 
 	<?php if ( $permalink ) : ?><a href="<?php echo esc_url( $permalink ); ?>"><?php endif; ?>
 
-		<?php the_post_thumbnail( esc_attr( $size ) ); ?>
+	<?php the_post_thumbnail( esc_attr( $size ) ); ?>
 
 	<?php if ( $permalink ) : ?></a><?php endif; ?>
 
