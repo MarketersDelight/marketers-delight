@@ -1,0 +1,2778 @@
+# Copyright (C) 2024 Alex, Kolakube
+# This file is distributed under the .
+msgid ""
+msgstr ""
+"Project-Id-Version: Marketers Delight 6.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/marketers-delight\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-03-03T01:06:42+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: md\n"
+
+#. Theme Name of the theme
+#: style.css
+#: lib/admin/admin-page.php:13
+#: lib/admin/admin.php:120
+#: site/blocks/blocks.php:75
+msgid "Marketers Delight"
+msgstr ""
+
+#. Theme URI of the theme
+#: style.css
+msgid "https://marketersdelight.com/"
+msgstr ""
+
+#. Description of the theme
+#: style.css
+msgid "Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website's features with Drop-ins and develop your own layouts with MD development tools."
+msgstr ""
+
+#. Author of the theme
+#: style.css
+msgid "Alex, Kolakube"
+msgstr ""
+
+#. Author URI of the theme
+#: style.css
+msgid "https://kolakube.com/"
+msgstr ""
+
+#. Template Name of the theme
+msgid "Builder Template"
+msgstr ""
+
+#: lib/admin/admin-page.php:20
+msgid "Docs"
+msgstr ""
+
+#: lib/admin/admin-page.php:21
+msgid "Get support"
+msgstr ""
+
+#: lib/admin/admin-page.php:22
+msgid "My account"
+msgstr ""
+
+#: lib/admin/admin.php:173
+msgid "Stick this post to the front page"
+msgstr ""
+
+#: lib/admin/admin.php:174
+msgid "Public, Sticky"
+msgstr ""
+
+#: lib/admin/admin.php:180
+msgid "Status"
+msgstr ""
+
+#: lib/admin/admin.php:181
+msgid "Make this post sticky"
+msgstr ""
+
+#: lib/admin/admin.php:182
+#: site/loop/query-settings.php:373
+msgid "Sticky"
+msgstr ""
+
+#: lib/admin/admin.php:359
+msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
+msgstr ""
+
+#: lib/admin/admin.php:382
+msgid "Ready to update %s %2s?"
+msgstr ""
+
+#: lib/admin/admin.php:383
+msgid "Here are some resources to help you:"
+msgstr ""
+
+#: lib/admin/admin.php:384
+msgid "Read the changelog"
+msgstr ""
+
+#: lib/admin/admin.php:385
+msgid "See what's new in MD"
+msgstr ""
+
+#: lib/admin/admin.php:386
+msgid "Get help at support"
+msgstr ""
+
+#: lib/admin/admin.php:387
+msgid "When in doubt, make a backup your website before proceeding."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:15
+#: lib/admin/integrations/admin-page.php:13
+msgid "Site Tools"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:22
+msgid "CSS Manager"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:23
+msgid "If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD's stylesheet file. For further optimization you can print your stylesheets inline to your site's %s.<br /><br />Note: if you combine your child theme styles you will need to resave the MD settings above to see any changes you make to the file afterwards."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:25
+msgid "Combine child theme CSS into %s"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:26
+msgid "Print %s inline"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:35
+msgid "404 Page ID"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:39
+msgid "Success! You can <a href=\"%s\">edit your 404 page here</a>."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:41
+msgid "Create a custom 404 page by attaching a new <a href=\"%s\">Page ID</a> here."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:49
+msgid "Web Fonts"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:50
+msgid "By default MD loads all Google and Typekit web fonts through a stylesheet and prefetch method. To <b>attempt</b> to improve font performance and fight off \"Flash of invisible text,\" enable the WebFont loader script here."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:52
+msgid "Enable WebFont Loader"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:60
+msgid "Optimize WP"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:62
+msgid "<b>Disable</b> Widgets blocks editor"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:63
+msgid "<code>&lt;head&gt;</code> <b>Remove</b> <code>block-library.css</code> and block inline styles"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:64
+msgid "<code>&lt;head&gt;</code> <b>Remove</b> <code>/wp-json/</code> REST API"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:65
+msgid "<code>&lt;head&gt;</code> <b>Restore</b> all default <code>wp_head</code> tags"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:66
+msgid "<code>&lt;/body&gt;</code> <b>Remove</b> <code>wp-embed.js</code> script"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:77
+msgid "Sidebars"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:82
+msgid "Create new sidebar areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:93
+msgid "Scripts Manager"
+msgstr ""
+
+#: lib/admin/dashboard/admin-page.php:105
+msgid "Save Settings"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:33
+#: lib/admin/dashboard/dashboard.php:34
+#: lib/admin/dropins/admin-page.php:73
+#: site/blog/blog.php:29
+#: site/blog/category.php:19
+#: site/byline/byline.php:139
+#: site/byline/byline.php:166
+#: site/byline/byline.php:202
+#: site/hero/meta-box.php:152
+msgid "Settings"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:77
+msgid "Inactive"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:87
+msgid "Active"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:95
+msgid "Something went wrong. Please try to connect your license key again."
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:98
+msgid "Disabled"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:99
+msgid "Your license key has been disabled. Please contact MD support for more information."
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:103
+msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:108
+msgid "Expired"
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:109
+msgid "Renew now (save 40%)."
+msgstr ""
+
+#: lib/admin/dashboard/dashboard.php:155
+msgid "Enter sidebar name..."
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:4
+msgid "Updates"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:8
+#: templates/byline/badge.php:3
+msgid "New!"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:10
+msgid "Up to date"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:33
+#: lib/admin/dashboard/update-fields.php:58
+msgid "%s <span class=\"md-version-new\">%2s</span>"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:34
+msgid "NOTICE: You are about to update the Marketers Delight WordPress theme files. Any changes made directly to the MD parent theme will be erased. Your child theme files will always remain untouched."
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:34
+#: lib/admin/dashboard/update-fields.php:59
+msgid "Upgrade now"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:59
+#: lib/admin/dropins/admin-page.php:44
+msgid "NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files."
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:72
+msgid "Please wait upto 5 minutes to check again."
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:75
+msgid "Check for updates"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:77
+msgid "Edit site license"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:82
+msgid "Enter MD license key"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:83
+msgid "Enter license key here..."
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:89
+msgid "Activate license key"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:90
+msgid "NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?"
+msgstr ""
+
+#: lib/admin/dashboard/update-fields.php:90
+msgid "Deactivate site"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:3
+#: lib/admin/dropins/dropins.php:18
+msgid "Drop-ins"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:4
+msgid "Add new"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:5
+msgid "Get Drop-ins &rarr;"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:13
+msgid "Drop-in installed!"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:14
+msgid "Upload your Drop-in package file"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:15
+msgid "If you have a drop-in in a <code>.zip</code> format, you may install or update it by uploading it here. Find more available drop-ins here at the official <a href=\"https://marketersdelight.com/dropins/\" target=\"_blank\">Drop-ins Library</a>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:21
+msgid "Installed <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:23
+msgid "Active <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:24
+msgid "Inactive <span>(%s)</span>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:43
+msgid "There is a new version of <strong>%s</strong> available."
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:44
+msgid "Upgrade to <b>%s</b>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:61
+msgid "<b>Activate</b>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:65
+msgid "Requires <b>%s</b> plugin"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:68
+msgid ""
+"You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\n"
+"and not all data will be saved. Do you want to proceed?"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:68
+#: lib/fields/builder-fields.php:22
+#: lib/fields/group.php:32
+msgid "Delete"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:76
+msgid "<i>by</i> <a href=\"%s\" target=\"_blank\">%1s</a>"
+msgstr ""
+
+#: lib/admin/dropins/admin-page.php:99
+msgid "No Drop-ins found."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader-skin.php:78
+msgid "Go back to to Drop-ins Manager"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:34
+msgid "The dropin is at the latest version."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:35
+msgid "Update package not available."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:36
+msgid "Downloading update from %s&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:37
+msgid "Unpacking the update&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:38
+msgid "Removing the old version of the dropin&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:39
+msgid "Could not remove the old dropin."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:40
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:67
+msgid "Drop-in update failed."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:41
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:42
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:68
+msgid "Drop-in updated successfully."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:43
+msgid "Updating Drop-in %1$s (%2$d/%3$d)"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:53
+msgid "Installation package not available."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:54
+msgid "Downloading installation package from %s&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:55
+msgid "Unpacking the package&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:56
+msgid "Installing the drop-in&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:57
+msgid "Removing the current drop-in&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:58
+msgid "Could not remove the current drop-in."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:59
+msgid "The drop-in contains no files."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:60
+msgid "Drop-in installation failed."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:61
+msgid "Drop-in installed successfully."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:62
+msgid "Successfully installed the drop-in <strong>%1$s %2$s</strong>."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:66
+msgid "Updating the drop-in&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:72
+msgid "Downgrading the drop-in&#8230;"
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:73
+msgid "Drop-in downgrade failed."
+msgstr ""
+
+#: lib/admin/dropins/upgraders/dropin-upgrader.php:74
+msgid "Drop-in downgraded successfully."
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:3
+msgid "Icons <small>(%s)</small>"
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:5
+msgid "Customize the <a href=\"https://marketersdelight.com/font-icons-manager/\" target=\"_blank\">MD Icons library</a> with your own font icon set, and update default icons. "
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:9
+msgid "Manage Icons"
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:19
+msgid "Upload font icons JSON file"
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:20
+msgid "Icons successfully updated."
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:21
+msgid "To sync new and removed icons, upload the <code>selection.json</code> file from your <a href=\"https://icomoon.io/app/#/select\" target=\"_blank\">IcoMoon download</a>.<br />You should do this every time you change your <code>md.woff</code> child theme file."
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:26
+msgid ""
+"You are about to revert to the default MD font icons set. No files will be deleted, but your current icons\n"
+"data will be removed and any custom icons may no longer show on your website. Do you wish to proceed?"
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:26
+msgid "Restore default icons"
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:47
+msgid "Enter icon name..."
+msgstr ""
+
+#: lib/admin/icons/admin-page.php:53
+msgid "Unicode: %s"
+msgstr ""
+
+#: lib/admin/icons/icons.php:19
+msgid "Font Icons"
+msgstr ""
+
+#: lib/admin/icons/icons.php:20
+msgid "Icons"
+msgstr ""
+
+#: lib/admin/integrations/admin-page.php:2
+msgid "Website Integrations"
+msgstr ""
+
+#: lib/admin/integrations/admin-page.php:3
+msgid "Connect your website to your favorite third-party services."
+msgstr ""
+
+#: lib/admin/integrations/admin-page.php:8
+msgid "Email Services"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:3
+msgid "API Key"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:4
+msgid "Account URL"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:17
+msgid "<b>Note:</b> To refresh %s data, please <a href=\"%2s\" target=\"_blank\">enter a new %s</a> below."
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:19
+msgid "<b>Connection failed.</b> Please enter valid API credentials or try again in a few minutes."
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:22
+msgid "Enter %s URL..."
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:25
+msgid "Enter %s %2s..."
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:27
+msgid "Account ID"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:28
+msgid "Enter %s Account ID..."
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:31
+msgid "Connect to %s"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:35
+msgid "Enter the %s from your %2s account into the text field above then click the \"Connect\" button. <a href=\"%3s\" target=\"_blank\">Click here to get your API key &rarr;</a>"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:40
+msgid "Your site is connected to <b>%s</b>!"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:43
+msgid " (%s subscribers)"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:52
+msgid "Refresh %s"
+msgstr ""
+
+#: lib/admin/integrations/integration-fields.php:54
+msgid "Disconnect from %s"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:22
+msgid "Adobe Fonts"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:27
+msgid "Kit ID"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:29
+msgid "Your Font Kit is now loading on your site! Go to the <a href=\"%s\">Fonts and Typography</a> section in the Site Design panel to assign fonts to your design."
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:32
+msgid "Google Analytics"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:37
+msgid "Tracking ID"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:39
+msgid "The Google Analytics tracking code is now loading on your site! For best performance the script has been placed at the bottom of every page."
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:89
+msgid "Site Integrations"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:90
+msgid "Integrations"
+msgstr ""
+
+#: lib/admin/integrations/integrations.php:142
+msgid "Sorry, there was an error during the connection process. Please try again."
+msgstr ""
+
+#: lib/admin/upgrade/md-upgrader.php:99
+msgid "For full compatibility with the new MD5.3 Drop-ins Manager please run the following update process now.<br /><b>Note:</b> It is strongly recommended you make a complete site and database backup before running this process."
+msgstr ""
+
+#: lib/admin/upgrade/md-upgrader.php:100
+msgid "Update now"
+msgstr ""
+
+#: lib/admin/upgrade/md-upgrader.php:102
+msgid "Upgrade complete! Redirecting you to the <strong>Drop-ins Manager</strong>..."
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:61
+msgid "Marketers Delight Upgrade"
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:61
+msgid "<b style=\"color:yellow\">Upgrade MD &rarr;</b>"
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:88
+msgid "Marketers Delight needs to upgrade your database for full compatibility with the newest version."
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:89
+msgid "Upgrade database &rarr;"
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:112
+msgid "Marketers Delight Upgrader"
+msgstr ""
+
+#: lib/admin/upgrade/upgrade.php:114
+msgid "Your database is currently being upgraded to the latest version of Marketers Delight. Please do not leave this page until the upgrade process is complete."
+msgstr ""
+
+#: lib/api/api-functions.php:579
+#: site/widgets/loop-query.php:42
+msgid "Untitled"
+msgstr ""
+
+#: lib/api/design.php:260
+#: site/design/design.php:128
+msgid "Primary"
+msgstr ""
+
+#: lib/api/design.php:261
+#: site/design/design.php:129
+msgid "Secondary"
+msgstr ""
+
+#: lib/api/design.php:262
+#: site/design/design.php:130
+msgid "Tertiary"
+msgstr ""
+
+#: lib/api/design.php:263
+#: site/design/design.php:131
+msgid "Action"
+msgstr ""
+
+#: lib/api/design.php:264
+#: site/design/design.php:132
+msgid "Accent"
+msgstr ""
+
+#: lib/api/design.php:266
+msgid "White"
+msgstr ""
+
+#: lib/api/design.php:269
+#: lib/fields/link-fields.php:17
+#: site/byline/byline.php:238
+#: site/design/design.php:135
+#: site/design/design.php:150
+#: site/design/design.php:158
+#: site/design/templates/admin-page.php:30
+#: site/header/admin/design-fields.php:18
+msgid "Text"
+msgstr ""
+
+#: lib/api/design.php:270
+msgid "Secondary Text"
+msgstr ""
+
+#: lib/api/design.php:271
+#: site/design/design.php:137
+#: site/design/design.php:153
+#: site/design/design.php:160
+#: site/header/admin/design-fields.php:39
+#: site/header/admin/design-fields.php:74
+#: site/hero/meta-box.php:68
+msgid "Links"
+msgstr ""
+
+#: lib/api/design.php:272
+#: lib/fields/link-fields.php:44
+#: site/loop/loop-settings.php:215
+#: site/loop/query-settings.php:303
+msgid "Button"
+msgstr ""
+
+#: lib/api/design.php:273
+msgid "Button Secondary"
+msgstr ""
+
+#: lib/api/requests.php:380
+msgid "Sorry, you are not allowed to update drop-ins for this website."
+msgstr ""
+
+#: lib/api/requests.php:383
+msgid "Please select a dropin to update."
+msgstr ""
+
+#: lib/api/sanitize.php:145
+#: site/layout/layout-settings.php:145
+#: site/loop/query-settings.php:389
+msgid "Sidebar / Content"
+msgstr ""
+
+#: lib/api/sanitize.php:148
+msgid "Right, text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:149
+msgid "Left, text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:150
+msgid "Center, no text wrap"
+msgstr ""
+
+#: lib/api/sanitize.php:151
+msgid "Before headline"
+msgstr ""
+
+#: lib/api/sanitize.php:152
+msgid "After headline"
+msgstr ""
+
+#: lib/api/sanitize.php:153
+msgid "Hide image"
+msgstr ""
+
+#: lib/api/sanitize.php:156
+msgid "Headline Cover"
+msgstr ""
+
+#: lib/api/sanitize.php:157
+msgid "Header Cover"
+msgstr ""
+
+#: lib/api/sanitize.php:158
+msgid "Full Header Cover"
+msgstr ""
+
+#: lib/deprecated.php:83
+#: lib/marketers-delight.php:113
+msgid "Header Menu"
+msgstr ""
+
+#: lib/deprecated.php:84
+#: lib/marketers-delight.php:114
+msgid "Header Menu (logged-in users only)"
+msgstr ""
+
+#: lib/deprecated.php:148
+#: site/loop/loop-functions.php:239
+#: site/loop/loop-settings.php:204
+#: site/loop/query-settings.php:292
+msgid "Continue reading &rarr;"
+msgstr ""
+
+#: lib/fields/builder-fields.php:17
+msgid "Enter label..."
+msgstr ""
+
+#: lib/fields/builder-fields.php:23
+#: lib/fields/group.php:33
+msgid "Reorder"
+msgstr ""
+
+#: lib/fields/builder.php:5
+msgid "Add Elements"
+msgstr ""
+
+#: lib/fields/builder.php:64
+msgid "Drag an element here."
+msgstr ""
+
+#: lib/fields/fields.php:544
+msgid "Restore default color"
+msgstr ""
+
+#: lib/fields/fields.php:620
+msgid "No categories"
+msgstr ""
+
+#: lib/fields/fields.php:639
+msgid "Add New"
+msgstr ""
+
+#: lib/fields/fields.php:706
+msgid "Font Size"
+msgstr ""
+
+#: lib/fields/fields.php:707
+msgid "Line Height"
+msgstr ""
+
+#: lib/fields/fields.php:711
+msgid "Default Fonts"
+msgstr ""
+
+#: lib/fields/fields.php:715
+msgid "Google Fonts"
+msgstr ""
+
+#: lib/fields/fields.php:722
+msgid "TypeKit"
+msgstr ""
+
+#: lib/fields/fields.php:766
+msgid "Page Title"
+msgstr ""
+
+#: lib/fields/fields.php:767
+msgid "Add an <code>h1</code> title tag to the top of the page."
+msgstr ""
+
+#: lib/fields/fields.php:774
+#: site/loop/query-settings.php:352
+#: site/widgets/loop-query.php:120
+#: site/widgets/text-image.php:67
+msgid "Description"
+msgstr ""
+
+#: lib/fields/fields.php:775
+msgid "Write a short description to show below the page title."
+msgstr ""
+
+#: lib/fields/fields.php:800
+#: site/hero/meta-box.php:30
+#: site/hero/meta-box.php:136
+msgid "Position"
+msgstr ""
+
+#: lib/fields/fields.php:803
+msgid "Before Headline"
+msgstr ""
+
+#: lib/fields/fields.php:804
+msgid "After Headline"
+msgstr ""
+
+#: lib/fields/fields.php:805
+msgid "After Post"
+msgstr ""
+
+#: lib/fields/fields.php:819
+msgid "Switch to Desktop controls"
+msgstr ""
+
+#: lib/fields/fields.php:822
+msgid "Switch to Tablet controls"
+msgstr ""
+
+#: lib/fields/fields.php:825
+msgid "Switch to Mobile controls"
+msgstr ""
+
+#: lib/fields/fields.php:850
+msgid "Save %s"
+msgstr ""
+
+#: lib/fields/group.php:26
+msgid "New entry..."
+msgstr ""
+
+#: lib/fields/link-fields.php:5
+#: site/header/admin/layout-fields.php:10
+#: site/header/admin/menu-fields.php:16
+#: site/header/admin/search-fields.php:6
+msgid "Display"
+msgstr ""
+
+#: lib/fields/link-fields.php:7
+msgid "Always show"
+msgstr ""
+
+#: lib/fields/link-fields.php:9
+msgid "Show on desktop only"
+msgstr ""
+
+#: lib/fields/link-fields.php:10
+msgid "Show on mobile only"
+msgstr ""
+
+#: lib/fields/link-fields.php:27
+msgid "Type"
+msgstr ""
+
+#: lib/fields/link-fields.php:30
+msgid "Page URL"
+msgstr ""
+
+#: lib/fields/link-fields.php:31
+msgid "Open Popup"
+msgstr ""
+
+#: lib/fields/link-fields.php:32
+#: lib/fields/link-fields.php:90
+msgid "Phone Number"
+msgstr ""
+
+#: lib/fields/link-fields.php:40
+#: site/loop/loop-settings.php:14
+#: site/loop/query-settings.php:38
+msgid "Style"
+msgstr ""
+
+#: lib/fields/link-fields.php:41
+#: site/loop/loop-settings.php:213
+#: site/loop/query-settings.php:301
+msgid "Text link"
+msgstr ""
+
+#: lib/fields/link-fields.php:52
+#: site/logo/admin-page.php:70
+#: site/logo/admin-page.php:106
+msgid "Color"
+msgstr ""
+
+#: lib/fields/link-fields.php:61
+#: site/header/admin/search-fields.php:9
+msgid "Hide label"
+msgstr ""
+
+#: lib/fields/link-fields.php:62
+#: site/header/admin/menu-fields.php:18
+#: site/header/admin/search-fields.php:10
+msgid "Hide label on mobile"
+msgstr ""
+
+#: lib/fields/link-fields.php:74
+msgid "Icon"
+msgstr ""
+
+#: lib/fields/link-fields.php:75
+msgid "Select icon"
+msgstr ""
+
+#: lib/fields/link-fields.php:83
+msgid "URL"
+msgstr ""
+
+#: lib/fields/link-fields.php:91
+msgid "(999) 999-9999"
+msgstr ""
+
+#: lib/fields/link-fields.php:98
+msgid "Open popup"
+msgstr ""
+
+#: lib/fields/link-fields.php:99
+msgid "Select a popup..."
+msgstr ""
+
+#: lib/fields/link-fields.php:108
+msgid "Open in new tab"
+msgstr ""
+
+#: lib/fields/link-fields.php:119
+msgid "Button Style"
+msgstr ""
+
+#: lib/fields/link-fields.php:120
+#: lib/fields/link-fields.php:131
+msgid "Default"
+msgstr ""
+
+#: lib/fields/link-fields.php:122
+msgid "Outline"
+msgstr ""
+
+#: lib/fields/link-fields.php:130
+msgid "Button Size"
+msgstr ""
+
+#: lib/fields/link-fields.php:133
+msgid "Small"
+msgstr ""
+
+#: lib/fields/link-fields.php:134
+msgid "Large"
+msgstr ""
+
+#: lib/fields/page-settings.php:17
+msgid "Page Settings"
+msgstr ""
+
+#: lib/fields/select.php:16
+#: site/loop/query-settings.php:197
+msgid "Select author(s)..."
+msgstr ""
+
+#: lib/fields/typography.php:28
+msgid "Font Family"
+msgstr ""
+
+#: lib/fields/typography.php:45
+msgid "Font Weight"
+msgstr ""
+
+#: lib/fields/typography.php:46
+#: lib/fields/typography.php:56
+msgid "Select font weight..."
+msgstr ""
+
+#: lib/fields/typography.php:55
+msgid "Bold Text"
+msgstr ""
+
+#: lib/fields/uploader.php:8
+msgid "ID: %s"
+msgstr ""
+
+#: lib/fields/uploader.php:13
+#: site/widgets/content-spotlight.php:82
+#: site/widgets/quote.php:72
+#: site/widgets/text-image.php:90
+msgid "Click to upload"
+msgstr ""
+
+#: lib/fields/uploader.php:16
+#: site/widgets/content-spotlight.php:85
+#: site/widgets/quote.php:75
+#: site/widgets/text-image.php:93
+msgid "Preview Image"
+msgstr ""
+
+#: lib/fields/uploader.php:27
+msgid "Click to copy URL"
+msgstr ""
+
+#: lib/fields/uploader.php:32
+#: site/widgets/content-spotlight.php:94
+#: site/widgets/quote.php:84
+#: site/widgets/text-image.php:102
+msgid "Add Image"
+msgstr ""
+
+#: lib/fields/uploader.php:33
+#: site/widgets/content-spotlight.php:95
+#: site/widgets/quote.php:85
+#: site/widgets/text-image.php:103
+msgid "Remove Image"
+msgstr ""
+
+#: lib/fields/uploader.php:47
+msgid "You are about to upload a new file. Do you want to proceed?"
+msgstr ""
+
+#: lib/fields/uploader.php:48
+msgid "File successfully updated."
+msgstr ""
+
+#: lib/filters.php:99
+msgid "Default loop"
+msgstr ""
+
+#: lib/filters.php:100
+msgid "A traditional blog with a flexible layout and styles."
+msgstr ""
+
+#: lib/filters.php:103
+msgid "Simple list"
+msgstr ""
+
+#: lib/filters.php:104
+msgid "A condensed list of posts with a small image."
+msgstr ""
+
+#: lib/filters.php:108
+msgid "Blocks"
+msgstr ""
+
+#: lib/filters.php:109
+msgid "A featured image aligned next to the post content."
+msgstr ""
+
+#: lib/filters.php:113
+msgid "Post covers"
+msgstr ""
+
+#: lib/filters.php:114
+msgid "Posts list with full-width background covers."
+msgstr ""
+
+#: lib/filters.php:139
+msgid "Sitewide"
+msgstr ""
+
+#: lib/filters.php:140
+msgid "Front Page"
+msgstr ""
+
+#: lib/filters.php:141
+msgid "Blog Page"
+msgstr ""
+
+#: lib/filters.php:142
+msgid "All Posts"
+msgstr ""
+
+#: lib/filters.php:143
+msgid "All Categories"
+msgstr ""
+
+#: lib/filters.php:144
+msgid "All Pages"
+msgstr ""
+
+#: lib/filters.php:145
+msgid "All Author Pages"
+msgstr ""
+
+#: lib/filters.php:146
+msgid "Search Results"
+msgstr ""
+
+#: lib/marketers-delight.php:115
+msgid "Main Menu"
+msgstr ""
+
+#: lib/marketers-delight.php:169
+#: site/layout/layout-functions.php:409
+msgid "Blog"
+msgstr ""
+
+#: lib/marketers-delight.php:278
+msgid "Main Sidebar"
+msgstr ""
+
+#: lib/marketers-delight.php:279
+msgid "The default sidebar used around your site."
+msgstr ""
+
+#: lib/marketers-delight.php:303
+msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
+msgstr ""
+
+#: lib/marketers-delight.php:314
+msgid "Footer Copy"
+msgstr ""
+
+#: lib/marketers-delight.php:315
+msgid "Add text and site links to the bottom of the site footer."
+msgstr ""
+
+#: lib/marketers-delight.php:335
+msgid "Twitter username (without @)"
+msgstr ""
+
+#: site/blog/blog.php:80
+msgid "Blog Settings"
+msgstr ""
+
+#: site/blog/category.php:46
+msgid "Category Settings"
+msgstr ""
+
+#: site/byline/admin-page.php:3
+#: site/loop/loop-settings.php:179
+#: site/loop/query-settings.php:267
+msgid "Byline"
+msgstr ""
+
+#: site/byline/admin-page.php:7
+msgid "Edit Byline"
+msgstr ""
+
+#: site/byline/admin-page.php:11
+#: site/byline/admin-page.php:16
+msgid "Archives"
+msgstr ""
+
+#: site/byline/admin-page.php:12
+#: site/byline/admin-page.php:21
+#: site/layout/layout-settings.php:175
+#: site/layout/layout.php:171
+msgid "Single"
+msgstr ""
+
+#: site/byline/admin-page.php:17
+msgid "Customize the byline items that show on archive and category pages."
+msgstr ""
+
+#: site/byline/admin-page.php:22
+msgid "Customize the byline items that show on single pages."
+msgstr ""
+
+#: site/byline/byline.php:40
+msgid "Author"
+msgstr ""
+
+#: site/byline/byline.php:47
+#: site/loop/loop-settings.php:56
+#: site/loop/query-settings.php:88
+msgid "Date"
+msgstr ""
+
+#: site/byline/byline.php:54
+msgid "Last Updated"
+msgstr ""
+
+#: site/byline/byline.php:61
+msgid "Comments"
+msgstr ""
+
+#: site/byline/byline.php:68
+msgid "Category"
+msgstr ""
+
+#: site/byline/byline.php:75
+msgid "Badge"
+msgstr ""
+
+#: site/byline/byline.php:82
+#: templates/comments/comment.php:34
+msgid "Edit"
+msgstr ""
+
+#: site/byline/byline.php:142
+msgid "Show author first name"
+msgstr ""
+
+#: site/byline/byline.php:143
+msgid "Show avatar"
+msgstr ""
+
+#: site/byline/byline.php:149
+msgid "Avatar size"
+msgstr ""
+
+#: site/byline/byline.php:169
+msgid "Show relative date"
+msgstr ""
+
+#: site/byline/byline.php:185
+msgid "Prefix"
+msgstr ""
+
+#: site/byline/byline.php:186
+#: templates/byline/last-updated.php:4
+msgid "Last updated:"
+msgstr ""
+
+#: site/byline/byline.php:205
+msgid "Show comments label"
+msgstr ""
+
+#: site/byline/byline.php:206
+msgid "Hide if zero comments"
+msgstr ""
+
+#: site/byline/byline.php:212
+msgid "Label for zero comments"
+msgstr ""
+
+#: site/byline/byline.php:246
+msgid "New duration"
+msgstr ""
+
+#: site/byline/byline.php:248
+msgid "days"
+msgstr ""
+
+#: site/byline/byline.php:263
+msgid "Label"
+msgstr ""
+
+#: site/design/design.php:109
+#: site/header/admin/design-fields.php:3
+msgid "Design"
+msgstr ""
+
+#: site/design/design.php:127
+#: site/design/design.php:149
+#: site/design/design.php:156
+#: site/design/templates/content-settings.php:11
+#: site/header/admin/design-fields.php:11
+#: site/header/admin/design-fields.php:67
+msgid "Background"
+msgstr ""
+
+#: site/design/design.php:136
+msgid "Text Secondary"
+msgstr ""
+
+#: site/design/design.php:138
+msgid "Links Secondary"
+msgstr ""
+
+#: site/design/design.php:139
+msgid "Headline"
+msgstr ""
+
+#: site/design/design.php:140
+msgid "Headline Links"
+msgstr ""
+
+#: site/design/design.php:143
+#: site/design/design.php:145
+msgid "Background color"
+msgstr ""
+
+#: site/design/design.php:144
+#: site/design/design.php:146
+msgid "Text color"
+msgstr ""
+
+#: site/design/design.php:151
+#: site/design/design.php:159
+#: site/loop/loop-settings.php:57
+#: site/loop/query-settings.php:89
+#: site/loop/query-settings.php:345
+#: site/widgets/accordion.php:123
+#: site/widgets/loop-query.php:114
+#: site/widgets/quote.php:49
+#: site/widgets/text-image.php:61
+msgid "Title"
+msgstr ""
+
+#: site/design/design.php:152
+msgid "Title Link"
+msgstr ""
+
+#: site/design/design.php:157
+#: site/design/templates/content-settings.php:18
+#: site/header/admin/design-fields.php:25
+msgid "Border"
+msgstr ""
+
+#: site/design/icons-functions.php:98
+msgid "Arrow Down"
+msgstr ""
+
+#: site/design/icons-functions.php:102
+msgid "Arrow Left"
+msgstr ""
+
+#: site/design/icons-functions.php:106
+msgid "Arrow Right"
+msgstr ""
+
+#: site/design/icons-functions.php:110
+msgid "Arrow Up"
+msgstr ""
+
+#: site/design/icons-functions.php:114
+msgid "Bell"
+msgstr ""
+
+#: site/design/icons-functions.php:118
+msgid "Bolt"
+msgstr ""
+
+#: site/design/icons-functions.php:122
+msgid "Book"
+msgstr ""
+
+#: site/design/icons-functions.php:126
+msgid "Cancel (X)"
+msgstr ""
+
+#: site/design/icons-functions.php:130
+msgid "Cart"
+msgstr ""
+
+#: site/design/icons-functions.php:134
+msgid "Chat"
+msgstr ""
+
+#: site/design/icons-functions.php:138
+msgid "Clock"
+msgstr ""
+
+#: site/design/icons-functions.php:142
+msgid "Copy"
+msgstr ""
+
+#: site/design/icons-functions.php:146
+msgid "Location"
+msgstr ""
+
+#: site/design/icons-functions.php:150
+msgid "Code"
+msgstr ""
+
+#: site/design/icons-functions.php:154
+msgid "Download"
+msgstr ""
+
+#: site/design/icons-functions.php:158
+msgid "Dribbble"
+msgstr ""
+
+#: site/design/icons-functions.php:162
+msgid "Exclamation (!)"
+msgstr ""
+
+#: site/design/icons-functions.php:166
+msgid "Eye"
+msgstr ""
+
+#: site/design/icons-functions.php:170
+msgid "Facebook"
+msgstr ""
+
+#: site/design/icons-functions.php:175
+msgid "Flickr"
+msgstr ""
+
+#: site/design/icons-functions.php:179
+msgid "Forum"
+msgstr ""
+
+#: site/design/icons-functions.php:183
+msgid "GitHub"
+msgstr ""
+
+#: site/design/icons-functions.php:188
+msgid "Hand"
+msgstr ""
+
+#: site/design/icons-functions.php:192
+msgid "Heart"
+msgstr ""
+
+#: site/design/icons-functions.php:196
+msgid "Heart Empty"
+msgstr ""
+
+#: site/design/icons-functions.php:200
+msgid "Instagram"
+msgstr ""
+
+#: site/design/icons-functions.php:204
+msgid "Key"
+msgstr ""
+
+#: site/design/icons-functions.php:208
+msgid "Like"
+msgstr ""
+
+#: site/design/icons-functions.php:212
+#: site/header/header.php:115
+#: site/widgets/content-spotlight.php:67
+#: site/widgets/text-image.php:73
+msgid "Link"
+msgstr ""
+
+#: site/design/icons-functions.php:216
+msgid "LinkedIn"
+msgstr ""
+
+#: site/design/icons-functions.php:221
+msgid "Loading"
+msgstr ""
+
+#: site/design/icons-functions.php:225
+msgid "Mail"
+msgstr ""
+
+#: site/design/icons-functions.php:229
+msgid "Medium"
+msgstr ""
+
+#: site/design/icons-functions.php:233
+#: site/header/admin/design-fields.php:33
+#: site/header/admin/menu-fields.php:6
+#: site/header/header.php:128
+#: site/layout/layout-functions.php:160
+msgid "Menu"
+msgstr ""
+
+#: site/design/icons-functions.php:237
+#: site/design/icons-functions.php:307
+msgid "Star"
+msgstr ""
+
+#: site/design/icons-functions.php:241
+msgid "OK"
+msgstr ""
+
+#: site/design/icons-functions.php:246
+msgid "Pencil"
+msgstr ""
+
+#: site/design/icons-functions.php:250
+msgid "Phone"
+msgstr ""
+
+#: site/design/icons-functions.php:254
+msgid "Pin"
+msgstr ""
+
+#: site/design/icons-functions.php:258
+msgid "Pinterest"
+msgstr ""
+
+#: site/design/icons-functions.php:263
+msgid "Plus"
+msgstr ""
+
+#: site/design/icons-functions.php:267
+msgid "Quote"
+msgstr ""
+
+#: site/design/icons-functions.php:271
+#: templates/comments/comment.php:39
+msgid "Reply"
+msgstr ""
+
+#: site/design/icons-functions.php:275
+msgid "RSS"
+msgstr ""
+
+#: site/design/icons-functions.php:279
+#: site/header/header.php:121
+#: site/header/header.php:122
+#: site/header/templates.php:184
+#: site/header/templates.php:213
+msgid "Search"
+msgstr ""
+
+#: site/design/icons-functions.php:283
+msgid "Share"
+msgstr ""
+
+#: site/design/icons-functions.php:287
+msgid "Social"
+msgstr ""
+
+#: site/design/icons-functions.php:291
+msgid "Skype"
+msgstr ""
+
+#: site/design/icons-functions.php:295
+msgid "Slack"
+msgstr ""
+
+#: site/design/icons-functions.php:299
+msgid "SpeakerDeck"
+msgstr ""
+
+#: site/design/icons-functions.php:303
+msgid "Stack"
+msgstr ""
+
+#: site/design/icons-functions.php:311
+msgid "Support"
+msgstr ""
+
+#: site/design/icons-functions.php:315
+msgid "Tags"
+msgstr ""
+
+#: site/design/icons-functions.php:319
+msgid "Telegram"
+msgstr ""
+
+#: site/design/icons-functions.php:323
+msgid "TikTok"
+msgstr ""
+
+#: site/design/icons-functions.php:327
+msgid "Trophy"
+msgstr ""
+
+#: site/design/icons-functions.php:331
+msgid "Tumblr"
+msgstr ""
+
+#: site/design/icons-functions.php:336
+msgid "Twitter"
+msgstr ""
+
+#: site/design/icons-functions.php:340
+msgid "User"
+msgstr ""
+
+#: site/design/icons-functions.php:344
+msgid "User Add"
+msgstr ""
+
+#: site/design/icons-functions.php:348
+msgid "Vimeo"
+msgstr ""
+
+#: site/design/icons-functions.php:353
+msgid "Volume Up"
+msgstr ""
+
+#: site/design/icons-functions.php:357
+msgid "WhatsApp"
+msgstr ""
+
+#: site/design/icons-functions.php:361
+msgid "WordPress"
+msgstr ""
+
+#: site/design/icons-functions.php:365
+msgid "YouTube"
+msgstr ""
+
+#: site/design/templates/admin-page.php:3
+msgid "Site Design"
+msgstr ""
+
+#: site/design/templates/admin-page.php:5
+msgid "Configure your site's design and brand settings here."
+msgstr ""
+
+#: site/design/templates/admin-page.php:10
+msgid "Branding"
+msgstr ""
+
+#: site/design/templates/admin-page.php:12
+msgid "<b>Tip:</b> Save any changes you make to your brand colors to see how they apply across your site."
+msgstr ""
+
+#: site/design/templates/admin-page.php:45
+msgid "Buttons"
+msgstr ""
+
+#: site/design/templates/admin-page.php:47
+msgid "Main Button"
+msgstr ""
+
+#: site/design/templates/admin-page.php:62
+msgid "Secondary Button"
+msgstr ""
+
+#: site/design/templates/admin-page.php:84
+#: site/design/templates/typography-settings.php:69
+#: site/layout/layout-settings.php:189
+#: site/loop/query-settings.php:369
+msgid "Sidebar"
+msgstr ""
+
+#: site/design/templates/admin-page.php:101
+#: site/design/templates/typography-settings.php:94
+#: site/layout/layout.php:235
+msgid "Footer"
+msgstr ""
+
+#: site/design/templates/content-settings.php:3
+#: site/layout/layout-settings.php:82
+msgid "Content"
+msgstr ""
+
+#: site/design/templates/content-settings.php:27
+msgid "Removes background color and extra spacing from page content."
+msgstr ""
+
+#: site/design/templates/content-settings.php:29
+msgid "Disable box style"
+msgstr ""
+
+#: site/design/templates/content-settings.php:40
+msgid "Post Width"
+msgstr ""
+
+#: site/design/templates/content-settings.php:49
+msgid "Sidebar Width"
+msgstr ""
+
+#: site/design/templates/content-settings.php:58
+msgid "Site Width"
+msgstr ""
+
+#: site/design/templates/content-settings.php:66
+msgid "<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box."
+msgstr ""
+
+#: site/design/templates/content-settings.php:68
+msgid "<b>Tip:</b> For the most accurate results you must add any extra spacing within the content box and sidebar to find the true width of your site.<br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>"
+msgstr ""
+
+#: site/design/templates/typography-settings.php:5
+msgid "Fonts & Typography"
+msgstr ""
+
+#: site/design/templates/typography-settings.php:7
+msgid "Assign custom fonts and fine-tune your website's typography."
+msgstr ""
+
+#: site/design/templates/typography-settings.php:13
+msgid "Body"
+msgstr ""
+
+#: site/design/templates/typography-settings.php:36
+msgid "Inherit from body"
+msgstr ""
+
+#: site/design/templates/typography-settings.php:36
+msgid "Inherit from <h1>"
+msgstr ""
+
+#: site/design/templates/typography-settings.php:40
+msgid "Headline (%s)"
+msgstr ""
+
+#: site/design/typography.php:52
+#: site/header/admin/admin-page.php:17
+msgid "Typography"
+msgstr ""
+
+#: site/header/admin/admin-page.php:5
+#: site/header/header.php:48
+#: site/header/header.php:98
+#: site/header/header.php:103
+#: site/layout/layout-settings.php:9
+msgid "Header"
+msgstr ""
+
+#: site/header/admin/admin-page.php:7
+msgid "Customize your website header with specialized navigation elements."
+msgstr ""
+
+#: site/header/admin/design-fields.php:46
+#: site/header/admin/design-fields.php:81
+msgid "Links Hover"
+msgstr ""
+
+#: site/header/admin/design-fields.php:53
+msgid "Links Active"
+msgstr ""
+
+#: site/header/admin/design-fields.php:61
+msgid "Sub Menu"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:3
+#: site/header/admin/layout-fields.php:26
+#: site/layout/layout.php:28
+#: site/loop/query-settings.php:20
+msgid "Layout"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:13
+msgid "Remove <strong>Site Title</strong>"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:14
+msgid "Remove <strong>Site Tagline</strong>"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:15
+msgid "Align Title and Tagline in one line"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:16
+msgid "Hide <strong>Site Title</strong> on mobile"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:17
+msgid "Hide <strong>Site Tagline</strong> on mobile"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:18
+msgid "Make <strong>sticky</strong>"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:31
+msgid "Header Left"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:32
+msgid "The default header layout with a left-aligned logo and nav menu to the right."
+msgstr ""
+
+#: site/header/admin/layout-fields.php:36
+msgid "Header Right"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:37
+msgid "A reversed header layout with a right-aligned logo and nav menu to the left."
+msgstr ""
+
+#: site/header/admin/layout-fields.php:41
+msgid "Header Center"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:42
+msgid "A logo aligned to the center between two outer nav areas."
+msgstr ""
+
+#: site/header/admin/layout-fields.php:52
+msgid "Mobile Layout"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:57
+msgid "Standard"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:58
+msgid "The default layout with the logo on the left and controls to the right."
+msgstr ""
+
+#: site/header/admin/layout-fields.php:62
+msgid "Expanded"
+msgstr ""
+
+#: site/header/admin/layout-fields.php:63
+msgid "Moves the main nav control before the Logo, and other controls to the right."
+msgstr ""
+
+#: site/header/admin/menu-fields.php:7
+msgid "Use Header menu"
+msgstr ""
+
+#: site/header/admin/menu-fields.php:8
+msgid "Edit menus &rarr;"
+msgstr ""
+
+#: site/header/admin/menu-fields.php:26
+msgid "Submenu Width"
+msgstr ""
+
+#: site/header/admin/search-fields.php:8
+msgid "Enable toggle"
+msgstr ""
+
+#: site/header/admin/search-fields.php:18
+msgid "Placeholder Text"
+msgstr ""
+
+#: site/header/admin/search-fields.php:19
+#: site/header/templates.php:185
+msgid "Search..."
+msgstr ""
+
+#: site/header/header.php:104
+msgid "The main branding and navigation area at the top of every page."
+msgstr ""
+
+#: site/header/header.php:108
+msgid "Header Aside"
+msgstr ""
+
+#: site/header/header.php:109
+msgid "A secondary content area for the header area."
+msgstr ""
+
+#: site/hero/hero.php:94
+msgid "Hero"
+msgstr ""
+
+#: site/hero/meta-box.php:5
+msgid "The <strong>Hero area</strong> contains the Page Title & Description and is located above the fold.<br />Upload a cover photo and CTA for maximum impact."
+msgstr ""
+
+#: site/hero/meta-box.php:8
+#: site/loop/loop-settings.php:149
+#: site/loop/query-settings.php:237
+msgid "Featured Image"
+msgstr ""
+
+#: site/hero/meta-box.php:9
+#: site/hero/meta-box.php:56
+#: site/loop/loop-settings.php:280
+#: site/loop/loop-settings.php:287
+#: site/loop/loop-settings.php:295
+#: site/loop/query-settings.php:166
+#: site/loop/query-settings.php:396
+msgid "Call to Action"
+msgstr ""
+
+#: site/hero/meta-box.php:10
+msgid "Cover"
+msgstr ""
+
+#: site/hero/meta-box.php:31
+#: site/layout/layout-settings.php:65
+#: site/loop/loop-settings.php:150
+#: site/loop/query-settings.php:238
+msgid "Use default position"
+msgstr ""
+
+#: site/hero/meta-box.php:41
+msgid "Width (%s)"
+msgstr ""
+
+#: site/hero/meta-box.php:64
+msgid "Select CTA type..."
+msgstr ""
+
+#: site/hero/meta-box.php:69
+#: site/hero/meta-box.php:108
+msgid "Custom HTML"
+msgstr ""
+
+#: site/hero/meta-box.php:78
+msgid "Secondary Link"
+msgstr ""
+
+#: site/hero/meta-box.php:92
+msgid "Primary Link"
+msgstr ""
+
+#: site/hero/meta-box.php:118
+msgid "Cover Photo"
+msgstr ""
+
+#: site/hero/meta-box.php:137
+msgid "Do not show cover"
+msgstr ""
+
+#: site/hero/meta-box.php:143
+msgid "Overlay Color"
+msgstr ""
+
+#: site/hero/meta-box.php:154
+msgid "Use alternate text color"
+msgstr ""
+
+#: site/hero/meta-box.php:155
+msgid "Background repeat"
+msgstr ""
+
+#: site/hero/meta-box.php:156
+msgid "Remove overlay"
+msgstr ""
+
+#: site/layout/layout-settings.php:11
+msgid "Remove <b>Header</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:20
+msgid "Remove <b>Logo</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:29
+msgid "Remove <b>Tagline</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:40
+msgid "Remove <b>Menu</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:47
+msgid "Use default menu"
+msgstr ""
+
+#: site/layout/layout-settings.php:59
+msgid "Featured image"
+msgstr ""
+
+#: site/layout/layout-settings.php:88
+msgid "Show <strong>Page Title</strong> inline"
+msgstr ""
+
+#: site/layout/layout-settings.php:96
+msgid "Remove <b>Content Box</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:113
+msgid "Remove <b>Headline</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:122
+msgid "Remove <b>Author Box</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:129
+#: site/layout/layout-settings.php:177
+msgid "Add <b>Author Box</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:142
+#: site/loop/query-settings.php:386
+msgid "Content / Sidebar"
+msgstr ""
+
+#: site/layout/layout-settings.php:153
+msgid "Disable <strong>Box style</strong>"
+msgstr ""
+
+#: site/layout/layout-settings.php:161
+msgid "Disable <strong>WP formatting</strong>"
+msgstr ""
+
+#: site/layout/layout-settings.php:178
+#: site/layout/layout.php:211
+msgid "Remove <b>Post Nav</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:197
+msgid "Enable on all pages"
+msgstr ""
+
+#: site/layout/layout-settings.php:208
+msgid "Enable on <strong>%s</strong>"
+msgstr ""
+
+#: site/layout/layout-settings.php:209
+msgid "Disable on <strong>%s</strong>"
+msgstr ""
+
+#: site/layout/layout-settings.php:216
+#: site/loop/query-settings.php:379
+msgid "Use Main sidebar"
+msgstr ""
+
+#: site/layout/layout-settings.php:230
+msgid "Remove <b>Sidebar</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:239
+msgid "Add <b>Main Sidebar</b>"
+msgstr ""
+
+#: site/layout/layout-settings.php:252
+msgid "Use default sidebar"
+msgstr ""
+
+#: site/layout/layout-settings.php:261
+msgid "Posts in this category..."
+msgstr ""
+
+#: site/layout/layout-settings.php:267
+msgid "<a href=\"%s\" target=\"_blank\">Edit Custom Sidebars</a>"
+msgstr ""
+
+#: site/layout/layout.php:169
+msgid "Archive"
+msgstr ""
+
+#: site/layout/layout.php:170
+msgid "Categories"
+msgstr ""
+
+#: site/layout/layout.php:204
+msgid "Add <b>Breadcrumbs</b>"
+msgstr ""
+
+#: site/layout/layout.php:207
+msgid "Remove <b>Breadcrumbs</b>"
+msgstr ""
+
+#: site/layout/layout.php:214
+msgid "Add <b>Post Nav</b>"
+msgstr ""
+
+#: site/layout/layout.php:237
+msgid "Remove <b>Footer</b>"
+msgstr ""
+
+#: site/layout/layout.php:244
+msgid "Remove <b>Columns</b>"
+msgstr ""
+
+#: site/logo/admin-page.php:5
+#: site/logo/admin-page.php:16
+#: site/logo/logo.php:59
+msgid "Logo"
+msgstr ""
+
+#: site/logo/admin-page.php:7
+msgid "Upload a custom logo image and customize the Site Title and Tagline text."
+msgstr ""
+
+#: site/logo/admin-page.php:23
+msgid "Logo (dark theme)"
+msgstr ""
+
+#: site/logo/admin-page.php:34
+msgid "Logo Width%s"
+msgstr ""
+
+#: site/logo/admin-page.php:43
+msgid "Custom logo"
+msgstr ""
+
+#: site/logo/admin-page.php:45
+msgid "Enable custom logo HTML"
+msgstr ""
+
+#: site/logo/admin-page.php:55
+msgid "Logo HTML code"
+msgstr ""
+
+#: site/logo/admin-page.php:56
+msgid "<b>Tip:</b> Use custom HTML here, including <a href=\"%s\" target=\"_blank\">MD helper classes</a>."
+msgstr ""
+
+#: site/logo/admin-page.php:62
+#: site/logo/admin-page.php:77
+msgid "Site Title"
+msgstr ""
+
+#: site/logo/admin-page.php:98
+#: site/logo/admin-page.php:113
+msgid "Site Tagline"
+msgstr ""
+
+#: site/loop/loop-functions.php:325
+#: site/loop/loop-settings.php:265
+#: templates/comments/comments.php:25
+#: templates/post-nav.php:3
+msgid "Previous"
+msgstr ""
+
+#: site/loop/loop-functions.php:326
+#: site/loop/loop-settings.php:272
+#: templates/comments/comments.php:26
+#: templates/post-nav.php:5
+msgid "Next"
+msgstr ""
+
+#: site/loop/loop-settings.php:6
+#: site/loop/query-settings.php:30
+msgid "Template"
+msgstr ""
+
+#: site/loop/loop-settings.php:15
+#: site/loop/query-settings.php:39
+msgid "Default style"
+msgstr ""
+
+#: site/loop/loop-settings.php:17
+#: site/loop/query-settings.php:41
+msgid "Box style"
+msgstr ""
+
+#: site/loop/loop-settings.php:18
+#: site/loop/query-settings.php:42
+msgid "No style"
+msgstr ""
+
+#: site/loop/loop-settings.php:26
+#: site/loop/query-settings.php:50
+msgid "List"
+msgstr ""
+
+#: site/loop/loop-settings.php:27
+#: site/loop/query-settings.php:51
+msgid "Use default"
+msgstr ""
+
+#: site/loop/loop-settings.php:29
+#: site/loop/query-settings.php:53
+msgid "Post Listing"
+msgstr ""
+
+#: site/loop/loop-settings.php:30
+#: site/loop/query-settings.php:54
+msgid "Timeline"
+msgstr ""
+
+#: site/loop/loop-settings.php:31
+#: site/loop/query-settings.php:55
+msgid "Timeline (left)"
+msgstr ""
+
+#: site/loop/loop-settings.php:32
+#: site/loop/query-settings.php:56
+msgid "Numbered"
+msgstr ""
+
+#: site/loop/loop-settings.php:44
+#: site/loop/query-settings.php:67
+msgid "List posts by category"
+msgstr ""
+
+#: site/loop/loop-settings.php:53
+#: site/loop/query-settings.php:85
+msgid "Orderby"
+msgstr ""
+
+#: site/loop/loop-settings.php:54
+#: site/loop/query-settings.php:86
+msgid "Sort order of posts."
+msgstr ""
+
+#: site/loop/loop-settings.php:58
+#: site/loop/query-settings.php:90
+msgid "Last Modified"
+msgstr ""
+
+#: site/loop/loop-settings.php:59
+#: site/loop/query-settings.php:91
+msgid "Comment Count"
+msgstr ""
+
+#: site/loop/loop-settings.php:60
+#: site/loop/query-settings.php:92
+msgid "Random"
+msgstr ""
+
+#: site/loop/loop-settings.php:68
+#: site/loop/query-settings.php:100
+msgid "Order"
+msgstr ""
+
+#: site/loop/loop-settings.php:69
+#: site/loop/query-settings.php:101
+msgid "Lowest/highest value."
+msgstr ""
+
+#: site/loop/loop-settings.php:70
+#: site/loop/query-settings.php:102
+#: site/widgets/accordion.php:141
+msgid "Descending"
+msgstr ""
+
+#: site/loop/loop-settings.php:72
+#: site/loop/query-settings.php:104
+msgid "Ascending"
+msgstr ""
+
+#: site/loop/loop-settings.php:82
+#: site/loop/query-settings.php:120
+msgid "Categories Per Page"
+msgstr ""
+
+#: site/loop/loop-settings.php:84
+#: site/loop/query-settings.php:122
+msgid "Category sections to show."
+msgstr ""
+
+#: site/loop/loop-settings.php:91
+#: site/loop/query-settings.php:129
+msgid "Category Columns"
+msgstr ""
+
+#: site/loop/loop-settings.php:93
+#: site/loop/query-settings.php:130
+msgid "Categories into columns."
+msgstr ""
+
+#: site/loop/loop-settings.php:102
+#: site/loop/query-settings.php:138
+msgid "Posts Per Page"
+msgstr ""
+
+#: site/loop/loop-settings.php:104
+#: site/loop/query-settings.php:140
+msgid "Number of posts to show."
+msgstr ""
+
+#: site/loop/loop-settings.php:111
+#: site/loop/loop-settings.php:134
+#: site/loop/query-settings.php:147
+msgid "Featured Posts"
+msgstr ""
+
+#: site/loop/loop-settings.php:112
+#: site/loop/query-settings.php:148
+msgid "Feature the first X posts."
+msgstr ""
+
+#: site/loop/loop-settings.php:120
+#: site/loop/query-settings.php:156
+msgid "Post Columns"
+msgstr ""
+
+#: site/loop/loop-settings.php:122
+#: site/loop/query-settings.php:158
+msgid "Break posts into columns."
+msgstr ""
+
+#: site/loop/loop-settings.php:133
+msgid "Standard Posts"
+msgstr ""
+
+#: site/loop/loop-settings.php:156
+#: site/loop/query-settings.php:244
+msgid "Show full size image"
+msgstr ""
+
+#: site/loop/loop-settings.php:158
+#: site/loop/query-settings.php:246
+msgid "Post Thumbnail 150x150)"
+msgstr ""
+
+#: site/loop/loop-settings.php:166
+#: site/loop/query-settings.php:254
+msgid "Post Content"
+msgstr ""
+
+#: site/loop/loop-settings.php:168
+#: site/loop/query-settings.php:255
+msgid "Show excerpt"
+msgstr ""
+
+#: site/loop/loop-settings.php:170
+#: site/loop/query-settings.php:258
+msgid "Show full content"
+msgstr ""
+
+#: site/loop/loop-settings.php:171
+#: site/loop/query-settings.php:259
+msgid "Hide content"
+msgstr ""
+
+#: site/loop/loop-settings.php:180
+#: site/loop/query-settings.php:268
+msgid "Show full byline"
+msgstr ""
+
+#: site/loop/loop-settings.php:183
+#: site/loop/query-settings.php:271
+msgid "Remove Before Headline"
+msgstr ""
+
+#: site/loop/loop-settings.php:184
+#: site/loop/query-settings.php:272
+msgid "Remove After Headline"
+msgstr ""
+
+#: site/loop/loop-settings.php:185
+#: site/loop/query-settings.php:273
+msgid "Remove Byline"
+msgstr ""
+
+#: site/loop/loop-settings.php:191
+#: site/loop/query-settings.php:279
+msgid "Remove Post Footer"
+msgstr ""
+
+#: site/loop/loop-settings.php:203
+#: site/loop/query-settings.php:291
+msgid "Read More Text"
+msgstr ""
+
+#: site/loop/loop-settings.php:211
+#: site/loop/query-settings.php:299
+msgid "Text Style"
+msgstr ""
+
+#: site/loop/loop-settings.php:223
+#: site/loop/query-settings.php:311
+msgid "Excerpt More"
+msgstr ""
+
+#: site/loop/loop-settings.php:231
+#: site/loop/query-settings.php:319
+msgid "Excerpt Length"
+msgstr ""
+
+#: site/loop/loop-settings.php:232
+#: site/loop/query-settings.php:320
+msgid "words"
+msgstr ""
+
+#: site/loop/loop-settings.php:233
+#: site/loop/query-settings.php:321
+msgid "55"
+msgstr ""
+
+#: site/loop/loop-settings.php:247
+msgid "Pagination"
+msgstr ""
+
+#: site/loop/loop-settings.php:254
+msgid "Page Numbers"
+msgstr ""
+
+#: site/loop/loop-settings.php:257
+msgid "Previous/Next Links"
+msgstr ""
+
+#: site/loop/loop-settings.php:288
+#: site/loop/query-settings.php:167
+msgid "Show after the Xth post."
+msgstr ""
+
+#: site/loop/loop-settings.php:296
+msgid "Choose a pre-made <a href=\"%s\">call to action</a> to show within this loop."
+msgstr ""
+
+#: site/loop/loop-settings.php:297
+#: site/loop/query-settings.php:398
+msgid "Select call to action..."
+msgstr ""
+
+#: site/loop/loop.php:60
+msgid "Loop"
+msgstr ""
+
+#: site/loop/loop.php:284
+msgid "Query Loops"
+msgstr ""
+
+#: site/loop/loop.php:288
+msgid "Add Queries"
+msgstr ""
+
+#: site/loop/post-functions.php:324
+msgid "Leave a Comment"
+msgstr ""
+
+#: site/loop/post-functions.php:328
+msgid "Cancel"
+msgstr ""
+
+#: site/loop/post-functions.php:370
+msgid "To view this protected post, enter the password below:"
+msgstr ""
+
+#: site/loop/post-functions.php:371
+msgid "Enter the password&hellip;"
+msgstr ""
+
+#: site/loop/post-functions.php:372
+msgid "Get Access"
+msgstr ""
+
+#: site/loop/query-settings.php:6
+msgid "Position on page"
+msgstr ""
+
+#: site/loop/query-settings.php:7
+msgid "Do not show"
+msgstr ""
+
+#: site/loop/query-settings.php:9
+msgid "After Header"
+msgstr ""
+
+#: site/loop/query-settings.php:10
+msgid "Before Content"
+msgstr ""
+
+#: site/loop/query-settings.php:11
+msgid "After Content"
+msgstr ""
+
+#: site/loop/query-settings.php:12
+msgid "Before Footer"
+msgstr ""
+
+#: site/loop/query-settings.php:18
+msgid "Query"
+msgstr ""
+
+#: site/loop/query-settings.php:19
+msgid "Post"
+msgstr ""
+
+#: site/loop/query-settings.php:75
+msgid "Post Type"
+msgstr ""
+
+#: site/loop/query-settings.php:76
+msgid "Type of content to show."
+msgstr ""
+
+#: site/loop/query-settings.php:77
+msgid "Detect post type"
+msgstr ""
+
+#: site/loop/query-settings.php:112
+msgid "Offset"
+msgstr ""
+
+#: site/loop/query-settings.php:113
+msgid "Skip a number of posts."
+msgstr ""
+
+#: site/loop/query-settings.php:181
+msgid "Include tags"
+msgstr ""
+
+#: site/loop/query-settings.php:182
+msgid "Separate tags by a comma <code>,</code>"
+msgstr ""
+
+#: site/loop/query-settings.php:188
+msgid "Include categories"
+msgstr ""
+
+#: site/loop/query-settings.php:195
+msgid "By author(s)"
+msgstr ""
+
+#: site/loop/query-settings.php:199
+msgid "Only show posts from the selected author(s)."
+msgstr ""
+
+#: site/loop/query-settings.php:208
+msgid "Exclude categories"
+msgstr ""
+
+#: site/loop/query-settings.php:230
+msgid "%s Posts"
+msgstr ""
+
+#: site/loop/query-settings.php:358
+msgid "Custom Classes"
+msgstr ""
+
+#: site/loop/query-settings.php:359
+msgid "Add your own custom CSS classes to the container of this Loop."
+msgstr ""
+
+#: site/loop/query-settings.php:372
+msgid "<strong>Add</strong> sidebar"
+msgstr ""
+
+#: site/loop/query-settings.php:397
+msgid "The CTA to show after the Xth post."
+msgstr ""
+
+#: site/widgets/accordion.php:18
+msgid "Posts count"
+msgstr ""
+
+#: site/widgets/accordion.php:19
+msgid "Slug"
+msgstr ""
+
+#: site/widgets/accordion.php:20
+msgid "Category ID"
+msgstr ""
+
+#: site/widgets/accordion.php:21
+msgid "Category Order"
+msgstr ""
+
+#: site/widgets/accordion.php:23
+msgid "MD &rarr; Accordion Nav"
+msgstr ""
+
+#: site/widgets/accordion.php:24
+msgid "List category links in a highly organized accordion widget."
+msgstr ""
+
+#: site/widgets/accordion.php:127
+msgid "Category type"
+msgstr ""
+
+#: site/widgets/accordion.php:129
+msgid "Auto-detect categories"
+msgstr ""
+
+#: site/widgets/accordion.php:138
+msgid "List direction"
+msgstr ""
+
+#: site/widgets/accordion.php:140
+msgid "Ascending (default)"
+msgstr ""
+
+#: site/widgets/accordion.php:145
+msgid "Order by"
+msgstr ""
+
+#: site/widgets/accordion.php:147
+msgid "Name (default)"
+msgstr ""
+
+#: site/widgets/accordion.php:154
+msgid "Posts per category"
+msgstr ""
+
+#: site/widgets/accordion.php:158
+msgid "Exclude"
+msgstr ""
+
+#: site/widgets/accordion.php:160
+msgid "Enter categories to exclude by the category ID. Separate IDs by a comma <code>,</code>"
+msgstr ""
+
+#: site/widgets/accordion.php:163
+msgid "See more text"
+msgstr ""
+
+#: site/widgets/accordion.php:165
+msgid "<b>Default:</b> <i>See all {count} {category} &rarr;</i>"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:6
+msgid "MD &rarr; Content Spotlight"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:7
+msgid "Create a nicely designed image banner and link to any page on your site."
+msgstr ""
+
+#: site/widgets/content-spotlight.php:52
+msgid "Outer Widget Title"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:57
+msgid "Box Intro"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:62
+msgid "Box Title"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:68
+msgid "https://"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:73
+msgid "Open link in new window"
+msgstr ""
+
+#: site/widgets/content-spotlight.php:89
+#: site/widgets/quote.php:79
+#: site/widgets/text-image.php:97
+msgid "Image URL"
+msgstr ""
+
+#: site/widgets/loop-query.php:17
+msgid "MD &rarr; Loop Query"
+msgstr ""
+
+#: site/widgets/loop-query.php:18
+msgid "Display posts from your own Loop Queries in a widget."
+msgstr ""
+
+#: site/widgets/loop-query.php:126
+msgid "Select Query"
+msgstr ""
+
+#: site/widgets/loop-query.php:129
+msgid "Select a query"
+msgstr ""
+
+#: site/widgets/quote.php:6
+msgid "MD &rarr; Testimonial"
+msgstr ""
+
+#: site/widgets/quote.php:7
+msgid "Add a testimonial/quote to any designated widget area!"
+msgstr ""
+
+#: site/widgets/quote.php:55
+msgid "Quoted Text"
+msgstr ""
+
+#: site/widgets/quote.php:61
+msgid "Quote Author"
+msgstr ""
+
+#: site/widgets/text-image.php:16
+msgid "MD &rarr; Text and Image"
+msgstr ""
+
+#: site/widgets/text-image.php:17
+msgid "Create a Text widget with a small right-aligned image as well as a button."
+msgstr ""
+
+#: site/widgets/text-image.php:79
+msgid "Button Text"
+msgstr ""
+
+#: templates/author-box.php:25
+msgid "Follow on Twitter"
+msgstr ""
+
+#: templates/author-box.php:31
+msgid "Visit website"
+msgstr ""
+
+#: templates/author-box.php:37
+msgid "See all posts"
+msgstr ""
+
+#: templates/blocks/content-upgrade.php:27
+msgid "Download now"
+msgstr ""
+
+#: templates/breadcrumbs.php:41
+msgid "Search results"
+msgstr ""
+
+#: templates/breadcrumbs.php:47
+#: templates/content-item-404.php:7
+msgid "Nothing Found"
+msgstr ""
+
+#: templates/byline/author.php:19
+msgid "by"
+msgstr ""
+
+#: templates/byline/comments.php:21
+msgctxt "Number of comments"
+msgid " comment"
+msgid_plural " comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/byline/date.php:11
+msgid "%s ago"
+msgstr ""
+
+#: templates/comments/comment.php:4
+msgid "Jump to comment %s"
+msgstr ""
+
+#: templates/comments/comment.php:26
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: templates/comments/comments.php:5
+msgctxt "comments title"
+msgid "1 comment"
+msgid_plural "%1$s comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/comments/comments.php:6
+msgid "add comment"
+msgstr ""
+
+#: templates/content-item-404.php:19
+msgid "It looks like the page you're looking for isn't here! See if the tools below can help you find what you're looking for:"
+msgstr ""
+
+#: templates/content-item-404.php:22
+msgid "Search the Website"
+msgstr ""
+
+#: templates/content-item-404.php:23
+msgid "If you have an idea of what you're looking for, try typing in a few of the best keywords you can think of to get the most relevant search results possible."
+msgstr ""
+
+#: templates/content-item-404.php:31
+msgid "Browse Latest Posts"
+msgstr ""
+
+#: templates/content-item-404.php:43
+msgid "Browse By Month"
+msgstr ""
+
+#: templates/widgets/accordion.php:18
+msgid "See all <b>%s</b> %1s &rarr;"
+msgstr ""
