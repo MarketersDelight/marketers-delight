@@ -1,8 +1,4 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * Create admin pages, meta boxes, terms, register settings,
  * load custom fields API and run other administrative actions.
@@ -13,6 +9,8 @@ if ( ! defined( 'ABSPATH' ) ) exit;
 class md_admin {
 
 	public $requests;
+	public $sanitize;
+	public $files;
 
 	/**
 	 * Run class methods on instantiation.
@@ -32,13 +30,17 @@ class md_admin {
 	 */
 
 	public function includes() {
-		require_once( 'settings/dashboard/dashboard.php' );
-		require_once( 'design/design.php' );
-		require_once( 'settings/dropins/dropins.php' );
-		require_once( 'settings/integrations/integrations.php' );
-		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/md-upgrader.php' );
+		require_once( 'dashboard/dashboard.php' );
+		require_once( 'icons/icons.php' );
+		require_once( MD_DIR . 'lib/fields/page-settings.php' );
+		require_once( MD_DIR . 'site/design/typography.php' );
+		require_once( 'integrations/integrations.php' );
+		require_once( 'dropins/dropins-functions.php' );
+		require_once( 'dropins/dropins.php' );
+		require_once( 'dropins/upgraders/dropin-upgrader.php' );
+		require_once( 'upgrade/md-upgrader.php' );
 		if ( md_setting( 'version' ) < '5.0' )
-		require_once( MD_DIR . 'lib/wp/upgraders/md-upgrader/upgrade.php' );
+			require_once( 'upgrade/upgrade.php' );
 	}
 
 	/**
@@ -51,8 +53,8 @@ class md_admin {
 		$this->sanitize = new md_sanitize;
 		$this->files = new md_files;
 		$this->requests = new md_requests;
-		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
-		add_action( 'wp_update_nav_menu', 'md_compile_css' );
+
+		add_action( 'wp_update_nav_menu', 'md_compile' );
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
@@ -115,28 +117,28 @@ class md_admin {
 	 */
 
 	public function add_menu() {
-		add_submenu_page( 'md_settings', __( 'Marketers Delight', 'md' ), __( 'Settings', 'md' ), 'edit_theme_options', 'admin.php?page=md_settings' );
+		add_submenu_page( 'index.php', __( 'Marketers Delight', 'md' ), __( 'Marketers Delight', 'md' ), 'edit_theme_options', 'themes.php?page=md_settings', null );
 
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;
-			if ( ! isset( $fields['parent'] ) )
-				$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
-			else
-				$parent_slug = null;
+
+			$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
 			$capability = isset( $fields['capability'] ) ? $fields['capability'] : 'manage_options';
 			$callback = array( $this, 'admin_page' );
 			$menu_slug = 'md_' . ( isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $admin_page );
 			$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';
-			$position = isset( $fields['position'] ) ? $fields['position'] : 30;
+			$position = isset( $fields['position'] ) ? $fields['position'] : null;
 			$menu_title = isset( $fields['menu_title'] ) ? $fields['menu_title'] : $fields['name'];
 
 			if ( ! empty( $fields['toplevel'] ) )
 				add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
 			else {
 				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
-				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback );
+
+				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback, $position );
 			}
+
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
 		}
@@ -150,15 +152,16 @@ class md_admin {
 
 	public function enqueue() {
 		$screen = get_current_screen();
-		$style = 'lib/admin/css/admin.css';
+		$style = 'lib/admin/admin.css';
 		$script = 'lib/admin/js/admin.js';
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
-		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'wp-color-picker', 'md-alpha-color' ), md_ver( $script ), true );
+		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
 
 		$vars = array(
 			'user_id' => get_current_user_id(),
-			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' )
+			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
+			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
 
 		if ( in_array( $screen->base, array( 'edit', 'post' ) ) && ! in_array( $screen->post_type, array( 'post', 'page' ) ) ) {
@@ -167,24 +170,26 @@ class md_admin {
 					'screen' => 'post',
 					'is_sticky' => is_sticky() ? true : false,
 					'checked_attribute' => checked( is_sticky(), true, false ),
-					'label_text' => __( 'Stick this post to the front page','cpt_sticky' ),
-					'sticky_visibility_text' => __( 'Public, Sticky','cpt_sticky' )
+					'label_text' => __( 'Stick this post to the front page', 'md' ),
+					'sticky_visibility_text' => __( 'Public, Sticky', 'md' )
 				) );
 			else
 				$vars = array_merge( $vars, array(
 					'screen' => 'edit',
 					'post_type' => $screen->post_type,
-					'status_label_text' => __( 'Status' ),
-					'label_text' => __( 'Make this post sticky','cpt_sticky' ),
-					'sticky_text' => __( 'Sticky','cpt_sticky' ),
+					'status_label_text' => __( 'Status', 'md' ),
+					'label_text' => __( 'Make this post sticky', 'md' ),
+					'sticky_text' => __( 'Sticky', 'md' )
 				) );
 			wp_add_inline_script( 'marketers-delight', 'MD.stickyPostTypes();' );
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_enqueue_script( 'md-sortable', MD_URL . 'lib/admin/js/sortable.js', array(), '', true );
-		wp_register_script( 'md-alpha-color', MD_URL . 'lib/admin/js/alpha-color.js', array( 'wp-color-picker' ), '', true );
-		
+		wp_register_script( 'md-color', MD_URL . 'lib/admin/js/jscolor.js', array(), '', true );
+		wp_register_script( 'md-sortable', MD_URL . 'lib/admin/js/sortable.js', array(), '', true );
+		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
+		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
+
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
 	}
@@ -196,13 +201,14 @@ class md_admin {
 	 */
 
 	public function admin_page() {
-		$admin_tabs = array();
+		$admin_tabs = $admin_order = array();
 		$admin_pages = md_register( 'admin_pages' );
 		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
-		include( 'settings/admin-page.php' );
+
+		include( 'admin-page.php' );
 	}
 
 	/**
@@ -213,8 +219,10 @@ class md_admin {
 
     public function admin_row( $actions, $post ) {
 	    $user = wp_get_current_user();
+
 	    if ( in_array( $user->roles[0], array( 'administrator', 'editor' ) ) )
 			$actions['md_post_id'] = '<span class="md-action-row-label">ID: ' . get_the_ID() . '</span>';
+
 		return $actions;
     }
 
@@ -226,14 +234,24 @@ class md_admin {
 
 	public function add_meta_boxes() {
 		$screen = get_current_screen();
+		$blog_id = get_option( 'page_for_posts' );
+		$post_id = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : '';
+
 		foreach ( md_register( 'meta_boxes' ) as $meta_box => $fields ) {
 			$post_types = isset( $fields['post_type'] ) ? $fields['post_type'] : md_post_type_meta();
 			$context = isset( $fields['context'] ) ? $fields['context'] : 'normal';
 			$priority = isset( $fields['priority'] ) ? $fields['priority'] : 'default';
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
+
 			foreach ( $post_types as $post_type ) {
-				if ( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) )
+				if (
+					! isset( $fields['name'] ) || isset( $fields['hide'] ) || isset( $fields['page_settings'] ) ||
+					( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) ||
+					( isset( $fields['post_id'] ) && $fields['post_id'] != $post_id ) ||
+					( $blog_id == $post_id )
+				)
 					continue;
+
 				add_meta_box( $fields['id'], $fields['name'], array( $this, 'meta_box' ), $post_type, $context, $priority, array(
 					'function_callback' => $callback
 				) );
@@ -267,6 +285,7 @@ class md_admin {
 	public function hide_meta_keys( $protected, $meta_key ) {
 		if ( 'marketers_delight' == $meta_key )
 			return true;
+
 		return $protected;
 	}
 
@@ -312,24 +331,6 @@ class md_admin {
 	}
 
 	/**
-	 * Add classes to the admin <body> tag.
-	 *
-	 * #since 4.9
-	 */
-
-	public function admin_body_class( $classes ) {
-		$screen = get_current_screen();
-		if ( $screen->base == 'post' ) {
-			$site_add = md_setting( array( 'content', 'sidebar', 'single' ) );
-			$single_remove = md_post_meta( array( 'layout', 'sidebar', 'remove' ) );
-			$single_add = md_post_meta( array( 'layout', 'sidebar', 'add' ) );
-			if ( ( $site_add && $single_remove ) || ( ! $site_add && ! $single_add ) )
-				$classes .= 'md-editor-full';
-		}
-		return $classes;
-	}
-
-	/**
 	 * Show MD update notification when necessary.
 	 *
 	 * @since 4.7
@@ -347,18 +348,20 @@ class md_admin {
 	 */
 
 	public function update_nag() {
-		$strings = array(
-			'update-notice' => esc_js( __( "Updating MD will lose any customizations you\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update.", 'md' ) ),
-			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
-		);
 		$license_status = md_setting( array( 'license', 'status' ) );
-		$theme_slug = $this->requests->license( 'theme_slug' );
 		$theme = md_setting( array( 'license', 'updates', 'theme' ) );
-		$theme_name = str_replace( ' 4', '', $theme['name'] );
 		$new_version = md_setting( array( 'license', 'updates', 'theme', 'new_version' ) );
 
 		if ( $license_status !== 'valid' || empty( $theme ) || version_compare( MD_VERSION, $new_version, '>=' ) )
 			return;
+
+		$strings = array(
+			'update-notice' => esc_js( __( "Updating MD will lose any customizations you\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update.", 'md' ) ),
+			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
+		);
+
+		$theme_slug = $this->requests->license( 'theme_slug' );
+		$theme_name = str_replace( ' 4', '', $theme['name'] );
 
 		$update_url = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $theme_slug ), 'upgrade-theme_' . $theme_slug );
 		$update_onclick = ' onclick="if ( confirm(\'' . esc_js( $strings['update-notice'] ) . '\') ) {return true;}return false;"';
@@ -378,9 +381,9 @@ class md_admin {
 		<div id="<?php echo esc_attr( $theme_slug . '_changelog' ); ?>" style="display:none;">
 			<h1><?php echo sprintf( __( 'Ready to update %s %2s?', 'md' ), $theme_name, $new_version ); ?></h2>
 			<p><?php echo __( 'Here are some resources to help you:', 'md' ); ?></p>
-			<h3>- <a href="https://marketersdelight.com/changelog/" target="_blank"><?php echo __( 'Read the changelog' ); ?></a></h3>
-			<h3>- <a href="https://marketersdelight.com/news/" target="_blank"><?php echo __( 'See what\'s new in MD' ); ?></a></h3>
-			<h3>- <a href="https://marketersdelight.com/support/" target="_blank"><?php echo __( 'Get help at support' ); ?></a></h3>
+			<h3>- <a href="https://marketersdelight.com/changelog/" target="_blank"><?php echo __( 'Read the changelog', 'md' ); ?></a></h3>
+			<h3>- <a href="https://marketersdelight.com/stream/" target="_blank"><?php echo __( 'See what\'s new in MD', 'md' ); ?></a></h3>
+			<h3>- <a href="https://kolakube.com/community/" target="_blank"><?php echo __( 'Get help at support', 'md' ); ?></a></h3>
 			<p><?php echo __( 'When in doubt, make a backup your website before proceeding.', 'md' ); ?></p>
 		</div>
 	<?php }

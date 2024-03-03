@@ -1,3 +1,29 @@
-<?php if ( ! in_array( 'comments', $byline ) && md_has_comments() ) : ?>
-	<span class="byline-comments byline-item byline-icon<?php echo isset( $args['classes'] ) ? ' ' . $args['classes'] : ''; ?>"><a href="<?php comments_link(); ?>"><?php echo md_icon( 'chat' ); ?> <?php echo sprintf( _nx( '1 <span class="byline-comments-label">comment</span>', '%1$s <span class="byline-comments-label">comments</span>', get_comments_number(), 'Number of comments', 'md' ), number_format_i18n( get_comments_number() ) ); ?></a></span>
+<?php if ( md_has_comments() ) :
+	$comments = get_comments_number();
+
+	if ( $comments == 0 && ! empty( $fields['settings']['hide'] ) )
+		return;
+?>
+
+<span class="byline-comments byline-item">
+	<a href="<?php echo get_comments_link(); ?>">
+		<?php
+			echo md_icon( 'chat' );
+
+			echo ' <span class="md-byline-label">';
+
+			if ( $comments == 0 && ! empty( $fields['title'] ) )
+				echo esc_html( $fields['title'] );
+			else {
+				echo number_format_i18n( $comments );
+
+				if ( ! empty( $fields['settings']['label'] ) )
+					echo _nx( ' comment', ' comments', $comments, 'Number of comments', 'md' );
+			}
+
+			echo '</span>';
+		?>
+	</a>
+</span>
+
 <?php endif; ?>

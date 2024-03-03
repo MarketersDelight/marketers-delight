@@ -1,16 +1,25 @@
-<?php if ( ! in_array( 'date', $byline ) ) : ?>
-	<span class="byline-date byline-item">
-		<?php echo md_icon( 'clock' ); ?> <time datetime="<?php the_date( 'c' ); ?>" itemprop="datePublished"><?php the_time( get_option( 'date_format' ) ); ?></time>
-		<?php if ( in_array( 'last-updated', $byline ) ) : ?>
-			(<?php echo __( 'updated ', 'md' ); ?> <?php the_modified_date(); ?>)
-		<?php endif; ?>
-	</span>
-<?php endif; ?>
+<?php
+	$permalink = get_permalink();
+	$date = $post_date = get_the_time( get_option( 'date_format' ) );
 
-<?php if ( in_array( 'last-updated', $byline ) && in_array( 'date', $byline ) ) : ?>
-	<span class="byline-date-modified byline-item" itemprop="dateModified" content="<?php the_modified_date( 'c' ); ?>">
-		<?php echo md_icon( 'clock' ); ?> <?php echo __( 'Last updated:', 'md' ); ?> <?php the_modified_date(); ?>
-	</span>
-<?php endif; ?>
+	if ( isset( $fields['url_params'] ) )
+		$permalink .= $fields['url_params'];
+
+	if ( ! empty( $fields['settings']['relative'] ) || isset( $fields['relative_date'] ) ) {
+		$relative = isset( $fields['relative_date'] ) ? $fields['relative_date'] : get_the_time( 'U' );
+		$time = human_time_diff( $relative, current_time( 'U' ) );
+		$date = sprintf( __( '%s ago', 'md' ), $time );
+	}
+?>
+
+<span class="byline-date byline-item">
+
+	<?php echo md_icon( 'clock' ); ?>
+
+	<time datetime="<?php echo get_the_date( 'c' ); ?>" title="<?php echo esc_attr( $post_date ); ?>">
+		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
+	</time>
+
+</span>
 
 <?php do_action( 'md_hook_byline_after_date' ); ?>

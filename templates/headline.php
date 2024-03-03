@@ -1,23 +1,11 @@
-<<?php echo md_content_item_headline_html(); ?> class="<?php echo md_headline_classes(); ?>"<?php echo md_featured_image_cover(); ?>>
+<?php do_action( "md_hook_before_{$context}_header", "before_{$context}_header" ); ?>
 
-	<?php md_hook_headline_top(); ?>
+<div class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
 
-	<div class="content-inner">
+	<?php md_overlay( $cover ); ?>
 
-		<?php md_hook_before_headline(); ?>
+	<?php md_title( $args ); ?>
 
-		<?php if ( is_singular() || is_404() ) : ?>
-			<h1 class="headline entry-title"><?php echo get_the_title(); ?></h1>
-		<?php else : ?>
-			<h1 class="headline entry-title">
-				<a href="<?php the_permalink(); ?>" title="<?php echo sprintf( __( 'Permanent Link to %s', 'md' ), the_title_attribute( 'echo=0' ) ); ?>"><?php echo get_the_title(); ?></a>
-			</h1>
-		<?php endif; ?>
+</div>
 
-		<?php md_hook_after_headline(); ?>
-
-	</div>
-
-	<?php md_hook_headline_bottom(); ?>
-
-</<?php echo md_content_item_headline_html(); ?>>
+<?php do_action( "md_hook_after_{$context}_header", "after_{$context}_header" ); ?>

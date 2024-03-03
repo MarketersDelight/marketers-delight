@@ -8,18 +8,17 @@
  * @refactored 5.0
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_api {
 
 	public $_id;
 	public $_clean_id;
 	public $_option = 'marketers_delight';
 	public $_prefix;
+	public $fields;
+	public $name;
 
 	/**
-	 * Fire off class extension actions, filters, and set core properties.
+	 * Fires class extension actions, filters, and set core properties.
 	 *
 	 * @since 4.0
 	 */
@@ -29,7 +28,7 @@ class md_api {
 		$this->_id = isset( $id ) ? $id : get_class( $this );
 
 		/**
-		 * Load subclass' psuedo-contructor, if it exists.
+		 * Load subclass' pseudo-constructor, if it exists.
 		 * @DEPRECATED 5.0, now use $this->actions() and $this->includes() respectively
 		 */
 
@@ -48,16 +47,17 @@ class md_api {
 
 		// Print dynamic CSS to master stylesheet
 
-		if ( method_exists( $this, 'css' ) )
+		if ( method_exists( $this, 'css' ) ) #since 4.9
 			add_filter( 'md_dropins_css_templates', array( $this, 'css' ) );
 
 		if ( method_exists( $this, 'css_data' ) )
 			add_filter( 'md_filter_css_values', array( $this, 'css_data' ) );
 
-		// Utilities
+		if ( method_exists( $this, 'js' ) ) #since 5.4.2
+			add_filter( 'md_js_templates', array( $this, 'js' ) );
 
-		if ( method_exists( $this, 'after_setup_theme' ) )
-			add_action( 'after_setup_theme', array( $this, 'after_setup_theme' ) );
+		if ( method_exists( $this, 'onscroll' ) ) #since 5.4.2
+			add_filter( 'md_js_onscroll', array( $this, 'onscroll' ) );
 
 		// Frontend
 
@@ -73,6 +73,23 @@ class md_api {
 		if ( method_exists( $this, 'widgets' ) )
 			add_action( 'widgets_init', array( $this, 'widgets' ) );
 
+		// Filters
+
+		if ( method_exists( $this, 'post_meta' ) )
+			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
+
+		if ( method_exists( $this, 'term_meta' ) || method_exists( $this, 'taxonomy_meta' ) )
+			add_filter( 'md_taxonomy_meta', array( $this, 'term_meta' ) );
+
+		if ( method_exists( $this, 'blocks' ) )
+			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
+
+		if ( method_exists( $this, 'blocks_scripts' ) )
+			add_filter( 'md_filter_blocks_scripts', array( $this, 'blocks_scripts' ), 10, 2 );
+
+		if ( method_exists( $this, 'byline' ) )
+			add_filter( 'md_byline', array( $this, 'byline' ) );
+
 		// Admin
 
 		if ( is_admin() ) {
@@ -80,8 +97,12 @@ class md_api {
 			// Set core properties
 
 			$this->_clean_id = md_clean_id( $this->_id );
-			$this->_prefix = "{$this->_option}_{$this->_clean_id}";
-			$this->fields = new md_fields( $this->_id );
+			$this->_prefix = $this->_prefix();
+			$this->fields = new md_fields( array(
+				'id' => $this->_id,
+				'clean_id' => $this->_clean_id,
+				'prefix' => $this->_prefix
+			) );
 
 			// Register components and fields
 
@@ -91,70 +112,142 @@ class md_api {
 
 			// Admin pages
 
-			if ( method_exists( $this, 'admin_page' ) && ( isset( $register['admin_page'] ) || $this->admin_page ) )
+			if ( method_exists( $this, 'admin_page' ) && isset( $register['admin_page'] ) )
 				add_action( "{$this->_id}_admin_page", array( $this, 'admin_page' ) );
 
 			if ( method_exists( $this, 'admin_page_before' ) ) #MD5.4, drop-ins page
 				add_action( "{$this->_id}_admin_page_before_form", array( $this, 'admin_page_before' ) );
 
+			// Admin Settings #6.0
+
+			if ( method_exists( $this, 'admin_settings' ) )
+				add_filter( 'md_admin_settings', array( $this, 'admin_settings' ) );
+
+			if ( method_exists( $this, 'admin_fields' ) ) {
+				add_action( 'admin_init', array( $this, '_admin_init' ) );
+
+				if ( method_exists( $this, 'fields' ) )
+					add_filter( 'md_page_settings_fields', array( $this, '_admin_fields' ) );
+			}
+
 			// Meta boxes
 
-			if ( method_exists( $this, 'meta_box' ) && ( isset( $register['meta_box'] ) || $this->meta_box ) )
-				add_action( "{$this->_id}_meta_box", array( $this, 'meta_box' ) );
+			if ( isset( $register['meta_box'] ) && method_exists( $this, 'meta_box' ) )
+				if ( isset( $register['meta_box']['page_settings'] ) )
+					add_action( 'md_post_meta_page_settings', array( $this, 'meta_box' ) );
+				else
+					add_action( "{$this->_id}_meta_box", array( $this, 'meta_box' ) );
 
 			// Terms
 
-			if ( ( method_exists( $this, 'term' ) || isset( $register['term']['callback'] ) && ( isset( $register['term'] ) || $this->taxonomy ) ) ) {
-				$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
-				$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
-				$callback = ! empty( $register['term']['callback'] ) ? $register['term']['callback'] : array( $this, 'term' );
-				$position = ! empty( $register['term']['position'] ) ? $register['term']['position'] : 10;
-				add_action( "md_{$taxonomy}_{$term}", $callback, $position );
+			if ( isset( $register['term'] ) && ( method_exists( $this, 'term' ) || isset( $register['term']['callback'] ) ) ) {
+				if ( isset( $register['term']['page_settings'] ) )
+					add_action( 'md_term_meta_page_settings', array( $this, 'term' ) );
+				else {
+					$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
+					$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
+					$callback = ! empty( $register['term']['callback'] ) ? $register['term']['callback'] : array( $this, 'term' );
+					$position = ! empty( $register['term']['position'] ) ? $register['term']['position'] : 100;
+
+					add_action( "md_{$taxonomy}_{$term}", $callback, $position );
+				}
 			}
 
 			// User meta
-			if ( isset( $register['user_meta'] ) && method_exists( $this, 'user_meta' ) )
+
+			if ( method_exists( $this, 'user_meta' ) && isset( $register['user_meta'] ) )
 				add_action( 'md_user_meta_fields', array( $this, 'user_meta' ) );
 
 			// Scripts
+
 			add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue' ) );
-			add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ) );
+			add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ), 100 );
 		}
 
 	}
 
 	/**
+	 * Get a prefix for option names and values across different contexts.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _prefix() {
+		$prefix = "{$this->_option}_{$this->_clean_id}";
+
+		if ( isset( $_GET['page'] ) ) {
+			$page = esc_attr( $_GET['page'] );
+			$page_types = md_admin_settings();
+
+			if ( ! empty( $page_types[$page] ) ) {
+				$page = md_clean_id( $page );
+
+				if ( $page !== $this->_clean_id )
+					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
+				else
+					$prefix = "{$this->_option}_{$this->_clean_id}";
+			}
+		}
+
+		return $prefix;
+	}
+
+	/**
 	 * If this instance creates new admin pages, tabs, meta, or terms
-	 * add it to the full collections below. Supports deprecated data formats.
+	 * add it to the full collections below.
 	 *
 	 * @since 5.0
 	 */
 
 	public function _register( $data ) {
 		$register = $this->register();
+		$order = 10;
 
-		if ( isset( $register['admin_page'] ) || $this->admin_page ) {
-			$admin_page = $this->admin_page ? $this->admin_page : $register['admin_page'];
-			$data['admin_pages'][$this->_clean_id] = $admin_page;
+		if ( isset( $register['admin_page'] ) ) {
+			$data['admin_pages'][$this->_clean_id] = $register['admin_page'];
+
 			if ( ! isset( $data['admin_pages'][$this->_id]['id'] ) )
 				$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
 		}
 
-		if ( isset( $register['meta_box'] ) || $this->meta_box ) {
-			$meta_box = $this->meta_box ? $this->meta_box : $register['meta_box'];
-			$data['meta_boxes'][$this->_clean_id] = $meta_box;
+		if ( isset( $register['meta_box'] ) ) {
+			$data['meta_boxes'][$this->_clean_id] = $register['meta_box'];
 			$data['meta_boxes'][$this->_clean_id]['id'] = $this->_id;
+
+			if ( isset( $data['meta_boxes'][$this->_clean_id]['page_settings'] ) ) {
+				$name = $data['meta_boxes'][$this->_clean_id]['name'];
+
+				if ( isset( $data['meta_boxes'][$this->_clean_id]['tab_name'] ) )
+					$name = $data['meta_boxes'][$this->_clean_id]['tab_name'];
+
+				if ( isset( $data['meta_boxes'][$this->_clean_id]['order'] ) )
+					$order = $data['meta_boxes'][$this->_clean_id]['order'];
+
+				$data['post_meta_page_settings'][$this->_clean_id]['name'] = $name;
+				$data['post_meta_page_settings'][$this->_clean_id]['order'] = $order;
+			}
 		}
 
-		if ( isset( $register['term'] ) || $this->taxonomy ) {
-			$term = $this->taxonomy ? $this->taxonomy : $register['term'];
-			$data['terms'][$this->_clean_id] = $term;
+		if ( isset( $register['term'] ) ) {
+			$data['terms'][$this->_clean_id] = $register['term'];
 			$data['terms'][$this->_clean_id]['id'] = $this->_id;
+
+			if ( isset( $data['terms'][$this->_clean_id]['page_settings'] ) ) {
+				$name = $data['terms'][$this->_clean_id]['name'];
+
+				if ( isset( $data['terms'][$this->_clean_id]['tab_name'] ) )
+					$name = $data['terms'][$this->_clean_id]['tab_name'];
+
+				if ( isset( $data['terms'][$this->_clean_id]['order'] ) )
+					$order = $data['terms'][$this->_clean_id]['order'];
+
+				$data['term_meta_page_settings'][$this->_clean_id]['name'] = $name;
+				$data['term_meta_page_settings'][$this->_clean_id]['order'] = $order;
+			}
 		}
 
 		if ( isset( $register['user_meta'] ) ) {
-			$user_meta = $register['user_meta'];
-			$data['user_meta'][$this->_clean_id] = $user_meta;
+			$data['user_meta'][$this->_clean_id] = $register['user_meta'];
 			$data['user_meta'][$this->_clean_id]['id'] = $this->_id;
 		}
 
@@ -162,14 +255,80 @@ class md_api {
 	}
 
 	/**
+	 * Get API design data a little easier.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function _data( $key = null ) {
+		$design = new md_design;
+		$sanitize = new md_sanitize;
+		$data = array(
+			'values' => $design->values(),
+			'defaults' => $design->defaults(),
+			'sanitize' => $sanitize,
+			'menus' => $sanitize->menus()
+		);
+
+		if ( isset( $key ) )
+			$data = $data[$key];
+
+		return $data;
+	}
+
+	/**
 	 * Register custom components to be loaded throughout
-	 * the WordPres interface.
+	 * the WordPress interface.
 	 *
 	 * @since 5.0
 	 */
 
 	public function register() {
 		return array();
+	}
+
+	/**
+	 * Fire all-purpose admin actions. Currently restricted to adding
+	 * page settings to Admin Pages when called from Drop-ins.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _admin_init() {
+		if ( wp_doing_ajax() )
+			return;
+
+		$order = 100;
+		$admin_fields = md_admin_fields();
+
+		if ( ! empty( $admin_fields[$this->_clean_id] ) )
+			foreach ( $admin_fields[$this->_clean_id] as $admin_field ) { #wtf
+				if ( in_array( $this->_clean_id, array( 'cta', 'floating_bars', 'popups' ) ) )
+					continue;
+
+				if ( $this->_clean_id == 'hero' )
+					$order = 10;
+				elseif ( $this->_clean_id == 'layout' )
+					$order = 20;
+				elseif ( $this->_clean_id == 'loop' )
+					$order = 30;
+				elseif ( $this->_clean_id == 'byline' )
+					$order = 40;
+
+				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );
+			}
+	}
+
+	/**
+	 * Add class extensions field data to shared array.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _admin_fields( $settings ) {
+		$settings[$this->_clean_id] = $this->fields();
+
+		return $settings;
 	}
 
 	/**
@@ -218,63 +377,6 @@ class md_api {
 
 		if ( in_array( $screen->base, array( 'profile' ) ) && method_exists( $this, 'user_meta_scripts' ) )
 			$this->user_meta_scripts();
-	}
-
-	// @DEPRECATED 5.0
-	public $admin_page;
-	public $admin_tab;
-	public $meta_box;
-	public $taxonomy;
-	/**
-	 * Use this method in class extensions to send options data
-	 * through MD sanitize.
-	 *
-	 * @since 4.0
-	 * @DEPRECATED 5.0
-	 */
-	public function register_fields() {
-		return array();
-	}
-	/**
-	 * Create admin field with Fields API.
-	 *
-	 * @since 4.0
-	 * @DEPRECATED 5.0 use $this->fields->field()
-	 */
-	public function field( $type, $field, $values = null, $args = null ) {
-		$args = array();
-		$args['type'] = $type;
-		if ( isset( $values ) )
-			$args['options'] = $values;
-		$this->fields->field( $field, $args );
-	}
-	/**
-	 * Load admin field based on type of screen.
-	 *
-	 * @since 4.1
-	 * @DEPRECATED 5.0 use $this->fields->module()
-	 */
-	public function module_field( $field ) {
-		$this->fields->module( $field );
-	}
-	/**
-	 * Easily create a label for your fields.
-	 *
-	 * @since 4.0
-	 * @DEPRECATED 5.0 (use $this->fields->label())
-	 */
-	public function label( $field, $label ) {
-		$args['label'] = $label;
-		$this->fields->label( $field, $args );
-	}
-	/**
-	 * Easily create a description for your fields.
-	 *
-	 * @since 4.0
-	 * @DEPRECATED 5.0
-	 */
-	public function desc( $desc ) {
-		$this->fields->description( $desc );
 	}
 
 }

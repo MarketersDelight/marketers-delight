@@ -5,20 +5,29 @@
  * @since 4.5
  */
 
- // Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 class md_sanitize {
 
+	public $values;
+
 	/**
-	 * Assign properties.
+	 * Add needed font weights for design controls.
 	 *
-	 * @since 5.0
+	 * @since 4.8
 	 */
 
-	public function __construct() {
-		$this->values = $this->values();
-	}
+	public $_font_weights = array(
+		'normal' => 'Regular',
+		'bold' => 'Bold',
+		'100' => '100',
+		'200' => '200',
+		'300' => '300',
+		'400' => '400',
+		'500' => '500',
+		'600' => '600',
+		'700' => '700',
+		'800' => '800',
+		'900' => '900'
+	);
 
 	/**
 	 * Allow only the following HTML tags + attributes
@@ -32,6 +41,20 @@ class md_sanitize {
 			'class' => array(),
 			'id' => array(),
 			'style' => array()
+		),
+		'svg' => array(
+			'xmlns' => array(),
+			'fill' => array(),
+			'viewbox' => array(),
+			'role' => array(),
+			'aria-hidden' => array(),
+			'focusable' => array(),
+			'height' => array(),
+			'width' => array()
+		),
+		'path' => array(
+			'd' => array(),
+			'fill' => array(),
 		),
 		'p' => array(
 			'class' => array(),
@@ -101,24 +124,14 @@ class md_sanitize {
 	);
 
 	/**
-	 * Add needed font weights for design controls.
+	 * Assign properties.
 	 *
-	 * @since 4.8
+	 * @since 5.0
 	 */
 
-	public $_font_weights = array(
-		'normal' => 'Regular',
-		'bold' => 'Bold',
-		'100' => '100',
-		'200' => '200',
-		'300' => '300',
-		'400' => '400',
-		'500' => '500',
-		'600' => '600',
-		'700' => '700',
-		'800' => '800',
-		'900' => '900'
-	);
+	public function __construct() {
+		$this->values = $this->values();
+	}
 
 	/**
 	 * Settings that are often reused with the same values.
@@ -129,37 +142,23 @@ class md_sanitize {
 	public function values() {
 		return array(
 			'content_box' => array(
-				'content_sidebar' => __( 'Content / Sidebar', 'md' ),
 				'sidebar_content' => __( 'Sidebar / Content', 'md' )
 			),
 			'featured_image' => array(
 				'right' => __( 'Right, text wrap', 'md' ),
 				'left' => __( 'Left, text wrap', 'md' ),
 				'center' => __( 'Center, no text wrap', 'md' ),
-				'below_headline' => __( 'Full-width, below headline', 'md' ),
-				'above_headline' => __( 'Full-width, above headline', 'md' ),
-				'headline_cover' => __( 'Headline cover', 'md' ),
-				'header_cover' => __( 'Header cover', 'md' ),
-				'header_cover_full' => __( 'Full Header cover', 'md' ),
+				'above_headline' => __( 'Before headline', 'md' ),
+				'below_headline' => __( 'After headline', 'md' ),
 				'remove' => __( 'Hide image', 'md' )
+			),
+			'covers' => array(
+				'headline_cover' => __( 'Headline Cover', 'md' ),
+				'header_cover' => __( 'Header Cover', 'md' ),
+				'header_cover_full' => __( 'Full Header Cover', 'md' ),
 			),
 			'alignment' => array( 'alignleft', 'alignright', 'aligncenter' )
 		);
-	}
-
-	/**
-	 * Return terms hierarchy in data format.
-	 *
-	 * @since 5.3.1
-	 */
-
-	public function terms( $taxonomy = 'category' ) {
-		$cats = array();
-		$terms = get_terms( $taxonomy );
-		foreach ( $terms as $term )
-			if ( isset( $term->term_id ) )
-				$cats[] = esc_attr( $term->term_id );
-		return $cats;
 	}
 
 	/**
@@ -209,12 +208,14 @@ class md_sanitize {
 	 */
 
 	public function upload( $input, $upload_type ) {
-		if ( $upload_type == 'media' )
-			$save = array(
-				'id' => esc_attr( $input['id'] ),
-				'url' => esc_url( $input['url'] )
-			);
-		return $save;
+		if ( $upload_type == 'media' ) {
+			if ( ! empty( $input['id'] ) )
+				$save['id'] = esc_attr( $input['id'] );
+			if ( ! empty( $input['url'] ) )
+				$save['url'] = esc_url( $input['url'] );
+			if ( ! empty( $save ) )
+				return $save;
+		}
 	}
 
 	/**
@@ -225,9 +226,14 @@ class md_sanitize {
 
 	public function color( $input ) {
 		if ( strpos( $input, 'rgba' ) === false )
-			return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+			if ( strlen( $input ) == 7 ) // HEX
+				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+			elseif ( strlen( $input ) == 9 ) // HEXA
+				return preg_match( '/^#[a-f0-9]{8}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+
 		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
-		return "rgba({$r},{$g},{$b},{$a})";
+
+		return "rgba({$r}, {$g}, {$b}, {$a})"; // RGBA
 	}
 
 	/**
@@ -246,6 +252,7 @@ class md_sanitize {
 		}
 		else
 			$save = $input == true ? true : false;
+
 		return $save;
 	}
 
@@ -256,7 +263,17 @@ class md_sanitize {
 	 */
 
 	public function select( $input, $options ) {
-		return in_array( $input, $options ) ? $input : '';
+		if ( is_array( $input ) ) {
+			$values = array();
+
+			foreach ( $input as $key )
+				if ( in_array( $key, $options ) )
+					$values[] = $key;
+
+			return $values;
+		}
+		else
+			return in_array( $input, $options ) ? $input : '';
 	}
 
 	/**
@@ -268,6 +285,7 @@ class md_sanitize {
 	public function customize_select( $input, $setting ) {
 		$input = sanitize_key( $input );
 		$choices = $setting->manager->get_control( $setting->id )->choices;
+
 		return array_key_exists( $input, $choices ) ? $input : $setting->default;
 	}
 
@@ -279,8 +297,10 @@ class md_sanitize {
 
 	public function font_weights( $input ) {
 		$weights = array();
+
 		foreach ( $this->_font_weights as $weight => $label )
 			$weights[] = $weight;
+
 		return in_array( $input, $weights ) ? $input : '';
 	}
 
@@ -303,7 +323,44 @@ class md_sanitize {
 	 */
 
 	public function featured_image_position( $input ) {
-		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'headline_cover', 'header_cover', 'header_cover_full', 'remove' ) ) ? $input : '';
+		return in_array( $input, array( 'right', 'left', 'center', 'below_headline', 'above_headline', 'remove' ) ) ? $input : '';
+	}
+
+	/**
+	 * Return terms hierarchy in data format.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function terms( $taxonomy = 'category' ) {
+		$cats = array();
+		$terms = get_terms( $taxonomy );
+
+		foreach ( $terms as $term )
+			if ( isset( $term->term_id ) )
+				$cats[] = esc_attr( $term->term_id );
+
+		return $cats;
+	}
+
+	/**
+	 * Return a save ready list of WP menus.
+	 *
+	 * @since 6.0
+	 */
+
+	public function menus() {
+		$menus = array( 'ids' => array(), 'options' => array() );
+		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+
+		if ( ! empty( $nav_menus ) )
+			foreach ( $nav_menus as $menu ) {
+				$menu_id = esc_attr( $menu->term_id );
+				$menus['ids'][] = $menu_id;
+				$menus['options'][$menu_id] = esc_html( $menu->name );
+			}
+
+		return $menus;
 	}
 
 	/**
@@ -312,8 +369,9 @@ class md_sanitize {
 	 * @since 4.0
 	 */
 
-	public function admin_save( $input ) {	
+	public function admin_save( $input ) {
 		$save = $this->validate( 'admin_pages', $input );
+
 		return array_merge( md_setting(), $save );
 	}
 
@@ -325,9 +383,12 @@ class md_sanitize {
 
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
+
 		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
 			return;
+
 		$save = $this->validate( 'user_meta', $_POST[$option] );
+
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );
 		elseif ( empty( $save ) )
@@ -342,8 +403,10 @@ class md_sanitize {
 
 	public function term_save( $term_id ) {
 		$option = 'marketers_delight';
+
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
 			$save = $this->validate( 'terms', $_POST[$option] );
+
 			if ( $save )
 				update_term_meta( $term_id, $option, $save );
 			elseif ( empty( $save ) )
@@ -382,7 +445,7 @@ class md_sanitize {
 	}
 
 	/**
-	 * An ugly function (how can this be ade recursive?), but one thorough enough
+	 * An ugly function (how can this be made recursive?), but one thorough enough
 	 * to properly validate and sanitize multiple levels of nested options.
 	 * Sets up data and feeds option value to validate_field() method and then
 	 * builds full options array for save.
@@ -400,7 +463,7 @@ class md_sanitize {
 			if ( ! in_array( $key, $whitelist ) ) {
 				if ( ! empty( $data[$key]['fields'] ) )
 					foreach ( $data[$key]['fields'] as $group => $group_fields ) {
-						if ( isset( $group_fields['type'] ) && $group_fields['type'] == 'group' && isset( $input[$key][$group] ) ) {
+						if ( isset( $group_fields['type'] ) && in_array( $group_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group] ) ) {
 							unset( $input[$key][$group]['{clone}'] );
 							foreach ( $input[$key][$group] as $clone_group => $clone_fields ) {
 								if ( isset( $group_fields['group_key_lowercase'] ) )
@@ -409,17 +472,40 @@ class md_sanitize {
 									if ( ! empty( $clone_val ) || $clone_val == '0' )
 										$save[$key][$group][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data[$key]['fields'][$group]['fields'][$clone_key] );
 							}
+							if ( $group_fields['type'] == 'builder' ) {
+								$builder_data = $builder_elements = array();
+								foreach ( $save[$key][$group] as $builder_id => $builder_fields ) {
+									$builder_type = esc_attr( $builder_fields['type'] );
+									$builder_data[$builder_fields['area']][] = array( 'type' => $builder_type, 'id' => $builder_id );
+									$builder_elements[$builder_type][] = $builder_id;
+									$save[$key]["{$group}_data"] = serialize( $builder_data );
+									$save[$key]["{$group}_elements"] = serialize( $builder_elements );
+								}
+							}
 						}
 						elseif ( isset( $group_fields['type'] ) && ( ! empty( $input[$key][$group] ) || ( ! empty( $input[$key][$group] ) && $input[$key][$group] == '0' ) ) )
 							$save[$key][$group] = $this->validate_field( $input[$key][$group], $group_fields );
-						else
-							foreach ( $group_fields as $option_name => $option_fields )
-								if ( isset( $option_fields['type'] ) && ! empty( $input[$key][$group][$option_name] ) )
+						else {
+							foreach ( $group_fields as $option_name => $option_fields ) {
+								if ( isset( $option_fields['type'] ) && in_array( $option_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group][$option_name] ) ) {
+									unset( $input[$key][$group][$option_name]['{clone}'] );
+									foreach ( $input[$key][$group][$option_name] as $clone_group => $clone_fields ) {
+										if ( isset( $group_fields['group_key_lowercase'] ) )
+											$clone_group = strtolower( $clone_group );
+										foreach ( $clone_fields as $clone_key => $clone_val ) {
+											if ( ! empty( $clone_val ) || $clone_val == '0' )
+												$save[$key][$group][$option_name][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data[$key]['fields'][$group][$option_name]['fields'][$clone_key] );
+										}
+									}
+								}
+								elseif ( isset( $option_fields['type'] ) && ! empty( $input[$key][$group][$option_name] ) )
 									$save[$key][$group][$option_name] = $this->validate_field( $input[$key][$group][$option_name], $option_fields );
 								elseif ( is_array( $option_fields ) )
 									foreach ( $option_fields as $val_name => $val_fields )
 										if ( isset( $val_fields['type'] ) && ! empty( $input[$key][$group][$option_name][$val_name] ) )
 											$save[$key][$group][$option_name][$val_name] = $this->validate_field( $input[$key][$group][$option_name][$val_name], $val_fields );
+							}
+						}
 					}
 			}
 			else
@@ -446,7 +532,7 @@ class md_sanitize {
 		if ( in_array( $type, array( 'text', 'textarea', 'editor', 'hidden' ) ) )
 			$field = $this->text( $val );
 
-		if ( $type == 'number' || $type == 'range' )
+		if ( in_array( $type, array( 'number', 'range' ) ) )
 			$field = $this->number( $val );
 
 		if ( in_array( $type, array( 'code', 'data' ) ) )
@@ -466,8 +552,12 @@ class md_sanitize {
 			$field = $this->upload( $val, $upload_type );
 		}
 
-		if ( $type == 'color' )
-			$field = $this->color( $val );
+		if ( $type == 'color' ) {
+			$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
+
+			if ( $default !== $val )
+				$field = $this->color( $val );
+		}
 
 		return $field;
 	}

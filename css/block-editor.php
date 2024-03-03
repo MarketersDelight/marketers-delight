@@ -1,9 +1,5 @@
 <style type="text/css">
 
-<?php include( md_css( 'blocks', true ) ); ?>
-
-
-
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
@@ -25,12 +21,11 @@
 \*------------------------------*/
 
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	border-bottom: 1px solid <?php echo $colors['site']['links']; ?>;
 	color: <?php echo $colors['site']['links']; ?>;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
-div.editor-styles-wrapper a:hover { border-bottom: 0; }
+div.editor-styles-wrapper a:hover { text-decoration: none; }
 
 /* ICONS */
 
@@ -62,24 +57,7 @@ div.editor-styles-wrapper a:hover { border-bottom: 0; }
 .wp-block { max-width: <?php echo $post_width; ?>px; }
 
 @media all and (min-width: 900px) {
-	#editor .alignfull,
-	#editor .aligncenter.wrap, #editor .alignleft.wrap,
-	div.editor-styles-wrapper .alignfull,
-	div.editor-styles-wrapper .aligncenter.wrap, div.editor-styles-wrapper .alignleft.wrap {
-		max-width: <?php echo $post_width + $quad; ?>px;
-	}
-	#editor .alignwide,
-	#editor .aligncenter.wrap-small, #editor .alignleft.wrap-small,
-	div.editor-styles-wrapper .wp-block[data-align="wide"],
-	div.editor-styles-wrapper .alignwide,
-	div.editor-styles-wrapper .aligncenter.wrap-small, div.editor-styles-wrapper .alignleft.wrap-small {
-		max-width: <?php echo $post_width + $double; ?>px;
-	}
-	.md-editor-full div.editor-styles-wrapper .alignwide,
-	div.editor-styles-wrapper .wp-block[data-align="wide"],
-	.md-editor-full div.editor-styles-wrapper .aligncenter.wrap-small, .md-editor-full div.editor-styles-wrapper .alignleft.wrap-small {
-		max-width: <?php echo $post_width + $quad + $quad; ?>px;
-	}
+	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: <?php echo $post_width + $triple; ?>px; }
 }
 
 /* MAIN TYPE */
@@ -137,8 +115,8 @@ div.editor-styles-wrapper p.micro-title,
 div.editor-styles-wrapper p.small-title { margin-top: 0; }
 
 .editor-styles-wrapper .intro {
-	font-size: 1.2em;
-	line-height: 1.5em;
+	font-size: <?php echo round( $typography['body']['font_size']['desktop'] * 1.2 ); ?>px;
+	line-height: <?php echo round( $typography['body']['line_height']['desktop'] * 1.1 ); ?>px;
 }
 
 div.editor-styles-wrapper,
@@ -197,14 +175,17 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	foreach ( $queries as $w => $d ) {
 		echo "@media all and (max-width: {$w}px) {\n";
 		foreach ( $titles as $h => $selector ) {
+			if ( ! empty( $typography[$h] ) )
 			echo "\t$selector, " . $texts[$h] . " { ".
-				 	'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '.
-				 	'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '.
-				 "}\n";
+					( ! empty( $typography[$h]['font_size'][$d] ) ? 'font-size: ' . $typography[$h]['font_size'][$d] . 'px; ' : '' ).
+					( ! empty( $typography[$h]['line_height'][$d] ) ? 'line-height: ' . $typography[$h]['line_height'][$d] . 'px; ' : '' ).
+				"}\n";
 		}
 		echo "}\n";
 	}
 ?>
+
+
 
 /* SPACERS */
 
@@ -267,7 +248,10 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	padding-left: 0;
 }
 
-/* OVERLAYS / SHADOWS */
+/* DESIGN / OVERLAYS / SHADOWS */
+
+.wp-block.note { background-color: <?php echo $colors['site']['tertiary']; ?>; }
+.wp-block.alert { background-color: <?php echo $colors['site']['accent']; ?>; }
 
 .image-overlay {
 	background-position: center top;
@@ -278,7 +262,7 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 }
 
 .image-overlay:after {
-	background-color: <?php echo $content['featured_image']['cover_color']; ?>;
+	background-color: rgba(0, 0, 0, 0.5);
 	content: '';
 	display: block;
 	height: 100%;
@@ -308,7 +292,7 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 .md-button, .md-submit {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
-	border-radius: 3px;
+	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
@@ -316,26 +300,14 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
-	font-weight: <?php echo $bold; ?>;
-	padding: 17px <?php echo $single; ?>px;
+	padding: <?php echo $half; ?>px;
 	position: relative;
 	text-align: center;
-	text-transform: uppercase;
 	z-index: 10;
-	-webkit-appearance: none;
-	-o-transition: 0.3s;
-	-ms-transition: 0.3s;
-	-moz-transition: 0.3s;
-	-webkit-transition: 0.3s;
 	transition: 0.3s;
 }
 
-.md-button:hover, .md-submit:hover {
-	-moz-transform: translateY(1px);
-	-ms-transform: translateY(1px);
-	-webkit-transform: translateY(1px);
-	transform: translateY(1px);
-}
+.md-button:hover, .md-submit:hover { transform: translateY(1px); }
 
 /* SIZES */
 
@@ -349,8 +321,7 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 .md-submit.md-submit-outline {
 	background-color: transparent;
 	border: 3px solid <?php echo $colors['site']['button']; ?>;
-	border-bottom-width: 3px;
-	border-radius: 3px;
+	border-radius: 5px;
 	color: <?php echo $colors['site']['button']; ?>;
 }
 
@@ -361,97 +332,10 @@ div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 	display: inline-block;
 	font-family: 'md-icon';
 	margin-left: 13px;
-	-o-transition: 0.3s;
-	-ms-transition: 0.3s;
-	-moz-transition: 0.3s;
-	-webkit-transition: 0.3s;
 	transition: 0.3s;
 }
 
-.md-button.md-button-arrow:after {
-	-moz-transform: translateX(4px);
-	-ms-transform: translateX(4px);
-	-webkit-transform: translateX(4px);
-	transform: translateX(4px);
-}
-
-
-
-/*------------------------------*\
-	$SPACERS
-\*------------------------------*/
-
-#editor .mt-none { margin-top: 0 !important; }
-#editor .mr-none { margin-right: 0; }
-#editor .mb-none { margin-bottom: 0 !important; }
-#editor .ml-none { margin-left: 0; }
-
-/* QUAD */
-
-#editor .mt-quad { margin-top: <?php echo $quad; ?>px; }
-#editor .mb-quad { margin-bottom: <?php echo $quad; ?>px; }
-
-/* TRIPLE */
-
-#editor .mt-triple { margin-top: <?php echo $triple; ?>px; }
-#editor .mb-triple { margin-bottom: <?php echo $triple; ?>px; }
-
-/* DOUBLE */
-
-#editor .mt-double { margin-top: <?php echo $double; ?>px; }
-#editor .mr-double { margin-right: <?php echo $double; ?>px; }
-#editor .mb-double { margin-bottom: <?php echo $double; ?>px; }
-
-/* MID */
-
-#editor .mt-mid { margin-top: <?php echo $mid; ?>px; }
-#editor .mb-mid { margin-bottom: <?php echo $mid; ?>px; }
-
-/* SINGLE */
-
-#editor .mt-single { margin-top: <?php echo $single; ?>px; }
-#editor .mr-single { margin-right: <?php echo $single; ?>px; }
-#editor .mb-single { margin-bottom: <?php echo $single; ?>px; }
-
-/* HALF */
-
-#editor .mt-half { margin-top: <?php echo $half; ?>px; }
-#editor .mr-half { margin-right: <?php echo $half; ?>px; }
-#editor .mb-half, .byline { margin-bottom: <?php echo $half; ?>px; }
-
-/* SMALL */
-
-#editor .mt-small { margin-top: <?php echo $small; ?>px; }
-#editor .mr-small { margin-right: <?php echo $small; ?>px; }
-#editor .mb-small { margin-bottom: <?php echo $small; ?>px; }
-#editor .ml-small { margin-left: <?php echo $small; ?>px; }
-
-@media all and (max-width: 900px) {
-	/* TRIPLE */
-	#editor .mt-quad { margin-top: <?php echo $triple; ?>px; }
-	#editor .mb-quad { margin-bottom: <?php echo $triple; ?>px; }
-	/* DOUBLE */
-	#editor .mt-triple { margin-top: <?php echo $double; ?>px; }
-	#editor .mb-triple { margin-bottom: <?php echo $double; ?>px; }
-	#editor .alignright.wrap,
-	#editor .alignleft.wrap,
-	#editor .alignfull,
-	#editor .aligncenter.wrap,
-	#editor .alignleft.wrap,
-	#editor .alignfull {
-		margin-left: -<?php echo $half; ?>px;
-		margin-right: -<?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	/* DOUBLE */
-	#editor .mt-quad { margin-top: <?php echo $double; ?>px; }
-	#editor .mb-quad { margin-bottom: <?php echo $double; ?>px; }
-	/* SINGLE */
-	#editor .mt-triple { margin-top: <?php echo $single; ?>px; }
-	#editor .mb-triple, .mb-double { margin-bottom: <?php echo $single; ?>px; }
-}
+.md-button.md-button-arrow:hover:after { transform: translateX(4px); }
 
 
 
@@ -472,31 +356,37 @@ input.md-input, button.md-submit {
 	line-height: 1;
 }
 
-input.md-input {
-	border: 1px solid #ddd;
+.md-form-field {
+	align-items: center;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 0;
 	box-shadow: none;
+	display: flex;
+}
+
+.md-form-field-icon {
+	color: <?php echo $colors['site']['text']; ?>;
+	font-size: 1.2em;
+	line-height: 1;
+	min-width: <?php echo 50 - $half; ?>px;
+	padding: <?php echo $half; ?>px;
+	text-align: center;
+}
+
+input.md-input {
+	border: 0;
+	box-shadow: none;
 	margin: 0;
-	padding: 16px;
+	padding: <?php echo $half; ?>px <?php echo $half; ?>px <?php echo $half; ?>px 0;
 }
 
 .md-input[disabled] { background-color: #fff; }
 
-input.md-input-name, input.md-input-email {
-	background-repeat: no-repeat;
-	background-position: 16px center;
-	padding-left: 45px;
-}
+.md-email-full .md-form-field, .md-email-full .md-submit { width: 100%; }
 
-input.md-input-name { background-image: url('<?php echo MD_URL . 'lib/assets/images/user.png'; ?>'); }
+.md-email-full .md-form-field { margin-bottom: <?php echo $half; ?>px; }
 
-input.md-input-email { background-image: url('<?php echo MD_URL . 'lib/assets/images/mail.png'; ?>'); }
-
-.md-email-full .md-input, .md-email-full .md-submit { width: 100%; }
-
-.md-email-full .md-input { margin-bottom: <?php echo $half; ?>px; }
-
-[class*="md-email-attached"] .md-input, [class*="md-email-attached"] .md-submit { float: left; }
+[class*="md-email-attached"] .md-form-field, [class*="md-email-attached"] .md-submit { float: left; }
 
 [class*="md-email-attached"] .md-submit {
 	border-radius: 0 3px 3px 0;
@@ -504,9 +394,9 @@ input.md-input-email { background-image: url('<?php echo MD_URL . 'lib/assets/im
 	width: 22%;
 }
 
-.md-email-attached .md-input { width: 78%; }
+.md-email-attached .md-form-field { width: 78%; }
 
-.md-email-attached-2 .md-input { width: 39%; }
+.md-email-attached-2 .md-form-field { width: 39%; }
 
 .md-email-attached-2 .md-input-name {
 	border-right: 0;
@@ -653,10 +543,10 @@ div.editor-styles-wrapper .md-email-footer {
 
 .md-callout .md-callout-icon.icon {
 	background-color: #1e1e1e;
-	font-size: 43px;
+	font-size: 40px;
 	height: 80px;
+	line-height: 77px;
 	margin-top: -25px;
-	padding-top: 13px;
 	width: 80px;
 }
 
@@ -676,4 +566,4 @@ div.editor-styles-wrapper .md-email-footer {
 
 .md-callout-action .md-button { width: 100%; }
 
-<?php include( md_css( 'effects', true ) ); ?>
+<?php md_block_editor_css(); ?>

@@ -4,25 +4,46 @@
 	$WIDGETS
 \*------------------------------*/
 
-.sidebar .widget:not(:last-child), .footer .widget:not(:last-child) { margin-bottom: <?php echo $mid; ?>px; }
+.format .widget:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.box-style, .box-style-list ul, .tagcloud, #wp-calendar { margin-left: 0; }
-
-.style-default .box-style,
-.style-default .box-style-list ul,
-.style-default .tagcloud,
-.style-default #wp-calendar {
-	background-color: #fff;
-	border-radius: 2px;
-	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-	color: #333;
+.format .widget ul, .format .widget ol {
+	list-style: none;
+	margin-left: 0;
 }
 
-.style-default .box-style-list ul { padding: <?php echo $single; ?>px; }
+.wp-block-latest-comments__comment { line-height: inherit; }
 
-/* EMAIL FORM */
+/* MENU */
 
-.widget_md_email .sidebar-title { color: inherit; }
+.format .widget_nav_menu .menu, .format .widget_nav_menu .sub-menu {
+	margin-left: 0;
+	margin-top: 0;
+}
+
+.widget_nav_menu .sub-menu { display: none !important /*temporary*/; }
+
+.widget_nav_menu .menu-item {
+	display: block;
+	margin-bottom: 0;
+}
+
+.widget_nav_menu .menu-item a {
+	padding: <?php echo $third; ?>px 0;
+	width: 100%;
+}
+
+.widget_nav_menu .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+/* SEARCH */
+
+.wp-block-search__input {
+	align-self: normal;
+	margin-right: 2%;
+}
+
+.format .wp-block-search .wp-block-search__input { margin-bottom: 0; }
+
+.wp-block-search__button { align-self: flex-start; }
 
 /* CONTENT SPOTLIGHT */
 
@@ -30,7 +51,6 @@
 	background-color: #222;
 	background-position: center center;
 	background-repeat: no-repeat;
-	border-bottom-width: 0;
 	color: #fff;
 	display: block;
 	text-align: center;
@@ -60,26 +80,36 @@
 
 #wp-calendar {
 	border-collapse: collapse;
-	border-radius: 0 0 3px 3px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: 1;
+	margin-bottom: <?php echo $small; ?>px;
+	margin-left: 0;
 	text-align: center;
 	width: 100%;
 }
 
-#wp-calendar td { padding: 9px <?php echo $half; ?>px; }
+.style-default #wp-calendar {
+	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	border-radius: 5px;
+	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+	color: <?php echo $colors['site']['text']; ?>;
+}
+
+#wp-calendar td { padding: <?php echo $third; ?>px; }
 
 #wp-calendar thead th {
-	padding-bottom: 9px;
-	padding-top: 9px;
+	padding-bottom: <?php echo $third; ?>px;
+	padding-top: <?php echo $third; ?>px;
 }
 
 #wp-calendar thead th { background-color: #f9f9f9; }
 
-#wp-calendar tbody a { font-weight: bold; }
+#wp-calendar tbody a { font-weight: <?php echo $bold; ?>; }
 
-#wp-calendar thead tr, #wp-calendar tbody td { border-bottom: 1px solid #ddd; }
+#wp-calendar thead tr, #wp-calendar tbody td { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 #wp-calendar caption {
-	background-color: #ae2525;
+	background-color: <?php echo $colors['site']['primary']; ?>;
 	border-radius: 2px 2px 0 0;
 	color: #fff;
 	padding: <?php echo $half; ?>px;
@@ -91,7 +121,7 @@
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-top: 4px solid <?php echo $colors['site']['secondary']; ?>;
-	border-radius: 3px;
+	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -133,8 +163,6 @@
 }
 
 .sidebar .accordion a {
-	border-bottom: 0;
 	color: <?php echo $colors['site']['links']; ?>;
+	text-decoration: none;
 }
-
-.sidebar .accordion a:hover { border-bottom: 0; }

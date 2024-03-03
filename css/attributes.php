@@ -2,13 +2,15 @@
 
 <?php echo '/*
 	Theme Name: Marketers Delight
-	Version: ' . MD_VERSION . '
-	Author: Alex Mangini
-	Description: Marketers Delight is your smart website design system for the future. Built on a foundation of typography, MD\'s features and layout all work together to help you create stunning content on the web. Use the Site Designer to design your site, capture subscribers with MD\'s email and popups tools, and enable power features like the Stream and Bookshelf to deliver unique kinds of content to your audience. All of that and more in Marketers Delight.
 	Theme URI: https://marketersdelight.com/
+	Author: Alex, Kolakube
 	Author URI: https://kolakube.com/
+	Description: Start a website that delights. Marketers Delight adds powerful content marketing and design tools to make publishing on your WordPress website fun and productive. Extend your website\'s features with Drop-ins and develop your own layouts with MD development tools.
+	GitHub Theme URI: https://github.com/MarketersDelight/marketers-delight
 	Text Domain: md
-*/';
+	Version: ' . MD_VERSION . '
+	Table of contents:' . $style_guide .
+'*/';
 ?>
 
 /*------------------------------*\
@@ -23,14 +25,6 @@
 	padding: 0;
 }
 
-@font-face {
-	font-family: md-icon;
-	font-display: swap;
-	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
-	font-style: normal;
-	font-weight: 400;
-}
-
 body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
@@ -41,7 +35,15 @@ body {
 	position: relative;
 }
 
-b, strong, .bold { font-weight: <?php echo $bold; ?>; }
+/* ICONS */
+
+@font-face {
+	font-family: md-icon;
+	font-display: swap;
+	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
+	font-style: normal;
+	font-weight: 400;
+}
 
 [class*="md-icon"] { display: inline-block; }
 
@@ -60,24 +62,7 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 
-.small {
-	font-size: 0.85em;
-	line-height: 1.5em;
-}
-
-<?php
-	foreach ( md_editor_colors() as $color_group => $color_fields ) {
-		$color_slug = $color_fields['slug'];
-		$color_val = $color_fields['color'];
-		echo
-			".has-$color_slug-background-color { background-color: $color_val; }\n".
-			( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
-	}
-?>
-
-.has-text-color.has-white-color { color: #fff; }
-
-#cancel-comment-reply-link:before, .menu-icon a, .list-check li:before {
+#cancel-comment-reply-link:before, .menu .trigger-icon:before, .menu .trigger-icon:after, .list-check li:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -85,9 +70,13 @@ b, strong, .bold { font-weight: <?php echo $bold; ?>; }
 	line-height: 1;
 }
 
-main { display: block; }
+/* ATTRIBUTES */
 
-ul { list-style: square; }
+.normal { font-weight: <?php echo $font_weight; ?>; }
+
+b, strong, .bold { font-weight: <?php echo $bold; ?>; }
+
+i, em, .italic { font-style: italic; }
 
 p { position: relative; }
 
@@ -108,37 +97,80 @@ sup { line-height: 1; }
 
 hr {
     border: 0;
-    height: 0;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    height: 0;
 }
 
 pre, code {
-	background-color: #ddd;
+	background-color: rgba(0, 0, 0, 0.1);
 	color: #3e3e3e;
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
 	font-size: 0.9em;
 }
 
-code a, .format code a {
-	border-bottom: 0;
-	color: #3e3e3e;
-}
-
 pre {
 	overflow: auto;
-	padding: 26px;
+	padding: <?php echo $single; ?>px;
 }
 
 code {
-	border-radius: 3px;
+	border-radius: 5px;
 	padding: 2px 5px;
 }
 
 abbr, acronym {
-	border-bottom: 1px dotted #777;
+	border-bottom: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
 	cursor: help;
 	text-decoration: none;
 }
 
-a abbr, a acronym { border-bottom: none; }
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.caps { text-transform: uppercase; }
+
+/* BLOCKQUOTE */
+
+blockquote {
+	background-color: #fff;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-left-width: 7px;
+	border-radius: 5px;
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	display: block;
+	font-style: italic;
+	padding: <?php echo $single; ?>px;
+	position: relative;
+}
+
+blockquote:before, blockquote:after {
+	color: #ddd;
+	font-family: Georgia, serif;
+	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $bold; ?>;
+	position: absolute;
+}
+
+blockquote:before {
+	content: open-quote;
+	left: <?php echo $small; ?>px;
+}
+
+blockquote:after {
+	bottom: <?php echo $small; ?>px;
+	content: close-quote;
+	right: <?php echo $half; ?>px;
+}
+
+blockquote.small {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+
+blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
+
+blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }

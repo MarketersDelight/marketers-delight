@@ -1,7 +1,7 @@
-<?php get_header(); ?>
+<?php
 
-<?php if ( md_has_content_box() ) : ?>
-	<?php md_content_box(); ?>
-<?php endif; ?>
+get_header();
 
-<?php get_footer(); ?>
+md_content_box();
+
+get_footer();

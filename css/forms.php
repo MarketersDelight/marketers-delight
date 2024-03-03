@@ -4,91 +4,177 @@
 	$FORMS
 \*------------------------------*/
 
-label {
-	cursor: pointer;
-	display: inline-block;
-	margin-bottom: <?php echo $half; ?>px;
-}
+/* INPUTS */
 
-label.required, .required { color: #ae2525; }
+label { cursor: pointer; }
 
 input, textarea {
 	font-family: inherit;
 	font-size: inherit;
-	line-height: inherit;
-	padding: 16px;
+	line-height: 1;
+	padding: <?php echo $half; ?>px;
 }
 
-input[type="text"], input[type="email"], input[type="search"], input[type="url"], input[type="password"], textarea {
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="search"],
+input[type="password"],
+textarea,
+.form-icons .input-field {
 	background-color: #fff;
-	border-radius: 0;
-	border: 1px solid #ddd;
-	margin-bottom: <?php echo $half; ?>px;
+	border-radius: 5px;
+	border: 1px solid rgba(0, 0, 0, 0.2);
 	position: relative;
 	width: 100%;
 	-webkit-appearance: none;
 }
 
-textarea {
-	padding: <?php echo $single; ?>px;
-	width: 100%;
-	-webkit-appearance: none;
-}
-
-fieldset {
-	border: 1px solid rgba(0, 0, 0, 0.15);
-	padding: <?php echo $single; ?>px;
-}
-
-input[type="text"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="url"]:focus, input[type="password"]:focus, textarea:focus {
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+input[type="text"]:focus,
+input[type="url"]:focus,
+input[type="email"]:focus,
+input[type="search"]:focus,
+input[type="password"]:focus,
+textarea:focus {
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
 
-select { max-width: 100%; }
+textarea { padding: <?php echo $single; ?>px; }
 
-.form-input-name, .form-input-email {
-	background-position: 16px center;
-	background-repeat: no-repeat;
-	padding-left: 45px;
+select {
+	font-size: inherit;
+	max-width: 100%;
+	padding: <?php echo $third; ?>px;
+	width: 100%;
 }
 
-.form-input-name { background-image: url('<?php echo MD_URL; ?>lib/assets/images/user.png'); }
+.required { color: #ae2525; }
 
-.form-input-email { background-image: url('<?php echo MD_URL; ?>lib/assets/images/mail.png'); }
+/* TRIGGERS */
 
-.email-form-title:empty, .email-form-footer:empty { display: none; }
-
-.email-form-footer {
-	clear: both;
-	font-size: 0.8em;
-	font-style: italic;
-	line-height: 1.5em;
+.trigger {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	position: relative;
 	text-align: center;
 }
 
-.form-input, .form-submit { width: 100%; }
+.trigger-text { margin-left: <?php echo $small; ?>px; }
 
-.form-input, .form-submit:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.hide-label .link-text, .hide-label .trigger-text { display: none; }
 
-.form-full .form-input { display: block; }
+.has-search .trigger-search .trigger-icon:before,
+.has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 
-@media all and (min-width: 700px) {
-	[class*="form-attached"] { position: relative; }
-	[class*="form-attached"] .form-input {
-		border-right-width: 0;
-		margin-bottom: 0;
-		float: left;
-		width: 78%;
+.has-search:not(.has-cover) .trigger-search .trigger-icon:before,
+.has-mobile-menu:not(.has-cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
+
+/* TOOLTIP */
+
+.tooltip {
+	background-color: rgba(0, 0, 0, 0.8);
+	border-radius: 5px;
+	color: #fff;
+	cursor: default;
+	display: none;
+	font-size: 14px;
+	line-height: 1;
+	margin-left: -80px;
+	padding: <?php echo $third; ?>px;
+	position: absolute;
+		left: 50%;
+		top: -40px;
+	text-align: center;
+	width: 160px;
+}
+
+.tooltip:after {
+	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+	border-style: solid;
+	border-width: 5px;
+	content: '';
+	margin-left: -5px;
+	position: absolute;
+		left: 50%;
+		top: 100%;
+}
+
+.tooltip-parent { position: relative; }
+
+.tooltip-parent:hover .tooltip { display: block; }
+
+/* STRUCTURES */
+
+.input-icon, .search-form {
+	align-items: center;
+	display: flex;
+}
+
+.has-search .triggers, .search-form .inputs { margin-right: <?php echo $half; ?>px; }
+
+.input-field { display: flex; }
+
+.form-full, .inline-form, .form-full .input-field { margin-bottom: <?php echo $half; ?>px; }
+
+.form-icons .input {
+	background-color: transparent;
+	border: 0;
+	padding-left: 0;
+}
+
+.form-style .input { padding-left: <?php echo $half; ?>px; }
+
+.form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
+
+.form-icons .input:focus { box-shadow: none; }
+
+.form-small .input, .form-small .input-icon {
+	padding-bottom: <?php echo $small; ?>px;
+	padding-top: <?php echo $small; ?>px;
+}
+
+.input-icon {
+	color: <?php echo $colors['site']['text']; ?>;
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+	justify-content: center;
+}
+
+.form-style .input-icon {
+	background-color: rgba(0, 0, 0, 0.15);
+	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-radius: 5px 0 0 5px;
+}
+
+.form-full .submit { width: 100%; }
+
+/* SEARCH */
+
+.has-search .inputs, .has-search .input-field { flex: 1; }
+
+.form-toggle .inputs, .form-toggle .submit,
+.has-search .search-form .trigger-text { display: none; }
+
+.has-search .inputs, .has-search .submit,
+.form-toggle .trigger-search { display: block; }
+
+/* QUERIES */
+
+@media all and (min-width: 800px) {
+	.show-mobile { display: none !important; }
+	.inline-form, .inline-form .inputs {
+		align-items: center;
+		display: flex;
+		flex: 1;
 	}
-	.form-attached-2 .form-input { width: 39%; }
-	[class*="form-attached"] .form-submit {
-		border-radius: 0 2px 2px 0;
-		border-width: 3px 3px 3px 0;
-		float: left;
-		font-size: inherit;
-		line-height: inherit;
-		padding: 16px 7px;
-		width: 22%;
-	}
+	.inline-form .inputs, .inline-form .input-field:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 800px) {
+	.show-desktop { display: none !important; }
+	.inline-form .submit { width: 100%; }
+	.inline-form .input-field, .inline-form .inputs { margin-bottom: <?php echo $half; ?>px; }
 }

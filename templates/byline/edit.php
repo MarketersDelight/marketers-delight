@@ -1,3 +1,5 @@
-<?php if ( ! in_array( 'edit', $byline ) ) : ?>
-	<?php edit_post_link( '<i class="' . md_icon( 'pencil', true ) . '"></i>', '<span class="byline-icon byline-edit byline-item">', '</span>' ); ?>
-<?php endif; ?>
+<span class="byline-edit byline-item">
+	<a href="<?php echo get_edit_post_link( get_the_ID() ); ?>" class="post-edit-link">
+		<?php echo md_icon( 'pencil' ) . ( ! empty( $fields['title'] ) ? ' ' . esc_html( $fields['title'] ) : '' ); ?>
+	</a>
+</span>

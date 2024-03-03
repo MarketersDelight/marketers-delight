@@ -55,7 +55,7 @@
 		$button_classes[] = 'md-popup-trigger';
 	$classes = join( ' ', $classes );
 	$button_classes = join( ' ', $button_classes );
-	if ( md_has( 'popups' ) && $has_popup )
+	if ( md_has( 'optins' ) && $has_popup )
 		md_popup( array( 'id' => $popup ) );
 ?>
 <div class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
@@ -65,7 +65,7 @@
 		</div>
 	<?php endif; ?>
 	<?php if ( $title || $text ) : ?>
-		<div class="content-upgrade-text mb-single">
+		<div class="content-upgrade-text">
 			<?php if ( $title ) : ?>
 				<p class="small-title mb-small"><?php echo md_text_field( $title ); ?></p>
 			<?php endif; ?>
