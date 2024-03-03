@@ -22,6 +22,27 @@
 	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
 }
 
+.content-title {
+	align-items: center;
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	margin-bottom: <?php echo $single; ?>px;
+	padding-bottom: <?php echo $half; ?>px;
+}
+
+.content-title .title {
+	flex: 1;
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
+	margin-bottom: 0;
+}
+
+.content-title i {
+	font-size: 0.85em;
+	margin-right: <?php echo $small; ?>px;
+}
+
 /* COMMENT */
 
 .comment {
@@ -188,10 +209,10 @@
 
 @media all and (min-width: 700px) {
 	.comment-content {
-		font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
+		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
-	.comment-content p:not(:last-child) { margin-bottom: <?php echo $typography['body']['line_height']['mobile'] - $small; ?>px; }
+	.comment-content p:not(:last-child) { margin-bottom: <?php echo $line_height['mobile'] - $small; ?>px; }
 	.comment-form-author, .comment-form-email {
 		float: left;
 		width: 50%;

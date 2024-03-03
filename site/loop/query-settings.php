@@ -17,27 +17,63 @@
 	<div class="nav-tab-wrapper">
 		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-query"><?php echo __( 'Query', 'md' ); ?></a>
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-post-content"><?php echo __( 'Post', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-content"><?php echo __( 'Content', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-style"><?php echo __( 'Style', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-content"><?php echo __( 'Layout', 'md' ); ?></a>
 	</div>
 
 	<div class="md-loop-query md-tab-content active">
 
-		<?php $this->fields->field( array( $group, $field, 'category_posts' ), array(
-			'type' => 'checkbox',
-			'wrap_classes' => 'md-sep-micro',
-			'check_class' => 'md-check-val',
-			'options' => array(
-				'enable' => __( 'List posts by category', 'md' )
-			)
-		) ); ?>
+		<div class="columns-4 columns-single md-full-select md-sep-micro">
 
-		<div class="columns-4 columns-half md-sep-micro">
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'loop' ), array(
+					'type' => 'select',
+					'label' => __( 'Template', 'md' ),
+					'options' => md_loops( 'options' )
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'style' ), array(
+					'type' => 'select',
+					'label' => __( 'Style', 'md' ),
+					'empty_label' => __( 'Default style', 'md' ),
+					'options' => array(
+						'box_style' => __( 'Box style', 'md' ),
+						'simple' => __( 'No style', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( array( $group, $field, 'list' ), array(
+					'type' => 'select',
+					'label' => __( 'List', 'md' ),
+					'empty_label' => __( 'Use default', 'md' ),
+					'options' => array(
+						'list' => __( 'Post Listing', 'md' ),
+						'timeline' => __( 'Timeline', 'md' ),
+						'timeline-left' => __( 'Timeline (left)', 'md' ),
+						'numbers' => __( 'Numbered', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col col2 md-sep-top">
+				<?php $this->fields->field( array( $group, $field, 'category_posts' ), array(
+					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro',
+					'check_class' => 'md-check-val',
+					'options' => array(
+						'enable' => __( 'List posts by category', 'md' )
+					)
+				) ); ?>
+			</div>
 
 			<div class="col md-sep-micro">
 				<?php $this->fields->field( array( $group, $field, 'post_type' ), array(
 					'type' => 'select',
 					'label' => __( 'Post Type', 'md' ),
+					'description' => __( 'Type of content to show.', 'md' ),
 					'empty_label' => __( 'Detect post type', 'md' ),
 					'options' => $post_types
 				) ); ?>
@@ -128,7 +164,7 @@
 				<?php $this->fields->field( array( $group, $field, 'cta_x_loop' ), array(
 					'type' => 'number',
 					'label' => __( 'Call to Action', 'md' ),
-					'description' => __( 'Show CTA after the Xth post.', 'md' ),
+					'description' => __( 'Show after the Xth post.', 'md' ),
 				) ); ?>
 			</div>
 			<?php endif; ?>
@@ -160,11 +196,12 @@
 					'type' => 'select',
 					'empty_label' => __( 'Select author(s)...', 'md' ),
 					'options' => $args['authors'],
+					'description' => __( 'Only show posts from the selected author(s).', 'md' ),
 					'group' => true,
 					'select2' => true,
 					'multiple' => true,
 					'style' => 'width: 100%;',
-					'wrap_classes' => 'md-sep-small'
+					'wrap_classes' => 'md-sep-micro'
 				) ); ?>
 
 				<?php $this->fields->field( array( $group, $field, 'exclude_cats' ), array(
@@ -184,7 +221,11 @@
 			$active = $post == 'standard' ? ' active' : '';
 		?>
 
-		<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-sep-small">
+		<div class="md-loop-post-<?php echo esc_attr( $post ) . ( $post == 'featured' ? ' md-sep-small-top' : '' ); ?>">
+
+			<?php if ( $post == 'featured' ) : ?>
+			<hr class="md-sep-small" />
+			<?php endif; ?>
 
 			<h4 class="md-loop-post-title"><?php echo sprintf( __( '%s Posts', 'md' ), ucwords( $post ) ); ?></h4>
 
@@ -293,72 +334,6 @@
 
 	</div>
 
-	<div class="md-loop-style md-tab-content">
-
-		<div class="md-radio-fields md-clear md-sep-micro">
-			<?php $this->fields->field( array( $group, $field, 'loop' ), array(
-				'type' => 'radio',
-				'label' => __( 'Select Loop', 'md' ),
-				'svg' => md_svg( 'query' ),
-				'layout' => 'banner',
-				'columns' => 5,
-				'tooltip' => 'large',
-				'options' => md_loops()
-			) ); ?>
-		</div>
-
-		<div class="columns-4 columns-half md-sep-small md-full-select">
-
-			<div class="col">
-				<?php $this->fields->field( array( $group, $field, 'style' ), array(
-					'type' => 'select',
-					'label' => __( 'Style', 'md' ),
-					'empty_label' => __( 'Default style', 'md' ),
-					'options' => array(
-						'box_style' => __( 'Box style', 'md' ),
-						'simple' => __( 'No style', 'md' )
-					)
-				) ); ?>
-			</div>
-
-			<div class="col">
-				<?php $this->fields->field( array( $group, $field, 'size' ), array(
-					'type' => 'select',
-					'label' => __( 'Size', 'md' ),
-					'empty_label' => __( 'Default size', 'md' ),
-					'options' => array(
-						'large' => __( 'Large', 'md' ),
-						'medium' => __( 'Medium', 'md' ),
-						'small' => __( 'Small', 'md' ),
-						'normal' => __( 'Normal', 'md' )
-					)
-				) ); ?>
-			</div>
-
-			<div class="col">
-				<?php $this->fields->field( array( $group, $field, 'list' ), array(
-					'type' => 'select',
-					'label' => __( 'List', 'md' ),
-					'empty_label' => __( 'Use default', 'md' ),
-					'options' => array(
-						'list' => __( 'Post Listing', 'md' ),
-						'timeline' => __( 'Timeline', 'md' ),
-						'timeline-left' => __( 'Timeline (left)', 'md' ),
-						'numbers' => __( 'Numbered', 'md' )
-					)
-				) ); ?>
-			</div>
-
-		</div>
-
-		<?php $this->fields->field( array( $group, $field, 'classes' ), array(
-			'type' => 'text',
-			'label' => __( 'Custom Classes', 'md' ),
-			'description' => __( 'Add your own custom CSS classes to the container of this Loop.', 'md' )
-		) ); ?>
-
-	</div>
-
 	<div class="md-loop-content md-tab-content">
 
 		<div class="columns-2 columns-65-35 columns-single">
@@ -374,8 +349,15 @@
 				<?php $this->fields->field( array( $group, $field, 'description' ), array(
 					'type' => 'editor',
 					'init' => true,
-					'label' => __( 'Description', 'md' )
+					'label' => __( 'Description', 'md' ),
+					'wrap_classes' => 'md-sep-small'
 				) ); ?>
+
+			<?php $this->fields->field( array( $group, $field, 'classes' ), array(
+				'type' => 'text',
+				'label' => __( 'Custom Classes', 'md' ),
+				'description' => __( 'Add your own custom CSS classes to the container of this Loop.', 'md' )
+			) ); ?>
 
 			</div>
 

@@ -12,8 +12,8 @@ function md_post_class( $loop, $c = 0 ) {
 	$cover = md_cover();
 
 	// Posts with Covers outside of content box add image to post content center
-	if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
-		$loop['featured_image'] = 'center';
+//	if ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+//		$loop['featured_image'] = 'center';
 
 	if ( isset( $loop['featured'] ) )
 		if ( isset( $loop['is_featured'] ) )
@@ -27,11 +27,6 @@ function md_post_class( $loop, $c = 0 ) {
 	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
-	$loop_style = md_loop_style( $loop );
-
-	if ( $loop_style && empty( $loop['category_posts'] ) )
-		$classes[] = $loop_style;
-
 	if ( isset( $loop['featured_image_id'] ) && $loop['featured_image'] !== 'remove' ) {
 		$image_class = $loop['featured_image'];
 
@@ -39,8 +34,6 @@ function md_post_class( $loop, $c = 0 ) {
 			$image_class = 'before';
 		elseif ( $loop['featured_image'] == 'below_headline' )
 			$image_class = 'after';
-
-		$data['classes'][] = 'image-' . str_replace( '_', '-', $image_class );
 
 		$classes[] = 'image-' . str_replace( '_', '-', $image_class );
 	}
@@ -71,7 +64,7 @@ function md_has_headline() {
 function md_has_headline_cover() {
 	$cover = md_cover();
 
-	return is_singular() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
+	return is_singular() && in_the_loop() && ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 }
 
 /**
@@ -81,34 +74,24 @@ function md_has_headline_cover() {
  */
 
 function md_headline( $args = array() ) {
-	if ( ! md_has_headline() )
-		return;
+//	if ( ! md_has_headline() )
+//		return;
 
-	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 	$loop = array();
+	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
 	if ( isset( $args['loop'] ) )
 		$loop = $args['loop'];
 
 	$cover = md_cover( $context );
-	$has_cover = is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) );
+	$has_cover = in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
 	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
 	$classes = array_merge( array( "$context-header" ), $classes, md_cover_classes( $cover ) );
-	$classes = join( ' ' , $classes );
-
-	if ( $context == 'post' && ! $has_cover ) { // Above Title Featured Image position
-		$loop['show_image'] = array( 'above_headline' );
-		md_featured_image( $loop );
-	}
+	$classes = join( ' ', $classes );
 
 	include( md_template( 'headline', true ) );
-
-	if ( $context == 'post' && ! $has_cover ) { // Below Title Featured Image position
-		$loop['show_image'] = array( 'below_headline' );
-		md_featured_image( $loop );
-	}
 }
 
 /**
@@ -119,17 +102,17 @@ function md_headline( $args = array() ) {
  */
 
 function md_title( $args = array() ) {
-	$context = isset( $args['context'] ) ? esc_attr( $args['context'] ) : 'post';
-	$title = get_the_title();
+	$context = isset( $args['context'] ) ? $args['context'] : 'post';
+	$title = md_get_title( $context );
+	$title_html = '';
 	$permalink = null;
+	$description = md_get_description( $context );
 	$byline_args = array();
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
+	$cover = md_cover( $context );
 
 	if ( isset( $args['loop'] ) )
 		$loop = $byline_args['loop'] = $args['loop'];
-
-	if ( isset( $args['title'] ) )
-		$title = $args['title'];
 
 	if ( ( ! is_singular() && $context == 'post' ) || ! empty( $args['loop']['is_query'] ) )
 		$permalink = get_permalink();
@@ -140,40 +123,7 @@ function md_title( $args = array() ) {
 	if ( isset( $args['loop']['is_query'] ) )
 		$h = 'h4';
 
-	do_action( "md_hook_{$context}_header_top" );
-
-	if ( $context == 'post' )
-		md_byline( 'before_headline', $byline_args );
-
-	if ( $title ) {
-		$title_html = '';
-
-		if ( $permalink )
-			$title_html .= '<a href="' . esc_url( $permalink ) . '">';
-
-		$title_html .= md_text_field( $title );
-
-		if ( $permalink )
-			$title_html .= '</a>';
-
-		echo '<div class="title-wrap">';
-
-		do_action( "md_hook_before_{$context}_title" );
-
-		if ( isset( $loop['show_image'] ) )
-			md_featured_image( $loop );
-
-		echo "<$h class=\"title\">$title_html</$h>";
-
-		do_action( "md_hook_after_{$context}_title" );
-
-		echo '</div>';
-	}
-
-	if ( $context == 'post' )
-		md_byline( 'after_headline', $byline_args );
-
-	do_action( "md_hook_{$context}_header_bottom" );
+	include( md_template( 'title', true ) );
 }
 
 /**
@@ -186,7 +136,10 @@ function md_the_content( $loop ) {
 	if ( isset( $loop['content'] ) && $loop['content'] == 'hide' )
 		return;
 
-	the_content( $loop['read_more'] );
+	if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
+		echo get_the_content( $loop['read_more'] );
+	else
+		the_content( $loop['read_more'] );
 
 	if ( ! isset( $loop['is_query'] ) )
 		wp_link_pages();
@@ -230,12 +183,14 @@ function md_content( $loop ) {
 	if ( get_the_content() && $loop['content'] !== 'hide' ) {
 		echo '<div class="the-content">';
 
-		md_featured_image( $loop );
+		md_hook_the_content_top();
 
 		if ( ( is_singular() && in_the_loop() ) || $loop['content'] == 'full' )
 			md_the_content( $loop );
 		else
 			md_the_excerpt( $loop );
+
+		md_hook_the_content_bottom();
 
 		echo '</div>';
 	}

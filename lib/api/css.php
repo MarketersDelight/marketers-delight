@@ -55,12 +55,12 @@ class md_css {
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
+			'sidebar' => locate_template( 'css/sidebar.php' ),
+			'footer' => locate_template( 'css/footer.php' ),
 			'loop' => locate_template( 'css/loop.php' ),
 			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
-			'sidebar' => locate_template( 'css/sidebar.php' ),
-			'footer' => locate_template( 'css/footer.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		) );
 
@@ -208,6 +208,7 @@ class md_css {
 		$design = new md_design;
 		$values = $design->values();
 		$theme_url = get_stylesheet_directory_uri();
+		$queries = array( 900 => 'tablet', 600 => 'mobile' );
 
 		$colors = $values['colors'];
 		$typography = $values['typography'];
@@ -254,24 +255,25 @@ class md_css {
 		$admin_bar_height = 32;
 		$admin_bar_height_mobile = 46;
 
+		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
 		$style_guide = $this->style_guide();
 
-		$cover_image_id = md_setting( array( 'colors', 'header', 'cover_image', 'id' ) );
 		$cover_colors = array(
 			'default' => array(
 				'class' => '',
-				'color' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
-				'border' => ( ! empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+				'color' => '#fff',
+				'border' => 'rgba(255, 255, 255, 0.3)'
 			),
 			'alt' => array(
 				'class' => '.alt',
-				'color' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? $header['color'] : '#fff' ),
-				'border' => ( empty( $colors['page_cover']['cover_styles']['text_color'] ) ? 'rgba(0, 0, 0, 0.2)' : 'rgba(255, 255, 255, 0.3)' )
+				'color' => $header['color'],
+				'border' => 'rgba(0, 0, 0, 0.2)'
 			)
 		);
 
 		foreach ( $this->files[$file]['templates'] as $template => $path ) {
-			if ( ! file_exists( $path ) ) continue;
+			if ( ! file_exists( $path ) )
+				continue;
 
 			include( $path );
 

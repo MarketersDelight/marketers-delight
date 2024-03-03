@@ -1,4 +1,4 @@
-<div class="columns wide">
+<div class="columns">
 
 <?php foreach ( $columns as $col ) : ?>
 

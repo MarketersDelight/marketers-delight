@@ -1,7 +1,19 @@
 <?php
 	$query_args = array( 'query' => $loop );
-	$query_classes = md_content_box_classes( array( 'query' ), $loop );
+	$query_classes = array( 'query' );
 	$has_sidebar = ! empty( $loop['sidebar']['enable'] ) ? true : false;
+
+	if ( $has_sidebar ) {
+		$query_classes[] = 'content-sidebar';
+
+		if ( ! empty( $loop['content_layout'] ) && $loop['content_layout'] == 'sidebar_content' )
+			$query_classes[] = 'left';
+	}
+
+	if ( ! isset( $loop['is_inline'] ) )
+		$query_classes[] = 'format';
+
+	$query_classes = join( ' ', $query_classes );
 ?>
 
 <div class="<?php echo esc_attr( $query_classes ); ?>">
@@ -37,16 +49,11 @@
 			</div>
 
 			<div class="sidebar<?php echo esc_attr( $sidebar_class ); ?>">
-
 				<?php dynamic_sidebar( $index ); ?>
-
 			</div>
 
 		<?php }
-
-			else md_loop( $query_args );
-
-		?>
+			else md_loop( $query_args ); ?>
 
 	<?php echo ! isset( $loop['is_inline'] ) ? '</div>' : ''; ?>
 

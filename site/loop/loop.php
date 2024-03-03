@@ -14,8 +14,9 @@ class md_loop extends md_api {
 	 */
 
 	public function includes() {
-		include_once( 'loop-functions.php' );
+		include_once( 'image-functions.php' );
 		include_once( 'post-functions.php' );
+		include_once( 'loop-functions.php' );
 	}
 
 	/**

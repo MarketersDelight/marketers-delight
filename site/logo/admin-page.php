@@ -108,7 +108,7 @@
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">
-					<?php $this->fields->field( array( 'site_title', 'text' ), array(
+					<?php $this->fields->field( array( 'site_tagline', 'text' ), array(
 						'type' => 'text',
 						'label' => __( 'Site Tagline', 'md' ),
 						'placeholder' => get_bloginfo( 'description' )

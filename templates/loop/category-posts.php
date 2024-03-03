@@ -7,21 +7,18 @@ $category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per
 $categories = new WP_Term_Query( array(
 	'taxonomy' => $taxonomy,
 	'number' => $category_per_page,
-	'offset' => ( $loop['paged'] > 0 ) ?  $category_per_page * ( $loop['paged'] - 1 ) : 1
+	'offset' => $loop['paged'] > 0 ? $category_per_page * ( $loop['paged'] - 1 ) : 1
 ) );
 
-if ( empty( $loop['category_columns'] ) )
-	$loop['category_columns'] = 1;
-
-if ( $loop['category_columns'] > 1 ) {
+if ( isset( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) {
 	$categories_classes[] = 'columns';
+
+	if ( $loop['category_columns'] >= 3 )
+		$categories_classes[] = 'slim';
 
 	if ( $loop['category_columns'] <= 5 )
 		$category_classes[] = 'f' . $loop['category_columns'];
 }
-
-if ( isset( $loop['size'] ) && ! empty( $loop['category_posts'] ) )
-	$categories_classes[] = esc_attr( $loop['size'] );
 
 $categories_classes = join( ' ', $categories_classes );
 $category_classes = join( ' ', $category_classes );
@@ -38,7 +35,7 @@ foreach ( $categories->terms as $category ) {
 	$c = 1;
 	$posts = new WP_Query( array(
 		'post_type' => $post_type,
-		'posts_per_page' => esc_attr( $posts_per_page ),
+		'posts_per_page' => esc_attr( $loop['posts_per_page'] ),
 		'no_found_rows' => true,
 		'tax_query' => array(
 			array(

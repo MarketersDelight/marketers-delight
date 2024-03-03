@@ -53,33 +53,93 @@ function md_html_close() {
  * @since 6.0
  */
 
-function md_page_title() {
+function md_get_title( $context = 'post' ) {
 	$title = '';
 
-	if ( is_post_type_archive() ) {
-		$post_type_title = post_type_archive_title( '', false );
-		$title = md_post_type_field( 'archives_title', $post_type_title );
-	}
-	elseif ( is_home() || is_singular( 'post' ) )
-		$title = md_post_type_field( 'archives_title' );
-	elseif ( is_tax() && get_queried_object() ) {
-		$term_title = single_term_title( '', false );
-		$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
-	}
-	elseif ( is_category() )
-		$title = single_cat_title( '', false );
-	elseif ( is_tag() )
-		$title = single_tag_title( '', false );
-	elseif ( is_author() )
-		$title = get_the_author();
-	elseif ( is_year() )
-		$title = get_the_date( 'Y' );
-	elseif ( is_month() )
-		$title = get_the_date( 'F Y' );
-	elseif ( is_day() )
-		$title = get_the_date( 'F j, Y' );
+	if ( $context == 'post' )
+		$title = get_the_title();
+	elseif ( $context == 'page' )
+		if ( is_post_type_archive() ) {
+			$post_type_title = post_type_archive_title( '', false );
+			$title = md_post_type_field( 'archives_title', $post_type_title );
+		}
+		elseif ( is_home() || is_singular( 'post' ) )
+			$title = md_post_type_field( 'archives_title' );
+		elseif ( is_tax() && get_queried_object() ) {
+			$term_title = single_term_title( '', false );
+			$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
+		}
+		elseif ( is_category() )
+			$title = single_cat_title( '', false );
+		elseif ( is_tag() )
+			$title = single_tag_title( '', false );
+		elseif ( is_author() )
+			$title = get_the_author();
+		elseif ( is_year() )
+			$title = get_the_date( 'Y' );
+		elseif ( is_month() )
+			$title = get_the_date( 'F Y' );
+		elseif ( is_day() )
+			$title = get_the_date( 'F j, Y' );
 
 	return $title;
+}
+
+/**
+ * Show Description of current page.
+ *
+ * @since 6.0
+ */
+
+function md_get_description( $context = 'post' ) {
+	$description = '';
+
+	if ( $context == 'post' && has_excerpt() )
+		$description = get_the_excerpt();
+	elseif ( $context == 'page' )
+		if ( is_post_type_archive() || is_home() )
+			$description = md_post_type_field( 'archives_text' );
+		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
+			$description = category_description();
+		elseif ( is_author() )
+			$description = get_the_author_meta( 'description' );
+
+	return $description;
+}
+
+/**
+ * Get Hero/inline CTA of any given page. A CTA can be a
+ * link group, email form, custom HTML, or more.
+ *
+ * @since 6.0
+ */
+
+function md_inline_cta() {
+	$cta = md_module( array( 'hero', 'page_cta' ) );
+
+	if ( ! $cta )
+		return;
+
+	$link_primary = md_module( array( 'hero', 'link_primary' ) );
+	$link_secondary = md_module( array( 'hero', 'link_secondary' ) );
+
+	echo '<div class="inline-cta">';
+
+	if ( $cta == 'links' ) {
+		if ( $link_secondary ) {
+			$link_secondary['link_classes'] = 'inline-cta-link';
+			echo md_link( $link_secondary );
+		}
+
+		if ( $link_primary ) {
+			$link_primary['link_classes'] = 'inline-cta-link';
+			echo md_link( $link_primary );
+		}
+	}
+	elseif ( $cta == 'custom' )
+		echo md_module( 'custom_html' );
+
+	echo '</div>';
 }
 
 /**
@@ -139,6 +199,60 @@ function md_has_content_box() {
 function md_content_box() {
 	if ( md_has_content_box() )
 		include( md_template( 'content-box', true ) );
+}
+
+/**
+ * A list of classes to add to the content box container.
+ *
+ * @since 4.1
+ */
+
+function md_content_box_classes( $classes = array() ) {
+	$classes[] = 'main';
+
+	if ( is_singular() ) {
+		$classes[] = 'article';
+
+		if ( ! md_has_sidebar() )
+			$classes[] = 'expanded';
+	}
+
+	if ( md_has_sidebar() ) {
+		$classes[] = 'content-sidebar';
+		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
+		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
+
+		if ( $layout == 'sidebar_content' )
+			$classes[] = 'left';
+	}
+	else
+		$classes[] = 'full';
+
+	$classes[] = 'format';
+	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
+
+	return join( ' ', $classes );
+}
+
+/**
+ * A list of classes to add to content box.
+ *
+ * @since 4.5
+ */
+
+function md_content_classes( $classes = array() ) {
+	$classes[] = 'content';
+
+	if ( is_singular() ) {
+		$style = md_loop_style();
+
+		if ( $style )
+			$classes[] = $style;
+	}
+
+	$classes = apply_filters( 'md_filter_content_classes', $classes );
+
+	return join( ' ', $classes );
 }
 
 /**

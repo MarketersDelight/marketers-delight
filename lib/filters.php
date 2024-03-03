@@ -96,35 +96,22 @@ function md_byline_items() {
 function md_filter_loops() {
 	return apply_filters( 'md_filter_loops', array(
 		'fluid' => array(
-			'name' => __( 'Default', 'md' ),
-			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
-			'defaults' => array(
-				'size' => 'large'
-			)
+			'name' => __( 'Default loop', 'md' ),
+			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' )
 		),
 		'list' => array(
-			'name' => __( 'Plain List', 'md' ),
+			'name' => __( 'Simple list', 'md' ),
 			'description' => __( 'A condensed list of posts with a small image.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-list.png',
-			'template' => md_template( 'loop/loop-list', true ),
-			'defaults' => array(
-				'size' => 'medium'
-			)
+			'template' => md_template( 'loop/loop-list', true )
 		),
 		'blocks' => array(
 			'name' => __( 'Blocks', 'md' ),
 			'description' => __( 'A featured image aligned next to the post content.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-icons.png',
-			'template' => md_template( 'loop/loop-blocks', true ),
-			'defaults' => array(
-				'size' => 'medium'
-			)
+			'template' => md_template( 'loop/loop-blocks', true )
 		),
 		'covers' => array(
-			'name' => __( 'Post Covers', 'md' ),
+			'name' => __( 'Post covers', 'md' ),
 			'description' => __( 'Posts list with full-width background covers.', 'md' ),
-			'image' => MD_URL . 'lib/admin/images/loop-fluid.png',
 			'template' => md_template( 'loop/loop-covers', true )
 		)
 	) );

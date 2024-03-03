@@ -85,29 +85,6 @@
 				) ); ?>
 			</div>
 
-			<hr class="md-sep" />
-
-			<div class="md-sep-small">
-
-				<h4 class="md-title"><?php echo __( 'Sidebar Title', 'md' ); ?></h4>
-
-				<?php $this->fields->typography( 'sidebar_title', array(
-					'font_size' => array(
-						'desktop' => $defaults['sidebar_title']['font_size']['desktop'],
-						'tablet' => $defaults['sidebar_title']['font_size']['tablet'],
-						'mobile' => $defaults['sidebar_title']['font_size']['mobile']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['sidebar_title']['line_height']['desktop'],
-						'tablet' => $defaults['sidebar_title']['line_height']['tablet'],
-						'mobile' => $defaults['sidebar_title']['line_height']['mobile']
-					),
-					'font_family' => array( 'placeholder' => __( 'Inherit from <h3>', 'md' ) ),
-					'font_weight' => array( 'empty_label' => __( 'Inherit from <h3>', 'md' ) )
-				) ); ?>
-
-			</div>
-
 		</div>
 
 	</div>
@@ -117,42 +94,18 @@
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
 
 		<div class="md-widget-item">
-
-			<div class="md-sep-small">
-				<?php $this->fields->typography( 'footer', array(
-					'font_size' => array(
-						'desktop' => $defaults['footer']['font_size']['desktop'],
-						'tablet' => $defaults['footer']['font_size']['tablet'],
-						'mobile' => $defaults['footer']['font_size']['mobile']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['footer']['line_height']['desktop'],
-						'tablet' => $defaults['footer']['line_height']['tablet'],
-						'mobile' => $defaults['footer']['line_height']['mobile']
-					)
-				) ); ?>
-			</div>
-
-			<hr class="md-sep" />
-
-			<div class="md-sep-small">
-				<h4 class="md-title"><?php echo __( 'Footer Title', 'md' ); ?></h4>
-				<?php $this->fields->typography( 'footer_title', array(
-					'font_size' => array(
-						'desktop' => $defaults['footer_title']['font_size']['desktop'],
-						'tablet' => $defaults['footer_title']['font_size']['tablet'],
-						'mobile' => $defaults['footer_title']['font_size']['mobile']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['footer_title']['line_height']['desktop'],
-						'tablet' => $defaults['footer_title']['line_height']['tablet'],
-						'mobile' => $defaults['footer_title']['line_height']['mobile']
-					),
-					'font_family' => array( 'placeholder' => __( 'Inherit from <h3>', 'md' ) ),
-					'font_weight' => array( 'empty_label' => __( 'Inherit from <h3>', 'md' ) )
-				) ); ?>
-			</div>
-
+			<?php $this->fields->typography( 'footer', array(
+				'font_size' => array(
+					'desktop' => $defaults['footer']['font_size']['desktop'],
+					'tablet' => $defaults['footer']['font_size']['tablet'],
+					'mobile' => $defaults['footer']['font_size']['mobile']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['footer']['line_height']['desktop'],
+					'tablet' => $defaults['footer']['line_height']['tablet'],
+					'mobile' => $defaults['footer']['line_height']['mobile']
+				)
+			) ); ?>
 		</div>
 
 	</div>

@@ -218,7 +218,7 @@ function md_inline_css( $args ) {
 		}
 	}
 
-	echo "\n<style type=\"text/css\">\n" . $css . "</style>\n";
+	return "\n<style type=\"text/css\">\n" . $css . "</style>\n";
 }
 
 /**
@@ -281,13 +281,18 @@ function md_style( $fields ) {
  */
 
 function md_link( $fields, $p = '' ) {
+	$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
+	$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
+	$icon = ! empty( $fields["link{$p}_icon"] ) ? $fields["link{$p}_icon"] : '';
+
+	if ( empty( $text ) && empty ( $icon ) )
+		return;
+
 	$classes = $styles = array();
 	$html = 'span';
 	$class = $href = $target = $popup = '';
 	$parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
-	$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
-	$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
-	$title = $text ? ' title="' . $text . '"' : '';
+	$title = $text ? ' title="' . strip_tags( $text ) . '"' : '';
 	$subtext = isset( $fields["link{$p}_subtext"] ) ? $fields["link{$p}_subtext"] : '';
 	$url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
 	$phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
@@ -322,8 +327,11 @@ function md_link( $fields, $p = '' ) {
 		$button_color = '';
 		$classes[] = 'button';
 
-		if ( ! empty( $fields["link{$p}_button_color"] ) )
-			$button_color = $fields["link{$p}_button_color"];
+		if ( isset( $fields["link{$p}_size"] ) )
+			$classes[] = 'button-' . $fields["link{$p}_size"];
+
+		if ( ! empty( $fields["link{$p}_color"] ) )
+			$button_color = $fields["link{$p}_color"];
 
 		if ( ! empty( $fields["link{$p}_button_style"] ) ) {
 			if ( $fields["link{$p}_button_style"] == 'outline' ) {
@@ -360,7 +368,7 @@ function md_link( $fields, $p = '' ) {
 
 	echo
 		"<$html{$href}{$popup}{$class}{$target}{$style}{$title}>".
-		( ! empty( $fields["link{$p}_icon"] ) ? md_icon( $fields["link{$p}_icon"], array( 'classes' => $icon_classes ) ) : '' ).
+		( $icon ? md_icon( $icon, array( 'classes' => $icon_classes ) ) : '' ).
 		( $text || is_customize_preview() ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ).
 		( $subtext || is_customize_preview() ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) .
 		"</$html>";

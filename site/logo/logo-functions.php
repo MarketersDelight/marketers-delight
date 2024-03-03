@@ -20,7 +20,7 @@ function md_has_site_title() {
 function md_site_title() {
 	$title = get_bloginfo( 'name' );
 
-	return md_setting( array( 'logo', 'site_title_text' ), $title );
+	return md_setting( array( 'logo', 'site_title', 'text' ), $title );
 }
 
 /**
@@ -43,7 +43,7 @@ function md_has_tagline() {
 function md_site_tagline() {
 	$tagline = get_bloginfo( 'description' );
 
-	return md_setting( array( 'logo', 'site_tagline_text' ), $tagline );
+	return md_setting( array( 'logo', 'site_tagline', 'text' ), $tagline );
 }
 
 /**

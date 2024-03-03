@@ -57,12 +57,7 @@ class md_fields_data {
 	public function page_settings() {
 		return apply_filters( 'md_page_settings_fields', array(
 			'archives_title' => array( 'type' => 'text' ),
-			'archives_text' => array( 'type' => 'textarea' ),
-			'page_cta' => array(
-				'type' => 'select',
-				'options' => array( 'links', 'custom' )
-			),
-			'custom_html' => array( 'type' => 'code' )
+			'archives_text' => array( 'type' => 'textarea' )
 		) );
 	}
 
@@ -107,6 +102,10 @@ class md_fields_data {
 					'options' => array( 'button' )
 				)
 			),
+			'link_color' => array(
+				'field' => "link{$p}_color",
+				'save' => array( 'type' => 'color' )
+			),
 			'link_icon' => array(
 				'field' => "link{$p}_icon",
 				'save' => array(
@@ -143,16 +142,19 @@ class md_fields_data {
 					'options' => md_get_popups( 'ids' )
 				)
 			),
+			'link_size' => array(
+				'field' => "link{$p}_size",
+				'save' => array(
+					'type' => 'select',
+					'options' => array( 'small', 'large' )
+				)
+			),
 			'link_button_style' => array(
 				'field' => "link{$p}_button_style",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'outline' )
 				)
-			),
-			'link_button_color' => array(
-				'field' => "link{$p}_button_color",
-				'save' => array( 'type' => 'color' )
 			)
 		);
 

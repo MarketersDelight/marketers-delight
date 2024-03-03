@@ -49,46 +49,60 @@ function md_loop( $args = array() ) {
 			$post_type = $loop['post_type'];
 	}
 	else {
-		$loop = md_module( 'loop', array() );
+		if ( is_singular() )
+			$loop = md_module( 'loop', array() );
+		else
+			$loop = md_post_type_field( 'loop', array() );
+
 		unset( $loop['query'] );
 	}
 
+	$loop = apply_filters( 'md_filter_set_loop', $loop );
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'fluid';
 
 	if ( ! empty( $loops[$loop_type]['defaults'] ) )
 		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
 
-	$loop = apply_filters( 'md_filter_set_loop', $loop );
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-	$posts_per_page = ! empty( $loop['posts_per_page'] ) ? $loop['posts_per_page'] : get_option( 'posts_per_page' );
+	$loop['by_category'] = ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) ? true : false;
+
+	if ( empty( $loop['posts_per_page'] ) )
+		$loop['posts_per_page'] = get_option( 'posts_per_page' );
 
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
 	$wrap_classes[] = "loop-{$post_type}";
+	$wrap_classes[] = "loop-{$loop_type}";
 
 	if ( isset( $loop['list'] ) )
 		$wrap_classes[] = esc_attr( $loop['list'] );
 
+	if ( ! isset( $loop['featured_image'] ) )
+		$loop['featured_image'] = '';
+
 	if ( isset( $loop['position'] ) && in_array( $loop['position'], array( 'before_content', 'content' ) ) )
 		$loop['is_inline'] = true;
 
-	if ( $loop['columns'] > 1 )
+	if ( $loop['columns'] > 1 ) {
 		$wrap_classes[] = 'columns';
+
+		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
+			$wrap_classes[] = 'slim';
+	}
+	else
+		$wrap_classes[] = 'row';
+
+	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
+		$wrap_classes[] = 'slim';
 
 	$loop_style = md_loop_style( $loop );
 
-	if ( $loop_style ) {
-		if ( ! empty( $loop['category_posts'] ) )
-			$categories_classes[] = "has-$loop_style";
+	if ( $loop_style )
+		if ( $loop['by_category'] )
+			$categories_classes[] = $loop_style;
 		else
-			$wrap_classes[] = "has-$loop_style";
-
-		$category_classes[] = $loop_style;
-	}
-
-	if ( ! isset( $loop['is_query'] ) && isset( $loop['size'] ) && empty( $loop['category_posts'] ) )
-		$wrap_classes[] = $loop['size'];
+			$wrap_classes[] = $loop_style;
 
 	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
@@ -97,7 +111,7 @@ function md_loop( $args = array() ) {
 
 	if ( isset( $args['sticky'] ) )
 		include( md_template( 'loop/the-post', true ) );
-	elseif ( ! empty( $loop['category_posts']['enable'] ) )
+	elseif ( $loop['by_category'] )
 		include( md_template( 'loop/category-posts', true ) );
 	elseif ( isset( $args['query'] ) ) {
 		echo "<div class=\"loop$wrap_classes\">";
@@ -230,78 +244,16 @@ function md_the_loop( $loop, $c ) {
 	if ( empty( $loop['excerpt_more'] ) )
 		$loop['excerpt_more'] = '[...]';
 
-	if ( get_post_thumbnail_id() ) {
-		$loop['featured_image_id'] = get_post_thumbnail_id();
+	$featured_image = md_get_featured_image();
 
-		if ( ! isset( $loop['featured_image'] ) )
-			$loop['featured_image'] = md_featured_image_position();
+	if ( ! empty( $featured_image['id'] ) ) {
+		$loop['featured_image_id'] = $featured_image['id'];
+
+		if ( empty( $loop['featured_image'] ) )
+			$loop['featured_image'] = $featured_image['position'];
 	}
 
 	return $loop;
-}
-
-/**
- * A list of classes to add to the content box container.
- *
- * @since 4.1
- */
-
-function md_content_box_classes( $classes = array(), $loop = array() ) {
-	if ( ! isset( $loop['is_query'] ) ) {
-		$classes[] = 'main';
-
-		if ( is_singular() )
-			$classes[] = 'article';
-
-		if ( empty( $loop['loop'] ) )
-			$loop['loop'] = md_module( array( 'loop', 'loop' ), 'fluid' );
-
-		if ( md_has_sidebar() )
-			$loop['sidebar']['enable'] = true;
-	}
-
-	if ( empty( $loop['loop'] ) )
-		$loop['loop'] = 'fluid';
-
-	if ( empty( $loop['columns'] ) )
-		$loop['columns'] = 1;
-
-	$loop_type = $loop['loop'];
-	$classes[] = "loop-$loop_type";
-
-	if ( isset( $loop['sidebar']['enable'] ) ) {
-		$classes[] = 'content-sidebar';
-		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
-		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
-
-		if ( $layout == 'sidebar_content' )
-			$classes[] = 'left';
-	}
-	elseif ( isset( $loop['is_inline'] ) )
-		$classes[] = 'inline';
-	else {
-		$classes[] = 'full';
-
-		if ( is_singular() && ! isset( $loop['is_query'] ) )
-			$classes[] = 'expanded';
-	}
-
-	if ( ! isset( $loop['is_inline'] ) )
-		$classes[] = 'format';
-
-	$loops = md_loops();
-	if ( isset( $loop['is_query'] ) && ! empty( $loops[$loop_type]['defaults'] ) )
-		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
-
-	if ( isset( $loop['size'] ) && empty( $loop['category_posts'] ) )
-		$classes[] = esc_attr( $loop['size'] );
-
-	if ( isset( $loop['classes'] ) )
-		$classes[] = $loop['classes'];
-
-	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
-
-	return join( ' ', $classes );
 }
 
 /**
@@ -310,11 +262,12 @@ function md_content_box_classes( $classes = array(), $loop = array() ) {
  * @since 5.1
  */
 
-function md_loop_style( $loop ) {
+function md_loop_style( $loop = array() ) {
 	$style = 'box-style';
 	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
+	$disable_single = md_meta( array( 'layout', 'content', 'box_style' ) );
 
-	if ( $disable_box_style )
+	if ( $disable_box_style || $disable_single )
 		$style = '';
 
 	if ( isset( $loop['style'] ) )
@@ -373,7 +326,7 @@ function md_pagination( $loop = array() ) {
 	$nxtlabel = ! empty( $loop['next_label'] ) ? $loop['next_label'] : __( 'Next', 'md' );
 	$class = $type == 'prev_next' ? 'prev-next' : 'numbers';
 
-	if ( ! empty( $loop['category_posts']['enable'] ) ) {
+	if ( $loop['by_category'] ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
 		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;

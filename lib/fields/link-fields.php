@@ -19,9 +19,9 @@
 		) ); ?>
 	<?php endif; ?>
 
-	<div class="columns-3 columns-half">
+	<div class="columns-4 columns-half md-full-select">
 
-		<div class="col col1 md-sep-micro">
+		<div class="col md-sep-micro">
 			<?php $this->field( $fields['link_type']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Type', 'md' ),
@@ -34,7 +34,7 @@
 			) ); ?>
 		</div>
 
-		<div class="col col2">
+		<div class="col">
 			<?php $this->field( $fields['link_style']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Style', 'md' ),
@@ -47,9 +47,16 @@
 		</div>
 
 		<div class="col">
+			<?php $this->field( $fields['link_color']['field'], array(
+				'type' => 'color',
+				'label' => __( 'Color', 'md' )
+			) ); ?>
+		</div>
+
+		<div class="col">
 			<?php $this->field( $fields['link_toggle']['field'], array(
 				'type' => 'checkbox',
-				'classes' => 'field-no-label',
+				'classes' => 'md-sep-top-small',
 				'options' => array(
 					'hide_label' => __( 'Hide label', 'md' ),
 					'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
@@ -104,23 +111,27 @@
 
 	</div>
 
-	<div class="is-button columns-25-50-25 columns-half">
+	<div class="is-button columns-4 columns-half">
 
-		<div class="col col1">
-			<?php $this->field( $fields['link_button_color']['field'], array(
-				'type' => 'color',
-				'label' => __( 'Button Color', 'md' ),
-				'default' => md_setting( array( 'colors', 'site', 'button' ), '#22A340' )
-			) ); ?>
-		</div>
-
-		<div class="col col2">
+		<div class="col">
 			<?php $this->field( $fields['link_button_style']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Button Style', 'md' ),
 				'empty_label' => __( 'Default', 'md' ),
 				'options' => array(
 					'outline' => __( 'Outline', 'md' )
+				)
+			) ); ?>
+		</div>
+
+		<div class="col">
+			<?php $this->field( $fields['link_size']['field'], array(
+				'type' => 'select',
+				'label' => __( 'Button Size', 'md' ),
+				'empty_label' => __( 'Default', 'md' ),
+				'options' => array(
+					'small' => __( 'Small', 'md' ),
+					'large' => __( 'Large', 'md' )
 				)
 			) ); ?>
 		</div>

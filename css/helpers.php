@@ -40,6 +40,11 @@
 	width: 100vw;
 }
 
+.auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 @media all and (min-width: <?php echo $site_width; ?>px) {
 	.expanded .alignfull, .expanded .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
 	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
@@ -65,12 +70,12 @@
 	.alignwide, .alignleft.wrap { margin-left: -<?php echo $single; ?>px; }
 }
 
-@media all and (min-width: <?php echo $content_width + ( $mid * 2 ); ?>px) {
+@media all and (min-width: <?php echo $content_width + $triple; ?>px) {
 	.expanded .alignwide, .expanded .alignright.wrap { margin-right: -<?php echo $triple; ?>px; }
 	.expanded .alignwide, .expanded .alignleft.wrap { margin-left: -<?php echo $triple; ?>px; }
 }
 
-@media all and (max-width: <?php echo $content_width + ( $mid * 2 ); ?>px) {
+@media all and (max-width: <?php echo $content_width + $triple; ?>px) {
 	.alignwide {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
@@ -96,6 +101,42 @@
 .mb-half:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 .mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
 .mb-none { margin-bottom: 0 !important; }
+.mr-half:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+.mr-small:not(:last-child) { margin-right: <?php echo $small; ?>px; }
+
+/* BLOCKS */
+
+.block-half { padding: <?php echo $half; ?>px; }
+.block-single { padding: <?php echo $single; ?>px; }
+.block-mid { padding: <?php echo $mid; ?>px; }
+.block-double { padding: <?php echo $double; ?>px; }
+.block-triple { padding: <?php echo $triple; ?>px; }
+.block-quad { padding: <?php echo $quad; ?>px; }
+
+.block-half-tb {
+	padding-bottom: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
+}
+.block-single-tb {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+.block-mid-tb {
+	padding-bottom: <?php echo $mid; ?>px;
+	padding-top: <?php echo $mid; ?>px;
+}
+.block-double-tb {
+	padding-bottom: <?php echo $double; ?>px;
+	padding-top: <?php echo $double; ?>px;
+}
+.block-triple-tb {
+	padding-bottom: <?php echo $triple; ?>px;
+	padding-top: <?php echo $triple; ?>px;
+}
+.block-quad-tb {
+	padding-bottom: <?php echo $quad; ?>px;
+	padding-top: <?php echo $quad; ?>px;
+}
 
 /* LISTS */
 
@@ -129,6 +170,7 @@ ul.list-check li:before {
 	content: '';
 	inset: 0;
 	position: absolute;
+	z-index: 3;
 }
 
 .avatar {
@@ -140,6 +182,13 @@ ul.list-check li:before {
 	background-color: #fdd169;
 	padding-left: <?php echo $small; ?>px;
 	padding-right: <?php echo $small; ?>px;
+}
+
+.alert {
+	background-color: #fefbd1;
+	border-radius: 5px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	padding: <?php echo $half; ?>px;
 }
 
 .foot {
@@ -164,6 +213,11 @@ ul.list-check li:before {
 
 .has-text-color.has-white-color { color: #fff; }
 
+.s-small {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+}
+
 .circle { border-radius: 50%; }
 
 .circle-icon, a.circle-icon, .toc-anchor {
@@ -181,6 +235,11 @@ ul.list-check li:before {
 	width: <?php echo $single + $small; ?>px;
 }
 
+.circle-icon.mid {
+	height: <?php echo $mid; ?>px;
+	width: <?php echo $mid; ?>px;
+}
+
 .close {
 	background-color: transparent;
 	color: #ae2525;
@@ -191,7 +250,7 @@ ul.list-check li:before {
 .close:hover { background-color: rgba(0, 0, 0, 0.2); }
 
 .overlay {
-	background-color: <?php echo $colors['page_cover']['cover_color']; ?>;
+	background-color: rgba(0, 0, 0, 0.5);
 	content: '';
 	display: block;
 	inset: 0;

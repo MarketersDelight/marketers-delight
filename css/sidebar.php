@@ -12,40 +12,18 @@
 	<?php echo ( ! empty( $colors['sidebar']['bg_color'] ) ? "padding: {$single}px;" : '' ); ?>
 }
 
-.sidebar a:not(.button) { color: <?php echo $colors['sidebar']['links']; ?>; }
+.sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar-title {
-	color: <?php echo $colors['sidebar']['title']; ?>;
-	<?php if ( ! empty( $typography['sidebar_title']['font_family'] ) ) : ?>
-	font-family: <?php echo $typography['sidebar_title']['font_family']; ?>;
-	<?php endif; ?>
-	font-size: <?php echo $typography['sidebar_title']['font_size']['desktop']; ?>px;
-	<?php if ( ! empty( $typography['sidebar_title']['font_weight'] ) ) : ?>
-	font-weight: <?php echo $typography['sidebar_title']['font_weight']; ?>;
-	<?php endif; ?>
-	line-height: <?php echo $typography['sidebar_title']['line_height']['desktop']; ?>px;
-}
+.sidebar-title { color: <?php echo $colors['sidebar']['title']; ?>; }
 
-.sidebar .title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+.sidebar-title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
 
-@media all and (max-width: 900px) {
+<?php foreach ( $queries as $w => $d ) :
+if ( ! empty( $typography['sidebar']['font_size'][$d] ) || ! empty( $typography['sidebar']['line_height'][$d] ) ) : ?>
+@media all and (max-width: <?php echo $w; ?>px) {
 	.sidebar {
-		font-size: <?php echo $typography['sidebar']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['sidebar']['line_height']['tablet']; ?>px;
-	}
-	.sidebar-title {
-		font-size: <?php echo $typography['sidebar_title']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['sidebar_title']['line_height']['tablet']; ?>px;
+		<?php echo ( ! empty( $typography['sidebar']['font_size'][$d] ) ? 'font-size: ' . $typography['sidebar']['font_size'][$d] . 'px; ' : '' ); ?>
+		<?php echo ( ! empty( $typography['sidebar']['line_height'][$d] ) ? 'line-height: ' . $typography['sidebar']['line_height'][$d] . 'px; ' : '' ); ?>
 	}
 }
-
-@media all and (max-width: 700px) {
-	.sidebar {
-		font-size: <?php echo $typography['sidebar']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['sidebar']['line_height']['mobile']; ?>px;
-	}
-	.sidebar-title {
-		font-size: <?php echo $typography['sidebar_title']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['sidebar_title']['line_height']['mobile']; ?>px;
-	}
-}
+<?php endif; endforeach; ?>

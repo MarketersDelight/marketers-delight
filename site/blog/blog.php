@@ -8,21 +8,27 @@
 class md_post extends md_api {
 
 	/**
+	 * Include additional files for Blog.
+	 *
+	 * @since 6.0
+	 */
+
+	public function includes() {
+		require_once( 'category.php' );
+	}
+
+	/**
 	 * Create admin page and meta box.
 	 *
 	 * @since 6.0
 	 */
 
 	public function register() {
-		$page_settings = $this->fields->data->page_settings();
-		$page_settings['link_primary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
-		$page_settings['link_secondary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
-
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Settings', 'md' ),
 				'parent_slug' => 'edit.php',
-				'fields' => $page_settings
+				'fields' => $this->fields->data->page_settings()
 			)
 		);
 	}
@@ -59,7 +65,7 @@ class md_post extends md_api {
 	 */
 
 	public function admin_settings( $settings ) {
-		$settings[$this->_id] = array( 'page_cover', 'layout', 'featured_image', 'loop', 'byline', 'share', 'optins', 'cta', 'floating_bars', 'popups', 'scripts' );
+		$settings[$this->_id] = array( 'hero', 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
 
 		return $settings;
 	}
@@ -71,7 +77,17 @@ class md_post extends md_api {
 	 */
 
 	public function admin_page() {
-		include( 'blog-settings.php' );
+		echo '<h1>' . __( 'Blog Settings', 'md' ) . '</h1>'.
+			 '<hr class="md-sep-small" />'.
+			 '<div class="md-content-wrap-med">';
+
+		$this->fields->page_fields();
+
+		do_action( "{$this->_id}_admin_fields" );
+
+		$this->fields->save();
+
+		echo '</div>';
 	}
 
 }

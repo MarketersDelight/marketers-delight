@@ -1,6 +1,6 @@
 <div class="columns-4 columns-single">
 
-	<div class="col md-sep-small">
+	<div class="col">
 
 		<!-- Header -->
 
@@ -53,11 +53,25 @@
 
 		</div>
 
-		<?php do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' ); ?>
+		<?php
+		$featured_image = array(
+			'type' => 'select',
+			'label' => __( 'Featured image', 'md' ),
+			'wrap_classes' => 'md-sep-small',
+			'options' => $sanitize->values['featured_image']
+		);
 
-		<?php if ( $is_admin ) : ?>
-			<?php $this->footer_fields(); ?>
-		<?php endif; ?>
+		if ( $is_post )
+			$featured_image['empty_label'] = __( 'Use default position', 'md' );
+
+		$this->fields->field( 'featured_image', $featured_image );
+
+		do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' );
+
+		if ( $is_admin )
+			$this->footer_fields();
+
+		?>
 
 	</div>
 
@@ -85,61 +99,69 @@
 
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php if ( $post_type !== 'page' ) : ?>
-				<?php $this->fields->field( 'breadcrumbs', array(
-					'type' => 'checkbox',
-					'options' => $breadcrumbs_options
-				) ); ?>
-			<?php endif; ?>
-
-			<?php if ( $is_post ) : ?>
-
-				<?php $this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'headline' => __( 'Remove <b>Headline</b>', 'md' )
-					)
-				) ); ?>
-
-				<?php if ( $post_type !== 'page' ) : ?>
-
-					<?php if ( $author_box ) : ?>
-
-						<?php $this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => array(
-								'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
-							)
-						) ); ?>
-
-					<?php else : ?>
-
-						<?php $this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => array(
-								'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
-							)
-						) ); ?>
-
-					<?php endif; ?>
-
-					<?php $this->fields->field( 'content', array(
+			<?php
+				if ( $post_type !== 'page' )
+					$this->fields->field( 'breadcrumbs', array(
 						'type' => 'checkbox',
-						'options' => $post_nav_options
-					) ); ?>
+						'options' => $breadcrumbs_options
+					) );
 
-				<?php endif; ?>
+				if ( $is_post ) {
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'headline' => __( 'Remove <b>Headline</b>', 'md' )
+						)
+					) );
 
-			<?php endif; ?>
+					if ( $post_type !== 'page' ) {
+						if ( $author_box )
+							$this->fields->field( 'content', array(
+								'type' => 'checkbox',
+								'options' => array(
+									'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
+								)
+							) );
+						else
+							$this->fields->field( 'content', array(
+								'type' => 'checkbox',
+								'options' => array(
+									'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
+								)
+							) );
 
-			<?php $this->fields->field( 'content_box', array(
-				'type' => 'select',
-				'empty_label' => __( 'Content / Sidebar', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'sidebar_content' => __( 'Sidebar / Content', 'md' )
-				)
-			) ); ?>
+						$this->fields->field( 'content', array(
+							'type' => 'checkbox',
+							'options' => $post_nav_options
+						) );
+					}
+				}
+
+				$this->fields->field( 'content_box', array(
+					'type' => 'select',
+					'empty_label' => __( 'Content / Sidebar', 'md' ),
+					'wrap_classes' => 'md-sep-micro',
+					'options' => array(
+						'sidebar_content' => __( 'Sidebar / Content', 'md' )
+					)
+				) );
+
+				if ( ! md_setting( array( 'colors', 'design', 'box_style' ) ) )
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'box_style' => __( 'Disable <strong>Box style</strong>', 'md' )
+						)
+					) );
+
+				if ( $is_post )
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'wpautop' => __( 'Disable <strong>WP formatting</strong>', 'md' )
+						)
+					) );
+			?>
 
 			<div class="md-sep-micro">
 				<?php do_action( 'md_post_layout_content_options' ); ?>
@@ -147,25 +169,16 @@
 
 		</div>
 
-		<?php if ( $is_admin ) : ?>
-
-			<?php $this->fields->field( 'content', array(
+		<?php if ( $is_admin )
+			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
 				'label' => __( 'Single', 'md' ),
 				'options' => array(
 					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
 					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ),
 				)
-			) ); ?>
-
-			<?php $this->fields->field( 'featured_image', array(
-				'type' => 'select',
-				'label' => __( 'Featured Image', 'md' ),
-				'options' => $sanitize->values['featured_image'],
-				'description' => __( 'Set a default image position.', 'md' )
-			) ); ?>
-
-		<?php endif; ?>
+			) );
+		?>
 
 	</div>
 

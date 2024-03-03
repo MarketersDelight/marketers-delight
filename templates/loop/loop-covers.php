@@ -2,12 +2,12 @@
 	$cover = md_cover();
 	$cover['position'] = 'headline_cover';
 
-	if ( empty( $cover['image'] ) && isset( $loop['featured_image_id'] ) ) {
-		$cover['image']['id'] = get_post_thumbnail_id();
-		$cover['image']['url'] = $cover['style']['bg_image'] = $style['bg_image'] = get_the_post_thumbnail_url( null, 'full' );
+	if ( empty( $cover['photo'] ) && isset( $loop['featured_image_id'] ) ) {
+		$cover['photo']['id'] = get_post_thumbnail_id();
+		$cover['photo']['url'] = $cover['style']['bg_image'] = $style['bg_image'] = get_the_post_thumbnail_url( null, 'full' );
 	}
 	else
-		$style['bg_image'] = $cover['image']['url'];
+		$style['bg_image'] = $cover['photo']['url'];
 
 	if ( $cover )
 		$classes .= ' ' . md_cover_classes( $cover, true );

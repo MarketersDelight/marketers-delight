@@ -1,18 +1,18 @@
 <article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
 
-	<div class="post-box">
+<?php
+	if ( $loop['featured_image'] == 'above_headline' )
+		md_featured_image( 'post', $loop );
 
-		<?php
-			if ( ! md_has_headline_cover() )
-				md_headline( array( 'loop' => $loop ) );
+	if ( ! md_has_headline_cover() )
+		md_headline( array( 'loop' => $loop ) );
 
-			$loop['image_inline'] = true;
+	if ( $loop['featured_image'] !== 'above_headline' )
+		md_featured_image( 'post', $loop );
 
-			md_content( $loop );
+	md_content( $loop );
 
-			md_hook_content_item();
-		?>
-
-	</div>
+	md_hook_content_item();
+?>
 
 </article>

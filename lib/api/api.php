@@ -50,6 +50,9 @@ class md_api {
 		if ( method_exists( $this, 'css' ) ) #since 4.9
 			add_filter( 'md_dropins_css_templates', array( $this, 'css' ) );
 
+		if ( method_exists( $this, 'css_data' ) )
+			add_filter( 'md_filter_css_values', array( $this, 'css_data' ) );
+
 		if ( method_exists( $this, 'js' ) ) #since 5.4.2
 			add_filter( 'md_js_templates', array( $this, 'js' ) );
 
@@ -75,7 +78,7 @@ class md_api {
 		if ( method_exists( $this, 'post_meta' ) )
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 
-		if ( method_exists( $this, 'taxonomy_meta' ) )
+		if ( method_exists( $this, 'term_meta' ) || method_exists( $this, 'taxonomy_meta' ) )
 			add_filter( 'md_taxonomy_meta', array( $this, 'term_meta' ) );
 
 		if ( method_exists( $this, 'blocks' ) )
@@ -303,16 +306,14 @@ class md_api {
 				if ( in_array( $this->_clean_id, array( 'cta', 'floating_bars', 'popups' ) ) )
 					continue;
 
-				if ( $this->_clean_id == 'featured_image' )
+				if ( $this->_clean_id == 'hero' )
 					$order = 10;
-				elseif ( $this->_clean_id == 'page_cover' )
-					$order = 20;
 				elseif ( $this->_clean_id == 'layout' )
-					$order = 30;
+					$order = 20;
 				elseif ( $this->_clean_id == 'loop' )
-					$order = 40;
+					$order = 30;
 				elseif ( $this->_clean_id == 'byline' )
-					$order = 50;
+					$order = 40;
 
 				add_action( "{$admin_field}_admin_fields", array( $this, 'admin_fields' ), $order );
 			}

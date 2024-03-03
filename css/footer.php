@@ -26,45 +26,14 @@
 
 .footer a:not(.button) { color: <?php echo $colors['footer']['links']; ?> }
 
-.footer .footer-title {
-	color: <?php echo $colors['footer']['title']; ?>;
-	<?php if ( ! empty( $typography['footer_title']['font_family'] ) ) : ?>
-	font-family: <?php echo $typography['footer_title']['font_family']; ?>;
-	<?php endif; ?>
-	font-size: <?php echo $typography['footer_title']['font_size']['desktop']; ?>px;
-	<?php if ( ! empty( $typography['footer_title']['font_weight'] ) ) : ?>
-	font-weight: <?php echo $typography['footer_title']['font_weight']; ?>;
-	<?php endif; ?>
-	line-height: <?php echo $typography['footer_title']['line_height']['desktop']; ?>px;
-	margin-bottom: <?php echo $half; ?>px;
-}
+.footer .footer-title { color: <?php echo $colors['footer']['title']; ?>; }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.footer .columns, .footer-copy {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
-	}
-}
-
-@media all and (max-width: 900px) {
+<?php foreach ( $queries as $w => $d ) :
+if ( ! empty( $typography['footer']['font_size'][$d] ) || ! empty( $typography['footer']['line_height'][$d] ) ) : ?>
+@media all and (max-width: <?php echo $w; ?>px) {
 	.footer {
-		font-size: <?php echo $typography['footer']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['footer']['line_height']['tablet']; ?>px;
-	}
-	.footer-title {
-		font-size: <?php echo $typography['footer_title']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['footer_title']['line_height']['tablet']; ?>px;
-	}
-	.footer .entry:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-}
-
-@media all and (max-width: 700px) {
-	.footer {
-		font-size: <?php echo $typography['footer']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['footer']['line_height']['mobile']; ?>px;
-	}
-	.footer-title {
-		font-size: <?php echo $typography['footer_title']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['footer_title']['line_height']['mobile']; ?>px;
+		<?php echo ( ! empty( $typography['footer']['font_size'][$d] ) ? 'font-size: ' . $typography['footer']['font_size'][$d] . 'px; ' : '' ); ?>
+		<?php echo ( ! empty( $typography['footer']['line_height'][$d] ) ? 'line-height: ' . $typography['footer']['line_height'][$d] . 'px; ' : '' ); ?>
 	}
 }
+<?php endif; endforeach; ?>

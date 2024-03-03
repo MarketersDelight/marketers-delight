@@ -21,31 +21,25 @@ class md_design {
 		$line_height = round( $font_size * $g );
 		$h1 = array(
 			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.5 ) ) ),
-			'tablet' => md_setting( array( 'typography', 'h1', 'font_size', 'tablet' ), round( $font_size * ( $g * 1.25 ) ) ),
 			'mobile' => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $font_size * ( $g * 1.2 ) ) )
 		);
 		$h2 = array(
 			'desktop' => round( $h1['desktop'] * 0.85 ),
-			'tablet'  => round( $h1['tablet'] * 0.85 ),
 			'mobile'  => round( $h1['mobile'] * 0.85 )
 		);
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.7 ),
-			'tablet'  => round( $h1['tablet'] * 0.7 ),
 			'mobile'  => round( $h1['mobile'] * 0.7 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
-			'tablet'  => round( $h1['tablet'] * 0.6 ),
 			'mobile'  => round( $h1['mobile'] * 0.6 )
 		);
 		$h5 = array(
-			'desktop' => round( $h1['desktop'] * 0.55 ),
-			'tablet'  => round( $h1['tablet'] * 0.55 ),
-			'mobile'  => round( $h1['mobile'] * 0.55 )
+			'desktop' => round( $h1['desktop'] * 0.5 )
 		);
 		$h6 = array(
-			'desktop' => round( $h1['desktop'] * 0.45 )
+			'desktop' => round( $h1['desktop'] * 0.4 )
 		);
 		// colors
 		$colors = array(
@@ -93,9 +87,6 @@ class md_design {
 					'headline' => $colors['text'],
 					'headline-links' => $colors['text']
 				),
-				'page_cover' => array(
-					'cover_color' => 'rgba(0, 0, 0, 0.5)'
-				),
 				'content' => array(
 					'bg_color' => '#FFFFFF',
 					'border_color' => $colors['border']
@@ -125,12 +116,10 @@ class md_design {
 				'body' => array(
 					'font_size' => array(
 						'desktop' => $font_size,
-						'tablet' => $font_size,
 						'mobile' => $mobile
 					),
 					'line_height' => array(
 						'desktop' => $line_height,
-						'tablet' => $line_height,
 						'mobile' => round( $mobile * $g )
 					),
 					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
@@ -138,73 +127,59 @@ class md_design {
 				'huge' => array(
 					'font_size' => array(
 						'desktop' => round( $h1['desktop'] * 1.5 ),
-						'tablet' => round( $h1['tablet'] * 1.5 ),
 						'mobile' => round( $h1['mobile'] * 1.5 )
 					),
 					'line_height' => array(
 						'desktop' => round( $h1['desktop'] * 2 ),
-						'tablet' => round( $h1['tablet'] * 2 ),
 						'mobile' => round( $h1['mobile'] * 2 )
 					)
 				),
 				'h1' => array(
 					'font_size' => array(
 						'desktop' => $h1['desktop'],
-						'tablet' => $h1['tablet'],
 						'mobile' => $h1['mobile']
 					),
 					'line_height' => array(
 						'desktop' => round( $h1['desktop'] * 1.3 ),
-						'tablet' => round( $h1['tablet'] * 1.3 ),
 						'mobile' => round( $h1['mobile'] * 1.3 )
 					)
 				),
 				'h2' => array(
 					'font_size' => array(
 						'desktop' => $h2['desktop'],
-						'tablet' => $h2['tablet'],
 						'mobile' => $h2['mobile']
 					),
 					'line_height' => array(
 						'desktop' => round( $h2['desktop'] * 1.35 ),
-						'tablet' => round( $h2['tablet'] * 1.35 ),
 						'mobile' => round( $h2['mobile'] * 1.35 )
 					)
 				),
 				'h3' => array(
 					'font_size' => array(
 						'desktop' => $h3['desktop'],
-						'tablet' => $h3['tablet'],
 						'mobile' => $h3['mobile']
 					),
 					'line_height' => array(
 						'desktop' => round( $h3['desktop'] * 1.4 ),
-						'tablet' => round( $h3['tablet'] * 1.4 ),
 						'mobile' => round( $h3['mobile'] * 1.4 )
 					)
 				),
 				'h4' => array(
 					'font_size' => array(
 						'desktop' => $h4['desktop'],
-						'tablet' => $h4['tablet'],
 						'mobile' => $h4['mobile']
 					),
 					'line_height' => array(
 						'desktop' => round( $h4['desktop'] * 1.4 ),
-						'tablet' => round( $h4['tablet'] * 1.4 ),
 						'mobile' => round( $h4['mobile'] * 1.45 )
 					)
 				),
 				'h5' => array(
 					'font_size' => array(
-						'desktop' => $h5['desktop'],
-						'tablet' => $h5['tablet'],
-						'mobile' => $h5['mobile']
+						'desktop' => $h5['desktop']
 					),
 					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.55 ),
-						'tablet' => round( $h5['tablet'] * 1.5 ),
-						'mobile' => round( $h5['mobile'] * 1.5 )
+						'desktop' => round( $h5['desktop'] * 1.55 )
 					)
 				),
 				'h6' => array(
@@ -217,50 +192,18 @@ class md_design {
 				),
 				'sidebar' => array(
 					'font_size' => array(
-						'desktop' => round( $font_size * 0.95 ),
-						'tablet' => round( $font_size * 0.9 ),
-						'mobile' => round( $font_size * 0.9 )
+						'desktop' => round( $font_size * 0.95 )
 					),
 					'line_height' => array(
-						'desktop' => round( $line_height * 0.9 ),
-						'tablet' => round( $line_height * 0.85 ),
-						'mobile' => round( $line_height * 0.8 )
-					)
-				),
-				'sidebar_title' => array(
-					'font_size' => array(
-						'desktop' => $h5['desktop'],
-						'tablet' => $h5['tablet'],
-						'mobile' => $h5['mobile']
-					),
-					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.45 ),
-						'tablet' => round( $h5['tablet'] * 1.45 ),
-						'mobile' => round( $h5['mobile'] * 1.45 )
+						'desktop' => round( $line_height * 0.9 )
 					)
 				),
 				'footer' => array(
 					'font_size' => array(
-						'desktop' => round( $font_size * 0.95 ),
-						'tablet' => round( $font_size * 0.9 ),
-						'mobile' => round( $font_size * 0.85 )
+						'desktop' => round( $font_size * 0.95 )
 					),
 					'line_height' => array(
-						'desktop' => round( $line_height * 0.9 ),
-						'tablet' => round( $line_height * 0.85 ),
-						'mobile' => round( $line_height * 0.8 )
-					)
-				),
-				'footer_title' => array(
-					'font_size' => array(
-						'desktop' => $h5['desktop'],
-						'tablet' => $h5['tablet'],
-						'mobile' => $h5['mobile']
-					),
-					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.45 ),
-						'tablet' => round( $h5['tablet'] * 1.45 ),
-						'mobile' => round( $h5['mobile'] * 1.45 )
+						'desktop' => round( $line_height * 0.9 )
 					)
 				)
 			),

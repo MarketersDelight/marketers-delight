@@ -1,8 +1,4 @@
 <?php
-
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) exit;
-
 /**
  * Create admin pages, meta boxes, terms, register settings,
  * load custom fields API and run other administrative actions.

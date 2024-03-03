@@ -2,7 +2,7 @@
 
 $query_args = array(
 	'post_type' => $post_type,
-	'posts_per_page' => $posts_per_page,
+	'posts_per_page' => $loop['posts_per_page'],
 	'no_found_rows' => true
 );
 

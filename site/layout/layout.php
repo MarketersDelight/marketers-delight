@@ -73,7 +73,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'page_title' )
+				'options' => array( 'remove', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'page_title', 'box_style', 'wpautop' )
 			),
 			'breadcrumbs' => array(
 				'type' => 'checkbox',
@@ -256,6 +256,7 @@ class md_layout extends md_api {
 	public function scripts( $has_sidebar ) {
 		$screen = get_current_screen();
 		$prefix = $this->_prefix();
+		$sidebars = md_get_sidebars();
 	?>
 
 		<script>
@@ -278,6 +279,7 @@ class md_layout extends md_api {
 					}
 				<?php endif; ?>
 
+				<?php if ( ! empty( $sidebars ) ) : ?>
 				<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
 					<?php if ( $has_sidebar ) : ?>
 						document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
@@ -292,6 +294,7 @@ class md_layout extends md_api {
 					document.getElementById( '<?php echo $prefix; ?>_sidebar_global' ).onchange = function() {
 						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
 					}
+				<?php endif; ?>
 				<?php endif; ?>
 
 				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {

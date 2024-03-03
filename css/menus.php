@@ -27,6 +27,10 @@
 	padding: 0;
 }
 
+.menu-item-title { display: block; }
+
+.menu-item-desc { font-size: 0.85em; }
+
 /* SUB MENU */
 
 .menu-item-has-children > a { flex: 1; }
@@ -60,8 +64,8 @@
 		background-color: <?php echo $header['submenu']['bg_color']; ?>;
 		border-radius: 5px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		font-size: <?php echo $typography['body']['font_size']['tablet']; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['tablet']; ?>px;
+		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 		position: absolute;
 			right: -<?php echo $half; ?>px;
 		width: <?php echo $submenu_width; ?>px;

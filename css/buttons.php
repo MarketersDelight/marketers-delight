@@ -5,7 +5,8 @@
 \*------------------------------*/
 
 button, .button, a.button, .button a, input[type="submit"], .format .button,
-.header .button, .header .button:hover, .header .button a, .header .button a:hover {
+.header-wrap .button, .header-wrap .button:hover,
+.header-wrap .button a, .header-wrap .button a:hover {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
 	border-radius: 5px;
@@ -28,6 +29,23 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
 
+/* COLORS */
+
+.button.white {
+	background-color: #fff;
+	color: inherit;
+}
+
+.button.button-outline.white, .button.button-outline.white:hover {
+	border-color: #fff;
+	color: #fff;
+}
+
+.button.button-disabled {
+	background-color: #999;
+	cursor: not-allowed;
+}
+
 /* STYLES */
 
 .button.button-sec, a.button.button-sec, .button.button-sec a {
@@ -39,6 +57,8 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 }
+
+.button-small .link-icon { font-size: <?php echo $typography['body']['font_size']['desktop'] + 2; ?>px; }
 
 .button.button-large {
 	font-size: 1.4em;

@@ -12,14 +12,8 @@
 	<?php if ( ! empty( $header['font_family'] ) ) : ?>
 	font-family: <?php echo $header['font_family']; ?>;
 	<?php endif; ?>
-	<?php if ( ! empty( $header['font_size']['desktop'] ) ) : ?>
-	font-size: <?php echo $header['font_size']['desktop']; ?>px;
-	<?php endif; ?>
 	<?php if ( ! empty( $header['font_weight'] ) ) : ?>
 	font-weight: <?php echo $header['font_weight']; ?>;
-	<?php endif; ?>
-	<?php if ( ! empty( $header['line_height']['desktop'] ) ) : ?>
-	line-height: <?php echo $header['line_height']['desktop']; ?>px;
 	<?php endif; ?>
 	position: relative;
 }
@@ -29,6 +23,12 @@
 .header-wrap a:hover, .header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
 
 .header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
+
+.header .trigger-icon, .header .link-icon {
+	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
+	font-style: normal;
+	line-height: 1;
+}
 
 /* SITE TITLE + TAGLINE */
 
@@ -43,7 +43,7 @@
 	<?php if ( ! empty( $logo['site_title']['font_family'] ) ) : ?>
 	font-family: <?php echo $logo['site_title']['font_family']; ?>;
 	<?php endif; ?>
-	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+	font-size: <?php echo $logo['site_title']['font_size']['desktop']; ?>px;
 	<?php if ( ! empty( $logo['site_title']['font_weight'] ) ) : ?>
 	font-weight: <?php echo $logo['site_title']['font_weight']; ?>;
 	<?php endif; ?>
@@ -101,19 +101,11 @@
 
 /* QUERIES */
 
-@media all and (max-width: 900px) {
-	<?php if ( ! empty( $header['font_size']['tablet'] ) || ! empty( $header['line_height']['tablet'] ) ) : ?>
-	.header {
-		<?php echo ! empty( $header['font_size']['tablet'] ) ? 'font-size: ' . $header['font_size']['tablet'] . 'px;' : ''; ?>
-		<?php echo ! empty( $header['line_height']['tablet'] ) ? 'line-height: ' . $header['line_height']['tablet'] . 'px;' : ''; ?>
-	}
-	<?php endif; ?>
-	<?php if ( ! empty( $logo['logo_width']['tablet'] ) ) : ?>
-	.logo { flex-basis: <?php echo $logo['logo_width']['tablet']; ?>px; }
-	<?php endif; ?>
-}
-
 @media all and (min-width: 800px) {
+	.header {
+		font-size: <?php echo $header['font_size']['desktop']; ?>px;
+		line-height: <?php echo $header['line_height']['desktop']; ?>px;
+	}
 	/* LAYOUT */
 	.header-wrap, .header-primary, .header-aside {
 		align-items: center;
@@ -148,6 +140,7 @@
 		<?php echo ! empty( $header['line_height']['mobile'] ) ? 'line-height: ' . $header['line_height']['mobile'] . 'px;' : ''; ?>
 	}
 	<?php endif; ?>
+	.header .trigger-icon, .header .hide-label .link-icon, .header .hide-label-mobile .link-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px; }
 	/* DISPLAY */
 	.header-menu, .header_aside-menu,
 	.header .header-link,
@@ -177,6 +170,12 @@
 	<?php if ( md_setting( array( 'header', 'display', 'hide_title_mobile' ) ) ) : ?>
 	.site-name { display: none; }
 	<?php endif; ?>
+	<?php if ( ! empty( $logo['site_title']['font_size']['tablet'] ) ) : ?>
+	.site-name { font-size: <?php echo $logo['site_title']['font_size']['tablet']; ?>px; }
+	<?php endif; ?>
+	<?php if ( ! empty( $logo['site_title']['line_height']['tablet'] ) ) : ?>
+	.site-name { line-height: <?php echo $logo['site_title']['line_height']['tablet']; ?>px; }
+	<?php endif; ?>
 	<?php if ( md_setting( array( 'header', 'display', 'hide_tagline_mobile' ) ) ) : ?>
 	.tagline { display: none; }
 	<?php endif; ?>
@@ -187,12 +186,24 @@
 		order: 1;
 	}
 	/* MENU */
-	.header .menu {
+	.header-primary .menu, .header-aside .menu {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
 	/* SEARCH */
 	.header .search-form { padding-bottom: <?php echo $half; ?>px; }
+}
+
+@media all and (max-width: 900px) {
+	<?php if ( ! empty( $header['font_size']['tablet'] ) || ! empty( $header['line_height']['tablet'] ) ) : ?>
+	.header {
+		<?php echo ! empty( $header['font_size']['tablet'] ) ? 'font-size: ' . $header['font_size']['tablet'] . 'px;' : ''; ?>
+		<?php echo ! empty( $header['line_height']['tablet'] ) ? 'line-height: ' . $header['line_height']['tablet'] . 'px;' : ''; ?>
+	}
+	<?php endif; ?>
+	<?php if ( ! empty( $logo['logo_width']['tablet'] ) ) : ?>
+	.logo { flex-basis: <?php echo $logo['logo_width']['tablet']; ?>px; }
+	<?php endif; ?>
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
@@ -201,3 +212,14 @@
 		padding-right: <?php echo $half; ?>px;
 	}
 }
+
+<?php if ( ! empty( $logo['site_title']['font_size']['mobile'] ) || ! empty( $logo['site_title']['line_height']['mobile'] ) ) : ?>
+@media all and (max-width: 700px) {
+	<?php if ( ! empty( $logo['site_title']['font_size']['mobile'] ) ) : ?>
+	.site-name { font-size: <?php echo $logo['site_title']['font_size']['mobile']; ?>px; }
+	<?php endif; ?>
+	<?php if ( ! empty( $logo['site_title']['line_height']['mobile'] ) ) : ?>
+	.site-name { line-height: <?php echo $logo['site_title']['line_height']['mobile']; ?>px; }
+	<?php endif; ?>
+}
+<?php endif; ?>

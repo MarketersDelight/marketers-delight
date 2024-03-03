@@ -34,41 +34,44 @@ class md_header_templates {
 
 		echo '</div>';
 
-		echo '<div class="header-primary">';
+		if ( md_has_menu() ) {
 
-		if ( ! empty( $data['header'] ) )
-			foreach ( $data['header'] as $order => $items ) {
-				$type = esc_attr( $items['type'] );
-				$id = esc_attr( $items['id'] );
+			echo '<div class="header-primary">';
 
-				if ( ! empty( $fields[$id] ) ) {
-					$fields_args['location'] = 'header';
-					$fields[$id]['args'] = $fields_args;
-					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
+			if ( ! empty( $data['header'] ) )
+				foreach ( $data['header'] as $order => $items ) {
+					$type = esc_attr( $items['type'] );
+					$id = esc_attr( $items['id'] );
+
+					if ( ! empty( $fields[$id] ) ) {
+						$fields_args['location'] = 'header';
+						$fields[$id]['args'] = $fields_args;
+						call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
+					}
 				}
-			}
-
-		echo '</div>';
-
-		if ( ! empty( $data['header_aside'] ) ) {
-			echo '<div class="header-aside">';
-
-			foreach ( $data['header_aside'] as $order => $items ) {
-				$type = esc_attr( $items['type'] );
-				$id = esc_attr( $items['id'] );
-
-				if ( ! empty( $fields[$id] ) ) {
-					$fields_args['location'] = 'header_aside';
-					$fields[$id]['args'] = $fields_args;
-					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
-				}
-			}
 
 			echo '</div>';
-		}
 
-		if ( empty( $data ) && md_has_menu() )
-			$this->menu();
+			if ( ! empty( $data['header_aside'] ) ) {
+				echo '<div class="header-aside">';
+
+				foreach ( $data['header_aside'] as $order => $items ) {
+					$type = esc_attr( $items['type'] );
+					$id = esc_attr( $items['id'] );
+
+					if ( ! empty( $fields[$id] ) ) {
+						$fields_args['location'] = 'header_aside';
+						$fields[$id]['args'] = $fields_args;
+						call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
+					}
+				}
+
+				echo '</div>';
+			}
+
+			if ( empty( $data ) )
+				$this->menu();
+		}
 	}
 
 	/**

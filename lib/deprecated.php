@@ -25,18 +25,6 @@ function md_featured_image_caption() { md_get_caption(); }
 function md_page_data() { return array(); }
 
 /**
- * A list of classes to add to content box.
- *
- * @since 4.5
- * @deprecated 6.0
- */
-function md_content_classes( $classes = array() ) {
-	$classes[] = 'content';
-	$classes = apply_filters( 'md_filter_content_classes', $classes );
-	return join( ' ', $classes );
-}
-
-/**
  * Get the current page Loop. If post_type parameter
  * is set in $loops, all views will be set according to the
  * loop being registered. Unless set, categories will use the
@@ -158,16 +146,6 @@ function md_excerpt_more( $more ) {
 function md_read_more_text() {
 	$read_more = md_module( array( 'loop', 'read_more' ) );
 	return ! empty( $read_more ) ? md_text_field( $read_more ) : __( 'Continue reading &rarr;', 'md' );
-}
-
-/**
- * If no service is connected, display this message.
- *
- * @since 4.5
- * @deprecated 6.0
- */
-function md_popup_connect_notice() {
-	echo '<p class="description">' . sprintf( __( 'You must <a href="%s">create at least one popup</a> before you can add one here.', 'md-optins' ), admin_url( 'themes.php?page=md_popups' ) ) . '</p>';
 }
 
 /**

@@ -77,13 +77,11 @@ final class marketers_delight {
 		require_once( MD_DIR . 'site/layout/layout.php' );
 		require_once( MD_DIR . 'site/logo/logo.php' );
 		require_once( MD_DIR . 'site/header/header.php' );
-		require_once( MD_DIR . 'site/featured-image/featured-image.php' );
-		require_once( MD_DIR . 'site/featured-video/featured-video.php' );
-		require_once( MD_DIR . 'site/page-cover/page-cover.php' );
-		require_once( MD_DIR . 'site/page-cover/page-title.php' );
+		require_once( MD_DIR . 'site/hero/hero.php' );
 		require_once( MD_DIR . 'site/loop/loop.php' );
 		require_once( MD_DIR . 'site/byline/byline.php' );
 		require_once( MD_DIR . 'site/blog/blog.php' );
+//		require_once( md_template( 'hero', true ) );
 		require_once( 'walker.php' );
 		foreach ( array( 'accordion', 'loop-query', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "site/widgets/$widget.php" );
@@ -282,8 +280,8 @@ final class marketers_delight {
 			'id' => 'sidebar-main',
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget' => '</div>',
-			'before_title' => '<h3 class="sidebar-title">',
-			'after_title' => '</h3>'
+			'before_title' => '<h4 class="sidebar-title">',
+			'after_title' => '</h4>'
 		) );
 
 		// Custom Sidebars
@@ -293,8 +291,8 @@ final class marketers_delight {
 				'id' => $id,
 				'before_widget' => '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
-				'before_title' => '<h3 class="sidebar-title">',
-				'after_title' => '</h3>'
+				'before_title' => '<h4 class="sidebar-title">',
+				'after_title' => '</h4>'
 			) );
 		}
 
@@ -306,8 +304,8 @@ final class marketers_delight {
 				'id' => "md-footer-col-$w",
 				'before_widget' => '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
-				'before_title' => '<h3 class="footer-title">',
-				'after_title' => '</h3>'
+				'before_title' => '<h4 class="footer-title">',
+				'after_title' => '</h4>'
 			) );
 		}
 

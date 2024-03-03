@@ -92,12 +92,24 @@ function md_hook_content_item() {
 	do_action( 'md_hook_content_item', 'content_item' );
 }
 
+function md_hook_the_content() {
+	do_action( 'md_hook_the_content' );
+}
+
 function md_hook_before_the_content() {
 	do_action( 'md_hook_before_the_content' );
 }
 
 function md_hook_after_the_content() {
 	do_action( 'md_hook_after_the_content' );
+}
+
+function md_hook_the_content_top() {
+	do_action( 'md_hook_the_content_top' );
+}
+
+function md_hook_the_content_bottom() {
+	do_action( 'md_hook_the_content_bottom' );
 }
 
 function md_hook_before_title() {

@@ -62,21 +62,15 @@ select {
 	text-align: center;
 }
 
-.trigger-icon, .hide-label .link-icon, .link-icon:first-child {
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
-	font-style: normal;
-	line-height: 1;
-}
-
 .trigger-text { margin-left: <?php echo $small; ?>px; }
 
 .hide-label .link-text, .hide-label .trigger-text { display: none; }
 
 .has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before {
-	color: <?php echo $colors['site']['primary']; ?>;
-	content: '\e810';
-}
+.has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
+
+.has-search:not(.has-cover) .trigger-search .trigger-icon:before,
+.has-mobile-menu:not(.has-cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
 
 /* TOOLTIP */
 
@@ -183,6 +177,4 @@ select {
 	.show-desktop { display: none !important; }
 	.inline-form .submit { width: 100%; }
 	.inline-form .input-field, .inline-form .inputs { margin-bottom: <?php echo $half; ?>px; }
-	.trigger-icon, .hide-label .link-icon,
-	.hide-label-mobile .link-icon { font-size: <?php echo round( $header['font_size']['desktop'] * 1.5 ); ?>px; }
 }

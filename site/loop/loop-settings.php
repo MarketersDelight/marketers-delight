@@ -1,15 +1,12 @@
-<div class="md-radio-fields md-clear md-sep-micro">
-	<?php $this->fields->field( 'loop', array(
-		'type' => 'radio',
-		'label' => __( 'Select Loop', 'md' ),
-		'svg' => md_svg( 'query' ),
-		'layout' => 'banner',
-		'columns' => 5,
-		'options' => md_loops()
-	) ); ?>
-</div>
+<div class="columns-4 columns-single md-full-select md-sep-micro">
 
-<div class="columns-4 columns-half md-sep-small md-full-select">
+	<div class="col">
+		<?php $this->fields->field( 'loop', array(
+			'type' => 'select',
+			'label' => __( 'Template', 'md' ),
+			'options' => md_loops( 'options' )
+		) ); ?>
+	</div>
 
 	<div class="col">
 		<?php $this->fields->field( 'style', array(
@@ -19,20 +16,6 @@
 			'options' => array(
 				'box_style' => __( 'Box style', 'md' ),
 				'simple' => __( 'No style', 'md' )
-			)
-		) ); ?>
-	</div>
-
-	<div class="col">
-		<?php $this->fields->field( 'size', array(
-			'type' => 'select',
-			'label' => __( 'Size', 'md' ),
-			'empty_label' => __( 'Default size', 'md' ),
-			'options' => array(
-				'large' => __( 'Large', 'md' ),
-				'medium' => __( 'Medium', 'md' ),
-				'small' => __( 'Small', 'md' ),
-				'normal' => __( 'Normal', 'md' ),
 			)
 		) ); ?>
 	</div>
@@ -51,20 +34,18 @@
 		) ); ?>
 	</div>
 
-</div>
-
-<?php if ( $screen->base !== 'term' )
-	$this->fields->field( 'category_posts', array(
-		'type' => 'checkbox',
-		'wrap_classes' => 'md-sep-micro',
-		'check_class' => 'md-check-val',
-		'options' => array(
-			'enable' => __( 'Show posts by category', 'md' )
-		)
-	) );
-?>
-
-<div class="columns-4 columns-half mb-sep-small">
+	<?php if ( $screen->base !== 'term' ) : ?>
+	<div class="col md-sep-top">
+		<?php $this->fields->field( 'category_posts', array(
+			'type' => 'checkbox',
+			'wrap_classes' => 'md-sep-micro',
+			'check_class' => 'md-check-val',
+			'options' => array(
+				'enable' => __( 'List posts by category', 'md' )
+			)
+		) ); ?>
+	</div>
+	<?php endif; ?>
 
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'orderby', array(
@@ -144,11 +125,9 @@
 
 </div>
 
-<hr class="md-sep-small" />
+<hr />
 
 <div class="md-loop-post md-tabs">
-
-	<h4><?php echo __( 'Post Content', 'md' ); ?></h4>
 
 	<div class="nav-tab-wrapper">
 		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-post-standard"><?php echo __( 'Standard Posts', 'md' ); ?></a>
@@ -298,8 +277,6 @@
 
 <?php if ( md_has( 'optins' ) ) : ?>
 
-<hr class="md-sep-small" />
-
 <h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
 
 <div class="columns-2 columns-single">
@@ -307,8 +284,8 @@
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'cta_x_loop', array(
 			'type' => 'number',
-			'label' => __( 'Show After X Post', 'md' ),
-			'description' => __( 'Show CTA after post number in Loop.', 'md' )
+			'label' => __( 'Call to Action', 'md' ),
+			'description' => __( 'Show after the Xth post.', 'md' )
 		) ); ?>
 	</div>
 

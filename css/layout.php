@@ -12,22 +12,35 @@
 }
 
 .clear:after, .inner:after, .menu:after, .content-sidebar:after,
-.post-box:after, .the-content:after, .byline:after, .sidebar:after {
+.byline:after, .post-box:after, .the-content:after, .sidebar:after {
 	clear: both;
 	content: '';
 	display: table;
 }
 
-.layout {
-	align-items: center;
-	display: flex;
-	row-gap: <?php echo $half; ?>px;
+/* BLOCK ELEMENTS */
+
+.block .title-wrap, .block .featured-image {
+	margin-left: auto;
+	margin-right: auto;
 }
 
-.columns {
-	display: flex;
-	justify-content: space-around;
-	row-gap: <?php echo $single; ?>px;
+@media all and (min-width: 700px) {
+	.block {
+		align-items: center;
+		display: flex;
+		gap: <?php echo $single; ?>px;
+	}
+	.block.image-before, .block.image-after, .block.image-center {
+		flex-direction: column;
+		text-align: center;
+	}
+	.block .title, .block .description, .block .inline-cta { max-width: <?php echo $content_width; ?>px; }
+	.block.image-left .featured-image { order: -1; }
+}
+
+@media all and (max-width: 700px) {
+	.block .title-wrap:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 }
 
 /* SPACING */
@@ -39,10 +52,8 @@
 
 .main + .query > .inner { padding-top: 0; }
 
-.page-header:not(:last-child), .section-header { margin-bottom: <?php echo $single; ?>px; }
-
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.main .inner, .query .inner {
+	.inner {
 		padding-left: <?php echo $half; ?>px;
 		padding-right: <?php echo $half; ?>px;
 	}
@@ -67,20 +78,24 @@
 	}
 }
 
-@media all and (max-width: 800px) {
-	.layout, .columns { flex-flow: wrap; }
+@media all and (min-width: 700px) {
+	.f3, .f4, .f5 {
+		flex-basis: calc(50% - <?php echo $half; ?>px);
+		max-width: calc(50% - <?php echo $half; ?>px);
+	}
+}
+
+@media all and (max-width: 900px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
 }
 
-@media all and (min-width: 800px) {
-	.loop.columns, .categories.columns { flex-flow: wrap; }
-	.layout { column-gap: <?php echo $single; ?>px; }
-	.layout:not(.inline) { row-gap: <?php echo $single; ?>px; }
-	<?php for ( $f = 2; $f <= 8; $f++ ) : ?>
-	.f<?php echo $f; ?> {
-		flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px);
-		max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px);
-	}
+@media all and (min-width: 900px) {
+	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
+	.f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); }
+	<?php endfor; ?>
+	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
+	.box-style.columns > .f<?php echo $f; ?>, .slim .f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
+	.box-style.columns .columns .f<?php echo $f; ?> { flex-basis: <?php echo ( 100 / $f ); ?>%; max-width: <?php echo ( 100 / $f ); ?>%; }
 	<?php endfor; ?>
 }
 
