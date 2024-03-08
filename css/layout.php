@@ -18,31 +18,6 @@
 	display: table;
 }
 
-/* BLOCK ELEMENTS */
-
-.block .title-wrap, .block .featured-image {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-@media all and (min-width: 700px) {
-	.block {
-		align-items: center;
-		display: flex;
-		gap: <?php echo $single; ?>px;
-	}
-	.block.image-before, .block.image-after, .block.image-center {
-		flex-direction: column;
-		text-align: center;
-	}
-	.block .title, .block .description, .block .inline-cta { max-width: <?php echo $content_width; ?>px; }
-	.block.image-left .featured-image { order: -1; }
-}
-
-@media all and (max-width: 700px) {
-	.block .title-wrap:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-}
-
 /* SPACING */
 
 .main > .inner, .query > .inner {
@@ -97,6 +72,79 @@
 	.box-style.columns > .f<?php echo $f; ?>, .slim .f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
 	.box-style.columns .columns .f<?php echo $f; ?> { flex-basis: <?php echo ( 100 / $f ); ?>%; max-width: <?php echo ( 100 / $f ); ?>%; }
 	<?php endfor; ?>
+}
+
+/* BLOCK ELEMENTS */
+
+.page-header { margin-bottom: <?php echo $single; ?>px; }
+
+.description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+
+.inline-cta {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $single; ?>px;
+	position: relative;
+}
+
+.inline-cta-link {
+	flex: 1;
+	text-align: center;
+}
+
+.block .block-inner, .block .featured-image {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.block.inline { flex-flow: wrap; }
+
+.inline .block-inner {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+}
+
+.block.inline .title,
+.block.inline .description,
+.block.inline .inline-cta { flex: 1; }
+
+@media all and (min-width: 700px) {
+	.block {
+		align-items: center;
+		display: flex;
+		gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+		text-align: center;
+	}
+	.inline, .block.image-right, .block.image-left { text-align: left; }
+	.block.image-before, .block.image-after, .block.image-center {
+		flex-direction: column;
+		text-align: center;
+	}
+	.block.inline .title { margin-bottom: 0; }
+	.block.wide .title:not(:last-child),
+	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block.image-left .description, .block.image-right .description {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.block.image-left .featured-image { order: -1; }
+	.block.wide .inline-cta { justify-content: center; }
+}
+
+@media all and (max-width: 700px) {
+	.block .block-inner:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block.inline .block-inner { flex-direction: column; }
+}
+
+@media all and (min-width: 900px) {
+	.block .title { max-width: <?php echo $content_width; ?>px; }
+	.block .description,
+	.block .inline-cta {
+		margin-left: auto;
+		margin-right: auto;
+		max-width: <?php echo $post_width; ?>px;
+	}
 }
 
 /* STICKY */

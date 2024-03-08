@@ -1,7 +1,6 @@
 <style type="text/css">
 
 .full .loop, .full .categories,
-.full .content > .headline-cover,
 .article.full .stream {
 	margin-left: auto;
 	margin-right: auto;
