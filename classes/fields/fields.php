@@ -709,18 +709,18 @@ class md_fields {
 		$font_types = array(
 			'default' => array(
 				'name' => __( 'Default Fonts', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/fonts.png'
+				'image' => MD_URL . 'images/fonts.png'
 			),
 			'google' => array(
 				'name' => __( 'Google Fonts', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/google.png'
+				'image' => MD_URL . 'images/google.png'
 			)
 		);
 
 		if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 			$font_types['typekit'] = array(
 				'name' => __( 'TypeKit', 'md' ),
-				'image' => MD_URL . 'lib/admin/images/typekit-small.png'
+				'image' => MD_URL . 'images/typekit-small.png'
 			);
 
 		include( 'typography.php' );

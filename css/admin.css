@@ -64,7 +64,7 @@
 
 @font-face {
     font-family: 'md-icon';
-    src: url('images/logo.woff') format('woff');
+    src: url('../images/logo.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

@@ -82,7 +82,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'classes/design.php' );
 
 		if ( is_admin() )
-			require_once( MD_DIR . 'admin/admin.php' );
+			require_once( MD_DIR . 'classes/admin.php' );
 
 		require_once( MD_DIR . 'functions/layout-functions.php' );
 		require_once( MD_DIR . 'classes/layout.php' );

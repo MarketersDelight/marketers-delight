@@ -89,7 +89,7 @@ class md_dropins extends md_api {
 
 		ksort( $installed );
 
-		include( 'admin-page.php' );
+		include md_template( 'admin/dropins', true );
 	}
 
 	/**

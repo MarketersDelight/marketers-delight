@@ -128,7 +128,7 @@ class md_settings extends md_api {
 		$theme = ! empty( $option['license']['updates']['theme'] ) ? $option['license']['updates']['theme'] : array();
 		$dropins = ! empty( $option['license']['updates']['dropins'] ) ? $option['license']['updates']['dropins'] : array();
 
-		include( 'update-fields.php' );
+		include md_template( 'admin/license-key', true );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class md_settings extends md_api {
 	public function admin_page() {
 		$page404 = $this->fields->get_field( array( 'settings', '404_page' ) );
 
-		include( 'admin-page.php' );
+		include md_template( 'admin/dashboard', true );
 	}
 
 	/**
