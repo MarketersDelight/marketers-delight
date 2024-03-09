@@ -128,23 +128,23 @@ function md_get_inline_cta() {
 	$link_primary = md_module( array( 'hero', 'link_primary' ) );
 	$link_secondary = md_module( array( 'hero', 'link_secondary' ) );
 
-	$html .= '<div class="inline-cta">';
-
 	if ( $cta == 'links' ) {
+		$html .= '<div class="cta">';
+
 		if ( $link_secondary ) {
-			$link_secondary['link_classes'] = 'inline-cta-link';
+			$link_secondary['link_classes'] = 'cta-link';
 			$html .= md_get_link( $link_secondary );
 		}
 
 		if ( $link_primary ) {
-			$link_primary['link_classes'] = 'inline-cta-link';
+			$link_primary['link_classes'] = 'cta-link';
 			$html .= md_get_link( $link_primary );
 		}
+
+		$html .= '</div>';
 	}
 	elseif ( $cta == 'custom' )
 		$html .= md_module( 'custom_html' );
-
-	$html .= '</div>';
 
 	return $html;
 }

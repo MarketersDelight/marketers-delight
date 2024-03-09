@@ -25,7 +25,7 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.main + .query > .inner { padding-top: 0; }
+.main + .query > .inner, .block + .main > .inner { padding-top: 0; }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.inner {
@@ -54,10 +54,15 @@
 }
 
 @media all and (min-width: 700px) {
+	.show-mobile { display: none !important; }
 	.f3, .f4, .f5 {
 		flex-basis: calc(50% - <?php echo $half; ?>px);
 		max-width: calc(50% - <?php echo $half; ?>px);
 	}
+}
+
+@media all and (max-width: 700px) {
+	.show-desktop { display: none !important; }
 }
 
 @media all and (max-width: 900px) {
@@ -80,26 +85,27 @@
 
 .description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
-.inline-cta {
+.cta {
 	align-items: center;
 	display: flex;
 	gap: <?php echo $single; ?>px;
 	position: relative;
 }
 
-.inline-cta-link {
+.cta-link {
 	flex: 1;
 	text-align: center;
 }
 
-.block .block-inner, .block .featured-image {
+.block .block-inner,
+.block .featured-image {
 	margin-left: auto;
 	margin-right: auto;
 }
 
 .block.inline { flex-flow: wrap; }
 
-.inline .block-inner {
+.block.inline .block-inner {
 	align-items: center;
 	display: flex;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
@@ -107,10 +113,10 @@
 
 .block.inline .title,
 .block.inline .description,
-.block.inline .inline-cta { flex: 1; }
+.block.inline .cta { flex: 1; }
 
 @media all and (min-width: 700px) {
-	.block {
+	.block, .block > .inner {
 		align-items: center;
 		display: flex;
 		gap: <?php echo $half; ?>px <?php echo $single; ?>px;
@@ -129,7 +135,7 @@
 		margin-right: 0;
 	}
 	.block.image-left .featured-image { order: -1; }
-	.block.wide .inline-cta { justify-content: center; }
+	.block.wide .cta { justify-content: center; }
 }
 
 @media all and (max-width: 700px) {
@@ -137,14 +143,17 @@
 	.block.inline .block-inner { flex-direction: column; }
 }
 
-@media all and (min-width: 900px) {
-	.block .title { max-width: <?php echo $content_width; ?>px; }
+@media all and (min-width: <?php echo $content_width; ?>px) {
+	.block .title { width: <?php echo $content_width; ?>px; }
 	.block .description,
-	.block .inline-cta {
+	.block .cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
+	.the-content .block .title,
+	.the-content .block .description,
+	.the-content .block .cta { max-width: 100%; }
 }
 
 /* STICKY */

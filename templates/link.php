@@ -1,6 +1,11 @@
 <?php
 
-// Customize the output of a link or button rendered from any MD button settings page.
+/**
+ * Customize the output of a link or button displayed from any MD button settings page
+ * or the md_get_link and md_link() function.
+ *
+ * @since 6.0
+ */
 
 $text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
 $text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
@@ -13,7 +18,7 @@ $classes = $styles = array();
 $h = 'span';
 $class = $href = $target = $popup = '';
 $parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
-$title = $text ? ' title="' . strip_tags( $text ) . '"' : '';
+$title = ( $icon && ! $text ) ? ' title="' . strip_tags( $text ) . '"' : '';
 $subtext = isset( $fields["link{$p}_subtext"] ) ? $fields["link{$p}_subtext"] : '';
 $url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
 $phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
@@ -48,7 +53,7 @@ if ( $style == 'button' ) {
 	$button_color = '';
 	$classes[] = 'button';
 
-	if ( isset( $fields["link{$p}_size"] ) )
+	if ( ! empty( $fields["link{$p}_size"] ) )
 		$classes[] = 'button-' . $fields["link{$p}_size"];
 
 	if ( ! empty( $fields["link{$p}_color"] ) )

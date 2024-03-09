@@ -147,9 +147,12 @@
 	.header .header_aside-link,
 	.header .search-form,
 	.hide-label-mobile .link-text,
-	.hide-label-mobile .trigger-text { display: none; }
-	.has-mobile-menu .header-menu, .has-mobile-menu .header_aside-menu,
-	.header-controls .header-link, .header-controls .header_aside-link { display: block; }
+	.hide-label-mobile .trigger-text,
+	.header.has-search .header-triggers .trigger-search { display: none; }
+	.has-mobile-menu .header-menu,
+	.has-mobile-menu .header_aside-menu,
+	.header-controls .header-link,
+	.header-controls .header_aside-link { display: block; }
 	.has-search .search-form { display: flex; }
 	/* LAYOUT */
 	.header-controls, .header-triggers {

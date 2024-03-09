@@ -1,3 +1,5 @@
+/* @since 4.0 */
+
 /*------------------------------*\
 	$ATTRIBUTES
 \*------------------------------*/
@@ -64,7 +66,7 @@
 
 @font-face {
     font-family: 'md-icon';
-    src: url('../images/logo.woff') format('woff');
+    src: url('../assets/logo.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }

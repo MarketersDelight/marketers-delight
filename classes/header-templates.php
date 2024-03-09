@@ -182,10 +182,11 @@ class md_header_templates {
 	public function search( $fields ) {
 		$parent = isset( $fields['parent'] ) ? $fields['parent'] : 'header';
 		$title = isset( $fields['title'] ) ? $fields['title'] : __( 'Search', 'md' );
-		$placeholder = isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Search...', 'md' );
+		$placeholder = isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Type to search...', 'md' );
+		$submit_text = isset( $fields['submit_text'] ) ? $fields['submit_text'] : __( 'Search', 'md' );
 
-		$fields['classes'][] = "{$parent}-search";
 		$fields['classes'][] = 'search-form';
+		$fields['classes'][] = 'form-icons';
 
 		if ( ! empty( $fields['toggle']['search'] ) )
 			$fields['classes'][] = 'form-toggle';

@@ -22,6 +22,7 @@ class md_header extends md_api {
 			'area' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
 			'placeholder' => array( 'type' => 'text' ),
+			'submit_text' => array( 'type' => 'text' ),
 			'submenu_width' => array( 'type' => 'number' ),
 			'menu' => array(
 				'type' => 'select',

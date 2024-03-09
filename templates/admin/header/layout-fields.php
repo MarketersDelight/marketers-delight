@@ -30,17 +30,17 @@
 					'standard' => array(
 						'name' => __( 'Header Left', 'md' ),
 						'description' => __( 'The default header layout with a left-aligned logo and nav menu to the right.', 'md' ),
-						'image' => MD_URL . 'images/header-standard.gif'
+						'image' => MD_URL . 'assets/header-standard.gif'
 					),
 					'rtl' => array(
 						'name' => __( 'Header Right', 'md' ),
 						'description' => __( 'A reversed header layout with a right-aligned logo and nav menu to the left.', 'md' ),
-						'image' => MD_URL . 'images/header-rtl.gif'
+						'image' => MD_URL . 'assets/header-rtl.gif'
 					),
 					'flyer' => array(
 						'name' => __( 'Header Center', 'md' ),
 						'description' => __( 'A logo aligned to the center between two outer nav areas.', 'md' ),
-						'image' => MD_URL . 'images/header-flyer.gif'
+						'image' => MD_URL . 'assets/header-flyer.gif'
 					)
 				)
 			) ); ?>
@@ -56,12 +56,12 @@
 					'standard' => array(
 						'name' => __( 'Standard', 'md' ),
 						'description' => __( 'The default layout with the logo on the left and controls to the right.', 'md' ),
-						'image' => MD_URL . 'images/header-mobile-standard.gif'
+						'image' => MD_URL . 'assets/header-mobile-standard.gif'
 					),
 					'expanded' => array(
 						'name' => __( 'Expanded', 'md' ),
 						'description' => __( 'Moves the main nav control before the Logo, and other controls to the right.', 'md' ),
-						'image' => MD_URL . 'images/header-mobile-expanded.gif'
+						'image' => MD_URL . 'assets/header-mobile-expanded.gif'
 					)
 				)
 			) ); ?>

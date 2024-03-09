@@ -16,7 +16,13 @@
 		<?php $this->fields->field( array( 'builder', $group, 'placeholder' ), array(
 			'type' => 'text',
 			'label' => __( 'Placeholder Text', 'md' ),
-			'placeholder' => __( 'Search...', 'md' )
+			'placeholder' => __( 'Type to search...', 'md' ),
+			'wrap_classes' => 'md-sep-micro'
+		) ); ?>
+		<?php $this->fields->field( array( 'builder', $group, 'submit_text' ), array(
+			'type' => 'text',
+			'label' => __( 'Submit text', 'md' ),
+			'placeholder' => __( 'Search', 'md' )
 		) ); ?>
 	</div>
 

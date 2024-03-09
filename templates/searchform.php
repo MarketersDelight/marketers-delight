@@ -12,12 +12,15 @@
 	<div class="inputs">
 
 		<div class="input-field">
+			<label class="input-icon"><?php echo md_icon( 'search' ); ?></label>
 			<input type="search" name="s" value="<?php echo esc_attr( get_search_query() ); ?>" class="input" placeholder="<?php echo md_text_field( $placeholder ); ?>" required />
 		</div>
 
 	</div>
 
-	<button type="submit" class="submit"><?php echo md_icon( 'search' ); ?></button>
+	<button type="submit" class="submit">
+		<span class="button-text"><?php echo md_text_field( $submit_text ); ?></span>
+	</button>
 
 </form>
 

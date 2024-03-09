@@ -108,16 +108,24 @@ select {
 
 /* STRUCTURES */
 
-.input-icon, .search-form {
+.form { width: 100%; }
+
+.form,
+.inputs,
+.input-field,
+.input-icon,
+.search-form {
 	align-items: center;
 	display: flex;
+	gap: <?php echo $half; ?>px;
 }
 
-.has-search .triggers, .search-form .inputs { margin-right: <?php echo $half; ?>px; }
+.form-full { flex-direction: column; }
 
-.input-field { display: flex; }
+.form.inline,
+.form.inline .inputs { flex: 1; }
 
-.form-full, .inline-form, .form-full .input-field { margin-bottom: <?php echo $half; ?>px; }
+.form-full .inputs, .form-full .submit { width: 100%; }
 
 .form-icons .input {
 	background-color: transparent;
@@ -131,7 +139,8 @@ select {
 
 .form-icons .input:focus { box-shadow: none; }
 
-.form-small .input, .form-small .input-icon {
+.form-small .input,
+.form-small .input-icon {
 	padding-bottom: <?php echo $small; ?>px;
 	padding-top: <?php echo $small; ?>px;
 }
@@ -139,7 +148,6 @@ select {
 .input-icon {
 	color: <?php echo $colors['site']['text']; ?>;
 	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
 	justify-content: center;
 }
 
@@ -149,9 +157,9 @@ select {
 	border-radius: 5px 0 0 5px;
 }
 
-.form-full .submit { width: 100%; }
-
 /* SEARCH */
+
+.has-search .triggers { order: 3; }
 
 .has-search .inputs, .has-search .input-field { flex: 1; }
 
@@ -163,18 +171,12 @@ select {
 
 /* QUERIES */
 
-@media all and (min-width: 800px) {
-	.show-mobile { display: none !important; }
-	.inline-form, .inline-form .inputs {
-		align-items: center;
-		display: flex;
-		flex: 1;
-	}
-	.inline-form .inputs, .inline-form .input-field:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+@media all and (min-width: 600px) {
+	.form.inline .submit { flex: 0 1 25%; }
 }
 
-@media all and (max-width: 800px) {
-	.show-desktop { display: none !important; }
-	.inline-form .submit { width: 100%; }
-	.inline-form .input-field, .inline-form .inputs { margin-bottom: <?php echo $half; ?>px; }
+@media all and (max-width: 600px) {
+	.form.multi { flex-direction: column; }
+	.form.multi .inputs { flex-basis: 100%; }
+	.form.multi .submit { width: 100%; }
 }
