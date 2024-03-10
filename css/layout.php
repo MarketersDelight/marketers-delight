@@ -79,7 +79,7 @@
 	<?php endfor; ?>
 }
 
-/* BLOCK ELEMENTS */
+/* CONTENT BLOCK */
 
 .page-header { margin-bottom: <?php echo $single; ?>px; }
 
@@ -97,18 +97,18 @@
 	text-align: center;
 }
 
-.block .block-inner,
-.block .featured-image {
-	margin-left: auto;
-	margin-right: auto;
-}
-
 .block.inline { flex-flow: wrap; }
 
 .block.inline .block-inner {
 	align-items: center;
 	display: flex;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+}
+
+.block .block-inner,
+.block .featured-image {
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .block.inline .title,
@@ -129,26 +129,23 @@
 		flex-direction: column;
 		text-align: center;
 	}
-	.block .title,
-	.block .description,
-	.block .cta {
+	.block.wide .title,
+	.block.wide .description,
+	.block.wide .cta {
 		margin-left: auto;
 		margin-right: auto;
 	}
-	.block .title { max-width: <?php echo $content_width; ?>px; }
-	.block .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
+	.block.wide .title { max-width: <?php echo $content_width; ?>px; }
+	.block.wide .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
 	.block.wide .title:not(:last-child),
 	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block.wide .cta { justify-content: center; }
 	.block.inline .title { margin-bottom: 0; }
 	.block.image-left .description, .block.image-right .description {
 		margin-left: 0;
 		margin-right: 0;
 	}
 	.block.image-left .featured-image { order: -1; }
-	.block.wide .cta { justify-content: center; }
-	.content .block .title,
-	.content .block .description,
-	.content .block .cta { width: 100%; }
 }
 
 @media all and (max-width: <?php echo $content_width + $double; ?>px) {
