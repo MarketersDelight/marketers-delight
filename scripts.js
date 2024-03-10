@@ -115,8 +115,8 @@ headerMenu: function() {
 					}
 	}
 },
-sticky: function() {
-	const el = document.querySelector( '.sticky' );
+sticky: function( selector ) {
+	const el = document.querySelector( selector );
 	const observer = new IntersectionObserver(
 		( [e] ) => e.target.classList.toggle( 'stuck', e.intersectionRatio < 1 ),
 		{ threshold: [1] }
@@ -173,6 +173,8 @@ floatingBars: {
 			MD.removeClass( el, 'hide' );
 			MD.addClass( el, 'active' );
 			MD.floatingBars.showing = id;
+			if ( MD.hasClass( el, 'sticky' ) )
+				MD.sticky( '#' + id );
 			delete MD.floatingBars.data[id];
 			MD.floatingBars.close.events();
 		},

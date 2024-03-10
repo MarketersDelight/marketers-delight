@@ -145,8 +145,8 @@ headerMenu: function() {
 
 <?php endif; ?>
 
-sticky: function() {
-	const el = document.querySelector( '.sticky' );
+sticky: function( selector ) {
+	const el = document.querySelector( selector );
 
 	const observer = new IntersectionObserver(
 		( [e] ) => e.target.classList.toggle( 'stuck', e.intersectionRatio < 1 ),

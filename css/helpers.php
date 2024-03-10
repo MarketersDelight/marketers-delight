@@ -4,19 +4,12 @@
 
 .alignfull, .alignwide { max-width: initial; }
 
-.alignfull {
-	margin-left: -<?php echo $half; ?>px;
-	margin-right: -<?php echo $half; ?>px;
-}
-
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
 	margin-bottom: <?php echo $single; ?>px;
 	z-index: 10;
 }
-
-.alignwide img, .alignfull img { width: 100%; }
 
 .aligncenter {
 	clear: both;
@@ -30,6 +23,8 @@
 	clear: both;
 	float: none;
 }
+
+.alignwide img, .alignfull img { width: 100%; }
 
 .extend {
 	margin-left: -50vw;
@@ -62,9 +57,20 @@
 }
 
 @media all and (min-width: 900px) {
-	.alignfull {
+	.content-sidebar .alignfull {
 		margin-left: -<?php echo $mid; ?>px;
 		margin-right: -<?php echo $mid; ?>px;
+	}
+}
+
+@media all and (max-width: 900px) {
+	.content-sidebar .alignfull {
+		margin-left: -50vw;
+		margin-right: -50vw;
+		position: relative;
+			left: 50%;
+			right: 50%;
+		width: 100vw;
 	}
 }
 

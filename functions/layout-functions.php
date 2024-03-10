@@ -19,16 +19,15 @@ add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 if ( ! function_exists( 'md_inline_js' ) ) :
 
 function md_inline_js() {
-	if ( md_has_menu() )
-		wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
-
 	if ( has_nav_menu( 'main_menu' ) )
 		wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
+	elseif ( md_has_menu() )
+		wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
 
 	wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
 
 	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
-		wp_add_inline_script( 'marketers-delight', 'MD.sticky();' );
+		wp_add_inline_script( 'marketers-delight', 'MD.sticky(\'.header\');' );
 }
 
 endif;

@@ -1675,17 +1675,12 @@ select {
 }
 /* ALIGNMENTS */
 .alignfull, .alignwide { max-width: initial; }
-.alignfull {
-	margin-left: -15px;
-	margin-right: -15px;
-}
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
 	margin-bottom: 29px;
 	z-index: 10;
 }
-.alignwide img, .alignfull img { width: 100%; }
 .aligncenter {
 	clear: both;
 	float: none;
@@ -1697,6 +1692,7 @@ select {
 	clear: both;
 	float: none;
 }
+.alignwide img, .alignfull img { width: 100%; }
 .extend {
 	margin-left: -50vw;
 	margin-right: -50vw;
@@ -1724,9 +1720,19 @@ select {
 	}
 }
 @media all and (min-width: 900px) {
-	.alignfull {
+	.content-sidebar .alignfull {
 		margin-left: -44px;
 		margin-right: -44px;
+	}
+}
+@media all and (max-width: 900px) {
+	.content-sidebar .alignfull {
+		margin-left: -50vw;
+		margin-right: -50vw;
+		position: relative;
+			left: 50%;
+			right: 50%;
+		width: 100vw;
 	}
 }
 @media all and (min-width: 784px) {
@@ -2041,6 +2047,7 @@ ul.list-check li:before {
 	visibility: visible;
 }
 .floating-bar.sticky { z-index: 100; }
+.admin-bar .floating-bar.stuck { padding-top: 47px; }
 .floating-bar.sticky.bottom { bottom: 0; }
 .floating-bar a { color: #fffbcc; }
 .bar-wrap, .bar-cta {
@@ -2124,6 +2131,9 @@ ul.list-check li:before {
 		padding-right: 15px;
 	}
 	.bar-close { margin-right: 15px; }
+}
+@media all and (max-width: 782px) {
+	.admin-bar .floating-bar.stuck { padding-top: 61px; }
 }
 /*------------------------------*\
 	$POPUPS
