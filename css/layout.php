@@ -83,7 +83,7 @@
 
 .page-header { margin-bottom: <?php echo $single; ?>px; }
 
-.description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.title:not(:last-child), .description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .cta {
 	align-items: center;
@@ -115,7 +115,7 @@
 .block.inline .description,
 .block.inline .cta { flex: 1; }
 
-@media all and (min-width: 700px) {
+@media all and (min-width: <?php echo $content_width + $double; ?>px) {
 	.block, .block > .inner {
 		align-items: center;
 		display: flex;
@@ -127,33 +127,32 @@
 		flex-direction: column;
 		text-align: center;
 	}
+	.block .title { width: <?php echo $content_width; ?>px; }
 	.block.inline .title { margin-bottom: 0; }
 	.block.wide .title:not(:last-child),
 	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-	.block.image-left .description, .block.image-right .description {
-		margin-left: 0;
-		margin-right: 0;
-	}
-	.block.image-left .featured-image { order: -1; }
-	.block.wide .cta { justify-content: center; }
-}
-
-@media all and (max-width: 700px) {
-	.block .block-inner:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-	.block.inline .block-inner { flex-direction: column; }
-}
-
-@media all and (min-width: <?php echo $content_width; ?>px) {
-	.block .title { width: <?php echo $content_width; ?>px; }
 	.block .description,
 	.block .cta {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-	.the-content .block .title,
-	.the-content .block .description,
-	.the-content .block .cta { max-width: 100%; }
+	.block.image-left .description,
+	.block.image-right .description {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	.block.image-left .featured-image { order: -1; }
+	.block.wide .cta { justify-content: center; }
+	.content .block .title,
+	.content .block .description,
+	.content .block .cta { width: 100%; }
+}
+
+@media all and (max-width: <?php echo $content_width + $double; ?>px) {
+	.block .inner { width: 100%; }
+	.block .block-inner:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block.inline .block-inner { flex-direction: column; }
 }
 
 /* STICKY */

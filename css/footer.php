@@ -26,7 +26,7 @@
 
 .footer a:not(.button) { color: <?php echo $colors['footer']['links']; ?> }
 
-.footer .footer-title { color: <?php echo $colors['footer']['title']; ?>; }
+.footer .widget-title { color: <?php echo $colors['footer']['title']; ?>; }
 
 <?php foreach ( $queries as $w => $d ) :
 if ( ! empty( $typography['footer']['font_size'][$d] ) || ! empty( $typography['footer']['line_height'][$d] ) ) : ?>

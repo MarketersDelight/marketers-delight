@@ -304,7 +304,7 @@ final class marketers_delight {
 			'id' => 'sidebar-main',
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget' => '</div>',
-			'before_title' => '<h4 class="sidebar-title">',
+			'before_title' => '<h4 class="widget-title">',
 			'after_title' => '</h4>'
 		) );
 
@@ -315,7 +315,7 @@ final class marketers_delight {
 				'id' => $id,
 				'before_widget' => '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
-				'before_title' => '<h4 class="sidebar-title">',
+				'before_title' => '<h4 class="widget-title">',
 				'after_title' => '</h4>'
 			) );
 		}
@@ -328,7 +328,7 @@ final class marketers_delight {
 				'id' => "md-footer-col-$w",
 				'before_widget' => '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
-				'before_title' => '<h4 class="footer-title">',
+				'before_title' => '<h4 class="widget-title">',
 				'after_title' => '</h4>'
 			) );
 		}
@@ -340,7 +340,7 @@ final class marketers_delight {
 			'id' => 'footer-copy',
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
 			'after_widget' => '</div>',
-			'before_title' => '<h3 class="footer-title">',
+			'before_title' => '<h3 class="widget-title">',
 			'after_title' => '</h3>'
 		) );
 	}

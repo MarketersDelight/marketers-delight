@@ -120,7 +120,7 @@
 	.content.box-style .the-content	{ padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
 }
 
-@media all and (max-width: 900px) {
+@media all and (max-width: <?php echo $site_width; ?>px) {
 	.article .content.box-style {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;

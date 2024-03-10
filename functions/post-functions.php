@@ -114,7 +114,7 @@ function md_title( $args = array() ) {
 	$is_inline = isset( $args['inline'] ) ? true : false;
 
 	if ( isset( $args['loop'] ) )
-		$loop = $byline_args['loop'] = $args['loop'];
+		$byline_args['loop'] = $args['loop'];
 
 	if ( ( ! is_singular() && $context == 'post' ) || ! empty( $args['loop']['is_query'] ) )
 		$permalink = get_permalink();

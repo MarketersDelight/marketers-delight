@@ -140,6 +140,7 @@
 .cover<?php echo $text_class; ?>,
 .cover<?php echo $text_class; ?> a,
 .cover<?php echo $text_class; ?> .title,
+.cover<?php echo $text_class; ?> .widget-title,
 .cover<?php echo $text_class; ?> .byline { color: <?php echo esc_attr( $text_atts['color'] ); ?>; }
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 <?php endforeach; ?>
