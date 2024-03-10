@@ -115,6 +115,8 @@
 .block.inline .description,
 .block.inline .cta { flex: 1; }
 
+.block .inner, .block-inner { width: 100%; }
+
 @media all and (min-width: <?php echo $content_width + $double; ?>px) {
 	.block, .block > .inner {
 		align-items: center;
@@ -127,18 +129,18 @@
 		flex-direction: column;
 		text-align: center;
 	}
-	.block .title { width: <?php echo $content_width; ?>px; }
-	.block.inline .title { margin-bottom: 0; }
-	.block.wide .title:not(:last-child),
-	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block .title,
 	.block .description,
 	.block .cta {
 		margin-left: auto;
 		margin-right: auto;
-		max-width: <?php echo $post_width; ?>px;
 	}
-	.block.image-left .description,
-	.block.image-right .description {
+	.block .title { max-width: <?php echo $content_width; ?>px; }
+	.block .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
+	.block.wide .title:not(:last-child),
+	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+	.block.inline .title { margin-bottom: 0; }
+	.block.image-left .description, .block.image-right .description {
 		margin-left: 0;
 		margin-right: 0;
 	}
