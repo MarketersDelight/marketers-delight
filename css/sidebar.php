@@ -14,9 +14,9 @@
 
 .sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar-title { color: <?php echo $colors['sidebar']['title']; ?>; }
+.sidebar .widget-title { color: <?php echo $colors['sidebar']['title']; ?>; }
 
-.sidebar-title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+.sidebar .widget-title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
 
 <?php foreach ( $queries as $w => $d ) :
 if ( ! empty( $typography['sidebar']['font_size'][$d] ) || ! empty( $typography['sidebar']['line_height'][$d] ) ) : ?>

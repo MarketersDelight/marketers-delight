@@ -37,19 +37,6 @@
 .box-style .image-before .cover,
 .box-style .image-before .cover .overlay { border-radius: 0 0 5px 5px; }
 
-/* PAGE TITLE */
-
-.page-header { margin-bottom: <?php echo $single; ?>px; }
-
-.description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-
-.inline-cta {
-	align-items: center;
-	display: flex;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-	justify-content: center;
-}
-
 /* BYLINE */
 
 .byline {
@@ -139,10 +126,6 @@
 	position: relative;
 }
 
-.main > .header-cover { margin-bottom: 0; }
-
-.headline-cover { margin-bottom: <?php echo $single; ?>px; }
-
 <?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
 .header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
 <?php endif; ?>
@@ -157,12 +140,13 @@
 .cover<?php echo $text_class; ?>,
 .cover<?php echo $text_class; ?> a,
 .cover<?php echo $text_class; ?> .title,
+.cover<?php echo $text_class; ?> .widget-title,
 .cover<?php echo $text_class; ?> .byline { color: <?php echo esc_attr( $text_atts['color'] ); ?>; }
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 <?php endforeach; ?>
 
 @media all and (min-width: 800px) {
- 	.content .cover { padding: <?php echo $mid; ?>px; }
+ 	.cover { padding: <?php echo $mid; ?>px; }
 	.header .header-cover-full, .main > .header-cover {
 		padding-bottom: <?php echo $double; ?>px;
 		padding-top: <?php echo $double; ?>px;

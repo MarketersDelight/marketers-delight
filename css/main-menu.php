@@ -1,3 +1,5 @@
+<style type="text/css">
+
 /* MAIN MENU */
 
 .main-menu {
@@ -54,6 +56,8 @@
 	.admin-bar .main-menu { top: <?php echo $admin_bar_height; ?>px; }
 	.main-menu .inner {
 		height: 100%;
+		padding-left: 0;
+		padding-right: 0;
 		overflow-y: scroll;
 	}
 	.has-main-menu { overflow: hidden; }

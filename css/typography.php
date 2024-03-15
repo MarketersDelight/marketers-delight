@@ -23,13 +23,13 @@
 
 <?php
 	$titles = array(
-		'huge' => '.huge-title',
-		'h1' => 'h1, .large-title',
-		'h2' => 'h2, .main-title',
-		'h3' => 'h3, .med-title',
-		'h4' => 'h4, .mid-title, .slim .title',
-		'h5' => 'h5, .small-title, .slim .slim .title',
-		'h6' => 'h6, .micro-title'
+		'huge' => '.huge, .huge-title',
+		'h1' => 'h1, .h1, .large-title',
+		'h2' => 'h2, .h2, .main-title',
+		'h3' => 'h3, .h3, .med-title',
+		'h4' => 'h4, .h4, .mid-title, .slim .title',
+		'h5' => 'h5, .h5, .small-title, .slim .slim .title',
+		'h6' => 'h6, .h6, .micro-title'
 	);
 	$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
 	$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
