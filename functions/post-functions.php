@@ -195,10 +195,6 @@ function md_get_description( $context = 'post' ) {
  * @since 6.0
  */
 
-function md_inline_cta() {
-	echo md_get_inline_cta();
-}
-
 function md_get_inline_cta() {
 	$cta = md_module( array( 'hero', 'page_cta' ) );
 
@@ -228,6 +224,10 @@ function md_get_inline_cta() {
 		$html .= md_module( 'custom_html' );
 
 	return $html;
+}
+
+function md_inline_cta() {
+	echo md_get_inline_cta();
 }
 
 /**
