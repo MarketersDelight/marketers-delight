@@ -18,9 +18,9 @@
 
 /*
 .box-style.columns.slim { row-gap: <?php echo $half; ?>px; }
-*/
-.box-style .columns, .box-style .loop { row-gap: 0; }
 
+.box-style .columns, .box-style .loop { row-gap: 0; }
+*/
 .full .loop.columns, .full .categories.columns { max-width: 100%; }
 
 .entry {
@@ -35,7 +35,9 @@
 
 .timeline, .timeline-left { position: relative; }
 
-.timeline:before, .timeline-left:before, .timeline.columns > .entry:before {
+.timeline:before,
+.timeline-left:before,
+.timeline.columns > .entry:before {
 	background-color: <?php echo $colors['site']['links']; ?>;
 	content: '';
 	display: block;
@@ -88,17 +90,23 @@
 
 /* BOX STYLE */
 
-.box-style > .entry, .timeline-left.box-style > .entry, .the-embed {
+.box-style > .entry,
+.timeline-left.box-style > .entry,
+.the-embed {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.box-style .post-header:not(.cover), .box-style .the-content, .box-style .post-footer { padding: <?php echo $half; ?>px; }
+.box-style .post-header:not(.cover),
+.box-style .the-content,
+.box-style .post-footer { padding: <?php echo $half; ?>px; }
 
-.box-style .post-header, .box-style .the-content { margin-bottom: 0; }
+.box-style .post-header,
+.box-style .the-content { margin-bottom: 0; }
 
-.box-style.categories .section-header, .box-style.timeline-left:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style.categories .section-header,
+.box-style.timeline-left:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
 
@@ -113,11 +121,15 @@
 
 @media all and (min-width: 800px) {
 	.content .box-style:not(.columns) .post-header:not(.cover),
-	.content .box-style:not(.columns) .post-footer,
+	.content .box-style:not(.columns) .post-footer:not(.byline),
 	.content .box-style:not(.columns) .the-content,
 	.content.box-style .post-header:not(.cover),
-	.content.box-style .post-footer,
+	.content.box-style .post-footer:not(.byline),
 	.content.box-style .the-content	{ padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
+	.box-style .post-footer.byline {
+		padding-left: <?php echo $mid; ?>px;
+		padding-right: <?php echo $mid; ?>px;
+	}
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
@@ -127,8 +139,9 @@
 	}
 }
 
-@media all and (min-width: 900px) {
-	.expanded .box-style .author-box, .expanded .box-style .comments {
+@media all and (min-width: 700px) {
+	.expanded .box-style .entry .author-box,
+	.expanded .box-style .entry .comments {
 		padding-left: <?php echo $breakout_full; ?>%;
 		padding-right: <?php echo $breakout_full; ?>%;
 	}
@@ -136,7 +149,8 @@
 
 .box-style .post-header:not(.cover) + .the-content { padding-top: 0; }
 
-.timeline-left.box-style .post-header, .timeline-left.box-style .the-content { padding-left: <?php echo $half + $third; ?>px; }
+.timeline-left.box-style .post-header,
+.timeline-left.box-style .the-content { padding-left: <?php echo $half + $third; ?>px; }
 
 /* LOOP FLUID */
 

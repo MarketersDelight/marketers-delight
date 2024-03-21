@@ -1,18 +1,18 @@
-<article id="post_<?php the_ID(); ?>" <?php post_class( $classes ); ?>>
-
 <?php
-	if ( $loop['featured_image'] == 'above_headline' )
-		md_featured_image( 'post', $loop );
 
-	if ( ! md_has_headline_cover() )
-		md_headline( array( 'loop' => $loop ) );
+echo "<$h id=\"post_"  . get_the_ID() . '" class="' . implode( ' ', get_post_class( $classes ) ) . '">';
 
-	if ( $loop['featured_image'] !== 'above_headline' )
-		md_featured_image( 'post', $loop );
+if ( $loop['featured_image'] == 'above_headline' )
+	md_featured_image( 'post', $loop );
 
-	md_content( $loop );
+if ( ! md_has_headline_cover() )
+	md_headline( array( 'loop' => $loop ) );
 
-	md_hook_content_item();
-?>
+if ( $loop['featured_image'] !== 'above_headline' )
+	md_featured_image( 'post', $loop );
 
-</article>
+md_content( $loop );
+
+md_hook_content_item();
+
+echo "</$h>";

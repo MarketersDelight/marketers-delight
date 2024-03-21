@@ -101,10 +101,10 @@ final class marketers_delight {
 			include_once( MD_DIR . 'classes/blocks.php' );
 		// Hooks
 		require_once( MD_DIR . 'wp/hooks.php' );
-		// Drop-ins
-		$this->dropins();
 		// Deprecated
 		require_once( MD_DIR . 'functions/deprecated.php' );
+		// Drop-ins
+		$this->dropins();
 	}
 
 	/**

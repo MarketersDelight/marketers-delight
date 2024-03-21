@@ -55,8 +55,6 @@ class md_css {
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
-			'sidebar' => locate_template( 'css/sidebar.php' ),
-			'footer' => locate_template( 'css/footer.php' ),
 			'loop' => locate_template( 'css/loop.php' ),
 			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
@@ -67,6 +65,7 @@ class md_css {
 		$templates['main-menu'] = locate_template( 'css/main-menu.php' );
 
 		$dropins = apply_filters( 'md_dropins_css_templates', array() );
+
 		$templates = array_merge( $templates, $dropins );
 
 		return apply_filters( 'md_style_css_templates', $templates );

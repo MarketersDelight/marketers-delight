@@ -35,6 +35,7 @@ function md_loops( $sort = null ) {
 
 function md_loop( $args = array() ) {
 	$c = 1;
+	$h = is_singular() ? 'div' : 'article';
 	$wrap_classes = array();
 	$categories_classes = array( 'categories' );
 	$category_classes = array( 'entry' );

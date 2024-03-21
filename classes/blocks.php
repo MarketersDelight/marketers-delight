@@ -89,7 +89,7 @@ class md_blocks {
 
 		$files['block-editor'] = array(
 			'templates' => $templates,
-			'path' => MD_DIR . 'block-editor.css'
+			'path' => MD_DIR . 'css/block-editor.css'
 		);
 
 		return $files;
@@ -120,7 +120,7 @@ class md_blocks {
 
 		// Load Blocks CSS
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) ) {
-			$css = 'block-editor.css';
+			$css = 'css/block-editor.css';
 
 			wp_enqueue_style( 'md-blocks', MD_URL . $css, array( 'wp-edit-blocks' ), md_ver( $css ) );
 		}

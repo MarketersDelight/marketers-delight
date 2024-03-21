@@ -44,7 +44,6 @@
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: flex;
 	flex-flow: wrap;
-	column-gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -55,7 +54,9 @@
 	text-decoration: none;
 }
 
-.byline-item { font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
+.byline-item {font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
+
+.byline-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
@@ -79,14 +80,11 @@
 
 .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.post-footer.byline, .box-style .post-footer.byline {
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
-}
-
 .post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .post-footer + .post-footer { border-top: 0; }
+
+.post-footer.byline { margin-bottom: 0; }
 
 /* CAPTIONS */
 

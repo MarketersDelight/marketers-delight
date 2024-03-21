@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Customize the output of a link or button displayed from any MD button settings page
  * or the md_get_link and md_link() function.
@@ -70,8 +69,12 @@ if ( $style == 'button' ) {
 	elseif ( $button_color )
 		$styles['bg_color'] = esc_attr( $button_color );
 }
-else
+else {
 	$classes[] = 'link';
+
+	if ( ! empty( $fields["link{$p}_color"] ) )
+		$styles['color'] = esc_attr( $fields["link{$p}_color"] );
+}
 
 if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
 	$popup = ' data-popup="popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';

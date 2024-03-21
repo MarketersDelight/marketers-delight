@@ -43,7 +43,7 @@ class md_js {
 	public function script_js() {
 		$child_js = locate_template( 'scripts.php' );
 		$templates = array(
-			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'scripts.php'
+			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'js/scripts.php'
 		);
 		$templates = apply_filters( 'md_js_templates', $templates );
 

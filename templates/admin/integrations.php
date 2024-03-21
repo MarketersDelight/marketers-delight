@@ -1,8 +1,8 @@
 <div class="<?php echo md_has( 'optins' ) ? 'md-content-wrap-med' : 'md-content-wrap'; ?>">
 
-	<h2 class="md-title"><?php echo __( 'Website Integrations', 'md' ); ?></h2>
+	<h2 class="md-title"><?php echo __( 'Integrations', 'md' ); ?></h2>
 
-	<p><?php echo __( 'Connect your website to your favorite third-party services.', 'md' ); ?></p>
+	<p><?php echo __( 'Connect to your favorite third-party services for better feature integrations.', 'md' ); ?></p>
 
 	<hr />
 

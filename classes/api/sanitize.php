@@ -162,6 +162,28 @@ class md_sanitize {
 	}
 
 	/**
+	 * A list of accepted title sizes from h1-h6 selectors.
+	 *
+	 * @since 6.0
+	 */
+
+	public function h_ids() {
+		return array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'huge' );
+	}
+
+	public function h_options() {
+		return array(
+			'h1' => __( 'Main Title (h1)', 'md' ),
+			'h2' => __( 'Large Title (h2)', 'md' ),
+			'h3' => __( 'Medium Title (h3)', 'md' ),
+			'h4' => __( 'Small Title (h4)', 'md' ),
+			'h5' => __( 'Micro Title (h5)', 'md' ),
+			'h6' => __( 'Normal Text', 'md' ),
+			'huge' => __( 'Huge Title', 'md' )
+		);
+	}
+
+	/**
 	 * Run text field through native WP function.
 	 *
 	 * @since 4.5

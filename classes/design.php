@@ -54,6 +54,7 @@ class md_colors extends md_api {
 				'border_color' => array( 'type' => 'color' ),
 				'text' => array( 'type' => 'color' ),
 				'title' => array( 'type' => 'color' ),
+				'title_link' => array( 'type' => 'color' ),
 				'links' => array( 'type' => 'color' )
 			)
 		);
@@ -98,6 +99,7 @@ class md_colors extends md_api {
 				'name' => __( 'Design', 'md' ),
 				'parent' => 'md_settings',
 				'admin_header' => true,
+				'order' => 3,
 				'hide_tab' => true,
 				'fields' => $fields
 			)
@@ -146,6 +148,7 @@ class md_colors extends md_api {
 				'border_color' => __( 'Border', 'md' ),
 				'text' => __( 'Text', 'md' ),
 				'title' => __( 'Title', 'md' ),
+				'title_link' => __( 'Title Link', 'md' ),
 				'links' => __( 'Links', 'md' )
 			)
 		);

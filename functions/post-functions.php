@@ -195,6 +195,10 @@ function md_get_description( $context = 'post' ) {
  * @since 6.0
  */
 
+function md_inline_cta() {
+	echo md_get_inline_cta();
+}
+
 function md_get_inline_cta() {
 	$cta = md_module( array( 'hero', 'page_cta' ) );
 
@@ -224,10 +228,6 @@ function md_get_inline_cta() {
 		$html .= md_module( 'custom_html' );
 
 	return $html;
-}
-
-function md_inline_cta() {
-	echo md_get_inline_cta();
 }
 
 /**
@@ -385,7 +385,7 @@ function md_real_comment_count( $count ) {
 
 function md_comments() {
 	if ( md_has_comments() )
-		comments_template( '/templates/comments/comments.php' );
+		comments_template();
 }
 
 /**
@@ -413,7 +413,7 @@ function md_comment( $comment, $args, $depth ) {
 
 	$classes = array_values( $classes );
 
-	include( md_template( 'comments/comment', true ) );
+	include( md_template( 'comment', true ) );
 }
 
 /**

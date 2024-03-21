@@ -34,10 +34,11 @@ if ( $title ) {
 
 	if ( $context == 'post' )
 		md_byline( 'after_headline', $byline_args );
-	elseif ( ! $is_inline )
-		md_inline_cta();
 
 	do_action( "md_hook_after_{$context}_title" );
+
+	if ( ! $is_inline )
+		md_inline_cta();
 
 	echo $context !== 'post' ? '</div>' : ''; // close .block-inner
 }

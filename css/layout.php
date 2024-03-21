@@ -25,7 +25,8 @@
 	padding-top: <?php echo $single; ?>px;
 }
 
-.main + .query > .inner, .block + .main > .inner { padding-top: 0; }
+.main + .query > .inner,
+.block + .main > .inner { padding-top: 0; }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.inner {
@@ -53,49 +54,39 @@
 	}
 }
 
-@media all and (min-width: 700px) {
-	.show-mobile { display: none !important; }
-	.f3, .f4, .f5 {
-		flex-basis: calc(50% - <?php echo $half; ?>px);
-		max-width: calc(50% - <?php echo $half; ?>px);
-	}
-}
-
-@media all and (max-width: 700px) {
-	.show-desktop { display: none !important; }
-}
-
 @media all and (max-width: 900px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
 }
 
-@media all and (min-width: 900px) {
-	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
-	.f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); }
-	<?php endfor; ?>
-	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
-	.box-style.columns > .f<?php echo $f; ?>, .slim .f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
-	.box-style.columns .columns .f<?php echo $f; ?> { flex-basis: <?php echo ( 100 / $f ); ?>%; max-width: <?php echo ( 100 / $f ); ?>%; }
-	<?php endfor; ?>
+/* FOOTER */
+
+.footer .columns {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
+.footer-copy {
+	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+	text-align: center;
 }
 
 /* CONTENT BLOCK */
 
 .page-header { margin-bottom: <?php echo $single; ?>px; }
 
-.title:not(:last-child), .description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.title:not(:last-child),
+.description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .cta {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $single; ?>px;
+	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 	position: relative;
 }
 
-.cta-link {
-	flex: 1;
-	text-align: center;
-}
+.cta-link { text-align: center; }
 
 .block.inline { flex-flow: wrap; }
 
@@ -137,8 +128,6 @@
 	}
 	.block.wide .title { max-width: <?php echo $content_width; ?>px; }
 	.block.wide .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
-	.block.wide .title:not(:last-child),
-	.block.wide .description:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.block.wide .cta { justify-content: center; }
 	.block.inline .title { margin-bottom: 0; }
 	.block.image-left .description, .block.image-right .description {
@@ -152,22 +141,4 @@
 	.block .inner { width: 100%; }
 	.block .block-inner:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 	.block.inline .block-inner { flex-direction: column; }
-}
-
-/* STICKY */
-
-.sticky {
-	position: sticky;
-		top: -1px;
-	z-index: 50;
-}
-
-.admin-bar .stuck { padding-top: <?php echo $admin_bar_height; ?>px; }
-
-@media all and (max-width: 782px) {
-	.admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
-}
-
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed; }
 }

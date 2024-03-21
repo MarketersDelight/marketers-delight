@@ -1,5 +1,23 @@
 <style type="text/css">
 
+/* STICKY */
+
+.sticky {
+	position: sticky;
+		top: -1px;
+	z-index: 50;
+}
+
+.admin-bar .stuck { padding-top: <?php echo $admin_bar_height; ?>px; }
+
+@media all and (max-width: 782px) {
+	.admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
+}
+
+@media all and (max-width: 600px) {
+	#wpadminbar { position: fixed; }
+}
+
 /* ALIGNMENTS */
 
 .alignfull, .alignwide { max-width: initial; }
@@ -95,6 +113,25 @@
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
+}
+
+/* WIDTHS */
+
+@media all and (min-width: 700px) {
+	.f3, .f4, .f5 {
+		flex-basis: calc(50% - <?php echo $half; ?>px);
+		max-width: calc(50% - <?php echo $half; ?>px);
+	}
+}
+
+@media all and (min-width: 900px) {
+	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
+	.f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $single; ?>px); }
+	<?php endfor; ?>
+	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
+	.box-style.columns > .f<?php echo $f; ?>, .slim .f<?php echo $f; ?> { flex-basis: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
+	.box-style.columns .columns .f<?php echo $f; ?> { flex-basis: <?php echo ( 100 / $f ); ?>%; max-width: <?php echo ( 100 / $f ); ?>%; }
+	<?php endfor; ?>
 }
 
 /* SPACERS */
@@ -216,6 +253,8 @@ ul.list-check li:before {
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
+.border { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+
 .highlight {
 	background-color: #fdd169;
 	padding-left: <?php echo $small; ?>px;
@@ -229,6 +268,13 @@ ul.list-check li:before {
 	padding: <?php echo $half; ?>px;
 }
 
+.note {
+	background-color: #ddd;
+	border-radius: 5px;
+	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	padding: <?php echo $half; ?>px;
+}
+
 .foot {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
@@ -237,24 +283,16 @@ ul.list-check li:before {
 }
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
-
 .wp-block-image.shadow { box-shadow: none; }
 
 <?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
 	$color_slug = $color_fields['slug'];
 	$color_val = $color_fields['color'];
-
-	echo
-		".has-$color_slug-background-color { background-color: $color_val; }\n".
+	echo ".has-$color_slug-background-color { background-color: $color_val; }\n".
 		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n" : '' );
 } ?>
 
 .has-text-color.has-white-color { color: #fff; }
-
-.s-small {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-}
 
 .circle { border-radius: 50%; }
 
@@ -275,6 +313,7 @@ ul.list-check li:before {
 
 .circle-icon.mid {
 	height: <?php echo $mid; ?>px;
+	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
 	width: <?php echo $mid; ?>px;
 }
 
@@ -293,4 +332,12 @@ ul.list-check li:before {
 	display: block;
 	inset: 0;
 	position: absolute;
+}
+
+@media all and (min-width: 700px) {
+	.show-mobile { display: none !important; }
+}
+
+@media all and (max-width: 700px) {
+	.show-desktop { display: none !important; }
 }

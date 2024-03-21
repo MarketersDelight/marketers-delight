@@ -19,7 +19,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 	font-family: inherit;
 	font-style: normal;
 	line-height: 1;
-	padding: <?php echo $half; ?>px;
+	padding: <?php echo $half; ?>px <?php echo $half + $small; ?>px;
 	position: relative;
 	text-align: center;
 	text-decoration: none;

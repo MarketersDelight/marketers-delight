@@ -16,11 +16,10 @@ class md_icons extends md_api {
 	public function register() {
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Font Icons', 'md' ),
+				'name' => __( 'Icons', 'md' ),
 				'tab_name' => __( 'Icons', 'md' ),
-				'parent_slug' => 'upload.php',
-				'admin_header' => true,
-				'order' => 15,
+				'parent' => 'md_settings',
+				'order' => 3,
 				'fields' => array(
 					'data' => array(
 						'type' => 'group',

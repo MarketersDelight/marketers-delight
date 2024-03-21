@@ -1,14 +1,19 @@
 <?php
 	$permalink = get_permalink();
+	$post_time = get_post_time();
+	$relative = human_time_diff( $post_time, current_time( 'U' ) );
 	$date = $post_date = get_the_time( get_option( 'date_format' ) );
 
 	if ( isset( $fields['url_params'] ) )
 		$permalink .= $fields['url_params'];
 
 	if ( ! empty( $fields['settings']['relative'] ) || isset( $fields['relative_date'] ) ) {
-		$relative = isset( $fields['relative_date'] ) ? $fields['relative_date'] : get_the_time( 'U' );
-		$time = human_time_diff( $relative, current_time( 'U' ) );
-		$date = sprintf( __( '%s ago', 'md' ), $time );
+		if ( isset( $fields['relative_date'] ) ) {
+			$post_time = $fields['relative_date'];
+			$relative = human_time_diff( $post_time );
+		}
+
+		$date = sprintf( __( '%s ago', 'md' ), $relative );
 	}
 ?>
 

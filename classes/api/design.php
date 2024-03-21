@@ -102,6 +102,7 @@ class md_design {
 					'border_color' => $colors['border'],
 					'text' => $colors['text'],
 					'title' => $colors['text'],
+					'title_link' => $colors['text'],
 					'links' => $colors['subtext']
 				),
 				'width' => array(
@@ -127,11 +128,11 @@ class md_design {
 				'huge' => array(
 					'font_size' => array(
 						'desktop' => round( $h1['desktop'] * 1.5 ),
-						'mobile' => round( $h1['mobile'] * 1.5 )
+						'mobile' => round( $h1['mobile'] * 1.25 )
 					),
 					'line_height' => array(
 						'desktop' => round( $h1['desktop'] * 2 ),
-						'mobile' => round( $h1['mobile'] * 2 )
+						'mobile' => round( $h1['mobile'] * 1.5 )
 					)
 				),
 				'h1' => array(
