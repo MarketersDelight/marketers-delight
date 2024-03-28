@@ -2,7 +2,7 @@
 
 	<?php md_featured_image( $loop ); ?>
 
-	<div class="post-header">
+	<div class="headline post-headline block">
 		<?php md_title( array( 'loop' => $loop ) ); ?>
 	</div>
 

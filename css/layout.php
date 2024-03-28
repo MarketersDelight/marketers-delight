@@ -38,6 +38,7 @@
 @media all and (min-width: 900px) {
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
+	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
 	.content-sidebar .content {
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
@@ -58,7 +59,21 @@
 	.content { margin-bottom: <?php echo $single; ?>px; }
 }
 
-/* FOOTER */
+/* ASIDE ELEMENTS */
+
+<?php foreach ( array( 'sidebar', 'footer' ) as $aside ) {
+	echo
+		".{$aside} {\n".
+			( ! empty( $colors[$aside]['bg_color'] ) ? "\tbackground-color: " . $colors[$aside]['bg_color'] . ";\n" : '' ).
+			'color: ' . $colors[$aside]['text'] . ";\n".
+			'font-size: ' . $typography[$aside]['font_size']['desktop'] . "px;\n".
+			'line-height: ' . $typography[$aside]['line_height']['desktop'] . "px;\n".
+			"position: relative;\n".
+		"}\n".
+		".{$aside} a { color: " . $colors[$aside]['links'] . "; }\n".
+		".{$aside} .widget-title { color: " . $colors[$aside]['title'] . "; }\n".
+		".{$aside} .widget-title a { color: " . $colors[$aside]['title_link'] . "; }\n";
+} ?>
 
 .footer .columns {
 	padding-bottom: <?php echo $single; ?>px;
@@ -72,73 +87,31 @@
 	text-align: center;
 }
 
-/* CONTENT BLOCK */
+<?php foreach ( $queries as $w => $d ) {
 
-.page-header { margin-bottom: <?php echo $single; ?>px; }
+	echo "@media all and (max-width: {$w}px) {\n";
 
-.title:not(:last-child),
-.description:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+	if ( ! empty( $font_size[$d] ) || ! empty( $line_height[$d] ) )
+		echo "\tbody { ".
+				( ! empty( $font_size[$d] ) ? 'font-size: ' . $font_size[$d] . 'px; ' : '' ).
+				( ! empty( $line_height[$d] ) ? 'line-height: ' . $line_height[$d] . 'px; ' : '' ).
+		 	"}\n";
 
-.cta {
-	align-items: center;
-	display: flex;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-	position: relative;
-}
-
-.cta-link { text-align: center; }
-
-.block.inline { flex-flow: wrap; }
-
-.block.inline .block-inner {
-	align-items: center;
-	display: flex;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-}
-
-.block .block-inner,
-.block .featured-image {
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.block.inline .title,
-.block.inline .description,
-.block.inline .cta { flex: 1; }
-
-.block .inner, .block-inner { width: 100%; }
-
-@media all and (min-width: <?php echo $content_width + $double; ?>px) {
-	.block, .block > .inner {
-		align-items: center;
-		display: flex;
-		gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-		text-align: center;
+	foreach ( $titles as $h => $selector ) {
+		if ( ! empty( $typography[$h]['font_size'][$d] ) || ! empty( $typography[$h]['line_height'][$d] ) )
+		echo "\t$selector { ".
+				( ! empty( $typography[$h]['font_size'][$d] ) ? 'font-size: ' . $typography[$h]['font_size'][$d] . 'px; ' : '' ).
+				( ! empty( $typography[$h]['line_height'][$d] ) ? 'line-height: ' . $typography[$h]['line_height'][$d] . 'px; ' : '' ).
+			"}\n";
 	}
-	.inline, .block.image-right, .block.image-left { text-align: left; }
-	.block.image-before, .block.image-after, .block.image-center {
-		flex-direction: column;
-		text-align: center;
-	}
-	.block.wide .title,
-	.block.wide .description,
-	.block.wide .cta {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.block.wide .title { max-width: <?php echo $content_width; ?>px; }
-	.block.wide .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
-	.block.wide .cta { justify-content: center; }
-	.block.inline .title { margin-bottom: 0; }
-	.block.image-left .description, .block.image-right .description {
-		margin-left: 0;
-		margin-right: 0;
-	}
-	.block.image-left .featured-image { order: -1; }
-}
 
-@media all and (max-width: <?php echo $content_width + $double; ?>px) {
-	.block .inner { width: 100%; }
-	.block .block-inner:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-	.block.inline .block-inner { flex-direction: column; }
-}
+	foreach ( array( 'sidebar', 'footer' ) as $aside )
+		if ( ! empty( $typography[$aside]['font_size'][$d] ) || ! empty( $typography[$aside]['line_height'][$d] ) ) {
+			echo ".{$aside} { ".
+		 		( ! empty( $typography[$aside]['font_size'][$d] ) ? 'font-size: ' . $typography[$aside]['font_size'][$d] . 'px; ' : '' ).
+		 		( ! empty( $typography[$aside]['line_height'][$d] ) ? 'line-height: ' . $typography[$aside]['line_height'][$d] . 'px; ' : '' ) . '}';
+	}
+
+	echo "}\n";
+
+} ?>

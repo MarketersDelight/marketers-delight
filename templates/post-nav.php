@@ -1,7 +1,19 @@
 <aside class="post-nav">
 
-	<?php previous_post_link( '<div class="post-nav-previous">%link</div>', '<p class="post-nav-subtitle">' . md_icon( 'angle-left' ) . __( 'Previous', 'md' ) . '</p><p class="post-nav-title">%title</p>' ); ?>
+	<?php if ( get_previous_post_link() ) : ?>
+	<div class="post-nav-previous">
+		<?php echo md_icon( 'angle-left', array( 'classes' => 'mr-small' ) ); ?>
+		<span class="post-nav-direction"><?php echo __( 'Previous', 'md' ); ?></span>
+		<?php echo get_previous_post_link( '%link' ); ?>
+	</div>
+	<?php endif; ?>
 
-	<?php next_post_link( '<div class="post-nav-next">%link</div>', '<p class="post-nav-subtitle">' . __( 'Next', 'md' ) . md_icon( 'angle-right' ) . '</p><p class="post-nav-title">%title</p>' ); ?>
+	<?php if ( get_next_post_link() ) : ?>
+	<div class="post-nav-next">
+		<span class="post-nav-direction mr-small"><?php echo __( 'Next', 'md' ); ?></span>
+		<?php echo md_icon( 'angle-right' ); ?>
+		<?php echo get_next_post_link( '%link' ); ?>
+	</div>
+	<?php endif; ?>
 
 </aside>

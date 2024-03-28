@@ -17,11 +17,6 @@
 
 /* TITLE */
 
-.comment-reply-title {
-	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
-}
-
 .content-title {
 	align-items: center;
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;

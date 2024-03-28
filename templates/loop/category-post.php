@@ -1,8 +1,7 @@
-<div class="<?php echo esc_attr( $category_classes ); ?>">
+<div class="entry">
 
-	<div class="section-header post-header layout">
-
-		<div class="title-wrap">
+	<div class="headline post-headline block">
+		<div class="wrap">
 
 			<h2 class="title"><a href="<?php echo get_term_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a></h2>
 
@@ -11,18 +10,16 @@
 				<?php echo wpautop( $category_description ); ?>
 			</div>
 			<?php endif; ?>
-
 		</div>
 
 	</div>
 
 	<div class="loop<?php echo esc_attr( $wrap_classes ); ?>">
 
-	<?php while ( $posts->have_posts() ) {
-		$posts->the_post();
-
-		include( md_template( 'loop/the-post', true ) );
-	} ?>
+		<?php while ( $posts->have_posts() ) :
+			$posts->the_post();
+			include( md_template( 'loop/the-post', true ) );
+		endwhile; ?>
 
 	</div>
 

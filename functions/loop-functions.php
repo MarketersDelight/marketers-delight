@@ -38,7 +38,6 @@ function md_loop( $args = array() ) {
 	$h = is_singular() ? 'div' : 'article';
 	$wrap_classes = array();
 	$categories_classes = array( 'categories' );
-	$category_classes = array( 'entry' );
 	$post_type = md_get_post_type();
 	$loops = md_loops();
 
@@ -87,6 +86,7 @@ function md_loop( $args = array() ) {
 
 	if ( $loop['columns'] > 1 ) {
 		$wrap_classes[] = 'columns';
+		$wrap_classes[] = 'columns-' . $loop['columns'];
 
 		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
 			$wrap_classes[] = 'slim';
@@ -109,6 +109,8 @@ function md_loop( $args = array() ) {
 	$wrap_classes = ' ' . join( ' ', $wrap_classes );
 
 	$looped = $loop;
+
+	do_action( 'md_loop_before' );
 
 	if ( isset( $args['sticky'] ) )
 		include( md_template( 'loop/the-post', true ) );
@@ -138,6 +140,8 @@ function md_loop( $args = array() ) {
 	}
 	else
 		md_404_template();
+
+	do_action( 'md_loop_after' );
 }
 
 /**

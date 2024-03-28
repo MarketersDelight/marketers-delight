@@ -2,9 +2,20 @@
 
 <div class="<?php echo esc_attr( $classes ); ?>"<?php echo $style; ?>>
 
-	<?php md_overlay( $cover ); ?>
+	<?php
 
-	<?php md_title( $args ); ?>
+	md_overlay( $cover );
+
+	do_action( "md_hook_{$context}_header_top", "{$context}_header_top" );
+
+	md_title( $args );
+
+	do_action( "md_hook_{$context}_header_bottom", "{$context}_header_bottom" );
+
+	if ( ! empty( $cover['photo']['id'] ) )
+		echo md_get_caption( $cover['photo']['id'] );
+
+	?>
 
 </div>
 

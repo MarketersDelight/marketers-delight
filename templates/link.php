@@ -28,9 +28,6 @@ $icon_classes = 'link-icon';
 if ( $parent )
 	$classes[] = "{$parent}-link";
 
-if ( isset( $fields["link{$p}_classes"] ) )
-	$classes[] = esc_attr( $fields["link{$p}_classes"] );
-
 if ( ! empty( $fields["link{$p}_display"] ) )
 	$classes[] = 'show-' . esc_attr( $fields["link{$p}_display"] );
 
@@ -90,6 +87,10 @@ if ( ! empty( $fields["link{$p}_toggle"]['hide_label_mobile'] ) )
 	$classes[] = 'hide-label-mobile';
 
 $style = md_style( $styles );
+
+if ( isset( $fields["link{$p}_classes"] ) )
+	$classes[] = esc_attr( $fields["link{$p}_classes"] );
+
 $classes = join( ' ', $classes );
 
 if ( $classes )

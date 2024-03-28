@@ -18,6 +18,8 @@
 	position: relative;
 }
 
+.header-wrap { position: relative; }
+
 .header-wrap a { color: <?php echo $header['menu']['links']; ?>; }
 
 .header-wrap a:hover, .header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
@@ -120,8 +122,11 @@
 	.site-name + .tagline { margin-left: <?php echo $third; ?>px; }
 	<?php endif; ?>
 	/* FLYER */
-	.header-flyer .header-controls { order: 2; }
-	.header-flyer .header-aside { order: 3; }
+	.header-flyer .header-wrap {
+		column-gap: <?php echo $single; ?>px;
+		justify-content: center;
+	}
+	.header-flyer .header-primary { order: -1; }
 	.header-flyer .site-title { justify-content: center; }
 	/* RTL */
 	.header-rtl .header-controls { order: 3; }

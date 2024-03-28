@@ -1,12 +1,5 @@
 <style type="text/css">
 
-.full .loop, .full .categories,
-.article.full .stream {
-	margin-left: auto;
-	margin-right: auto;
-	max-width: <?php echo $content_width; ?>px;
-}
-
 .loop, .categories, .columns {
 	display: flex;
 	flex-flow: wrap;
@@ -21,12 +14,10 @@
 
 .box-style .columns, .box-style .loop { row-gap: 0; }
 */
-.full .loop.columns, .full .categories.columns { max-width: 100%; }
 
 .entry {
-	flex-basis: 100%;
-	max-width: 100%;
 	position: relative;
+	width: 100%;
 }
 
 /* LIST: TIMELINE */
@@ -98,14 +89,14 @@
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
-.box-style .post-header:not(.cover),
+.box-style .headline:not(.cover),
 .box-style .the-content,
 .box-style .post-footer { padding: <?php echo $half; ?>px; }
 
-.box-style .post-header,
+.box-style .headline,
 .box-style .the-content { margin-bottom: 0; }
 
-.box-style.categories .section-header,
+.box-style.categories .headline,
 .box-style.timeline-left:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
@@ -120,10 +111,10 @@
 }
 
 @media all and (min-width: 800px) {
-	.content .box-style:not(.columns) .post-header:not(.cover),
+	.content .box-style:not(.columns) .headline:not(.cover),
 	.content .box-style:not(.columns) .post-footer:not(.byline),
 	.content .box-style:not(.columns) .the-content,
-	.content.box-style .post-header:not(.cover),
+	.content.box-style .headline:not(.cover),
 	.content.box-style .post-footer:not(.byline),
 	.content.box-style .the-content	{ padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
 	.box-style .post-footer.byline {
@@ -133,7 +124,7 @@
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-	.article .content.box-style {
+	.single .content.box-style {
 		margin-left: -<?php echo $half; ?>px;
 		margin-right: -<?php echo $half; ?>px;
 	}
@@ -147,9 +138,9 @@
 	}
 }
 
-.box-style .post-header:not(.cover) + .the-content { padding-top: 0; }
+.box-style .headline:not(.cover) + .the-content { padding-top: 0; }
 
-.timeline-left.box-style .post-header,
+.timeline-left.box-style .headline,
 .timeline-left.box-style .the-content { padding-left: <?php echo $half + $third; ?>px; }
 
 /* LOOP FLUID */
@@ -169,9 +160,9 @@
 
 .loop-list.box-style .post-box { gap: 0; }
 
-.loop-list .post-header { flex: 1; }
+.loop-list .headline { flex: 1; }
 
-.loop-list .image-right .post-header { order: -1; }
+.loop-list .image-right .headline { order: -1; }
 
 .loop-list.box-style .image-left .featured-image {
 	margin-right: <?php echo $half; ?>px;
@@ -187,7 +178,7 @@
 	padding-top: <?php echo $half; ?>px;
 }
 
-.loop-list.box-style .post-header + .the-content { padding-top: <?php echo $half; ?>px; }
+.loop-list.box-style .headline + .the-content { padding-top: <?php echo $half; ?>px; }
 */
 .loop-list .post-footer, .loop-blocks .post-footer { flex-basis: 100%; }
 
@@ -261,14 +252,14 @@
 	text-shadow: 0 2px 3px rgba(0, 0, 0, 0.8);
 }
 
-.loop-covers .post-header {
+.loop-covers .headline {
 	padding: 0;
 	position: relative;
 	transition: 0.3s;
 	z-index: 10;
 }
 
-.loop-covers .entry:hover .post-header { transform: translateY(-<?php echo $small; ?>px); }
+.loop-covers .entry:hover .headline { transform: translateY(-<?php echo $small; ?>px); }
 
 .loop-covers .standard .byline-badge { display: none; }
 
@@ -294,21 +285,23 @@
 /* SIZES */
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.expanded .post-header, .header .post-header { text-align: center; }
-	.expanded .byline, .header .byline { justify-content: center; }
 	.expanded .the-content {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-	.expanded .box-style .the-content {
-		padding-left: 0;
-		padding-right: 0;
-	}
-	.expanded .author-box, .expanded .post-footer, .expanded .comments {
+	.expanded .author-box,
+	.expanded .post-footer,
+	.expanded .comments {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
-	.expanded .box-style .post-footer, .expanded .box-style .author-box, .expanded .box-style .comments { max-width: 100%; }
+	.expanded .box-style .the-content {
+		padding-left: 0;
+		padding-right: 0;
+	}
+	.expanded .box-style .post-footer,
+	.expanded .box-style .author-box,
+	.expanded .box-style .comments { max-width: 100%; }
 }

@@ -145,13 +145,17 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e901',
 			'label' => __( 'Copy', 'md' )
 		),
-		'location' => array(
-			'unicode' => 'e947',
-			'label' => __( 'Location', 'md' )
+		'calendar' => array(
+			'unicode' => 'e90c',
+			'label' => __( 'Calendar', 'md' )
 		),
 		'code' => array(
 			'unicode' => 'f121',
 			'label' => __( 'Code', 'md' )
+		),
+		'cog' => array(
+			'unicode' => 'e906',
+			'label' => __( 'Cog', 'md' )
 		),
 		'download' => array(
 			'unicode' => 'e822',
@@ -160,6 +164,10 @@ function md_icons( $show_defaults = null ) {
 		'dribbble' => array(
 			'unicode' => 'e80c',
 			'label' => __( 'Dribbble', 'md' )
+		),
+		'drop' => array(
+			'unicode' => 'e909',
+			'label' => __( 'Drop', 'md' )
 		),
 		'exclamation' => array(
 			'unicode' => 'f12a',
@@ -177,6 +185,10 @@ function md_icons( $show_defaults = null ) {
 		'flickr' => array(
 			'unicode' => 'e80a',
 			'label' => __( 'Flickr', 'md' )
+		),
+		'font' => array(
+			'unicode' => 'e90b',
+			'label' => __( 'Font', 'md' )
 		),
 		'forum' => array(
 			'unicode' => 'e902',
@@ -199,6 +211,14 @@ function md_icons( $show_defaults = null ) {
 			'unicode' => 'e801',
 			'label' => __( 'Heart Empty', 'md' )
 		),
+		'home' => array(
+			'unicode' => 'e907',
+			'label' => __( 'Home', 'md' )
+		),
+		'image' => array(
+			'unicode' => 'e908',
+			'label' => __( 'Image', 'md' ),
+		),
 		'instagram' => array(
 			'unicode' => 'e805',
 			'label' => __( 'Instagram', 'md' ),
@@ -210,6 +230,10 @@ function md_icons( $show_defaults = null ) {
 		'like' => array(
 			'unicode' => 'e820',
 			'label' => __( 'Like', 'md' )
+		),
+		'location' => array(
+			'unicode' => 'e947',
+			'label' => __( 'Location', 'md' )
 		),
 		'url' => array(
 			'unicode' => 'e827',
@@ -238,7 +262,7 @@ function md_icons( $show_defaults = null ) {
 		),
 		'notification' => array(
 			'unicode' => 'e905',
-			'label' => __( 'Star', 'md' )
+			'label' => __( 'Notification', 'md' )
 		),
 		'ok' => array(
 			'unicode' => 'e804',
@@ -265,6 +289,10 @@ function md_icons( $show_defaults = null ) {
 		'plus' => array(
 			'unicode' => 'ea0a',
 			'label' => __( 'Plus', 'md' )
+		),
+		'plugin' => array(
+			'unicode' => 'e90a',
+			'label' => __( 'Plugin', 'md' )
 		),
 		'quote' => array(
 			'unicode' => 'f10e',

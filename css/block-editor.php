@@ -64,9 +64,9 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 
 div.editor-styles-wrapper {
 	<?php if ( md_setting( array( 'content', 'style' ) ) == 'minimal' ) : ?>
-		background-color: <?php echo $colors['site']['bg_color']; ?>;
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	<?php else : ?>
-		background-color: <?php echo $colors['content']['bg_color']; ?>;
+	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	<?php endif; ?>
 	color: <?php echo $colors['site']['text']; ?>;
 }

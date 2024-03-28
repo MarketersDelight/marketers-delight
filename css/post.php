@@ -1,41 +1,17 @@
 <style type="text/css">
 
-/* BREADCRUMBS */
+/* POST / PAGE HEADER */
 
-.breadcrumbs {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	margin-bottom: <?php echo $half; ?>px;
-}
+.page-headline { margin-bottom: <?php echo $single; ?>px; }
 
-.breadcrumbs a { text-decoration: underline; }
-
-.breadcrumbs a:hover { text-decoration: none; }
-
-.breadcrumbs a, .breadcrumbs i, .breadcrumb-text { margin-right: <?php echo $third; ?>px; }
-
-/* FEATURED IMAGE */
-
-.featured-image {
+.cta {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 	position: relative;
-	z-index: 5;
 }
 
-.featured-image a { display: block; }
-
-.featured-image img { width: 100%; }
-
-.cover, .cover .overlay, .featured-image img { border-radius: 5px; }
-
-.box-style .image-before .featured-image img,
-.box-style .image-after .post-header,
-.box-style .image-after .cover,
-.box-style .image-after .cover .overlay { border-radius: 5px 5px 0 0; }
-
-.box-style .image-after .featured-image img,
-.box-style .image-before .post-header,
-.box-style .image-before .cover,
-.box-style .image-before .cover .overlay { border-radius: 0 0 5px 5px; }
+.cta-link { text-align: center; }
 
 /* BYLINE */
 
@@ -46,8 +22,6 @@
 	flex-flow: wrap;
 	position: relative;
 }
-
-.byline:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -76,15 +50,28 @@
 	margin-bottom: <?php echo $half; ?>px;
 }
 
-/* POST FOOTER */
+/* FEATURED IMAGE */
 
-.post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.featured-image {
+	position: relative;
+	z-index: 5;
+}
 
-.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.featured-image a { display: block; }
 
-.post-footer + .post-footer { border-top: 0; }
+.featured-image img { width: 100%; }
 
-.post-footer.byline { margin-bottom: 0; }
+.cover, .cover .overlay, .featured-image img { border-radius: 5px; }
+
+.box-style .image-before .featured-image img,
+.box-style .image-after .headline,
+.box-style .image-after .cover,
+.box-style .image-after .cover .overlay { border-radius: 5px 5px 0 0; }
+
+.box-style .image-after .featured-image img,
+.box-style .image-before .headline,
+.box-style .image-before .cover,
+.box-style .image-before .cover .overlay { border-radius: 0 0 5px 5px; }
 
 /* CAPTIONS */
 
@@ -114,54 +101,11 @@
 	z-index: 10;
 }
 
-/* COVERS */
-
-.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
-
-.cover, .header.has-cover {
-	background-position: center center;
-	background-size: cover;
-	position: relative;
-}
-
-<?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
-.header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
-<?php endif; ?>
-
-<?php foreach ( $cover_colors as $text_class => $text_atts ) : $text_class = $text_atts['class']; ?>
-.header.has-cover<?php echo $text_class; ?>,
-.header.has-cover<?php echo $text_class; ?> .site-name,
-.header.has-cover<?php echo $text_class; ?> .site-name a,
-.header.has-cover<?php echo $text_class; ?> .tagline,
-.header.has-cover<?php echo $text_class; ?> .header-triggers a,
-.header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
-.cover<?php echo $text_class; ?>,
-.cover<?php echo $text_class; ?> a,
-.cover<?php echo $text_class; ?> .title,
-.cover<?php echo $text_class; ?> .widget-title,
-.cover<?php echo $text_class; ?> .byline { color: <?php echo esc_attr( $text_atts['color'] ); ?>; }
-.cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
-<?php endforeach; ?>
-
-@media all and (min-width: 800px) {
- 	.cover { padding: <?php echo $mid; ?>px; }
-	.header .header-cover-full, .main > .header-cover {
-		padding-bottom: <?php echo $double; ?>px;
-		padding-top: <?php echo $double; ?>px;
-	}
-}
-
-@media all and (max-width: 800px) {
-	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
-	.header.has-cover .menu-item:not(:last-child),
-	.header.has-cover .menu .toggle { border-color: <?php echo $text_atts['border']; ?>; }
-	.header .header-cover-full, .main > .header-cover {
-		padding-left: 0;
-		padding-right: 0;
-	}
-}
-
 /* BLOCKS */
+
+<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
+.the-content h1, .the-content h2, .the-content h3, .the-content h4, .the-content h5, .the-content h6 { color: <?php echo $colors['site']['headline']; ?>; }
+<?php endif; ?>
 
 .wp-block-cover[class*="align"] { width: auto; }
 
@@ -234,145 +178,59 @@
 	.content-upgrade-text { margin-bottom: <?php echo $half; ?>px; }
 }
 
-/* AUTHOR BOX */
+/* POST FOOTER */
 
-.author-meta {
-	align-items: center;
-	display: flex;
-	margin-bottom: <?php echo $half; ?>px;
-}
+.post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.author-box .circle-icon { margin-right: <?php echo $third; ?>px; }
+.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.author-title { margin-bottom: <?php echo $small; ?>px; }
+.post-footer + .post-footer { border-top: 0; }
 
-.author-title {
-	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-	font-weight: <?php echo $bold; ?>;
-	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
-}
+.post-footer.byline { margin-bottom: 0; }
 
-.author-description { margin-bottom: <?php echo $half + $small; ?>px; }
+/* COVERS */
 
-.author-avatar {
-	flex: 0 1 <?php echo $double; ?>px;
-	margin-right: <?php echo $half; ?>px;
-}
+.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
-.author-avatar img { width: 100%; }
-
-.author-links {
-	align-items: center;
-	display: flex;
-	font-size: <?php echo round( $typography['body']['font_size']['mobile'] - 1 ); ?>px;
-	gap: <?php echo $half; ?>px;
-	line-height: <?php echo round( $typography['body']['line_height']['mobile'] - 1 ); ?>px;
-}
-
-.author-link { color: <?php echo $colors['site']['links_sec']; ?>; }
-
-.author-link:not(:last-child) { margin-right: <?php echo $small; ?>px; }
-
-.author-link.twitter .circle-icon {
-	background-color: #1da1f2;
-	color: #fff;
-}
-
-.author-link.twitter .md-icon-twitter { color: #fff; }
-
-.author-link.twitter a { color: #1da1f2; }
-
-@media all and (max-width: 700px) {
-	.author-links { flex-flow: wrap; }
-	.author-link { flex-basis: calc(50% - <?php echo $half; ?>px); }
-}
-
-/* PAGINATION */
-
-.pagination {
-	justify-content: space-between;
+.cover, .header.has-cover {
+	background-position: center center;
+	background-size: cover;
 	position: relative;
-	text-align: center;
 }
 
-.pagination.prev-next .pagination-wrap {
-	display: flex;
-	justify-content: space-between;
-}
+<?php if ( ! empty( $colors['header']['cover_image']['url'] ) ) : ?>
+.header.has-cover { background-image: url('<?php echo esc_url( $colors['header']['cover_image']['url'] ); ?>'); }
+<?php endif; ?>
 
-.pagination a { text-decoration: none; }
-
-.post-nav-links {
-	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 5px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-	padding: <?php echo $half; ?>px;
-}
-
-.pagination .page-numbers,
-.post-nav-links .post-page-numbers {
-	background-color: #fff;
-	border: 0;
-	border-radius: 50%;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-	display: inline-block;
-	margin-right: <?php echo $small; ?>px;
-	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
-}
-
-.page-numbers.current,
-.post-page-numbers.current {
-	cursor: default;
-	font-weight: bold;
-}
-
-.pagination .page-numbers:hover,
-.post-nav-links.post-page-numbers:hover { opacity: 0.8; }
-
-.page-numbers.dots,
-.page-numbers.prev,
-.page-numbers.next {
-	background-color: transparent;
-	border-radius: inherit;
-	box-shadow: none;
-	border: 0;
-	color: <?php echo $colors['site']['text']; ?>;
-	padding: 0;
-}
-
-.page-numbers.prev { margin-right: <?php echo $third; ?>px; }
-.page-numbers.next { margin-left: <?php echo $third; ?>px; }
-
-/* POST NAV */
-
-.post-nav {
-	align-items: center;
-	display: flex;
-}
-
-.post-nav p { margin-bottom: 0; }
-
-.post-nav a {
-	display: block;
-	padding: <?php echo $half; ?>px;
-	text-decoration: none;
-}
-
-.post-nav-next { text-align: right; }
-
-.post-nav-previous, .post-nav-next { flex: 1; }
-
-.post-nav-title { color: <?php echo $colors['site']['text']; ?>; }
-
-.post-nav-previous:hover .post-nav-title, .post-nav-next:hover .post-nav-title { text-decoration: underline; }
-
-.post-nav-previous .post-nav-subtitle i { margin-right: <?php echo $third; ?>px; }
-
-.post-nav-next .post-nav-subtitle i { margin-left: <?php echo $third; ?>px; }
+<?php foreach ( $cover_colors as $text_class => $text_atts ) : $text_class = $text_atts['class']; ?>
+.header.has-cover<?php echo $text_class; ?>,
+.header.has-cover<?php echo $text_class; ?> .site-name,
+.header.has-cover<?php echo $text_class; ?> .site-name a,
+.header.has-cover<?php echo $text_class; ?> .tagline,
+.header.has-cover<?php echo $text_class; ?> .header-triggers a,
+.header.has-cover<?php echo $text_class; ?> .menu > .menu-item > a,
+.cover<?php echo $text_class; ?>,
+.cover<?php echo $text_class; ?> a,
+.cover<?php echo $text_class; ?> .title,
+.cover<?php echo $text_class; ?> .widget-title,
+.cover<?php echo $text_class; ?> .byline { color: <?php echo esc_attr( $text_atts['color'] ); ?>; }
+.cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
+<?php endforeach; ?>
 
 @media all and (min-width: 800px) {
-	.post-nav a {
-		padding-bottom: <?php echo $single; ?>px;
-		padding-top: <?php echo $single; ?>px;
+ 	.cover { padding: <?php echo $mid; ?>px; }
+	.header .header-cover, .main > .header-cover {
+		padding-bottom: <?php echo $double; ?>px;
+		padding-top: <?php echo $double; ?>px;
+	}
+}
+
+@media all and (max-width: 800px) {
+	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
+	.header.has-cover .menu-item:not(:last-child),
+	.header.has-cover .menu .toggle { border-color: <?php echo $text_atts['border']; ?>; }
+	.header .header-cover, .main > .header-cover {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }

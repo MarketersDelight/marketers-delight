@@ -121,6 +121,7 @@ final class marketers_delight {
 		// Add WordPress Features
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
+		add_post_type_support( 'page', 'excerpt' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		add_theme_support( 'align-wide' );
 		add_theme_support( 'editor-color-palette', md_editor_colors() );
@@ -239,7 +240,8 @@ final class marketers_delight {
 		$data = md_setting( array( 'integrations' ) );
 
 		if ( ! empty( $data['enabled']['mailerlite'] ) )
-			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );	}
+			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
+	}
 
 	/**
  	 * Output inline JavaScript to footer (formerly md_inline_js())

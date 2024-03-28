@@ -30,7 +30,7 @@ class md_settings extends md_api {
 	public function register() {
 		return array(
 			'admin_page' => array(
-				'name' => __( 'Marketers Delight', 'md' ),
+				'name' => __( 'Theme Settings', 'md' ),
 				'tab_name' => __( 'Settings', 'md' ),
 				'admin_header' => true,
 				'position' => 1,

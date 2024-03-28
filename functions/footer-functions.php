@@ -60,6 +60,7 @@ function md_footer_classes() {
 
 function md_footer_columns_template() {
 	$columns = md_filter_footer_columns();
+    $count = count( $columns );
 
 	if ( md_has_footer_columns() )
 		include( md_template( 'footer-columns', true ) );

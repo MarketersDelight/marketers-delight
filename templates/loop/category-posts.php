@@ -12,16 +12,13 @@ $categories = new WP_Term_Query( array(
 
 if ( isset( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) {
 	$categories_classes[] = 'columns';
+	$categories_classes[] = 'columns-' . $loop['category_columns'];
 
 	if ( $loop['category_columns'] >= 3 )
 		$categories_classes[] = 'slim';
-
-	if ( $loop['category_columns'] <= 5 )
-		$category_classes[] = 'f' . $loop['category_columns'];
 }
 
 $categories_classes = join( ' ', $categories_classes );
-$category_classes = join( ' ', $category_classes );
 
 if ( empty( $categories->terms ) )
 

@@ -192,14 +192,12 @@ function md_cover( $context = 'post' ) {
 function md_cover_classes( $cover, $string = false ) {
 	$classes = array();
 
-	if ( ! empty( $cover['position'] ) ) {
-		if ( empty( $cover['hide_cover'] ) ) {
-			$classes[] = 'cover';
-			$classes[] = str_replace( '_', '-', $cover['position'] );
+	if ( ! empty( $cover['position'] ) && empty( $cover['hide_cover'] ) ) {
+		$classes[] = str_replace( array( '_full', '_' ), array( '', '-' ) , $cover['position'] );
+		$classes[] = 'cover';
 
-			if ( ! empty( $cover['display']['alternate'] ) )
-				$classes[] = 'alt';
-		}
+		if ( ! empty( $cover['display']['alternate'] ) )
+			$classes[] = 'alt';
 
 		if ( $cover['position'] == 'header_cover_full' )
 			$classes[] = 'format';

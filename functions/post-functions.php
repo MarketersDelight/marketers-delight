@@ -21,9 +21,6 @@ function md_post_class( $loop, $c = 0 ) {
 		else
 			$classes[] = 'standard';
 
-	if ( $loop['columns'] > 1 && $loop['columns'] <= 5 )
-		$classes[] = 'f' . $loop['columns'];
-
 	if ( ! empty( $loop['is_query'] ) || ( ! is_singular() && empty( $loop['is_query'] ) ) )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
@@ -87,8 +84,16 @@ function md_headline( $args = array() ) {
 	$has_cover = in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
-	$classes = isset( $args['classes'] ) ? $args['classes'] : array();
-	$classes = array_merge( array( "$context-header" ), $classes, md_cover_classes( $cover ) );
+	$classes = array( 'headline', "$context-headline", 'block' );
+
+	if ( $context == 'page' || $has_cover )
+		$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
+
+	$classes = array_merge( $classes, md_cover_classes( $cover ) );
+
+	if ( isset( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
 	$classes = join( ' ', $classes );
 
 	include( md_template( 'headline', true ) );
@@ -142,6 +147,10 @@ function md_get_title( $context = 'post' ) {
 function md_title( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 	$title = md_get_title( $context );
+
+	if ( ! $title )
+		return;
+
 	$title_html = '';
 	$permalink = null;
 	$description = md_get_description( $context );
@@ -180,6 +189,8 @@ function md_get_description( $context = 'post' ) {
 	elseif ( $context == 'page' )
 		if ( is_post_type_archive() || is_home() )
 			$description = md_post_type_field( 'archives_text' );
+		elseif ( is_page() )
+			$description = get_the_excerpt();
 		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
 			$description = category_description();
 		elseif ( is_author() )
@@ -200,31 +211,35 @@ function md_inline_cta() {
 }
 
 function md_get_inline_cta() {
-	$cta = md_module( array( 'hero', 'page_cta' ) );
+//	$hero = md_module( array( 'hero', 'page_cta' ) );
+	if ( in_the_loop() )
+		$hero = md_post_meta( 'hero' );
+	else
+		$hero = md_module( 'hero' );
 
-	if ( ! $cta )
+	if ( empty( $hero['page_cta'] ) )
 		return;
 
 	$html = '';
-	$link_primary = md_module( array( 'hero', 'link_primary' ) );
-	$link_secondary = md_module( array( 'hero', 'link_secondary' ) );
+//	$link_primary = md_module( array( 'hero', 'link_primary' ) );
+//	$link_secondary = md_module( array( 'hero', 'link_secondary' ) );
 
-	if ( $cta == 'links' ) {
+	if ( $hero['page_cta'] == 'links' ) {
 		$html .= '<div class="cta">';
 
-		if ( $link_secondary ) {
-			$link_secondary['link_classes'] = 'cta-link';
-			$html .= md_get_link( $link_secondary );
+		if ( ! empty( $hero['link_secondary'] ) ) {
+			$hero['link_secondary']['link_classes'] = 'cta-link';
+			$html .= md_get_link( $hero['link_secondary'] );
 		}
 
-		if ( $link_primary ) {
-			$link_primary['link_classes'] = 'cta-link';
-			$html .= md_get_link( $link_primary );
+		if ( ! empty( $hero['link_primary'] ) ) {
+			$hero['link_primary']['link_classes'] = 'cta-link';
+			$html .= md_get_link( $hero['link_primary'] );
 		}
 
 		$html .= '</div>';
 	}
-	elseif ( $cta == 'custom' )
+	elseif ( $hero['page_cta'] == 'custom' )
 		$html .= md_module( 'custom_html' );
 
 	return $html;

@@ -103,20 +103,6 @@ select {
 	padding-right: <?php echo $half; ?>px;
 }
 
-/* SEARCH */
-
-.has-search .triggers { order: 3; }
-
-.has-search .inputs, .has-search .input-field { flex: 1; }
-
-.form-toggle .inputs,
-.form-toggle .submit,
-.has-search .search-form .trigger-text { display: none; }
-
-.has-search .inputs,
-.has-search .submit,
-.form-toggle .trigger-search { display: block; }
-
 /* QUERIES */
 
 @media all and (min-width: 600px) {
@@ -128,24 +114,3 @@ select {
 	.form.multi .inputs { flex-basis: 100%; }
 	.form.multi .submit { width: 100%; }
 }
-
-/* TRIGGERS */
-
-.trigger {
-	align-items: center;
-	cursor: pointer;
-	display: flex;
-	justify-content: center;
-	position: relative;
-	text-align: center;
-}
-
-.trigger-text { margin-left: <?php echo $small; ?>px; }
-
-.hide-label .link-text, .hide-label .trigger-text { display: none; }
-
-.has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
-
-.has-search:not(.has-cover) .trigger-search .trigger-icon:before,
-.has-mobile-menu:not(.has-cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }

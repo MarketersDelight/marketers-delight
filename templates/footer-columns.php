@@ -1,16 +1,16 @@
-<div class="columns">
+<div class="columns columns-<?php echo esc_attr( $count ); ?>">
 
 <?php foreach ( $columns as $col ) : ?>
 
-<?php if ( is_active_sidebar( "md-footer-col-$col" ) ) : ?>
+	<?php if ( is_active_sidebar( "md-footer-col-$col" ) ) : ?>
 
-	<div class="entry f<?php echo esc_attr( count( $columns ) ); ?>">
+	<div class="entry">
 
 		<?php dynamic_sidebar( "md-footer-col-$col" ); ?>
 
 	</div>
 
-<?php endif; ?>
+	<?php endif; ?>
 
 <?php endforeach; ?>
 

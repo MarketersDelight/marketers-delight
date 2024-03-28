@@ -50,10 +50,10 @@ class md_hero extends md_api {
 				add_action( 'md_hook_after_header', array( $this, 'html' ) );
 		}
 		elseif ( ! is_singular() ) {
-			$hook = 'md_hook_content_top';
+			$hook = 'md_hook_content';
 
-			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) )
-				$hook = 'md_hook_content';
+			if ( md_has_sidebar() && ! md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) )
+				$hook = 'md_hook_content_top';
 
 			add_action( $hook, array( $this, 'html' ) );
 		}
@@ -72,18 +72,11 @@ class md_hero extends md_api {
 				md_headline();
 			}
 		else {
-			$args = array(
-				'context' => 'page',
-				'classes' => array( 'block' )
-			);
+			$args['context'] = 'page';
 			$featured_image = md_get_featured_image( 'page' );
 
-			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) ) {
+			if ( md_module( array( 'layout', 'content', 'hero_inline' ) ) )
 				$args['inline'] = true;
-				$args['classes'][] = 'inline';
-			}
-			else
-				$args['classes'][] = 'wide';
 
 			if ( ! empty( $featured_image['id'] ) && $featured_image['position'] !== 'remove' ) {
 				$image_position = $image_class = $featured_image['position'];
@@ -93,7 +86,7 @@ class md_hero extends md_api {
 				elseif ( $image_position == 'below_headline' )
 					$image_class = 'after';
 
-				$args['classes'][] = 'image-' . str_replace( '_', '-', $image_class );
+				$args['classes'] = 'image-' . str_replace( '_', '-', $image_class );
 			}
 
 			md_headline( $args );
