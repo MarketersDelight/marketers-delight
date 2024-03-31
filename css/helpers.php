@@ -40,6 +40,11 @@ ul.list-check li:before {
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 
+.auto {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 .alignfull, .alignwide { max-width: initial; }
 
 .alignleft, .alignright, .aligncenter, .alignnone {
@@ -73,25 +78,22 @@ ul.list-check li:before {
 	width: 100vw;
 }
 
-.auto {
-	margin-left: auto;
-	margin-right: auto;
+@media all and (min-width: 700px) {
+	.alignleft {
+		float: left;
+		margin-right: <?php echo $half; ?>px;
+	}
+	.alignright {
+		float: right;
+		margin-left: <?php echo $half; ?>px;
+	}
 }
 
-@media all and (min-width: <?php echo $site_width; ?>px) {
+@media all and (min-width: <?php echo $content_width + $triple; ?>px) {
+	.expanded .alignwide, .expanded .alignright.wrap-small { margin-right: -<?php echo $triple; ?>px; }
+	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-left: -<?php echo $triple; ?>px; }
 	.expanded .alignfull, .expanded .alignleft.wrap { margin-left: -<?php echo $breakout; ?>%; }
 	.expanded .alignfull, .expanded .alignright.wrap { margin-right: -<?php echo $breakout; ?>%; }
-}
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.expanded .alignfull {
-		margin-left: -50vw;
-		margin-right: -50vw;
-		position: relative;
-			left: 50%;
-			right: 50%;
-		width: 100vw;
-	}
 }
 
 @media all and (min-width: 900px) {
@@ -112,19 +114,14 @@ ul.list-check li:before {
 	}
 }
 
-@media all and (min-width: <?php echo $content_width + $triple; ?>px) {
-	.expanded .alignwide, .expanded .alignright.wrap { margin-right: -<?php echo $triple; ?>px; }
-	.expanded .alignwide, .expanded .alignleft.wrap { margin-left: -<?php echo $triple; ?>px; }
-}
-
-@media all and (min-width: 700px) {
-	.alignleft {
-		float: left;
-		margin-right: <?php echo $half; ?>px;
-	}
-	.alignright {
-		float: right;
-		margin-left: <?php echo $half; ?>px;
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.expanded .alignfull {
+		margin-left: -50vw;
+		margin-right: -50vw;
+		position: relative;
+			left: 50%;
+			right: 50%;
+		width: 100vw;
 	}
 }
 
@@ -155,12 +152,14 @@ ul.list-check li:before {
 
 /* SPACERS */
 
-.mb-double:not(:last-child) { margin-bottom: <?php echo $double; ?>px; }
-.mb-mid:not(:last-child) { margin-bottom: <?php echo $mid; ?>px; }
-.mb-single:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
-.mb-half:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-.mb-small:not(:last-child) { margin-bottom: <?php echo $small; ?>px; }
+.mb-double, .format .mb-double { margin-bottom: <?php echo $double; ?>px; }
+.mb-mid, .format .mb-mid { margin-bottom: <?php echo $mid; ?>px; }
+.mb-single, .format .mb-single { margin-bottom: <?php echo $single; ?>px; }
+.mb-half, .format .mb-half { margin-bottom: <?php echo $half; ?>px; }
+.mb-small, .format .mb-small { margin-bottom: <?php echo $small; ?>px; }
 .mb-none { margin-bottom: 0 !important; }
+.ml-half:not(:first-child) { margin-left: <?php echo $half; ?>px; }
+.ml-small:not(:first-child) { margin-left: <?php echo $small; ?>px; }
 .mr-half:not(:last-child) { margin-right: <?php echo $half; ?>px; }
 .mr-small:not(:last-child) { margin-right: <?php echo $small; ?>px; }
 

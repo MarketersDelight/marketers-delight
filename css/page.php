@@ -179,10 +179,10 @@
 
 /* BLOCK LAYOUT */
 
-.block, .block > .wrap {
+.block, .block .wrap, .block.wide .inner {
 	display: flex;
 	flex-flow: wrap;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+	gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -201,24 +201,23 @@
 }
 
 @media all and (min-width: <?php echo $content_width; ?>px) {
-	.block .description,
-	.block .cta { max-width: <?php echo $post_width; ?>px; }
-	.block.wide, .block.inline > .wrap { flex-flow: initial; }
-	.block.wide > .wrap {
+	.block .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
+	.block.wide, .block.wide .inner, .block.inline .wrap { flex-flow: initial; }
+	.block.wide .wrap {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
-	.block.wide > .wrap,
+	.block.wide .wrap,
 	.block.wide .cta,
-	.expanded .block .wrap,
-	.expanded .block .byline,
-	.expanded .block .cta {
+	.expanded .content > .entry .wrap,
+	.expanded .headline .byline,
+	.expanded .headline .cta {
 		justify-content: center;
 		text-align: center;
 	}
-	.header .block .wrap,
-	.expanded .block .wrap {
+
+	.header .block .wrap, .expanded .block .wrap {
 		max-width: 100%;
 		width: 100%;
 	}

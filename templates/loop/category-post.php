@@ -1,6 +1,6 @@
 <div class="entry">
 
-	<div class="headline post-headline block">
+	<div class="category-headline headline block">
 		<div class="wrap">
 
 			<h2 class="title"><a href="<?php echo get_term_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a></h2>

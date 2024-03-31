@@ -95,8 +95,8 @@ function md_byline_items() {
 
 function md_filter_loops() {
 	return apply_filters( 'md_filter_loops', array(
-		'fluid' => array(
-			'name' => __( 'Default loop', 'md' ),
+		'post' => array(
+			'name' => __( 'Post loop', 'md' ),
 			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' )
 		),
 		'list' => array(

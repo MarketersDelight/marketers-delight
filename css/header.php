@@ -22,7 +22,13 @@
 
 .header-wrap a { color: <?php echo $header['menu']['links']; ?>; }
 
-.header-wrap a:hover, .header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
+.header-wrap a:hover,
+.header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
+
+.header-simple .header-wrap {
+	justify-content: center;
+	text-align: center;
+}
 
 .header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
 

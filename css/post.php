@@ -4,6 +4,8 @@
 
 .page-headline { margin-bottom: <?php echo $single; ?>px; }
 
+.main > .header-cover { margin-bottom: 0; }
+
 .cta {
 	align-items: center;
 	display: flex;

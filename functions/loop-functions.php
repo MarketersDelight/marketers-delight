@@ -1,5 +1,4 @@
 <?php
-
 /**
  * A list of Loops registered to MD's settings.
  *
@@ -26,7 +25,6 @@ function md_loops( $sort = null ) {
 
 	return $data;
 }
-
 /**
  * The Main Loop used on all posts, pages, and archives.
  *
@@ -58,7 +56,7 @@ function md_loop( $args = array() ) {
 	}
 
 	$loop = apply_filters( 'md_filter_set_loop', $loop );
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'fluid';
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
 
 	if ( ! empty( $loops[$loop_type]['defaults'] ) )
 		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
@@ -73,7 +71,9 @@ function md_loop( $args = array() ) {
 		$loop['columns'] = 1;
 
 	$wrap_classes[] = "loop-{$post_type}";
-	$wrap_classes[] = "loop-{$loop_type}";
+
+	if ( $loop_type !== $post_type )
+		$wrap_classes[] = "loop-{$loop_type}";
 
 	if ( isset( $loop['list'] ) )
 		$wrap_classes[] = esc_attr( $loop['list'] );
@@ -91,8 +91,6 @@ function md_loop( $args = array() ) {
 		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
 			$wrap_classes[] = 'slim';
 	}
-	else
-		$wrap_classes[] = 'row';
 
 	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
 		$wrap_classes[] = 'slim';

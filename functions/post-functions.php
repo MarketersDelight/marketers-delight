@@ -84,7 +84,7 @@ function md_headline( $args = array() ) {
 	$has_cover = in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
 	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
 
-	$classes = array( 'headline', "$context-headline", 'block' );
+	$classes = array( "$context-headline", 'headline', 'block' );
 
 	if ( $context == 'page' || $has_cover )
 		$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
@@ -211,7 +211,6 @@ function md_inline_cta() {
 }
 
 function md_get_inline_cta() {
-//	$hero = md_module( array( 'hero', 'page_cta' ) );
 	if ( in_the_loop() )
 		$hero = md_post_meta( 'hero' );
 	else
@@ -221,8 +220,6 @@ function md_get_inline_cta() {
 		return;
 
 	$html = '';
-//	$link_primary = md_module( array( 'hero', 'link_primary' ) );
-//	$link_secondary = md_module( array( 'hero', 'link_secondary' ) );
 
 	if ( $hero['page_cta'] == 'links' ) {
 		$html .= '<div class="cta">';

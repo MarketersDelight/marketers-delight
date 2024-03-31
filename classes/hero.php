@@ -34,7 +34,7 @@ class md_hero extends md_api {
 
 		if ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_post_header_top', array( $this, 'inner' ), 5 );
-			add_action( 'md_hook_page_header_top', array( $this, 'close_div' ), 5 );
+			add_action( 'md_hook_page_header_top', array( $this, 'inner' ), 5 );
 			add_action( 'md_hook_post_header_bottom', array( $this, 'close_div' ), 100 );
 			add_action( 'md_hook_page_header_bottom', array( $this, 'close_div' ), 100 );
 
