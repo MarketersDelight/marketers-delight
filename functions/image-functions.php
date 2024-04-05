@@ -219,9 +219,6 @@ function md_cover_classes( $cover, $string = false ) {
 
 	$classes[] = 'cover';
 
-	if ( $cover['position'] !== 'headline_cover' )
-		$classes[] = 'header-cover';
-
 	if ( ! empty( $cover['display']['hide_cover'] ) )
 		return $classes;
 

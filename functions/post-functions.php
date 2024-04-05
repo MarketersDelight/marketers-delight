@@ -84,10 +84,7 @@ function md_headline( $args = array() ) {
 		$context = 'page';
 
 	$classes = array( "$context-headline", 'headline', 'block' );
-
-//	if ( $context == 'page' || ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) )
 	$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
-
 	$classes = array_merge( $classes, md_cover_classes( $cover ) );
 
 	if ( isset( $args['classes'] ) )
@@ -148,7 +145,6 @@ function md_get_title( $context = 'post' ) {
 
 function md_title( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-
 	$title = md_get_title( $context );
 
 	if ( ! $title )

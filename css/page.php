@@ -63,9 +63,9 @@
 .author-links {
 	align-items: center;
 	display: flex;
-	font-size: <?php echo round( $typography['body']['font_size']['mobile'] - 1 ); ?>px;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	gap: <?php echo $half; ?>px;
-	line-height: <?php echo round( $typography['body']['line_height']['mobile'] - 1 ); ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
 .author-link:not(:last-child) { margin-right: <?php echo $small; ?>px; }
@@ -164,12 +164,17 @@
 
 /* BLOCK LAYOUT */
 
+.content > .page-headline,
+.content .inner > .page-headline { margin-bottom: <?php echo $single; ?>px; }
+
 .block, .block .wrap, .block.wide .inner {
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px;
 	position: relative;
 }
+
+.block.wide .wrap { width: 100%; }
 
 .block .title { margin-bottom: 0; }
 
@@ -178,38 +183,21 @@
 	margin-right: auto;
 }
 
-.block.wide .featured-image { flex: 1; }
-
 @media all and (min-width: <?php echo $content_width; ?>px) {
-	.block.wide { align-items: center; }
-	.block .description, .block .cta { max-width: <?php echo $post_width; ?>px; }
-	.block.wide, .block.wide .inner, .block.inline .wrap { flex-flow: initial; }
-	.block.image-left .featured-image { order: -1; }
-	.page-headline.wide .wrap {
-		margin-left: auto;
-		margin-right: auto;
-		max-width: <?php echo $content_width; ?>px;
-	}
-	.page-headline.wide .wrap,
-	.page-headline.wide .byline,
-	.page-headline.wide .cta {
+	.block.wide {
+		align-items: center;
 		justify-content: center;
+	}
+	.block.wide, .block.wide .inner, .block.inline .wrap { flex-flow: initial; }
+	.expanded .page-headline.wide .wrap {
+		align-items: center;
+		max-width: <?php echo $content_width; ?>px;
 		text-align: center;
 	}
-	.page-headline.wide .description {
-		margin-left: auto;
-		margin-right: auto;
+	.header .page-headline.wide .wrap {
+		align-items: center;
+		text-align: center;
 	}
-	.page-headline.cover.wide .wrap { max-width: 100%; }
-/*
-	.expanded .row .headline .description {
-		margin-left: auto;
-		margin-right: auto;
-	}
-	.header .block .wrap,
-	.expanded .block .wrap {
-		max-width: 100%;
-		width: 100%;
-	}
-*/
+	.block .description { max-width: <?php echo $post_width; ?>px; }
+	.block.image-left .featured-image { order: -1; }
 }

@@ -238,13 +238,13 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	position: relative;
 }
 
-/* SMALL FORMAT */
+/* SLIM FORMAT */
 
-.small {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+.slim {
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.small ul, .small ol, .small p, .small hr, .small pre, .small table, .small blockquote, .small .wp-caption, .small .wp-block-image { margin-bottom: <?php echo $half; ?>px; }
+.slim ul, .slim ol, .slim p, .slim hr, .slim pre, .slim table, .slim blockquote, .slim .wp-caption, .slim .wp-block-image { margin-bottom: <?php echo $half; ?>px; }
 
-.small ul, .small ol { margin-left: <?php echo $half; ?>px; }
+.slim ul, .slim ol { margin-left: <?php echo $half; ?>px; }

@@ -81,7 +81,7 @@
 	max-width: 100%;
 }
 
-.wp-caption-text {
+.wp-caption-text, .wp-element-caption {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	font-style: italic;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
@@ -89,7 +89,8 @@
 	text-align: center;
 }
 
-.entry .wp-caption-text, .wp-element-caption {
+.entry .wp-caption-text,
+.wp-element-caption {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 }
@@ -179,16 +180,6 @@
 	.content-upgrade-text { margin-bottom: <?php echo $half; ?>px; }
 }
 
-/* POST FOOTER */
-
-.post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.post-footer:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.post-footer + .post-footer { border-top: 0; }
-
-.post-footer.byline { margin-bottom: 0; }
-
 /* COVERS */
 
 .entry .cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
@@ -218,14 +209,14 @@
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 <?php endforeach; ?>
 
-.header-cover {
+.page-headline.cover {
 	padding-bottom: <?php echo $single; ?>px;
 	padding-top: <?php echo $single; ?>px;
 }
 
 @media all and (min-width: 800px) {
  	.entry .cover { padding: <?php echo $mid; ?>px; }
-	.header-cover {
+	.page-headline.cover {
 		padding-bottom: <?php echo $mid; ?>px;
 		padding-top: <?php echo $mid; ?>px;
 	}
