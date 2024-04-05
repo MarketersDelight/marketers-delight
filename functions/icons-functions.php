@@ -389,7 +389,7 @@ function md_icons( $show_defaults = null ) {
 			'label' => __( 'WhatsApp', 'md' )
 		),
 		'wordpress' => array(
-			'unicode' => 'e80b',
+			'unicode' => 'e90d',
 			'label' => __( 'WordPress', 'md' )
 		),
 		'youtube' => array(

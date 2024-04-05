@@ -91,6 +91,8 @@ function md_loop( $args = array() ) {
 		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
 			$wrap_classes[] = 'slim';
 	}
+	elseif ( ! $loop['by_category'] )
+		$wrap_classes[] = 'row';
 
 	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
 		$wrap_classes[] = 'slim';
@@ -268,7 +270,7 @@ function md_the_loop( $loop, $c ) {
 function md_loop_style( $loop = array() ) {
 	$style = 'box-style';
 	$disable_box_style = md_setting( array( 'colors', 'design', 'box_style' ) );
-	$disable_single = md_meta( array( 'layout', 'content', 'box_style' ) );
+	$disable_single = md_meta( array( 'layout', 'content', 'box_style' ), get_queried_object_ID() );
 
 	if ( $disable_box_style || $disable_single )
 		$style = '';

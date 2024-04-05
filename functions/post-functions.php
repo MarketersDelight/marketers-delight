@@ -71,9 +71,7 @@ function md_has_headline_cover() {
  */
 
 function md_headline( $args = array() ) {
-//	if ( ! md_has_headline() )
-//		return;
-
+	$style = '';
 	$loop = array();
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
@@ -81,13 +79,14 @@ function md_headline( $args = array() ) {
 		$loop = $args['loop'];
 
 	$cover = md_cover( $context );
-	$has_cover = in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ? true : false;
-	$style = isset( $cover['style'] ) ? md_style( $cover['style'] ) : '';
+
+	if ( is_singular() && in_the_loop() )
+		$context = 'page';
 
 	$classes = array( "$context-headline", 'headline', 'block' );
 
-	if ( $context == 'page' || $has_cover )
-		$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
+//	if ( $context == 'page' || ( is_singular() && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) )
+	$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
 
 	$classes = array_merge( $classes, md_cover_classes( $cover ) );
 
@@ -95,6 +94,9 @@ function md_headline( $args = array() ) {
 		$classes[] = $args['classes'];
 
 	$classes = join( ' ', $classes );
+
+	if ( isset( $cover['style'] ) && empty( $cover['display']['hide_cover'] ) )
+		$style = md_style( $cover['style'] );
 
 	include( md_template( 'headline', true ) );
 }
@@ -146,6 +148,7 @@ function md_get_title( $context = 'post' ) {
 
 function md_title( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
+
 	$title = md_get_title( $context );
 
 	if ( ! $title )
@@ -153,11 +156,11 @@ function md_title( $args = array() ) {
 
 	$title_html = '';
 	$permalink = null;
-	$description = md_get_description( $context );
 	$byline_args = array();
+	$description = md_get_description( $context );
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
 	$cover = md_cover( $context );
-	$cta = md_get_inline_cta();
+	$cta = md_inline_cta();
 	$is_inline = isset( $args['inline'] ) ? true : false;
 
 	if ( isset( $args['loop'] ) )
@@ -206,13 +209,9 @@ function md_get_description( $context = 'post' ) {
  * @since 6.0
  */
 
-function md_inline_cta() {
-	echo md_get_inline_cta();
-}
-
-function md_get_inline_cta() {
-	if ( in_the_loop() )
-		$hero = md_post_meta( 'hero' );
+function md_inline_cta( $context = 'post' ) {
+	if ( $context == 'post' )
+		$hero = md_meta( 'hero' );
 	else
 		$hero = md_module( 'hero' );
 
@@ -368,7 +367,7 @@ function md_author_box() {
  */
 
 function md_has_comments() {
-	if ( in_the_loop() && is_singular() && ! is_404() && ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
+	if ( ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
 		return true;
 }
 

@@ -2,10 +2,6 @@
 
 /* POST / PAGE HEADER */
 
-.page-headline { margin-bottom: <?php echo $single; ?>px; }
-
-.main > .header-cover { margin-bottom: 0; }
-
 .cta {
 	align-items: center;
 	display: flex;
@@ -20,19 +16,22 @@
 .byline {
 	align-items: center;
 	color: <?php echo $colors['site']['text-sec']; ?>;
+	column-gap: <?php echo $half; ?>px;
 	display: flex;
 	flex-flow: wrap;
 	position: relative;
 }
+
+.slim .byline { column-gap: <?php echo $third; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	text-decoration: none;
 }
 
-.byline-item {font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
+.byline-item { font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
 
-.byline-item:not(:last-child) { margin-right: <?php echo $half; ?>px; }
+.byline-item i:not(:last-child) { margin-right: <?php echo $small; ?>px; }
 
 .byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
 
@@ -192,7 +191,7 @@
 
 /* COVERS */
 
-.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+.entry .cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
 .cover, .header.has-cover {
 	background-position: center center;
@@ -219,11 +218,16 @@
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 <?php endforeach; ?>
 
+.header-cover {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
 @media all and (min-width: 800px) {
- 	.cover { padding: <?php echo $mid; ?>px; }
-	.header .header-cover, .main > .header-cover {
-		padding-bottom: <?php echo $double; ?>px;
-		padding-top: <?php echo $double; ?>px;
+ 	.entry .cover { padding: <?php echo $mid; ?>px; }
+	.header-cover {
+		padding-bottom: <?php echo $mid; ?>px;
+		padding-top: <?php echo $mid; ?>px;
 	}
 }
 
@@ -231,8 +235,4 @@
 	.header.has-cover .sub-menu .menu-item a { color: <?php echo $cover_colors['default']['color']; ?>; }
 	.header.has-cover .menu-item:not(:last-child),
 	.header.has-cover .menu .toggle { border-color: <?php echo $text_atts['border']; ?>; }
-	.header .header-cover, .main > .header-cover {
-		padding-left: 0;
-		padding-right: 0;
-	}
 }

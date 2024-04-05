@@ -91,8 +91,8 @@ $titles = array(
 	'huge' => '.huge, .huge-title',
 	'h1' => 'h1, .h1, .large-title',
 	'h2' => 'h2, .h2, .main-title',
-	'h3' => 'h3, .h3, .med-title',
-	'h4' => 'h4, .h4, .mid-title, .slim .title',
+	'h3' => 'h3, .h3, .med-title, .slim .title',
+	'h4' => 'h4, .h4, .mid-title',
 	'h5' => 'h5, .h5, .small-title, .slim .slim .title',
 	'h6' => 'h6, .h6, .micro-title'
 );
@@ -237,3 +237,14 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 	margin-bottom: <?php echo $third; ?>px;
 	position: relative;
 }
+
+/* SMALL FORMAT */
+
+.small {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+}
+
+.small ul, .small ol, .small p, .small hr, .small pre, .small table, .small blockquote, .small .wp-caption, .small .wp-block-image { margin-bottom: <?php echo $half; ?>px; }
+
+.small ul, .small ol { margin-left: <?php echo $half; ?>px; }

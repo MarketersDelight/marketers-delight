@@ -32,7 +32,7 @@ function md_content_box_classes( $classes = array() ) {
 	$classes[] = 'main';
 
 	if ( md_has_sidebar() ) {
-		$classes[] = 'content-sidebar';
+		$classes[] = 'narrow';
 		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
 		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
 
@@ -56,6 +56,7 @@ function md_content_box_classes( $classes = array() ) {
 
 function md_content_classes( $classes = array() ) {
 	$classes[] = 'content';
+	$classes[] = 'row';
 
 	if ( is_singular() ) {
 		$style = md_loop_style();

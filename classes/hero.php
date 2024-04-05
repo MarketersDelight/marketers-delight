@@ -75,7 +75,7 @@ class md_hero extends md_api {
 			$args['context'] = 'page';
 			$featured_image = md_get_featured_image( 'page' );
 
-			if ( md_module( array( 'layout', 'content', 'hero_inline' ) ) )
+			if ( md_module( array( 'layout', 'content', 'hero_inline' ) ) && md_has_sidebar() )
 				$args['inline'] = true;
 
 			if ( ! empty( $featured_image['id'] ) && $featured_image['position'] !== 'remove' ) {
@@ -208,7 +208,7 @@ class md_hero extends md_api {
 
 	public function admin_template( $group = null ) {
 		$screen = get_current_screen();
-		$has_tabs = ! in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+		$has_tabs = ! in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ? true : false;
 		$prefix = $this->_prefix;
 		$values = $this->_data( 'values' );
 		$sanitize = $this->_data( 'sanitize' );

@@ -57,7 +57,7 @@ function md_featured_image( $context = 'post', $loop = array() ) {
 
 	if ( $context == 'page' && ! empty( $featured_image['width'] ) )
 		echo md_inline_css( array(
-			'.page-header .featured-image' => array(
+			'.page-headline .featured-image' => array(
 				'max-width' => array(
 					'query' => $featured_image['width'],
 					'unit' => 'px'
@@ -142,6 +142,27 @@ function md_featured_image_position( $context = null ) {
 }
 
 /**
+ * Get caption from image attachment or default to featured image.
+ *
+ * @since 4.0
+ */
+
+function md_get_caption( $id = null ) {
+	if ( ! is_singular() || ! in_the_loop() )
+		return;
+
+	if ( empty( $id ) )
+		$id = get_post_thumbnail_id();
+
+	$caption = wp_get_attachment_caption( $id );
+
+	if ( ! empty( $caption ) )
+		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
+
+	return $caption;
+}
+
+/**
  * Get Cover attributes for any given page.
  *
  * @since 4.1
@@ -149,7 +170,7 @@ function md_featured_image_position( $context = null ) {
  */
 
 function md_cover( $context = 'post' ) {
-	$cover = array();
+	$cover = array( 'position' => '' );
 
 	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
@@ -177,8 +198,9 @@ function md_cover( $context = 'post' ) {
 		if ( ! empty( $hero['cover_display'] ) )
 			$cover['display'] = $hero['cover_display'];
 	}
-	else
-		$cover['position'] = '';
+
+	if ( is_singular() && $cover['position'] == 'header_cover_full' )
+		$cover['display']['hide_cover'] = true;
 
 	return $cover;
 }
@@ -192,55 +214,27 @@ function md_cover( $context = 'post' ) {
 function md_cover_classes( $cover, $string = false ) {
 	$classes = array();
 
-	if ( ! empty( $cover['position'] ) && empty( $cover['hide_cover'] ) ) {
-		$classes[] = str_replace( array( '_full', '_' ), array( '', '-' ) , $cover['position'] );
-		$classes[] = 'cover';
+	if ( empty( $cover['position'] ) )
+		return $classes;
 
-		if ( ! empty( $cover['display']['alternate'] ) )
-			$classes[] = 'alt';
+	$classes[] = 'cover';
 
-		if ( $cover['position'] == 'header_cover_full' )
-			$classes[] = 'format';
-	}
+	if ( $cover['position'] !== 'headline_cover' )
+		$classes[] = 'header-cover';
+
+	if ( ! empty( $cover['display']['hide_cover'] ) )
+		return $classes;
+
+	if ( ! empty( $cover['display']['alternate'] ) )
+		$classes[] = 'alt';
+
+	if ( $cover['position'] == 'header_cover_full' )
+		$classes[] = 'format';
 
 	if ( ! empty( $string ) )
 		$classes = join( ' ', $classes );
 
 	return $classes;
-}
-
-/**
- * A simple and thorough check to detect Page Cover.
- *
- * @since 6.0
- */
-
-function md_has_cover() {
-	$cover = md_cover();
-
-	if ( empty( $cover['position'] ) )
-		return false;
-}
-
-/**
- * Get caption from image attachment or default to featured image.
- *
- * @since 4.0
- */
-
-function md_get_caption( $id = null ) {
-	if ( ! is_singular() || ! in_the_loop() )
-		return;
-
-	if ( empty( $id ) )
-		$id = get_post_thumbnail_id();
-
-	$caption = wp_get_attachment_caption( $id );
-
-	if ( ! empty( $caption ) )
-		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
-
-	return $caption;
 }
 
 /**
@@ -250,7 +244,7 @@ function md_get_caption( $id = null ) {
  */
 
 function md_overlay( $cover ) {
-	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_cover'] ) )
+	if ( empty( $cover['position'] ) || ! empty( $cover['display']['hide_cover'] ) )
 		return;
 
 	$style = array();

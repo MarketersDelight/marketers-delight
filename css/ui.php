@@ -116,7 +116,7 @@
 	cursor: default;
 	display: none;
 	font-size: 14px;
-	line-height: 1;
+	line-height: 21px;
 	margin-left: -80px;
 	padding: <?php echo $third; ?>px;
 	position: absolute;

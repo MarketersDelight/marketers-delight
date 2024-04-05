@@ -8,9 +8,7 @@
 <span class="byline-comments byline-item">
 	<a href="<?php echo get_comments_link(); ?>">
 		<?php
-			echo md_icon( 'chat' );
-
-			echo ' <span class="md-byline-label">';
+			echo md_icon( 'chat' ) . '<span class="md-byline-label">';
 
 			if ( $comments == 0 && ! empty( $fields['title'] ) )
 				echo esc_html( $fields['title'] );

@@ -4,7 +4,7 @@
 	$has_sidebar = ! empty( $loop['sidebar']['enable'] ) ? true : false;
 
 	if ( $has_sidebar ) {
-		$query_classes[] = 'content-sidebar';
+		$query_classes[] = 'narrow';
 
 		if ( ! empty( $loop['content_layout'] ) && $loop['content_layout'] == 'sidebar_content' )
 			$query_classes[] = 'left';

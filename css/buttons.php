@@ -14,7 +14,6 @@ button, .button, a.button, .button a, input[type="submit"], .format .button,
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
 	display: inline-block;
-	flex-shrink: 0;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
@@ -104,5 +103,4 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	font-weight: normal;
 	padding: 4px 7px;
     position: relative;
-    text-transform: uppercase;
 }

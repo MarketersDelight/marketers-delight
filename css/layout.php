@@ -11,7 +11,7 @@
 	position: relative;
 }
 
-.clear:after, .inner:after, .menu:after, .content-sidebar:after,
+.clear:after, .inner:after, .menu:after, .narrow:after,
 .byline:after, .post-box:after, .the-content:after, .sidebar:after {
 	clear: both;
 	content: '';
@@ -39,17 +39,17 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
-	.content-sidebar .content {
+	.narrow .content {
 		float: left;
 		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
 	}
-	.content-sidebar.left .content { float: right; }
-	.content-sidebar .sidebar {
+	.narrow.left .content { float: right; }
+	.narrow .sidebar {
 		float: left;
 		padding-left: <?php echo $single; ?>px;
 		width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
-	.content-sidebar.left .sidebar {
+	.narrow.left .sidebar {
 		padding-left: 0;
 		padding-right: <?php echo $single; ?>px;
 	}
@@ -57,6 +57,12 @@
 
 @media all and (max-width: 900px) {
 	.content { margin-bottom: <?php echo $single; ?>px; }
+	.single .content.box-style > .entry,
+	.page .content.box-style > .entry {
+		margin-left: -<?php echo $half; ?>px;
+		margin-right: -<?php echo $half; ?>px;
+		width: auto;
+	}
 }
 
 /* ASIDE ELEMENTS */

@@ -1,12 +1,5 @@
 <style type="text/css">
 
-.small {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
-}
-
-.small li:not(:last-child) { margin-bottom: 0; }
-
 /* LISTS */
 
 .list, .list > ul, ul.list-check { list-style: none; }
@@ -97,14 +90,14 @@ ul.list-check li:before {
 }
 
 @media all and (min-width: 900px) {
-	.content-sidebar .alignfull {
+	.narrow .alignfull {
 		margin-left: -<?php echo $mid; ?>px;
 		margin-right: -<?php echo $mid; ?>px;
 	}
 }
 
 @media all and (max-width: 900px) {
-	.content-sidebar .alignfull {
+	.narrow .alignfull {
 		margin-left: -50vw;
 		margin-right: -50vw;
 		position: relative;
@@ -137,16 +130,16 @@ ul.list-check li:before {
 .width-full { max-width: 100%; width: 100%; }
 
 <?php for ( $f = 6; $f <= 9; $f++ ) : ?>
-.columns-<?php echo $f; ?> > .entry { max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
+.columns-<?php echo $f; ?> > .entry { width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
 <?php endfor; ?>
 
 @media all and (min-width: 600px) {
-	.columns-3 > .entry, .columns-4 > .entry, .columns-5 > .entry { max-width: calc(50% - <?php echo $half; ?>px); }
+	.columns-3 > .entry, .columns-4 > .entry, .columns-5 > .entry { width: calc(50% - <?php echo $half; ?>px); }
 }
 
 @media all and (min-width: 800px) {
 	<?php for ( $f = 2; $f <= 5; $f++ ) : ?>
-	.columns-<?php echo $f; ?> > .entry { max-width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
+	.columns-<?php echo $f; ?> > .entry { width: calc(<?php echo ( 100 / $f ); ?>% - <?php echo $half; ?>px); }
 	<?php endfor; ?>
 }
 

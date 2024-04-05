@@ -25,10 +25,7 @@
 .header-wrap a:hover,
 .header-wrap a:hover + .toggle { color: <?php echo $header['menu']['hover']; ?>; }
 
-.header-simple .header-wrap {
-	justify-content: center;
-	text-align: center;
-}
+.header-simple .header-wrap { text-align: center; }
 
 .header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
 
@@ -115,10 +112,16 @@
 		line-height: <?php echo $header['line_height']['desktop']; ?>px;
 	}
 	/* LAYOUT */
-	.header-wrap, .header-primary, .header-aside {
+	.header-wrap,
+	.header-primary,
+	.header-aside {
 		align-items: center;
 		display: flex;
 		justify-content: space-between;
+	}
+	.header-simple .header-wrap {
+		justify-content: center;
+		gap : <?php echo $half; ?>px;
 	}
 	<?php if ( md_setting( array( 'header', 'display', 'align_tagline' ) ) ) : ?>
 	.header .site-details {
@@ -166,6 +169,7 @@
 	.header-controls .header_aside-link { display: block; }
 	.has-search .search-form { display: flex; }
 	/* LAYOUT */
+	.header-simple .site-title { justify-content: center; }
 	.header-controls, .header-triggers {
 		align-items: center;
 		display: flex;

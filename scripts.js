@@ -111,6 +111,7 @@ headerMenu: function() {
 		this.toggle( 'menu' );
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
+						MD.removeClass( header, 'has-search' );
 					}
 	}
 },
@@ -414,14 +415,6 @@ like: function() {
 				};
 				request.send( 'action=md_like&post_id=' + post_id + '&type=' + post_type + '&nonce=' + MDJS.nonce );
 			}
-		}
-	}
-},
-footnotes: function() {
-	var footnotes = document.getElementsByClassName( 'footnote' );
-	for ( var i = 0; i < footnotes.length; i++ ) {
-		footnotes[i].onclick = function( e ) {
-			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
 		}
 	}
 },

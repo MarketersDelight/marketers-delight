@@ -24,7 +24,7 @@ if ( ! $is_inline )
 if ( $description || ( $cta && $is_inline ) ) {
 	echo '<div class="description">'.
 		 ( $description ? wpautop( $description ) : '' ).
-		 ( $cta && $is_inline ? md_get_inline_cta() : '' ).
+		 ( $cta && $is_inline ? md_inline_cta( $context ) : '' ).
 		 '</div>';
 }
 
@@ -34,6 +34,6 @@ if ( $context == 'post' )
 do_action( "md_hook_after_{$context}_title" );
 
 if ( ! $is_inline )
-	md_inline_cta();
+	echo md_inline_cta( $context );
 
 echo '</div>'; // close .wrap
