@@ -11,7 +11,7 @@ do_action( "md_hook_{$context}_header_top", "{$context}_header_top" );
 if ( $is_inline )
 	echo md_title( $args );
 
-echo '<div class="wrap">';
+echo '<div class="wrap">'; // open .wrap
 
 do_action( "md_hook_{$context}_header_wrap_top", "{$context}_header_wrap_top" );
 
@@ -21,11 +21,11 @@ if ( ! $is_inline )
 if ( $description || ( $cta && $is_inline ) )
 	echo '<div class="description">'.
 	 	( $description ? wpautop( $description ) : '' ).
-	 	( $cta && $is_inline ? md_cta( $context ) : '' ).
+	 	( $cta && $is_inline ? $cta : '' ).
 	 	'</div>';
 
-if ( ! $is_inline )
-	echo md_cta( $context );
+if ( ! $is_inline && $cta )
+	echo $cta;
 
 if ( ! empty( $cover['photo']['id'] ) )
 	echo md_get_caption( $cover['photo']['id'] );

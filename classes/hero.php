@@ -23,7 +23,7 @@ class md_hero extends md_api {
 		if ( ! empty( $featured_image['id'] ) ) {
 			$page_image_hook = 'md_hook_page_header_bottom';
 
-			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) )
+			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) && md_has_sidebar() )
 				$page_image_hook = 'md_hook_page_header_wrap_bottom';
 
 			if ( $featured_image['position'] == 'above_headline' )

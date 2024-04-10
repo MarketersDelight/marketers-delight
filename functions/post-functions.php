@@ -71,19 +71,26 @@ function md_has_headline_cover() {
  */
 
 function md_headline( $args = array() ) {
-	$style = '';
-	$loop = array();
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-	$is_inline = isset( $args['inline'] ) ? true : false;
+
+	if ( ! md_get_title( $context ) )
+		return;
+
+	$style = '';
+	$is_inline = false;
 	$cover = md_cover( $context );
 	$description = md_get_description( $context );
-	$cta = md_cta();
+	$cta = md_cta( $context );
 
-	if ( is_singular() && in_the_loop() )
+	if ( isset( $args['inline'] ) || ( in_the_loop() || ! empty( $args['loop'] ) ) )
+		$is_inline = true;
+
+	if ( is_singular() && in_the_loop() ) {
 		$context = 'page';
 
-	if ( isset( $args['loop'] ) )
-		$loop = $args['loop'];
+		if ( in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) )
+			$is_inline = false;
+	}
 
 	$classes = array( "$context-headline", 'headline', 'block' );
 	$classes[] = $is_inline ? 'inline' : 'wide';

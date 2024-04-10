@@ -133,7 +133,14 @@
 @media all and (min-width: 800px) {
 	.box-style.row .headline,
 	.box-style.row .the-content,
-	.box-style.row .post-footer { padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
+	.box-style.row .post-footer {
+		padding: <?php echo $single; ?>px <?php echo $mid; ?>px;
+	}
+	.expanded .box-style .the-content,
+	.expanded .box-style .post-footer {
+		padding-left: 0;
+		padding-right: 0;
+	}
 }
 
 /* EXPANDED */
@@ -144,18 +151,10 @@
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;
 	}
-/*
 	.expanded .the-content,
-*/
 	.expanded .post-footer .wrap {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-/*
-	.expanded .box-style.row .the-content {
-		padding-left: 0;
-		padding-right: 0;
-	}
-*/
 }
