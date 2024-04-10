@@ -74,17 +74,19 @@ function md_headline( $args = array() ) {
 	$style = '';
 	$loop = array();
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
-
-	if ( isset( $args['loop'] ) )
-		$loop = $args['loop'];
-
+	$is_inline = isset( $args['inline'] ) ? true : false;
 	$cover = md_cover( $context );
+	$description = md_get_description( $context );
+	$cta = md_cta();
 
 	if ( is_singular() && in_the_loop() )
 		$context = 'page';
 
+	if ( isset( $args['loop'] ) )
+		$loop = $args['loop'];
+
 	$classes = array( "$context-headline", 'headline', 'block' );
-	$classes[] = isset( $args['inline'] ) ? 'inline' : 'wide';
+	$classes[] = $is_inline ? 'inline' : 'wide';
 	$classes = array_merge( $classes, md_cover_classes( $cover ) );
 
 	if ( isset( $args['classes'] ) )
@@ -143,27 +145,21 @@ function md_get_title( $context = 'post' ) {
  * @since 6.0
  */
 
+if ( ! function_exists( 'md_title' ) ) :
+
 function md_title( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 	$title = md_get_title( $context );
-
-	if ( ! $title )
-		return;
-
 	$title_html = '';
 	$permalink = null;
 	$byline_args = array();
-	$description = md_get_description( $context );
 	$h = is_singular() || $context == 'page' ? 'h1' : 'h2';
-	$cover = md_cover( $context );
-	$cta = md_inline_cta();
-	$is_inline = isset( $args['inline'] ) ? true : false;
-
-	if ( isset( $args['loop'] ) )
-		$byline_args['loop'] = $args['loop'];
 
 	if ( ( ! is_singular() && $context == 'post' ) || ! empty( $args['loop']['is_query'] ) )
 		$permalink = get_permalink();
+
+	if ( isset( $args['loop'] ) )
+		$byline_args['loop'] = $args['loop'];
 
 	if ( $context == 'post' && md_module( array( 'loop', 'category_posts', 'enable' ) ) )
 		$h = 'h3';
@@ -171,8 +167,30 @@ function md_title( $args = array() ) {
 	if ( isset( $args['loop']['is_query'] ) )
 		$h = 'h4';
 
-	include( md_template( 'title', true ) );
+	if ( $permalink )
+		$title_html .= '<a href="' . esc_url( $permalink ) . '">';
+
+	$title_html .= md_text_field( $title );
+
+	if ( $permalink )
+		$title_html .= '</a>';
+
+	do_action( "md_hook_before_{$context}_title" );
+
+	if ( $title ) {
+		if ( $context == 'post' )
+			md_byline( 'before_headline', $byline_args );
+
+		echo "<$h class=\"title\">$title_html</$h>";
+
+		if ( $context == 'post' )
+			md_byline( 'after_headline', $byline_args );
+	}
+
+	do_action( "md_hook_after_{$context}_title" );
 }
+
+endif;
 
 /**
  * Show Description of current page.
@@ -205,7 +223,7 @@ function md_get_description( $context = 'post' ) {
  * @since 6.0
  */
 
-function md_inline_cta( $context = 'post' ) {
+function md_cta( $context = 'post' ) {
 	if ( $context == 'post' )
 		$hero = md_meta( 'hero' );
 	else

@@ -165,7 +165,8 @@
 /* BLOCK LAYOUT */
 
 .content > .page-headline,
-.content .inner > .page-headline { margin-bottom: <?php echo $single; ?>px; }
+.content .inner > .page-headline,
+.main .inner > .page-headline { margin-bottom: <?php echo $single; ?>px; }
 
 .block, .block .wrap, .block.wide .inner {
 	display: flex;
@@ -189,12 +190,15 @@
 		justify-content: center;
 	}
 	.block.wide, .block.wide .inner, .block.inline .wrap { flex-flow: initial; }
+	.block.wide.image-before,
+	.block.image-center,
+	.block.image-center .wrap { flex-direction: column; }
 	.expanded .page-headline.wide .wrap {
 		align-items: center;
 		max-width: <?php echo $content_width; ?>px;
 		text-align: center;
 	}
-	.header .page-headline.wide .wrap {
+	.page-headline.wide .wrap {
 		align-items: center;
 		text-align: center;
 	}

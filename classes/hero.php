@@ -24,10 +24,12 @@ class md_hero extends md_api {
 			$page_image_hook = 'md_hook_page_header_bottom';
 
 			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) )
-				$page_image_hook = 'md_hook_after_page_title';
+				$page_image_hook = 'md_hook_page_header_wrap_bottom';
 
 			if ( $featured_image['position'] == 'above_headline' )
 				$page_image_hook = 'md_hook_page_header_top';
+			elseif ( $featured_image['position'] == 'below_headline' )
+				$page_image_hook = 'md_hook_after_page_title';
 
 			add_action( $page_image_hook, 'md_page_featured_image' );
 		}
