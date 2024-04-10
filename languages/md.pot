@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-05T23:45:35+00:00\n"
+"POT-Creation-Date: 2024-04-10T03:35:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -803,7 +803,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: classes/hero.php:103
+#: classes/hero.php:105
 msgid "Hero"
 msgstr ""
 
@@ -1302,23 +1302,23 @@ msgstr ""
 msgid "YouTube"
 msgstr ""
 
-#: functions/post-functions.php:435
+#: functions/post-functions.php:453
 msgid "Leave a Comment"
 msgstr ""
 
-#: functions/post-functions.php:439
+#: functions/post-functions.php:457
 msgid "Cancel"
 msgstr ""
 
-#: functions/post-functions.php:481
+#: functions/post-functions.php:499
 msgid "To view this protected post, enter the password below:"
 msgstr ""
 
-#: functions/post-functions.php:482
+#: functions/post-functions.php:500
 msgid "Enter the password&hellip;"
 msgstr ""
 
-#: functions/post-functions.php:483
+#: functions/post-functions.php:501
 msgid "Get Access"
 msgstr ""
 
