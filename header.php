@@ -1,9 +1,9 @@
 <?php
-	md_template( 'html' );
-	md_hook_before_html();
-?>
 
-<?php if ( md_has_header() ) : ?>
+md_template( 'html' );
+md_hook_before_html();
+
+if ( md_has_header() ) : ?>
 
 <header id="header" class="<?php echo md_header_classes(); ?>">
 

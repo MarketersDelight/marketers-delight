@@ -68,8 +68,7 @@ class md_api {
 			add_action( 'parse_query', array( $this, 'parse_query' ) );
 
 		if ( method_exists( $this, 'enqueue' ) )
-			add_action( 'md_enqueue_scripts', array( $this, 'enqueue' ) );
-//			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		if ( method_exists( $this, 'widgets' ) )
 			add_action( 'widgets_init', array( $this, 'widgets' ) );

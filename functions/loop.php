@@ -34,7 +34,7 @@ function md_loops( $sort = null ) {
 function md_loop( $args = array() ) {
 	$c = 1;
 	$h = is_singular() ? 'div' : 'article';
-	$wrap_classes = array();
+	$loop_classes = array();
 	$categories_classes = array( 'categories' );
 	$post_type = md_get_post_type();
 	$loops = md_loops();
@@ -70,13 +70,13 @@ function md_loop( $args = array() ) {
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
-	$wrap_classes[] = "loop-{$post_type}";
+	$loop_classes[] = "loop-{$post_type}";
 
 	if ( $loop_type !== $post_type )
-		$wrap_classes[] = "loop-{$loop_type}";
+		$loop_classes[] = "loop-{$loop_type}";
 
 	if ( isset( $loop['list'] ) )
-		$wrap_classes[] = esc_attr( $loop['list'] );
+		$loop_classes[] = esc_attr( $loop['list'] );
 
 	if ( ! isset( $loop['featured_image'] ) )
 		$loop['featured_image'] = '';
@@ -85,28 +85,25 @@ function md_loop( $args = array() ) {
 		$loop['is_inline'] = true;
 
 	if ( $loop['columns'] > 1 ) {
-		$wrap_classes[] = 'columns';
-		$wrap_classes[] = 'columns-' . $loop['columns'];
+		$loop_classes[] = 'columns';
+		$loop_classes[] = 'columns-' . $loop['columns'];
 
 		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
-			$wrap_classes[] = 'slim';
+			$loop_classes[] = 'slim';
 	}
 	elseif ( ! $loop['by_category'] )
-		$wrap_classes[] = 'row';
+		$loop_classes[] = 'row';
 
 	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
-		$wrap_classes[] = 'slim';
+		$loop_classes[] = 'slim';
 
 	$loop_style = md_loop_style( $loop );
 
 	if ( $loop_style )
-		if ( $loop['by_category'] )
-			$categories_classes[] = $loop_style;
-		else
-			$wrap_classes[] = $loop_style;
+		$loop_classes[] = $loop_style;
 
-	$wrap_classes = apply_filters( 'md_filter_loop_classes', $wrap_classes );
-	$wrap_classes = ' ' . join( ' ', $wrap_classes );
+	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
+	$loop_classes = ' ' . join( ' ', $loop_classes );
 
 	$looped = $loop;
 
@@ -117,12 +114,12 @@ function md_loop( $args = array() ) {
 	elseif ( $loop['by_category'] )
 		include( md_template( 'loop/category-posts', true ) );
 	elseif ( isset( $args['query'] ) ) {
-		echo "<div class=\"loop$wrap_classes\">";
+		echo "<div class=\"loop$loop_classes\">";
 		include( md_template( 'loop/the-query', true ) );
 		echo '</div>';
 	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? "<div class=\"loop$wrap_classes\">" : '';
+		echo ! is_singular() ? "<div class=\"loop$loop_classes\">" : '';
 
 		md_hook_loop_top();
 

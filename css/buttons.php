@@ -83,6 +83,8 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 /* ELEMENTS */
 
+.link-icon { vertical-align: middle; }
+
 .link-icon + .link-text { margin-left: <?php echo $third; ?>px; }
 
 .link-subtext {

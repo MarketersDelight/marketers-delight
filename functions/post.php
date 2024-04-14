@@ -73,13 +73,13 @@ function md_has_headline_cover() {
 function md_headline( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
-	if ( ! md_get_title( $context ) )
-		return;
+//	if ( ! md_get_title( $context ) )
+//		return;
 
 	$style = '';
 	$is_inline = false;
 	$cover = md_cover( $context );
-	$description = md_get_description( $context );
+	$description = array( 'text' => md_get_description( $context ) );
 	$cta = md_cta( $context );
 
 	if ( isset( $args['inline'] ) || ( in_the_loop() || ! empty( $args['loop'] ) ) )
@@ -92,7 +92,10 @@ function md_headline( $args = array() ) {
 			$is_inline = false;
 	}
 
-	$classes = array( "$context-headline", 'headline', 'block' );
+	if ( $cta && $is_inline )
+		$description['after'] = $cta;
+
+	$classes = array( 'headline', "$context-headline", 'block' );
 	$classes[] = $is_inline ? 'inline' : 'wide';
 	$classes = array_merge( $classes, md_cover_classes( $cover ) );
 
@@ -114,11 +117,9 @@ function md_headline( $args = array() ) {
  */
 
 function md_get_title( $context = 'post' ) {
-	$title = '';
+	$title = get_the_title();
 
-	if ( $context == 'post' )
-		$title = get_the_title();
-	elseif ( $context == 'page' )
+	if ( $context == 'page' )
 		if ( is_post_type_archive() ) {
 			$post_type_title = post_type_archive_title( '', false );
 			$title = md_post_type_field( 'archives_title', $post_type_title );
@@ -184,15 +185,14 @@ function md_title( $args = array() ) {
 
 	do_action( "md_hook_before_{$context}_title" );
 
-	if ( $title ) {
-		if ( $context == 'post' )
-			md_byline( 'before_headline', $byline_args );
+	if ( $context == 'post' )
+		md_byline( 'before_headline', $byline_args );
 
+	if ( $title )
 		echo "<$h class=\"title\">$title_html</$h>";
 
-		if ( $context == 'post' )
-			md_byline( 'after_headline', $byline_args );
-	}
+	if ( $context == 'post' )
+		md_byline( 'after_headline', $byline_args );
 
 	do_action( "md_hook_after_{$context}_title" );
 }
@@ -221,6 +221,22 @@ function md_get_description( $context = 'post' ) {
 			$description = get_the_author_meta( 'description' );
 
 	return $description;
+}
+
+function md_description( $args = array() ) {
+	$description = md_get_description();
+
+	if ( isset( $args['text'] ) )
+		$description = $args['text'];
+
+	if ( empty( $description ) && empty( $args['after'] ) )
+		return;
+
+	return
+		'<div class="description">'.
+		( $description ? wpautop( $description ) : '' ).
+		( isset( $args['after'] ) ? $args['after'] : '' ).
+		'</div>';
 }
 
 /**
@@ -335,8 +351,8 @@ function md_content( $loop ) {
 
 	if ( ! isset( $loop['post_footer']['remove'] ) )
 		md_byline( 'after_post', array(
-			'classes' => 'post-footer',
-			'loop' => $loop
+			'loop' => $loop,
+			'classes' => 'post-footer'
 		) );
 }
 
@@ -380,113 +396,6 @@ function md_author_box() {
 
 	include( md_template( 'author-box', true ) );
 }
-
-/**
- * Checks if comments are on page.
- *
- * @since 4.1
- */
-
-function md_has_comments() {
-	if ( ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
-		return true;
-}
-
-/**
- * Strips pingbacks count from comment count.
- *
- * @since 4.0
- */
-
-function md_real_comment_count( $count ) {
-	if ( ! is_admin() ) {
-		global $id;
-		$status = get_comments( "status=approve&post_id=$id" );
-		$comments_by_type = separate_comments( $status );
-		return count( $comments_by_type['comment'] );
-	}
-	else
-		return $count;
-}
-
-/**
- * Displays full comments template.
- *
- * @since 4.1
- */
-
-function md_comments() {
-	if ( md_has_comments() )
-		comments_template();
-}
-
-/**
- * This function accounts for the output of an individual comment, and is referenced
- * in wp_list_comments(). see comments.php.
- *
- * @since 4.1
- */
-
-function md_comment( $comment, $args, $depth ) {
-	global $post;
-
-	$classes = array();
-	$GLOBALS['comment'] = $comment;
-	$comment_id = get_comment_ID();
-	$comment_link = get_comment_link( $comment->comment_ID );
-	$is_author = $comment->user_id == $post->post_author ? true : false;
-	$avatar_size = esc_html( $args['avatar_size'] );
-
-	if ( ! empty( $args['has_children'] ) )
-		$classes[] = 'parent';
-
-	if ( $is_author )
-		$classes[] = 'is-author';
-
-	$classes = array_values( $classes );
-
-	include( md_template( 'comment', true ) );
-}
-
-/**
- * Insert comment form to Comments template.
- *
- * @since 5.5.7
- */
-
-function md_comment_form( $args = array() ) {
-	if ( empty( $args ) )
-		$args = array(
-			'title_reply' => __( 'Leave a Comment', 'md' ),
-			'comment_notes_before' => false,
-			'comment_notes_after' => false,
-			'logged_in_as' => false,
-			'cancel_reply_link' => __( 'Cancel', 'md')
-		);
-
-	comment_form( $args );
-}
-
-/**
- * Move Name, Email, and Website fields back to top of Comment Form.
- *
- * @since 6.0
-*/
-
-function md_comment_form_reorder( $fields ) {
-	$comment = $fields['comment'];
-	$cookies = isset( $fields['cookies'] ) ? $fields['cookies'] : '';
-
-	unset( $fields['comment'] );
-	unset( $fields['cookies'] );
-
-	$fields['comment'] = $comment;
-	$fields['cookies'] = $cookies;
-
-	return $fields;
-}
-
-add_filter( 'comment_form_fields', 'md_comment_form_reorder' );
 
 /**
  * Outputs the standard WordPress password form with the

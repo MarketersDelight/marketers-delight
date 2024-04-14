@@ -219,8 +219,8 @@ function md_cover_classes( $cover, $string = false ) {
 
 	$classes[] = 'cover';
 
-	if ( ! empty( $cover['display']['hide_cover'] ) )
-		return $classes;
+//	if ( ! empty( $cover['display']['hide_cover'] ) )
+//		return $classes;
 
 	if ( ! empty( $cover['display']['alternate'] ) )
 		$classes[] = 'alt';

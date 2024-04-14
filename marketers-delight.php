@@ -60,26 +60,27 @@ final class marketers_delight {
 		// API
 		require_once( MD_DIR . 'wp/filters.php' );
 		require_once MD_DIR . 'wp/walker.php';
-		require_once( MD_DIR . 'functions/api-functions.php' );
+		require_once( MD_DIR . 'functions/api.php' );
 		require_once( MD_DIR . 'classes/api/sanitize.php' );
 		require_once( MD_DIR . 'classes/api/design.php' );
 		require_once( MD_DIR . 'classes/api/css.php' );
 		require_once( MD_DIR . 'classes/api/js.php' );
-		require_once( MD_DIR . 'classes/fields/data.php' );
-		require_once( MD_DIR . 'classes/fields/fields.php' );
+		require_once( MD_DIR . 'classes/api/fields-data.php' );
+		require_once( MD_DIR . 'classes/api/fields.php' );
 		require_once( MD_DIR . 'classes/api/api.php' );
 		// Functions
-		require_once( MD_DIR . 'functions/icons-functions.php' );
-		require_once( MD_DIR . 'functions/design-functions.php' );
-		require_once MD_DIR . 'functions/image-functions.php';
-		require_once( MD_DIR . 'functions/byline-functions.php' );
-		require_once MD_DIR . 'functions/post-functions.php';
-		require_once MD_DIR . 'functions/loop-functions.php';
-		require_once( MD_DIR . 'functions/logo-functions.php' );
-		require_once( MD_DIR . 'functions/header-functions.php' );
-		require_once( MD_DIR . 'functions/content-functions.php' );
-		require_once( MD_DIR . 'functions/sidebar-functions.php' );
-		require_once( MD_DIR . 'functions/footer-functions.php' );
+		require_once( MD_DIR . 'functions/icons.php' );
+		require_once( MD_DIR . 'functions/design.php' );
+		require_once MD_DIR . 'functions/image.php';
+		require_once( MD_DIR . 'functions/byline.php' );
+		require_once MD_DIR . 'functions/post.php';
+		require_once MD_DIR . 'functions/comments.php';
+		require_once MD_DIR . 'functions/loop.php';
+		require_once( MD_DIR . 'functions/logo.php' );
+		require_once( MD_DIR . 'functions/header.php' );
+		require_once( MD_DIR . 'functions/content.php' );
+		require_once( MD_DIR . 'functions/sidebar.php' );
+		require_once( MD_DIR . 'functions/footer.php' );
 		// Admin
 		if ( is_admin() ) {
 			require_once( MD_DIR . 'classes/api/files.php' );
@@ -213,7 +214,7 @@ final class marketers_delight {
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
 		// Load scripts
-		wp_enqueue_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
+		wp_enqueue_script( 'marketers-delight', MD_URL . 'assets/scripts.js', array(), md_ver( 'assets/scripts.js' ), true );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),

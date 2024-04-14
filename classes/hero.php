@@ -21,13 +21,13 @@ class md_hero extends md_api {
 		$featured_image = md_get_featured_image( 'page' );
 
 		if ( ! empty( $featured_image['id'] ) ) {
-			$page_image_hook = 'md_hook_page_header_bottom';
+			$page_image_hook = 'md_hook_page_headline_bottom';
 
 			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) && md_has_sidebar() )
-				$page_image_hook = 'md_hook_page_header_wrap_bottom';
+				$page_image_hook = 'md_hook_page_headline_wrap_bottom';
 
 			if ( $featured_image['position'] == 'above_headline' )
-				$page_image_hook = 'md_hook_page_header_top';
+				$page_image_hook = 'md_hook_page_headline_top';
 			elseif ( $featured_image['position'] == 'below_headline' )
 				$page_image_hook = 'md_hook_after_page_title';
 
@@ -35,10 +35,10 @@ class md_hero extends md_api {
 		}
 
 		if ( $cover['position'] == 'header_cover' ) {
-			add_action( 'md_hook_post_header_top', array( $this, 'inner' ), 5 );
-			add_action( 'md_hook_page_header_top', array( $this, 'inner' ), 5 );
-			add_action( 'md_hook_post_header_bottom', array( $this, 'close_div' ), 100 );
-			add_action( 'md_hook_page_header_bottom', array( $this, 'close_div' ), 100 );
+			add_action( 'md_hook_post_headline_top', array( $this, 'inner' ), 5 );
+			add_action( 'md_hook_page_headline_top', array( $this, 'inner' ), 5 );
+			add_action( 'md_hook_post_headline_bottom', array( $this, 'close_div' ), 100 );
+			add_action( 'md_hook_page_headline_top', array( $this, 'close_div' ), 100 );
 
 			if ( md_has_headline() )
 				add_action( 'md_hook_content_box_top', array( $this, 'html' ) );

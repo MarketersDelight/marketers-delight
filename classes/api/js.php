@@ -29,7 +29,7 @@ class md_js {
 		return array_merge( array(
 			'script' => array(
 				'templates' => $this->script_js(),
-				'path' => MD_DIR . 'scripts.js'
+				'path' => MD_DIR . 'assets/scripts.js'
 			)
 		), apply_filters( 'md_js_files', array() ) );
 	}
@@ -43,7 +43,7 @@ class md_js {
 	public function script_js() {
 		$child_js = locate_template( 'scripts.php' );
 		$templates = array(
-			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'js/scripts.php'
+			'scripts' => ! empty( $child_js ) ? $child_js :  MD_DIR . 'scripts.php'
 		);
 		$templates = apply_filters( 'md_js_templates', $templates );
 

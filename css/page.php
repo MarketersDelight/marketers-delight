@@ -168,19 +168,22 @@
 .content .inner > .page-headline,
 .main .inner > .page-headline { margin-bottom: <?php echo $single; ?>px; }
 
-.block, .block .wrap, .block.wide .inner {
+.block,
+.block .wrap, .block.wide .inner {
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
+.block.wide .wrap,
+.block.wide .inner { column-gap: <?php echo $single; ?>px; }
+
 .block .wrap:empty { display: none; } /* heh */
 
-.block.wide .wrap,
-.block.wide .byline { width: 100%; }
+.block.wide .wrap { width: 100%; }
 
-.block .title { margin-bottom: 0; }
+.block .title, .block .subtitle { margin-bottom: 0; }
 
 .block .featured-image {
 	margin-left: auto;
@@ -188,11 +191,20 @@
 }
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.block.wide {
+	.block.wide,
+	.block.wide .wrap,
+	.expanded .page-headline,
+	.expanded .page-headline .wrap {
 		align-items: center;
-/*
-		justify-content: center;
-*/
+		text-align: center;
+	}
+	.block.wide.image-left,
+	.block.wide.image-left .wrap,
+	.block.wide.image-right,
+	.block.wide.image-right .wrap {
+		align-items: inherit;
+		align-self: center;
+		text-align: inherit;
 	}
 	.block.wide,
 	.block.wide .inner,
@@ -202,10 +214,4 @@
 	.block.image-center .wrap { flex-direction: column; }
 	.block .description { max-width: <?php echo $post_width; ?>px; }
 	.block.image-left .featured-image { order: -1; }
-
-	.expanded .page-headline,
-	.expanded .page-headline .wrap {
-		align-items: center;
-		text-align: center;
-	}
 }

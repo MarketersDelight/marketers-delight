@@ -91,8 +91,8 @@ $titles = array(
 	'huge' => '.huge, .huge-title',
 	'h1' => 'h1, .h1, .large-title',
 	'h2' => 'h2, .h2, .main-title',
-	'h3' => 'h3, .h3, .med-title, .slim .title',
-	'h4' => 'h4, .h4, .mid-title',
+	'h3' => 'h3, .h3, .med-title',
+	'h4' => 'h4, .h4, .mid-title, .slim .title',
 	'h5' => 'h5, .h5, .small-title, .slim .slim .title',
 	'h6' => 'h6, .h6, .micro-title'
 );

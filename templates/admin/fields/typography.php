@@ -2,21 +2,21 @@
 
 	<?php foreach ( $fonts as $font => $label ) : ?>
 
-		<div class="col md-sep-small">
+	<div class="col md-sep-small">
 
-			<?php foreach ( $devices as $device ) : ?>
-				<div class="md-<?php echo $device; ?>">
-					<?php $this->field( array_merge( $field, array( $font, $device ) ), array(
-						'type' => 'range',
-						'label' => "$label ($device)",
-						'placeholder' => isset( $args[$font][$device] ) ? $args[$font][$device] : '',
-						'min' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * ( $g / 2 ) ) : '',
-						'max' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * $g ) : ''
-					) ); ?>
-				</div>
-			<?php endforeach; ?>
+		<?php foreach ( $devices as $device ) : ?>
+			<div class="md-<?php echo $device; ?>">
+				<?php $this->field( array_merge( $field, array( $font, $device ) ), array(
+					'type' => 'range',
+					'label' => "$label ($device)",
+					'placeholder' => isset( $args[$font][$device] ) ? $args[$font][$device] : '',
+					'min' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * ( $g / 2 ) ) : '',
+					'max' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * $g ) : ''
+				) ); ?>
+			</div>
+		<?php endforeach; ?>
 
-		</div>
+	</div>
 
 	<?php endforeach; ?>
 

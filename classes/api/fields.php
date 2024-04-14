@@ -470,7 +470,7 @@ class md_fields {
 
 		$classes = join( ' ' , $classes );
 
-		include( 'select.php' );
+		include( md_template( 'admin/fields/select', true ) );
 
 		if ( isset( $args['select2'] ) ) {
 			wp_enqueue_style( 'md-select2' );
@@ -523,7 +523,7 @@ class md_fields {
 
 		$classes = join( ' ', $classes );
 
-		include( 'uploader.php' );
+		include( md_template( 'admin/fields/uploader', true ) );
 	}
 
 	/**
@@ -656,7 +656,7 @@ class md_fields {
 		$style = isset( $args['style'] ) ? $args['style'] : 'list';
 		$callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null;
 
-		include( 'group.php' );
+		include( md_template( 'admin/fields/group', true ) );
 	}
 
 	/**
@@ -672,7 +672,7 @@ class md_fields {
 		$key = esc_attr( $args['field'] );
 		$active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
-		include( 'builder.php' );
+		include( md_template( 'admin/fields/builder', true ) );
 	}
 
 	/**
@@ -685,7 +685,7 @@ class md_fields {
 		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
 		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
 
-		include( 'builder-fields.php' );
+		include( md_template( 'admin/fields/builder-fields', true ) );
 	}
 
 	/**
@@ -723,7 +723,7 @@ class md_fields {
 				'image' => MD_URL . 'assets/typekit-small.png'
 			);
 
-		include( 'typography.php' );
+		include( md_template( 'admin/fields/typography', true ) );
 	}
 
 	/**
@@ -742,7 +742,7 @@ class md_fields {
 		$classes[] = 'style-' . $link_style;
 		$classes = join( ' ', $classes );
 
-		include( 'link-fields.php' );
+		include( md_template( 'admin/fields/link', true ) );
 	}
 
 	// Compatibility between 5.x -> 6.0
