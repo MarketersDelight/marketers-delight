@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-14T06:51:14+00:00\n"
+"POT-Creation-Date: 2024-04-23T04:39:45+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -45,61 +45,52 @@ msgstr ""
 msgid "Builder Template"
 msgstr ""
 
-#: classes/admin.php:124
-msgid "Edit Design"
-msgstr ""
-
-#: classes/admin.php:124
-#: templates/admin/design.php:3
-msgid "Site Design"
-msgstr ""
-
-#: classes/admin.php:177
+#: classes/admin.php:175
 msgid "Stick this post to the front page"
 msgstr ""
 
-#: classes/admin.php:178
+#: classes/admin.php:176
 msgid "Public, Sticky"
 msgstr ""
 
-#: classes/admin.php:184
+#: classes/admin.php:182
 msgid "Status"
 msgstr ""
 
-#: classes/admin.php:185
+#: classes/admin.php:183
 msgid "Make this post sticky"
 msgstr ""
 
-#: classes/admin.php:186
+#: classes/admin.php:184
 #: templates/admin/query.php:373
 msgid "Sticky"
 msgstr ""
 
-#: classes/admin.php:363
+#: classes/admin.php:361
 msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
 msgstr ""
 
-#: classes/admin.php:386
+#: classes/admin.php:384
 msgid "Ready to update %s %2s?"
 msgstr ""
 
-#: classes/admin.php:387
+#: classes/admin.php:385
 msgid "Here are some resources to help you:"
 msgstr ""
 
-#: classes/admin.php:388
+#: classes/admin.php:386
 msgid "Read the changelog"
 msgstr ""
 
-#: classes/admin.php:389
+#: classes/admin.php:387
 msgid "See what's new in MD"
 msgstr ""
 
-#: classes/admin.php:390
+#: classes/admin.php:388
 msgid "Get help at support"
 msgstr ""
 
-#: classes/admin.php:391
+#: classes/admin.php:389
 msgid "When in doubt, make a backup your website before proceeding."
 msgstr ""
 
@@ -431,7 +422,7 @@ msgid "Category Settings"
 msgstr ""
 
 #: classes/dashboard.php:33
-msgid "Theme Settings"
+msgid "Edit Theme"
 msgstr ""
 
 #: classes/dashboard.php:78
@@ -588,7 +579,7 @@ msgstr ""
 msgid "Menu"
 msgstr ""
 
-#: classes/hero.php:105
+#: classes/hero.php:104
 msgid "Hero"
 msgstr ""
 
@@ -770,20 +761,20 @@ msgid "add comment"
 msgstr ""
 
 #: comments.php:26
-#: functions/loop.php:327
+#: functions/loop.php:338
 #: templates/admin/loop.php:265
 #: templates/post-nav.php:9
 msgid "Previous"
 msgstr ""
 
 #: comments.php:27
-#: functions/loop.php:328
+#: functions/loop.php:339
 #: templates/admin/loop.php:272
 #: templates/post-nav.php:21
 msgid "Next"
 msgstr ""
 
-#: functions/api.php:579
+#: functions/api.php:582
 #: wp/widget-loop-query.php:42
 msgid "Untitled"
 msgstr ""
@@ -812,7 +803,7 @@ msgid "Header Menu (logged-in users only)"
 msgstr ""
 
 #: functions/deprecated.php:155
-#: functions/loop.php:241
+#: functions/loop.php:252
 #: templates/admin/loop.php:204
 #: templates/admin/query.php:292
 msgid "Continue reading &rarr;"
@@ -1099,15 +1090,15 @@ msgstr ""
 msgid "YouTube"
 msgstr ""
 
-#: functions/post.php:415
+#: functions/post.php:419
 msgid "To view this protected post, enter the password below:"
 msgstr ""
 
-#: functions/post.php:416
+#: functions/post.php:420
 msgid "Enter the password&hellip;"
 msgstr ""
 
-#: functions/post.php:417
+#: functions/post.php:421
 msgid "Get Access"
 msgstr ""
 
@@ -1290,6 +1281,10 @@ msgstr ""
 
 #: templates/admin/dashboard.php:105
 msgid "Save Settings"
+msgstr ""
+
+#: templates/admin/design.php:3
+msgid "Site Design"
 msgstr ""
 
 #: templates/admin/design.php:5
