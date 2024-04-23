@@ -121,8 +121,6 @@ class md_admin {
 	 */
 
 	public function add_menu() {
-		add_submenu_page( 'themes.php', __( 'Edit Design', 'md' ), __( 'Site Design', 'md' ), 'edit_theme_options', 'themes.php?page=md_settings&tab=md_colors', '', 1 );
-
 		foreach ( md_register( 'admin_pages' ) as $admin_page => $fields ) {
 			if ( ! isset( $fields['name'] ) )
 				continue;

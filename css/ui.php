@@ -184,17 +184,14 @@
 
 /* ACCORDION */
 
-.accordion {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-top: 4px solid <?php echo $colors['site']['secondary']; ?>;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
 .accordion .current { font-weight: <?php echo $bold; ?>; }
 
-.accordion-group:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.accordion-group {
+	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	padding-bottom: <?php echo $third; ?>px;
+}
+
+.accordion-group:not(:first-child) { padding-top: <?php echo $half; ?>px; }
 
 .accordion-group.active .accordion-content { display: block; }
 
@@ -202,7 +199,6 @@
 	color: <?php echo $colors['site']['text']; ?>;
 	cursor: pointer;
 	font-weight: <?php echo $bold; ?>;
-	padding: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -210,18 +206,33 @@
 	content: '\e80e';
 	display: inline-block;
 	font-family: 'md-icon';
+	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 	position: absolute;
 		top: <?php echo $half; ?>px;;
 		right: <?php echo $half; ?>px;
 }
+
+.account .accordion-title:after {
+	border-radius: 50%;
+	height: <?php echo $mid; ?>px;
+	line-height: <?php echo $mid; ?>px;
+	margin-top: -<?php echo round( $mid / 2 ); ?>px;
+	position: absolute;
+		top: 50%;
+	text-align: center;
+	width: <?php echo $mid; ?>px;
+}
+
+.account .accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
+
+.format .accordion-title { margin-bottom: 0; }
 
 .accordion-group.active .accordion-title:after { content: '\e817'; }
 
 .accordion-content {
 	display: none;
 	padding-bottom: <?php echo $half; ?>px;
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
+	padding-top: <?php echo $half; ?>px;
 }
 
 .accordion .list {

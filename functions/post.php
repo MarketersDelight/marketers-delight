@@ -82,7 +82,11 @@ function md_headline( $args = array() ) {
 	$description = array( 'text' => md_get_description( $context ) );
 	$cta = md_cta( $context );
 
-	if ( isset( $args['inline'] ) || ( in_the_loop() || ! empty( $args['loop'] ) ) )
+	if (
+		isset( $args['inline'] ) ||
+		( in_the_loop() || ! empty( $args['loop'] ) ) ||
+		( $context == 'page' && md_has_sidebar() && ! md_module( array( 'layout', 'hero_inline' ) ) )
+	)
 		$is_inline = true;
 
 	if ( is_singular() && in_the_loop() ) {
@@ -178,7 +182,7 @@ function md_title( $args = array() ) {
 	if ( $permalink )
 		$title_html .= '<a href="' . esc_url( $permalink ) . '">';
 
-	$title_html .= md_text_field( $title );
+	$title_html .= apply_filters( "md_{$context}_title", md_text_field( $title ) );
 
 	if ( $permalink )
 		$title_html .= '</a>';

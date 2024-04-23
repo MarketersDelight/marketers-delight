@@ -6,7 +6,7 @@
  */
 
 add_action( 'md_hook_content', 'md_breadcrumbs' );
-add_action( 'md_hook_content', 'md_loop', 30 );
+add_action( 'md_hook_content', 'md_loop', 30, 2 );
 add_filter( 'excerpt_more', '__return_empty_string' );
 add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
@@ -86,7 +86,9 @@ function md_hook_content_box_bottom() {
 }
 
 function md_hook_content() {
-	do_action( 'md_hook_content', 'content' );
+	$data = apply_filters( 'md_content_data', array() );
+
+	do_action( 'md_hook_content', 'content', $data );
 }
 
 function md_hook_content_top() {

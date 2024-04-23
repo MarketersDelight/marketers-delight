@@ -1,11 +1,13 @@
 <style type="text/css">
 
-.loop, .columns {
+.loop, .columns, .categories {
 	display: flex;
 	flex-flow: wrap;
+	gap: <?php echo $half; ?>px;
 	justify-content: space-evenly;
-	row-gap: <?php echo $single; ?>px;
 }
+
+.columns:not(.slim) { justify-content: space-between; }
 
 .loop:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
@@ -16,13 +18,9 @@
 	width: 100%;
 }
 
-.entry .featured-image,
-.entry .headline,
-.entry .the-content,
-.entry .post-footer { margin-bottom: <?php echo $single; ?>px; }
+.entry .headline, .entry .the-content, .entry .featured-image, .entry .post-footer { margin-bottom: <?php echo $single; ?>px; }
 
-.entry :last-child,
-.has-cover.image-before .featured-image { margin-bottom: 0; }
+.entry :last-child, .has-cover.image-before .featured-image { margin-bottom: 0; }
 
 /* LIST: TIMELINE */
 
@@ -127,7 +125,7 @@
 
 .box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #fefefe 80%); }
 
-.box-style .headline:not(.cover) + .the-content { padding-top: 0; }
+.box-style.row > .entry .headline:not(.cover) + .the-content { padding-top: 0; }
 
 .box-style.timeline-left:before { left: <?php echo $half; ?>px; }
 
@@ -136,21 +134,26 @@
 	top: <?php echo $half; ?>px;
 }
 
+/* QUERIES */
+
 @media all and (min-width: 800px) {
 	.box-style.row .item,
 	.box-style.row .headline,
 	.box-style.row .the-content,
 	.box-style.row .post-footer:not(.byline) { padding: <?php echo $single; ?>px <?php echo $mid; ?>px; }
+	.box-style.slim .item,
+	.box-style.slim .headline,
+	.box-style.slim .the-content,
+	.box-style.slim .post-footer:not(.byline) { padding: <?php echo $half; ?>px; }
 	.expanded .box-style.row .the-content {
 		padding-left: 0;
 		padding-right: 0;
 	}
 }
 
-/* EXPANDED */
-
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.expanded .loop-post {
+	.expanded .content.row .categories { gap: <?php echo $mid; ?>px; }
+	.expanded .loop-post.row {
 		margin-left: auto;
 		margin-right: auto;
 		max-width: <?php echo $content_width; ?>px;

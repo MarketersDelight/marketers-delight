@@ -242,7 +242,7 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 
 .slim {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
 }
 
 .slim ul, .slim ol, .slim p, .slim hr, .slim pre, .slim table, .slim blockquote, .slim .wp-caption, .slim .wp-block-image { margin-bottom: <?php echo $half; ?>px; }

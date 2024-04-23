@@ -1,5 +1,14 @@
 <style type="text/css">
 
+.small {
+	font-size: 0.8em;
+	line-height: 1em;
+}
+
+.text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
+
+a.underline { text-decoration: underline; }
+
 /* LISTS */
 
 .list, .list > ul, ul.list-check { list-style: none; }
@@ -28,10 +37,20 @@ ul.list-check li:before {
 
 /* ALIGNMENTS */
 
-.text-center { text-align: center; }
-.f-center { justify-content: center }
-.text-left { text-align: left; }
-.text-right { text-align: right; }
+.text-left {
+	justify-content: start;
+	text-align: left;
+}
+
+.text-right {
+	justify-content: right;
+	text-align: right;
+}
+
+.text-center {
+	justify-content: center;
+	text-align: center;
+}
 
 .auto {
 	margin-left: auto;
@@ -125,7 +144,7 @@ ul.list-check li:before {
 	}
 }
 
-/* WIDTHS */
+/* COLUMNS */
 
 .width-full { max-width: 100%; width: 100%; }
 

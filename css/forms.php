@@ -38,6 +38,14 @@ textarea:focus {
 	outline: none;
 }
 
+input.no-style, input.no-style:focus {
+	background-color: transparent;
+	border-radius: inherit;
+	border: 0;
+	box-shadow: none;
+	padding: 0;
+}
+
 textarea { padding: <?php echo $single; ?>px; }
 
 select {

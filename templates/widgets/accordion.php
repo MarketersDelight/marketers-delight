@@ -21,7 +21,7 @@
 	?>
 		<?php if ( $articles->have_posts() ) : ?>
 			<div id="accordion_<?php echo esc_attr( $args['id'] ); ?>_<?php echo $c; ?>" class="accordion-group<?php echo $c == 1 ? ' active' : ''; ?>">
-				<div class="accordion-title" data-accordion="<?php echo $c; ?>"><?php echo $term->name; ?></div>
+				<div class="accordion-title" data-accordion="<?php echo $c; ?>"><?php echo md_text_field( $term->name ); ?></div>
 				<div class="accordion-content">
 					<ul class="list">
 						<?php while ( $articles->have_posts() ) : $articles->the_post();

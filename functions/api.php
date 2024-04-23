@@ -381,16 +381,19 @@ function md_block_field( $attributes, $field ) {
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.
  *
+ * $default and $id are reversed order relative to other get functions
+ * due to lesser use of $id here.
+ *
  * @since 4.7
  */
 
-function md_module( $keys = null, $default = null ) {
+function md_module( $keys = null, $default = null, $id = null ) {
 	if ( is_home() || is_post_type_archive() || is_author() )
 		$option = md_post_type_field( $keys, $default );
 	elseif ( is_category() || is_tax() )
-		$option = md_term_meta( $keys, null, $default );
+		$option = md_term_meta( $keys, $id, $default );
 	elseif ( is_singular() )
-		$option = md_post_meta( $keys, null, $default );
+		$option = md_post_meta( $keys, $id, $default );
 	else
 		$option = md_setting( $keys, $default );
 

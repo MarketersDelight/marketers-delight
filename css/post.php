@@ -5,7 +5,7 @@
 .cta {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+	gap: <?php echo $half; ?>px;
 	position: relative;
 }
 
@@ -21,8 +21,6 @@
 	flex-flow: wrap;
 	position: relative;
 }
-
-.slim .byline { column-gap: <?php echo $third; ?>px; }
 
 .byline a, .byline-item a {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -50,6 +48,10 @@
 	font-weight: <?php echo $bold; ?>;
 	margin-bottom: <?php echo $half; ?>px;
 }
+
+.slim .byline { column-gap: <?php echo $third; ?>px; }
+
+.slim .byline-item { font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px; }
 
 /* FEATURED IMAGE */
 
@@ -182,7 +184,16 @@
 
 /* COVERS */
 
-.entry .cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+.cover {
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+}
+
+.main .inner > .cover,
+.content .cover {
+	padding-left: <?php echo $half; ?>px;
+	padding-left: <?php echo $half; ?>px;
+}
 
 .cover, .header.has-cover {
 	background-position: center center;
@@ -209,17 +220,8 @@
 .cover<?php echo $text_class; ?> .author-link { border-bottom-color: <?php echo $text_atts['border']; ?>; }
 <?php endforeach; ?>
 
-.page-headline.cover {
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
-}
-
 @media all and (min-width: 800px) {
- 	.entry .cover { padding: <?php echo $mid; ?>px; }
-	.page-headline.cover {
-		padding-bottom: <?php echo $mid; ?>px;
-		padding-top: <?php echo $mid; ?>px;
-	}
+ 	.content .cover { padding: <?php echo $mid; ?>px; }
 }
 
 @media all and (max-width: 800px) {

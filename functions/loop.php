@@ -25,13 +25,18 @@ function md_loops( $sort = null ) {
 
 	return $data;
 }
+
 /**
  * The Main Loop used on all posts, pages, and archives.
  *
  * @since 4.1
+ *
+ * $args (Optional) set loop attributes
+ * $data (Optional) gets passed data from md_hook_content,
+ *       and is second argument when used in add_action
  */
 
-function md_loop( $args = array() ) {
+function md_loop( $args = array(), $data = array() ) {
 	$c = 1;
 	$h = is_singular() ? 'div' : 'article';
 	$loop_classes = array();
@@ -72,6 +77,8 @@ function md_loop( $args = array() ) {
 
 	$loop_classes[] = "loop-{$post_type}";
 
+	$loop['has_sidebar'] = ! empty( $loop['sidebar']['enable'] ) || md_has_sidebar() ? true : false;
+
 	if ( $loop_type !== $post_type )
 		$loop_classes[] = "loop-{$loop_type}";
 
@@ -88,7 +95,11 @@ function md_loop( $args = array() ) {
 		$loop_classes[] = 'columns';
 		$loop_classes[] = 'columns-' . $loop['columns'];
 
-		if ( $loop['columns'] >= 3 || ( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) )
+		if (
+			$loop['columns'] >= 3 ||
+			( $loop['columns'] >= 2 && ! empty( $loop['by_category'] ) ) ||
+			( $loop['columns'] = 2 && ! empty( $loop['has_sidebar'] ) )
+		)
 			$loop_classes[] = 'slim';
 	}
 	elseif ( ! $loop['by_category'] )
@@ -271,12 +282,12 @@ function md_loop_style( $loop = array() ) {
 
 	if ( $disable_box_style || $disable_single )
 		$style = '';
+	elseif ( isset( $loop['style'] ) ) {
+		$style = str_replace( '_', '-', $loop['style'] );
 
-	if ( isset( $loop['style'] ) )
-		if ( $loop['style'] !== 'simple' )
-			$style = str_replace( '_', '-', $loop['style'] );
-		else
+		if ( $loop['style'] == 'simple' )
 			$style = '';
+	}
 
 	return $style;
 }

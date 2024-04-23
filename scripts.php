@@ -80,7 +80,6 @@ tabs: function( parent ) {
 				MD.removeClass( parentTabs[i], 'active' );
 			for ( var i = 0; i < parentContent.length; i++ )
 				MD.removeClass( parentContent[i], 'active' );
-			document.getElementById( parent ).className = 'has-' + tabID;
 			MD.addClass( document.getElementById( tabID ), 'active' );
 			MD.addClass( document.getElementById( tabID + '_tab' ), 'active' );
 		}
@@ -93,9 +92,7 @@ accordion: function( parent ) {
 			var groups = document.querySelectorAll( '#' + parent + ' .accordion-group' ),
 				groupID = this.getAttribute( 'data-accordion' ),
 				group = document.getElementById( parent + '_' + groupID );
-			for ( var i = 0; i < groups.length; i++ )
-				MD.removeClass( groups[i], 'active' );
-			MD.addClass( group, 'active' );
+			MD.toggleClass( group, 'active' );
 		}
 	}
 },
