@@ -1,7 +1,7 @@
 <?php
 /**
  * Customize the output of a link or button displayed from any MD button settings page
- * or the md_get_link and md_link() function.
+ * or the md_get_link and md_link() function with passed data.
  *
  * @since 6.0
  */
@@ -24,6 +24,7 @@ $phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
 $style = isset( $fields["link{$p}_style"] ) ? $fields["link{$p}_style"] : 'link';
 $type = isset( $fields["link{$p}_type"] ) ? $fields["link{$p}_type"] : 'url';
 $icon_classes = 'link-icon';
+$has_wrap = $icon && $text && $subtext ? true : false;
 
 if ( $parent )
 	$classes[] = "{$parent}-link";
@@ -91,6 +92,9 @@ $style = md_style( $styles );
 if ( isset( $fields["link{$p}_classes"] ) )
 	$classes[] = esc_attr( $fields["link{$p}_classes"] );
 
+if ( $has_wrap )
+	$classes[] = 'link-style';
+
 $classes = join( ' ', $classes );
 
 if ( $classes )
@@ -99,6 +103,8 @@ if ( $classes )
 $html =
 	"<$h{$href}{$popup}{$class}{$target}{$style}{$title}>".
 	( $icon ? md_icon( $icon, array( 'classes' => $icon_classes ) ) : '' ).
-	( $text || is_customize_preview() ? '<span class="link-text">' . md_text_field( $text ) . '</span>' : '' ).
-	( $subtext || is_customize_preview() ? '<span class="link-subtext">' . md_text_field( $subtext ) . '</span>' : '' ) .
+	( $has_wrap ? '<span class="link-wrap">' : '' ).
+	( $text || is_customize_preview() ? '<span class="link-text">' . do_shortcode( md_text_field( $text ) ) . '</span>' : '' ).
+	( $subtext || is_customize_preview() ? '<span class="link-subtext">' . do_shortcode( md_text_field( $subtext ) ) . '</span>' : '' ) .
+	( $has_wrap ? '</span>' : '' ).
 	"</$h>";

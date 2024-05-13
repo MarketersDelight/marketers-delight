@@ -117,11 +117,12 @@
 	.header-aside {
 		align-items: center;
 		display: flex;
+		gap: <?php echo $half; ?>px;
 		justify-content: space-between;
 	}
 	.header-simple .header-wrap {
 		justify-content: center;
-		gap : <?php echo $half; ?>px;
+		gap: <?php echo $half; ?>px;
 	}
 	<?php if ( md_setting( array( 'header', 'display', 'align_tagline' ) ) ) : ?>
 	.header .site-details {

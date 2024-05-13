@@ -649,12 +649,36 @@ class md_fields {
 	 */
 
 	public function group( $name, $id, $option, $args ) {
-		$var = '{clone}';
-		$option = ! empty( $option ) ? $option : array();
-		$empty[$var] = array();
-		$option = array_merge( $empty, $option );
+		if ( empty( $option ) )
+			$option = array();
+
+		$clone = '{clone}';
+		$group_id = $args['field'];
+		$sort = "{$group_id}_sort";
+		$elements = isset( $args['elements'] ) ? $args['elements'] : array();
 		$style = isset( $args['style'] ) ? $args['style'] : 'list';
+
+		if ( isset( $args['sort'] ) ) {
+			$classes = array( 'md-sort' );
+
+			$option = $this->get_field( array( $this->_clean_id, $group_id ), $elements );
+			$order = $this->get_field( array( $this->_clean_id, $sort ) );
+
+			if ( $order ) {
+				$order = explode( ',', $order );
+				array_combine( $order, $option );
+			}
+		}
+		else {
+			$classes = array( 'md-groups' );
+			$empty[$clone] = array();
+			$option = array_merge( $empty, $option );
+		}
+
 		$callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null;
+
+		$classes[] = "md-group-$style";
+		$classes = join( ' ', $classes );
 
 		include( md_template( 'admin/fields/group', true ) );
 	}

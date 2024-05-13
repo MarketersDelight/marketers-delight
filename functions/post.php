@@ -73,6 +73,9 @@ function md_has_headline_cover() {
 function md_headline( $args = array() ) {
 	$context = isset( $args['context'] ) ? $args['context'] : 'post';
 
+	if ( ! md_has_headline() )
+		return;
+
 //	if ( ! md_get_title( $context ) )
 //		return;
 

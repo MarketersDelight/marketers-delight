@@ -1,4 +1,5 @@
 <?php
+
 /**
  * A list of Loops registered to MD's settings.
  *
@@ -27,7 +28,8 @@ function md_loops( $sort = null ) {
 }
 
 /**
- * The Main Loop used on all posts, pages, and archives.
+ * The Main Loop Logic loaded to all posts, pages, and archives.
+ * Meant to mirror native WP page hierarchy and loop accordingly.
  *
  * @since 4.1
  *
@@ -36,7 +38,7 @@ function md_loops( $sort = null ) {
  *       and is second argument when used in add_action
  */
 
-function md_loop( $args = array(), $data = array() ) {
+function md_loop( $args = array() ) {
 	$c = 1;
 	$h = is_singular() ? 'div' : 'article';
 	$loop_classes = array();
@@ -62,6 +64,9 @@ function md_loop( $args = array(), $data = array() ) {
 
 	$loop = apply_filters( 'md_filter_set_loop', $loop );
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
+
+	if ( isset( $loops[$loop_type]['data'] ) )
+		$data = $loop['data'] = $loops[$loop_type]['data'];
 
 	if ( ! empty( $loops[$loop_type]['defaults'] ) )
 		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );

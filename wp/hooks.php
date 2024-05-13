@@ -112,7 +112,9 @@ function md_hook_loop_top() {
 }
 
 function md_hook_content_item() {
-	do_action( 'md_hook_content_item', 'content_item' );
+	$data = apply_filters( 'md_content_item_data', array() );
+
+	do_action( 'md_hook_content_item', 'content_item', $data );
 }
 
 function md_hook_the_content() {

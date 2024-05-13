@@ -84,8 +84,16 @@ class md_fields_data {
 					'options' => array( 'mobile', 'desktop' )
 				)
 			),
+			'name' => array(
+				'field' => 'name',
+				'save' => array( 'type' => 'text' )
+			),
 			'link_text' => array(
 				'field' => "link{$p}_text",
+				'save' => array( 'type' => 'text' )
+			),
+			'link_subtext' => array(
+				'field' => "link{$p}_subtext",
 				'save' => array( 'type' => 'text' )
 			),
 			'link_type' => array(

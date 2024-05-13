@@ -53,13 +53,13 @@ class md_css {
 			'forms' => locate_template( 'css/forms.php' ),
 			'menus' => locate_template( 'css/menus.php' ),
 			'header' => locate_template( 'css/header.php' ),
-			'layout' => locate_template( 'css/layout.php' ),
 			'page' => locate_template( 'css/page.php' ),
 			'post' => locate_template( 'css/post.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'ui' => locate_template( 'css/ui.php' ),
 			'loop' => locate_template( 'css/loop.php' ),
+			'layout' => locate_template( 'css/layout.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		) );
 

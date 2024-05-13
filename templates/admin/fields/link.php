@@ -11,13 +11,20 @@
 		)
 	) ); ?>
 
-	<?php if ( empty( $args['disable_text'] ) ) : ?>
-		<?php $this->field( $fields['link_text']['field'], array(
-			'type' => 'text',
-			'label' => __( 'Text', 'md' ),
-			'wrap_classes' => 'md-sep-micro'
-		) ); ?>
-	<?php endif; ?>
+	<div class="columns-2 columns-half md-sep-micro">
+		<div class="col">
+			<?php $this->field( $fields['link_text']['field'], array(
+				'type' => 'text',
+				'label' => __( 'Text', 'md' )
+			) ); ?>
+		</div>
+		<div class="col">
+			<?php $this->field( $fields['link_subtext']['field'], array(
+				'type' => 'text',
+				'label' => __( 'Sub Text', 'md' )
+			) ); ?>
+		</div>
+	</div>
 
 	<div class="columns-4 columns-half md-full-select">
 

@@ -68,6 +68,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'classes/api/fields-data.php' );
 		require_once( MD_DIR . 'classes/api/fields.php' );
 		require_once( MD_DIR . 'classes/api/api.php' );
+
 		// Functions
 		require_once( MD_DIR . 'functions/icons.php' );
 		require_once( MD_DIR . 'functions/design.php' );
@@ -81,12 +82,7 @@ final class marketers_delight {
 		require_once( MD_DIR . 'functions/content.php' );
 		require_once( MD_DIR . 'functions/sidebar.php' );
 		require_once( MD_DIR . 'functions/footer.php' );
-		// Admin
-		if ( is_admin() ) {
-			require_once( MD_DIR . 'classes/api/files.php' );
-			require_once( MD_DIR . 'classes/api/requests.php' );
-			require_once( MD_DIR . 'classes/admin.php' );
-		}
+
 		// Layout
 		require_once( MD_DIR . 'classes/header-templates.php' );
 		require_once( MD_DIR . 'classes/header.php' );
@@ -94,16 +90,28 @@ final class marketers_delight {
 		require_once( MD_DIR . 'classes/loop.php' );
 		require_once( MD_DIR . 'classes/byline.php' );
 		require_once( MD_DIR . 'classes/blog.php' );
+
 		// Widgets
 		foreach ( array( 'accordion', 'loop-query', 'content-spotlight', 'text-image', 'quote' ) as $widget )
 			include_once( MD_DIR . "wp/widget-$widget.php" );
+
 		// Blocks
 		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
 			include_once( MD_DIR . 'classes/blocks.php' );
+
 		// Hooks
 		require_once( MD_DIR . 'wp/hooks.php' );
+
 		// Deprecated
 		require_once( MD_DIR . 'functions/deprecated.php' );
+
+		// Admin
+		if ( is_admin() ) {
+			require_once( MD_DIR . 'classes/api/files.php' );
+			require_once( MD_DIR . 'classes/api/requests.php' );
+			require_once( MD_DIR . 'classes/admin.php' );
+		}
+
 		// Drop-ins
 		$this->dropins();
 	}

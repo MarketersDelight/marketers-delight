@@ -50,6 +50,8 @@ class md_header_templates {
 					}
 				}
 
+				do_action( 'md_hook_header_primary' );
+
 			echo '</div>';
 
 			if ( ! empty( $data['header_aside'] ) ) {
@@ -65,6 +67,8 @@ class md_header_templates {
 						call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 					}
 				}
+
+				do_action( 'md_hook_header_aside' );
 
 				echo '</div>';
 			}

@@ -81,11 +81,13 @@ class md_sanitize {
 			'class' => array(),
 			'id' => array(),
 			'target' => array(),
+			'title' => array(),
 			'rel' => array()
 		),
 		'span' => array(
 			'class' => array(),
 			'id' => array(),
+			'title' => array(),
 			'style' => array()
 		),
 		'img' => array(
@@ -94,6 +96,7 @@ class md_sanitize {
 			'height' => array(),
 			'width' => array(),
 			'class' => array(),
+			'title' => array(),
 			'id' => array()
 		),
 		'mark' => array(
@@ -467,8 +470,56 @@ class md_sanitize {
 	}
 
 	/**
-	 * An ugly function (how can this be made recursive?), but one thorough enough
+	 * Validate and sanitize individual fields.
+	 *
+	 * @since 5.0
+	 */
+
+	public function validate_field( $val, $fields ) {
+		$field = '';
+		$type = isset( $fields['type'] ) ? $fields['type'] : '';
+		$sub_options = isset( $fields['options'] ) ? $fields['options'] : '';
+
+		if ( $val == '' && isset( $fields['default'] ) )
+			$val = $fields['default'];
+
+		if ( in_array( $type, array( 'text', 'textarea', 'editor', 'hidden' ) ) )
+			$field = $this->text( $val );
+
+		if ( in_array( $type, array( 'number', 'range' ) ) )
+			$field = $this->number( $val );
+
+		if ( in_array( $type, array( 'code', 'data' ) ) )
+			$field = $val;
+
+		if ( $type == 'url' )
+			$field = $this->url( $val );
+
+		if ( $type == 'checkbox' )
+			$field = $this->checkbox( $val );
+
+		if ( in_array( $type, array( 'select', 'radio' ) ) && is_array( $sub_options ) )
+			$field = $this->select( $val, $sub_options );
+
+		if ( $type == 'upload' ) {
+			$upload_type = isset( $fields['upload_type'] ) ? $fields['upload_type'] : '';
+			$field = $this->upload( $val, $upload_type );
+		}
+
+		if ( $type == 'color' ) {
+			$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
+
+			if ( $default !== $val )
+				$field = $this->color( $val );
+		}
+
+		return $field;
+	}
+
+	/**
+	 * The ugliest function in MD (make this recursive), but one thorough enough
 	 * to properly validate and sanitize multiple levels of nested options.
+	 *
 	 * Sets up data and feeds option value to validate_field() method and then
 	 * builds full options array for save.
 	 *
@@ -535,53 +586,6 @@ class md_sanitize {
 		}
 
 		return $save;
-	}
-
-	/**
-	 * Validate and sanitize individual fields.
-	 *
-	 * @since 5.0
-	 */
-
-	public function validate_field( $val, $fields ) {
-		$field = '';
-		$type = isset( $fields['type'] ) ? $fields['type'] : '';
-		$sub_options = isset( $fields['options'] ) ? $fields['options'] : '';
-
-		if ( $val == '' && isset( $fields['default'] ) )
-			$val = $fields['default'];
-
-		if ( in_array( $type, array( 'text', 'textarea', 'editor', 'hidden' ) ) )
-			$field = $this->text( $val );
-
-		if ( in_array( $type, array( 'number', 'range' ) ) )
-			$field = $this->number( $val );
-
-		if ( in_array( $type, array( 'code', 'data' ) ) )
-			$field = $val;
-
-		if ( $type == 'url' )
-			$field = $this->url( $val );
-
-		if ( $type == 'checkbox' )
-			$field = $this->checkbox( $val );
-
-		if ( in_array( $type, array( 'select', 'radio' ) ) && is_array( $sub_options ) )
-			$field = $this->select( $val, $sub_options );
-
-		if ( $type == 'upload' ) {
-			$upload_type = isset( $fields['upload_type'] ) ? $fields['upload_type'] : '';
-			$field = $this->upload( $val, $upload_type );
-		}
-
-		if ( $type == 'color' ) {
-			$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
-
-			if ( $default !== $val )
-				$field = $this->color( $val );
-		}
-
-		return $field;
 	}
 
 }

@@ -4,7 +4,7 @@
 	$ATTRIBUTES
 \*------------------------------*/
 
-.md .error, .md-display-none { display: none; }
+.md .error, .md-display-none, .md [data-id="hide"] { display: none; }
 
 .md *, .md *:before, .md *:after {
 	-webkit-box-sizing: border-box;
@@ -229,6 +229,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 /* TABS */
 
+.md-subnav-tab-wrapper { margin-bottom: 5px; }
+
 .md-submenu {
 	border-bottom: 1px solid #ccc;
 	color: #555;
@@ -239,7 +241,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	width: 100%;
 }
 
-.md-submenu-item {
+.md-submenu-item,
+.md-subnav-tab-wrapper .nav-tab {
 	border-bottom: 4px solid #f1f1f1;
 	color: #666;
 	cursor: pointer;
@@ -249,13 +252,33 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	text-decoration: none;
 }
 
-.md-submenu-active {
+.md-submenu-active,
+.md-subnav-tab-wrapper .nav-tab-active {
 	border-bottom: 4px solid #666;
 	color: #222;
 	font-weight: bold;
 }
 
-.md-submenu-active:hover { border-bottom-color: #00a0d2; }
+.md-submenu-active:hover,
+.md-subnav-tab-wrapper .nav-tab-active:hover { border-bottom-color: #00a0d2; }
+
+.md-subnav-tab-wrapper .nav-tab {
+	background-color: transparent;
+	border-width: 0 0 4px;
+}
+
+.md-subnav-tab-wrapper .nav-tab {
+	border-bottom-color: #fff;
+	font-weight: normal;
+	padding-bottom: 12px;
+	padding-top: 0;
+}
+.md-subnav-tab-wrapper .nav-tab.nav-tab-active {
+	border-bottom-color: #666;
+	font-weight: bold;
+}
+.md-meta-box .md-tabs .md-tab-content { padding-top: 5; }
+
 
 /* HEADER */
 

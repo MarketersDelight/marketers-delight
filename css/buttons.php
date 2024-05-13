@@ -4,6 +4,8 @@
 	$BUTTONS
 \*------------------------------*/
 
+/* BUTTONS */
+
 button, .button, a.button, .button a, input[type="submit"], .format .button,
 .header-wrap .button, .header-wrap .button:hover,
 .header-wrap .button a, .header-wrap .button a:hover {
@@ -81,11 +83,9 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 .button.button-arrow:hover:after { transform: translateX(4px); }
 
-/* ELEMENTS */
+/* LINKS */
 
 .link-icon { vertical-align: middle; }
-
-.link-icon + .link-text { margin-left: <?php echo $third; ?>px; }
 
 .link-subtext {
 	display: block;
@@ -93,7 +93,14 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.link-subtext:not(:empty) { margin-top: <?php echo $small; ?>px; }
+.link-style, .link-style.button {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	text-align: left;
+}
+
+.format .link-style { text-decoration: none; }
 
 /* BADGE */
 

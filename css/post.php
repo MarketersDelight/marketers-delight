@@ -1,6 +1,6 @@
 <style type="text/css">
 
-/* POST / PAGE HEADER */
+/* CALL TO ACTION */
 
 .cta {
 	align-items: center;
@@ -8,8 +8,6 @@
 	gap: <?php echo $half; ?>px;
 	position: relative;
 }
-
-.cta-link { text-align: center; }
 
 /* BYLINE */
 
@@ -22,16 +20,18 @@
 	position: relative;
 }
 
-.byline a, .byline-item a {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	text-decoration: none;
-}
+.byline a, .byline-item a { color: <?php echo $colors['site']['text-sec']; ?>; }
+
+.byline .badge, .byline-date a { text-decoration: none; }
 
 .byline-item { font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
 
 .byline-item i:not(:last-child) { margin-right: <?php echo $small; ?>px; }
 
-.byline .author-link { border-bottom: 1px solid rgba(0, 0, 0, 0.15); }
+.byline .author-link {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	text-decoration: none;
+}
 
 .byline .author-link:hover { border-bottom: 0; }
 

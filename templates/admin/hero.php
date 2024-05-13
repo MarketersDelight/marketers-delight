@@ -1,16 +1,20 @@
-<div class="<?php echo $has_tabs ? 'md-tabs' : 'md-test'; ?> md-conditional">
+<div class="md-conditional md-tabs">
 
-	<?php if ( $has_tabs ) : ?>
+	<?php if ( ! $is_post ) : ?>
+	<p class="description"><i class="dashicons dashicons-editor-help"></i> <?php echo __( 'The <strong>Page Title area</strong> contains the Main Title and Description, Featured Image, and the main call to action.<br />Set a cover photo or background color to create a <strong>Hero section!</strong>', 'md' ); ?></p>
+	<?php endif; ?>
 
-	<p class="description"><i class="dashicons dashicons-editor-help"></i> <?php echo __( 'The <strong>Hero area</strong> contains the Page Title & Description and is located above the fold.<br />Upload a cover photo and CTA for maximum impact.', 'md' ); ?></p>
-
-	<div class="nav-tab-wrapper">
-		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-hero-featured-image"><?php echo __( 'Featured Image', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-hero-cta"><?php echo __( 'Call to Action', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-hero-cover"><?php echo __( 'Cover', 'md' ); ?></a>
+	<div class="nav-tab-wrapper<?php echo $is_post ? ' md-subnav-tab-wrapper' : ''; ?>">
+		<?php if ( ! $is_post ) : ?>
+		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-page-featured-image"><?php echo __( 'Featured Image', 'md' ); ?></a>
+		<?php endif; ?>
+		<a href="#" class="md-tab nav-tab<?php echo $is_post ? ' nav-tab-active' : ''; ?>" data-md-tab="md-page-cta"><?php echo __( 'Call to Action', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-page-cover"><?php echo __( 'Cover', 'md' ); ?></a>
 	</div>
 
-	<div class="md-hero-featured-image md-tab-content active">
+	<?php if ( ! $is_post ) : ?>
+
+	<div class="md-page-featured-image md-tab-content active">
 
 		<div class="columns-2 columns-30-70 columns-double">
 
@@ -47,17 +51,14 @@
 				<?php endforeach; ?>
 
 			</div>
+
 		</div>
 
 	</div>
 
-	<?php else : ?>
-
-	<h3 class="mt-none"><?php echo __( 'Call to Action', 'md' ); ?></h3>
-
 	<?php endif; ?>
 
-	<div class="md-hero-cta md-conditional <?php echo $has_tabs ? 'md-tab-content' : 'md-sep-small'; ?>">
+	<div class="md-page-cta md-conditional md-tab-content<?php echo $is_post ? ' active' : ''; ?>">
 
 		<?php $this->fields->field( 'page_cta', array(
 			'type' => 'select',
@@ -71,35 +72,21 @@
 		) ); ?>
 
 		<div id="<?php echo $prefix; ?>_page_cta_links" class="md-conditional-item md-conditional-links" style="display: <?php echo $cta_type == 'links' ? 'block' : 'none'; ?>">
-
-			<div class="md-widget md-widget-secondary md-toggle">
-
-				<div class="md-widget-title">
-					<?php echo __( 'Secondary Link', 'md' ); ?>
-				</div>
-
-				<div class="md-widget-item">
-					<?php $this->fields->link_fields( array(
-						'group' => array( 'link_secondary' )
-					) ); ?>
-				</div>
-
-			</div>
-
-			<div class="md-widget md-widget-secondary md-toggle">
-
-				<div class="md-widget-title">
-					<?php echo __( 'Primary Link', 'md' ); ?>
-				</div>
-
-				<div class="md-widget-item">
-					<?php $this->fields->link_fields( array(
-						'group' => array( 'link_primary' )
-					) ); ?>
-				</div>
-
-			</div>
-
+			<?php $this->fields->field( 'links', array(
+				'type' => 'group',
+				'sort' => true,
+				'style' => 'boxes',
+				'secondary' => true,
+				'callback' => array( $this, 'sort_fields' ),
+				'elements' => array(
+					'link_primary' => array(
+						'label' => __( 'Primary Link', 'md' )
+					),
+					'link_secondary' => array(
+						'label' => __( 'Secondary Link', 'md' )
+					)
+				)
+			) ); ?>
 		</div>
 
 		<div id="<?php echo $prefix; ?>_page_cta_custom" class="md-conditional-item md-conditional-custom" style="display: <?php echo $cta_type == 'custom' ? 'block' : 'none'; ?>">
@@ -111,19 +98,11 @@
 
 	</div>
 
-	<?php if ( ! $has_tabs ) : ?>
+	<div class="md-page-cover md-tab-content">
 
-	<hr />
+		<div class="columns-2 columns-25-75 columns-single">
 
-	<h3><?php echo __( 'Cover Photo', 'md' ); ?></h3>
-
-	<?php endif; ?>
-
-	<div class="md-hero-cover<?php echo $has_tabs ? ' md-tab-content' : ''; ?>">
-
-		<div class="columns-3 columns-double">
-
-			<div class="col">
+			<div class="col col1">
 				<?php $this->fields->field( 'cover_photo', array(
 					'type' => 'upload',
 					'upload_type' => 'media'
@@ -131,25 +110,27 @@
 			</div>
 
 			<div class="col">
-				<?php $this->fields->field( 'cover_position', array(
-					'type' => 'select',
-					'label' => __( 'Position', 'md' ),
-					'empty_label' => __( 'Do not show cover', 'md' ),
-					'options' => $sanitize->values['covers'],
-					'wrap_classes' => 'md-sep-micro'
-				) ); ?>
-				<?php $this->fields->field( 'cover_bg_color', array(
-					'type' => 'color',
-					'label' =>  __( 'Overlay Color', 'md' ),
-					'default' => 'rgba(0, 0, 0, 0.5)',
-					'wrap_classes' => 'md-sep-micro'
-				) ); ?>
-			</div>
-
-			<div class="col">
+				<div class="columns-2 columns-half mb-half">
+					<div class="col">
+						<?php $this->fields->field( 'cover_position', array(
+							'type' => 'select',
+							'label' => __( 'Position', 'md' ),
+							'empty_label' => __( 'Do not show cover', 'md' ),
+							'options' => $sanitize->values['covers']
+						) ); ?>
+					</div>
+					<div class="col">
+						<?php $this->fields->field( 'cover_bg_color', array(
+							'type' => 'color',
+							'label' =>  __( 'Overlay Color', 'md' ),
+							'default' => 'rgba(0, 0, 0, 0.5)'
+						) ); ?>
+					</div>
+				</div>
 				<?php $this->fields->field( 'cover_display', array(
 					'type' => 'checkbox',
 					'label' => __( 'Settings', 'md' ),
+					'inline' => true,
 					'options' => array(
 						'alternate' => __( 'Use alternate text color', 'md' ),
 						'bg_repeat' => __( 'Background repeat', 'md' ),

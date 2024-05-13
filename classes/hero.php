@@ -101,7 +101,7 @@ class md_hero extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Hero', 'md' );
+		$this->name = __( 'Page Title', 'md' );
 
 		return array(
 			'meta_box' => array(
@@ -157,11 +157,13 @@ class md_hero extends md_api {
 				'type' => 'select',
 				'options' => array( 'links', 'custom' )
 			),
-			'custom_html' => array( 'type' => 'code' )
+			'custom_html' => array( 'type' => 'code' ),
+			'links_sort' => array( 'type' => 'text' ),
+			'links' => array(
+				'type' => 'group',
+				'fields' => $this->fields->data->links( array( 'sort' => 'save' ) )
+			)
 		);
-
-		$fields['link_primary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
-		$fields['link_secondary'] = $this->fields->data->links( array( 'sort' => 'save' ) );
 
 		return $fields;
 	}
@@ -209,7 +211,7 @@ class md_hero extends md_api {
 
 	public function admin_template( $group = null ) {
 		$screen = get_current_screen();
-		$has_tabs = ! in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ? true : false;
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$prefix = $this->_prefix;
 		$values = $this->_data( 'values' );
 		$sanitize = $this->_data( 'sanitize' );
@@ -244,6 +246,10 @@ class md_hero extends md_api {
 			</div>
 		</div>
 	<?php }
+
+	public function sort_fields( $group, $field ) {
+		$this->fields->link_fields( array( 'group' => array( $group, $field ) ) );
+	}
 
 	/**
 	 * To detect a Full Header Cover, manually set a context.

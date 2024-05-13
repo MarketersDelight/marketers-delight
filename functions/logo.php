@@ -13,6 +13,7 @@ function md_has_site_title() {
 
 /**
  * Render Site Title as default WP text or custom title.
+ * Only use to display text on page, not recommended in <title>.
  *
  * @since 5.5.8
  */
@@ -47,7 +48,7 @@ function md_site_tagline() {
 }
 
 /**
- * Checks if logo is enabled.
+ * Checks if logo is enabled through custom options.
  *
  * @since 4.1
  */

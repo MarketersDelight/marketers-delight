@@ -1,7 +1,25 @@
 <?php
 
 /**
- * A procedural function to access Block Editor colors.
+ * Easily output a button with different kind of action.
+ *
+ * @since 4.3.5
+ */
+
+function md_link( $fields, $p = '' ) {
+	echo md_get_link( $fields, $p );
+}
+
+function md_get_link( $fields, $p = '' ) {
+	$html = '';
+
+	include( md_template( 'link', true ) );
+
+	return $html;
+}
+
+/**
+ * A function to access Block Editor colors.
  *
  * since 4.9
  */
@@ -10,6 +28,59 @@ function md_editor_colors() {
 	$design = new md_design;
 
 	return $design->editor_colors();
+}
+
+/**
+ * Return inline style selector with sanitized values.
+ *
+ * @since 5.0
+ */
+
+function md_style( $fields ) {
+	$style = '';
+	$attributes = array();
+
+	if ( ! empty( $fields['bg_color'] ) )
+		$attributes['bg_color'] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
+
+	if ( ! empty( $fields['bg_image'] ) )
+		$attributes['bg_image'] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
+
+	if ( ! empty( $fields['bg_size'] ) )
+		$attributes['bg_size'] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
+
+	if ( ! empty( $fields['border_color'] ) )
+		$attributes['border_color'] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
+
+	if ( isset( $fields['border'] ) && ! empty( $fields['border'][2] ) ) {
+		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
+		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
+		$border_color = ! empty( $fields['border'][2] ) ? $fields['border'][2] : '#1e1e1e';
+		$attributes['border'] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $border_color ) . ';';
+	}
+
+	if ( ! empty( $fields['color'] ) )
+		$attributes['color'] = 'color:' . esc_attr( $fields['color'] ) . ';';
+
+	if ( ! empty( $fields['width'] ) )
+		$attributes['width'] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
+
+	if ( ! empty( $fields['max_width'] ) )
+		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
+
+	if ( ! empty( $fields['flex'] ) )
+		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
+
+	if ( ! empty( $fields['flex_basis'] ) )
+		$attributes['flex_basis'] = 'flex-basis:' . esc_attr( $fields['flex_basis'] ) . ';';
+
+	if ( ! empty( $fields['height'] ) )
+		$attributes['height'] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
+
+	if ( ! empty( $attributes ) )
+		$style = ' style="' . join( '', $attributes ) . '"';
+
+	return $style;
 }
 
 /**
@@ -28,23 +99,6 @@ function md_enqueue_fonts() {
 
 	if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
 		wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );
-}
-
-/**
- * Enqueue MD's integrated web font services to <head> when needed.
- *
- * @since 4.8
- */
-
-function md_webfonts_loader() {
-	$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
-	$fonts = md_web_fonts();
-	$has_typekit = ( ! empty( $typekit ) && ! empty( $fonts['typekit'] ) ) ? true : false;
-	$has_google = ( ! empty( $fonts['google'] ) ) ? true : false;
-
-	if ( $has_google || $has_typekit )
-		return
-			"\t<script>WebFontConfig={" . ( $has_google ? 'google:{families:[' .  md_google_fonts( 'ids' ) . ']},' : '' ) . ( $has_typekit ? 'typekit:{id:\'' . esc_attr( $typekit['key'] ) . '\'}' : '' ) . '};(function(d){var wf=d.createElement(\'script\'),s=d.scripts[0];wf.src=\'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js\';wf.async=true;s.parentNode.insertBefore(wf,s);})(document);' . "</script>\n";
 }
 
 /**
@@ -159,8 +213,29 @@ function md_google_fonts( $format = null ) {
 }
 
 /**
+ * Enqueue MD's integrated web font services to <head> when needed.
+ *
+ * @since 4.8
+ */
+
+function md_webfonts_loader() {
+	$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
+	$fonts = md_web_fonts();
+	$has_typekit = ( ! empty( $typekit ) && ! empty( $fonts['typekit'] ) ) ? true : false;
+	$has_google = ( ! empty( $fonts['google'] ) ) ? true : false;
+
+	if ( $has_google || $has_typekit )
+		return
+			"\t<script>WebFontConfig={" . ( $has_google ? 'google:{families:[' .  md_google_fonts( 'ids' ) . ']},' : '' ) . ( $has_typekit ? 'typekit:{id:\'' . esc_attr( $typekit['key'] ) . '\'}' : '' ) . '};(function(d){var wf=d.createElement(\'script\'),s=d.scripts[0];wf.src=\'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js\';wf.async=true;s.parentNode.insertBefore(wf,s);})(document);' . "</script>\n";
+}
+
+/**
  * Build custom inline CSS on the fly with data from
- * custom values and disperse into media queries.
+ * custom values and disperse into media queries. Call
+ * inline when it's too late to wp_print_inline_css.
+ *
+ * @bug Assigning multiple rules to single selector prints
+ * 		separate lines, logic for merging under same name needs tweak.
  *
  * @since 6.0
  */
@@ -219,75 +294,4 @@ function md_inline_css( $args ) {
 	}
 
 	return "\n<style type=\"text/css\">\n" . $css . "</style>\n";
-}
-
-/**
- * Return HTML for Page Lead background color/image.
- *
- * @since 5.0
- */
-
-function md_style( $fields ) {
-	$style = '';
-	$attributes = array();
-
-	if ( ! empty( $fields['bg_color'] ) )
-		$attributes['bg_color'] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
-
-	if ( ! empty( $fields['bg_image'] ) )
-		$attributes['bg_image'] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
-
-	if ( ! empty( $fields['bg_size'] ) )
-		$attributes['bg_size'] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
-
-	if ( ! empty( $fields['border_color'] ) )
-		$attributes['border_color'] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
-
-	if ( isset( $fields['border'] ) && ! empty( $fields['border'][2] ) ) {
-		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
-		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
-		$border_color = ! empty( $fields['border'][2] ) ? $fields['border'][2] : '#1e1e1e';
-		$attributes['border'] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $border_color ) . ';';
-	}
-
-	if ( ! empty( $fields['color'] ) )
-		$attributes['color'] = 'color:' . esc_attr( $fields['color'] ) . ';';
-
-	if ( ! empty( $fields['width'] ) )
-		$attributes['width'] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
-
-	if ( ! empty( $fields['max_width'] ) )
-		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
-
-	if ( ! empty( $fields['flex'] ) )
-		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
-
-	if ( ! empty( $fields['flex_basis'] ) )
-		$attributes['flex_basis'] = 'flex-basis:' . esc_attr( $fields['flex_basis'] ) . ';';
-
-	if ( ! empty( $fields['height'] ) )
-		$attributes['height'] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
-
-	if ( ! empty( $attributes ) )
-		$style = ' style="' . join( '', $attributes ) . '"';
-
-	return $style;
-}
-
-/**
- * Easily output a button with different kind of action.
- *
- * @since 4.3.5
- */
-
-function md_link( $fields, $p = '' ) {
-	echo md_get_link( $fields, $p );
-}
-
-function md_get_link( $fields, $p = '' ) {
-	$html = '';
-
-	include( md_template( 'link', true ) );
-
-	return $html;
 }

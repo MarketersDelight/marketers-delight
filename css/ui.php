@@ -186,7 +186,7 @@
 
 .accordion .current { font-weight: <?php echo $bold; ?>; }
 
-.accordion-group {
+.accordion-group:not(:last-child) {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-bottom: <?php echo $third; ?>px;
 }
@@ -200,30 +200,28 @@
 	cursor: pointer;
 	font-weight: <?php echo $bold; ?>;
 	position: relative;
+	width: 100%;
 }
 
 .accordion-title:after {
+	border-radius: 50%;
 	content: '\e80e';
 	display: inline-block;
 	font-family: 'md-icon';
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
-	position: absolute;
-		top: <?php echo $half; ?>px;;
-		right: <?php echo $half; ?>px;
-}
-
-.account .accordion-title:after {
-	border-radius: 50%;
 	height: <?php echo $mid; ?>px;
 	line-height: <?php echo $mid; ?>px;
 	margin-top: -<?php echo round( $mid / 2 ); ?>px;
 	position: absolute;
 		top: 50%;
+		right: 0;
 	text-align: center;
 	width: <?php echo $mid; ?>px;
 }
 
-.account .accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
+.box-style .accordion-title:after { right: <?php echo $half; ?>px; }
+
+.accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
 
 .format .accordion-title { margin-bottom: 0; }
 
@@ -234,6 +232,8 @@
 	padding-bottom: <?php echo $half; ?>px;
 	padding-top: <?php echo $half; ?>px;
 }
+
+.accordion-group:last-child .accordion-content { padding-bottom: 0; }
 
 .accordion .list {
 	font-size: 0.9em;

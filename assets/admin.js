@@ -118,6 +118,7 @@
 		sortable: {
 			init: function() {
 				this.groups();
+				this.sort();
 				this.shared();
 				this.builder();
 			},
@@ -127,6 +128,23 @@
 					new Sortable( groups[i], {
 						handle: '.md-reorder',
 						animation: 150
+					});
+			},
+			sort: function() {
+				var sort = document.getElementsByClassName( 'md-sort' );
+				for ( var i = 0; i < sort.length; i++ )
+					var sort = new Sortable( sort[i], {
+						handle: '.md-reorder',
+						animation: 150,
+						onEnd: function ( e ) {
+							var items = sort.toArray(),
+								ignore = items.indexOf( 'hide' );
+
+							if ( ignore > -1 )
+								items.splice( ignore, 1 );
+
+							$( e.item.parentElement ).find( '.md-sort-order' ).val( items.join( ',' ) );
+						}
 					});
 			},
 			shared: function() {

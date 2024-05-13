@@ -29,9 +29,12 @@ body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+}
+
+body, .font-normal {
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-weight: <?php echo $font_weight; ?>;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
 	position: relative;
 }
 
@@ -169,6 +172,31 @@ abbr, acronym {
 
 .caps { text-transform: uppercase; }
 
+/* LISTS */
+
+[class*="list"] { margin-left: 0; }
+
+ul[class*="list"],
+[class*="list"] ul { list-style: none; }
+
+.list > ul:not(:last-child),
+.list li:not(:last-child) {
+	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	padding-bottom: <?php echo $half; ?>px;
+}
+
+.list-check { margin-left: <?php echo $single; ?>px; }
+
+ul.list-check li:before {
+	background-color: rgba(0, 0, 0, 0.08);
+	border-radius: 50%;
+	color: #22a340;
+	padding: <?php echo $small; ?>px;
+	position: absolute;
+		left: -<?php echo $single + $small + 2; ?>px;
+		top: 0;
+}
+
 /* BLOCKQUOTE */
 
 blockquote {
@@ -213,7 +241,7 @@ blockquote.small:before, blockquote.small:after { font-size: <?php echo $typogra
 
 blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }
 
-/* POST FORMAT */
+/* FORMAT - spacing classes within posts */
 
 .format { word-wrap: break-word; }
 
@@ -231,14 +259,26 @@ blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 );
 
 .format ul { list-style: square; }
 
-.format ul, .format ol { margin-left: <?php echo $single; ?>px; }
+.format ul[class*="list"], .format [class*="list"] ul { list-style: none; }
+
+.format [class*="list"] { margin-left: 0; }
+
+.format ul, .format ol,
+.format .list-check { margin-left: <?php echo $single; ?>px; }
 
 .format li {
-	margin-bottom: <?php echo $third; ?>px;
+	margin-bottom: <?php echo $half; ?>px;
 	position: relative;
 }
 
-/* SLIM FORMAT */
+.format ul ul {
+	margin-bottom: <?php echo $half; ?>px;
+	margin-left: <?php echo $half; ?>px;
+}
+
+.text-center [class*="list"], .text-center ul, .text-center ol { text-align: left; }
+
+/* FORMAT SLIM - universal small fonts */
 
 .slim {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;

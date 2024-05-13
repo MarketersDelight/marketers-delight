@@ -9,14 +9,13 @@
 
 		<h3 class="md-widget-title md-group-controls">
 
-			<span class="md-badge"<?php echo ! empty( $color ) ? ' style="background-color: ' . esc_attr( $color ) . ';"' : ''; ?>><i class="dashicons dashicons-<?php echo esc_attr( $icon ); ?>"></i> <?php echo esc_html( $fields['title'] ); ?></span>
+			<span class="md-badge"<?php echo md_style( array( 'bg_color' => $color ) ); ?>><i class="dashicons dashicons-<?php echo esc_attr( $icon ); ?>"></i> <?php echo esc_html( $fields['title'] ); ?></span>
 
-			<?php if ( ! isset( $fields['hide_title'] ) || $fields['hide_title'] !== false ) : ?>
-				<?php $this->field( array( $key, $group, 'title' ), array(
+			<?php if ( ! isset( $fields['hide_title'] ) || $fields['hide_title'] !== false )
+				$this->field( array( $key, $group, 'title' ), array(
 					'type' => 'text',
 					'placeholder' => isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Enter label...', 'md' )
 				) ); ?>
-			<?php endif; ?>
 
 			<span class="md-group-controls-inner">
 				<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>

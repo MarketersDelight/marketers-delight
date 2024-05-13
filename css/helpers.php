@@ -1,39 +1,19 @@
 <style type="text/css">
 
+.fl {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+}
+
 .small {
-	font-size: 0.8em;
-	line-height: 1em;
+	font-size: 0.85em;
+	line-height: 1.5em;
 }
 
 .text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 a.underline { text-decoration: underline; }
-
-/* LISTS */
-
-.list, .list > ul, ul.list-check { list-style: none; }
-
-.list li, ul.list-check li { position: relative; }
-
-.list > li:not(:last-child) {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-	margin-bottom: <?php echo $third; ?>px;
-	padding-bottom: <?php echo $third; ?>px;
-}
-
-ul.list-check { margin-left: <?php echo $single + $small; ?>px; }
-
-ul.list-check li:not(:last-child) { margin-bottom: <?php echo $third; ?>px; }
-
-ul.list-check li:before {
-	background-color: rgba(0, 0, 0, 0.08);
-	border-radius: 50%;
-	color: #22a340;
-	padding: <?php echo $small; ?>px;
-	position: absolute;
-		left: -<?php echo $single + $small; ?>px;
-		top: 0;
-}
 
 /* ALIGNMENTS */
 
@@ -79,7 +59,7 @@ ul.list-check li:before {
 	float: none;
 }
 
-.alignwide img, .alignfull img { width: 100%; }
+.alignwide.wp-block-image img, .alignfull.wp-block-image img { width: 100%; }
 
 .extend {
 	margin-left: -50vw;
@@ -169,11 +149,14 @@ ul.list-check li:before {
 .mb-single, .format .mb-single { margin-bottom: <?php echo $single; ?>px; }
 .mb-half, .format .mb-half { margin-bottom: <?php echo $half; ?>px; }
 .mb-small, .format .mb-small { margin-bottom: <?php echo $small; ?>px; }
+
 .mb-none { margin-bottom: 0 !important; }
-.ml-half:not(:first-child) { margin-left: <?php echo $half; ?>px; }
-.ml-small:not(:first-child) { margin-left: <?php echo $small; ?>px; }
-.mr-half:not(:last-child) { margin-right: <?php echo $half; ?>px; }
-.mr-small:not(:last-child) { margin-right: <?php echo $small; ?>px; }
+.ml-half { margin-left: <?php echo $half; ?>px; }
+.ml-third { margin-left: <?php echo $third; ?>px; }
+.ml-small { margin-left: <?php echo $small; ?>px; }
+.mr-third { margin-right: <?php echo $third; ?>px; }
+.mr-half { margin-right: <?php echo $half; ?>px; }
+.mr-small { margin-right: <?php echo $small; ?>px; }
 
 /* BLOCKS */
 
@@ -224,7 +207,6 @@ ul.list-check li:before {
 .foot {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	font-style: italic;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
@@ -250,7 +232,7 @@ ul.list-check li:before {
 
 .circle { border-radius: 50%; }
 
-.circle-icon, a.circle-icon, .toc-anchor {
+.circle-icon, a.circle-icon {
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
@@ -266,6 +248,7 @@ ul.list-check li:before {
 }
 
 .circle-icon.mid {
+	flex: 1 0 <?php echo $mid + $small; ?>px;
 	height: <?php echo $mid + $small; ?>px;
 	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
 	width: <?php echo $mid + $small; ?>px;
