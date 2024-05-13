@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-23T04:39:45+00:00\n"
+"POT-Creation-Date: 2024-05-13T21:46:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -39,6 +39,312 @@ msgstr ""
 #. Author URI of the theme
 #: style.css
 msgid "https://kolakube.com/"
+msgstr ""
+
+#: assets/icons.php:6
+msgid "Arrow Down"
+msgstr ""
+
+#: assets/icons.php:10
+msgid "Arrow Left"
+msgstr ""
+
+#: assets/icons.php:14
+msgid "Arrow Right"
+msgstr ""
+
+#: assets/icons.php:18
+msgid "Arrow Up"
+msgstr ""
+
+#: assets/icons.php:22
+msgid "Bell"
+msgstr ""
+
+#: assets/icons.php:26
+msgid "Bolt"
+msgstr ""
+
+#: assets/icons.php:30
+msgid "Book"
+msgstr ""
+
+#: assets/icons.php:34
+msgid "Cancel (X)"
+msgstr ""
+
+#: assets/icons.php:38
+msgid "Cart"
+msgstr ""
+
+#: assets/icons.php:42
+msgid "Chat"
+msgstr ""
+
+#: assets/icons.php:46
+msgid "Clock"
+msgstr ""
+
+#: assets/icons.php:50
+msgid "Copy"
+msgstr ""
+
+#: assets/icons.php:54
+msgid "Calendar"
+msgstr ""
+
+#: assets/icons.php:58
+msgid "Code"
+msgstr ""
+
+#: assets/icons.php:62
+msgid "Cog"
+msgstr ""
+
+#: assets/icons.php:66
+msgid "Download"
+msgstr ""
+
+#: assets/icons.php:70
+msgid "Dribbble"
+msgstr ""
+
+#: assets/icons.php:74
+msgid "Drop"
+msgstr ""
+
+#: assets/icons.php:78
+msgid "Exclamation (!)"
+msgstr ""
+
+#: assets/icons.php:82
+msgid "Eye"
+msgstr ""
+
+#: assets/icons.php:86
+msgid "Facebook"
+msgstr ""
+
+#: assets/icons.php:91
+msgid "Flickr"
+msgstr ""
+
+#: assets/icons.php:95
+msgid "Font"
+msgstr ""
+
+#: assets/icons.php:99
+msgid "Forum"
+msgstr ""
+
+#: assets/icons.php:103
+msgid "GitHub"
+msgstr ""
+
+#: assets/icons.php:108
+msgid "Hand"
+msgstr ""
+
+#: assets/icons.php:112
+msgid "Heart"
+msgstr ""
+
+#: assets/icons.php:116
+msgid "Heart Empty"
+msgstr ""
+
+#: assets/icons.php:120
+msgid "Home"
+msgstr ""
+
+#: assets/icons.php:124
+msgid "Image"
+msgstr ""
+
+#: assets/icons.php:128
+msgid "Instagram"
+msgstr ""
+
+#: assets/icons.php:132
+msgid "Key"
+msgstr ""
+
+#: assets/icons.php:136
+msgid "Like"
+msgstr ""
+
+#: assets/icons.php:140
+msgid "Location"
+msgstr ""
+
+#: assets/icons.php:144
+#: classes/header.php:106
+#: wp/widget-content-spotlight.php:67
+#: wp/widget-text-image.php:73
+msgid "Link"
+msgstr ""
+
+#: assets/icons.php:148
+msgid "LinkedIn"
+msgstr ""
+
+#: assets/icons.php:153
+msgid "Loading"
+msgstr ""
+
+#: assets/icons.php:157
+msgid "Mail"
+msgstr ""
+
+#: assets/icons.php:161
+msgid "Medium"
+msgstr ""
+
+#: assets/icons.php:165
+#: classes/header.php:119
+#: functions/header.php:86
+#: templates/admin/header/design-fields.php:33
+#: templates/admin/header/menu-fields.php:6
+msgid "Menu"
+msgstr ""
+
+#: assets/icons.php:169
+msgid "Notification"
+msgstr ""
+
+#: assets/icons.php:173
+msgid "OK"
+msgstr ""
+
+#: assets/icons.php:178
+msgid "Pencil"
+msgstr ""
+
+#: assets/icons.php:182
+msgid "Phone"
+msgstr ""
+
+#: assets/icons.php:186
+msgid "Pin"
+msgstr ""
+
+#: assets/icons.php:190
+msgid "Pinterest"
+msgstr ""
+
+#: assets/icons.php:195
+msgid "Plus"
+msgstr ""
+
+#: assets/icons.php:199
+msgid "Plugin"
+msgstr ""
+
+#: assets/icons.php:203
+msgid "Quote"
+msgstr ""
+
+#: assets/icons.php:207
+#: templates/comment.php:39
+msgid "Reply"
+msgstr ""
+
+#: assets/icons.php:211
+msgid "RSS"
+msgstr ""
+
+#: assets/icons.php:215
+#: classes/header-templates.php:188
+#: classes/header-templates.php:190
+#: classes/header-templates.php:218
+#: classes/header.php:112
+#: classes/header.php:113
+#: templates/admin/header/search-fields.php:25
+msgid "Search"
+msgstr ""
+
+#: assets/icons.php:219
+msgid "Share"
+msgstr ""
+
+#: assets/icons.php:223
+msgid "Social"
+msgstr ""
+
+#: assets/icons.php:227
+msgid "Skype"
+msgstr ""
+
+#: assets/icons.php:231
+msgid "Slack"
+msgstr ""
+
+#: assets/icons.php:235
+msgid "SpeakerDeck"
+msgstr ""
+
+#: assets/icons.php:239
+msgid "Stack"
+msgstr ""
+
+#: assets/icons.php:243
+msgid "Star"
+msgstr ""
+
+#: assets/icons.php:247
+msgid "Support"
+msgstr ""
+
+#: assets/icons.php:251
+msgid "Tags"
+msgstr ""
+
+#: assets/icons.php:255
+msgid "Telegram"
+msgstr ""
+
+#: assets/icons.php:259
+msgid "TikTok"
+msgstr ""
+
+#: assets/icons.php:263
+msgid "Trophy"
+msgstr ""
+
+#: assets/icons.php:267
+msgid "Tumblr"
+msgstr ""
+
+#: assets/icons.php:272
+msgid "Twitter"
+msgstr ""
+
+#: assets/icons.php:276
+msgid "User"
+msgstr ""
+
+#: assets/icons.php:280
+msgid "User Add"
+msgstr ""
+
+#: assets/icons.php:284
+msgid "Vimeo"
+msgstr ""
+
+#: assets/icons.php:289
+msgid "Volume Up"
+msgstr ""
+
+#: assets/icons.php:293
+msgid "WhatsApp"
+msgstr ""
+
+#: assets/icons.php:297
+msgid "WordPress"
+msgstr ""
+
+#: assets/icons.php:301
+msgid "YouTube"
 msgstr ""
 
 #. Template Name of the theme
@@ -129,7 +435,7 @@ msgstr ""
 #: classes/design.php:141
 #: classes/design.php:149
 #: templates/admin/design.php:30
-#: templates/admin/fields/link.php:17
+#: templates/admin/fields/link.php:18
 #: templates/admin/header/design-fields.php:18
 msgid "Text"
 msgstr ""
@@ -144,12 +450,12 @@ msgstr ""
 #: classes/design.php:152
 #: templates/admin/header/design-fields.php:39
 #: templates/admin/header/design-fields.php:74
-#: templates/admin/hero.php:68
+#: templates/admin/hero.php:69
 msgid "Links"
 msgstr ""
 
 #: classes/api/design.php:273
-#: templates/admin/fields/link.php:44
+#: templates/admin/fields/link.php:51
 #: templates/admin/loop.php:215
 #: templates/admin/query.php:303
 msgid "Button"
@@ -171,76 +477,77 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: classes/api/fields.php:706
+#: classes/api/fields.php:730
 msgid "Font Size"
 msgstr ""
 
-#: classes/api/fields.php:707
+#: classes/api/fields.php:731
 msgid "Line Height"
 msgstr ""
 
-#: classes/api/fields.php:711
+#: classes/api/fields.php:735
 msgid "Default Fonts"
 msgstr ""
 
-#: classes/api/fields.php:715
+#: classes/api/fields.php:739
 msgid "Google Fonts"
 msgstr ""
 
-#: classes/api/fields.php:722
+#: classes/api/fields.php:746
 msgid "TypeKit"
 msgstr ""
 
-#: classes/api/fields.php:766
+#: classes/api/fields.php:790
+#: classes/hero.php:104
 msgid "Page Title"
 msgstr ""
 
-#: classes/api/fields.php:767
+#: classes/api/fields.php:791
 msgid "Add an <code>h1</code> title tag to the top of the page."
 msgstr ""
 
-#: classes/api/fields.php:774
+#: classes/api/fields.php:798
 #: templates/admin/query.php:352
 #: wp/widget-loop-query.php:120
 #: wp/widget-text-image.php:67
 msgid "Description"
 msgstr ""
 
-#: classes/api/fields.php:775
+#: classes/api/fields.php:799
 msgid "Write a short description to show below the page title."
 msgstr ""
 
-#: classes/api/fields.php:800
-#: templates/admin/hero.php:30
-#: templates/admin/hero.php:136
+#: classes/api/fields.php:824
+#: templates/admin/hero.php:34
+#: templates/admin/hero.php:117
 msgid "Position"
 msgstr ""
 
-#: classes/api/fields.php:803
+#: classes/api/fields.php:827
 msgid "Before Headline"
 msgstr ""
 
-#: classes/api/fields.php:804
+#: classes/api/fields.php:828
 msgid "After Headline"
 msgstr ""
 
-#: classes/api/fields.php:805
+#: classes/api/fields.php:829
 msgid "After Post"
 msgstr ""
 
-#: classes/api/fields.php:819
+#: classes/api/fields.php:843
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: classes/api/fields.php:822
+#: classes/api/fields.php:846
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: classes/api/fields.php:825
+#: classes/api/fields.php:849
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: classes/api/fields.php:850
+#: classes/api/fields.php:874
 msgid "Save %s"
 msgstr ""
 
@@ -252,73 +559,73 @@ msgstr ""
 msgid "Please select a dropin to update."
 msgstr ""
 
-#: classes/api/sanitize.php:145
+#: classes/api/sanitize.php:148
 #: templates/admin/layout.php:144
 #: templates/admin/query.php:389
 msgid "Sidebar / Content"
 msgstr ""
 
-#: classes/api/sanitize.php:148
+#: classes/api/sanitize.php:151
 msgid "Right, text wrap"
 msgstr ""
 
-#: classes/api/sanitize.php:149
+#: classes/api/sanitize.php:152
 msgid "Left, text wrap"
 msgstr ""
 
-#: classes/api/sanitize.php:150
+#: classes/api/sanitize.php:153
 msgid "Center, no text wrap"
 msgstr ""
 
-#: classes/api/sanitize.php:151
+#: classes/api/sanitize.php:154
 msgid "Before headline"
 msgstr ""
 
-#: classes/api/sanitize.php:152
+#: classes/api/sanitize.php:155
 msgid "After headline"
 msgstr ""
 
-#: classes/api/sanitize.php:153
+#: classes/api/sanitize.php:156
 msgid "Hide image"
 msgstr ""
 
-#: classes/api/sanitize.php:156
+#: classes/api/sanitize.php:159
 msgid "Headline Cover"
 msgstr ""
 
-#: classes/api/sanitize.php:157
+#: classes/api/sanitize.php:160
 msgid "Header Cover"
 msgstr ""
 
-#: classes/api/sanitize.php:158
+#: classes/api/sanitize.php:161
 msgid "Full Header Cover"
 msgstr ""
 
-#: classes/api/sanitize.php:176
+#: classes/api/sanitize.php:179
 msgid "Main Title (h1)"
 msgstr ""
 
-#: classes/api/sanitize.php:177
+#: classes/api/sanitize.php:180
 msgid "Large Title (h2)"
 msgstr ""
 
-#: classes/api/sanitize.php:178
+#: classes/api/sanitize.php:181
 msgid "Medium Title (h3)"
 msgstr ""
 
-#: classes/api/sanitize.php:179
+#: classes/api/sanitize.php:182
 msgid "Small Title (h4)"
 msgstr ""
 
-#: classes/api/sanitize.php:180
+#: classes/api/sanitize.php:183
 msgid "Micro Title (h5)"
 msgstr ""
 
-#: classes/api/sanitize.php:181
+#: classes/api/sanitize.php:184
 msgid "Normal Text"
 msgstr ""
 
-#: classes/api/sanitize.php:182
+#: classes/api/sanitize.php:185
 msgid "Huge Title"
 msgstr ""
 
@@ -329,7 +636,7 @@ msgstr ""
 #: classes/category.php:19
 #: classes/dashboard.php:34
 #: templates/admin/dropins.php:73
-#: templates/admin/hero.php:152
+#: templates/admin/hero.php:132
 msgid "Settings"
 msgstr ""
 
@@ -529,17 +836,7 @@ msgstr ""
 msgid "Drop-ins"
 msgstr ""
 
-#: classes/header-templates.php:184
-#: classes/header-templates.php:186
-#: classes/header-templates.php:214
-#: classes/header.php:112
-#: classes/header.php:113
-#: functions/icons.php:311
-#: templates/admin/header/search-fields.php:25
-msgid "Search"
-msgstr ""
-
-#: classes/header-templates.php:185
+#: classes/header-templates.php:189
 #: templates/admin/header/search-fields.php:19
 msgid "Type to search..."
 msgstr ""
@@ -562,25 +859,6 @@ msgstr ""
 
 #: classes/header.php:100
 msgid "A secondary content area for the header area."
-msgstr ""
-
-#: classes/header.php:106
-#: functions/icons.php:240
-#: wp/widget-content-spotlight.php:67
-#: wp/widget-text-image.php:73
-msgid "Link"
-msgstr ""
-
-#: classes/header.php:119
-#: functions/header.php:86
-#: functions/icons.php:261
-#: templates/admin/header/design-fields.php:33
-#: templates/admin/header/menu-fields.php:6
-msgid "Menu"
-msgstr ""
-
-#: classes/hero.php:104
-msgid "Hero"
 msgstr ""
 
 #: classes/icons.php:19
@@ -761,14 +1039,14 @@ msgid "add comment"
 msgstr ""
 
 #: comments.php:26
-#: functions/loop.php:338
+#: functions/loop.php:343
 #: templates/admin/loop.php:265
 #: templates/post-nav.php:9
 msgid "Previous"
 msgstr ""
 
 #: comments.php:27
-#: functions/loop.php:339
+#: functions/loop.php:344
 #: templates/admin/loop.php:272
 #: templates/post-nav.php:21
 msgid "Next"
@@ -788,345 +1066,64 @@ msgid "Cancel"
 msgstr ""
 
 #: functions/content.php:119
-#: marketers-delight.php:188
+#: marketers-delight.php:196
 msgid "Blog"
 msgstr ""
 
 #: functions/deprecated.php:90
-#: marketers-delight.php:132
+#: marketers-delight.php:140
 msgid "Header Menu"
 msgstr ""
 
 #: functions/deprecated.php:91
-#: marketers-delight.php:133
+#: marketers-delight.php:141
 msgid "Header Menu (logged-in users only)"
 msgstr ""
 
 #: functions/deprecated.php:155
-#: functions/loop.php:252
+#: functions/loop.php:257
 #: templates/admin/loop.php:204
 #: templates/admin/query.php:292
 msgid "Continue reading &rarr;"
 msgstr ""
 
-#: functions/icons.php:102
-msgid "Arrow Down"
-msgstr ""
-
-#: functions/icons.php:106
-msgid "Arrow Left"
-msgstr ""
-
-#: functions/icons.php:110
-msgid "Arrow Right"
-msgstr ""
-
-#: functions/icons.php:114
-msgid "Arrow Up"
-msgstr ""
-
-#: functions/icons.php:118
-msgid "Bell"
-msgstr ""
-
-#: functions/icons.php:122
-msgid "Bolt"
-msgstr ""
-
-#: functions/icons.php:126
-msgid "Book"
-msgstr ""
-
-#: functions/icons.php:130
-msgid "Cancel (X)"
-msgstr ""
-
-#: functions/icons.php:134
-msgid "Cart"
-msgstr ""
-
-#: functions/icons.php:138
-msgid "Chat"
-msgstr ""
-
-#: functions/icons.php:142
-msgid "Clock"
-msgstr ""
-
-#: functions/icons.php:146
-msgid "Copy"
-msgstr ""
-
-#: functions/icons.php:150
-msgid "Calendar"
-msgstr ""
-
-#: functions/icons.php:154
-msgid "Code"
-msgstr ""
-
-#: functions/icons.php:158
-msgid "Cog"
-msgstr ""
-
-#: functions/icons.php:162
-msgid "Download"
-msgstr ""
-
-#: functions/icons.php:166
-msgid "Dribbble"
-msgstr ""
-
-#: functions/icons.php:170
-msgid "Drop"
-msgstr ""
-
-#: functions/icons.php:174
-msgid "Exclamation (!)"
-msgstr ""
-
-#: functions/icons.php:178
-msgid "Eye"
-msgstr ""
-
-#: functions/icons.php:182
-msgid "Facebook"
-msgstr ""
-
-#: functions/icons.php:187
-msgid "Flickr"
-msgstr ""
-
-#: functions/icons.php:191
-msgid "Font"
-msgstr ""
-
-#: functions/icons.php:195
-msgid "Forum"
-msgstr ""
-
-#: functions/icons.php:199
-msgid "GitHub"
-msgstr ""
-
-#: functions/icons.php:204
-msgid "Hand"
-msgstr ""
-
-#: functions/icons.php:208
-msgid "Heart"
-msgstr ""
-
-#: functions/icons.php:212
-msgid "Heart Empty"
-msgstr ""
-
-#: functions/icons.php:216
-msgid "Home"
-msgstr ""
-
-#: functions/icons.php:220
-msgid "Image"
-msgstr ""
-
-#: functions/icons.php:224
-msgid "Instagram"
-msgstr ""
-
-#: functions/icons.php:228
-msgid "Key"
-msgstr ""
-
-#: functions/icons.php:232
-msgid "Like"
-msgstr ""
-
-#: functions/icons.php:236
-msgid "Location"
-msgstr ""
-
-#: functions/icons.php:244
-msgid "LinkedIn"
-msgstr ""
-
-#: functions/icons.php:249
-msgid "Loading"
-msgstr ""
-
-#: functions/icons.php:253
-msgid "Mail"
-msgstr ""
-
-#: functions/icons.php:257
-msgid "Medium"
-msgstr ""
-
-#: functions/icons.php:265
-msgid "Notification"
-msgstr ""
-
-#: functions/icons.php:269
-msgid "OK"
-msgstr ""
-
-#: functions/icons.php:274
-msgid "Pencil"
-msgstr ""
-
-#: functions/icons.php:278
-msgid "Phone"
-msgstr ""
-
-#: functions/icons.php:282
-msgid "Pin"
-msgstr ""
-
-#: functions/icons.php:286
-msgid "Pinterest"
-msgstr ""
-
-#: functions/icons.php:291
-msgid "Plus"
-msgstr ""
-
-#: functions/icons.php:295
-msgid "Plugin"
-msgstr ""
-
-#: functions/icons.php:299
-msgid "Quote"
-msgstr ""
-
-#: functions/icons.php:303
-#: templates/comment.php:39
-msgid "Reply"
-msgstr ""
-
-#: functions/icons.php:307
-msgid "RSS"
-msgstr ""
-
-#: functions/icons.php:315
-msgid "Share"
-msgstr ""
-
-#: functions/icons.php:319
-msgid "Social"
-msgstr ""
-
-#: functions/icons.php:323
-msgid "Skype"
-msgstr ""
-
-#: functions/icons.php:327
-msgid "Slack"
-msgstr ""
-
-#: functions/icons.php:331
-msgid "SpeakerDeck"
-msgstr ""
-
-#: functions/icons.php:335
-msgid "Stack"
-msgstr ""
-
-#: functions/icons.php:339
-msgid "Star"
-msgstr ""
-
-#: functions/icons.php:343
-msgid "Support"
-msgstr ""
-
-#: functions/icons.php:347
-msgid "Tags"
-msgstr ""
-
-#: functions/icons.php:351
-msgid "Telegram"
-msgstr ""
-
-#: functions/icons.php:355
-msgid "TikTok"
-msgstr ""
-
-#: functions/icons.php:359
-msgid "Trophy"
-msgstr ""
-
-#: functions/icons.php:363
-msgid "Tumblr"
-msgstr ""
-
-#: functions/icons.php:368
-msgid "Twitter"
-msgstr ""
-
-#: functions/icons.php:372
-msgid "User"
-msgstr ""
-
-#: functions/icons.php:376
-msgid "User Add"
-msgstr ""
-
-#: functions/icons.php:380
-msgid "Vimeo"
-msgstr ""
-
-#: functions/icons.php:385
-msgid "Volume Up"
-msgstr ""
-
-#: functions/icons.php:389
-msgid "WhatsApp"
-msgstr ""
-
-#: functions/icons.php:393
-msgid "WordPress"
-msgstr ""
-
-#: functions/icons.php:397
-msgid "YouTube"
-msgstr ""
-
-#: functions/post.php:419
+#: functions/post.php:422
 msgid "To view this protected post, enter the password below:"
 msgstr ""
 
-#: functions/post.php:420
+#: functions/post.php:423
 msgid "Enter the password&hellip;"
 msgstr ""
 
-#: functions/post.php:421
+#: functions/post.php:424
 msgid "Get Access"
 msgstr ""
 
-#: marketers-delight.php:134
+#: marketers-delight.php:142
 msgid "Main Menu"
 msgstr ""
 
-#: marketers-delight.php:317
+#: marketers-delight.php:325
 msgid "Main Sidebar"
 msgstr ""
 
-#: marketers-delight.php:318
+#: marketers-delight.php:326
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: marketers-delight.php:342
+#: marketers-delight.php:350
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: marketers-delight.php:353
+#: marketers-delight.php:361
 msgid "Footer Copy"
 msgstr ""
 
-#: marketers-delight.php:354
+#: marketers-delight.php:362
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
 
-#: marketers-delight.php:374
+#: marketers-delight.php:382
 msgid "Twitter username (without @)"
 msgstr ""
 
@@ -1378,8 +1375,8 @@ msgid ""
 msgstr ""
 
 #: templates/admin/dropins.php:68
-#: templates/admin/fields/builder-fields.php:22
-#: templates/admin/fields/group.php:32
+#: templates/admin/fields/builder-fields.php:21
+#: templates/admin/fields/group.php:43
 msgid "Delete"
 msgstr ""
 
@@ -1395,8 +1392,8 @@ msgstr ""
 msgid "Enter label..."
 msgstr ""
 
-#: templates/admin/fields/builder-fields.php:23
-#: templates/admin/fields/group.php:33
+#: templates/admin/fields/builder-fields.php:22
+#: templates/admin/fields/group.php:45
 msgid "Reorder"
 msgstr ""
 
@@ -1408,7 +1405,7 @@ msgstr ""
 msgid "Drag an element here."
 msgstr ""
 
-#: templates/admin/fields/group.php:26
+#: templates/admin/fields/group.php:37
 msgid "New entry..."
 msgstr ""
 
@@ -1431,102 +1428,106 @@ msgstr ""
 msgid "Show on mobile only"
 msgstr ""
 
-#: templates/admin/fields/link.php:27
+#: templates/admin/fields/link.php:24
+msgid "Sub Text"
+msgstr ""
+
+#: templates/admin/fields/link.php:34
 msgid "Type"
 msgstr ""
 
-#: templates/admin/fields/link.php:30
+#: templates/admin/fields/link.php:37
 msgid "Page URL"
 msgstr ""
 
-#: templates/admin/fields/link.php:31
+#: templates/admin/fields/link.php:38
 msgid "Open Popup"
 msgstr ""
 
-#: templates/admin/fields/link.php:32
-#: templates/admin/fields/link.php:90
+#: templates/admin/fields/link.php:39
+#: templates/admin/fields/link.php:97
 msgid "Phone Number"
 msgstr ""
 
-#: templates/admin/fields/link.php:40
+#: templates/admin/fields/link.php:47
 #: templates/admin/loop.php:14
 #: templates/admin/query.php:38
 msgid "Style"
 msgstr ""
 
-#: templates/admin/fields/link.php:41
+#: templates/admin/fields/link.php:48
 #: templates/admin/loop.php:213
 #: templates/admin/query.php:301
 msgid "Text link"
 msgstr ""
 
-#: templates/admin/fields/link.php:52
+#: templates/admin/fields/link.php:59
 #: templates/admin/logo.php:70
 #: templates/admin/logo.php:106
 msgid "Color"
 msgstr ""
 
-#: templates/admin/fields/link.php:61
+#: templates/admin/fields/link.php:68
 #: templates/admin/header/search-fields.php:9
 msgid "Hide label"
 msgstr ""
 
-#: templates/admin/fields/link.php:62
+#: templates/admin/fields/link.php:69
 #: templates/admin/header/menu-fields.php:18
 #: templates/admin/header/search-fields.php:10
 msgid "Hide label on mobile"
 msgstr ""
 
-#: templates/admin/fields/link.php:74
+#: templates/admin/fields/link.php:81
 msgid "Icon"
 msgstr ""
 
-#: templates/admin/fields/link.php:75
+#: templates/admin/fields/link.php:82
 msgid "Select icon"
 msgstr ""
 
-#: templates/admin/fields/link.php:83
+#: templates/admin/fields/link.php:90
 msgid "URL"
 msgstr ""
 
-#: templates/admin/fields/link.php:91
+#: templates/admin/fields/link.php:98
 msgid "(999) 999-9999"
 msgstr ""
 
-#: templates/admin/fields/link.php:98
+#: templates/admin/fields/link.php:105
 msgid "Open popup"
 msgstr ""
 
-#: templates/admin/fields/link.php:99
+#: templates/admin/fields/link.php:106
 msgid "Select a popup..."
 msgstr ""
 
-#: templates/admin/fields/link.php:108
+#: templates/admin/fields/link.php:115
 msgid "Open in new tab"
 msgstr ""
 
-#: templates/admin/fields/link.php:119
+#: templates/admin/fields/link.php:126
 msgid "Button Style"
 msgstr ""
 
-#: templates/admin/fields/link.php:120
-#: templates/admin/fields/link.php:131
+#: templates/admin/fields/link.php:127
+#: templates/admin/fields/link.php:138
 msgid "Default"
 msgstr ""
 
-#: templates/admin/fields/link.php:122
+#: templates/admin/fields/link.php:129
 msgid "Outline"
 msgstr ""
 
-#: templates/admin/fields/link.php:130
+#: templates/admin/fields/link.php:137
 msgid "Button Size"
 msgstr ""
 
-#: templates/admin/fields/link.php:133
+#: templates/admin/fields/link.php:140
 msgid "Small"
 msgstr ""
 
-#: templates/admin/fields/link.php:134
+#: templates/admin/fields/link.php:141
 msgid "Large"
 msgstr ""
 
@@ -1705,18 +1706,17 @@ msgstr ""
 msgid "Submit text"
 msgstr ""
 
-#: templates/admin/hero.php:5
-msgid "The <strong>Hero area</strong> contains the Page Title & Description and is located above the fold.<br />Upload a cover photo and CTA for maximum impact."
+#: templates/admin/hero.php:4
+msgid "The <strong>Page Title area</strong> contains the Main Title and Description, Featured Image, and the main call to action.<br />Set a cover photo or background color to create a <strong>Hero section!</strong>"
 msgstr ""
 
-#: templates/admin/hero.php:8
+#: templates/admin/hero.php:9
 #: templates/admin/loop.php:149
 #: templates/admin/query.php:237
 msgid "Featured Image"
 msgstr ""
 
-#: templates/admin/hero.php:9
-#: templates/admin/hero.php:56
+#: templates/admin/hero.php:11
 #: templates/admin/loop.php:280
 #: templates/admin/loop.php:287
 #: templates/admin/loop.php:295
@@ -1725,59 +1725,55 @@ msgstr ""
 msgid "Call to Action"
 msgstr ""
 
-#: templates/admin/hero.php:10
+#: templates/admin/hero.php:12
 msgid "Cover"
 msgstr ""
 
-#: templates/admin/hero.php:31
+#: templates/admin/hero.php:35
 #: templates/admin/layout.php:65
 #: templates/admin/loop.php:150
 #: templates/admin/query.php:238
 msgid "Use default position"
 msgstr ""
 
-#: templates/admin/hero.php:41
+#: templates/admin/hero.php:45
 msgid "Width (%s)"
 msgstr ""
 
-#: templates/admin/hero.php:64
+#: templates/admin/hero.php:65
 msgid "Select CTA type..."
 msgstr ""
 
-#: templates/admin/hero.php:69
-#: templates/admin/hero.php:108
+#: templates/admin/hero.php:70
+#: templates/admin/hero.php:95
 msgid "Custom HTML"
 msgstr ""
 
-#: templates/admin/hero.php:78
-msgid "Secondary Link"
-msgstr ""
-
-#: templates/admin/hero.php:92
+#: templates/admin/hero.php:83
 msgid "Primary Link"
 msgstr ""
 
-#: templates/admin/hero.php:118
-msgid "Cover Photo"
+#: templates/admin/hero.php:86
+msgid "Secondary Link"
 msgstr ""
 
-#: templates/admin/hero.php:137
+#: templates/admin/hero.php:118
 msgid "Do not show cover"
 msgstr ""
 
-#: templates/admin/hero.php:143
+#: templates/admin/hero.php:125
 msgid "Overlay Color"
 msgstr ""
 
-#: templates/admin/hero.php:154
+#: templates/admin/hero.php:135
 msgid "Use alternate text color"
 msgstr ""
 
-#: templates/admin/hero.php:155
+#: templates/admin/hero.php:136
 msgid "Background repeat"
 msgstr ""
 
-#: templates/admin/hero.php:156
+#: templates/admin/hero.php:137
 msgid "Remove overlay"
 msgstr ""
 
