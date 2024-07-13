@@ -1,5 +1,4 @@
 <script>
-
 <?php
 /**
  * This file compiles to scripts.js to serve to the frontend.

@@ -25,7 +25,7 @@ function md_header_classes() {
 	$classes = array();
 	$classes[] = 'header';
 
-	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
+	if ( md_setting( array( 'header', 'sticky', 'enable' ) ) )
 		$classes[] = 'sticky';
 
 	if ( ! md_has_menu() || ! md_has_logo() )

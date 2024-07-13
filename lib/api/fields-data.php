@@ -67,12 +67,6 @@ class md_fields_data {
 	 * @since 6.0
 	 */
 
-	/**
-	 * Collect a list of fields in a Links Group.
-	 *
-	 * @since 6.0
-	 */
-
 	public function links( $args = array() ) {
 		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
 		$group = isset( $args['group'] ) ? $args['group'] : array();
@@ -92,8 +86,8 @@ class md_fields_data {
 				'field' => "link{$p}_text",
 				'save' => array( 'type' => 'text' )
 			),
-			'link_subtext' => array(
-				'field' => "link{$p}_subtext",
+			'link_subtitle' => array(
+				'field' => "link{$p}_subtitle",
 				'save' => array( 'type' => 'text' )
 			),
 			'link_type' => array(
@@ -160,8 +154,15 @@ class md_fields_data {
 			'link_button_style' => array(
 				'field' => "link{$p}_button_style",
 				'save' => array(
-					'type' => 'select',
-					'options' => array( 'outline' )
+					'type' => 'checkbox',
+					'options' => array( 'outline', 'frame' )
+				)
+			),
+			'link_user' => array(
+				'field' => "link{$p}_user",
+				'save' => array(
+					'type' => 'checkbox',
+					'options' => array( 'logged_in', 'logged_out' )
 				)
 			)
 		);

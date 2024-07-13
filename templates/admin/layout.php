@@ -21,7 +21,7 @@
 				)
 			) ); ?>
 
-			<?php if ( ! md_setting( array( 'header', 'display', 'site_tagline' ) ) ) : ?>
+			<?php if ( ! md_setting( array( 'logo', 'display', 'site_tagline' ) ) ) : ?>
 
 				<?php $this->fields->field( 'header', array(
 					'type' => 'checkbox',

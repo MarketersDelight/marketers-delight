@@ -1,4 +1,4 @@
-<div class="md-content-wrap md-header-logo<?php echo ! empty( $values['logo']['logo_html_display']['enable'] ) ? ' md-has-logo-html' : ''; ?>">
+<div class="md-content-wrap md-header-logo<?php echo ! empty( $values['logo']['display']['logo_html'] ) ? ' md-has-logo-html' : ''; ?>">
 
 	<?php $this->fields->devices(); ?>
 
@@ -6,9 +6,22 @@
 
 	<p><?php echo __( 'Upload a custom logo image and customize the Site Title and Tagline text.', 'md' ); ?></p>
 
-	<hr class="md-sep-small" />
+	<div class="md-sep-small">
+		<?php $this->fields->field( 'display', array(
+			'type' => 'checkbox',
+			'multi' => true,
+			'options' => array(
+				'site_title' => __( 'Remove <strong>Site Title</strong>', 'md' ),
+				'hide_title_mobile' => __( 'Hide <strong>Site Title</strong> on mobile', 'md' ),
+				'site_tagline' => __( 'Remove <strong>Tagline</strong>', 'md' ),
+				'hide_tagline_mobile' => __( 'Hide <strong>Tagline</strong> on mobile', 'md' ),
+				'align_title_tagline' => __( 'Align Title & Tagline', 'md' ),
+				'stack_logo' => __( 'Stack Logo', 'md' )
+			)
+		) ); ?>
+	</div>
 
-	<div class="columns-2 columns-single">
+	<div class="columns-2 columns-double md-sep-micro">
 		<div class="col md-sep-small">
 			<?php $this->fields->field( 'logo', array(
 				'type' => 'upload',
@@ -16,7 +29,7 @@
 				'label' => __( 'Logo', 'md' )
 			) ); ?>
 		</div>
-		<div class="col md-sep-small">
+		<div class="col">
 			<?php $this->fields->field( 'logo_alt', array(
 				'type' => 'upload',
 				'upload_type' => 'media',
@@ -25,30 +38,30 @@
 		</div>
 	</div>
 
-	<div class="columns-2 columns-single">
-		<div class="col md-sep-small">
+	<div class="columns-2 columns-single md-sep-micro">
+		<div class="col">
 			<?php foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) : ?>
-				<div class="md-<?php echo $device; ?>">
-					<?php $this->fields->field( array( 'logo_width', $device ), array(
-						'type' => 'range',
-						'label' => sprintf( __( 'Logo Width%s', 'md' ), " ($device)" ),
-						'max' => 500
-					) ); ?>
-				</div>
+			<div class="md-<?php echo $device; ?>">
+				<?php $this->fields->field( array( 'logo_width', $device ), array(
+					'type' => 'range',
+					'label' => sprintf( __( 'Logo Width%s', 'md' ), " ($device)" ),
+					'max' => 500
+				) ); ?>
+			</div>
 			<?php endforeach; ?>
 		</div>
 		<div class="col">
-			<?php $this->fields->field( 'logo_html_display', array(
+			<?php $this->fields->field( 'display', array(
 				'type' => 'checkbox',
-				'label' => __( 'Custom logo', 'md' ),
+				'classes' => 'field-no-label',
 				'options' => array(
-					'enable' => __( 'Enable custom logo HTML', 'md' )
+					'logo_html' => __( 'Enable custom <strong>Logo HTML</strong>', 'md' )
 				)
 			) ); ?>
 		</div>
 	</div>
 
-	<div class="md-header-logo-html">
+	<div class="md-header-logo-html md-sep-small">
 		<?php $this->fields->field( 'logo_html', array(
 			'type' => 'code',
 			'rows' => 8,
@@ -93,7 +106,7 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle">
 
 		<h3 class="md-widget-title"><?php echo __( 'Site Tagline', 'md' ); ?></h3>
 
@@ -121,8 +134,6 @@
 		</div>
 
 	</div>
-
-	<hr class="md-sep-small" />
 
 	<?php $this->fields->save(); ?>
 

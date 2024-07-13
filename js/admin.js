@@ -203,13 +203,13 @@
 		conditional: function() {
 			$( document ).on( 'change', '.md-conditional-option', function( e ) {
 				var val = $( this ).val(),
-					parent = $( this ).parents( '.md-conditional' );
+					parent = $( this ).closest( '.md-conditional' );
 				parent.find( '.md-conditional-item' ).hide();
 				parent.find( '.md-conditional-' + val ).show();
 			});
 		},
 		toggle: function() {
-			$( document ).on( 'click', '.md-widget-title', function() {
+			$( document ).on( 'click', 'h3.md-widget-title, .md-widget-handle, .md-toggle-arrow', function() {
 				var toggle = $( this );
 				if ( toggle.parent().hasClass( 'open' ) )
 					toggle.parent().removeClass( 'open' );

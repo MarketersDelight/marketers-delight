@@ -215,7 +215,7 @@ class md_design {
 						'desktop' => $site_title
 					),
 					'line_height' => array(
-						'desktop' => round( $site_title * 1.1 )
+						'desktop' => round( $site_title * 1.4 )
 					)
 				),
 				'site_tagline' => array(

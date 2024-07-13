@@ -1,6 +1,7 @@
 <?php
 
 md_template( 'html' );
+
 md_hook_before_html();
 
 if ( md_has_header() ) : ?>
@@ -29,4 +30,3 @@ if ( md_has_header() ) : ?>
 
 if ( md_filter_template() !== false )
 	md_hook_before_content_box();
-?>

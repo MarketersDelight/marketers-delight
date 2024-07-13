@@ -38,9 +38,9 @@ class md_logo extends md_api {
 				'mobile' => array( 'type' => 'range' )
 			),
 			'logo_html' => array( 'type' => 'code' ),
-			'logo_html_display' => array(
+			'display' => array(
 				'type' => 'checkbox',
-				'options' => array( 'enable' )
+				'options' => array( 'site_title', 'site_tagline', 'hide_title_mobile', 'hide_tagline_mobile', 'logo_html', 'align_title_tagline', 'stack_logo' )
 			)
 		);
 
@@ -76,7 +76,7 @@ class md_logo extends md_api {
 
 	public function admin_scripts() { ?>
 		<script>
-			document.getElementById( 'marketers_delight_logo_logo_html_display_enable' ).onchange = function( e ) {
+			document.getElementById( 'marketers_delight_logo_display_logo_html' ).onchange = function( e ) {
 				jQuery( '.md-header-logo' ).toggleClass( 'md-has-logo-html' );
 			};
 		</script>

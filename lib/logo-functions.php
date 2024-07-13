@@ -7,7 +7,7 @@
  */
 
 function md_has_site_title() {
-	if ( ! md_setting( array( 'header', 'display', 'site_title' ) ) )
+	if ( ! md_setting( array( 'logo', 'display', 'site_title' ) ) )
 		return true;
 }
 
@@ -31,7 +31,7 @@ function md_site_title() {
  */
 
 function md_has_tagline() {
-	if ( get_bloginfo( 'description' ) && ! md_setting( array( 'header', 'display', 'site_tagline' ) ) && ! md_module( array( 'layout', 'header', 'tagline' ) ) )
+	if ( get_bloginfo( 'description' ) && ! md_setting( array( 'logo', 'display', 'site_tagline' ) ) && ! md_module( array( 'layout', 'header', 'tagline' ) ) )
 		return true;
 }
 
@@ -69,7 +69,7 @@ function md_custom_logo() {
 	$custom_logo = false;
 	$logo = md_setting( 'logo' );
 
-	if ( ! empty( $logo['logo_html_display']['enable'] ) && ! empty( $logo['logo_html'] ) )
+	if ( ! empty( $logo['display']['logo_html'] ) && ! empty( $logo['logo_html'] ) )
 		$custom_logo = $logo['logo_html'];
 	elseif ( ! empty( $logo['logo']['id'] ) ) {
         $logo_id = $logo['logo']['id'];
@@ -94,5 +94,7 @@ function md_custom_logo() {
  */
 
 function md_logo() {
-	include( md_template( 'logo', true ) );
+	$logo = md_setting( 'logo' );
+
+	include md_template( 'logo', true );
 }

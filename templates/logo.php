@@ -1,18 +1,19 @@
-<div class="site-title">
+<div class="site-title<?php echo ! empty( $logo['display']['stack_logo'] ) ? ' stack' : ''; ?>">
 
 	<?php echo md_custom_logo(); ?>
 
 	<?php if ( md_has_site_title() || md_has_tagline() ) : ?>
 
-		<div class="site-details">
+		<div class="site-details<?php echo ! empty( $logo['display']['align_title_tagline'] ) ? ' align' : ''; ?>">
 
 			<?php if ( md_has_site_title() ) : ?>
-				<p class="site-name"><a href="<?php echo home_url( '/' ); ?>"><?php echo md_site_title(); ?></a></p>
-				<?php md_hook_after_site_title(); ?>
-			<?php endif; ?>
+			<p class="site-name">
+				<a href="<?php echo home_url( '/' ); ?>"><?php echo md_site_title(); ?></a>
+			</p>
+			<?php md_hook_after_site_title(); endif; ?>
 
 			<?php if ( md_has_tagline() ) : ?>
-				<p class="tagline"><?php echo md_site_tagline(); ?></p>
+			<p class="tagline"><?php echo md_site_tagline(); ?></p>
 			<?php endif; ?>
 
 			<?php md_hook_header_details(); ?>

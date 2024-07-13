@@ -189,6 +189,7 @@ class md_fields {
 		}
 		elseif ( ! empty( $page_types[$page] ) ) {
 			$page_id = md_clean_id( $page );
+
 			if ( $page_id == $this->_clean_id )
 				array_unshift( $keys, $page_id );
 			else
@@ -761,9 +762,9 @@ class md_fields {
 		$link_type = $this->module( $fields['link_type']['field'], 'url' );
 		$link_style = $this->module( $fields['link_style']['field'], 'link' );
 
-		$classes = array( 'md-group-link' );
-		$classes[] = 'type-' . $link_type;
-		$classes[] = 'style-' . $link_style;
+		$classes = array( 'md-group-link', 'md-conditional' );
+		$classes[] = "type-$link_type";
+		$classes[] = "style-$link_style";
 		$classes = join( ' ', $classes );
 
 		include( md_template( 'admin/fields/link', true ) );
@@ -775,32 +776,18 @@ class md_fields {
 	}
 
 	/**
-	 * Build generic Page fields for standard components of a web page.
+	 * Build generic Page Title for standard components of a web page.
 	 *
 	 * @since 6.0
 	 */
 
-	public function page_fields() {
-		$cta_type = $this->get_field( 'page_cta' );
+	public function page_title() {
+		$sanitize = new md_sanitize;
 		$prefix = $this->_prefix;
-	?>
-		<div class="md-field-row md-sep">
-			<?php $this->field( 'archives_title', array(
-				'type' => 'text',
-				'label' => __( 'Page Title', 'md' ),
-				'description' => __( 'Add an <code>h1</code> title tag to the top of the page.', 'md' )
-			) ); ?>
-		</div>
-		<div class="md-field-row md-sep">
-			<?php $this->field( 'archives_text', array(
-				'type' => 'editor',
-				'init' => true,
-				'label' => __( 'Description', 'md' ),
-				'description' => __( 'Write a short description to show below the page title.', 'md' ),
-				'rows' => 4
-			) ); ?>
-		</div>
-	<?php }
+		$cta_type = $this->module( 'page_cta' );
+
+		include md_template( 'admin/fields/page-title', true );
+	}
 
 	/**
 	 * A valet method to render the Byline Position field

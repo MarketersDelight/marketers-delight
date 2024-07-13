@@ -1,4 +1,3 @@
-
 <div class="md-integration <?php echo esc_attr( $id ); ?> md-widget md-toggle md-sep-small type-<?php echo esc_attr( $fields['type'] ) . ( $error ? ' invalid' : '' ) . ( ! empty( $option['enabled'][$id] ) ? ' valid' : ' inactive' ); ?>">
 
 	<h3 class="md-widget-title">

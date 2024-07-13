@@ -84,7 +84,7 @@ class md_post extends md_api {
 			 '<hr class="md-sep-small" />'.
 			 '<div class="md-content-wrap-med">';
 
-		$this->fields->page_fields();
+		$this->fields->page_title();
 
 		do_action( "{$this->_id}_admin_fields" );
 

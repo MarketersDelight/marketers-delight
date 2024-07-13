@@ -24,8 +24,7 @@
 .md-field-row:after,
 .md-radio-fields:after,
 .md-devices:after,
-.md-uploader:after,
-.md-group-controls:after {
+.md-uploader:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -46,6 +45,8 @@
 .md .large-text { width: 100%; }
 
 .md-hide, .md-hidden, .md-conditional-item { display: none; }
+
+.md-conditional-item.is-condition { display: block; }
 
 .md .green { color: #30a146; }
 .md .red { color: #ae2525; }
@@ -450,17 +451,68 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	background-color: #fff;
 	border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 0;
 }
+
+.md-widget-bar {
+	align-items: center;
+	border-radius: 5px;
+	cursor: pointer;
+	display: flex;
+	gap: 15px;
+	line-height: 25px;
+	overflow: hidden;
+	margin-bottom: 0;
+	margin-top: 0;
+	padding: 8px 15px;
+	position: relative;
+}
+
+ /* Compatibility for 5.x -> 6.0 */
+
+.md-widget-title:not(.md-widget-bar) {
+	cursor: pointer;
+	padding: 15px;
+}
+
+.md-toggle .md-widget-title:not(.md-widget-bar):before {
+	content: "\f347";
+	float: right;
+	font-family: 'dashicons';
+	margin-left: 5px;
+}
+
+.md-toggle.open .md-widget-title:not(.md-widget-bar):before { content: "\f343"; }
+
+/* end compatibility */
 
 .md .md-widget-secondary {
 	border: 1px solid #ccc;
 	box-shadow: none;
 }
 
-.md .md-widget-secondary .md-widget-title {
-	background-color: #f9f9f9;
-	padding: 10px;
+.md .md-widget-secondary .md-widget-bar { background-color: #f9f9f9; }
+
+.md-widget-handle {
+	display: block;
+	flex: 1;
+}
+
+.md-meta-box .md-widget-handle { padding: 5px; }
+
+.md-builder-group .md-widget-handle { padding: 0; }
+
+.md-widget-handle span { visibility: hidden; }
+
+@media all and (max-width: 775px) {
+	.md-widget-handle { display: none; }
+	.md-widget-edit { flex: 1; }
+}
+
+.md-widget-controls {
+	align-items: center;
+	display: flex;
+	font-size: 22px;
+	gap: 10px;
 }
 
 .md-widget.md-toggle:not(:last-child) { margin-bottom: 15px; }
@@ -473,26 +525,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md .md-widget.highlight { border-left-color: #F5B843; }
 
-.md .md-widget-title {
-	border-radius: 5px;
-	cursor: pointer;
-	display: block;
-	line-height: 25px;
-	overflow: hidden;
-	margin-bottom: 0;
-	margin-top: 0;
-	padding: 15px;
-	position: relative;
-}
+.md-widget-title { margin-top: 0; }
 
 .md-widget.open > .md-widget-title {
 	border-bottom: 1px solid #ccc;
 	border-radius: 5px 5px 0 0;
 }
-
-.md-widget-title .md-field { display: inline-block; }
-
-.md-widget-title .md-field-text { width: 60%; }
 
 .md-widget-title input[type="text"] {
 	background-color: transparent;
@@ -501,10 +539,15 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	font-size: inherit;
 	font-weight: bold;
 	line-height: 27px;
+	margin: 0;
+	min-height: auto;
 	padding: 0;
 }
 
-.md-widget-title { font-size: 1.3em; }
+.md-widget-title {
+	font-size: 1.3em;
+	margin-bottom: 0;
+}
 
 .md-widget-title h3 .button { float: right; }
 
@@ -531,6 +574,42 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-widget-item .nav-tab:hover { background-color: #eee; }
 
+.md-widget-title
+
+.md-toggle h3 { cursor: pointer; }
+
+.md-toggle .md-widget-item { display: none; }
+
+.md-toggle.open > .md-widget-item { display: block; }
+
+.md-toggle-arrow { font-family: 'dashicons'; }
+
+.md-toggle-arrow:before {
+	content: "\f347";
+	position: relative;
+		bottom: -3px;
+		left: -3px;
+}
+
+.md-toggle.open > .md-widget-title .md-toggle-arrow:before,
+.md-opened .md-toggle-arrow:before { content: "\f343"; }
+
+.md-integration .md-loading {
+	display: none;
+	float: right;
+	font-size: 21px;
+}
+
+.md-integration.type-email .md-loading, .md-integration.invalid .md-loading { margin-top: 13px; }
+
+.md-display:not(:last-child) { margin-bottom: 20px; }
+
+.md-display-fields:not(:last-child) {
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 20px;
+	padding-bottom: 20px;
+}
+
 .md .md-tab-content {
 	display: none;
 	padding-top: 15px;
@@ -545,51 +624,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-meta-box .nav-tab-active {
 	background-color: #fff;
 	border-bottom-color: #fff;
-}
-
-.md-toggle h3 { cursor: pointer; }
-
-.md-toggle .md-widget-item { display: none; }
-
-.md-toggle .md-widget-title:before {
-	content: "\f347";
-	float: right;
-	font-family: 'dashicons';
-	margin-left: 5px;
-}
-
-.md-toggle.open > .md-widget-item { display: block; }
-
-.md-toggle.open .md-widget-title:before { content: "\f343"; }
-
-.md-dashicon-arrow-down {
-	font-family: 'dashicons';
-	font-size: 17px;
-}
-
-.md-dashicon-arrow-down:before {
-	content: "\f140";
-	position: relative;
-		bottom: -3px;
-		left: -3px;
-}
-
-.md-opened .md-dashicon-arrow-down:before { content: "\f142"; }
-
-.md-integration .md-loading {
-	display: none;
-	float: right;
-	font-size: 21px;
-}
-
-.md-integration.type-email .md-loading, .md-integration.invalid .md-loading { margin-top: 13px; }
-
-.md-display:not(:last-child) { margin-bottom: 20px;}
-
-.md-display-fields:not(:last-child) {
-	border-bottom: 1px solid #ccc;
-	margin-bottom: 20px;
-	padding-bottom: 20px;
 }
 
 .md-sidebars .md-checkboxes .md-checkbox-disable,
@@ -793,20 +827,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	padding-bottom: 15px;
 }
 
-.md-group-list .md-group-controls {
-	float: right;
-	text-align: right;
-	width: 15%;
-}
-
 .md-group-list .md-group-content {
 	float: left;
 	width: 85%;
 }
-
-.md-group-controls-inner { float: right; }
-
-.md-group-list .md-group-controls-inner { float: none; }
 
 /* BUILDER */
 
@@ -915,6 +939,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-group-link.type-phone .is-phone,
 .has-select2 .md-select2 { display: block; }
 
+.md-meta-box .md-group-link { max-width: 650px; }
+
 /* DEVICE FIELDS */
 
 .md-devices {
@@ -957,7 +983,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-field-select select { max-width: 100%; }
 
-.md .small-text.regular-text { width: 50%; }
+.md-widget-title .small-text.regular-text {
+	font-size: 0.8em;
+	font-weight: normal;
+	line-height: 1;
+	margin: 0;
+	min-height: auto;
+	width: 100%;
+}
 
 .md .regular-text, .md-display select, .md-full-select select { width: 100%; }
 
@@ -1278,14 +1311,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-radius: 3px;
 	color: #fff;
 	font-size: 14px;
-	padding: 4px 9px 5px 3px;
+	padding: 2px 9px 3px;
 	text-decoration: none;
 }
 
 .md-builder-group .md-badge { background-color: #3c434a; }
 
 .md-badge .dashicons {
-	font-size: 15px;
+	font-size: 17px;
 	vertical-align: bottom;
 }
 

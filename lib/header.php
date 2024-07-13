@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Create Header Options settings page.
  *
@@ -53,9 +54,9 @@ class md_header extends md_api {
 						'type' => 'radio',
 						'options' => array( 'standard', 'expanded' )
 					),
-					'display' => array(
+					'sticky' => array(
 						'type' => 'checkbox',
-						'options' => array( 'site_title', 'site_tagline', 'align_tagline', 'hide_title_mobile', 'hide_tagline_mobile', 'sticky' )
+						'options' => array( 'enable' )
 					),
 					'bg_color' => array( 'type' => 'color' ),
 					'border_color' => array( 'type' => 'color' ),
@@ -104,6 +105,7 @@ class md_header extends md_api {
 			'elements' => array(
 				'link' => array(
 					'title' => __( 'Link', 'md' ),
+					'subtitle' => true,
 					'color' => '#2772af',
 					'icon' => 'admin-links',
 					'callback' => array( $this, 'link_fields' )
@@ -122,21 +124,6 @@ class md_header extends md_api {
 				)
 			)
 		);
-	}
-
-	/**
-	 * Load header hooks to template_redirect.
-	 *
-	 * @since 6.0
-	 */
-
-	public function template() {
-		$templates = new md_header_templates;
-
-		add_action( 'md_hook_header', array( $templates, 'template' ) );
-
-		if ( has_nav_menu( 'main_menu' ) )
-			add_action( 'md_hook_before_content_box', array( $templates, 'main_menu' ) );
 	}
 
 	/**
@@ -203,8 +190,7 @@ class md_header extends md_api {
 
 	public function link_fields( $group ) {
 		$this->fields->link_fields( array(
-			'group' => array( 'builder', $group ),
-			'disable_text' => true
+			'group' => array( 'builder', $group )
 		) );
 	}
 

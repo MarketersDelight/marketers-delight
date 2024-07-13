@@ -30,18 +30,17 @@ class md_admin {
 	 */
 
 	public function includes() {
-		require_once( MD_DIR . 'classes/page-settings.php' );
-		require_once( MD_DIR . 'functions/dropins.php' );
-		require_once( MD_DIR . 'classes/dashboard.php' );
-		require_once( MD_DIR . 'classes/icons.php' );
-		require_once( MD_DIR . 'classes/integrations.php' );
-		require_once( MD_DIR . 'classes/dropins.php' );
-		require_once( MD_DIR . 'classes/typography.php' );
-		require_once( MD_DIR . 'classes/design.php' );
-		require_once( MD_DIR . 'classes/layout.php' );
-		require_once( MD_DIR . 'classes/logo.php' );
+		require_once( MD_DIR . 'lib/dropins-functions.php' );
+		require_once( MD_DIR . 'lib/dashboard.php' );
+		require_once( MD_DIR . 'lib/icons.php' );
+		require_once( MD_DIR . 'lib/integrations.php' );
+		require_once( MD_DIR . 'lib/dropins.php' );
+		require_once( MD_DIR . 'lib/typography.php' );
+		require_once( MD_DIR . 'lib/design.php' );
+		require_once( MD_DIR . 'lib/layout.php' );
+		require_once( MD_DIR . 'lib/logo.php' );
 		require_once( MD_DIR . 'wp/dropin-upgrader.php' );
-		require_once( MD_DIR . 'classes/upgrade/md-upgrader.php' );
+		require_once( MD_DIR . 'lib/upgrade/md-upgrader.php' );
 
 		if ( md_setting( 'version' ) < '5.0' )
 			require_once( 'upgrade/upgrade.php' );
@@ -155,7 +154,7 @@ class md_admin {
 	public function enqueue() {
 		$screen = get_current_screen();
 		$style = 'css/admin.css';
-		$script = 'assets/admin.js';
+		$script = 'js/admin.js';
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
@@ -187,8 +186,8 @@ class md_admin {
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_register_script( 'md-color', MD_URL . 'assets/jscolor.js', array(), '', true );
-		wp_register_script( 'md-sortable', MD_URL . 'assets/sortable.js', array(), '', true );
+		wp_register_script( 'md-color', MD_URL . 'js/jscolor.js', array(), '', true );
+		wp_register_script( 'md-sortable', MD_URL . 'js/sortable.js', array(), '', true );
 		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
 		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
 

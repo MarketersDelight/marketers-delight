@@ -1,24 +1,16 @@
+<?php $this->fields->field( 'sticky', array(
+	'type' => 'checkbox',
+	'wrap_classes' => 'md-sep-small',
+	'options' => array(
+		'enable' => __( 'Enable Sticky Header', 'md' ),
+	)
+) ); ?>
+
 <div class="md-widget md-toggle md-sep-small">
 
 	<h3 class="md-widget-title"><?php echo __( 'Layout', 'md' ); ?></h3>
 
 	<div class="md-widget-item">
-
-		<div class="md-sep-small">
-			<?php $this->fields->field( 'display', array(
-				'type' => 'checkbox',
-				'label' => __( 'Display', 'md' ),
-				'multi' => true,
-				'options' => array(
-					'site_title' => __( 'Remove <strong>Site Title</strong>', 'md' ),
-					'site_tagline' => __( 'Remove <strong>Site Tagline</strong>', 'md' ),
-					'align_tagline' => __( 'Align Title and Tagline in one line', 'md' ),
-					'hide_title_mobile' => __( 'Hide <strong>Site Title</strong> on mobile', 'md' ),
-					'hide_tagline_mobile' => __( 'Hide <strong>Site Tagline</strong> on mobile', 'md' ),
-					'sticky' => __( 'Make <strong>sticky</strong>', 'md' )
-				)
-			) ); ?>
-		</div>
 
 		<div class="md-header-layout md-radio-fields md-clear md-sep-small">
 			<?php $this->fields->field( 'layout', array(

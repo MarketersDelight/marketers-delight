@@ -29,21 +29,35 @@
 
 	<div <?php echo isset( $args['sort'] ) ? ' data-id="' . esc_attr( $group ) . '"' : ''; ?>class="md-group<?php echo $valid . ( "$group" == $clone ? ' empty' : '' ) . ( $style == 'boxes' ? ' md-widget md-toggle' : '' ) . ( isset( $args['secondary'] ) ? ' md-widget-secondary' : '' ); ?>">
 
-		<div class="md-group-controls<?php echo $style == 'boxes' ? ' md-widget-title' : ''; ?>">
+		<div class="md-widget-bar<?php echo $style == 'boxes' ? ' md-widget-title' : ''; ?>">
 
-			<?php if ( $style == 'boxes' )
+			<?php if ( $style == 'boxes' ) {
+				echo '<div class="md-widget-edit">';
+
 				$this->field( array( $group_id, $group, 'name' ), array(
 					'type' => 'text',
-					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' ),
-					'classes' => 'md-focus'
-				) ); ?>
+					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' )
+				) );
 
-			<span class="md-group-controls-inner">
+				if ( isset( $args['subtitle'] ) )
+					$this->field( array( $group_id, $group, 'subtitle' ), array(
+						'type' => 'text',
+						'placeholder' => __( 'Add subtitle (optional)', 'md' ),
+						'classes' => 'small-text'
+					) );
+
+				echo '</div>';
+			} ?>
+
+			<div class="md-widget-handle"><span><?php echo __( 'Click here to reorder this group.', 'md' ); ?></span></div>
+
+			<div class="md-widget-controls">
 				<?php if ( ! isset( $args['sort'] ) ) : ?>
 				<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
 				<?php endif; ?>
 				<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
-			</span>
+				<span class="md-toggle-arrow" title="<?php echo __( 'Click to toggle', 'md' ); ?>"></span>
+			</div>
 
 		</div>
 

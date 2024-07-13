@@ -1,6 +1,6 @@
 <div class="md-widget md-toggle md-sep-small">
 
-	<h3 class="md-widget-title"><?php echo __( 'Design', 'md' ); ?></h3>
+	<h3 class="md-widget-title"><?php echo __( 'Colors', 'md' ); ?></h3>
 
 	<div class="md-widget-item">
 

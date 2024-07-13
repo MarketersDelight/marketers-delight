@@ -1,39 +1,48 @@
-<div class="md-header-settings md-content-wrap<?php echo $header_layout == 'flyer' ? ' is-flyer' : ''; ?>">
+<div class="md-header-settings md-content-wrap md-tabs<?php echo $header_layout == 'flyer' ? ' is-flyer' : ''; ?>">
 
 	<?php $this->fields->devices(); ?>
 
-	<h2 class="md-title"><?php echo __( 'Header', 'md' ); ?></h2>
+	<h2 class="md-title"><?php echo __( 'Edit Header', 'md' ); ?></h2>
 
-	<p><?php echo __( 'Customize your website header with specialized navigation elements.', 'md' ); ?></p>
+	<p><?php echo __( 'Create a custom Header layout and adjust colors and fonts.', 'md' ); ?></p>
 
-	<hr class="md-sep-small" />
+	<div class="nav-tab-wrapper">
+		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-header-settings"><?php echo __( 'Settings', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-header-builder"><?php echo __( 'Builder', 'md' ); ?></a>
+	</div>
 
-	<?php include( md_template( 'admin/header/layout-fields', true ) ); ?>
+	<div class="md-header-settings md-tab-content active md-sep-small">
 
-	<?php include( md_template( 'admin/header/design-fields', true ) ); ?>
+		<?php include( md_template( 'admin/header/layout-fields', true ) ); ?>
 
-	<div class="md-widget md-toggle md-sep-small">
+		<?php include( md_template( 'admin/header/design-fields', true ) ); ?>
 
-		<h3 class="md-widget-title"><?php echo __( 'Typography', 'md' ); ?></h3>
+		<div class="md-widget md-toggle md-sep-small">
 
-		<div class="md-widget-item">
+			<h3 class="md-widget-title"><?php echo __( 'Typography', 'md' ); ?></h3>
 
-			<div class="md-sep-small">
-				<?php $this->fields->typography( array(), array(
-					'font_size' => array(
-						'desktop' => $defaults['header']['font_size']['desktop']
-					),
-					'line_height' => array(
-						'desktop' => $defaults['header']['line_height']['desktop']
-					)
-				) ); ?>
+			<div class="md-widget-item">
+
+				<div class="md-sep-small">
+					<?php $this->fields->typography( array(), array(
+						'font_size' => array(
+							'desktop' => $defaults['header']['font_size']['desktop']
+						),
+						'line_height' => array(
+							'desktop' => $defaults['header']['line_height']['desktop']
+						)
+					) ); ?>
+				</div>
+
 			</div>
 
 		</div>
 
 	</div>
 
-	<?php $this->fields->field( 'builder', $builder_fields ); ?>
+	<div class="md-header-builder md-tab-content">
+		<?php $this->fields->field( 'builder', $builder_fields ); ?>
+	</div>
 
 	<?php $this->fields->save(); ?>
 

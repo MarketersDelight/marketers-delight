@@ -1,6 +1,7 @@
 <?php
 /**
- * A unified settings group to compile various page settings into a joined interface.
+ * A unified settings group to compile multiple meta/term boxes
+ * into a joined interface.
  *
  * @since 6.0
  */

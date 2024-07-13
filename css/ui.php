@@ -33,12 +33,11 @@
 	align-items: center;
 	cursor: pointer;
 	display: flex;
+	gap: <?php echo $small; ?>px;
 	justify-content: center;
 	position: relative;
 	text-align: center;
 }
-
-.trigger-text { margin-left: <?php echo $small; ?>px; }
 
 .hide-label .link-text, .hide-label .trigger-text { display: none; }
 

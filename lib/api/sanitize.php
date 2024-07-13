@@ -236,8 +236,10 @@ class md_sanitize {
 		if ( $upload_type == 'media' ) {
 			if ( ! empty( $input['id'] ) )
 				$save['id'] = esc_attr( $input['id'] );
+
 			if ( ! empty( $input['url'] ) )
 				$save['url'] = esc_url( $input['url'] );
+
 			if ( ! empty( $save ) )
 				return $save;
 		}
@@ -271,6 +273,7 @@ class md_sanitize {
 	public function checkbox( $input ) {
 		if ( is_array( $input ) ) {
 			$save = array();
+
 			foreach ( $input as $check => $val )
 				if ( ! empty( $val ) )
 					$save[$check] = true;

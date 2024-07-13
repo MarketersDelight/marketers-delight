@@ -257,7 +257,7 @@ function md_image_sizes() {
  */
 function md_the_logo() {
 	$has_custom_logo = md_has_custom_logo();
-	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );
+	$has_logo_html = md_setting( array( 'logo', 'display', 'logo_html' ) );
 	$logo_html = md_setting( array( 'logo', 'logo_html' ) );
 	if ( $has_logo_html && ! empty( $logo_html ) )
 		echo $logo_html;
@@ -286,7 +286,7 @@ function md_the_logo() {
  */
 function md_has_custom_logo() {
 	$logo_image = md_setting( array( 'logo', 'logo', 'url' ) );
-	$has_logo_html = md_setting( array( 'logo', 'logo_html_display', 'enable' ) );
+	$has_logo_html = md_setting( array( 'logo', 'display', 'logo_html' ) );
 	$logo_html = md_setting( array( 'logo', 'logo_html' ) );
 	if ( $logo_image || ( $has_logo_html && ! empty( $logo_html ) ) )
 		return true;

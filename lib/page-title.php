@@ -210,14 +210,7 @@ class md_hero extends md_api {
 	 */
 
 	public function admin_template( $group = null ) {
-		$screen = get_current_screen();
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
-		$prefix = $this->_prefix;
-		$values = $this->_data( 'values' );
-		$sanitize = $this->_data( 'sanitize' );
-		$cta_type = $this->fields->module( 'page_cta' );
-
-		include( md_template( 'admin/hero', true ) );
+		$this->fields->page_title();
 	}
 
 	/**
@@ -238,16 +231,16 @@ class md_hero extends md_api {
 	 * @since 6.0
 	 */
 
-	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
-			<div class="md-widget-item">
-				<?php $this->admin_template(); ?>
-			</div>
-		</div>
-	<?php }
+	public function admin_fields() { $this->admin_template(); }
 
-	public function sort_fields( $group, $field ) {
+	/**
+	 * Wrap admin link fields in callback function to include
+	 * as repeatable group fields template.
+	 *
+	 * @since 6.0
+	 */
+
+	public function link_fields( $group, $field ) {
 		$this->fields->link_fields( array( 'group' => array( $group, $field ) ) );
 	}
 

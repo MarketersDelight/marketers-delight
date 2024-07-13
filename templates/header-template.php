@@ -1,24 +1,54 @@
 <?php
+
+$md_header_template = new md_header_template;
+
+add_action( 'template_redirect', array( $md_header_template, 'actions' ) );
+
 /**
- * This class holds all frontend templates and routes
- * for the Header area.
+ * Build header template in conditional parts and build each component.
+ *
+ * This class is hooked to template_redirect and contains various
+ * template routes to different pieces of a possible header layout.
+ * The base markup loads a structured header that contains:
+ *
+ * 1) Header controls
+ * 2) Primary header content
+ * 3) Secondary header content
+ *
+ * Populated based on user-filled settings in WP admin > Edit Theme > Header
  *
  * @since 6.0
  */
 
-class md_header_templates {
+class md_header_template {
 
 	/**
-	 * Build Header template with flexible Builder fields data.
+	 * Load header HTML to page and additional high-level hooks and filters.
 	 *
 	 * @since 6.0
 	 */
 
-	public function template() {
+	public function actions() {
+		add_action( 'md_hook_header', array( $this, 'html' ) );
+
+		if ( has_nav_menu( 'main_menu' ) )
+			add_action( 'md_hook_before_content_box', array( $this, 'main_menu' ) );
+	}
+
+	/**
+	 * Main header template hooked into to md_hook_header
+	 * from /lib/header.php->template().
+	 *
+	 * @since 6.0
+	 */
+
+	public function html() {
 		$data = md_get_builder( 'header', 'data' );
 		$fields = md_setting( array( 'header', 'builder' ), array() );
-		$fields_args = array(
-			'layout' => md_setting( array( 'header', 'layout' ), 'standard' )
+		$fields_args = array( 'layout' => md_setting( array( 'header', 'layout' ), 'standard' ) );
+		$areas = array(
+			'header' => array( 'key' => 'primary' ),
+			'header_aside' => array( 'key' => 'aside' )
 		);
 
 		echo '<div class="header-controls">';
@@ -34,52 +64,35 @@ class md_header_templates {
 
 		echo '</div>';
 
-		if ( md_has_menu() ) {
+		foreach ( $areas as $area_id => $area_field ) {
+			if ( empty( $data[$area_id] ) )
+				continue;
 
-			echo '<div class="header-primary">';
+			echo '<div class="header-' . esc_attr( $area_field['key'] ) . '">';
 
-			if ( ! empty( $data['header'] ) )
-				foreach ( $data['header'] as $order => $items ) {
-					$type = esc_attr( $items['type'] );
-					$id = esc_attr( $items['id'] );
+			foreach ( $data[$area_id] as $order => $items ) {
+				$type = esc_attr( $items['type'] );
+				$id = esc_attr( $items['id'] );
 
-					if ( ! empty( $fields[$id] ) ) {
-						$fields_args['location'] = 'header';
-						$fields[$id]['args'] = $fields_args;
-						call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
-					}
+				if ( ! empty( $fields[$id] ) ) {
+					$fields_args['location'] = $area_id;
+					$fields[$id]['args'] = $fields_args;
+
+					call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
 				}
-
-				do_action( 'md_hook_header_primary' );
-
-			echo '</div>';
-
-			if ( ! empty( $data['header_aside'] ) ) {
-				echo '<div class="header-aside">';
-
-				foreach ( $data['header_aside'] as $order => $items ) {
-					$type = esc_attr( $items['type'] );
-					$id = esc_attr( $items['id'] );
-
-					if ( ! empty( $fields[$id] ) ) {
-						$fields_args['location'] = 'header_aside';
-						$fields[$id]['args'] = $fields_args;
-						call_user_func( array( $this, esc_attr( $type ) ), $fields[$id] );
-					}
-				}
-
-				do_action( 'md_hook_header_aside' );
-
-				echo '</div>';
 			}
 
-			if ( empty( $data ) )
-				$this->menu();
+			do_action( 'md_hook_header_' . $area_field['key'] );
+
+			echo '</div>';
 		}
+
+		if ( empty( $data ) )
+			$this->menu();
 	}
 
 	/**
- 	 * Displays the header menu and other triggers.
+ 	 * Renders known header triggers (think: nav menu toggle, search open/close, etc.).
  	 *
  	 * @since 4.8
 	 * Formerly md_header_triggers() #6.0
@@ -109,7 +122,17 @@ class md_header_templates {
 	}
 
 	/**
-	 * Frontend markup for Menu.
+	 * Renders the Link/Button markup, which hooks to header_triggers().
+	 *
+	 * @since 6.0
+	 */
+
+	public function link( $fields ) {
+		md_link( $fields );
+	}
+
+	/**
+	 * Render a menu instance with a customized wp_nav_menu().
 	 *
 	 * @since 6.0
 	 */
@@ -134,11 +157,13 @@ class md_header_templates {
 			$menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
 			$args['theme_location'] = $menu_location;
 		}
-	?>
-		<nav class="<?php echo esc_attr( $parent ); ?>-menu">
-			<?php wp_nav_menu( $args ); ?>
-		</nav>
-	<?php }
+
+		echo '<nav class="' . esc_attr( $parent ) . '-menu">';
+
+		wp_nav_menu( $args );
+
+		echo '</nav>';
+	}
 
 	public function main_menu() {
 		$menus = md_get_builder( 'header', null, 'menu' );
@@ -148,15 +173,17 @@ class md_header_templates {
 	}
 
 	/**
-	 * Header menu trigger template.
+	 * Renders the Menu Trigger markup, which hooks to header_triggers().
 	 *
 	 * @since 6.0
 	 */
 
 	public function menu_trigger() {
 		$menu_id = 'header_menu';
+
 		if ( has_nav_menu( 'main_menu' ) )
 			$menu_id = 'main_menu';
+
 		$elements = md_get_builder( 'header' );
 		$element_id = ! empty( $elements['menu'][0] ) ? $elements['menu'][0] : '';
 		$nav_menu_title = md_get_menu_name( 'header' );
@@ -170,15 +197,15 @@ class md_header_templates {
 			$classes[] = 'hide-label-mobile';
 
 		$classes = join( ' ', $classes );
-	?>
-		<span id="<?php echo esc_attr( $menu_id ); ?>_trigger" class="<?php echo esc_attr( $classes ); ?>" title="<?php echo esc_attr( $title ); ?>">
-			<?php echo md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ); ?>
-			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
-		</span>
-	<?php }
+
+		echo '<span id="' . esc_attr( $menu_id ) . '_trigger" class="' . esc_attr( $classes ) . '" title="' . esc_attr( $title ) . '">'.
+			md_icon( 'menu', array( 'classes' => 'trigger-icon' ) ).
+			'<span class="trigger-text">' . md_text_field( $title ) . '</span>'.
+		'</span>';
+	}
 
 	/**
-	 * Frontend markup for Search.
+	 * Renders the Search Form markup for each instance.
 	 *
 	 * @since 6.0
 	 */
@@ -207,7 +234,7 @@ class md_header_templates {
 	}
 
 	/**
-	 * Header search trigger template.
+	 * Renders the Search Trigger markup, which hooks to header_triggers().
 	 *
 	 * @since 6.0
 	 */
@@ -227,21 +254,11 @@ class md_header_templates {
 			$label_classes[] = 'hide-label-mobile';
 
 		$label_classes = join( ' ', $label_classes );
-	?>
-		<span class="<?php echo esc_attr( $label_classes ); ?>" title="<?php echo esc_attr( $title ); ?>" data-md-parent="header">
-			<?php echo md_icon( 'search', array( 'classes' => 'trigger-icon' ) ); ?>
-			<span class="trigger-text"><?php echo md_text_field( $title ); ?></span>
-		</span>
-	<?php }
 
-	/**
-	 * Frontend markup for Link.
-	 *
-	 * @since 6.0
-	 */
-
-	public function link( $fields ) {
-		md_link( $fields );
+		echo '<span class="' . esc_attr( $label_classes ) . '" title="' . esc_attr( $title ) . '" data-md-parent="header">'.
+			md_icon( 'search', array( 'classes' => 'trigger-icon' ) ).
+			'<span class="trigger-text">' . md_text_field( $title ) . '</span>'.
+		'</span>';
 	}
 
 }
