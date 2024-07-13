@@ -1,4 +1,4 @@
-<div class="md-field-row md-sep">
+<div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
@@ -6,7 +6,7 @@
 	) ); ?>
 </div>
 
-<div class="md-field-row md-sep">
+<div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_text', array(
 		'type' => 'editor',
 		'init' => true,
@@ -16,7 +16,7 @@
 	) ); ?>
 </div>
 
-<div class="md-field-row md-conditional md-sep">
+<div class="md-field-row md-conditional">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Call to Action', 'md' ); ?></label>
@@ -65,15 +65,13 @@
 
 </div>
 
-<h3><?php echo __( 'Page Media', 'md' ); ?></h3>
-
-<div class="md-field-row md-tab-content md-sep active">
+<div class="md-field-row md-tab-content md-sep-small active">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Featured Image', 'md' ); ?></label>
 	</p>
 
-	<div class="md-field columns-2 columns-30-70 columns-half">
+	<div class="md-field columns-2 columns-40-60 columns-single">
 
 		<div class="col col1">
 			<?php $this->field( 'featured_image', array(
@@ -87,7 +85,7 @@
 			<?php $this->field( 'featured_image_position', array(
 				'type' => 'select',
 				'label' => __( 'Position', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
+				'empty_label' => __( 'Use default', 'md' ),
 				'wrap_classes' => 'md-sep-small',
 				'options' => $sanitize->values['featured_image']
 			) ); ?>
@@ -109,13 +107,13 @@
 
 </div>
 
-<div class="md-field-row md-sep">
+<div class="md-field-row md-sep-small">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Page Cover', 'md' ); ?></label>
 	</p>
 
-	<div class="md-field columns-2 columns-30-70 columns-half">
+	<div class="md-field columns-2 columns-40-60 columns-single">
 
 		<div class="col col1">
 			<?php $this->field( 'cover_photo', array(
@@ -125,12 +123,12 @@
 		</div>
 
 		<div class="col col2">
-			<div class="columns-2 columns-half mb-half">
+			<div class="columns-2 columns-single mb-half">
 				<div class="col">
 					<?php $this->field( 'cover_position', array(
 						'type' => 'select',
 						'label' => __( 'Position', 'md' ),
-						'empty_label' => __( 'Do not show cover', 'md' ),
+						'empty_label' => __( 'No cover', 'md' ),
 						'options' => $sanitize->values['covers']
 					) ); ?>
 				</div>
@@ -147,7 +145,7 @@
 				'label' => __( 'Settings', 'md' ),
 				'inline' => true,
 				'options' => array(
-					'alternate' => __( 'Use alternate text color', 'md' ),
+					'alternate' => __( 'Invert text color', 'md' ),
 					'bg_repeat' => __( 'Background repeat', 'md' ),
 					'disable_cover' => __( 'Remove overlay', 'md' )
 				)

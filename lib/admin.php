@@ -30,7 +30,7 @@ class md_admin {
 	 */
 
 	public function includes() {
-		require_once( MD_DIR . 'lib/dropins-functions.php' );
+		require_once( MD_DIR . 'lib/functions/dropins-functions.php' );
 		require_once( MD_DIR . 'lib/dashboard.php' );
 		require_once( MD_DIR . 'lib/icons.php' );
 		require_once( MD_DIR . 'lib/integrations.php' );

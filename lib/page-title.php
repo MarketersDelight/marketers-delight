@@ -112,8 +112,7 @@ class md_hero extends md_api {
 			'term' => array(
 				'name' => $this->name,
 				'fields' => $this->fields(),
-				'position' => 20,
-				'callback' => array( $this, 'admin_fields' )
+				'position' => 20
 			)
 		);
 	}
@@ -204,16 +203,6 @@ class md_hero extends md_api {
 	}
 
 	/**
-	 * General fields admin template.
-	 *
-	 * @since 4.7
-	 */
-
-	public function admin_template( $group = null ) {
-		$this->fields->page_title();
-	}
-
-	/**
 	 * Meta box template callback.
 	 *
 	 * @since 5.0
@@ -221,7 +210,7 @@ class md_hero extends md_api {
 
 	public function meta_box() {
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
-		$this->admin_template();
+		$this->fields->page_title();
 		echo '</div>';
 	}
 
@@ -231,7 +220,9 @@ class md_hero extends md_api {
 	 * @since 6.0
 	 */
 
-	public function admin_fields() { $this->admin_template(); }
+	public function term() {
+		$this->fields->page_title();
+	}
 
 	/**
 	 * Wrap admin link fields in callback function to include

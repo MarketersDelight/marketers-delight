@@ -60,7 +60,7 @@ final class marketers_delight {
 		// API
 		require_once MD_DIR . 'wp/filters.php';
 		require_once MD_DIR . 'wp/walker.php';
-		require_once MD_DIR . 'lib/api/api-functions.php';
+		require_once MD_DIR . 'lib/functions/api-functions.php';
 		require_once MD_DIR . 'lib/api/sanitize.php';
 		require_once MD_DIR . 'lib/api/design.php';
 		require_once MD_DIR . 'lib/api/css.php';
@@ -71,17 +71,17 @@ final class marketers_delight {
 		require_once MD_DIR . 'lib/page-settings.php';
 
 		// Functions
-		require_once MD_DIR . 'lib/icons-functions.php';
-		require_once MD_DIR . 'lib/design-functions.php';
-		require_once MD_DIR . 'lib/image-functions.php';
-		require_once MD_DIR . 'lib/byline-functions.php';
-		require_once MD_DIR . 'lib/post-functions.php';
-		require_once MD_DIR . 'lib/comments-functions.php';
-		require_once MD_DIR . 'lib/loop-functions.php';
-		require_once MD_DIR . 'lib/logo-functions.php';
-		require_once MD_DIR . 'lib/header-functions.php';
-		require_once MD_DIR . 'lib/layout-functions.php';
-		require_once MD_DIR . 'lib/footer-functions.php';
+		require_once MD_DIR . 'lib/functions/icons-functions.php';
+		require_once MD_DIR . 'lib/functions/design-functions.php';
+		require_once MD_DIR . 'lib/functions/image-functions.php';
+		require_once MD_DIR . 'lib/functions/byline-functions.php';
+		require_once MD_DIR . 'lib/functions/post-functions.php';
+		require_once MD_DIR . 'lib/functions/comments-functions.php';
+		require_once MD_DIR . 'lib/functions/loop-functions.php';
+		require_once MD_DIR . 'lib/functions/logo-functions.php';
+		require_once MD_DIR . 'lib/functions/header-functions.php';
+		require_once MD_DIR . 'lib/functions/layout-functions.php';
+		require_once MD_DIR . 'lib/functions/footer-functions.php';
 
 		// Layout
 		require_once MD_DIR . 'templates/header-template.php';
