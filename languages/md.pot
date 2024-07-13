@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-13T21:44:16+00:00\n"
+"POT-Creation-Date: 2024-07-13T22:29:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -201,7 +201,7 @@ msgid "Medium"
 msgstr ""
 
 #: assets/icons.php:165
-#: lib/header-functions.php:86
+#: lib/functions/header-functions.php:86
 #: lib/header.php:121
 #: templates/admin/header/design-fields.php:33
 #: templates/admin/header/menu-fields.php:6
@@ -363,14 +363,14 @@ msgid "add comment"
 msgstr ""
 
 #: comments.php:26
-#: lib/loop-functions.php:343
+#: lib/functions/loop-functions.php:343
 #: templates/admin/loop.php:265
 #: templates/post-nav.php:9
 msgid "Previous"
 msgstr ""
 
 #: comments.php:27
-#: lib/loop-functions.php:344
+#: lib/functions/loop-functions.php:344
 #: templates/admin/loop.php:272
 #: templates/post-nav.php:21
 msgid "Next"
@@ -423,11 +423,6 @@ msgstr ""
 
 #: lib/admin.php:388
 msgid "When in doubt, make a backup your website before proceeding."
-msgstr ""
-
-#: lib/api/api-functions.php:582
-#: wp/widget-loop-query.php:42
-msgid "Untitled"
 msgstr ""
 
 #: lib/api/design.php:261
@@ -528,8 +523,8 @@ msgid "TypeKit"
 msgstr ""
 
 #: lib/api/fields.php:811
-#: templates/admin/fields/page-title.php:89
-#: templates/admin/fields/page-title.php:132
+#: templates/admin/fields/page-title.php:87
+#: templates/admin/fields/page-title.php:130
 msgid "Position"
 msgstr ""
 
@@ -677,7 +672,7 @@ msgstr ""
 #: lib/dashboard.php:34
 #: lib/post.php:29
 #: templates/admin/dropins.php:73
-#: templates/admin/fields/page-title.php:147
+#: templates/admin/fields/page-title.php:145
 #: templates/admin/header/header.php:10
 msgid "Settings"
 msgstr ""
@@ -735,14 +730,6 @@ msgstr ""
 msgid "Category Settings"
 msgstr ""
 
-#: lib/comments-functions.php:62
-msgid "Leave a Comment"
-msgstr ""
-
-#: lib/comments-functions.php:66
-msgid "Cancel"
-msgstr ""
-
 #: lib/dashboard.php:33
 msgid "Edit Theme"
 msgstr ""
@@ -794,7 +781,7 @@ msgid "Header Menu (logged-in users only)"
 msgstr ""
 
 #: lib/deprecated.php:155
-#: lib/loop-functions.php:257
+#: lib/functions/loop-functions.php:257
 #: templates/admin/loop.php:204
 #: templates/admin/query.php:292
 msgid "Continue reading &rarr;"
@@ -867,6 +854,36 @@ msgstr ""
 msgid "Drop-ins"
 msgstr ""
 
+#: lib/functions/api-functions.php:582
+#: wp/widget-loop-query.php:42
+msgid "Untitled"
+msgstr ""
+
+#: lib/functions/comments-functions.php:62
+msgid "Leave a Comment"
+msgstr ""
+
+#: lib/functions/comments-functions.php:66
+msgid "Cancel"
+msgstr ""
+
+#: lib/functions/layout-functions.php:119
+#: marketers-delight.php:196
+msgid "Blog"
+msgstr ""
+
+#: lib/functions/post-functions.php:422
+msgid "To view this protected post, enter the password below:"
+msgstr ""
+
+#: lib/functions/post-functions.php:423
+msgid "Enter the password&hellip;"
+msgstr ""
+
+#: lib/functions/post-functions.php:424
+msgid "Get Access"
+msgstr ""
+
 #: lib/header.php:40
 #: lib/header.php:90
 #: lib/header.php:95
@@ -934,11 +951,6 @@ msgstr ""
 
 #: lib/integrations.php:145
 msgid "Sorry, there was an error during the connection process. Please try again."
-msgstr ""
-
-#: lib/layout-functions.php:119
-#: marketers-delight.php:196
-msgid "Blog"
 msgstr ""
 
 #: lib/layout.php:18
@@ -1019,18 +1031,6 @@ msgstr ""
 #: lib/page-title.php:104
 #: templates/admin/fields/page-title.php:4
 msgid "Page Title"
-msgstr ""
-
-#: lib/post-functions.php:422
-msgid "To view this protected post, enter the password below:"
-msgstr ""
-
-#: lib/post-functions.php:423
-msgid "Enter the password&hellip;"
-msgstr ""
-
-#: lib/post-functions.php:424
-msgid "Get Access"
 msgstr ""
 
 #: lib/post.php:83
@@ -1583,48 +1583,43 @@ msgstr ""
 msgid "Secondary Link"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:68
-msgid "Page Media"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:73
+#: templates/admin/fields/page-title.php:71
 #: templates/admin/loop.php:149
 #: templates/admin/query.php:237
 msgid "Featured Image"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:90
-#: templates/admin/layout.php:65
-#: templates/admin/loop.php:150
-#: templates/admin/query.php:238
-msgid "Use default position"
+#: templates/admin/fields/page-title.php:88
+#: templates/admin/loop.php:27
+#: templates/admin/query.php:51
+msgid "Use default"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:99
+#: templates/admin/fields/page-title.php:97
 msgid "Width (%s)"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:115
+#: templates/admin/fields/page-title.php:113
 msgid "Page Cover"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:133
-msgid "Do not show cover"
+#: templates/admin/fields/page-title.php:131
+msgid "No cover"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:140
+#: templates/admin/fields/page-title.php:138
 msgid "Overlay Color"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:150
-msgid "Use alternate text color"
+#: templates/admin/fields/page-title.php:148
+msgid "Invert text color"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:151
+#: templates/admin/fields/page-title.php:149
 msgid "Background repeat"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:152
+#: templates/admin/fields/page-title.php:150
 msgid "Remove overlay"
 msgstr ""
 
@@ -1927,6 +1922,12 @@ msgstr ""
 msgid "Featured image"
 msgstr ""
 
+#: templates/admin/layout.php:65
+#: templates/admin/loop.php:150
+#: templates/admin/query.php:238
+msgid "Use default position"
+msgstr ""
+
 #: templates/admin/layout.php:87
 msgid "Show <strong>Hero</strong> inline"
 msgstr ""
@@ -2138,11 +2139,6 @@ msgstr ""
 #: templates/admin/loop.php:26
 #: templates/admin/query.php:50
 msgid "List"
-msgstr ""
-
-#: templates/admin/loop.php:27
-#: templates/admin/query.php:51
-msgid "Use default"
 msgstr ""
 
 #: templates/admin/loop.php:29
