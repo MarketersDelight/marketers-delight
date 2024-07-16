@@ -36,13 +36,13 @@
 
 				$this->field( array( $group_id, $group, 'name' ), array(
 					'type' => 'text',
-					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' )
+					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'Add title', 'md' )
 				) );
 
 				if ( isset( $args['subtitle'] ) )
 					$this->field( array( $group_id, $group, 'subtitle' ), array(
 						'type' => 'text',
-						'placeholder' => __( 'Add subtitle (optional)', 'md' ),
+						'placeholder' => __( 'Add subtitle', 'md' ),
 						'classes' => 'small-text'
 					) );
 

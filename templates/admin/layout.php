@@ -1,6 +1,6 @@
-<div class="columns-4 columns-single">
+<div class="md-layout md-columns columns-<?php echo $is_post ? '4' : '3'; ?>">
 
-	<div class="col">
+	<div class="md-col">
 
 		<!-- Header -->
 
@@ -53,30 +53,13 @@
 
 		</div>
 
-		<?php
-			$featured_image = array(
-				'type' => 'select',
-				'label' => __( 'Featured image', 'md' ),
-				'wrap_classes' => 'md-sep-small',
-				'options' => $sanitize->values['featured_image']
-			);
-
-			if ( $is_post )
-				$featured_image['empty_label'] = __( 'Use default position', 'md' );
-
-			$this->fields->field( 'featured_image', $featured_image );
-
-			do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' );
-
-			if ( $is_admin )
-				$this->footer_fields();
-		?>
+		<?php do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' ); ?>
 
 	</div>
 
 	<!-- Content -->
 
-	<div class="col">
+	<div class="md-col">
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
@@ -168,7 +151,24 @@
 
 		</div>
 
-		<?php if ( $is_admin )
+	</div>
+
+	<div class="md-col">
+
+		<?php
+		$featured_image = array(
+			'type' => 'select',
+			'label' => __( 'Featured image', 'md' ),
+			'wrap_classes' => 'md-sep-small',
+			'options' => $sanitize->values['featured_image']
+		);
+
+		if ( $is_post )
+			$featured_image['empty_label'] = __( 'Use default position', 'md' );
+
+		$this->fields->field( 'featured_image', $featured_image );
+
+		if ( $is_admin )
 			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
 				'label' => __( 'Single', 'md' ),
@@ -273,10 +273,22 @@
 
 	</div>
 
-	<?php if ( ! $is_admin ) : ?>
-		<div class="col">
-			<?php $this->footer_fields(); ?>
+	<div class="md-col">
+		<?php $this->fields->field( 'footer', array(
+			'type' => 'checkbox',
+			'label' => __( 'Footer', 'md' ),
+			'options' => array(
+				'remove' => __( 'Remove <b>Footer</b>', 'md' )
+			)
+		) ); ?>
+		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
+			<?php $this->fields->field( 'footer', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'columns' => __( 'Remove <b>Columns</b>', 'md' )
+				)
+			) ); ?>
 		</div>
-	<?php endif; ?>
+	</div>
 
 </div>

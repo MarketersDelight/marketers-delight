@@ -1,10 +1,10 @@
 <div class="<?php echo esc_attr( $classes ); ?>">
 
-	<div class="columns-4 columns-single md-sep-micro">
+	<div class="columns-4 columns-half md-sep-micro">
 		<div class="col col1">
 			<?php $this->field( $fields['link_type']['field'], array(
 				'type' => 'select',
-				'label' => __( 'Type', 'md' ),
+				'label' => __( 'Link type', 'md' ),
 				'classes' => 'md-conditional-option',
 				'wrap_classes' => 'md-sep-small',
 				'options' => array(
@@ -15,6 +15,17 @@
 			) ); ?>
 		</div>
 		<div class="col col2">
+			<?php $this->field( $fields['link_style']['field'], array(
+				'type' => 'select',
+				'label' => __( 'Style', 'md' ),
+				'empty_label' => __( 'Text link', 'md' ),
+				'classes' => 'md-link-style',
+				'options' => array(
+					'button' => __( 'Button', 'md' )
+				)
+			) ); ?>
+		</div>
+		<div class="col col3">
 			<?php $this->field( $fields['link_icon']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Icon', 'md' ),
@@ -80,18 +91,6 @@
 	<div class="columns-3 columns-half md-full-select md-sep-small">
 
 		<div class="col">
-			<?php $this->field( $fields['link_style']['field'], array(
-				'type' => 'select',
-				'label' => __( 'Style', 'md' ),
-				'empty_label' => __( 'Text link', 'md' ),
-				'classes' => 'md-link-style',
-				'options' => array(
-					'button' => __( 'Button', 'md' )
-				)
-			) ); ?>
-		</div>
-
-		<div class="col">
 			<?php $this->field( $fields['link_color']['field'], array(
 				'type' => 'color',
 				'label' => __( 'Color', 'md' )
@@ -103,8 +102,8 @@
 				'type' => 'checkbox',
 				'classes' => 'md-sep-top-small',
 				'options' => array(
-					'hide_label' => __( 'Hide label', 'md' ),
-					'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
+					'hide_label' => __( 'Hide text', 'md' ),
+					'hide_label_mobile' => __( 'Hide text on mobile', 'md' )
 				)
 			) ); ?>
 		</div>

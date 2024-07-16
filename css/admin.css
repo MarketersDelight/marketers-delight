@@ -358,12 +358,20 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 @media all and (min-width: 900px) {
+	.md-columns {
+		display: flex;
+		flex-flow: wrap;
+		row-gap: 10px;
+	}
+	.md-columns.columns-3 > .md-col { flex-basis: 33.3333333333%; }
+	.md-columns.columns-4 > .md-col { flex-basis: 25%; }
+	.md-columns .md-col.col-50 { flex-basis: 50%; }
+
 	.md .col { float: left; }
 	.md .columns-3 > .col { width: 33.333333333%; }
-	.md .columns-2 .col,
+	.md .columns-2 .col { width: 50%; }
 	.md .columns-25-50-25 .col2,
 	.md .columns-50-25-25 .col1,
-	.md [class*="columns-"] .col.col-50 { width: 50%; }
 	.md .columns-4 > .col, .md .columns-25-75 > .col1,
 	.md .columns-25-50-25 .col1, .md .columns-25-50-25 .col3,
 	.md .columns-50-25-25 .col2, .md .columns-50-25-25 .col3 { width: 25%; }
@@ -390,10 +398,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 @media all and (max-width: 900px) {
 	.md.wrap { margin-right: 10px; }
 	.md .columns-flex > .col { width: 50%; }
-}
-
-@media all and (max-width: 1175px) {
-	.md-layout .columns-4 > .col { width: 50%; }
 }
 
 .md .col-style {
@@ -629,6 +633,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	display: none;
 	padding-top: 18px;
 }
+
+.md-widget-item > .md-tab-content { padding-top: 0; }
 
 .md .md-tab-content.active { display: block; }
 

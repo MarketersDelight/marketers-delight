@@ -1,8 +1,8 @@
 <div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
-		'label' => __( 'Page Title', 'md' ),
-		'description' => __( 'Add an <code>h1</code> title tag to the top of the page.', 'md' )
+		'label' => __( 'Headline', 'md' ),
+		'description' => __( 'Write a custom headline to overwrite the <code>h1</code> title of this page.', 'md' )
 	) ); ?>
 </div>
 
@@ -11,7 +11,7 @@
 		'type' => 'editor',
 		'init' => true,
 		'label' => __( 'Description', 'md' ),
-		'description' => __( 'Write a short description to show below the page title.', 'md' ),
+		'description' => __( 'Write an expanded Page Description with Rich-Text formatting.', 'md' ),
 		'rows' => 4
 	) ); ?>
 </div>
@@ -42,6 +42,7 @@
 				'style' => 'boxes',
 				'secondary' => true,
 				'subtitle' => true,
+				'new_label' => __( 'Add link text', 'md' ),
 				'callback' => array( $this, 'link_fields' ),
 				'elements' => array(
 					'link_primary' => array(

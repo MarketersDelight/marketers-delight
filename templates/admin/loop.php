@@ -279,23 +279,21 @@
 
 <h4><?php echo __( 'Call to Action', 'md' ); ?></h4>
 
-<div class="columns-2 columns-single">
+<div class="columns-2 columns-30-70 columns-single">
 
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'cta_x_loop', array(
-			'type' => 'number',
-			'label' => __( 'Call to Action', 'md' ),
-			'description' => __( 'Show after the Xth post.', 'md' )
+	<div class="col col1">
+		<?php $this->fields->field( 'x_cta', array(
+			'type' => 'select',
+			'description' => sprintf( __( 'Display your pre-made <a href="%s">CTA</a>s and <a href="%1s">Block Patterns</a> in this Loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ), admin_url( 'edit.php?post_type=wp_block' ) ),
+			'empty_label' => __( 'Select call to action...', 'md' ),
+			'options' => $cta_options
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'x_cta', array(
-			'type' => 'select',
-			'label' => __( 'Call to Action', 'md' ),
-			'description' => sprintf( __( 'Choose a pre-made <a href="%s">call to action</a> to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
-			'empty_label' => __( 'Select call to action...', 'md' ),
-			'options' => $cta_options
+	<div class="col col2">
+		<?php $this->fields->field( 'cta_x_loop', array(
+			'type' => 'number',
+			'label' => __( 'Show after Xth post', 'md' )
 		) ); ?>
 	</div>
 
