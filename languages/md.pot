@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-13T22:29:57+00:00\n"
+"POT-Creation-Date: 2024-07-16T01:18:39+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -460,7 +460,7 @@ msgstr ""
 #: lib/design.php:141
 #: lib/design.php:149
 #: templates/admin/design.php:30
-#: templates/admin/fields/link.php:63
+#: templates/admin/fields/link.php:65
 #: templates/admin/header/design-fields.php:18
 msgid "Text"
 msgstr ""
@@ -480,7 +480,7 @@ msgid "Links"
 msgstr ""
 
 #: lib/api/design.php:273
-#: templates/admin/fields/link.php:87
+#: templates/admin/fields/link.php:89
 #: templates/admin/loop.php:215
 #: templates/admin/query.php:303
 msgid "Button"
@@ -522,37 +522,37 @@ msgstr ""
 msgid "TypeKit"
 msgstr ""
 
-#: lib/api/fields.php:811
-#: templates/admin/fields/page-title.php:87
-#: templates/admin/fields/page-title.php:130
+#: lib/api/fields.php:813
+#: templates/admin/fields/page-title.php:86
+#: templates/admin/fields/page-title.php:131
 msgid "Position"
 msgstr ""
 
-#: lib/api/fields.php:814
+#: lib/api/fields.php:816
 msgid "Before Headline"
 msgstr ""
 
-#: lib/api/fields.php:815
+#: lib/api/fields.php:817
 msgid "After Headline"
 msgstr ""
 
-#: lib/api/fields.php:816
+#: lib/api/fields.php:818
 msgid "After Post"
 msgstr ""
 
-#: lib/api/fields.php:830
+#: lib/api/fields.php:832
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: lib/api/fields.php:833
+#: lib/api/fields.php:835
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: lib/api/fields.php:836
+#: lib/api/fields.php:838
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: lib/api/fields.php:861
+#: lib/api/fields.php:863
 msgid "Save %s"
 msgstr ""
 
@@ -672,7 +672,7 @@ msgstr ""
 #: lib/dashboard.php:34
 #: lib/post.php:29
 #: templates/admin/dropins.php:73
-#: templates/admin/fields/page-title.php:145
+#: templates/admin/fields/page-title.php:146
 #: templates/admin/header/header.php:10
 msgid "Settings"
 msgstr ""
@@ -1028,7 +1028,7 @@ msgstr ""
 msgid "Page Settings"
 msgstr ""
 
-#: lib/page-title.php:104
+#: lib/page-title.php:20
 #: templates/admin/fields/page-title.php:4
 msgid "Page Title"
 msgstr ""
@@ -1403,142 +1403,142 @@ msgstr ""
 msgid "New entry..."
 msgstr ""
 
-#: templates/admin/fields/link.php:5
+#: templates/admin/fields/link.php:7
 msgid "Type"
 msgstr ""
 
-#: templates/admin/fields/link.php:9
+#: templates/admin/fields/link.php:11
 msgid "Page URL"
 msgstr ""
 
-#: templates/admin/fields/link.php:10
+#: templates/admin/fields/link.php:12
 msgid "Open Popup"
 msgstr ""
 
-#: templates/admin/fields/link.php:11
-#: templates/admin/fields/link.php:42
+#: templates/admin/fields/link.php:13
+#: templates/admin/fields/link.php:45
 msgid "Phone Number"
 msgstr ""
 
-#: templates/admin/fields/link.php:19
+#: templates/admin/fields/link.php:20
 msgid "Icon"
 msgstr ""
 
-#: templates/admin/fields/link.php:20
+#: templates/admin/fields/link.php:21
 msgid "Select icon"
 msgstr ""
 
-#: templates/admin/fields/link.php:29
+#: templates/admin/fields/link.php:31
 msgid "URL"
 msgstr ""
 
-#: templates/admin/fields/link.php:35
+#: templates/admin/fields/link.php:37
 msgid "Open in new tab"
 msgstr ""
 
-#: templates/admin/fields/link.php:43
+#: templates/admin/fields/link.php:46
 msgid "(999) 999-9999"
 msgstr ""
 
-#: templates/admin/fields/link.php:49
+#: templates/admin/fields/link.php:53
 msgid "Open popup"
 msgstr ""
 
-#: templates/admin/fields/link.php:50
+#: templates/admin/fields/link.php:54
 msgid "Select a popup..."
 msgstr ""
 
-#: templates/admin/fields/link.php:71
+#: templates/admin/fields/link.php:73
 msgid "Sub Text"
 msgstr ""
 
-#: templates/admin/fields/link.php:83
+#: templates/admin/fields/link.php:85
 #: templates/admin/loop.php:14
 #: templates/admin/query.php:38
 msgid "Style"
 msgstr ""
 
-#: templates/admin/fields/link.php:84
+#: templates/admin/fields/link.php:86
 #: templates/admin/loop.php:213
 #: templates/admin/query.php:301
 msgid "Text link"
 msgstr ""
 
-#: templates/admin/fields/link.php:95
+#: templates/admin/fields/link.php:97
 #: templates/admin/logo.php:83
 #: templates/admin/logo.php:119
 msgid "Color"
 msgstr ""
 
-#: templates/admin/fields/link.php:104
+#: templates/admin/fields/link.php:106
 #: templates/admin/header/search-fields.php:9
 msgid "Hide label"
 msgstr ""
 
-#: templates/admin/fields/link.php:105
+#: templates/admin/fields/link.php:107
 #: templates/admin/header/menu-fields.php:18
 #: templates/admin/header/search-fields.php:10
 msgid "Hide label on mobile"
 msgstr ""
 
-#: templates/admin/fields/link.php:117
+#: templates/admin/fields/link.php:119
 msgid "Button styles"
 msgstr ""
 
-#: templates/admin/fields/link.php:118
-#: templates/admin/fields/link.php:131
+#: templates/admin/fields/link.php:120
+#: templates/admin/fields/link.php:133
 msgid "Default"
 msgstr ""
 
-#: templates/admin/fields/link.php:121
+#: templates/admin/fields/link.php:123
 msgid "Outline"
 msgstr ""
 
-#: templates/admin/fields/link.php:122
+#: templates/admin/fields/link.php:124
 msgid "Frame"
 msgstr ""
 
-#: templates/admin/fields/link.php:130
+#: templates/admin/fields/link.php:132
 msgid "Button size"
 msgstr ""
 
-#: templates/admin/fields/link.php:133
+#: templates/admin/fields/link.php:135
 msgid "Small"
 msgstr ""
 
-#: templates/admin/fields/link.php:134
+#: templates/admin/fields/link.php:136
 msgid "Large"
 msgstr ""
 
-#: templates/admin/fields/link.php:145
+#: templates/admin/fields/link.php:149
 msgid "Show to..."
 msgstr ""
 
-#: templates/admin/fields/link.php:146
+#: templates/admin/fields/link.php:150
 msgid "All visitors"
 msgstr ""
 
-#: templates/admin/fields/link.php:148
+#: templates/admin/fields/link.php:152
 msgid "Logged in users only"
 msgstr ""
 
-#: templates/admin/fields/link.php:149
+#: templates/admin/fields/link.php:153
 msgid "Logged out users only"
 msgstr ""
 
-#: templates/admin/fields/link.php:156
+#: templates/admin/fields/link.php:160
 msgid "Visibility"
 msgstr ""
 
-#: templates/admin/fields/link.php:158
+#: templates/admin/fields/link.php:162
 msgid "Always show"
 msgstr ""
 
-#: templates/admin/fields/link.php:160
+#: templates/admin/fields/link.php:164
 msgid "Show on desktop only"
 msgstr ""
 
-#: templates/admin/fields/link.php:161
+#: templates/admin/fields/link.php:165
 msgid "Show on mobile only"
 msgstr ""
 
@@ -1571,7 +1571,6 @@ msgid "Select CTA type..."
 msgstr ""
 
 #: templates/admin/fields/page-title.php:34
-#: templates/admin/fields/page-title.php:60
 msgid "Custom HTML"
 msgstr ""
 
@@ -1583,43 +1582,43 @@ msgstr ""
 msgid "Secondary Link"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:71
+#: templates/admin/fields/page-title.php:70
 #: templates/admin/loop.php:149
 #: templates/admin/query.php:237
 msgid "Featured Image"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:88
+#: templates/admin/fields/page-title.php:87
 #: templates/admin/loop.php:27
 #: templates/admin/query.php:51
 msgid "Use default"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:97
+#: templates/admin/fields/page-title.php:96
 msgid "Width (%s)"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:113
+#: templates/admin/fields/page-title.php:114
 msgid "Page Cover"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:131
+#: templates/admin/fields/page-title.php:132
 msgid "No cover"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:138
+#: templates/admin/fields/page-title.php:139
 msgid "Overlay Color"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:148
+#: templates/admin/fields/page-title.php:149
 msgid "Invert text color"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:149
+#: templates/admin/fields/page-title.php:150
 msgid "Background repeat"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:150
+#: templates/admin/fields/page-title.php:151
 msgid "Remove overlay"
 msgstr ""
 
