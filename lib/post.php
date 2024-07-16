@@ -68,7 +68,7 @@ class md_post extends md_api {
 	 */
 
 	public function admin_settings( $settings ) {
-		$settings[$this->_id] = array( 'hero', 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
+		$settings[$this->_id] = array( 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
 
 		return $settings;
 	}

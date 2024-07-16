@@ -278,8 +278,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-bottom-color: #666;
 	font-weight: bold;
 }
-.md-meta-box .md-tabs .md-tab-content { padding-top: 5; }
-
 
 /* HEADER */
 
@@ -497,8 +495,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	flex: 1;
 }
 
-.md-meta-box .md-widget-handle { padding: 5px; }
-
 .md-builder-group .md-widget-handle { padding: 0; }
 
 .md-widget-handle span { visibility: hidden; }
@@ -594,6 +590,25 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-toggle.open > .md-widget-title .md-toggle-arrow:before,
 .md-opened .md-toggle-arrow:before { content: "\f343"; }
 
+#md_page_settings .inside,
+.md-page-settings > .md-widget-item {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#md_page_settings .inside { margin-top: 10px; }
+
+.md-page-settings > .md-widget-item { padding-top: 10px; }
+
+#md_page_settings .inside .md-tab-content,
+.md-page-settings > .md-widget-item .md-tab-content {
+	padding-left: 18px;
+	padding-right: 18px;
+}
+
+#md_page_settings .nav-tab:first-child,
+.md-page-settings .nav-tab:first-child { margin-left: 15px; }
+
 .md-integration .md-loading {
 	display: none;
 	float: right;
@@ -612,7 +627,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md .md-tab-content {
 	display: none;
-	padding-top: 15px;
+	padding-top: 18px;
 }
 
 .md .md-tab-content.active { display: block; }

@@ -39,7 +39,7 @@ class md_page_settings extends md_api {
 	 */
 
 	public function term() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-page-settings md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template( 'term_meta' ); ?>
@@ -54,7 +54,7 @@ class md_page_settings extends md_api {
 	 */
 
 	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-page-settings md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template( 'admin_fields' ); ?>

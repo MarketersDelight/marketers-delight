@@ -306,7 +306,7 @@ class md_api {
 				if ( in_array( $this->_clean_id, array( 'cta', 'floating_bars', 'popups' ) ) )
 					continue;
 
-				if ( $this->_clean_id == 'hero' )
+				if ( $this->_clean_id == 'page_settings' )
 					$order = 10;
 				elseif ( $this->_clean_id == 'layout' )
 					$order = 20;

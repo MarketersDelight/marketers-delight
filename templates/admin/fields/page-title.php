@@ -16,7 +16,7 @@
 	) ); ?>
 </div>
 
-<div class="md-field-row md-conditional">
+<div class="md-field-row md-conditional md-sep-small">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Call to Action', 'md' ); ?></label>
@@ -55,17 +55,16 @@
 		</div>
 
 		<div id="<?php echo $prefix; ?>_page_cta_custom" class="md-conditional-item md-conditional-custom" style="display: <?php echo $cta_type == 'custom' ? 'block' : 'none'; ?>">
-			<?php $this->field( 'custom_html', array(
-				'type' => 'code',
-				'label' => __( 'Custom HTML', 'md' ),
-			) ); ?>
+			<?php $this->field( 'custom_html', array( 'type' => 'code' ) ); ?>
 		</div>
 
 	</div>
 
 </div>
 
-<div class="md-field-row md-tab-content md-sep-small active">
+<?php if ( ! $is_post ) : ?>
+
+<div class="md-field-row md-sep-small active">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Featured Image', 'md' ); ?></label>
@@ -106,6 +105,8 @@
 	</div>
 
 </div>
+
+<?php endif; ?>
 
 <div class="md-field-row md-sep-small">
 

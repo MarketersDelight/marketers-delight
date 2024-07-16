@@ -782,6 +782,8 @@ class md_fields {
 	 */
 
 	public function page_title() {
+		$screen = get_current_screen();
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$sanitize = new md_sanitize;
 		$prefix = $this->_prefix;
 		$cta_type = $this->module( 'page_cta' );

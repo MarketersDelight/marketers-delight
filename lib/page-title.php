@@ -11,6 +11,29 @@
 class md_hero extends md_api {
 
 	/**
+	 * Register meta box and term.
+	 *
+	 * @since 4.3.5
+	 */
+
+	public function register() {
+		$this->name = __( 'Page Title', 'md' );
+
+		return array(
+			'meta_box' => array(
+				'name' => $this->name,
+				'page_settings' => true,
+				'fields' => $this->fields()
+			),
+			'term' => array(
+				'name' => $this->name,
+				'position' => 20,
+				'fields' => $this->fields()
+			)
+		);
+	}
+
+	/**
 	 * Load featured image in various positions across templates.
 	 *
 	 * @since 4.8.3
@@ -92,29 +115,6 @@ class md_hero extends md_api {
 
 			md_headline( $args );
 		}
-	}
-
-	/**
-	 * Register meta box and term.
-	 *
-	 * @since 4.3.5
-	 */
-
-	public function register() {
-		$this->name = __( 'Page Title', 'md' );
-
-		return array(
-			'meta_box' => array(
-				'name' => $this->name,
-				'page_settings' => true,
-				'fields' => $this->fields()
-			),
-			'term' => array(
-				'name' => $this->name,
-				'fields' => $this->fields(),
-				'position' => 20
-			)
-		);
 	}
 
 	/**
@@ -220,9 +220,14 @@ class md_hero extends md_api {
 	 * @since 6.0
 	 */
 
-	public function term() {
-		$this->fields->page_title();
-	}
+	public function term() { ?>
+		<div class="md-widget md-toggle md-sep-small">
+			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
+			<div class="md-widget-item">
+				<?php $this->fields->page_title(); ?>
+			</div>
+		</div>
+	<?php }
 
 	/**
 	 * Wrap admin link fields in callback function to include
