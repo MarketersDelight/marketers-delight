@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-16T06:53:09+00:00\n"
+"POT-Creation-Date: 2024-07-18T17:25:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -473,9 +473,9 @@ msgstr ""
 #: lib/design.php:128
 #: lib/design.php:144
 #: lib/design.php:152
-#: templates/admin/fields/page-title.php:33
 #: templates/admin/header/design-fields.php:39
 #: templates/admin/header/design-fields.php:74
+#: templates/admin/page-title.php:33
 msgid "Links"
 msgstr ""
 
@@ -523,8 +523,8 @@ msgid "TypeKit"
 msgstr ""
 
 #: lib/api/fields.php:813
-#: templates/admin/fields/page-title.php:87
-#: templates/admin/fields/page-title.php:132
+#: templates/admin/page-title.php:87
+#: templates/admin/page-title.php:132
 msgid "Position"
 msgstr ""
 
@@ -565,7 +565,7 @@ msgid "Please select a dropin to update."
 msgstr ""
 
 #: lib/api/sanitize.php:148
-#: templates/admin/layout.php:127
+#: templates/admin/layout.php:93
 #: templates/admin/query.php:389
 msgid "Sidebar / Content"
 msgstr ""
@@ -672,8 +672,7 @@ msgstr ""
 #: lib/dashboard.php:34
 #: lib/post.php:29
 #: templates/admin/dropins.php:73
-#: templates/admin/fields/page-title.php:147
-#: templates/admin/header/header.php:10
+#: templates/admin/page-title.php:147
 msgid "Settings"
 msgstr ""
 
@@ -809,7 +808,6 @@ msgid "Links Secondary"
 msgstr ""
 
 #: lib/design.php:130
-#: templates/admin/fields/page-title.php:4
 msgid "Headline"
 msgstr ""
 
@@ -830,6 +828,7 @@ msgstr ""
 #: lib/design.php:142
 #: lib/design.php:150
 #: templates/admin/loop.php:57
+#: templates/admin/page-title.php:4
 #: templates/admin/query.php:89
 #: templates/admin/query.php:345
 #: wp/widget-accordion.php:123
@@ -888,7 +887,7 @@ msgstr ""
 #: lib/header.php:40
 #: lib/header.php:90
 #: lib/header.php:95
-#: templates/admin/layout.php:9
+#: templates/admin/layout.php:7
 msgid "Header"
 msgstr ""
 
@@ -955,7 +954,7 @@ msgid "Sorry, there was an error during the connection process. Please try again
 msgstr ""
 
 #: lib/layout.php:18
-#: templates/admin/header/layout-fields.php:11
+#: templates/admin/header/layout-fields.php:3
 #: templates/admin/header/layout-fields.php:18
 #: templates/admin/query.php:20
 msgid "Layout"
@@ -972,7 +971,7 @@ msgstr ""
 #: lib/layout.php:161
 #: templates/admin/byline.php:12
 #: templates/admin/byline.php:21
-#: templates/admin/layout.php:174
+#: templates/admin/layout.php:113
 msgid "Single"
 msgstr ""
 
@@ -985,7 +984,7 @@ msgid "Remove <b>Breadcrumbs</b>"
 msgstr ""
 
 #: lib/layout.php:203
-#: templates/admin/layout.php:177
+#: templates/admin/layout.php:116
 msgid "Remove <b>Post Nav</b>"
 msgstr ""
 
@@ -1024,7 +1023,7 @@ msgid "Blog Settings"
 msgstr ""
 
 #: lib/typography.php:52
-#: templates/admin/header/header.php:22
+#: templates/admin/header/header.php:17
 msgid "Typography"
 msgstr ""
 
@@ -1128,7 +1127,7 @@ msgid "Customize the byline items that show on single pages."
 msgstr ""
 
 #: templates/admin/content.php:3
-#: templates/admin/layout.php:64
+#: templates/admin/layout.php:61
 msgid "Content"
 msgstr ""
 
@@ -1274,14 +1273,14 @@ msgid "Secondary Button"
 msgstr ""
 
 #: templates/admin/design.php:84
-#: templates/admin/layout.php:188
+#: templates/admin/layout.php:180
 #: templates/admin/query.php:369
 #: templates/admin/typography.php:61
 msgid "Sidebar"
 msgstr ""
 
 #: templates/admin/design.php:101
-#: templates/admin/layout.php:279
+#: templates/admin/layout.php:272
 #: templates/admin/typography.php:82
 msgid "Footer"
 msgstr ""
@@ -1460,8 +1459,8 @@ msgid "Sub Text"
 msgstr ""
 
 #: templates/admin/fields/link.php:96
-#: templates/admin/logo.php:83
-#: templates/admin/logo.php:119
+#: templates/admin/logo.php:82
+#: templates/admin/logo.php:118
 msgid "Color"
 msgstr ""
 
@@ -1534,88 +1533,6 @@ msgstr ""
 msgid "Show on mobile only"
 msgstr ""
 
-#: templates/admin/fields/page-title.php:5
-msgid "Write a custom headline to overwrite the <code>h1</code> title of this page."
-msgstr ""
-
-#: templates/admin/fields/page-title.php:13
-#: templates/admin/query.php:352
-#: wp/widget-loop-query.php:120
-#: wp/widget-text-image.php:67
-msgid "Description"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:14
-msgid "Write an expanded Page Description with Rich-Text formatting."
-msgstr ""
-
-#: templates/admin/fields/page-title.php:22
-#: templates/admin/loop.php:280
-#: templates/admin/query.php:166
-#: templates/admin/query.php:396
-msgid "Call to Action"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:29
-msgid "Select CTA type..."
-msgstr ""
-
-#: templates/admin/fields/page-title.php:34
-msgid "Custom HTML"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:45
-msgid "Add link text"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:49
-msgid "Primary Link"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:52
-msgid "Secondary Link"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:71
-#: templates/admin/loop.php:149
-#: templates/admin/query.php:237
-msgid "Featured Image"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:88
-#: templates/admin/loop.php:27
-#: templates/admin/query.php:51
-msgid "Use default"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:97
-msgid "Width (%s)"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:115
-msgid "Page Cover"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:133
-msgid "No cover"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:140
-msgid "Overlay Color"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:150
-msgid "Invert text color"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:151
-msgid "Background repeat"
-msgstr ""
-
-#: templates/admin/fields/page-title.php:152
-msgid "Remove overlay"
-msgstr ""
-
 #: templates/admin/fields/select.php:16
 #: templates/admin/query.php:197
 msgid "Select author(s)..."
@@ -1643,10 +1560,7 @@ msgid "ID: %s"
 msgstr ""
 
 #: templates/admin/fields/uploader.php:13
-#: wp/widget-content-spotlight.php:82
-#: wp/widget-quote.php:72
-#: wp/widget-text-image.php:90
-msgid "Click to upload"
+msgid "Upload image"
 msgstr ""
 
 #: templates/admin/fields/uploader.php:16
@@ -1707,12 +1621,8 @@ msgstr ""
 msgid "Create a custom Header layout and adjust colors and fonts."
 msgstr ""
 
-#: templates/admin/header/header.php:11
-msgid "Builder"
-msgstr ""
-
-#: templates/admin/header/layout-fields.php:5
-msgid "Enable Sticky Header"
+#: templates/admin/header/layout-fields.php:11
+msgid "Enable <strong>Sticky</strong> Header"
 msgstr ""
 
 #: templates/admin/header/layout-fields.php:23
@@ -1900,112 +1810,113 @@ msgstr ""
 msgid "Email Services"
 msgstr ""
 
-#: templates/admin/layout.php:11
+#: templates/admin/layout.php:9
 msgid "Remove <b>Header</b>"
 msgstr ""
 
-#: templates/admin/layout.php:20
+#: templates/admin/layout.php:18
 msgid "Remove <b>Logo</b>"
 msgstr ""
 
-#: templates/admin/layout.php:29
+#: templates/admin/layout.php:27
 msgid "Remove <b>Tagline</b>"
 msgstr ""
 
-#: templates/admin/layout.php:40
+#: templates/admin/layout.php:38
 msgid "Remove <b>Menu</b>"
 msgstr ""
 
-#: templates/admin/layout.php:47
+#: templates/admin/layout.php:45
 msgid "Use default menu"
 msgstr ""
 
-#: templates/admin/layout.php:70
-msgid "Show <strong>Hero</strong> inline"
-msgstr ""
-
-#: templates/admin/layout.php:78
+#: templates/admin/layout.php:67
 msgid "Remove <b>Content Box</b>"
 msgstr ""
 
-#: templates/admin/layout.php:95
-msgid "Remove <b>Headline</b>"
+#: templates/admin/layout.php:78
+msgid "Disable <strong>Box style</strong>"
 msgstr ""
 
-#: templates/admin/layout.php:104
-msgid "Remove <b>Author Box</b>"
-msgstr ""
-
-#: templates/admin/layout.php:111
-#: templates/admin/layout.php:176
-msgid "Add <b>Author Box</b>"
-msgstr ""
-
-#: templates/admin/layout.php:124
+#: templates/admin/layout.php:90
 #: templates/admin/query.php:386
 msgid "Content / Sidebar"
 msgstr ""
 
-#: templates/admin/layout.php:135
-msgid "Disable <strong>Box style</strong>"
+#: templates/admin/layout.php:115
+#: templates/admin/layout.php:141
+msgid "Add <b>Author Box</b>"
 msgstr ""
 
-#: templates/admin/layout.php:143
-msgid "Disable <strong>WP formatting</strong>"
+#: templates/admin/layout.php:123
+#: templates/admin/query.php:19
+msgid "Post"
 msgstr ""
 
-#: templates/admin/layout.php:161
+#: templates/admin/layout.php:125
+msgid "Remove <b>Headline</b>"
+msgstr ""
+
+#: templates/admin/layout.php:134
+msgid "Remove <b>Author Box</b>"
+msgstr ""
+
+#: templates/admin/layout.php:154
+msgid "Disable <strong><acronym title=\"WordPress Auto Paragraph\">wpautop</acronym></strong>"
+msgstr ""
+
+#: templates/admin/layout.php:165
 msgid "Featured image"
 msgstr ""
 
-#: templates/admin/layout.php:167
+#: templates/admin/layout.php:171
 #: templates/admin/loop.php:150
 #: templates/admin/query.php:238
 msgid "Use default position"
 msgstr ""
 
-#: templates/admin/layout.php:196
+#: templates/admin/layout.php:189
 msgid "Enable on all pages"
 msgstr ""
 
-#: templates/admin/layout.php:207
+#: templates/admin/layout.php:200
 msgid "Enable on <strong>%s</strong>"
 msgstr ""
 
-#: templates/admin/layout.php:208
+#: templates/admin/layout.php:201
 msgid "Disable on <strong>%s</strong>"
 msgstr ""
 
-#: templates/admin/layout.php:215
+#: templates/admin/layout.php:208
 #: templates/admin/query.php:379
 msgid "Use Main sidebar"
 msgstr ""
 
-#: templates/admin/layout.php:229
+#: templates/admin/layout.php:222
 msgid "Remove <b>Sidebar</b>"
 msgstr ""
 
-#: templates/admin/layout.php:238
+#: templates/admin/layout.php:231
 msgid "Add <b>Main Sidebar</b>"
 msgstr ""
 
-#: templates/admin/layout.php:251
+#: templates/admin/layout.php:244
 msgid "Use default sidebar"
 msgstr ""
 
-#: templates/admin/layout.php:260
+#: templates/admin/layout.php:253
 msgid "Posts in this category..."
 msgstr ""
 
-#: templates/admin/layout.php:266
+#: templates/admin/layout.php:259
 msgid "<a href=\"%s\" target=\"_blank\">Edit Custom Sidebars</a>"
 msgstr ""
 
-#: templates/admin/layout.php:281
+#: templates/admin/layout.php:278
 msgid "Remove <b>Footer</b>"
 msgstr ""
 
-#: templates/admin/layout.php:288
+#: templates/admin/layout.php:286
 msgid "Remove <b>Columns</b>"
 msgstr ""
 
@@ -2109,20 +2020,16 @@ msgid "Enable custom <strong>Logo HTML</strong>"
 msgstr ""
 
 #: templates/admin/logo.php:68
-msgid "Logo HTML code"
-msgstr ""
-
-#: templates/admin/logo.php:69
 msgid "<b>Tip:</b> Use custom HTML here, including <a href=\"%s\" target=\"_blank\">MD helper classes</a>."
 msgstr ""
 
-#: templates/admin/logo.php:75
-#: templates/admin/logo.php:90
+#: templates/admin/logo.php:74
+#: templates/admin/logo.php:89
 msgid "Site Title"
 msgstr ""
 
-#: templates/admin/logo.php:111
-#: templates/admin/logo.php:126
+#: templates/admin/logo.php:110
+#: templates/admin/logo.php:125
 msgid "Site Tagline"
 msgstr ""
 
@@ -2149,6 +2056,11 @@ msgstr ""
 #: templates/admin/loop.php:26
 #: templates/admin/query.php:50
 msgid "List"
+msgstr ""
+
+#: templates/admin/loop.php:27
+#: templates/admin/query.php:51
+msgid "Use default"
 msgstr ""
 
 #: templates/admin/loop.php:29
@@ -2277,6 +2189,12 @@ msgstr ""
 msgid "Standard Posts"
 msgstr ""
 
+#: templates/admin/loop.php:149
+#: templates/admin/page-title.php:71
+#: templates/admin/query.php:237
+msgid "Featured Image"
+msgstr ""
+
 #: templates/admin/loop.php:156
 #: templates/admin/query.php:244
 msgid "Show full size image"
@@ -2374,6 +2292,13 @@ msgstr ""
 msgid "Previous/Next Links"
 msgstr ""
 
+#: templates/admin/loop.php:280
+#: templates/admin/page-title.php:22
+#: templates/admin/query.php:166
+#: templates/admin/query.php:396
+msgid "Call to Action"
+msgstr ""
+
 #: templates/admin/loop.php:287
 msgid "Display your pre-made <a href=\"%s\">CTA</a>s and <a href=\"%1s\">Block Patterns</a> in this Loop."
 msgstr ""
@@ -2385,6 +2310,77 @@ msgstr ""
 
 #: templates/admin/loop.php:296
 msgid "Show after Xth post"
+msgstr ""
+
+#: templates/admin/page-title.php:5
+msgid "Write your own headline to overwrite the <code>h1</code> title name of this page."
+msgstr ""
+
+#: templates/admin/page-title.php:13
+#: templates/admin/query.php:352
+#: wp/widget-loop-query.php:120
+#: wp/widget-text-image.php:67
+msgid "Description"
+msgstr ""
+
+#: templates/admin/page-title.php:14
+msgid "Add additional description content after the page title."
+msgstr ""
+
+#: templates/admin/page-title.php:29
+msgid "Select CTA type..."
+msgstr ""
+
+#: templates/admin/page-title.php:34
+msgid "Custom HTML"
+msgstr ""
+
+#: templates/admin/page-title.php:45
+msgid "Add link text"
+msgstr ""
+
+#: templates/admin/page-title.php:49
+msgid "Primary Link"
+msgstr ""
+
+#: templates/admin/page-title.php:52
+msgid "Secondary Link"
+msgstr ""
+
+#: templates/admin/page-title.php:88
+msgid "Show default"
+msgstr ""
+
+#: templates/admin/page-title.php:97
+msgid "Width (%s)"
+msgstr ""
+
+#: templates/admin/page-title.php:115
+msgid "Page Cover"
+msgstr ""
+
+#: templates/admin/page-title.php:133
+msgid "No cover"
+msgstr ""
+
+#: templates/admin/page-title.php:140
+msgid "Overlay Color"
+msgstr ""
+
+#: templates/admin/page-title.php:150
+msgid "Show inline"
+msgstr ""
+
+#: templates/admin/page-title.php:151
+msgid "Invert text color"
+msgstr ""
+
+#: templates/admin/page-title.php:152
+msgid "Background repeat"
+msgstr ""
+
+#: templates/admin/page-title.php:153
+msgid "Remove overlay"
 msgstr ""
 
 #: templates/admin/query.php:6
@@ -2413,10 +2409,6 @@ msgstr ""
 
 #: templates/admin/query.php:18
 msgid "Query"
-msgstr ""
-
-#: templates/admin/query.php:19
-msgid "Post"
 msgstr ""
 
 #: templates/admin/query.php:75
@@ -2844,6 +2836,12 @@ msgstr ""
 
 #: wp/widget-content-spotlight.php:73
 msgid "Open link in new window"
+msgstr ""
+
+#: wp/widget-content-spotlight.php:82
+#: wp/widget-quote.php:72
+#: wp/widget-text-image.php:90
+msgid "Click to upload"
 msgstr ""
 
 #: wp/widget-content-spotlight.php:89
