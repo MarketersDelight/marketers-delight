@@ -1,8 +1,8 @@
 <div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
-		'label' => __( 'Headline', 'md' ),
-		'description' => __( 'Write a custom headline to overwrite the <code>h1</code> title of this page.', 'md' )
+		'label' => __( 'Title', 'md' ),
+		'description' => __( 'Write your own headline to overwrite the <code>h1</code> title name of this page.', 'md' )
 	) ); ?>
 </div>
 
@@ -11,7 +11,7 @@
 		'type' => 'editor',
 		'init' => true,
 		'label' => __( 'Description', 'md' ),
-		'description' => __( 'Write an expanded Page Description with Rich-Text formatting.', 'md' ),
+		'description' => __( 'Add additional description content after the page title.', 'md' ),
 		'rows' => 4
 	) ); ?>
 </div>
@@ -65,7 +65,7 @@
 
 <?php if ( ! $is_post ) : ?>
 
-<div class="md-field-row md-sep-small active">
+<div class="md-field-row md-sep-small">
 
 	<p class="md-label-wrap">
 		<label class="md-label"><?php echo __( 'Featured Image', 'md' ); ?></label>
@@ -85,7 +85,7 @@
 			<?php $this->field( 'featured_image_position', array(
 				'type' => 'select',
 				'label' => __( 'Position', 'md' ),
-				'empty_label' => __( 'Use default', 'md' ),
+				'empty_label' => __( 'Show default', 'md' ),
 				'wrap_classes' => 'md-sep-small',
 				'options' => $sanitize->values['featured_image']
 			) ); ?>
@@ -125,7 +125,7 @@
 		</div>
 
 		<div class="col col2">
-			<div class="columns-2 columns-single mb-half">
+			<div class="columns-2 columns-single md-sep-micro">
 				<div class="col">
 					<?php $this->field( 'cover_position', array(
 						'type' => 'select',
@@ -147,6 +147,7 @@
 				'label' => __( 'Settings', 'md' ),
 				'inline' => true,
 				'options' => array(
+					'inline' => __( 'Show inline', 'md' ),
 					'alternate' => __( 'Invert text color', 'md' ),
 					'bg_repeat' => __( 'Background repeat', 'md' ),
 					'disable_cover' => __( 'Remove overlay', 'md' )

@@ -10,7 +10,7 @@
 		<?php endif; ?>
 		<div class="md-upload-preview-action">
 			<span class="dashicons dashicons-upload"></span>
-			<p class="md-upload-preview-text"><?php echo __( 'Click to upload', 'md' ); ?></p>
+			<p class="md-upload-preview-text"><?php echo __( 'Upload image', 'md' ); ?></p>
 		</div>
 		<div class="md-upload-preview-image">
 			<img src="<?php echo esc_url( $upload_url ); ?>" alt="<?php echo __( 'Preview Image', 'md' ); ?>" />

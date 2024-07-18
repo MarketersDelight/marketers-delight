@@ -1,16 +1,16 @@
-<?php $this->fields->field( 'sticky', array(
-	'type' => 'checkbox',
-	'wrap_classes' => 'md-sep-small',
-	'options' => array(
-		'enable' => __( 'Enable Sticky Header', 'md' ),
-	)
-) ); ?>
-
 <div class="md-widget md-toggle md-sep-small">
 
 	<h3 class="md-widget-title"><?php echo __( 'Layout', 'md' ); ?></h3>
 
 	<div class="md-widget-item">
+
+		<?php $this->fields->field( 'settings', array(
+			'type' => 'checkbox',
+			'wrap_classes' => 'md-sep-small',
+			'options' => array(
+				'sticky' => __( 'Enable <strong>Sticky</strong> Header', 'md' ),
+			)
+		) ); ?>
 
 		<div class="md-header-layout md-radio-fields md-clear md-sep-small">
 			<?php $this->fields->field( 'layout', array(
@@ -38,7 +38,7 @@
 			) ); ?>
 		</div>
 
-		<div class="md-radio-fields md-clear md-sep-micro">
+		<div class="md-radio-fields md-clear">
 			<?php $this->fields->field( 'layout_mobile', array(
 				'type' => 'radio',
 				'label' => __( 'Mobile Layout', 'md' ),

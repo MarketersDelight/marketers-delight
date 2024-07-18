@@ -65,7 +65,6 @@
 		<?php $this->fields->field( 'logo_html', array(
 			'type' => 'code',
 			'rows' => 8,
-			'label' => __( 'Logo HTML code', 'md' ),
 			'description' => sprintf( __( '<b>Tip:</b> Use custom HTML here, including <a href="%s" target="_blank">MD helper classes</a>.', 'md' ), 'https://marketersdelight.com/style-guide/' )
 		) ); ?>
 	</div>

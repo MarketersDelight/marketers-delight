@@ -1,8 +1,6 @@
-<div class="md-layout md-columns columns-<?php echo $is_post ? '4' : '3'; ?>">
+<div class="md-layout md-columns columns-4">
 
 	<div class="md-col">
-
-		<!-- Header -->
 
 		<?php $this->fields->field( 'header', array(
 			'type' => 'checkbox',
@@ -12,7 +10,7 @@
 			)
 		) ); ?>
 
-		<div id="header_options" class="md-sep-small" style="display: <?php echo ! empty( $header['remove'] ) ? 'none' : 'block'; ?>;">
+		<div id="header_options" style="display: <?php echo ! empty( $header['remove'] ) ? 'none' : 'block'; ?>;">
 
 			<?php $this->fields->field( 'header', array(
 				'type' => 'checkbox',
@@ -51,26 +49,17 @@
 
 			<?php endif; ?>
 
-		</div>
+			<?php do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' ); ?>
 
-		<?php do_action( 'md_layout_' . ( $is_post ? 'post' : $screen_base ) . '_after_header' ); ?>
+		</div>
 
 	</div>
 
-	<!-- Content -->
-
 	<div class="md-col">
 
-		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
-
-		<?php if ( ! $is_post ) : ?>
-			<?php $this->fields->field( 'content', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'hero_inline' => __( 'Show <strong>Hero</strong> inline', 'md' ),
-				)
-			) ); ?>
-		<?php endif; ?>
+		<p class="md-row-head md-label-wrap">
+			<label class="md-label"><?php echo __( 'Content', 'md' ); ?></label>
+		</p>
 
 		<?php $this->fields->field( 'content', array(
 			'type' => 'checkbox',
@@ -82,42 +71,19 @@
 		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<?php
+				if ( ! md_setting( array( 'colors', 'design', 'box_style' ) ) )
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'box_style' => __( 'Disable <strong>Box style</strong>', 'md' )
+						)
+					) );
+
 				if ( $post_type !== 'page' )
 					$this->fields->field( 'breadcrumbs', array(
 						'type' => 'checkbox',
 						'options' => $breadcrumbs_options
 					) );
-
-				if ( $is_post ) {
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'headline' => __( 'Remove <b>Headline</b>', 'md' )
-						)
-					) );
-
-					if ( $post_type !== 'page' ) {
-						if ( $author_box )
-							$this->fields->field( 'content', array(
-								'type' => 'checkbox',
-								'options' => array(
-									'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
-								)
-							) );
-						else
-							$this->fields->field( 'content', array(
-								'type' => 'checkbox',
-								'options' => array(
-									'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
-								)
-							) );
-
-						$this->fields->field( 'content', array(
-							'type' => 'checkbox',
-							'options' => $post_nav_options
-						) );
-					}
-				}
 
 				$this->fields->field( 'content_box', array(
 					'type' => 'select',
@@ -127,22 +93,6 @@
 						'sidebar_content' => __( 'Sidebar / Content', 'md' )
 					)
 				) );
-
-				if ( ! md_setting( array( 'colors', 'design', 'box_style' ) ) )
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'box_style' => __( 'Disable <strong>Box style</strong>', 'md' )
-						)
-					) );
-
-				if ( $is_post )
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'wpautop' => __( 'Disable <strong>WP formatting</strong>', 'md' )
-						)
-					) );
 			?>
 
 			<div class="md-sep-micro">
@@ -153,22 +103,11 @@
 
 	</div>
 
+	<?php if ( $is_admin || $is_post ) : ?>
+
 	<div class="md-col">
 
-		<?php
-		$featured_image = array(
-			'type' => 'select',
-			'label' => __( 'Featured image', 'md' ),
-			'wrap_classes' => 'md-sep-small',
-			'options' => $sanitize->values['featured_image']
-		);
-
-		if ( $is_post )
-			$featured_image['empty_label'] = __( 'Use default position', 'md' );
-
-		$this->fields->field( 'featured_image', $featured_image );
-
-		if ( $is_admin )
+		<?php if ( $is_admin )
 			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
 				'label' => __( 'Single', 'md' ),
@@ -177,15 +116,69 @@
 					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ),
 				)
 			) );
-		?>
 
+		if ( $is_post ) {
+			$this->fields->field( 'content', array(
+				'type' => 'checkbox',
+				'label' => __( 'Post', 'md' ),
+				'options' => array(
+					'headline' => __( 'Remove <b>Headline</b>', 'md' )
+				)
+			) );
+
+			if ( $post_type !== 'page' ) {
+				if ( $author_box )
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
+						)
+					) );
+				else
+					$this->fields->field( 'content', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
+						)
+					) );
+
+				$this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => $post_nav_options
+				) );
+			}
+
+			$this->fields->field( 'content', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'wpautop' => __( 'Disable <strong><acronym title="WordPress Auto Paragraph">wpautop</acronym></strong>', 'md' )
+				)
+			) );
+		} ?>
 	</div>
+	<?php endif; ?>
 
-	<!-- Sidebar -->
+	<div class="md-col">
+		<?php
+			$featured_image = array(
+				'type' => 'select',
+				'label' => __( 'Featured image', 'md' ),
+				'wrap_classes' => 'md-sep-small',
+				'options' => $sanitize->values['featured_image']
+			);
+
+			if ( $is_post )
+				$featured_image['empty_label'] = __( 'Use default position', 'md' );
+
+			$this->fields->field( 'featured_image', $featured_image );
+		?>
+	</div>
 
 	<div id="sidebar_fields" class="<?php echo esc_attr( $sidebar_classes ); ?>" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-		<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
+		<p class="md-label-wrap">
+			<label class="md-label"><?php echo __( 'Sidebar', 'md' ); ?></label>
+		</p>
 
 		<?php if ( $is_admin ) : ?>
 
@@ -274,13 +267,18 @@
 	</div>
 
 	<div class="md-col">
+
+		<p class=" md-label-wrap">
+			<label class="md-label"><?php echo __( 'Footer', 'md' ); ?></label>
+		</p>
+
 		<?php $this->fields->field( 'footer', array(
 			'type' => 'checkbox',
-			'label' => __( 'Footer', 'md' ),
 			'options' => array(
 				'remove' => __( 'Remove <b>Footer</b>', 'md' )
 			)
 		) ); ?>
+
 		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
 			<?php $this->fields->field( 'footer', array(
 				'type' => 'checkbox',
@@ -289,6 +287,7 @@
 				)
 			) ); ?>
 		</div>
+
 	</div>
 
 </div>

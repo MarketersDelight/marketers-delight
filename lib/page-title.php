@@ -8,7 +8,7 @@
  * @since 6.0
  */
 
-class md_hero extends md_api {
+class md_page_title extends md_api {
 
 	/**
 	 * Register meta box and term.
@@ -137,7 +137,7 @@ class md_hero extends md_api {
 			'cover_bg_color' => array( 'type' => 'color' ),
 			'cover_display' => array(
 				'type' => 'checkbox',
-				'options' => array( 'alternate', 'disable_cover', 'bg_repeat' )
+				'options' => array( 'inline', 'alternate', 'disable_cover', 'bg_repeat' )
 			),
 			'image' => array(
 				'type' => 'upload',
@@ -229,6 +229,10 @@ class md_hero extends md_api {
 		</div>
 	<?php }
 
+	public function admin_fields() {
+		$this->fields->page_title();
+	}
+
 	/**
 	 * Wrap admin link fields in callback function to include
 	 * as repeatable group fields template.
@@ -284,4 +288,4 @@ class md_hero extends md_api {
 
 }
 
-new md_hero;
+new md_page_title;

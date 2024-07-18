@@ -68,7 +68,7 @@ class md_post extends md_api {
 	 */
 
 	public function admin_settings( $settings ) {
-		$settings[$this->_id] = array( 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
+		$settings[$this->_id] = array( 'page_title', 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
 
 		return $settings;
 	}
@@ -83,8 +83,6 @@ class md_post extends md_api {
 		echo '<h1>' . __( 'Blog Settings', 'md' ) . '</h1>'.
 			 '<hr class="md-sep-small" />'.
 			 '<div class="md-content-wrap-med">';
-
-		$this->fields->page_title();
 
 		do_action( "{$this->_id}_admin_fields" );
 

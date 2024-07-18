@@ -54,9 +54,9 @@ class md_header extends md_api {
 						'type' => 'radio',
 						'options' => array( 'standard', 'expanded' )
 					),
-					'sticky' => array(
+					'settings' => array(
 						'type' => 'checkbox',
-						'options' => array( 'enable' )
+						'options' => array( 'sticky' )
 					),
 					'bg_color' => array( 'type' => 'color' ),
 					'border_color' => array( 'type' => 'color' ),

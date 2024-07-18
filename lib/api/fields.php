@@ -788,7 +788,7 @@ class md_fields {
 		$prefix = $this->_prefix;
 		$cta_type = $this->module( 'page_cta' );
 
-		include md_template( 'admin/fields/page-title', true );
+		include md_template( 'admin/page-title', true );
 	}
 
 	/**
