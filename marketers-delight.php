@@ -214,6 +214,12 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
+
+		$testoption = md_setting();
+//		unset( $testoption['header'] );
+//		update_option( 'marketers_delight', $testoption );
+
+
 		// Load styles
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
 			wp_enqueue_style( 'marketers-delight', MD_URL . 'style.css', array(), md_ver( 'style.css' ) );

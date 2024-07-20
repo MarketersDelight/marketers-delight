@@ -2,7 +2,7 @@
 
 	<div class="columns-4 columns-half md-sep-micro">
 		<div class="col col1">
-			<?php $this->field( $fields['link_type']['field'], array(
+			<?php $this->field( $fields['type']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Link type', 'md' ),
 				'classes' => 'md-conditional-option',
@@ -15,7 +15,7 @@
 			) ); ?>
 		</div>
 		<div class="col col2">
-			<?php $this->field( $fields['link_style']['field'], array(
+			<?php $this->field( $fields['style']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Style', 'md' ),
 				'empty_label' => __( 'Text link', 'md' ),
@@ -26,7 +26,7 @@
 			) ); ?>
 		</div>
 		<div class="col col3">
-			<?php $this->field( $fields['link_icon']['field'], array(
+			<?php $this->field( $fields['icon']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Icon', 'md' ),
 				'empty_label' => __( 'Select icon', 'md' ),
@@ -37,13 +37,13 @@
 
 	<div class="md-conditional-item md-conditional-url columns-2 columns-70-30 columns-single<?php echo $link_type == 'url' ? ' is-condition' : ''; ?> md-sep-micro">
 		<div class="col col1">
-			<?php $this->field( $fields['link_url']['field'], array(
+			<?php $this->field( $fields['url']['field'], array(
 				'type' => 'url',
 				'label' => __( 'URL', 'md' )
 			) ); ?>
 		</div>
 		<div class="col col2 field-no-label">
-			<?php $this->field( $fields['link_target']['field'], array(
+			<?php $this->field( $fields['target']['field'], array(
 				'type' => 'checkbox',
 				'options' => array( 'new' => __( 'Open in new tab', 'md' ) )
 			) ); ?>
@@ -51,7 +51,7 @@
 	</div>
 
 	<div class="md-conditional-item md-conditional-phone<?php echo $link_type == 'phone' ? ' is-condition' : ''; ?> md-sep-micro">
-		<?php $this->field( $fields['link_phone']['field'], array(
+		<?php $this->field( $fields['phone']['field'], array(
 			'type' => 'text',
 			'label' => __( 'Phone Number', 'md' ),
 			'placeholder' => __( '(999) 999-9999', 'md' )
@@ -59,7 +59,7 @@
 	</div>
 
 	<div class="md-conditional-item md-conditional-popup<?php echo $link_type == 'popup' ? ' is-condition' : ''; ?> md-sep-micro">
-		<?php $this->field( $fields['link_popup']['field'], array(
+		<?php $this->field( $fields['popup']['field'], array(
 			'type' => 'select',
 			'label' => __( 'Open popup', 'md' ),
 			'empty_label' => __( 'Select a popup...', 'md' ),
@@ -67,38 +67,17 @@
 		) ); ?>
 	</div>
 
-	<?php if ( isset( $args['show_title'] ) || isset( $args['show_subtitle'] ) ) : ?>
-	<div class="columns-2 columns-half md-sep-micro">
-		<?php if ( isset( $args['show_title'] ) ) : ?>
-		<div class="col">
-			<?php $this->field( $fields['link_text']['field'], array(
-				'type' => 'text',
-				'label' => __( 'Text', 'md' )
-			) ); ?>
-		</div>
-		<?php endif; ?>
-		<?php if ( isset( $args['show_subtitle'] ) ) : ?>
-		<div class="col">
-			<?php $this->field( $fields['link_subtitle']['field'], array(
-				'type' => 'text',
-				'label' => __( 'Sub Text', 'md' )
-			) ); ?>
-		</div>
-		<?php endif; ?>
-	</div>
-	<?php endif; ?>
-
 	<div class="columns-3 columns-half md-full-select md-sep-small">
 
 		<div class="col">
-			<?php $this->field( $fields['link_color']['field'], array(
+			<?php $this->field( $fields['color']['field'], array(
 				'type' => 'color',
 				'label' => __( 'Color', 'md' )
 			) ); ?>
 		</div>
 
 		<div class="col">
-			<?php $this->field( $fields['link_toggle']['field'], array(
+			<?php $this->field( $fields['toggle']['field'], array(
 				'type' => 'checkbox',
 				'classes' => 'md-sep-top-small',
 				'options' => array(
@@ -113,7 +92,7 @@
 	<div class="is-button columns-4 columns-single md-sep-small">
 
 		<div class="col">
-			<?php $this->field( $fields['link_button_style']['field'], array(
+			<?php $this->field( $fields['button_style']['field'], array(
 				'type' => 'checkbox',
 				'label' => __( 'Button styles', 'md' ),
 				'empty_label' => __( 'Default', 'md' ),
@@ -126,7 +105,7 @@
 		</div>
 
 		<div class="col">
-			<?php $this->field( $fields['link_size']['field'], array(
+			<?php $this->field( $fields['size']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Button size', 'md' ),
 				'empty_label' => __( 'Default', 'md' ),
@@ -143,7 +122,7 @@
 
 	<div class="columns-3 columns-single">
 		<div class="col">
-			<?php $this->field( $fields['link_user']['field'], array(
+			<?php $this->field( $fields['user']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Show to...', 'md' ),
 				'empty_label' => __( 'All visitors', 'md' ),
@@ -154,7 +133,7 @@
 			) ); ?>
 		</div>
 		<div class="col">
-			<?php $this->field( $fields['link_display']['field'], array(
+			<?php $this->field( $fields['display']['field'], array(
 				'type' => 'select',
 				'label' => __( 'Visibility', 'md' ),
 				'wrap_classes' => 'md-sep-micro',

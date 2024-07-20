@@ -551,8 +551,8 @@ class md_sanitize {
 							if ( $group_fields['type'] == 'builder' ) {
 								$builder_data = $builder_elements = array();
 								foreach ( $save[$key][$group] as $builder_id => $builder_fields ) {
-									$builder_type = esc_attr( $builder_fields['type'] );
-									$builder_data[$builder_fields['area']][] = array( 'type' => $builder_type, 'id' => $builder_id );
+									$builder_type = esc_attr( $builder_fields['builder_type'] );
+									$builder_data[$builder_fields['builder_area']][] = array( 'type' => $builder_type, 'id' => $builder_id );
 									$builder_elements[$builder_type][] = $builder_id;
 									$save[$key]["{$group}_data"] = serialize( $builder_data );
 									$save[$key]["{$group}_elements"] = serialize( $builder_elements );

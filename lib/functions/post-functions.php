@@ -207,7 +207,7 @@ function md_title( $args = array() ) {
 endif;
 
 /**
- * Show Description of current page.
+ * Return text description of current page.
  *
  * @since 6.0
  */
@@ -229,6 +229,12 @@ function md_get_description( $context = 'post' ) {
 
 	return $description;
 }
+
+/**
+ * Echo the description HTML markup.
+ *
+ * @since 6.0
+ */
 
 function md_description( $args = array() ) {
 	$description = md_get_description();
@@ -262,25 +268,25 @@ function md_cta( $context = 'post' ) {
 	if ( empty( $page_title['page_cta'] ) )
 		return;
 
-	$html = '';
+	$html = '<div class="cta">';
 
 	if ( $page_title['page_cta'] == 'links' ) {
-		$html .= '<div class="cta">';
 
-		if ( ! empty( $page_title['link_secondary'] ) ) {
-			$page_title['link_secondary']['link_classes'] = 'cta-link';
-			$html .= md_get_link( $page_title['link_secondary'] );
+		if ( ! empty( $page_title['links']['link_secondary'] ) ) {
+			$page_title['links']['link_secondary']['classes'] = 'cta-link';
+			$html .= md_get_link( $page_title['links']['link_secondary'] );
 		}
 
-		if ( ! empty( $page_title['link_primary'] ) ) {
-			$page_title['link_primary']['link_classes'] = 'cta-link';
-			$html .= md_get_link( $page_title['link_primary'] );
+		if ( ! empty( $page_title['links']['link_primary'] ) ) {
+			$page_title['links']['link_primary']['classes'] = 'cta-link';
+			$html .= md_get_link( $page_title['links']['link_primary'] );
 		}
 
-		$html .= '</div>';
 	}
 	elseif ( $page_title['page_cta'] == 'custom' )
 		$html .= md_module( 'custom_html' );
+
+	$html .= '</div>';
 
 	return $html;
 }

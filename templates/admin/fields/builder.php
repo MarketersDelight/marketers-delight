@@ -53,8 +53,8 @@
 		<?php if ( $option ) : ?>
 			<?php foreach ( $option as $group => $fields ) {
 				$group = esc_attr( $group );
-				$area = ! empty( $fields['area'] ) ? esc_attr( $fields['area'] ) : '';
-				$type = ! empty( $fields['type'] ) ? esc_attr( $fields['type'] ) : '';
+				$area = ! empty( $fields['builder_area'] ) ? esc_attr( $fields['builder_area'] ) : '';
+				$type = ! empty( $fields['builder_type'] ) ? esc_attr( $fields['builder_type'] ) : '';
 
 				if ( $area == $area_id )
 					$this->builder_fields( $key, $group, $type, $elements[$type] );

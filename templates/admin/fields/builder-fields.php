@@ -40,13 +40,13 @@
 
 		<div class="md-widget-item">
 			<?php
-				$this->field( array( $key, $group, 'type' ), array(
+				$this->field( array( $key, $group, 'builder_type' ), array(
 					'type' => 'text',
 					'hidden' => true,
 					'default' => esc_attr( $type )
 				) );
 
-				$this->field( array( $key, $group, 'area' ), array(
+				$this->field( array( $key, $group, 'builder_area' ), array(
 					'type' => 'text',
 					'hidden' => true,
 					'classes' => 'canvas-area',

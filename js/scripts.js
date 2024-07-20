@@ -108,7 +108,6 @@ headerMenu: function() {
 		this.toggle( 'menu' );
 		headerTrigger.onclick = function( e ) {
 			MD.toggleClass( header, 'has-mobile-menu' );
-						MD.removeClass( header, 'has-search' );
 					}
 	}
 },

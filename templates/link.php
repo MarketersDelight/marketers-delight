@@ -7,10 +7,11 @@
  */
 
 $text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
-$text = isset( $fields["link{$p}_text"] ) ? $fields["link{$p}_text"] : $text;
-$icon = ! empty( $fields["link{$p}_icon"] ) ? $fields["link{$p}_icon"] : '';
+$text = isset( $fields["{$p}text"] ) ? $fields["{$p}text"] : $text;
 
-if ( empty( $text ) && empty ( $icon ) )
+$icon = ! empty( $fields["{$p}icon"] ) ? $fields["{$p}icon"] : '';
+
+if ( empty( $text ) && empty( $icon ) )
 	return;
 
 $classes = $styles = array();
@@ -18,29 +19,29 @@ $h = 'span';
 $class = $href = $target = $popup = '';
 $parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
 $title = ( $icon && ! $text ) ? ' title="' . strip_tags( $text ) . '"' : '';
-$subtext = isset( $fields["link{$p}_subtext"] ) ? $fields["link{$p}_subtext"] : '';
-$url = isset( $fields["link{$p}_url"] ) ? $fields["link{$p}_url"] : '';
-$phone = isset( $fields["link{$p}_phone"] ) ? $fields["link{$p}_phone"] : '';
-$style = isset( $fields["link{$p}_style"] ) ? $fields["link{$p}_style"] : 'link';
-$type = isset( $fields["link{$p}_type"] ) ? $fields["link{$p}_type"] : 'url';
+$subtext = isset( $fields["{$p}subtext"] ) ? $fields["{$p}subtext"] : '';
+$url = isset( $fields["{$p}url"] ) ? $fields["{$p}url"] : '';
+$phone = isset( $fields["{$p}phone"] ) ? $fields["{$p}phone"] : '';
+$style = isset( $fields["{$p}style"] ) ? $fields["{$p}style"] : 'link';
+$type = isset( $fields["{$p}type"] ) ? $fields["{$p}type"] : 'url';
 $icon_classes = 'link-icon';
 $has_wrap = $icon && $text && $subtext ? true : false;
 
 if ( $parent )
 	$classes[] = "{$parent}-link";
 
-if ( ! empty( $fields["link{$p}_display"] ) )
-	$classes[] = 'show-' . esc_attr( $fields["link{$p}_display"] );
+if ( ! empty( $fields["{$p}display"] ) )
+	$classes[] = 'show-' . esc_attr( $fields["{$p}display"] );
 
 if ( in_array( $type, array( 'url', 'link' ) ) && $url ) {
 	$h = 'a';
 	$href = ' href="' . esc_url( $url ) . '"';
-	$target = ( isset( $fields["link{$p}_target"]['new'] ) ? ' target="_blank"' : '' );
+	$target = ( isset( $fields["{$p}target"]['new'] ) ? ' target="_blank"' : '' );
 }
 elseif ( $type == 'phone' ) {
 	$h = 'a';
 	$href = ' href="tel:' . esc_attr( $phone ) . '"';
-	$classes[] = $fields["link{$p}_icon"] = 'phone';
+	$classes[] = $fields["{$p}icon"] = 'phone';
 
 	if ( ! $text )
 		$text = esc_attr( $phone );
@@ -50,14 +51,14 @@ if ( $style == 'button' ) {
 	$button_color = '';
 	$classes[] = 'button';
 
-	if ( ! empty( $fields["link{$p}_size"] ) )
-		$classes[] = 'button-' . $fields["link{$p}_size"];
+	if ( ! empty( $fields["{$p}size"] ) )
+		$classes[] = 'button-' . $fields["{$p}size"];
 
-	if ( ! empty( $fields["link{$p}_color"] ) )
-		$button_color = $fields["link{$p}_color"];
+	if ( ! empty( $fields["{$p}color"] ) )
+		$button_color = $fields["{$p}color"];
 
-	if ( ! empty( $fields["link{$p}_button_style"] ) ) {
-		if ( $fields["link{$p}_button_style"] == 'outline' ) {
+	if ( ! empty( $fields["{$p}button_style"] ) ) {
+		if ( $fields["{$p}button_style"] == 'outline' ) {
 			$classes[] = 'button-outline';
 
 			if ( $button_color )
@@ -70,27 +71,27 @@ if ( $style == 'button' ) {
 else {
 	$classes[] = 'link';
 
-	if ( ! empty( $fields["link{$p}_color"] ) )
-		$styles['color'] = esc_attr( $fields["link{$p}_color"] );
+	if ( ! empty( $fields["{$p}color"] ) )
+		$styles['color'] = esc_attr( $fields["{$p}color"] );
 }
 
-if ( $type == 'popup' && isset( $fields["link{$p}_popup"] ) ) {
-	$popup = ' data-popup="popup_' . esc_attr( $fields["link{$p}_popup"] ) . '"';
+if ( $type == 'popup' && isset( $fields["{$p}popup"] ) ) {
+	$popup = ' data-popup="popup_' . esc_attr( $fields["{$p}popup"] ) . '"';
 	$classes[] = 'popup-trigger';
 
-	md_popup( array( 'id' => $fields["link{$p}_popup"] ) );
+	md_popup( array( 'id' => $fields["{$p}popup"] ) );
 }
 
-if ( ! empty( $fields["link{$p}_toggle"]['hide_label'] ) )
+if ( ! empty( $fields["{$p}toggle"]['hide_label'] ) )
 	$classes[] = 'hide-label';
 
-if ( ! empty( $fields["link{$p}_toggle"]['hide_label_mobile'] ) )
+if ( ! empty( $fields["{$p}toggle"]['hide_label_mobile'] ) )
 	$classes[] = 'hide-label-mobile';
 
 $style = md_style( $styles );
 
-if ( isset( $fields["link{$p}_classes"] ) )
-	$classes[] = esc_attr( $fields["link{$p}_classes"] );
+if ( isset( $fields["{$p}classes"] ) )
+	$classes[] = esc_attr( $fields["{$p}classes"] );
 
 if ( $has_wrap )
 	$classes[] = 'link-style';

@@ -412,7 +412,7 @@ function md_get_builder( $id, $type = null, $area = null ) {
 	if ( $type == null )
 		$type = 'elements';
 
-	$builder = unserialize( md_setting( array( $id, "builder_{$type}" ) ) );
+	$builder = unserialize( md_setting( array( $id, "builder_{$type}" ), '' ) );
 
 	if ( ! empty( $area ) )
 		$builder = ! empty( $builder[$area] ) ? $builder[$area] : array();

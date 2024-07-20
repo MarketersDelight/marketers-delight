@@ -681,7 +681,7 @@ class md_fields {
 		$classes[] = "md-group-$style";
 		$classes = join( ' ', $classes );
 
-		include( md_template( 'admin/fields/group', true ) );
+		include md_template( 'admin/fields/group', true );
 	}
 
 	/**
@@ -697,7 +697,7 @@ class md_fields {
 		$key = esc_attr( $args['field'] );
 		$active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
-		include( md_template( 'admin/fields/builder', true ) );
+		include md_template( 'admin/fields/builder', true );
 	}
 
 	/**
@@ -710,7 +710,7 @@ class md_fields {
 		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
 		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
 
-		include( md_template( 'admin/fields/builder-fields', true ) );
+		include md_template( 'admin/fields/builder-fields', true );
 	}
 
 	/**
@@ -759,8 +759,8 @@ class md_fields {
 
 	public function link_fields( $args = array() ) {
 		$fields = $this->data->links( $args );
-		$link_type = $this->module( $fields['link_type']['field'], 'url' );
-		$link_style = $this->module( $fields['link_style']['field'], 'link' );
+		$link_type = $this->module( $fields['type']['field'], 'url' );
+		$link_style = $this->module( $fields['style']['field'], 'link' );
 
 		$classes = array( 'md-group-link', 'md-conditional' );
 		$classes[] = "type-$link_type";
@@ -773,23 +773,6 @@ class md_fields {
 	// Compatibility between 5.x -> 6.0
 	public function link_fields_data( $args = array() ) {
 		return $this->data->links( $args );
-	}
-
-	/**
-	 * Build generic Page Title for standard components of a web page.
-	 *
-	 * @since 6.0
-	 */
-
-	public function page_title( $args ) {
-		$screen = get_current_screen();
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
-		$sanitize = new md_sanitize;
-		$prefix = $this->_prefix;
-		$cta_type = $this->module( 'page_cta' );
-		$links_callback = isset( $args['links_callback'] ) ? $args['links_callback'] : array( $this, 'link_fields' );
-
-		include md_template( 'admin/page-title', true );
 	}
 
 	/**

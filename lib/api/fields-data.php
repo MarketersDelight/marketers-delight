@@ -59,8 +59,8 @@ class md_fields_data {
 		$group = isset( $args['group'] ) ? $args['group'] : array();
 
 		$fields = array(
-			'link_display' => array(
-				'field' => "link{$p}_display",
+			'display' => array(
+				'field' => "{$p}display",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'mobile', 'desktop' )
@@ -70,84 +70,84 @@ class md_fields_data {
 				'field' => 'name',
 				'save' => array( 'type' => 'text' )
 			),
-			'link_text' => array(
-				'field' => "link{$p}_text",
+			'text' => array(
+				'field' => "{$p}text",
 				'save' => array( 'type' => 'text' )
 			),
-			'link_subtitle' => array(
-				'field' => "link{$p}_subtitle",
+			'subtitle' => array(
+				'field' => "{$p}subtitle",
 				'save' => array( 'type' => 'text' )
 			),
-			'link_type' => array(
-				'field' => "link{$p}_type",
+			'type' => array(
+				'field' => "{$p}type",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'url', 'popup', 'phone' )
 				)
 			),
-			'link_style' => array(
-				'field' => "link{$p}_style",
+			'style' => array(
+				'field' => "{$p}style",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'button' )
 				)
 			),
-			'link_color' => array(
-				'field' => "link{$p}_color",
+			'color' => array(
+				'field' => "{$p}color",
 				'save' => array( 'type' => 'color' )
 			),
-			'link_icon' => array(
-				'field' => "link{$p}_icon",
+			'icon' => array(
+				'field' => "{$p}icon",
 				'save' => array(
 					'type' => 'select',
 					'options' => md_get_icons( 'ids' )
 				)
 			),
-			'link_url' => array(
-				'field' => "link{$p}_url",
+			'url' => array(
+				'field' => "{$p}url",
 				'save' => array( 'type' => 'url' )
 			),
-			'link_target' => array(
-				'field' => "link{$p}_target",
+			'target' => array(
+				'field' => "{$p}target",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'new' )
 				)
 			),
-			'link_toggle' => array(
-				'field' => "link{$p}_toggle",
+			'toggle' => array(
+				'field' => "{$p}toggle",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'hide_label', 'hide_label_mobile' )
 				)
 			),
-			'link_phone' => array(
-				'field' => "link{$p}_phone",
+			'phone' => array(
+				'field' => "{$p}phone",
 				'save' => array( 'type' => 'text' )
 			),
-			'link_popup' => array(
-				'field' => "link{$p}_popup",
+			'popup' => array(
+				'field' => "{$p}popup",
 				'save' => array(
 					'type' => 'select',
 					'options' => md_get_popups( 'ids' )
 				)
 			),
-			'link_size' => array(
-				'field' => "link{$p}_size",
+			'size' => array(
+				'field' => "{$p}size",
 				'save' => array(
 					'type' => 'select',
 					'options' => array( 'small', 'large' )
 				)
 			),
-			'link_button_style' => array(
-				'field' => "link{$p}_button_style",
+			'button_style' => array(
+				'field' => "{$p}button_style",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'outline', 'frame' )
 				)
 			),
-			'link_user' => array(
-				'field' => "link{$p}_user",
+			'user' => array(
+				'field' => "{$p}user",
 				'save' => array(
 					'type' => 'checkbox',
 					'options' => array( 'logged_in', 'logged_out' )

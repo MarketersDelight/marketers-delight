@@ -19,8 +19,8 @@ class md_header extends md_api {
 		$links = $this->fields->data->links( array( 'sort' => 'save' ) );
 		$typography = $this->fields->data->typography();
 		$builder = array_merge( array(
-			'type' => array( 'type' => 'text' ),
-			'area' => array( 'type' => 'text' ),
+			'builder_type' => array( 'type' => 'text' ),
+			'builder_area' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
 			'placeholder' => array( 'type' => 'text' ),
 			'submit_text' => array( 'type' => 'text' ),
