@@ -88,7 +88,7 @@ function md_headline( $args = array() ) {
 	if (
 		isset( $args['inline'] ) ||
 		( in_the_loop() || ! empty( $args['loop'] ) ) ||
-		( $context == 'page' && md_has_sidebar() && ! md_module( array( 'layout', 'hero_inline' ) ) )
+		( $context == 'page' && md_has_sidebar() && md_module( array( 'page_title', 'cover_display', 'inline' ) ) )
 	)
 		$is_inline = true;
 
@@ -129,13 +129,13 @@ function md_get_title( $context = 'post' ) {
 	if ( $context == 'page' )
 		if ( is_post_type_archive() ) {
 			$post_type_title = post_type_archive_title( '', false );
-			$title = md_post_type_field( 'archives_title', $post_type_title );
+			$title = md_post_type_field( array( 'page_title', 'title' ), $post_type_title );
 		}
 		elseif ( is_home() || is_singular( 'post' ) )
-			$title = md_post_type_field( 'archives_title' );
+			$title = md_post_type_field( array( 'page_title', 'title' ) );
 		elseif ( is_tax() && get_queried_object() ) {
 			$term_title = single_term_title( '', false );
-			$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
+			$title = md_term_meta( array( get_post_type(), array( 'page_title', 'title' ) ), null, $term_title );
 		}
 		elseif ( is_category() )
 			$title = single_cat_title( '', false );
@@ -219,7 +219,7 @@ function md_get_description( $context = 'post' ) {
 		$description = get_the_excerpt();
 	elseif ( $context == 'page' )
 		if ( is_post_type_archive() || is_home() )
-			$description = md_post_type_field( 'archives_text' );
+			$description = md_post_type_field( array( 'page_title', 'description' ) );
 		elseif ( is_page() )
 			$description = get_the_excerpt();
 		elseif ( ( is_category() || is_tax() ) && get_queried_object() )
@@ -247,7 +247,7 @@ function md_description( $args = array() ) {
 }
 
 /**
- * Get Hero/inline CTA of any given page. A CTA can be a
+ * Get Page Title/inline CTA of any given page. A CTA can be a
  * link group, email form, custom HTML, or more.
  *
  * @since 6.0
@@ -255,31 +255,31 @@ function md_description( $args = array() ) {
 
 function md_cta( $context = 'post' ) {
 	if ( $context == 'post' )
-		$hero = md_meta( 'hero' );
+		$page_title = md_meta( 'page_title' );
 	else
-		$hero = md_module( 'hero' );
+		$page_title = md_module( 'page_title' );
 
-	if ( empty( $hero['page_cta'] ) )
+	if ( empty( $page_title['page_cta'] ) )
 		return;
 
 	$html = '';
 
-	if ( $hero['page_cta'] == 'links' ) {
+	if ( $page_title['page_cta'] == 'links' ) {
 		$html .= '<div class="cta">';
 
-		if ( ! empty( $hero['link_secondary'] ) ) {
-			$hero['link_secondary']['link_classes'] = 'cta-link';
-			$html .= md_get_link( $hero['link_secondary'] );
+		if ( ! empty( $page_title['link_secondary'] ) ) {
+			$page_title['link_secondary']['link_classes'] = 'cta-link';
+			$html .= md_get_link( $page_title['link_secondary'] );
 		}
 
-		if ( ! empty( $hero['link_primary'] ) ) {
-			$hero['link_primary']['link_classes'] = 'cta-link';
-			$html .= md_get_link( $hero['link_primary'] );
+		if ( ! empty( $page_title['link_primary'] ) ) {
+			$page_title['link_primary']['link_classes'] = 'cta-link';
+			$html .= md_get_link( $page_title['link_primary'] );
 		}
 
 		$html .= '</div>';
 	}
-	elseif ( $hero['page_cta'] == 'custom' )
+	elseif ( $page_title['page_cta'] == 'custom' )
 		$html .= md_module( 'custom_html' );
 
 	return $html;

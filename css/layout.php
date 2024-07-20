@@ -94,6 +94,11 @@
 .block .title:not(:last-child),
 .block .subtitle:not(:last-child) { margin-bottom: 0; }
 
+.block .featured-image {
+	margin-left: auto;
+	margin-right: auto;
+}
+
 @media all and (min-width: <?php echo $post_width; ?>px) {
 	.block .description { max-width: <?php echo $post_width; ?>px; }
 	.block.wide,
@@ -101,7 +106,9 @@
 	.block.wide,
 	.block.wide .wrap,
 	.expanded .page-headline,
-	.expanded .page-headline .wrap { align-items: center; }
+	.expanded .page-headline .wrap,
+	.block.wide .inner,
+	.block.inline .wrap { align-items: center; }
 	.block.wide,
 	.expanded .page-headline { text-align: center; }
 	.block.wide,
@@ -112,14 +119,14 @@
 	.block.image-center .wrap { flex-direction: column; }
 	.block.image-left .featured-image { order: -1; }
 }
-
+/*
 @media all and (max-width: <?php echo $post_width; ?>px) {
 	.block .featured-image {
 		margin-left: auto;
 		margin-right: auto;
 	}
 }
-
+*/
 /* ASIDE ELEMENTS */
 
 <?php foreach ( array( 'sidebar', 'footer' ) as $aside ) {

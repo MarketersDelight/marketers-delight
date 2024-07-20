@@ -167,7 +167,7 @@
 				'options' => $sanitize->values['featured_image']
 			);
 
-			if ( $is_post )
+			if ( ! $is_admin )
 				$featured_image['empty_label'] = __( 'Use default position', 'md' );
 
 			$this->fields->field( 'featured_image', $featured_image );

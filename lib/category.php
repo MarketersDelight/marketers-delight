@@ -18,7 +18,7 @@ class md_category extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Settings', 'md' ),
 				'parent' => 'md_post',
-				'fields' => $this->fields->data->page_settings()
+				'fields' => md_page_settings_fields()
 			)
 		);
 	}
@@ -31,7 +31,7 @@ class md_category extends md_api {
 	 */
 
 	public function admin_settings( $settings ) {
-		$settings[$this->_id] = array( 'hero', 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
+		$settings[$this->_id] = array( 'page_title', 'layout', 'loop', 'byline', 'share', 'optins', 'scripts' );
 
 		return $settings;
 	}

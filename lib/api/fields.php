@@ -781,12 +781,13 @@ class md_fields {
 	 * @since 6.0
 	 */
 
-	public function page_title() {
+	public function page_title( $args ) {
 		$screen = get_current_screen();
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$sanitize = new md_sanitize;
 		$prefix = $this->_prefix;
 		$cta_type = $this->module( 'page_cta' );
+		$links_callback = isset( $args['links_callback'] ) ? $args['links_callback'] : array( $this, 'link_fields' );
 
 		include md_template( 'admin/page-title', true );
 	}

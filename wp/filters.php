@@ -51,6 +51,16 @@ function md_admin_settings() {
 }
 
 /**
+ * A collection of save fields to be pre-grouped for Page Settings.
+ *
+ * @since 6.0
+ */
+
+function md_page_settings_fields() {
+	return apply_filters( 'md_page_settings_fields', array() );
+}
+
+/**
  * A reverse list of admin settings locations by fields.
  *
  * @since 6.0

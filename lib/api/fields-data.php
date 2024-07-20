@@ -49,19 +49,6 @@ class md_fields_data {
 	}
 
 	/**
-     * A collection of save fields to be pre-grouped for Page Settings.
- 	 *
- 	 * @since 6.0
- 	 */
-
-	public function page_settings() {
-		return apply_filters( 'md_page_settings_fields', array(
-			'archives_title' => array( 'type' => 'text' ),
-			'archives_text' => array( 'type' => 'textarea' )
-		) );
-	}
-
-	/**
 	 * Collect a list of fields in a Links Group.
 	 *
 	 * @since 6.0
@@ -70,6 +57,7 @@ class md_fields_data {
 	public function links( $args = array() ) {
 		$p = isset( $args['prefix'] ) ? $args['prefix'] : '';
 		$group = isset( $args['group'] ) ? $args['group'] : array();
+
 		$fields = array(
 			'link_display' => array(
 				'field' => "link{$p}_display",

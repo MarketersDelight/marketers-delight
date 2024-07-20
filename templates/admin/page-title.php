@@ -1,5 +1,5 @@
 <div class="md-field-row md-sep-small">
-	<?php $this->field( 'archives_title', array(
+	<?php $this->field( 'title', array(
 		'type' => 'text',
 		'label' => __( 'Title', 'md' ),
 		'description' => __( 'Write your own headline to overwrite the <code>h1</code> title name of this page.', 'md' )
@@ -7,7 +7,7 @@
 </div>
 
 <div class="md-field-row md-sep-small">
-	<?php $this->field( 'archives_text', array(
+	<?php $this->field( 'description', array(
 		'type' => 'editor',
 		'init' => true,
 		'label' => __( 'Description', 'md' ),
@@ -43,7 +43,7 @@
 				'secondary' => true,
 				'subtitle' => true,
 				'new_label' => __( 'Add link text', 'md' ),
-				'callback' => array( $this, 'link_fields' ),
+				'callback' => $links_callback,
 				'elements' => array(
 					'link_primary' => array(
 						'label' => __( 'Primary Link', 'md' )
@@ -74,7 +74,7 @@
 	<div class="md-field columns-2 columns-40-60 columns-single">
 
 		<div class="col col1">
-			<?php $this->field( 'featured_image', array(
+			<?php $this->field( 'image', array(
 				'type' => 'upload',
 				'upload_type' => 'media'
 			) ); ?>
@@ -82,7 +82,7 @@
 
 		<div class="col col2">
 
-			<?php $this->field( 'featured_image_position', array(
+			<?php $this->field( 'image_position', array(
 				'type' => 'select',
 				'label' => __( 'Position', 'md' ),
 				'empty_label' => __( 'Show default', 'md' ),
@@ -92,7 +92,7 @@
 
 			<?php foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) : ?>
 				<div class="md-<?php echo esc_attr( $device ); ?>">
-					<?php $this->field( array( 'featured_image_width', $device ), array(
+					<?php $this->field( array( 'image_width', $device ), array(
 						'type' => 'range',
 						'label' => sprintf( __( 'Width (%s)', 'md' ), $device ),
 						'unit' => 'px',

@@ -38,9 +38,9 @@ function md_get_featured_image( $context = 'post', $field = null ) {
 	);
 
 	if ( $context == 'page' ) {
-		$featured_image['id'] = md_module( array( 'hero', 'image', 'id' ) );
+		$featured_image['id'] = md_module( array( 'page_title', 'image', 'id' ) );
 		$featured_image['position'] = md_featured_image_position( 'page' );
-		$featured_image['width'] = md_module( array( 'hero', 'image_width' ), array() );
+		$featured_image['width'] = md_module( array( 'page_title', 'image_width' ), array() );
 	}
 
 	$featured_image = wp_parse_args( $featured_image, $defaults );
@@ -62,9 +62,9 @@ function md_featured_image_position( $context = null ) {
 
 	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
-			$position = md_term_meta( array( 'hero', 'image_position' ), null, $default );
+			$position = md_term_meta( array( 'page_title', 'image_position' ), null, $default );
 		else
-			$position = md_post_type_field( array( 'hero', 'image_position' ), $default );
+			$position = md_post_type_field( array( 'page_title', 'image_position' ), $default );
 	}
 	else {
 		$post_type = md_post_type_field( array( 'loop', 'featured_image' ), $default );
@@ -72,7 +72,7 @@ function md_featured_image_position( $context = null ) {
 		if ( is_singular() )
 			$position = md_post_meta( array( 'layout', 'featured_image' ), null, $default );
 		elseif ( is_category() || is_tax() )
-			$position = md_term_meta( array( 'hero', 'image_position' ), null, $post_type );
+			$position = md_term_meta( array( 'page_title', 'image_position' ), null, $post_type );
 		else
 			$position = $post_type;
 	}
@@ -113,29 +113,29 @@ function md_cover( $context = 'post' ) {
 
 	if ( $context == 'page' ) {
 		if ( is_category() || is_tax() )
-			$hero = md_term_meta( 'hero' );
+			$page_title = md_term_meta( 'page_title' );
 		else
-			$hero = md_post_type_field( 'hero' );
+			$page_title = md_post_type_field( 'page_title' );
 	}
 	else
-		$hero = md_post_meta( 'hero' );
+		$page_title = md_post_meta( 'page_title' );
 
-	if ( ! empty( $hero['cover_position'] ) ) {
-		$cover['position'] = $hero['cover_position'];
+	if ( ! empty( $page_title['cover_position'] ) ) {
+		$cover['position'] = $page_title['cover_position'];
 
-		if ( ! empty( $hero['cover_photo'] ) ) {
-			$cover['photo'] = $hero['cover_photo'];
+		if ( ! empty( $page_title['cover_photo'] ) ) {
+			$cover['photo'] = $page_title['cover_photo'];
 			$cover['style'] = array(
 				'bg_image' => esc_url( $cover['photo']['url'] ),
 				'bg_size' => 'auto'
 			);
 		}
 
-		if ( ! empty( $hero['cover_bg_color'] ) )
-			$cover['bg_color'] = $hero['cover_bg_color'];
+		if ( ! empty( $page_title['cover_bg_color'] ) )
+			$cover['bg_color'] = $page_title['cover_bg_color'];
 
-		if ( ! empty( $hero['cover_display'] ) )
-			$cover['display'] = $hero['cover_display'];
+		if ( ! empty( $page_title['cover_display'] ) )
+			$cover['display'] = $page_title['cover_display'];
 	}
 
 	if ( is_singular() && $cover['position'] == 'header_cover_full' )

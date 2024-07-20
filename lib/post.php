@@ -28,7 +28,7 @@ class md_post extends md_api {
 			'admin_page' => array(
 				'name' => __( 'Settings', 'md' ),
 				'parent_slug' => 'edit.php',
-				'fields' => $this->fields->data->page_settings()
+				'fields' => md_page_settings_fields()
 			)
 		);
 	}

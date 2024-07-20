@@ -43,10 +43,12 @@ class md_page_title extends md_api {
 		$cover = $this->cover();
 		$featured_image = md_get_featured_image( 'page' );
 
+		// Insert Featured Image on non-Post pages (archives, category, etc.)
+
 		if ( ! empty( $featured_image['id'] ) ) {
 			$page_image_hook = 'md_hook_page_headline_bottom';
 
-			if ( md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) && md_has_sidebar() )
+			if ( md_post_type_field( array( 'page_title', 'cover_display', 'inline' ) ) && md_has_sidebar() )
 				$page_image_hook = 'md_hook_page_headline_wrap_bottom';
 
 			if ( $featured_image['position'] == 'above_headline' )
@@ -56,6 +58,8 @@ class md_page_title extends md_api {
 
 			add_action( $page_image_hook, 'md_page_featured_image' );
 		}
+
+		// Convert Header and Headline to a Page Cover
 
 		if ( $cover['position'] == 'header_cover' ) {
 			add_action( 'md_hook_page_headline_top', array( $this, 'inner' ) );
@@ -75,7 +79,7 @@ class md_page_title extends md_api {
 		elseif ( ! is_singular() ) {
 			$hook = 'md_hook_content';
 
-			if ( md_has_sidebar() && ! md_post_type_field( array( 'layout', 'content', 'hero_inline' ) ) )
+			if ( md_has_sidebar() && ! md_post_type_field( array( 'page_title', 'cover_display', 'inline' ) ) )
 				$hook = 'md_hook_content_top';
 
 			add_action( $hook, array( $this, 'html' ) );
@@ -98,8 +102,9 @@ class md_page_title extends md_api {
 		else {
 			$args['context'] = 'page';
 			$featured_image = md_get_featured_image( 'page' );
+			$cover = $this->cover();
 
-			if ( md_module( array( 'layout', 'content', 'hero_inline' ) ) && md_has_sidebar() )
+			if ( ! empty( $cover['position'] ) && md_module( array( 'page_title', 'cover_display', 'inline' ) ) && md_has_sidebar() )
 				$args['inline'] = true;
 
 			if ( ! empty( $featured_image['id'] ) && $featured_image['position'] !== 'remove' ) {
@@ -126,6 +131,8 @@ class md_page_title extends md_api {
 	public function fields() {
 		$sanitize = $this->_data( 'sanitize' );
 		$fields = array(
+			'title' => array( 'type' => 'text' ),
+			'description' => array( 'type' => 'textarea' ),
 			'cover_photo' => array(
 				'type' => 'upload',
 				'upload_type' => 'media'
@@ -210,7 +217,7 @@ class md_page_title extends md_api {
 
 	public function meta_box() {
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
-		$this->fields->page_title();
+		$this->admin_fields();
 		echo '</div>';
 	}
 
@@ -224,13 +231,13 @@ class md_page_title extends md_api {
 		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
-				<?php $this->fields->page_title(); ?>
+				<?php $this->admin_fields(); ?>
 			</div>
 		</div>
 	<?php }
 
 	public function admin_fields() {
-		$this->fields->page_title();
+		$this->fields->page_title( array( 'links_callback' => array( $this, 'links_fields' ) ) );
 	}
 
 	/**
@@ -240,7 +247,7 @@ class md_page_title extends md_api {
 	 * @since 6.0
 	 */
 
-	public function link_fields( $group, $field ) {
+	public function links_fields( $group, $field ) {
 		$this->fields->link_fields( array( 'group' => array( $group, $field ) ) );
 	}
 
