@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-18T17:25:17+00:00\n"
+"POT-Creation-Date: 2024-07-20T00:45:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -522,37 +522,37 @@ msgstr ""
 msgid "TypeKit"
 msgstr ""
 
-#: lib/api/fields.php:813
+#: lib/api/fields.php:814
 #: templates/admin/page-title.php:87
 #: templates/admin/page-title.php:132
 msgid "Position"
 msgstr ""
 
-#: lib/api/fields.php:816
+#: lib/api/fields.php:817
 msgid "Before Headline"
 msgstr ""
 
-#: lib/api/fields.php:817
+#: lib/api/fields.php:818
 msgid "After Headline"
 msgstr ""
 
-#: lib/api/fields.php:818
+#: lib/api/fields.php:819
 msgid "After Post"
 msgstr ""
 
-#: lib/api/fields.php:832
+#: lib/api/fields.php:833
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: lib/api/fields.php:835
+#: lib/api/fields.php:836
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: lib/api/fields.php:838
+#: lib/api/fields.php:839
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: lib/api/fields.php:863
+#: lib/api/fields.php:864
 msgid "Save %s"
 msgstr ""
 
@@ -2678,67 +2678,67 @@ msgstr ""
 msgid "Drop-in downgraded successfully."
 msgstr ""
 
-#: wp/filters.php:99
+#: wp/filters.php:109
 msgid "Post loop"
 msgstr ""
 
-#: wp/filters.php:100
+#: wp/filters.php:110
 msgid "A traditional blog with a flexible layout and styles."
 msgstr ""
 
-#: wp/filters.php:103
+#: wp/filters.php:113
 msgid "Simple list"
 msgstr ""
 
-#: wp/filters.php:104
+#: wp/filters.php:114
 msgid "A condensed list of posts with a small image."
 msgstr ""
 
-#: wp/filters.php:108
+#: wp/filters.php:118
 msgid "Blocks"
 msgstr ""
 
-#: wp/filters.php:109
+#: wp/filters.php:119
 msgid "A featured image aligned next to the post content."
 msgstr ""
 
-#: wp/filters.php:113
+#: wp/filters.php:123
 msgid "Post covers"
 msgstr ""
 
-#: wp/filters.php:114
+#: wp/filters.php:124
 msgid "Posts list with full-width background covers."
 msgstr ""
 
-#: wp/filters.php:139
+#: wp/filters.php:149
 msgid "Sitewide"
 msgstr ""
 
-#: wp/filters.php:140
+#: wp/filters.php:150
 msgid "Front Page"
 msgstr ""
 
-#: wp/filters.php:141
+#: wp/filters.php:151
 msgid "Blog Page"
 msgstr ""
 
-#: wp/filters.php:142
+#: wp/filters.php:152
 msgid "All Posts"
 msgstr ""
 
-#: wp/filters.php:143
+#: wp/filters.php:153
 msgid "All Categories"
 msgstr ""
 
-#: wp/filters.php:144
+#: wp/filters.php:154
 msgid "All Pages"
 msgstr ""
 
-#: wp/filters.php:145
+#: wp/filters.php:155
 msgid "All Author Pages"
 msgstr ""
 
-#: wp/filters.php:146
+#: wp/filters.php:156
 msgid "Search Results"
 msgstr ""
 
