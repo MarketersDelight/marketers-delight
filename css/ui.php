@@ -33,13 +33,14 @@
 	align-items: center;
 	cursor: pointer;
 	display: flex;
-	gap: <?php echo $small; ?>px;
+	gap: <?php echo $third; ?>px;
 	justify-content: center;
 	position: relative;
 	text-align: center;
 }
 
-.hide-label .link-text, .hide-label .trigger-text { display: none; }
+.hide-label .link-name, .hide-label .link-subtitle,
+.hide-label .trigger-text { display: none; }
 
 .has-search .trigger-search .trigger-icon:before,
 .has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }

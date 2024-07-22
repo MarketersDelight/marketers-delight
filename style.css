@@ -255,25 +255,46 @@ blockquote.alignright, blockquote.alignleft { width: 174px; }
 button, .button, a.button, .button a, input[type="submit"], .format .button,
 .header-wrap .button, .header-wrap .button:hover,
 .header-wrap .button a, .header-wrap .button a:hover {
+	align-items: center;
 	background-color: #22A340;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: #FFFFFF;
 	cursor: pointer;
-	display: inline-block;
+	display: inline-flex;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
+	gap: 10px;
 	line-height: 1;
 	padding: 15px 20px;
 	position: relative;
-	text-align: center;
+	text-align: left;
 	text-decoration: none;
 	transition: 0.3s;
 	-webkit-appearance: none;
 }
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
+/* ELEMENTS */
+.link-subtitle {
+	display: block;
+	font-size: 16px;
+	line-height: 26px;
+}
+.link-icon, .trigger-icon {
+	font-size: 23px;
+	line-height: 1;
+}
+.badge {
+    background-color: #f58f2a;
+    border-radius: 5px;
+    color: #fff;
+	font-size: 14px;
+	font-weight: normal;
+	padding: 4px 7px;
+    position: relative;
+}
 /* COLORS */
 .button.white {
 	background-color: #fff;
@@ -315,30 +336,6 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	transition: 0.3s;
 }
 .button.button-arrow:hover:after { transform: translateX(4px); }
-/* LINKS */
-.link-icon { vertical-align: middle; }
-.link-subtext {
-	display: block;
-	font-size: 16px;
-	line-height: 26px;
-}
-.link-style, .link-style.button {
-	align-items: center;
-	display: flex;
-	gap: 15px;
-	text-align: left;
-}
-.format .link-style { text-decoration: none; }
-/* BADGE */
-.badge {
-    background-color: #f58f2a;
-    border-radius: 5px;
-    color: #fff;
-	font-size: 14px;
-	font-weight: normal;
-	padding: 4px 7px;
-    position: relative;
-}
 /*------------------------------*\
 	$FORMS
 \*------------------------------*/
@@ -566,11 +563,6 @@ select {
 .header-wrap a:hover + .toggle { color: #AE2525; }
 .header-simple .header-wrap { text-align: center; }
 .header-link, .header_aside-link { padding: 15px 10px; }
-.header .trigger-icon, .header .link-icon {
-	font-size: 23px;
-	font-style: normal;
-	line-height: 1;
-}
 /* LOGO */
 .logo {
 		flex-basis: 75px;
@@ -638,7 +630,8 @@ select {
 	.header .header-link,
 	.header .header_aside-link,
 	.header .search-form,
-	.hide-label-mobile .link-text,
+	.hide-label-mobile .link-name,
+	.hide-label-mobile .link-subtitle,
 	.hide-label-mobile .trigger-text,
 	.header.has-search .header-triggers .trigger-search { display: none; }
 	.has-mobile-menu .header-menu,
@@ -1271,12 +1264,13 @@ select {
 	align-items: center;
 	cursor: pointer;
 	display: flex;
-	gap: 5px;
+	gap: 10px;
 	justify-content: center;
 	position: relative;
 	text-align: center;
 }
-.hide-label .link-text, .hide-label .trigger-text { display: none; }
+.hide-label .link-name, .hide-label .link-subtitle,
+.hide-label .trigger-text { display: none; }
 .has-search .trigger-search .trigger-icon:before,
 .has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 .has-search:not(.has-cover) .trigger-search .trigger-icon:before,

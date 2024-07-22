@@ -6,26 +6,22 @@
  * @since 6.0
  */
 
-$text = isset( $fields["{$p}title"] ) ? $fields["{$p}title"] : '';
-$text = isset( $fields["{$p}text"] ) ? $fields["{$p}text"] : $text;
-
+$name = isset( $fields["{$p}name"] ) ? $fields["{$p}name"] : '';
+$subtitle = isset( $fields["{$p}subtitle"] ) ? $fields["{$p}subtitle"] : '';
 $icon = ! empty( $fields["{$p}icon"] ) ? $fields["{$p}icon"] : '';
 
-if ( empty( $text ) && empty( $icon ) )
+if ( empty( $name ) && empty( $subtitle ) && empty( $icon ) )
 	return;
 
 $classes = $styles = array();
 $h = 'span';
 $class = $href = $target = $popup = '';
 $parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
-$title = ( $icon && ! $text ) ? ' title="' . strip_tags( $text ) . '"' : '';
-$subtext = isset( $fields["{$p}subtext"] ) ? $fields["{$p}subtext"] : '';
 $url = isset( $fields["{$p}url"] ) ? $fields["{$p}url"] : '';
 $phone = isset( $fields["{$p}phone"] ) ? $fields["{$p}phone"] : '';
 $style = isset( $fields["{$p}style"] ) ? $fields["{$p}style"] : 'link';
 $type = isset( $fields["{$p}type"] ) ? $fields["{$p}type"] : 'url';
 $icon_classes = 'link-icon';
-$has_wrap = $icon && $text && $subtext ? true : false;
 
 if ( $parent )
 	$classes[] = "{$parent}-link";
@@ -89,12 +85,10 @@ if ( ! empty( $fields["{$p}toggle"]['hide_label_mobile'] ) )
 	$classes[] = 'hide-label-mobile';
 
 $style = md_style( $styles );
+$title = $name ? ' title="' . strip_tags( $name ) . '"' : '';
 
 if ( isset( $fields["{$p}classes"] ) )
 	$classes[] = esc_attr( $fields["{$p}classes"] );
-
-if ( $has_wrap )
-	$classes[] = 'link-style';
 
 $classes = join( ' ', $classes );
 
@@ -104,8 +98,8 @@ if ( $classes )
 $html =
 	"<$h{$href}{$popup}{$class}{$target}{$style}{$title}>".
 	( $icon ? md_icon( $icon, array( 'classes' => $icon_classes ) ) : '' ).
-	( $has_wrap ? '<span class="link-wrap">' : '' ).
-	( $text || is_customize_preview() ? '<span class="link-text">' . do_shortcode( md_text_field( $text ) ) . '</span>' : '' ).
-	( $subtext || is_customize_preview() ? '<span class="link-subtext">' . do_shortcode( md_text_field( $subtext ) ) . '</span>' : '' ) .
-	( $has_wrap ? '</span>' : '' ).
+	( $icon ? '<span class="link-wrap">' : '' ).
+	( $name || is_customize_preview() ? '<span class="link-name">' . do_shortcode( md_text_field( $name ) ) . '</span>' : '' ).
+	( $subtitle || is_customize_preview() ? '<span class="link-subtitle">' . do_shortcode( md_text_field( $subtitle ) ) . '</span>' : '' ) .
+	( $icon ? '</span>' : '' ).
 	"</$h>";

@@ -33,12 +33,6 @@
 
 .header-link, .header_aside-link { padding: <?php echo $half; ?>px <?php echo $third; ?>px; }
 
-.header .trigger-icon, .header .link-icon {
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
-	font-style: normal;
-	line-height: 1;
-}
-
 /* LOGO */
 
 .logo {
@@ -161,7 +155,8 @@
 	.header .header-link,
 	.header .header_aside-link,
 	.header .search-form,
-	.hide-label-mobile .link-text,
+	.hide-label-mobile .link-name,
+	.hide-label-mobile .link-subtitle,
 	.hide-label-mobile .trigger-text,
 	.header.has-search .header-triggers .trigger-search { display: none; }
 	.has-mobile-menu .header-menu,

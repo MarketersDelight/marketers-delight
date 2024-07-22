@@ -101,16 +101,6 @@ toggle: function() {
 		}
 	}
 },
-headerMenu: function() {
-	var header = document.getElementById( 'header' ),
-		headerTrigger = document.getElementById( 'header_menu_trigger' );
-	if ( headerTrigger ) {
-		this.toggle( 'menu' );
-		headerTrigger.onclick = function( e ) {
-			MD.toggleClass( header, 'has-mobile-menu' );
-					}
-	}
-},
 sticky: function( selector ) {
 	const el = document.querySelector( selector );
 	const observer = new IntersectionObserver(
