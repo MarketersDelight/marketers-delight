@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-07-20T00:45:32+00:00\n"
+"POT-Creation-Date: 2024-07-22T23:36:55+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: md\n"
@@ -460,7 +460,6 @@ msgstr ""
 #: lib/design.php:141
 #: lib/design.php:149
 #: templates/admin/design.php:30
-#: templates/admin/fields/link.php:76
 #: templates/admin/header/design-fields.php:18
 msgid "Text"
 msgstr ""
@@ -522,37 +521,37 @@ msgstr ""
 msgid "TypeKit"
 msgstr ""
 
-#: lib/api/fields.php:814
+#: lib/api/fields.php:797
 #: templates/admin/page-title.php:87
 #: templates/admin/page-title.php:132
 msgid "Position"
 msgstr ""
 
-#: lib/api/fields.php:817
+#: lib/api/fields.php:800
 msgid "Before Headline"
 msgstr ""
 
-#: lib/api/fields.php:818
+#: lib/api/fields.php:801
 msgid "After Headline"
 msgstr ""
 
-#: lib/api/fields.php:819
+#: lib/api/fields.php:802
 msgid "After Post"
 msgstr ""
 
-#: lib/api/fields.php:833
+#: lib/api/fields.php:816
 msgid "Switch to Desktop controls"
 msgstr ""
 
-#: lib/api/fields.php:836
+#: lib/api/fields.php:819
 msgid "Switch to Tablet controls"
 msgstr ""
 
-#: lib/api/fields.php:839
+#: lib/api/fields.php:822
 msgid "Switch to Mobile controls"
 msgstr ""
 
-#: lib/api/fields.php:864
+#: lib/api/fields.php:847
 msgid "Save %s"
 msgstr ""
 
@@ -872,15 +871,15 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: lib/functions/post-functions.php:422
+#: lib/functions/post-functions.php:428
 msgid "To view this protected post, enter the password below:"
 msgstr ""
 
-#: lib/functions/post-functions.php:423
+#: lib/functions/post-functions.php:429
 msgid "Enter the password&hellip;"
 msgstr ""
 
-#: lib/functions/post-functions.php:424
+#: lib/functions/post-functions.php:430
 msgid "Get Access"
 msgstr ""
 
@@ -1454,82 +1453,78 @@ msgstr ""
 msgid "Select a popup..."
 msgstr ""
 
-#: templates/admin/fields/link.php:84
-msgid "Sub Text"
-msgstr ""
-
-#: templates/admin/fields/link.php:96
+#: templates/admin/fields/link.php:75
 #: templates/admin/logo.php:82
 #: templates/admin/logo.php:118
 msgid "Color"
 msgstr ""
 
-#: templates/admin/fields/link.php:105
+#: templates/admin/fields/link.php:84
 msgid "Hide text"
 msgstr ""
 
-#: templates/admin/fields/link.php:106
+#: templates/admin/fields/link.php:85
 msgid "Hide text on mobile"
 msgstr ""
 
-#: templates/admin/fields/link.php:118
+#: templates/admin/fields/link.php:97
 msgid "Button styles"
 msgstr ""
 
-#: templates/admin/fields/link.php:119
-#: templates/admin/fields/link.php:132
+#: templates/admin/fields/link.php:98
+#: templates/admin/fields/link.php:111
 msgid "Default"
 msgstr ""
 
-#: templates/admin/fields/link.php:122
+#: templates/admin/fields/link.php:101
 msgid "Outline"
 msgstr ""
 
-#: templates/admin/fields/link.php:123
+#: templates/admin/fields/link.php:102
 msgid "Frame"
 msgstr ""
 
-#: templates/admin/fields/link.php:131
+#: templates/admin/fields/link.php:110
 msgid "Button size"
 msgstr ""
 
-#: templates/admin/fields/link.php:134
+#: templates/admin/fields/link.php:113
 msgid "Small"
 msgstr ""
 
-#: templates/admin/fields/link.php:135
+#: templates/admin/fields/link.php:114
 msgid "Large"
 msgstr ""
 
-#: templates/admin/fields/link.php:148
+#: templates/admin/fields/link.php:127
 msgid "Show to..."
 msgstr ""
 
-#: templates/admin/fields/link.php:149
+#: templates/admin/fields/link.php:128
 msgid "All visitors"
 msgstr ""
 
-#: templates/admin/fields/link.php:151
+#: templates/admin/fields/link.php:130
 msgid "Logged in users only"
 msgstr ""
 
-#: templates/admin/fields/link.php:152
+#: templates/admin/fields/link.php:131
 msgid "Logged out users only"
 msgstr ""
 
-#: templates/admin/fields/link.php:159
+#: templates/admin/fields/link.php:138
 msgid "Visibility"
 msgstr ""
 
-#: templates/admin/fields/link.php:161
+#: templates/admin/fields/link.php:140
 msgid "Always show"
 msgstr ""
 
-#: templates/admin/fields/link.php:163
+#: templates/admin/fields/link.php:142
 msgid "Show on desktop only"
 msgstr ""
 
-#: templates/admin/fields/link.php:164
+#: templates/admin/fields/link.php:143
 msgid "Show on mobile only"
 msgstr ""
 
