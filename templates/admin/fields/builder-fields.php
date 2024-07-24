@@ -13,7 +13,7 @@
 
 			<div class="md-widget-edit">
 				<?php
-					$this->field( array( $key, $group, 'title' ), array(
+					$this->field( array( $key, $group, 'name' ), array(
 						'type' => 'text',
 						'placeholder' => isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Enter label...', 'md' )
 					) );

@@ -21,7 +21,7 @@ class md_header extends md_api {
 		$builder = array_merge( array(
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
-			'title' => array( 'type' => 'text' ),
+			'name' => array( 'type' => 'text' ),
 			'placeholder' => array( 'type' => 'text' ),
 			'submit_text' => array( 'type' => 'text' ),
 			'submenu_width' => array( 'type' => 'number' ),

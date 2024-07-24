@@ -215,8 +215,12 @@ endif;
 function md_get_description( $context = 'post' ) {
 	$description = '';
 
-	if ( $context == 'post' && has_excerpt() )
-		$description = get_the_excerpt();
+	if ( $context == 'post' ) {
+		$description = md_post_meta( array( 'page_title', 'description' ) );
+
+		if ( empty( $description ) && has_excerpt() )
+			$description = get_the_excerpt();
+	}
 	elseif ( $context == 'page' )
 		if ( is_post_type_archive() || is_home() )
 			$description = md_post_type_field( array( 'page_title', 'description' ) );

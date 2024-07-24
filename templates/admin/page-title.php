@@ -1,3 +1,5 @@
+<?php do_action( 'md_page_title_fields_top' ); ?>
+
 <div class="md-field-row md-sep-small">
 	<?php $this->fields->field( 'title', array(
 		'type' => 'text',

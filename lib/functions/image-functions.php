@@ -125,10 +125,10 @@ function md_cover( $context = 'post' ) {
 
 		if ( ! empty( $page_title['cover_photo'] ) ) {
 			$cover['photo'] = $page_title['cover_photo'];
-			$cover['style'] = array(
-				'bg_image' => esc_url( $cover['photo']['url'] ),
-				'bg_size' => 'auto'
-			);
+			$cover['style']['bg_image'] = esc_url( $cover['photo']['url'] );
+
+			if ( ! empty( $page_title['cover_display']['bg_repeat'] ) )
+				$cover['style']['bg_size'] = 'auto';
 		}
 
 		if ( ! empty( $page_title['cover_bg_color'] ) )
