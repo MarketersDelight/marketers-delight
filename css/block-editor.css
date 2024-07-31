@@ -1,8 +1,8 @@
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #009639; }
-div.editor-styles-wrapper .has-primary-color { color: #009639; }
+div.editor-styles-wrapper .has-primary-background-color { background-color: #AE2525; }
+div.editor-styles-wrapper .has-primary-color { color: #AE2525; }
 div.editor-styles-wrapper .has-secondary-background-color { background-color: #2E2E2E; }
 div.editor-styles-wrapper .has-secondary-color { color: #2E2E2E; }
 div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
@@ -17,17 +17,17 @@ div.editor-styles-wrapper .has-text-background-color { background-color: #1E1E1E
 div.editor-styles-wrapper .has-text-color { color: #1E1E1E; }
 div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
 div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #009639; }
-div.editor-styles-wrapper .has-links-color { color: #009639; }
+div.editor-styles-wrapper .has-links-background-color { background-color: #AE2525; }
+div.editor-styles-wrapper .has-links-color { color: #AE2525; }
 div.editor-styles-wrapper .has-button-background-color { background-color: #22A340; }
 div.editor-styles-wrapper .has-button-color { color: #22A340; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #FD5F21; }
-div.editor-styles-wrapper .has-button-sec-color { color: #FD5F21; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
+div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #009639;
+	color: #AE2525;
 	text-decoration: underline;
 }
 div.editor-styles-wrapper a:hover { text-decoration: none; }
@@ -35,7 +35,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://revive.kolakube.com/wp-content/themes/marketers-delight/assets/md.woff') format('woff');
+	src: url('http://localhost:8888/wp/wp-content/themes/marketers-delight/assets/md.woff') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -111,8 +111,8 @@ div.editor-styles-wrapper .has-large-font-size,
 div.editor-styles-wrapper .has-medium-font-size,
 div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
-	font-size: 62px;
-	line-height: 82px;
+	font-size: 57px;
+	line-height: 74px;
 }
 div.editor-styles-wrapper .huge-title {
 	font-weight: bold;
@@ -169,7 +169,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
 @media all and (max-width: 700px) {
-	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 44px; line-height: 53px; }
+	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 39px; line-height: 53px; }
 	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 35px; line-height: 46px; }
 	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 30px; line-height: 41px; }
 	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 25px; line-height: 35px; }

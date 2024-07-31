@@ -127,11 +127,11 @@ class md_design {
 				),
 				'huge' => array(
 					'font_size' => array(
-						'desktop' => round( $h1['desktop'] * 1.5 ),
-						'mobile' => round( $h1['mobile'] * 1.25 )
+						'desktop' => round( $h1['desktop'] * 1.4 ),
+						'mobile' => round( $h1['mobile'] * 1.1 )
 					),
 					'line_height' => array(
-						'desktop' => round( $h1['desktop'] * 2 ),
+						'desktop' => round( $h1['desktop'] * 1.8 ),
 						'mobile' => round( $h1['mobile'] * 1.5 )
 					)
 				),

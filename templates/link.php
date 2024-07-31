@@ -16,7 +16,7 @@ if ( empty( $name ) && empty( $subtitle ) && empty( $icon ) )
 $classes = $styles = array();
 $h = 'span';
 $class = $href = $target = $popup = '';
-$parent = isset( $fields["{$p}area"] ) ? $fields["{$p}area"] : '';
+$parent = isset( $fields["{$p}builder_area"] ) ? $fields["{$p}builder_area"] : '';
 $url = isset( $fields["{$p}url"] ) ? $fields["{$p}url"] : '';
 $phone = isset( $fields["{$p}phone"] ) ? $fields["{$p}phone"] : '';
 $style = isset( $fields["{$p}style"] ) ? $fields["{$p}style"] : 'link';
