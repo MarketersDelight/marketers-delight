@@ -40,6 +40,8 @@ final class marketers_delight {
 		$this->includes();
 
 		add_action( 'init', array( $this, 'wp_init' ) );
+		// Load textdomain on init to follow WP 6.7+ standards
+		add_action( 'init', array( $this, 'load_textdomain' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
@@ -60,6 +62,7 @@ final class marketers_delight {
 		// API
 		require_once MD_DIR . 'wp/filters.php';
 		require_once MD_DIR . 'wp/walker.php';
+		require_once MD_DIR . 'lib/wp/optimize.php';
 		require_once MD_DIR . 'lib/functions/api-functions.php';
 		require_once MD_DIR . 'lib/api/sanitize.php';
 		require_once MD_DIR . 'lib/api/design.php';
@@ -125,10 +128,17 @@ final class marketers_delight {
 	 * @since 4.0
 	 */
 
-	public function setup() {
-		// Load Textdomain
+	/**
+	 * Load theme textdomain for translations.
+	 * Called on 'init' to follow WP 6.7+ standards.
+	 *
+	 * @since 6.1
+	 */
+	public function load_textdomain() {
 		load_theme_textdomain( 'md' );
+	}
 
+	public function setup() {
 		// Add WordPress Features
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );

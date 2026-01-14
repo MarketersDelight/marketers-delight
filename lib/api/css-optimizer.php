@@ -106,34 +106,35 @@ class md_css_optimizer {
 
 			// Loops - only on archive/loop pages
 			'loops' => [
-				'templates' => [ 'loop' ],
+				'templates' => [ 'loops' ],
 				'condition' => [ $this, 'needs_loops' ],
 				'inline' => false,
 				'priority' => 3
 			],
 
-			// UI components - always needed
-			'ui' => [
-				'templates' => [ 'ui' ],
+			// Footer - always needed
+			'footer' => [
+				'templates' => [ 'footer' ],
 				'condition' => '__return_true',
 				'inline' => false,
 				'priority' => 4
 			],
 
-			// Helpers - always needed
-			'helpers' => [
-				'templates' => [ 'helpers' ],
-				'condition' => '__return_true',
+			// Utility classes - load based on setting
+			'utilities' => [
+				'templates' => [ 'blocks', 'spacers', 'columns' ],
+				'condition' => [ $this, 'load_utilities' ],
 				'inline' => false,
 				'priority' => 5
 			],
 
-			// Main menu - only if main menu registered
-			'main_menu' => [
-				'templates' => [ 'main-menu' ],
-				'condition' => [ $this, 'has_main_menu' ],
+			// Effects/animations - defer loading
+			'effects' => [
+				'templates' => [ 'effects' ],
+				'condition' => '__return_true',
 				'inline' => false,
-				'priority' => 3
+				'priority' => 10,
+				'defer' => true
 			]
 		];
 
@@ -162,14 +163,7 @@ class md_css_optimizer {
 	 * Check if any menus are registered
 	 */
 	public function has_menus() {
-		return has_nav_menu( 'header' ) || has_nav_menu( 'main_menu' );
-	}
-
-	/**
-	 * Check if main menu is registered
-	 */
-	public function has_main_menu() {
-		return has_nav_menu( 'main_menu' );
+		return has_nav_menu( 'header' ) || has_nav_menu( 'main' ) || has_nav_menu( 'footer' );
 	}
 
 	/**
@@ -192,6 +186,14 @@ class md_css_optimizer {
 		if ( ! is_singular() ) return false;
 		if ( ! comments_open() && get_comments_number() == 0 ) return false;
 		return true;
+	}
+
+	/**
+	 * Check if utility classes should be loaded
+	 */
+	public function load_utilities() {
+		// Can be disabled via settings
+		return ! md_setting( [ 'settings', 'css', 'disable_utilities' ], false );
 	}
 
 	/**
@@ -245,16 +247,17 @@ class md_css_optimizer {
 
 		// Set up variables (same as md_css::templates)
 		$g = 1.618;
+		$css_unit = md_get_unit();
 
-		$site_width = $values['colors']['width']['site'];
-		$content_width = $values['colors']['width']['content_width'];
-		$post_width = $values['colors']['width']['post'];
-		$sidebar_width = $values['colors']['width']['sidebar'];
+		$site_width = $values['content']['width']['site'];
+		$content_width = $values['content']['width']['content_width'];
+		$post_width = $values['content']['width']['post'];
+		$sidebar_width = $values['content']['width']['sidebar'];
 
 		$colors = $values['colors'];
 		$typography = $values['typography'];
 		$header = $values['header'];
-		$content = $values['content'] ?? [];
+		$content = $values['content'];
 
 		$font_size = $values['typography']['body']['font_size'];
 		$font_family = $values['typography']['body']['font_family'];
@@ -262,7 +265,7 @@ class md_css_optimizer {
 		$font_weight = ! empty( $typography['body']['font_weight'] ) ? $typography['body']['font_weight'] : 'normal';
 		$bold = ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : 'bold';
 
-		// Spacing calculations (using px to match existing templates)
+		// Spacing calculations
 		$single_px = $line_height['desktop'];
 		$small_px = round( $single_px / 6 );
 		$third_px = round( $single_px / 3 );
@@ -272,17 +275,16 @@ class md_css_optimizer {
 		$triple_px = round( $single_px * 3 );
 		$quad_px = round( $single_px * 4 );
 
-		// Use px units to match existing CSS templates
-		$single = $lh = $single_px;
-		$small = $lhsm = $small_px;
-		$third = $lhth = $third_px;
-		$half = $lhh = $half_px;
-		$mid = $lhm = $mid_px;
-		$double = $lhd = $double_px;
-		$triple = $lht = $triple_px;
-		$quad = $lhq = $quad_px;
+		$single = $lh = md_unit( $single_px );
+		$small = $lhsm = md_unit( $small_px );
+		$third = $lhth = md_unit( $third_px );
+		$half = $lhh = md_unit( $half_px );
+		$mid = $lhm = md_unit( $mid_px );
+		$double = $lhd = md_unit( $double_px );
+		$triple = $lht = md_unit( $triple_px );
+		$quad = $lhq = md_unit( $quad_px );
 
-		$submenu_width = md_setting( [ 'header', 'submenu_width' ], ( $double * 5 ) );
+		$submenu_width = md_unit( $double_px * 5 );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 		$breakout = ( $gutter_width / $post_width ) * 100;
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
@@ -351,11 +353,6 @@ class md_css_optimizer {
 			return;
 		}
 
-		// Skip if optimizer is disabled
-		if ( ! md_setting( [ 'settings', 'css', 'optimize' ], false ) ) {
-			return;
-		}
-
 		// Get categories to load
 		$to_load = $this->get_categories_to_load();
 
@@ -384,11 +381,6 @@ class md_css_optimizer {
 	public function inline_critical_css() {
 		// Skip if using legacy mode
 		if ( md_setting( [ 'settings', 'css', 'legacy_mode' ], false ) ) {
-			return;
-		}
-
-		// Skip if optimizer is disabled
-		if ( ! md_setting( [ 'settings', 'css', 'optimize' ], false ) ) {
 			return;
 		}
 

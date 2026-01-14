@@ -23,7 +23,21 @@
 							'description' => sprintf( __( 'If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD\'s stylesheet file. For further optimization you can print your stylesheets inline to your site\'s %s.<br /><br />Note: if you combine your child theme styles you will need to resave the MD settings above to see any changes you make to the file afterwards.', 'md' ), '<code>&lt;head&gt;</code>' ),
 							'options' => array(
 								'child' => sprintf( __( 'Combine child theme CSS into %s', 'md' ), '<code>style.css</code>' ),
-								'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' )
+								'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' ),
+								'optimize' => __( 'Enable CSS Optimizer (load CSS conditionally per page)', 'md' )
+							)
+						) ); ?>
+					</div>
+
+					<div class="md-sep-small">
+						<?php $this->fields->field( 'css_unit', array(
+							'type' => 'select',
+							'label' => __( 'CSS Units', 'md' ),
+							'description' => __( 'Choose the CSS unit for typography and spacing values. <b>rem</b> (recommended) scales with browser settings, <b>em</b> scales relative to parent, <b>px</b> uses fixed pixels.', 'md' ),
+							'options' => array(
+								'rem' => __( 'rem (Recommended)', 'md' ),
+								'em' => __( 'em', 'md' ),
+								'px' => __( 'px', 'md' )
 							)
 						) ); ?>
 					</div>

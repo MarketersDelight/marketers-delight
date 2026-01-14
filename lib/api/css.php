@@ -3,7 +3,50 @@
  * This class generates MD CSS files and other actions.
  *
  * @since 4.9.4
+ * @updated 6.0 - Added CSS unit support (rem/em/px)
  */
+
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Convert pixel value to specified CSS unit.
+ *
+ * @since 6.0
+ * @param int|float $value The pixel value to convert
+ * @param string $unit The target unit (rem, em, px)
+ * @param int $base_size Base font size for rem/em conversion (default 16)
+ * @return string The value with unit suffix
+ */
+function md_unit( $value, $unit = null, $base_size = 16 ) {
+	if ( $unit === null ) {
+		$unit = md_setting( array( 'settings', 'css_unit' ), 'rem' );
+	}
+
+	if ( empty( $value ) || $value === 0 ) {
+		return '0';
+	}
+
+	switch ( $unit ) {
+		case 'rem':
+			return round( $value / $base_size, 4 ) . 'rem';
+		case 'em':
+			return round( $value / $base_size, 4 ) . 'em';
+		case 'px':
+		default:
+			return $value . 'px';
+	}
+}
+
+/**
+ * Get the current CSS unit setting.
+ *
+ * @since 6.0
+ * @return string The CSS unit (rem, em, or px)
+ */
+function md_get_unit() {
+	return md_setting( array( 'settings', 'css_unit' ), 'rem' );
+}
 
 class md_css {
 

@@ -29,10 +29,10 @@ Features already implemented in `marketers-delight-local` that should be merged.
 
 ### Featured Video System
 
-- [ ] `lib/wp/featured-video/featured-video.php` - Video meta box
-- [ ] `lib/wp/featured-video/meta-box.php` - Video meta UI
-- [ ] `templates/featured-video.php` - Frontend template
-- [ ] Supports YouTube, Vimeo, and custom embed codes with position control
+- [x] `lib/wp/featured-video/featured-video.php` - Video meta box ✓ MIGRATED
+- [x] `lib/wp/featured-video/meta-box.php` - Video meta UI ✓ MIGRATED
+- [x] `templates/featured-video.php` - Frontend template ✓ MIGRATED
+- [x] Supports YouTube, Vimeo, and custom embed codes with position control ✓ MIGRATED
 
 ### Featured Image Enhancements
 
@@ -42,7 +42,7 @@ Features already implemented in `marketers-delight-local` that should be merged.
 
 ### WordPress Optimization Module
 
-- [ ] `lib/wp/optimize.php` - Performance optimization module
+- [x] `lib/wp/optimize.php` - Performance optimization module ✓ MIGRATED
 
 ### Enhanced Upgrader System
 
@@ -81,7 +81,7 @@ Block styles:
 - [ ] `css/blocks/steps.php` - Step-by-step block
 
 General CSS:
-- [ ] `css/effects.php` - Animation effects (bounce, spin, loading states)
+- [x] `css/effects.php` - Animation effects (bounce, spin, loading states) ✓ MIGRATED
 - [ ] `css/format.php` - Text formatting styles
 - [ ] `css/spacers.php` - Spacing utility styles
 - [ ] `css/columns.php` - Column management
@@ -106,12 +106,10 @@ General CSS:
 - [ ] `templates/byline/date.php`
 - [ ] `templates/byline/edit.php`
 - [ ] `templates/byline/newsletter.php`
-- [ ] `templates/byline/post-series.php`
-- [ ] `templates/byline/verified-by.php`
 
 ### PWA & Offline Support
 
-- [ ] `offline.php` - Offline fallback page for PWA official plugin.
+- [x] `offline.php` - Offline fallback page for PWA official plugin ✓ MIGRATED
   - Animated offline icon
   - Connection status
   - Cached content suggestions
@@ -151,13 +149,13 @@ Reorganize widgets into class-based structure:
 
 ### Custom Menu Walker
 
-- [ ] `class-gt-menu-walker.php` - Advanced menu rendering
+- [x] `class-gt-menu-walker.php` - Advanced menu rendering ✓ MIGRATED
   - Description support
   - Custom markup
 
 ### WordPress 6.7+ Compatibility
 
-- [ ] Move `load_textdomain` to `init` hook (WP 6.7+ standard)
+- [x] Move `load_textdomain` to `init` hook (WP 6.7+ standard) ✓ MIGRATED
 - [ ] Update initialization patterns
 
 ### Build System
@@ -437,10 +435,10 @@ These require minimal effort and provide immediate benefits:
 
 1. [x] Copy `lib/api/css-optimizer.php` - Instant CSS performance boost ✓ DONE
 2. [x] Copy `lib/api/theme-json.php` - Dynamic block editor settings ✓ DONE
-3. [ ] Copy `lib/wp/optimize.php` - Performance optimizations
-4. [ ] Copy `css/effects.php` - Animation utilities
+3. [x] Copy `lib/wp/optimize.php` - Performance optimizations ✓ DONE
+4. [x] Copy `css/effects.php` - Animation utilities ✓ DONE
 5. [ ] Copy enhanced `scripts.js` with button() and mainMenu()
-6. [ ] Move `load_textdomain` to `init` hook (WP 6.7+ compat)
+6. [x] Move `load_textdomain` to `init` hook (WP 6.7+ compat) ✓ DONE
 
 ### Core Template Files
 

@@ -47,7 +47,11 @@ class md_settings extends md_api {
 					),
 					'css' => array(
 						'type' => 'checkbox',
-						'options' => array( 'inline', 'child' )
+						'options' => array( 'inline', 'child', 'optimize' )
+					),
+					'css_unit' => array(
+						'type' => 'select',
+						'options' => array( 'rem', 'em', 'px' )
 					),
 					'webfonts' => array(
 						'type' => 'checkbox',
