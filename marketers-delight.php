@@ -68,6 +68,8 @@ final class marketers_delight {
 		require_once MD_DIR . 'lib/api/fields-data.php';
 		require_once MD_DIR . 'lib/api/fields.php';
 		require_once MD_DIR . 'lib/api/api.php';
+		require_once MD_DIR . 'lib/api/css-optimizer.php';
+		require_once MD_DIR . 'lib/api/theme-json.php';
 		require_once MD_DIR . 'lib/page-settings.php';
 
 		// Functions

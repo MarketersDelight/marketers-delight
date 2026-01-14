@@ -10,11 +10,11 @@ Features already implemented in `marketers-delight-local` that should be merged.
 
 ### Core API Additions
 
-- [ ] `lib/api/css-optimizer.php` - Conditional CSS loading system
+- [x] `lib/api/css-optimizer.php` - Conditional CSS loading system ✓ MIGRATED
   - Categorizes CSS (critical, shared, page-specific)
   - Loads CSS conditionally per page type
   - Reduces unused CSS payload
-- [ ] `lib/api/theme-json.php` - Dynamic theme.json generator
+- [x] `lib/api/theme-json.php` - Dynamic theme.json generator ✓ MIGRATED
   - Generates block editor config from MD settings
   - Replaces static theme.json approach
 - [ ] `lib/api/hooks.php` - Centralized hooks definition
@@ -435,8 +435,8 @@ These require minimal effort and provide immediate benefits:
 
 ### From Local Version (Copy/Merge)
 
-1. [ ] Copy `lib/api/css-optimizer.php` - Instant CSS performance boost
-2. [ ] Copy `lib/api/theme-json.php` - Dynamic block editor settings
+1. [x] Copy `lib/api/css-optimizer.php` - Instant CSS performance boost ✓ DONE
+2. [x] Copy `lib/api/theme-json.php` - Dynamic block editor settings ✓ DONE
 3. [ ] Copy `lib/wp/optimize.php` - Performance optimizations
 4. [ ] Copy `css/effects.php` - Animation utilities
 5. [ ] Copy enhanced `scripts.js` with button() and mainMenu()
