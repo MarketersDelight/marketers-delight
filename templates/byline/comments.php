@@ -10,8 +10,8 @@
 		<?php
 			echo md_icon( 'chat' ) . '<span class="md-byline-label">';
 
-			if ( $comments == 0 && ! empty( $fields['title'] ) )
-				echo esc_html( $fields['title'] );
+			if ( $comments == 0 && ! empty( $fields['name'] ) )
+				echo esc_html( $fields['name'] );
 			else {
 				echo number_format_i18n( $comments );
 

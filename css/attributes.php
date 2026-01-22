@@ -1,6 +1,5 @@
-<style type="text/css">
-
-<?php echo '/*
+<style type="text/css"><?php echo '
+/*
 	Theme Name: Marketers Delight
 	Theme URI: https://marketersdelight.com/
 	Author: Alex, Kolakube
@@ -11,6 +10,22 @@
 	Version: ' . MD_VERSION . '
 	Table of contents:' . $style_guide .
 '*/';
+
+if ( locate_template( 'css/fonts.php' ) )
+	include locate_template( 'css/fonts.php' );
+
+$titles = array(
+	'huge' => '.huge, .huge-title',
+	'h1' => 'h1, .h1, .large-title',
+	'h2' => 'h2, .h2, .main-title',
+	'h3' => 'h3, .h3, .med-title',
+	'h4' => 'h4, .h4, .mid-title',
+	'h5' => 'h5, .h5, .small-title',
+	'h6' => 'h6, .h6, .micro-title'
+);
+$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
+$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
+
 ?>
 
 /*------------------------------*\
@@ -25,25 +40,40 @@
 	padding: 0;
 }
 
+/* CRITICAL LOAD: FONT FAMILIES + WEIGHTS */
+
 body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
 }
 
-body, .font-normal {
-	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-weight: <?php echo $font_weight; ?>;
-	position: relative;
-}
+body, .normal { font-weight: <?php echo $font_weight; ?>; }
 
-/* ICONS */
+b, strong, .bold { font-weight: <?php echo $bold; ?>; }
+
+i, em, .italic { font-style: italic; }
+
+.h-font { font-family: <?php echo $h1_font_family; ?>; }
+
+<?php foreach ( $titles as $attribute => $selector ) {
+	$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family;
+	$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight;
+
+	echo "$selector {\n".
+			( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
+			"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
+			"\tfont-weight: {$h_fw};\n".
+			"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
+		"}\n";
+} ?>
 
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('<?php echo md_font_icons_url(); ?>') format('woff');
+	src: url('<?php echo md_font_icons_url(); ?>') format('woff2');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -63,13 +93,10 @@ body, .font-normal {
 	text-transform: none;
 }
 
-.md-icon.icon-data:before { content: attr(data-md-icon); }
-
-#cancel-comment-reply-link:before,
-.menu .trigger-icon:before,
-.menu .trigger-icon:after,
 .list-check li:before,
-.breadcrumbs li:not(:last-child):after {
+#cancel-comment-reply-link:before,
+.menu .trigger-icon:before,.menu .trigger-icon:after,
+.breadcrumbs li:not(:last-child):after, .breadcrumbs-home:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -77,60 +104,16 @@ body, .font-normal {
 	line-height: 1;
 }
 
-/* HEADINGS */
-
-h1, h2, h3, h4, h5, h6 {
-	<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
-	color: <?php echo $colors['site']['headline']; ?>;
-	<?php endif; ?>
-	position: relative;
-}
-
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
-
-<?php // Calculate titles/headings font properties
-
-$titles = array(
-	'huge' => '.huge, .huge-title',
-	'h1' => 'h1, .h1, .large-title',
-	'h2' => 'h2, .h2, .main-title',
-	'h3' => 'h3, .h3, .med-title',
-	'h4' => 'h4, .h4, .mid-title, .slim .title',
-	'h5' => 'h5, .h5, .small-title, .slim .slim .title',
-	'h6' => 'h6, .h6, .micro-title'
-);
-$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
-$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
-
-foreach ( $titles as $attribute => $selector ) {
-	$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family;
-	$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight;
-
-	echo "$selector {\n".
-			( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
-			"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
-			"\tfont-weight: {$h_fw};\n".
-			"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
-		"}\n";
-}
-?>
+.md-icon.icon-data:before { content: attr(data-md-icon); }
 
 /* ATTRIBUTES */
-
-p { position: relative; }
-
-.normal { font-weight: <?php echo $font_weight; ?>; }
-
-b, strong, .bold { font-weight: <?php echo $bold; ?>; }
-
-i, em, .italic { font-style: italic; }
 
 a {
 	color: <?php echo $colors['site']['links']; ?>;
 	text-decoration: none;
 }
 
-img, a img, .size-auto, .size-full, .size-large, .size-medium, .size-thumbnail {
+img, a img {
 	height: auto;
 	max-width: 100%;
 	vertical-align: top;
@@ -170,32 +153,44 @@ abbr, acronym {
 	text-decoration: none;
 }
 
-.caps { text-transform: uppercase; }
+/* HEADINGS */
 
-/* LISTS */
+<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
+h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
+<?php endif; ?>
 
-[class*="list"] { margin-left: 0; }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
 
-ul[class*="list"],
-[class*="list"] ul { list-style: none; }
+<?php foreach ( $queries as $w => $d ) {
 
-.list > ul:not(:last-child),
-.list li:not(:last-child) {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-	padding-bottom: <?php echo $half; ?>px;
+echo "@media (max-width: {$w}px) {\n";
+
+foreach ( $titles as $h => $selector ) {
+	if ( ! empty( $typography[$h]['font_size'][$d] ) || ! empty( $typography[$h]['line_height'][$d] ) )
+	echo "\t$selector { ".
+			( ! empty( $typography[$h]['font_size'][$d] ) ?
+				'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '
+			: '' ).
+			( ! empty( $typography[$h]['line_height'][$d] ) ?
+				'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '
+			: '' ).
+		"}\n";
 }
 
-.list-check { margin-left: <?php echo $single; ?>px; }
-
-ul.list-check li:before {
-	background-color: rgba(0, 0, 0, 0.08);
-	border-radius: 50%;
-	color: #22a340;
-	padding: <?php echo $small; ?>px;
-	position: absolute;
-		left: -<?php echo $single + $small + 2; ?>px;
-		top: 0;
+foreach ( array( 'sidebar', 'footer' ) as $aside )
+	if ( ! empty( $typography[$aside]['font_size'][$d] ) || ! empty( $typography[$aside]['line_height'][$d] ) ) {
+		echo ".{$aside} { ".
+			( ! empty( $typography[$aside]['font_size'][$d] ) ?
+				'font-size: ' . $typography[$aside]['font_size'][$d] . 'px; '
+			: '' ).
+			( ! empty( $typography[$aside]['line_height'][$d] ) ?
+				'line-height: ' . $typography[$aside]['line_height'][$d] . 'px; '
+			: '' ) . '}';
 }
+
+echo "}\n";
+
+} ?>
 
 /* BLOCKQUOTE */
 
@@ -240,51 +235,3 @@ blockquote.small {
 blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
 
 blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }
-
-/* FORMAT - spacing classes within posts */
-
-.format { word-wrap: break-word; }
-
-<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
-.format *:last-child { margin-bottom: 0; }
-<?php endif; ?>
-
-.format a { text-decoration: underline; }
-
-.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-bottom: <?php echo $half; ?>px; }
-
-.format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a, .format a:hover { text-decoration: none; }
-
-.format ul, .format ol, .format p, .format hr, .format pre, .format table, .format blockquote, .format .wp-caption, .format .wp-block-image { margin-bottom: <?php echo $single; ?>px; }
-
-.format ul { list-style: square; }
-
-.format ul[class*="list"], .format [class*="list"] ul { list-style: none; }
-
-.format [class*="list"] { margin-left: 0; }
-
-.format ul, .format ol,
-.format .list-check { margin-left: <?php echo $single; ?>px; }
-
-.format li {
-	margin-bottom: <?php echo $half; ?>px;
-	position: relative;
-}
-
-.format ul ul {
-	margin-bottom: <?php echo $half; ?>px;
-	margin-left: <?php echo $half; ?>px;
-}
-
-.text-center [class*="list"], .text-center ul, .text-center ol { text-align: left; }
-
-/* FORMAT SLIM - universal small fonts */
-
-.slim {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
-}
-
-.slim ul, .slim ol, .slim p, .slim hr, .slim pre, .slim table, .slim blockquote, .slim .wp-caption, .slim .wp-block-image { margin-bottom: <?php echo $half; ?>px; }
-
-.slim ul, .slim ol { margin-left: <?php echo $half; ?>px; }

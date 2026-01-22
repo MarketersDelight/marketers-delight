@@ -6,54 +6,26 @@
 
 /* BUTTONS */
 
-button, .button, a.button, .button a, input[type="submit"], .format .button,
-.header-wrap .button, .header-wrap .button:hover,
-.header-wrap .button a, .header-wrap .button a:hover {
-	align-items: center;
+button, .button, a.button, .button a, input[type="submit"], .format .button {
 	background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
-	display: inline-flex;
+	display: inline-block;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
-	gap: <?php echo $third; ?>px;
 	line-height: 1;
 	padding: <?php echo $half; ?>px <?php echo $half + $small; ?>px;
-	position: relative;
-	text-align: left;
+	text-align: center;
 	text-decoration: none;
 	transition: 0.3s;
 	-webkit-appearance: none;
 }
 
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
-
-/* ELEMENTS */
-
-.link-subtitle {
-	display: block;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-}
-
-.link-icon, .trigger-icon {
-	font-size: <?php echo round( $header['font_size']['desktop'] * 1.3 ); ?>px;
-	line-height: 1;
-}
-
-.badge {
-    background-color: #f58f2a;
-    border-radius: 5px;
-    color: #fff;
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-	font-weight: normal;
-	padding: 4px 7px;
-    position: relative;
-}
 
 /* COLORS */
 
@@ -107,3 +79,40 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 }
 
 .button.button-arrow:hover:after { transform: translateX(4px); }
+
+/* LINKS */
+
+.link-icon { vertical-align: middle; }
+
+.link-icon + .link-name { margin-left: <?php echo $third; ?>px; }
+
+.link-icon, .trigger-icon, .input-icon {
+	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
+	font-style: normal;
+	line-height: 1;
+}
+
+.link-subtitle {
+	display: block;
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
+}
+
+.link-wrap, a.link-wrap {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	text-align: left;
+}
+
+/* BADGE */
+
+.badge {
+    background-color: #f58f2a;
+    border-radius: 5px;
+    color: #fff;
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	font-weight: normal;
+	padding: 4px 7px;
+    position: relative;
+}

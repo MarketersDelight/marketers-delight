@@ -13,6 +13,58 @@
 
 .wp-block-latest-comments__comment { line-height: inherit; }
 
+.widget-title { margin-bottom: <?php echo $half; ?>px; }
+
+/* SIDEBAR */
+
+.sidebar {
+	<?php if ( ! empty( $colors['sidebar']['bg_color'] ) ) : ?>
+	background-color: <?php echo $colors['sidebar']['bg_color']; ?>;
+	<?php endif; ?>
+	color: <?php echo $colors['sidebar']['text']; ?>;
+	font-size: <?php echo $typography['sidebar']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['sidebar']['line_height']['desktop']; ?>px;
+}
+
+.sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
+
+.sidebar .widget-title { color: <?php echo $colors['sidebar']['title']; ?>; }
+
+.sidebar .widget-title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+
+/* FOOTER */
+
+.footer {
+	<?php if ( $colors['footer']['bg_color'] !== $colors['site']['bg_color'] ) : ?>
+	background-color: <?php echo $colors['footer']['bg_color']; ?>;
+	<?php endif; ?>
+	color: <?php echo $colors['footer']['text']; ?>;
+	font-size: <?php echo $typography['footer']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['footer']['line_height']['desktop']; ?>px;
+}
+
+.footer a { color: <?php echo $colors['footer']['links']; ?>; }
+
+.footer .widget-title { color: <?php echo $colors['footer']['title']; ?>; }
+
+.footer .widget-title a { color: <?php echo $colors['footer']['title_link']; ?>; }
+
+.footer .columns {
+	padding-bottom: <?php echo $mid; ?>px;
+	padding-top: <?php echo $mid; ?>px;
+}
+
+.footer .list li:not(:last-child) { border-bottom-color: <?php echo $colors['footer']['border_color']; ?>; }
+
+.footer .list a { display: block; }
+
+.footer-copy {
+	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
+	padding-bottom: <?php echo $single; ?>px;
+	padding-top: <?php echo $single; ?>px;
+	text-align: center;
+}
+
 /* MENU */
 
 .format .widget_nav_menu .menu, .format .widget_nav_menu .sub-menu {
@@ -44,21 +96,6 @@
 .format .wp-block-search .wp-block-search__input { margin-bottom: 0; }
 
 .wp-block-search__button { align-self: flex-start; }
-
-/* CONTENT SPOTLIGHT */
-
-.content-spotlight, .widget_md_content_spotlight a.content-spotlight {
-	background-color: #222;
-	background-position: center center;
-	background-repeat: no-repeat;
-	color: #fff;
-	display: block;
-	text-align: center;
-}
-
-.content-spotlight small { text-transform: uppercase; }
-
-.content-spotlight .content-spotlight-title { font-weight: bold; }
 
 /* RSS */
 

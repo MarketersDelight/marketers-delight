@@ -22,7 +22,6 @@ final class marketers_delight {
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
 		define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 		define( 'MD_PLUGIN_DIR', '' );
-		define( 'MD_PLUGIN_URL', MD_URL . 'lib/' );
 		define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
 		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
 		define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
@@ -43,11 +42,14 @@ final class marketers_delight {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_priority' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ), 1 );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
 		add_action( 'wp_head', array( $this, 'head_priority' ), 5 );
+		add_action( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 	}
 
 	/**
@@ -57,63 +59,39 @@ final class marketers_delight {
 	 */
 
 	public function includes() {
-		// API
-		require_once MD_DIR . 'wp/filters.php';
-		require_once MD_DIR . 'wp/walker.php';
-		require_once MD_DIR . 'lib/functions/api-functions.php';
-		require_once MD_DIR . 'lib/api/sanitize.php';
-		require_once MD_DIR . 'lib/api/design.php';
-		require_once MD_DIR . 'lib/api/css.php';
-		require_once MD_DIR . 'lib/api/js.php';
-		require_once MD_DIR . 'lib/api/fields-data.php';
-		require_once MD_DIR . 'lib/api/fields.php';
-		require_once MD_DIR . 'lib/api/api.php';
-		require_once MD_DIR . 'lib/page-settings.php';
+		require_once MD_DIR . 'functions/theme-functions.php';
+		require_once MD_DIR . 'api/sanitize.php';
+		require_once MD_DIR . 'api/design.php';
+		require_once MD_DIR . 'api/css.php';
+		require_once MD_DIR . 'api/js.php';
+		require_once MD_DIR . 'api/data.php';
+		require_once MD_DIR . 'api/fields.php';
+		require_once MD_DIR . 'api/walker.php';
+		require_once MD_DIR . 'api/api.php';
 
-		// Functions
-		require_once MD_DIR . 'lib/functions/icons-functions.php';
-		require_once MD_DIR . 'lib/functions/design-functions.php';
-		require_once MD_DIR . 'lib/functions/image-functions.php';
-		require_once MD_DIR . 'lib/functions/byline-functions.php';
-		require_once MD_DIR . 'lib/functions/post-functions.php';
-		require_once MD_DIR . 'lib/functions/comments-functions.php';
-		require_once MD_DIR . 'lib/functions/loop-functions.php';
-		require_once MD_DIR . 'lib/functions/logo-functions.php';
-		require_once MD_DIR . 'lib/functions/header-functions.php';
-		require_once MD_DIR . 'lib/functions/layout-functions.php';
-		require_once MD_DIR . 'lib/functions/footer-functions.php';
+		require_once MD_DIR . 'functions/template-functions.php';
+		require_once MD_DIR . 'functions/image-functions.php';
+		require_once MD_DIR . 'functions/page-functions.php';
+		require_once MD_DIR . 'functions/comment-functions.php';
+		require_once MD_DIR . 'functions/loop-functions.php';
+		require_once MD_DIR . 'functions/header-functions.php';
+		require_once MD_DIR . 'functions/layout-functions.php';
 
-		// Layout
-		require_once MD_DIR . 'templates/header-template.php';
-		require_once MD_DIR . 'lib/header.php';
-		require_once MD_DIR . 'lib/page-title.php';
-		require_once MD_DIR . 'lib/loop.php';
-		require_once MD_DIR . 'lib/byline.php';
-		require_once MD_DIR . 'lib/post.php';
-
-		// Widgets
-		foreach ( array( 'accordion', 'loop-query', 'content-spotlight', 'text-image', 'quote' ) as $widget )
-			include_once MD_DIR . "wp/widget-$widget.php";
-
-		// Blocks
-		if ( function_exists( 'register_block_type' ) && ! md_setting( array( 'content', 'post', 'blocks' ) ) )
-			include_once MD_DIR . 'lib/blocks.php';
-
-		// Hooks
-		require_once MD_DIR . 'wp/hooks.php';
-
-		// Deprecated
-		require_once MD_DIR . 'lib/deprecated.php';
-
-		// Admin
 		if ( is_admin() ) {
-			require_once MD_DIR . 'lib/api/files.php';
-			require_once MD_DIR . 'lib/api/requests.php';
-			require_once MD_DIR . 'lib/admin.php';
+			require_once MD_DIR . 'api/files.php';
+			require_once MD_DIR . 'api/requests.php';
+			require_once MD_DIR . 'admin/admin.php';
 		}
 
-		// Drop-ins
+		require_once MD_DIR . 'admin/page-image.php';
+		require_once MD_DIR . 'admin/page-cover.php';
+		require_once MD_DIR . 'admin/page-cta.php';
+
 		$this->dropins();
+
+		require_once MD_DIR . 'blog.php';
+		require_once MD_DIR . 'actions.php';
+		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
 
 	/**
@@ -143,6 +121,7 @@ final class marketers_delight {
 		) );
 
 		// Enable shortcodes in widgets
+		add_shortcode( 'md_template', array( $this, 'template_shortcode' ) );
 		add_filter( 'widget_text', 'do_shortcode' );
 
 		// Remove WP junk, mostly from <head>
@@ -192,9 +171,6 @@ final class marketers_delight {
 	 */
 
 	public function wp_init() {
-    	$post_type = get_post_type_object( 'post' );
-		$post_type->labels->name = $post_type->labels->menu_name = __( 'Blog', 'md' );
-
 		if ( is_admin() )
 			$this->activate_dropin();
 
@@ -222,7 +198,7 @@ final class marketers_delight {
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
 		// Load scripts
-		wp_enqueue_script( 'marketers-delight', MD_URL . 'js/scripts.js', array(), md_ver( 'js/scripts.js' ), true );
+		wp_enqueue_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
@@ -246,10 +222,31 @@ final class marketers_delight {
 		}
 
 		// Load stupid legacy MailerLite script
-		$data = md_setting( array( 'integrations' ) );
+		$data = md_setting( 'integrations' );
 
 		if ( ! empty( $data['enabled']['mailerlite'] ) )
 			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
+	}
+
+	/**
+ 	 * Enqueue MD's integrated web font services to <head> when needed.
+ 	 *
+ 	 * @since 4.8
+ 	 */
+
+	public function enqueue_fonts() {
+		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
+			return;
+
+		$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
+
+		if ( md_web_fonts( 'google' ) ) {
+			$url = md_setting( array( 'typography', 'google_fonts' ) );
+			wp_enqueue_style( 'marketers-delight-google-fonts', $url );
+		}
+
+		if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
+			wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );
 	}
 
 	/**
@@ -259,31 +256,27 @@ final class marketers_delight {
  	 */
 
 	public function inline_js() {
-		if ( has_nav_menu( 'main_menu' ) )
-			wp_add_inline_script( 'marketers-delight', 'MD.mainMenu();' );
-		elseif ( md_has_menu() )
-			wp_add_inline_script( 'marketers-delight', 'MD.headerMenu();' );
-
+		wp_add_inline_script( 'marketers-delight', "MD.triggers();" );
 		wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
 
-		if ( md_setting( array( 'header', 'sticky', 'enable' ) ) )
+		if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.sticky(\'.header\');' );
 	}
 
 	/**
-	 * Enqueue prioritized scripts and styles.
+	 * Add custom query vars to known WP.
 	 *
-	 * @since 5.6.0
+	 * @since 6.0
 	 */
 
-	public function enqueue_priority() {
-		// Custom Fonts
-		if ( ! md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
-			md_enqueue_fonts();
+	public function query_vars( $vars ) {
+		$vars[] = 'filter';
+
+		return $vars;
 	}
 
 	/**
-	 * Load regular priority CSS, JS, and meta to WP <head>.
+	 * Load inline CSS if enabled from user settings.
 	 *
 	 * @since 4.8
 	 */
@@ -307,28 +300,45 @@ final class marketers_delight {
 	}
 
 	/**
+	 * Load custom classes to the body tag when necessary.
+	 *
+	 * @since 4.0
+	 */
+
+	public function body_class( $classes ) {
+		$context = is_singular() || is_404() ? 'post' : 'page';
+		$cover = md_cover( $context );
+		$style = md_content_style( array( 'global' => true ) );
+
+		if ( $style )
+			$classes[] = 'is-' . $style;
+
+		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
+			$classes[] = 'header-cover';
+
+			if ( $cover['position'] == 'header_cover_full' )
+				$classes[] = 'full-cover';
+		}
+
+		return $classes;
+	}
+
+	/**
 	 * Register custom MD widgets and areas.
 	 *
 	 * @since 4.0
 	 */
 
 	public function widgets() {
-		// Register custom Widgets
-		register_widget( 'md_accordion_widget' );
-		register_widget( 'md_loop_query_widget' );
-		register_widget( 'md_content_spotlight' );
-		register_widget( 'md_text_image' );
-		register_widget( 'md_quote_widget' );
-
 		// Main Sidebar
 		register_sidebar( array(
 			'name' => __( 'Main Sidebar', 'md' ),
 			'description' => __( 'The default sidebar used around your site.', 'md' ),
 			'id' => 'sidebar-main',
-			'before_widget' => '<div id="%1$s" class="widget %2$s">',
-			'after_widget' => '</div>',
-			'before_title' => '<h4 class="widget-title">',
-			'after_title' => '</h4>'
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget' => '</section>',
+			'before_title' => '<h3 class="widget-title">',
+			'after_title' => '</h3>'
 		) );
 
 		// Custom Sidebars
@@ -336,10 +346,10 @@ final class marketers_delight {
 			register_sidebar( array(
 				'name' => esc_html( $name ),
 				'id' => $id,
-				'before_widget' => '<div id="%1$s" class="widget %2$s">',
-				'after_widget' => '</div>',
-				'before_title' => '<h4 class="widget-title">',
-				'after_title' => '</h4>'
+				'before_widget' => '<section id="%1$s" class="widget %2$s">',
+				'after_widget' => '</section>',
+				'before_title' => '<h3 class="widget-title">',
+				'after_title' => '</h3>'
 			) );
 		}
 
@@ -349,10 +359,10 @@ final class marketers_delight {
 				'name' => __( "Footer $w", 'md' ),
 				'description' => sprintf( __( 'You can create up to 3 columns of content in your site\'s footer. This is column %s.', 'md' ), $w ),
 				'id' => "md-footer-col-$w",
-				'before_widget' => '<div id="%1$s" class="widget %2$s">',
-				'after_widget' => '</div>',
-				'before_title' => '<h4 class="widget-title">',
-				'after_title' => '</h4>'
+				'before_widget' => '<section id="%1$s" class="widget %2$s">',
+				'after_widget' => '</section>',
+				'before_title' => '<h3 class="widget-title">',
+				'after_title' => '</h3>'
 			) );
 		}
 
@@ -366,6 +376,28 @@ final class marketers_delight {
 			'before_title' => '<h3 class="widget-title">',
 			'after_title' => '</h3>'
 		) );
+	}
+
+	/**
+	 * Create the [md_template] shortcode, which is a quick way
+	 * to render any template from the Parent/Child Theme folder
+	 * and Drop-ins Library.
+	 *
+	 * @since 6.0
+	 */
+
+	public function template_shortcode( $atts, $content = null ) {
+		ob_start(); extract( shortcode_atts( array(
+			'name' => '',
+			'dropin_name' => ''
+		), $atts, 'md_template' ) );
+
+		if ( isset( $atts['dropin_name'] ) )
+			include md_template( 'dropins', $atts['dropin_name'], true );
+		elseif ( isset( $atts['name'] ) )
+			include md_template( $atts['name'], true );
+
+		return ob_get_clean();
 	}
 
 	/**
@@ -419,7 +451,7 @@ final class marketers_delight {
 
 			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
 				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
-					require_once( $old_dropin_file );
+					require_once $old_dropin_file;
 		}
 	}
 

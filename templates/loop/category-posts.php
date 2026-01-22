@@ -20,11 +20,10 @@ if ( isset( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) {
 
 $categories_classes = join( ' ', $categories_classes );
 
-if ( empty( $categories->terms ) )
-
-	md_404_template();
-
-else
+if ( empty( $categories->terms ) ) {
+	md_404();
+	return false;
+}
 
 echo '<div class="' . esc_attr( $categories_classes ) . '">';
 
@@ -47,7 +46,7 @@ foreach ( $categories->terms as $category ) {
 		$category_id = $category->term_id;
 		$category_description = term_description( $category_id );
 
-		include( md_template( 'loop/category-post', true ) );
+		include md_template( 'loop/category-post', true );
 	}
 
 	md_hook_x_loop( $loop, $t );

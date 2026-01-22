@@ -1,9 +1,9 @@
-<div id="comments" class="comments post-footer">
+<section id="comments" class="comments post-footer">
 	<div class="wrap">
 
 		<?php if ( have_comments() ) : ?>
 		<div class="content-title">
-			<h3 class="title"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?></h3>
+			<h2 class="title"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?></h2>
 			<a href="#respond" class="button button-small gray"><?php echo md_icon( 'plus' ) . __( 'add comment', 'md' ); ?></a>
 		</div>
 		<?php endif; ?>
@@ -34,4 +34,4 @@
 		<?php md_hook_after_comments_list(); ?>
 
 	</div>
-</div>
+</section>

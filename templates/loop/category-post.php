@@ -14,13 +14,11 @@
 
 	</div>
 
-	<div class="loop<?php echo esc_attr( $loop_classes ); ?>">
-
+	<div class="<?php echo esc_attr( $loop_classes ); ?>">
 		<?php while ( $posts->have_posts() ) :
 			$posts->the_post();
-			include( md_template( 'loop/the-post', true ) );
+			include md_template( 'loop/the-post', true );
 		endwhile; ?>
-
 	</div>
 
 </div>

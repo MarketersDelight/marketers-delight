@@ -24,7 +24,6 @@ if ( isset( $loop['author'] ) )
 if ( isset( $loop['include_cats'] ) ) {
 	$taxonomies = get_object_taxonomies( $post_type );
 	$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-
 	$query_args['tax_query'] = array(
 		array(
 			'taxonomy' => $taxonomy,
@@ -34,15 +33,18 @@ if ( isset( $loop['include_cats'] ) ) {
 	);
 }
 
+$query_args = wp_parse_args( $args['query'], $query_args );
+
 $query = new WP_Query( $query_args );
 
 if ( $query->have_posts() )
 	while ( $query->have_posts() ) {
 		$query->the_post();
-
-		include( md_template( 'loop/the-post', true ) );
+		include md_template( 'loop/the-post', true );
 	}
 else
 	md_404_template();
 
 wp_reset_query();
+
+md_pagination( $loop );

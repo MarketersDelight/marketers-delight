@@ -1,4 +1,4 @@
-<div class="author-box post-footer">
+<section class="author-box post-footer">
 	<div class="wrap">
 
 		<div class="author-meta">
@@ -42,4 +42,4 @@
 		</div>
 
 	</div>
-</div>
+</section>

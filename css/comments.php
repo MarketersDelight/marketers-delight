@@ -49,12 +49,14 @@
 
 .comment-details {
 	align-items: center;
-	background-color: <?php echo $colors['site']['bg_color']; ?>;
+	background-color: <?php echo $colors['content']['body_color']; ?>;
 	display: flex;
 	padding-bottom: <?php echo $half; ?>px;
 	position: relative;
 	z-index: 10;
 }
+
+.box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
 
 .comment-details a { text-decoration: none; }
 

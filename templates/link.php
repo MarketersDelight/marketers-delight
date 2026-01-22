@@ -6,100 +6,75 @@
  * @since 6.0
  */
 
-$name = isset( $fields["{$p}name"] ) ? $fields["{$p}name"] : '';
-$subtitle = isset( $fields["{$p}subtitle"] ) ? $fields["{$p}subtitle"] : '';
-$icon = ! empty( $fields["{$p}icon"] ) ? $fields["{$p}icon"] : '';
-
-if ( empty( $name ) && empty( $subtitle ) && empty( $icon ) )
-	return;
-
-$classes = $styles = array();
 $h = 'span';
-$class = $href = $target = $popup = '';
-$parent = isset( $fields["{$p}builder_area"] ) ? $fields["{$p}builder_area"] : '';
-$url = isset( $fields["{$p}url"] ) ? $fields["{$p}url"] : '';
-$phone = isset( $fields["{$p}phone"] ) ? $fields["{$p}phone"] : '';
-$style = isset( $fields["{$p}style"] ) ? $fields["{$p}style"] : 'link';
-$type = isset( $fields["{$p}type"] ) ? $fields["{$p}type"] : 'url';
-$icon_classes = 'link-icon';
+$classes = array( 'link' );
+$has_wrap = $fields['name'] && $fields['subtitle'] && $fields['icon'] ? true : false;
 
-if ( $parent )
-	$classes[] = "{$parent}-link";
-
-if ( ! empty( $fields["{$p}display"] ) )
-	$classes[] = 'show-' . esc_attr( $fields["{$p}display"] );
-
-if ( in_array( $type, array( 'url', 'link' ) ) && $url ) {
+if ( $fields['type'] == 'url' && $fields['url'] ) {
 	$h = 'a';
-	$href = ' href="' . esc_url( $url ) . '"';
-	$target = ( isset( $fields["{$p}target"]['new'] ) ? ' target="_blank"' : '' );
+	$attrs .= ' href="' . esc_url( $fields['url'] ) . '"';
+	$attrs .= isset( $fields['target']['new'] ) ? ' target="_blank"' : '';
 }
-elseif ( $type == 'phone' ) {
+elseif ( $fields['type'] == 'phone' ) {
 	$h = 'a';
-	$href = ' href="tel:' . esc_attr( $phone ) . '"';
-	$classes[] = $fields["{$p}icon"] = 'phone';
+	$attrs .= ' href="tel:' . esc_html( $fields['phone'] ) . '"';
+	$classes[] = $fields['icon'] = 'phone';
 
-	if ( ! $text )
-		$text = esc_attr( $phone );
+	if ( empty( $fields['name'] ) )
+		$fields['name'] = esc_html( $phone );
+}
+elseif ( $fields['type'] == 'popup' && $fields['popup'] && function_exists( 'md_popup' ) ) {
+	$attrs .= ' data-popup="' . $fields['popup'] . '"';
+	$classes[] = 'popup-trigger';
+	md_popup( array( 'id' => $fields['popup'] ) );
 }
 
-if ( $style == 'button' ) {
-	$button_color = '';
+if ( $fields['style'] == 'button' ) {
 	$classes[] = 'button';
 
-	if ( ! empty( $fields["{$p}size"] ) )
-		$classes[] = 'button-' . $fields["{$p}size"];
+	if ( $fields['size'] )
+		$classes[] = 'button-' . $fields['size'];
 
-	if ( ! empty( $fields["{$p}color"] ) )
-		$button_color = $fields["{$p}color"];
+	if ( $fields['button_style'] )
+		foreach ( $fields['button_style'] as $button_style => $val )
+			$classes[] = 'button-' . $button_style;
 
-	if ( ! empty( $fields["{$p}button_style"] ) ) {
-		if ( $fields["{$p}button_style"] == 'outline' ) {
-			$classes[] = 'button-outline';
+	if ( $fields['color'] )
+		if ( in_array( 'outline', $fields['button_style'] ) )
+			$styles['color'] = $styles['border_color'] = $fields['color'];
+		else
+			$styles['bg_color'] = $fields['color'];
 
-			if ( $button_color )
-				$styles['border_color'] = $styles['color'] = esc_attr( $button_color );
-		}
-	}
-	elseif ( $button_color )
-		$styles['bg_color'] = esc_attr( $button_color );
 }
-else {
-	$classes[] = 'link';
+elseif ( $fields['color'] )
+	$styles['color'] = $fields['color'];
 
-	if ( ! empty( $fields["{$p}color"] ) )
-		$styles['color'] = esc_attr( $fields["{$p}color"] );
-}
-
-if ( $type == 'popup' && isset( $fields["{$p}popup"] ) ) {
-	$popup = ' data-popup="popup_' . esc_attr( $fields["{$p}popup"] ) . '"';
-	$classes[] = 'popup-trigger';
-
-	md_popup( array( 'id' => $fields["{$p}popup"] ) );
-}
-
-if ( ! empty( $fields["{$p}toggle"]['hide_label'] ) )
+if ( $fields['toggle']['hide_label'] )
 	$classes[] = 'hide-label';
 
-if ( ! empty( $fields["{$p}toggle"]['hide_label_mobile'] ) )
+if ( $fields['toggle']['hide_label_mobile'] )
 	$classes[] = 'hide-label-mobile';
 
-$style = md_style( $styles );
-$title = $name ? ' title="' . strip_tags( $name ) . '"' : '';
+$attrs .= md_style( $styles );
 
-if ( isset( $fields["{$p}classes"] ) )
-	$classes[] = esc_attr( $fields["{$p}classes"] );
+if ( $has_wrap )
+	$classes[] = 'link-wrap';
+
+if ( $fields['display'] )
+	$classes[] = 'show-' . $fields['display'];
+
+if ( $fields['classes'] )
+	$classes[] = $fields['classes'];
 
 $classes = join( ' ', $classes );
 
-if ( $classes )
-	$class = ' class="' . esc_attr( $classes ) . '"';
+$attrs .= ' class="' . esc_attr( $classes ) . '"';
 
 $html =
-	"<$h{$href}{$popup}{$class}{$target}{$style}{$title}>".
-	( $icon ? md_icon( $icon, array( 'classes' => $icon_classes ) ) : '' ).
-	( $icon ? '<span class="link-wrap">' : '' ).
-	( $name || is_customize_preview() ? '<span class="link-name">' . do_shortcode( md_text_field( $name ) ) . '</span>' : '' ).
-	( $subtitle || is_customize_preview() ? '<span class="link-subtitle">' . do_shortcode( md_text_field( $subtitle ) ) . '</span>' : '' ) .
-	( $icon ? '</span>' : '' ).
+	"<$h{$attrs}>".
+	( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
+	( $has_wrap ? '<span class="wrap">' : '' ).
+	( $fields['name'] ? '<span class="link-name">' . md_text_field( $fields['name'] ) . '</span>' : '' ).
+	( $fields['subtitle'] ? '<span class="link-subtitle">' . md_text_field( $fields['subtitle'] ) . '</span>' : '' ).
+	( $has_wrap ? '</span>' : '' ).
 	"</$h>";

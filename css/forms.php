@@ -111,6 +111,41 @@ select {
 	padding-right: <?php echo $half; ?>px;
 }
 
+/* TRIGGERS */
+
+.show-search .triggers { order: 3; }
+
+.trigger {
+	align-items: center;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	position: relative;
+	text-align: center;
+}
+
+.trigger-text { margin-left: <?php echo $small; ?>px; }
+
+.hide-label .link-text, .hide-label .trigger-text { display: none; }
+
+.show-search .trigger-search .trigger-icon:before,
+.show-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
+
+.show-search:not(.cover) .trigger-search .trigger-icon:before,
+.show-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
+
+/* TOGGLES */
+
+.search-form .inputs { flex: 1; }
+
+.form-toggle .inputs,
+.form-toggle .submit,
+.show-search .search-form .trigger-text { display: none; }
+
+.show-search .inputs, .form-toggle .trigger-search { display: flex; }
+
+.show-search .submit { display: block; }
+
 /* QUERIES */
 
 @media all and (min-width: 600px) {
@@ -121,4 +156,9 @@ select {
 	.form.multi { flex-direction: column; }
 	.form.multi .inputs { flex-basis: 100%; }
 	.form.multi .submit { width: 100%; }
+	.hide-label-mobile .trigger-text { display: none; }
+}
+
+@media all and (min-width: 900px) {
+	.search-form .input-field { min-width: <?php echo $quad * 2; ?>px; }
 }

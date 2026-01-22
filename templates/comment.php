@@ -7,9 +7,9 @@
 	<div class="comment-details">
 
 		<?php if ( $avatar_size > 0 ): ?>
-			<div class="comment-avatar">
-				<?php echo get_avatar( $comment, $avatar_size ); ?>
-			</div>
+		<div class="comment-avatar">
+			<?php echo get_avatar( $comment, $avatar_size ); ?>
+		</div>
 		<?php endif; ?>
 
 		<div class="comment-byline">
@@ -23,7 +23,7 @@
 	<div id="comment-content-<?php comment_ID(); ?>" class="comment-content">
 
 		<?php if ( $comment->comment_approved == 0 ) : ?>
-			<p class="comment-awaiting-moderation"><?php echo md_icon( 'exclamation', array( 'classes' => 'circle-icon micro mr-small' ) ) . __( 'Your comment is awaiting moderation.', 'md' ); ?></p>
+		<p class="comment-awaiting-moderation"><?php echo md_icon( 'exclamation', array( 'classes' => 'circle-icon micro mr-small' ) ) . __( 'Your comment is awaiting moderation.', 'md' ); ?></p>
 		<?php endif; ?>
 
 		<?php comment_text(); ?>

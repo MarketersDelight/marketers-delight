@@ -4,7 +4,7 @@
 
 	<?php if ( is_active_sidebar( "md-footer-col-$col" ) ) : ?>
 
-	<div class="entry">
+	<div class="entry col<?php echo esc_attr( $col ); ?>">
 
 		<?php dynamic_sidebar( "md-footer-col-$col" ); ?>
 

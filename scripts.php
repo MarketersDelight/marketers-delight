@@ -39,6 +39,10 @@ removeClass: function( el, classes ) {
 			el.className = el.className.replace( new RegExp( '(?:^|\\s)' + className + '(?!\\S)' ), '' );
 	});
 },
+removeClassByPrefix: function( el, prefix ) {
+	var regex = new RegExp( '(' + prefix + '(\\s|(-)?(\\w*)(\\s)?)).*?', 'g' );
+	el.className = el.className.replace( regex, '' );
+},
 toggleClass: function( el, classes ) {
 	MD.foreach( classes, function( className ) {
 		( MD.hasClass( el, className ) ? MD.removeClass : MD.addClass )( el, className );
@@ -120,27 +124,38 @@ toggle: function() {
 		}
 	}
 },
+triggers: function() {
+	var triggers = document.getElementsByClassName( 'trigger' );
 
-<?php if ( md_has_menu() ) : ?>
+	for ( var i = 0; i < triggers.length; i++ ) {
+		triggers[i].onclick = function( e ) {
+			var type = this.getAttribute( 'data-md-trigger' ),
+				location = this.getAttribute( 'data-md-location' ),
+				parent = this.getAttribute( 'data-md-parent' ),
+				container = this.closest( '.' + parent ),
+				classes = container.classList;
 
-headerMenu: function() {
-	var header = document.getElementById( 'header' ),
-		headerTrigger = document.getElementById( 'header_menu_trigger' );
+			MD.toggleClass( container, 'show-' + type );
+			MD.toggleClass( container, 'from-' + location );
 
-	if ( headerTrigger ) {
-		this.toggle( 'menu' );
+			for ( var c = 0; c < classes.length; c++ ) {
+				var cl = classes[c];
+				if ( cl.startsWith( 'show-' ) )
+					container.classList.replace( cl, 'show-' + type );
+				if ( cl.startsWith( 'from-' ) )
+					container.classList.replace( cl, 'from-' + location );
+			}
 
-		headerTrigger.onclick = function( e ) {
-			MD.toggleClass( header, 'has-mobile-menu' );
-			<?php if ( md_has_header_search() ) : ?>
-			MD.removeClass( header, 'has-search' );
-			<?php endif; ?>
+			if ( parent === 'header' && MD.hasClass( container, 'cover' ) )
+				MD.toggleClass( container, 'cover' );
+
+			if ( type === 'search' )
+				container.querySelector( '.input' ).focus();
+
+			<?php do_action( 'md_js_custom_triggers' ); ?>
 		}
 	}
 },
-
-<?php endif; ?>
-
 sticky: function( selector ) {
 	const el = document.querySelector( selector );
 
@@ -150,34 +165,6 @@ sticky: function( selector ) {
 	);
 
 	observer.observe( el );
-},
-
-mainMenu: function() {
-	var menuTrigger = document.getElementById( 'main_menu_trigger' );
-
-	if ( menuTrigger ) {
-		var html = document.getElementsByTagName( 'html' )[0];
-		this.toggle( 'menu' );
-
-		menuTrigger.onclick = function( e ) {
-			MD.addClass( html, 'has-main-menu' );
-		}
-		document.getElementById( 'main_menu_close' ).onclick = document.getElementById( 'main_menu_overlay' ).onclick = function( e ) {
-			MD.removeClass( html, 'has-main-menu' );
-		}
-	}
-},
-
-searchToggle: function() {
-	var searchTriggers = document.getElementsByClassName( 'trigger-search' );
-	for ( var i = 0; i < searchTriggers.length; i++ ) {
-		searchTriggers[i].onclick = function( e ) {
-			var parent = this.getAttribute( 'data-md-parent' );
-			MD.toggleClass( document.getElementById( parent ), 'has-search' );
-			this.closest( '#' + parent ).querySelector( '.input' ).focus();
-			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
-		}
-	}
 },
 
 <?php if ( has_action( 'md_js_onscroll' ) ) : ?>

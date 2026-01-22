@@ -1,13 +1,13 @@
-<?php if ( md_has_sidebar() ) : ?>
+<?php if ( md_has_sidebar() ) {
 
-<div class="sidebar">
+echo '<aside class="sidebar">';
 
-	<?php
-		md_hook_before_sidebar();
-		dynamic_sidebar( md_get_sidebar_id() );
-		md_hook_after_sidebar();
-	?>
+md_hook_before_sidebar();
 
-</div>
+dynamic_sidebar( md_get_sidebar_id() );
 
-<?php endif; ?>
+md_hook_after_sidebar();
+
+echo '</aside>';
+
+}

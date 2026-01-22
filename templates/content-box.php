@@ -1,27 +1,29 @@
-<div id="content" class="<?php echo md_content_box_classes(); ?>">
+<?php
 
-	<?php md_hook_content_box_top(); ?>
+echo "<$html id=\"content\" class=\"" . md_content_box_classes() . '">';
 
-	<div class="inner">
+md_hook_content_box_top();
 
-		<?php md_hook_content_top(); ?>
+echo md_has_sidebar() ? '<div class="inner">' : '';
 
-		<main class="<?php echo md_content_classes(); ?>">
+md_hook_content_top();
 
-			<?php md_hook_before_content(); ?>
+echo "<$inner_html class=\"" . md_content_classes() . '">';
 
-			<?php md_hook_content(); ?>
+md_hook_before_content();
 
-			<?php md_hook_after_content(); ?>
+md_hook_content();
 
-		</main>
+md_hook_after_content();
 
-		<?php get_sidebar(); ?>
+echo "</$inner_html>";
 
-		<?php md_hook_content_bottom(); ?>
+get_sidebar();
 
-	</div>
+md_hook_content_bottom();
 
-	<?php md_hook_content_box_bottom(); ?>
+echo md_has_sidebar() ? '</div>' : '';
 
-</div>
+md_hook_content_box_bottom();
+
+echo "</$html>";

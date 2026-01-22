@@ -1,19 +1,13 @@
 <?php
-	$taxonomy = 'category';
+
+if ( empty( $fields['term'] ) ) {
 	$taxonomies = get_object_taxonomies( get_post_type() );
+	$term = ! empty( $taxonomies[0] ) ? esc_attr( $taxonomies[0] ) : 'category';
+}
+else $term = esc_attr( $fields['term'] );
 
-	if ( ! empty( $taxonomies[0] ) )
-		$taxonomy = esc_attr( $taxonomies[0] );
+$terms = get_the_terms( get_the_ID(), $term );
 
-	$terms = get_the_terms( get_the_ID(), $taxonomy );
-	$term = ! empty( $terms[0] ) ? $terms[0] : '';
-
-	if ( empty( $term ) )
-		return false;
-?>
-
-<span class="byline-category byline-item">
-	<a href="<?php echo get_term_link( $term->term_id ); ?>">
-		<?php echo esc_html( $term->name ); ?>
-	</a>
-</span>
+if ( ! empty( $terms ) )
+	foreach ( $terms as $order => $term )
+		echo '<span class="byline-category byline-item"><a href="' . get_term_link( $term->term_id ) . '">' . esc_html( $term->name ) . '</a></span>';

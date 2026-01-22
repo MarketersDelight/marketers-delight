@@ -1,19 +1,26 @@
 <style type="text/css">
 
+.sticky {
+	position: sticky;
+		top: -1px;
+	z-index: 50;
+}
+
 .overlay {
-	background-color: rgba(0, 0, 0, 0.5);
+	background-color: <?php echo $colors['content']['page_cover']; ?>;
 	content: '';
 	display: block;
 	inset: 0;
 	position: absolute;
 }
 
-.clickable:after,
-.post-nav a:after {
+.repeat { background-repeat: repeat; }
+
+.clickable:after, .post-nav a:after {
 	content: '';
-	inset: 0;
 	position: absolute;
-	z-index: 3;
+		inset: 0;
+	z-index: 50;
 }
 
 .close {
@@ -24,60 +31,6 @@
 }
 
 .close:hover { background-color: rgba(0, 0, 0, 0.2); }
-
-/* TRIGGERS */
-
-.has-search .triggers { order: 3; }
-
-.trigger {
-	align-items: center;
-	cursor: pointer;
-	display: flex;
-	gap: <?php echo $third; ?>px;
-	justify-content: center;
-	position: relative;
-	text-align: center;
-}
-
-.hide-label .link-name, .hide-label .link-subtitle,
-.hide-label .trigger-text { display: none; }
-
-.has-search .trigger-search .trigger-icon:before,
-.has-mobile-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
-
-.has-search:not(.has-cover) .trigger-search .trigger-icon:before,
-.has-mobile-menu:not(.has-cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
-
-/* TOGGLES */
-
-.has-search .inputs,
-.has-search .input-field { flex: 1; }
-
-.form-toggle .inputs,
-.form-toggle .submit,
-.has-search .search-form .trigger-text { display: none; }
-
-.has-search .inputs,
-.has-search .submit,
-.form-toggle .trigger-search { display: block; }
-
-/* STICKY */
-
-.sticky {
-	position: sticky;
-		top: -1px;
-	z-index: 50;
-}
-
-.admin-bar .stuck { padding-top: <?php echo $admin_bar_height; ?>px; }
-
-@media all and (max-width: 782px) {
-	.admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
-}
-
-@media all and (max-width: 600px) {
-	#wpadminbar { position: fixed; }
-}
 
 /* SCROLLER NAV */
 

@@ -1,7 +1,1 @@
-<?php
-
-get_header();
-
-md_content_box();
-
-get_footer();
+<?php get_header(); md_content_box(); get_footer();

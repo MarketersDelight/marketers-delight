@@ -1,18 +1,52 @@
 <?php
 
-echo "<$h id=\"post_"  . get_the_ID() . '" class="' . implode( ' ', get_post_class( $classes ) ) . '">';
+echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
 
-if ( $loop['featured_image'] == 'above_headline' )
-	md_featured_image( 'post', $loop );
+md_byline( 'before_post', array( 'classes' => 'post-meta' ) );
 
-if ( ! md_has_headline_cover() )
-	md_headline( array( 'loop' => $loop ) );
+md_featured_image( 'post', array( 'show_image' => array( 'above_headline' ) ) );
 
-if ( $loop['featured_image'] !== 'above_headline' )
-	md_featured_image( 'post', $loop );
+md_title();
 
-md_content( $loop );
+md_featured_image( 'post', array( 'show_image' => array( 'below_headline' ) ) );
+
+md_hook_before_the_content();
+
+if ( $loop['content'] !== 'hide' ) {
+
+	echo "<section class=\"the-content\">";
+
+	md_featured_image( 'post', array( 'show_image' => array( 'left', 'right', 'center' ) ) );
+
+	md_hook_the_content_top();
+
+	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && in_the_loop() ) ) {
+		if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
+			echo get_the_content();
+		else
+			the_content( esc_html( $loop['read_more'] ) );
+
+		wp_link_pages();
+	}
+	elseif ( empty( $loop['content'] ) && get_the_excerpt() ) echo
+		wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
+		( empty( $loop['excerpt_settings']['remove_text'] ) ? '<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>' : '' );
+
+	md_hook_the_content_bottom();
+
+	echo "</section>";
+
+}
+
+md_hook_after_the_content();
+
+if ( ! isset( $loop['post_footer']['remove'] ) )
+	md_byline( 'after_post', array(
+		'loop' => $loop,
+		'classes' => 'post-footer',
+		'html' => 'footer'
+	) );
 
 md_hook_content_item();
 
-echo "</$h>";
+echo "</$html>";

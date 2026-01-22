@@ -1,0 +1,120 @@
+<div class="md-content-wrap">
+
+	<?php $this->fields->devices(); ?>
+
+	<h2 class="md-title"><?php echo __( 'Fonts & Typography', 'md' ); ?></h2>
+
+	<p><?php echo __( 'Assign custom fonts and fine-tune your website\'s typography.', 'md' ); ?></p>
+
+	<hr class="md-sep" />
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Body', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+			<?php $this->fields->typography( 'body', array(
+				'font_size' => array(
+					'desktop' => $defaults['body']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['body']['line_height']['desktop']
+				),
+				'bold' => true
+			) ); ?>
+		</div>
+
+	</div>
+
+	<hr class="md-sep-small" />
+
+	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $h ) :
+		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
+	?>
+
+		<div class="md-widget md-toggle md-sep-small">
+
+			<h3 class="md-widget-title"><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?></h3>
+
+			<div class="md-widget-item">
+
+				<?php $this->fields->typography( $h, array(
+					'font_size' => array(
+						'desktop' => $defaults[$h]['font_size']['desktop']
+					),
+					'line_height' => array(
+						'desktop' => $defaults[$h]['line_height']['desktop']
+					),
+					'font_family' => array( 'placeholder' => $label ),
+					'font_weight' => array( 'empty_label' => $label )
+				) ); ?>
+
+			</div>
+
+		</div>
+
+	<?php endforeach; ?>
+
+	<hr class="md-sep-small" />
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+			<?php $this->fields->typography( 'header', array(
+				'font_size' => array(
+					'desktop' => $defaults['header']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['header']['line_height']['desktop']
+				)
+			) ); ?>
+		</div>
+
+	</div>
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+			<?php $this->fields->typography( 'sidebar', array(
+				'font_size' => array(
+					'desktop' => $defaults['sidebar']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['sidebar']['line_height']['desktop']
+				)
+			) ); ?>
+		</div>
+
+	</div>
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+			<?php $this->fields->typography( 'footer', array(
+				'font_size' => array(
+					'desktop' => $defaults['footer']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['footer']['line_height']['desktop']
+				)
+			) ); ?>
+		</div>
+
+	</div>
+
+	<?php $this->fields->field( 'google_fonts', array(
+		'type' => 'text',
+		'hidden' => true
+	) ); ?>
+
+	<hr class="md-sep-small" />
+
+	<?php $this->fields->save(); ?>
+
+</div>
