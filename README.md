@@ -5,7 +5,9 @@ Years in the making, this is the first commit of MD6.0 to GitHub..
 ## Known Issues
 
 - [ ] Block Editor and Classic Editor styles missing / incomplete
-- [x] Full Header Cover CSS styling missing
+- [x] Full Header Cover absolute position CSS styling missing
+- [ ] Full Header Cover mobile toggles need backgrounds to prevent overlap
+- [ ] Header Cover title spacing slightly off with extra `gap` when Title only
 - [ ] Breadcrumbs out of place on Full Header Cover
 - [ ] Loop `h1` different font size than single `h1`
 - [ ] Empty site: Header missing top/bottom padding
