@@ -29,6 +29,14 @@
 .is-box-style .header.cover { background-color: transparent; }
 <?php endif; ?>
 
+.header-cover.full-cover .header {
+	position: absolute;
+		left: 0;
+		top: 0;
+	width: 100%;
+	z-index: 10;
+}
+
 .header .inner {
 	align-items: center;
 	display: flex;

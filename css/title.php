@@ -19,6 +19,9 @@
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 }
 
+.header-cover.full-cover .page-title,
+.header-cover.full-cover .content > .post-title { padding-top: <?php echo $double * 2; ?>px; }
+
 @media all and (min-width: <?php echo $post_width; ?>px) {
 	.expanded .page-title,
 	.expanded .post-title,
@@ -43,9 +46,6 @@
 }
 
 @media all and (max-width: 900px) {
-/*
-	.box-style .page-title:first-child { padding-top: <?php echo $single; ?>px; }
-*/
 	.header-cover .compact.box-style > .post-title { margin-bottom: 0; }
 }
 
