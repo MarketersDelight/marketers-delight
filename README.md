@@ -34,7 +34,7 @@ require_once get_template_directory() . '/marketers-delight.php';
 - [ ] Full Header Cover mobile toggles need backgrounds to prevent overlap
 - [ ] Header Cover title spacing slightly off with extra `gap` when Title only
 - [ ] Breadcrumbs out of place on Full Header Cover
-- [ ] Titles in Loop full column needs to match font size on single posts (uses `h2` within loops)
+- [x] Titles in Loop full column needs to match font size on single posts (uses `h2` within loops)
 - [ ] Empty site: Header missing top/bottom padding
 - [ ] Layout options: Sidebar meta fields not toggling in all cases
 - [ ] 404 page frontend not loading content
