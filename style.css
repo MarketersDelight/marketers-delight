@@ -50,7 +50,7 @@ i, em, .italic { font-style: italic; }
 	font-weight: bold;
 	line-height: 86px;
 }
-h1, .h1, .large-title {
+h1, .h1, .large-title, .row.full .title {
 	font-size: 43px;
 	font-weight: bold;
 	line-height: 56px;
@@ -154,7 +154,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #1E1E1E; }
 }
 @media (max-width: 600px) {
 	.huge, .huge-title { font-size: 46px; line-height: 56px; }
-	h1, .h1, .large-title { font-size: 37px; line-height: 48px; }
+	h1, .h1, .large-title, .row.full .title { font-size: 37px; line-height: 48px; }
 	h2, .h2, .main-title { font-size: 31px; line-height: 42px; }
 	h3, .h3, .med-title { font-size: 26px; line-height: 36px; }
 	h4, .h4, .mid-title { font-size: 22px; line-height: 32px; }
