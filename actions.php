@@ -19,22 +19,29 @@ add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
  * @since 4.0
  */
 
-add_action( 'template_redirect', 'md_templates' );
-
 function md_templates() {
 	$context = is_singular() || is_404() ? 'post' : 'page';
+	$has_cover = md_has_header_cover( $context );
 
 	if ( md_has_post_content() )
 		add_action( 'md_hook_content', 'md_loop', 30, 2 );
 
-	if ( md_has_header_cover( $context ) )
+	if ( $has_cover )
 		add_action( 'md_hook_content_box_top', 'md_page_title' );
 	else
 		add_action( 'md_hook_content', 'md_page_title' );
 
-	$breadcrumbs = md_has_header_cover( $context ) == 'header_cover_full' ? 'md_hook_content_box_top' : 'md_hook_before_content_box';
+	$breadcrumbs = $has_cover == 'header_cover_full' ? 'md_hook_content_box_top' : 'md_hook_before_content_box';
 	add_action( $breadcrumbs, 'md_breadcrumbs' );
 }
+
+add_action( 'template_redirect', 'md_templates' );
+
+/**
+ * Call Post/Page Title dynamically.
+ *
+ * @since 4.0
+ */
 
 function md_page_title() {
 	if ( ! is_singular() && ! is_404() )

@@ -23,8 +23,7 @@
 .header-cover.full-cover .header:not([class*="show-"]) + .content > .post-title { padding-top: <?php echo $triple * 2; ?>px; }
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.expanded .page-title,
-	.expanded .post-title,
+	.expanded .page-title, .expanded .post-title,
 	.post-title.wide .inner {
 		align-items: center;
 		text-align: center;

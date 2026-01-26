@@ -53,10 +53,8 @@
 	gap: <?php echo $half; ?>px;
 }
 
-.header .menu a { color: <?php echo $colors['menu']['links']; ?>; }
-
-.header .menu li:hover > a,
-.header .menu li:hover > .toggle { color: <?php echo $colors['menu']['hover']; ?>; }
+.header .menu a,
+.header .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
 
 .header .current-menu-item > a,
 .header .current-menu-item > .toggle { color: <?php echo $colors['menu']['active']; ?>; }

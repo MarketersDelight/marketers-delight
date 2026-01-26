@@ -50,7 +50,7 @@ i, em, .italic { font-style: italic; }
 	font-weight: bold;
 	line-height: 86px;
 }
-h1, .h1, .large-title, .row.full .post-title {
+h1, .h1, .large-title, .row.full .post-title .title {
 	font-size: 43px;
 	font-weight: bold;
 	line-height: 56px;
@@ -154,7 +154,7 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: #1E1E1E; }
 }
 @media (max-width: 600px) {
 	.huge, .huge-title { font-size: 46px; line-height: 56px; }
-	h1, .h1, .large-title, .row.full .post-title { font-size: 37px; line-height: 48px; }
+	h1, .h1, .large-title, .row.full .post-title .title { font-size: 37px; line-height: 48px; }
 	h2, .h2, .main-title { font-size: 31px; line-height: 42px; }
 	h3, .h3, .med-title { font-size: 26px; line-height: 36px; }
 	h4, .h4, .mid-title { font-size: 22px; line-height: 32px; }
@@ -781,9 +781,8 @@ select {
 	display: flex;
 	gap: 16px;
 }
-.header .menu a { color: #444444; }
-.header .menu li:hover > a,
-.header .menu li:hover > .toggle { color: #AE2525; }
+.header .menu a,
+.header .sub-menu .trigger { color: #444444; }
 .header .current-menu-item > a,
 .header .current-menu-item > .toggle { color: #AE2525; }
 /* LAYOUTS */
@@ -802,6 +801,7 @@ select {
 	text-align: right;
 }
 /* SITE TITLE + TAGLINE */
+.logo { flex: 0 1 75px; max-width: 75px; }
 .logo a { display: block; }
 .site-title {
 	align-items: center;
@@ -919,8 +919,7 @@ select {
 .header-cover.full-cover .header:not([class*="show-"]) + .content .page-title,
 .header-cover.full-cover .header:not([class*="show-"]) + .content > .post-title { padding-top: 186px; }
 @media all and (min-width: 651px) {
-	.expanded .page-title,
-	.expanded .post-title,
+	.expanded .page-title, .expanded .post-title,
 	.post-title.wide .inner {
 		align-items: center;
 		text-align: center;
@@ -1274,8 +1273,9 @@ img.alignfull, .alignfull img { width: 100%; }
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 .cover, .cover a,
 .cover .byline,
-.cover .tagline, .cover .site-name a:hover,
-.cover .menu > .menu-item > a, .cover .menu > .menu-item > a:hover { color: #fff; }
+.cover .site-name a, .cover .tagline,
+.cover .menu > .menu-item > a,
+.cover .menu > .menu-item > a:hover { color: #fff; }
 .entry.image-center .cover,
 .entry.image-below .cover { margin-bottom: 0; }
 /* CAPTIONS */

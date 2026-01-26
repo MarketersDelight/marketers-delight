@@ -103,8 +103,9 @@
 
 .cover, .cover a,
 .cover .byline,
-.cover .tagline, .cover .site-name a:hover,
-.cover .menu > .menu-item > a, .cover .menu > .menu-item > a:hover { color: #fff; }
+.cover .site-name a, .cover .tagline,
+.cover .menu > .menu-item > a,
+.cover .menu > .menu-item > a:hover { color: #fff; }
 
 .entry.image-center .cover,
 .entry.image-below .cover { margin-bottom: 0; }
