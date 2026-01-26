@@ -113,18 +113,17 @@ triggers: function() {
 				location = this.getAttribute( 'data-md-location' ),
 				parent = this.getAttribute( 'data-md-parent' ),
 				container = this.closest( '.' + parent ),
-				classes = container.classList;
-			MD.toggleClass( container, 'show-' + type );
-			MD.toggleClass( container, 'from-' + location );
-			for ( var c = 0; c < classes.length; c++ ) {
-				var cl = classes[c];
-				if ( cl.startsWith( 'show-' ) )
-					container.classList.replace( cl, 'show-' + type );
-				if ( cl.startsWith( 'from-' ) )
-					container.classList.replace( cl, 'from-' + location );
+				showClass = 'show-' + type,
+				fromClass = 'from-' + location,
+				isActive = container.classList.contains( showClass ) && container.classList.contains( fromClass ),
+				classes = Array.from( container.classList );
+			for ( var c = 0; c < classes.length; c++ )
+				if ( classes[c].startsWith( 'show-' ) || classes[c].startsWith( 'from-' ) )
+					container.classList.remove( classes[c] );
+			if ( ! isActive ) {
+				MD.toggleClass( container, showClass );
+				MD.toggleClass( container, fromClass );
 			}
-			if ( parent === 'header' && MD.hasClass( container, 'cover' ) )
-				MD.toggleClass( container, 'cover' );
 			if ( type === 'search' )
 				container.querySelector( '.input' ).focus();
 					}
