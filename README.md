@@ -31,7 +31,7 @@ require_once get_template_directory() . '/marketers-delight.php';
 
 - [ ] Block Editor and Classic Editor styles missing / incomplete
 - [x] Full Header Cover absolute position CSS styling missing
-- [ ] Full Header Cover mobile toggles need backgrounds to prevent overlap
+- [x] Full Header Cover mobile toggles need backgrounds to prevent overlap
 - [ ] Header Cover - apply `alt` styling
 - [ ] Header Cover title spacing slightly off with extra `gap` when Title only
 - [ ] Breadcrumbs out of place on Full Header Cover
