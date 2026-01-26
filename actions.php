@@ -32,7 +32,7 @@ function md_templates() {
 	else
 		add_action( 'md_hook_content', 'md_page_title' );
 
-	$breadcrumbs = md_has_header_cover() ? 'md_hook_before_content_box' : 'md_hook_content_box_top';
+	$breadcrumbs = md_has_header_cover( $context ) == 'header_cover_full' ? 'md_hook_content_box_top' : 'md_hook_before_content_box';
 	add_action( $breadcrumbs, 'md_breadcrumbs' );
 }
 

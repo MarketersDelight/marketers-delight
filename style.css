@@ -83,7 +83,7 @@ h6, .h6, .micro-title {
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://MD:8890/wp-content/themes/marketers-delight/md.woff2') format('woff2');
+	src: url('https://md:8890/wp-content/themes/marketers-delight/md.woff2') format('woff2');
 	font-style: normal;
 	font-weight: 400;
 }

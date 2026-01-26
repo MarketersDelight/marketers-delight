@@ -35,7 +35,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://MD:8890/wp-content/themes/marketers-delight/md.woff2') format('woff');
+	src: url('https://md:8890/wp-content/themes/marketers-delight/md.woff2') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }

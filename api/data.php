@@ -8,6 +8,7 @@
 class md_fields_data {
 
 	public $sanitize;
+	public $values;
 
 	/**
      * Assign shared class data and other setup actions.
