@@ -29,7 +29,7 @@
 .is-box-style .header.cover { background-color: transparent; }
 <?php endif; ?>
 
-.header-cover.full-cover .header {
+.header-cover.full-cover .header:not([class*="show-"]) {
 	position: absolute;
 		left: 0;
 		top: 0;
@@ -219,7 +219,7 @@
 	<?php echo ! empty( $logo['logo_width']['mobile'] ) ? '.logo { flex-basis: ' . $logo['logo_width']['mobile'] . 'px; max-width: ' . $logo['logo_width']['mobile'] . 'px; }' : ''; ?>
 }
 
-/* STICKY */
+/* STICKY *
 
 .admin-bar.full-cover .header, .admin-bar .stuck { padding-top: <?php echo $admin_bar_height; ?>px; }
 
@@ -227,3 +227,4 @@
 	.admin-bar.full-cover .header, .admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
 }
 @media all and (max-width: 600px) { #wpadminbar { position: fixed; } }
+*/

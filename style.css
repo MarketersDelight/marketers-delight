@@ -761,7 +761,7 @@ select {
 				font-size: 19px;
 				line-height: 31px;
 	}
-.header-cover.full-cover .header {
+.header-cover.full-cover .header:not([class*="show-"]) {
 	position: absolute;
 		left: 0;
 		top: 0;
@@ -893,12 +893,13 @@ select {
 }
 @media all and (max-width: 600px) {
 			}
-/* STICKY */
+/* STICKY *
 .admin-bar.full-cover .header, .admin-bar .stuck { padding-top: 32px; }
 @media all and (max-width: 782px) {
 	.admin-bar.full-cover .header, .admin-bar .stuck { padding-top: 46px; }
 }
 @media all and (max-width: 600px) { #wpadminbar { position: fixed; } }
+*/
 /*------------------------------*\
 	$TITLES
 \*------------------------------*/
@@ -915,8 +916,8 @@ select {
 	flex-direction: column;
 	gap: 16px 31px;
 }
-.header-cover.full-cover .page-title,
-.header-cover.full-cover .content > .post-title { padding-top: 124px; }
+.header-cover.full-cover .header:not([class*="show-"]) + .content .page-title,
+.header-cover.full-cover .header:not([class*="show-"]) + .content > .post-title { padding-top: 186px; }
 @media all and (min-width: 651px) {
 	.expanded .page-title,
 	.expanded .post-title,

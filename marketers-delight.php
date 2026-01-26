@@ -197,9 +197,6 @@ final class marketers_delight {
 		if ( is_child_theme() && ! md_setting( array( 'settings', 'css', 'child' ) ) )
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
-		if ( $this->inline_css() )
-			wp_add_inline_style( 'marketers-delight', $this->inline_css() );
-
 		// Load scripts
 		wp_enqueue_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
@@ -250,25 +247,6 @@ final class marketers_delight {
 
 		if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
 			wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );
-	}
-
-	/**
-	 * Output inline CSS when needed.
-	 *
-	 * @since 6.0
-	 */
-
-	public function inline_css() {
-		$css = '';
-
-		if ( is_singular() ) {
-			$cover = md_cover();
-
-			if ( $cover['position'] == 'header_cover_full' && isset( $cover['bg_color'] ) )
-				$css .= '.header[class*="show-"] { background-color: ' . esc_attr( $cover['bg_color'] ) . '; }';
-		}
-
-		return $css;
 	}
 
 	/**

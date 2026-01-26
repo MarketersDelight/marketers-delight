@@ -19,8 +19,8 @@
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 }
 
-.header-cover.full-cover .page-title,
-.header-cover.full-cover .content > .post-title { padding-top: <?php echo $double * 2; ?>px; }
+.header-cover.full-cover .header:not([class*="show-"]) + .content .page-title,
+.header-cover.full-cover .header:not([class*="show-"]) + .content > .post-title { padding-top: <?php echo $triple * 2; ?>px; }
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
 	.expanded .page-title,
