@@ -35,7 +35,7 @@ require_once get_template_directory() . '/marketers-delight.php';
 - [ ] Header Cover title spacing slightly off with extra `gap` when Title only
 - [ ] Breadcrumbs out of place on Full Header Cover
 - [x] Titles in Loop full column needs to match font size on single posts (uses `h2` within loops)
-- [ ] Empty site: Header missing top/bottom padding
+- [x] Empty site: Header missing top/bottom padding
 - [ ] Layout options: Sidebar meta fields not toggling in all cases
 - [ ] 404 page frontend not loading content
 - [ ] Blocks / Widgets extracted from theme, need to build as Drop-in
