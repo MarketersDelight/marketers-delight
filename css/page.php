@@ -106,13 +106,6 @@
 .cover .tagline, .cover .site-name a:hover,
 .cover .menu > .menu-item > a, .cover .menu > .menu-item > a:hover { color: #fff; }
 
-.full .entry .cover {
-	padding-left: <?php echo $mid; ?>px;
-	padding-right: <?php echo $mid; ?>px;
-}
-
-.slim .entry .cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
-
 .entry.image-center .cover,
 .entry.image-below .cover { margin-bottom: 0; }
 

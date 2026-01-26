@@ -723,7 +723,7 @@ select {
 	/* MENU ITEM */
 	.menu-item { flex-flow: wrap; }
 	.menu-item:not(.toggle-menu-item):hover > a,
-	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.05); }
+	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.1); }
 	.menu-item:not(:last-child) { border-bottom: 1px solid #CCCCCC; }
 	.menu .button, .menu .button:hover {
 		padding: 16px;
@@ -971,6 +971,10 @@ select {
 .row > .entry,
 .entry > *:not(:last-child) { margin-bottom: 47px; }
 .loop .entry > *:not(:last-child) { margin-bottom: 31px; }
+.entry .cover {
+	padding-left: 16px;
+	padding-right: 16px;
+}
 /* BOX STYLE */
 .box-style.content { background-color: #F0F0F0; }
 .box-style .row .entry:not(:last-child),
@@ -982,11 +986,12 @@ select {
 	width: auto;
 }
 .box-style .entry > *:not(:last-child) { margin-bottom: 0; }
+.slim .entry .cover,
+.content-wrap .page-title.cover,
 .box-style .item,
-.box-style .entry .post-title,
+.box-style .entry .post-title:not(.cover),
 .box-style .entry .the-content,
-.box-style .entry .post-footer,
-.content-wrap .page-title.cover { padding: 31px 16px; }
+.box-style .entry .post-footer { padding: 31px 16px; }
 .box-style .post-title:not(.cover) + .the-content { padding-top: 0; }
 .box-style .post-footer { border-top: 1px solid #CCCCCC; }
 .box-style .entry .byline.post-footer {
@@ -1012,11 +1017,12 @@ select {
 /* QUERIES */
 @media all and (min-width: 651px) {
 	.content { padding-top: 31px; }
+	.full .entry .cover,
+	.content-wrap .page-title.cover,
 	.box-style .item,
-	.box-style .full .post-title,
+	.box-style .full .post-title:not(.cover),
 	.box-style .full .the-content,
-	.box-style .full .post-footer,
-	.content-wrap .page-title.cover { padding: 47px; }
+	.box-style .full .post-footer { padding: 47px; }
 	.box-style.expanded .row .the-content {
 		padding-left: 0;
 		padding-right: 0;
@@ -1269,11 +1275,6 @@ img.alignfull, .alignfull img { width: 100%; }
 .cover .byline,
 .cover .tagline, .cover .site-name a:hover,
 .cover .menu > .menu-item > a, .cover .menu > .menu-item > a:hover { color: #fff; }
-.full .entry .cover {
-	padding-left: 47px;
-	padding-right: 47px;
-}
-.slim .entry .cover { padding: 31px 16px; }
 .entry.image-center .cover,
 .entry.image-below .cover { margin-bottom: 0; }
 /* CAPTIONS */

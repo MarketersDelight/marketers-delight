@@ -103,7 +103,7 @@
 	/* MENU ITEM */
 	.menu-item { flex-flow: wrap; }
 	.menu-item:not(.toggle-menu-item):hover > a,
-	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.05); }
+	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.1); }
 	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.menu .button, .menu .button:hover {
 		padding: <?php echo $half; ?>px;

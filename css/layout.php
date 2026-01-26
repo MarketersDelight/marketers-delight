@@ -38,6 +38,11 @@
 
 .loop .entry > *:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
+.entry .cover {
+	padding-left: <?php echo $half; ?>px;
+	padding-right: <?php echo $half; ?>px;
+}
+
 /* BOX STYLE */
 
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
@@ -54,11 +59,12 @@
 
 .box-style .entry > *:not(:last-child) { margin-bottom: 0; }
 
+.slim .entry .cover,
+.content-wrap .page-title.cover,
 .box-style .item,
-.box-style .entry .post-title,
+.box-style .entry .post-title:not(.cover),
 .box-style .entry .the-content,
-.box-style .entry .post-footer,
-.content-wrap .page-title.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+.box-style .entry .post-footer { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
 .box-style .post-title:not(.cover) + .the-content { padding-top: 0; }
 
@@ -94,11 +100,12 @@
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
 	.content { padding-top: <?php echo $single; ?>px; }
+	.full .entry .cover,
+	.content-wrap .page-title.cover,
 	.box-style .item,
-	.box-style .full .post-title,
+	.box-style .full .post-title:not(.cover),
 	.box-style .full .the-content,
-	.box-style .full .post-footer,
-	.content-wrap .page-title.cover { padding: <?php echo $mid; ?>px; }
+	.box-style .full .post-footer { padding: <?php echo $mid; ?>px; }
 	.box-style.expanded .row .the-content {
 		padding-left: 0;
 		padding-right: 0;
