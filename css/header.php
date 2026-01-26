@@ -43,8 +43,8 @@
 }
 
 .header-controls {
-	padding-bottom: <?php echo $small; ?>px;
-	padding-top: <?php echo $small; ?>px;
+	padding-bottom: <?php echo $third; ?>px;
+	padding-top: <?php echo $third; ?>px;
 }
 
 .header-triggers {
@@ -63,7 +63,10 @@
 
 /* LAYOUTS */
 
-.header.simple { text-align: center; }
+.header.simple .inner {
+	justify-content: center;
+	text-align: center;
+}
 
 .left .header-triggers { justify-content: space-between; }
 

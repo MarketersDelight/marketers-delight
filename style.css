@@ -773,8 +773,8 @@ select {
 	display: flex;
 }
 .header-controls {
-	padding-bottom: 5px;
-	padding-top: 5px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 .header-triggers {
 	align-items: center;
@@ -787,7 +787,10 @@ select {
 .header .current-menu-item > a,
 .header .current-menu-item > .toggle { color: #AE2525; }
 /* LAYOUTS */
-.header.simple { text-align: center; }
+.header.simple .inner {
+	justify-content: center;
+	text-align: center;
+}
 .left .header-triggers { justify-content: space-between; }
 .right .header-triggers {
 	flex-direction: row-reverse;

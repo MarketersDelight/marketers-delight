@@ -104,20 +104,23 @@ function md_menu( $fields = array() ) {
 
 	$args = array(
 		'menu' => md_module( array( 'layout', 'header_menu' ), $menu_id ),
-		'container' => false,
-		'fallback_cb' => false,
 		'menu_class' => esc_attr( $menu_class ),
+		'container' => 'nav',
+		'container_class' => "header-menu $location-menu",
+		'echo' => false,
+		'fallback_cb' => false,
 		'walker' => new md_menu_walker( true, true )
 	);
 
-	if ( empty( $menu_id ) ) {
-		$menu_location = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
-		$args['theme_location'] = $menu_location;
-	}
+	if ( empty( $menu_id ) )
+		$args['theme_location'] = is_user_logged_in() && has_nav_menu( 'header_loggedin' ) ? 'header_loggedin' : 'header';
 
-	echo '<nav class="header-menu ' . esc_attr( $location ) . '-menu">';
-	wp_nav_menu( $args );
-	echo '</nav>';
+	$menu = wp_nav_menu( $args );
+
+	if ( $menu ) echo
+		( isset( $fields['wrap'] ) ? '<div class="' . esc_attr( $fields['wrap'] ) . '">' : '' ).
+		$menu.
+		( isset( $fields['wrap'] ) ? '</div>' : '' );
 }
 
 /**
@@ -131,6 +134,7 @@ function md_trigger( $type = 'menu', $args = array() ) {
 	$elements = md_get_builder( 'header', 'elements' );
 	$id = ! empty( $elements[$type][0] ) ? $elements[$type][0] : '';
 	$location = md_get_builder( 'header', 'locations', $id );
+	$location = ! empty( $location ) ? $location : 'primary';
 	$parent = isset( $args['parent'] ) ? $args['parent'] : 'header';
 
 	$title = isset( $args['title'] ) ? $args['title'] : '';

@@ -1,6 +1,7 @@
 <?php
 
 $header = md_get_builder( 'header' );
+$fields = md_setting( array( 'header', 'builder' ), array() );
 $mobile = md_setting( array( 'header', 'layout_mobile' ) );
 
 md_template( 'head' );
@@ -43,9 +44,8 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 
 		?></div>
 
-		<?php // Display Primary and Aside Header Sections
-			$fields = md_setting( array( 'header', 'builder' ), array() );
-			foreach ( array( 'primary', 'aside' ) as $section ) {
+		<?php if ( ! empty( $header['data'] ) )
+			foreach ( array_keys( $header['data'] ) as $section ) {
 				if ( empty( $header['data'][$section] ) )
 					continue;
 
@@ -69,11 +69,8 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 				echo '</div>';
 		} ?>
 
-		<?php if ( empty( $header['data'] ) ) : ?>
-		<div class="header-primary">
-			<?php md_menu(); ?>
-		</div>
-		<?php endif; ?>
+		<?php if ( empty( $header['data'] ) )
+			md_menu( array( 'wrap' => 'header-primary' ) ); ?>
 
 		<?php md_hook_after_header(); ?>
 
