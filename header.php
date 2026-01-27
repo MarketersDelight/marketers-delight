@@ -24,27 +24,31 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 			if ( md_has_logo() )
 				md_logo();
 
-			echo '<div class="header-triggers">';
+			if ( md_has_menu() ) {
 
-			if ( ! empty( $header['elements']['search'] ) )
-				md_trigger( 'search', array( 'title' => __( 'Search', 'md' ) ) );
+				echo '<div class="header-triggers">';
 
-			if ( md_has_menu() && $mobile !== 'expanded' )
-				md_trigger();
+				if ( ! empty( $header['elements']['search'] ) )
+					md_trigger( 'search', array( 'title' => __( 'Search', 'md' ) ) );
 
-			if ( ! empty( $header['elements']['link'] ) )
-				foreach ( $header['elements']['link'] as $c => $link_id ) {
-					$link = md_setting( array( 'header', 'builder', $link_id ) );
-					md_link( $link );
-				}
+				if ( md_has_menu() && $mobile !== 'expanded' )
+					md_trigger();
 
-			do_action( 'md_hook_header_triggers' );
+				if ( ! empty( $header['elements']['link'] ) )
+					foreach ( $header['elements']['link'] as $c => $link_id ) {
+						$link = md_setting( array( 'header', 'builder', $link_id ) );
+						md_link( $link );
+					}
 
-			echo '</div>';
+				do_action( 'md_hook_header_triggers' );
+
+				echo '</div>';
+
+			}
 
 		?></div>
 
-		<?php if ( ! empty( $header['data'] ) )
+		<?php if ( ! empty( $header['data'] ) && md_has_menu() )
 			foreach ( array_keys( $header['data'] ) as $section ) {
 				if ( empty( $header['data'][$section] ) )
 					continue;

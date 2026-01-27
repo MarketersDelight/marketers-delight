@@ -10,8 +10,8 @@ function md_get_title( $context = 'post' ) {
 	$title = get_the_title();
 
 	if ( $context == 'post' ) {
-		if ( is_404() )
-			$title = __( 'Nothing Found', 'md' );
+		if ( is_404() && ! md_has_custom_404() )
+			$title = __( 'Page not found', 'md' );
 
 		return $title;
 	}

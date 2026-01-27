@@ -794,10 +794,11 @@ select {
 .header .current-menu-item > a,
 .header .current-menu-item > .toggle { color: #AE2525; }
 /* LAYOUTS */
-.header.simple .inner {
-	justify-content: center;
-	text-align: center;
-}
+.header.simple .inner,
+.header.simple .header-primary,
+.header.simple .header-aside,
+.header.simple .header-controls,
+.header.simple .header-triggers { justify-content: center; }
 .left .header-triggers { justify-content: space-between; }
 .right .header-triggers {
 	flex-direction: row-reverse;
@@ -862,6 +863,10 @@ select {
 		order: 3;
 	}
 	.center .site-title { justify-content: center; }
+	.header.simple .header-primary, .header.simple .header-aside {
+		padding-bottom: 10px;
+		padding-top: 10px;
+	}
 	/* STATES */
 	.header.show-search .inner { column-gap: 16px; }
 	.show-search.from-aside .header-primary,

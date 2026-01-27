@@ -20,7 +20,7 @@ if ( $loop['content'] !== 'hide' ) {
 
 	md_hook_the_content_top();
 
-	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && in_the_loop() ) ) {
+	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
 		if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
 			echo get_the_content();
 		else

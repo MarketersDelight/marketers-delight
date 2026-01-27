@@ -99,6 +99,12 @@ function md_loop( $args = array() ) {
 	$loop['by_category'] = ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) ? true : false;
 	$loop['has_sidebar'] = md_has_sidebar();
 
+	if ( isset( $args['in_loop'] ) )
+		$loop['in_loop'] = true;
+
+	if ( isset( $args['sticky'] ) )
+		$loop['sticky'] = true;
+
 	if ( empty( $loop['posts_per_page'] ) )
 		$loop['posts_per_page'] = get_option( 'posts_per_page' );
 
@@ -144,7 +150,7 @@ function md_loop( $args = array() ) {
 
 	do_action( 'md_loop_before' );
 
-	if ( isset( $args['sticky'] ) || isset( $args['single'] ) )
+	if ( isset( $loop['sticky'] ) || isset( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
 	elseif ( $loop['by_category'] )
 		include md_template( 'loop/category-posts', true );
@@ -154,7 +160,7 @@ function md_loop( $args = array() ) {
 		echo '</div>';
 	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() && ! is_404() ? "<div class=\"$loop_classes\">" : '';
+		echo ! is_singular() ? "<div class=\"$loop_classes\">" : '';
 
 		md_hook_loop_top();
 
@@ -163,7 +169,7 @@ function md_loop( $args = array() ) {
 			include md_template( 'loop/the-post', true );
 		}
 
-		if ( ! is_singular() && ! is_404() ) {
+		if ( ! is_singular() ) {
 			echo '</div>';
 			md_pagination( $loop );
 		}
@@ -282,10 +288,17 @@ function md_loop_featured( $loop ) {
  * @since 4.0
  */
 
-function md_404() {
+function md_has_custom_404() {
 	$page_404 = md_setting( array( 'settings', '404_page' ) );
 
-	if ( $page_404 && get_post_status( $page_404 ) ) {
+	if ( is_404() && $page_404 && get_post_status( $page_404 ) )
+		return $page_404;
+}
+
+function md_404() {
+	$page_404 = md_has_custom_404();
+
+	if ( $page_404 ) {
 		$query_404 = new WP_Query( array(
 			'post_type' => 'page',
 			'p' => $page_404,
@@ -295,12 +308,12 @@ function md_404() {
 		if ( $query_404->have_posts() )
 			while ( $query_404->have_posts() ) {
 				$query_404->the_post();
-				md_loop( array( 'single' => true ) );
+				md_loop( array( 'in_loop' => true ) );
 			}
 
 		wp_reset_query();
 	}
-	else md_loop( array( 'single' => true ) );
+	else md_loop( array( 'in_loop' => true ) );
 }
 
 /**

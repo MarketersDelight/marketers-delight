@@ -71,10 +71,11 @@
 
 /* LAYOUTS */
 
-.header.simple .inner {
-	justify-content: center;
-	text-align: center;
-}
+.header.simple .inner,
+.header.simple .header-primary,
+.header.simple .header-aside,
+.header.simple .header-controls,
+.header.simple .header-triggers { justify-content: center; }
 
 .left .header-triggers { justify-content: space-between; }
 
@@ -181,6 +182,10 @@
 		order: 3;
 	}
 	.center .site-title { justify-content: center; }
+	.header.simple .header-primary, .header.simple .header-aside {
+		padding-bottom: <?php echo $third; ?>px;
+		padding-top: <?php echo $third; ?>px;
+	}
 	/* STATES */
 	.header.show-search .inner { column-gap: <?php echo $half; ?>px; }
 	.show-search.from-aside .header-primary,

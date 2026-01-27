@@ -89,7 +89,7 @@ function md_content_classes( $classes = array() ) {
 	if ( ! md_has_sidebar() )
 		$classes[] = 'inner';
 
-	if ( is_singular() ) {
+	if ( is_singular() || is_404() ) {
 		$classes[] = 'row';
 		$classes[] = 'full';
 	}
