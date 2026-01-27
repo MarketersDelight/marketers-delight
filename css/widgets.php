@@ -13,7 +13,7 @@
 
 .wp-block-latest-comments__comment { line-height: inherit; }
 
-.widget-title { margin-bottom: <?php echo $half; ?>px; }
+.widget-title, .widget .wp-block-heading { margin-bottom: <?php echo $half; ?>px; }
 
 /* SIDEBAR */
 
@@ -28,9 +28,11 @@
 
 .sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar .widget-title { color: <?php echo $colors['sidebar']['title']; ?>; }
+.sidebar .widget-title,
+.sidebar .wp-block-heading { color: <?php echo $colors['sidebar']['title']; ?>; }
 
-.sidebar .widget-title a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+.sidebar .widget-title a,
+.sidebar .wp-block-heading a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
 
 /* FOOTER */
 
@@ -45,9 +47,11 @@
 
 .footer a { color: <?php echo $colors['footer']['links']; ?>; }
 
-.footer .widget-title { color: <?php echo $colors['footer']['title']; ?>; }
+.footer .widget-title,
+.footer .wp-block-heading { color: <?php echo $colors['footer']['title']; ?>; }
 
-.footer .widget-title a { color: <?php echo $colors['footer']['title_link']; ?>; }
+.footer .widget-title a,
+.footer .wp-block-heading a { color: <?php echo $colors['footer']['title_link']; ?>; }
 
 .footer .columns {
 	padding-bottom: <?php echo $mid; ?>px;

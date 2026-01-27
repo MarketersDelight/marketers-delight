@@ -19,7 +19,7 @@ $titles = array(
 	'h1' => 'h1, .h1, .large-title, .row.full .post-title .title',
 	'h2' => 'h2, .h2, .main-title',
 	'h3' => 'h3, .h3, .med-title',
-	'h4' => 'h4, .h4, .mid-title',
+	'h4' => 'h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading',
 	'h5' => 'h5, .h5, .small-title',
 	'h6' => 'h6, .h6, .micro-title'
 );
