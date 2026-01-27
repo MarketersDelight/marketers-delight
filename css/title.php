@@ -19,10 +19,10 @@
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 }
 
-.header-cover.full-cover .header:not([class*="show-"]) + .content .page-title,
-.header-cover.full-cover .header:not([class*="show-"]) + .content > .post-title { padding-top: <?php echo $triple * 2; ?>px; }
+.header-cover.full-cover .content .page-title,
+.header-cover.full-cover .content > .post-title { padding-top: <?php echo $triple * 2; ?>px; }
 
-@media all and (min-width: <?php echo $post_width; ?>px) {
+@media (min-width: <?php echo $post_width; ?>px) {
 	.expanded .page-title, .expanded .post-title,
 	.post-title.wide .inner {
 		align-items: center;
@@ -44,7 +44,7 @@
 	.title-wrap, .image-inline .wrap, .image-inline.inline .description { flex: 1; }
 }
 
-@media all and (max-width: 900px) {
+@media (max-width: 900px) {
 	.header-cover .compact.box-style > .post-title { margin-bottom: 0; }
 }
 

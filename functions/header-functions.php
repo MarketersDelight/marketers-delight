@@ -18,9 +18,6 @@ function md_header_classes() {
 	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
 		$classes[] = 'sticky';
 
-	if ( md_has_header_cover() == 'header_cover_full' )
-		$classes[] = 'cover';
-
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 
 	return join( ' ', $classes );

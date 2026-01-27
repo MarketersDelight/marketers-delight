@@ -316,8 +316,14 @@ final class marketers_delight {
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
 			$classes[] = 'header-cover';
 
-			if ( $cover['position'] == 'header_cover_full' )
+			if ( $cover['position'] == 'header_cover_full' ) {
 				$classes[] = 'full-cover';
+
+				if ( isset( $cover['display']['alternate'] ) )
+					$classes[] = 'cover-alt';
+				else
+					$classes[] = 'cover-text';
+			}
 		}
 
 		return $classes;

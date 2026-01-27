@@ -101,11 +101,9 @@
 
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
-.cover, .cover a,
-.cover .byline,
-.cover .site-name a, .cover .tagline,
-.cover .menu > .menu-item > a,
-.cover .menu > .menu-item > a:hover { color: #fff; }
+.cover, .cover a, .cover .byline { color: #fff; }
+
+.cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text']; ?>; }
 
 .entry.image-center .cover,
 .entry.image-below .cover { margin-bottom: 0; }

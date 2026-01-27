@@ -136,7 +136,6 @@ triggers: function() {
 				showClass = 'show-' + type,
 				fromClass = 'from-' + location,
 				isActive = container.classList.contains( showClass ) && container.classList.contains( fromClass ),
-				hasCover = container.classList.contains( 'cover' ),
 				classes = Array.from( container.classList );
 
 			for ( var c = 0; c < classes.length; c++ )
@@ -146,14 +145,6 @@ triggers: function() {
 			if ( ! isActive ) {
 				MD.toggleClass( container, showClass );
 				MD.toggleClass( container, fromClass );
-				container.classList.remove( 'cover' );
-
-				if ( hasCover && ! container._hadCover )
-					container._hadCover = true;
-			}
-			else if ( container._hadCover ) {
-				container.classList.add( 'cover' );
-				delete container._hadCover;
 			}
 
 			if ( type === 'search' )

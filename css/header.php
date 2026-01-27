@@ -25,14 +25,24 @@
 	<?php endif; ?>
 }
 
+.cover-text .header .site-name a,
+.cover-text .header .tagline,
+.cover-text .header .trigger,
+.cover-text .header .menu > .menu-item > a { color: #fff; }
+
+.cover-alt .header .site-name a,
+.cover-alt .header .tagline,
+.cover-alt .header .trigger,
+.cover-alt .header .menu > .menu-item > a { color: <?php echo $colors['site']['text']; ?>; }
+
 <?php if ( ! empty ( $colors['header']['bg_color'] ) ) : ?>
 .is-box-style .header.cover { background-color: transparent; }
 <?php endif; ?>
 
-.header-cover.full-cover .header:not([class*="show-"]) {
+.header-cover.full-cover .header {
 	position: absolute;
 		left: 0;
-		top: 0;
+		top: <?php echo $half; ?>px;
 	width: 100%;
 	z-index: 10;
 }
@@ -54,7 +64,7 @@
 }
 
 .header .menu a,
-.header .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
+.header .menu .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
 
 .header .current-menu-item > a,
 .header .current-menu-item > .toggle { color: <?php echo $colors['menu']['active']; ?>; }
@@ -181,6 +191,7 @@
 }
 
 @media all and (max-width: 900px) {
+	.header-cover.full-cover .header[class*="show-"] { position: static; }
 	.header .inner {
 		flex-direction: column;
 		padding-left: 0;
@@ -209,6 +220,11 @@
 	/* LAYOUTS */
 	.left .header-triggers, .center .header-triggers { justify-content: end; }
 	.right .header-triggers { order: -1; }
+	/* COVER */
+	.full-cover .header[class*="show-"] .site-name a,
+	.full-cover .header[class*="show-"] .tagline,
+	.full-cover .header[class*="show-"] .trigger,
+	.full-cover .header[class*="show-"] .menu > .menu-item > a { color: inherit; }
 }
 
 @media all and (max-width: 600px) {
@@ -217,12 +233,10 @@
 	<?php echo ! empty( $logo['logo_width']['mobile'] ) ? '.logo { flex-basis: ' . $logo['logo_width']['mobile'] . 'px; max-width: ' . $logo['logo_width']['mobile'] . 'px; }' : ''; ?>
 }
 
-/* STICKY *
+/* STICKY */
 
-.admin-bar.full-cover .header, .admin-bar .stuck { padding-top: <?php echo $admin_bar_height; ?>px; }
+.admin-bar.full-cover .header, .admin-bar .stuck { top: <?php echo $admin_bar_height; ?>px; }
 
 @media all and (max-width: 782px) {
-	.admin-bar.full-cover .header, .admin-bar .stuck { padding-top: <?php echo $admin_bar_height_mobile; ?>px; }
+	.admin-bar.full-cover .header, .admin-bar .stuck { top: <?php echo $admin_bar_height_mobile; ?>px; }
 }
-@media all and (max-width: 600px) { #wpadminbar { position: fixed; } }
-*/
