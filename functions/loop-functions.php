@@ -288,13 +288,6 @@ function md_loop_featured( $loop ) {
  * @since 4.0
  */
 
-function md_has_custom_404() {
-	$page_404 = md_setting( array( 'settings', '404_page' ) );
-
-	if ( is_404() && $page_404 && get_post_status( $page_404 ) )
-		return $page_404;
-}
-
 function md_404() {
 	$page_404 = md_has_custom_404();
 
@@ -314,6 +307,19 @@ function md_404() {
 		wp_reset_query();
 	}
 	else md_loop( array( 'in_loop' => true ) );
+}
+
+/**
+ * Check if custom 404 page is enabled and published.
+ *
+ * @since 6.0
+ */
+
+function md_has_custom_404() {
+	$page_404 = md_setting( array( 'settings', '404_page' ) );
+
+	if ( is_404() && $page_404 && get_post_status( $page_404 ) )
+		return $page_404;
 }
 
 /**

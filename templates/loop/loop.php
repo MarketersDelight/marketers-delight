@@ -21,10 +21,13 @@ if ( $loop['content'] !== 'hide' ) {
 	md_hook_the_content_top();
 
 	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
-		if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
-			echo get_the_content();
+		if ( is_404() )
+			include_once md_template( 'loop/404', true );
 		else
-			the_content( esc_html( $loop['read_more'] ) );
+			if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
+				echo get_the_content();
+			else
+				the_content( esc_html( $loop['read_more'] ) );
 
 		wp_link_pages();
 	}
