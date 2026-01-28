@@ -10,7 +10,7 @@ function md_header_classes() {
 	$classes = array();
 	$classes[] = 'header';
 
-	if ( ! md_has_menu() || ! md_has_logo() )
+	if ( ! md_has_menu() || ! md_has_logo() || ! md_has_header_elements() )
 		$classes[] = 'simple';
 	else
 		$classes[] = md_setting( array( 'header', 'layout' ), 'left' );
@@ -49,6 +49,24 @@ function md_has_header() {
 }
 
 /**
+ * Check if removing all header elements.
+ *
+ * @since 6.0
+ */
+
+function md_has_header_elements() {
+	$elements = md_get_builder( 'header', 'elements' );
+
+	if ( ! md_has_menu() )
+		unset( $elements['menu'] );
+
+	if ( $elements &&
+		! md_module( array( 'layout', 'header', 'remove' ) ) &&
+		! md_module( array( 'layout', 'header', 'elements' ) )
+	) return true;
+}
+
+/**
  * Outputs the menu name assigned to the specified Menu area.
  *
  * @since 4.0
@@ -80,9 +98,8 @@ function md_has_menu() {
 	if (
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&
 		! md_module( array( 'layout', 'header', 'menu' ) ) &&
-		( ! empty( $elements['menu'] ) || empty( $elements['menu'] ) && has_nav_menu( 'header' ) )
-	)
-		return true;
+		( ! empty( $elements['menu'] ) || ( empty( $elements ) && has_nav_menu( 'header' ) ) )
+	) return true;
 }
 
 /**
@@ -92,6 +109,9 @@ function md_has_menu() {
  */
 
 function md_menu( $fields = array() ) {
+	if ( ! md_has_menu() )
+		return;
+
 	$location = isset( $fields['area'] ) ? $fields['area'] : 'primary';
 	$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
 	$menu_class = 'menu menu-' . esc_attr( $location );

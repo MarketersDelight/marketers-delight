@@ -54,7 +54,7 @@ class md_layout extends md_api {
 		$fields = array(
 			'header' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'logo', 'tagline', 'menu' )
+				'options' => array( 'remove', 'logo', 'tagline', 'menu', 'elements' )
 			),
 			'header_menu' => array(
 				'type' => 'select',

@@ -24,7 +24,7 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 			if ( md_has_logo() )
 				md_logo();
 
-			if ( md_has_menu() ) {
+			if ( md_has_header_elements() ) {
 
 				echo '<div class="header-triggers">';
 
@@ -48,7 +48,7 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 
 		?></div>
 
-		<?php if ( ! empty( $header['data'] ) && md_has_menu() )
+		<?php if ( md_has_header_elements() )
 			foreach ( array_keys( $header['data'] ) as $section ) {
 				if ( empty( $header['data'][$section] ) )
 					continue;

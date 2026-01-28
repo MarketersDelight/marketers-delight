@@ -32,6 +32,15 @@
 
 			<?php endif; ?>
 
+			<?php if ( md_has_header_elements() )
+				$this->fields->field( 'header', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'elements' => __( 'Remove <b>Elements</b>', 'md' )
+					)
+				)
+			); ?>
+
 			<?php if ( md_has_menu() ) : ?>
 
 				<?php $this->fields->field( 'header', array(
