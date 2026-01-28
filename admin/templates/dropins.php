@@ -96,7 +96,7 @@
 			<?php endforeach; ?>
 		<?php else : ?>
 			<div class="md-dropin">
-				<p><?php echo __( 'No Drop-ins found.', 'md' ); ?></p>
+				<p class="md-dropin-inner"><?php echo __( 'No Drop-ins found.', 'md' ); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>
