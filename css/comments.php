@@ -49,7 +49,7 @@
 
 .comment-details {
 	align-items: center;
-	background-color: <?php echo $colors['content']['body_color']; ?>;
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	display: flex;
 	padding-bottom: <?php echo $half; ?>px;
 	position: relative;
@@ -103,7 +103,7 @@
 
 .comment-controls a:hover { background-color: rgba(0, 0, 0, 0.05); }
 
- .comment-controls i {
+.comment-controls i {
 	font-size: 0.85em;
 	margin-right: <?php echo $small; ?>px;
 }
@@ -145,6 +145,10 @@
 		bottom: 0;
 		left: 0;
 	width: 100%;
+}
+
+.box-style .toggle-comment .comment-content:after {
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['content']['bg_color']; ?> 80%);
 }
 
 /* TIMELINE */

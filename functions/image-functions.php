@@ -93,7 +93,9 @@ function md_has_image( $context = 'post', $args = array() ) {
 function md_image_position( $context = 'post' ) {
 	$default = 'right';
 
-	if ( $context == 'page' ) {
+	if ( is_author() ) // 6.0 - author is hardcoded until dedicated option page is added
+		$position = $default;
+	elseif ( $context == 'page' ) {
 		$position = md_post_type_field( array( 'page_image', 'position' ), $default );
 
 		if ( is_category() || is_tax() )

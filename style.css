@@ -1455,7 +1455,7 @@ img.alignfull, .alignfull img { width: 100%; }
 .comment:not(:last-child) { margin-bottom: 31px; }
 .comment-details {
 	align-items: center;
-	background-color: #F0F0F0;
+	background-color: #FFFFFF;
 	display: flex;
 	padding-bottom: 16px;
 	position: relative;
@@ -1497,7 +1497,7 @@ img.alignfull, .alignfull img { width: 100%; }
 	text-decoration: none;
 }
 .comment-controls a:hover { background-color: rgba(0, 0, 0, 0.05); }
- .comment-controls i {
+.comment-controls i {
 	font-size: 0.85em;
 	margin-right: 5px;
 }
@@ -1531,6 +1531,9 @@ img.alignfull, .alignfull img { width: 100%; }
 		bottom: 0;
 		left: 0;
 	width: 100%;
+}
+.box-style .toggle-comment .comment-content:after {
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, #FFFFFF 80%);
 }
 /* TIMELINE */
 .comment-timeline {
