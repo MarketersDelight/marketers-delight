@@ -420,15 +420,19 @@ function md_get_post_type( $post_id = null ) {
 
 function md_get_builder( $id, $type = null, $key = null ) {
 	$builder = array();
-	$data = md_setting( array( $id, "builder_{$type}" ) );
 
-	if ( empty( $data ) )
-		return $builder;
+	if ( $type ) {
+		$data = md_setting( array( $id, "builder_{$type}" ) );
 
-	if ( $type )
-		$builder = unserialize( $data );
-	else foreach ( array( 'elements', 'data', 'locations' ) as $type )
-		$builder[$type] = unserialize( $data );
+		if ( $data )
+			$builder = unserialize( $data );
+	}
+	else foreach ( array( 'elements', 'data', 'locations' ) as $type ) {
+		$data = md_setting( array( $id, "builder_{$type}" ) );
+
+		if ( $data )
+			$builder[$type] = unserialize( $data );
+	}
 
 	if ( ! empty( $key ) )
 		$builder = ! empty( $builder[$key] ) ? $builder[$key] : array();
