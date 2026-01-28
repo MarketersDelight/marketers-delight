@@ -31,9 +31,9 @@ require_once get_template_directory() . '/marketers-delight.php';
 
 - [ ] Block Editor and Classic Editor styles missing / incomplete
 - [ ] Layout options: Sidebar meta fields not toggling in all cases
-- [ ] 404 page frontend not loading content
 - [ ] Blocks / Widgets extracted from theme, need to build as Drop-in
 - [ ] Header Cover title spacing slightly off with extra `gap` when Title only
+- [x] 404 page frontend not loading content
 - [x] Full Header Cover absolute position CSS styling missing
 - [x] Full Header Cover mobile toggles need backgrounds to prevent overlap
 - [x] Header Cover - apply `alt` styling
