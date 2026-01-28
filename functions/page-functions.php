@@ -28,6 +28,8 @@ function md_get_title( $context = 'post' ) {
 		$title = single_cat_title( '', false );
 	elseif ( is_tag() )
 		$title = single_tag_title( '', false );
+	elseif ( is_search() )
+		$title = sprintf( esc_html__( 'Search Results For: %s', 'md' ), '<span class="search-query">' . get_search_query() . '</span>' );
 	elseif ( is_author() )
 		$title = get_the_author();
 	elseif ( is_year() )
@@ -142,7 +144,7 @@ function md_link( $fields, $p = '' ) {
 function md_get_link( $fields, $p = '' ) {
 	$html = $attrs = '';
 	$styles = array();
-	$defaults = array(
+	$fields = wp_parse_args( $fields, array(
 		'type' => 'url',
 		'style' => 'link',
 		'area' => '',
@@ -162,9 +164,7 @@ function md_get_link( $fields, $p = '' ) {
 			'hide_label' => '',
 			'hide_label_mobile' => ''
 		)
-	);
-
-	$fields = wp_parse_args( $fields, $defaults );
+	) );
 
 	if ( ( $fields['user'] == 'logged_out' && is_user_logged_in() ) || ( $fields['user'] == 'logged_in' && ! is_user_logged_in() ) )
 		return;
@@ -371,30 +371,7 @@ function md_author_box() {
  * @since 6.0
  */
 
-function md_search( $fields ) {
-	$id = isset( $fields['id'] ) ? $fields['id'] : 's';
-	$location = isset( $fields['location'] ) ? $fields['location'] : '';
-	$parent = isset( $fields['parent'] ) ? $fields['parent'] : 'header';
-	$title = isset( $fields['title'] ) ? $fields['title'] : __( 'Search', 'md' );
-	$placeholder = isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Type to search...', 'md' );
-	$submit_text = isset( $fields['submit_text'] ) ? $fields['submit_text'] : __( 'Search', 'md' );
-
-	$fields['classes'][] = 'search-form';
-	$fields['classes'][] = 'form-icons';
-
-	if ( ! empty( $fields['toggle']['search'] ) )
-		$fields['classes'][] = 'form-toggle';
-	else
-		$fields['classes'][] = 'inline';
-
-	if ( ! empty( $fields['toggle']['hide_label'] ) )
-		$fields['classes'][] = 'hide-label';
-
-	if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
-		$fields['classes'][] = 'hide-label-mobile';
-
-	$classes = join( ' ', $fields['classes'] );
-
+function md_search( $args = array() ) {
 	include locate_template( 'searchform.php' );
 }
 

@@ -21,7 +21,7 @@ if ( $loop['content'] !== 'hide' ) {
 	md_hook_the_content_top();
 
 	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
-		if ( is_404() )
+		if ( is_404() && ! md_has_custom_404() )
 			include_once md_template( 'loop/404', true );
 		else
 			if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )

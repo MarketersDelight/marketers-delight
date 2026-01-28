@@ -6,7 +6,8 @@
 
 .format .widget:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
 
-.format .widget ul, .format .widget ol {
+.sidebar .widget ul, .sidebar .widget ol,
+.footer .widget ul, .footer .widget ol {
 	list-style: none;
 	margin-left: 0;
 }
@@ -28,11 +29,9 @@
 
 .sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
 
-.sidebar .widget-title,
-.sidebar .wp-block-heading { color: <?php echo $colors['sidebar']['title']; ?>; }
+.sidebar .widget-title, .sidebar .wp-block-heading { color: <?php echo $colors['sidebar']['title']; ?>; }
 
-.sidebar .widget-title a,
-.sidebar .wp-block-heading a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+.sidebar .widget-title a, .sidebar .wp-block-heading a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
 
 /* FOOTER */
 
@@ -47,11 +46,9 @@
 
 .footer a { color: <?php echo $colors['footer']['links']; ?>; }
 
-.footer .widget-title,
-.footer .wp-block-heading { color: <?php echo $colors['footer']['title']; ?>; }
+.footer .widget-title, .footer .wp-block-heading { color: <?php echo $colors['footer']['title']; ?>; }
 
-.footer .widget-title a,
-.footer .wp-block-heading a { color: <?php echo $colors['footer']['title_link']; ?>; }
+.footer .widget-title a, .footer .wp-block-heading a { color: <?php echo $colors['footer']['title_link']; ?>; }
 
 .footer .columns {
 	padding-bottom: <?php echo $mid; ?>px;
