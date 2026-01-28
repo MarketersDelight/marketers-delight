@@ -33,6 +33,7 @@ require_once get_template_directory() . '/marketers-delight.php';
 - [ ] Layout options: Sidebar meta fields not toggling in all cases
 - [ ] Blocks / Widgets extracted from theme, need to build as Drop-in
 - [ ] Header Cover title spacing slightly off with extra `gap` when Title only
+- [ ] Test page title on author pages
 - [x] 404 page frontend not loading content
 - [x] Full Header Cover absolute position CSS styling missing
 - [x] Full Header Cover mobile toggles need backgrounds to prevent overlap
