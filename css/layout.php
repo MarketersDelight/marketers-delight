@@ -144,7 +144,9 @@
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
+/*
 	.box-style.content.expanded { padding-top: 0; }
+*/
 	.box-style.content.expanded .breadcrumbs { padding-top: <?php echo $half; ?>px; }
 	.inner {
 		padding-left: <?php echo $half; ?>px;

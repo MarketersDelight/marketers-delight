@@ -183,25 +183,27 @@
 			) ); ?>
 
 			<?php foreach ( $page_types as $type => $label ) : ?>
-				<div class="columns-2 md-sep-micro">
-					<div class="col">
-						<?php $this->fields->field( "sidebar_{$type}_show", array(
-							'type' => 'checkbox',
-							'inline' => true,
-							'options' => array(
-								'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
-								'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
-							)
-						) ); ?>
-					</div>
-					<div class="col">
-						<?php $this->fields->field( "sidebar_$type", array(
-							'type' => 'select',
-							'empty_label' => __( 'Use Main sidebar', 'md' ),
-							'options' => $sidebars
-						) ); ?>
-					</div>
+			<div class="columns-2 md-sep-micro">
+				<div class="col">
+					<?php $this->fields->field( "sidebar_{$type}_show", array(
+						'type' => 'checkbox',
+						'inline' => true,
+						'options' => array(
+							'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
+							'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
+						)
+					) ); ?>
 				</div>
+				<?php if ( $sidebars ) : ?>
+				<div class="col">
+					<?php $this->fields->field( "sidebar_$type", array(
+						'type' => 'select',
+						'empty_label' => __( 'Use Main sidebar', 'md' ),
+						'options' => $sidebars
+					) ); ?>
+				</div>
+				<?php endif; ?>
+			</div>
 			<?php endforeach; ?>
 
 		<?php else : ?>
@@ -233,7 +235,7 @@
 				<div id="<?php echo $this->_id; ?>_custom_sidebar_option">
 					<?php $this->fields->field( 'custom_sidebar', array(
 						'type' => 'select',
-						'empty_label' => __( 'Use default sidebar', 'md' ),
+						'empty_label' => __( 'Use Main sidebar', 'md' ),
 						'wrap_classes' => 'md-sep-micro',
 						'options' => $sidebars
 					) ); ?>

@@ -10,34 +10,20 @@
 function md_featured_image( $context = 'post', $args = array() ) {
 	$image = md_has_image( $context, $args );
 
-	if ( empty( $image ) ) return;
+	if ( empty( $image ) )
+		return;
 
-	$size = isset( $args['size'] ) ? $args['size'] : 'full';
+	$size = 'full';
+
+	if ( isset( $args['size'] ) )
+		$size = $args['size'];
+	elseif ( is_author() )
+		$size = 250;
+
 	$permalink = $context == 'post' && ! is_singular() && ! is_404() ? get_permalink() : '';
 	$style = ! empty( $image['width'] ) ? md_style( array( 'flex' => '0 1 ' . $image['width'] . 'px' ) ) : '';
 
 	include md_template( 'featured-image', true );
-}
-
-/**
- * Get caption from image attachment or default to featured image.
- *
- * @since 4.0
- */
-
-function md_get_caption( $id = null ) {
-	if ( ! is_singular() || ! in_the_loop() )
-		return;
-
-	if ( empty( $id ) )
-		$id = get_post_thumbnail_id();
-
-	$caption = wp_get_attachment_caption( $id );
-
-	if ( ! empty( $caption ) )
-		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
-
-	return $caption;
 }
 
 /**
@@ -46,19 +32,24 @@ function md_get_caption( $id = null ) {
  * @since 6.0
  */
 
-function md_get_image( $context = 'post', $field = null ) {
-	$image = array();
+function md_get_image( $context = 'post' ) {
+	$image = array( 'position' => md_image_position( $context ) );
 
 	if ( $context == 'page' ) {
-		$image['id'] = md_module( array( 'page_image', 'image', 'id' ) );
-		$image['width'] = md_module( array( 'page_image', 'image_width' ) );
+		$image_id = md_module( array( 'page_image', 'image', 'id' ) );
+		$image_width = md_module( array( 'page_image', 'image_width' ) );
+
+		if ( $image_id )
+			$image['id'] = $image_id;
+
+		if ( is_author() )
+			$image['author'] = true;
+
+		if ( $image_width )
+			$image['width'] = $image_width;
 	}
-	else $image['id'] = get_post_thumbnail_id();
-
-	$image['position'] = md_image_position( $context );
-
-	if ( isset( $field ) )
-		return $image[$field];
+	elseif ( get_post_thumbnail_id() )
+		$image['id'] = get_post_thumbnail_id();
 
 	return $image;
 }
@@ -71,18 +62,22 @@ function md_get_image( $context = 'post', $field = null ) {
 
 function md_has_image( $context = 'post', $args = array() ) {
 	$image = md_get_image( $context );
+	$image = array_merge( $image, $args );
 	$position = $image['position'];
 
-	if ( isset( $args['featured_image'] ) )
-		$position = $args['featured_image'];
+	if ( isset( $image['featured_image'] ) )
+		$position = $image['featured_image'];
 
-	if ( empty( $image['id'] ) || $position == 'remove' )
+	if ( $position == 'remove' )
 		return;
 
-	if ( isset( $args['show_image'] ) && ! in_array( $position, $args['show_image'] ) )
+	if ( empty( $image['id'] ) && empty( $image['author'] ) )
 		return;
 
-	if ( isset( $args['hide_image'] ) && in_array( $position, $args['hide_image'] ) )
+	if ( isset( $image['show_image'] ) && ! in_array( $position, $image['show_image'] ) )
+		return;
+
+	if ( isset( $image['hide_image'] ) && in_array( $position, $image['hide_image'] ) )
 		return;
 
 	return $image;
@@ -117,6 +112,27 @@ function md_image_position( $context = 'post' ) {
 	}
 
 	return $position;
+}
+
+/**
+ * Get caption from image attachment or default to featured image.
+ *
+ * @since 4.0
+ */
+
+function md_get_caption( $id = null ) {
+	if ( ! is_singular() || ! in_the_loop() )
+		return;
+
+	if ( empty( $id ) )
+		$id = get_post_thumbnail_id();
+
+	$caption = wp_get_attachment_caption( $id );
+
+	if ( ! empty( $caption ) )
+		$caption = '<p class="wp-caption-text">' . $caption . '</p>';
+
+	return $caption;
 }
 
 /**

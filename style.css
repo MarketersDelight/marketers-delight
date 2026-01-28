@@ -830,11 +830,11 @@ select {
 		font-size: 26px;
 		line-height: 29px;
 }
-.site-name, .site-name a, .site-name a:hover { color: #FF46A6; }
+.site-name, .site-name a, .site-name a:hover { color: #1E1E1E; }
 .tagline {
-	color: #4A2CFF;
+	color: #777777;
 				}
-.tagline a { color: #4A2CFF; }
+.tagline a { color: #777777; }
 /* QUERIES */
 @media all and (min-width: 900px) {
 	.header-primary, .header-aside {
@@ -1076,7 +1076,9 @@ select {
 	}
 }
 @media all and (max-width: 1117px) {
+/*
 	.box-style.content.expanded { padding-top: 0; }
+*/
 	.box-style.content.expanded .breadcrumbs { padding-top: 16px; }
 	.inner {
 		padding-left: 16px;
