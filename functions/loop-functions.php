@@ -79,7 +79,7 @@ function md_loop( $args = array() ) {
 		else
 			$html = 'main';
 
-	$loop_classes = array( 'loop', 'format' );
+	$loop_classes = array( 'loop' );
 	$loops = md_loops();
 	$loop = md_post_type_field( 'loop', array() );
 

@@ -228,8 +228,7 @@ blockquote:after {
 blockquote.small {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
+	padding-block: <?php echo $half; ?>px;
 }
 
 blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }

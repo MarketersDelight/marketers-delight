@@ -40,8 +40,7 @@
 	display: flex;
 	height: 100%;
 	font-size: 33px;
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
+	padding-inline: <?php echo $half; ?>px;
 	position: absolute;
 		top: 0;
 		right: 0;
@@ -84,7 +83,7 @@
 	border-style: solid;
 	border-width: 5px;
 	content: '';
-	margin-left: -5px;
+	margin-inline-start: -5px;
 	position: absolute;
 		left: 50%;
 		top: 100%;
@@ -104,7 +103,7 @@
 
 .tabs {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	margin-bottom: <?php echo $single; ?>px;
+	margin-block-end: <?php echo $single; ?>px;
 }
 
 .tab {
@@ -116,7 +115,7 @@
 	cursor: pointer;
 	display: inline-block;
 	line-height: 1;
-	margin-right: <?php echo $third; ?>px;
+	margin-inline-end: <?php echo $third; ?>px;
 	padding: <?php echo $half; ?>px;
 	text-decoration: none;
 }
@@ -130,10 +129,10 @@
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-bottom-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-bottom-width: 1px;
-	margin-bottom: -1px;
+	margin-block-end: -1px;
 }
 
-.tab i { margin-right: <?php echo $third; ?>px; }
+.tab i { margin-inline-end: <?php echo $third; ?>px; }
 
 /* ACCORDION */
 
@@ -141,10 +140,10 @@
 
 .accordion-group:not(:last-child) {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	padding-bottom: <?php echo $third; ?>px;
+	padding-block-end: <?php echo $third; ?>px;
 }
 
-.accordion-group:not(:first-child) { padding-top: <?php echo $half; ?>px; }
+.accordion-group:not(:first-child) { padding-block-start: <?php echo $half; ?>px; }
 
 .accordion-group.active .accordion-content { display: block; }
 
@@ -164,7 +163,7 @@
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 	height: <?php echo $mid; ?>px;
 	line-height: <?php echo $mid; ?>px;
-	margin-top: -<?php echo round( $mid / 2 ); ?>px;
+	margin-block-start: -<?php echo round( $mid / 2 ); ?>px;
 	position: absolute;
 		top: 50%;
 		right: 0;
@@ -176,17 +175,16 @@
 
 .accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
 
-.format .accordion-title { margin-bottom: 0; }
+.format .accordion-title { margin-block-end: 0; }
 
 .accordion-group.active .accordion-title:after { content: '\e817'; }
 
 .accordion-content {
 	display: none;
-	padding-bottom: <?php echo $half; ?>px;
-	padding-top: <?php echo $half; ?>px;
+	padding-block: <?php echo $half; ?>px;
 }
 
-.accordion-group:last-child .accordion-content { padding-bottom: 0; }
+.accordion-group:last-child .accordion-content { padding-block-end: 0; }
 
 .accordion .list {
 	font-size: 0.9em;

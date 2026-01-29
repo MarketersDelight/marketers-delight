@@ -9,7 +9,7 @@
 .sidebar .widget ul, .sidebar .widget ol,
 .footer .widget ul, .footer .widget ol {
 	list-style: none;
-	margin-left: 0;
+	margin-inline-start: 0;
 }
 
 .wp-block-latest-comments__comment { line-height: inherit; }
@@ -48,10 +48,7 @@
 
 .footer .widget-title a, .footer .wp-block-heading a { color: <?php echo $colors['footer']['title_link']; ?>; }
 
-.footer .columns {
-	padding-bottom: <?php echo $mid; ?>px;
-	padding-top: <?php echo $mid; ?>px;
-}
+.footer .columns { padding-block: <?php echo $mid; ?>px; }
 
 .footer .list li:not(:last-child) { border-bottom-color: <?php echo $colors['footer']['border_color']; ?>; }
 
@@ -59,23 +56,22 @@
 
 .footer-copy {
 	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
-	padding-bottom: <?php echo $single; ?>px;
-	padding-top: <?php echo $single; ?>px;
+	padding-block: <?php echo $single; ?>px;
 	text-align: center;
 }
 
 /* MENU */
 
 .format .widget_nav_menu .menu, .format .widget_nav_menu .sub-menu {
-	margin-left: 0;
-	margin-top: 0;
+	margin-inline-start: 0;
+	margin-block-start: 0;
 }
 
 .widget_nav_menu .sub-menu { display: none !important /*temporary*/; }
 
 .widget_nav_menu .menu-item {
 	display: block;
-	margin-bottom: 0;
+	margin-block-end: 0;
 }
 
 .widget_nav_menu .menu-item a {
@@ -89,26 +85,26 @@
 
 .wp-block-search__input {
 	align-self: normal;
-	margin-right: 2%;
+	margin-inline-end: 2%;
 }
 
-.format .wp-block-search .wp-block-search__input { margin-bottom: 0; }
+.format .wp-block-search .wp-block-search__input { margin-block-end: 0; }
 
 .wp-block-search__button { align-self: flex-start; }
 
 /* RSS */
 
 .rsswidget img {
-	margin-right: 4px;
-	margin-top: 9px;
+	margin-inline-end: 4px;
+	margin-block-start: 9px;
 }
 
 .rss-date, .widget_rss cite {
 	display: block;
-	margin-top: 13px;
+	margin-block-start: 13px;
 }
 
-.rss-date { margin-bottom: <?php echo $half; ?>px; }
+.rss-date { margin-block-end: <?php echo $half; ?>px; }
 
 .widget_rss cite:before { content: "\2014\00a0"; }
 
@@ -118,8 +114,8 @@
 	border-collapse: collapse;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: 1;
-	margin-bottom: <?php echo $small; ?>px;
-	margin-left: 0;
+	margin-block-end: <?php echo $small; ?>px;
+	margin-block-start: 0;
 	text-align: center;
 	width: 100%;
 }
@@ -133,10 +129,7 @@
 
 #wp-calendar td { padding: <?php echo $third; ?>px; }
 
-#wp-calendar thead th {
-	padding-bottom: <?php echo $third; ?>px;
-	padding-top: <?php echo $third; ?>px;
-}
+#wp-calendar thead th { padding-block: <?php echo $third; ?>px; }
 
 #wp-calendar thead th { background-color: #f9f9f9; }
 

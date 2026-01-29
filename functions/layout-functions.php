@@ -84,6 +84,7 @@ function md_content_box_classes( $classes = array() ) {
 
 function md_content_classes( $classes = array() ) {
 	$classes[] = 'content-wrap';
+	$classes[] = 'format';
 
 	if ( ! md_has_sidebar() )
 		$classes[] = 'inner';

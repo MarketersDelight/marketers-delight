@@ -4,16 +4,13 @@
 	$ALIGNMENTS
 \*------------------------------*/
 
-.auto {
-	margin-left: auto;
-	margin-right: auto;
-}
+.auto { margin-inline: auto; }
 
 .alignleft, .alignright,
 .aligncenter, .alignnone {
 	display: block;
 	position: relative;
-	margin-bottom: <?php echo $single; ?>px;
+	margin-block-end: <?php echo $single; ?>px;
 	z-index: 10;
 }
 
@@ -25,17 +22,14 @@
 .aligncenter {
 	clear: both;
 	float: none;
-	margin-left: auto;
-	margin-right: auto;
+	margin-inline: auto;
 	text-align: center;
 }
 
-img.alignwide, .alignwide img,
-img.alignfull, .alignfull img { width: 100%; }
+img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 
 .expanded .alignfull {
-	margin-left: -50vw;
-	margin-right: -50vw;
+	margin-inline: -50vw;
 	position: relative;
 		left: 50%;
 		right: 50%;
@@ -66,8 +60,7 @@ img.alignfull, .alignfull img { width: 100%; }
 
 @media all and (max-width: <?php echo $post_width; ?>px) {
 	.compact .alignwide, .compact .alignfull {
-		margin-left: -50vw;
-		margin-right: -50vw;
+		margin-inline: -50vw;
 		position: relative;
 			left: 50%;
 			right: 50%;
@@ -77,8 +70,7 @@ img.alignfull, .alignfull img { width: 100%; }
 
 @media all and (max-width: <?php echo $content_width + $six; ?>px) {
 	.expanded .alignwide {
-		margin-left: -50vw;
-		margin-right: -50vw;
+		margin-inline: -50vw;
 		position: relative;
 			left: 50%;
 			right: 50%;
@@ -107,8 +99,7 @@ img.alignfull, .alignfull img { width: 100%; }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.expanded.box-style .alignfull {
-		margin-left: -50vw;
-		margin-right: -50vw;
+		margin-inline: -50vw;
 		position: relative;
 			left: 50%;
 			right: 50%;

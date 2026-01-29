@@ -45,13 +45,13 @@
 	position: relative;
 }
 
-.comment:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.comment:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .comment-details {
 	align-items: center;
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
 	display: flex;
-	padding-bottom: <?php echo $half; ?>px;
+	padding-block-end: <?php echo $half; ?>px;
 	position: relative;
 	z-index: 10;
 }
@@ -67,14 +67,14 @@
 
 .comment-byline {
 	flex: 1;
-	padding-left: <?php echo $half; ?>px;
+	padding-inline-start: <?php echo $half; ?>px;
 }
 
 .comment-byline p { margin-bottom: 0; }
 
 .comment-content {
-	margin-bottom: <?php echo $half; ?>px;
-	padding-left: <?php echo $single; ?>px;
+	margin-block-end: <?php echo $half; ?>px;
+	padding-inline-start: <?php echo $single; ?>px;
 }
 
 .comment .comment-awaiting-moderation {
@@ -82,11 +82,11 @@
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	font-style: italic;
-	margin-bottom: <?php echo $half; ?>px;
+	margin-block-end: <?php echo $half; ?>px;
 	padding: <?php echo $half; ?>px;
 }
 
-.comment-controls { padding-left: <?php echo $single; ?>px; }
+.comment-controls { padding-inline-start: <?php echo $single; ?>px; }
 
 .comment-respond + .comment-controls { display: none; }
 
@@ -117,14 +117,14 @@
 	float: right;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: 1;
-	margin-top: <?php echo $half + $small; ?>px;
+	margin-block-start: <?php echo $half + $small; ?>px;
 	position: relative;
 	z-index: 10;
 }
 
 .comment-details:hover > .comment-byline > .toggle { display: block; }
 
-.comment.toggle-comment:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+.comment.toggle-comment:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
 .toggle-comment .comment-controls, .toggle-comment .children,
 .show-comment, .toggle-comment .hide-comment { display: none; }
@@ -169,11 +169,11 @@
 
 /* FORM */
 
-.comment-form p { margin-bottom: <?php echo $half; ?>px; }
+.comment-form p { margin-block-end: <?php echo $half; ?>px; }
 
 .comment-form-author label, .comment-form-email label, .comment-form-url label { display: block; }
 
-.comment-form input[type="text"] { margin-bottom: 0; }
+.comment-form input[type="text"] { margin-block-end: 0; }
 
 .comment-form-cookies-consent {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
@@ -184,15 +184,15 @@
 
 /* RESPOND */
 
-.comments-list + .comment-respond { margin-top: <?php echo $single; ?>px; }
+.comments-list + .comment-respond { margin-block-start: <?php echo $single; ?>px; }
 
 .comment .comment-respond {
-	margin-bottom: <?php echo $half; ?>px;
-	padding-left: <?php echo $single; ?>px;
-	padding-right: <?php echo $third; ?>px;
+	margin-block-end: <?php echo $half; ?>px;
+	padding-inline-start: <?php echo $single; ?>px;
+	padding-inline-end: <?php echo $third; ?>px;
 }
 
-.comment-form .comment-form-comment { margin-bottom: <?php echo $half; ?>px; }
+.comment-form .comment-form-comment { margin-block-end: <?php echo $half; ?>px; }
 
 #cancel-comment-reply-link {
 	color: <?php echo $colors['site']['links']; ?>;
@@ -206,14 +206,14 @@
 	margin-right: <?php echo $small; ?>px;
 }
 
-.comment-form .form-submit { margin-bottom: 0; }
+.comment-form .form-submit { margin-block-end: 0; }
 
 @media all and (min-width: 700px) {
 	.comment-content {
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 	}
-	.comment-content p:not(:last-child) { margin-bottom: <?php echo $line_height['mobile'] - $small; ?>px; }
+	.comment-content p:not(:last-child) { margin-block-end: <?php echo $line_height['mobile'] - $small; ?>px; }
 	.comment-form-author, .comment-form-email {
 		float: left;
 		width: 50%;
@@ -222,6 +222,6 @@
 		clear: both;
 		width: 100%;
 	}
-	.comment-form-author { padding-right: <?php echo $third; ?>px; }
-	.comment-form-email { padding-left: <?php echo $third; ?>px; }
+	.comment-form-author { padding-inline-end:<?php echo $third; ?>px; }
+	.comment-form-email { padding-inline-start: <?php echo $third; ?>px; }
 }

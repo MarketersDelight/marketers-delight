@@ -52,10 +52,7 @@
 	display: flex;
 }
 
-.header-controls {
-	padding-bottom: <?php echo $third; ?>px;
-	padding-top: <?php echo $third; ?>px;
-}
+.header-controls { padding-block: <?php echo $third; ?>px; }
 
 .header-triggers {
 	align-items: center;
@@ -168,10 +165,7 @@
 	.right .header-primary { order: 2; }
 	.right .header-controls { order: 3; }
 	.right .search-form, .right .input-field { flex-direction: row-reverse; }
-	.right .form-icons .input {
-		padding-left: <?php echo $half; ?>px;
-		padding-right: 0;
-	}
+	.right .form-icons .input { padding-inline: <?php echo $half; ?>px 0; }
 	.center .header-primary {
 		flex: 1 0 100px;
 		order: -1;
@@ -182,10 +176,7 @@
 		order: 3;
 	}
 	.center .site-title { justify-content: center; }
-	.header.simple .header-primary, .header.simple .header-aside {
-		padding-bottom: <?php echo $third; ?>px;
-		padding-top: <?php echo $third; ?>px;
-	}
+	.header.simple .header-primary, .header.simple .header-aside { padding-block: <?php echo $third; ?>px; }
 	/* STATES */
 	.header.show-search .inner { column-gap: <?php echo $half; ?>px; }
 	.show-search.from-aside .header-primary,
@@ -199,16 +190,14 @@
 	.header-cover.full-cover .header[class*="show-"] { position: static; }
 	.header .inner {
 		flex-direction: column;
-		padding-left: 0;
-		padding-right: 0;
+		padding-inline: 0;
 	}
 	.header-primary, .header-aside { width: 100%; }
 	.header-controls {
 		align-items: center;
 		display: flex;
 		gap: <?php echo $half; ?>px;
-		padding-left: <?php echo $half; ?>px;
-		padding-right: <?php echo $half; ?>px;
+		padding-inline: <?php echo $half; ?>px;
 		width: 100%;
 	}
 	.header-triggers { flex: 1; }

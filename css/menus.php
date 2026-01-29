@@ -21,10 +21,7 @@
 
 .menu-item-has-children > a { flex: 1; }
 
-.menu-item-has-children > .trigger {
-	padding-left: <?php echo $third; ?>px;
-	padding-right: <?php echo $third; ?>px;
-}
+.menu-item-has-children > .trigger { padding-inline: <?php echo $third; ?>px; }
 
 .menu .trigger-icon:after { content: '\e80e'; }
 
@@ -58,7 +55,7 @@
 		align-items: center;
 		display: flex;
 	}
-	.menu-item-has-children a { padding-right: 0; }
+	.menu-item-has-children a { padding-inline-end: 0; }
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $colors['submenu']['bg_color']; ?>;
@@ -129,7 +126,6 @@
 	.sub-menu .menu-item a {
 		font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
-		padding-bottom: <?php echo $third; ?>px;
-		padding-top: <?php echo $third; ?>px;
+		padding-block: <?php echo $third; ?>px;
 	}
 }

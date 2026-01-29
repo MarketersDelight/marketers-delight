@@ -80,35 +80,30 @@ select {
 .form-icons .input {
 	background-color: transparent;
 	border: 0;
-	padding-left: 0;
+	padding-inline-start: 0;
 }
 
 .form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
 
 .form-icons .input:focus { box-shadow: none; }
 
-.form-small .input,
-.form-small .input-icon {
-	padding-bottom: <?php echo $small; ?>px;
-	padding-top: <?php echo $small; ?>px;
-}
+.form-small .input, .form-small .input-icon { padding-block: <?php echo $small; ?>px; }
 
 .input-field { gap: 0; }
 
 .input-icon {
 	color: <?php echo $colors['site']['text']; ?>;
-	padding-left: <?php echo $half; ?>px;
-	padding-right: <?php echo $half; ?>px;
+	padding-inline: <?php echo $half; ?>px;
 	justify-content: center;
 }
 
-.form-style .input { padding-left: <?php echo $half; ?>px; }
+.form-style .input { padding-inline-start: <?php echo $half; ?>px; }
 
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
 	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px 0 0 5px;
-	padding-right: <?php echo $half; ?>px;
+	padding-inline-end: <?php echo $half; ?>px;
 }
 
 /* TRIGGERS */
