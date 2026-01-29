@@ -5,14 +5,14 @@
 \*------------------------------*/
 
 .comments .comments-list {
-	margin-bottom: 0;
-	margin-left: 0;
+	margin-block-end: 0;
+	margin-inline-start: 0;
 	position: relative;
 }
 
 .comments .children {
-	margin-left: <?php echo $single; ?>px;
-	margin-top: <?php echo $half; ?>px;
+	margin-inline-start: <?php echo $single; ?>px;
+	margin-block-start: <?php echo $half; ?>px;
 }
 
 /* TITLE */
@@ -22,20 +22,20 @@
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	display: flex;
 	gap: <?php echo $half; ?>px;
-	margin-bottom: <?php echo $single; ?>px;
-	padding-bottom: <?php echo $half; ?>px;
+	margin-block-end: <?php echo $single; ?>px;
+	padding-block-end: <?php echo $half; ?>px;
 }
 
 .content-title .title {
 	flex: 1;
 	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
-	margin-bottom: 0;
+	margin-block-end: 0;
 }
 
 .content-title i {
 	font-size: 0.85em;
-	margin-right: <?php echo $small; ?>px;
+	margin-inline-end: <?php echo $small; ?>px;
 }
 
 /* COMMENT */
@@ -70,7 +70,7 @@
 	padding-inline-start: <?php echo $half; ?>px;
 }
 
-.comment-byline p { margin-bottom: 0; }
+.comment-byline p { margin-block-end: 0; }
 
 .comment-content {
 	margin-block-end: <?php echo $half; ?>px;
@@ -105,7 +105,7 @@
 
 .comment-controls i {
 	font-size: 0.85em;
-	margin-right: <?php echo $small; ?>px;
+	margin-inline-end: <?php echo $small; ?>px;
 }
 
 /* TOGGLE */
@@ -147,9 +147,7 @@
 	width: 100%;
 }
 
-.box-style .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['content']['bg_color']; ?> 80%);
-}
+.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['content']['bg_color']; ?> 80%); }
 
 /* TIMELINE */
 
@@ -203,7 +201,7 @@
 
 #cancel-comment-reply-link:before {
 	content: '\e810';
-	margin-right: <?php echo $small; ?>px;
+	margin-inline-end: <?php echo $small; ?>px;
 }
 
 .comment-form .form-submit { margin-block-end: 0; }

@@ -5,7 +5,7 @@
 .breadcrumbs {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	margin-bottom: <?php echo $half; ?>px;
+	margin-block-end: <?php echo $half; ?>px;
 }
 
 .breadcrumbs ol {
@@ -17,7 +17,7 @@
 
 .breadcrumbs li {
 	display: inline-block;
-	margin-bottom: 0;
+	margin-block-end: 0;
 }
 
 .breadcrumbs li:not(:last-child):after {
@@ -27,7 +27,7 @@
 
 .breadcrumbs-home:before {
 	content: '\e907';
-	margin-right: <?php echo $third; ?>px;
+	margin-inline-end: <?php echo $third; ?>px;
 }
 
 .breadcrumbs a { text-decoration: underline; }
@@ -55,9 +55,9 @@
 
 .byline .badge, .byline-date a { text-decoration: none; }
 
-.byline-item:not(:last-child) { margin-right: <?php echo $third; ?>px; }
+.byline-item:not(:last-child) { margin-inline-end: <?php echo $third; ?>px; }
 
-.byline-item i:not(:last-child), .byline-author .avatar { margin-right: <?php echo $small; ?>px; }
+.byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
 
 .byline .author-link { text-decoration-color: rgba(0, 0, 0, 0.2); }
 
@@ -77,7 +77,7 @@
 	z-index: 5;
 }
 
-.loop .image-above.has-cover .featured-image { margin-bottom: 0; }
+.loop .image-above.has-cover .featured-image { margin-block-end: 0; }
 
 .featured-image a { display: block; }
 
@@ -141,7 +141,7 @@
 	margin-block-end: <?php echo $half; ?>px;
 }
 
-.author-box .circle-icon { margin-right: <?php echo $third; ?>px; }
+.author-box .circle-icon { margin-inline-end: <?php echo $third; ?>px; }
 
 .author-title {
 	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
@@ -150,11 +150,11 @@
 	margin-block-end: <?php echo $small; ?>px;
 }
 
-.author-description { margin-bottom: <?php echo $half + $small; ?>px; }
+.author-description { margin-block-end: <?php echo $half + $small; ?>px; }
 
 .author-avatar {
 	flex: 0 1 <?php echo $double; ?>px;
-	margin-right: <?php echo $half; ?>px;
+	margin-inline-end: <?php echo $half; ?>px;
 }
 
 .author-avatar img { width: 100%; }
@@ -167,7 +167,7 @@
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.author-link:not(:last-child) { margin-right: <?php echo $small; ?>px; }
+.author-link:not(:last-child) { margin-inline-end: <?php echo $small; ?>px; }
 
 .author-link.twitter .circle-icon {
 	background-color: #1da1f2;
@@ -213,7 +213,7 @@
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	display: inline-block;
-	margin-right: <?php echo $small; ?>px;
+	margin-inline-end: <?php echo $small; ?>px;
 	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
 }
 
@@ -239,8 +239,8 @@
 
 .page-numbers:not(.prev):not(.next):not(.current) { color: <?php echo $colors['site']['text-sec']; ?>; }
 
-.prev-icon, .page-numbers.prev { margin-right: <?php echo $third; ?>px; }
-.next-icon, .page-numbers.next { margin-left: <?php echo $third; ?>px; }
+.prev-icon, .page-numbers.prev { margin-inline-end: <?php echo $third; ?>px; }
+.next-icon, .page-numbers.next { margin-inline-start: <?php echo $third; ?>px; }
 
 /* POST NAV */
 
