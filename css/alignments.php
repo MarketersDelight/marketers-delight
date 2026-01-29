@@ -31,8 +31,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 .expanded .alignfull {
 	margin-inline: -50vw;
 	position: relative;
-		left: 50%;
-		right: 50%;
+		inset-inline: 50%;
 	max-width: 100vw;
 	width: 100vw;
 }
@@ -62,8 +61,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.compact .alignwide, .compact .alignfull {
 		margin-inline: -50vw;
 		position: relative;
-			left: 50%;
-			right: 50%;
+			inset-inline: 50%;
 		width: 100vw;
 	}
 }
@@ -72,8 +70,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
-			left: 50%;
-			right: 50%;
+			inset-inline: 50%;
 		width: 100vw;
 	}
 }
@@ -85,8 +82,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 
 @media all and (min-width: <?php echo $site_width; ?>px) {
 	.expanded.box-style .alignfull {
-		left: inherit;
-		right: inherit;
+		inset-inline: inherit;
 		width: auto;
 	}
 	.expanded.box-style .alignfull,
@@ -101,8 +97,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.expanded.box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;
-			left: 50%;
-			right: 50%;
+			inset-inline: 50%;
 		width: 100vw;
 	}
 }

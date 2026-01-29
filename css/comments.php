@@ -142,8 +142,8 @@
 	display: block;
 	height: <?php echo $single; ?>px;
 	position: absolute;
-		bottom: 0;
-		left: 0;
+		inset-block-end: 0;
+		inset-inline-start: 0;
 	width: 100%;
 }
 
@@ -156,8 +156,8 @@
 	display: block;
 	height: 100%;
 	position: absolute;
-		left: <?php echo $small; ?>px;
-		top: 0;
+		inset-inline-start: <?php echo $small; ?>px;
+		inset-block-start: 0;
 	width: 5px;
 }
 

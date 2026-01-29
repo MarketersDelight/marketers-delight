@@ -41,8 +41,8 @@
 
 .header-cover.full-cover .header {
 	position: absolute;
-		left: 0;
-		top: <?php echo $half; ?>px;
+		inset-inline-start: 0;
+		inset-block-start: <?php echo $half; ?>px;
 	width: 100%;
 	z-index: 10;
 }
@@ -106,8 +106,8 @@
 	content: '';
 	height: 100%;
 	position: absolute;
-		left: 0;
-		top: 0;
+		inset-inline-start: 0;
+		inset-block-start: 0;
 	width: 100%;
 }
 
@@ -229,8 +229,8 @@
 
 /* STICKY */
 
-.admin-bar.full-cover .header, .admin-bar .stuck { top: <?php echo $admin_bar_height; ?>px; }
+.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: <?php echo $admin_bar_height; ?>px; }
 
 @media all and (max-width: 782px) {
-	.admin-bar.full-cover .header, .admin-bar .stuck { top: <?php echo $admin_bar_height_mobile; ?>px; }
+	.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: <?php echo $admin_bar_height_mobile; ?>px; }
 }

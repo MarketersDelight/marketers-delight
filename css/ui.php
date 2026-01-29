@@ -2,7 +2,7 @@
 
 .sticky {
 	position: sticky;
-		top: -1px;
+		inset-block-start: -1px;
 	z-index: 50;
 }
 
@@ -42,8 +42,8 @@
 	font-size: 33px;
 	padding-inline: <?php echo $half; ?>px;
 	position: absolute;
-		top: 0;
-		right: 0;
+		inset-block-start: 0;
+		inset-inline-end: 0;
 }
 
 .scroller-nav i { font-size: inherit; }
@@ -72,8 +72,8 @@
 	margin-inline-start: -80px;
 	padding: <?php echo $third; ?>px;
 	position: absolute;
-		left: 50%;
-		top: -40px;
+		inset-inline-start: 50%;
+		inset-block-start: -40px;
 	text-align: center;
 	width: 160px;
 }
@@ -85,8 +85,8 @@
 	content: '';
 	margin-inline-start: -5px;
 	position: absolute;
-		left: 50%;
-		top: 100%;
+		inset-inline-start: 50%;
+		inset-block-start: 100%;
 }
 
 .tooltip-parent { position: relative; }
@@ -165,13 +165,13 @@
 	line-height: <?php echo $mid; ?>px;
 	margin-block-start: -<?php echo round( $mid / 2 ); ?>px;
 	position: absolute;
-		top: 50%;
-		right: 0;
+		inset-block-start: 50%;
+		inset-inline-end: 0;
 	text-align: center;
 	width: <?php echo $mid; ?>px;
 }
 
-.box-style .accordion-title:after { right: <?php echo $half; ?>px; }
+.box-style .accordion-title:after { inset-inline-end: <?php echo $half; ?>px; }
 
 .accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
 

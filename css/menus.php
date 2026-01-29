@@ -64,7 +64,7 @@
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 		position: absolute;
-			right: 0;
+			inset-inline-end: 0;
 		width: <?php echo $submenu_width; ?>px;
 	}
 	.sub-menu .menu-item-has-children { flex-direction: row-reverse; }
@@ -73,12 +73,12 @@
 		opacity: 1;
 		transition: opacity 200ms linear,transform 200ms ease-out;
 		transform: translateY(0);
-		top: <?php echo $mid + $third; ?>px;
+		inset-block-start: <?php echo $mid + $third; ?>px;
 		visibility: visible;
 	}
 	.menu-item .sub-menu .sub-menu {
-		top: 0;
-		left: -<?php echo $submenu_width; ?>px;
+		inset-block-start: 0;
+		inset-inline-start: -<?php echo $submenu_width; ?>px;
 	}
 	.sub-menu .menu-item { align-items: end; }
 	<?php if ( ! empty( $colors['submenu']['hover'] ) ) : ?>
@@ -89,9 +89,9 @@
 	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
 	.sub-menu .trigger-icon:after { content: '\e816'; }
 	/* SUB MENU ALT DIRECTION */
-	.sub-alt .sub-menu { right: inherit; }
+	.sub-alt .sub-menu { inset-inline-end: inherit; }
 	.sub-alt .menu-item-has-children { flex-direction: inherit; }
-	.sub-alt .sub-menu .sub-menu { left: <?php echo $submenu_width; ?>px; }
+	.sub-alt .sub-menu .sub-menu { inset-inline-start: <?php echo $submenu_width; ?>px; }
 	.sub-alt .sub-menu .menu-item-has-children a { order: inherit; }
 	.sub-alt .sub-menu .trigger-icon:after { content: '\e80f'; }
 }

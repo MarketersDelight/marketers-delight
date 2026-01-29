@@ -216,13 +216,13 @@ blockquote:before, blockquote:after {
 
 blockquote:before {
 	content: open-quote;
-	left: <?php echo $small; ?>px;
+	inset-inline-start: <?php echo $small; ?>px;
 }
 
 blockquote:after {
-	bottom: <?php echo $small; ?>px;
+	inset-block-end: <?php echo $small; ?>px;
 	content: close-quote;
-	right: <?php echo $half; ?>px;
+	inset-inline-end: <?php echo $half; ?>px;
 }
 
 blockquote.small {

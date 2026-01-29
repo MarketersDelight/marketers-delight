@@ -128,8 +128,8 @@
 .cover .wp-caption-text {
 	background-color: rgba(0, 0, 0, 0.75);
 	position: absolute;
-		bottom: 0;
-		right: 0;
+		inset-block-end: 0;
+		inset-inline-end: 0;
 	z-index: 10;
 }
 
