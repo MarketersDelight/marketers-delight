@@ -6,6 +6,7 @@
  * @since 4.0
  */
 
+add_action( 'md_hook_content_box_top', 'md_breadcrumbs', 20 );
 add_action( 'md_hook_content_item', 'md_author', 60 );
 add_action( 'md_hook_content_item', 'md_comments', 60 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
@@ -21,18 +22,14 @@ add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 
 function md_templates() {
 	$context = is_singular() || is_404() ? 'post' : 'page';
-	$has_cover = md_has_header_cover( $context );
 
 	if ( md_has_post_content() )
 		add_action( 'md_hook_content', 'md_loop', 30, 2 );
 
-	if ( $has_cover )
+	if ( md_has_header_cover( $context ) )
 		add_action( 'md_hook_content_box_top', 'md_page_title' );
 	else
 		add_action( 'md_hook_content', 'md_page_title' );
-
-	$breadcrumbs = $has_cover == 'header_cover_full' ? 'md_hook_content_box_top' : 'md_hook_before_content_box';
-	add_action( $breadcrumbs, 'md_breadcrumbs' );
 }
 
 add_action( 'template_redirect', 'md_templates' );

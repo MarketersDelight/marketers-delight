@@ -270,7 +270,7 @@ function md_has_breadcrumbs() {
 	if ( ! $global_add && ! $single_add )
 		return;
 
-	if ( is_front_page() || ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )
+	if ( ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )
 		return;
 
 	return true;
