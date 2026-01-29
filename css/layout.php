@@ -132,16 +132,13 @@
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
-/*
-	.box-style.content.expanded { padding-top: 0; }
-*/
 	.box-style.content.expanded .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-left: -<?php echo $half; ?>px; }
+	.box-style .entry, .content-wrap .page-title.cover { margin-inline-start: -<?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
 	.box-style.content.compact { padding-block-start: 0; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-right: -<?php echo $half; ?>px; }
+	.box-style .entry, .content-wrap .page-title.cover { margin-inline-end: -<?php echo $half; ?>px; }
 	.sidebar { margin-block-start: <?php echo $single; ?>px; }
 }

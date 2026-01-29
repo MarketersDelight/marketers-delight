@@ -4,7 +4,7 @@
 	$WIDGETS
 \*------------------------------*/
 
-.format .widget:not(:last-child) { margin-bottom: <?php echo $single; ?>px; }
+.format .widget:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .sidebar .widget ul, .sidebar .widget ol,
 .footer .widget ul, .footer .widget ol {

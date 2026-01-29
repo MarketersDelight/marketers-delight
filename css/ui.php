@@ -69,7 +69,7 @@
 	display: none;
 	font-size: 14px;
 	line-height: 21px;
-	margin-left: -80px;
+	margin-inline-start: -80px;
 	padding: <?php echo $third; ?>px;
 	position: absolute;
 		left: 50%;
@@ -188,7 +188,7 @@
 
 .accordion .list {
 	font-size: 0.9em;
-	margin-left: 0;
+	margin-inline-start: 0;
 }
 
 .sidebar .accordion a {

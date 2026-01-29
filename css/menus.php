@@ -118,7 +118,7 @@
 		background-color: rgba(0, 0, 0, 0.1);
 		height: auto;
 		opacity: 1;
-		transition: opacity 200ms linear,transform 200ms ease-out;
+		transition: opacity 200ms linear, transform 200ms ease-out;
 		transform: translateY(0);
 		visibility: visible;
 	}

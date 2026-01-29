@@ -74,7 +74,7 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	content: '\e80f';
 	display: inline-block;
 	font-family: 'md-icon';
-	margin-left: <?php echo $half; ?>px;
+	margin-inline-start: <?php echo $half; ?>px;
 	transition: 0.3s;
 }
 
@@ -84,7 +84,7 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 
 .link-icon { vertical-align: middle; }
 
-.link-icon + .link-name { margin-left: <?php echo $third; ?>px; }
+.link-icon + .link-name { margin-inline-start: <?php echo $third; ?>px; }
 
 .link-icon, .trigger-icon, .input-icon {
 	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;

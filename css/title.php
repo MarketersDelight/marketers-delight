@@ -25,8 +25,7 @@
 /* DESCRIPTION + SUBTITLES */
 
 .wide .description, .wide .subtitle {
-	margin-left: auto;
-	margin-right: auto;
+	margin-inline: auto;
 	max-width: <?php echo $post_width; ?>px;
 }
 

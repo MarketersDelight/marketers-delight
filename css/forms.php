@@ -119,7 +119,7 @@ select {
 	text-align: center;
 }
 
-.trigger-text { margin-left: <?php echo $small; ?>px; }
+.trigger-text { margin-inline-start: <?php echo $small; ?>px; }
 
 .hide-label .link-text, .hide-label .trigger-text { display: none; }
 

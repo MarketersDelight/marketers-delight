@@ -27,14 +27,14 @@
 
 .format ul ul {
 	margin-block-end: <?php echo $half; ?>px;
-	margin-left: <?php echo $half; ?>px;
+	margin-inline-start: <?php echo $half; ?>px;
 }
 
 .text-center [class^="list"], .text-center ul, .text-center ol { text-align: left; }
 
-.the-content [class^="list"] { margin-left: 0; }
+.the-content [class^="list"] { margin-inline-start: 0; }
 
-.the-content ul, .the-content ol, .the-content .list-check { margin-left: <?php echo $single; ?>px; }
+.the-content ul, .the-content ol, .the-content .list-check { margin-inline-start: <?php echo $single; ?>px; }
 
 .the-content h1, .the-content h2,
 .the-content h3, .the-content h4,
@@ -42,7 +42,7 @@
 	<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
 	color: <?php echo $colors['site']['headline']; ?>;
 	<?php endif; ?>
-	margin-blockstart: <?php echo $mid; ?>px;
+	margin-block-start: <?php echo $mid; ?>px;
 }
 
 .the-content h1:first-child, .the-content h2:first-child,
@@ -58,7 +58,7 @@ ul[class^="list"], [class^="list"] ul { list-style: none; }
 	padding-block-end: <?php echo $half; ?>px;
 }
 
-.list-check { margin-left: <?php echo $single; ?>px; }
+.list-check { margin-inline-start: <?php echo $single; ?>px; }
 
 ul.list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
@@ -79,7 +79,7 @@ ul.list-check li:before {
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
 .slim .wp-block-image, .slim .the-content .featured-image { margin-block-end: <?php echo $half; ?>px; }
 
-.slim ul, .slim ol { margin-left: <?php echo $half; ?>px; }
+.slim ul, .slim ol { margin-inline-start: <?php echo $half; ?>px; }
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.slim .title {
