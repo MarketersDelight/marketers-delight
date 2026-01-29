@@ -200,6 +200,7 @@ blockquote.alignright, blockquote.alignleft { width: 186px; }
 \*------------------------------*/
 .format { word-wrap: break-word; }
 .format a { text-decoration: underline; }
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-bottom: 16px; }
 .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a, .format a:hover { text-decoration: none; }
 .format ul, .format ol, .format p, .format hr,
 .format table, .format blockquote, .format pre, .format .wp-caption,
@@ -220,8 +221,7 @@ blockquote.alignright, blockquote.alignleft { width: 186px; }
 .the-content h1, .the-content h2,
 .the-content h3, .the-content h4,
 .the-content h5, .the-content h6 {
-		margin-bottom: 16px;
-	margin-top: 47px;
+		margin-top: 47px;
 }
 .the-content h1:first-child, .the-content h2:first-child,
 .the-content h3:first-child, .the-content h4:first-child,
@@ -1602,7 +1602,6 @@ img.alignfull, .alignfull img { width: 100%; }
 	margin-left: 0;
 }
 .wp-block-latest-comments__comment { line-height: inherit; }
-.widget-title, .widget .wp-block-heading { margin-bottom: 16px; }
 /* SIDEBAR */
 .sidebar {
 		color: #777777;

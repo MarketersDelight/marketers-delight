@@ -71,7 +71,6 @@ function md_content_box_classes( $classes = array() ) {
 	}
 	else $classes[] = 'expanded';
 
-	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );

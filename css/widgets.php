@@ -14,8 +14,6 @@
 
 .wp-block-latest-comments__comment { line-height: inherit; }
 
-.widget-title, .widget .wp-block-heading { margin-bottom: <?php echo $half; ?>px; }
-
 /* SIDEBAR */
 
 .sidebar {

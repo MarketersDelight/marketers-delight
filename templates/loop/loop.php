@@ -14,7 +14,7 @@ md_hook_before_the_content();
 
 if ( $loop['content'] !== 'hide' ) {
 
-	echo "<section class=\"the-content\">";
+	echo "<section class=\"the-content format\">";
 
 	md_featured_image( 'post', array( 'show_image' => array( 'left', 'right', 'center' ) ) );
 

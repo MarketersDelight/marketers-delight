@@ -8,6 +8,8 @@
 
 .format a { text-decoration: underline; }
 
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-bottom: <?php echo $half; ?>px; }
+
 .format h1 a, .format h2 a, .format h3 a, .format h4 a, .format h5 a, .format h6 a, .format a:hover { text-decoration: none; }
 
 .format ul, .format ol, .format p, .format hr,
@@ -40,7 +42,6 @@
 	<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
 	color: <?php echo $colors['site']['headline']; ?>;
 	<?php endif; ?>
-	margin-bottom: <?php echo $half; ?>px;
 	margin-top: <?php echo $mid; ?>px;
 }
 
