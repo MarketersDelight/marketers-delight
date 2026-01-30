@@ -66,7 +66,7 @@
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.border { border-bottom: 1px solid rgba(0, 0, 0, 0.1); }
+.border { border-block-end: 1px solid rgba(0, 0, 0, 0.1); }
 .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
 .wp-block-image.shadow { box-shadow: none; }
 

@@ -54,7 +54,7 @@
 ul[class^="list"], [class^="list"] ul { list-style: none; }
 
 .list > ul:not(:last-child), .list li:not(:last-child) {
-	border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: <?php echo $half; ?>px;
 }
 

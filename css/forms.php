@@ -101,7 +101,7 @@ select {
 
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
-	border-right: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-inline-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px 0 0 5px;
 	padding-inline-end: <?php echo $half; ?>px;
 }

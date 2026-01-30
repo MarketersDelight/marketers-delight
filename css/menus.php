@@ -85,7 +85,7 @@
 	.sub-menu .menu-item a:hover { color: <?php echo $colors['submenu']['hover']; ?>; }
 	<?php endif; ?>
 	.sub-menu .menu-item:not(:last-child) a,
-	.sub-menu .menu-item:not(:last-child) .trigger { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.sub-menu .menu-item:not(:last-child) .trigger { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
 	.sub-menu .trigger-icon:after { content: '\e816'; }
 	/* SUB MENU ALT DIRECTION */
@@ -101,7 +101,7 @@
 	.menu-item { flex-flow: wrap; }
 	.menu-item:not(.toggle-menu-item):hover > a,
 	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.1); }
-	.menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.menu .button, .menu .button:hover {
 		padding: <?php echo $half; ?>px;
 		width: 100%;

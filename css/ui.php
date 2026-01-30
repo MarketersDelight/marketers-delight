@@ -102,7 +102,7 @@
 .md-tab-content.active { display: block; }
 
 .tabs {
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	margin-block-end: <?php echo $single; ?>px;
 }
 
@@ -139,7 +139,7 @@
 .accordion .current { font-weight: <?php echo $bold; ?>; }
 
 .accordion-group:not(:last-child) {
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-end: <?php echo $third; ?>px;
 }
 

@@ -50,12 +50,12 @@
 
 .footer .columns { padding-block: <?php echo $mid; ?>px; }
 
-.footer .list li:not(:last-child) { border-bottom-color: <?php echo $colors['footer']['border_color']; ?>; }
+.footer .list li:not(:last-child) { border-block-end-color: <?php echo $colors['footer']['border_color']; ?>; }
 
 .footer .list a { display: block; }
 
 .footer-copy {
-	border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>;
+	border-block-start-color: 1px solid <?php echo $colors['footer']['border_color']; ?>;
 	padding-block: <?php echo $single; ?>px;
 	text-align: center;
 }
@@ -79,7 +79,7 @@
 	width: 100%;
 }
 
-.widget_nav_menu .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.widget_nav_menu .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 /* SEARCH */
 
@@ -135,7 +135,7 @@
 
 #wp-calendar tbody a { font-weight: <?php echo $bold; ?>; }
 
-#wp-calendar thead tr, #wp-calendar tbody td { border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+#wp-calendar thead tr, #wp-calendar tbody td { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 #wp-calendar caption {
 	background-color: <?php echo $colors['site']['primary']; ?>;

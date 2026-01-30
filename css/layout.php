@@ -66,28 +66,28 @@
 
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 
-.box-style .post-footer { border-top: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
 /* PLAIN STYLE */
 
-.is-plain .header:not(.cover) { border-bottom: 1px solid <?php echo $colors['header']['border_color']; ?>; }
-.is-plain .footer { border-top: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
+.is-plain .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+.is-plain .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
 
 .plain .page-title:not(.cover) {
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-end: <?php echo $mid; ?>px;
 }
 
 .plain .loop.row .entry:not(:first-child) {
-	border-top: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-start: <?php echo $mid; ?>px;
 }
 
 .plain .loop.row .entry.has-cover,
 .plain .loop.row .entry.image-above {
-	border-top: 0;
+	border-block-start: 0;
 	padding-block-start: 0;
 }
 

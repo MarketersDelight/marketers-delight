@@ -125,8 +125,8 @@ sup { line-height: 1; }
 
 hr {
     border: 0;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-block-start: 1px solid rgba(0, 0, 0, 0.1);
+    border-block-end: 1px solid rgba(255, 255, 255, 0.3);
     height: 0;
 }
 
@@ -148,7 +148,7 @@ code {
 }
 
 abbr, acronym {
-	border-bottom: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
+	border-block-end: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
 	cursor: help;
 	text-decoration: none;
 }
@@ -197,7 +197,7 @@ echo "}\n";
 blockquote {
 	background-color: #fff;
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-left-width: 7px;
+	border-inline-start-width: 7px;
 	border-radius: 5px;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: block;
