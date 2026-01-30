@@ -77,8 +77,6 @@
 	z-index: 5;
 }
 
-.loop .image-above.has-cover .featured-image { margin-block-end: 0; }
-
 .featured-image a { display: block; }
 
 .featured-image img {

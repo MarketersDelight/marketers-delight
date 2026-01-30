@@ -8,12 +8,10 @@
 
 .compact .page-title .title { margin-block-end: 0; }
 
-.post-title, .page-title,
+.post-title, .page-title, .title-wrap,
 .wide .inner, .wide .wrap,
-.page-title.inline,
 .image-title .wrap,
-.image-inline.inline .wrap,
-.title-wrap {
+.image-inline.inline .wrap {
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
@@ -22,14 +20,12 @@
 .header-cover.full-cover .content .page-title,
 .header-cover.full-cover .content > .post-title { padding-block-start: <?php echo $triple * 2; ?>px; }
 
-/* DESCRIPTION + SUBTITLES */
+/* CTA, DESCRIPTION, SUBTITLE4 */
 
-.wide .description, .wide .subtitle {
+.wide .description, .wide .subtitle, .wide .cta {
 	margin-inline: auto;
 	max-width: <?php echo $post_width; ?>px;
 }
-
-/* CTA */
 
 .cta {
 	align-items: center;
@@ -45,19 +41,16 @@
 		text-align: center;
 	}
 	.image-title .wrap,
-	.image-inline.wide,
-	.image-inline.inline .wrap,
-	.image-inline.wide .inner {
+	.image-inline.wide, .image-inline.inline .wrap, .image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
 		width: 100%;
 	}
+	.image-title.left .featured-image { order: -1; }
 	.wide, .wide .inner, .wide .wrap { row-gap: <?php echo $half + $third; ?>px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
-	.title-wrap,
-	.wide.image-inline .wrap,
-	.image-inline.inline .description { flex: 1; }
+	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
 }
 
 @media (max-width: 900px) {
