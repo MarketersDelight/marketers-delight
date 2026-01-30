@@ -4,11 +4,9 @@
 	$LAYOUT
 \*------------------------------*/
 
-/*
-.clear:after, .inner:after, .menu:after, .compact:after,
-.byline:after, .the-content:after, .sidebar:after {
-*/
-.clear:after {
+.clear:after,
+.entry.image-left .the-content:after,
+.entry.image-right .the-content:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -46,8 +44,9 @@
 
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
-.loop:not(:last-child),
-.box-style .row .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop:not(:last-child), .box-style .row .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+
+.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 
 .box, .box-style .entry {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
@@ -55,8 +54,6 @@
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	width: auto;
 }
-
-.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 
 .slim .entry .cover,
 .content-wrap .page-title.cover,
@@ -71,23 +68,23 @@
 
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
-/* PLAIN STYLE */
+/* BORDER STYLE */
 
-.is-plain .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
-.is-plain .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
+.is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+.is-border-style .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
 
-.plain .page-title:not(.cover) {
+.border-style .page-title:not(.cover) {
 	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-end: <?php echo $mid; ?>px;
 }
 
-.plain .loop.row .entry:not(:first-child) {
+.border-style .loop.row .entry:not(:first-child) {
 	border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-start: <?php echo $mid; ?>px;
 }
 
-.plain .loop.row .entry.has-cover,
-.plain .loop.row .entry.image-above {
+.border-style .loop.row .entry.has-cover,
+.border-style .loop.row .entry.image-above {
 	border-block-start: 0;
 	padding-block-start: 0;
 }

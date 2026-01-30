@@ -945,11 +945,9 @@ select {
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
-/*
-.clear:after, .inner:after, .menu:after, .compact:after,
-.byline:after, .the-content:after, .sidebar:after {
-*/
-.clear:after {
+.clear:after,
+.entry.image-left .the-content:after,
+.entry.image-right .the-content:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -972,15 +970,14 @@ select {
 .entry .cover { padding-inline: 16px; }
 /* BOX STYLE */
 .box-style.content { background-color: #F0F0F0; }
-.loop:not(:last-child),
-.box-style .row .entry:not(:last-child) { margin-block-end: 31px; }
+.loop:not(:last-child), .box-style .row .entry:not(:last-child) { margin-block-end: 31px; }
+.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 .box, .box-style .entry {
 	background-color: #FFFFFF;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	width: auto;
 }
-.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 .slim .entry .cover,
 .content-wrap .page-title.cover,
 .box-style .item,
@@ -990,19 +987,19 @@ select {
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 .box-style .post-footer { border-block-start: 1px solid #CCCCCC; }
 .box-style .entry .byline.post-footer { padding-block: 16px; }
-/* PLAIN STYLE */
-.is-plain .header:not(.cover) { border-block-end: 1px solid #CCCCCC; }
-.is-plain .footer { border-block-start: 1px solid #CCCCCC; }
-.plain .page-title:not(.cover) {
+/* BORDER STYLE */
+.is-border-style .header:not(.cover) { border-block-end: 1px solid #CCCCCC; }
+.is-border-style .footer { border-block-start: 1px solid #CCCCCC; }
+.border-style .page-title:not(.cover) {
 	border-block-end: 1px solid #CCCCCC;
 	padding-block-end: 47px;
 }
-.plain .loop.row .entry:not(:first-child) {
+.border-style .loop.row .entry:not(:first-child) {
 	border-block-start: 1px solid #CCCCCC;
 	padding-block-start: 47px;
 }
-.plain .loop.row .entry.has-cover,
-.plain .loop.row .entry.image-above {
+.border-style .loop.row .entry.has-cover,
+.border-style .loop.row .entry.image-above {
 	border-block-start: 0;
 	padding-block-start: 0;
 }
