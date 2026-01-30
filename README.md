@@ -31,7 +31,8 @@ require_once get_template_directory() . '/marketers-delight.php';
 
 - [ ] Block Editor and Classic Editor styles missing / incomplete
 - [ ] Blocks / Widgets extracted from theme, need to build as Drop-in
-- [ ] Header Cover title spacing slightly off with extra `gap` when Title only
+- [ ] Page CTA > Links > Edit any link > URL is default value, but URL text field not shown until manually select option
+- [x] Header Cover title spacing slightly off with extra `gap` when Title only
 - [x] Test page title on author pages
 - [x] Layout options: Sidebar meta fields not toggling in all cases
 - [x] 404 page frontend not loading content
