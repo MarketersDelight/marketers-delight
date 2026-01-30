@@ -186,9 +186,9 @@ function md_get_link( $fields, $p = '' ) {
 
 function md_cta( $context = 'post' ) {
 	if ( $context == 'page' ) {
-		$cta = md_post_type_field( 'page_cta' );
-		$type = md_post_type_field( array( 'page_cta', 'page_cta' ) );
-		$links = md_post_type_field( array( 'page_cta', 'links' ) );
+		$cta = md_module( 'page_cta' );
+		$type = md_module( array( 'page_cta', 'page_cta' ) );
+		$links = md_module( array( 'page_cta', 'links' ) );
 	}
 	else {
 		$cta = md_post_meta( 'page_cta' );

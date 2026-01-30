@@ -203,9 +203,12 @@
 		conditional: function() {
 			$( document ).on( 'change', '.md-conditional-option', function( e ) {
 				var val = $( this ).val(),
-					parent = $( this ).closest( '.md-conditional' );
-				parent.find( '.md-conditional-item' ).hide();
-				parent.find( '.md-conditional-' + val ).show();
+					parent = $( this ).closest( '.md-conditional' ),
+					children = function() {
+						return $( this ).closest( '.md-conditional' ).is( parent );
+					};
+				parent.find( '.md-conditional-item' ).filter( children ).hide();
+				parent.find( '.md-conditional-' + val ).filter( children ).show();
 			});
 		},
 		toggle: function() {
