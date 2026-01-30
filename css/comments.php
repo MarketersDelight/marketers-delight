@@ -19,7 +19,7 @@
 
 .content-title {
 	align-items: center;
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	display: flex;
 	gap: <?php echo $half; ?>px;
 	margin-block-end: <?php echo $single; ?>px;
