@@ -104,8 +104,7 @@
 	.box-style.expanded .row .the-content { padding-inline: 0; }
 	.box-style .slim .entry .post-title:not(.cover) { padding-block-end: <?php echo $half; ?>px; }
 	.box-style .slim .entry .the-content { padding-block-start: <?php echo $half; ?>px; }
-	.page-title.wide .description,
-	.page-title.wide .cta,
+
 	.expanded .the-content,
 	.expanded .post-footer .wrap {
 		margin-inline: auto;

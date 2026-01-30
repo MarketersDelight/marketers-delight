@@ -8,11 +8,11 @@
 
 .compact .page-title .title { margin-block-end: 0; }
 
+.post-title, .page-title,
+.wide .inner, .wide .wrap,
 .page-title.inline,
 .image-title .wrap,
-.entry .post-title,
-.wide, .wide .inner, .wide .wrap,
-.image-inline.wide, .image-inline.inline .wrap,
+.image-inline.inline .wrap,
 .title-wrap {
 	display: flex;
 	flex-direction: column;
@@ -40,24 +40,24 @@
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.expanded .page-title, .expanded .post-title, .post-title.wide .inner {
+	.post-title.wide, .page-title.wide {
 		align-items: center;
 		text-align: center;
 	}
-	.expanded .slim .post-title, .expanded .image-title {
-		align-items: inherit;
-		text-align: inherit;
-	}
+	.image-title .wrap,
 	.image-inline.wide,
 	.image-inline.inline .wrap,
-	.image-inline.wide .inner,
-	.image-title .wrap {
+	.image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
 		width: 100%;
 	}
-	.wide, .wide .inner, .wide .wrap, .image-inline.wide { row-gap: <?php echo $half + $third; ?>px }
-	.title-wrap, .image-inline .wrap, .image-inline.inline .description { flex: 1; }
+	.wide, .wide .inner, .wide .wrap { row-gap: <?php echo $half + $third; ?>px }
+	.image-title.wide .wrap { justify-content: center; }
+	.image-title .title-wrap { text-align: left; }
+	.title-wrap,
+	.wide.image-inline .wrap,
+	.image-inline.inline .description { flex: 1; }
 }
 
 @media (max-width: 900px) {
