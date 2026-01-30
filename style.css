@@ -1380,7 +1380,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 /* TITLE */
 .content-title {
 	align-items: center;
-	border-bottom: 1px solid #CCCCCC;
+	border-block-end: 1px solid #CCCCCC;
 	display: flex;
 	gap: 16px;
 	margin-block-end: 31px;

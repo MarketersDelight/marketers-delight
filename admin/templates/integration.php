@@ -2,7 +2,7 @@
 
 	<h3 class="md-widget-title">
 
-		<img src="<?php echo esc_url( "$icon_path/{$id}.png" ); ?>" alt="<?php echo esc_html( $fields['name'] ); ?>" class="mr-half" width="25" />
+		<img src="<?php echo esc_url( $icon_url ); ?>" alt="<?php echo esc_html( $fields['name'] ); ?>" class="mr-half" width="25" />
 
 		<?php echo esc_html( $fields['name'] ); ?>
 
