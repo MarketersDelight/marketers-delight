@@ -505,10 +505,10 @@ select {
 		inset-inline-end: 0;
 }
 .scroller-nav i { font-size: inherit; }
-@media all and (min-width: 1117px) {
+@media all and (min-width: 1148px) {
 	.scroller-nav { display: none; }
 }
-@media all and (max-width: 1117px) {
+@media all and (max-width: 1148px) {
 	.scroller {
 		overflow-x: auto;
 		white-space: nowrap;
@@ -939,7 +939,7 @@ select {
 @media (max-width: 900px) {
 	.header-cover .compact.box-style > .post-title { margin-block-end: 0; }
 }
-@media all and (max-width: 1117px) {
+@media all and (max-width: 1148px) {
 	.header-cover .expanded.box-style > .post-title { margin-block-end: 0; }
 }
 /*------------------------------*\
@@ -949,14 +949,14 @@ select {
 .clear:after, .inner:after, .menu:after, .compact:after,
 .byline:after, .the-content:after, .sidebar:after {
 */
-.clear:after, .compact:after {
+.clear:after {
 	clear: both;
 	content: '';
 	display: table;
 }
 .inner {
 	margin-inline: auto;
-	max-width: 1117px;
+	max-width: 1148px;
 	position: relative;
 	width: 100%;
 }
@@ -968,8 +968,8 @@ select {
 .loop.row:not(:last-child) { margin-block-end: 62px; }
 .row > .entry, .entry > *:not(:last-child) { margin-block-end: 47px; }
 .loop .entry > *:not(:last-child) { margin-block-end: 31px; }
-.entry .cover { padding-inline: 16px; }
 .loop .image-above.has-cover .featured-image { margin-block-end: 0; }
+.entry .cover { padding-inline: 16px; }
 /* BOX STYLE */
 .box-style.content { background-color: #F0F0F0; }
 .loop:not(:last-child),
@@ -1028,19 +1028,15 @@ select {
 	.content-width { max-width: 745px; }
 	.post-width { max-width: 651px; }
 	.sidebar-width { max-width: 372px; }
-	.compact .content-wrap {
-		float: left;
-		width: 66.696508504924%;
+	.compact > .inner {
+		display: grid;
+		gap: 31px;
+		grid-template-columns: 64.895470383275% 32.404181184669%;
 	}
-	.compact.left .content-wrap { float: right; }
-	.compact .sidebar {
-		float: left;
-		padding-inline-start: 31px;
-		width: 33.303491495076%;
-	}
-	.compact.left .sidebar { padding-inline: 0 31px; }
+	.compact.left > .inner { direction: rtl; }
+	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
-@media all and (max-width: 1117px) {
+@media all and (max-width: 1148px) {
 	.box-style.content.expanded .breadcrumbs { padding-block-start: 16px; }
 	.inner { padding-inline: 16px; }
 	.box-style .entry, .content-wrap .page-title.cover { margin-inline-start: -16px; }
@@ -1106,7 +1102,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		width: 100vw;
 	}
 }
-@media all and (max-width: 931px) {
+@media all and (max-width: 993px) {
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
@@ -1114,23 +1110,23 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		width: 100vw;
 	}
 }
-@media all and (min-width: 931px) {
-	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -24.96644295302%; }
-	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -24.96644295302%; }
+@media all and (min-width: 993px) {
+	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -16.644295302013%; }
+	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -16.644295302013%; }
 }
-@media all and (min-width: 1117px) {
+@media all and (min-width: 1148px) {
 	.expanded.box-style .alignfull {
 		inset-inline: inherit;
 		width: auto;
 	}
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignleft.wrap, .expanded .row .image-left .featured-image,
-	.expanded .alignleft, .expanded .wp-block-image .alignleft { margin-inline-start: -35.7910906298%; }
+	.expanded .alignleft, .expanded .wp-block-image .alignleft { margin-inline-start: -38.248847926267%; }
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignright.wrap, .expanded .row .image-right .featured-image,
-	.expanded .alignright, .expanded .wp-block-image .alignright { margin-inline-end: -35.7910906298%; }
+	.expanded .alignright, .expanded .wp-block-image .alignright { margin-inline-end: -38.248847926267%; }
 }
-@media all and (max-width: 1117px) {
+@media all and (max-width: 1148px) {
 	.expanded.box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;

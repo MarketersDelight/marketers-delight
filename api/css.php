@@ -266,8 +266,6 @@ class md_css {
 		$double = $lhd = round( $single * 2 );
 		$triple = $lht = round( $single * 3 );
 		$quad = $lhq = round( $single * 4 );
-		$five = $lhq = round( $single * 5 );
-		$six = round( $single * 6 );
 
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );

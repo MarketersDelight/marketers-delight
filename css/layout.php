@@ -8,7 +8,7 @@
 .clear:after, .inner:after, .menu:after, .compact:after,
 .byline:after, .the-content:after, .sidebar:after {
 */
-.clear:after, .compact:after {
+.clear:after {
 	clear: both;
 	content: '';
 	display: table;
@@ -38,9 +38,9 @@
 
 .loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.entry .cover { padding-inline: <?php echo $half; ?>px; }
-
 .loop .image-above.has-cover .featured-image { margin-block-end: 0; }
+
+.entry .cover { padding-inline: <?php echo $half; ?>px; }
 
 /* BOX STYLE */
 
@@ -116,17 +116,13 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
-	.compact .content-wrap {
-		float: left;
-		width: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>%;
+	.compact > .inner {
+		display: grid;
+		gap: <?php echo $single; ?>px;
+		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
-	.compact.left .content-wrap { float: right; }
-	.compact .sidebar {
-		float: left;
-		padding-inline-start: <?php echo $single; ?>px;
-		width: <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
-	}
-	.compact.left .sidebar { padding-inline: 0 <?php echo $single; ?>px; }
+	.compact.left > .inner { direction: rtl; }
+	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
 
 @media all and (max-width: <?php echo $site_width; ?>px) {

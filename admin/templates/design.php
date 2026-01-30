@@ -129,7 +129,33 @@
 
 			<p class="description"><?php echo __( '<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box.', 'md' ); ?>
 
-			<p class="description"><?php echo sprintf( __( '<b>Tip:</b> For the most accurate results you must add any extra spacing within the content box and sidebar to find the true width of your site.<br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>', 'md' ), $values['colors']['width']['post'], $values['colors']['width']['sidebar'], ( md_setting( array( 'content', 'style' ) ) == '' ? ' + <b>' . ( $layout_spacing * 2 ) . '</b>' : '' ), $values['colors']['width']['site'] ); ?></p>
+			<p class="description"><?php echo __( '<b>Tip:</b> To calculate your own site width you must add any extra spacing within the content and sidebar, which can change based on the <b>Site style</b>.', 'md' ); ?></p>
+
+			<?php
+
+		$design = md_setting( array( 'colors', 'design' ) );
+
+		$post_width = round( 21 * $line_height );
+		$layout_spacing = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
+		$content_width = $post_width + $layout_spacing;
+		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
+		$sidebar_width = round( 12 * $line_height );
+
+		$site_width = $content_width + $sidebar_width + $line_height; #add $line_height to account for gap
+
+		echo '<p class="description"><code>';
+
+		if ( $design )
+			echo "<b>$post_width</b> + <b>$sidebar_width</b> + <b>$line_height</b> = <b>$site_width</b>";
+		else
+			echo "<b>( $post_width + $layout_spacing )</b> + <b>$sidebar_width</b> + <b>$line_height</b> = <b>$site_width</b>";
+
+		echo '</code></p>';
+
+		// 651 + 372 + 94 = 1054
+
+		// <br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>', 'md' ), $values['colors']['width']['post'], $values['colors']['width']['sidebar'], ( md_setting( array( 'content', 'style' ) ) == '' ? ' + <b>' . ( $layout_spacing * 2 ) . '</b>' : '' ), $values['colors']['width']['site']
+			?>
 
 		</div>
 	</div>

@@ -25,7 +25,7 @@ function md_filter_loops() {
 function md_filter_loop_styles() {
 	return apply_filters( 'md_filter_loop_styles', array(
 		'box_style' => __( 'Box style', 'md' ),
-		'plain' => __( 'Simple style', 'md' ),
+		'plain' => __( 'Border style', 'md' ),
 		'none' => __( 'No style', 'md' )
 	) );
 }

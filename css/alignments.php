@@ -66,7 +66,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (max-width: <?php echo $content_width + $six; ?>px) {
+@media all and (max-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
@@ -75,9 +75,9 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (min-width: <?php echo $content_width + $six; ?>px) {
-	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -<?php echo ( $six / $content_width ) * 100; ?>%; }
-	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -<?php echo ( $six / $content_width ) * 100; ?>%; }
+@media all and (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
+	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
 }
 
 @media all and (min-width: <?php echo $site_width; ?>px) {
