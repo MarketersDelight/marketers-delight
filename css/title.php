@@ -6,7 +6,7 @@
 
 .page-title, .header-cover .content > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
-.compact .page-title .title { margin-block-end: 0; }
+.post-title .title, .page-title .title { margin-block-end: 0; }
 
 .post-title, .page-title, .title-wrap,
 .wide .inner, .wide .wrap,

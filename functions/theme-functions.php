@@ -148,7 +148,8 @@ function md_js_object( $args ) {
  */
 
 function md_compile( $delete = null ) {
-	md_compile_css(); md_compile_js();
+	md_compile_css();
+	md_compile_js();
 }
 
 /**
@@ -185,6 +186,7 @@ function md_compile_js( $delete = null ) {
 
 function md_ver( $file, $path = null ) {
 	$path = isset( $path ) ? $path : MD_DIR;
+
 	return date( 'ymds', filemtime( $path . $file ) );
 }
 
@@ -196,6 +198,7 @@ function md_ver( $file, $path = null ) {
 
 function md_text_field( $string ) {
 	$sanitize = new md_sanitize;
+
 	return wp_kses( $string, $sanitize->_allowed_html );
 }
 

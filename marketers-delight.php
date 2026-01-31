@@ -71,9 +71,10 @@ final class marketers_delight {
 
 		require_once MD_DIR . 'functions/template-functions.php';
 		require_once MD_DIR . 'functions/image-functions.php';
-		require_once MD_DIR . 'functions/page-functions.php';
+		require_once MD_DIR . 'functions/title-functions.php';
 		require_once MD_DIR . 'functions/comment-functions.php';
 		require_once MD_DIR . 'functions/loop-functions.php';
+		require_once MD_DIR . 'functions/page-functions.php';
 		require_once MD_DIR . 'functions/header-functions.php';
 		require_once MD_DIR . 'functions/layout-functions.php';
 

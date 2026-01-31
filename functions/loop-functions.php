@@ -323,37 +323,6 @@ function md_has_custom_404() {
 }
 
 /**
- * Creates previous/next post links at the end of a
- * single entry.
- *
- * @since 4.0
- */
-
-function md_post_nav() {
-	if ( md_has_post_nav() )
-		md_template( 'post-nav' );
-}
-
-/**
- * Check if Post Nav is active on page.
- *
- * @since 6.0
- */
-
-function md_has_post_nav() {
-	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );
-	$single_remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
-	$single_add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
-
-	if (
-		! is_page() && is_singular() && ( get_previous_post() || get_next_post() ) &&
-		! $single_remove &&
-		( ! $disable || $single_add )
-	)
-		return true;
-}
-
-/**
  * Create pagination for use on home and archives pages.
  *
  * @since 4.0
