@@ -195,10 +195,6 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array( 'large', 'medium', 'small', 'normal' )
 			),
-			'list' => array(
-				'type' => 'select',
-				'options' => array( 'timeline', 'numbers', 'list' )
-			),
 			'tags' => array( 'type' => 'text' ),
 			'author' => array(
 				'type' => 'select',

@@ -8,19 +8,6 @@
 		) ); ?>
 	</div>
 
-	<div class="col">
-		<?php $this->fields->field( 'list', array(
-			'type' => 'select',
-			'label' => __( 'List', 'md' ),
-			'empty_label' => __( 'Use default', 'md' ),
-			'options' => array(
-				'list' => __( 'Post Listing', 'md' ),
-				'timeline' => __( 'Timeline', 'md' ),
-				'numbers' => __( 'Numbered', 'md' )
-			)
-		) ); ?>
-	</div>
-
 	<?php if ( $screen->base !== 'term' ) : ?>
 	<div class="col md-sep-top">
 		<?php $this->fields->field( 'category_posts', array(

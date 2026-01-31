@@ -563,11 +563,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin-top: 0;
 }
 
+.md .md-widget-item p:last-child { margin-bottom: 0; }
+
 .md-widget-item .nav-tab { background-color: #f8f8f8; }
 
 .md-widget-item .nav-tab:hover { background-color: #eee; }
-
-.md-widget-title
 
 .md-toggle h3 { cursor: pointer; }
 

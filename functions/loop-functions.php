@@ -118,9 +118,6 @@ function md_loop( $args = array() ) {
 	if ( $loop_type !== $post_type )
 		$loop_classes[] = "loop-{$loop_type}";
 
-	if ( isset( $loop['list'] ) )
-		$loop_classes[] = $loop['list'];
-
 	if ( $loop['columns'] > 1 ) {
 		$loop_classes[] = 'columns';
 		$loop_classes[] = 'columns-' . $loop['columns'];
