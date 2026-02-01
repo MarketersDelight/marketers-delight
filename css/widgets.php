@@ -55,7 +55,7 @@
 .footer .list a { display: block; }
 
 .footer-copy {
-	border-block-start-color: 1px solid <?php echo $colors['footer']['border_color']; ?>;
+	border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>;
 	padding-block: <?php echo $single; ?>px;
 	text-align: center;
 }

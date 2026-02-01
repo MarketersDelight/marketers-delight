@@ -7,12 +7,12 @@
  */
 
 add_action( 'md_hook_content_box_top', 'md_breadcrumbs', 20 );
-add_action( 'md_hook_content_item', 'md_author', 60 );
-add_action( 'md_hook_content_item', 'md_comments', 60 );
+add_action( 'md_hook_content_item', 'md_author' );
+add_action( 'md_hook_content_item', 'md_comments' );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
-add_action( 'md_hook_content', 'md_post_nav', 70 );
-add_action( 'md_hook_footer', 'md_footer_columns_template', 20 );
-add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
+add_action( 'md_hook_content', 'md_post_nav', 20 );
+add_action( 'md_hook_footer', 'md_footer_columns_template' );
+add_action( 'md_hook_footer_bottom', 'md_footer_copy' );
 
 /**
  * Add hooks to the template with advanced logic.
@@ -23,13 +23,13 @@ add_action( 'md_hook_footer_bottom', 'md_footer_copy', 20 );
 function md_templates() {
 	$context = is_singular() || is_404() ? 'post' : 'page';
 
-	if ( md_has_post_content() )
-		add_action( 'md_hook_content', 'md_loop', 30, 2 );
-
 	if ( md_has_header_cover( $context ) )
 		add_action( 'md_hook_content_box_top', 'md_page_title' );
 	else
 		add_action( 'md_hook_content', 'md_page_title' );
+
+	if ( md_has_post_content() )
+		add_action( 'md_hook_content', 'md_loop' );
 }
 
 add_action( 'template_redirect', 'md_templates' );

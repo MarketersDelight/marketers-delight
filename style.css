@@ -1556,7 +1556,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 .footer .list li:not(:last-child) { border-block-end-color: #CCCCCC; }
 .footer .list a { display: block; }
 .footer-copy {
-	border-block-start-color: 1px solid #CCCCCC;
+	border-block-start: 1px solid #CCCCCC;
 	padding-block: 31px;
 	text-align: center;
 }
