@@ -21,7 +21,7 @@ function md_featured_image( $context = 'post', $args = array() ) {
 		$size = 250;
 
 	$permalink = $context == 'post' && ! is_singular() && ! is_404() ? get_permalink() : '';
-	$style = ! empty( $image['width'] ) ? md_style( array( 'flex' => '0 1 ' . $image['width'] . 'px' ) ) : '';
+	$style = ! empty( $image['width'] ) ? md_style( array( 'max_width' => $image['width'] ) ) : '';
 
 	include md_template( 'featured-image', true );
 }

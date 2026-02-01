@@ -34,10 +34,6 @@
 
 .breadcrumbs a:hover { text-decoration: none; }
 
-@media all and (max-width: 900px) {
-	.box-style .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
-}
-
 @media all and (min-width: <?php echo $post_width; ?>px) {
 	.expanded:not(.box-style) .breadcrumbs {
 		margin-block-end: <?php echo $single; ?>px;

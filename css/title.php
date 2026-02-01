@@ -22,11 +22,6 @@
 
 /* CTA, DESCRIPTION, SUBTITLE4 */
 
-.wide .description, .wide .subtitle, .wide .cta {
-	margin-inline: auto;
-	max-width: <?php echo $post_width; ?>px;
-}
-
 .cta {
 	align-items: center;
 	display: flex;
@@ -46,11 +41,21 @@
 		flex-flow: row;
 		width: 100%;
 	}
+	.page-title.image-inline.left .featured-image,
 	.image-title.left .featured-image { order: -1; }
 	.wide, .wide .inner, .wide .wrap { row-gap: <?php echo $half + $third; ?>px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
 	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
+	.wide .description, .wide .subtitle, .wide .cta {
+		margin-inline: auto;
+		max-width: <?php echo $post_width; ?>px;
+	}
+}
+
+@media (max-width: <?php echo $post_width; ?>px) {
+	.page-title.image-title .wrap { text-align: center; }
+	.page-title.image-title .featured-image { margin-inline: auto; }
 }
 
 @media (max-width: 900px) {
@@ -59,4 +64,5 @@
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.header-cover .expanded.box-style > .post-title { margin-block-end: 0; }
+	.header-cover .expanded.box-style .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
 }

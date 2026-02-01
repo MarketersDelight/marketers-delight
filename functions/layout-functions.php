@@ -41,17 +41,9 @@ function md_content_box() {
 
 		if ( md_has_header_cover() )
 			$html = 'main';
-		elseif ( ! is_singular() && md_has_sidebar() )
+		elseif ( ! is_singular() )
 			$inner_html = 'main';
 
-/*
-		if ( md_has_header_cover() )
-			$html = 'main';
-		elseif ( ! is_singular() && md_has_sidebar() )
-			$inner_html = 'main';
-		elseif ( ! md_has_sidebar() )
-			$inner_html = 'main';
-*/
 		include md_template( 'content-box', true );
 	}
 }

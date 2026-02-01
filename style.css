@@ -910,10 +910,6 @@ select {
 .header-cover.full-cover .content .page-title,
 .header-cover.full-cover .content > .post-title { padding-block-start: 186px; }
 /* CTA, DESCRIPTION, SUBTITLE4 */
-.wide .description, .wide .subtitle, .wide .cta {
-	margin-inline: auto;
-	max-width: 651px;
-}
 .cta {
 	align-items: center;
 	display: flex;
@@ -931,17 +927,27 @@ select {
 		flex-flow: row;
 		width: 100%;
 	}
+	.page-title.image-inline.left .featured-image,
 	.image-title.left .featured-image { order: -1; }
 	.wide, .wide .inner, .wide .wrap { row-gap: 26px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
 	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
+	.wide .description, .wide .subtitle, .wide .cta {
+		margin-inline: auto;
+		max-width: 651px;
+	}
+}
+@media (max-width: 651px) {
+	.page-title.image-title .wrap { text-align: center; }
+	.page-title.image-title .featured-image { margin-inline: auto; }
 }
 @media (max-width: 900px) {
 	.header-cover .compact.box-style > .post-title { margin-block-end: 0; }
 }
 @media all and (max-width: 1148px) {
 	.header-cover .expanded.box-style > .post-title { margin-block-end: 0; }
+	.header-cover .expanded.box-style .breadcrumbs { padding-block-start: 16px; }
 }
 /*------------------------------*\
 	$LAYOUT
@@ -1035,12 +1041,12 @@ select {
 	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
 @media all and (max-width: 1148px) {
-	.box-style.content.expanded .breadcrumbs { padding-block-start: 16px; }
 	.inner { padding-inline: 16px; }
 	.box-style .entry, .content-wrap .page-title.cover { margin-inline-start: -16px; }
 }
 @media all and (max-width: 900px) {
 	.box-style.content.compact { padding-block-start: 0; }
+	.box-style.content.compact .breadcrumbs { padding-block-start: 16px; }
 	.box-style .entry, .content-wrap .page-title.cover { margin-inline-end: -16px; }
 	.sidebar { margin-block-start: 31px; }
 }
@@ -1182,9 +1188,6 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 }
 .breadcrumbs a { text-decoration: underline; }
 .breadcrumbs a:hover { text-decoration: none; }
-@media all and (max-width: 900px) {
-	.box-style .breadcrumbs { padding-block-start: 16px; }
-}
 @media all and (min-width: 651px) {
 	.expanded:not(.box-style) .breadcrumbs {
 		margin-block-end: 31px;

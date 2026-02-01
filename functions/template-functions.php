@@ -263,9 +263,6 @@ function md_style( $fields ) {
 	if ( ! empty( $fields['flex'] ) )
 		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
 
-	if ( ! empty( $fields['flex_basis'] ) )
-		$attributes['flex_basis'] = 'flex-basis:' . esc_attr( $fields['flex_basis'] ) . 'px;';
-
 	if ( ! empty( $fields['height'] ) )
 		$attributes['height'] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
 
