@@ -1,4 +1,4 @@
-<div class="post-nav<?php echo ! md_has_sidebar() ? ' inner' : ''; ?>">
+<div class="post-nav<?php echo ! md_has_sidebar() ? ' inner format' : ''; ?>">
 
 	<?php if ( get_previous_post_link() ) : ?>
 

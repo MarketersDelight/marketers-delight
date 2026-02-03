@@ -41,7 +41,7 @@ function md_content_box() {
 
 		if ( md_has_header_cover() )
 			$html = 'main';
-		elseif ( ! is_singular() )
+		else
 			$inner_html = 'main';
 
 		include md_template( 'content-box', true );

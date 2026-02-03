@@ -69,12 +69,9 @@ function md_loops( $sort = null ) {
 
 function md_loop( $args = array() ) {
 	$c = 1;
-	$html = 'article';
+	$html = is_singular() ? 'div' : 'article';
 	$categories_classes = array( 'categories' );
 	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
-
-	if ( is_singular() )
-		$html =  md_has_header_cover() ? 'div' : 'main';
 
 	$loop_classes = array( 'loop' );
 	$loops = md_loops();

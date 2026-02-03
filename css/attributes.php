@@ -16,7 +16,7 @@ if ( locate_template( 'css/fonts.php' ) )
 
 $titles = array(
 	'huge' => '.huge, .huge-title',
-	'h1' => 'h1, .h1, .large-title, .loop.full.row .post-title .title',
+	'h1' => 'h1, .h1, .large-title',
 	'h2' => 'h2, .h2, .main-title',
 	'h3' => 'h3, .h3, .med-title',
 	'h4' => 'h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading',

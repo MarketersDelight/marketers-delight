@@ -10,7 +10,6 @@ add_action( 'md_hook_content_box_top', 'md_breadcrumbs', 20 );
 add_action( 'md_hook_content_item', 'md_author' );
 add_action( 'md_hook_content_item', 'md_comments' );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
-add_action( 'md_hook_content', 'md_post_nav', 20 );
 add_action( 'md_hook_footer', 'md_footer_columns_template' );
 add_action( 'md_hook_footer_bottom', 'md_footer_copy' );
 
@@ -30,6 +29,9 @@ function md_templates() {
 
 	if ( md_has_post_content() )
 		add_action( 'md_hook_content', 'md_loop' );
+
+	$hook = md_has_sidebar() ? 'md_hook_content' : 'md_hook_content_box_bottom';
+	add_action( $hook, 'md_post_nav', 50 );
 }
 
 add_action( 'template_redirect', 'md_templates' );

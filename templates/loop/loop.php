@@ -2,6 +2,8 @@
 
 echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
 
+md_hook_content_top();
+
 md_byline( 'before_post', array( 'classes' => 'post-meta' ) );
 
 md_featured_image( 'post', array( 'show_image' => array( 'above_headline' ) ) );
@@ -12,13 +14,13 @@ md_featured_image( 'post', array( 'show_image' => array( 'below_headline' ) ) );
 
 md_hook_before_the_content();
 
-if ( $loop['content'] !== 'hide' ) {
+if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
 
 	echo "<section class=\"the-content\">";
 
-	md_featured_image( 'post', array( 'show_image' => array( 'left', 'right', 'center' ) ) );
-
 	md_hook_the_content_top();
+
+	md_featured_image( 'post', array( 'show_image' => array( 'left', 'right', 'center' ) ) );
 
 	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
 		if ( is_404() && ! md_has_custom_404() )
@@ -51,5 +53,7 @@ if ( ! isset( $loop['post_footer']['remove'] ) )
 	) );
 
 md_hook_content_item();
+
+md_hook_content_bottom();
 
 echo "</$html>";
