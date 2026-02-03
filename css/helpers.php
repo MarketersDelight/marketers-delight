@@ -152,21 +152,40 @@
 /* BLOCKS */
 
 .block-half { padding: <?php echo $half; ?>px; }
+.block-half-tb { padding-block: <?php echo $half; ?>px; }
+.block-half-lr { padding-inline: <?php echo $half; ?>px; }
+.block-half-top { padding-block-start: <?php echo $half; ?>px; }
 .block-half-bot { padding-block-end: <?php echo $half; ?>px; }
+
 .block-single { padding: <?php echo $single; ?>px; }
+.block-single-tb { padding-block: <?php echo $single; ?>px; }
+.block-single-lr { padding-inline: <?php echo $single; ?>px; }
+.block-single-top { padding-block-start: <?php echo $single; ?>px; }
 .block-single-bot { padding-block-end: <?php echo $single; ?>px; }
+
 .block-mid { padding: <?php echo $mid; ?>px; }
-.block-double { padding: <?php echo $double; ?>px; }
-.block-double-bot { padding-block-end: <?php echo $double; ?>px; }
-.block-triple { padding: <?php echo $triple; ?>px; }
-.block-quad { padding: <?php echo $quad; ?>px; }
-.block-half-tb { padding-block-end: <?php echo $half; ?>px; padding-block-start: <?php echo $half; ?>px; }
-.block-single-tb { padding-block-end: <?php echo $single; ?>px; padding-block-start: <?php echo $single; ?>px; }
-.block-mid-tb { padding-block-end: <?php echo $mid; ?>px; padding-block-start: <?php echo $mid; ?>px; }
+.block-mid-tb { padding-block: <?php echo $mid; ?>px; }
+.block-mid-lr { padding-inline: <?php echo $mid; ?>px; }
 .block-mid-top { padding-block-start: <?php echo $mid; ?>px; }
-.block-double-tb { padding-block-end: <?php echo $double; ?>px; padding-block-start: <?php echo $double; ?>px; }
-.block-triple-tb { padding-block-end: <?php echo $triple; ?>px; padding-block-start: <?php echo $triple; ?>px; }
-.block-quad-tb { padding-block-end: <?php echo $quad; ?>px; padding-block-start: <?php echo $quad; ?>px; }
+.block-mid-bot { padding-block-end: <?php echo $mid; ?>px; }
+
+.block-double { padding: <?php echo $double; ?>px; }
+.block-double-tb { padding-block: <?php echo $double; ?>px; }
+.block-double-lr { padding-inline: <?php echo $double; ?>px; }
+.block-double-top { padding-block-start: <?php echo $double; ?>px; }
+.block-double-bot { padding-block-end: <?php echo $double; ?>px; }
+
+.block-triple { padding: <?php echo $triple; ?>px; }
+.block-triple-tb { padding-block: <?php echo $triple; ?>px; }
+.block-triple-lr { padding-inline: <?php echo $triple; ?>px; }
+.block-triple-top { padding-block-start: <?php echo $triple; ?>px; }
+.block-triple-bot { padding-block-end: <?php echo $triple; ?>px; }
+
+.block-quad { padding: <?php echo $quad; ?>px; }
+.block-quad-tb { padding-block: <?php echo $quad; ?>px; }
+.block-quad-lr { padding-inline: <?php echo $quad; ?>px; }
+.block-quad-top { padding-block-start: <?php echo $quad; ?>px; }
+.block-quad-bot { padding-block-end: <?php echo $quad; ?>px; }
 
 /* EDITOR COLORS */
 

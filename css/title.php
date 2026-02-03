@@ -79,6 +79,10 @@
 		align-items: center;
 		text-align: center;
 	}
+	.columns .post-title {
+		align-items: inherit;
+		text-align: inherit;
+	}
 	.image-title .wrap,
 	.image-inline.wide, .image-inline.inline .wrap, .image-inline.wide .inner {
 		align-items: center;
@@ -87,7 +91,7 @@
 	}
 	.page-title.image-inline.left .featured-image,
 	.image-title.left .featured-image { order: -1; }
-	.page-title.wide, .page-title.wide .inner, .page-title.wide .wrap { row-gap: <?php echo $half + $third; ?>px }
+	.wide, .wide .inner, .wide .wrap { row-gap: <?php echo $half + $third; ?>px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
 	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
