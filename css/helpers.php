@@ -1,10 +1,16 @@
 <style type="text/css">
 
+/*------------------------------*\
+	$HELPERS
+\*------------------------------*/
+
 .fl {
 	align-items: center;
 	display: flex;
 	gap: <?php echo $half; ?>px;
 }
+
+.reverse { flex-direction: row-reverse; }
 
 .width-full { width: 100%; }
 
@@ -22,7 +28,6 @@
 .text-center { text-align: center; }
 
 .caps { text-transform: uppercase; }
-.underline, .format .underline { text-decoration: underline; }
 
 .small {
 	font-size: 0.85em;
@@ -57,6 +62,16 @@
 	border-radius: 5px;
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	padding: <?php echo $half; ?>px;
+}
+
+.badge {
+    background-color: #f58f2a;
+    border-radius: 5px;
+    color: #fff;
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	font-weight: normal;
+	padding: 4px 7px;
+    position: relative;
 }
 
 /* DESIGN */
@@ -151,41 +166,22 @@
 
 /* BLOCKS */
 
-.block-half { padding: <?php echo $half; ?>px; }
-.block-half-tb { padding-block: <?php echo $half; ?>px; }
-.block-half-lr { padding-inline: <?php echo $half; ?>px; }
-.block-half-top { padding-block-start: <?php echo $half; ?>px; }
-.block-half-bot { padding-block-end: <?php echo $half; ?>px; }
+<?php $blocks = array(
+	'half' => $half,
+	'single' => $single,
+	'mid' => $mid,
+	'triple' => $triple,
+	'double' => $double,
+	'quad' => $quad
+);
 
-.block-single { padding: <?php echo $single; ?>px; }
-.block-single-tb { padding-block: <?php echo $single; ?>px; }
-.block-single-lr { padding-inline: <?php echo $single; ?>px; }
-.block-single-top { padding-block-start: <?php echo $single; ?>px; }
-.block-single-bot { padding-block-end: <?php echo $single; ?>px; }
-
-.block-mid { padding: <?php echo $mid; ?>px; }
-.block-mid-tb { padding-block: <?php echo $mid; ?>px; }
-.block-mid-lr { padding-inline: <?php echo $mid; ?>px; }
-.block-mid-top { padding-block-start: <?php echo $mid; ?>px; }
-.block-mid-bot { padding-block-end: <?php echo $mid; ?>px; }
-
-.block-double { padding: <?php echo $double; ?>px; }
-.block-double-tb { padding-block: <?php echo $double; ?>px; }
-.block-double-lr { padding-inline: <?php echo $double; ?>px; }
-.block-double-top { padding-block-start: <?php echo $double; ?>px; }
-.block-double-bot { padding-block-end: <?php echo $double; ?>px; }
-
-.block-triple { padding: <?php echo $triple; ?>px; }
-.block-triple-tb { padding-block: <?php echo $triple; ?>px; }
-.block-triple-lr { padding-inline: <?php echo $triple; ?>px; }
-.block-triple-top { padding-block-start: <?php echo $triple; ?>px; }
-.block-triple-bot { padding-block-end: <?php echo $triple; ?>px; }
-
-.block-quad { padding: <?php echo $quad; ?>px; }
-.block-quad-tb { padding-block: <?php echo $quad; ?>px; }
-.block-quad-lr { padding-inline: <?php echo $quad; ?>px; }
-.block-quad-top { padding-block-start: <?php echo $quad; ?>px; }
-.block-quad-bot { padding-block-end: <?php echo $quad; ?>px; }
+foreach ( $blocks as $block => $unit ) echo
+	".block-$block { padding: {$unit}px; }\n
+	.block-$block-tb { padding-block: {$unit}px; }\n
+	.block-$block-lr { padding-inline: {$unit}px; }\n
+	.block-$block-top { padding-block-start: {$unit}px; }\n
+	.block-$block-bot { padding-block-end: {$unit}px; }\n";
+?>
 
 /* EDITOR COLORS */
 

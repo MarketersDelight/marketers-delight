@@ -53,13 +53,12 @@ if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 
 	<div class="col">
 
-		<p>
-			<?php $this->field( array_merge( $field, array( 'font_family' ) ), array(
-				'type' => 'text',
-				'label' => __( 'Font Family', 'md' ),
-				'placeholder' => isset( $args['font_family']['placeholder'] ) ? $args['font_family']['placeholder'] : $defaults['typography']['body']['font_family']
-			) ); ?>
-		</p>
+		<?php $this->field( array_merge( $field, array( 'font_family' ) ), array(
+			'type' => 'text',
+			'label' => __( 'Font Family', 'md' ),
+			'placeholder' => isset( $args['font_family']['placeholder'] ) ? $args['font_family']['placeholder'] : $defaults['typography']['body']['font_family'],
+			'wrap_classes' => 'md-sep-micro'
+		) ); ?>
 
 		<?php $this->field( array_merge( $field, array( 'font_type' ) ), array(
 			'type' => 'radio',

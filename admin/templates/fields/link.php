@@ -41,9 +41,12 @@ $classes = join( ' ', $classes );
 					) ); ?>
 				</div>
 				<div class="col col2 field-no-label">
-					<?php $this->field( $fields['target']['field'], array(
+					<?php $this->field( $fields['settings']['field'], array(
 						'type' => 'checkbox',
-						'options' => array( 'new' => __( 'Open in new tab', 'md' ) )
+						'options' => array(
+							'new' => __( 'Open in new tab', 'md' ),
+							'icon_end' => __( 'Show icon at end', 'md' )
+						)
 					) ); ?>
 				</div>
 			</div>

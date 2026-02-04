@@ -141,11 +141,11 @@ class md_fields_data {
 				'field' => 'url',
 				'save' => array( 'type' => 'url' )
 			),
-			'target' => array(
-				'field' => 'target',
+			'settings' => array(
+				'field' => 'settings',
 				'save' => array(
 					'type' => 'checkbox',
-					'options' => array( 'new' )
+					'options' => array( 'new', 'icon_end' )
 				)
 			),
 			'toggle' => array(

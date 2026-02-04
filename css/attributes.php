@@ -111,6 +111,7 @@ i, em, .italic { font-style: italic; }
 a {
 	color: <?php echo $colors['site']['links']; ?>;
 	text-decoration: none;
+	text-underline-offset: 4px;
 }
 
 img, a img {

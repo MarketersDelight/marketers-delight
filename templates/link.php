@@ -13,7 +13,7 @@ $has_wrap = $fields['name'] && $fields['subtitle'] && $fields['icon'] ? true : f
 if ( $fields['type'] == 'url' && $fields['url'] ) {
 	$h = 'a';
 	$attrs .= ' href="' . esc_url( $fields['url'] ) . '"';
-	$attrs .= isset( $fields['target']['new'] ) ? ' target="_blank"' : '';
+	$attrs .= isset( $fields['settings']['new'] ) ? ' target="_blank"' : '';
 }
 elseif ( $fields['type'] == 'phone' ) {
 	$h = 'a';
@@ -57,11 +57,14 @@ if ( $fields['toggle']['hide_label_mobile'] )
 
 $attrs .= md_style( $styles );
 
-if ( $has_wrap )
-	$classes[] = 'link-wrap';
-
 if ( $fields['display'] )
 	$classes[] = 'show-' . $fields['display'];
+
+if ( $fields['icon'] )
+	$classes[] = 'has-icon';
+
+if ( isset( $fields['settings']['icon_end'] ) )
+	$classes[] = 'reverse';
 
 if ( $fields['classes'] )
 	$classes[] = $fields['classes'];
@@ -73,7 +76,7 @@ $attrs .= ' class="' . esc_attr( $classes ) . '"';
 $html =
 	"<$h{$attrs}>".
 	( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
-	( $has_wrap ? '<span class="wrap">' : '' ).
+	( $has_wrap ? '<span class="link-wrap">' : '' ).
 	( $fields['name'] ? '<span class="link-name">' . md_text_field( $fields['name'] ) . '</span>' : '' ).
 	( $fields['subtitle'] ? '<span class="link-subtitle">' . md_text_field( $fields['subtitle'] ) . '</span>' : '' ).
 	( $has_wrap ? '</span>' : '' ).

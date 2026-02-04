@@ -34,8 +34,9 @@
 
 .row > .entry, .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
-.expanded .content-wrap:not(:last-child),
-.loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop:not(:last-child),
+.loop .entry > *:not(:last-child),
+.expanded .content-wrap:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .loop .image-above.has-cover .featured-image { margin-block-end: 0; }
 
@@ -45,7 +46,7 @@
 
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
-.loop:not(:last-child), .box-style .row .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 
