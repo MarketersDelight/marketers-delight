@@ -75,9 +75,10 @@ function md_loop( $args = array() ) {
 
 	$loop_classes = array( 'loop' );
 	$loops = md_loops();
-	$loop = md_post_type_field( 'loop', array() );
+	$post_type_loop = md_post_type_field( 'loop', array() );
+	$loop = array_merge( $post_type_loop, md_module( 'loop', array() ) );
 
-	if ( is_singular() || is_404() || is_category() || is_tax() )
+	if ( is_singular() || is_404() )
 		$loop = md_module( 'loop', array() );
 
 	$loop = apply_filters( 'md_filter_set_loop', $loop );

@@ -97,11 +97,11 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	color: <?php echo $colors['site']['button']; ?>;
 }
 
+.button-arrow { flex-direction: row; }
+
 .button.button-arrow:after {
 	content: '\e80f';
-	display: inline-block;
 	font-family: 'md-icon';
-	margin-inline-start: <?php echo $half; ?>px;
 	transition: 0.3s;
 }
 

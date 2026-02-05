@@ -37,11 +37,11 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 }
 
 @media all and (min-width: 700px) {
-	.alignleft {
+	.alignleft, .format .left {
 		float: left;
 		margin-inline-end: <?php echo $half; ?>px;
 	}
-	.alignright {
+	.alignright, .format .right {
 		float: right;
 		margin-inline-start: <?php echo $half; ?>px;
 	}

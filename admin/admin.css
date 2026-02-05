@@ -734,6 +734,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 		float: left;
 		width: 73%;
 	}
+	.md-user-meta .md-field-row > .md-label-wrap { width: 210px; }
 	[class*="columns-3"] .md-field-row .md-label-wrap { width: 40%; }
 	[class*="columns-3"] .md-field-row .md-field { width: 60%; }
 }

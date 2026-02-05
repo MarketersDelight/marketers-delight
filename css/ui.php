@@ -136,65 +136,52 @@
 
 /* ACCORDION */
 
-.accordion .current { font-weight: <?php echo $bold; ?>; }
-
-.accordion-group:not(:last-child) {
-	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	padding-block-end: <?php echo $third; ?>px;
+summary {
+  position: relative;
+}
+summary::marker {
+  content: none;
+}
+summary::before,
+summary::after {
+  content: '';
+}
+summary::before,
+summary::after {
+    width: .75em;
+    height: 0;
+    border-bottom: 2px solid;
+    position: absolute;
+    top: calc(50% - 1px);
+    right: 0;
+    transform: translateY(-50%);
+  }
+summary::after {
+  transform: rotate(90deg);
+  transform-origin: 50% 50%;
+}
+[open] summary::after {
+  transform: rotate(0deg);
 }
 
-.accordion-group:not(:first-child) { padding-block-start: <?php echo $half; ?>px; }
-
-.accordion-group.active .accordion-content { display: block; }
-
-.accordion-title {
-	color: <?php echo $colors['site']['text']; ?>;
-	cursor: pointer;
-	font-weight: <?php echo $bold; ?>;
-	position: relative;
-	width: 100%;
-}
-
-.accordion-title:after {
-	border-radius: 50%;
-	content: '\e80e';
-	display: inline-block;
-	font-family: 'md-icon';
-	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
-	height: <?php echo $mid; ?>px;
-	line-height: <?php echo $mid; ?>px;
-	margin-block-start: -<?php echo round( $mid / 2 ); ?>px;
-	position: absolute;
-		inset-block-start: 50%;
-		inset-inline-end: 0;
-	text-align: center;
-	width: <?php echo $mid; ?>px;
-}
-
-.box-style .accordion-title:after { inset-inline-end: <?php echo $half; ?>px; }
-
-.accordion-group:hover .accordion-title:after { background-color: rgba(0, 0, 0, 0.1); }
-
-.format .accordion-title { margin-block-end: 0; }
-
-.accordion-group.active .accordion-title:after { content: '\e817'; }
-
-.accordion-content {
-	display: none;
-	padding-block: <?php echo $half; ?>px;
-}
-
-.accordion-group:last-child .accordion-content { padding-block-end: 0; }
-
-.accordion .list {
-	font-size: 0.9em;
-	margin-inline-start: 0;
-}
-
-.sidebar .accordion a {
-	color: <?php echo $colors['site']['links']; ?>;
-	text-decoration: none;
-}
+  details {
+    border: 1px solid;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    padding: 0 1rem;
+	border-radius: 8px;
+	border-color: <?php echo $colors['content']['border_color']; ?>;
+    background: white;
+  }
+  details:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
+  details[open] {
+      padding-bottom: 1em;
+  }
+  summary {
+    padding: 1rem 2em 1rem 0;
+    font-size: 1.25rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
 /* DISPLAYS */
 

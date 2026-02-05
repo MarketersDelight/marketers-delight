@@ -1,8 +1,3 @@
-<?php
-$cta_type = $this->get_field( 'page_cta' );
-$prefix = $this->_prefix;
-?>
-
 <div class="md-field-row md-sep">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',

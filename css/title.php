@@ -91,7 +91,7 @@
 	}
 	.page-title.image-inline.left .featured-image,
 	.image-title.left .featured-image { order: -1; }
-	.wide, .wide .inner, .wide .wrap { row-gap: <?php echo $half + $third; ?>px }
+	.wide, .wide .inner, .wide .wrap, .wide .title-wrap { row-gap: <?php echo $half + $third; ?>px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
 	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
@@ -99,6 +99,7 @@
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
+	.image-title .cta { margin-inline: inherit; max-width: 100%; }
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {

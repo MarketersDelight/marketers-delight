@@ -34,9 +34,9 @@
 
 .row > .entry, .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
+.expanded .content-wrap:not(:last-child),
 .loop:not(:last-child),
-.loop .entry > *:not(:last-child),
-.expanded .content-wrap:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .loop .image-above.has-cover .featured-image { margin-block-end: 0; }
 

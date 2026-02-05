@@ -57,9 +57,8 @@ class md_fields {
 			$tag_id = esc_attr( $_GET['tag_ID'] );
 			$setting = get_term_meta( $tag_id, $this->_option, true );
 		}
-		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) && isset( $args['user_meta'] ) ) {
-			$user_meta = $args['user_meta'];
-			$user_id = esc_attr( $user_meta->data->ID );
+		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) ) {
+			$user_id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : 1;
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {
