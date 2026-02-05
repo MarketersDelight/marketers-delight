@@ -90,7 +90,7 @@ function md_title( $context = 'post' ) {
 	else $classes[] = 'wide';
 
 	if ( $image && ( $context == 'page' || ( $context == 'post' && in_array( $image['position'], $title_images ) ) ) ) {
-		$class_name = $image['position'];
+		$class_name = 'image-' . $image['position'];
 
 		if ( in_array( $image['position'], $inline_images ) )
 			$classes[] = 'image-inline';
@@ -100,7 +100,7 @@ function md_title( $context = 'post' ) {
 		}
 		elseif ( in_array( $image['position'], $title_images ) ) {
 			$classes[] = 'image-title';
-			$class_name = str_replace( 'title_', '', $image['position'] );
+			$class_name = str_replace( '_', '-', $image['position'] );
 		}
 
 		$classes[] = $class_name;

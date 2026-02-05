@@ -89,8 +89,8 @@
 		flex-flow: row;
 		width: 100%;
 	}
-	.page-title.image-inline.left .featured-image,
-	.image-title.left .featured-image { order: -1; }
+	.page-title.image-inline.image-left .featured-image,
+	.image-title.title-left .featured-image { order: -1; }
 	.wide, .wide .inner, .wide .wrap, .wide .title-wrap { row-gap: <?php echo $half + $third; ?>px }
 	.image-title.wide .wrap { justify-content: center; }
 	.image-title .title-wrap { text-align: left; }
@@ -99,11 +99,15 @@
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-	.image-title .cta { margin-inline: inherit; max-width: 100%; }
+	.image-title .cta {
+		margin-inline: inherit;
+		max-width: 100%;
+	}
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {
 	.page-title.image-title .wrap { text-align: center; }
+	.page-title.image-inline .featured-image, .page-title.image-center .featured-image,
 	.page-title.image-title .featured-image { margin-inline: auto; }
 }
 

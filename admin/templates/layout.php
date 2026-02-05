@@ -1,6 +1,6 @@
-<div class="columns-4 columns-single">
+<div id="md_layout" class="columns-<?php echo $is_post ? 4 : 3; ?> columns-single<?php echo ( ! empty( $content['remove'] ) ? ' remove-content-box' : '' ) . ( $is_admin ? ' md-layout-admin' : '' ); ?>">
 
-	<div class="col">
+	<div class="col col1">
 
 		<!-- Header -->
 
@@ -62,22 +62,11 @@
 
 		</div>
 
-		<?php if ( $is_admin ) $this->footer_fields(); ?>
-
 	</div>
 
 	<!-- Content -->
 
-	<div class="col">
-
-		<?php if ( ! $is_term )
-			$this->fields->field( 'featured_image', array(
-				'type' => 'select',
-				'label' => __( 'Featured image position', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'wrap_classes' => 'md-sep-small',
-				'options' => $this->fields->data->values['featured_image']
-		) ); ?>
+	<div class="col col2">
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
@@ -89,14 +78,13 @@
 			)
 		) ); ?>
 
-		<div id="content_options" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
+		<div id="content_options" class="md-sep-small" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<?php
-			if ( $post_type !== 'page' )
-				$this->fields->field( 'breadcrumbs', array(
-					'type' => 'checkbox',
-					'options' => $breadcrumbs_options
-				) );
+			$this->fields->field( 'breadcrumbs', array(
+				'type' => 'checkbox',
+				'options' => $breadcrumbs_options
+			) );
 
 			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
@@ -177,102 +165,137 @@
 
 	<!-- Sidebar -->
 
-	<div id="sidebar_fields" class="<?php echo esc_attr( $sidebar_classes ); ?>" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
+	<div class="col col3">
 
-		<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
+		<div id="sidebar_fields" class="<?php echo esc_attr( $sidebar_classes ); ?>" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-		<?php if ( $is_admin ) : ?>
+			<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
 
-			<?php $this->fields->field( 'sidebar', array(
-				'type' => 'checkbox',
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'global' => __( 'Enable on all pages', 'md' )
-				)
-			) ); ?>
-
-			<?php foreach ( $page_types as $type => $label ) : ?>
-			<div class="columns-2 md-sep-micro">
-				<div class="col">
-					<?php $this->fields->field( "sidebar_{$type}_show", array(
-						'type' => 'checkbox',
-						'inline' => true,
-						'options' => array(
-							'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
-							'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
-						)
-					) ); ?>
-				</div>
-				<?php if ( $sidebars ) : ?>
-				<div class="col">
-					<?php $this->fields->field( "sidebar_$type", array(
-						'type' => 'select',
-						'empty_label' => __( 'Use Main sidebar', 'md' ),
-						'options' => $sidebars
-					) ); ?>
-				</div>
-				<?php endif; ?>
-			</div>
-			<?php endforeach; ?>
-
-		<?php else : ?>
-
-			<?php if ( $has_sidebar ) : ?>
+			<?php if ( $is_admin ) : ?>
 
 				<?php $this->fields->field( 'sidebar', array(
 					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro',
 					'options' => array(
-						'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
+						'global' => __( 'Enable on all pages', 'md' )
 					)
 				) ); ?>
+
+				<?php foreach ( $page_types as $type => $label ) : ?>
+				<div class="columns-2 md-sep-micro">
+					<div class="col">
+						<?php $this->fields->field( "sidebar_{$type}_show", array(
+							'type' => 'checkbox',
+							'inline' => true,
+							'options' => array(
+								'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
+								'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
+							)
+						) ); ?>
+					</div>
+					<div class="col">
+						<?php $this->fields->field( "sidebar_$type", array(
+							'type' => 'select',
+							'empty_label' => __( 'Use Main sidebar', 'md' ),
+							'options' => $sidebars
+						) ); ?>
+					</div>
+				</div>
+				<?php endforeach; ?>
 
 			<?php else : ?>
 
-				<?php $this->fields->field( 'sidebar', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
-					)
-				) ); ?>
+				<?php if ( $has_sidebar ) : ?>
 
-			<?php endif; ?>
-
-			<?php if ( ! empty( $sidebars ) ) : ?>
-
-			<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
-
-				<div id="<?php echo $this->_id; ?>_custom_sidebar_option">
-					<?php $this->fields->field( 'custom_sidebar', array(
-						'type' => 'select',
-						'empty_label' => __( 'Use Main sidebar', 'md' ),
-						'wrap_classes' => 'md-sep-micro',
-						'options' => $sidebars
+					<?php $this->fields->field( 'sidebar', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
+						)
 					) ); ?>
-				</div>
 
-				<?php if ( $is_term ) : ?>
-					<?php $this->fields->field( 'entries_sidebar', array(
-						'type' => 'select',
-						'empty_label' => __( 'Posts in this category...', 'md' ),
-						'wrap_classes' => 'md-sep-micro',
-						'options' => $sidebars
+				<?php else : ?>
+
+					<?php $this->fields->field( 'sidebar', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
+						)
 					) ); ?>
+
 				<?php endif; ?>
 
-				<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings&tab=md_sidebars' ) ); ?></p>
+				<?php if ( ! empty( $sidebars ) ) : ?>
 
-			</div>
+				<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
+
+					<div id="<?php echo $this->_id; ?>_custom_sidebar_option">
+						<?php $this->fields->field( 'custom_sidebar', array(
+							'type' => 'select',
+							'empty_label' => __( 'Use Main sidebar', 'md' ),
+							'wrap_classes' => 'md-sep-micro',
+							'options' => $sidebars
+						) ); ?>
+					</div>
+
+					<?php if ( $is_term ) : ?>
+						<?php $this->fields->field( 'entries_sidebar', array(
+							'type' => 'select',
+							'empty_label' => __( 'Posts in this category...', 'md' ),
+							'wrap_classes' => 'md-sep-micro',
+							'options' => $sidebars
+						) ); ?>
+					<?php endif; ?>
+
+					<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings&tab=md_sidebars' ) ); ?></p>
+
+				</div>
+
+				<?php endif; ?>
 
 			<?php endif; ?>
 
-		<?php endif; ?>
+		</div>
+
+		<?php $this->fields->field( 'footer', array(
+			'type' => 'checkbox',
+			'label' => __( 'Footer', 'md' ),
+			'options' => array(
+				'remove' => __( 'Remove <b>Footer</b>', 'md' )
+			)
+		) ); ?>
+
+		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
+			<?php $this->fields->field( 'footer', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'columns' => __( 'Remove <b>Columns</b>', 'md' )
+				)
+			) ); ?>
+		</div>
 
 	</div>
 
-	<?php if ( ! $is_admin ) : ?>
-	<div class="col">
-		<?php $this->footer_fields(); ?>
-	</div>
+	<!-- Featured Image -->
+
+	<?php if ( $is_post ) : ?>
+		<div class="col">
+			<?php $this->fields->field( 'featured_image', array(
+				'type' => 'select',
+				'label' => __( 'Featured image position', 'md' ),
+				'empty_label' => __( 'Use default position', 'md' ),
+				'wrap_classes' => 'md-sep-small',
+				'options' => $this->fields->data->values['featured_image']
+			) ); ?>
+			<div id="featured_image_fields" style="display: <?php echo ! in_array( $featured_image_position, array( 'above_headline', 'below_headline', 'remove' ) ) ? 'block' : 'none'; ?>;">
+				<?php $this->fields->field( 'featured_image_width', array(
+					'type' => 'range',
+					'label' => __( 'Featured image width', 'md' ),
+					'unit' => 'px',
+					'max' => '550'
+				) ); ?>
+			</div>
+		</div>
 	<?php endif; ?>
 
 </div>

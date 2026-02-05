@@ -1,33 +1,33 @@
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #B18951; }
-div.editor-styles-wrapper .has-primary-color { color: #B18951; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #45301B; }
-div.editor-styles-wrapper .has-secondary-color { color: #45301B; }
-div.editor-styles-wrapper .has-tertiary-background-color { background-color: #2E2B27; }
-div.editor-styles-wrapper .has-tertiary-color { color: #2E2B27; }
+div.editor-styles-wrapper .has-primary-background-color { background-color: #AE2525; }
+div.editor-styles-wrapper .has-primary-color { color: #AE2525; }
+div.editor-styles-wrapper .has-secondary-background-color { background-color: #2E2E2E; }
+div.editor-styles-wrapper .has-secondary-color { color: #2E2E2E; }
+div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
+div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
 div.editor-styles-wrapper .has-action-color { color: #EDF6FD; }
-div.editor-styles-wrapper .has-accent-background-color { background-color: #F3D0A9; }
-div.editor-styles-wrapper .has-accent-color { color: #F3D0A9; }
+div.editor-styles-wrapper .has-accent-background-color { background-color: #FFFBCC; }
+div.editor-styles-wrapper .has-accent-color { color: #FFFBCC; }
 div.editor-styles-wrapper .has-white-background-color { background-color: #FFFFFF; }
 div.editor-styles-wrapper .has-white-color { color: #FFFFFF; }
-div.editor-styles-wrapper .has-text-background-color { background-color: #45301B; }
-div.editor-styles-wrapper .has-text-color { color: #45301B; }
-div.editor-styles-wrapper .has-text-sec-background-color { background-color: #716253; }
-div.editor-styles-wrapper .has-text-sec-color { color: #716253; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #3A6C96; }
-div.editor-styles-wrapper .has-links-color { color: #3A6C96; }
-div.editor-styles-wrapper .has-button-background-color { background-color: #3A6C96; }
-div.editor-styles-wrapper .has-button-color { color: #3A6C96; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #D98510; }
-div.editor-styles-wrapper .has-button-sec-color { color: #D98510; }
+div.editor-styles-wrapper .has-text-background-color { background-color: #1E1E1E; }
+div.editor-styles-wrapper .has-text-color { color: #1E1E1E; }
+div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
+div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
+div.editor-styles-wrapper .has-links-background-color { background-color: #AE2525; }
+div.editor-styles-wrapper .has-links-color { color: #AE2525; }
+div.editor-styles-wrapper .has-button-background-color { background-color: #22A340; }
+div.editor-styles-wrapper .has-button-color { color: #22A340; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
+div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #3A6C96;
+	color: #AE2525;
 	text-decoration: underline;
 }
 div.editor-styles-wrapper a:hover { text-decoration: none; }
@@ -35,7 +35,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://client.kolakube.com/wp-content/themes/marketers-delight/md.woff2') format('woff');
+	src: url('https://md:8890/wp-content/themes/marketers-delight/md.woff2') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -53,14 +53,14 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 }
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 /* WRAPS */
-.wp-block { max-width: 672px; }
+.wp-block { max-width: 651px; }
 @media all and (min-width: 900px) {
-	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: 768px; }
+	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: 744px; }
 }
 /* MAIN TYPE */
 div.editor-styles-wrapper {
 		background-color: #FFFFFF;
-		color: #45301B;
+		color: #1E1E1E;
 }
 #editor .editor-post-title__block .editor-post-title__input,
 div.editor-styles-wrapper h1,
@@ -68,15 +68,15 @@ div.editor-styles-wrapper h2,
 div.editor-styles-wrapper h3,
 div.editor-styles-wrapper h4,
 div.editor-styles-wrapper h5,
-div.editor-styles-wrapper h6 { color: #45301B; }
+div.editor-styles-wrapper h6 { color: #1E1E1E; }
 div.editor-styles-wrapper h2:not(:first-child),
 div.editor-styles-wrapper h3:not(:first-child),
 div.editor-styles-wrapper h4:not(:first-child),
-div.editor-styles-wrapper h5:not(:first-child) { margin-top: 48px; }
-div.editor-styles-wrapper ol, div.editor-styles-wrapper ul { padding-left: 64px; }
-div.editor-styles-wrapper li { margin-bottom: 11px; }
+div.editor-styles-wrapper h5:not(:first-child) { margin-top: 47px; }
+div.editor-styles-wrapper ol, div.editor-styles-wrapper ul { padding-left: 62px; }
+div.editor-styles-wrapper li { margin-bottom: 10px; }
 div.editor-styles-wrapper p {
-	margin-bottom: 32px;
+	margin-bottom: 31px;
 	margin-top: 0;
 }
 div.editor-styles-wrapper p:last-child, div.editor-styles-wrapper p:empty { margin-bottom: 0; }
@@ -96,75 +96,68 @@ div.editor-styles-wrapper p.mid-title,
 div.editor-styles-wrapper p.micro-title,
 div.editor-styles-wrapper p.small-title { margin-top: 0; }
 .editor-styles-wrapper .intro {
-	font-size: 24px;
-	line-height: 35px;
+	font-size: 23px;
+	line-height: 34px;
 }
 div.editor-styles-wrapper,
 div.editor-styles-wrapper p,
 .editor-post-title__block .editor-post-title__input {
-	font-size: 20px;
-	font-family: Roboto;
-	 font-weight: 400;	line-height: 32px;
+	font-size: 19px;
+	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+		line-height: 31px;
 }
 div.editor-styles-wrapper .has-huge-font-size,
 div.editor-styles-wrapper .has-large-font-size,
 div.editor-styles-wrapper .has-medium-font-size,
 div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
-	font-size: 68px;
-	line-height: 90px;
+	font-size: 65px;
+	line-height: 86px;
 }
 div.editor-styles-wrapper .huge-title {
-	font-family: Montserrat;
-	font-weight: 800;
+	font-weight: bold;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 45px;
-	line-height: 59px;
+	font-size: 43px;
+	line-height: 56px;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-family: Montserrat;
-	font-weight: 800;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 38px;
-	line-height: 51px;
+	font-size: 37px;
+	line-height: 50px;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-family: Montserrat;
-	font-weight: 800;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
-	font-size: 32px;
-	line-height: 45px;
+	font-size: 30px;
+	line-height: 42px;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-family: Montserrat;
-	font-weight: 800;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
-	font-size: 27px;
-	line-height: 38px;
-}
-div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-family: Montserrat;
-	font-weight: 800;
-}
-div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
-	font-size: 23px;
+	font-size: 26px;
 	line-height: 36px;
 }
+div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
+	font-weight: bold;
+}
+div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
+	font-size: 22px;
+	line-height: 34px;
+}
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-family: Montserrat;
-	font-weight: 600;
+	font-weight: bold;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
-	font-size: 20px;
-	line-height: 30px;
+	font-size: 19px;
+	line-height: 29px;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-family: Montserrat;
-	font-weight: 600;
+	font-weight: bold;
 }
 @media all and (max-width: 900px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { }
@@ -176,11 +169,11 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
 @media all and (max-width: 700px) {
-	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 49px; line-height: 59px; }
-	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 39px; line-height: 51px; }
-	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 33px; line-height: 45px; }
-	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 27px; line-height: 38px; }
-	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 23px; line-height: 33px; }
+	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 46px; line-height: 56px; }
+	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 37px; line-height: 48px; }
+	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 31px; line-height: 42px; }
+	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 26px; line-height: 36px; }
+	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 22px; line-height: 32px; }
 	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { }
 	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
@@ -188,13 +181,13 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 .editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,
 .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit,
 .editor-block-list__layout > .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit {
-	margin-bottom: 32px;
-	margin-top: 32px;
+	margin-bottom: 31px;
+	margin-top: 31px;
 }
 .block-library-list .editor-rich-text__tinymce,
 .block-library-list .editor-rich-text__tinymce ol,
 .block-library-list .editor-rich-text__tinymce ul,
-.editor-styles-wrapper ul.md-list { margin-left: 32px; }
+.editor-styles-wrapper ul.md-list { margin-left: 31px; }
 /* ALIGNMENTS */
 .text-center, .aligncenter.wrap-small { text-align: center; }
 .alignvertical {
@@ -206,9 +199,9 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* FULL WIDTH */
 @media all and (min-width: 900px) {
 	.md-editor-full .wp-block.editor-post-title__block {
-		max-width: 1184px;
-		padding-left: 96px;
-		padding-right: 96px;
+		max-width: 1148px;
+		padding-left: 93px;
+		padding-right: 93px;
 	}
 	.md-editor-full .editor-post-title,
 	.md-editor-full .editor-post-title__block,
@@ -221,7 +214,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 }
 /* POST STYLES */
 .wp-block-image figcaption {
-	color: #716253;
+	color: #777777;
 	font-style: italic;
 	font-size: 0.9em;
 	margin-bottom: 0;
@@ -235,8 +228,8 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	padding-left: 0;
 }
 /* DESIGN / OVERLAYS / SHADOWS */
-.wp-block.note { background-color: #2E2B27; }
-.wp-block.alert { background-color: #F3D0A9; }
+.wp-block.note { background-color: #DDDDDD; }
+.wp-block.alert { background-color: #FFFBCC; }
 .image-overlay {
 	background-position: center top;
 	background-size: cover;
@@ -265,7 +258,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	$BUTTONS
 \*------------------------------*/
 .md-button, .md-submit {
-	background-color: #3A6C96;
+	background-color: #22A340;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -285,14 +278,14 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* SIZES */
 .md-button.md-button-large {
 	font-size: 1.4em;
-	padding: 32px 48px;
+	padding: 31px 47px;
 }
 /* OUTLINE */
 .md-submit.md-submit-outline {
 	background-color: transparent;
-	border: 3px solid #3A6C96;
+	border: 3px solid #22A340;
 	border-radius: 5px;
-	color: #3A6C96;
+	color: #22A340;
 }
 /* ARROW */
 .md-button.md-button-arrow:after {

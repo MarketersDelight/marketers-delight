@@ -137,37 +137,4 @@ sticky: function( selector ) {
 	);
 	observer.observe( el );
 },
-caseStudy: function() {
-	var filters = document.getElementsByClassName( 'filter-item' );
-	for ( var i = 0; i < filters.length; i++ )
-		filters[i].onclick = function( e ) {
-			var name = this.name.replace( 'filter', '' ).replace( /[\[\]]/g, '' ),
-				taxUrl = document.getElementById( name + '_url' ),
-				val = this.value + ',';
-			if ( this.checked )
-				taxUrl.value += val;
-			else
-				taxUrl.value = taxUrl.value.replace( val, '' );
-		}
-	document.getElementById( 'filter_year' ).onchange = function( e ) {
-		var val = document.getElementById( 'year_url' );
-		if ( this.value )
-			val.value = 'year=' + this.value;
-		else
-			val.value = 'year=';
-	}
-	document.getElementById( 'filter_submit' ).onclick = function( e ) {
-		var urlParams = '', filterUrls = document.getElementsByClassName( 'filter-url' );
-		for ( var i = 0; i < filterUrls.length; i++ ) {
-			var val = filterUrls[i].value,
-				id = filterUrls[i].id.replace( '_url', '' ),
-				hasVal = val.replace( id + '=', '' );
-			if ( hasVal !== '' )
-				urlParams += '&' + val;
-			urlParams = urlParams.replace( /,\s*$/, '' );
-		}
-		window.location.href = document.case_study_filter.action += urlParams;
-		return false;
-	}
-},
 }

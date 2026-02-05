@@ -80,6 +80,7 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $this->fields->data->values['featured_image'] )
 			),
+			'featured_image_width' => array( 'type' => 'number' ),
 			'sidebar' => array(
 				'type' => 'checkbox',
 				'options' => array( 'add', 'remove', 'global' )
@@ -165,6 +166,7 @@ class md_layout extends md_api {
 
 		$header = $this->fields->module( 'header' );
 		$content = $this->fields->module( 'content' );
+		$footer = $this->fields->module( 'footer' );
 
 		$sidebar_display = 'none';
 		$sidebars = md_get_sidebars();
@@ -176,19 +178,18 @@ class md_layout extends md_api {
 		) );
 		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
 		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );
+		$featured_image_position = $this->fields->module( 'featured_image' );
 
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
 
-		$sidebar_classes = array( 'md-sidebars', 'col', 'md-sep-small' );
+		$sidebar_classes = array( 'md-sidebars', 'md-sep-small' );
 
 		if ( $is_admin ) {
 			$global = $this->fields->module( array( 'sidebar', 'global' ) );
 
 			if ( $global )
 				$sidebar_classes[] = 'is-global';
-
-			$sidebar_classes[] = 'col-50';
 		}
 
 		$sidebar_classes = join( ' ', $sidebar_classes );
@@ -216,32 +217,6 @@ class md_layout extends md_api {
 	}
 
 	/**
-	 * Footer admin fields for use in different positions in meta box.
-	 *
-	 * @since 6.0
-	 */
-
-	public function footer_fields() {
-		$footer = $this->fields->module( 'footer' );
-	?>
-		<?php $this->fields->field( 'footer', array(
-			'type' => 'checkbox',
-			'label' => __( 'Footer', 'md' ),
-			'options' => array(
-				'remove' => __( 'Remove <b>Footer</b>', 'md' )
-			)
-		) ); ?>
-		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
-			<?php $this->fields->field( 'footer', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'columns' => __( 'Remove <b>Columns</b>', 'md' )
-				)
-			) ); ?>
-		</div>
-	<?php }
-
-	/**
 	 * Print footer scripts to admin screens to toggle options.
 	 *
 	 * @since 4.7
@@ -259,36 +234,43 @@ class md_layout extends md_api {
 					document.getElementById( 'header_options' ).style.display = this.checked ? 'none' : 'block';
 				}
 				<?php if ( md_has_menu() ) : ?>
-					document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
-						document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
-					}
+				document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
+					document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
+				}
 				<?php endif; ?>
-				document.getElementById( '<?php echo $prefix; ?>_content_the_content' ).onchange = document.getElementById( '<?php echo $prefix; ?>_content_remove' ).onchange = function( e ) {
+				document.getElementById( '<?php echo $prefix; ?>_content_remove' ).onchange = function( e ) {
+					document.getElementById( 'md_layout' ).classList.toggle( 'remove-content-box' );
 					document.getElementById( 'content_options' ).style.display = this.checked ? 'none' : 'block';
 					document.getElementById( 'sidebar_fields' ).style.display = this.checked ? 'none' : 'block';
 				}
 				<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
-					document.getElementById( '<?php echo $prefix; ?>_content_headline' ).onchange = function( e ) {
-						document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
-					}
+				document.getElementById( '<?php echo $prefix; ?>_content_headline' ).onchange = function( e ) {
+					document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
+				}
+				<?php endif; ?>
+
+				<?php if ( in_array( $screen->base, array( 'post', 'post-new' ) ) ) : ?>
+				document.getElementById( '<?php echo $prefix; ?>_featured_image' ).onchange = function( e ) {
+					document.getElementById( 'featured_image_fields' ).style.display = ['above_headline', 'below_headline', 'remove'].includes( this.value ) ? 'none' : 'block';
+				}
 				<?php endif; ?>
 
 				<?php if ( ! empty( $sidebars ) ) : ?>
-				<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
-					<?php if ( $has_sidebar ) : ?>
+					<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
+						<?php if ( $has_sidebar ) : ?>
 						document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
 							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
 						}
-					<?php else : ?>
+						<?php else : ?>
 						document.getElementById( '<?php echo $prefix; ?>_sidebar_add' ).onchange = function( e ) {
 							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'block' : 'none';
 						}
-					<?php endif; ?>
-				<?php else : ?>
+						<?php endif; ?>
+					<?php else : ?>
 					document.getElementById( '<?php echo $prefix; ?>_sidebar_global' ).onchange = function() {
 						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
 					}
-				<?php endif; ?>
+					<?php endif; ?>
 				<?php endif; ?>
 
 				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {

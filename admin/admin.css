@@ -268,8 +268,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-bottom-color: #666;
 	font-weight: bold;
 }
-.md-meta-box .md-tabs .md-tab-content { padding-top: 5px; }
-
 
 /* HEADER */
 
@@ -352,10 +350,9 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 @media all and (min-width: 900px) {
 	.md .col { float: left; }
 	.md .columns-3 > .col { width: 33.333333333%; }
-	.md .columns-2 .col,
+	.md .columns-2 .col { width: 50%; }
 	.md .columns-25-50-25 .col2,
 	.md .columns-50-25-25 .col1,
-	.md [class*="columns-"] .col.col-50 { width: 50%; }
 	.md .columns-4 > .col, .md .columns-25-75 > .col1,
 	.md .columns-25-50-25 .col1, .md .columns-25-50-25 .col3,
 	.md .columns-50-25-25 .col2, .md .columns-50-25-25 .col3 { width: 25%; }
@@ -1083,6 +1080,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 /* RANGE */
 
+.md-range { position: relative; }
+
 .md-range-field {
 	position: relative;
 		top: 4px;
@@ -1100,6 +1099,19 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-range-reset:hover { color: #aaa; }
+
+.remove-content-box .md-checkbox-the_content { display: none; }
+
+.md-layout-admin.columns-3 > .col { width: 27%; }
+.md-layout-admin.columns-3 > .col3 { width: 46%; }
+
+@media (min-width: 850px) {
+	body:not(.block-editor-page) .md-layout .md-range-reset {
+		position: absolute;
+			top: -30px;
+			right: 0;
+	}
+}
 
 /* COLOR PICKER */
 

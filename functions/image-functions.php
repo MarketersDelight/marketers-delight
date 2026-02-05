@@ -48,8 +48,13 @@ function md_get_image( $context = 'post' ) {
 		if ( $image_width )
 			$image['width'] = $image_width;
 	}
-	elseif ( get_post_thumbnail_id() )
+	elseif ( get_post_thumbnail_id() ) {
 		$image['id'] = get_post_thumbnail_id();
+		$image_width = md_post_meta( array( 'layout', 'featured_image_width' ) );
+
+		if ( $image_width )
+			$image['width'] = $image_width;
+	}
 
 	return $image;
 }
