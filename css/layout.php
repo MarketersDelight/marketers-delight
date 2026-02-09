@@ -126,12 +126,10 @@
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-inline-start: -<?php echo $half; ?>px; }
+	.box-style .entry, .content-wrap .page-title.cover { margin-inline: -<?php echo $half; ?>px; }
 }
 
 @media all and (max-width: 900px) {
 	.box-style.content.compact { padding-block-start: 0; }
 	.box-style.content.compact .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-inline-end: -<?php echo $half; ?>px; }
-	.sidebar { margin-block-start: <?php echo $single; ?>px; }
 }

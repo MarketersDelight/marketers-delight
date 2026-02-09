@@ -20,7 +20,7 @@ $titles = array(
 	'h2' => 'h2, .h2, .main-title',
 	'h3' => 'h3, .h3, .med-title',
 	'h4' => 'h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading',
-	'h5' => 'h5, .h5, .small-title',
+	'h5' => 'h5, .h5, .small-title, .subtitle',
 	'h6' => 'h6, .h6, .micro-title'
 );
 $h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;

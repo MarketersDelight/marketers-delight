@@ -30,7 +30,7 @@ button, .button, .button a, input[type="submit"] {
 }
 
 .link-subtitle {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
 	font-weight: normal;
 }
 
@@ -46,7 +46,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
-	padding: <?php echo $half; ?>px <?php echo $half + $small; ?>px;
+	padding: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
 	text-decoration: none;
 	transition: 0.3s;
 	-webkit-appearance: none;

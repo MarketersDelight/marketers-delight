@@ -6,8 +6,6 @@
 
 .page-title, .header-cover .content > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
-.post-title .title, .page-title .title { margin-block-end: 0; }
-
 .post-title, .page-title, .title-wrap,
 .wide .inner, .wide .wrap,
 .image-title .wrap,
@@ -15,6 +13,11 @@
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+}
+
+.wide, .wide .inner, .wide .wrap {
+	justify-content: center;
+	row-gap: <?php echo $half + $third; ?>px;
 }
 
 /* COVER */
@@ -39,10 +42,22 @@
 
 .entry.image-center .cover, .entry.image-below .cover { margin-block-end: 0; }
 
-/* CTA, DESCRIPTION, SUBTITLE */
+/* TITLE, LEDE, SUBTITLE, DESC, CTA */
+
+.post-title .title, .post-title .lede, .post-title .subtitle,
+.page-title .title, .page-title .lede, .page-title .subtitle { margin-block-end: 0; }
+
+.lede {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+}
+
+.byline + .lede { margin-top: <?php echo $half; ?>px; }
+
+.subtitle { font-weight: normal; }
 
 .cta {
-	align-items: center;
 	display: flex;
 	column-gap: <?php echo $single; ?>px;
 }
@@ -74,41 +89,25 @@
 
 /* QUERIES */
 
-@media (min-width: <?php echo $post_width; ?>px) {
-	.post-title.wide, .page-title.wide {
-		align-items: center;
-		text-align: center;
-	}
-	.columns .post-title {
-		align-items: inherit;
-		text-align: inherit;
-	}
+@media (min-width: 800px) {
+	.wide, .wide .inner { align-items: center; }
+	.image-inline.wide .inner,
+	.image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
 	.image-title .wrap,
 	.image-inline.wide, .image-inline.inline .wrap, .image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
-		width: 100%;
 	}
+	.wide .title { max-width: <?php echo $post_width; ?>px; }
+	.image-title.wide .title-wrap,
+	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
+	.post-title .subtitle, .page-title .subtitle { margin-block-end: <?php echo $third; ?>px; }
 	.page-title.image-inline.image-left .featured-image,
 	.image-title.title-left .featured-image { order: -1; }
-	.wide, .wide .inner, .wide .wrap, .wide .title-wrap { row-gap: <?php echo $half + $third; ?>px }
-	.image-title.wide .wrap { justify-content: center; }
-	.image-title .title-wrap { text-align: left; }
-	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
-	.wide .description, .wide .subtitle, .wide .cta {
-		margin-inline: auto;
-		max-width: <?php echo $post_width; ?>px;
-	}
-	.image-title .cta {
-		margin-inline: inherit;
-		max-width: 100%;
-	}
 }
 
-@media (max-width: <?php echo $post_width; ?>px) {
-	.page-title.image-title .wrap { text-align: center; }
-	.page-title.image-inline .featured-image, .page-title.image-center .featured-image,
-	.page-title.image-title .featured-image { margin-inline: auto; }
+@media all and (max-width: 800px) {
+	.featured-image { margin-inline: auto; }
 }
 
 @media (max-width: 900px) {

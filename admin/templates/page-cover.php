@@ -1,4 +1,4 @@
-<div class="columns-2 columns-30-70 columns-single">
+<div class="columns-2 columns-30-70 columns-single md-sep-small">
 
 	<div class="col col1">
 		<?php $this->fields->field( 'photo', array(
@@ -61,3 +61,19 @@
 	</div>
 
 </div>
+
+<?php if ( in_array( $screen->base, array( 'post', 'post-new' ) ) ) : ?>
+
+<hr class="md-sep-small" />
+
+<div class="md-field-row">
+	<?php $this->fields->field( 'title_content', array(
+		'type' => 'editor',
+		'init' => true,
+		'label' => __( 'Page Content', 'md' ),
+		'description' => __( 'Add short or longform content to show below the page title.', 'md' ),
+		'rows' => 4
+	) ); ?>
+</div>
+
+<?php endif; ?>

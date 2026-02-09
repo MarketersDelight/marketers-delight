@@ -23,7 +23,8 @@ class md_hero extends md_api {
 			),
 			'term' => array(
 				'name' => $this->name,
-				'position' => 10
+				'position' => 10,
+				'fields' => $this->fields->data->page_fields()
 			)
 		);
 	}
@@ -53,6 +54,7 @@ class md_hero extends md_api {
 		<div class="md-widget md-toggle md-sep-small">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
+				<?php $this->fields->page_fields(); ?>
 				<?php $this->fields->settings_group( 'term_meta' ); ?>
 			</div>
 		</div>

@@ -55,7 +55,8 @@ class md_page_cover extends md_api {
 			'display' => array(
 				'type' => 'checkbox',
 				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'term', 'single' )
-			)
+			),
+			'title_content' => array( 'type' => 'text' )
 		);
 
 		return $fields;

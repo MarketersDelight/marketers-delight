@@ -34,8 +34,10 @@ function md_get_title( $context = 'post' ) {
 		$term_title = single_term_title( '', false );
 		$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
 	}
-	elseif ( is_category() )
-		$title = single_cat_title( '', false );
+	elseif ( is_category() ) {
+		$cat_title = single_cat_title( '', false );
+		$title = md_term_meta( array( 'hero', 'archives_title' ), null, $cat_title );
+	}
 	elseif ( is_tag() )
 		$title = single_tag_title( '', false );
 	elseif ( is_search() )
@@ -128,6 +130,26 @@ function md_title( $context = 'post' ) {
  */
 
 function md_description( $context = 'post', $args = array() ) {
+	$excerpt = $context == 'post' && is_singular() && has_excerpt() ? get_the_excerpt() : '';
+	$description = md_module( array( 'page_settings', 'description' ), $excerpt );
+
+	if ( $context == 'post' && is_singular() )
+		$description = md_post_meta( array( 'page_cover', 'title_content' ) );
+	elseif ( $context == 'page' )
+		if ( is_post_type_archive() || is_home() )
+			$description = md_post_type_field( 'archives_text' );
+		elseif ( is_page() || is_front_page() )
+			$description = get_the_excerpt();
+		elseif ( ( is_category() || is_tax() ) && get_queried_object() ) {
+			$category_description = category_description();
+			$description = md_term_meta( array( 'hero', 'archives_text' ), null, $category_description );
+		}
+		elseif ( is_author() )
+			$description = get_the_author_meta( 'description' );
+
+	if ( empty( $description ) )
+		return;
+
 	include md_template( 'description', true );
 }
 
@@ -145,10 +167,14 @@ function md_cta( $context = 'post' ) {
 		$links = md_module( array( 'page_cta', 'links' ) );
 	}
 	else {
+		if ( ! is_singular() )
+			return;
+
 		$cta = md_post_meta( 'page_cta' );
 		$type = md_post_meta( array( 'page_cta', 'page_cta' ) );
 		$links = md_post_meta( array( 'page_cta', 'links' ) );
 	}
+
 	include md_template( 'cta', true );
 }
 

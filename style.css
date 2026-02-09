@@ -71,7 +71,7 @@ h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading {
 	font-weight: bold;
 	line-height: 36px;
 }
-h5, .h5, .small-title {
+h5, .h5, .small-title, .subtitle {
 	font-size: 22px;
 	font-weight: bold;
 	line-height: 34px;
@@ -279,7 +279,7 @@ button, .button, .button a, input[type="submit"] {
 	font-style: normal;
 }
 .link-subtitle {
-	font-size: 16px;
+	font-size: 15px;
 	font-weight: normal;
 }
 /* BUTTONS */
@@ -293,7 +293,7 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
-	padding: 16px 21px;
+	padding: 16px 26px;
 	text-decoration: none;
 	transition: 0.3s;
 	-webkit-appearance: none;
@@ -888,7 +888,6 @@ summary::after {
 	$TITLES
 \*------------------------------*/
 .page-title, .header-cover .content > .post-title { margin-block-end: 31px; }
-.post-title .title, .page-title .title { margin-block-end: 0; }
 .post-title, .page-title, .title-wrap,
 .wide .inner, .wide .wrap,
 .image-title .wrap,
@@ -896,6 +895,10 @@ summary::after {
 	display: flex;
 	flex-direction: column;
 	gap: 16px 31px;
+}
+.wide, .wide .inner, .wide .wrap {
+	justify-content: center;
+	row-gap: 26px;
 }
 /* COVER */
 .header-cover.full-cover .content .page-title,
@@ -911,9 +914,17 @@ summary::after {
 .cover, .cover a, .cover .byline { color: #fff; }
 .cover.alt, .cover.alt a, .cover.alt .byline { color: #1E1E1E; }
 .entry.image-center .cover, .entry.image-below .cover { margin-block-end: 0; }
-/* CTA, DESCRIPTION, SUBTITLE */
+/* TITLE, LEDE, SUBTITLE, DESC, CTA */
+.post-title .title, .post-title .lede, .post-title .subtitle,
+.page-title .title, .page-title .lede, .page-title .subtitle { margin-block-end: 0; }
+.lede {
+	color: #777777;
+	font-size: 17px;
+	line-height: 28px;
+}
+.byline + .lede { margin-top: 16px; }
+.subtitle { font-weight: normal; }
 .cta {
-	align-items: center;
 	display: flex;
 	column-gap: 31px;
 }
@@ -933,40 +944,24 @@ summary::after {
 	margin-block-end: 16px;
 }
 /* QUERIES */
-@media (min-width: 651px) {
-	.post-title.wide, .page-title.wide {
-		align-items: center;
-		text-align: center;
-	}
-	.columns .post-title {
-		align-items: inherit;
-		text-align: inherit;
-	}
+@media (min-width: 800px) {
+	.wide, .wide .inner { align-items: center; }
+	.image-inline.wide .inner,
+	.image-title.wide .wrap { column-gap: 47px; }
 	.image-title .wrap,
 	.image-inline.wide, .image-inline.inline .wrap, .image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
-		width: 100%;
 	}
+	.wide .title { max-width: 651px; }
+	.image-title.wide .title-wrap,
+	.wide .description, .wide .subtitle { max-width: 651px; }
+	.post-title .subtitle, .page-title .subtitle { margin-block-end: 10px; }
 	.page-title.image-inline.image-left .featured-image,
 	.image-title.title-left .featured-image { order: -1; }
-	.wide, .wide .inner, .wide .wrap, .wide .title-wrap { row-gap: 26px }
-	.image-title.wide .wrap { justify-content: center; }
-	.image-title .title-wrap { text-align: left; }
-	.title-wrap, .wide.image-inline .wrap, .image-inline.inline .description { flex: 1; }
-	.wide .description, .wide .subtitle, .wide .cta {
-		margin-inline: auto;
-		max-width: 651px;
-	}
-	.image-title .cta {
-		margin-inline: inherit;
-		max-width: 100%;
-	}
 }
-@media (max-width: 651px) {
-	.page-title.image-title .wrap { text-align: center; }
-	.page-title.image-inline .featured-image, .page-title.image-center .featured-image,
-	.page-title.image-title .featured-image { margin-inline: auto; }
+@media all and (max-width: 800px) {
+	.featured-image { margin-inline: auto; }
 }
 @media (max-width: 900px) {
 	.header-cover .compact.box-style > .post-title { margin-block-end: 0; }
@@ -1070,13 +1065,11 @@ summary::after {
 }
 @media all and (max-width: 1148px) {
 	.inner { padding-inline: 16px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-inline-start: -16px; }
+	.box-style .entry, .content-wrap .page-title.cover { margin-inline: -16px; }
 }
 @media all and (max-width: 900px) {
 	.box-style.content.compact { padding-block-start: 0; }
 	.box-style.content.compact .breadcrumbs { padding-block-start: 16px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-inline-end: -16px; }
-	.sidebar { margin-block-start: 31px; }
 }
 /*------------------------------*\
 	$ALIGNMENTS

@@ -258,7 +258,7 @@ function md_style( $fields ) {
 		$attributes['width'] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
 
 	if ( ! empty( $fields['max_width'] ) )
-		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
+		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ';';
 
 	if ( ! empty( $fields['flex'] ) )
 		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
