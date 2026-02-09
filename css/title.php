@@ -98,7 +98,8 @@
 		align-items: center;
 		flex-flow: row;
 	}
-	.wide .title { max-width: <?php echo $post_width; ?>px; }
+	.expanded .page-title:not(.image-inline):not(.image-title) .title { text-align: center; }
+	.image-title.wide .title { max-width: <?php echo $post_width; ?>px; }
 	.image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
 	.post-title .subtitle, .page-title .subtitle { margin-block-end: <?php echo $third; ?>px; }

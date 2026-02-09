@@ -953,7 +953,8 @@ summary::after {
 		align-items: center;
 		flex-flow: row;
 	}
-	.wide .title { max-width: 651px; }
+	.expanded .page-title:not(.image-inline):not(.image-title) .title { text-align: center; }
+	.image-title.wide .title { max-width: 651px; }
 	.image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: 651px; }
 	.post-title .subtitle, .page-title .subtitle { margin-block-end: 10px; }
