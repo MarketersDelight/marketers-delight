@@ -68,6 +68,27 @@
 
 	<div class="col col2">
 
+		<?php if ( $is_admin ) : ?>
+			<?php $this->fields->field( 'content', array(
+				'type' => 'checkbox',
+				'label' => __( 'Single', 'md' ),
+				'wrap_classes' => 'md-sep-micro',
+				'options' => array(
+					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
+					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
+				)
+			) ); ?>
+
+			<?php $this->fields->field( 'featured_image', array(
+				'type' => 'select',
+				'label' => __( 'Featured image position', 'md' ),
+				'empty_label' => __( 'Use default position', 'md' ),
+				'wrap_classes' => 'md-sep-small',
+				'options' => $this->fields->data->values['featured_image']
+			) ); ?>
+
+		<?php endif; ?>
+
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
 		<?php $this->fields->field( 'content', array(
@@ -150,16 +171,6 @@
 			) ); ?>
 
 		</div>
-
-		<?php if ( $is_admin )
-			$this->fields->field( 'content', array(
-				'type' => 'checkbox',
-				'label' => __( 'Single', 'md' ),
-				'options' => array(
-					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
-					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
-				)
-			) ); ?>
 
 	</div>
 

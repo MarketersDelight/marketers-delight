@@ -10,6 +10,9 @@
 	gap: <?php echo $half; ?>px;
 }
 
+.fl-grow { flex: 1; }
+.fl-center { justify-content: center; }
+
 .reverse { flex-direction: row-reverse; }
 
 .width-full { width: 100%; }

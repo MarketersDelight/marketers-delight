@@ -83,7 +83,6 @@ function md_title( $context = 'post' ) {
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $image && ! in_array( $image['position'], $full_width ) ? true : false;
-	$has_inner = $has_header_cover ? true : false;
 
 	if ( $has_sidebar && ! $has_header_cover ) {
 		$is_inline = true;
@@ -130,6 +129,9 @@ function md_title( $context = 'post' ) {
  */
 
 function md_description( $context = 'post', $args = array() ) {
+	if ( ! apply_filters( "md_has_{$context}_title_description", true ) )
+		return;
+
 	$excerpt = $context == 'post' && is_singular() && has_excerpt() ? get_the_excerpt() : '';
 	$description = md_module( array( 'page_settings', 'description' ), $excerpt );
 

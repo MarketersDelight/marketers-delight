@@ -4,7 +4,7 @@ echo '<header class="page-title' . esc_attr( $classes ) . "\"$style>";
 
 md_overlay( 'page' );
 
-echo $has_inner ? '<div class="inner">' : '';
+echo $has_header_cover ? '<div class="inner">' : '';
 
 md_featured_image( 'page', array( 'show_image' => array( 'above_headline' ) ) );
 
@@ -66,6 +66,6 @@ else { // Default view (Wide)
 
 do_action( 'md_hook_page_title_bottom' );
 
-echo $has_inner ? '</div>' : '';
+echo $has_header_cover ? '</div>' : '';
 
 echo '</header>';

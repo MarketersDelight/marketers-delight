@@ -48,8 +48,6 @@
 	z-index: 5;
 }
 
-.featured-image a { display: block; }
-
 .featured-image img {
 	border-radius: 5px;
 	width: 100%;

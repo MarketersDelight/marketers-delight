@@ -953,7 +953,8 @@ summary::after {
 		align-items: center;
 		flex-flow: row;
 	}
-	.expanded .page-title:not(.image-inline):not(.image-title) .title { text-align: center; }
+	.post-title:not(.image-inline):not(.image-title).wide .title,
+	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
 	.image-title.wide .title { max-width: 651px; }
 	.image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: 651px; }
@@ -1221,7 +1222,6 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	position: relative;
 	z-index: 5;
 }
-.featured-image a { display: block; }
 .featured-image img {
 	border-radius: 5px;
 	width: 100%;
@@ -1626,6 +1626,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	display: flex;
 	gap: 16px;
 }
+.fl-grow { flex: 1; }
+.fl-center { justify-content: center; }
 .reverse { flex-direction: row-reverse; }
 .width-full { width: 100%; }
 .format :last-child { margin-block-end: 0; }
