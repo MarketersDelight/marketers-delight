@@ -100,23 +100,9 @@
 	}
 	.post-title:not(.image-inline):not(.image-title).wide .title,
 	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
-	.image-title.wide .title { max-width: <?php echo $post_width; ?>px; }
-	.image-title.wide .title-wrap,
+	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
 	.post-title .subtitle, .page-title .subtitle { margin-block-end: <?php echo $third; ?>px; }
 	.page-title.image-inline.image-left .featured-image,
 	.image-title.title-left .featured-image { order: -1; }
-}
-
-@media all and (max-width: 800px) {
-	.featured-image { margin-inline: auto; }
-}
-
-@media (max-width: 900px) {
-	.header-cover .compact.box-style > .post-title { margin-block-end: 0; }
-}
-
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.header-cover .expanded.box-style > .post-title { margin-block-end: 0; }
-	.header-cover .expanded.box-style .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
 }

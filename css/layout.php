@@ -94,7 +94,6 @@
 /* QUERIES */
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.content { padding-block-start: <?php echo $single; ?>px; }
 	.full .entry .cover,
 	.content-wrap .page-title.cover,
 	.box-style .item,
@@ -127,9 +126,4 @@
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
 	.box-style .entry, .content-wrap .page-title.cover { margin-inline: -<?php echo $half; ?>px; }
-}
-
-@media all and (max-width: 900px) {
-	.box-style.content.compact { padding-block-start: 0; }
-	.box-style.content.compact .breadcrumbs { padding-block-start: <?php echo $half; ?>px; }
 }

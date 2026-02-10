@@ -41,6 +41,11 @@
 	}
 }
 
+@media all and (max-width: <?php echo $site_width; ?>px) {
+	.box-style .breadcrumbs:first-child,
+	.box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
+}
+
 /* FEATURED IMAGE */
 
 .featured-image {
@@ -48,9 +53,12 @@
 	z-index: 5;
 }
 
-.featured-image img {
-	border-radius: 5px;
-	width: 100%;
+.featured-image img { border-radius: 5px; }
+
+.image-center .featured-image { text-align: center; }
+
+@media all and (max-width: 800px) {
+	.featured-image { margin-inline: auto; }
 }
 
 /* CAPTIONS */

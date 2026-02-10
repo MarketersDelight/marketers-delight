@@ -878,7 +878,7 @@ summary::after {
 	.full-cover .header[class*="show-"] .menu > .menu-item > a { color: inherit; }
 }
 @media all and (max-width: 600px) {
-			}
+	.site-name span { display: none; }	.tagline { display: none; }	}
 /* STICKY */
 .admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: 32px; }
 @media all and (max-width: 782px) {
@@ -955,22 +955,11 @@ summary::after {
 	}
 	.post-title:not(.image-inline):not(.image-title).wide .title,
 	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
-	.image-title.wide .title { max-width: 651px; }
-	.image-title.wide .title-wrap,
+	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: 651px; }
 	.post-title .subtitle, .page-title .subtitle { margin-block-end: 10px; }
 	.page-title.image-inline.image-left .featured-image,
 	.image-title.title-left .featured-image { order: -1; }
-}
-@media all and (max-width: 800px) {
-	.featured-image { margin-inline: auto; }
-}
-@media (max-width: 900px) {
-	.header-cover .compact.box-style > .post-title { margin-block-end: 0; }
-}
-@media all and (max-width: 1148px) {
-	.header-cover .expanded.box-style > .post-title { margin-block-end: 0; }
-	.header-cover .expanded.box-style .breadcrumbs { padding-block-start: 16px; }
 }
 /*------------------------------*\
 	$LAYOUT
@@ -1037,7 +1026,6 @@ summary::after {
 }
 /* QUERIES */
 @media all and (min-width: 651px) {
-	.content { padding-block-start: 31px; }
 	.full .entry .cover,
 	.content-wrap .page-title.cover,
 	.box-style .item,
@@ -1068,10 +1056,6 @@ summary::after {
 @media all and (max-width: 1148px) {
 	.inner { padding-inline: 16px; }
 	.box-style .entry, .content-wrap .page-title.cover { margin-inline: -16px; }
-}
-@media all and (max-width: 900px) {
-	.box-style.content.compact { padding-block-start: 0; }
-	.box-style.content.compact .breadcrumbs { padding-block-start: 16px; }
 }
 /*------------------------------*\
 	$ALIGNMENTS
@@ -1217,14 +1201,19 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		text-align: center;
 	}
 }
+@media all and (max-width: 1148px) {
+	.box-style .breadcrumbs:first-child,
+	.box-style .cover + .breadcrumbs { margin-top: -16px; }
+}
 /* FEATURED IMAGE */
 .featured-image {
 	position: relative;
 	z-index: 5;
 }
-.featured-image img {
-	border-radius: 5px;
-	width: 100%;
+.featured-image img { border-radius: 5px; }
+.image-center .featured-image { text-align: center; }
+@media all and (max-width: 800px) {
+	.featured-image { margin-inline: auto; }
 }
 /* CAPTIONS */
 .wp-caption {
