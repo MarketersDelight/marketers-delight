@@ -16,7 +16,7 @@ md_hook_before_the_content();
 
 if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
 
-	echo "<section class=\"the-content\">";
+	echo "<section id=\"the_content\" class=\"the-content\">";
 
 	md_hook_the_content_top();
 

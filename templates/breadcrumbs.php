@@ -68,7 +68,7 @@ if ( get_query_var( 'filter' ) ) {
 		else unset( $filters[$key] );
 	}
 
-	echo '<div class="query-filters">';
+	echo '<div class="query-filters"><div class="inner">';
 
 	foreach ( $filters as $tax => $terms ) {
 		$filter_url = get_post_type_archive_link( $post_type );
@@ -80,6 +80,6 @@ if ( get_query_var( 'filter' ) ) {
 		}
 	}
 
-	echo '</div>';
+	echo '</div></div>';
 
 }

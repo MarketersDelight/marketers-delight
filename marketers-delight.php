@@ -42,7 +42,7 @@ final class marketers_delight {
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ), 1 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
 		add_action( 'wp_head', array( $this, 'head_priority' ), 5 );
@@ -88,11 +88,11 @@ final class marketers_delight {
 		require_once MD_DIR . 'admin/page-cover.php';
 		require_once MD_DIR . 'admin/page-cta.php';
 
-		$this->dropins();
-
 		require_once MD_DIR . 'blog.php';
 		require_once MD_DIR . 'actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
+
+		$this->dropins();
 	}
 
 	/**
@@ -199,7 +199,8 @@ final class marketers_delight {
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
 		// Load scripts
-		wp_enqueue_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
+		wp_register_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
+		wp_enqueue_script( 'marketers-delight' );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
