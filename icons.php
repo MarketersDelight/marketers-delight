@@ -42,7 +42,7 @@ return array(
 		'label' => __( 'Chat', 'md' )
 	),
 	'check' => array(
-		'unicode' => 'e90e',
+		'unicode' => 'e90',
 		'label' => __( 'Check', 'md' )
 	),
 	'clock' => array(
@@ -73,10 +73,6 @@ return array(
 		'unicode' => 'e822',
 		'label' => __( 'Download', 'md' )
 	),
-	'dribbble' => array(
-		'unicode' => 'e80c',
-		'label' => __( 'Dribbble', 'md' )
-	),
 	'drop' => array(
 		'unicode' => 'e909',
 		'label' => __( 'Drop', 'md' )
@@ -97,10 +93,6 @@ return array(
 	'filter' => array(
 		'unicode' => 'e90f',
 		'label' => __( 'Filter', 'md' )
-	),
-	'flickr' => array(
-		'unicode' => 'e80a',
-		'label' => __( 'Flickr', 'md' )
 	),
 	'font' => array(
 		'unicode' => 'e90b',
@@ -168,13 +160,13 @@ return array(
 		'unicode' => 'e814',
 		'label' => __( 'Mail', 'md' )
 	),
-	'medium' => array(
-		'unicode' => 'f23a',
-		'label' => __( 'Medium', 'md' )
-	),
 	'menu' => array(
 		'unicode' => 'e815',
 		'label' => __( 'Menu', 'md' )
+	),
+	'moon' => array(
+		'unicode' => 'e91e',
+		'label' => __( 'Moon', 'md' )
 	),
 	'notification' => array(
 		'unicode' => 'e905',
@@ -234,18 +226,6 @@ return array(
 		'unicode' => 'e900',
 		'label' => __( 'Social', 'md' )
 	),
-	'skype' => array(
-		'unicode' => 'f17e',
-		'label' => __( 'Skype', 'md' )
-	),
-	'slack' => array(
-		'unicode' => 'e83c',
-		'label' => __( 'Slack', 'md' )
-	),
-	'speakerdeck' => array(
-		'unicode' => 'e81f',
-		'label' => __( 'SpeakerDeck', 'md' )
-	),
 	'stack' => array(
 		'unicode' => 'e904',
 		'label' => __( 'Stack', 'md' )
@@ -253,6 +233,10 @@ return array(
 	'star' => array(
 		'unicode' => 'e81b',
 		'label' => __( 'Star', 'md' )
+	),
+	'sun' => array(
+		'unicode' => 'e91f',
+		'label' => __( 'Sun', 'md' )
 	),
 	'support' => array(
 		'unicode' => 'e903',
@@ -273,15 +257,6 @@ return array(
 	'trophy' => array(
 		'unicode' => 'e824',
 		'label' => __( 'Trophy', 'md' )
-	),
-	'tumblr' => array(
-		'unicode' => 'e808',
-		'label' => __( 'Tumblr', 'md' ),
-		'classes' => array( '.md-icon-tumblr-squared' )
-	),
-	'twitter' => array(
-		'unicode' => 'e800',
-		'label' => __( 'Twitter', 'md' )
 	),
 	'user' => array(
 		'unicode' => 'e819',
@@ -307,6 +282,11 @@ return array(
 	'wordpress' => array(
 		'unicode' => 'e90d',
 		'label' => __( 'WordPress', 'md' )
+	),
+	'x' => array(
+		'unicode' => 'e800',
+		'label' => __( 'X/Twitter', 'md' ),
+		'classes' => array( '.md-icon-twitter' )
 	),
 	'youtube' => array(
 		'unicode' => 'e807',

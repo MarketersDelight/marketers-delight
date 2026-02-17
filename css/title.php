@@ -55,8 +55,6 @@
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.byline + .lede { margin-top: <?php echo $half; ?>px; }
-
 .subtitle {
 	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
@@ -69,7 +67,13 @@
 
 /* BYLINE */
 
-.byline { font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px; }
+.byline {
+	align-items: center;
+	display: flex;
+	flex-flow: wrap;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	gap: <?php echo $half; ?>px;
+}
 
 .byline, .byline a, .byline-item a, .byline .circle-icon { color: <?php echo $colors['site']['text-sec']; ?>; }
 
@@ -77,9 +81,9 @@
 
 .byline .badge, .byline-date a { text-decoration: none; }
 
-.byline-item:not(:last-child) { margin-inline-end: <?php echo $third; ?>px; }
-
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
+
+.byline-edit:last-child { margin-inline-start: auto; }
 
 .byline .author-link { text-decoration-color: rgba(0, 0, 0, 0.2); }
 
@@ -107,7 +111,6 @@
 	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
 	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
-	.post-title .subtitle, .page-title .subtitle { margin-block-end: <?php echo $third; ?>px; }
 	.page-title.image-inline.image-left .featured-image,
 	.image-title.title-left .featured-image { order: -1; }
 }
