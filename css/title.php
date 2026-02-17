@@ -17,7 +17,9 @@
 
 .wide, .wide .inner, .wide .wrap {
 	justify-content: center;
+/*
 	row-gap: <?php echo $half + $third; ?>px;
+*/
 }
 
 /* COVER */
@@ -55,11 +57,14 @@
 
 .byline + .lede { margin-top: <?php echo $half; ?>px; }
 
-.subtitle { font-weight: normal; }
+.subtitle {
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
+}
 
 .cta {
-	display: flex;
 	column-gap: <?php echo $single; ?>px;
+	display: flex;
 }
 
 /* BYLINE */

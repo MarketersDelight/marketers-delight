@@ -32,7 +32,7 @@ function md_get_title( $context = 'post' ) {
 	}
 	elseif ( is_tax() && get_queried_object() ) {
 		$term_title = single_term_title( '', false );
-		$title = md_term_meta( array( get_post_type(), 'archives_title' ), null, $term_title );
+		$title = md_term_meta( array( 'hero', 'archives_title' ), null, $term_title );
 	}
 	elseif ( is_category() ) {
 		$cat_title = single_cat_title( '', false );
@@ -163,6 +163,9 @@ function md_description( $context = 'post', $args = array() ) {
  */
 
 function md_cta( $context = 'post' ) {
+	if ( ! apply_filters( "md_has_{$context}_cta", true ) )
+		return;
+
 	if ( $context == 'page' ) {
 		$cta = md_module( 'page_cta' );
 		$type = md_module( array( 'page_cta', 'page_cta' ) );

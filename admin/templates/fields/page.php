@@ -1,10 +1,14 @@
+<?php do_action( 'md_admin_before_page_title' ); ?>
+
 <div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
-		'description' => __( 'Add an <code>h1</code> title tag to the top of the page.', 'md' )
+		'description' => __( 'The main <code>h1</code> title tag of the page.', 'md' )
 	) ); ?>
 </div>
+
+<?php do_action( 'md_admin_after_page_title' ); ?>
 
 <div class="md-field-row md-sep-small">
 	<?php $this->field( 'archives_text', array(

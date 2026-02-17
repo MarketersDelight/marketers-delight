@@ -189,19 +189,22 @@ class md_api {
 			$term_callback = method_exists( $this, 'term' ) ? 'term' : $callback;
 			$position = ! empty( $this->register['term']['position'] ) ? $this->register['term']['position'] : 100;
 
-			if ( isset( $this->register['term']['child_of'] ) ) {
-				$groups = $this->register['term']['child_of'];
-				$groups = ! is_array( $groups ) ? (array) $groups : $groups;
-				foreach ( $groups as $group ) {
-					add_filter( "md_term_meta_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
-					add_action( "md_term_meta_{$group}_fields", array( $this, $term_callback ), $position );
+			if ( method_exists( $this, $term_callback ) )
+				if ( isset( $this->register['term']['child_of'] ) ) {
+					$groups = $this->register['term']['child_of'];
+					$groups = ! is_array( $groups ) ? (array) $groups : $groups;
+
+					foreach ( $groups as $group ) {
+						add_filter( "md_term_meta_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
+						add_action( "md_term_meta_{$group}_fields", array( $this, $term_callback ), $position );
+					}
 				}
-			}
-			else {
-				$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
-				$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
-				add_action( "md_{$taxonomy}_{$term}", array( $this, $term_callback ), $position );
-			}
+				else {
+					$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
+					$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
+
+					add_action( "md_{$taxonomy}_{$term}", array( $this, $term_callback ), $position );
+				}
 		}
 
 		// User meta

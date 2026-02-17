@@ -34,7 +34,7 @@
 
 .row > .entry, .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
-.expanded .content-wrap:not(:last-child),
+.content-wrap:not(:last-child),
 .loop:not(:last-child),
 .loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
@@ -114,6 +114,7 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
+	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact > .inner {
 		display: grid;
 		gap: <?php echo $single; ?>px;
@@ -125,5 +126,5 @@
 
 @media all and (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.box-style .entry, .content-wrap .page-title.cover { margin-inline: -<?php echo $half; ?>px; }
+	.box-style .row .entry, .content-wrap .page-title.cover { margin-inline: -<?php echo $half; ?>px; }
 }
