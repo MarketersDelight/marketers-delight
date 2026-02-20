@@ -36,8 +36,8 @@ function md_get_image( $context = 'post' ) {
 	$image = array( 'position' => md_image_position( $context ) );
 
 	if ( $context == 'page' ) {
-		$image_id = md_module( array( 'page_image', 'image', 'id' ) );
-		$image_width = md_module( array( 'page_image', 'image_width' ) );
+		$image_id = md_module( array( 'featured_media', 'image', 'id' ) );
+		$image_width = md_module( array( 'featured_media', 'image_width' ) );
 
 		if ( $image_id )
 			$image['id'] = $image_id;
@@ -101,10 +101,10 @@ function md_image_position( $context = 'post' ) {
 	if ( is_author() ) // 6.0 - author is hardcoded until dedicated option page is added
 		$position = $default;
 	elseif ( $context == 'page' ) {
-		$position = md_post_type_field( array( 'page_image', 'position' ), $default );
+		$position = md_post_type_field( array( 'featured_media', 'position' ), $default );
 
 		if ( is_category() || is_tax() )
-			$position = md_term_meta( array( 'page_image', 'position' ), null, $position );
+			$position = md_term_meta( array( 'featured_media', 'position' ), null, $position );
 	}
 	else {
 		$position = md_post_meta( array( 'layout', 'featured_image' ) );

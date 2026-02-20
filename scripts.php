@@ -113,14 +113,19 @@ toggle: function() {
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
 			var toggle = this.getAttribute( 'data-toggle' ),
-				parent = this.closest( '.' + toggle );
-			MD.toggleClass( parent, 'toggle-' + toggle );
-			if ( this.getAttribute( 'data-toggle-close' ) ) {
+				parent = this.closest( '.' + toggle ),
+				className = 'toggle-' + toggle;
+			if ( ! parent.classList.contains( className ) ) {
+				var isOpen = document.querySelectorAll( '.' + className );
+				for ( var j = 0; j < isOpen.length; j++ )
+					MD.removeClass( isOpen[j], className );
+			}
+			MD.toggleClass( parent, className );
+			if ( this.getAttribute( 'data-toggle-close' ) )
 				document.onclick = function( e ) {
 					if ( ! parent.contains( e.target ) )
 						MD.removeClass( parent, 'toggle-' + toggle );
 				}
-			}
 		}
 	}
 },

@@ -10,6 +10,7 @@ class md_page_cta extends md_api {
 
 	public function register() {
 		$this->name = __( 'Call to Action', 'md' );
+
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,

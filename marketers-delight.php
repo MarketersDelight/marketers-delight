@@ -70,7 +70,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/api.php';
 
 		require_once MD_DIR . 'functions/template-functions.php';
-		require_once MD_DIR . 'functions/image-functions.php';
+		require_once MD_DIR . 'functions/media-functions.php';
 		require_once MD_DIR . 'functions/title-functions.php';
 		require_once MD_DIR . 'functions/comment-functions.php';
 		require_once MD_DIR . 'functions/loop-functions.php';
@@ -84,7 +84,7 @@ final class marketers_delight {
 			require_once MD_DIR . 'admin/admin.php';
 		}
 
-		require_once MD_DIR . 'admin/page-image.php';
+		require_once MD_DIR . 'admin/featured-media.php';
 		require_once MD_DIR . 'admin/page-cover.php';
 		require_once MD_DIR . 'admin/page-cta.php';
 
