@@ -112,6 +112,6 @@
 	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
 	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
-	.page-title.image-inline.image-left .featured-image,
-	.image-title.title-left .featured-image { order: -1; }
+	.page-title.image-inline.image-left .featured-media,
+	.image-title.title-left .featured-media { order: -1; }
 }

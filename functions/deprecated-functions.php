@@ -2,7 +2,7 @@
 
 // Deprecated 6.0
 function md_the_content() { the_content(); }
-function md_featured_image_position( $context = null ) { md_image_position( $context ); }
+function md_featured_image_position( $context = null ) { md_media_position( $context ); }
 function md_content_text() {}
 function md_headline_classes( $classes = array() ) {
 	$classes = apply_filters( 'md_filter_headline_classes', $classes );

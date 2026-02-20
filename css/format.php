@@ -14,7 +14,7 @@
 
 .format ul, .format ol, .format p, .format hr,
 .format table, .format blockquote, .format pre, .format .wp-caption,
-.format .wp-block-image, .full .the-content .featured-image { margin-block-end: <?php echo $single; ?>px; }
+.format .wp-block-image, .full .the-content .featured-media { margin-block-end: <?php echo $single; ?>px; }
 
 .format ul { list-style: square; }
 
@@ -77,7 +77,7 @@ ul.list-check li:before {
 
 .slim ul, .slim ol, .slim p, .slim hr,
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
-.slim .wp-block-image, .slim .the-content .featured-image { margin-block-end: <?php echo $half; ?>px; }
+.slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: <?php echo $half; ?>px; }
 
 .slim ul, .slim ol { margin-inline-start: <?php echo $half; ?>px; }
 

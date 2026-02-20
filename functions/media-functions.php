@@ -5,12 +5,13 @@
  * $args take same as other elements that accept $loop, like md_content( $loop ).
  *
  * @since 4.0
+ * @renamed from md_featured_image 6.0
  */
 
-function md_featured_image( $context = 'post', $args = array() ) {
-	$image = md_has_image( $context, $args );
+function md_featured_media( $context = 'post', $args = array() ) {
+	$media = md_has_media( $context, $args );
 
-	if ( empty( $image ) )
+	if ( empty( $media ) )
 		return;
 
 	$size = 'full';
@@ -21,9 +22,9 @@ function md_featured_image( $context = 'post', $args = array() ) {
 		$size = 250;
 
 	$permalink = $context == 'post' && ! is_singular() && ! is_404() ? get_permalink() : '';
-	$style = ! empty( $image['width'] ) ? md_style( array( 'max_width' => $image['width'] . 'px' ) ) : '';
+	$style = ! empty( $media['width'] ) ? md_style( array( 'max_width' => $media['width'] . 'px' ) ) : '';
 
-	include md_template( 'featured-image', true );
+	include md_template( 'featured-media', true );
 }
 
 /**
@@ -32,31 +33,24 @@ function md_featured_image( $context = 'post', $args = array() ) {
  * @since 6.0
  */
 
-function md_get_image( $context = 'post' ) {
-	$image = array( 'position' => md_image_position( $context ) );
+function md_get_media( $context = 'post' ) {
+	$defaults = array(
+		'media_type' => 'image',
+		'position' => md_media_position( $context )
+	);
 
 	if ( $context == 'page' ) {
-		$image_id = md_module( array( 'featured_media', 'image', 'id' ) );
-		$image_width = md_module( array( 'featured_media', 'image_width' ) );
-
-		if ( $image_id )
-			$image['id'] = $image_id;
+		$option = md_module( 'featured_media', array() );
 
 		if ( is_author() )
-			$image['author'] = true;
-
-		if ( $image_width )
-			$image['width'] = $image_width;
+			$option['author'] = true;
 	}
 	elseif ( get_post_thumbnail_id() ) {
-		$image['id'] = get_post_thumbnail_id();
-		$image_width = md_post_meta( array( 'layout', 'featured_image_width' ) );
-
-		if ( $image_width )
-			$image['width'] = $image_width;
+		$option = md_post_meta( 'featured_media', array() );
+		$option['image']['id'] = get_post_thumbnail_id();
 	}
 
-	return $image;
+	return wp_parse_args( $option, $defaults );
 }
 
 /**
@@ -65,27 +59,30 @@ function md_get_image( $context = 'post' ) {
  * @since 6.0
  */
 
-function md_has_image( $context = 'post', $args = array() ) {
-	$image = md_get_image( $context );
-	$image = array_merge( $image, $args );
-	$position = $image['position'];
+function md_has_media( $context = 'post', $args = array() ) {
+	$media = array_merge( md_get_media( $context ), $args );
+	$position = $media['position'];
 
-	if ( isset( $image['featured_image'] ) )
-		$position = $image['featured_image'];
+	if ( isset( $media['featured_image'] ) )
+		$position = $media['featured_image'];
 
 	if ( $position == 'remove' )
 		return;
 
-	if ( empty( $image['id'] ) && empty( $image['author'] ) )
+	if (
+		( in_array( $media['media_type'], array( '', 'image' ) ) && empty( $media['image']['id'] ) && empty( $media['author'] ) ) ||
+		( $media['media_type'] == 'video' && empty( $media['video_embed'] ) ) ||
+		( $media['media_type'] == 'custom_html' && empty( $media['custom_html'] ) )
+	)
 		return;
 
-	if ( isset( $image['show_image'] ) && ! in_array( $position, $image['show_image'] ) )
+	if ( isset( $media['show_image'] ) && ! in_array( $position, $media['show_image'] ) )
 		return;
 
-	if ( isset( $image['hide_image'] ) && in_array( $position, $image['hide_image'] ) )
+	if ( isset( $media['hide_image'] ) && in_array( $position, $media['hide_image'] ) )
 		return;
 
-	return $image;
+	return $media;
 }
 
 /**
@@ -95,10 +92,10 @@ function md_has_image( $context = 'post', $args = array() ) {
  * @renamed md_featured_image_position 6.0
  */
 
-function md_image_position( $context = 'post' ) {
+function md_media_position( $context = 'post' ) {
 	$default = 'right';
 
-	if ( is_author() ) // 6.0 - author is hardcoded until dedicated option page is added
+	if ( is_author() ) // 6.0 - author is hardcoded until dedicated author admin page is added
 		$position = $default;
 	elseif ( $context == 'page' ) {
 		$position = md_post_type_field( array( 'featured_media', 'position' ), $default );

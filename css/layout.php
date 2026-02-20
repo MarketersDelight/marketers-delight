@@ -38,7 +38,7 @@
 .loop:not(:last-child),
 .loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.loop .image-above.has-cover .featured-image { margin-block-end: 0; }
+.loop .image-above.has-cover .featured-media { margin-block-end: 0; }
 
 .entry .cover { padding-inline: <?php echo $half; ?>px; }
 

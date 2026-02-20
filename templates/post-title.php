@@ -19,7 +19,7 @@ if ( $image && in_array( $image['position'], $title_images ) ) { // Render when 
 		'cta' => true
 	) );
 
-	md_featured_image();
+	md_featured_media();
 
 	echo '</div>';
 

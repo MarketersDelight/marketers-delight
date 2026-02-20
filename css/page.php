@@ -47,17 +47,17 @@
 
 /* FEATURED IMAGE */
 
-.featured-image {
+.featured-media {
 	position: relative;
 	z-index: 5;
 }
 
-.featured-image img { border-radius: 5px; }
+.featured-media img { border-radius: 5px; }
 
-.image-center .featured-image { text-align: center; }
+.image-center .featured-media { text-align: center; }
 
 @media all and (max-width: 800px) {
-	.featured-image { margin-inline: auto; }
+	.featured-media { margin-inline: auto; }
 }
 
 /* CAPTIONS */
