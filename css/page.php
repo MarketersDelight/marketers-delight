@@ -125,7 +125,7 @@
 .author-link:not(:last-child) { margin-inline-end: <?php echo $small; ?>px; }
 
 .author-link.twitter .circle-icon {
-	background-color: #1da1f2;
+	background-color: #000;
 	color: #fff;
 }
 

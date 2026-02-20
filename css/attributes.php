@@ -160,7 +160,8 @@ abbr, acronym {
 h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
 <?php endif; ?>
 
-h1 a, h2 a, h3 a, h4 a, h5 a, h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a,
+.h1 a, .h2 a, .h3 a, .h4 a, .h5 a, .h6 a { color: <?php echo $colors['site']['headline-links']; ?>; }
 
 <?php foreach ( $queries as $w => $d ) {
 

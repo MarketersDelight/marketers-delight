@@ -23,7 +23,7 @@
 
 			<?php if ( ! empty( $twitter ) ) : ?>
 				<a href="https://twitter.com/<?php echo esc_attr( $twitter ); ?>" class="author-link twitter" rel="nofollow" target="_blank">
-					<span class="circle-icon micro"><?php echo md_icon( 'twitter' ); ?></span><span class="author-link-label"><?php echo __( 'Follow on Twitter', 'md' ); ?></span>
+					<span class="circle-icon micro"><?php echo md_icon( 'twitter' ); ?></span><span class="author-link-label"><?php echo __( 'Follow on X', 'md' ); ?></span>
 				</a>
 			<?php endif; ?>
 

@@ -61,6 +61,7 @@
 }
 
 .cta {
+	align-items: center;
 	column-gap: <?php echo $single; ?>px;
 	display: flex;
 }

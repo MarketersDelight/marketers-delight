@@ -194,6 +194,10 @@ return array(
 		'label' => __( 'Pinterest', 'md' ),
 		'classes' => array( '.md-icon-pinterest-squared' )
 	),
+	'play' => array(
+		'unicode' => 'e90e',
+		'label' => __( 'Play', 'md' )
+	),
 	'plus' => array(
 		'unicode' => 'ea0a',
 		'label' => __( 'Plus', 'md' )

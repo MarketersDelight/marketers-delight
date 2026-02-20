@@ -86,12 +86,14 @@ function md_content_classes( $classes = array() ) {
 	$classes[] = 'content-wrap';
 	$classes[] = 'format';
 
-	if ( ! md_has_sidebar() )
-		$classes[] = 'inner';
+	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) ) {
+		if ( ! md_has_sidebar() )
+			$classes[] = 'inner';
 
-	if ( is_singular() || is_404() ) {
-		$classes[] = 'row';
-		$classes[] = 'full';
+		if ( is_singular() || is_404() ) {
+			$classes[] = 'row';
+			$classes[] = 'full';
+		}
 	}
 
 	$classes = apply_filters( 'md_filter_content_classes', $classes );
