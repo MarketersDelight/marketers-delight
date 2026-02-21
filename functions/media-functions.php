@@ -14,15 +14,19 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	if ( empty( $media ) )
 		return;
 
+	$permalink = '';
+	$type = $media['media_type'];
+	$style = ! empty( $media['image_width'] ) ? md_style( array( 'max_width' => $media['image_width'] . 'px' ) ) : '';
+
+	if ( $context == 'post' && ! is_singular() && ! is_404() )
+		$permalink = get_permalink();
+
 	$size = 'full';
 
 	if ( isset( $args['size'] ) )
 		$size = $args['size'];
 	elseif ( is_author() )
 		$size = 250;
-
-	$permalink = $context == 'post' && ! is_singular() && ! is_404() ? get_permalink() : '';
-	$style = ! empty( $media['width'] ) ? md_style( array( 'max_width' => $media['width'] . 'px' ) ) : '';
 
 	include md_template( 'featured-media', true );
 }
@@ -34,6 +38,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
  */
 
 function md_get_media( $context = 'post' ) {
+	$option = array();
 	$defaults = array(
 		'media_type' => 'image',
 		'position' => md_media_position( $context )
@@ -62,6 +67,7 @@ function md_get_media( $context = 'post' ) {
 function md_has_media( $context = 'post', $args = array() ) {
 	$media = array_merge( md_get_media( $context ), $args );
 	$position = $media['position'];
+	$type = isset( $media['media_type'] ) ? $media['media_type'] : 'image';
 
 	if ( isset( $media['featured_image'] ) )
 		$position = $media['featured_image'];
@@ -70,9 +76,8 @@ function md_has_media( $context = 'post', $args = array() ) {
 		return;
 
 	if (
-		( in_array( $media['media_type'], array( '', 'image' ) ) && empty( $media['image']['id'] ) && empty( $media['author'] ) ) ||
-		( $media['media_type'] == 'video' && empty( $media['video_embed'] ) ) ||
-		( $media['media_type'] == 'custom_html' && empty( $media['custom_html'] ) )
+		( $type == 'image' && empty( $media['image']['id'] ) && empty( $media['author'] ) ) ||
+		( empty( $media[$type] ) )
 	)
 		return;
 

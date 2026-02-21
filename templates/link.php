@@ -77,7 +77,7 @@ $html =
 	"<$h{$attrs}>".
 	( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
 	( $has_wrap ? '<span class="link-wrap">' : '' ).
-	( $fields['name'] ? '<span class="link-name">' . md_text_field( $fields['name'] ) . '</span>' : '' ).
-	( $fields['subtitle'] ? '<span class="link-subtitle">' . md_text_field( $fields['subtitle'] ) . '</span>' : '' ).
+	( $fields['name'] ? '<span class="link-name">' . wp_kses_data( $fields['name'] ) . '</span>' : '' ).
+	( $fields['subtitle'] ? '<span class="link-subtitle">' . wp_kses_data( $fields['subtitle'] ) . '</span>' : '' ).
 	( $has_wrap ? '</span>' : '' ).
 	"</$h>";

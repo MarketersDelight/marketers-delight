@@ -28,103 +28,6 @@ class md_sanitize {
 	);
 
 	/**
-	 * Allow only the following HTML tags + attributes
-	 * on validation.
-	 *
-	 * @since 4.0
-	 */
-
-	public $_allowed_html = array(
-		'div' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'svg' => array(
-			'xmlns' => array(),
-			'fill' => array(),
-			'viewbox' => array(),
-			'role' => array(),
-			'aria-hidden' => array(),
-			'focusable' => array(),
-			'height' => array(),
-			'width' => array()
-		),
-		'path' => array(
-			'd' => array(),
-			'fill' => array(),
-		),
-		'p' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'ul' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'ol' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'li' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'a' => array(
-			'href' => array(),
-			'class' => array(),
-			'id' => array(),
-			'target' => array(),
-			'title' => array(),
-			'rel' => array()
-		),
-		'span' => array(
-			'class' => array(),
-			'id' => array(),
-			'title' => array(),
-			'style' => array()
-		),
-		'img' => array(
-			'src' => array(),
-			'alt' => array(),
-			'height' => array(),
-			'width' => array(),
-			'class' => array(),
-			'title' => array(),
-			'id' => array()
-		),
-		'mark' => array(
-			'class' => array(),
-			'id' => array(),
-			'style' => array()
-		),
-		'acronym' => array(
-			'title' => array()
-		),
-		'br' => array(),
-		'b' => array(),
-		'strong' => array(
-			'class' => array()
-		),
-		'i' => array(
-			'class' => array()
-		),
-		'em' => array(
-			'class' => array()
-		),
-		'small' => array(
-			'class' => array(),
-			'style' => array()
-		),
-		's' => array(),
-		'code' => array()
-	);
-
-	/**
 	 * A list of accepted title sizes from h1-h6 selectors.
 	 *
 	 * @since 6.0
@@ -146,15 +49,6 @@ class md_sanitize {
 		);
 	}
 */
-	/**
-	 * Run text field through native WP function.
-	 *
-	 * @since 4.5
-	 */
-
-	public function text( $input ) {
-		return wp_kses( $input, $this->_allowed_html );
-	}
 
 	/**
 	 * Ensure only a number is saved.
@@ -442,14 +336,17 @@ class md_sanitize {
 		if ( $val == '' && isset( $fields['default'] ) )
 			$val = $fields['default'];
 
-		if ( in_array( $type, array( 'text', 'textarea', 'editor', 'hidden' ) ) )
-			$field = $this->text( $val );
+		if ( in_array( $type, array( 'text', 'textarea' ) ) )
+			$field = wp_kses_data( $val );
+
+		if ( in_array( $type, array( 'editor', 'code' ) ) )
+			$field = wp_kses_post( $val );
 
 		if ( in_array( $type, array( 'number', 'range' ) ) )
 			$field = $this->number( $val );
 
-		if ( in_array( $type, array( 'code', 'data' ) ) )
-			$field = $val;
+		if ( in_array( $type, array( 'hidden', 'data' ) ) )
+			$field = sanitize_text_field( $val );
 
 		if ( $type == 'url' )
 			$field = $this->url( $val );

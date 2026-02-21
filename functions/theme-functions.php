@@ -191,18 +191,6 @@ function md_ver( $file, $path = null ) {
 }
 
 /**
- * Run KSES with MD approved HTML tags.
- *
- * @since 5.2.2
- */
-
-function md_text_field( $string ) {
-	$sanitize = new md_sanitize;
-
-	return wp_kses( $string, $sanitize->_allowed_html );
-}
-
-/**
  * Pull data from the Marketers Delight options array. For
  * best performance, always pull MD settings from here.
  *

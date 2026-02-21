@@ -47,10 +47,10 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
 	<div class="md-builder-head">
 
-		<h3 class="md-builder-title"><i class="dashicons dashicons-admin-page"></i> <?php echo md_text_field( $area_fields['title'] ); ?></h3>
+		<h3 class="md-builder-title"><i class="dashicons dashicons-admin-page"></i> <?php echo sanitize_text_field( $area_fields['title'] ); ?></h3>
 
 		<?php if ( isset( $area_fields['description'] ) ) : ?>
-		<p class="description"><?php echo md_text_field( $area_fields['description'] ); ?></p>
+		<p class="description"><?php echo sanitize_text_field( $area_fields['description'] ); ?></p>
 		<?php endif; ?>
 
 	</div>

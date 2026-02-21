@@ -171,7 +171,7 @@ function md_trigger( $type = 'menu', $args = array() ) {
 	echo
 		'<span class="' . esc_attr( $classes ) . '" title="' . esc_attr( $title ) . '" data-md-parent="' . esc_attr( $parent ) . '" data-md-trigger="' . esc_attr( $type ) . '" data-md-location="' . esc_attr( $location ) . '">'.
 			md_icon( $type, array( 'classes' => 'trigger-icon' ) ).
-			'<span class="trigger-text">' . md_text_field( $title ) . '</span>'.
+			'<span class="trigger-text">' . wp_kses_data( $title ) . '</span>'.
 		'</span>';
 }
 

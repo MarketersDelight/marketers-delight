@@ -50,7 +50,7 @@ function md_breadcrumbs() {
 	$blog_id = get_option( 'page_for_posts' );
 
 	if ( ! empty( $post_type_obj ) )
-		$post_type_title = md_text_field( $post_type_obj->labels->name );
+		$post_type_title = wp_kses_data( $post_type_obj->labels->name );
 
 	if ( $post_type == 'post' ) {
 		if ( ! empty( $blog_id ) )

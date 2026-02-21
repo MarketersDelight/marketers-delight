@@ -278,7 +278,7 @@ class md_fields {
 	 */
 
 	public function description( $description ) {
-		echo '<p class="description">' . md_text_field( $description ) . '</p>';
+		echo '<p class="description">' . wp_kses_data( $description ) . '</p>';
 	}
 
 	/**

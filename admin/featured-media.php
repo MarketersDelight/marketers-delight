@@ -45,7 +45,7 @@ class md_featured_media extends md_api {
 				'upload_type' => 'media'
 			),
 			'image_width' => array( 'type' => 'range' ),
-			'video_embed' => array( 'type' => 'code' ),
+			'video' => array( 'type' => 'url' ),
 			'custom_html' => array( 'type' => 'code' )
 		);
 

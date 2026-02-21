@@ -6,14 +6,24 @@ echo '<div class="featured-media"' . $style . '>';
 
 do_action( "md_hook_{$context}_featured_media_top" );
 
-echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '">' : '' );
+if ( $type == 'image' ) {
 
-if ( isset( $media['author'] ) )
-	echo get_avatar( get_the_author_meta( 'ID' ), $size );
-else
-	echo wp_get_attachment_image( $media['image']['id'], $size );
+	echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '">' : '' );
 
-echo ( $permalink ? '</a>' : '' ) . md_get_caption();
+	if ( isset( $media['author'] ) )
+		echo get_avatar( get_the_author_meta( 'ID' ), $size );
+	else
+		echo wp_get_attachment_image( $media['image']['id'], $size );
+
+	echo ( $permalink ? '</a>' : '' ) . md_get_caption();
+
+}
+elseif ( $type == 'video' )
+	echo wp_video_shortcode( array(
+		'src' => esc_url( $media[$type] )
+	) );
+elseif ( $type == 'custom_html' )
+	echo wp_kses_post( $media[$type] );
 
 do_action( "md_hook_{$context}_featured_media_bottom" );
 

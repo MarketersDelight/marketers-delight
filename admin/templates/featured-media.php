@@ -43,9 +43,9 @@
 </div>
 
 <div id="<?php echo $prefix; ?>_featured_media_video" class="md-conditional-item md-conditional-video" style="display: <?php echo $media_type == 'video' ? 'block' : 'none'; ?>">
-	<?php $this->fields->field( 'video_embed', array(
-		'type' => 'code',
-		'label' => __( 'Video Embed Code', 'md' )
+	<?php $this->fields->field( 'video', array(
+		'type' => 'url',
+		'label' => __( 'Video URL', 'md' )
 	) ); ?>
 </div>
 
