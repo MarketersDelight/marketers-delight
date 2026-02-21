@@ -53,6 +53,7 @@ function md_get_media( $context = 'post' ) {
 	elseif ( get_post_thumbnail_id() ) {
 		$option = md_post_meta( 'featured_media', array() );
 		$option['image']['id'] = get_post_thumbnail_id();
+		$option['image_width'] = md_post_meta( array( 'layout', 'featured_image_width' ) );
 	}
 
 	return wp_parse_args( $option, $defaults );

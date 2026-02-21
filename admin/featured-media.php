@@ -16,6 +16,11 @@ class md_featured_media extends md_api {
 				'child_of' => array( 'hero', 'page_settings' ),
 				'fields' => $this->fields()
 			),
+			'meta_box' => array(
+				'name' => $this->name,
+				'child_of' => 'page_settings',
+				'fields' => $this->fields()
+			),
 			'term' => array(
 				'name' => $this->name,
 				'child_of' => array( 'hero', 'page_settings' ),
@@ -59,12 +64,18 @@ class md_featured_media extends md_api {
 	 */
 
 	public function admin_fields() {
-		$screen = get_current_screen();
 		$prefix = $this->_prefix;
-		$active = ! in_array( $screen->base, array( 'post', 'post-new' ) ) ? ' active' : '';
+		$screen = get_current_screen();
+		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$media_type = $this->fields->module( 'media_type' );
+		$classes = array( "md-$this->_clean_id", 'md-tab-content', 'md-conditional' );
 
-		echo "<div class=\"md-$this->_clean_id md-tab-content{$active} md-conditional\">";
+		if ( ! $is_post )
+			$classes[] = 'active';
+
+		$classes = join( ' ', $classes );
+
+		echo '<div class="' . esc_attr( $classes ) . '">';
 		include md_template( 'admin/featured-media', true );
 		echo '</div>';
 	}

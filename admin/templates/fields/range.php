@@ -10,6 +10,8 @@ $max = ! empty( $args['max'] ) ? $args['max'] : 100;
 
 <p class="md-range">
 	<input type="range" class="md-range-field" value="<?php echo esc_attr( $option ); ?>" min="<?php echo $min; ?>" max="<?php echo $max; ?>" />
-	<input name="<?php echo $name; ?>" id="<?php echo $id; ?>" class="md-range-number" type="number" value="<?php echo esc_attr( $option ); ?>" placeholder="<?php echo $placeholder; ?>" style="width: 75px;" /> <?php echo esc_html( $unit ); ?>
-	<span class="md-range-reset dashicons dashicons-image-rotate" data-default="<?php echo $default; ?>"></span>
+	<span class="md-range-wrap">
+		<input name="<?php echo $name; ?>" id="<?php echo $id; ?>" class="md-range-number" type="number" value="<?php echo esc_attr( $option ); ?>" placeholder="<?php echo $placeholder; ?>" /> <?php echo esc_html( $unit ); ?>
+		<span class="md-range-reset dashicons dashicons-image-rotate" data-default="<?php echo $default; ?>"></span>
+	</span>
 </p>

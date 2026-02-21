@@ -37,7 +37,7 @@ class md_fields_data {
 				'center' => __( 'Center, no text wrap', 'md' ),
 				'above_headline' => __( 'Before headline', 'md' ),
 				'below_headline' => __( 'After headline', 'md' ),
-				'remove' => __( 'Hide image', 'md' )
+				'remove' => __( 'Don\'t show', 'md' )
 			)
 		);
 	}

@@ -249,18 +249,18 @@
 		},
 		range: function() {
 			$( '.md-range-field' ).on( 'input change', function() {
-				var parent = $( this ).parent( '.md-range' ),
+				var parent = $( this ).parents( '.md-range' ),
 					number = parent.find( '.md-range-number' );
 				number.val( $( this ).val() );
 			});
 			$( '.md-range-number' ).on( 'input change', function() {
-				var parent = $( this ).parent( '.md-range' ),
+				var parent = $( this ).parents( '.md-range' ),
 					range = parent.find( '.md-range-field' );
 				range.val( $( this ).val() );
 			});
 			$( '.md-range-reset' ).on( 'click', function() {
 				var data = $( this ).data( 'default' ),
-					parent = $( this ).parent( '.md-range' )
+					parent = $( this ).parents( '.md-range' )
 					number = parent.find( '.md-range-number' ),
 					range = parent.find( '.md-range-field' );
 				number.val( '' );

@@ -293,7 +293,7 @@
 		<div class="col">
 			<?php $this->fields->field( 'featured_image', array(
 				'type' => 'select',
-				'label' => __( 'Featured image position', 'md' ),
+				'label' => __( 'Featured Media Position', 'md' ),
 				'empty_label' => __( 'Use default position', 'md' ),
 				'wrap_classes' => 'md-sep-small',
 				'options' => $this->fields->data->values['featured_image']
@@ -301,7 +301,7 @@
 			<div id="featured_image_fields" style="display: <?php echo ! in_array( $featured_image_position, array( 'above_headline', 'below_headline', 'remove' ) ) ? 'block' : 'none'; ?>;">
 				<?php $this->fields->field( 'featured_image_width', array(
 					'type' => 'range',
-					'label' => __( 'Featured image width', 'md' ),
+					'label' => __( 'Featured Media Width', 'md' ),
 					'unit' => 'px',
 					'max' => '550'
 				) ); ?>
