@@ -10,7 +10,7 @@ md_featured_media( 'page', array( 'show_image' => array( 'above_headline' ) ) );
 
 do_action( 'md_hook_page_title_top' );
 
-if ( $image && in_array( $image['position'], $title_images ) ) { // Render when image is aligned left/right inside title
+if ( $media && in_array( $media['position'], $title_images ) ) { // Render when image is aligned left/right inside title
 
 	echo '<div class="wrap">';
 

@@ -124,7 +124,7 @@
 			<div class="col">
 				<?php $this->fields->field( "{$p}featured_image", array(
 					'type' => 'select',
-					'label' => __( 'Featured Image', 'md' ),
+					'label' => __( 'Featured Media', 'md' ),
 					'empty_label' => __( 'Use default position', 'md' ),
 					'options' => $this->fields->data->values['featured_image'],
 					'wrap_classes' => 'md-sep-micro',

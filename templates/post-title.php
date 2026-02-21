@@ -8,7 +8,7 @@ do_action( 'md_hook_post_title_top' );
 
 echo ( is_singular() || is_404() ) && $has_header_cover ? '<div class="inner">' : '';
 
-if ( $image && in_array( $image['position'], $title_images ) ) { // Render when image is aligned left/right inside title
+if ( $media && in_array( $media['position'], $title_images ) ) { // Render when image is aligned left/right inside title
 
 	echo '<div class="wrap">';
 

@@ -79,10 +79,10 @@ function md_title( $context = 'post' ) {
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
-	$image = md_has_media( $context );
+	$media = md_has_media( $context );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
-	$has_wrap = $image && ! in_array( $image['position'], $full_width ) ? true : false;
+	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
 
 	if ( $has_sidebar && ! $has_header_cover ) {
 		$is_inline = true;
@@ -90,18 +90,18 @@ function md_title( $context = 'post' ) {
 	}
 	else $classes[] = 'wide';
 
-	if ( $image && ( $context == 'page' || ( $context == 'post' && in_array( $image['position'], $title_images ) ) ) ) {
-		$class_name = 'image-' . $image['position'];
+	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) ) {
+		$class_name = 'image-' . $media['position'];
 
-		if ( in_array( $image['position'], $inline_images ) )
+		if ( in_array( $media['position'], $inline_images ) )
 			$classes[] = 'image-inline';
-		elseif ( in_array( $image['position'], $full_width ) ) {
+		elseif ( in_array( $media['position'], $full_width ) ) {
 			$classes[] = 'image-full';
-			$class_name = str_replace( '_headline', '', $image['position'] );
+			$class_name = str_replace( '_headline', '', $media['position'] );
 		}
-		elseif ( in_array( $image['position'], $title_images ) ) {
+		elseif ( in_array( $media['position'], $title_images ) ) {
 			$classes[] = 'image-title';
-			$class_name = str_replace( '_', '-', $image['position'] );
+			$class_name = str_replace( '_', '-', $media['position'] );
 		}
 
 		$classes[] = $class_name;
