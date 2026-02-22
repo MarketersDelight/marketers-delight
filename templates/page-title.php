@@ -1,4 +1,11 @@
 <?php
+/**
+ * The Page Title template is used to load titles for non-Single pages,
+ * such as Post Type Archive pages, Category/Term Pages, Author Pages, etc.
+ *
+ * To edit the title for standard pages within the Loop, including the Single
+ * page types, please edit post-title.php template file.
+ */
 
 echo '<header class="page-title' . esc_attr( $classes ) . "\"$style>";
 

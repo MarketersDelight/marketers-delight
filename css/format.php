@@ -36,18 +36,14 @@
 
 .the-content ul, .the-content ol, .the-content .list-check { margin-inline-start: <?php echo $single; ?>px; }
 
-.the-content h1, .the-content h2,
-.the-content h3, .the-content h4,
-.the-content h5, .the-content h6 {
+.the-content :is(h1, h2, h3, h4, h5, h6) {
 	<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
 	color: <?php echo $colors['site']['headline']; ?>;
 	<?php endif; ?>
 	margin-block-start: <?php echo $mid; ?>px;
 }
 
-.the-content h1:first-child, .the-content h2:first-child,
-.the-content h3:first-child, .the-content h4:first-child,
-.the-content h5:first-child, .the-content h6:first-child { margin-block-start: 0; }
+.the-content :is(h1, h2, h3, h4, h5, h6):first-child { margin-block-start: 0; }
 
 /* LISTS */
 
