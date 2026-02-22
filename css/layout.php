@@ -32,11 +32,9 @@
 
 .loop.row:not(:last-child) { margin-block-end: <?php echo $double; ?>px; }
 
-.row > .entry, .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
+.row > .entry { margin-block-end: <?php echo $mid; ?>px; }
 
-.content-wrap:not(:last-child),
-.loop:not(:last-child),
-.loop .entry > *:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.content-wrap:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .loop .image-above.has-cover .featured-media { margin-block-end: 0; }
 
@@ -47,8 +45,6 @@
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
 .box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
-
-.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 
 .box, .box-style .entry {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
@@ -70,7 +66,9 @@
 
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
-/* BORDER STYLE */
+/* PLAIN/BORDER STYLES */
+
+:is(.plain-style, .border-style) .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 .is-border-style .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }

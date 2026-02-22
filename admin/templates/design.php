@@ -86,7 +86,7 @@
 
 			<?php
 			$content_style = md_filter_loop_styles();
-			unset( $content_style['box_style'] );
+			unset( $content_style['box'] );
 			$this->fields->field( 'design', array(
 				'type' => 'select',
 				'label' => __( 'Site style', 'md' ),

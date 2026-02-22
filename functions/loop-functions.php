@@ -24,9 +24,9 @@ function md_filter_loops() {
 
 function md_filter_loop_styles() {
 	return apply_filters( 'md_filter_loop_styles', array(
-		'box_style' => __( 'Box style', 'md' ),
-		'border_style' => __( 'Border style', 'md' ),
-		'none' => __( 'No style', 'md' )
+		'box' => __( 'Box style', 'md' ),
+		'border' => __( 'Border style', 'md' ),
+		'plain' => __( 'No style', 'md' )
 	) );
 }
 

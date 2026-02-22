@@ -310,10 +310,8 @@ final class marketers_delight {
 	public function body_class( $classes ) {
 		$context = is_singular() || is_404() ? 'post' : 'page';
 		$cover = md_cover( $context );
-		$style = md_content_style( array( 'global' => true ) );
 
-		if ( $style )
-			$classes[] = 'is-' . $style;
+		$classes[] = 'is-' . md_content_style( array( 'global' => true ) );
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
 			$classes[] = 'header-cover';

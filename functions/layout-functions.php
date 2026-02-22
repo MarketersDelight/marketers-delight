@@ -110,6 +110,7 @@ function md_content_classes( $classes = array() ) {
 
 function md_post_class( $loop, $c = 0 ) {
 	$classes = array( 'entry' );
+	$cover = md_cover();
 
 	if ( isset( $loop['featured'] ) )
 		if ( isset( $loop['is_featured'] ) )
@@ -132,7 +133,7 @@ function md_post_class( $loop, $c = 0 ) {
 			$classes[] = 'image-title';
 	}
 
-	if ( md_cover() )
+	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
 
 	return join( ' ', $classes );
@@ -146,19 +147,14 @@ function md_post_class( $loop, $c = 0 ) {
  */
 
 function md_content_style( $args = array() ) {
-	$style = md_setting( array( 'colors', 'design' ), 'box-style' );
+	$style = md_setting( array( 'colors', 'design' ), 'box' );
 	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
 	$single = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() );
 
-	if ( isset( $args['style'] ) )
-		$style = $args['style'];
-	elseif ( $single && ! isset( $args['global'] ) )
+	if ( $single && ! isset( $args['global'] ) )
 		$style = $single;
 
-	if ( $style == 'none' )
-		$style = '';
-
-	return str_replace( '_', '-', $style );
+	return "{$style}-style";
 }
 
 /**

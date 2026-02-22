@@ -499,10 +499,10 @@ select {
 		inset-inline-end: 0;
 }
 .scroller-nav i { font-size: inherit; }
-@media all and (min-width: 1148px) {
+@media all and (min-width: 1054px) {
 	.scroller-nav { display: none; }
 }
-@media all and (max-width: 1148px) {
+@media all and (max-width: 1054px) {
 	.scroller {
 		overflow-x: auto;
 		white-space: nowrap;
@@ -898,12 +898,7 @@ summary::after {
 	flex-direction: column;
 	gap: 16px 31px;
 }
-.wide, .wide .inner, .wide .wrap {
-	justify-content: center;
-/*
-	row-gap: 26px;
-*/
-}
+.wide, .wide .inner, .wide .wrap { justify-content: center; }
 /* COVER */
 .header-cover.full-cover .content .page-title,
 .header-cover.full-cover .content > .post-title { padding-block-start: 186px; }
@@ -966,8 +961,7 @@ summary::after {
 		align-items: center;
 		flex-flow: row;
 	}
-	.post-title:not(.image-inline):not(.image-title).wide .title,
-	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
+	.image-full.wide .title { text-align: center; }
 	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: 651px; }
 	.page-title.image-inline.image-left .featured-media,
@@ -985,7 +979,7 @@ summary::after {
 }
 .inner {
 	margin-inline: auto;
-	max-width: 1148px;
+	max-width: 1054px;
 	position: relative;
 	width: 100%;
 }
@@ -995,16 +989,13 @@ summary::after {
 .header-cover .content { padding-block-start: 0; }
 /* LOOP */
 .loop.row:not(:last-child) { margin-block-end: 62px; }
-.row > .entry, .entry > *:not(:last-child) { margin-block-end: 47px; }
-.content-wrap:not(:last-child),
-.loop:not(:last-child),
-.loop .entry > *:not(:last-child) { margin-block-end: 31px; }
+.row > .entry { margin-block-end: 47px; }
+.content-wrap:not(:last-child), .loop:not(:last-child) { margin-block-end: 31px; }
 .loop .image-above.has-cover .featured-media { margin-block-end: 0; }
 .entry .cover { padding-inline: 16px; }
 /* BOX STYLE */
 .box-style.content { background-color: #F0F0F0; }
 .box-style .row.full > .entry:not(:last-child) { margin-block-end: 31px; }
-.box-style .entry > *:not(:last-child) { margin-block-end: 0; }
 .box, .box-style .entry {
 	background-color: #FFFFFF;
 	border-radius: 5px;
@@ -1020,7 +1011,8 @@ summary::after {
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 .box-style .post-footer { border-block-start: 1px solid #CCCCCC; }
 .box-style .entry .byline.post-footer { padding-block: 16px; }
-/* BORDER STYLE */
+/* PLAIN/BORDER STYLES */
+:is(.plain-style, .border-style) .entry > *:not(:last-child) { margin-block-end: 47px; }
 .is-border-style .header:not(.cover) { border-block-end: 1px solid #CCCCCC; }
 .is-border-style .footer { border-block-start: 1px solid #CCCCCC; }
 .border-style .page-title:not(.cover) {
@@ -1054,19 +1046,19 @@ summary::after {
 	}
 }
 @media all and (min-width: 900px) {
-	.content-width { max-width: 745px; }
+	.content-width { max-width: 651px; }
 	.post-width { max-width: 651px; }
 	.sidebar-width { max-width: 372px; }
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact > .inner {
 		display: grid;
 		gap: 31px;
-		grid-template-columns: 64.895470383275% 32.404181184669%;
+		grid-template-columns: 61.764705882353% 35.294117647059%;
 	}
 	.compact.left > .inner { direction: rtl; }
 	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
-@media all and (max-width: 1148px) {
+@media all and (max-width: 1054px) {
 	.inner { padding-inline: 16px; }
 	.box-style .row .entry, .content-wrap .page-title.cover { margin-inline: -16px; }
 }
@@ -1126,7 +1118,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		width: 100vw;
 	}
 }
-@media all and (max-width: 993px) {
+@media all and (max-width: 899px) {
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
@@ -1134,23 +1126,23 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		width: 100vw;
 	}
 }
-@media all and (min-width: 993px) {
-	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -16.644295302013%; }
-	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -16.644295302013%; }
+@media all and (min-width: 899px) {
+	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -19.047619047619%; }
+	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -19.047619047619%; }
 }
-@media all and (min-width: 1148px) {
+@media all and (min-width: 1054px) {
 	.expanded.box-style .alignfull {
 		inset-inline: inherit;
 		width: auto;
 	}
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignleft.wrap, .expanded .row .image-left .featured-media,
-	.expanded .alignleft, .expanded .wp-block-image .alignleft { margin-inline-start: -38.248847926267%; }
+	.expanded .alignleft, .expanded .wp-block-image .alignleft { margin-inline-start: -31.029185867896%; }
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignright.wrap, .expanded .row .image-right .featured-media,
-	.expanded .alignright, .expanded .wp-block-image .alignright { margin-inline-end: -38.248847926267%; }
+	.expanded .alignright, .expanded .wp-block-image .alignright { margin-inline-end: -31.029185867896%; }
 }
-@media all and (max-width: 1148px) {
+@media all and (max-width: 1054px) {
 	.expanded.box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;
@@ -1214,7 +1206,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		text-align: center;
 	}
 }
-@media all and (max-width: 1148px) {
+@media all and (max-width: 1054px) {
 	.box-style .breadcrumbs:first-child, .box-style .cover + .breadcrumbs { margin-top: -16px; }
 }
 /* FEATURED IMAGE */
@@ -1914,7 +1906,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 /*------------------------------*\
 	$STREAM
 \*------------------------------*/
-.post-type-archive-stream .expanded .inner { max-width: 839px; }
+.post-type-archive-stream .expanded .inner { max-width: 745px; }
 .post-type-archive-stream .post-title.wide {
 	align-items: inherit;
 	text-align: inherit;

@@ -15,12 +15,7 @@
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 }
 
-.wide, .wide .inner, .wide .wrap {
-	justify-content: center;
-/*
-	row-gap: <?php echo $half + $third; ?>px;
-*/
-}
+.wide, .wide .inner, .wide .wrap { justify-content: center; }
 
 /* COVER */
 
@@ -108,8 +103,7 @@
 		align-items: center;
 		flex-flow: row;
 	}
-	.post-title:not(.image-inline):not(.image-title).wide .title,
-	.page-title:not(.image-inline):not(.image-title).wide .title { text-align: center; }
+	.image-full.wide .title { text-align: center; }
 	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
 	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
 	.page-title.image-inline.image-left .featured-media,
