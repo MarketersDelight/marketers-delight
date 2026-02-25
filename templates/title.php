@@ -1,13 +1,5 @@
 <?php
 
-$h = 'h1';
-$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
-
-if ( $context == 'post' && ! is_singular() && ! is_404() ) {
-	$h = 'h2';
-	$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
-}
-
 if ( isset( $args['wrap'] ) )
 	echo '<div class="title-wrap">';
 

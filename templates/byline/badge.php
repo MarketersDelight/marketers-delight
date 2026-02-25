@@ -10,6 +10,4 @@
 		return;
 ?>
 
-<span class="byline-item byline-badge">
-	<span class="badge"><?php echo esc_html( $label ); ?></span>
-</span>
+<span class="byline-item byline-badge badge"><?php echo esc_html( $label ); ?></span>

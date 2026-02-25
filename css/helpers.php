@@ -10,9 +10,10 @@
 	gap: <?php echo $half; ?>px;
 }
 
-.fl-grow { flex: 1; }
-.fl-center { justify-content: center; }
+.grow { flex: 1; }
 .reverse { flex-direction: row-reverse; }
+.column { flex-direction: column; }
+.fl-center { justify-content: center; }
 
 .width-full { width: 100%; }
 
@@ -118,7 +119,7 @@
 	width: 100%;
 }
 
-.slim[class*="columns-"] { column-gap: <?php echo $half; ?>px; }
+.slim[class*="columns-"] { gap: <?php echo $half; ?>px; }
 
 .entry, .col {
 	position: relative;
@@ -165,6 +166,13 @@
 .mr-third { margin-inline-end: <?php echo $third; ?>px; }
 .mr-half { margin-inline-end: <?php echo $half; ?>px; }
 .mr-small { margin-inline-end: <?php echo $small; ?>px; }
+
+/* GAPS */
+
+.gap-half { gap: <?php echo $half; ?>px; }
+.gap-single { gap: <?php echo $single; ?>px; }
+.gap-mid { gap: <?php echo $mid; ?>px; }
+.gap-double { gap: <?php echo $double; ?>px; }
 
 /* BLOCKS */
 

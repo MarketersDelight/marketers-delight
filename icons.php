@@ -69,6 +69,10 @@ return array(
 		'unicode' => 'e906',
 		'label' => __( 'Cog', 'md' )
 	),
+	'discord' => array(
+		'unicode' => 'e912',
+		'label' => __( 'Discord', 'md' )
+	),
 	'download' => array(
 		'unicode' => 'e822',
 		'label' => __( 'Download', 'md' )
@@ -101,6 +105,10 @@ return array(
 	'forum' => array(
 		'unicode' => 'e902',
 		'label' => __( 'Forum', 'md' )
+	),
+	'game' => array(
+		'unicode' => 'e911',
+		'label' => __( 'Game', 'md' )
 	),
 	'github' => array(
 		'unicode' => 'e802',
@@ -261,6 +269,10 @@ return array(
 	'trophy' => array(
 		'unicode' => 'e824',
 		'label' => __( 'Trophy', 'md' )
+	),
+	'twitch' => array(
+		'unicode' => 'e913',
+		'label' => __( 'Twitch', 'md' )
 	),
 	'user' => array(
 		'unicode' => 'e819',

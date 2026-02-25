@@ -10,7 +10,6 @@ button, .button, .button a, input[type="submit"] {
 	flex-direction: column;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
 	line-height: 1;
-	text-align: left;
 }
 
 .has-icon, .button.has-icon {
@@ -61,9 +60,16 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	color: inherit;
 }
 
-.button.button-outline.white, .button.button-outline.white:hover {
+.button.button-outline.white,
+.button.button-outline.white:hover {
 	border-color: #fff;
 	color: #fff;
+}
+
+.button.button-outline.has-links-color,
+.button.button-outline.has-links-color:hover {
+	border-color: <?php echo $colors['site']['links']; ?>;
+	color: <?php echo $colors['site']['links']; ?>;
 }
 
 .button.button-disabled {
@@ -104,5 +110,7 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	font-family: 'md-icon';
 	transition: 0.3s;
 }
+
+.button-arrow.width-full:after { margin-left: auto; }
 
 .button.button-arrow:hover:after { transform: translateX(4px); }

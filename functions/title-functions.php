@@ -7,6 +7,15 @@
  */
 
 function md_the_title( $context = 'post', $args = array() ) {
+	$h = 'h1';
+	$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
+	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
+
+	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
+		$h = $category_posts ? 'h3' : 'h2';
+		$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
+	}
+
 	include md_template( 'title', true );
 }
 

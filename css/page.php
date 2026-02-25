@@ -52,7 +52,7 @@
 	z-index: 5;
 }
 
-.featured-media img { border-radius: 5px; }
+.featured-media img { border-radius: 8px; }
 
 .image-center .featured-media { text-align: center; }
 
@@ -155,7 +155,7 @@
 
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 5px;
+	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
 	padding: <?php echo $half; ?>px;
 }
@@ -165,7 +165,7 @@
 .pagination .page-numbers, .post-nav-links .post-page-numbers {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border: 0;
-	border-radius: 5px;
+	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	display: inline-block;
 	margin-inline-end: <?php echo $small; ?>px;

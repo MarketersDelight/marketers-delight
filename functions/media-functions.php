@@ -112,13 +112,14 @@ function md_media_position( $context = 'post' ) {
 	else {
 		$position = md_post_meta( array( 'layout', 'featured_image' ) );
 
-		if ( empty( $position ) )
-			if ( is_singular() )
-				$position = md_post_type_field( array( 'layout', 'featured_image' ), $default );
-			else {
-				$loop = md_post_type_field( array( 'loop', 'featured_image' ), $default );
+		if ( empty( $position ) ) {
+			$position = md_post_type_field( array( 'layout', 'featured_image' ), $default );
+
+			if ( ! is_singular() ) {
+				$loop = md_post_type_field( array( 'loop', 'featured_image' ), $position );
 				$position = md_term_meta( array( 'loop', 'featured_image' ), null, $loop );
 			}
+		}
 	}
 
 	return $position;

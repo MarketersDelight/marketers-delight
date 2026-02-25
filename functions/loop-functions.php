@@ -74,6 +74,7 @@ function md_loop( $args = array() ) {
 	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
 
 	$loop_classes = array( 'loop' );
+	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
 	$loops = md_loops();
 	$post_type_loop = md_post_type_field( 'loop', array() );
 	$loop = array_merge( $post_type_loop, md_module( 'loop', array() ) );
@@ -108,7 +109,8 @@ function md_loop( $args = array() ) {
 
 //	$loop = wp_parse_args( $args, $loop );
 
-	$loop_classes[] = 'loop-' . str_replace( '_', '-', $post_type );
+	$loop_classes[] = $loop_class;
+	$categories_classes[] = "category-$loop_class";
 
 	if ( $loop_type !== $post_type )
 		$loop_classes[] = "loop-{$loop_type}";

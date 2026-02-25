@@ -57,7 +57,7 @@
 
 .cta {
 	align-items: center;
-	column-gap: <?php echo $single; ?>px;
+	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 	display: flex;
 }
 
@@ -75,7 +75,7 @@
 
 .byline:empty { display: none; }
 
-.byline .badge, .byline-date a { text-decoration: none; }
+.byline .badge, .byline-date a, .byline-comments a { text-decoration: none; }
 
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
 

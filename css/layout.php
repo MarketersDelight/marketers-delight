@@ -48,7 +48,7 @@
 
 .box, .box-style .entry {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border-radius: 5px;
+	border-radius: 8px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	width: auto;
 }
@@ -68,7 +68,7 @@
 
 /* PLAIN/BORDER STYLES */
 
-:is(.plain-style, .border-style) .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
+:is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 .is-border-style .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }

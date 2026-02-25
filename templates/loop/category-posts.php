@@ -22,10 +22,11 @@ $categories_classes = join( ' ', $categories_classes );
 
 if ( empty( $categories->terms ) ) {
 	md_404();
+
 	return false;
 }
 
-echo '<div class="' . esc_attr( $categories_classes ) . '">';
+echo '<section class="' . esc_attr( $categories_classes ) . '">';
 
 foreach ( $categories->terms as $category ) {
 	$c = 1;
@@ -56,7 +57,7 @@ foreach ( $categories->terms as $category ) {
 	wp_reset_postdata();
 }
 
-echo '</div>';
+echo '</section>';
 
 if ( ! isset( $args['query'] ) )
 	md_pagination( $loop );
