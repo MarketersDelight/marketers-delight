@@ -28,7 +28,7 @@ function md_templates() {
 		add_action( 'md_hook_content', 'md_page_title' );
 
 	if ( md_has_post_content() )
-		add_action( 'md_hook_content', 'md_loop' );
+		add_action( 'md_hook_content', 'md_loop', 20 );
 
 	$hook = md_has_sidebar() ? 'md_hook_content' : 'md_hook_content_box_bottom';
 	add_action( $hook, 'md_post_nav', 50 );

@@ -69,6 +69,14 @@ return array(
 		'unicode' => 'e906',
 		'label' => __( 'Cog', 'md' )
 	),
+	'devices' => array(
+		'unicode' => 'e915',
+		'label' => __( 'Devices', 'md' )
+	),
+	'devices-mobile' => array(
+		'unicode' => 'e914',
+		'label' => __( 'Devices (mobile)', 'md' )
+	),
 	'discord' => array(
 		'unicode' => 'e912',
 		'label' => __( 'Discord', 'md' )
@@ -301,7 +309,7 @@ return array(
 	),
 	'x' => array(
 		'unicode' => 'e800',
-		'label' => __( 'X/Twitter', 'md' ),
+		'label' => __( 'X (Twitter)', 'md' ),
 		'classes' => array( '.md-icon-twitter' )
 	),
 	'youtube' => array(

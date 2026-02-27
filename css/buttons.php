@@ -111,6 +111,9 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	transition: 0.3s;
 }
 
-.button-arrow.width-full:after { margin-left: auto; }
-
 .button.button-arrow:hover:after { transform: translateX(4px); }
+
+.button-arrow.down:after { content: '\e80e'; }
+.button-arrow.down:hover:after { transform: none; }
+
+.button-arrow.width-full:after { margin-left: auto; }

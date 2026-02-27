@@ -14,7 +14,8 @@ class md_hero extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Hero', 'md' );
+		$this->name = __( 'Page Title', 'md' );
+
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,

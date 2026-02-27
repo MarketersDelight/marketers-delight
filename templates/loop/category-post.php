@@ -1,4 +1,4 @@
-<section class="entry">
+<section id="<?php echo esc_attr( $category->slug ); ?>" class="entry">
 
 	<div class="category-title">
 

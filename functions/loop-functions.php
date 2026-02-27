@@ -191,8 +191,6 @@ function md_hook_x_loop( $loop, $c ) {
  */
 
 function md_loop_post( $loop, $c ) {
-	$media = md_get_media();
-
 	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
 		$loop = md_loop_featured( $loop );
 
@@ -209,11 +207,12 @@ function md_loop_post( $loop, $c ) {
 	elseif ( empty( $loop['excerpt_more'] ) )
 		$loop['excerpt_more'] = '[...]';
 
-	$loop['featured_image'] = '';
-
-	if ( ! empty( $media['image']['id'] ) ) {
-		$loop['featured_image_id'] = $media['image']['id'];
+	if ( md_has_media( 'post' ) ) {
+		$media = md_get_media();
 		$loop['featured_image'] = $media['position'];
+
+		if ( ! empty( $media['image']['id'] ) )
+			$loop['featured_image_id'] = $media['image']['id'];
 	}
 
 	if ( ! isset( $loop['content'] ) )

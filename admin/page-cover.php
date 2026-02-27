@@ -54,7 +54,7 @@ class md_page_cover extends md_api {
 			'bg_color' => array( 'type' => 'color' ),
 			'display' => array(
 				'type' => 'checkbox',
-				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'term', 'single' )
+				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'archive', 'term', 'single', 'show_excerpt' )
 			),
 			'title_content' => array( 'type' => 'text' )
 		);
@@ -70,6 +70,7 @@ class md_page_cover extends md_api {
 	public function admin_fields() {
 		$screen = get_current_screen();
 		$is_admin = ! in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ? true : false;
+
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
 		include md_template( 'admin/page-cover', true );
 		echo '</div>';

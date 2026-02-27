@@ -50,10 +50,13 @@ function md_get_media( $context = 'post' ) {
 		if ( is_author() )
 			$option['author'] = true;
 	}
-	elseif ( get_post_thumbnail_id() ) {
+	else {
 		$option = md_post_meta( 'featured_media', array() );
-		$option['image']['id'] = get_post_thumbnail_id();
-		$option['image_width'] = md_post_meta( array( 'layout', 'featured_image_width' ) );
+
+		if ( get_post_thumbnail_id() ) {
+			$option['image']['id'] = get_post_thumbnail_id();
+			$option['image_width'] = md_post_meta( array( 'layout', 'featured_image_width' ) );
+		}
 	}
 
 	return wp_parse_args( $option, $defaults );
@@ -158,9 +161,9 @@ function md_cover( $context = 'post' ) {
 	$cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
 
 	if ( $context == 'page' ) {
-		$cover = md_post_type_field( 'page_cover' );
-
-		if ( is_category() || is_tax() ) {
+		if ( is_post_type_archive() && ! empty( $post_type['display']['archive'] ) )
+			$cover = $post_type;
+		elseif ( is_category() || is_tax() ) {
 			$cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
 
 			if ( ! empty( $post_type['display']['term'] ) )

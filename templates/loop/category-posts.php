@@ -26,7 +26,7 @@ if ( empty( $categories->terms ) ) {
 	return false;
 }
 
-echo '<section class="' . esc_attr( $categories_classes ) . '">';
+echo '<div id="loop" class="' . esc_attr( $categories_classes ) . '">';
 
 foreach ( $categories->terms as $category ) {
 	$c = 1;
@@ -57,7 +57,7 @@ foreach ( $categories->terms as $category ) {
 	wp_reset_postdata();
 }
 
-echo '</section>';
+echo '</div>';
 
 if ( ! isset( $args['query'] ) )
 	md_pagination( $loop );

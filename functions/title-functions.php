@@ -141,16 +141,19 @@ function md_description( $context = 'post', $args = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_title_description", true ) )
 		return;
 
-	$excerpt = $context == 'post' && is_singular() && has_excerpt() ? get_the_excerpt() : '';
-	$description = md_module( array( 'page_settings', 'description' ), $excerpt );
+	$description = '';
 
-	if ( $context == 'post' && is_singular() )
-		$description = md_post_meta( array( 'page_cover', 'title_content' ) );
+	if ( $context == 'post' && is_singular() ) {
+		$show_excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) );
+
+		if ( has_excerpt() && $show_excerpt )
+			$description = get_the_excerpt();
+
+		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $description );
+	}
 	elseif ( $context == 'page' )
 		if ( is_post_type_archive() || is_home() )
 			$description = md_post_type_field( 'archives_text' );
-		elseif ( is_page() || is_front_page() )
-			$description = get_the_excerpt();
 		elseif ( ( is_category() || is_tax() ) && get_queried_object() ) {
 			$category_description = category_description();
 			$description = md_term_meta( array( 'hero', 'archives_text' ), null, $category_description );

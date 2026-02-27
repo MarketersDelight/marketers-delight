@@ -36,7 +36,7 @@ class md_admin {
 		include_once 'integrations.php';
 		include_once 'dropins.php';
 		include_once 'page-settings.php';
-		include_once 'hero.php';
+		include_once 'page-title.php';
 		include_once 'typography.php';
 		include_once 'design.php';
 		include_once 'layout.php';

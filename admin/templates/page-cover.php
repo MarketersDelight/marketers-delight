@@ -48,8 +48,12 @@
 			'disable_overlay' => __( 'Remove overlay', 'md' )
 		);
 		if ( $is_admin ) {
-			$display_options['term'] = __( 'Apply to all <strong>categories</strong>', 'md' );
-			$display_options['single'] = __( 'Apply to all <strong>posts</strong>', 'md' );
+			$display_options = array(
+				'archive' => __( 'Apply to <strong>Archive</strong>', 'md' ),
+				'term' => __( 'Apply to all <strong>Categories</strong>', 'md' ),
+				'single' => __( 'Apply to all <strong>Posts</strong>', 'md' ),
+				'show_excerpt' => __( 'Show <strong>Excerpt</strong> in Post Titles', 'md' )
+			);
 		}
 		$this->fields->field( 'display', array(
 			'type' => 'checkbox',
@@ -66,14 +70,12 @@
 
 <hr class="md-sep-small" />
 
-<div class="md-field-row">
-	<?php $this->fields->field( 'title_content', array(
-		'type' => 'editor',
-		'init' => true,
-		'label' => __( 'Page Content', 'md' ),
-		'description' => __( 'Add short or longform content to show below the page title.', 'md' ),
-		'rows' => 4
-	) ); ?>
-</div>
+<?php $this->fields->field( 'title_content', array(
+	'type' => 'editor',
+	'init' => true,
+	'label' => __( 'Page Content', 'md' ),
+	'description' => __( 'Overwrite the page excerpt or display formatted content to show below the page title.', 'md' ),
+	'rows' => 4
+) ); ?>
 
 <?php endif; ?>

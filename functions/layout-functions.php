@@ -121,7 +121,7 @@ function md_post_class( $loop, $c = 0 ) {
 	if ( ! is_singular() )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
-	if ( isset( $loop['featured_image_id'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right' ) ) ) {
+	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right' ) ) ) {
 		$position = $loop['featured_image'];
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 
