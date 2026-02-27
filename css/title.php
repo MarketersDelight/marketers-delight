@@ -95,9 +95,7 @@
 /* QUERIES */
 
 @media (min-width: 800px) {
-/*
 	.wide, .wide .inner { align-items: center; }
-*/
 	.image-inline.wide .inner,
 	.image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
 	.image-title .wrap,
@@ -105,15 +103,9 @@
 		align-items: center;
 		flex-flow: row;
 	}
-	.wide .title { text-align: center; }
-	.image-title.wide .title { text-align: left; }
-	.image-inline.wide .title,
-	.image-title.wide :is(.title-wrap, .title),
-	.wide :is(.description, .lede, .subtitle) {
-		margin-inline: auto;
-		max-width: <?php echo $post_width; ?>px;
-	}
-	.image-title.wide :is(.description, .lede, .subtitle) { margin-inline: 0; }
+	.image-full.wide .title { text-align: center; }
+	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
+	.wide .description, .wide .subtitle { max-width: <?php echo $post_width; ?>px; }
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }
 }

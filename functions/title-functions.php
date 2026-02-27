@@ -88,12 +88,13 @@ function md_title( $context = 'post' ) {
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
+	$loop = md_module( 'loop' );
 	$media = md_has_media( $context );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
 
-	if ( $has_sidebar && ! $has_header_cover ) {
+	if ( ( $has_sidebar && ! $has_header_cover ) || ( isset( $loop['columns'] ) && $loop['columns'] > 2 ) ) {
 		$is_inline = true;
 		$classes[] = 'inline';
 	}

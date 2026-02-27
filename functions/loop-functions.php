@@ -207,7 +207,7 @@ function md_loop_post( $loop, $c ) {
 	elseif ( empty( $loop['excerpt_more'] ) )
 		$loop['excerpt_more'] = '[...]';
 
-	if ( md_has_media( 'post' ) ) {
+	if ( md_has_media() ) {
 		$media = md_get_media();
 		$loop['featured_image'] = $media['position'];
 
