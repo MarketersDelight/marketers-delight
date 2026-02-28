@@ -222,6 +222,7 @@ class md_loop extends md_api {
 	public function admin_fields() {
 		$screen = get_current_screen();
 		$sanitize = new md_sanitize;
+		$prefix = $this->_prefix;
 		$category_posts = $this->fields->module( 'category_posts' );
 		$featured = $this->fields->module( 'featured' );
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
@@ -290,13 +291,16 @@ class md_loop extends md_api {
 
 	public function scripts() {
 		$screen = get_current_screen();
-		$prefix = $this->_prefix();
+		$prefix = $this->_prefix;
 	?>
 		<script>
 			jQuery( document ).ready( function( $ ) {
 				$( '.md-check-val' ).on( 'change', function( e ) {
 					$( this ).parents( '.md-loop' ).toggleClass( 'has-category-posts' );
-				} );
+				});
+				$( '.md-content-val' ).on( 'change', function() {
+					$( this ).parents( '.md-loop-post-group' ).find( '.md-loop-content-options' ).toggle( this.value !== 'hide' );
+				});
 				$( '.md-num-val' ).on( 'change', function( e ) {
 					var loop = $( this ).parents( '.md-loop' );
 					if ( this.value >= 1 )

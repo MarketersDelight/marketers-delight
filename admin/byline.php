@@ -26,6 +26,7 @@ class md_byline extends md_api {
 
 	public function register() {
 		$this->name = __( 'Byline', 'md' );
+
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
@@ -60,11 +61,14 @@ class md_byline extends md_api {
 			),
 			'settings' => array(
 				'type' => 'checkbox',
-				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative' )
+				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative', 'first' )
 			),
 			'time' => array( 'type' => 'number' ),
 			'image_size' => array( 'type' => 'number' ),
-			'term' => array( 'type' => 'select', 'dynamic' => true )
+			'term' => array(
+				'type' => 'select',
+				'dynamic' => true
+			)
 		);
 
 		foreach ( md_byline_items() as $byline_id => $byline_fields )
@@ -266,11 +270,21 @@ class md_byline extends md_api {
 		foreach ( $terms as $order => $term )
 			$options[$term] = ucwords( str_replace( '_', ' ', $term ) );
 
+		$options['all'] = __( 'Show all', 'md' );
+
 		$this->fields->field( array( 'builder', $group, 'term' ), array(
 			'type' => 'select',
-			'label' => __( 'Only show from term', 'md' ),
-			'empty_label' => __( 'Show main term', 'md' ),
+			'label' => __( 'Only show', 'md' ),
+			'empty_label' => __( 'Use default category', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
 			'options' => $options
+		) );
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'options' => array(
+				'first' => __( 'Only show first category', 'md' )
+			)
 		) );
 	}
 

@@ -115,34 +115,19 @@
 	<?php foreach ( array( 'standard', 'featured' ) as $post ) :
 		$p = $post == 'featured' ? "{$post}_" : '';
 		$active = $post == 'standard' ? ' active' : '';
+		$post_content = $this->fields->module( "{$p}content" );
 	?>
 
-	<div class="md-loop-post-<?php echo esc_attr( $post ); ?> md-tab-content<?php echo $active; ?>">
+	<div class="md-loop-post-group md-loop-post-<?php echo esc_attr( $post ); ?> md-tab-content<?php echo $active; ?>">
 
 		<div class="columns-3 columns-half md-sep-small">
-
-			<div class="col">
-				<?php $this->fields->field( "{$p}featured_image", array(
-					'type' => 'select',
-					'label' => __( 'Featured Media', 'md' ),
-					'empty_label' => __( 'Use default position', 'md' ),
-					'options' => $this->fields->data->values['featured_image'],
-					'wrap_classes' => 'md-sep-micro',
-				) ); ?>
-				<?php $this->fields->field( "{$p}featured_image_size", array(
-					'type' => 'select',
-					'empty_label' => __( 'Show full size image', 'md' ),
-					'options' => array(
-						'thumbnail' => __( 'Post Thumbnail 150x150)', 'md' )
-					)
-				) ); ?>
-			</div>
 
 			<div class="col">
 				<?php $this->fields->field( "{$p}content", array(
 					'type' => 'select',
 					'label' => __( 'Post Content', 'md' ),
 					'style' => 'width: 75%',
+					'classes' => 'md-content-val',
 					'empty_label' => __( 'Show excerpt', 'md' ),
 					'options' => array(
 						'full' => __( 'Show full content', 'md' ),
@@ -151,7 +136,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-small">
+			<div class="col">
 				<?php $this->fields->field( "{$p}remove_byline", array(
 					'type' => 'select',
 					'label' => __( 'Byline', 'md' ),
@@ -171,9 +156,26 @@
 				) ); ?>
 			</div>
 
+			<div class="col">
+				<?php $this->fields->field( "{$p}featured_image", array(
+					'type' => 'select',
+					'label' => __( 'Featured Media', 'md' ),
+					'empty_label' => __( 'Use default position', 'md' ),
+					'options' => $this->fields->data->values['featured_image'],
+					'wrap_classes' => 'md-sep-micro',
+				) ); ?>
+				<?php $this->fields->field( "{$p}featured_image_size", array(
+					'type' => 'select',
+					'empty_label' => __( 'Show full size image', 'md' ),
+					'options' => array(
+						'thumbnail' => __( 'Post Thumbnail 150x150)', 'md' )
+					)
+				) ); ?>
+			</div>
+
 		</div>
 
-		<div class="columns-3 columns-half md-sep-small">
+		<div class="md-loop-content-options columns-3 columns-half md-sep-small" style="display: <?php echo $post_content !== 'hide' ? 'block' : 'none'; ?>">
 
 			<div class="col">
 				<?php $this->fields->field( "{$p}read_more", array(
