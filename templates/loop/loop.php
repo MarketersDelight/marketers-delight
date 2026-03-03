@@ -27,7 +27,7 @@ if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || 
 			include_once md_template( 'loop/404', true );
 		else
 			if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
-				echo get_the_content();
+				echo do_shortcode( get_the_content() );
 			else
 				the_content( esc_html( $loop['read_more'] ) );
 

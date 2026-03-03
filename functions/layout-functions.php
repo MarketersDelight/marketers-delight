@@ -116,7 +116,8 @@ function md_post_class( $loop, $c = 0 ) {
 		if ( isset( $loop['is_featured'] ) )
 			$classes[] = 'featured';
 	}
-	else $classes[] = 'standard';
+	else
+		$classes[] = 'standard';
 
 	if ( ! is_singular() )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
