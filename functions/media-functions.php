@@ -59,7 +59,12 @@ function md_get_media( $context = 'post' ) {
 		}
 	}
 
-	return wp_parse_args( $option, $defaults );
+	$media = wp_parse_args( $option, $defaults );
+
+	if ( ! is_singular() && $media['media_type'] == 'custom_html' )
+		$media['media_type'] = 'image';
+
+	return $media;
 }
 
 /**
@@ -70,8 +75,8 @@ function md_get_media( $context = 'post' ) {
 
 function md_has_media( $context = 'post', $args = array() ) {
 	$media = array_merge( md_get_media( $context ), $args );
+	$type = $media['media_type'];
 	$position = $media['position'];
-	$type = isset( $media['media_type'] ) ? $media['media_type'] : 'image';
 
 	if ( isset( $media['featured_image'] ) )
 		$position = $media['featured_image'];
@@ -113,15 +118,19 @@ function md_media_position( $context = 'post' ) {
 			$position = md_term_meta( array( 'featured_media', 'position' ), null, $position );
 	}
 	else {
-		$position = md_post_meta( array( 'layout', 'featured_image' ) );
+		$position = md_post_type_field( array( 'layout', 'featured_image' ), $default );
+		$inherit = md_post_type_field( array( 'loop', 'inherit', 'position' ) );
 
-		if ( empty( $position ) ) {
-			$position = md_post_type_field( array( 'layout', 'featured_image' ), $default );
+		if ( is_singular() )
+			$position = md_post_meta( array( 'layout', 'featured_image' ), null, $position );
+		else {
+			$position = md_post_type_field( array( 'loop', 'featured_image' ), $position );
 
-			if ( ! is_singular() ) {
-				$loop = md_post_type_field( array( 'loop', 'featured_image' ), $position );
-				$position = md_term_meta( array( 'loop', 'featured_image' ), null, $loop );
-			}
+			if ( is_category() || is_tax() )
+				$position = md_term_meta( array( 'loop', 'featured_image' ), null, $position );
+
+			if ( $inherit )
+				$position = md_post_meta( array( 'layout', 'featured_image' ), null, $position );
 		}
 	}
 
@@ -159,6 +168,7 @@ function md_get_caption( $id = null ) {
 function md_cover( $context = 'post' ) {
 	$post_type = md_post_type_field( 'page_cover' );
 	$cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
+	$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
 
 	if ( $context == 'page' ) {
 		if ( is_post_type_archive() && ! empty( $post_type['display']['archive'] ) )
@@ -173,7 +183,10 @@ function md_cover( $context = 'post' ) {
 	elseif ( ! empty( $post_type['display']['single'] ) )
 		$cover = array_merge( $post_type, $cover );
 
-	if ( isset( $cover['position'] ) && $cover['position'] == 'remove' )
+	if (
+		( isset( $cover['position'] ) && $cover['position'] == 'remove' ) ||
+		( ! is_singular() && ! $inherit )
+	)
 		$cover = array();
 
 	return $cover;

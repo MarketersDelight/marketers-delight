@@ -493,6 +493,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-widget-handle span { visibility: hidden; }
 
+.md-widget-edit { flex-basis: 40%; }
+
 @media all and (max-width: 775px) {
 	.md-widget-handle { display: none; }
 	.md-widget-edit { flex: 1; }

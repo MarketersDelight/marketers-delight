@@ -4,6 +4,7 @@
 		<?php $this->fields->field( 'loop', array(
 			'type' => 'select',
 			'label' => __( 'Template', 'md' ),
+			'empty_label' => __( 'Use default', 'md' ),
 			'options' => md_loops( 'options' )
 		) ); ?>
 	</div>
@@ -126,32 +127,20 @@
 				<?php $this->fields->field( "{$p}content", array(
 					'type' => 'select',
 					'label' => __( 'Post Content', 'md' ),
-					'style' => 'width: 75%',
 					'classes' => 'md-content-val',
+					'style' => 'width: 75%;',
+					'wrap_classes' => 'md-sep-micro',
 					'empty_label' => __( 'Show excerpt', 'md' ),
 					'options' => array(
 						'full' => __( 'Show full content', 'md' ),
 						'hide' => __( 'Hide content', 'md' )
 					)
 				) ); ?>
-			</div>
-
-			<div class="col">
-				<?php $this->fields->field( "{$p}remove_byline", array(
-					'type' => 'select',
-					'label' => __( 'Byline', 'md' ),
-					'empty_label' => __( 'Show full byline(s)', 'md' ),
-					'wrap_classes' => 'md-sep-micro',
-					'options' => array(
-						'before_headline' => __( 'Remove Before Headline', 'md' ),
-						'after_headline' => __( 'Remove After Headline', 'md' ),
-						'remove' => __( 'Remove all bylines', 'md' )
-					)
-				) ); ?>
-				<?php $this->fields->field( "{$p}post_footer", array(
+				<?php $this->fields->field( "{$p}inherit", array(
 					'type' => 'checkbox',
 					'options' => array(
-						'remove' => __( 'Remove Post Footer', 'md' )
+						'position' => __( 'Inherit Media Position', 'md' ),
+						'page_cover' => __( 'Inherit Page Cover', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -167,8 +156,21 @@
 				<?php $this->fields->field( "{$p}featured_image_size", array(
 					'type' => 'select',
 					'empty_label' => __( 'Show full size image', 'md' ),
+					'options' => array_combine( $image_sizes, $image_sizes )
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( "{$p}remove_byline", array(
+					'type' => 'checkbox',
+					'label' => __( 'Remove Byline(s)', 'md' ),
+					'inline' => true,
 					'options' => array(
-						'thumbnail' => __( 'Post Thumbnail 150x150)', 'md' )
+						'before_post' => __( 'Before Post', 'md' ),
+						'before_title' => __( 'Before Title', 'md' ),
+						'after_title' => __( 'After Title', 'md' ),
+						'after_post' => __( 'After Post', 'md' ),
+						'remove' => __( 'All', 'md' )
 					)
 				) ); ?>
 			</div>
@@ -268,7 +270,7 @@
 			'label' => __( 'Call to Action', 'md' ),
 			'description' => sprintf( __( 'Choose a pre-made <a href="%s">call to action</a> to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
 			'empty_label' => __( 'Select call to action...', 'md' ),
-			'options' => $cta_options
+			'options' => wp_list_pluck( $cta, 'name' )
 		) ); ?>
 	</div>
 

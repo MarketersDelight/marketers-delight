@@ -4,7 +4,7 @@ if ( isset( $args['wrap'] ) )
 	echo '<div class="title-wrap">';
 
 if ( isset( $args['byline'] ) )
-	md_byline( 'before_headline' );
+	md_byline( 'before_title' );
 
 do_action( "md_hook_before_{$context}_title" );
 
@@ -13,7 +13,7 @@ echo "<{$h} class=\"title\">" . $title . "</{$h}>";
 do_action( "md_hook_after_{$context}_title" );
 
 if ( isset( $args['byline'] ) )
-	md_byline( 'after_headline' );
+	md_byline( 'after_title' );
 
 if ( isset( $args['description'] ) )
 	md_description( $context );

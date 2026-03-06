@@ -86,7 +86,7 @@ function md_title( $context = 'post' ) {
 	$style = array();
 	$classes = array( '' );
 	$inline_images = array( 'left', 'right' );
-	$title_images = array( 'title_left', 'title_right' );
+	$title_images = array( 'title_left', 'title_right', 'title_center' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
 
 	$post_type_loop = md_post_type_field( 'loop', array() );
@@ -182,10 +182,11 @@ function md_cta( $context = 'post' ) {
 	if ( ! apply_filters( "md_has_{$context}_cta", true ) )
 		return;
 
+	$html = '';
+
 	if ( $context == 'page' ) {
 		$cta = md_module( 'page_cta' );
 		$type = md_module( array( 'page_cta', 'page_cta' ) );
-		$links = md_module( array( 'page_cta', 'links' ) );
 	}
 	else {
 		if ( ! is_singular() )
@@ -193,8 +194,20 @@ function md_cta( $context = 'post' ) {
 
 		$cta = md_post_meta( 'page_cta' );
 		$type = md_post_meta( array( 'page_cta', 'page_cta' ) );
-		$links = md_post_meta( array( 'page_cta', 'links' ) );
 	}
+
+	if ( $type == 'links' && ! empty( $cta['links'] ) ) {
+		foreach ( $cta['links'] as $group => $fields )
+			if ( ! empty( $cta['links'][$group] ) ) {
+				$cta['links'][$group]['classes'] = 'cta-link';
+				$html .= md_get_link( $cta['links'][$group] );
+			}
+	}
+	elseif ( $type == 'custom' && ! empty( $cta['custom_html'] ) )
+		$html = $cta['custom_html'];
+
+	if ( empty( $html ) )
+		return;
 
 	include md_template( 'cta', true );
 }
@@ -261,42 +274,82 @@ function md_byline_items() {
  * @since 4.0
  */
 
-function md_byline( $location = 'before_headline', $args = array() ) {
+function md_byline( $location = 'before_title', $args = array() ) {
+	if ( has_action( 'md_hook_byline_' . get_post_type() ) )
+		return do_action( 'md_hook_byline_' . get_post_type(), true );
+
+	$items = md_get_byline( $location, $args );
+
+	if ( empty( $items ) )
+		return;
+
+	$c = 1;
+	$classes = array( 'byline' );
+	$classes[] = str_replace( '_', '-', $location );
+	$html = isset( $args['html'] ) ? $args['html'] : 'div';
+	$total = count( $items );
+	$data = md_byline_items();
+
+	if ( isset( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
+	if ( $total >= 3 )
+		$classes[] = 'can-wrap';
+
+	if ( ! empty( $items['share'] ) )
+		$classes[] = 'has-share';
+
+	$classes = join( ' ', $classes );
+
 	include md_template( 'byline/byline', true );
 }
 
 /**
- * Get byline items based on a specified position.
+ * Get byline items based on location and source.
  *
- * Accepts: before_headline | after_headline | before_post | after_post
+ * Accepts: before_title | after_title | before_post | after_post
  *
  * @since 6.0
  */
 
-function md_get_byline( $position, $loop = array() ) {
-	$remove = '';
-	$byline = array();
-	$context = 'single';
+function md_get_byline( $position, $args = array() ) {
+	$byline = $items = array();
+	$loop = md_loop_options();
+
+	// Skip build if no byline on page
+
+	if ( ! empty( $loop['remove_byline'][$position] ) || ! empty( $loop['remove_byline']['remove'] ) )
+		return $byline;
+
+	// Build data from user options based on page type in WP
+
 	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
 
 	if ( is_category() || is_tax() )
 		$builder = md_term_meta( array( 'byline', 'builder' ), null, $builder );
 
-	if ( isset( $loop['remove_byline'] ) )
-		$remove = $loop['remove_byline'];
+	// Check if items set manually in $args, or show default items while options empty
 
-	if ( $position == $remove || $remove == 'remove' || ( $position == 'after_post' && isset( $loop['post_footer']['remove'] ) ) )
-		return;
+	if ( isset( $args['items'] ) )
+		$items = $args['items'];
+	elseif ( isset( $args['default'] ) && empty( $builder ) )
+		$items = $args['default'];
 
-	if ( is_home() || is_archive() || isset( $loop['is_query'] ) )
-		$context = 'archives';
+	// Finally, format data for easy usage
 
-	foreach ( $builder as $id => $fields )
-		if ( $context == $fields['builder_area'] && $position == $fields['position'] ) {
-			$type = $fields['builder_type'];
-			$byline[$type] = $fields;
-			$byline[$type]['id'] = $id;
-		}
+	if ( $items )
+		foreach ( $items as $item => $item_fields )
+			$byline[$item][] = $item_fields;
+	else {
+		$context = is_home() || is_archive() ? 'archives' : 'single';
+
+		foreach ( $builder as $id => $fields )
+			if ( $context == $fields['builder_area'] && $position == $fields['position'] ) {
+				$type = $fields['builder_type'];
+				$byline[$type][$id] = $fields;
+				$byline[$type][$id]['id'] = $id;
+			}
+	}
 
 	return $byline;
 }

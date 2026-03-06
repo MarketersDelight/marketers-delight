@@ -8,37 +8,6 @@
 class md_loop extends md_api {
 
 	/**
- 	 * Load Queries to hook areas when auto-inserted.
- 	 *
- 	 * @since 6.0
- 	 *
-
-	public function template() {
-		if ( ! is_post_type_archive() && ! is_home() )
-			return;
-
-		$queries = md_post_type_field( array( 'loop', 'query' ), array() );
-		$hooks = array(
-			'before_content_box' => 'md_hook_before_content_box',
-			'before_content' => 'md_hook_before_content',
-			'content' => 'md_hook_after_content',
-			'before_footer' => 'md_hook_before_footer'
-		);
-
-		foreach ( $queries as $query_id => $loop ) {
-			if ( ! isset( $loop['position'] ) )
-				continue;
-
-			$position = $loop['position'];
-
-			if ( empty( $hooks[$position] ) )
-				continue;
-
-			add_action( $hooks[$position], 'md_query' );
-		}
-	}
-*/
-	/**
 	 * Create meta box and terms.
 	 *
 	 * @since 5.0
@@ -46,43 +15,28 @@ class md_loop extends md_api {
 
 	public function register() {
 		$this->name = __( 'Loop', 'md' );
+		$fields = $this->fields();
+
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
 				'parent_group' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $fields
 			),
 			'term' => array(
 				'name' => $this->name,
-				'fields' => $this->fields()
+				'fields' => $fields
 			)
 		);
 	}
 
 	/**
-	 * Send admin fields to sanitize and save.
+	 * Register list of Loop admin fields to save.
 	 *
-	 * @since 5.1
+	 * @since 5.0
 	 */
 
 	public function fields() {
-		$fields = $this->loop_fields();
-/*
-		$fields['query'] = array(
-			'type' => 'group',
-			'fields' => $fields
-		);
-*/
-		return $fields;
-	}
-
-	/**
-	 * Register list of Loop admin fields to save.
-	 *
-	 * @since 6.0
-	 */
-
-	public function loop_fields() {
 		$block_ids = $cta_ids = array();
 		$sidebars = md_get_sidebars( true );
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
@@ -92,11 +46,6 @@ class md_loop extends md_api {
 		foreach ( $cta as $cta_id => $cta_fields )
 			$cta_ids[] = $cta_id;
 
-		$authors = get_users( array(
-			'fields' => array( 'ID' ),
-			'has_published_posts' => true
-		) );
-
 		$post_content = array(
 			'featured_image' => array(
 				'type' => 'select',
@@ -104,19 +53,19 @@ class md_loop extends md_api {
 			),
 			'featured_image_size' => array(
 				'type' => 'select',
-				'options' => array( 'thumbnail')
+				'options' => get_intermediate_image_sizes()
 			),
 			'content' => array(
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )
 			),
 			'remove_byline' => array(
-				'type' => 'select',
-				'options' => array( 'before_headline', 'after_headline', 'remove' )
-			),
-			'post_footer' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove' )
+				'options' => array( 'before_post', 'after_post', 'before_title', 'after_title', 'remove' )
+			),
+			'inherit' => array(
+				'type' => 'checkbox',
+				'options' => array( 'position', 'page_cover' )
 			),
 			'excerpt_length' => array( 'type' => 'number' ),
 			'excerpt_more' => array( 'type' => 'text' ),
@@ -196,11 +145,6 @@ class md_loop extends md_api {
 				'options' => array( 'large', 'medium', 'small', 'normal' )
 			),
 			'tags' => array( 'type' => 'text' ),
-			'author' => array(
-				'type' => 'select',
-				'multiple' => true,
-				'options' => wp_list_pluck( $authors, 'ID' )
-			),
 			'include_cats' => array(
 				'type' => 'checkbox',
 				'options' => $sanitize->terms()
@@ -221,16 +165,10 @@ class md_loop extends md_api {
 
 	public function admin_fields() {
 		$screen = get_current_screen();
-		$sanitize = new md_sanitize;
-		$prefix = $this->_prefix;
 		$category_posts = $this->fields->module( 'category_posts' );
 		$featured = $this->fields->module( 'featured' );
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
-		$cta_options = wp_list_pluck( $cta, 'name' );
-		$authors = get_users( array(
-			'fields' => array( 'ID', 'display_name' ),
-			'has_published_posts' => true
-		) );
+		$image_sizes = get_intermediate_image_sizes();
 	?>
 
 	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo $category_posts ? ' has-category-posts' : ''; ?>">
@@ -239,49 +177,8 @@ class md_loop extends md_api {
 			<?php include md_template( 'admin/loop', true ); ?>
 		</div>
 	</div>
-<!--
-	<div id="query" class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title">__( 'Query Loops', 'md' );</h3>
-		<div class="md-widget-item">
-			$this->fields->field( 'query', array(
-				'type' => 'group',
-				'label' => __( 'Add Queries', 'md' ),
-				'style' => 'boxes',
-				'callback' => array( $this, 'query_settings' ),
-				'callback_args' => array(
-					'authors' => wp_list_pluck( $authors, 'display_name', 'ID' )
-				)
-			) );
-		</div>
-	</div>
--->
+
 	<?php $this->scripts(); }
-
-	/**
-	 * Call admin template for repeatable fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function query_settings( $group, $field, $args ) {
-/*
-		$post_types = $cta_options = array();
-		$sanitize = new md_sanitize;
-		$category_posts = $this->fields->module( array( $group, $field, 'category_posts' ) );
-		$featured = $this->fields->module( array( $group, $field, 'featured' ) );
-		$sidebars = md_get_sidebars();
-		$post_types = get_post_types( array( 'public' => true ), 'objects' );
-		$post_types = wp_list_pluck( $post_types, 'label' );
-		$cta = md_setting( array( 'cta', 'forms' ), array() );
-		$cta_options = wp_list_pluck( $cta, 'name' );
-
-		echo '<div class="md-loop' . ( $featured >= 1 ? ' has-featured' : '' ) . ( $category_posts ? ' has-category-posts' : '' ) . '">';
-
-		include md_template( 'loop/admin/query', true );
-
-		echo '</div>';
-*/
-	}
 
 	/**
 	 * Print footer scripts to admin screens to toggle options.

@@ -32,9 +32,10 @@ class md_fields_data {
 			'featured_image' => array(
 				'title_right' => __( 'Right, title wrap', 'md' ),
 				'title_left' => __( 'Left, title wrap', 'md' ),
+				'title_center' => __( 'Center, title wrap', 'md' ),
 				'right' => __( 'Right, content wrap', 'md' ),
 				'left' => __( 'Left, content wrap', 'md' ),
-				'center' => __( 'Center, no text wrap', 'md' ),
+				'center' => __( 'Center, no content wrap', 'md' ),
 				'above_headline' => __( 'Before headline', 'md' ),
 				'below_headline' => __( 'After headline', 'md' ),
 				'remove' => __( 'Don\'t show', 'md' )

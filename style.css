@@ -965,17 +965,27 @@ summary::after {
 }
 /* QUERIES */
 @media (min-width: 800px) {
-	.wide, .wide .inner { align-items: center; }
+	.wide, .wide .inner,
+	.title-center .title-wrap {
+		align-items: center;
+		text-align: center;
+	}
 	.image-inline.wide .inner,
 	.image-title.wide .wrap { column-gap: 54px; }
-	.image-title .wrap,
-	.image-inline.wide, .image-inline.inline .wrap, .image-inline.wide .inner {
+	.title-left .wrap, .title-right .wrap,
+	.image-inline.inline .wrap,
+	.image-inline.wide, .image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
 	}
-	.image-full.wide .title { text-align: center; }
-	.image-inline.wide .title, .image-title.wide .title, .image-title.wide .title-wrap,
-	.wide .description, .wide .subtitle { max-width: 756px; }
+	.title-left.wide, .title-left.wide .inner,
+	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
+	.image-inline.wide .title,
+	.image-title.wide :is(.title-wrap, .title),
+	.wide :is(.description, .subtitle) {
+		margin-inline: auto;
+		max-width: 756px;
+	}
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }
 }
@@ -1880,8 +1890,8 @@ body {
 	color: #fff;
 	text-wrap: balance;
 }
-.header + .content > .cover { padding-block-start: 108px; }
-.header + .expanded .content-wrap:first-child { padding-block-start: 72px; }
+.header + .content > .cover,
+body:not(.header-cover) .expanded { padding-block-start: 108px; }
 .home .content > .post-title { border-block-end: 1px solid #334459; }
 .home .content > .post-title .cta .button {
 	font-weight: 700;
@@ -1912,14 +1922,8 @@ body {
 /* GAMES ARCHIVE */
 .post-type-archive-games .content-wrap { max-width: 100%; }
 .post-type-archive-games .page-title {
-	align-items: inherit;
 	margin-inline: auto;
 	max-width: 1224px;
-	text-align: center;
-}
-.post-type-archive-games .description {
-	margin-inline: auto;
-	text-align: left;
 }
 /* BUTTONS */
 .button.button-outline.discord {
@@ -2033,7 +2037,6 @@ a.tag { text-decoration: none; }
 .gloss-box {
 	align-items: center;
 	justify-content: space-evenly;
-	max-width: 100%;
 }
 /* SOCIAL */
 .social {

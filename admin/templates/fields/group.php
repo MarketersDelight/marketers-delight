@@ -29,19 +29,17 @@ $callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null
 
 $classes[] = "md-group-$style";
 $classes = join( ' ', $classes );
-
-if ( isset( $args['label'] ) ) : ?>
+?>
 
 <div class="md-group-head md-clear">
 
-	<?php $this->label( $id, $args ); ?>
+	<?php if ( isset( $args['label'] ) )
+		$this->label( $id, $args ); ?>
 
 	<?php if ( ! isset( $args['sort'] ) && ! isset( $args['hide_button'] ) )
 		$this->clone_button( $group_id ); ?>
 
 </div>
-
-<?php endif; ?>
 
 <div id="md_group_<?php echo esc_attr( "{$this->_id}_$group_id" ); ?>" class="<?php echo esc_attr( $classes ); ?>">
 

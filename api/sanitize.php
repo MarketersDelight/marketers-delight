@@ -201,7 +201,11 @@ class md_sanitize {
 	 */
 
 	public function featured_image_position( $input ) {
-		return in_array( $input, array( 'right', 'left', 'title_right', 'title_left', 'center', 'below_headline', 'above_headline', 'remove' ) ) ? $input : '';
+		return in_array( $input, array(
+			'right', 'left', 'center', 'remove',
+			'title_right', 'title_left', 'title_center',
+			'below_headline', 'above_headline'
+		) ) ? $input : '';
 	}
 
 	/**

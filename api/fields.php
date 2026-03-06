@@ -556,8 +556,8 @@ class md_fields {
 			'label' => __( 'Position', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
-				'before_headline' => __( 'Before Headline', 'md' ),
-				'after_headline' =>  __( 'After Headline', 'md' ),
+				'before_title' => __( 'Before Title', 'md' ),
+				'after_title' =>  __( 'After Title', 'md' ),
 				'before_post' =>  __( 'Before Post', 'md' ),
 				'after_post' =>  __( 'After Post', 'md' )
 			)

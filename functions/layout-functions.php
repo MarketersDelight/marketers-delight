@@ -122,7 +122,7 @@ function md_post_class( $loop, $c = 0 ) {
 	if ( ! is_singular() )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
-	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right' ) ) ) {
+	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ) ) ) {
 		$position = $loop['featured_image'];
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 
@@ -130,7 +130,7 @@ function md_post_class( $loop, $c = 0 ) {
 			$classes[] = 'image-inline';
 		elseif ( in_array( $position, array( 'center', 'above_headline', 'below_headline' ) ) )
 			$classes[] = 'image-full';
-		elseif ( in_array( $position, array( 'title_left', 'title_right' ) ) )
+		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ) ) )
 			$classes[] = 'image-title';
 	}
 

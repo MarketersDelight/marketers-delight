@@ -31,6 +31,26 @@ function md_filter_loop_styles() {
 }
 
 /**
+ * Return loop data with context awareness and user-set
+ * options blended with global post type level data.
+ *
+ * @since 6.0
+ */
+
+function md_loop_options() {
+	$loop = array();
+	$post_type = md_post_type_field( 'loop', array() );
+	$single = md_module( 'loop', array() );
+
+	if ( is_singular() || is_404() )
+		$loop = $single;
+	else
+		$loop = array_merge( $post_type, $single );
+
+	return apply_filters( 'md_filter_set_loop', $loop );
+}
+
+/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -76,13 +96,7 @@ function md_loop( $args = array() ) {
 	$loop_classes = array( 'loop' );
 	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
 	$loops = md_loops();
-	$post_type_loop = md_post_type_field( 'loop', array() );
-	$loop = array_merge( $post_type_loop, md_module( 'loop', array() ) );
-
-	if ( is_singular() || is_404() )
-		$loop = md_module( 'loop', array() );
-
-	$loop = apply_filters( 'md_filter_set_loop', $loop );
+	$loop = md_loop_options();
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
 
 	if ( isset( $loops[$loop_type]['data'] ) )
