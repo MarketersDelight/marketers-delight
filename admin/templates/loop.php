@@ -121,7 +121,7 @@
 
 	<div class="md-loop-post-group md-loop-post-<?php echo esc_attr( $post ); ?> md-tab-content<?php echo $active; ?>">
 
-		<div class="columns-3 columns-half md-sep-small">
+		<div class="columns-3 columns-half md-sep-micro">
 
 			<div class="col">
 				<?php $this->fields->field( "{$p}content", array(

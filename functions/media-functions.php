@@ -109,29 +109,42 @@ function md_has_media( $context = 'post', $args = array() ) {
 function md_media_position( $context = 'post' ) {
 	$default = 'right';
 
-	if ( is_author() ) // 6.0 - author is hardcoded until dedicated author admin page is added
-		$position = $default;
-	elseif ( $context == 'page' ) {
-		$position = md_post_type_field( array( 'featured_media', 'position' ), $default );
+	if ( is_author() )
+		return $default;
+
+	$position = $default;
+	$single_key = array( 'layout', 'featured_image' );
+
+	if ( $context === 'page' ) {
+		$key = array( 'featured_media', 'position' );
+		$position = md_post_type_field( $key, $default );
 
 		if ( is_category() || is_tax() )
-			$position = md_term_meta( array( 'featured_media', 'position' ), null, $position );
+			$position = md_term_meta( $key, null, $position );
+	}
+	elseif ( is_singular() ) {
+		$position = md_post_type_field( $single_key, $default );
+		$position = md_post_meta( $single_key, null, $position );
 	}
 	else {
-		$position = md_post_type_field( array( 'layout', 'featured_image' ), $default );
-		$inherit = md_post_type_field( array( 'loop', 'inherit', 'position' ) );
+		$loop_key = array( 'loop', 'featured_image' );
+		$inherit_key = array( 'loop', 'inherit', 'position' );
 
-		if ( is_singular() )
-			$position = md_post_meta( array( 'layout', 'featured_image' ), null, $position );
-		else {
-			$position = md_post_type_field( array( 'loop', 'featured_image' ), $position );
+		$position = md_post_type_field( $single_key, $default );
+		$position = md_post_type_field( $loop_key, $position );
 
-			if ( is_category() || is_tax() )
-				$position = md_term_meta( array( 'loop', 'featured_image' ), null, $position );
+		$is_term = is_category() || is_tax();
 
-			if ( $inherit )
-				$position = md_post_meta( array( 'layout', 'featured_image' ), null, $position );
-		}
+		if ( $is_term )
+			$position = md_term_meta( $loop_key, null, $position );
+
+		$inherit = md_post_type_field( $inherit_key );
+
+		if ( $is_term )
+			$inherit = md_term_meta( $inherit_key, null, $inherit );
+
+		if ( $inherit )
+			$position = md_post_meta( $single_key, null, $position );
 	}
 
 	return $position;
@@ -166,25 +179,36 @@ function md_get_caption( $id = null ) {
  */
 
 function md_cover( $context = 'post' ) {
-	$post_type = md_post_type_field( 'page_cover' );
-	$cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
+	$page_type = null;
+	$single_cover = array();
+	$post_type_cover = md_post_type_field( 'page_cover' );
 	$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
 
-	if ( $context == 'page' ) {
-		if ( is_post_type_archive() && ! empty( $post_type['display']['archive'] ) )
-			$cover = $post_type;
-		elseif ( is_category() || is_tax() ) {
-			$cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
-
-			if ( ! empty( $post_type['display']['term'] ) )
-				$cover = array_merge( $post_type, $cover );
-		}
+	if ( $context === 'post' ) {
+		$single_cover = md_post_meta( 'page_cover', null, array() );
+		$page_type = 'single';
 	}
-	elseif ( ! empty( $post_type['display']['single'] ) )
-		$cover = array_merge( $post_type, $cover );
+	else {
+		if ( is_post_type_archive() )
+			$page_type = 'archive';
+		elseif ( is_category() || is_tax() ) {
+			$single_cover = md_term_meta( 'page_cover', null, array() );
+			$page_type = 'term';
+		}
+		else
+			$single_cover = md_post_meta( 'page_cover', null, array() );
+	}
+
+	$cover = array_filter( $single_cover );
+
+	if ( $page_type && ! empty( $post_type_cover['display'][$page_type] ) )
+		$cover = array_merge( $post_type_cover, $cover );
+
+	if ( is_category() || is_tax() )
+		$inherit = md_term_meta( array( 'loop', 'inherit', 'page_cover' ), null, $inherit );
 
 	if (
-		( isset( $cover['position'] ) && $cover['position'] == 'remove' ) ||
+		( isset( $cover['position'] ) && $cover['position'] === 'remove' ) ||
 		( ! is_singular() && ! $inherit )
 	)
 		$cover = array();
