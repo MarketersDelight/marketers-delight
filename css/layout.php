@@ -30,8 +30,6 @@
 
 /* LOOP */
 
-.loop.row:not(:last-child) { margin-block-end: <?php echo $double; ?>px; }
-
 .row > .entry { margin-block-end: <?php echo $mid; ?>px; }
 
 .content-wrap:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
@@ -66,11 +64,18 @@
 
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
-/* PLAIN/BORDER STYLES */
+/* PLAIN + BORDER STYLES */
 
+.plain-style .page-title,
+.plain-style .loop.row:not(:last-child),
+.plain-style .row > .entry { margin-block-end: <?php echo $triple; ?>px; }
+
+.border-style .loop.row:not(:last-child),
+.border-style .row > .entry,
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+
 .is-border-style .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
 
 .border-style .page-title:not(.cover) {

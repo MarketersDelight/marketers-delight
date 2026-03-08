@@ -115,9 +115,14 @@
 	.image-inline.wide .title,
 	.image-title.wide :is(.title-wrap, .title),
 	.wide :is(.description, .subtitle) {
+/*
 		margin-inline: auto;
+*/
 		max-width: <?php echo $post_width; ?>px;
 	}
+
+	.image-inline.wide { justify-content: center; }
+
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }
 }

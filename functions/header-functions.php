@@ -9,11 +9,16 @@
 function md_header_classes() {
 	$classes = array();
 	$classes[] = 'header';
+	$has = count( array_filter( array(
+		md_has_menu(),
+		md_has_logo(),
+		md_has_header_elements()
+	) ) );
 
-	if ( ! md_has_menu() || ! md_has_logo() || ! md_has_header_elements() )
-		$classes[] = 'simple';
-	else
+	if ( $has > 1 )
 		$classes[] = md_setting( array( 'header', 'layout' ), 'left' );
+	else
+		$classes[] = 'simple';
 
 	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
 		$classes[] = 'sticky';

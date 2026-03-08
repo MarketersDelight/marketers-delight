@@ -184,7 +184,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-save { text-align: center; }
 
-.md .submit, .md-builder-share h3 { margin-top: 0; }
+.md .submit, .md-builder-share h4 {
+	line-height: 42px;
+	margin: 0;
+}
 
 .md .md-builder-share .md-widget { border: 0; }
 
@@ -194,7 +197,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-width: 0 1px 1px;
 }
 
-.md-builder-share .md-widget-title { color: #fff; }
+.md-builder-share .md-widget-title, .md-builder-share .md-widget-title h4 { color: #fff; }
 
 .md .button .dashicons {
 	position: relative;
@@ -484,16 +487,22 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-widget-handle {
-	display: block;
-	flex: 1;
-	padding: 5px;
+	position: absolute;
+		inset: 0;
+	height: 100%;
+	width: 100%;
+	z-index: 1;
 }
 
-.md-meta-box .md-widget-handle { padding: 15px; }
+.md-widget-bar .md-widget-edit,
+.md-widget-bar .md-widget-controls {
+	position: relative;
+	z-index: 5;
+}
 
 .md-widget-handle span { visibility: hidden; }
 
-.md-widget-edit { flex-basis: 40%; }
+.md-widget-edit { flex-basis: 50%; }
 
 @media all and (max-width: 775px) {
 	.md-widget-handle { display: none; }
@@ -505,6 +514,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	display: flex;
 	font-size: 22px;
 	gap: 10px;
+	margin-left: auto;
 }
 
 .md-widget.md-toggle:not(:last-child) { margin-bottom: 20px; }
@@ -538,6 +548,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-widget-title {
 	font-size: 1.3em;
+	line-height: 1.5em;
 	margin-bottom: 0;
 }
 
@@ -852,6 +863,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-builder-group:not(:last-child) { margin-bottom: 20px; }
+
+.md-builder-group .md-widget-bar { padding-block: 9px; }
 
 .md-builder-elements {
 	align-items: center;
@@ -1185,10 +1198,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-upload:not(:last-child) { margin-bottom: 15px; }
 
 .md-upload-canvas {
+	align-items: center;
 	background-color: #f1f1f1;
 	cursor: pointer;
-	display: block;
+	display: flex;
 	height: 100px;
+	justify-content: center;
 	overflow-y: auto;
 	position: relative;
 	text-align: center;
