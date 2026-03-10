@@ -41,7 +41,6 @@ class md_page_cover extends md_api {
 	 */
 
 	public function fields() {
-		$sanitize = $this->_data( 'sanitize' );
 		$fields = array(
 			'photo' => array(
 				'type' => 'upload',

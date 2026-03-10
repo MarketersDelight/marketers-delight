@@ -7,7 +7,7 @@ $clone = '{clone}';
 $group_id = $args['field'];
 $sort = "{$group_id}_sort";
 $elements = isset( $args['elements'] ) ? $args['elements'] : array();
-$style = isset( $args['style'] ) ? $args['style'] : 'list';
+$style = isset( $args['style'] ) ? esc_attr( $args['style'] ) : 'list';
 
 if ( isset( $args['sort'] ) ) {
 	$classes = array( 'md-sort' );

@@ -1,7 +1,7 @@
 <?php
 
 $style = array();
-$layout = isset( $args['layout'] ) ? $args['layout'] : '';
+$layout = isset( $args['layout'] ) ? esc_attr( $args['layout'] ) : '';
 $columns = isset( $args['columns'] ) ? round( ( 100 / $args['columns'] ) - 2 ) : '';
 
 if ( ! empty( $columns ) ) {

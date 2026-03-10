@@ -81,8 +81,13 @@ class md_upgrade {
 
 	public function admin_notice() {
 		global $pagenow;
-		if ( $pagenow == 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] == $this->slug )
-			return;
+
+		if ( $pagenow === 'admin.php' && isset( $_GET['page'] ) ) {
+			$page = sanitize_key( wp_unslash( $_GET['page'] ) );
+
+			if ( $page === $this->slug )
+				return;
+		}
 	?>
 		<div id="md_update_47_notice" class="notice notice-error">
 			<p><?php echo __( 'Marketers Delight needs to upgrade your database for full compatibility with the newest version.', 'md' ); ?></p>

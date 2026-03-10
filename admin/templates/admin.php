@@ -65,7 +65,7 @@
 			?>
 
 			<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo esc_attr( $child['name'] ); ?>">
-				<?php echo isset( $child['tab_name'] ) ? $child['tab_name'] : $child['name']; ?>
+				<?php echo esc_html( isset( $child['tab_name'] ) ? $child['tab_name'] : $child['name'] ); ?>
 			</a>
 
 			<?php endforeach; ?>

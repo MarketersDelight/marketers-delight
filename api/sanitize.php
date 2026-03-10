@@ -213,6 +213,19 @@ class md_sanitize {
 	}
 
 	/**
+	 * Run through an array down to sanitize a text field.
+	 *
+	 * @since 6.0
+	 */
+
+	public function recursive( $value ) {
+		if ( is_array( $value ) )
+			return array_map( array( $this, 'recursive' ), $value );
+
+		return sanitize_text_field( $value );
+	}	
+
+	/**
 	 * Return a save ready list of WP menus.
 	 *
 	 * @since 6.0

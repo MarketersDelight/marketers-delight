@@ -37,7 +37,6 @@ class md_page_cta extends md_api {
 	 */
 
 	public function fields() {
-		$sanitize = $this->_data( 'sanitize' );
 		$fields = array(
 			'page_cta' => array(
 				'type' => 'select',

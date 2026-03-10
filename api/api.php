@@ -17,6 +17,8 @@ class md_api {
 	public $fields;
 	public $name;
 	public $register;
+	protected static $sanitize;
+	protected static $design;
 
 	/**
 	 * Fires class extension actions, filters, and set core properties.
@@ -120,7 +122,9 @@ class md_api {
 		// Register components and fields
 
 		$callback = 'admin_fields';
+
 		$this->register = $this->register();
+
 		add_filter( 'md_register', array( $this, '_register' ) );
 
 		// Admin pages
@@ -145,8 +149,10 @@ class md_api {
 				elseif ( isset( $this->register['admin_page']['child_of'] ) ) {
 					$groups = $this->register['admin_page']['child_of'];
 					$groups = ! is_array( $groups ) ? (array) $groups : $groups;
+
 					foreach ( $groups as $group ) {
 						$admin_hooks[] = "md_admin_page_{$group}_fields";
+
 						add_filter( "md_admin_page_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
 					}
 				}
@@ -171,8 +177,10 @@ class md_api {
 			if ( isset( $this->register['meta_box']['child_of'] ) ) {
 				$groups = $this->register['meta_box']['child_of'];
 				$groups = ! is_array( $groups ) ? (array) $groups : $groups;
+
 				foreach ( $groups as $group ) {
 					$meta_hooks[] = "md_post_meta_{$group}_fields";
+
 					add_filter( "md_post_meta_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
 				}
 			} else $meta_hooks = array( "{$this->_id}_meta_box" );
@@ -199,9 +207,9 @@ class md_api {
 						add_action( "md_term_meta_{$group}_fields", array( $this, $term_callback ), $position );
 					}
 				}
-				else {
-					$taxonomy = isset( $_GET['taxonomy'] ) ? $_GET['taxonomy'] : '';
-					$term = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
+				elseif ( isset( $_GET['taxonomy'] ) && isset( $_GET['tag_ID'] ) ) {
+					$taxonomy = sanitize_key( $_GET['taxonomy'] );
+					$term = intval( $_GET['tag_ID'] );
 
 					add_action( "md_{$taxonomy}_{$term}", array( $this, $term_callback ), $position );
 				}
@@ -228,7 +236,7 @@ class md_api {
 		$prefix = "{$this->_option}_{$this->_clean_id}";
 
 		if ( isset( $_GET['page'] ) ) {
-			$page = esc_attr( $_GET['page'] );
+			$page = sanitize_key( $_GET['page'] );
 			$page_types = apply_filters( 'md_admin_groups', array() );
 
 			if ( ! empty( $page_types[$page] ) ) {
@@ -242,6 +250,32 @@ class md_api {
 		}
 
 		return $prefix;
+	}
+
+	/**
+	 * Get API sanitize class instance.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function sanitize() {
+		if ( ! isset( self::$sanitize ) )
+			self::$sanitize = new md_sanitize;
+
+		return self::$sanitize;
+	}
+
+	/**
+	 * Get API design class instance.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function design() {
+		if ( ! isset( self::$design ) )
+			self::$design = new md_design;
+
+		return self::$design;
 	}
 
 	/**
@@ -278,35 +312,15 @@ class md_api {
 	}
 
 	/**
-	 * Get API design data a little easier.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function _data( $key = null ) {
-		$design = new md_design;
-		$sanitize = new md_sanitize;
-		$data = array(
-			'values' => $design->values(),
-			'defaults' => $design->defaults(),
-			'sanitize' => $sanitize,
-			'menus' => $sanitize->menus()
-		);
-
-		if ( isset( $key ) )
-			$data = $data[$key];
-
-		return $data;
-	}
-
-	/**
 	 * Register custom components to be loaded throughout
 	 * the WordPress interface.
 	 *
 	 * @since 5.0
 	 */
 
-	public function register() { return array(); }
+	public function register() {
+		return array();
+	}
 
 	/**
 	 * Add class extensions field data to shared array.
@@ -317,18 +331,21 @@ class md_api {
 	// Groups of settings pages like Post Types (Blog, Stream, Docs, etc.)
 	public function _admin_groups( $settings ) {
 		$settings[$this->_id] = true;
+
 		return $settings;
 	}
 
 	// List of admin fields inside a parent group
 	public function _admin_fields( $settings ) {
 		$settings[$this->_clean_id] = $this->fields();
+
 		return $settings;
 	}
 
 	// List of children admin settings pages with name
 	public function _admin_child_fields( $settings ) {
 		$settings[$this->_clean_id] = $this->name;
+
 		return $settings;
 	}
 
@@ -364,8 +381,8 @@ class md_api {
 
 	public function _admin_scripts() {
 		$screen = get_current_screen();
-		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
 
 		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_scripts' ) )
 			$this->meta_scripts();

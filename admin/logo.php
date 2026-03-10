@@ -61,8 +61,9 @@ class md_logo extends md_api {
 	 */
 
 	public function admin_page() {
-		$values = $this->_data( 'values' );
-		$defaults = $this->_data( 'defaults' );
+		$values = $this->design()->values();
+		$defaults = $this->design()->defaults();;
+
 		include md_template( 'admin/logo', true );
 	}
 

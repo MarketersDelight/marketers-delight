@@ -14,7 +14,7 @@ class md_header extends md_api {
 	 */
 
 	public function register() {
-		$menus = $this->_data( 'menus' );
+		$menus = $this->sanitize()->menus();
 		$links = $this->fields->data->links( array( 'sort' => 'save' ) );
 		$builder = array_merge( array(
 			'builder_type' => array( 'type' => 'text' ),
@@ -68,9 +68,9 @@ class md_header extends md_api {
 	 */
 
 	public function admin_page() {
-		$values = $this->_data( 'values' );
+		$values = $this->design()->values();
 		$header = $values['header'];
-		$defaults = $this->_data( 'defaults' );
+		$defaults = $this->design()->defaults();
 
 		include md_template( 'admin/header', true );
 	}

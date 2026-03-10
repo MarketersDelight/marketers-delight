@@ -50,7 +50,7 @@
 					</p>
 				<?php endif; ?>
 				<p><code><?php echo esc_attr( "md-icon-$icon" ); ?></code></p>
-				<p><?php echo sprintf( __( 'Unicode: %s', 'md' ), '<code>\\' . $fields['unicode'] . '</code>' ); ?></p>
+				<p><?php echo sprintf( __( 'Unicode: %s', 'md' ), '<code>\\' . esc_html( $fields['unicode'] ) . '</code>' ); ?></p>
 				<?php if ( ! in_array( $icon, $default_icons_ids ) ) : ?>
 					<p>
 						<?php $this->fields->field( array( 'data', $icon, 'unicode' ), array(

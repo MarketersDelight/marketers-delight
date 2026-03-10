@@ -17,15 +17,6 @@
 				'label' => __( 'Logo', 'md' )
 			) ); ?>
 		</div>
-<!--
-		<div class="col md-sep-small">
-			<?php /* $this->fields->field( 'logo_alt', array(
-				'type' => 'upload',
-				'upload_type' => 'media',
-				'label' => __( 'Logo (dark theme)', 'md' )
-			) );*/ ?>
-		</div>
--->
 	</div>
 
 	<div class="columns-2 columns-single">

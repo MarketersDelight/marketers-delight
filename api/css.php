@@ -215,7 +215,7 @@ class md_css {
 				foreach ( $fields['classes'] as $selector )
 					$selectors .= ",{$selector}:before";
 
-			echo '.md-icon-' . $icon . ":before{$selectors}{content:'\\" . $fields['unicode'] . '\'}';
+			echo '.md-icon-' . esc_attr( $icon ) . ":before{$selectors}{content:'\\" . esc_attr( $fields['unicode'] ) . '\'}';
 		}
 	}
 

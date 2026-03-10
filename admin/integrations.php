@@ -126,11 +126,9 @@ class md_integrations extends md_api {
 		$error = isset( $args['error'] ) ? true : '';
 
 		foreach ( $integrations as $id => $fields ) {
-
 			$icon_path = isset( $fields['icon_path'] ) ? $fields['icon_path'] : MD_URL . 'admin/images';
 			$icon_name = isset( $fields['icon_name'] ) ? $fields['icon_name'] : str_replace( '_', '-', "{$id}.png" );
 			$icon_url = "$icon_path/$icon_name";
-
 			$api_key_label = ! empty( $fields['labels']['api_key'] ) ? $fields['labels']['api_key'] : __( 'API Key', 'md' );
 			$account_url_label = ! empty( $fields['labels']['account_url'] ) ? $fields['labels']['account_url'] : __( 'Account URL', 'md' );
 
@@ -145,7 +143,9 @@ class md_integrations extends md_api {
 	 */
 
 	public function connect() {
-		parse_str( stripslashes( $_POST['form'] ), $form );
+		wp_parse_str( wp_unslash( $_POST['form'] ), $form );
+
+		$form = $this->sanitize()->recursive( $form );
 
 		if ( ! wp_verify_nonce( $form['_wpnonce'], $form['option_page'] . '-options' ) )
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );

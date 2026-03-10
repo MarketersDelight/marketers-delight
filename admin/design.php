@@ -9,8 +9,10 @@
 
 class md_colors extends md_api {
 
-	public $data;
-	public $colors;
+	private $data;
+	private $colors;
+	private $values;
+	private $defaults;
 
 	/**
 	 * Actions, filters, and properties.
@@ -19,7 +21,8 @@ class md_colors extends md_api {
 	 */
 
 	public function actions() {
-		$this->data = $this->_data();
+		$this->values = $this->design()->values();
+		$this->defaults = $this->design()->defaults();
 		$this->colors = array(
 			'site' => array(
 				'bg_color' => array( 'type' => 'color' ),
@@ -81,8 +84,8 @@ class md_colors extends md_api {
 
 		foreach ( $this->colors as $group => $options ) {
 			foreach ( $options as $field => $fields ) {
-				if ( ! empty( $this->data['defaults']['colors'][$group][$field] ) ) {
-					$default_value = $this->data['defaults']['colors'][$group][$field];
+				if ( ! empty( $this->defaults['colors'][$group][$field] ) ) {
+					$default_value = $this->defaults['colors'][$group][$field];
 
 					if ( is_array( $default_value ) )
 						foreach ( $default_value as $sub => $sub_value )
@@ -179,8 +182,8 @@ class md_colors extends md_api {
 
 	public function admin_page() {
 		$options = $this->options();
-		$defaults = $this->data['defaults'];
-		$values = $this->data['values'];
+		$defaults = $this->defaults;
+		$values = $this->values;
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$layout_spacing = $line_height + round( $line_height / 2 );
 
