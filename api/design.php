@@ -121,12 +121,12 @@ class md_design {
 		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
 
 		$post_width = ! empty( $cw ) ? $cw : round( 21 * $line_height );
-		$layout_spacing = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
-		$content_width = $post_width + $layout_spacing;
+		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
+		$content_width = $post_width + $gutter;
 		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
 
-		$site_width = $content_width + $sidebar_width + $line_height; #add $line_height to account for gap
+		$site_width = $content_width + $sidebar_width + ( $line_height * 1.5 ); #add $line_height to account for gap
 		$site_width_full = $site_width + ( $site_width / 2 );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 

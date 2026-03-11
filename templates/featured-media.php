@@ -2,7 +2,7 @@
 
 do_action( "md_hook_before_{$context}_featured_media" );
 
-echo '<div class="featured-media"' . $style . '>';
+echo '<div class="' . esc_attr( $classes ) . '"' . $style . '>';
 
 do_action( "md_hook_{$context}_featured_media_top" );
 

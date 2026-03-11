@@ -73,15 +73,15 @@ class md_sanitize {
 	 * @since 4.5
 	 */
 
-	public function upload( $input, $upload_type ) {
-		if ( $upload_type == 'media' ) {
-			if ( ! empty( $input['id'] ) )
-				$save['id'] = esc_attr( $input['id'] );
-			if ( ! empty( $input['url'] ) )
-				$save['url'] = esc_url( $input['url'] );
-			if ( ! empty( $save ) )
-				return $save;
-		}
+	public function upload( $input, $fields ) {
+		if ( $fields['upload_type'] !== 'media' )
+			return;
+
+		if ( ! empty( $input['id'] ) )
+			$save['id'] = esc_attr( $input['id'] );
+
+		if ( ! empty( $save ) )
+			return $save;
 	}
 
 	/**
@@ -223,7 +223,7 @@ class md_sanitize {
 			return array_map( array( $this, 'recursive' ), $value );
 
 		return sanitize_text_field( $value );
-	}	
+	}
 
 	/**
 	 * Return a save ready list of WP menus.
@@ -362,8 +362,10 @@ class md_sanitize {
 			$field = $this->select( $val, $sub_options, $dynamic );
 
 		if ( $type == 'upload' ) {
-			$upload_type = isset( $fields['upload_type'] ) ? $fields['upload_type'] : '';
-			$field = $this->upload( $val, $upload_type );
+			if ( empty( $fields['upload_type'] ) )
+				$fields['upload_type'] = 'media';
+
+			$field = $this->upload( $val, $fields );
 		}
 
 		if ( $type == 'color' ) {
@@ -393,17 +395,21 @@ class md_sanitize {
 
 		foreach ( $input as $key => $input_fields ) {
 			$save[$key] = array();
+
 			if ( ! in_array( $key, $whitelist ) ) {
 				if ( ! empty( $data[$key]['fields'] ) )
 					foreach ( $data[$key]['fields'] as $group => $group_fields ) {
 						if ( isset( $group_fields['type'] ) && in_array( $group_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group] ) ) {
 							unset( $input[$key][$group]['{clone}'] );
+
 							foreach ( $input[$key][$group] as $clone_group => $clone_fields ) {
 								if ( isset( $group_fields['group_key_lowercase'] ) )
 									$clone_group = strtolower( $clone_group );
+
 								foreach ( $clone_fields as $clone_key => $clone_val )
 									if ( ! empty( $clone_val ) || $clone_val == '0' ) {
 										$data_fields = $data[$key]['fields'][$group]['fields'][$clone_key];
+
 										if ( $data_fields['type'] == 'group' ) {
 											foreach ( $clone_val as $subgroup_key => $subgroup_val ) {
 												$save[$key][$group][$clone_group][$clone_key][$subgroup_key] = $this->validate_field( $subgroup_val, $data[$key]['fields'][$group]['fields'][$clone_key]['fields'][$subgroup_key] );
@@ -414,11 +420,16 @@ class md_sanitize {
 											$save[$key][$group][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data_fields );
 									}
 							}
+
 							if ( $group_fields['type'] == 'builder' ) {
 								$builder_data = $builder_elements = $builder_locations = array();
+
 								foreach ( $save[$key][$group] as $builder_id => $builder_fields ) {
 									$builder_type = esc_attr( $builder_fields['builder_type'] );
-									$builder_data[$builder_fields['builder_area']][] = array( 'type' => $builder_type, 'id' => $builder_id );
+									$builder_data[$builder_fields['builder_area']][] = array(
+										'type' => $builder_type,
+										'id' => $builder_id
+									);
 									$builder_elements[$builder_type][] = $builder_id;
 									$builder_locations[$builder_id] = $builder_fields['builder_area'];
 									$save[$key]["{$group}_data"] = serialize( $builder_data );
@@ -433,9 +444,11 @@ class md_sanitize {
 							foreach ( $group_fields as $option_name => $option_fields ) {
 								if ( isset( $option_fields['type'] ) && in_array( $option_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group][$option_name] ) ) {
 									unset( $input[$key][$group][$option_name]['{clone}'] );
+
 									foreach ( $input[$key][$group][$option_name] as $clone_group => $clone_fields ) {
 										if ( isset( $group_fields['group_key_lowercase'] ) )
 											$clone_group = strtolower( $clone_group );
+
 										foreach ( $clone_fields as $clone_key => $clone_val ) {
 											if ( ! empty( $clone_val ) || $clone_val == '0' )
 												$save[$key][$group][$option_name][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data[$key]['fields'][$group][$option_name]['fields'][$clone_key] );

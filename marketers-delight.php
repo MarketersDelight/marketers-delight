@@ -341,8 +341,8 @@ final class marketers_delight {
 			'name' => __( 'Main Sidebar', 'md' ),
 			'description' => __( 'The default sidebar used around your site.', 'md' ),
 			'id' => 'sidebar-main',
-			'before_widget' => '<section id="%1$s" class="widget %2$s">',
-			'after_widget' => '</section>',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
 			'before_title' => '<h3 class="widget-title">',
 			'after_title' => '</h3>'
 		) );
@@ -352,8 +352,8 @@ final class marketers_delight {
 			register_sidebar( array(
 				'name' => esc_html( $name ),
 				'id' => $id,
-				'before_widget' => '<section id="%1$s" class="widget %2$s">',
-				'after_widget' => '</section>',
+				'before_widget' => '<div id="%1$s" class="widget %2$s">',
+				'after_widget' => '</div>',
 				'before_title' => '<h3 class="widget-title">',
 				'after_title' => '</h3>'
 			) );
@@ -365,8 +365,8 @@ final class marketers_delight {
 				'name' => __( "Footer $w", 'md' ),
 				'description' => sprintf( __( 'You can create up to 3 columns of content in your site\'s footer. This is column %s.', 'md' ), $w ),
 				'id' => "md-footer-col-$w",
-				'before_widget' => '<section id="%1$s" class="widget %2$s">',
-				'after_widget' => '</section>',
+				'before_widget' => '<div id="%1$s" class="widget %2$s">',
+				'after_widget' => '</div>',
 				'before_title' => '<h3 class="widget-title">',
 				'after_title' => '</h3>'
 			) );

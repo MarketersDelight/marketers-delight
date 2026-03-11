@@ -65,13 +65,14 @@
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
 /* PLAIN + BORDER STYLES */
-
+/*
 .plain-style .page-title,
 .plain-style .loop.row:not(:last-child),
 .plain-style .row > .entry { margin-block-end: <?php echo $triple; ?>px; }
 
 .border-style .loop.row:not(:last-child),
 .border-style .row > .entry,
+*/
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
@@ -120,7 +121,7 @@
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact > .inner {
 		display: grid;
-		gap: <?php echo $single; ?>px;
+		gap: <?php echo $mid; ?>px;
 		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
 	.compact.left > .inner { direction: rtl; }

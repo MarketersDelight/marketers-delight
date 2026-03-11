@@ -379,7 +379,7 @@ class md_fields {
 	 */
 
 	public function upload( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/uploader', true );
+		include md_template( 'admin/fields/upload', true );
 	}
 
 	/**

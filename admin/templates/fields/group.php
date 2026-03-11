@@ -76,7 +76,9 @@ $classes = join( ' ', $classes );
 				<span class="md-delete dashicons dashicons-no" title="<?php echo __( 'Delete', 'md' ); ?>"></span>
 				<?php endif; ?>
 				<span class="md-reorder dashicons dashicons-menu" title="<?php echo __( 'Reorder', 'md' ); ?>"></span>
+				<?php if ( $style == 'boxes' ) : ?>
 				<span class="md-toggle-arrow" title="<?php echo __( 'Click to toggle', 'md' ); ?>"></span>
+				<?php endif; ?>
 			</div>
 
 		</div>

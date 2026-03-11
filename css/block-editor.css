@@ -1,10 +1,10 @@
 /*------------------------------*\
 	$COLORS
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #AE2525; }
-div.editor-styles-wrapper .has-primary-color { color: #AE2525; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #2E2E2E; }
-div.editor-styles-wrapper .has-secondary-color { color: #2E2E2E; }
+div.editor-styles-wrapper .has-primary-background-color { background-color: #7C2A8A; }
+div.editor-styles-wrapper .has-primary-color { color: #7C2A8A; }
+div.editor-styles-wrapper .has-secondary-background-color { background-color: #1A1F29; }
+div.editor-styles-wrapper .has-secondary-color { color: #1A1F29; }
 div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
 div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
 div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
@@ -13,21 +13,21 @@ div.editor-styles-wrapper .has-accent-background-color { background-color: #FFFB
 div.editor-styles-wrapper .has-accent-color { color: #FFFBCC; }
 div.editor-styles-wrapper .has-white-background-color { background-color: #FFFFFF; }
 div.editor-styles-wrapper .has-white-color { color: #FFFFFF; }
-div.editor-styles-wrapper .has-text-background-color { background-color: #1E1E1E; }
-div.editor-styles-wrapper .has-text-color { color: #1E1E1E; }
-div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
-div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #AE2525; }
-div.editor-styles-wrapper .has-links-color { color: #AE2525; }
-div.editor-styles-wrapper .has-button-background-color { background-color: #22A340; }
-div.editor-styles-wrapper .has-button-color { color: #22A340; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
-div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
+div.editor-styles-wrapper .has-text-background-color { background-color: #9CABB9; }
+div.editor-styles-wrapper .has-text-color { color: #9CABB9; }
+div.editor-styles-wrapper .has-text-sec-background-color { background-color: #D0B9B0; }
+div.editor-styles-wrapper .has-text-sec-color { color: #D0B9B0; }
+div.editor-styles-wrapper .has-links-background-color { background-color: #9FC5FF; }
+div.editor-styles-wrapper .has-links-color { color: #9FC5FF; }
+div.editor-styles-wrapper .has-button-background-color { background-color: #7C2A8A; }
+div.editor-styles-wrapper .has-button-color { color: #7C2A8A; }
+div.editor-styles-wrapper .has-button-sec-background-color { background-color: #9FC5FF; }
+div.editor-styles-wrapper .has-button-sec-color { color: #9FC5FF; }
 /*------------------------------*\
 	$TYPOGRAPHY
 \*------------------------------*/
 div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #AE2525;
+	color: #9FC5FF;
 	text-decoration: underline;
 }
 div.editor-styles-wrapper a:hover { text-decoration: none; }
@@ -35,7 +35,7 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('https://md:8890/wp-content/themes/marketers-delight/md.woff2') format('woff');
+	src: url('https://uo.kolakube.com/wp-content/themes/marketers-delight/md.woff2') format('woff');
 	font-style: normal;
 	font-weight: 400;
 }
@@ -53,14 +53,14 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 }
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 /* WRAPS */
-.wp-block { max-width: 651px; }
+.wp-block { max-width: 756px; }
 @media all and (min-width: 900px) {
-	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: 744px; }
+	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: 864px; }
 }
 /* MAIN TYPE */
 div.editor-styles-wrapper {
-		background-color: #FFFFFF;
-		color: #1E1E1E;
+		background-color: #061217;
+		color: #9CABB9;
 }
 #editor .editor-post-title__block .editor-post-title__input,
 div.editor-styles-wrapper h1,
@@ -68,19 +68,19 @@ div.editor-styles-wrapper h2,
 div.editor-styles-wrapper h3,
 div.editor-styles-wrapper h4,
 div.editor-styles-wrapper h5,
-div.editor-styles-wrapper h6 { color: #1E1E1E; }
+div.editor-styles-wrapper h6 { color: #9CABB9; }
 div.editor-styles-wrapper h2:not(:first-child),
 div.editor-styles-wrapper h3:not(:first-child),
 div.editor-styles-wrapper h4:not(:first-child),
-div.editor-styles-wrapper h5:not(:first-child) { margin-top: 47px; }
-div.editor-styles-wrapper ol, div.editor-styles-wrapper ul { padding-left: 62px; }
-div.editor-styles-wrapper li { margin-bottom: 10px; }
+div.editor-styles-wrapper h5:not(:first-child) { margin-top: 54px; }
+div.editor-styles-wrapper ol, div.editor-styles-wrapper ul { padding-left: 72px; }
+div.editor-styles-wrapper li { margin-bottom: 12px; }
 div.editor-styles-wrapper p {
-	margin-bottom: 31px;
+	margin-bottom: 36px;
 	margin-top: 0;
 }
 div.editor-styles-wrapper p:last-child, div.editor-styles-wrapper p:empty { margin-bottom: 0; }
-.wp-block.wp-block-heading { margin-bottom: 16px; }
+.wp-block.wp-block-heading { margin-bottom: 18px; }
 .editor-block-list__layout .editor-block-list__block:not([data-align="full"]) {
 	padding-left: 0;
 	padding-right: 0
@@ -96,68 +96,75 @@ div.editor-styles-wrapper p.mid-title,
 div.editor-styles-wrapper p.micro-title,
 div.editor-styles-wrapper p.small-title { margin-top: 0; }
 .editor-styles-wrapper .intro {
-	font-size: 23px;
-	line-height: 34px;
+	font-size: 26px;
+	line-height: 40px;
 }
 div.editor-styles-wrapper,
 div.editor-styles-wrapper p,
 .editor-post-title__block .editor-post-title__input {
-	font-size: 19px;
-	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-		line-height: 31px;
+	font-size: 22px;
+	font-family: Josefin Sans;
+	 font-weight: 400;	line-height: 36px;
 }
 div.editor-styles-wrapper .has-huge-font-size,
 div.editor-styles-wrapper .has-large-font-size,
 div.editor-styles-wrapper .has-medium-font-size,
 div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
 div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
-	font-size: 65px;
-	line-height: 86px;
+	font-size: 74px;
+	line-height: 98px;
 }
 div.editor-styles-wrapper .huge-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 43px;
-	line-height: 56px;
+	font-size: 49px;
+	line-height: 64px;
 }
 .editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 37px;
-	line-height: 50px;
+	font-size: 42px;
+	line-height: 57px;
 }
 div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
-	font-size: 30px;
-	line-height: 42px;
+	font-size: 34px;
+	line-height: 48px;
 }
 div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
-	font-size: 26px;
-	line-height: 36px;
+	font-size: 29px;
+	line-height: 41px;
 }
 div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
-	font-size: 22px;
-	line-height: 34px;
+	font-size: 25px;
+	line-height: 32px;
 }
 div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
-	font-size: 19px;
+	font-size: 22px;
 	line-height: 29px;
 }
 div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-weight: bold;
+	font-family: Spectral SC;
+	font-weight: 500;
 }
 @media all and (max-width: 900px) {
 	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { }
@@ -169,11 +176,11 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
 @media all and (max-width: 700px) {
-	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 46px; line-height: 56px; }
-	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 37px; line-height: 48px; }
-	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 31px; line-height: 42px; }
-	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 26px; line-height: 36px; }
-	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 22px; line-height: 32px; }
+	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 54px; line-height: 65px; }
+	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 43px; line-height: 56px; }
+	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 37px; line-height: 50px; }
+	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 30px; line-height: 42px; }
+	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 26px; line-height: 38px; }
 	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { }
 	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
 }
@@ -181,13 +188,13 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 .editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,
 .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit,
 .editor-block-list__layout > .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit {
-	margin-bottom: 31px;
-	margin-top: 31px;
+	margin-bottom: 36px;
+	margin-top: 36px;
 }
 .block-library-list .editor-rich-text__tinymce,
 .block-library-list .editor-rich-text__tinymce ol,
 .block-library-list .editor-rich-text__tinymce ul,
-.editor-styles-wrapper ul.md-list { margin-left: 31px; }
+.editor-styles-wrapper ul.md-list { margin-left: 36px; }
 /* ALIGNMENTS */
 .text-center, .aligncenter.wrap-small { text-align: center; }
 .alignvertical {
@@ -199,9 +206,9 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* FULL WIDTH */
 @media all and (min-width: 900px) {
 	.md-editor-full .wp-block.editor-post-title__block {
-		max-width: 1148px;
-		padding-left: 93px;
-		padding-right: 93px;
+		max-width: 1242px;
+		padding-left: 108px;
+		padding-right: 108px;
 	}
 	.md-editor-full .editor-post-title,
 	.md-editor-full .editor-post-title__block,
@@ -214,7 +221,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 }
 /* POST STYLES */
 .wp-block-image figcaption {
-	color: #777777;
+	color: #D0B9B0;
 	font-style: italic;
 	font-size: 0.9em;
 	margin-bottom: 0;
@@ -258,7 +265,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	$BUTTONS
 \*------------------------------*/
 .md-button, .md-submit {
-	background-color: #22A340;
+	background-color: #7C2A8A;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -268,7 +275,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 	font-family: inherit;
 	display: inline-block;
 	font-style: normal;
-	padding: 16px;
+	padding: 18px;
 	position: relative;
 	text-align: center;
 	z-index: 10;
@@ -278,14 +285,14 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* SIZES */
 .md-button.md-button-large {
 	font-size: 1.4em;
-	padding: 31px 47px;
+	padding: 36px 54px;
 }
 /* OUTLINE */
 .md-submit.md-submit-outline {
 	background-color: transparent;
-	border: 3px solid #22A340;
+	border: 3px solid #7C2A8A;
 	border-radius: 5px;
-	color: #22A340;
+	color: #7C2A8A;
 }
 /* ARROW */
 .md-button.md-button-arrow:after {
