@@ -397,4 +397,18 @@ class md_api {
 			$this->user_meta_scripts();
 	}
 
+	// Inherited methods
+	public function construct() {}
+	public function includes() {}
+	public function actions() {}
+	public function init() {}
+	public function fields() {}
+	public function admin_enqueue() {}
+	public function meta_enqueue() {}
+	public function term_enqueue() {}
+	public function user_meta_enqueue() {}
+	public function admin_scripts() {}
+	public function meta_scripts() {}
+	public function term_scripts() {}
+	public function user_meta_scripts() {}
 }

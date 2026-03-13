@@ -57,17 +57,8 @@ class md_js {
 	 */
 
 	public function compile( $delete = null ) {
-		$inline = md_setting( array( 'settings', 'js', 'inline' ) );
-
-		foreach ( $this->files as $file => $fields ) {
-			if ( empty( $inline ) ) {
-				if ( isset( $delete ) )
-					delete_option( "marketers_delight_{$file}_js" );
-				$this->generate( $file );
-			}
-			else
-				$this->save( $file );
-		}
+		foreach ( $this->files as $file => $fields )
+			$this->generate( $file );
 
 		wp_cache_flush();
 	}

@@ -54,7 +54,7 @@ class md_requests {
 	 */
 
 	public function get_api( $api_params ) {
-		$update_data = array();
+		$update_data = new stdClass;
 	 	$license_input = $this->license();
 		$response = wp_remote_post( $license_input['remote_api_url'], array(
 			'timeout' => 15,
