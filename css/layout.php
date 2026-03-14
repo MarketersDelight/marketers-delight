@@ -65,14 +65,7 @@
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 
 /* PLAIN + BORDER STYLES */
-/*
-.plain-style .page-title,
-.plain-style .loop.row:not(:last-child),
-.plain-style .row > .entry { margin-block-end: <?php echo $triple; ?>px; }
 
-.border-style .loop.row:not(:last-child),
-.border-style .row > .entry,
-*/
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
@@ -94,6 +87,12 @@
 	border-block-start: 0;
 	padding-block-start: 0;
 }
+
+/* SLIM */
+
+.slim.columns .post-title { gap: <?php echo $small; ?>px; }
+
+.columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
 /* QUERIES */
 

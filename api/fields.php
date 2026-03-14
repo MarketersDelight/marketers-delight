@@ -93,7 +93,7 @@ class md_fields {
 			$option = isset( $setting[$clean_id][$field] ) ? $setting[$clean_id][$field] : '';
 		}
 
-		if ( isset( $args['label'] ) && $args['type'] !== 'group' )
+		if ( isset( $args['label'] ) && $args['type'] !== 'group' && ! isset( $args['multiple'] ) )
 			$this->label( $id, $args );
 
 		$wrap_classes[] = 'md-field-' . esc_attr( $args['type'] );
@@ -223,9 +223,6 @@ class md_fields {
 		if ( $type == 'url' )
 			$this->url( $name, $id, $option, $args );
 
-		if ( $type == 'hidden' )
-			$this->hidden( $name, $id, $option, $args );
-
 		if ( $type == 'checkbox' )
 			$this->checkbox( $name, $id, $option, $args );
 
@@ -244,7 +241,7 @@ class md_fields {
 		if ( $type == 'editor' )
 			$this->editor( $name, $id, $option, $args );
 
-		if ( $type == 'upload' )
+		if ( in_array( $type, array( 'media', 'upload' ) ) )
 			$this->upload( $name, $id, $option, $args );
 
 		if ( $type == 'group' )
@@ -255,10 +252,6 @@ class md_fields {
 
 		if ( $type == 'terms' )
 			$this->terms( $name, $id, $option, $args );
-
-		#deprecated 4.8.4
-		if ( $type == 'media' )
-			$this->media( $name, $id, $option, $args );
 	}
 
 	/**
@@ -493,6 +486,7 @@ class md_fields {
 		$design = new md_design;
 		$menus = $sanitize->menus();
 		$values = $design->values();
+
 		include md_template( 'admin/fields/builder-menu', true );
 	}
 

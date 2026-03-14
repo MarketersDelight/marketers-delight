@@ -14,9 +14,7 @@
 	flex-direction: column;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
 }
-/*
-.wide, .wide .inner, .wide .wrap { justify-content: center; }
-*/
+
 /* COVER */
 
 .header-cover.full-cover .content .page-title,
@@ -41,8 +39,8 @@
 
 /* TITLE, LEDE, SUBTITLE, DESC, CTA */
 
-.post-title .title, .post-title .lede, .post-title .subtitle,
-.page-title .title, .page-title .lede, .page-title .subtitle { margin-block-end: 0; }
+.post-title :is(.title, .lede, .subtitle),
+.page-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
 .lede {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -108,19 +106,15 @@
 		align-items: center;
 		flex-flow: row;
 	}
-
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
-
 	.image-inline.wide .title,
 	.image-title.wide :is(.title-wrap, .title),
 	.wide :is(.description, .subtitle) {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-
 	.image-inline.wide { justify-content: center; }
-
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }
 }

@@ -36,7 +36,8 @@ button, .button, .button a, input[type="submit"] {
 /* BUTTONS */
 
 button, .button, a.button, .button a, input[type="submit"], .format .button {
-	background-color: <?php echo $colors['site']['button']; ?>;
+	appearance: none;
+    background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -46,9 +47,9 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-family: inherit;
 	font-style: normal;
 	padding: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
+    text-align: initial;
 	text-decoration: none;
 	transition: 0.3s;
-	-webkit-appearance: none;
 }
 
 button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
@@ -78,6 +79,10 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 }
 
 /* STYLES */
+
+.button.pill { border-radius: 50px; }
+
+.button.width-full { justify-content: center; }
 
 .button.button-sec, a.button.button-sec, .button.button-sec a {
 	background-color: <?php echo $colors['site']['button-sec']; ?>;

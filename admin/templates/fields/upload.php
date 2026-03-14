@@ -4,6 +4,7 @@ $type = isset( $args['upload_type'] ) ? $args['upload_type'] : 'media';
 
 if ( $type == 'media' ) :
 	$upload_id = ! empty( $option['id'] ) ? esc_attr( $option['id'] ) : '';
+	$upload_ids = ! empty( $option['ids'] ) ? $option['ids'] : array();
 	$upload_url = wp_get_attachment_image_url( $upload_id );
 	$multiple = isset( $args['multiple'] ) ? ' data-md-multiple="true"' : '';
 	$classes = array( 'md-upload', "md-upload-{$type}" );
@@ -21,11 +22,15 @@ if ( $type == 'media' ) :
 
 <div class="<?php echo esc_attr( $classes ); ?>">
 
-	<?php if ( $multiple ) :
-		$upload_ids = array_filter( explode( ',', $upload_id ) );
-	?>
+	<?php if ( $multiple ) : ?>
 
-	<p><input type="button" class="md-upload-add button" data-md-multiple="true" value="<?php echo __( 'Add Image(s)', 'md' ); ?>" /></p>
+    <div class="md-group-head md-clear">
+
+        <?php $this->label( $id, $args ); ?>
+
+        <input type="button" class="md-upload-add button" data-md-multiple="true" value="<?php echo __( 'Add image(s)', 'md' ); ?>" />
+
+    </div>
 
 	<div class="md-upload-preview-image">
 		<?php foreach ( $upload_ids as $image_id )

@@ -74,14 +74,17 @@ class md_sanitize {
 	 */
 
 	public function upload( $input, $fields ) {
-		if ( $fields['upload_type'] !== 'media' )
+		if ( $fields['upload_type'] !== 'media' || empty( $input['id'] ) )
 			return;
 
-		if ( ! empty( $input['id'] ) )
-			$save['id'] = esc_attr( $input['id'] );
+        if ( isset( $fields['multiple'] ) ) {
+            $ids = explode( ',', $input['id'] );
+            $save['ids'] = array_map( 'intval', $ids );
+        }
 
-		if ( ! empty( $save ) )
-			return $save;
+        $save['id'] = sanitize_text_field( $input['id'] );
+
+        return $save;
 	}
 
 	/**
@@ -273,7 +276,7 @@ class md_sanitize {
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );
 		elseif ( empty( $save ) )
-			delete_user_meta( $term_id, $option );
+			delete_user_meta( $user_id, $option );
 	}
 
 	/**

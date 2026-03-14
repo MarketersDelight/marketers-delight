@@ -9,9 +9,10 @@
  */
 
 function md_featured_media( $context = 'post', $args = array() ) {
+    $args = array_merge( $args, md_loop_options() );
 	$media = md_has_media( $context, $args );
 
-	if ( empty( $media ) )
+    if ( empty( $media ) )
 		return;
 
 	$permalink = '';
@@ -24,7 +25,9 @@ function md_featured_media( $context = 'post', $args = array() ) {
 
 	if ( isset( $args['size'] ) )
 		$size = $args['size'];
-	elseif ( is_author() )
+    elseif ( isset( $args['featured_image_size'] ) )
+        $size = $args['featured_image_size'];
+    elseif ( is_author() )
 		$size = 250;
 
 	$classes = array( 'featured-media', 'media-' . str_replace( '_', '-', $type ) );
