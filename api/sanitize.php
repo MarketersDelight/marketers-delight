@@ -13,6 +13,8 @@ class md_sanitize {
 	 * @since 4.8
 	 */
 
+	private $whitelist = array( 'version', 'integrations', 'popups_data', 'license', 'custom_icons' );
+
 	public $_font_weights = array(
 		'normal' => 'Regular',
 		'bold' => 'Bold',
@@ -28,6 +30,29 @@ class md_sanitize {
 	);
 
 	/**
+	 * Check if a value is found, including a text string 0.
+	 *
+	 * @since 6.0
+	 */
+
+	public function has_value( $value ) {
+		return ! empty( $value ) || $value == '0';
+	}
+
+	/**
+	 * Run through an array down to sanitize a text field.
+	 *
+	 * @since 6.0
+	 */
+
+	public function recursive( $value ) {
+		if ( is_array( $value ) )
+			return array_map( array( $this, 'recursive' ), $value );
+
+		return sanitize_text_field( $value );
+	}
+
+	/**
 	 * A list of accepted title sizes from h1-h6 selectors.
 	 *
 	 * @since 6.0
@@ -35,6 +60,36 @@ class md_sanitize {
 
 	public function h_ids() {
 		return array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'huge' );
+	}
+
+	/**
+	 * Checks Font Weight controls.
+	 *
+	 * @since 4.8
+	 */
+
+	public function font_weights( $input ) {
+		$weights = array();
+
+		foreach ( $this->_font_weights as $weight => $label )
+			$weights[] = $weight;
+
+		return in_array( $input, $weights ) ? $input : '';
+	}
+
+	/**
+	 * Checks Featured Image position settings.
+	 *
+	 * @since 4.5
+	 * @moved 4.5.4
+	 */
+
+	public function featured_image_position( $input ) {
+		return in_array( $input, array(
+			'right', 'left', 'center', 'remove',
+			'title_right', 'title_left', 'title_center',
+			'below_headline', 'above_headline'
+		) ) ? $input : '';
 	}
 
 	/**
@@ -55,54 +110,6 @@ class md_sanitize {
 
 	public function url( $input ) {
 		return wp_kses_bad_protocol( $input, array( 'http', 'https' ) );
-	}
-
-	/**
-	 * Ensure we are saving an email address.
-	 *
-	 * @since 4.5
-	 */
-
-	public function email( $input ) {
-		return sanitize_email( $input );
-	}
-
-	/**
-	 * Escape image URL for uploaded media.
-	 *
-	 * @since 4.5
-	 */
-
-	public function upload( $input, $fields ) {
-		if ( $fields['upload_type'] !== 'media' || empty( $input['id'] ) )
-			return;
-
-        if ( isset( $fields['multiple'] ) ) {
-            $ids = explode( ',', $input['id'] );
-            $save['ids'] = array_map( 'intval', $ids );
-        }
-
-        $save['id'] = sanitize_text_field( $input['id'] );
-
-        return $save;
-	}
-
-	/**
-	 * Properly save color values to color fields as hex or RGBA.
-	 *
-	 * @since 4.7
-	 */
-
-	public function color( $input ) {
-		if ( strpos( $input, 'rgba' ) === false )
-			if ( strlen( $input ) == 7 ) // HEX
-				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
-			elseif ( strlen( $input ) == 9 ) // HEXA
-				return preg_match( '/^#[a-f0-9]{8}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
-
-		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
-
-		return "rgba({$r}, {$g}, {$b}, {$a})"; // RGBA
 	}
 
 	/**
@@ -158,44 +165,41 @@ class md_sanitize {
 	}
 
 	/**
-	 * Checks Font Weight controls.
+	 * Properly save color values to color fields as hex or RGBA.
 	 *
-	 * @since 4.8
+	 * @since 4.7
 	 */
 
-	public function font_weights( $input ) {
-		$weights = array();
+	public function color( $input ) {
+		if ( strpos( $input, 'rgba' ) === false )
+			if ( strlen( $input ) == 7 ) // HEX
+				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+			elseif ( strlen( $input ) == 9 ) // HEXA
+				return preg_match( '/^#[a-f0-9]{8}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
 
-		foreach ( $this->_font_weights as $weight => $label )
-			$weights[] = $weight;
+		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
 
-		return in_array( $input, $weights ) ? $input : '';
+		return "rgba({$r}, {$g}, {$b}, {$a})"; // RGBA
 	}
 
 	/**
-	 * Checks Content Box Customizer settings.
-	 *
-	 * @since 4.0
-	 * @moved 4.5.4
-	 */
-
-	public function content_box( $input ) {
-		return in_array( $input, array( 'content_sidebar', 'sidebar_content' ) ) ? $input : '';
-	}
-
-	/**
-	 * Checks Featured Image position settings.
+	 * Escape image URL for uploaded media.
 	 *
 	 * @since 4.5
-	 * @moved 4.5.4
 	 */
 
-	public function featured_image_position( $input ) {
-		return in_array( $input, array(
-			'right', 'left', 'center', 'remove',
-			'title_right', 'title_left', 'title_center',
-			'below_headline', 'above_headline'
-		) ) ? $input : '';
+	public function upload( $input, $fields ) {
+		if ( $fields['upload_type'] !== 'media' || empty( $input['id'] ) )
+			return;
+
+        if ( isset( $fields['multiple'] ) ) {
+            $ids = explode( ',', $input['id'] );
+            $save['ids'] = array_map( 'intval', $ids );
+        }
+
+        $save['id'] = sanitize_text_field( $input['id'] );
+
+        return $save;
 	}
 
 	/**
@@ -213,19 +217,6 @@ class md_sanitize {
 				$cats[] = esc_attr( $term->term_id );
 
 		return $cats;
-	}
-
-	/**
-	 * Run through an array down to sanitize a text field.
-	 *
-	 * @since 6.0
-	 */
-
-	public function recursive( $value ) {
-		if ( is_array( $value ) )
-			return array_map( array( $this, 'recursive' ), $value );
-
-		return sanitize_text_field( $value );
 	}
 
 	/**
@@ -256,6 +247,7 @@ class md_sanitize {
 
 	public function admin_save( $input ) {
 		$save = $this->validate( 'admin_pages', $input );
+
 		return array_merge( md_setting(), $save );
 	}
 
@@ -334,7 +326,7 @@ class md_sanitize {
 	 * @since 5.0
 	 */
 
-	public function validate_field( $val, $fields ) {
+	private function validate_field( $val, $fields ) {
 		$field = '';
 		$type = isset( $fields['type'] ) ? $fields['type'] : '';
 		$sub_options = isset( $fields['options'] ) ? $fields['options'] : array();
@@ -382,11 +374,74 @@ class md_sanitize {
 	}
 
 	/**
-	 * The ugliest function in MD (make this recursive), but one thorough enough
-	 * to properly validate and sanitize multiple levels of nested options.
+	 * Validate clone-style groups used by group/builder fields.
 	 *
-	 * Sets up data and feeds option value to validate_field() method and then
-	 * builds full options array for save.
+	 * @since 6.0
+	 */
+
+	private function clone_groups( $groups, $input, $lowercase = false, $nested = false ) {
+		$save = array();
+
+		foreach ( $groups as $group => $clone_fields ) {
+			if ( $lowercase )
+				$group = strtolower( $group );
+
+			foreach ( $clone_fields as $key => $val ) {
+				if ( ! $this->has_value( $val ) || empty( $input[$key] ) )
+					continue;
+
+				$input_fields = $input[$key];
+
+				if ( $nested && isset( $input_fields['type'] ) && $input_fields['type'] == 'group' && is_array( $val ) ) {
+					foreach ( $val as $subgroup_key => $subgroup_val ) {
+						if ( empty( $input_fields['fields'][$subgroup_key] ) )
+							continue;
+
+						$save[$group][$key][$subgroup_key] = $this->validate_field( $subgroup_val, $input_fields['fields'][$subgroup_key] );
+					}
+				}
+				else
+					$save[$group][$key] = $this->validate_field( $val, $input_fields );
+			}
+		}
+
+		return $save;
+	}
+
+	/**
+	 * Build the required builder index arrays from saved builder rows.
+	 *
+	 * @since 6.0
+	 */
+
+	private function builder( $input ) {
+		$data = $elements = $locations = array();
+
+		foreach ( $input as $id => $fields ) {
+			if ( empty( $fields['builder_type'] ) || ! isset( $fields['builder_area'] ) )
+				continue;
+
+			$builder_type = esc_attr( $fields['builder_type'] );
+			$builder_area = $fields['builder_area'];
+			$data[$builder_area][] = array(
+				'type' => $builder_type,
+				'id' => $id
+			);
+
+			$elements[$builder_type][] = $id;
+			$locations[$id] = $builder_area;
+		}
+
+		return array(
+			'data' => serialize( $data ),
+			'elements' => serialize( $elements ),
+			'locations' => serialize( $locations )
+		);
+	}
+
+	/**
+	 * A big function to save all fields type data safely and expectedley.
+	 * Handles single level fields, clone/group, and unique builder fields.
 	 *
 	 * @since 4.7
 	 */
@@ -394,75 +449,39 @@ class md_sanitize {
 	public function validate( $settings, $input ) {
 		$save = array();
 		$data = md_register( $settings );
-		$whitelist = array( 'version', 'integrations', 'popups_data', 'license', 'custom_icons' );
 
 		foreach ( $input as $key => $input_fields ) {
 			$save[$key] = array();
 
-			if ( ! in_array( $key, $whitelist ) ) {
+			if ( ! in_array( $key, $this->whitelist ) ) {
 				if ( ! empty( $data[$key]['fields'] ) )
 					foreach ( $data[$key]['fields'] as $group => $group_fields ) {
 						if ( isset( $group_fields['type'] ) && in_array( $group_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group] ) ) {
 							unset( $input[$key][$group]['{clone}'] );
 
-							foreach ( $input[$key][$group] as $clone_group => $clone_fields ) {
-								if ( isset( $group_fields['group_key_lowercase'] ) )
-									$clone_group = strtolower( $clone_group );
-
-								foreach ( $clone_fields as $clone_key => $clone_val )
-									if ( ! empty( $clone_val ) || $clone_val == '0' ) {
-										$data_fields = $data[$key]['fields'][$group]['fields'][$clone_key];
-
-										if ( $data_fields['type'] == 'group' ) {
-											foreach ( $clone_val as $subgroup_key => $subgroup_val ) {
-												$save[$key][$group][$clone_group][$clone_key][$subgroup_key] = $this->validate_field( $subgroup_val, $data[$key]['fields'][$group]['fields'][$clone_key]['fields'][$subgroup_key] );
-
-											}
-										}
-										else
-											$save[$key][$group][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data_fields );
-									}
-							}
+							$save[$key][$group] = $this->clone_groups( $input[$key][$group], $data[$key]['fields'][$group]['fields'], isset( $group_fields['group_key_lowercase'] ), true );
 
 							if ( $group_fields['type'] == 'builder' ) {
-								$builder_data = $builder_elements = $builder_locations = array();
-
-								foreach ( $save[$key][$group] as $builder_id => $builder_fields ) {
-									$builder_type = esc_attr( $builder_fields['builder_type'] );
-									$builder_data[$builder_fields['builder_area']][] = array(
-										'type' => $builder_type,
-										'id' => $builder_id
-									);
-									$builder_elements[$builder_type][] = $builder_id;
-									$builder_locations[$builder_id] = $builder_fields['builder_area'];
-									$save[$key]["{$group}_data"] = serialize( $builder_data );
-									$save[$key]["{$group}_elements"] = serialize( $builder_elements );
-									$save[$key]["{$group}_locations"] = serialize( $builder_locations );
-								}
+								$builder = $this->builder( $save[$key][$group] );
+								$save[$key]["{$group}_data"] = $builder['data'];
+								$save[$key]["{$group}_elements"] = $builder['elements'];
+								$save[$key]["{$group}_locations"] = $builder['locations'];
 							}
 						}
-						elseif ( isset( $group_fields['type'] ) && ( ! empty( $input[$key][$group] ) || ( ! empty( $input[$key][$group] ) && $input[$key][$group] == '0' ) ) )
+						elseif ( isset( $group_fields['type'] ) && $this->has_value( $input[$key][$group] ) )
 							$save[$key][$group] = $this->validate_field( $input[$key][$group], $group_fields );
 						else {
 							foreach ( $group_fields as $option_name => $option_fields ) {
 								if ( isset( $option_fields['type'] ) && in_array( $option_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group][$option_name] ) ) {
 									unset( $input[$key][$group][$option_name]['{clone}'] );
 
-									foreach ( $input[$key][$group][$option_name] as $clone_group => $clone_fields ) {
-										if ( isset( $group_fields['group_key_lowercase'] ) )
-											$clone_group = strtolower( $clone_group );
-
-										foreach ( $clone_fields as $clone_key => $clone_val ) {
-											if ( ! empty( $clone_val ) || $clone_val == '0' )
-												$save[$key][$group][$option_name][$clone_group][$clone_key] = $this->validate_field( $clone_val, $data[$key]['fields'][$group][$option_name]['fields'][$clone_key] );
-										}
-									}
+									$save[$key][$group][$option_name] = $this->clone_groups( $input[$key][$group][$option_name], $data[$key]['fields'][$group][$option_name]['fields'], isset( $group_fields['group_key_lowercase'] ) );
 								}
-								elseif ( isset( $option_fields['type'] ) && ! empty( $input[$key][$group][$option_name] ) )
+								elseif ( isset( $option_fields['type'] ) && $this->has_value( $input[$key][$group][$option_name] ) )
 									$save[$key][$group][$option_name] = $this->validate_field( $input[$key][$group][$option_name], $option_fields );
 								elseif ( is_array( $option_fields ) )
 									foreach ( $option_fields as $val_name => $val_fields )
-										if ( isset( $val_fields['type'] ) && ! empty( $input[$key][$group][$option_name][$val_name] ) )
+										if ( isset( $val_fields['type'] ) && $this->has_value( $input[$key][$group][$option_name][$val_name] ) )
 											$save[$key][$group][$option_name][$val_name] = $this->validate_field( $input[$key][$group][$option_name][$val_name], $val_fields );
 							}
 						}
