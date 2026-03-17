@@ -57,7 +57,7 @@
 .image-center .featured-media { text-align: center; }
 
 @media all and (max-width: 800px) {
-	.featured-media { margin-inline: auto; }
+	.featured-media.media-image { margin-inline: auto; }
 }
 
 /* CAPTIONS */

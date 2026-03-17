@@ -90,7 +90,7 @@
 
 /* SITE TITLE + TAGLINE */
 
-<?php echo ! empty( $logo['logo_width']['desktop'] ) ? '.logo { flex: 0 1 ' . $logo['logo_width']['desktop'] . 'px; max-width: ' . $logo['logo_width']['desktop'] . 'px; }' : ''; ?>
+<?php echo ! empty( $logo['logo_width']['desktop'] ) ? '.logo { flex: 1 0 ' . $logo['logo_width']['desktop'] . 'px; max-width: ' . $logo['logo_width']['desktop'] . 'px; }' : ''; ?>
 
 .logo a { display: block; }
 
@@ -166,12 +166,8 @@
 	.right .header-controls { order: 3; }
 	.right .search-form, .right .input-field { flex-direction: row-reverse; }
 	.right .form-icons .input { padding-inline: <?php echo $half; ?>px 0; }
-	.center .header-primary {
-		flex: 1 0 100px;
-		order: -1;
-	}
+	.center .header-primary { order: -1; }
 	.center .header-aside {
-		flex: 1 0 100px;
 		justify-content: end;
 		order: 3;
 	}

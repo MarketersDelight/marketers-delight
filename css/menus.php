@@ -101,7 +101,8 @@
 	.menu-item { flex-flow: wrap; }
 	.menu-item:not(.toggle-menu-item):hover > a,
 	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.1); }
-	.menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+    .header.center.show-menu .header-primary:not(:last-child),
+    .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.menu .button, .menu .button:hover {
 		padding: <?php echo $half; ?>px;
 		width: 100%;
