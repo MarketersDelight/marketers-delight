@@ -4,17 +4,10 @@
 	$BUTTONS
 \*------------------------------*/
 
-.link, .link-wrap,
-button, .button, .button a, input[type="submit"] {
+.link, button, .button, input[type="submit"] {
 	display: inline-flex;
-	flex-direction: column;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
 	line-height: 1;
-}
-
-.has-icon, .button.has-icon {
-	align-items: center;
-	flex-direction: row;
 }
 
 /* LINKS */
@@ -22,6 +15,13 @@ button, .button, .button a, input[type="submit"] {
 .link, .underline { text-decoration: underline; }
 
 .link:hover, .no-underline { text-decoration: none; }
+
+.link-wrap {
+	display: inline-flex;
+	flex-direction: column;
+	gap: <?php echo $third; ?>px;
+	text-align: initial;
+}
 
 .link-icon, .trigger-icon, .input-icon {
 	font-size: <?php echo round( $typography['header']['font_size']['desktop'] * 1.3 ); ?>px;
@@ -35,7 +35,8 @@ button, .button, .button a, input[type="submit"] {
 
 /* BUTTONS */
 
-button, .button, a.button, .button a, input[type="submit"], .format .button {
+button, .button, input[type="submit"] {
+	align-items: center;
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
@@ -46,13 +47,14 @@ button, .button, a.button, .button a, input[type="submit"], .format .button {
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
+	justify-content: center;
 	padding: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
-    text-align: initial;
-	text-decoration: none;
 	transition: 0.3s;
 }
 
-button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit"]:hover { transform: translateY(1px); }
+a.button { text-decoration: none; }
+
+button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(1px); }
 
 /* COLORS */
 
@@ -61,33 +63,29 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	color: inherit;
 }
 
-.button.button-outline.white,
-.button.button-outline.white:hover {
+.button.button-sec {
+	background-color: <?php echo $colors['site']['button-sec']; ?>;
+	color: <?php echo $colors['site']['button-sec-text']; ?>;
+}
+
+.button.button-outline {
+	background-color: transparent;
+	border: 3px solid <?php echo $colors['site']['button']; ?>;
+	color: <?php echo $colors['site']['button']; ?>;
+}
+
+
+.button.button-outline.white {
 	border-color: #fff;
 	color: #fff;
 }
 
-.button.button-outline.has-links-color,
-.button.button-outline.has-links-color:hover {
+.button.button-outline.has-links-color{
 	border-color: <?php echo $colors['site']['links']; ?>;
 	color: <?php echo $colors['site']['links']; ?>;
 }
 
-.button.button-disabled {
-	background-color: #999;
-	cursor: not-allowed;
-}
-
-/* STYLES */
-
-.button.pill { border-radius: 50px; }
-
-.button.width-full { justify-content: center; }
-
-.button.button-sec, a.button.button-sec, .button.button-sec a {
-	background-color: <?php echo $colors['site']['button-sec']; ?>;
-	color: <?php echo $colors['site']['button-sec-text']; ?>;
-}
+/* SIZES */
 
 .button.button-small {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
@@ -101,12 +99,16 @@ button:hover, .button:hover, a.button:hover, .button a:hover, input[type="submit
 	padding: <?php echo $half + $small; ?>px <?php echo $single; ?>px;
 }
 
-.button.button-outline, .button.button-outline:hover {
-	background-color: transparent;
-	border: 3px solid <?php echo $colors['site']['button']; ?>;
-	border-radius: 10px;
-	color: <?php echo $colors['site']['button']; ?>;
+/* STYLES */
+
+.button.button-disabled {
+	background-color: #999;
+	cursor: not-allowed;
 }
+
+.button.pill { border-radius: 50px; }
+
+.button.width-full { justify-content: center; }
 
 .button-arrow { flex-direction: row; }
 
