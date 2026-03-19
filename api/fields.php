@@ -44,8 +44,10 @@ class md_fields {
 		$page = $has_parent = false;
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
+
 		if ( isset( $args['id'] ) )
 			$clean_id = $args['id'];
+
 		$name = "{$this->_option}[$clean_id]";
 		$id = "{$this->_option}_{$clean_id}";
 		$screen = get_current_screen();

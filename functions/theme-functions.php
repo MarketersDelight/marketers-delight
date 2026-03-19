@@ -77,6 +77,80 @@ function md_template( $file, $path = null, $include = null ) {
 }
 
 /**
+ * Call this function to load CSS or JS template from child theme
+ * or use default templates.
+ *
+ * @since 6.0
+ */
+
+function md_asset( $type, $file, $path = null, $include = null ) {
+	$type = $type === 'js' ? 'js' : 'css';
+	$extension = ".{$type}";
+	$dir = '';
+	$directory = MD_DIR;
+
+	if ( isset( $path ) && is_string( $path ) ) {
+		$dir = $file;
+		$file = $path;
+	}
+
+	$file = trim( $file, '/' );
+	$parts = explode( '/', $file );
+	$locate_file = ! empty( $dir ) ? $parts[0] : $file;
+	$template = locate_template( "$type/$locate_file.php" );
+
+	if ( ! $template ) {
+		$template_path = implode( '/', $parts );
+
+		if ( $dir == 'dropins' && file_exists( MD_INSTALLED_DROPINS ) ) {
+			$dir = '';
+			$directory = MD_INSTALLED_DROPINS;
+		}
+
+		$template = trailingslashit( $directory );
+
+		if ( ! empty( $dir ) )
+			$template .= trailingslashit( trim( $dir, '/' ) );
+
+		$template .= $template_path;
+	}
+
+	if ( file_exists( "$template.php" ) )
+		$template .= '.php';
+	elseif ( file_exists( "$template$extension" ) )
+		$template .= $extension;
+	elseif ( ! file_exists( $template ) )
+		return;
+
+	if ( ( isset( $path ) && ! is_string( $path ) ) || isset( $include ) )
+		return $template;
+
+	return load_template( $template, false );
+}
+
+/**
+ * Call this function to load CSS template from child theme
+ * or use default templates.
+ *
+ * @since 5.1.1
+ */
+
+function md_css( $file, $path = null, $include = null ) {
+	return md_asset( 'css', $file, $path, $include );
+}
+
+/**
+ * Call this function to load JS template from child theme
+ * or use default templates.
+ *
+ * @since 5.4.2
+ */
+
+function md_js( $file, $path = null, $include = null ) {
+	return md_asset( 'js', $file, $path, $include );
+}
+
+/**
  * Pass dynamic data into scripts.
  *
  * @since 4.9
@@ -379,6 +453,7 @@ function md_module( $keys = null, $default = null, $id = null ) {
 
 function md_editor_colors() {
 	$design = new md_design;
+
 	return $design->editor_colors();
 }
 

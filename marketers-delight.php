@@ -88,11 +88,11 @@ final class marketers_delight {
 		require_once MD_DIR . 'admin/page-cover.php';
 		require_once MD_DIR . 'admin/page-cta.php';
 
+		$this->dropins();
+
 		require_once MD_DIR . 'blog.php';
 		require_once MD_DIR . 'actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
-
-		$this->dropins();
 	}
 
 	/**

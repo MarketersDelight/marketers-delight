@@ -54,10 +54,9 @@
 
 .featured-media img { border-radius: 8px; }
 
-.image-center .featured-media { text-align: center; }
-
-@media all and (max-width: 800px) {
-	.featured-media.media-image { margin-inline: auto; }
+:is(.image-full, .image-center) .featured-media {
+	margin-inline: auto;
+	text-align: center;
 }
 
 /* CAPTIONS */

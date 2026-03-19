@@ -205,6 +205,8 @@ function md_cta( $context = 'post' ) {
 	}
 	elseif ( $type == 'custom' && ! empty( $cta['custom_html'] ) )
 		$html = $cta['custom_html'];
+	elseif ( ! empty( $type ) )
+		$html = apply_filters( "md_cta_{$type}", $context, $cta );
 
 	if ( empty( $html ) )
 		return;

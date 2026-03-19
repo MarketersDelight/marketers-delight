@@ -5,38 +5,28 @@
 		'empty_label' => __( 'Select CTA type...', 'md' ),
 		'classes' => 'md-conditional-option',
 		'wrap_classes' => 'md-sep-small',
-		'options' => array(
-			'links' => __( 'Links', 'md' ),
-			'custom' => __( 'Custom HTML', 'md' )
-		)
-	) ); ?>
+		'options' => $cta_options
+	) );
 
-	<div id="<?php echo $prefix; ?>_page_cta_links" class="md-conditional-item md-conditional-links" style="display: <?php echo $cta_type == 'links' ? 'block' : 'none'; ?>">
+	foreach ( $cta_types as $type_id => $type ) : ?>
 
-		<?php $this->fields->field( 'links', array(
-			'type' => 'group',
-			'sort' => true,
-			'style' => 'boxes',
-			'secondary' => true,
-			'subtitle' => true,
-			'callback' => array( $this, 'link_fields' ),
-			'elements' => array(
-				'primary' => array(
-					'label' => __( 'Primary Link', 'md' )
-				),
-				'secondary' => array(
-					'label' => __( 'Secondary Link', 'md' )
-				)
-			)
-		) ); ?>
+		<div id="<?php echo $prefix; ?>_page_cta_<?php echo esc_attr( $type_id ); ?>" class="md-conditional-item md-conditional-<?php echo esc_attr( $type_id ); ?>" style="display: <?php echo $cta_type == $type_id ? 'block' : 'none'; ?>">
 
-	</div>
+		<?php
+			if ( ! empty( $type['admin_callback'] ) && is_callable( $type['admin_callback'] ) ) {
+				if ( $type['admin_callback'] instanceof Closure )
+					$type['admin_callback']->call( $this );
+				else
+					call_user_func( $type['admin_callback'] );
+			}
+			else
+				do_action( 'md_page_cta_admin_fields' );
 
-	<div id="<?php echo $prefix; ?>_page_cta_custom" class="md-conditional-item md-conditional-custom" style="display: <?php echo $cta_type == 'custom' ? 'block' : 'none'; ?>">
-		<?php $this->fields->field( 'custom_html', array(
-			'type' => 'code',
-			'label' => __( 'Custom HTML', 'md' ),
-		) ); ?>
-	</div>
+			do_action( "md_page_cta_admin_fields_{$type_id}" );
+		?>
+
+		</div>
+
+	<?php endforeach; ?>
 
 </div>
