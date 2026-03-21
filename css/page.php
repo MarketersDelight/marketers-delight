@@ -56,10 +56,6 @@
 
 .featured-media img { border-radius: 8px; }
 
-@media (min-width: 800px) {
-	.featured-media { flex 1 0 auto; }
-}
-
 /* CAPTIONS */
 
 .wp-caption {

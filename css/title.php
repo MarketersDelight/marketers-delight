@@ -98,6 +98,7 @@
 		align-items: center;
 		text-align: center;
 	}
+	.image-inline.wide { justify-content: center; }
 	.image-inline.wide .inner,
 	.image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
 	.title-left .wrap, .title-right .wrap,
@@ -108,11 +109,12 @@
 	}
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
-	.wide :is(.title-wrap, .title, .lede, .description, .subtitle) {
+	.wide:not(.image-title) :is(.subtitle, .description),
+	.image-inline.wide :is(.title, .lede),
+	.image-title.wide .title-wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
-	.image-inline.wide { justify-content: center; }
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }
 }
