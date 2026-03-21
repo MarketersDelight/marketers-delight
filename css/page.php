@@ -48,15 +48,16 @@
 /* FEATURED IMAGE */
 
 .featured-media {
+	margin-inline: auto;
 	position: relative;
+	text-align: center;
 	z-index: 5;
 }
 
 .featured-media img { border-radius: 8px; }
 
-:is(.image-full, .image-center) .featured-media {
-	margin-inline: auto;
-	text-align: center;
+@media (min-width: 800px) {
+	.featured-media { flex 1 0 auto; }
 }
 
 /* CAPTIONS */

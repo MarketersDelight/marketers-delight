@@ -108,9 +108,7 @@
 	}
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
-	.image-inline.wide .title,
-	.image-title.wide :is(.title-wrap, .title),
-	.wide :is(.description, .subtitle) {
+	.wide :is(.title-wrap, .title, .lede, .description, .subtitle) {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 	}
