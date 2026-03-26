@@ -487,6 +487,22 @@
 			});
 		},
 		media: function() {
+			var getUploadPreviewSrc = function( upload ) {
+				var attrs = upload && upload.attributes ? upload.attributes : {},
+					sizes = attrs.sizes || {};
+
+				if ( sizes.thumbnail && sizes.thumbnail.url )
+					return sizes.thumbnail.url;
+
+				if ( sizes.medium && sizes.medium.url )
+					return sizes.medium.url;
+
+				if ( sizes.full && sizes.full.url )
+					return sizes.full.url;
+
+				return attrs.url || '';
+			};
+
 			$( document ).on( 'click', '.md-upload-add', function() {
 				var parent = $( this ).parents( '.md-upload' ),
 					isMultiple = $( this ).data( 'md-multiple' ) === true;
@@ -503,8 +519,9 @@
                 			var ids = uploadID.val() ? uploadID.val().split( ',' ).filter( Boolean ) : [];
                 			selection.each( function( upload ) {
 								var id = upload.attributes.id,
+									previewSrc = getUploadPreviewSrc( upload ),
 									img = $( '<img>' ).attr( {
-										src: upload.attributes.sizes.thumbnail.url,
+										src: previewSrc,
 										alt: 'Preview image'
 									} ),
 									span = $( '<span>' ).attr( {
@@ -519,8 +536,9 @@
 						}
 						else {
 							selection.each( function( upload ) {
+								var previewSrc = getUploadPreviewSrc( upload );
 								uploadID.val( upload.attributes.id );
-								parent.find( '.md-upload-preview-image img' ).attr( 'src', upload.attributes.sizes.thumbnail.url );
+								parent.find( '.md-upload-preview-image img' ).attr( 'src', previewSrc );
 							});
 						}
 						parent.addClass( 'has-upload' );

@@ -101,6 +101,8 @@ button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(
 
 /* STYLES */
 
+.button.button-cancel { background-color: #ae2525; }
+
 .button.button-disabled {
 	background-color: #999;
 	cursor: not-allowed;

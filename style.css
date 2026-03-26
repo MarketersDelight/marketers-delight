@@ -333,6 +333,7 @@ button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(
 	padding: 21px 31px;
 }
 /* STYLES */
+.button.button-cancel { background-color: #ae2525; }
 .button.button-disabled {
 	background-color: #999;
 	cursor: not-allowed;
@@ -1646,6 +1647,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	font-size: 1.3em;
 	line-height: 1.45em;
 }
+a.no-underline, .no-underline a { text-decoration: none; }
 .foot {
 	color: #777777;
 	font-size: 17px;

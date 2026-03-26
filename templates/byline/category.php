@@ -2,7 +2,9 @@
 
 $c = 1;
 $categories = $terms = array();
-$taxonomies = get_object_taxonomies( get_post_type() );
+$post_id = isset( $fields['post_id'] ) ? $fields['post_id'] : get_the_ID();
+$post_type = isset( $fields['post_type'] ) ? $fields['post_type'] : md_get_post_type();
+$taxonomies = get_object_taxonomies( $post_type );
 
 if ( empty( $fields['term'] ) )
 	$categories[] = ! empty( $taxonomies[0] ) ? esc_attr( $taxonomies[0] ) : 'category';
@@ -12,7 +14,7 @@ else
 	$categories[] = esc_attr( $fields['term'] );
 
 foreach ( $categories as $category )
-	$terms = array_merge( $terms, get_the_terms( get_the_ID(), $category ) );
+	$terms = array_merge( $terms, get_the_terms( $post_id, $category ) );
 
 if ( empty( $terms ) )
 	return;

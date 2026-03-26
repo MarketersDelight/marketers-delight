@@ -6,7 +6,9 @@ echo '<div class="' . esc_attr( $classes ) . '"' . $style . '>';
 
 do_action( "md_hook_{$context}_featured_media_top" );
 
-if ( $type == 'image' ) {
+if ( has_action( "md_hook_{$context}_featured_media" ) )
+    do_action( "md_hook_{$context}_featured_media", $media );
+elseif ( $type == 'image' ) {
 
 	echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '">' : '' );
 

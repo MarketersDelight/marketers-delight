@@ -42,6 +42,8 @@
 	line-height: 1.45em;
 }
 
+a.no-underline, .no-underline a { text-decoration: none; }
+
 .foot {
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;

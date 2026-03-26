@@ -178,25 +178,25 @@ function md_description( $context = 'post', $args = array() ) {
  * @since 6.0
  */
 
-function md_cta( $context = 'post' ) {
+function md_cta( $context = 'post', $cta = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_cta", true ) )
 		return;
 
 	$html = '';
 
-	if ( $context == 'page' ) {
-		$cta = md_module( 'page_cta' );
-		$type = md_module( array( 'page_cta', 'page_cta' ) );
-	}
-	else {
-		if ( ! is_singular() )
-			return;
+    if ( empty( $cta ) )
+        if ( $context == 'page' )
+            $cta = md_module( 'page_cta' );
+        else {
+            if ( ! is_singular() )
+                return;
 
-		$cta = md_post_meta( 'page_cta' );
-		$type = md_post_meta( array( 'page_cta', 'page_cta' ) );
-	}
+            $cta = md_post_meta( 'page_cta' );
+        }
 
-	if ( $type == 'links' && ! empty( $cta['links'] ) ) {
+    $type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
+
+    if ( $type == 'links' && ! empty( $cta['links'] ) ) {
 		foreach ( $cta['links'] as $group => $fields )
 			if ( ! empty( $cta['links'][$group] ) ) {
 				$cta['links'][$group]['classes'] = 'cta-link';
