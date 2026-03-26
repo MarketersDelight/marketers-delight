@@ -1,4 +1,5 @@
 <?php
+	$post_id = isset( $fields['post_id'] ) ? $fields['post_id'] : get_the_ID();
 	$author_id = isset( $fields['user_id'] ) ? $fields['user_id'] : get_post_field( 'post_author', $post_id );
 	$author_name = get_the_author_meta( 'display_name', $author_id );
 
