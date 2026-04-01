@@ -35,7 +35,7 @@
 .breadcrumbs a:hover { text-decoration: none; }
 
 @media all and (min-width: <?php echo $post_width; ?>px) {
-	.expanded:not(.box-style) .breadcrumbs {
+	.expanded .breadcrumbs {
 		margin-block-end: <?php echo $single; ?>px;
 		text-align: center;
 	}

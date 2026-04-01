@@ -74,7 +74,6 @@ button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(
 	color: <?php echo $colors['site']['button']; ?>;
 }
 
-
 .button.button-outline.white {
 	border-color: #fff;
 	color: #fff;

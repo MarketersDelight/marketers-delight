@@ -75,6 +75,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
     color: #fff;
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
 	font-weight: normal;
+	line-height: 1;
 	padding: 4px 7px;
     position: relative;
 }

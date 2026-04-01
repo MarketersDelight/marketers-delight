@@ -68,14 +68,13 @@ class md_fields {
 			$page = esc_attr( $_GET['page'] );
 			$page_types = apply_filters( 'md_admin_groups', array() );
 
-			if ( ! empty( $page_types[$page] ) ) {
+			if ( ! empty( $page_types[$page] ) )
 				if ( $clean_id !== md_clean_id( $page ) ) {
 					$page = md_clean_id( $page );
 					$setting = ! empty( $setting[$page] ) ? $setting[$page] : '';
 					$name = "{$this->_option}[{$page}][$clean_id]";
 					$id = "{$this->_option}_{$page}_{$clean_id}";
 				}
-			}
 		}
 
 		$group = ! empty( $setting[$clean_id] ) ? $setting[$clean_id] : array();
@@ -102,6 +101,9 @@ class md_fields {
 
 		if ( isset( $args['wrap_classes'] ) )
 			$wrap_classes[] = $args['wrap_classes'];
+
+		if ( isset( $args['hidden'] ) )
+			$wrap_classes[] = 'md-hidden';
 
 		$wrap_classes = join( ' ', $wrap_classes );
 

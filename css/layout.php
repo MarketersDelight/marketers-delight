@@ -56,14 +56,16 @@
 .box-style .item,
 .box-style .entry .post-title:not(.cover),
 .box-style .entry .the-content,
-.box-style .entry .post-footer { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+.box-style .entry > .post-footer:not(.byline) { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+
+.box-style .entry > .post-footer.byline { padding: <?php echo $half; ?>px; }
 
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 
 .box-style .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
+/*
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
-
+*/
 /* PLAIN + BORDER STYLES */
 
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
@@ -102,7 +104,7 @@
 	.box-style .item,
 	.box-style .full .post-title:not(.cover),
 	.box-style .full .the-content,
-	.box-style .full .post-footer { padding: <?php echo $mid; ?>px; }
+	.box-style .full .entry > .post-footer:not(.byline) { padding: <?php echo $mid; ?>px; }
 	.box-style.expanded .row .the-content { padding-inline: 0; }
 	.box-style .slim .entry .post-title:not(.cover) { padding-block-end: <?php echo $half; ?>px; }
 	.box-style .slim .entry .the-content { padding-block-start: <?php echo $half; ?>px; }

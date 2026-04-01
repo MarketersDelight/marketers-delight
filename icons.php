@@ -222,6 +222,10 @@ return array(
 		'unicode' => 'e90a',
 		'label' => __( 'Plugin', 'md' )
 	),
+	'publish' => array(
+		'unicode' => 'e916',
+		'label' => __( 'Publish', 'md' )
+	),
 	'quote' => array(
 		'unicode' => 'f10e',
 		'label' => __( 'Quote', 'md' )

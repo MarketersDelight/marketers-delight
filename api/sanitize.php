@@ -93,6 +93,21 @@ class md_sanitize {
 	}
 
 	/**
+	 * Save a generic text string and special formatted strings.
+	 *
+	 * @since 4.0
+	 */
+
+	public function text( $input, $fields ) {
+		if ( isset( $fields['map'] ) )
+			$save = $this->ids( $input );
+		else
+			$save = sanitize_text_field( $input );
+
+		return $save;
+	}
+
+	/**
 	 * Ensure only a number is saved.
 	 *
 	 * @since 4.7
@@ -122,6 +137,7 @@ class md_sanitize {
 	public function checkbox( $input ) {
 		if ( is_array( $input ) ) {
 			$save = array();
+
 			foreach ( $input as $check => $val )
 				if ( ! empty( $val ) )
 					$save[$check] = true;
@@ -144,11 +160,12 @@ class md_sanitize {
 
 			foreach ( $input as $key )
 				if ( in_array( $key, $options ) )
-					$values[] = esc_attr( $key );
+					$values[] = sanitize_text_field( $key );
 
 			return $values;
 		}
-		else return in_array( $input, $options ) || $dynamic ? esc_attr( $input ) : '';
+		else
+			return in_array( $input, $options ) || $dynamic ? sanitize_text_field( $input ) : '';
 	}
 
 	/**
@@ -203,6 +220,38 @@ class md_sanitize {
 	}
 
 	/**
+	 * Save a list of IDs as a comma-separated text field and array list.
+	 *
+	 * @since 6.0
+	 */
+
+	public function ids( $input ) {
+		if ( is_array( $input ) ) {
+			$value = '';
+			$values = array();
+
+			if ( isset( $input['values'] ) )
+				$values = $input['values'];
+			elseif ( isset( $input['value'] ) )
+				$values = explode( ',', $input['value'] );
+
+			if ( isset( $input['value'] ) )
+				$value = $input['value'];
+			else
+				$value = join( ',', $values ) . ',';
+		}
+		else {
+			$value = $input;
+			$values = explode( ',', $value );
+		}
+
+		return array(
+			'value' => sanitize_text_field( $value ),
+			'values' => $values
+		);
+	}
+
+	/**
 	 * Return terms hierarchy in data format.
 	 *
 	 * @since 5.3.1
@@ -214,7 +263,7 @@ class md_sanitize {
 
 		foreach ( $terms as $term )
 			if ( isset( $term->term_id ) )
-				$cats[] = esc_attr( $term->term_id );
+				$cats[] = intval( $term->term_id );
 
 		return $cats;
 	}
@@ -231,9 +280,9 @@ class md_sanitize {
 
 		if ( ! empty( $nav_menus ) )
 			foreach ( $nav_menus as $menu ) {
-				$menu_id = esc_attr( $menu->term_id );
+				$menu_id = intval( $menu->term_id );
 				$menus['ids'][] = $menu_id;
-				$menus['options'][$menu_id] = esc_html( $menu->name );
+				$menus['options'][$menu_id] = sanitize_text_field( $menu->name );
 			}
 
 		return $menus;
@@ -336,7 +385,7 @@ class md_sanitize {
 			$val = $fields['default'];
 
 		if ( in_array( $type, array( 'text', 'textarea' ) ) )
-			$field = wp_kses_data( $val );
+			$field = $this->text( $val, $fields );
 
 		if ( in_array( $type, array( 'editor', 'code' ) ) )
 			$field = wp_kses_post( $val );
@@ -346,6 +395,12 @@ class md_sanitize {
 
 		if ( in_array( $type, array( 'hidden', 'data' ) ) )
 			$field = sanitize_text_field( $val );
+
+		if ( $type == 'id_list' )
+			$field = $this->id_list( $val );
+
+		if ( $type == 'recursive' )
+			$field = $this->recursive( $val );
 
 		if ( $type == 'url' )
 			$field = $this->url( $val );
