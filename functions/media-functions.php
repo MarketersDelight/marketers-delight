@@ -13,7 +13,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	$args = array_merge( $loop, $args );
 	$media = md_has_media( $context, $args );
 
-    if ( empty( $media ) )
+	if ( empty( $media ) )
 		return;
 
 	$permalink = '';
@@ -85,7 +85,7 @@ function md_has_media( $context = 'post', $args = array() ) {
 	$type = $media['media_type'];
 	$position = $media['position'];
 
-	if ( isset( $media['featured_image'] ) )
+	if ( $context == 'post' && isset( $media['featured_image'] ) )
 		$position = $media['featured_image'];
 
 	if ( $position == 'remove' )

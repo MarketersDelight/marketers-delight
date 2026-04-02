@@ -49,7 +49,7 @@ md_hook_after_the_content();
 
 if ( ! isset( $loop['post_footer']['remove'] ) )
 	md_byline( 'after_post', array_merge( $args, array(
-		'classes' => 'post-footer',
+		'classes' => 'post-footer item',
 		'html' => 'footer'
 	) ) );
 

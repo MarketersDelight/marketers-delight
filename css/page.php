@@ -50,7 +50,6 @@
 .featured-media {
 	margin-inline: auto;
 	position: relative;
-	text-align: center;
 	z-index: 5;
 }
 
