@@ -30,8 +30,6 @@
 
 /* LOOP */
 
-.row > .entry { margin-block-end: <?php echo $mid; ?>px; }
-
 .content-wrap:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .loop .image-above.has-cover .featured-media { margin-block-end: 0; }
@@ -41,8 +39,6 @@
 /* BOX STYLE */
 
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
-
-.box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .box, .box-style .entry {
 	border-radius: 8px;
@@ -54,6 +50,8 @@
 
 .box-style .item:first-child { border-radius: 8px 8px 0 0; }
 .box-style .item:last-child { border-radius: 0 0 8px 8px; }
+
+.box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .slim .entry .cover,
 .content-wrap .page-title.cover,
@@ -73,6 +71,8 @@
 .box-style .entry .byline.post-footer { padding-block: <?php echo $half; ?>px; }
 */
 /* PLAIN + BORDER STYLES */
+
+:is(.plain-style, .border-style) .row > .entry { margin-block-end: <?php echo $mid; ?>px; }
 
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
@@ -120,6 +120,10 @@
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 		width: 100%;
+	}
+	.expanded .image-title .wrap {
+		max-width: 100%;
+		width: auto;
 	}
 }
 
