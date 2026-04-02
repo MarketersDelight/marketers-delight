@@ -88,10 +88,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
-
-	$post_type_loop = md_post_type_field( 'loop', array() );
-	$loop = array_merge( $post_type_loop, md_module( 'loop', array() ) );
-
+	$loop = md_get_loop();
 	$media = md_has_media( $context );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
@@ -133,7 +130,9 @@ function md_title( $context = 'post', $args = array() ) {
 	$style = md_style( $style );
 
 	do_action( "md_hook_{$context}_title_before" );
+
 	include md_template( "{$context}-title", true );
+
 	do_action( "md_hook_{$context}_title_after" );
 }
 

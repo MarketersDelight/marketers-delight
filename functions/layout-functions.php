@@ -82,14 +82,12 @@ function md_content_box_classes( $classes = array() ) {
  * @since 4.5
  */
 
-function md_content_classes( $args = array(), $classes = array() ) {
-	if ( empty( $args['loop'] ) )
-		$args['loop'] = md_get_loop();
-
-	$loop = $args['loop'];
-	$is_single = is_singular() || is_404() || ! empty( $loop['in_loop'] );
+function md_content_classes() {
+	$classes = array();
 	$classes[] = 'content-wrap';
 	$classes[] = 'format';
+	$loop = md_get_loop();
+	$is_single = is_singular() || is_404() || ! empty( $loop['in_loop'] ) ? true : false;
 
 	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) ) {
 		if ( ! md_has_sidebar() )
@@ -101,8 +99,8 @@ function md_content_classes( $args = array(), $classes = array() ) {
 		}
 	}
 
-	if ( is_singular() ) {
-		$classes[] = md_post_class( $args );
+	if ( $is_single ) {
+		$classes[] = md_post_class();
 		$classes = get_post_class( $classes );
 	}
 
@@ -118,7 +116,7 @@ function md_content_classes( $args = array(), $classes = array() ) {
  * @since 6.0
  */
 
-function md_post_class( $args = array(), $c = 0 ) {
+function md_post_class( $args = array(), $c = 1 ) {
 	$classes = array( 'entry' );
 	$cover = md_cover();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();

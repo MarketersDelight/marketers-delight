@@ -396,9 +396,6 @@ class md_sanitize {
 		if ( in_array( $type, array( 'hidden', 'data' ) ) )
 			$field = sanitize_text_field( $val );
 
-		if ( $type == 'id_list' )
-			$field = $this->id_list( $val );
-
 		if ( $type == 'recursive' )
 			$field = $this->recursive( $val );
 
