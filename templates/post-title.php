@@ -13,6 +13,7 @@ if ( $media && in_array( $media['position'], $title_images ) ) { // Render when 
 	echo '<div class="wrap">';
 
 	md_the_title( 'post', array(
+		'loop' => ! empty( $args['loop'] ) ? $args['loop'] : array(),
 		'wrap' => true,
 		'byline' => true,
 		'description' => true,
@@ -27,7 +28,10 @@ if ( $media && in_array( $media['position'], $title_images ) ) { // Render when 
 
 else { // Default view (Wide)
 
-	md_the_title( 'post', array( 'byline' => true ) );
+	md_the_title( 'post', array(
+		'loop' => ! empty( $args['loop'] ) ? $args['loop'] : array(),
+		'byline' => true
+	) );
 
 	md_description();
 

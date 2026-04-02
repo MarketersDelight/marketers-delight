@@ -1,26 +1,27 @@
 <?php
 
-echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
+echo ! is_singular() ? "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">' : '';
 
 md_hook_content_top();
 
-md_byline( 'before_post', array( 'classes' => 'post-meta' ) );
+md_byline( 'before_post', array_merge( $args, array( 'classes' => 'post-meta' ) ) );
 
-md_featured_media( 'post', array( 'show_image' => array( 'above_headline' ) ) );
+md_featured_media( 'post', array_merge( $args, array( 'show_image' => array( 'above_headline' ) ) ) );
 
-md_title();
+md_title( 'post', $args );
 
-md_featured_media( 'post', array( 'show_image' => array( 'below_headline' ) ) );
+md_featured_media( 'post', array_merge( $args, array( 'show_image' => array( 'below_headline' ) ) ) );
 
 md_hook_before_the_content();
 
 if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
 
-	echo "<section id=\"the_content\" class=\"the-content\">";
+	echo "<section id=\"the_content\" class=\"the-content item\">".
+		 '<div class="wrap">';
 
 	md_hook_the_content_top();
 
-	md_featured_media( 'post', array( 'show_image' => array( 'left', 'right', 'center' ) ) );
+	md_featured_media( 'post', array_merge( $args, array( 'show_image' => array( 'left', 'right', 'center' ) ) ) );
 
 	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
 		if ( is_404() && ! md_has_custom_404() )
@@ -39,21 +40,21 @@ if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || 
 
 	md_hook_the_content_bottom();
 
-	echo "</section>";
+	echo '</div>'.
+		 '</section>';
 
 }
 
 md_hook_after_the_content();
 
 if ( ! isset( $loop['post_footer']['remove'] ) )
-	md_byline( 'after_post', array(
-		'loop' => $loop,
+	md_byline( 'after_post', array_merge( $args, array(
 		'classes' => 'post-footer',
 		'html' => 'footer'
-	) );
+	) ) );
 
 md_hook_content_item();
 
 md_hook_content_bottom();
 
-echo "</$html>";
+echo ! is_singular() ? "</$html>" : '';

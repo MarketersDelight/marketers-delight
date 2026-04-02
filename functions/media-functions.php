@@ -9,7 +9,8 @@
  */
 
 function md_featured_media( $context = 'post', $args = array() ) {
-    $args = array_merge( $args, md_loop_options() );
+	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
+	$args = array_merge( $loop, $args );
 	$media = md_has_media( $context, $args );
 
     if ( empty( $media ) )

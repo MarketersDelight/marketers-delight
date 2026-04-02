@@ -1,5 +1,8 @@
 <?php
 
+$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
+$loop_base = $loop;
+
 $query_args = array(
 	'post_type' => $post_type,
 	'posts_per_page' => $loop['posts_per_page'],
@@ -40,6 +43,7 @@ $query = new WP_Query( $query_args );
 if ( $query->have_posts() )
 	while ( $query->have_posts() ) {
 		$query->the_post();
+		$args['loop'] = $loop_base;
 		include md_template( 'loop/the-post', true );
 	}
 else
@@ -47,4 +51,4 @@ else
 
 wp_reset_query();
 
-md_pagination( $loop );
+md_pagination( $args );

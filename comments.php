@@ -1,4 +1,4 @@
-<section id="comments" class="comments post-footer">
+<section id="comments" class="comments item post-footer">
 	<div class="wrap">
 
 		<?php if ( have_comments() ) : ?>

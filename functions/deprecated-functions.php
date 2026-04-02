@@ -34,30 +34,6 @@ function md_page_data() { return array(); }
  * @deprecated 6.0, moved to class marketers_delight->inline_js()
  */
 if ( ! function_exists( 'md_inline_js' ) ) : function md_inline_js() { } endif;
-/**
- * Get the current page Loop. If post_type parameter
- * is set in $loops, all views will be set according to the
- * loop being registered. Unless set, categories will use the
- * same loop as archives.
- *
- * @since 4.6.4
- * @deprecated 6.0
- */
-function md_get_loop() {
-	$loop = 'default';
-	$post_type = md_get_post_type();
-	$settings = md_module( array( 'loop', 'archives' ) );
-	$loops = md_loops();
-	if ( ! empty( $settings ) )
-		$loop = $settings;
-	elseif ( ! empty( $loops[$post_type]['post_type'] ) ) {
-		if ( ( is_category() || is_tax() ) && md_term_meta( array( 'loop', 'archives' ) ) == '' )
-			$loop = md_post_type_field( array( 'loop', 'archives' ), $post_type );
-		else
-			$loop = $post_type;
-	}
-	return apply_filters( 'md_filter_loop', $loop );
-}
 
 /**
  * Organize array of lists for use in options.

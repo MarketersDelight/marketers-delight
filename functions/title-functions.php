@@ -73,7 +73,7 @@ function md_get_title( $context = 'post' ) {
  * @since 6.0
  */
 
-function md_title( $context = 'post' ) {
+function md_title( $context = 'post', $args = array() ) {
 	if ( ! md_get_title( $context ) )
 		return;
 
@@ -126,6 +126,8 @@ function md_title( $context = 'post' ) {
 		if ( ! empty( $cover['photo']['url'] ) )
 			$style['bg_image'] = esc_url( $cover['photo']['url'] );
 	}
+	elseif ( $context == 'post' )
+		$classes[] = 'item';
 
 	$classes = join( ' ', $classes );
 	$style = md_style( $style );
@@ -316,7 +318,7 @@ function md_byline( $location = 'before_title', $args = array() ) {
 
 function md_get_byline( $position, $args = array() ) {
 	$byline = $items = array();
-	$loop = md_loop_options();
+	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
 	// Skip build if no byline on page
 

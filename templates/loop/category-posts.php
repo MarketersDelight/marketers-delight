@@ -50,7 +50,7 @@ foreach ( $categories->terms as $category ) {
 		include md_template( 'loop/category-post', true );
 	}
 
-	md_hook_x_loop( $loop, $t );
+	md_hook_x_loop( $args, $t );
 
 	$t++;
 
@@ -60,4 +60,4 @@ foreach ( $categories->terms as $category ) {
 echo '</div>';
 
 if ( ! isset( $args['query'] ) )
-	md_pagination( $loop );
+	md_pagination( $args );

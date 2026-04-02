@@ -31,26 +31,6 @@ function md_filter_loop_styles() {
 }
 
 /**
- * Return loop data with context awareness and user-set
- * options blended with global post type level data.
- *
- * @since 6.0
- */
-
-function md_loop_options() {
-	$loop = array();
-	$post_type = md_post_type_field( 'loop', array() );
-	$single = md_module( 'loop', array() );
-
-	if ( is_singular() || is_404() )
-		$loop = $single;
-	else
-		$loop = array_merge( $post_type, $single );
-
-	return apply_filters( 'md_filter_set_loop', $loop );
-}
-
-/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -77,30 +57,29 @@ function md_loops( $sort = null ) {
 }
 
 /**
- * The Main Loop Logic loaded to all posts, pages, and archives.
- * Meant to mirror native WP page hierarchy and loop accordingly.
+ * Return loop data with context awareness and user-set
+ * options blended with global post type level data.
  *
- * @since 4.1
- *
- * $args (Optional) set loop attributes
- * $data (Optional) gets passed data from md_hook_content,
- *       and is second argument when used in add_action
+ * @since 6.0
  */
 
-function md_loop( $args = array() ) {
-	$c = 1;
-	$html = is_singular() ? 'div' : 'article';
-	$categories_classes = array( 'categories' );
-	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
-
-	$loop_classes = array( 'loop' );
-	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
+function md_get_loop() {
+	$loop = array();
 	$loops = md_loops();
-	$loop = md_loop_options();
+
+	// Set contextual data
+
+	$post_type = md_post_type_field( 'loop', array() );
+	$single = md_module( 'loop', array() );
+
+	if ( is_singular() || is_404() )
+		$loop = $single;
+	else
+		$loop = array_merge( $post_type, $single );
+
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
 
-	if ( isset( $loops[$loop_type]['data'] ) )
-		$data = $loop['data'] = $loops[$loop_type]['data'];
+	// Set defaults
 
 	if ( ! empty( $loops[$loop_type]['defaults'] ) )
 		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
@@ -108,23 +87,63 @@ function md_loop( $args = array() ) {
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$loop['by_category'] = ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) ? true : false;
 	$loop['has_sidebar'] = md_has_sidebar();
-
+/*
 	if ( isset( $args['in_loop'] ) )
 		$loop['in_loop'] = true;
 
 	if ( isset( $args['sticky'] ) )
 		$loop['sticky'] = true;
-
+*/
 	if ( empty( $loop['posts_per_page'] ) )
 		$loop['posts_per_page'] = get_option( 'posts_per_page' );
 
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
-//	$loop = wp_parse_args( $args, $loop );
+	if ( md_has_media() ) {
+		$media = md_get_media();
+		$loop['featured_image'] = $media['position'];
 
-	$loop_classes[] = $loop_class;
-	$categories_classes[] = "category-$loop_class";
+		if ( ! empty( $media['image']['id'] ) )
+			$loop['featured_image_id'] = $media['image']['id'];
+	}
+
+	if ( ! isset( $loop['content'] ) )
+		$loop['content'] = '';
+
+	return apply_filters( 'md_filter_set_loop', $loop );
+}
+
+/**
+ * The Main Loop Logic loaded to all posts, pages, and archives.
+ * Meant to mirror native WP page hierarchy and loop accordingly.
+ *
+ * @since 4.1
+ * $args (Optional) set loop attributes
+ */
+
+function md_loop( $args = array() ) {
+	$args = is_array( $args ) ? $args : array();
+	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
+
+	$loops = md_loops();
+	$loop = $loop_base = md_get_loop();
+
+	if ( ! empty( $args['sticky'] ) )
+		$loop['sticky'] = true;
+
+	if ( ! empty( $args['in_loop'] ) )
+		$loop['in_loop'] = true;
+
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
+
+	$c = 1;
+	$html = is_singular() ? 'div' : 'article';
+	$args = array_merge( $args, array( 'loop' => $loop ) );
+
+	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
+	$loop_classes = array( 'loop', $loop_class );
+	$categories_classes = array( 'categories', "category-$loop_class" );
 
 	if ( $loop_type !== $post_type )
 		$loop_classes[] = "loop-{$loop_type}";
@@ -154,32 +173,31 @@ function md_loop( $args = array() ) {
 	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
 	$loop_classes = join( ' ', $loop_classes );
 
-	$looped = $loop;
-
 	do_action( 'md_loop_before' );
 
-	if ( isset( $loop['sticky'] ) || isset( $loop['in_loop'] ) )
+	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
 	elseif ( $loop['by_category'] )
 		include md_template( 'loop/category-posts', true );
 	elseif ( isset( $args['query'] ) ) {
-		echo "<div class=\"$loop_classes\">";
+		echo "<section class=\"$loop_classes\">";
 		include md_template( 'loop/the-query', true );
-		echo '</div>';
+		echo '</section>';
 	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? "<div class=\"$loop_classes\">" : '';
+		echo ! is_singular() ? "<section class=\"$loop_classes\">" : '';
 
 		md_hook_loop_top();
 
 		while ( have_posts() ) {
 			the_post();
+
 			include md_template( 'loop/the-post', true );
 		}
 
 		if ( ! is_singular() ) {
-			echo '</div>';
-			md_pagination( $loop );
+			echo '</section>';
+			md_pagination( $args );
 		}
 	}
 	else md_404();
@@ -193,21 +211,20 @@ function md_loop( $args = array() ) {
  * @since 5.1
  */
 
-function md_hook_x_loop( $loop, $c ) {
+function md_hook_x_loop( $args, $c ) {
+	$loop = $args['loop'];
+
 	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
 		do_action( 'md_hook_x_loop', $loop );
 }
 
 /**
- * Set default values of an individual item in a loop.
+ * Build per-item loop settings from page-level defaults.
  *
  * @since 6.0
  */
 
-function md_loop_post( $loop, $c ) {
-	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
-		$loop = md_loop_featured( $loop );
-
+function md_loop_item( $loop = array(), $c = 1 ) {
 	if ( ! empty( $loop['excerpt_settings']['remove_text'] ) )
 		$loop['read_more'] = '';
 	elseif ( empty( $loop['read_more'] ) )
@@ -231,6 +248,9 @@ function md_loop_post( $loop, $c ) {
 
 	if ( ! isset( $loop['content'] ) )
 		$loop['content'] = '';
+
+	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
+		$loop = md_loop_featured( $loop );
 
 	return $loop;
 }
@@ -281,7 +301,7 @@ function md_loop_featured( $loop ) {
 		unset( $loop['featured_read_more'] );
 	}
 
-	if ( ! empty( $loop['excerpt_settings'] ) ) {
+	if ( ! empty( $loop['featured_excerpt_settings'] ) ) {
 		$loop['excerpt_settings'] = $loop['featured_excerpt_settings'];
 		unset( $loop['featured_excerpt_settings'] );
 	}
@@ -305,9 +325,11 @@ function md_404() {
 			'post_status' => array( 'publish' ),
 			'fields' => 'ids'
 		) );
+
 		if ( $query_404->have_posts() )
 			while ( $query_404->have_posts() ) {
 				$query_404->the_post();
+
 				md_loop( array( 'in_loop' => true ) );
 			}
 
@@ -335,13 +357,14 @@ function md_has_custom_404() {
  * @since 4.0
  */
 
-function md_pagination( $loop = array() ) {
+function md_pagination( $args = array() ) {
 	if ( is_singular() )
 		return;
 
 	$big = 999999999;
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
+	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
 	if ( $loop['by_category'] ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
