@@ -1,4 +1,4 @@
-<aside class="post-nav<?php echo ! md_has_sidebar() ? ' inner format' : ''; ?>">
+<aside class="post-nav inner format">
 
 	<?php if ( get_previous_post_link() ) : ?>
 
