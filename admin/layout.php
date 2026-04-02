@@ -15,6 +15,7 @@ class md_layout extends md_api {
 
 	public function register() {
 		$this->name = __( 'Layout', 'md' );
+
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
@@ -212,6 +213,8 @@ class md_layout extends md_api {
 
 		if ( $is_post )
 			echo '</div>';
+
+		do_action( 'md_layout_edit_screen_fields' );
 
 		$this->scripts( $has_sidebar );
 	}

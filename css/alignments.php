@@ -26,7 +26,8 @@
 	text-align: center;
 }
 
-img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
+img.alignwide, .alignwide img,
+img.alignfull, .alignfull img { width: 100%; }
 
 .expanded .alignfull {
 	margin-inline: -50vw;
@@ -36,7 +37,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	width: 100vw;
 }
 
-@media all and (min-width: 700px) {
+@media (min-width: 700px) {
 	.alignleft, .format .left {
 		float: left;
 		margin-inline-end: <?php echo $half; ?>px;
@@ -47,9 +48,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (max-width: 700px) {
-	.format .wp-block-image .alignleft, .format .wp-block-image .alignright,
-	.format .wp-block-image .aligncenter, .format .wp-block-image .alignnone {
+@media (max-width: 700px) {
+	.format .wp-block-image :is(.alignleft, .alignright, .aligncenter, .alignnone) {
 		display: block;
 		float: none;
 		margin: 0;
@@ -57,8 +57,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (max-width: <?php echo $post_width; ?>px) {
-	.compact .alignwide, .compact .alignfull {
+@media (max-width: <?php echo $post_width; ?>px) {
+	.compact :is(.alignwide, .alignfull) {
 		margin-inline: -50vw;
 		position: relative;
 			inset-inline: 50%;
@@ -66,7 +66,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (max-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
+@media (max-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
@@ -75,25 +75,25 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
-	.expanded .alignwide, .expanded .alignright.wrap-small { margin-inline-end: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
-	.expanded .alignwide, .expanded .alignleft.wrap-small { margin-inline-start: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+@media (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
+	.expanded :is(.alignwide, .alignright.wrap-small) { margin-inline-end: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+	.expanded :is(.alignwide, .alignleft.wrap-small) { margin-inline-start: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
 }
 
-@media all and (min-width: <?php echo $site_width; ?>px) {
+@media (min-width: <?php echo $site_width; ?>px) {
 	.expanded.box-style .alignfull {
 		inset-inline: inherit;
 		width: auto;
 	}
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignleft.wrap, .expanded .row .image-left .featured-media,
-	.expanded .alignleft, .expanded .wp-block-image .alignleft { margin-inline-start: -<?php echo $breakout; ?>%; }
+	.expanded :is(.alignleft, .wp-block-image .alignleft) { margin-inline-start: -<?php echo $breakout; ?>%; }
 	.expanded.box-style .alignfull,
 	.expanded.box-style .alignright.wrap, .expanded .row .image-right .featured-media,
-	.expanded .alignright, .expanded .wp-block-image .alignright { margin-inline-end: -<?php echo $breakout; ?>%; }
+	.expanded :is(.alignright, .wp-block-image .alignright) { margin-inline-end: -<?php echo $breakout; ?>%; }
 }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
+@media (max-width: <?php echo $site_width; ?>px) {
 	.expanded.box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;
@@ -102,7 +102,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media all and (min-width: <?php echo $post_width; ?>px) {
+@media (min-width: <?php echo $post_width; ?>px) {
 	.entry.image-left .featured-media {
 		float: left;
 		margin-inline-end: <?php echo $single; ?>px;
@@ -113,16 +113,12 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 	.columns .image-left .featured-media { margin-inline-end: <?php echo $half; ?>px; }
 	.columns .image-right .featured-media { margin-inline-start: <?php echo $half; ?>px; }
-	.columns .image-inline .featured-media,
-	.columns .image-title .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
-	.slim .image-inline .featured-media,
-	.slim .image-title .featured-media { max-width: <?php echo $quad; ?>px; }
-	.compact.box-style .full .alignfull,
-	.compact.box-style .full .alignwide, .compact.box-style .full .alignleft.wrap,
+	.columns :is(.image-inline, .image-title) .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
+	.slim :is(.image-inline, .image-title) .featured-media { max-width: <?php echo $quad; ?>px; }
+	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignleft.wrap,
 	.compact.box-style .full .image-left .featured-media,
 	.box-style .columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }
-	.compact.box-style .full .alignfull,
-	.compact.box-style .full .alignwide, .compact.box-style .full .alignright.wrap,
+	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignright.wrap,
 	.compact.box-style .full .image-right .featured-media,
 	.box-style .columns.full .image-right .featured-media { margin-inline-end: -<?php echo $mid; ?>px; }
 }

@@ -10,7 +10,7 @@
 
 function md_featured_media( $context = 'post', $args = array() ) {
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
-	$args = array_merge( $loop, $args );
+	$args['loop'] = $loop;
 	$media = md_has_media( $context, $args );
 
 	if ( empty( $media ) )
@@ -85,8 +85,8 @@ function md_has_media( $context = 'post', $args = array() ) {
 	$type = $media['media_type'];
 	$position = $media['position'];
 
-	if ( $context == 'post' && isset( $media['featured_image'] ) )
-		$position = $media['featured_image'];
+	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) )
+		$position = $args['loop']['featured_image'];
 
 	if ( $position == 'remove' )
 		return;
@@ -220,7 +220,7 @@ function md_cover( $context = 'post' ) {
 	)
 		$cover = array();
 
-	return $cover;
+		return $cover;
 }
 
 /**

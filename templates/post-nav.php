@@ -1,4 +1,4 @@
-<aside class="post-nav inner format">
+<aside class="post-nav <?php echo ! md_has_sidebar() ? 'inner format' : 'item'; ?>">
 
 	<?php if ( get_previous_post_link() ) : ?>
 
@@ -28,4 +28,4 @@
 
 	<?php endif; ?>
 
-	</aside>
+</aside>

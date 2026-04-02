@@ -120,8 +120,8 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context );
 
-		if ( ! empty( $cover['photo']['url'] ) )
-			$style['bg_image'] = esc_url( $cover['photo']['url'] );
+		if ( ! empty( $cover['photo']['id'] ) )
+			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
 	}
 	elseif ( $context == 'post' )
 		$classes[] = 'item';

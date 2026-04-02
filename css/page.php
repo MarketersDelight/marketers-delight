@@ -34,15 +34,20 @@
 
 .breadcrumbs a:hover { text-decoration: none; }
 
-@media all and (min-width: <?php echo $post_width; ?>px) {
+@media (min-width: <?php echo $post_width; ?>px) {
 	.expanded .breadcrumbs {
 		margin-block-end: <?php echo $single; ?>px;
 		text-align: center;
 	}
 }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.box-style .breadcrumbs:first-child, .box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
+@media (max-width: <?php echo $post_width; ?>px) {
+	.box-style.expanded .breadcrumbs:first-child,
+	.box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
+}
+
+@media (max-width: 900px) {
+	.box-style.compact .breadcrumbs:first-child { margin-top: -<?php echo $half; ?>px; }
 }
 
 /* FEATURED IMAGE */
@@ -54,6 +59,8 @@
 }
 
 .featured-media img { border-radius: 8px; }
+
+:is(.image-center, .image-full) .featured-media { text-align: center; }
 
 /* CAPTIONS */
 
@@ -157,7 +164,8 @@
 
 .pagination .page-numbers { text-decoration: none; }
 
-.pagination .page-numbers, .post-nav-links .post-page-numbers {
+.pagination .page-numbers,
+.post-nav-links .post-page-numbers {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border: 0;
 	border-radius: 8px;
@@ -198,7 +206,7 @@
 
 .post-nav-next, .post-nav-previous { position: relative; }
 
-@media all and (min-width: <?php echo $post_width; ?>px) {
+@media (min-width: <?php echo $post_width; ?>px) {
 	.post-nav {
 		align-items: center;
 		display: flex;
@@ -208,6 +216,6 @@
 	.post-nav-previous + .post-nav-next { text-align: right; }
 }
 
-@media all and (max-width: 900px) {
+@media (max-width: <?php echo $post_width; ?>px) {
 	.post-nav-previous:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 }

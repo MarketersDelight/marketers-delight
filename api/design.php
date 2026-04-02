@@ -126,8 +126,8 @@ class md_design {
 		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
 
-		$site_width = $content_width + $sidebar_width + ( $line_height * 1.5 ); #add $line_height to account for gap
-		$site_width_full = $site_width + ( $site_width / 2 );
+		$site_width = round( $content_width + $sidebar_width + ( $line_height * 1.5 ) ); #add $line_height to account for gap
+		$site_width_full = round( $site_width + ( $site_width / 2 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 
 		// Finally, return list of default values

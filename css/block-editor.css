@@ -199,7 +199,7 @@ div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
 /* FULL WIDTH */
 @media all and (min-width: 900px) {
 	.md-editor-full .wp-block.editor-post-title__block {
-		max-width: 1163.5px;
+		max-width: 1164px;
 		padding-left: 93px;
 		padding-right: 93px;
 	}
