@@ -120,6 +120,9 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context );
 
+		if ( $has_header_cover )
+			$classes[] = 'format';
+
 		if ( ! empty( $cover['photo']['id'] ) )
 			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
 	}

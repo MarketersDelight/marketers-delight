@@ -39,6 +39,7 @@
 		margin-block-end: <?php echo $single; ?>px;
 		text-align: center;
 	}
+	.full-cover .expanded .breadcrumbs { text-align: left; }
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {

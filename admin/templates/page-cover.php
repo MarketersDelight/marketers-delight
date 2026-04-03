@@ -1,13 +1,6 @@
-<div class="columns-2 columns-30-70 columns-single md-sep-small">
+<div class="columns-2 columns-single md-sep-small">
 
 	<div class="col col1">
-		<?php $this->fields->field( 'photo', array(
-			'type' => 'upload',
-			'upload_type' => 'media'
-		) ); ?>
-	</div>
-
-	<div class="col col2">
 
 		<div class="columns-2 columns-half mb-half">
 
@@ -62,6 +55,14 @@
 			'options' => $display_options
 		) ); ?>
 
+	</div>
+
+	<div class="col col2">
+		<?php $this->fields->field( 'photo', array(
+			'type' => 'upload',
+			'label' => __( 'Upload Image', 'md' ),
+			'upload_type' => 'media'
+		) ); ?>
 	</div>
 
 </div>

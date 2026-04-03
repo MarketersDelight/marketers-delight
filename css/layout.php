@@ -48,7 +48,11 @@
 }
 
 .box, .box-style .item,
-.box-style .image-full .featured-media { background-color: <?php echo $colors['content']['bg_color']; ?>; }
+.box-style .image-full .featured-media,
+.box-style .columns .entry { background-color: <?php echo $colors['content']['bg_color']; ?>; }
+
+.box-style .post-footer,
+.box-style.compact .post-nav { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-style .item:first-child,
 .box-style .image-above .featured-media { border-radius: 8px 8px 0 0; }
@@ -61,17 +65,13 @@
 .slim .entry .cover,
 .content-wrap .page-title.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
+.box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
+
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
-
-.box-style .post-footer,
-.box-style.compact .post-nav { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.box-style .byline.post-footer { padding: <?php echo $half; ?>px; }
 
 /* PLAIN + BORDER STYLES */
 
-:is(.plain-style, .border-style) .row > .entry { margin-block-end: <?php echo $mid; ?>px; }
-
+:is(.plain-style, .border-style) .row > .entry,
 :is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 :is(.plain-style, .border-style) .columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
@@ -95,21 +95,12 @@
 	padding-block-start: 0;
 }
 
-/* SLIM */
-
-.slim.columns .post-title { gap: <?php echo $small; ?>px; }
-
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.full .entry .cover,
 	.content-wrap .page-title.cover,
-	.box-style .item { padding: <?php echo $mid; ?>px; }
-
-	.box-style .slim .item.post-title:not(.cover) { padding-block-end: <?php echo $half; ?>px; }
-
-	.box-style .slim .item.the-content { padding-block-start: <?php echo $half; ?>px; }
-
+	.box-style .full .item { padding: <?php echo $mid; ?>px; }
 	.expanded .item .wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
@@ -135,11 +126,8 @@
 	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
 
-@media (max-width: 900px) {
-	.box-style .entry .item { margin-inline: -<?php echo $half; ?>px; }
-}
-
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.content-wrap .page-title.cover { margin-inline: -<?php echo $half; ?>px; }
+	.content-wrap .page-title.cover,
+	.box-style .full :is(.entry .item, .image-full .featured-media) { margin-inline: -<?php echo $half; ?>px; }
 }
