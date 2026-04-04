@@ -200,7 +200,7 @@ function md_cover( $context = 'post' ) {
 			$inherit = md_term_meta( array( 'loop', 'inherit', 'page_cover' ), null, $inherit );
 	}
 	else {
-		if ( is_post_type_archive() )
+		if ( is_post_type_archive() || is_home() )
 			$page_type = 'archive';
 		elseif ( is_category() || is_tax() ) {
 			$single_cover = md_term_meta( 'page_cover', null, array() );

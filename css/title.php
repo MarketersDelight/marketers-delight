@@ -81,11 +81,11 @@
 .cover {
 	background-position: center center;
 	background-size: cover;
-	padding-block: <?php echo $mid; ?>px;
+	padding: <?php echo $single; ?>px <?php echo $half; ?>px;
 	position: relative;
 }
 
-.content-wrap .cover, .content-wrap .cover .overlay { border-radius: 5px; }
+.content-wrap .cover, .content-wrap .cover .overlay { border-radius: 8px; }
 
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
@@ -94,8 +94,6 @@
 .cover .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
 
 .cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text']; ?>; }
-
-:is(.entry.image-center, .entry.image-below) .cover { margin-block-end: 0; }
 
 .header-cover.full-cover :is(.content .page-title, .content > .post-title) { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
 
@@ -118,11 +116,15 @@
 	}
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
-	.wide:not(.image-title) :is(.subtitle, .description),
+	.wide :is(.subtitle, .description),
 	.image-inline.wide :is(.title, .lede),
 	.image-title.wide .title-wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
+	}
+	.image-title.wide .subtitle {
+		margin: 0;
+		max-width: 100%;
 	}
 	.page-title.image-inline.image-left .featured-media,
 	.image-title.title-left .featured-media { order: -1; }

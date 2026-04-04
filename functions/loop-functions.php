@@ -8,8 +8,8 @@
 
 function md_filter_loops() {
 	return apply_filters( 'md_filter_loops', array(
-		'post' => array(
-			'name' => __( 'Post loop', 'md' ),
+		'article' => array(
+			'name' => __( 'Article view (default)', 'md' ),
 			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' )
 		)
 	) );
@@ -77,7 +77,7 @@ function md_get_loop() {
 	else
 		$loop = array_merge( $post_type, $single );
 
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
 
 	// Set defaults
 
@@ -144,6 +144,10 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 
 		if ( ! empty( $media['image']['id'] ) )
 			$loop['featured_image_id'] = $media['image']['id'];
+	}
+	else {
+		unset( $loop['featured_image'] );
+		unset( $loop['featured_image_id'] );
 	}
 
 	if ( ! isset( $loop['content'] ) )
@@ -212,17 +216,14 @@ function md_loop( $args = array() ) {
 	if ( ! empty( $args['in_loop'] ) )
 		$loop['in_loop'] = true;
 
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'post';
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 
 	// Formulate HTML classes
 
 	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
-	$loop_classes = array( 'loop', $loop_class );
+	$loop_classes = array( 'loop', $loop_class, "loop-{$loop_type}" );
 	$categories_classes = array( 'categories', "category-$loop_class" );
-
-	if ( $loop_type !== $post_type )
-		$loop_classes[] = "loop-{$loop_type}";
 
 	if ( $loop['columns'] > 1 ) {
 		$loop_classes[] = 'columns';

@@ -33,10 +33,6 @@
 .content-wrap:not(:last-child),
 .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.loop .image-above.has-cover .featured-media { margin-block-end: 0; }
-
-.entry .cover { padding-inline: <?php echo $half; ?>px; }
-
 /* BOX STYLE */
 
 .box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
@@ -54,16 +50,13 @@
 .box-style .post-footer,
 .box-style.compact .post-nav { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .item:first-child,
-.box-style .image-above .featured-media { border-radius: 8px 8px 0 0; }
+.box-style .item:first-child { border-radius: 8px 8px 0 0; }
 
 .box-style .item:last-child { border-radius: 0 0 8px 8px; }
 
 .box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.box-style .item,
-.slim .entry .cover,
-.content-wrap .page-title.cover { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
+.box-style .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
 .box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
 
@@ -71,10 +64,16 @@
 
 /* PLAIN + BORDER STYLES */
 
-:is(.plain-style, .border-style) .row > .entry,
-:is(.plain-style, .border-style) .row.full .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
+:is(.plain-style.expanded, .border-style.expanded) .loop-article.row .entry { margin-block-end: <?php echo $triple; ?>px; }
+
+:is(.plain-style.compact, .border-style.compact) .loop-article.row .entry,
+:is(.plain-style, .border-style) .loop-article.row.entry > *:not(:last-child),
+:is(.plain-style, .border-style) .loop-article.row .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 :is(.plain-style, .border-style) .columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
+
+:is(.plain-style, .border-style) .loop-article.image-above.has-cover .featured-media,
+:is(.plain-style, .border-style) .loop-article.image-below.has-cover .post-title { margin-block-end: 0; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 
@@ -98,9 +97,9 @@
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.full .entry .cover,
-	.content-wrap .page-title.cover,
+	.cover,
 	.box-style .full .item { padding: <?php echo $mid; ?>px; }
+	.slim .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item .wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
@@ -128,6 +127,9 @@
 
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
+	.cover .inner { padding-inline: 0; }
 	.content-wrap .page-title.cover,
+	.content-wrap.row .cover,
+	.content-wrap .row .entry .cover,
 	.box-style .full :is(.entry .item, .image-full .featured-media) { margin-inline: -<?php echo $half; ?>px; }
 }

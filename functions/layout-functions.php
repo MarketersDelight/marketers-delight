@@ -121,6 +121,8 @@ function md_post_class( $args = array(), $c = 1 ) {
 	$cover = md_cover();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
+	$classes[] = 'loop-' . ( isset( $loop['loop'] ) ? $loop['loop'] : 'article' );
+
 	if ( ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) )
 		$classes[] = 'featured';
 	else
