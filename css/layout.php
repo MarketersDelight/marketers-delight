@@ -58,7 +58,7 @@
 
 .box-style .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
-.box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
+.box-style .entry > .byline.post-footer { padding: <?php echo $half; ?>px; }
 
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 

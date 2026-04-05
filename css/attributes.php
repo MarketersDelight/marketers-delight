@@ -87,7 +87,6 @@ i, em, .italic { font-style: italic; }
 	font-variant: normal;
 	font-weight: 400;
 	line-height: 1;
-	speak: none;
 	text-align: center;
 	text-decoration: inherit;
 	text-transform: none;
