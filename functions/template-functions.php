@@ -1,6 +1,18 @@
 <?php
 
 /**
+ * Add important rel= tags to pagination prev/next links.
+ *
+ * @since 6.0
+ */
+
+add_filter( 'previous_posts_link_attributes', function() { return 'rel="prev"'; } );
+add_filter( 'next_posts_link_attributes', function() { return 'rel="next"'; } );
+add_filter( 'paginate_links_output', function( $html ) {
+	return str_replace( 'class="next', 'rel="next" class="next', str_replace( 'class="prev', 'rel="prev" class="prev', $html ) );
+} );
+
+/**
  * Get MD font icons URL.
  *
  * @since 5.2.3

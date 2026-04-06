@@ -6,7 +6,7 @@
 	$nxtlabel .= md_icon( 'angle-right', array( 'classes' => 'next-icon' ) );
 ?>
 
-<div class="pagination <?php echo esc_attr( $classes ); ?>">
+<nav class="pagination <?php echo esc_attr( $classes ); ?>">
 
 	<?php if ( $type == 'prev_next' ) {
 		previous_posts_link( $prelabel, $total );
@@ -14,6 +14,7 @@
 	}
 	else echo paginate_links( array(
 //		'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+		'type' => 'list',
 		'format' => '?paged=%#%',
 		'current' => max( 1, get_query_var( 'paged' ) ),
 		'prev_text' => $prelabel,
@@ -21,4 +22,4 @@
 		'total' => $total
 	) ); ?>
 
-</div>
+</nav>

@@ -54,8 +54,8 @@ function md_content_box() {
  * @since 4.1
  */
 
-function md_content_box_classes( $classes = array() ) {
-	$classes[] = 'content';
+function md_content_box_classes() {
+	$classes = array( 'content' );
 	$style = md_content_style();
 
 	if ( $style )
@@ -84,26 +84,15 @@ function md_content_box_classes( $classes = array() ) {
 
 function md_content_classes() {
 	$classes = array();
-	$classes[] = 'content-wrap';
+	$classes[] = 'main';
+
+	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
+		$classes[] = 'inner';
+
+	if ( is_singular() )
+		$classes[] = md_loop_classes();
+
 	$classes[] = 'format';
-	$loop = md_get_loop();
-	$is_single = is_singular() || is_404() || ! empty( $loop['in_loop'] ) ? true : false;
-
-	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) ) {
-		if ( ! md_has_sidebar() )
-			$classes[] = 'inner';
-
-		if ( $is_single ) {
-			$classes[] = 'row';
-			$classes[] = 'full';
-		}
-	}
-
-	if ( $is_single ) {
-		$classes[] = md_post_class();
-		$classes = get_post_class( $classes );
-	}
-
 	$classes = apply_filters( 'md_filter_content_classes', $classes );
 
 	return join( ' ', $classes );
@@ -120,8 +109,6 @@ function md_post_class( $args = array(), $c = 1 ) {
 	$classes = array( 'entry' );
 	$cover = md_cover();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
-
-	$classes[] = 'loop-' . ( isset( $loop['loop'] ) ? $loop['loop'] : 'article' );
 
 	if ( ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) )
 		$classes[] = 'featured';

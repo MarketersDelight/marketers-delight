@@ -85,7 +85,7 @@
 	position: relative;
 }
 
-.content-wrap .cover, .content-wrap .cover .overlay { border-radius: 8px; }
+.main .cover, .main .cover .overlay { border-radius: 8px; }
 
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 

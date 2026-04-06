@@ -116,9 +116,9 @@ img.alignfull, .alignfull img { width: 100%; }
 	.columns :is(.image-inline, .image-title) .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
 	.slim :is(.image-inline, .image-title) .featured-media { max-width: <?php echo $quad; ?>px; }
 	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignleft.wrap,
-	.compact.box-style .full .image-left .featured-media,
+	.compact.box-style .entry.full .image-left .featured-media,
 	.box-style .columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }
 	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignright.wrap,
-	.compact.box-style .full .image-right .featured-media,
+	.compact.box-style .entry.full .image-right .featured-media,
 	.box-style .columns.full .image-right .featured-media { margin-inline-end: -<?php echo $mid; ?>px; }
 }

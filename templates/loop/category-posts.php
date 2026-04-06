@@ -1,6 +1,7 @@
 <?php
 
 $t = 1;
+$categories_classes = array( 'categories', "category-$loop_class" );
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 $category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;

@@ -1,6 +1,6 @@
 <?php
 
-echo ! is_singular() ? "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">' : '';
+echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
 
 md_hook_content_top();
 
@@ -17,7 +17,7 @@ md_hook_before_the_content();
 if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
 
 	echo "<section id=\"the_content\" class=\"the-content item\">".
-		 '<div class="wrap">';
+		 ( empty( $loop['has_sidebar'] ) ? '<div class="wrap">' : '' );
 
 	md_hook_the_content_top();
 
@@ -40,7 +40,7 @@ if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || 
 
 	md_hook_the_content_bottom();
 
-	echo '</div>'.
+	echo ( empty( $loop['has_sidebar'] ) ? '</div>' : '' ).
 		 '</section>';
 
 }
@@ -57,4 +57,4 @@ md_hook_content_item();
 
 md_hook_content_bottom();
 
-echo ! is_singular() ? "</$html>" : '';
+echo "</$html>";

@@ -30,8 +30,7 @@
 
 /* LOOP */
 
-.content-wrap:not(:last-child),
-.loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.main:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 /* BOX STYLE */
 
@@ -50,11 +49,12 @@
 .box-style .post-footer,
 .box-style.compact .post-nav { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .item:first-child { border-radius: 8px 8px 0 0; }
+.box-style .item:first-child,
+.box-style .item:nth-child(1 of .item) { border-radius: 8px 8px 0 0; }
 
 .box-style .item:last-child { border-radius: 0 0 8px 8px; }
 
-.box-style .row.full > .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.box-style .row.full .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .box-style .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
@@ -67,7 +67,6 @@
 :is(.plain-style.expanded, .border-style.expanded) .loop-article.row .entry { margin-block-end: <?php echo $triple; ?>px; }
 
 :is(.plain-style.compact, .border-style.compact) .loop-article.row .entry,
-:is(.plain-style, .border-style) .loop-article.row.entry > *:not(:last-child),
 :is(.plain-style, .border-style) .loop-article.row .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 :is(.plain-style, .border-style) .columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
@@ -115,21 +114,21 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
-	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
+	.compact .main:not(:last-child) { margin-block-end: 0; }
 	.compact > .inner {
 		display: grid;
 		gap: <?php echo $mid; ?>px;
 		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
 	.compact.left > .inner { direction: rtl; }
-	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
+	.compact.left .main, .compact.left .sidebar { direction: ltr; }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
 	.cover .inner { padding-inline: 0; }
-	.content-wrap .page-title.cover,
-	.content-wrap.row .cover,
-	.content-wrap .row .entry .cover,
+	.main .page-title.cover,
+	.main.row .cover,
+	.main .row .entry .cover,
 	.box-style .full :is(.entry .item, .image-full .featured-media) { margin-inline: -<?php echo $half; ?>px; }
 }

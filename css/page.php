@@ -146,15 +146,9 @@
 
 /* PAGINATION */
 
-.pagination {
-	justify-content: space-between;
-	position: relative;
-	text-align: center;
-}
-
 .pagination:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.pagination.prev-next {
+.prev-next {
 	display: flex;
 	justify-content: space-between;
 }
@@ -168,16 +162,23 @@
 
 .pagination .page-numbers { text-decoration: none; }
 
-.pagination .page-numbers,
+ul.page-numbers {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	gap: <?php echo $third; ?>px;
+	list-style: none;
+}
+
+span.page-numbers, a.page-numbers,
 .post-nav-links .post-page-numbers {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border: 0;
 	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-	display: inline-block;
-	margin-inline-end: <?php echo $small; ?>px;
-	padding: <?php echo $small; ?>px <?php echo $half; ?>px;
+	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 }
+
+.page-numbers li { margin-block-end: 0; }
 
 .page-numbers.current,
 .post-page-numbers.current {
@@ -185,7 +186,7 @@
 	font-weight: bold;
 }
 
-.pagination .page-numbers:hover,
+span.page-numbers:hover, a.page-numbers:hover,
 .post-nav-links.post-page-numbers:hover { opacity: 0.8; }
 
 .page-numbers.prev, .page-numbers.next { text-decoration: underline; }

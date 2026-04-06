@@ -63,21 +63,23 @@ function md_loops( $sort = null ) {
  * @since 6.0
  */
 
-function md_get_loop() {
+function md_get_loop( $args = array() ) {
+	$args = is_array( $args ) ? $args : array();
 	$loop = array();
 	$loops = md_loops();
 
 	// Set contextual data
 
 	$post_type = md_post_type_field( 'loop', array() );
+	$loop_type = md_post_type_field( array( 'loop', 'loop' ), 'article' );
 	$single = md_module( 'loop', array() );
 
-	if ( is_singular() || is_404() )
+	if ( is_singular() || is_404() ) {
 		$loop = $single;
+		$loop['loop'] = $loop_type;
+	}
 	else
 		$loop = array_merge( $post_type, $single );
-
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
 
 	// Set defaults
 
@@ -101,6 +103,15 @@ function md_get_loop() {
 		if ( ! empty( $media['image']['id'] ) )
 			$loop['featured_image_id'] = $media['image']['id'];
 	}
+
+	if ( ! empty( $args['sticky'] ) )
+		$loop['sticky'] = true;
+
+	if ( ! empty( $args['in_loop'] ) )
+		$loop['in_loop'] = true;
+
+	$loop['loop'] = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
+	$loop['loop_classes'] = md_loop_classes( $loop );
 
 	return apply_filters( 'md_filter_set_loop', $loop );
 }
@@ -194,36 +205,18 @@ function md_loop_featured( $loop ) {
 }
 
 /**
- * The Main Loop Logic loaded to all posts, pages, and archives.
- * Meant to mirror native WP page hierarchy and loop accordingly.
+ * Build loop wrapper classes.
  *
- * @since 4.1
- * $args (Optional) set loop attributes
+ * @since 6.0
  */
 
-function md_loop( $args = array() ) {
-	$args = is_array( $args ) ? $args : array();
-	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
-
-	// Prepare loop data
-
-	$loops = md_loops();
-	$loop = $loop_base = md_get_loop();
-
-	if ( ! empty( $args['sticky'] ) )
-		$loop['sticky'] = true;
-
-	if ( ! empty( $args['in_loop'] ) )
-		$loop['in_loop'] = true;
+function md_loop_classes( $loop = array() ) {
+	if ( empty( $loop ) )
+		$loop = md_get_loop();
 
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
-	$args = array_merge( $args, array( 'loop' => $loop ) );
-
-	// Formulate HTML classes
-
-	$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
+	$loop_class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
 	$loop_classes = array( 'loop', $loop_class, "loop-{$loop_type}" );
-	$categories_classes = array( 'categories', "category-$loop_class" );
 
 	if ( $loop['columns'] > 1 ) {
 		$loop_classes[] = 'columns';
@@ -248,10 +241,26 @@ function md_loop( $args = array() ) {
 //		$loop_classes[] = 'slim';
 
 	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
-	$loop_classes = join( ' ', $loop_classes );
 
+	return join( ' ', $loop_classes );
+}
+
+/**
+ * The Main Loop Logic loaded to all posts, pages, and archives.
+ * Meant to mirror native WP page hierarchy and loop accordingly.
+ *
+ * @since 4.1
+ * $args (Optional) set loop attributes
+ */
+
+function md_loop( $args = array() ) {
+	$args = is_array( $args ) ? $args : array();
 	$c = 1;
 	$html = is_singular() ? 'div' : 'article';
+	$loop = $loop_base = md_get_loop( $args );
+	$loops = md_loops();
+	$args = array_merge( $args, array( 'loop' => $loop ) );
+	$loop_classes = $loop['loop_classes'];
 
 	// Render Loop templates
 
@@ -261,19 +270,15 @@ function md_loop( $args = array() ) {
 		include md_template( 'loop/the-post', true );
 	elseif ( $loop['by_category'] )
 		include md_template( 'loop/category-posts', true );
-	elseif ( isset( $args['query'] ) ) {
-		echo "<section class=\"$loop_classes\">";
+	elseif ( isset( $args['query'] ) )
 		include md_template( 'loop/the-query', true );
-		echo '</section>';
-	}
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? "<section class=\"$loop_classes\">" : '';
+		echo ! is_singular() ? '<section class="' . esc_attr( $loop_classes ) . '">' : '';
 
 		md_hook_loop_top();
 
 		while ( have_posts() ) {
 			the_post();
-
 			include md_template( 'loop/the-post', true );
 		}
 
