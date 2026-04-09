@@ -37,7 +37,7 @@ function md_comment( $comment, $args, $depth ) {
 	$comment_id = get_comment_ID();
 	$comment_link = get_comment_link( $comment->comment_ID );
 	$is_author = $comment->user_id == $post->post_author ? true : false;
-	$avatar_size = esc_html( $args['avatar_size'] );
+	$avatar_size = intval( $args['avatar_size'] );
 
 	if ( ! empty( $args['has_children'] ) )
 		$classes[] = 'parent';
@@ -63,7 +63,9 @@ function md_comment_form( $args = array() ) {
 			'comment_notes_before' => false,
 			'comment_notes_after' => false,
 			'logged_in_as' => false,
-			'cancel_reply_link' => __( 'Cancel', 'md')
+			'cancel_reply_link' => __( 'Cancel', 'md'),
+			'title_reply_before' => '<p id="reply-title" class="comment-reply-title">',
+			'title_reply_after' => '</p>'
 		);
 
 	comment_form( $args );
@@ -99,8 +101,10 @@ add_filter( 'comment_form_fields', 'md_comment_form_reorder' );
 function md_real_comment_count( $count ) {
 	if ( ! is_admin() ) {
 		global $id;
+
 		$status = get_comments( "status=approve&post_id=$id" );
 		$comments_by_type = separate_comments( $status );
+
 		return count( $comments_by_type['comment'] );
 	}
 	else

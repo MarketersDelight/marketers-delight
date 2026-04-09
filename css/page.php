@@ -60,11 +60,10 @@
 :is(.image-center, .image-full) .featured-media { text-align: center; }
 
 .image-above.has-cover .featured-media, .image-above.has-cover .featured-media img,
-.image-below.has-cover .cover, .image-below.has-cover .overlay,
-.image-above .featured-media { border-radius: 8px 8px 0 0; }
+.image-above .featured-media, .image-above .featured-media img { border-radius: 8px 8px 0 0; }
 
-.image-above.has-cover .cover, .image-above.has-cover .overlay,
-.image-below.has-cover .featured-media, .image-below.has-cover .featured-media img { border-radius: 0 0 8px 8px; }
+.image-below .featured-media img,
+.image-above.has-cover .cover, .image-above.has-cover .cover .overlay { border-radius: 0; }
 
 /* CAPTIONS */
 

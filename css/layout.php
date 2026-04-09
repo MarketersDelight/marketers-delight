@@ -38,19 +38,27 @@
 
 .box, .box-style .entry {
 	border-radius: 8px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 	width: auto;
 }
 
 .box, .box-style .item,
+.entry .cover, .image-full .featured-media,
+.box-style .columns .entry { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+
+.box, .box-style .item,
 .box-style .image-full .featured-media,
-.box-style .columns .entry { background-color: <?php echo $colors['content']['bg_color']; ?>; }
+.box-style .columns .entry,
+.box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
 
-.box-style .post-footer,
-.box-style.compact .post-nav { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style .columns .entry .item {
+	background-color: transparent;
+	box-shadow: none;
+}
 
-.box-style .item:first-child,
-.box-style .item:nth-child(1 of .item) { border-radius: 8px 8px 0 0; }
+.box-style .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.box-style .entry .cover, .box-style .entry .cover .overlay,
+.box-style .item:first-child { border-radius: 8px 8px 0 0; }
 
 .box-style .item:last-child { border-radius: 0 0 8px 8px; }
 

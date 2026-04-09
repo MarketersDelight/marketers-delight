@@ -112,11 +112,21 @@ function md_author_box() {
 	if ( ! md_has_author_box() )
 		return;
 
-	$h = is_author() ? 'h1' : 'h3';
-	$twitter = get_the_author_meta( 'twitter' );
-	$url = get_the_author_meta( 'url' );
-	$author = get_author_posts_url( get_the_author_meta( 'ID' ) );
-	$desc = get_the_author_meta( 'description' );
+	$author_id = get_queried_object_id();
+
+	if ( is_author() )
+		$h = 'h1';
+	else {
+		$h = 'h3';
+		$author_id = get_post_field( 'post_author', $author_id );
+	}
+
+	$author = get_userdata( $author_id );
+	$twitter = get_user_meta( $author_id, 'twitter', true );
+	$website_url = $author->user_url;
+	$author_name = $author->display_name;
+	$description = $author->description;
+	$author_url = get_author_posts_url( $author_id );
 	$has_avatar = get_option( 'show_avatars' );
 
 	include md_template( 'author-box', true );

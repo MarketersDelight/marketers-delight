@@ -11,8 +11,8 @@
 }
 
 .comments .children {
-	margin-inline-start: <?php echo $single; ?>px;
 	margin-block-start: <?php echo $half; ?>px;
+	margin-inline-start: <?php echo $single; ?>px;
 }
 
 /* TITLE */
@@ -33,9 +33,11 @@
 	margin-block-end: 0;
 }
 
-.content-title i {
-	font-size: 0.85em;
-	margin-inline-end: <?php echo $small; ?>px;
+.comments .comment-reply-title {
+	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $bold; ?>;
+	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
+	margin-block-end: <?php echo $half; ?>px;
 }
 
 /* COMMENT */
@@ -56,13 +58,10 @@
 	z-index: 10;
 }
 
-.box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
-
-.comment-details a { text-decoration: none; }
-
 .comment-author, .comment-author a {
 	color: <?php echo $colors['site']['text']; ?>;
 	font-weight: <?php echo $bold; ?>;
+	text-decoration: none;
 }
 
 .comment-byline {
@@ -126,8 +125,8 @@
 
 .comment.toggle-comment:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
-.toggle-comment .comment-controls, .toggle-comment .children,
-.show-comment, .toggle-comment .hide-comment { display: none; }
+.show-comment,
+.toggle-comment :is(.comment-controls, .children, .hide-comment) { display: none; }
 
 .toggle-comment .show-comment { display: inline; }
 
