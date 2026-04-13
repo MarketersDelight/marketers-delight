@@ -4,9 +4,9 @@
 	$TITLES
 \*------------------------------*/
 
-.page-title, .header-cover .content > .post-title { margin-block-end: <?php echo $single; ?>px; }
+.page-title, .header-cover .article-wrap > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
-.post-title, .page-title, .title-wrap,
+.entry-title, .title-wrap,
 .wide .inner, .wide .wrap,
 .image-title .wrap,
 .image-inline.inline .wrap {
@@ -17,8 +17,7 @@
 
 /* TITLE, LEDE, SUBTITLE, DESC, CTA */
 
-.post-title :is(.title, .lede, .subtitle),
-.page-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
+.entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
 .lede {
 	color: <?php echo $colors['site']['text-sec']; ?>;
@@ -85,8 +84,6 @@
 	position: relative;
 }
 
-.main .cover, .main .cover .overlay { border-radius: 8px; }
-
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
 .cover, .cover a, .cover .byline, .cover .lede { color: #fff; }
@@ -95,7 +92,7 @@
 
 .cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text']; ?>; }
 
-.header-cover.full-cover :is(.content .page-title, .content > .post-title) { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
+.full-cover .page-title, .full-cover .article-wrap > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
 
 /* QUERIES */
 

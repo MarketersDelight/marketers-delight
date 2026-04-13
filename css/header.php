@@ -39,7 +39,7 @@
 .is-box-style .header.cover { background-color: transparent; }
 <?php endif; ?>
 
-.header-cover.full-cover .header {
+.full-cover .header {
 	position: absolute;
 		inset-inline-start: 0;
 		inset-block-start: <?php echo $half; ?>px;
@@ -183,7 +183,7 @@
 }
 
 @media all and (max-width: 900px) {
-	.header-cover.full-cover .header[class*="show-"] { position: static; }
+	.full-cover .header[class*="show-"] { position: static; }
 	.header .inner {
 		flex-direction: column;
 		padding-inline: 0;

@@ -240,6 +240,14 @@ function md_loop_classes( $loop = array() ) {
 //	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
 //		$loop_classes[] = 'slim';
 
+
+
+	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
+		$loop_classes[] = 'inner';
+
+
+
+
 	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
 
 	return join( ' ', $loop_classes );
@@ -256,11 +264,14 @@ function md_loop_classes( $loop = array() ) {
 function md_loop( $args = array() ) {
 	$args = is_array( $args ) ? $args : array();
 	$c = 1;
-	$html = is_singular() ? 'div' : 'article';
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_classes = $loop['loop_classes'];
+
+	$html = 'div';
+	if ( ! md_has_header_cover( 'post' ) )
+		$html = 'article';
 
 	// Render Loop templates
 
@@ -273,7 +284,7 @@ function md_loop( $args = array() ) {
 	elseif ( isset( $args['query'] ) )
 		include md_template( 'loop/the-query', true );
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? '<section class="' . esc_attr( $loop_classes ) . '">' : '';
+		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '">' : '';
 
 		md_hook_loop_top();
 
@@ -283,7 +294,7 @@ function md_loop( $args = array() ) {
 		}
 
 		if ( ! is_singular() ) {
-			echo '</section>';
+			echo '</div>';
 			md_pagination( $args );
 		}
 	}

@@ -83,8 +83,7 @@ function md_title( $context = 'post', $args = array() ) {
 		return;
 
 	$is_inline = false;
-	$style = array();
-	$classes = array( '' );
+	$classes = $style = array();
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
@@ -119,9 +118,6 @@ function md_title( $context = 'post', $args = array() ) {
 
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context );
-
-		if ( $has_header_cover )
-			$classes[] = 'format';
 
 		if ( ! empty( $cover['photo']['id'] ) )
 			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
@@ -357,5 +353,9 @@ function md_get_byline( $position, $args = array() ) {
 			}
 	}
 
-	return $byline;
+	return apply_filters( 'md_filter_byline_items', $byline, array(
+		'position' => $position,
+		'args' => $args,
+		'loop' => $loop
+	) );
 }

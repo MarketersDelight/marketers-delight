@@ -1,4 +1,4 @@
-<section class="author-box post-footer item">
+<footer class="author-box post-footer item">
 	<?php echo ! md_has_sidebar() ? '<div class="wrap">' : ''; ?>
 
 		<div class="author-meta">
@@ -42,4 +42,4 @@
 		</div>
 
 	<?php echo ! md_has_sidebar() ? '</div>' : ''; ?>
-</section>
+</footer>

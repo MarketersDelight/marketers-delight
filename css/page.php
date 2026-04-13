@@ -55,15 +55,7 @@
 	z-index: 5;
 }
 
-.featured-media img { border-radius: 8px; }
-
 :is(.image-center, .image-full) .featured-media { text-align: center; }
-
-.image-above.has-cover .featured-media, .image-above.has-cover .featured-media img,
-.image-above .featured-media, .image-above .featured-media img { border-radius: 8px 8px 0 0; }
-
-.image-below .featured-media img,
-.image-above.has-cover .cover, .image-above.has-cover .cover .overlay { border-radius: 0; }
 
 /* CAPTIONS */
 

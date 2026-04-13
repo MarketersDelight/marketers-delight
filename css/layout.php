@@ -19,31 +19,39 @@
 	width: 100%;
 }
 
-.content {
+.main {
 	<?php if ( $colors['content']['body_color'] !== $defaults['colors']['content']['body_color'] ) : ?>
 	background-color: <?php echo $colors['content']['body_color']; ?>;
 	<?php endif; ?>
 	padding-block: <?php echo $single; ?>px;
 }
 
-.header-cover .content { padding-block-start: 0; }
+.header-cover .main { padding-block-start: 0; }
 
-/* LOOP */
-
-.main:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 /* BOX STYLE */
 
-.box-style.content { background-color: <?php echo $colors['content']['body_color']; ?>; }
+.box-style.main { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
-.box, .box-style .entry {
-	border-radius: 8px;
-	width: auto;
-}
+.box, .box-style .entry,
+.page-title.inline.cover, .page-title.inline.cover .overlay,
+.featured-media, .featured-media img,
+.box-style .entry .item:nth-child(1 of .item):nth-last-child(1 of .item) { border-radius: 8px; }
 
-.box, .box-style .item,
-.entry .cover, .image-full .featured-media,
-.box-style .columns .entry { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.box-style .entry .item:nth-child(1 of .item),
+.entry :is(.cover, .cover .overlay),
+.image-above :is(.featured-media, .featured-media img),
+.image-below.has-cover :is(.cover, .overlay),
+.header-cover .box-style .image-full :is(.featured-media, .featured-media img) { border-radius: 8px 8px 0 0; }
+
+.box-style .entry .item:nth-last-child(1 of .item),
+.image-above :is(.cover, .cover .overlay, .featured-media + .item) { border-radius: 0 0 8px 8px; }
+
+.box-style .image-below .featured-media img { border-radius: 0; }
+
+.box, .box-style .entry,
+.cover, .featured-media img { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
 
 .box, .box-style .item,
 .box-style .image-full .featured-media,
@@ -55,18 +63,18 @@
 	box-shadow: none;
 }
 
-.box-style .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-style .byline.post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .entry .cover, .box-style .entry .cover .overlay,
-.box-style .item:first-child { border-radius: 8px 8px 0 0; }
+.box-style .post-footer:not(:last-child) { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-style .item:last-child { border-radius: 0 0 8px 8px; }
+.box, .box-style .entry { width: auto; }
 
+.box-style .row.full > .item:not(:last-child),
 .box-style .row.full .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .box-style .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
-.box-style .entry > .byline.post-footer { padding: <?php echo $half; ?>px; }
+.box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
 
 .box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
 
@@ -106,6 +114,7 @@
 @media (min-width: <?php echo $post_width; ?>px) {
 	.cover,
 	.box-style .full .item { padding: <?php echo $mid; ?>px; }
+	.box-style.compact .full .post-title { padding-block-end: <?php echo $single; ?>px; }
 	.slim .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item .wrap {
 		margin-inline: auto;
@@ -122,21 +131,23 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
-	.compact .main:not(:last-child) { margin-block-end: 0; }
-	.compact > .inner {
+	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
+	.compact .content-wrap {
 		display: grid;
 		gap: <?php echo $mid; ?>px;
 		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
-	.compact.left > .inner { direction: rtl; }
-	.compact.left .main, .compact.left .sidebar { direction: ltr; }
+	.compact.left .content-wrap { direction: rtl; }
+	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
 	.cover .inner { padding-inline: 0; }
+/*
 	.main .page-title.cover,
 	.main.row .cover,
 	.main .row .entry .cover,
 	.box-style .full :is(.entry .item, .image-full .featured-media) { margin-inline: -<?php echo $half; ?>px; }
+*/
 }

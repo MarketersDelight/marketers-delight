@@ -1,6 +1,6 @@
 <?php
 
-echo '<header class="post-title' . esc_attr( $classes ) . "\"$style>";
+echo '<header class="post-title entry-title ' . esc_attr( $classes ) . "\"$style>";
 
 md_overlay();
 

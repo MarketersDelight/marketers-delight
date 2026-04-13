@@ -36,16 +36,8 @@ function md_has_content_box() {
  */
 
 function md_content_box() {
-	if ( md_has_content_box() ) {
-		$html = $inner_html = 'div';
-
-		if ( md_has_header_cover() )
-			$html = 'main';
-		else
-			$inner_html = 'main';
-
+	if ( md_has_content_box() )
 		include md_template( 'content-box', true );
-	}
 }
 
 /**
@@ -55,11 +47,8 @@ function md_content_box() {
  */
 
 function md_content_box_classes() {
-	$classes = array( 'content' );
+	$classes = array( 'main' );
 	$style = md_content_style();
-
-	if ( $style )
-		$classes[] = $style;
 
 	if ( md_has_sidebar() ) {
 		$classes[] = 'compact';
@@ -70,6 +59,11 @@ function md_content_box_classes() {
 			$classes[] = 'left';
 	}
 	else $classes[] = 'expanded';
+
+	if ( $style )
+		$classes[] = $style;
+
+	$classes[] = 'format';
 
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
@@ -84,15 +78,15 @@ function md_content_box_classes() {
 
 function md_content_classes() {
 	$classes = array();
-	$classes[] = 'main';
+	$classes[] = 'content';
 
-	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
-		$classes[] = 'inner';
+//	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
+//		$classes[] = 'inner';
 
-	if ( is_singular() )
-		$classes[] = md_loop_classes();
+//	if ( is_singular() )
+//		$classes[] = md_loop_classes();
 
-	$classes[] = 'format';
+//	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_classes', $classes );
 
 	return join( ' ', $classes );
@@ -122,9 +116,9 @@ function md_post_class( $args = array(), $c = 1 ) {
 		$position = $loop['featured_image'];
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 
-		if ( in_array( $position, array( 'left', 'right' ) ) )
+		if ( in_array( $position, array( 'left', 'right', 'center' ) ) )
 			$classes[] = 'image-inline';
-		elseif ( in_array( $position, array( 'center', 'above_headline', 'below_headline' ) ) )
+		elseif ( in_array( $position, array( 'above_headline', 'below_headline' ) ) )
 			$classes[] = 'image-full';
 		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ) ) )
 			$classes[] = 'image-title';

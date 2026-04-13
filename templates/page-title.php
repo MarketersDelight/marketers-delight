@@ -7,11 +7,11 @@
  * page types, please edit post-title.php template file.
  */
 
-echo '<header class="page-title' . esc_attr( $classes ) . "\"$style>";
+echo '<header class="page-title entry-title ' . esc_attr( $classes ) . "\"$style>";
 
 md_overlay( 'page' );
 
-echo $has_header_cover ? '<div class="inner">' : '';
+echo $has_header_cover || ! md_has_sidebar() ? '<div class="inner">' : '';
 
 md_featured_media( 'page', array( 'show_image' => array( 'above_headline' ) ) );
 
@@ -73,6 +73,6 @@ else { // Default view (Wide)
 
 do_action( 'md_hook_page_title_bottom' );
 
-echo $has_header_cover ? '</div>' : '';
+echo $has_header_cover || ! md_has_sidebar() ? '</div>' : '';
 
 echo '</header>';
