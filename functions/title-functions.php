@@ -318,6 +318,9 @@ function md_get_byline( $position, $args = array() ) {
 	$byline = $items = array();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
+	if ( empty( $args['context'] ) )
+		$args['context'] = 'parent';
+
 	// Skip build if no byline on page
 
 	if ( ! empty( $loop['remove_byline'][$position] ) || ! empty( $loop['remove_byline']['remove'] ) )
@@ -353,9 +356,5 @@ function md_get_byline( $position, $args = array() ) {
 			}
 	}
 
-	return apply_filters( 'md_filter_byline_items', $byline, array(
-		'position' => $position,
-		'args' => $args,
-		'loop' => $loop
-	) );
+	return apply_filters( 'md_filter_byline_items', $byline, $position, $args );
 }
