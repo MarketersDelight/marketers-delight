@@ -13,8 +13,12 @@ elseif ( $fields['term'] == 'all' )
 else
 	$categories[] = esc_attr( $fields['term'] );
 
-foreach ( $categories as $category )
-	$terms = array_merge( $terms, get_the_terms( $post_id, $category ) );
+foreach ( $categories as $category ) {
+	$category_terms = get_the_terms( $post_id, $category );
+
+	if ( ! is_wp_error( $category_terms ) )
+		$terms = array_merge( $terms, $category_terms );
+}
 
 if ( empty( $terms ) )
 	return;

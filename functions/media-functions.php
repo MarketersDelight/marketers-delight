@@ -18,6 +18,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 
 	$permalink = '';
 	$type = $media['media_type'];
+	$type_class = str_replace( '_', '-', $type );
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() )
 		$permalink = get_permalink();
@@ -31,9 +32,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
     elseif ( is_author() )
 		$size = 250;
 
-	$classes = array( 'featured-media', 'media-' . str_replace( '_', '-', $type ) );
 	$style = ! empty( $media['image_width'] ) ? md_style( array( 'max_width' => $media['image_width'] . 'px' ) ) : '';
-	$classes = join( ' ', $classes );
 
 	include md_template( 'featured-media', true );
 }
@@ -238,6 +237,9 @@ function md_cover_classes( $context = 'post' ) {
 		return $classes;
 
 	$classes[] = 'cover';
+
+	if ( $context == 'page' && $cover['position'] == 'headline_cover' )
+		$classes[] = 'inner';
 
 	if ( ! empty( $cover['display']['alternate'] ) )
 		$classes[] = 'alt';

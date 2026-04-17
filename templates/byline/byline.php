@@ -1,8 +1,8 @@
 <?php
 
-echo "<$html class=\"" .  esc_attr( $classes ) . '">';
+ob_start();
 
-foreach ( $items as $item => $groups ) {
+foreach ( $items as $item => $groups )
 	foreach ( $groups as $group => $fields ) {
         $fields['c'] = $c;
 
@@ -13,6 +13,10 @@ foreach ( $items as $item => $groups ) {
 
 		$c++;
 	}
-}
 
-echo "</$html>";
+$content = trim( ob_get_clean() );
+
+if ( empty( $content ) )
+	return;
+
+echo "<$html class=\"" .  esc_attr( $classes ) . '">' . $content . "</$html>";

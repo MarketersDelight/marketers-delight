@@ -8,7 +8,8 @@ if ( isset( $args['byline'] ) )
 
 do_action( "md_hook_before_{$context}_title" );
 
-echo "<{$h} class=\"title\">" . $title . "</{$h}>";
+if ( ! empty( $title ) )
+	echo "<{$h} class=\"title\">" . $title . "</{$h}>";
 
 do_action( "md_hook_after_{$context}_title" );
 

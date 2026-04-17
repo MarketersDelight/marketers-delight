@@ -258,9 +258,9 @@ class md_byline extends md_api {
 		$this->fields->byline_fields( $group );
 
 		if ( isset( $_GET['post_type'] ) )
-			$post_type = esc_attr( $_GET['post_type'] );
+			$post_type = sanitize_text_field( $_GET['post_type'] );
 		elseif ( isset( $_GET['page'] ) )
-			$post_type = esc_attr( $_GET['page'] );
+			$post_type = sanitize_text_field( $_GET['page'] );
 
 		$post_type = md_clean_id( $post_type );
 		$terms = get_object_taxonomies( $post_type );

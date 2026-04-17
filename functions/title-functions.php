@@ -13,7 +13,9 @@ function md_the_title( $context = 'post', $args = array() ) {
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
 		$h = $category_posts ? 'h3' : 'h2';
-		$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
+
+		if ( ! empty( $title ) )
+			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
 	}
 
 	include md_template( 'title', true );
@@ -60,7 +62,7 @@ function md_get_title( $context = 'post' ) {
 	elseif ( is_day() )
 		$title = get_the_date( 'F j, Y' );
 
-	return $title;
+	return trim( $title );
 }
 
 /**
@@ -74,7 +76,10 @@ function md_get_title( $context = 'post' ) {
  */
 
 function md_title( $context = 'post', $args = array() ) {
-	if ( ! md_get_title( $context ) )
+	if ( ! apply_filters( "md_has_{$context}_title", true, $args ) )
+		return;
+
+	if ( ! md_get_title( $context ) && $context !== 'post' )
 		return;
 
 	$has_header_cover = md_has_header_cover( $context );

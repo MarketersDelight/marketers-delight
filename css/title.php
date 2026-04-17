@@ -6,6 +6,8 @@
 
 .page-title, .header-cover .article-wrap > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
+.post-title:empty { display: none; }
+
 .entry-title, .title-wrap,
 .wide .inner, .wide .wrap,
 .image-title .wrap,
@@ -13,7 +15,11 @@
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
+	max-width: 100%;
+	width: auto;
 }
+
+.title-wrap { flex: 1; }
 
 /* TITLE, LEDE, SUBTITLE, DESC, CTA */
 
@@ -64,7 +70,7 @@
 
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
 
-.byline-edit:last-child { margin-inline-start: auto; }
+.byline:not(.can-wrap).byline-edit:last-child { margin-inline-start: auto; }
 
 .byline-item .md-icon-twitter { color: #1da1f2; }
 

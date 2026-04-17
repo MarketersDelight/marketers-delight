@@ -28,14 +28,14 @@
 
 .header-cover .main { padding-block-start: 0; }
 
-.loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.content:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 /* BOX STYLE */
 
 .box-style.main { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
 .box, .box-style .entry,
-.page-title.inline.cover, .page-title.inline.cover .overlay,
+.content :is(.page-title.cover, .page-title.cover .overlay),
 .featured-media, .featured-media img,
 .box-style .entry .item:nth-child(1 of .item):nth-last-child(1 of .item) { border-radius: 8px; }
 
@@ -48,7 +48,8 @@
 .box-style .entry .item:nth-last-child(1 of .item),
 .image-above :is(.cover, .cover .overlay, .featured-media + .item) { border-radius: 0 0 8px 8px; }
 
-.box-style .image-below .featured-media img { border-radius: 0; }
+.box-style .image-below .featured-media img,
+.box-style .entry.image-below .featured-media + .the-content { border-radius: 0; }
 
 .box, .box-style .entry,
 .cover, .featured-media img { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
@@ -76,7 +77,7 @@
 
 .box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
 
-.box-style .post-title:not(.cover) + .the-content { padding-block-start: 0; }
+.box-style .post-title:not(.cover):not(:empty) + .the-content { padding-block-start: 0; }
 
 /* PLAIN + BORDER STYLES */
 
@@ -116,14 +117,10 @@
 	.box-style .full .item { padding: <?php echo $mid; ?>px; }
 	.box-style.compact .full .post-title { padding-block-end: <?php echo $single; ?>px; }
 	.slim .cover { padding-inline: <?php echo $half; ?>px; }
-	.expanded .item .wrap {
+	.expanded .item:not(.post-title) .wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 		width: 100%;
-	}
-	.expanded .image-title .wrap {
-		max-width: 100%;
-		width: auto;
 	}
 }
 
@@ -143,11 +140,9 @@
 
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.cover .inner { padding-inline: 0; }
-/*
-	.main .page-title.cover,
-	.main.row .cover,
-	.main .row .entry .cover,
-	.box-style .full :is(.entry .item, .image-full .featured-media) { margin-inline: -<?php echo $half; ?>px; }
-*/
+	.cover .inner {
+		padding-inline: 0;
+		width: 100%;
+	}
+	.box-style .loop-article.full .entry { margin-inline: -<?php echo $half; ?>px; }
 }
