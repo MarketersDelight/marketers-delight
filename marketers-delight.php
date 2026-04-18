@@ -63,6 +63,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/sanitize.php';
 		require_once MD_DIR . 'api/design.php';
 		require_once MD_DIR . 'api/css.php';
+		require_once MD_DIR . 'api/theme-json.php';
 		require_once MD_DIR . 'api/js.php';
 		require_once MD_DIR . 'api/data.php';
 		require_once MD_DIR . 'api/fields.php';
@@ -111,8 +112,6 @@ final class marketers_delight {
 		add_theme_support( 'post-thumbnails' );
 		add_post_type_support( 'page', 'excerpt' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
-		add_theme_support( 'align-wide' );
-		add_theme_support( 'editor-color-palette', md_editor_colors() );
 
 		// Register Nav Menus
 		register_nav_menus( array(

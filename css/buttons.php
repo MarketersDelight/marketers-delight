@@ -40,7 +40,7 @@ button, .button, input[type="submit"] {
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
-	border-radius: 5px;
+	border-radius: 6px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;

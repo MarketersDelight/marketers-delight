@@ -114,6 +114,9 @@ class md_css {
 				$this->save( $file );
 		}
 
+		$theme_json = new md_theme_json;
+		$theme_json->generate();
+
 		wp_cache_flush();
 	}
 

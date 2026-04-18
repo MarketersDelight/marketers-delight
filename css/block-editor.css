@@ -1,36 +1,6 @@
 /*------------------------------*\
-	$COLORS
+	$BLOCK_EDITOR
 \*------------------------------*/
-div.editor-styles-wrapper .has-primary-background-color { background-color: #AE2525; }
-div.editor-styles-wrapper .has-primary-color { color: #AE2525; }
-div.editor-styles-wrapper .has-secondary-background-color { background-color: #2E2E2E; }
-div.editor-styles-wrapper .has-secondary-color { color: #2E2E2E; }
-div.editor-styles-wrapper .has-tertiary-background-color { background-color: #DDDDDD; }
-div.editor-styles-wrapper .has-tertiary-color { color: #DDDDDD; }
-div.editor-styles-wrapper .has-action-background-color { background-color: #EDF6FD; }
-div.editor-styles-wrapper .has-action-color { color: #EDF6FD; }
-div.editor-styles-wrapper .has-accent-background-color { background-color: #FFFBCC; }
-div.editor-styles-wrapper .has-accent-color { color: #FFFBCC; }
-div.editor-styles-wrapper .has-white-background-color { background-color: #FFFFFF; }
-div.editor-styles-wrapper .has-white-color { color: #FFFFFF; }
-div.editor-styles-wrapper .has-text-background-color { background-color: #1E1E1E; }
-div.editor-styles-wrapper .has-text-color { color: #1E1E1E; }
-div.editor-styles-wrapper .has-text-sec-background-color { background-color: #777777; }
-div.editor-styles-wrapper .has-text-sec-color { color: #777777; }
-div.editor-styles-wrapper .has-links-background-color { background-color: #AE2525; }
-div.editor-styles-wrapper .has-links-color { color: #AE2525; }
-div.editor-styles-wrapper .has-button-background-color { background-color: #22A340; }
-div.editor-styles-wrapper .has-button-color { color: #22A340; }
-div.editor-styles-wrapper .has-button-sec-background-color { background-color: #999999; }
-div.editor-styles-wrapper .has-button-sec-color { color: #999999; }
-/*------------------------------*\
-	$TYPOGRAPHY
-\*------------------------------*/
-div.editor-styles-wrapper a, div.editor-styles-wrapper a:hover {
-	color: #AE2525;
-	text-decoration: underline;
-}
-div.editor-styles-wrapper a:hover { text-decoration: none; }
 /* ICONS */
 @font-face {
 	font-family: md-icon;
@@ -46,254 +16,36 @@ div.editor-styles-wrapper a:hover { text-decoration: none; }
 	font-variant: normal;
 	font-weight: 400;
 	line-height: 1;
-	speak: none;
 	text-align: center;
 	text-decoration: inherit;
 	text-transform: none;
 }
 .md-icon.icon-data:before { content: attr(data-md-icon); }
-/* WRAPS */
-.wp-block { max-width: 651px; }
-@media all and (min-width: 900px) {
-	.editor-styles-wrapper .alignwide, .editor-styles-wrapper .wp-block[data-align="wide"] { max-width: 744px; }
-}
-/* MAIN TYPE */
-div.editor-styles-wrapper {
-		background-color: #FFFFFF;
-		color: #1E1E1E;
-}
-#editor .editor-post-title__block .editor-post-title__input,
-div.editor-styles-wrapper h1,
-div.editor-styles-wrapper h2,
-div.editor-styles-wrapper h3,
-div.editor-styles-wrapper h4,
-div.editor-styles-wrapper h5,
-div.editor-styles-wrapper h6 { color: #1E1E1E; }
-div.editor-styles-wrapper h2:not(:first-child),
-div.editor-styles-wrapper h3:not(:first-child),
-div.editor-styles-wrapper h4:not(:first-child),
-div.editor-styles-wrapper h5:not(:first-child) { margin-top: 47px; }
-div.editor-styles-wrapper ol, div.editor-styles-wrapper ul { padding-left: 62px; }
-div.editor-styles-wrapper li { margin-bottom: 10px; }
-div.editor-styles-wrapper p {
-	margin-bottom: 31px;
-	margin-top: 0;
-}
-div.editor-styles-wrapper p:last-child, div.editor-styles-wrapper p:empty { margin-bottom: 0; }
-.wp-block.wp-block-heading { margin-bottom: 16px; }
-.editor-block-list__layout .editor-block-list__block:not([data-align="full"]) {
-	padding-left: 0;
-	padding-right: 0
-}
-.edit-post-visual-editor .editor-block-list__block .editor-block-list__block-edit {
-	margin-left: 0;
-	margin-right: 0
-}
-div.editor-styles-wrapper p.huge-title,
-div.editor-styles-wrapper p.large-title,
-div.editor-styles-wrapper p.med-title,
-div.editor-styles-wrapper p.mid-title,
-div.editor-styles-wrapper p.micro-title,
-div.editor-styles-wrapper p.small-title { margin-top: 0; }
-.editor-styles-wrapper .intro {
-	font-size: 23px;
-	line-height: 34px;
-}
-div.editor-styles-wrapper,
-div.editor-styles-wrapper p,
-.editor-post-title__block .editor-post-title__input {
-	font-size: 19px;
-	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-		line-height: 31px;
-}
-div.editor-styles-wrapper .has-huge-font-size,
-div.editor-styles-wrapper .has-large-font-size,
-div.editor-styles-wrapper .has-medium-font-size,
-div.editor-styles-wrapper .has-small-font-size { line-height: initial; }
-div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text {
-	font-size: 65px;
-	line-height: 86px;
-}
-div.editor-styles-wrapper .huge-title {
-	font-weight: bold;
-}
-.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 43px;
-	line-height: 56px;
-}
-.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title {
-	font-weight: bold;
-}
-div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text {
-	font-size: 37px;
-	line-height: 50px;
-}
-div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title {
-	font-weight: bold;
-}
-div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text {
-	font-size: 30px;
-	line-height: 42px;
-}
-div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title {
-	font-weight: bold;
-}
-div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text {
-	font-size: 26px;
-	line-height: 36px;
-}
-div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title {
-	font-weight: bold;
-}
-div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text {
-	font-size: 22px;
-	line-height: 34px;
-}
-div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title {
-	font-weight: bold;
-}
-div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text {
-	font-size: 19px;
-	line-height: 29px;
-}
-div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title {
-	font-weight: bold;
-}
-@media all and (max-width: 900px) {
-	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { }
-	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { }
-	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { }
-	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { }
-	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { }
-	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
-}
-@media all and (max-width: 700px) {
-	div.editor-styles-wrapper .huge-title, div.editor-styles-wrapper .huge-text { font-size: 46px; line-height: 56px; }
-	.editor-post-title__block .editor-post-title__input, div.editor-styles-wrapper h1, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 37px; line-height: 48px; }
-	div.editor-styles-wrapper h2, div.editor-styles-wrapper .large-title, div.editor-styles-wrapper .large-text { font-size: 31px; line-height: 42px; }
-	div.editor-styles-wrapper h3, div.editor-styles-wrapper .med-title, div.editor-styles-wrapper .med-text { font-size: 26px; line-height: 36px; }
-	div.editor-styles-wrapper h4, div.editor-styles-wrapper .mid-title, div.editor-styles-wrapper .mid-text { font-size: 22px; line-height: 32px; }
-	div.editor-styles-wrapper h5, div.editor-styles-wrapper .small-title, div.editor-styles-wrapper .small-text { }
-	div.editor-styles-wrapper h6, div.editor-styles-wrapper .micro-title, div.editor-styles-wrapper .micro-text { }
-}
-/* SPACERS */
-.editor-block-list__layout .editor-default-block-appender > .editor-default-block-appender__content,
-.editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit,
-.editor-block-list__layout > .editor-block-list__layout > .editor-block-list__block > .editor-block-list__block-edit {
-	margin-bottom: 31px;
-	margin-top: 31px;
-}
-.block-library-list .editor-rich-text__tinymce,
-.block-library-list .editor-rich-text__tinymce ol,
-.block-library-list .editor-rich-text__tinymce ul,
-.editor-styles-wrapper ul.md-list { margin-left: 31px; }
-/* ALIGNMENTS */
-.text-center, .aligncenter.wrap-small { text-align: center; }
-.alignvertical {
-	position: absolute;
-		left: 50%;
-		top: 50%;
-	transform: translate(-50%,-50%);
-}
-/* FULL WIDTH */
-@media all and (min-width: 900px) {
-	.md-editor-full .wp-block.editor-post-title__block {
-		max-width: 1164px;
-		padding-left: 93px;
-		padding-right: 93px;
-	}
-	.md-editor-full .editor-post-title,
-	.md-editor-full .editor-post-title__block,
-	.md-editor-full .editor-post-title__block .editor-post-title__input {
-		padding-left: 0;
-		padding-right: 0;
-		word-break: normal;
-	}
-	.md-editor-full .editor-post-title__input { text-align: center; }
-}
-/* POST STYLES */
-.wp-block-image figcaption {
-	color: #777777;
-	font-style: italic;
-	font-size: 0.9em;
-	margin-bottom: 0;
-	text-align: center;
-}
-.block-library-list .editor-rich-text__tinymce,
-.block-library-list .editor-rich-text__tinymce ol,
-.block-library-list .editor-rich-text__tinymce ul,
-.editor-styles-wrapper ul.md-list {
-	list-style: square;
-	padding-left: 0;
-}
-/* DESIGN / OVERLAYS / SHADOWS */
-.wp-block.note { background-color: #DDDDDD; }
-.wp-block.alert { background-color: #FFFBCC; }
-.image-overlay {
-	background-position: center top;
-	background-size: cover;
-	display: block;
+/* LISTS */
+.editor-styles-wrapper :is(ul, ol) { margin-block-end: 31px; }
+.editor-styles-wrapper ul { list-style: square; }
+.editor-styles-wrapper :is(ul[class^="list"], [class^="list"] ul) { list-style: none; }
+.editor-styles-wrapper li {
+	margin-block-end: 16px;
 	position: relative;
-	z-index: 10;
 }
-.image-overlay:after {
-	background-color: rgba(0, 0, 0, 0.5);
-	content: '';
-	display: block;
-	height: 100%;
-	position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		top: 0;
-	width: 100%;
-	z-index: -1;
+.editor-styles-wrapper ul ul {
+	margin-block-end: 16px;
+	margin-inline-start: 16px;
 }
-.has-shadow, .shadow, .wp-block-image.shadow img { box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2); }
-.shadow-large, .wp-block-image.shadow-large img { box-shadow: 0 5px 55px rgba(0, 0, 0, 0.15); }
-.shadow-small, .wp-block-image.shadow-small img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); }
-.wp-block-image.shadow, .wp-block-image.shadow-large, .wp-block-image.shadow-small { box-shadow: none; }
-/*------------------------------*\
-	$BUTTONS
-\*------------------------------*/
-.md-button, .md-submit {
-	background-color: #22A340;
-	border: 0;
-	border-radius: 5px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	color: #FFFFFF;
-	cursor: pointer;
-	font-size: inherit;
+.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: 31px; }
+/* BUTTONS */
+.editor-styles-wrapper :is(button, .button, input[type="submit"], .wp-block-button .wp-element-button) {
+	align-items: center;
+	appearance: none;
+	display: inline-flex;
 	font-family: inherit;
-	display: inline-block;
+	font-size: inherit;
 	font-style: normal;
-	padding: 16px;
-	position: relative;
-	text-align: center;
-	z-index: 10;
-	transition: 0.3s;
+	gap: 10px 16px;
+	justify-content: center;
+	line-height: 1;
+	padding: 16px 26px;
+	text-decoration: none;
 }
-.md-button:hover, .md-submit:hover { transform: translateY(1px); }
-/* SIZES */
-.md-button.md-button-large {
-	font-size: 1.4em;
-	padding: 31px 47px;
-}
-/* OUTLINE */
-.md-submit.md-submit-outline {
-	background-color: transparent;
-	border: 3px solid #22A340;
-	border-radius: 5px;
-	color: #22A340;
-}
-/* ARROW */
-.md-button.md-button-arrow:after {
-	content: '\e80f';
-	display: inline-block;
-	font-family: 'md-icon';
-	margin-left: 13px;
-	transition: 0.3s;
-}
-.md-button.md-button-arrow:hover:after { transform: translateX(4px); }
 .md-icon-angle-down:before{content:'\e80e'}.md-icon-angle-left:before{content:'\e816'}.md-icon-angle-right:before{content:'\e80f'}.md-icon-angle-up:before{content:'\e817'}.md-icon-bell:before{content:'\f0f3'}.md-icon-bolt:before{content:'\e823'}.md-icon-book:before{content:'\e828'}.md-icon-cancel:before{content:'\e810'}.md-icon-cart:before{content:'\e825'}.md-icon-chat:before{content:'\e811'}.md-icon-check:before{content:'\e90'}.md-icon-clock:before{content:'\e812'}.md-icon-coin-dollar:before{content:'\e910'}.md-icon-copy:before{content:'\e901'}.md-icon-calendar:before{content:'\e90c'}.md-icon-code:before{content:'\f121'}.md-icon-cog:before{content:'\e906'}.md-icon-devices:before{content:'\e915'}.md-icon-devices-mobile:before{content:'\e914'}.md-icon-discord:before{content:'\e912'}.md-icon-download:before{content:'\e822'}.md-icon-drop:before{content:'\e909'}.md-icon-exclamation:before{content:'\f12a'}.md-icon-eye:before{content:'\e81e'}.md-icon-facebook:before,.md-icon-facebook-squared:before{content:'\f09a'}.md-icon-filter:before{content:'\e90f'}.md-icon-font:before{content:'\e90b'}.md-icon-forum:before{content:'\e902'}.md-icon-game:before{content:'\e911'}.md-icon-github:before,.md-icon-github-squared:before{content:'\e802'}.md-icon-hand:before{content:'\f256'}.md-icon-heart:before{content:'\e821'}.md-icon-heart-empty:before{content:'\e801'}.md-icon-home:before{content:'\e907'}.md-icon-image:before{content:'\e908'}.md-icon-instagram:before{content:'\e805'}.md-icon-key:before{content:'\e82a'}.md-icon-like:before{content:'\e820'}.md-icon-location:before{content:'\e947'}.md-icon-url:before{content:'\e827'}.md-icon-linkedin:before,.md-icon-linkedin-squared:before{content:'\f0e1'}.md-icon-loading:before{content:'\e832'}.md-icon-mail-alt:before{content:'\e814'}.md-icon-menu:before{content:'\e815'}.md-icon-moon:before{content:'\e91e'}.md-icon-notification:before{content:'\e905'}.md-icon-ok:before,.md-icon-ok-circled:before,.list-check li:before{content:'\e804'}.md-icon-pencil:before{content:'\e80d'}.md-icon-phone:before{content:'\e806'}.md-icon-pin:before{content:'\e803'}.md-icon-pinterest:before,.md-icon-pinterest-squared:before{content:'\f231'}.md-icon-play:before{content:'\e90e'}.md-icon-plus:before{content:'\ea0a'}.md-icon-plugin:before{content:'\e90a'}.md-icon-publish:before{content:'\e916'}.md-icon-quote:before{content:'\f10e'}.md-icon-reply:before{content:'\f112'}.md-icon-rss:before{content:'\f09e'}.md-icon-search:before{content:'\e813'}.md-icon-share:before{content:'\e81c'}.md-icon-social:before{content:'\e900'}.md-icon-stack:before{content:'\e904'}.md-icon-star:before{content:'\e81b'}.md-icon-sun:before{content:'\e91f'}.md-icon-support:before{content:'\e903'}.md-icon-tags:before{content:'\e829'}.md-icon-telegram:before{content:'\e839'}.md-icon-tiktok:before{content:'\e83a'}.md-icon-trophy:before{content:'\e824'}.md-icon-twitch:before{content:'\e913'}.md-icon-user:before{content:'\e819'}.md-icon-user-add:before{content:'\e818'}.md-icon-vimeo:before,.md-icon-vimeo-squared:before{content:'\e809'}.md-icon-volume-up:before{content:'\e826'}.md-icon-whatsapp:before{content:'\f232'}.md-icon-wordpress:before{content:'\e90d'}.md-icon-x:before,.md-icon-twitter:before{content:'\e800'}.md-icon-youtube:before,.md-icon-youtube-play:before{content:'\e807'}

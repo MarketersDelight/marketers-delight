@@ -1,0 +1,228 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "color": {
+            "defaultPalette": false,
+            "defaultGradients": false,
+            "palette": [
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#AE2525"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary",
+                    "color": "#2E2E2E"
+                },
+                {
+                    "name": "Tertiary",
+                    "slug": "tertiary",
+                    "color": "#DDDDDD"
+                },
+                {
+                    "name": "Action",
+                    "slug": "action",
+                    "color": "#EDF6FD"
+                },
+                {
+                    "name": "Accent",
+                    "slug": "accent",
+                    "color": "#FFFBCC"
+                },
+                {
+                    "name": "White",
+                    "slug": "white",
+                    "color": "#FFFFFF"
+                },
+                {
+                    "name": "Text",
+                    "slug": "text",
+                    "color": "#1E1E1E"
+                },
+                {
+                    "name": "Secondary Text",
+                    "slug": "text-sec",
+                    "color": "#777777"
+                },
+                {
+                    "name": "Links",
+                    "slug": "links",
+                    "color": "#AE2525"
+                },
+                {
+                    "name": "Button",
+                    "slug": "button",
+                    "color": "#22A340"
+                },
+                {
+                    "name": "Button Secondary",
+                    "slug": "button-sec",
+                    "color": "#999999"
+                }
+            ]
+        },
+        "typography": {
+            "defaultFontSizes": false,
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "19px"
+                },
+                {
+                    "name": "Normal",
+                    "slug": "normal",
+                    "size": "19px"
+                },
+                {
+                    "name": "Intro",
+                    "slug": "intro",
+                    "size": "23px"
+                },
+                {
+                    "name": "H3",
+                    "slug": "h3",
+                    "size": "30px"
+                },
+                {
+                    "name": "H2",
+                    "slug": "h2",
+                    "size": "37px"
+                },
+                {
+                    "name": "H1",
+                    "slug": "h1",
+                    "size": "43px"
+                },
+                {
+                    "name": "Huge",
+                    "slug": "huge",
+                    "size": "65px"
+                }
+            ],
+            "fontFamilies": [
+                {
+                    "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "name": "Body",
+                    "slug": "body"
+                }
+            ]
+        },
+        "layout": {
+            "contentSize": "651px",
+            "wideSize": "868px"
+        },
+        "spacing": {
+            "padding": false
+        }
+    },
+    "styles": {
+        "color": {
+            "background": "#FFFFFF",
+            "text": "#1E1E1E"
+        },
+        "typography": {
+            "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+            "fontSize": "19px",
+            "lineHeight": "1.632"
+        },
+        "elements": {
+            "heading": {
+                "color": {
+                    "text": "#1E1E1E"
+                },
+                "typography": {
+                    "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "fontWeight": "700"
+                }
+            },
+            "h1": {
+                "typography": {
+                    "fontSize": "43px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.302"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontSize": "37px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.351"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontSize": "30px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.4"
+                }
+            },
+            "h4": {
+                "typography": {
+                    "fontSize": "26px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.385"
+                }
+            },
+            "h5": {
+                "typography": {
+                    "fontSize": "22px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.545"
+                }
+            },
+            "h6": {
+                "typography": {
+                    "fontSize": "19px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.526"
+                }
+            },
+            "link": {
+                "color": {
+                    "text": "#AE2525"
+                }
+            }
+        },
+        "blocks": {
+            "core/button": {
+                "border": {
+                    "radius": "6px"
+                },
+                "color": {
+                    "background": "#22A340",
+                    "text": "#FFFFFF"
+                },
+                "shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",
+                "spacing": {
+                    "padding": {
+                        "top": "16px",
+                        "right": "26px",
+                        "bottom": "16px",
+                        "left": "26px"
+                    }
+                },
+                "typography": {
+                    "lineHeight": "1"
+                },
+                "variations": {
+                    "outline": {
+                        "border": {
+                            "width": "3px"
+                        }
+                    }
+                }
+            },
+            "core/post-title": {
+                "typography": {
+                    "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "fontSize": "43px",
+                    "fontWeight": "700",
+                    "lineHeight": "1.302"
+                }
+            }
+        }
+    }
+}
