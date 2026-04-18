@@ -187,38 +187,7 @@ class md_theme_json {
 					'padding' => false
 				)
 			),
-			'styles' => array(
-				'color' => array(
-					'background' => ( md_setting( array( 'content', 'style' ) ) == 'minimal' ? $this->colors['site']['bg_color'] : $this->colors['content']['bg_color'] ),
-					'text' => $this->colors['site']['text']
-				),
-				'typography' => array(
-					'fontFamily' => $this->body_font_family,
-					'fontSize' => $this->body_font_size . 'px',
-					'lineHeight' => $this->line_height( $this->body_font_size, $this->line_height )
-				),
-				'elements' => array(
-					'heading' => array(
-						'color' => array(
-							'text' => $this->colors['site']['headline']
-						),
-						'typography' => array(
-							'fontFamily' => $this->heading_font,
-							'fontWeight' => $this->heading_font_weight
-						)
-					),
-					'h1' => $this->heading_style( 'h1' ),
-					'h2' => $this->heading_style( 'h2' ),
-					'h3' => $this->heading_style( 'h3' ),
-					'h4' => $this->heading_style( 'h4' ),
-					'h5' => $this->heading_style( 'h5' ),
-					'h6' => $this->heading_style( 'h6' ),
-					'link' => array(
-						'color' => array(
-							'text' => $this->colors['site']['links']
-						)
-					)
-				),
+			'styles' => apply_filters( 'md_theme_json_styles', array(
 				'blocks' => array(
 					'core/button' => array(
 						'border' => array(
@@ -257,7 +226,7 @@ class md_theme_json {
 						)
 					)
 				)
-			)
+			), $this->values )
 		), $this->values );
 	}
 

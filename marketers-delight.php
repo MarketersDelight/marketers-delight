@@ -50,6 +50,9 @@ final class marketers_delight {
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
 		add_filter( 'query_vars', array( $this, 'query_vars' ) );
+
+		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) )
+			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
 	}
 
 	/**
@@ -216,10 +219,8 @@ final class marketers_delight {
 
 		// Dequeue Blocks Library if necessary
 		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
-//		    global $wp_styles;
-//		    $wp_styles->remove('global-styles');
 			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'classic-theme-styles' );
+			wp_dequeue_style( 'global-styles' );
 		}
 
 		// Load stupid legacy MailerLite script

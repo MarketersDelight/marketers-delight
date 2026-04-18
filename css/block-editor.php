@@ -28,6 +28,54 @@
 
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 
+/* BASE */
+
+.editor-styles-wrapper {
+	background-color: <?php echo md_setting( array( 'content', 'style' ) ) == 'minimal' ? $colors['site']['bg_color'] : $colors['content']['bg_color']; ?>;
+	color: <?php echo $colors['site']['text']; ?>;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper a { color: <?php echo $colors['site']['links']; ?>; }
+
+.editor-styles-wrapper :is(h1, h2, h3, h4, h5, h6, .wp-block-heading) {
+	color: <?php echo $colors['site']['headline']; ?>;
+	font-family: <?php echo ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $typography['body']['font_family']; ?>;
+	font-weight: <?php echo ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : ( ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : '700' ); ?>;
+}
+
+.editor-styles-wrapper h1 {
+	font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h1']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper h2 {
+	font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h2']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper h3 {
+	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper h4 {
+	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper h5 {
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
+}
+
+.editor-styles-wrapper h6 {
+	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+}
+
 /* LISTS */
 
 .editor-styles-wrapper :is(ul, ol) { margin-block-end: <?php echo $single; ?>px; }
