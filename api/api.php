@@ -60,7 +60,7 @@ class md_api {
 			add_filter( 'md_js_templates', array( $this, 'js' ) );
 
 		if ( method_exists( $this, 'onscroll' ) ) #since 5.4.2
-			add_filter( 'md_js_onscroll', array( $this, 'onscroll' ) );
+			add_filter( 'md_hook_js_onscroll', array( $this, 'onscroll' ) );
 
 		// Frontend
 

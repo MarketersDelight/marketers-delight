@@ -40,7 +40,7 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 						md_link( $link );
 					}
 
-				do_action( 'md_hook_header_triggers' );
+				md_hook_header_triggers();
 
 				echo '</div>';
 

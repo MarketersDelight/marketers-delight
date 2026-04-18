@@ -145,6 +145,14 @@ function md_hook_loop_top() {
 	do_action( 'md_hook_loop_top' );
 }
 
+function md_hook_loop_before() {
+	do_action( 'md_hook_loop_before' );
+}
+
+function md_hook_loop_after() {
+	do_action( 'md_hook_loop_after' );
+}
+
 function md_hook_content_item() {
 	$data = apply_filters( 'md_content_item_data', array() );
 	do_action( 'md_hook_content_item', 'content_item', $data );
@@ -248,4 +256,12 @@ function md_hook_after_footer_copy() {
 
 function md_hook_js() {
 	do_action( 'md_hook_js' );
+}
+
+function md_hook_js_custom_triggers() {
+	do_action( 'md_hook_js_custom_triggers' );
+}
+
+function md_hook_js_onscroll() {
+	do_action( 'md_hook_js_onscroll' );
 }

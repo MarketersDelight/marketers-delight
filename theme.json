@@ -153,7 +153,7 @@
                     "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
                     "fontSize": "43px",
                     "fontWeight": "700",
-                    "lineHeight": "1.302"
+                    "lineHeight": 1
                 }
             }
         }

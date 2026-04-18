@@ -155,7 +155,7 @@ triggers: function() {
 			if ( type === 'search' )
 				container.querySelector( '.input' ).focus();
 
-			<?php do_action( 'md_js_custom_triggers' ); ?>
+			<?php md_hook_js_custom_triggers(); ?>
 		}
 	}
 },
@@ -170,7 +170,7 @@ sticky: function( selector ) {
 	observer.observe( el );
 },
 
-<?php if ( has_action( 'md_js_onscroll' ) ) : ?>
+<?php if ( has_action( 'md_hook_js_onscroll' ) ) : ?>
 
 onScroll: function() {
 	var pos = 0, ticking = false;
@@ -183,7 +183,7 @@ onScroll: function() {
 				var contentBoxOffsetTop = contentBox.offsetTop,
 					content = document.getElementById( 'the_content' );
 				if ( content == null ) return;
-				<?php do_action( 'md_js_onscroll' ); ?>
+				<?php md_hook_js_onscroll(); ?>
 				ticking = false;
 			});
 		}

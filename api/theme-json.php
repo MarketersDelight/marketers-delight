@@ -51,13 +51,13 @@ class md_theme_json {
 	}
 
 	/**
-	 * Return line-height as a unitless ratio.
+	 * Return line-height for em format.
 	 *
 	 * @since 6.0
 	 */
 
 	private function line_height( $font_size, $line_height ) {
-		return (string) round( $line_height / $font_size, 3 );
+		return round( $line_height / $font_size );
 	}
 
 	/**

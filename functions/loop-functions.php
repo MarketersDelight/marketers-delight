@@ -275,7 +275,7 @@ function md_loop( $args = array() ) {
 
 	// Render Loop templates
 
-	do_action( 'md_loop_before' );
+	md_hook_loop_before();
 
 	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
@@ -300,7 +300,7 @@ function md_loop( $args = array() ) {
 	}
 	else md_404();
 
-	do_action( 'md_loop_after' );
+	md_hook_loop_after();
 }
 
 /**
