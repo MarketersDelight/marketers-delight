@@ -113,8 +113,11 @@ final class marketers_delight {
 		// Add WordPress Features
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
-		add_post_type_support( 'page', 'excerpt' );
+		add_theme_support( 'editor-styles' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
+		add_editor_style( 'css/editor/block-editor.css' );
+		add_editor_style( 'css/editor/classic-editor.css' );
+		add_post_type_support( 'page', 'excerpt' );
 
 		// Register Nav Menus
 		register_nav_menus( array(

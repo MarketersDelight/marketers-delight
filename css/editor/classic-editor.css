@@ -1,5 +1,5 @@
 /*------------------------------*\
-	$BLOCK_EDITOR
+	$CLASSIC_EDITOR
 \*------------------------------*/
 /* ICONS */
 @font-face {
@@ -9,7 +9,9 @@
 	font-style: normal;
 	font-weight: 400;
 }
-[class*="md-icon"]:before {
+.editor-styles-wrapper [class*="md-icon"]:before,
+body#tinymce [class*="md-icon"]:before,
+body.mce-content-body [class*="md-icon"]:before {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;
@@ -20,62 +22,82 @@
 	text-decoration: inherit;
 	text-transform: none;
 }
-.md-icon.icon-data:before { content: attr(data-md-icon); }
-/* BASE */
-.editor-styles-wrapper {
+.editor-styles-wrapper .md-icon.icon-data:before,
+body#tinymce .md-icon.icon-data:before,
+body.mce-content-body .md-icon.icon-data:before { content: attr(data-md-icon); }
+body#tinymce,
+body.mce-content-body {
 	background-color: #FFFFFF;
 	color: #1E1E1E;
 	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-size: 19px;
 	line-height: 31px;
+	max-width: 651px;
+	margin: 0 auto;
+	padding: 16px;
 }
-.editor-styles-wrapper a { color: #AE2525; }
-.editor-styles-wrapper :is(h1, h2, h3, h4, h5, h6, .wp-block-heading) {
+body#tinymce a,
+body.mce-content-body a { color: #AE2525; }
+body#tinymce :is(h1, h2, h3, h4, h5, h6),
+body.mce-content-body :is(h1, h2, h3, h4, h5, h6) {
 	color: #1E1E1E;
 	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
 	font-weight: 700;
+	margin-block-end: 16px;
 }
-.editor-styles-wrapper h1 {
+body#tinymce h1,
+body.mce-content-body h1 {
 	font-size: 43px;
 	line-height: 56px;
 }
-.editor-styles-wrapper h2 {
+body#tinymce h2,
+body.mce-content-body h2 {
 	font-size: 37px;
 	line-height: 50px;
 }
-.editor-styles-wrapper h3 {
+body#tinymce h3,
+body.mce-content-body h3 {
 	font-size: 30px;
 	line-height: 42px;
 }
-.editor-styles-wrapper h4 {
+body#tinymce h4,
+body.mce-content-body h4 {
 	font-size: 26px;
 	line-height: 36px;
 }
-.editor-styles-wrapper h5 {
+body#tinymce h5,
+body.mce-content-body h5 {
 	font-size: 22px;
 	line-height: 34px;
 }
-.editor-styles-wrapper h6 {
+body#tinymce h6,
+body.mce-content-body h6 {
 	font-size: 19px;
 	line-height: 29px;
 }
-/* LISTS */
-.editor-styles-wrapper :is(ul, ol) { margin-block-end: 31px; }
-.editor-styles-wrapper ul { list-style: square; }
-.editor-styles-wrapper :is(ul[class^="list"], [class^="list"] ul) { list-style: none; }
-.editor-styles-wrapper li {
+body#tinymce :is(ul, ol, p, hr, table, blockquote, pre),
+body.mce-content-body :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: 31px; }
+body#tinymce ul,
+body.mce-content-body ul { list-style: square; }
+body#tinymce li,
+body.mce-content-body li {
 	margin-block-end: 16px;
 	position: relative;
 }
-.editor-styles-wrapper ul ul {
+body#tinymce ul ul,
+body.mce-content-body ul ul {
 	margin-block-end: 16px;
 	margin-inline-start: 16px;
 }
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: 31px; }
-/* BUTTONS */
-.editor-styles-wrapper :is(button, .button, input[type="submit"], .wp-block-button .wp-element-button) {
+body#tinymce :is(button, .button, input[type="submit"]),
+body.mce-content-body :is(button, .button, input[type="submit"]) {
 	align-items: center;
 	appearance: none;
+	background-color: #22A340;
+	border: 0;
+	border-radius: 6px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	color: #FFFFFF;
 	display: inline-flex;
 	font-family: inherit;
 	font-size: inherit;

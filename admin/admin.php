@@ -8,8 +8,8 @@
 
 class md_admin {
 
-	public $requests;
 	public $sanitize;
+	public $requests;
 	public $files;
 
 	/**
@@ -59,8 +59,8 @@ class md_admin {
 
 	public function actions() {
 		$this->sanitize = new md_sanitize;
-		$this->files = new md_files;
 		$this->requests = new md_requests;
+		$this->files = new md_files;
 
 		add_action( 'wp_update_nav_menu', 'md_compile' );
 		// Admin pages
@@ -83,7 +83,6 @@ class md_admin {
 		add_action( 'edit_user_profile', array( $this, 'user_meta' ) );
 		add_action( 'profile_update', array( $this->sanitize, 'user_meta_save' ), 10, 2 );
 		// Enqueue
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor' ) );
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 		// Upgrader hooks
@@ -188,6 +187,7 @@ class md_admin {
 					'label_text' => __( 'Make this post sticky', 'md' ),
 					'sticky_text' => __( 'Sticky', 'md' )
 				) );
+
 			wp_add_inline_script( 'marketers-delight', 'MD.stickyPostTypes();' );
 		}
 
@@ -199,19 +199,6 @@ class md_admin {
 
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
-	}
-
-	/**
-	 * Load MD assets to Blocks Editor.
-	 *
-	 * @since 4.9
-	 */
-
-	public function enqueue_block_editor() {
-		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
-			wp_enqueue_style( 'md-block-editor', MD_URL . 'css/block-editor.css', array( 'wp-edit-blocks' ), md_ver( 'css/block-editor.css' ) );
-		else
-			wp_add_inline_style( 'wp-edit-post', get_option( 'marketers_delight_block-editor_css' ) );
 	}
 
 	/**

@@ -50,4 +50,4 @@ Before zipping MD, the following files should be emptied (not deleted) as they w
 
 1. `/style.css` (leave DocBlocks, OK to delete entire of Table of Contents)
 2. `/scripts.js`
-3. `/css/block-editor.css`
+3. `/css/editor/block-editor.css`

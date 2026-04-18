@@ -29,12 +29,20 @@ class md_css {
 		$files = array(
 			'style' => array(
 				'path' => MD_DIR . 'style.css',
-				'templates' => $this->style_css()
+				'icons' => true,
+				'templates' => $this->style_css(),
+			),
+			'classic-editor' => array(
+				'path' => MD_DIR . 'css/editor/classic-editor.css',
+				'icons' => true,
+				'templates' => array(
+					'classic-editor' => locate_template( 'css/editor/classic-editor.php' )
+				)
 			),
 			'block-editor' => array(
-				'path' => MD_DIR . 'css/block-editor.css',
+				'path' => MD_DIR . 'css/editor/block-editor.css',
 				'templates' => array(
-					'block-editor' => locate_template( 'css/block-editor.php' )
+					'block-editor' => locate_template( 'css/editor/block-editor.php' )
 				)
 			)
 		);
@@ -65,9 +73,7 @@ class md_css {
 			'widgets' => locate_template( 'css/widgets.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		);
-
 		$dropins = apply_filters( 'md_dropins_css_templates', array() );
-
 		$templates = array_merge( $templates, $dropins );
 
 		return apply_filters( 'md_style_css_templates', $templates );
@@ -131,9 +137,12 @@ class md_css {
 
 		if ( file_exists( $path ) ) {
 			ob_start();
+
 			$this->templates( $file );
+
 			$css = ob_get_clean();
 			$css = $this->clean( $css );
+
 			file_put_contents( $path, $css );
 		}
 	}
@@ -146,6 +155,7 @@ class md_css {
 
 	public function save( $file ) {
 		$css = $this->minify( $file );
+
 		update_option( "marketers_delight_{$file}_css", $css );
 	}
 
@@ -158,13 +168,18 @@ class md_css {
 
 	public function minify( $file ) {
 		ob_start();
+
 		$this->templates( $file );
+
 		$css = ob_get_clean();
 		$css = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css );
+
 		$s = array( "\r", "\n", "\t", ' }', '{ ', ' {', '; ', ': ', ', ', '   ' );
 		$r = array( '', '', '', '}', '{', '{', ';', ':', ',', '' );
+
 		$css = str_replace( $s, $r, $css );
 		$css = $this->clean( $css );
+
 		return $css;
 	}
 
@@ -177,6 +192,7 @@ class md_css {
 	public function clean( $css ) {
 		$css = str_replace( array( '<style type="text/css">', '<style type=\'text/css\'>', '<style>', '</style>' ), '', $css );
 		$css = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $css );
+
 		return trim( $css );
 	}
 
@@ -195,6 +211,7 @@ class md_css {
 		foreach ( $css_files as $css_group => $css_path ) {
 			$style_group_name = str_replace( '-', ' ', ucwords( $css_group ) );
 			$style_guide .= "\t\t{$c}. $style_group_name\n";
+
 			$c++;
 		}
 
@@ -303,7 +320,8 @@ class md_css {
 			echo "\n\n";
 		}
 
-		$this->icons_css();
+		if ( ! empty( $this->files[$file]['icons'] ) )
+			$this->icons_css();
 	}
 
 }
