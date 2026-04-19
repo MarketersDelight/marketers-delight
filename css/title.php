@@ -15,8 +15,6 @@
 	display: flex;
 	flex-direction: column;
 	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-	max-width: 100%;
-	width: auto;
 }
 
 .title-wrap { flex: 1; }

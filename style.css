@@ -895,8 +895,6 @@ summary::after {
 	display: flex;
 	flex-direction: column;
 	gap: 16px 31px;
-	max-width: 100%;
-	width: auto;
 }
 .title-wrap { flex: 1; }
 /* TITLE, LEDE, SUBTITLE, DESC, CTA */
