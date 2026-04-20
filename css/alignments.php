@@ -81,20 +81,20 @@ img.alignfull, .alignfull img { width: 100%; }
 }
 
 @media (min-width: <?php echo $site_width; ?>px) {
-	.expanded.box-style .alignfull {
+	.expanded .box-style .alignfull {
 		inset-inline: inherit;
 		width: auto;
 	}
-	.expanded.box-style .alignfull,
-	.expanded.box-style .alignleft.wrap, .expanded .row .image-left .featured-media,
+	.expanded .box-style .alignfull,
+	.expanded .box-style .alignleft.wrap, .expanded .row .image-left .featured-media,
 	.expanded :is(.alignleft, .wp-block-image .alignleft) { margin-inline-start: -<?php echo $breakout; ?>%; }
-	.expanded.box-style .alignfull,
-	.expanded.box-style .alignright.wrap, .expanded .row .image-right .featured-media,
+	.expanded .box-style .alignfull,
+	.expanded .box-style .alignright.wrap, .expanded .row .image-right .featured-media,
 	.expanded :is(.alignright, .wp-block-image .alignright) { margin-inline-end: -<?php echo $breakout; ?>%; }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {
-	.expanded.box-style .alignfull {
+	.expanded .box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;
 			inset-inline: 50%;
@@ -115,10 +115,10 @@ img.alignfull, .alignfull img { width: 100%; }
 	.columns .image-right .featured-media { margin-inline-start: <?php echo $half; ?>px; }
 	.columns :is(.image-inline, .image-title) .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
 	.slim :is(.image-inline, .image-title) .featured-media { max-width: <?php echo $quad; ?>px; }
-	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignleft.wrap,
-	.compact.box-style .entry.full .image-left .featured-media,
-	.box-style .columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }
-	.compact.box-style .full :is(.alignfull, .alignwide), .compact.box-style .full .alignright.wrap,
-	.compact.box-style .entry.full .image-right .featured-media,
-	.box-style .columns.full .image-right .featured-media { margin-inline-end: -<?php echo $mid; ?>px; }
+	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
+	.compact .box-style .entry.full .image-left .featured-media,
+	.box-style.columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }
+	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignright.wrap,
+	.compact .box-style .entry.full .image-right .featured-media,
+	.box-style.columns.full .image-right .featured-media { margin-inline-end: -<?php echo $mid; ?>px; }
 }

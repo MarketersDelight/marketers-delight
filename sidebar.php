@@ -1,6 +1,6 @@
 <?php if ( md_has_sidebar() ) {
 
-echo '<aside class="sidebar format">';
+echo '<aside class="sidebar">';
 
 md_hook_before_sidebar();
 

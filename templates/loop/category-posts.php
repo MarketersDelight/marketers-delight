@@ -1,6 +1,7 @@
 <?php
 
 $t = 1;
+$loop_class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
 $categories_classes = array( 'categories', "category-$loop_class" );
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';

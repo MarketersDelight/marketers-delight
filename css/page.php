@@ -34,17 +34,13 @@
 
 .breadcrumbs a:hover { text-decoration: none; }
 
-@media (min-width: <?php echo $post_width; ?>px) {
-	.expanded .breadcrumbs { margin-block-end: <?php echo $single; ?>px; }
-}
-
 @media (max-width: <?php echo $post_width; ?>px) {
-	.box-style.expanded .breadcrumbs:first-child,
-	.box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
+	.is-box-style .expanded .breadcrumbs:first-child,
+	.is-box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
 }
 
 @media (max-width: 900px) {
-	.box-style.compact .breadcrumbs:first-child { margin-top: -<?php echo $half; ?>px; }
+	.is-box-style .compact .breadcrumbs:first-child { margin-top: -<?php echo $half; ?>px; }
 }
 
 /* FEATURED IMAGE */

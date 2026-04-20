@@ -48,7 +48,6 @@ function md_content_box() {
 
 function md_content_box_classes() {
 	$classes = array( 'main' );
-	$style = md_content_style();
 
 	if ( md_has_sidebar() ) {
 		$classes[] = 'compact';
@@ -58,36 +57,11 @@ function md_content_box_classes() {
 		if ( $layout == 'sidebar_content' )
 			$classes[] = 'left';
 	}
-	else $classes[] = 'expanded';
-
-	if ( $style )
-		$classes[] = $style;
+	else
+		$classes[] = 'expanded';
 
 	$classes[] = 'format';
-
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
-
-	return join( ' ', $classes );
-}
-
-/**
- * A list of classes to add to content box.
- *
- * @since 4.5
- */
-
-function md_content_classes() {
-	$classes = array();
-	$classes[] = 'content';
-
-//	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
-//		$classes[] = 'inner';
-
-//	if ( is_singular() )
-//		$classes[] = md_loop_classes();
-
-//	$classes[] = 'format';
-	$classes = apply_filters( 'md_filter_content_classes', $classes );
 
 	return join( ' ', $classes );
 }
@@ -128,24 +102,6 @@ function md_post_class( $args = array(), $c = 1 ) {
 		$classes[] = 'has-cover';
 
 	return join( ' ', $classes );
-}
-
-/**
- * Determine the current content style.
- * $args are passed as $loop from Loop functions.
- *
- * @since 5.1
- */
-
-function md_content_style( $args = array() ) {
-	$style = md_setting( array( 'colors', 'design' ), 'box' );
-	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
-	$single = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() );
-
-	if ( $single && ! isset( $args['global'] ) )
-		$style = $single;
-
-	return "{$style}-style";
 }
 
 /**

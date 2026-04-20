@@ -178,7 +178,7 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 
 function md_loop_featured( $loop ) {
 	$loop['is_featured'] = true;
-	$featured_map = array(
+	$featured = array(
 		'featured_remove_byline' => 'remove_byline',
 		'featured_content' => 'content',
 		'featured_featured_image' => 'featured_image',
@@ -188,12 +188,12 @@ function md_loop_featured( $loop ) {
 		'featured_excerpt_settings' => 'excerpt_settings'
 	);
 
-	foreach ( $featured_map as $featured_key => $loop_key ) {
-		if ( empty( $loop[$featured_key] ) )
+	foreach ( $featured as $key => $loop_key ) {
+		if ( empty( $loop[$key] ) )
 			continue;
 
-		$loop[$loop_key] = $loop[$featured_key];
-		unset( $loop[$featured_key] );
+		$loop[$loop_key] = $loop[$key];
+		unset( $loop[$key] );
 	}
 
 	if ( ! empty( $loop['featured_post_footer']['remove'] ) ) {
@@ -202,6 +202,24 @@ function md_loop_featured( $loop ) {
 	}
 
 	return $loop;
+}
+
+/**
+ * Determine the current loop/content box style.
+ *
+ * @since 5.1
+ */
+
+function md_loop_style( $args = array() ) {
+	$body = md_setting( array( 'colors', 'design' ), 'box' );
+
+	if ( isset( $args['body'] ) )
+		return "{$body}-style";
+
+	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
+	$style = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() ) ?: $body;
+
+	return "{$style}-style";
 }
 
 /**
@@ -216,7 +234,11 @@ function md_loop_classes( $loop = array() ) {
 
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
 	$loop_class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
+	$style = md_loop_style();
 	$loop_classes = array( 'loop', $loop_class, "loop-{$loop_type}" );
+
+	if ( $style )
+		$loop_classes[] = $style;
 
 	if ( $loop['columns'] > 1 ) {
 		$loop_classes[] = 'columns';
@@ -224,7 +246,7 @@ function md_loop_classes( $loop = array() ) {
 
 		if (
 			$loop['columns'] >= 3 ||
-			( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) || ! empty( $loop['by_category'] ) ) )
+			( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) ) )
 		)
 			 $loop_classes[] = 'slim';
 		else
@@ -240,13 +262,8 @@ function md_loop_classes( $loop = array() ) {
 //	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
 //		$loop_classes[] = 'slim';
 
-
-
 	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
 		$loop_classes[] = 'inner';
-
-
-
 
 	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
 
@@ -262,18 +279,17 @@ function md_loop_classes( $loop = array() ) {
  */
 
 function md_loop( $args = array() ) {
+	$html = 'div';
 	$args = is_array( $args ) ? $args : array();
+	$post_type = get_post_type();
 	$c = 1;
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_classes = $loop['loop_classes'];
 
-	$html = 'div';
 	if ( ! md_has_header_cover( 'post' ) )
 		$html = 'article';
-
-	// Render Loop templates
 
 	md_hook_loop_before();
 
@@ -290,6 +306,7 @@ function md_loop( $args = array() ) {
 
 		while ( have_posts() ) {
 			the_post();
+
 			include md_template( 'loop/the-post', true );
 		}
 

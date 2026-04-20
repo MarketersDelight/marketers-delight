@@ -28,25 +28,25 @@
 
 .header-cover .main { padding-block-start: 0; }
 
-.content:not(:last-child), .loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 /* BOX STYLE */
 
-.box-style.main { background-color: <?php echo $colors['content']['body_color']; ?>; }
+.main:has(.box-style.loop) { background-color: <?php echo $colors['content']['body_color']; ?>; }
 
 .box, .box-style .entry,
 .content :is(.page-title.cover, .page-title.cover .overlay),
+.entry :is(.cover, .cover .overlay),
 .featured-media, .featured-media img,
 .box-style .entry .item:nth-child(1 of .item):nth-last-child(1 of .item) { border-radius: 8px; }
 
 .box-style .entry .item:nth-child(1 of .item),
-.entry :is(.cover, .cover .overlay),
-.image-above :is(.featured-media, .featured-media img),
-.image-below.has-cover :is(.cover, .overlay),
+.box-style .entry :is(.cover, .overlay),
+.box-style .image-above :is(.featured-media, .featured-media img),
 .header-cover .box-style .image-full :is(.featured-media, .featured-media img) { border-radius: 8px 8px 0 0; }
 
 .box-style .entry .item:nth-last-child(1 of .item),
-.image-above :is(.cover, .cover .overlay, .featured-media + .item) { border-radius: 0 0 8px 8px; }
+.box-style .image-above :is(.cover, .overlay, .featured-media + .item) { border-radius: 0 0 8px 8px; }
 
 .box-style .image-below .featured-media img,
 .box-style .entry.image-below .featured-media + .the-content { border-radius: 0; }
@@ -56,10 +56,10 @@
 
 .box, .box-style .item,
 .box-style .image-full .featured-media,
-.box-style .columns .entry,
+.box-style.columns .entry,
 .box-style .comment-details { background-color: <?php echo $colors['content']['bg_color']; ?>; }
 
-.box-style .columns .entry .item {
+.box-style.columns .entry .item {
 	background-color: transparent;
 	box-shadow: none;
 }
@@ -70,8 +70,8 @@
 
 .box, .box-style .entry { width: auto; }
 
-.box-style .row.full > .item:not(:last-child),
-.box-style .row.full .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.box-style.row.full > .item:not(:last-child),
+.box-style.row.full .entry:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .box-style .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
@@ -81,31 +81,31 @@
 
 /* PLAIN + BORDER STYLES */
 
-:is(.plain-style.expanded, .border-style.expanded) .loop-article.row .entry { margin-block-end: <?php echo $triple; ?>px; }
+.expanded :is(.plain-style, .border-style).loop-article.row > .entry { margin-block-end: <?php echo $triple; ?>px; }
 
-:is(.plain-style.compact, .border-style.compact) .loop-article.row .entry,
-:is(.plain-style, .border-style) .loop-article.row .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
+.compact :is(.plain-style, .border-style).loop-article.row > .entry,
+:is(.plain-style, .border-style).loop-article.row > .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
-:is(.plain-style, .border-style) .columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
+:is(.plain-style, .border-style).columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
-:is(.plain-style, .border-style) .loop-article.image-above.has-cover .featured-media,
-:is(.plain-style, .border-style) .loop-article.image-below.has-cover .post-title { margin-block-end: 0; }
+:is(.plain-style, .border-style).loop-article.image-above.has-cover > .featured-media,
+:is(.plain-style, .border-style).loop-article.image-below.has-cover > .post-title { margin-block-end: 0; }
 
 .is-border-style .header:not(.cover) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 
 .is-border-style .footer { border-block-start: 1px solid <?php echo $colors['footer']['border_color']; ?>; }
 
-.border-style .page-title:not(.cover) {
+.is-border-style .page-title:not(.cover) {
 	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-end: <?php echo $mid; ?>px;
 }
 
-.border-style .loop.row .entry:not(:first-child) {
+.border-style.row .entry:not(:first-child) {
 	border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	padding-block-start: <?php echo $mid; ?>px;
 }
 
-.border-style .loop.row :is(.entry.has-cover, .entry.image-above) {
+.border-style.row :is(.entry.has-cover, .entry.image-above) {
 	border-block-start: 0;
 	padding-block-start: 0;
 }
@@ -114,8 +114,8 @@
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.cover,
-	.box-style .full .item { padding: <?php echo $mid; ?>px; }
-	.box-style.compact .full .post-title { padding-block-end: <?php echo $single; ?>px; }
+	.box-style.full .item { padding: <?php echo $mid; ?>px; }
+	.compact .box-style.full .post-title { padding-block-end: <?php echo $single; ?>px; }
 	.slim .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item:not(.post-title) .wrap {
 		margin-inline: auto;
@@ -144,5 +144,5 @@
 		padding-inline: 0;
 		width: 100%;
 	}
-	.box-style .loop-article.full .entry { margin-inline: -<?php echo $half; ?>px; }
+	.box-style.loop-article.full .entry { margin-inline: -<?php echo $half; ?>px; }
 }

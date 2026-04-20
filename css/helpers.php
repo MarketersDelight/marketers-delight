@@ -122,6 +122,8 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	width: 100%;
 }
 
+[class*="columns-"].slim { gap: <?php echo $half; ?>px; }
+
 .entry, .col {
 	position: relative;
 	width: 100%;

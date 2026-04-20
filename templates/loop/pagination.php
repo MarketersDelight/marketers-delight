@@ -13,7 +13,7 @@
 		next_posts_link( $nxtlabel, $total );
 	}
 	else echo paginate_links( array(
-//		'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+		'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
 		'type' => 'list',
 		'format' => '?paged=%#%',
 		'current' => max( 1, get_query_var( 'paged' ) ),
