@@ -244,10 +244,7 @@ function md_loop_classes( $loop = array() ) {
 		$loop_classes[] = 'columns';
 		$loop_classes[] = 'columns-' . $loop['columns'];
 
-		if (
-			$loop['columns'] >= 3 ||
-			( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) ) )
-		)
+		if ( $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) ) ) )
 			 $loop_classes[] = 'slim';
 		else
 			$loop_classes[] = 'full';
@@ -256,11 +253,6 @@ function md_loop_classes( $loop = array() ) {
 		$loop_classes[] = 'row';
 		$loop_classes[] = 'full';
 	}
-//	elseif ( ! $loop['by_category'] )
-//		$loop_classes[] = 'full';
-
-//	if ( ! empty( $loop['by_category'] ) && isset( $loop['category_columns'] ) && $loop['category_columns'] >= 2 )
-//		$loop_classes[] = 'slim';
 
 	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
 		$loop_classes[] = 'inner';
