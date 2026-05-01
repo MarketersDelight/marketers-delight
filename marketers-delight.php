@@ -130,6 +130,12 @@ final class marketers_delight {
 		add_shortcode( 'md_template', array( $this, 'template_shortcode' ) );
 		add_filter( 'widget_text', 'do_shortcode' );
 
+		// Disable Widgets Block Editor
+		if ( md_setting( array( 'settings', 'head', 'widgets' ) ) ) {
+			add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
+			add_filter( 'use_widgets_block_editor', '__return_false' );
+		}
+
 		// Remove WP junk, mostly from <head>
 		if ( ! md_setting( array( 'settings', 'head', 'optimize' ) ) ) {
 			add_filter( 'post_class', array( $this, 'post_class' ) );
@@ -158,12 +164,6 @@ final class marketers_delight {
 			remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
 			remove_action( 'wp_head', 'wp_oembed_add_host_js' );
 			add_filter( 'rewrite_rules_array', array( $this, 'disable_embed_rewrites' ) );
-		}
-
-		// Disable Widgets Block Editor. Make default?
-		if ( md_setting( array( 'settings', 'head', 'widgets' ) ) ) {
-			add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
-			add_filter( 'use_widgets_block_editor', '__return_false' );
 		}
 
 		// Re-add RSS link
@@ -314,7 +314,7 @@ final class marketers_delight {
 		$context = is_singular() || is_404() ? 'post' : 'page';
 		$cover = md_cover( $context );
 
-		$classes[] = 'is-' . md_loop_style( array( 'body' => true ) );
+		$classes[] = 'is-' . md_loop_style( array( 'body' => true ) ) . '-style';
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
 			$classes[] = 'header-cover';
@@ -396,7 +396,9 @@ final class marketers_delight {
 	 */
 
 	public function template_shortcode( $atts, $content = null ) {
-		ob_start(); extract( shortcode_atts( array(
+		ob_start();
+
+		extract( shortcode_atts( array(
 			'name' => '',
 			'dropin_name' => ''
 		), $atts, 'md_template' ) );

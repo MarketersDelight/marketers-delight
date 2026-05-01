@@ -23,9 +23,6 @@ $titles = array(
 	'h5' => 'h5, .h5, .small-title',
 	'h6' => 'h6, .h6, .micro-title'
 );
-$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
-$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
-
 ?>
 
 /*------------------------------*\
@@ -33,42 +30,12 @@ $h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1'
 \*------------------------------*/
 
 *, *:before, *:after {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
 	box-sizing: border-box;
 	margin: 0;
 	padding: 0;
 }
 
-/* CRITICAL LOAD: FONT FAMILIES + WEIGHTS */
-
-body {
-	background-color: <?php echo $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
-	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
-}
-
-body, .normal { font-weight: <?php echo $font_weight; ?>; }
-
-b, strong, .bold { font-weight: <?php echo $bold; ?>; }
-
-i, em, .italic { font-style: italic; }
-
-.h-font { font-family: <?php echo $h1_font_family; ?>; }
-
-<?php foreach ( $titles as $attribute => $selector ) {
-	$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family;
-	$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight;
-
-	echo "$selector {\n".
-			( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
-			"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
-			"\tfont-weight: {$h_fw};\n".
-			"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
-		"}\n";
-} ?>
+/* FONT ICONS */
 
 @font-face {
 	font-family: md-icon;
@@ -104,6 +71,33 @@ i, em, .italic { font-style: italic; }
 }
 
 .md-icon.icon-data:before { content: attr(data-md-icon); }
+
+/* TYPOGRAPHY */
+
+body {
+	background-color: <?php echo $colors['site']['bg_color']; ?>;
+	color: <?php echo $colors['site']['text']; ?>;
+	font-family: <?php echo $typography['body']['font_family']; ?>;
+	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $font_weight; ?>;
+	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+}
+
+b, strong { font-weight: <?php echo $bold; ?>; }
+
+i, em { font-style: italic; }
+
+<?php foreach ( $titles as $attribute => $selector ) {
+	$h_ff = ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family;
+	$h_fw = ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight;
+
+	echo "$selector {\n".
+			( ! empty( $typography[$attribute]['font_family'] ) || ! empty( $typography['h1']['font_family'] ) ? "\tfont-family: {$h_ff};\n" : '' ).
+			"\tfont-size: " . $typography[$attribute]['font_size']['desktop'] . "px;\n".
+			"\tfont-weight: {$h_fw};\n".
+			"\tline-height: " . $typography[$attribute]['line_height']['desktop'] . "px;\n".
+		"}\n";
+} ?>
 
 /* ATTRIBUTES */
 
@@ -143,23 +137,15 @@ pre {
 }
 
 code {
-	border-radius: 5px;
+	border-radius: 6px;
 	padding: 2px 5px;
 }
 
-abbr, acronym {
-	border-block-end: 1px dotted <?php echo $colors['site']['text-sec']; ?>;
-	cursor: help;
-	text-decoration: none;
-}
+abbr { cursor: help; }
+
+cite { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 /* HEADINGS */
-
-<?php if ( $colors['site']['text'] !== $colors['site']['headline'] ) : ?>
-h1, h2, h3, h4, h5, h6 { color: <?php echo $colors['site']['headline']; ?>; }
-<?php endif; ?>
-
-:is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6) a { color: <?php echo $colors['site']['headline-links']; ?>; }
 
 <?php foreach ( $queries as $w => $d ) {
 
@@ -199,6 +185,7 @@ blockquote {
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-inline-start-width: 7px;
 	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: block;
 	font-style: italic;
@@ -220,17 +207,9 @@ blockquote:before {
 }
 
 blockquote:after {
-	inset-block-end: <?php echo $small; ?>px;
 	content: close-quote;
 	inset-inline-end: <?php echo $half; ?>px;
 }
 
-blockquote.small {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	padding-block: <?php echo $half; ?>px;
-}
-
-blockquote.small:before, blockquote.small:after { font-size: <?php echo $typography['h1']['font_size']['desktop']; ?>px; }
-
-blockquote.alignright, blockquote.alignleft { width: <?php echo ( $single * 6 ); ?>px; }
+blockquote:is(.alignright, .alignleft),
+.wp-block-pullquote:is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }

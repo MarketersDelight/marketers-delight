@@ -90,7 +90,7 @@
 
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
-.cover, .cover a, .cover .byline, .cover .lede { color: #fff; }
+.cover, .cover :is(a, .byline, .title, .lede) { color: #fff; }
 
 .cover .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
 

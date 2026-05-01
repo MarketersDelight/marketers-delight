@@ -10,51 +10,80 @@
 	font-family: inherit;
 	font-size: inherit;
 	font-style: normal;
-	gap: 10px 16px;
+	gap: 11px 16px;
 	justify-content: center;
 	line-height: 1;
-	padding: 16px 26px;
+	padding: 16px 27px;
 	text-decoration: none;
 }
 /* TYPOGRAPHY */
 .editor-styles-wrapper {
 	background-color: #FFFFFF;
+	color: #5A5A5A;
+	font-family: 'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+	font-size: 20px;
+	line-height: 32px;
+}
+.editor-styles-wrapper :is(b, strong) { font-weight: 500; }
+.editor-styles-wrapper a { color: #C0392B; }
+.editor-styles-wrapper :is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, .huge, .wp-block-heading) {
 	color: #1E1E1E;
-	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-	font-size: 19px;
-	line-height: 31px;
+	font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
+	font-weight: 500;
 }
-.editor-styles-wrapper a { color: #AE2525; }
-.editor-styles-wrapper :is(h1, h2, h3, h4, h5, h6, .wp-block-heading) {
-	color: #1E1E1E;
-	font-family: system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
-	font-weight: 700;
+.editor-styles-wrapper :is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, .huge):is(.alignwide, .alignfull) { text-align: center; }
+.editor-styles-wrapper .huge.wp-block {
+	font-size: 68px;
+	line-height: 90px;
 }
-.editor-styles-wrapper h1 {
-	font-size: 43px;
-	line-height: 56px;
+.editor-styles-wrapper h1, .editor-styles-wrapper .h1 {
+	font-size: 45px;
+	line-height: 59px;
 }
-.editor-styles-wrapper h2 {
-	font-size: 37px;
-	line-height: 50px;
+.editor-styles-wrapper h2, .editor-styles-wrapper .h2 {
+	font-size: 38px;
+	line-height: 51px;
 }
-.editor-styles-wrapper h3 {
-	font-size: 30px;
-	line-height: 42px;
+.editor-styles-wrapper h3, .editor-styles-wrapper .h3 {
+	font-size: 32px;
+	line-height: 45px;
 }
-.editor-styles-wrapper h4 {
-	font-size: 26px;
+.editor-styles-wrapper h4, .editor-styles-wrapper .h4 {
+	font-size: 27px;
+	line-height: 38px;
+}
+.editor-styles-wrapper h5, .editor-styles-wrapper .h5 {
+	font-size: 23px;
 	line-height: 36px;
 }
-.editor-styles-wrapper h5 {
-	font-size: 22px;
-	line-height: 34px;
+.editor-styles-wrapper h6, .editor-styles-wrapper .h6 {
+	font-size: 20px;
+	line-height: 30px;
 }
-.editor-styles-wrapper h6 {
-	font-size: 19px;
-	line-height: 29px;
+/* SPACING */
+.editor-styles-wrapper .wp-block-post-content > .wp-block { margin-block-start: 0; }
+.editor-styles-wrapper .wp-block-post-content > .wp-block:not([class*="mb-"]) { margin-block-end: 32px; }
+.editor-styles-wrapper .wp-block-post-content .wp-block-heading:not(:first-child) { margin-block-start: 48px; }
+.editor-styles-wrapper .wp-block-post-content .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: 16px; }
+.editor-styles-wrapper .is-layout-flow > .alignleft { margin-inline-end: 32px; }
+.editor-styles-wrapper .is-layout-flow > .alignright { margin-inline: 32px 0; }
+/* ATTRIBUTES */
+.editor-styles-wrapper :is(pre, code) {
+	background-color: rgba(0, 0, 0, 0.1);
+	color: #3e3e3e;
+	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
+	font-size: 0.9em;
 }
-.editor-styles-wrapper :is(ul, ol) { margin-block-end: 31px; }
+.editor-styles-wrapper pre {
+	margin-block-end: 32px;
+	overflow: auto;
+	padding: 32px;
+}
+.editor-styles-wrapper code {
+	border-radius: 5px;
+	padding: 2px 5px;
+}
+.editor-styles-wrapper :is(ul, ol) { margin-block-end: 32px; }
 .editor-styles-wrapper ul { list-style: square; }
 .editor-styles-wrapper :is(ul[class^="list"], [class^="list"] ul) { list-style: none; }
 .editor-styles-wrapper li {
@@ -65,4 +94,63 @@
 	margin-block-end: 16px;
 	margin-inline-start: 16px;
 }
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: 31px; }
+.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: 32px; }
+/* BLOCKQUOTE / PULLQUOTE */
+.editor-styles-wrapper .wp-block-quote:not(.is-style-plain),
+.editor-styles-wrapper .wp-block-pullquote:not(.is-style-plain) blockquote {
+	background-color: #fff;
+	border: 1px solid #CCCCCC;
+	border-inline-start-width: 7px;
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: #777777;
+	display: block;
+	font-style: italic;
+	padding: 32px;
+	position: relative;
+}
+.editor-styles-wrapper .wp-block-quote:not(.is-style-plain):before,
+.editor-styles-wrapper .wp-block-quote:not(.is-style-plain):after,
+.editor-styles-wrapper .wp-block-pullquote:not(.is-style-plain) blockquote:before,
+.editor-styles-wrapper .wp-block-pullquote:not(.is-style-plain) blockquote:after {
+	color: #ddd;
+	font-family: Georgia, serif;
+	font-size: 68px;
+	font-weight: 500;
+	line-height: 1;
+	position: absolute;
+}
+.editor-styles-wrapper .wp-block-quote:not(.is-style-plain):before,
+.editor-styles-wrapper .wp-block-pullquote:not(.is-style-plain) blockquote:before {
+	content: open-quote;
+	inset-block-start: 11px;
+	inset-inline-start: 11px;
+}
+.editor-styles-wrapper .wp-block-quote:not(.is-style-plain):after,
+.editor-styles-wrapper .wp-block-pullquote:not(.is-style-plain) blockquote:after {
+	content: close-quote;
+	inset-inline-end: 11px;
+}
+.editor-styles-wrapper .wp-block-quote p,
+.editor-styles-wrapper .wp-block-pullquote p { margin-block: 0 16px; }
+.editor-styles-wrapper .wp-block-quote p:last-child,
+.editor-styles-wrapper .wp-block-pullquote p:last-child { margin-block-end: 0; }
+.editor-styles-wrapper .wp-block-quote.alignright,
+.editor-styles-wrapper .wp-block-quote.alignleft { width: 192px; }
+.editor-styles-wrapper .wp-block-pullquote {
+	font-size: inherit;
+	line-height: inherit;
+	margin: 0;
+	padding: 0;
+	text-align: left;
+}
+.editor-styles-wrapper .wp-block-pullquote:is(.alignleft, .alignright) { width: 192px; }
+.editor-styles-wrapper .wp-block-pullquote p {
+	color: #5A5A5A;
+	font-style: normal;
+	font-weight: 500;
+}
+.editor-styles-wrapper .wp-block-pullquote cite { color: #777777; }
+.editor-styles-wrapper .wp-block-pullquote p + cite { margin-block-start: -16px; }
+/* MD BLOCKS */
+.editor-styles-wrapper .banner-wrap p { margin-block: 0; }

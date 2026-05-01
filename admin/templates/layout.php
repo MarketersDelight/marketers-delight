@@ -95,7 +95,8 @@
 			'type' => 'checkbox',
 			'options' => array(
 				'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
-				'the_content' => __( 'Remove <b>Content</b>', 'md' )
+				'the_content' => __( 'Remove <b>Content</b>', 'md' ),
+				'builder' => __( 'Enable <b>Builder</b>', 'md' )
 			)
 		) ); ?>
 

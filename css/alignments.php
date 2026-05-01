@@ -6,8 +6,7 @@
 
 .auto { margin-inline: auto; }
 
-.alignleft, .alignright,
-.aligncenter, .alignnone {
+.alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
 	margin-block-end: <?php echo $single; ?>px;

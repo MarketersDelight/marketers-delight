@@ -23,7 +23,7 @@ elseif ( $type == 'image' ) {
 elseif ( $type == 'video' )
 	echo wp_video_shortcode( array( 'src' => esc_url( $media[$type] ) ) );
 elseif ( $type == 'custom_html' )
-	echo wp_kses_post( $media[$type] );
+	echo do_shortcode( wp_kses_post( $media[$type] ) );
 
 do_action( "md_hook_{$context}_featured_media_bottom" );
 

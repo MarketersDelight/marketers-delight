@@ -424,6 +424,10 @@ function md_block_field( $attributes, $field ) {
 	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
 }
 
+function md_has_class( $slug, $type ) {
+	return $slug ? 'has-' . $slug . '-' . $type : '';
+}
+
 /**
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.

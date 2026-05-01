@@ -1,6 +1,7 @@
 <?php
 
-echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
+if ( empty( $builder ) )
+	echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
 
 md_hook_content_top();
 
@@ -16,8 +17,9 @@ md_hook_before_the_content();
 
 if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
 
-	echo "<section id=\"the_content\" class=\"the-content item\">".
-		 ( empty( $loop['has_sidebar'] ) ? '<div class="wrap">' : '' );
+	if ( empty( $builder ) )
+		echo "<div id=\"the_content\" class=\"the-content item\">".
+			 ( empty( $loop['has_sidebar'] ) ? '<div class="wrap">' : '' );
 
 	md_hook_the_content_top();
 
@@ -40,8 +42,9 @@ if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || 
 
 	md_hook_the_content_bottom();
 
-	echo ( empty( $loop['has_sidebar'] ) ? '</div>' : '' ).
-		 '</section>';
+	if ( empty( $builder ) )
+		echo ( empty( $loop['has_sidebar'] ) ? '</div>' : '' ).
+			 '</div>';
 
 }
 
@@ -57,4 +60,5 @@ md_hook_content_item();
 
 md_hook_content_bottom();
 
-echo "</$html>";
+if ( empty( $builder ) )
+	echo "</$html>";

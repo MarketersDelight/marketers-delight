@@ -40,6 +40,7 @@
 <?php endif; ?>
 
 .full-cover .header {
+	background-color: transparent;
 	position: absolute;
 		inset-inline-start: 0;
 		inset-block-start: <?php echo $half; ?>px;

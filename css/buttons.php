@@ -5,6 +5,7 @@
 \*------------------------------*/
 
 .link, button, .button, input[type="submit"] {
+	align-items: center;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
 	line-height: 1;
@@ -36,7 +37,6 @@
 /* BUTTONS */
 
 button, .button, input[type="submit"] {
-	align-items: center;
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
@@ -49,6 +49,7 @@ button, .button, input[type="submit"] {
 	font-style: normal;
 	justify-content: center;
 	padding: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
+	text-decoration: none;
 	transition: 0.3s;
 }
 

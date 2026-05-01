@@ -24,6 +24,10 @@ foreach: function( items, fn ) {
 	for ( var i = 0; i < items.length; i++ )
 		fn( items[i], i );
 },
+number: function( value ) {
+	var parsed = parseInt( value, 10 );
+	return isNaN( parsed ) ? 0 : parsed;
+},
 hasClass: function( el, className ) {
 	return new RegExp( '(^|\\s)' + className + '(\\s|$)').test( el.className );
 },

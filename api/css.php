@@ -270,6 +270,8 @@ class md_css {
 		$line_height = $values['typography']['body']['line_height'];
 		$font_weight = ! empty( $typography['body']['font_weight'] ) ? $typography['body']['font_weight'] : 'normal';
 		$bold = ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : 'bold';
+		$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
+		$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
 
 		$h1 = $values['typography']['h1'];
 		$h2 = $values['typography']['h2'];

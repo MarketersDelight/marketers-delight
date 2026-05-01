@@ -63,7 +63,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'the_content', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'wpautop' )
+				'options' => array( 'remove', 'builder', 'the_content', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'wpautop' )
 			),
 			'content_style' => array(
 				'type' => 'select',

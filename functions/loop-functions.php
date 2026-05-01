@@ -111,6 +111,7 @@ function md_get_loop( $args = array() ) {
 		$loop['in_loop'] = true;
 
 	$loop['loop'] = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
+	$loop['style'] = md_loop_style();
 	$loop['loop_classes'] = md_loop_classes( $loop );
 
 	return apply_filters( 'md_filter_set_loop', $loop );
@@ -214,12 +215,12 @@ function md_loop_style( $args = array() ) {
 	$body = md_setting( array( 'colors', 'design' ), 'box' );
 
 	if ( isset( $args['body'] ) )
-		return "{$body}-style";
+		return $body;
 
 	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
 	$style = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() ) ?: $body;
 
-	return "{$style}-style";
+	return $style;
 }
 
 /**
@@ -233,33 +234,30 @@ function md_loop_classes( $loop = array() ) {
 		$loop = md_get_loop();
 
 	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
-	$loop_class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
+	$class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
 	$style = md_loop_style();
-	$loop_classes = array( 'loop', $loop_class, "loop-{$loop_type}" );
+	$classes = array( 'loop', $class, "loop-{$loop_type}" );
 
 	if ( $style )
-		$loop_classes[] = $style;
+		$classes[] = "{$style}-style";
 
 	if ( $loop['columns'] > 1 ) {
-		$loop_classes[] = 'columns';
-		$loop_classes[] = 'columns-' . $loop['columns'];
+		$classes[] = 'columns';
+		$classes[] = 'columns-' . $loop['columns'];
 
 		if ( $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) ) ) )
-			 $loop_classes[] = 'slim';
+			 $classes[] = 'slim';
 		else
-			$loop_classes[] = 'full';
+			$classes[] = 'full';
 	}
 	else {
-		$loop_classes[] = 'row';
-		$loop_classes[] = 'full';
+		$classes[] = 'row';
+		$classes[] = 'full';
 	}
 
-	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) && ! md_has_sidebar() )
-		$loop_classes[] = 'inner';
+	$classes = apply_filters( 'md_filter_loop_classes', $classes );
 
-	$loop_classes = apply_filters( 'md_filter_loop_classes', $loop_classes );
-
-	return join( ' ', $loop_classes );
+	return join( ' ', $classes );
 }
 
 /**
@@ -279,6 +277,7 @@ function md_loop( $args = array() ) {
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_classes = $loop['loop_classes'];
+	$builder = md_meta( array( 'layout', 'content', 'builder' ) );
 
 	if ( ! md_has_header_cover( 'post' ) )
 		$html = 'article';

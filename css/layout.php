@@ -128,12 +128,12 @@
 	.content-width { max-width: <?php echo $content_width; ?>px; }
 	.post-width { max-width: <?php echo $post_width; ?>px; }
 	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
-	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact .content-wrap {
 		display: grid;
 		gap: <?php echo $mid; ?>px;
 		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
 	}
+	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }
 	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
 }

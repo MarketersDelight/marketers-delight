@@ -11,20 +11,34 @@
 }
 
 .grow { flex: 1; }
+.shrink { flex-shrink: 0; }
 .reverse { flex-direction: row-reverse; }
 .column { flex-direction: column; }
-.fl-center { justify-content: center; }
+.fl-center {
+	align-items: center;
+	justify-content: center;
+}
+.is-vertically-aligned-center { align-self: center; }
 
 .width-full { width: 100%; }
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
-.format :last-child { margin-block-end: 0; }
+.format *:last-child { margin-block-end: 0; }
 <?php endif; ?>
 
 /* TEXT */
 
+.normal { font-weight: <?php echo $font_weight; ?>; }
+
+.bold { font-weight: <?php echo $bold; ?>; }
+
+.italic { font-style: italic; }
+
+.h-font { font-family: <?php echo $h1_font_family; ?>; }
+
 .text-white { color: #fff; }
-.text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
+
+.text-sec, .foot, .wp-block-pullquote cite { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 .text-left { text-align: left; }
 .text-right { text-align: right; }
@@ -32,7 +46,7 @@
 
 .caps { text-transform: uppercase; }
 
-.small {
+.small, .foot, cite {
 	font-size: 0.85em;
 	line-height: 1.5em;
 }
@@ -43,12 +57,6 @@
 }
 
 a.no-underline, .no-underline a { text-decoration: none; }
-
-.foot {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-}
 
 .highlight {
 	background-color: #fdd169;
@@ -80,6 +88,20 @@ a.no-underline, .no-underline a { text-decoration: none; }
     position: relative;
 }
 
+/* BORDERS */
+
+.radius, .radius img { border-radius: 6px; }
+
+.circle { border-radius: 50%; }
+
+.border, [class*="border-"] {
+	border-style: solid;
+	border-width: 1px;
+}
+
+.border-tb { border-width: 1px 0; }
+.border-bottom { border-width: 0 0 1px; }
+
 /* DESIGN */
 
 .avatar {
@@ -87,11 +109,11 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.border { border-block-end: 1px solid rgba(0, 0, 0, 0.1); }
-.shadow, .wp-block-image.shadow img { box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
-.wp-block-image.shadow { box-shadow: none; }
+.shadow, .wp-block-image.shadow img { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
 
-.circle { border-radius: 50%; }
+.shadow-large { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06) }
+
+.wp-block-image.shadow { box-shadow: none; }
 
 .circle-icon, a.circle-icon {
 	align-items: center;
@@ -129,11 +151,11 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	width: 100%;
 }
 
-.columns-small { gap: <?php echo $small; ?>px; }
-.columns-half { gap: <?php echo $half; ?>px; }
-.columns-single { gap: <?php echo $single; ?>px; }
-.columns-mid { gap: <?php echo $mid; ?>px; }
-.columns-double { gap: <?php echo $double; ?>px; }
+.columns-small, .gap-small { gap: <?php echo $small; ?>px; }
+.columns-half, .gap-half { gap: <?php echo $half; ?>px; }
+.columns-single, .gap-single { gap: <?php echo $single; ?>px; }
+.columns-mid, .gap-mid { gap: <?php echo $mid; ?>px; }
+.columns-double, .gap-double { gap: <?php echo $double; ?>px; }
 
 <?php for ( $g = 6; $g <= 6; $g++ ) : ?>
 .columns-<?php echo $g; ?> { grid-template-columns: repeat(<?php echo $g; ?>, 1fr); }
@@ -149,6 +171,17 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	<?php for ( $g = 2; $g <= 6; $g++ ) : ?>
 	.columns-<?php echo $g; ?> { grid-template-columns: repeat(<?php echo $g; ?>, 1fr); }
 	<?php endfor; ?>
+}
+
+/* WP COLUMNS */
+
+.wp-block-columns {
+	display: flex;
+}
+
+.wp-block-column {
+	flex-basis: 0;
+	flex-grow: 1;
 }
 
 /* SPACERS */
@@ -203,7 +236,8 @@ foreach ( $blocks as $block => $unit ) echo
 	$color_val = $color_fields['color'];
 
 	echo ".has-$color_slug-background-color { background-color: $color_val; }\n".
-		( $color_slug !== 'text' ? ".has-$color_slug-color, .format .has-$color_slug-color { color: $color_val; }\n"
+		 ".has-$color_slug-border-color { border-color: $color_val; }\n".
+		 ( $color_slug !== 'text' ? ".has-$color_slug-color { color: $color_val; }\n"
 	: '' );
 } ?>
 

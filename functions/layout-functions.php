@@ -1,7 +1,5 @@
 <?php
 
-// Glossary: $CONTENT | $SIDEBAR | $FOOTER
-
 /**
  * Checks if page template is active.
  *
@@ -100,6 +98,9 @@ function md_post_class( $args = array(), $c = 1 ) {
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
+
+	if ( ! md_has_sidebar() )
+		$classes[] = 'inner';
 
 	return join( ' ', $classes );
 }

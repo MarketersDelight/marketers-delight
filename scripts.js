@@ -5,6 +5,10 @@ foreach: function( items, fn ) {
 	for ( var i = 0; i < items.length; i++ )
 		fn( items[i], i );
 },
+number: function( value ) {
+	var parsed = parseInt( value, 10 );
+	return isNaN( parsed ) ? 0 : parsed;
+},
 hasClass: function( el, className ) {
 	return new RegExp( '(^|\\s)' + className + '(\\s|$)').test( el.className );
 },
@@ -373,43 +377,68 @@ popups: {
 },
 like: function() {
 	var name = 'md_likes',
-		likes = document.getElementsByClassName( 'share-like' );
+		likes = document.getElementsByClassName( 'share-like' ),
+		updateCounts = function( post_id, count, increment ) {
+			var counts = document.getElementsByClassName( 'share-count' );
+			for ( var i = 0; i < counts.length; i++ ) {
+				var el = counts[i].parentElement;
+				if ( el.getAttribute( 'data-share-id' ) === post_id ) {
+					MD.addClass( el, 'liked' );
+					if ( ! MD.hasClass( el, 'share-like-total' ) )
+						counts[i].innerHTML = increment ? MD.number( counts[i].innerHTML ) + 1 : count;
+				}
+			}
+		},
+		updateTotals = function( post_type, total, increment ) {
+			var totals = document.getElementsByClassName( 'share-total' );
+			for ( var i = 0; i < totals.length; i++ )
+				if ( totals[i].parentElement.getAttribute( 'data-share-type' ) === post_type )
+					totals[i].innerHTML = increment ? MD.number( totals[i].innerHTML ) + 1 : total;
+		};
 	for ( var i = 0; i < likes.length; i++ ) {
 		likes[i].onclick = function( e ) {
 			e.preventDefault();
-			if ( ! MD.hasClass( this, 'liked' ) ) {
-				var post_id = this.getAttribute( 'data-share-id' );
-				if ( post_id == null )
+			if ( MD.hasClass( this, 'liked' ) )
+				return;
+			var post_id = this.getAttribute( 'data-share-id' );
+			if ( post_id == null )
+				return;
+			var post_type = this.getAttribute( 'data-share-type' ),
+				endpoint = MDJS.rest.likes ? MDJS.rest.likes + post_id + '/like' : null
+			if ( ! endpoint )
+				return;
+			updateCounts( post_id, null, true );
+			updateTotals( post_type, null, true );
+			MD.addClass( this, 'liked' );
+			fetch( endpoint, {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'X-WP-Nonce': MDJS.rest.nonce
+				},
+				body: new URLSearchParams({
+					type: post_type
+				})
+			} )
+			.then( function( response ) {
+				if ( ! response.ok )
+					return null;
+				return response.json().catch( function() {
+					return null;
+				} );
+			} )
+			.then( function( response ) {
+				if ( ! response )
 					return;
-				var post_type = this.getAttribute( 'data-share-type' ),
-					counts = document.getElementsByClassName( 'share-count' ),
-					request = new XMLHttpRequest();
-				for ( var l = 0; l < counts.length; l++ ) {
-					var countLike = counts[l].parentElement;
-					if ( countLike.getAttribute( 'data-share-id' ) === post_id ) {
-						MD.addClass( countLike, 'liked' );
-						if ( ! MD.hasClass( countLike, 'share-like-total' ) )
-							counts[l].innerHTML++;
-					}
+				var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [];
+				if ( response.data ) {
+					updateCounts( post_id, response.data.likes );
+					updateTotals( post_type, response.data.total );
 				}
-				request.open( 'POST', MDJS.ajaxurl, true );
-				request.setRequestHeader( 'Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8' );
-				request.onreadystatechange = function() {
-					if ( request.readyState === 4 && request.status === 200 ) {
-						var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [],
-							totals = document.getElementsByClassName( 'share-total' );
-						liked.push( post_id );
-						if ( totals )
-							for ( var t = 0; t < totals.length; t++ ) {
-								var totalLikes = totals[t].parentElement;
-								if ( totalLikes.getAttribute( 'data-share-type' ) === post_type )
-									totals[t].innerHTML++;
-							}
-						MD.cookie.create( name, JSON.stringify( liked ), 365 );
-					}
-				};
-				request.send( 'action=md_like&post_id=' + post_id + '&type=' + post_type + '&nonce=' + MDJS.nonce );
-			}
+				if ( liked.indexOf( post_id ) === -1 )
+					liked.push( post_id );
+				MD.cookie.create( name, JSON.stringify( liked ), 365 );
+			} );
 		}
 	}
 },

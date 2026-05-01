@@ -102,7 +102,7 @@ class md_sanitize {
 		if ( isset( $fields['map'] ) )
 			$save = $this->ids( $input );
 		else
-			$save = sanitize_text_field( $input );
+			$save = wp_kses_post( $input );
 
 		return $save;
 	}
