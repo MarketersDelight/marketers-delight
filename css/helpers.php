@@ -4,28 +4,6 @@
 	$HELPERS
 \*------------------------------*/
 
-.fl {
-	align-items: center;
-	display: flex;
-	gap: <?php echo $half; ?>px;
-}
-
-.grow { flex: 1; }
-.shrink { flex-shrink: 0; }
-.reverse { flex-direction: row-reverse; }
-.column { flex-direction: column; }
-.fl-center {
-	align-items: center;
-	justify-content: center;
-}
-.is-vertically-aligned-center { align-self: center; }
-
-.width-full { width: 100%; }
-
-<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
-.format *:last-child { margin-block-end: 0; }
-<?php endif; ?>
-
 /* TEXT */
 
 .normal { font-weight: <?php echo $font_weight; ?>; }
@@ -36,30 +14,33 @@
 
 .h-font { font-family: <?php echo $h1_font_family; ?>; }
 
-.text-white { color: #fff; }
-
-.text-sec, .foot, .wp-block-pullquote cite { color: <?php echo $colors['site']['text-sec']; ?>; }
-
 .text-left { text-align: left; }
+
 .text-right { text-align: right; }
+
 .text-center { text-align: center; }
 
 .caps { text-transform: uppercase; }
 
-.small, .foot, cite {
-	font-size: 0.85em;
+a.no-underline, .no-underline a { text-decoration: none; }
+
+.small {
+	font-size: 0.9em;
 	line-height: 1.5em;
 }
 
-.intro {
-	font-size: 1.3em;
-	line-height: 1.45em;
+cite, .tiny {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
 }
 
-a.no-underline, .no-underline a { text-decoration: none; }
+.intro {
+	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+}
 
 .highlight {
-	background-color: #fdd169;
+	background-color: <?php echo $colors['site']['action']; ?>;
 	padding-inline: <?php echo $small; ?>px;
 }
 
@@ -100,6 +81,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 }
 
 .border-tb { border-width: 1px 0; }
+
 .border-bottom { border-width: 0 0 1px; }
 
 /* DESIGN */
@@ -136,6 +118,31 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	width: <?php echo $mid + $small; ?>px;
 }
 
+/* LAYOUT */
+
+.fl {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+}
+
+.grow { flex: 1; }
+
+.shrink { flex-shrink: 0; }
+
+.reverse { flex-direction: row-reverse; }
+
+.column { flex-direction: column; }
+
+.fl-center {
+	align-items: center;
+	justify-content: center;
+}
+
+.is-vertically-aligned-center { align-self: center; }
+
+.width-full { width: 100%; }
+
 /* COLUMNS */
 
 [class*="columns-"] {
@@ -150,12 +157,6 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	position: relative;
 	width: 100%;
 }
-
-.columns-small, .gap-small { gap: <?php echo $small; ?>px; }
-.columns-half, .gap-half { gap: <?php echo $half; ?>px; }
-.columns-single, .gap-single { gap: <?php echo $single; ?>px; }
-.columns-mid, .gap-mid { gap: <?php echo $mid; ?>px; }
-.columns-double, .gap-double { gap: <?php echo $double; ?>px; }
 
 <?php for ( $g = 6; $g <= 6; $g++ ) : ?>
 .columns-<?php echo $g; ?> { grid-template-columns: repeat(<?php echo $g; ?>, 1fr); }
@@ -173,11 +174,9 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	<?php endfor; ?>
 }
 
-/* WP COLUMNS */
+/* WP COLUMNS (EXPERIMENTAL) */
 
-.wp-block-columns {
-	display: flex;
-}
+.wp-block-columns { display: flex; }
 
 .wp-block-column {
 	flex-basis: 0;
@@ -186,59 +185,49 @@ a.no-underline, .no-underline a { text-decoration: none; }
 
 /* SPACERS */
 
-.mb-quad, .format .mb-quad { margin-block-end: <?php echo $quad; ?>px; }
-.mb-triple, .format .mb-triple { margin-block-end: <?php echo $triple; ?>px; }
-.mb-double, .format .mb-double { margin-block-end: <?php echo $double; ?>px; }
-.mb-mid, .format .mb-mid { margin-block-end: <?php echo $mid; ?>px; }
-.mb-single, .format .mb-single { margin-block-end: <?php echo $single; ?>px; }
-.mb-half, .format .mb-half { margin-block-end: <?php echo $half; ?>px; }
-.mb-third, .format .mb-third { margin-block-end: <?php echo $third; ?>px; }
-.mb-small, .format .mb-small { margin-block-end: <?php echo $small; ?>px; }
+<?php
 
-.mb-none { margin-block-end: 0 !important; }
-.ml-half { margin-inline-start: <?php echo $half; ?>px; }
-.ml-third { margin-inline-start: <?php echo $third; ?>px; }
-.ml-small { margin-inline-start: <?php echo $small; ?>px; }
-.mr-third { margin-inline-end: <?php echo $third; ?>px; }
-.mr-half { margin-inline-end: <?php echo $half; ?>px; }
-.mr-small { margin-inline-end: <?php echo $small; ?>px; }
+/* MARGIN BOTTOM */
+
+foreach ( array( 'quad', 'triple', 'double', 'mid', 'single', 'half', 'third', 'small' ) as $size )
+	echo ".mb-$size, .format .mb-$size { margin-block-end: {$spacers[$size]}px; }\n";
+
+echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
+
+/* MARGIN LEFT */
+
+foreach ( array( 'half', 'third', 'small' ) as $size )
+	echo ".ml-$size { margin-inline-start: {$spacers[$size]}px; }\n";
+
+/* MARGIN RIGHT */
+
+foreach ( array( 'third', 'half', 'small' ) as $size )
+	echo ".mr-$size { margin-inline-end: {$spacers[$size]}px; }\n";
 
 /* GAPS */
 
-.gap-half { gap: <?php echo $half; ?>px; }
-.gap-single { gap: <?php echo $single; ?>px; }
-.gap-mid { gap: <?php echo $mid; ?>px; }
-.gap-double { gap: <?php echo $double; ?>px; }
+foreach ( array( 'half', 'single', 'mid', 'double' ) as $size )
+	echo ".gap-$size, .columns-$size { gap: {$spacers[$size]}px; }\n";
 
-/* BLOCKS */
+/* BLOCKS / PADDING */
 
-<?php $blocks = array(
-	'half' => $half,
-	'single' => $single,
-	'mid' => $mid,
-	'triple' => $triple,
-	'double' => $double,
-	'quad' => $quad
-);
+foreach ( array( 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size )
+	echo
+		".block-$size { padding: {$spacers[$size]}px; }\n".
+		".block-$size-tb { padding-block: {$spacers[$size]}px; }\n".
+		".block-$size-lr { padding-inline: {$spacers[$size]}px; }\n".
+		".block-$size-top { padding-block-start: {$spacers[$size]}px; }\n".
+		".block-$size-bot { padding-block-end: {$spacers[$size]}px; }\n";
 
-foreach ( $blocks as $block => $unit ) echo
-	".block-$block { padding: {$unit}px; }\n
-	.block-$block-tb { padding-block: {$unit}px; }\n
-	.block-$block-lr { padding-inline: {$unit}px; }\n
-	.block-$block-top { padding-block-start: {$unit}px; }\n
-	.block-$block-bot { padding-block-end: {$unit}px; }\n";
-?>
+echo ".pb-none { padding-block-end: 0; }\n";
 
 /* EDITOR COLORS */
 
-<?php foreach ( md_editor_colors() as $color_group => $color_fields ) {
+foreach ( md_editor_colors() as $color_group => $color_fields ) {
 	$color_slug = $color_fields['slug'];
 	$color_val = $color_fields['color'];
 
 	echo ".has-$color_slug-background-color { background-color: $color_val; }\n".
 		 ".has-$color_slug-border-color { border-color: $color_val; }\n".
-		 ( $color_slug !== 'text' ? ".has-$color_slug-color { color: $color_val; }\n"
-	: '' );
+		 ".has-$color_slug-color, a.has-$color_slug-color { color: $color_val; }\n";
 } ?>
-
-.has-text-color.has-white-color { color: #fff; }

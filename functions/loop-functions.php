@@ -78,8 +78,7 @@ function md_get_loop( $args = array() ) {
 		$loop = $single;
 		$loop['loop'] = $loop_type;
 	}
-	else
-		$loop = array_merge( $post_type, $single );
+	else $loop = array_merge( $post_type, $single );
 
 	// Set defaults
 
@@ -88,6 +87,7 @@ function md_get_loop( $args = array() ) {
 
 	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 	$loop['by_category'] = ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) ? true : false;
+	$loop['has_builder'] = md_meta( array( 'layout', 'content', 'builder' ) );
 	$loop['has_sidebar'] = md_has_sidebar();
 
 	if ( empty( $loop['posts_per_page'] ) )
@@ -255,6 +255,9 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = 'full';
 	}
 
+	if ( empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
+		$classes[] = 'inner';
+
 	$classes = apply_filters( 'md_filter_loop_classes', $classes );
 
 	return join( ' ', $classes );
@@ -269,15 +272,15 @@ function md_loop_classes( $loop = array() ) {
  */
 
 function md_loop( $args = array() ) {
+	$c = 1;
 	$html = 'div';
 	$args = is_array( $args ) ? $args : array();
 	$post_type = get_post_type();
-	$c = 1;
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
+	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
 	$loop_classes = $loop['loop_classes'];
-	$builder = md_meta( array( 'layout', 'content', 'builder' ) );
 
 	if ( ! md_has_header_cover( 'post' ) )
 		$html = 'article';

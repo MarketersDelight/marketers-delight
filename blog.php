@@ -61,7 +61,7 @@ class md_post extends md_api {
 	}
 
 	/**
-	 * A simple way to override the post count loop for archive.
+	 * Add user overwrites to the main loop query.
 	 *
 	 * @since 6.0
 	 */

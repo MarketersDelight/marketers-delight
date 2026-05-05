@@ -77,7 +77,7 @@
 
 .box-style .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
 
-.box-style .post-title:not(.cover):not(:empty) + .the-content { padding-block-start: 0; }
+.box-style .entry-title:not(.cover):not(:empty) + .the-content { padding-block-start: 0; }
 
 /* PLAIN + BORDER STYLES */
 

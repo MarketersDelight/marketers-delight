@@ -37,12 +37,18 @@ class md_css {
 				'icons' => true,
 				'templates' => array(
 					'classic-editor' => locate_template( 'css/editor/classic-editor.php' )
+				),
+				'replace' => array(
+					'.format' => '.mce-content-body'
 				)
 			),
 			'block-editor' => array(
 				'path' => MD_DIR . 'css/editor/block-editor.css',
 				'templates' => array(
 					'block-editor' => locate_template( 'css/editor/block-editor.php' )
+				),
+				'replace' => array(
+					'.format' => '.editor-styles-wrapper'
 				)
 			)
 		);
@@ -58,7 +64,7 @@ class md_css {
 
 	protected function css_files() {
 		$templates = array(
-			'attributes' => locate_template( 'css/attributes.php' ),
+			'style' => locate_template( 'css/style.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
@@ -141,6 +147,7 @@ class md_css {
 			$this->templates( $file );
 
 			$css = ob_get_clean();
+			$css = $this->replace( $css, $file );
 			$css = $this->clean( $css );
 
 			file_put_contents( $path, $css );
@@ -172,8 +179,8 @@ class md_css {
 		$this->templates( $file );
 
 		$css = ob_get_clean();
+		$css = $this->replace( $css, $file );
 		$css = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css );
-
 		$s = array( "\r", "\n", "\t", ' }', '{ ', ' {', '; ', ': ', ', ', '   ' );
 		$r = array( '', '', '', '}', '{', '{', ';', ':', ',', '' );
 
@@ -194,6 +201,19 @@ class md_css {
 		$css = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $css );
 
 		return trim( $css );
+	}
+
+	/**
+	 * Apply file-level string swaps to rendered CSS.
+	 *
+	 * @since 6.0
+	 */
+
+	private function replace( $css, $file ) {
+		if ( empty( $this->files[$file]['replace'] ) )
+			return $css;
+
+		return str_replace( array_keys( $this->files[$file]['replace'] ), $this->files[$file]['replace'], $css );
 	}
 
 	/**
@@ -270,8 +290,19 @@ class md_css {
 		$line_height = $values['typography']['body']['line_height'];
 		$font_weight = ! empty( $typography['body']['font_weight'] ) ? $typography['body']['font_weight'] : 'normal';
 		$bold = ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : 'bold';
-		$h1_font_family = ! empty( $typography['h1']['font_family'] ) ? $typography['h1']['font_family'] : $font_family;
-		$h1_font_weight = ! empty( $typography['h1']['font_weight'] ) ? $typography['h1']['font_weight'] : $bold;
+
+		$headings = array(
+			'huge' => '.huge-title',
+			'h1' => 'h1, .h1, .large-title, .wp-block-post-title',
+			'h2' => 'h2, .h2, .main-title',
+			'h3' => 'h3, .h3, .med-title',
+			'h4' => 'h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading',
+			'h5' => 'h5, .h5, .small-title',
+			'h6' => 'h6, .h6, .micro-title'
+		);
+		$heading_selectors = array_values( $headings );
+		$heading_selectors[] = '.wp-block-heading';
+		$heading_selectors = join( ', ', $heading_selectors );
 
 		$h1 = $values['typography']['h1'];
 		$h2 = $values['typography']['h2'];
@@ -279,6 +310,9 @@ class md_css {
 		$h4 = $values['typography']['h4'];
 		$h5 = $values['typography']['h5'];
 		$h6 = $values['typography']['h6'];
+
+		$h1_font_family = ! empty( $h1['font_family'] ) ? $h1['font_family'] : $font_family;
+		$h1_font_weight = ! empty( $h1['font_weight'] ) ? $h1['font_weight'] : $bold;
 
 		$single = $lh = $line_height['desktop'];
 		$small = $lhsm = round( $single / 6 );
@@ -288,6 +322,16 @@ class md_css {
 		$double = $lhd = round( $single * 2 );
 		$triple = $lht = round( $single * 3 );
 		$quad = $lhq = round( $single * 4 );
+		$spacers = array(
+			'small' => $small,
+			'third' => $third,
+			'half' => $half,
+			'single' => $single,
+			'mid' => $mid,
+			'double' => $double,
+			'triple' => $triple,
+			'quad' => $quad
+		);
 
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );

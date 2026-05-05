@@ -143,3 +143,23 @@
 	color: #fff;
 	padding: <?php echo $half; ?>px;
 }
+
+/* QUERIES */
+<?php foreach ( $queries as $w => $d ) {
+
+echo "@media (max-width: {$w}px) {\n";
+
+foreach ( array( 'sidebar', 'footer' ) as $aside )
+	if ( ! empty( $typography[$aside]['font_size'][$d] ) || ! empty( $typography[$aside]['line_height'][$d] ) ) {
+		echo ".{$aside} { ".
+			( ! empty( $typography[$aside]['font_size'][$d] ) ?
+				'font-size: ' . $typography[$aside]['font_size'][$d] . 'px; '
+			: '' ).
+			( ! empty( $typography[$aside]['line_height'][$d] ) ?
+				'line-height: ' . $typography[$aside]['line_height'][$d] . 'px; '
+			: '' ) . '}';
+}
+
+echo "}\n";
+
+} ?>

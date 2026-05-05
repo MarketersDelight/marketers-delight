@@ -4,7 +4,7 @@
 	$BUTTONS
 \*------------------------------*/
 
-.link, button, .button, input[type="submit"] {
+button, input[type="submit"] .link, .button {
 	align-items: center;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
@@ -36,7 +36,7 @@
 
 /* BUTTONS */
 
-button, .button, input[type="submit"] {
+button, input[type="submit"], .button, a.button {
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
@@ -55,7 +55,7 @@ button, .button, input[type="submit"] {
 
 a.button { text-decoration: none; }
 
-button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(1px); }
+button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(1px); }
 
 /* COLORS */
 
@@ -123,6 +123,7 @@ button:hover, .button:hover, input[type="submit"]:hover { transform: translateY(
 .button.button-arrow:hover:after { transform: translateX(4px); }
 
 .button-arrow.down:after { content: '\e80e'; }
+
 .button-arrow.down:hover:after { transform: none; }
 
 .button-arrow.width-full:after { margin-left: auto; }

@@ -15,38 +15,7 @@ md_featured_media( 'post', array_merge( $args, array( 'show_image' => array( 'be
 
 md_hook_before_the_content();
 
-if ( $loop['content'] !== 'hide' && ( get_the_content() || get_the_excerpt() || is_404() ) ) {
-
-	if ( empty( $builder ) )
-		echo "<div id=\"the_content\" class=\"the-content item\">".
-			 ( empty( $loop['has_sidebar'] ) ? '<div class="wrap">' : '' );
-
-	md_hook_the_content_top();
-
-	md_featured_media( 'post', array_merge( $args, array( 'show_image' => array( 'left', 'right', 'center' ) ) ) );
-
-	if ( $loop['content'] == 'full' || ( ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
-		if ( is_404() && ! md_has_custom_404() )
-			include_once md_template( 'loop/404', true );
-		else
-			if ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
-				echo do_shortcode( get_the_content() );
-			else
-				the_content( esc_html( $loop['read_more'] ) );
-
-		wp_link_pages();
-	}
-	elseif ( empty( $loop['content'] ) && get_the_excerpt() ) echo
-		wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
-		( empty( $loop['excerpt_settings']['remove_text'] ) ? '<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>' : '' );
-
-	md_hook_the_content_bottom();
-
-	if ( empty( $builder ) )
-		echo ( empty( $loop['has_sidebar'] ) ? '</div>' : '' ).
-			 '</div>';
-
-}
+include md_template( 'loop/the-content', true );
 
 md_hook_after_the_content();
 

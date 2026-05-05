@@ -164,6 +164,20 @@ function md_has_post_nav() {
 }
 
 /**
+ * Outputs the WordPress excerpt with read more and
+ * length enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_excerpt( $loop ) {
+	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
+		( empty( $loop['excerpt_settings']['remove_text'] ) ?
+			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>'
+		: '' );
+}
+
+/**
  * Outputs the standard WordPress password form with the
  * .form-attached class added to it.
  *

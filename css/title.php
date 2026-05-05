@@ -4,9 +4,9 @@
 	$TITLES
 \*------------------------------*/
 
-.page-title, .header-cover .article-wrap > .post-title { margin-block-end: <?php echo $single; ?>px; }
-
 .post-title:empty { display: none; }
+
+.page-title, .header-cover .article-wrap > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
 .entry-title, .title-wrap,
 .wide .inner, .wide .wrap,

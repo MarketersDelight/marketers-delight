@@ -53,6 +53,8 @@
 
 :is(.image-center, .image-full) .featured-media { text-align: center; }
 
+.full .the-content .featured-media { margin-block-end: <?php echo $single; ?>px; }
+
 /* CAPTIONS */
 
 .wp-caption {
@@ -157,8 +159,7 @@ ul.page-numbers {
 	list-style: none;
 }
 
-span.page-numbers, a.page-numbers,
-.post-nav-links .post-page-numbers {
+span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
@@ -167,19 +168,16 @@ span.page-numbers, a.page-numbers,
 
 .page-numbers li { margin-block-end: 0; }
 
-.page-numbers.current,
-.post-page-numbers.current {
+.page-numbers.current, .post-page-numbers.current {
 	cursor: default;
 	font-weight: bold;
 }
 
-span.page-numbers:hover, a.page-numbers:hover,
-.post-nav-links.post-page-numbers:hover { opacity: 0.8; }
+span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers:hover { opacity: 0.8; }
 
 .page-numbers.prev, .page-numbers.next { text-decoration: underline; }
 
-.page-numbers.dots,
-.page-numbers.prev, .page-numbers.next {
+.page-numbers.dots, .page-numbers.prev, .page-numbers.next {
 	background-color: transparent;
 	border-radius: inherit;
 	box-shadow: none;
@@ -190,6 +188,7 @@ span.page-numbers:hover, a.page-numbers:hover,
 .page-numbers:not(.prev):not(.next):not(.current) { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 .prev-icon, .page-numbers.prev { margin-inline-end: <?php echo $third; ?>px; }
+
 .next-icon, .page-numbers.next { margin-inline-start: <?php echo $third; ?>px; }
 
 /* POST NAV */

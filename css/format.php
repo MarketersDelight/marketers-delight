@@ -4,39 +4,110 @@
 	$FORMAT
 \*------------------------------*/
 
+/* ATTRIBUTES */
+
+a {
+	color: <?php echo $colors['site']['links']; ?>;
+	text-decoration: underline;
+}
+
+a:hover { text-decoration: none; }
+
+strong, b { font-weight: <?php echo $bold; ?>; }
+
+img, a img {
+	height: auto;
+	max-width: 100%;
+	vertical-align: top;
+}
+
+iframe, video, object { max-width: 100%; }
+
+abbr { cursor: help; }
+
+cite { color: <?php echo $colors['site']['text-sec']; ?>; }
+
+sup { line-height: 1; }
+
+hr {
+	border: 0;
+	border-block-start: 1px solid rgba(0, 0, 0, 0.1);
+	border-block-end: 1px solid rgba(255, 255, 255, 0.3);
+	height: 0;
+}
+
+code {
+	border-radius: 6px;
+	padding: 2px 5px;
+}
+
+pre {
+	margin-block-end: <?php echo $single; ?>px;
+	overflow: auto;
+	padding: <?php echo $single; ?>px;
+}
+
+code, pre {
+	background-color: rgba(0, 0, 0, 0.1);
+	color: #3e3e3e;
+	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
+	font-size: 0.9em;
+}
+
+/* FORMAT */
+
 .format { word-wrap: break-word; }
 
-.format a { text-decoration: underline; }
-
-.format a :hover { text-decoration: none; }
-
 .format :is(ul, ol, p, hr, table, blockquote, pre),
-.format :is(.wp-caption, .wp-block-image),
-.full .the-content .featured-media { margin-block-end: <?php echo $single; ?>px; }
+.format :is(.wp-caption, .wp-block-image) { margin-block-end: <?php echo $single; ?>px; }
 
 /* HEADINGS */
 
-.format :is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, .huge) {
-	color: <?php echo $colors['site']['headline']; ?>;
-	margin-block-end: <?php echo $half; ?>px;
-}
+<?php foreach ( $headings as $attribute => $selector ) {
+	echo "$selector {".
+		'color: ' . $colors['site']['headline'] . ";\n".
+		'font-family: ' . ( ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family ) . ";\n".
+		'font-size: ' . $typography[$attribute]['font_size']['desktop'] . "px;\n".
+		'font-weight: ' . ( ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight ) . ";\n".
+		'line-height: ' . $typography[$attribute]['line_height']['desktop'] . "px;\n".
+	"}\n";
+} ?>
 
-.format :is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, .huge) a {
+:is(<?php echo $heading_selectors ?>) a {
 	color: <?php echo $colors['site']['headline-links']; ?>;
 	text-decoration: none;
 }
 
-.format :is(h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6, .huge):is(.alignwide, .alignfull) { text-align: center; }
+.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-block-end: <?php echo $half; ?>px; }
 
-.the-content :is(h1, h2, h3, h4, h5, h6) { margin-block-start: <?php echo $mid; ?>px; }
+.format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
-.the-content :is(h1, h2, h3, h4, h5, h6):first-child { margin-block-start: 0; }
+.the-content :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+
+<?php foreach ( $queries as $w => $d ) {
+	echo "@media (max-width: {$w}px) {\n";
+
+	foreach ( $headings as $h => $selector ) {
+		if ( ! empty( $typography[$h]['font_size'][$d] ) || ! empty( $typography[$h]['line_height'][$d] ) ) {
+			echo "\t$selector { ".
+				( ! empty( $typography[$h]['font_size'][$d] ) ?
+					'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '
+				: '' ).
+				( ! empty( $typography[$h]['line_height'][$d] ) ?
+					'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '
+				: '' ).
+			"}\n";
+		}
+	}
+
+	echo "}\n";
+} ?>
 
 /* LISTS */
 
 .format ul { list-style: square; }
 
-.format ul[class^="list"], .format [class^="list"] ul { list-style: none; }
+.the-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $single; ?>px; }
 
 .format li {
 	margin-block-end: <?php echo $half; ?>px;
@@ -48,22 +119,19 @@
 	margin-inline-start: <?php echo $half; ?>px;
 }
 
-.text-center [class^="list"], .text-center ul, .text-center ol { text-align: left; }
+.format .list { margin-inline-start: 0; }
 
-.the-content [class^="list"] { margin-inline-start: 0; }
+.format [class^="list"], .format [class^="list"] ul { list-style: none; }
 
-.the-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $single; ?>px; }
-
-ul[class^="list"], [class^="list"] ul { list-style: none; }
-
-.list > ul:not(:last-child), .list li:not(:last-child) {
+[class^="list"] > ul:not(:last-child),
+[class^="list"] li:not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: <?php echo $half; ?>px;
 }
 
 .list-check { margin-inline-start: <?php echo $single; ?>px; }
 
-ul.list-check li:before {
+.list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
 	border-radius: 50%;
 	color: #22a340;
@@ -71,30 +139,45 @@ ul.list-check li:before {
 	padding: <?php echo $small; ?>px;
 }
 
-/* QUOTES */
+.text-center ul, .text-center ol, .text-center [class^="list"] { text-align: left; }
 
-.format blockquote p { margin-block-end: <?php echo $half; ?>px; }
+/* BLOCK/PULL QUOTES */
 
-.format blockquote p + cite {
+blockquote {
+	background-color: #fff;
+	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-inline-start-width: 7px;
+	border-radius: 5px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	color: <?php echo $colors['site']['text-sec']; ?>;
 	display: block;
-	margin-block-start: -<?php echo $half; ?>px;
+	font-style: italic;
+	margin-inline: 0;
+	padding: <?php echo $single; ?>px;
+	position: relative;
 }
 
-.format .wp-block-pullquote {
-	margin: 0;
-	padding: 0;
-}
-
-.wp-block-pullquote blockquote { color: inherit; }
-
-.wp-block-pullquote p {
-	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-	font-style: normal;
+blockquote:before, blockquote:after {
+	color: #ddd;
+	font-family: Georgia, serif;
+	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
 	font-weight: <?php echo $bold; ?>;
-	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
+	position: absolute;
 }
 
-.wp-block-pullquote.is-style-plain blockquote {
+blockquote:before {
+	content: open-quote;
+	inset-inline-start: <?php echo $small; ?>px;
+}
+
+blockquote:after {
+	content: close-quote;
+	inset-inline-end: <?php echo $half; ?>px;
+}
+
+:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
+
+blockquote.is-style-plain, .is-style-plain blockquote {
 	background-color: transparent;
 	border: 0;
 	box-shadow: none;
@@ -102,8 +185,15 @@ ul.list-check li:before {
 	padding: 0;
 }
 
-.wp-block-pullquote.is-style-plain blockquote:before,
-.wp-block-pullquote.is-style-plain blockquote:after { content: ''; }
+blockquote.is-style-plain:before, blockquote.is-style-plain:after,
+.is-style-plain blockquote:before, .is-style-plain blockquote:after { content: ''; }
+
+.format blockquote p { margin-block-end: <?php echo $half; ?>px; }
+
+.format blockquote p + cite {
+	display: block;
+	margin-block-start: -<?php echo $half; ?>px;
+}
 
 /* SLIM */
 
@@ -124,3 +214,7 @@ ul.list-check li:before {
 		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
 	}
 }
+
+<?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
+.format *:last-child { margin-block-end: 0; }
+<?php endif; ?>
