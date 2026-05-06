@@ -6,6 +6,10 @@
 
 /* TEXT */
 
+.underline { text-decoration: underline; }
+
+.no-underline { text-decoration: none; }
+
 .normal { font-weight: <?php echo $font_weight; ?>; }
 
 .bold { font-weight: <?php echo $bold; ?>; }
@@ -134,10 +138,7 @@ cite, .tiny {
 
 .column { flex-direction: column; }
 
-.fl-center {
-	align-items: center;
-	justify-content: center;
-}
+.fl-center { justify-content: center; }
 
 .is-vertically-aligned-center { align-self: center; }
 
@@ -190,7 +191,7 @@ cite, .tiny {
 /* MARGIN BOTTOM */
 
 foreach ( array( 'quad', 'triple', 'double', 'mid', 'single', 'half', 'third', 'small' ) as $size )
-	echo ".mb-$size, .format .mb-$size { margin-block-end: {$spacers[$size]}px; }\n";
+	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: {$spacers[$size]}px; }\n";
 
 echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 

@@ -71,10 +71,10 @@ function md_content_box_classes() {
  * @since 6.0
  */
 
-function md_post_class( $args = array(), $c = 1 ) {
+function md_post_class( $loop = array(), $c = 1 ) {
 	$classes = array( 'entry' );
 	$cover = md_cover();
-	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
 
 	if ( ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) )
 		$classes[] = 'featured';
@@ -99,8 +99,8 @@ function md_post_class( $args = array(), $c = 1 ) {
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
 
-	if ( ! md_has_sidebar() )
-		$classes[] = 'inner';
+//	if ( empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
+//		$classes[] = 'inner';
 
 	return join( ' ', $classes );
 }

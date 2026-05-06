@@ -9,6 +9,6 @@ else
 	include md_template( 'loop/loop', true );
 
 if ( empty( $loop['category_posts']['enable'] ) )
-	md_hook_x_loop( $args, $c );
+	md_hook_x_loop( $loop, $c );
 
 $c++;

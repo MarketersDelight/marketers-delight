@@ -16,21 +16,6 @@ function md_filter_loops() {
 }
 
 /**
- * A list of available loop styles (applied to all templates),
- * selectable from admin.
- *
- * @since 6.0
- */
-
-function md_filter_loop_styles() {
-	return apply_filters( 'md_filter_loop_styles', array(
-		'box' => __( 'Box style', 'md' ),
-		'border' => __( 'Border style', 'md' ),
-		'plain' => __( 'No style', 'md' )
-	) );
-}
-
-/**
  * A list of Loops registered to MD's settings.
  *
  * @since 5.1
@@ -57,118 +42,36 @@ function md_loops( $sort = null ) {
 }
 
 /**
- * Return loop data with context awareness and user-set
- * options blended with global post type level data.
+ * A list of available loop styles (applied to all templates),
+ * selectable from admin.
  *
  * @since 6.0
  */
 
-function md_get_loop( $args = array() ) {
-	$args = is_array( $args ) ? $args : array();
-	$loop = array();
-	$loops = md_loops();
-
-	// Set contextual data
-
-	$post_type = md_post_type_field( 'loop', array() );
-	$loop_type = md_post_type_field( array( 'loop', 'loop' ), 'article' );
-	$single = md_module( 'loop', array() );
-
-	if ( is_singular() || is_404() ) {
-		$loop = $single;
-		$loop['loop'] = $loop_type;
-	}
-	else $loop = array_merge( $post_type, $single );
-
-	// Set defaults
-
-	if ( ! empty( $loops[$loop_type]['defaults'] ) )
-		$loop = array_merge( $loops[$loop_type]['defaults'], $loop );
-
-	$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
-	$loop['by_category'] = ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) ? true : false;
-	$loop['has_builder'] = md_meta( array( 'layout', 'content', 'builder' ) );
-	$loop['has_sidebar'] = md_has_sidebar();
-
-	if ( empty( $loop['posts_per_page'] ) )
-		$loop['posts_per_page'] = get_option( 'posts_per_page' );
-
-	if ( empty( $loop['columns'] ) )
-		$loop['columns'] = 1;
-
-	if ( md_has_media() ) {
-		$media = md_get_media();
-		$loop['featured_image'] = $media['position'];
-
-		if ( ! empty( $media['image']['id'] ) )
-			$loop['featured_image_id'] = $media['image']['id'];
-	}
-
-	if ( ! empty( $args['sticky'] ) )
-		$loop['sticky'] = true;
-
-	if ( ! empty( $args['in_loop'] ) )
-		$loop['in_loop'] = true;
-
-	$loop['loop'] = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
-	$loop['style'] = md_loop_style();
-	$loop['loop_classes'] = md_loop_classes( $loop );
-
-	return apply_filters( 'md_filter_set_loop', $loop );
+function md_filter_loop_styles() {
+	return apply_filters( 'md_filter_loop_styles', array(
+		'box' => __( 'Box style', 'md' ),
+		'border' => __( 'Border style', 'md' ),
+		'plain' => __( 'No style', 'md' )
+	) );
 }
 
 /**
- * Hook custom content after Loop Item X.
+ * Determine the current loop/content box style.
  *
  * @since 5.1
  */
 
-function md_hook_x_loop( $args, $c ) {
-	$loop = $args['loop'];
+function md_loop_style( $args = array() ) {
+	$body = md_setting( array( 'colors', 'design' ), 'box' );
 
-	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
-		do_action( 'md_hook_x_loop', $loop );
-}
+	if ( isset( $args['body'] ) )
+		return $body;
 
-/**
- * Build per-item loop settings from page-level defaults.
- *
- * @since 6.0
- */
+	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
+	$style = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() ) ?: $body;
 
-function md_loop_item( $loop = array(), $c = 1 ) {
-	if ( ! empty( $loop['excerpt_settings']['remove_text'] ) )
-		$loop['read_more'] = '';
-	elseif ( empty( $loop['read_more'] ) )
-		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
-
-	if ( empty( $loop['excerpt_length'] ) )
-		$loop['excerpt_length'] = 55;
-
-	if ( ! empty( $loop['excerpt_settings']['remove_more'] ) )
-		$loop['excerpt_more'] = '';
-	elseif ( empty( $loop['excerpt_more'] ) )
-		$loop['excerpt_more'] = '[...]';
-
-	if ( md_has_media() ) {
-		$media = md_get_media();
-		$loop['featured_image'] = $media['position'];
-
-		if ( ! empty( $media['image']['id'] ) )
-			$loop['featured_image_id'] = $media['image']['id'];
-	}
-	else {
-		unset( $loop['featured_image'] );
-		unset( $loop['featured_image_id'] );
-	}
-
-	if ( ! isset( $loop['content'] ) )
-		$loop['content'] = '';
-
-	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
-		$loop = md_loop_featured( $loop );
-
-	return $loop;
+	return $style;
 }
 
 /**
@@ -206,24 +109,6 @@ function md_loop_featured( $loop ) {
 }
 
 /**
- * Determine the current loop/content box style.
- *
- * @since 5.1
- */
-
-function md_loop_style( $args = array() ) {
-	$body = md_setting( array( 'colors', 'design' ), 'box' );
-
-	if ( isset( $args['body'] ) )
-		return $body;
-
-	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
-	$style = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() ) ?: $body;
-
-	return $style;
-}
-
-/**
  * Build loop wrapper classes.
  *
  * @since 6.0
@@ -233,10 +118,10 @@ function md_loop_classes( $loop = array() ) {
 	if ( empty( $loop ) )
 		$loop = md_get_loop();
 
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
-	$class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
-	$style = md_loop_style();
-	$classes = array( 'loop', $class, "loop-{$loop_type}" );
+	$post_type = ! empty( $loop['post_type'] ) ? $loop['post_type'] : md_get_post_type();
+	$class = 'loop-' . str_replace( '_', '-', $post_type );
+	$style = isset( $loop['style'] ) ? $loop['style'] : md_loop_style();
+	$classes = array( 'loop', $class, 'loop-' . $loop['loop'] );
 
 	if ( $style )
 		$classes[] = "{$style}-style";
@@ -245,8 +130,8 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = 'columns';
 		$classes[] = 'columns-' . $loop['columns'];
 
-		if ( $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ( ! empty( $loop['has_sidebar'] ) ) ) )
-			 $classes[] = 'slim';
+		if ( ! empty( $loop['is_slim'] ) )
+			$classes[] = 'slim';
 		else
 			$classes[] = 'full';
 	}
@@ -255,12 +140,127 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = 'full';
 	}
 
-	if ( empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
+	if ( ! isset( $loop['query'] ) && empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
 		$classes[] = 'inner';
 
 	$classes = apply_filters( 'md_filter_loop_classes', $classes );
 
 	return join( ' ', $classes );
+}
+
+/**
+ * Build per-item loop settings from page-level defaults.
+ *
+ * @since 6.0
+ */
+
+function md_loop_item( $loop = array(), $c = 1 ) {
+	if ( ! empty( $loop['excerpt_settings']['remove_text'] ) )
+		$loop['read_more'] = '';
+	elseif ( empty( $loop['read_more'] ) )
+		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
+
+	if ( empty( $loop['excerpt_length'] ) )
+		$loop['excerpt_length'] = 55;
+
+	if ( ! empty( $loop['excerpt_settings']['remove_more'] ) )
+		$loop['excerpt_more'] = '';
+	elseif ( empty( $loop['excerpt_more'] ) )
+		$loop['excerpt_more'] = '[...]';
+
+	if ( md_has_media() && ! isset( $loop['featured_image'] ) ) {
+		$media = md_get_media();
+
+		$loop['featured_image'] = $media['position'];
+
+		if ( ! empty( $media['image']['id'] ) )
+			$loop['featured_image_id'] = $media['image']['id'];
+	}
+	else unset( $loop['featured_image_id'] );
+
+	if ( ! isset( $loop['content'] ) )
+		$loop['content'] = '';
+
+	if ( ! empty( $loop['featured'] ) && $c <= $loop['featured'] )
+		$loop = md_loop_featured( $loop );
+
+	return $loop;
+}
+
+/**
+ * Return loop data with context awareness and user-set
+ * options blended with global post type level data.
+ *
+ * @since 6.0
+ */
+
+function md_get_loop( $args = array() ) {
+	$loop = array();
+
+	if ( ! empty( $args['query'] ) ) {
+		$key = '';
+
+		if ( ! empty( $args['post_type'] ) )
+			$key = $args['post_type'];
+		elseif ( ! empty( $args['query']['post_type'] ) )
+			$key = $args['query']['post_type'];
+
+		if ( $key )
+			$loop = md_post_type_field( 'loop', array(), $key );
+	}
+	else {
+		$post_type = md_post_type_field( 'loop', array() );
+		$loop_type = md_post_type_field( array( 'loop', 'loop' ), 'article' );
+		$single = md_module( 'loop', array() );
+
+		if ( is_singular() || is_404() )
+			$loop = array_merge( array( 'loop' => $loop_type ), $single );
+		else
+			$loop = array_merge( $post_type, $single );
+
+		$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
+
+		if ( empty( $loop['posts_per_page'] ) )
+			$loop['posts_per_page'] = get_option( 'posts_per_page' );
+
+		if ( ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) )
+			$loop['by_category'] = true;
+
+		if ( md_meta( array( 'layout', 'content', 'builder' ) ) )
+			$loop['has_builder'] = true;
+
+		if ( md_has_sidebar() )
+			$loop['has_sidebar'] = true;
+
+		if ( md_has_media() ) {
+			$media = md_get_media();
+			$loop['featured_image'] = $media['position'];
+
+			if ( ! empty( $media['image']['id'] ) )
+				$loop['featured_image_id'] = $media['image']['id'];
+		}
+	}
+
+	if ( empty( $loop['columns'] ) )
+		$loop['columns'] = 1;
+
+	$loop = array_merge( $loop, $args );
+	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
+
+	if ( ! empty( $loop['query'] ) )
+		foreach ( array( 'posts_per_page', 'orderby', 'order' ) as $key )
+			if ( empty( $loop['query'][$key] ) && ! empty( $loop[$key] ) )
+				$loop['query'][$key] = $loop[$key];
+
+	if ( ! isset( $loop['style'] ) )
+		$loop['style'] = ! empty( $args['query'] ) ? md_loop_style( array( 'body' => true ) ) : md_loop_style();
+
+	if ( $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ! empty( $loop['has_sidebar'] ) ) )
+		$loop['is_slim'] = true;
+
+	$loop['loop_classes'] = md_loop_classes( $loop );
+
+	return apply_filters( 'md_filter_set_loop', $loop );
 }
 
 /**
@@ -273,26 +273,41 @@ function md_loop_classes( $loop = array() ) {
 
 function md_loop( $args = array() ) {
 	$c = 1;
-	$html = 'div';
 	$args = is_array( $args ) ? $args : array();
 	$post_type = get_post_type();
+	$html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
-	$loop_type = isset( $loop['loop'] ) ? $loop['loop'] : 'article';
+	$loop_type = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
-
-	if ( ! md_has_header_cover( 'post' ) )
-		$html = 'article';
 
 	md_hook_loop_before();
 
 	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
-	elseif ( $loop['by_category'] )
+	elseif ( isset( $loop['by_category'] ) )
 		include md_template( 'loop/category-posts', true );
-	elseif ( isset( $args['query'] ) )
-		include md_template( 'loop/the-query', true );
+	elseif ( isset( $args['query'] ) ) {
+		$query = new WP_Query( $loop['query'] );
+
+		if ( $query->have_posts() ) {
+			echo '<div class="' . esc_attr( $loop_classes ) . '">';
+
+			while ( $query->have_posts() ) {
+				$query->the_post();
+
+				include md_template( 'loop/the-post', true );
+			}
+
+			echo '</div>';
+		}
+		else md_404();
+
+		wp_reset_postdata();
+
+		md_pagination( $loop );
+	}
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '">' : '';
 
@@ -306,12 +321,23 @@ function md_loop( $args = array() ) {
 
 		if ( ! is_singular() ) {
 			echo '</div>';
-			md_pagination( $args );
+			md_pagination( $loop );
 		}
 	}
 	else md_404();
 
 	md_hook_loop_after();
+}
+
+/**
+ * Hook custom content after Loop Item X.
+ *
+ * @since 5.1
+ */
+
+function md_hook_x_loop( $loop, $c ) {
+	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
+		do_action( 'md_hook_x_loop', $loop );
 }
 
 /**
@@ -338,7 +364,7 @@ function md_404() {
 				md_loop( array( 'in_loop' => true ) );
 			}
 
-		wp_reset_query();
+		wp_reset_postdata();
 	}
 	else md_loop( array( 'in_loop' => true ) );
 }
@@ -362,16 +388,16 @@ function md_has_custom_404() {
  * @since 4.0
  */
 
-function md_pagination( $args = array() ) {
+function md_pagination( $loop = array() ) {
 	if ( is_singular() )
 		return;
 
 	$big = 999999999;
 	$type = md_module( array( 'loop', 'pagination' ) );
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
-	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
 
-	if ( $loop['by_category'] ) {
+	if ( isset( $loop['by_category'] ) ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
 		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;

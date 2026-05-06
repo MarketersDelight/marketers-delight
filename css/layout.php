@@ -81,10 +81,10 @@
 
 /* PLAIN + BORDER STYLES */
 
-.expanded :is(.plain-style, .border-style).loop-article.row > .entry { margin-block-end: <?php echo $triple; ?>px; }
+.expanded :is(.plain-style, .border-style).loop-article.row > .entry:not(:last-child) { margin-block-end: <?php echo $triple; ?>px; }
 
 .compact :is(.plain-style, .border-style).loop-article.row > .entry,
-:is(.plain-style, .border-style).loop-article.row > .entry > *:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
+:is(.plain-style, .border-style).loop-article.row > .entry > .item:not(:last-child) { margin-block-end: <?php echo $mid; ?>px; }
 
 :is(.plain-style, .border-style).columns .entry > *:not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 

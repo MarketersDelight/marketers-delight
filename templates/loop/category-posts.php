@@ -1,5 +1,8 @@
 <?php
 
+$post_type = isset( $post_type ) ? $post_type : get_post_type();
+$loop = isset( $loop ) && is_array( $loop ) ? $loop : array();
+
 $t = 1;
 $loop_class = 'loop-' . str_replace( '_', '-', md_get_post_type() );
 $categories_classes = array( 'categories', "category-$loop_class" );
@@ -52,7 +55,7 @@ foreach ( $categories->terms as $category ) {
 		include md_template( 'loop/category-post', true );
 	}
 
-	md_hook_x_loop( $args, $t );
+	md_hook_x_loop( $loop, $t );
 
 	$t++;
 
@@ -62,4 +65,4 @@ foreach ( $categories->terms as $category ) {
 echo '</div>';
 
 if ( ! isset( $args['query'] ) )
-	md_pagination( $args );
+	md_pagination( $loop );

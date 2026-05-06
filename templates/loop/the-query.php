@@ -1,5 +1,5 @@
 <?php
-
+/*
 //$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 $loop_base = $loop;
 $query_args = array(
@@ -36,18 +36,18 @@ if ( isset( $loop['include_cats'] ) ) {
 }
 
 $query_args = wp_parse_args( $args['query'], $query_args );
+*/
 
-$query = new WP_Query( $query_args );
+$query = new WP_Query( $loop['query'] );
 
 if ( $query->have_posts() )
 	while ( $query->have_posts() ) {
 		$query->the_post();
-		$args['loop'] = $loop_base;
+
 		include md_template( 'loop/the-post', true );
 	}
-else
-	md_404();
+else md_404();
 
-wp_reset_query();
+wp_reset_postdata();
 
-md_pagination( $args );
+md_pagination( $loop );

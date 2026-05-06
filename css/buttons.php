@@ -13,9 +13,7 @@ button, input[type="submit"] .link, .button {
 
 /* LINKS */
 
-.link, .underline { text-decoration: underline; }
-
-.link:hover, .no-underline { text-decoration: none; }
+.link:hover { text-decoration: none; }
 
 .link-wrap {
 	display: inline-flex;

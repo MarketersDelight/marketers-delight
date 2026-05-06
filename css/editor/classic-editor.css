@@ -258,8 +258,7 @@ button, input[type="submit"] .link, .button {
 	line-height: 1;
 }
 /* LINKS */
-.link, .underline { text-decoration: underline; }
-.link:hover, .no-underline { text-decoration: none; }
+.link:hover { text-decoration: none; }
 .link-wrap {
 	display: inline-flex;
 	flex-direction: column;
@@ -347,6 +346,8 @@ button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(
 	$HELPERS
 \*------------------------------*/
 /* TEXT */
+.underline { text-decoration: underline; }
+.no-underline { text-decoration: none; }
 .normal { font-weight: 400; }
 .bold { font-weight: 500; }
 .italic { font-style: italic; }
@@ -440,10 +441,7 @@ cite, .tiny {
 .shrink { flex-shrink: 0; }
 .reverse { flex-direction: row-reverse; }
 .column { flex-direction: column; }
-.fl-center {
-	align-items: center;
-	justify-content: center;
-}
+.fl-center { justify-content: center; }
 .is-vertically-aligned-center { align-self: center; }
 .width-full { width: 100%; }
 /* COLUMNS */
@@ -477,14 +475,14 @@ cite, .tiny {
 	flex-grow: 1;
 }
 /* SPACERS */
-.mb-quad, .mce-content-body .mb-quad { margin-block-end: 128px; }
-.mb-triple, .mce-content-body .mb-triple { margin-block-end: 96px; }
-.mb-double, .mce-content-body .mb-double { margin-block-end: 64px; }
-.mb-mid, .mce-content-body .mb-mid { margin-block-end: 48px; }
-.mb-single, .mce-content-body .mb-single { margin-block-end: 32px; }
-.mb-half, .mce-content-body .mb-half { margin-block-end: 16px; }
-.mb-third, .mce-content-body .mb-third { margin-block-end: 11px; }
-.mb-small, .mce-content-body .mb-small { margin-block-end: 5px; }
+.mb-quad, .mce-content-body .mb-quad:not(:last-child) { margin-block-end: 128px; }
+.mb-triple, .mce-content-body .mb-triple:not(:last-child) { margin-block-end: 96px; }
+.mb-double, .mce-content-body .mb-double:not(:last-child) { margin-block-end: 64px; }
+.mb-mid, .mce-content-body .mb-mid:not(:last-child) { margin-block-end: 48px; }
+.mb-single, .mce-content-body .mb-single:not(:last-child) { margin-block-end: 32px; }
+.mb-half, .mce-content-body .mb-half:not(:last-child) { margin-block-end: 16px; }
+.mb-third, .mce-content-body .mb-third:not(:last-child) { margin-block-end: 11px; }
+.mb-small, .mce-content-body .mb-small:not(:last-child) { margin-block-end: 5px; }
 .mb-none, .mce-content-body .mb-none { margin-block-end: 0; }
 .ml-half { margin-inline-start: 16px; }
 .ml-third { margin-inline-start: 11px; }

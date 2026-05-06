@@ -164,6 +164,16 @@ function md_has_post_nav() {
 }
 
 /**
+ * Outputs the_content with option enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_the_content( $loop ) {
+	include md_template( 'loop/the-content', true );
+}
+
+/**
  * Outputs the WordPress excerpt with read more and
  * length enhancements.
  *

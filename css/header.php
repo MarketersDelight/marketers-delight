@@ -25,15 +25,11 @@
 	<?php endif; ?>
 }
 
-.cover-text .header .site-name a,
-.cover-text .header .tagline,
-.cover-text .header .trigger,
-.cover-text .header .menu > .menu-item > a { color: #fff; }
+.header a { text-decoration: none; }
 
-.cover-alt .header .site-name a,
-.cover-alt .header .tagline,
-.cover-alt .header .trigger,
-.cover-alt .header .menu > .menu-item > a { color: <?php echo $colors['site']['text']; ?>; }
+.cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: #fff; }
+
+.cover-alt .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: <?php echo $colors['site']['text']; ?>; }
 
 <?php if ( ! empty ( $colors['header']['bg_color'] ) ) : ?>
 .is-box-style .header.cover { background-color: transparent; }
@@ -61,19 +57,13 @@
 	gap: <?php echo $half; ?>px;
 }
 
-.header .menu a,
-.header .menu .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
+.header .menu a, .header .menu .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
 
-.header .current-menu-item > a,
-.header .current-menu-item > .toggle { color: <?php echo $colors['menu']['active']; ?>; }
+.header .current-menu-item > a, .header .current-menu-item > .toggle { color: <?php echo $colors['menu']['active']; ?>; }
 
 /* LAYOUTS */
 
-.header.simple .inner,
-.header.simple .header-primary,
-.header.simple .header-aside,
-.header.simple .header-controls,
-.header.simple .header-triggers { justify-content: center; }
+.header.simple :is(.inner, .header-primary, .header-aside, .header-controls, .header-triggers) { justify-content: center; }
 
 .left .header-triggers { justify-content: space-between; }
 
@@ -212,10 +202,7 @@
 	.left .header-triggers, .center .header-triggers { justify-content: end; }
 	.right .header-triggers { order: -1; }
 	/* COVER */
-	.full-cover .header[class*="show-"] .site-name a,
-	.full-cover .header[class*="show-"] .tagline,
-	.full-cover .header[class*="show-"] .trigger,
-	.full-cover .header[class*="show-"] .menu > .menu-item > a { color: inherit; }
+	.full-cover .header[class*="show-"] :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: inherit; }
 }
 
 @media all and (max-width: 600px) {
