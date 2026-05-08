@@ -115,6 +115,7 @@ final class marketers_delight {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
+		add_editor_style( 'css/editor/font-icons.css' );
 		add_editor_style( 'css/editor/block-editor.css' );
 		add_editor_style( 'css/editor/classic-editor.css' );
 		add_post_type_support( 'page', 'excerpt' );

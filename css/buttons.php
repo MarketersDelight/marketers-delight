@@ -34,7 +34,7 @@ button, input[type="submit"] .link, .button {
 
 /* BUTTONS */
 
-button, input[type="submit"], .button, a.button {
+button, input[type="submit"], .button {
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;

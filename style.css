@@ -9,24 +9,25 @@
 	Version: 6.0
 	Table of contents:
 		1. Style
-		2. Format
-		3. Buttons
-		4. Forms
-		5. Ui
-		6. Menus
-		7. Header
-		8. Title
-		9. Layout
-		10. Alignments
-		11. Page
-		12. Comments
-		13. Widgets
-		14. Helpers
-		15. Share
-		16. Dropin
-		17. Footnotes
-		18. Glossary
-		19. Stream
+		2. Font icons
+		3. Format
+		4. Buttons
+		5. Forms
+		6. Ui
+		7. Menus
+		8. Header
+		9. Title
+		10. Layout
+		11. Alignments
+		12. Page
+		13. Comments
+		14. Widgets
+		15. Helpers
+		16. Share
+		17. Dropin
+		18. Footnotes
+		19. Glossary
+		20. Stream
 */
 /* TYPOGRAPHY */
 @font-face {
@@ -65,7 +66,6 @@
 	font-weight: 700;
 }
 .md, .format .md a { font-family: 'Marketing'; }
-/* GLOBAL */
 *, *:before, *:after {
 	box-sizing: border-box;
 	margin: 0;
@@ -79,7 +79,9 @@ body {
 	font-weight: 400;
 	line-height: 32px;
 }
-/* FONT ICONS */
+/*------------------------------*\
+	$FONT_ICONS
+\*------------------------------*/
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
@@ -270,6 +272,7 @@ blockquote:after {
 	inset-inline-end: 16px;
 }
 :is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: 192px; }
+.wp-block-pullquote { text-align: center; }
 blockquote.is-style-plain, .is-style-plain blockquote {
 	background-color: transparent;
 	border: 0;
@@ -326,7 +329,7 @@ button, input[type="submit"] .link, .button {
 	font-weight: normal;
 }
 /* BUTTONS */
-button, input[type="submit"], .button, a.button {
+button, input[type="submit"], .button {
 	appearance: none;
     background-color: #22A340;
 	border: 0;
@@ -542,7 +545,7 @@ select {
 /* SCROLLER NAV */
 .scroller-nav {
 	align-items: center;
-	background-color: #EEEACE;
+	background-color: #E6E0CF;
 	display: flex;
 	height: 100%;
 	font-size: 33px;
@@ -1680,13 +1683,14 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 .h-font { font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
-.text-center { text-align: center; }
+.text-center, .has-text-align-center { text-align: center; }
 .caps { text-transform: uppercase; }
 a.no-underline, .no-underline a { text-decoration: none; }
-.small {
+.small, .text-sec {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
+.text-sec { color: #777777; }
 cite, .tiny {
 	font-size: 16px;
 	line-height: 28px;
@@ -1721,6 +1725,10 @@ cite, .tiny {
 	padding: 4px 7px;
     position: relative;
 }
+.avatar {
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 /* BORDERS */
 .radius, .radius img { border-radius: 6px; }
 .circle { border-radius: 50%; }
@@ -1730,28 +1738,33 @@ cite, .tiny {
 }
 .border-tb { border-width: 1px 0; }
 .border-bottom { border-width: 0 0 1px; }
-/* DESIGN */
-.avatar {
-	border-radius: 50%;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
-.shadow, .wp-block-image.shadow img { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
-.shadow-large { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06) }
+/* SHADOWS */
+.shadow, .wp-block-image.shadow img { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
+.shadow-large { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
+.shadow-grow { transition: 0.3s; }
+.shadow-grow:hover { box-shadow: 0 6px 18px rgba(0, 0, 0,.05); }
 .wp-block-image.shadow { box-shadow: none; }
-.circle-icon, a.circle-icon {
+/* ICON SHAPES */
+.circle-icon, .square-icon {
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.1);
-	border-radius: 50%;
-	color: #5A5A5A;
 	display: inline-flex;
-	font-size: 20px;
-	height: 37px;
 	justify-content: center;
 	line-height: 1;
 	position: relative;
+}
+.circle-icon, a.circle-icon {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	color: #5A5A5A;
+	height: 37px;
 	width: 37px;
 }
-.circle-icon.mid {
+.square-icon, a.square-icon {
+	border-radius: 10px;
+	height: 48px;
+	width: 48px;
+}
+.circle-icon.mid, .square-icon.mid {
 	flex: 1 0 53px;
 	height: 53px;
 	font-size: 27px;
@@ -1769,6 +1782,7 @@ cite, .tiny {
 .column { flex-direction: column; }
 .fl-center { justify-content: center; }
 .is-vertically-aligned-center { align-self: center; }
+.start { align-items: start; }
 .width-full { width: 100%; }
 /* COLUMNS */
 [class*="columns-"] {
@@ -1857,9 +1871,9 @@ cite, .tiny {
 .has-secondary-background-color { background-color: #101010; }
 .has-secondary-border-color { border-color: #101010; }
 .has-secondary-color, a.has-secondary-color { color: #101010; }
-.has-tertiary-background-color { background-color: #EEEACE; }
-.has-tertiary-border-color { border-color: #EEEACE; }
-.has-tertiary-color, a.has-tertiary-color { color: #EEEACE; }
+.has-tertiary-background-color { background-color: #E6E0CF; }
+.has-tertiary-border-color { border-color: #E6E0CF; }
+.has-tertiary-color, a.has-tertiary-color { color: #E6E0CF; }
 .has-action-background-color { background-color: #EDF6FD; }
 .has-action-border-color { border-color: #EDF6FD; }
 .has-action-color, a.has-action-color { color: #EDF6FD; }
@@ -2002,7 +2016,7 @@ cite, .tiny {
 }
 .single .dropin .dropin-title {
     background-color: #FAF6EC;
-    border-block-end: 1px solid #EEEACE;
+    border-block-end: 1px solid #E6E0CF;
 	padding-block: 32px;
 }
 .expanded .dropin-title.item .wrap { max-width: 100%; }
@@ -2364,7 +2378,7 @@ cite, .tiny {
 	Template:       marketers-delight
 	Version:        5.0
 */
-.cover .lede { color: #EEEACE; }
+.cover .lede { color: #E6E0CF; }
 .wp-block-heading .md { font-size: 1.2em; }
 .header { border-block-end: 1px solid #E6E0CF; }
 /* HERO */
@@ -2392,7 +2406,7 @@ cite, .tiny {
 	width: 100%;
 }
 .browser-frame:before {
-	background-color: #EEEACE;
+	background-color: #E6E0CF;
 	border-radius: 6px 6px 0 0;
 	content: '';
 	padding: 21px;

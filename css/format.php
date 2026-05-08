@@ -177,6 +177,8 @@ blockquote:after {
 
 :is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
 
+.wp-block-pullquote { text-align: center; }
+
 blockquote.is-style-plain, .is-style-plain blockquote {
 	background-color: transparent;
 	border: 0;

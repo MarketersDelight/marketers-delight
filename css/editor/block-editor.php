@@ -8,6 +8,7 @@
 	include md_css( 'format', true );
 	include md_css( 'buttons', true );
 	include md_css( 'helpers', true );
+	include md_css( 'layout', true );
 ?>
 
 /* TYPOGRAPHY */
@@ -24,7 +25,7 @@
 
 /* SPACING */
 
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $single; ?>px; }
+.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $quad; ?>px; }
 
 .editor-styles-wrapper .wp-block-post-content > .wp-block { margin-block-start: 0; }
 
@@ -54,3 +55,4 @@
 /* MD BLOCKS */
 
 .editor-styles-wrapper .banner-wrap p { margin-block: 0; }
+.editor-styles-wrapper .feature-title { margin-block-start: 0; }

@@ -34,7 +34,6 @@ class md_css {
 			),
 			'classic-editor' => array(
 				'path' => MD_DIR . 'css/editor/classic-editor.css',
-				'icons' => true,
 				'templates' => array(
 					'classic-editor' => locate_template( 'css/editor/classic-editor.php' )
 				),
@@ -49,6 +48,13 @@ class md_css {
 				),
 				'replace' => array(
 					'.format' => '.editor-styles-wrapper'
+				)
+			),
+			'font-icons' => array(
+				'path' => MD_DIR . 'css/editor/font-icons.css',
+				'icons' => true,
+				'templates' => array(
+					'font-icons' => locate_template( 'css/font-icons.php' )
 				)
 			)
 		);
@@ -65,6 +71,7 @@ class md_css {
 	protected function css_files() {
 		$templates = array(
 			'style' => locate_template( 'css/style.php' ),
+			'font-icons' => locate_template( 'css/font-icons.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'forms' => locate_template( 'css/forms.php' ),

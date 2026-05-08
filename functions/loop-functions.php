@@ -143,6 +143,9 @@ function md_loop_classes( $loop = array() ) {
 	if ( ! isset( $loop['query'] ) && empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
 		$classes[] = 'inner';
 
+	if ( isset( $loop['classes'] ) )
+		$classes = array_merge( $classes, (array) $loop['classes'] );
+
 	$classes = apply_filters( 'md_filter_loop_classes', $classes );
 
 	return join( ' ', $classes );

@@ -22,16 +22,18 @@
 
 .text-right { text-align: right; }
 
-.text-center { text-align: center; }
+.text-center, .has-text-align-center { text-align: center; }
 
 .caps { text-transform: uppercase; }
 
 a.no-underline, .no-underline a { text-decoration: none; }
 
-.small {
+.small, .text-sec {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
+
+.text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
 
 cite, .tiny {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
@@ -73,6 +75,11 @@ cite, .tiny {
     position: relative;
 }
 
+.avatar {
+	border-radius: 50%;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
 /* BORDERS */
 
 .radius, .radius img { border-radius: 6px; }
@@ -88,34 +95,43 @@ cite, .tiny {
 
 .border-bottom { border-width: 0 0 1px; }
 
-/* DESIGN */
+/* SHADOWS */
 
-.avatar {
-	border-radius: 50%;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-}
+.shadow, .wp-block-image.shadow img { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
 
-.shadow, .wp-block-image.shadow img { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
+.shadow-large { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
 
-.shadow-large { box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06) }
+.shadow-grow { transition: 0.3s; }
+
+.shadow-grow:hover { box-shadow: 0 6px 18px rgba(0, 0, 0,.05); }
 
 .wp-block-image.shadow { box-shadow: none; }
 
-.circle-icon, a.circle-icon {
+/* ICON SHAPES */
+
+.circle-icon, .square-icon {
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.1);
-	border-radius: 50%;
-	color: <?php echo $colors['site']['text']; ?>;
 	display: inline-flex;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
-	height: <?php echo $single + $small; ?>px;
 	justify-content: center;
 	line-height: 1;
 	position: relative;
+}
+
+.circle-icon, a.circle-icon {
+	background-color: rgba(0, 0, 0, 0.1);
+	border-radius: 50%;
+	color: <?php echo $colors['site']['text']; ?>;
+	height: <?php echo $single + $small; ?>px;
 	width: <?php echo $single + $small; ?>px;
 }
 
-.circle-icon.mid {
+.square-icon, a.square-icon {
+	border-radius: 10px;
+	height: <?php echo $mid; ?>px;
+	width: <?php echo $mid; ?>px;
+}
+
+.circle-icon.mid, .square-icon.mid {
 	flex: 1 0 <?php echo $mid + $small; ?>px;
 	height: <?php echo $mid + $small; ?>px;
 	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
@@ -141,6 +157,8 @@ cite, .tiny {
 .fl-center { justify-content: center; }
 
 .is-vertically-aligned-center { align-self: center; }
+
+.start { align-items: start; }
 
 .width-full { width: 100%; }
 
