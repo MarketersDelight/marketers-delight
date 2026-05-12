@@ -125,9 +125,6 @@
 }
 
 @media (min-width: 900px) {
-	.content-width { max-width: <?php echo $content_width; ?>px; }
-	.post-width { max-width: <?php echo $post_width; ?>px; }
-	.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
 	.compact .content-wrap {
 		display: grid;
 		gap: <?php echo $mid; ?>px;

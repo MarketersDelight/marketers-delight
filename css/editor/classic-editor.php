@@ -17,7 +17,7 @@ include md_css( 'layout', true );
 /* CLASSIC EDITOR */
 
 .mce-content-body {
-	background-color: <?php echo md_setting( array( 'content', 'style' ) ) == 'minimal' ? $colors['site']['bg_color'] : $colors['content']['bg_color']; ?>;
+	background-color: <?php echo $colors['content']['body_color'] ?: $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;

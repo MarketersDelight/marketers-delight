@@ -4,8 +4,6 @@
 	$ALIGNMENTS
 \*------------------------------*/
 
-.auto { margin-inline: auto; }
-
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
@@ -25,8 +23,7 @@
 	text-align: center;
 }
 
-img.alignwide, .alignwide img,
-img.alignfull, .alignfull img { width: 100%; }
+img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 
 .expanded .alignfull {
 	margin-inline: -50vw;

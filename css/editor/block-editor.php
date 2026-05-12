@@ -5,16 +5,16 @@
 \*------------------------------*/
 
 <?php
-	include md_css( 'format', true );
-	include md_css( 'buttons', true );
-	include md_css( 'helpers', true );
-	include md_css( 'layout', true );
+include md_css( 'format', true );
+include md_css( 'helpers', true );
 ?>
 
 /* TYPOGRAPHY */
 
+body.expanded .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
+
 .editor-styles-wrapper {
-	background-color: <?php echo md_setting( array( 'content', 'style' ) ) == 'minimal' ? $colors['site']['bg_color'] : $colors['content']['bg_color']; ?>;
+	background-color: <?php echo $colors['content']['body_color'] ?: $colors['site']['bg_color']; ?>;
 	color: <?php echo $colors['site']['text']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
@@ -39,6 +39,18 @@
 
 .editor-styles-wrapper .is-layout-flow > .alignright { margin-inline: <?php echo $single; ?>px 0; }
 
+.expanded.editor-styles-wrapper .wp-block-group .alignwide { margin-inline: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+
+.expanded.editor-styles-wrapper .wp-block-group .alignright {
+	margin-inline-end: -50vw;
+	right: 50%;
+}
+
+.expanded.editor-styles-wrapper .wp-block-group .alignleft {
+	left: 50%;
+	margin-inline-start: -50vw;
+}
+
 /* BLOCK/PULL QUOTES */
 
 .editor-styles-wrapper .wp-block-pullquote {
@@ -55,4 +67,27 @@
 /* MD BLOCKS */
 
 .editor-styles-wrapper .banner-wrap p { margin-block: 0; }
-.editor-styles-wrapper .feature-title { margin-block-start: 0; }
+
+.editor-styles-wrapper .feature-title { margin-block: 0 <?php echo $small; ?>px; }
+
+.editor-styles-wrapper .feature-description { margin-block-start: 0; }
+
+/* WIDTHS */
+
+body.md-builder .is-root-container > * { max-width: 100%; }
+
+:is(body.md-builder, body.expanded) .wp-block-post-title {
+	max-width: <?php echo $site_width; ?>px;
+	text-align: center;
+}
+
+.editor-styles-wrapper .is-root-container .inner {
+	max-width: <?php echo $site_width; ?>px;
+	width: auto;
+}
+
+.editor-styles-wrapper .is-root-container .content-width { max-width: <?php echo $content_width; ?>px; }
+
+.editor-styles-wrapper .is-root-container .post-width { max-width: <?php echo $post_width; ?>px; }
+
+.editor-styles-wrapper .is-root-container .sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }

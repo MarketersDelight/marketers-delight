@@ -146,6 +146,8 @@ cite, .tiny {
 	gap: <?php echo $half; ?>px;
 }
 
+.auto { margin-inline: auto; }
+
 .grow { flex: 1; }
 
 .shrink { flex-shrink: 0; }
@@ -159,6 +161,14 @@ cite, .tiny {
 .is-vertically-aligned-center { align-self: center; }
 
 .start { align-items: start; }
+
+/* WIDTHS */
+
+.content-width { max-width: <?php echo $content_width; ?>px; }
+
+.post-width { max-width: <?php echo $post_width; ?>px; }
+
+.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
 
 .width-full { width: 100%; }
 
@@ -202,14 +212,15 @@ cite, .tiny {
 	flex-grow: 1;
 }
 
-/* SPACERS */
-
 <?php
 
 /* MARGIN BOTTOM */
 
-foreach ( array( 'quad', 'triple', 'double', 'mid', 'single', 'half', 'third', 'small' ) as $size )
+foreach ( array_keys( $spacers ) as $size )
 	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: {$spacers[$size]}px; }\n";
+
+foreach ( array( 'double', 'mid', 'single', 'half' ) as $size )
+	echo ".break-$size, .format .break-$size { margin-block-end: -{$spacers[$size]}px; }\n";
 
 echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 
@@ -220,7 +231,7 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 
 /* MARGIN RIGHT */
 
-foreach ( array( 'third', 'half', 'small' ) as $size )
+foreach ( array( 'half', 'third', 'small' ) as $size )
 	echo ".mr-$size { margin-inline-end: {$spacers[$size]}px; }\n";
 
 /* GAPS */

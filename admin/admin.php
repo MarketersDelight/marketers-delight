@@ -85,6 +85,8 @@ class md_admin {
 		// Enqueue
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor' ) );
+		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		// Upgrader hooks
 		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
 		add_filter( 'delete_site_transient_update_themes', array( $this->requests, 'delete_theme_update' ) );
@@ -159,7 +161,7 @@ class md_admin {
 	public function enqueue() {
 		$screen = get_current_screen();
 		$style = 'admin/admin.css';
-		$script = 'admin/admin.js';
+		$script = 'admin/js/admin.js';
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
@@ -199,6 +201,36 @@ class md_admin {
 
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
+	}
+
+	/**
+	 * Enqueue scripts and styles to the Block Editor.
+	 *
+	 * @since 6.0
+	 */
+
+	public function enqueue_block_editor() {
+		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready' ), MD_VERSION, true );
+	}
+
+	/**
+	 * Add body class to the admin panel.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_body_class( $classes ) {
+		$builder = md_post_meta( array( 'layout', 'content', 'builder' ) );
+
+		if ( ! empty( $builder ) )
+			$classes .= ' md-builder';
+
+		if ( md_has_sidebar( array( 'post_id' => get_the_ID() ) ) )
+			$classes .= ' compact';
+		else
+			$classes .= ' expanded';
+
+		return $classes;
 	}
 
 	/**

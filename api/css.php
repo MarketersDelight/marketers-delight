@@ -300,12 +300,12 @@ class md_css {
 
 		$headings = array(
 			'huge' => '.huge-title',
-			'h1' => 'h1, .h1, .large-title, .wp-block-post-title',
-			'h2' => 'h2, .h2, .main-title',
-			'h3' => 'h3, .h3, .med-title',
-			'h4' => 'h4, .h4, .mid-title, .widget-title, .widget .wp-block-heading',
-			'h5' => 'h5, .h5, .small-title',
-			'h6' => 'h6, .h6, .micro-title'
+			'h1' => 'h1, .h1, .wp-block-post-title',
+			'h2' => 'h2, .h2',
+			'h3' => 'h3, .h3',
+			'h4' => 'h4, .h4, .widget-title, .widget .wp-block-heading',
+			'h5' => 'h5, .h5',
+			'h6' => 'h6, .h6'
 		);
 		$heading_selectors = array_values( $headings );
 		$heading_selectors[] = '.wp-block-heading';
