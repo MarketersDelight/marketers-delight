@@ -58,7 +58,7 @@
 
 .byline:empty { display: none; }
 
-.byline .badge, .byline-date a, .byline-comments a { text-decoration: none; }
+.byline .badge, .byline-comments a { text-decoration: none; }
 
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
 

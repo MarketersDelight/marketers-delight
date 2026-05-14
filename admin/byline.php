@@ -60,7 +60,7 @@ class md_byline extends md_api {
 			),
 			'settings' => array(
 				'type' => 'checkbox',
-				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative', 'first' )
+				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative', 'first', 'alt' )
 			),
 			'time' => array( 'type' => 'number' ),
 			'image_size' => array( 'type' => 'number' ),
@@ -119,13 +119,6 @@ class md_byline extends md_api {
 				'color' => '#d44c3c',
 				'icon' => 'calendar',
 				'callback' => array( $this, 'date' )
-			),
-			'last-updated' => array(
-				'title' => __( 'Last Updated', 'md' ),
-				'hide_title' => false,
-				'color' => '#8c7310',
-				'icon' => 'clock',
-				'callback' => array( $this, 'last_updated' )
 			),
 			'comments' => array(
 				'title' => __( 'Comments', 'md' ),
@@ -201,26 +194,8 @@ class md_byline extends md_api {
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
 				'label' => __( 'Show label', 'md' ),
-				'relative' => __( 'Show relative date', 'md' )
-			)
-		) );
-	}
-
-	/**
-	 * Last Updated date fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function last_updated( $group ) {
-		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
-			'options' => array(
-				'label' => __( 'Hide label', 'md' )
+				'relative' => __( 'Show relative date', 'md' ),
+				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
 			)
 		) );
 	}
@@ -232,12 +207,6 @@ class md_byline extends md_api {
 	 */
 
 	public function comments( $group ) {
-		echo
-			'<p><b>Available tokens for use in comment labels:</b></p>'.
-			'<p class="description"><code>{count}</code> the number of comments</p>'.
-			'<p class="description"><code>{label}</code> the singular or plural label of <i>comment(s)</i></p>'.
-			'<p class="description"><code>{comments}</code> the full default comments text string</p>';
-
 		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
@@ -252,10 +221,16 @@ class md_byline extends md_api {
 
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',
-			'label' => __( 'Label for zero comments', 'md' ),
+			'label' => __( 'Zero comments label', 'md' ),
 			'style' => 'width: 30%',
-			'wrap_classes' => 'md-sep-micro'
+			'wrap_classes' => 'md-sep-small'
 		) );
+
+		echo
+			'<p><b>Available tokens for use in comment labels:</b></p>'.
+			'<p class="description"><code>{count}</code> the number of comments</p>'.
+			'<p class="description"><code>{label}</code> the singular or plural label of <i>comment(s)</i></p>'.
+			'<p class="description"><code>{comments}</code> the full default comments text string</p>';
 	}
 
 	/**

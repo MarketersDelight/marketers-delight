@@ -974,7 +974,7 @@ summary::after {
 .byline, .byline a, .byline .circle-icon { color: #777777; }
 .byline a { text-decoration-color: rgba(0, 0, 0, 0.2); }
 .byline:empty { display: none; }
-.byline .badge, .byline-date a, .byline-comments a { text-decoration: none; }
+.byline .badge, .byline-comments a { text-decoration: none; }
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: 5px; }
 .byline-item > .byline-item:not(:last-child) { margin-inline-end: 11px; }
 .byline:not(.can-wrap).byline-edit:last-child { margin-inline-start: auto; }

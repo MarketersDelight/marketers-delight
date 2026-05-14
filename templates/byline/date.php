@@ -1,8 +1,24 @@
 <?php
+	if ( ! empty( $fields['settings']['alt'] ) ) {
+		if ( get_the_modified_time( 'U' ) <= get_the_time( 'U' ) )
+			return;
+
+		$key = 'last_updated';
+		$post_time = get_the_modified_time( 'U' );
+		$date = $post_date = get_the_modified_time( get_option( 'date_format' ) );
+		$datetime = get_the_modified_time( 'c' );
+		$default_name = __( 'Last updated:', 'md' );
+	}
+	else {
+		$key = 'date';
+		$post_time = get_post_time();
+		$date = $post_date = get_the_time( get_option( 'date_format' ) );
+		$datetime = get_the_date( 'c' );
+		$default_name = __( 'Published on:', 'md' );
+	}
+
 	$permalink = get_permalink();
-	$post_time = get_post_time();
 	$relative = human_time_diff( $post_time, current_time( 'U' ) );
-	$date = $post_date = get_the_time( get_option( 'date_format' ) );
 
 	if ( isset( $fields['url_params'] ) )
 		$permalink .= $fields['url_params'];
@@ -22,12 +38,12 @@
 	<?php echo md_icon( 'clock' ); ?>
 
 	<?php if ( ! empty( $fields['settings']['label'] ) )
-		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'Published on:', 'md' ) ) . '</span>'; ?>
+		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : $default_name ) . '</span>'; ?>
 
-	<time datetime="<?php echo get_the_date( 'c' ); ?>" title="<?php echo esc_attr( $post_date ); ?>">
+	<time datetime="<?php echo $datetime; ?>" title="<?php echo esc_attr( $post_date ); ?>">
 		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
 	</time>
 
 </span>
 
-<?php do_action( 'md_hook_byline_after_date' ); ?>
+<?php do_action( "md_hook_byline_after_$key" ); ?>

@@ -276,6 +276,17 @@ function md_byline_items() {
 }
 
 /**
+ * Call the template of a single byline item with
+ * passable settings.
+ *
+ * @since 6.0
+ */
+
+function md_byline_item( $type, $fields = array() ) {
+	include md_template( "byline/$type", true );
+}
+
+/**
  * Render the byline template with designated items.
  *
  * @since 4.0
