@@ -15,7 +15,7 @@ body.expanded .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
 
 .editor-styles-wrapper {
 	background-color: <?php echo $colors['content']['body_color'] ?: $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
@@ -39,16 +39,16 @@ body.expanded .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
 
 .editor-styles-wrapper .is-layout-flow > .alignright { margin-inline: <?php echo $single; ?>px 0; }
 
-.expanded.editor-styles-wrapper .wp-block-group .alignwide { margin-inline: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
-
-.expanded.editor-styles-wrapper .wp-block-group .alignright {
-	margin-inline-end: -50vw;
-	right: 50%;
-}
-
-.expanded.editor-styles-wrapper .wp-block-group .alignleft {
-	left: 50%;
-	margin-inline-start: -50vw;
+@media (min-width: 900px) {
+	.expanded.editor-styles-wrapper .wp-block-group .alignwide { margin-inline: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+	.expanded.editor-styles-wrapper .wp-block-group .alignright {
+		margin-inline-end: -50vw;
+		right: 50%;
+	}
+	.expanded.editor-styles-wrapper .wp-block-group .alignleft {
+		left: 50%;
+		margin-inline-start: -50vw;
+	}
 }
 
 /* BLOCK/PULL QUOTES */

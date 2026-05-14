@@ -1,8 +1,13 @@
-<?php if ( md_has_comments() ) :
-	$comments = get_comments_number();
+<?php
+if ( ! md_has_comments() )
+	return;
 
-	if ( $comments == 0 && ! empty( $fields['settings']['hide'] ) )
-		return;
+$comments = get_comments_number();
+$count = number_format_i18n( $comments );
+$label = _nx( 'comment', 'comments', $comments, 'Number of comments', 'md' );
+
+if ( $comments == '0' && ! empty( $fields['settings']['hide'] ) )
+	return;
 ?>
 
 <span class="byline-comments byline-item">
@@ -10,18 +15,20 @@
 		<?php
 			echo md_icon( 'chat' ) . '<span class="md-byline-label">';
 
-			if ( $comments == 0 && ! empty( $fields['name'] ) )
-				echo esc_html( $fields['name'] );
-			else {
-				echo number_format_i18n( $comments );
+			if ( $comments == '0' && ! empty( $fields['title'] ) )
+				$text = $fields['title'];
+			elseif ( ! empty( $fields['name'] ) )
+				$text = $fields['name'];
+			else
+				$text = '{count}' . ( ! empty( $fields['settings']['label'] ) ? ' {label}' : '' );
 
-				if ( ! empty( $fields['settings']['label'] ) )
-					echo _nx( ' comment', ' comments', $comments, 'Number of comments', 'md' );
-			}
+			echo esc_html( strtr( $text, array(
+				'{count}' => $count,
+				'{label}' => $label,
+				'{comments}' => "$count $label"
+			) ) );
 
 			echo '</span>';
 		?>
 	</a>
 </span>
-
-<?php endif; ?>

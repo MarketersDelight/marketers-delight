@@ -21,6 +21,9 @@
 
 	<?php echo md_icon( 'clock' ); ?>
 
+	<?php if ( ! empty( $fields['settings']['label'] ) )
+		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'Published on:', 'md' ) ) . '</span>'; ?>
+
 	<time datetime="<?php echo get_the_date( 'c' ); ?>" title="<?php echo esc_attr( $post_date ); ?>">
 		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
 	</time>

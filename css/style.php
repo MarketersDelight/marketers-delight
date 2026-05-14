@@ -23,7 +23,7 @@ if ( locate_template( 'css/fonts.php' ) )
 
 body {
 	background-color: <?php echo $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	font-weight: <?php echo $font_weight; ?>;

@@ -4,11 +4,19 @@
 	$BUTTONS
 \*------------------------------*/
 
-button, input[type="submit"] .link, .button {
+button, input[type="submit"]
+.link, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
 	line-height: 1;
+}
+
+.cta, .wp-block-buttons {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	justify-content: center;
 }
 
 /* LINKS */
@@ -34,7 +42,8 @@ button, input[type="submit"] .link, .button {
 
 /* BUTTONS */
 
-button, input[type="submit"], .button {
+button, input[type="submit"],
+.button, .wp-element-button {
 	appearance: none;
     background-color: <?php echo $colors['site']['button']; ?>;
 	border: 0;
@@ -53,7 +62,8 @@ button, input[type="submit"], .button {
 
 a.button { text-decoration: none; }
 
-button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(1px); }
+button:hover, input[type="submit"]:hover,
+.button:hover, .wp-element-button:hover { transform: translateY(1px); }
 
 /* COLORS */
 
@@ -67,7 +77,8 @@ button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(
 	color: <?php echo $colors['site']['button-sec-text']; ?>;
 }
 
-.button.button-outline {
+.button.button-outline,
+.is-style-outline .wp-element-button {
 	background-color: transparent;
 	border: 3px solid <?php echo $colors['site']['button']; ?>;
 	color: <?php echo $colors['site']['button']; ?>;

@@ -59,7 +59,7 @@
 }
 
 .comment-author, .comment-author a {
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	font-weight: <?php echo $bold; ?>;
 	text-decoration: none;
 }

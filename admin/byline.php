@@ -52,9 +52,8 @@ class md_byline extends md_api {
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
-			'dropin' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
-			'label' => array( 'type' => 'text' ),
+			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
 				'options' => array( 'before_title', 'after_title', 'before_post', 'after_post' )
@@ -173,8 +172,9 @@ class md_byline extends md_api {
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
-				'first_name' => __( 'Show author first name', 'md' ),
-				'avatar' => __( 'Show avatar', 'md' )
+				'label' => __( 'Hide label', 'md' ),
+				'avatar' => __( 'Show avatar', 'md' ),
+				'first_name' => __( 'Show author first name', 'md' )
 			)
 		) );
 
@@ -200,6 +200,7 @@ class md_byline extends md_api {
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
+				'label' => __( 'Show label', 'md' ),
 				'relative' => __( 'Show relative date', 'md' )
 			)
 		) );
@@ -214,11 +215,13 @@ class md_byline extends md_api {
 	public function last_updated( $group ) {
 		$this->fields->byline_fields( $group );
 
-		$this->fields->field( array( 'builder', $group, 'title' ), array(
-			'type' => 'text',
-			'label' => __( 'Prefix', 'md' ),
-			'placeholder' => __( 'Last updated:', 'md' ),
-			'style' => 'width: 30%'
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'label' => __( 'Hide label', 'md' )
+			)
 		) );
 	}
 
@@ -229,6 +232,12 @@ class md_byline extends md_api {
 	 */
 
 	public function comments( $group ) {
+		echo
+			'<p><b>Available tokens for use in comment labels:</b></p>'.
+			'<p class="description"><code>{count}</code> the number of comments</p>'.
+			'<p class="description"><code>{label}</code> the singular or plural label of <i>comment(s)</i></p>'.
+			'<p class="description"><code>{comments}</code> the full default comments text string</p>';
+
 		$this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
@@ -236,7 +245,7 @@ class md_byline extends md_api {
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
-				'label' => __( 'Show comments label', 'md' ),
+				'label' => __( 'Show label', 'md' ),
 				'hide' => __( 'Hide if zero comments', 'md' )
 			)
 		) );
@@ -244,7 +253,8 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'type' => 'text',
 			'label' => __( 'Label for zero comments', 'md' ),
-			'style' => 'width: 30%'
+			'style' => 'width: 30%',
+			'wrap_classes' => 'md-sep-micro'
 		) );
 	}
 
@@ -283,6 +293,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
 			'options' => array(
+				'label' => __( 'Show label', 'md' ),
 				'first' => __( 'Only show first category', 'md' )
 			)
 		) );
@@ -296,14 +307,6 @@ class md_byline extends md_api {
 
 	public function badge( $group ) {
 		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'title' ), array(
-			'type' => 'text',
-			'label' => __( 'Text', 'md' ),
-			'placeholder' => 'New!',
-			'style' => 'width: 30%',
-			'wrap_classes' => 'md-sep-micro'
-		) );
 
 		$this->fields->field( array( 'builder', $group, 'time' ), array(
 			'type' => 'number',
@@ -321,12 +324,6 @@ class md_byline extends md_api {
 
 	public function edit( $group ) {
 		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'title' ), array(
-			'type' => 'text',
-			'label' => __( 'Label', 'md' ),
-			'style' => 'width: 30%'
-		) );
 	}
 
 }

@@ -23,13 +23,20 @@ foreach ( $categories as $category ) {
 if ( empty( $terms ) )
 	return;
 
+echo '<span class="byline-item byline-category">' . md_icon( 'tags' );
+
+if ( ! empty( $fields['settings']['label'] ) )
+	echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'Category:', 'md' ) ) . '</span> ';
+
 foreach ( $terms as $order => $term ) {
 	if ( isset( $fields['settings']['first'] ) && $c > 1 )
 		return;
 
 	$tax = 'tax-' . str_replace( '_', '-', $term->taxonomy );
 
-	echo '<span class="byline-item byline-category byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '">' . esc_html( $term->name ) . '</a></span>';
+	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '">' . esc_html( $term->name ) . '</a></span>';
 
 	$c++;
 }
+
+echo '</span>';

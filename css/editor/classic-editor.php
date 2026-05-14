@@ -18,7 +18,7 @@ include md_css( 'layout', true );
 
 .mce-content-body {
 	background-color: <?php echo $colors['content']['body_color'] ?: $colors['site']['bg_color']; ?>;
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;

@@ -124,7 +124,7 @@
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 }
 
 #wp-calendar td { padding: <?php echo $third; ?>px; }

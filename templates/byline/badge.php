@@ -1,13 +1,12 @@
 <?php
-	$time = get_the_time( 'U' );
-	$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'New', 'md' );
-	$t = ! empty( $fields['time'] ) ? $fields['time'] : 7;
+$time = get_the_time( 'U' );
+$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'New!', 'md' );
+$t = ! empty( $fields['time'] ) ? $fields['time'] : 7;
 
-	if ( isset( $fields['set_time'] ) )
-		$time = $fields['set_time'];
+if ( isset( $fields['set_time'] ) )
+	$time = $fields['set_time'];
 
-	if ( $time < strtotime( "-$t days" ) )
-		return;
-?>
+if ( $time < strtotime( "-$t days" ) )
+	return;
 
-<span class="byline-item byline-badge badge"><?php echo esc_html( $label ); ?></span>
+echo '<span class="byline-item byline-badge badge">' . esc_html( $label ) . '</span>';

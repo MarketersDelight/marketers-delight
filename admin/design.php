@@ -33,7 +33,7 @@ class md_colors extends md_api {
 				'tertiary' => array( 'type' => 'color' ),
 				'action' => array( 'type' => 'color' ),
 				'accent' => array( 'type' => 'color' ),
-				'text' => array( 'type' => 'color' ),
+				'text-main' => array( 'type' => 'color' ),
 				'text-sec' => array( 'type' => 'color' ),
 				'headline' => array( 'type' => 'color' ),
 				'headline-links' => array( 'type' => 'color' ),
@@ -143,7 +143,7 @@ class md_colors extends md_api {
 				'accent' => __( 'Accent', 'md' )
 			),
 			'text' => array(
-				'text' => __( 'Text', 'md' ),
+				'text-main' => __( 'Text', 'md' ),
 				'text-sec' => __( 'Text Secondary', 'md' ),
 				'links' => __( 'Links', 'md' ),
 				'links_sec' => __( 'Links Secondary', 'md' ),

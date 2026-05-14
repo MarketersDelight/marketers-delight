@@ -92,7 +92,7 @@ select {
 .input-field { gap: 0; }
 
 .input-icon {
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	padding-inline: <?php echo $half; ?>px;
 	justify-content: center;
 }

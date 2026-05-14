@@ -44,7 +44,7 @@ class md_design {
 				'name' => __( 'White', 'md' ),
 				'color' => '#FFFFFF'
 			),
-			'text' => __( 'Text', 'md' ),
+			'text-main' => __( 'Text', 'md' ),
 			'text-sec' => __( 'Secondary Text', 'md' ),
 			'links' => __( 'Links', 'md' ),
 			'button' => __( 'Button', 'md' ),
@@ -107,7 +107,7 @@ class md_design {
 		$colors = array(
 			'primary' => '#AE2525',
 			'secondary' => '#2E2E2E',
-			'text' => '#1E1E1E',
+			'text-main' => '#1E1E1E',
 			'subtext' => '#777777',
 			'border' => '#CCCCCC'
 		);
@@ -140,7 +140,7 @@ class md_design {
 					'tertiary' => '#DDDDDD',
 					'action' => '#EDF6FD',
 					'accent' => '#FFFBCC',
-					'text' => $colors['text'],
+					'text-main' => $colors['text-main'],
 					'text-sec' => $colors['subtext'],
 					'links' => $primary_color,
 					'links_sec' => $colors['subtext'],
@@ -148,13 +148,13 @@ class md_design {
 					'button-text' => '#FFFFFF',
 					'button-sec' => '#999999',
 					'button-sec-text' => '#FFFFFF',
-					'headline' => $colors['text'],
-					'headline-links' => $colors['text']
+					'headline' => $colors['text-main'],
+					'headline-links' => $colors['text-main']
 				),
 				'header' => array(
 					'bg_color' => '',
 					'border_color' => $colors['border'],
-					'color' => $colors['text']
+					'color' => $colors['text-main']
 				),
 				'menu' => array(
 					'links' => '#444444',
@@ -173,16 +173,16 @@ class md_design {
 				),
 				'sidebar' => array(
 					'text' => '#777777',
-					'title' => $colors['text'],
-					'title_link' => $colors['text'],
+					'title' => $colors['text-main'],
+					'title_link' => $colors['text-main'],
 					'links' => '#444444',
 				),
 				'footer' => array(
 					'bg_color' => '',
 					'border_color' => $colors['border'],
-					'text' => $colors['text'],
-					'title' => $colors['text'],
-					'title_link' => $colors['text'],
+					'text' => $colors['text-main'],
+					'title' => $colors['text-main'],
+					'title_link' => $colors['text-main'],
 					'links' => $colors['subtext']
 				),
 				'width' => array(
@@ -298,7 +298,7 @@ class md_design {
 			),
 			'logo' => array(
 				'site_title' => array(
-					'color' => $colors['text'],
+					'color' => $colors['text-main'],
 					'font_size' => array(
 						'desktop' => $site_title
 					),

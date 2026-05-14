@@ -19,7 +19,7 @@
 
 .title-wrap { flex: 1; }
 
-/* TITLE, LEDE, SUBTITLE, DESC, CTA */
+/* TITLE, LEDE, SUBTITLE, DESC */
 
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
@@ -42,12 +42,6 @@
 	line-height: inherit;
 }
 
-.cta {
-	align-items: center;
-	gap: <?php echo $half; ?>px <?php echo $single; ?>px;
-	display: flex;
-}
-
 /* BYLINE */
 
 .byline {
@@ -67,6 +61,8 @@
 .byline .badge, .byline-date a, .byline-comments a { text-decoration: none; }
 
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
+
+.byline-item > .byline-item:not(:last-child) { margin-inline-end: <?php echo $third; ?>px; }
 
 .byline:not(.can-wrap).byline-edit:last-child { margin-inline-start: auto; }
 
@@ -94,7 +90,7 @@
 
 .cover .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
 
-.cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text']; ?>; }
+.cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text-main']; ?>; }
 
 .full-cover .page-title, .full-cover .article-wrap > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
 

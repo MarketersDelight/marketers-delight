@@ -29,7 +29,7 @@
 
 .cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: #fff; }
 
-.cover-alt .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: <?php echo $colors['site']['text']; ?>; }
+.cover-alt .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: <?php echo $colors['site']['text-main']; ?>; }
 
 <?php if ( ! empty ( $colors['header']['bg_color'] ) ) : ?>
 .is-box-style .header.cover { background-color: transparent; }

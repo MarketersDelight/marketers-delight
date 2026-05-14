@@ -120,7 +120,7 @@ cite, .tiny {
 .circle-icon, a.circle-icon {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
-	color: <?php echo $colors['site']['text']; ?>;
+	color: <?php echo $colors['site']['text-main']; ?>;
 	height: <?php echo $single + $small; ?>px;
 	width: <?php echo $single + $small; ?>px;
 }

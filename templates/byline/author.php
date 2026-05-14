@@ -14,11 +14,10 @@
 	<?php if ( ! empty( $fields['settings']['avatar'] ) ) {
 		$avatar_size = isset( $fields['image_size'] ) ? $fields['image_size'] : 30;
 		echo get_avatar( $author_id, $avatar_size );
-	} ?>
+	} else echo md_icon( 'user' ); ?>
 
-	<?php if ( ! isset( $args['prefix'] ) ) : ?>
-		<em><?php echo __( 'by', 'md' ); ?></em>
-	<?php endif; ?>
+	<?php if ( empty( $fields['settings']['label'] ) )
+		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'by', 'md' ) ) . '</span>'; ?>
 
 	<a href="<?php echo get_author_posts_url( $author_id ); ?>" class="author-link"><?php echo esc_html( $author_name ); ?></a>
 

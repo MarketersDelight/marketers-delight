@@ -232,11 +232,18 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 /*------------------------------*\
 	$BUTTONS
 \*------------------------------*/
-button, input[type="submit"] .link, .button {
+button, input[type="submit"]
+.link, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
 	gap: 11px 16px;
 	line-height: 1;
+}
+.cta, .wp-block-buttons {
+	align-items: center;
+	display: flex;
+	gap: 16px;
+	justify-content: center;
 }
 /* LINKS */
 .link:hover { text-decoration: none; }
@@ -255,7 +262,8 @@ button, input[type="submit"] .link, .button {
 	font-weight: normal;
 }
 /* BUTTONS */
-button, input[type="submit"], .button {
+button, input[type="submit"],
+.button, .wp-element-button {
 	appearance: none;
     background-color: #22A340;
 	border: 0;
@@ -272,7 +280,8 @@ button, input[type="submit"], .button {
 	transition: 0.3s;
 }
 a.button { text-decoration: none; }
-button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(1px); }
+button:hover, input[type="submit"]:hover,
+.button:hover, .wp-element-button:hover { transform: translateY(1px); }
 /* COLORS */
 .button.white {
 	background-color: #fff;
@@ -282,7 +291,8 @@ button:hover, input[type="submit"]:hover, .button:hover { transform: translateY(
 	background-color: #999999;
 	color: #FFFFFF;
 }
-.button.button-outline {
+.button.button-outline,
+.is-style-outline .wp-element-button {
 	background-color: transparent;
 	border: 3px solid #22A340;
 	color: #22A340;
@@ -543,9 +553,9 @@ cite, .tiny {
 .has-white-background-color { background-color: #FFFFFF; }
 .has-white-border-color { border-color: #FFFFFF; }
 .has-white-color, a.has-white-color { color: #FFFFFF; }
-.has-text-background-color { background-color: #5A5A5A; }
-.has-text-border-color { border-color: #5A5A5A; }
-.has-text-color, a.has-text-color { color: #5A5A5A; }
+.has-text-main-background-color { background-color: #5A5A5A; }
+.has-text-main-border-color { border-color: #5A5A5A; }
+.has-text-main-color, a.has-text-main-color { color: #5A5A5A; }
 .has-text-sec-background-color { background-color: #777777; }
 .has-text-sec-border-color { border-color: #777777; }
 .has-text-sec-color, a.has-text-sec-color { color: #777777; }
