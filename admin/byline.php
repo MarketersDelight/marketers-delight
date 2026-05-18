@@ -257,20 +257,19 @@ class md_byline extends md_api {
 
 		$options['all'] = __( 'Show all', 'md' );
 
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Only show', 'md' ),
+			'options' => array(
+				'first' => __( 'Only show first category', 'md' )
+			)
+		) );
+
 		$this->fields->field( array( 'builder', $group, 'term' ), array(
 			'type' => 'select',
-			'label' => __( 'Only show', 'md' ),
 			'empty_label' => __( 'Use default category', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => $options
-		) );
-
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'options' => array(
-				'label' => __( 'Show label', 'md' ),
-				'first' => __( 'Only show first category', 'md' )
-			)
 		) );
 	}
 

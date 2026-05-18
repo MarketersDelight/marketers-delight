@@ -49,14 +49,13 @@ function md_content_box_classes() {
 
 	if ( md_has_sidebar() ) {
 		$classes[] = 'compact';
-		$default_layout = md_post_type_field( array( 'layout', 'content_box' ) );
-		$layout = md_meta( array( 'layout', 'content_box' ), get_queried_object_id(), $default_layout );
+		$show_on_left = md_post_type_field( array( 'layout', 'sidebar', 'left' ) );
+		$show_on_left = md_meta( array( 'layout', 'sidebar', 'left' ), get_queried_object_id(), $show_on_left );
 
-		if ( $layout == 'sidebar_content' )
+		if ( $show_on_left )
 			$classes[] = 'left';
 	}
-	else
-		$classes[] = 'expanded';
+	else $classes[] = 'expanded';
 
 	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );

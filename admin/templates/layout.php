@@ -62,14 +62,32 @@
 
 		</div>
 
+		<?php $this->fields->field( 'footer', array(
+			'type' => 'checkbox',
+			'label' => __( 'Footer', 'md' ),
+			'options' => array(
+				'remove' => __( 'Remove <b>Footer</b>', 'md' )
+			)
+		) ); ?>
+
+		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
+			<?php $this->fields->field( 'footer', array(
+				'type' => 'checkbox',
+				'options' => array(
+					'columns' => __( 'Remove <b>Columns</b>', 'md' )
+				)
+			) ); ?>
+		</div>
+
 	</div>
 
 	<!-- Content -->
 
 	<div class="col col2">
 
-		<?php if ( $is_admin ) : ?>
-			<?php $this->fields->field( 'content', array(
+		<?php if ( $is_admin ) {
+
+			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
 				'label' => __( 'Single', 'md' ),
 				'wrap_classes' => 'md-sep-micro',
@@ -77,17 +95,17 @@
 					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
 					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
 				)
-			) ); ?>
+			) );
 
-			<?php $this->fields->field( 'featured_image', array(
+			$this->fields->field( 'featured_image', array(
 				'type' => 'select',
-				'label' => __( 'Featured image position', 'md' ),
+				'label' => __( 'Featured image', 'md' ),
 				'empty_label' => __( 'Use default position', 'md' ),
 				'wrap_classes' => 'md-sep-small',
 				'options' => $this->fields->data->values['featured_image']
-			) ); ?>
+			) );
 
-		<?php endif; ?>
+		} ?>
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
@@ -162,15 +180,6 @@
 				'options' => md_filter_loop_styles()
 			) ); ?>
 
-			<?php $this->fields->field( 'content_box', array(
-				'type' => 'select',
-				'empty_label' => __( 'Content / Sidebar', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'sidebar_content' => __( 'Sidebar / Content', 'md' )
-				)
-			) ); ?>
-
 		</div>
 
 	</div>
@@ -184,6 +193,14 @@
 			<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
 
 			<?php if ( $is_admin ) : ?>
+
+				<?php $this->fields->field( 'sidebar', array(
+					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro md-right',
+					'options' => array(
+						'left' => __( 'Show on left', 'md' )
+					)
+				) ); ?>
 
 				<?php $this->fields->field( 'sidebar', array(
 					'type' => 'checkbox',
@@ -205,7 +222,7 @@
 							)
 						) ); ?>
 					</div>
-					<div class="col">
+					<div class="col md-full-select">
 						<?php $this->fields->field( "sidebar_$type", array(
 							'type' => 'select',
 							'empty_label' => __( 'Use Main sidebar', 'md' ),
@@ -241,6 +258,14 @@
 
 				<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
 
+					<?php $this->fields->field( 'sidebar', array(
+						'type' => 'checkbox',
+						'wrap_classes' => 'md-sep-micro',
+						'options' => array(
+							'left' => __( 'Show on left', 'md' )
+						)
+					) ); ?>
+
 					<div id="<?php echo $this->_id; ?>_custom_sidebar_option">
 						<?php $this->fields->field( 'custom_sidebar', array(
 							'type' => 'select',
@@ -269,45 +294,6 @@
 
 		</div>
 
-		<?php $this->fields->field( 'footer', array(
-			'type' => 'checkbox',
-			'label' => __( 'Footer', 'md' ),
-			'options' => array(
-				'remove' => __( 'Remove <b>Footer</b>', 'md' )
-			)
-		) ); ?>
-
-		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
-			<?php $this->fields->field( 'footer', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'columns' => __( 'Remove <b>Columns</b>', 'md' )
-				)
-			) ); ?>
-		</div>
-
 	</div>
-
-	<!-- Featured Image -->
-
-	<?php if ( $is_post ) : ?>
-		<div class="col">
-			<?php $this->fields->field( 'featured_image', array(
-				'type' => 'select',
-				'label' => __( 'Featured Media Position', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'wrap_classes' => 'md-sep-small',
-				'options' => $this->fields->data->values['featured_image']
-			) ); ?>
-			<div id="featured_image_fields" style="display: <?php echo ! in_array( $featured_image_position, array( 'above_headline', 'below_headline', 'remove' ) ) ? 'block' : 'none'; ?>;">
-				<?php $this->fields->field( 'featured_image_width', array(
-					'type' => 'range',
-					'label' => __( 'Featured Media Width', 'md' ),
-					'unit' => 'px',
-					'max' => '550'
-				) ); ?>
-			</div>
-		</div>
-	<?php endif; ?>
 
 </div>

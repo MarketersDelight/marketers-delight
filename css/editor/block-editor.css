@@ -106,7 +106,7 @@ line-height: 30px;
 }
 /* LISTS */
 .editor-styles-wrapper ul { list-style: square; }
-.the-content :is(ul, ol, .list-check) { margin-inline-start: 32px; }
+.the-content :is(ul, ol) { margin-inline-start: 32px; }
 .editor-styles-wrapper li {
 	margin-block-end: 16px;
 	position: relative;
@@ -116,9 +116,9 @@ line-height: 30px;
 	margin-inline-start: 16px;
 }
 .editor-styles-wrapper .list { margin-inline-start: 0; }
-.editor-styles-wrapper [class^="list"], .editor-styles-wrapper [class^="list"] ul { list-style: none; }
-[class^="list"] > ul:not(:last-child),
-[class^="list"] li:not(:last-child) {
+.editor-styles-wrapper [class*="list"], .editor-styles-wrapper [class*="list"] ul { list-style: none; }
+[class*="list"] > :is(ul, ol):not(:last-child),
+[class*="list"] li:not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: 16px;
 }

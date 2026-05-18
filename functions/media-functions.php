@@ -57,12 +57,10 @@ function md_get_media( $context = 'post' ) {
 			$option['author'] = true;
 	}
 	else {
-		$option = md_post_meta( 'featured_media', array() );
+		$option = md_post_meta( 'featured_media', true, array() );
 
-		if ( get_post_thumbnail_id() ) {
+		if ( get_post_thumbnail_id() )
 			$option['image']['id'] = get_post_thumbnail_id();
-			$option['image_width'] = md_post_meta( array( 'layout', 'featured_image_width' ) );
-		}
 	}
 
 	$media = wp_parse_args( $option, $defaults );
@@ -83,8 +81,12 @@ function md_has_media( $context = 'post', $args = array() ) {
 	$media = array_merge( md_get_media( $context ), $args );
 	$type = $media['media_type'];
 	$position = $media['position'];
+	$inherit = md_post_type_field( array( 'loop', 'inherit', 'position' ) );
 
-	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) )
+	if ( is_category() || is_tax() )
+		$inherit = md_term_meta( array( 'loop', 'inherit', 'position' ), null, $inherit );
+
+	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) && ! $inherit )
 		$position = $args['loop']['featured_image'];
 
 	if ( $position == 'remove' )
@@ -119,10 +121,10 @@ function md_media_position( $context = 'post' ) {
 		return $default;
 
 	$position = $default;
+	$key = array( 'featured_media', 'position' );
 	$single_key = array( 'layout', 'featured_image' );
 
 	if ( $context === 'page' ) {
-		$key = array( 'featured_media', 'position' );
 		$position = md_post_type_field( $key, $default );
 
 		if ( is_category() || is_tax() )
@@ -130,7 +132,7 @@ function md_media_position( $context = 'post' ) {
 	}
 	elseif ( is_singular() ) {
 		$position = md_post_type_field( $single_key, $default );
-		$position = md_post_meta( $single_key, null, $position );
+		$position = md_post_meta( $key, null, $position );
 	}
 	else {
 		$loop_key = array( 'loop', 'featured_image' );
@@ -150,7 +152,7 @@ function md_media_position( $context = 'post' ) {
 			$inherit = md_term_meta( $inherit_key, null, $inherit );
 
 		if ( $inherit )
-			$position = md_post_meta( $single_key, null, $position );
+			$position = md_post_meta( $key, null, $position );
 	}
 
 	return $position;

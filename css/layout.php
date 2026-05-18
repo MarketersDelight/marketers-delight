@@ -5,8 +5,8 @@
 \*------------------------------*/
 
 .clear:after,
-.entry.image-left .the-content:after,
-.entry.image-right .the-content:after {
+.entry.image-inline .the-content .wrap:after,
+.entry.image-inline .the-content .featured-media + :is(h2, h3, h4, h5, h6) {
 	clear: both;
 	content: '';
 	display: table;
@@ -132,7 +132,7 @@
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }
-	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
+	.compact.left :is(.content, .sidebar) { direction: ltr; }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {

@@ -8,6 +8,7 @@
 		$date = $post_date = get_the_modified_time( get_option( 'date_format' ) );
 		$datetime = get_the_modified_time( 'c' );
 		$default_name = __( 'Last updated:', 'md' );
+		$icon = 'clock';
 	}
 	else {
 		$key = 'date';
@@ -15,6 +16,7 @@
 		$date = $post_date = get_the_time( get_option( 'date_format' ) );
 		$datetime = get_the_date( 'c' );
 		$default_name = __( 'Published on:', 'md' );
+		$icon = 'calendar';
 	}
 
 	$permalink = get_permalink();
@@ -35,7 +37,7 @@
 
 <span class="byline-date byline-item">
 
-	<?php echo md_icon( 'clock' ); ?>
+	<?php echo md_icon( $icon ); ?>
 
 	<?php if ( ! empty( $fields['settings']['label'] ) )
 		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : $default_name ) . '</span>'; ?>

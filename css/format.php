@@ -107,7 +107,7 @@ code, pre {
 
 .format ul { list-style: square; }
 
-.the-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $single; ?>px; }
+.the-content :is(ul, ol) { margin-inline-start: <?php echo $single; ?>px; }
 
 .format li {
 	margin-block-end: <?php echo $half; ?>px;
@@ -121,10 +121,10 @@ code, pre {
 
 .format .list { margin-inline-start: 0; }
 
-.format [class^="list"], .format [class^="list"] ul { list-style: none; }
+.format [class*="list"], .format [class*="list"] ul { list-style: none; }
 
-[class^="list"] > ul:not(:last-child),
-[class^="list"] li:not(:last-child) {
+[class*="list"] > :is(ul, ol):not(:last-child),
+[class*="list"] li:not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: <?php echo $half; ?>px;
 }

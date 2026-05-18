@@ -69,22 +69,17 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => array_keys( md_filter_loop_styles() )
 			),
-			'breadcrumbs' => array(
-				'type' => 'checkbox',
-				'options' => array( 'add', 'remove' )
-			),
-			'content_box' => array(
-				'type' => 'select',
-				'options' => array( 'sidebar_content' )
-			),
 			'featured_image' => array(
 				'type' => 'select',
 				'options' => array_keys( $this->fields->data->values['featured_image'] )
 			),
-			'featured_image_width' => array( 'type' => 'number' ),
+			'breadcrumbs' => array(
+				'type' => 'checkbox',
+				'options' => array( 'add', 'remove' )
+			),
 			'sidebar' => array(
 				'type' => 'checkbox',
-				'options' => array( 'add', 'remove', 'global' )
+				'options' => array( 'add', 'remove', 'global', 'left' )
 			),
 			'custom_sidebar' => array(
 				'type' => 'select',
@@ -179,7 +174,6 @@ class md_layout extends md_api {
 		) );
 		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
 		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );
-		$featured_image_position = $this->fields->module( 'featured_image' );
 
 		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
 			$sidebar_display = 'block';
@@ -249,12 +243,6 @@ class md_layout extends md_api {
 				<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
 				document.getElementById( '<?php echo $prefix; ?>_content_headline' ).onchange = function( e ) {
 					document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
-				}
-				<?php endif; ?>
-
-				<?php if ( in_array( $screen->base, array( 'post', 'post-new' ) ) ) : ?>
-				document.getElementById( '<?php echo $prefix; ?>_featured_image' ).onchange = function( e ) {
-					document.getElementById( 'featured_image_fields' ).style.display = ['above_headline', 'below_headline', 'remove'].includes( this.value ) ? 'none' : 'block';
 				}
 				<?php endif; ?>
 

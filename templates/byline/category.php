@@ -25,8 +25,8 @@ if ( empty( $terms ) )
 
 echo '<span class="byline-item byline-category">' . md_icon( 'tags' );
 
-if ( ! empty( $fields['settings']['label'] ) )
-	echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'Category:', 'md' ) ) . '</span> ';
+if ( ! empty( $fields['name'] ) )
+	echo '<span class="byline-label">' . esc_html( $fields['name'] ) . '</span> ';
 
 foreach ( $terms as $order => $term ) {
 	if ( isset( $fields['settings']['first'] ) && $c > 1 )

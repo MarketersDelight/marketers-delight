@@ -28,10 +28,12 @@
 
 .content-title .title {
 	flex: 1;
-	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
+	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
 	margin-block-end: 0;
 }
+
+.format .content-title .title {  }
 
 .comments .comment-reply-title {
 	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;

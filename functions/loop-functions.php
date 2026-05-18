@@ -173,7 +173,6 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 
 	if ( md_has_media() && ! isset( $loop['featured_image'] ) ) {
 		$media = md_get_media();
-
 		$loop['featured_image'] = $media['position'];
 
 		if ( ! empty( $media['image']['id'] ) )
@@ -234,14 +233,6 @@ function md_get_loop( $args = array() ) {
 
 		if ( md_has_sidebar() )
 			$loop['has_sidebar'] = true;
-
-		if ( md_has_media() ) {
-			$media = md_get_media();
-			$loop['featured_image'] = $media['position'];
-
-			if ( ! empty( $media['image']['id'] ) )
-				$loop['featured_image_id'] = $media['image']['id'];
-		}
 	}
 
 	if ( empty( $loop['columns'] ) )

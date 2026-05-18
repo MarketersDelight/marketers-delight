@@ -27,10 +27,11 @@
 		17. Floating_bars
 		18. Popups
 		19. Share
-		20. Download
-		21. Footnotes
-		22. Glossary
-		23. Stream
+		20. Changelog
+		21. Download
+		22. Footnotes
+		23. Glossary
+		24. Stream
 */
 /* TYPOGRAPHY */
 @font-face {
@@ -220,7 +221,7 @@ line-height: 30px;
 }
 /* LISTS */
 .format ul { list-style: square; }
-.the-content :is(ul, ol, .list-check) { margin-inline-start: 32px; }
+.the-content :is(ul, ol) { margin-inline-start: 32px; }
 .format li {
 	margin-block-end: 16px;
 	position: relative;
@@ -230,9 +231,9 @@ line-height: 30px;
 	margin-inline-start: 16px;
 }
 .format .list { margin-inline-start: 0; }
-.format [class^="list"], .format [class^="list"] ul { list-style: none; }
-[class^="list"] > ul:not(:last-child),
-[class^="list"] li:not(:last-child) {
+.format [class*="list"], .format [class*="list"] ul { list-style: none; }
+[class*="list"] > :is(ul, ol):not(:last-child),
+[class*="list"] li:not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: 16px;
 }
@@ -975,6 +976,7 @@ summary::after {
 .byline a { text-decoration-color: rgba(0, 0, 0, 0.2); }
 .byline:empty { display: none; }
 .byline .badge, .byline-comments a { text-decoration: none; }
+.byline-author .byline-label { font-style: italic; }
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: 5px; }
 .byline-item > .byline-item:not(:last-child) { margin-inline-end: 11px; }
 .byline:not(.can-wrap).byline-edit:last-child { margin-inline-start: auto; }
@@ -1032,8 +1034,8 @@ summary::after {
 	$LAYOUT
 \*------------------------------*/
 .clear:after,
-.entry.image-left .the-content:after,
-.entry.image-right .the-content:after {
+.entry.image-inline .the-content .wrap:after,
+.entry.image-inline .the-content .featured-media + :is(h2, h3, h4, h5, h6) {
 	clear: both;
 	content: '';
 	display: table;
@@ -1124,7 +1126,7 @@ summary::after {
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }
-	.compact.left .content-wrap, .compact.left .sidebar { direction: ltr; }
+	.compact.left :is(.content, .sidebar) { direction: ltr; }
 }
 @media (max-width: 1200px) {
 	.inner { padding-inline: 16px; }
@@ -1421,10 +1423,11 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 }
 .content-title .title {
 	flex: 1;
-	font-size: 23px;
-	line-height: 36px;
+	font-size: 27px;
+	line-height: 38px;
 	margin-block-end: 0;
 }
+.format .content-title .title {  }
 .comments .comment-reply-title {
 	font-size: 27px;
 	font-weight: 500;
@@ -2283,9 +2286,25 @@ cite, .tiny {
 		width: 100%;
 	}
 }
+/*----------------------------------*\
+	$CHANGELOG
+\*----------------------------------*/
+.box-style .item + .changelog-list { padding-block-start: 0; }
+.changelog-list li {
+	align-items: center;
+	display: flex;
+	gap: 21px;
+}
+.changelog .badge {
+	align-self: start;
+	min-width: 110px;
+	padding-block: 8px 5px;
+	text-align: center;
+}
 /*------------------------------*\
 	$DOWNLOADS
 \*------------------------------*/
+/* LOOP */
 .edd-download {
     border: 1px solid #E6E0CF;
     transition: 0.3s;
@@ -2319,6 +2338,15 @@ cite, .tiny {
 }
 .single .edd-download .dropin-title .cta { margin-inline-start: auto; }
 .edd-download .cta .link { flex: 1; }
+/* SIDEBAR */
+.widget_md_post_details_widget .list li > .byline-item {
+	display: flex;
+	gap: 5px;
+}
+.widget_md_post_details_widget .list .byline-label {
+	flex: 1;
+	font-style: normal;
+}
 /* ICONS */
 .dropin-icon {
 	align-items: center;
@@ -2501,11 +2529,12 @@ cite, .tiny {
 /*------------------------------*\
 	$STREAM
 \*------------------------------*/
-.post-type-archive-stream .expanded .inner { max-width: 864px; }
-.post-type-archive-stream .post-title.wide {
+.expanded .loop-timeline { max-width: 864px; }
+.loop-timeline .post-title.wide {
 	align-items: inherit;
 	text-align: inherit;
 }
+.expanded .loop-timeline.box-style .item .wrap { margin-inline: inherit; }
 .box-style .stream_activity .item { padding: 16px; }
 /* TIMELINE */
 .box-style.loop-timeline .entry { box-shadow: none; }

@@ -60,6 +60,8 @@
 
 .byline .badge, .byline-comments a { text-decoration: none; }
 
+.byline-author .byline-label { font-style: italic; }
+
 .byline-item i:not(:last-child), .byline-author .avatar { margin-inline-end: <?php echo $small; ?>px; }
 
 .byline-item > .byline-item:not(:last-child) { margin-inline-end: <?php echo $third; ?>px; }

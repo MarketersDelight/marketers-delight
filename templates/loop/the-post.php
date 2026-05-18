@@ -1,7 +1,7 @@
 <?php
 
 $loop = $args['loop'] = md_loop_item( $loop_base, $c );
-$classes = md_post_class( $args, $c );
+$classes = md_post_class( $loop, $c );
 
 if ( isset( $loop_type ) && ! empty( $loops[$loop_type]['template'] ) )
 	include esc_attr( $loops[$loop_type]['template'] );

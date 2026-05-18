@@ -49,7 +49,7 @@ class md_featured_media extends md_api {
 				'type' => 'upload',
 				'upload_type' => 'media'
 			),
-			'image_width' => array( 'type' => 'range' ),
+			'image_width' => array( 'type' => 'number' ),
 			'video' => array( 'type' => 'url' ),
 			'custom_html' => array( 'type' => 'code' )
 		);
