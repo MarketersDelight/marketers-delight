@@ -138,21 +138,27 @@ triggers: function() {
 
 	for ( var i = 0; i < triggers.length; i++ ) {
 		triggers[i].onclick = function( e ) {
+			for ( var t = 0; t < triggers.length; t++ )
+				triggers[t].classList.remove( 'active' );
+
+			if ( ! this.classList.contains( 'active' ) )
+				this.classList.add( 'active' );
+
 			var type = this.getAttribute( 'data-md-trigger' ),
 				location = this.getAttribute( 'data-md-location' ),
 				parent = this.getAttribute( 'data-md-parent' ),
-				container = this.closest( '.' + parent ),
-				showClass = 'show-' + type,
+				container = document.querySelector( '.' + parent ),
+				toggleClass = 'toggle-' + type,
 				fromClass = 'from-' + location,
-				isActive = container.classList.contains( showClass ) && container.classList.contains( fromClass ),
+				isActive = container.classList.contains( toggleClass ) && container.classList.contains( fromClass ),
 				classes = Array.from( container.classList );
 
 			for ( var c = 0; c < classes.length; c++ )
-				if ( classes[c].startsWith( 'show-' ) || classes[c].startsWith( 'from-' ) )
+				if ( classes[c].startsWith( 'toggle' ) || classes[c].startsWith( 'from-' ) )
 					container.classList.remove( classes[c] );
 
 			if ( ! isActive ) {
-				MD.toggleClass( container, showClass );
+				MD.toggleClass( container, toggleClass );
 				MD.toggleClass( container, fromClass );
 			}
 

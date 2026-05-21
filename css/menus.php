@@ -19,15 +19,19 @@
 	width: 100%;
 }
 
+.menu-item a, .menu .sub-menu .trigger { color: <?php echo $colors['menu']['links']; ?>; }
+
 .menu-item-has-children > a { flex: 1; }
 
-.menu-item-has-children > .trigger { padding-inline: <?php echo $third; ?>px; }
+.menu-item-has-children > .trigger { padding-inline: <?php echo $half; ?>px; }
 
 .menu .trigger-icon:after { content: '\e80e'; }
 
 .menu-item-title { display: block; }
 
 .menu-item-desc { font-size: 0.85em; }
+
+.menu-item.current-menu-item > a, .current-menu-item > .toggle { color: <?php echo $colors['menu']['active']; ?>; }
 
 /* SUB MENU */
 
@@ -49,6 +53,7 @@
 		align-items: center;
 		display: flex;
 	}
+	.menu-item:hover, .menu-item:hover > a { color: <?php echo $colors['menu']['hover']; ?>; }
 	.menu-item-has-children a { padding-inline-end: 0; }
 	/* SUB MENU */
 	.sub-menu {
@@ -75,9 +80,14 @@
 		inset-inline-start: -<?php echo $submenu_width; ?>px;
 	}
 	.sub-menu .menu-item { align-items: end; }
-	<?php if ( ! empty( $colors['submenu']['hover'] ) ) : ?>
-	.sub-menu .menu-item a:hover { color: <?php echo $colors['submenu']['hover']; ?>; }
-	<?php endif; ?>
+	.sub-menu .menu-item a:hover {
+		background-color: rgba(0, 0, 0, 0.08);
+		<?php if ( ! empty( $colors['submenu']['hover'] ) ) : ?>
+		color: <?php echo $colors['submenu']['hover']; ?>;
+		<?php endif; ?>
+	}
+	.sub-menu .menu-item:first-child a:hover { border-radius: 6px 6px 0 0; }
+	.sub-menu .menu-item:last-child a:hover { border-radius: 0 0 6px 6px; }
 	.sub-menu .menu-item:not(:last-child) a,
 	.sub-menu .menu-item:not(:last-child) .trigger { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
@@ -93,9 +103,8 @@
 @media all and (max-width: 900px) {
 	/* MENU ITEM */
 	.menu-item { flex-flow: wrap; }
-	.menu-item:not(.toggle-menu-item):hover > a,
-	.menu-item:not(.toggle-menu-item):hover > .toggle { background-color: rgba(0, 0, 0, 0.1); }
-    .header.center.show-menu .header-primary:not(:last-child),
+	.menu-item:not(.toggle-menu-item):hover > :is(a, .toggle) { background-color: rgba(0, 0, 0, 0.08); }
+    .header.center.toggle-menu .header-primary:not(:last-child),
     .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	/* TOGGLE */
 	.menu .toggle {
@@ -106,14 +115,13 @@
 	/* SUB MENU */
 	.sub-menu { flex-basis: 100%; }
 	.toggle-menu-item > .sub-menu {
-		background-color: rgba(0, 0, 0, 0.1);
+		background-color: rgba(0, 0, 0, 0.08);
 		height: auto;
 		opacity: 1;
 		transition: opacity 200ms linear, transform 200ms ease-out;
 		transform: translateY(0);
 		visibility: visible;
 	}
-	.toggle-menu-item > .sub-menu .sub-menu { background-color: rgba(0, 0, 0, 0.05); }
 	.sub-menu .menu-item a {
 		font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;

@@ -246,6 +246,10 @@ return array(
 		'unicode' => 'e81c',
 		'label' => __( 'Share', 'md' )
 	),
+	'sidebar' => array(
+		'unicode' => 'e917',
+		'label' => __( 'Sidebar', 'md' )
+	),
 	'social' => array(
 		'unicode' => 'e900',
 		'label' => __( 'Social', 'md' )

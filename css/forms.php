@@ -108,12 +108,12 @@ select {
 
 /* TRIGGERS */
 
-.show-search .triggers { order: 3; }
+.toggle-search .triggers { order: 3; }
 
 .trigger {
 	align-items: center;
 	cursor: pointer;
-	display: flex;
+	display: inline-flex;
 	justify-content: center;
 	position: relative;
 	text-align: center;
@@ -123,11 +123,11 @@ select {
 
 .hide-label .link-text, .hide-label .trigger-text { display: none; }
 
-.show-search .trigger-search .trigger-icon:before,
-.show-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
+.toggle-search .trigger-search .trigger-icon:before,
+.toggle-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 
-.show-search:not(.cover) .trigger-search .trigger-icon:before,
-.show-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
+.toggle-search:not(.cover) .trigger-search .trigger-icon:before,
+.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
 
 /* TOGGLES */
 
@@ -135,25 +135,24 @@ select {
 
 .form-toggle .inputs,
 .form-toggle .submit,
-.show-search .search-form .trigger-text { display: none; }
+.toggle-search .search-form .trigger-text { display: none; }
 
-.show-search .inputs, .form-toggle .trigger-search { display: flex; }
+.toggle-search .inputs, .form-toggle .trigger-search { display: flex; }
 
-.show-search .submit { display: block; }
+.toggle-search .submit { display: block; }
 
 /* QUERIES */
 
-@media all and (min-width: 600px) {
+@media (min-width: 600px) {
 	.form.inline .submit { flex: 0 1 25%; }
 }
 
-@media all and (max-width: 600px) {
+@media (max-width: 600px) {
 	.form.multi { flex-direction: column; }
 	.form.multi .inputs { flex-basis: 100%; }
 	.form.multi .submit { width: 100%; }
-	.hide-label-mobile .trigger-text { display: none; }
 }
 
-@media all and (min-width: 900px) {
-	.search-form .input-field { min-width: <?php echo $quad * 2; ?>px; }
+@media (max-width: 900px) {
+	.hide-label-mobile .trigger-text { display: none; }
 }

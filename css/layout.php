@@ -28,7 +28,7 @@
 
 .header-cover .main { padding-block-start: 0; }
 
-.loop:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.loop:not(.content):not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 /* BOX STYLE */
 
@@ -113,8 +113,7 @@
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.cover,
-	.box-style.full .item { padding: <?php echo $mid; ?>px; }
+	.cover, .box-style.full .item { padding: <?php echo $mid; ?>px; }
 	.compact .box-style.full .post-title { padding-block-end: <?php echo $single; ?>px; }
 	.slim .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item:not(.post-title) .wrap {
@@ -128,7 +127,7 @@
 	.compact .content-wrap {
 		display: grid;
 		gap: <?php echo $mid; ?>px;
-		grid-template-columns: <?php echo ( ( $content_width / $site_width ) * 100 ); ?>% <?php echo ( ( $sidebar_width / $site_width ) * 100 ); ?>%;
+		grid-template-columns: <?php echo $content_width; ?>px minmax(0, <?php echo $sidebar_width; ?>px);
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }

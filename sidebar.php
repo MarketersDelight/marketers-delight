@@ -1,4 +1,4 @@
-<?php if ( md_has_sidebar() ) {
+<?php if ( ! md_has_sidebar() ) return;
 
 echo '<aside class="sidebar">';
 
@@ -9,5 +9,3 @@ dynamic_sidebar( md_get_sidebar_id() );
 md_hook_after_sidebar();
 
 echo '</aside>';
-
-}

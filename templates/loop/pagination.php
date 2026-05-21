@@ -1,12 +1,12 @@
 <?php
-	$prelabel = md_icon( 'angle-left', array( 'classes' => 'prev-icon' ) );
-	$prelabel .= ! empty( $loop['previous_label'] ) ? $loop['previous_label'] : __( 'Previous', 'md' );
+$prelabel = md_icon( 'angle-left', array( 'classes' => 'prev-icon' ) );
+$prelabel .= ! empty( $loop['previous_label'] ) ? $loop['previous_label'] : __( 'Previous', 'md' );
 
-	$nxtlabel = ! empty( $loop['next_label'] ) ? $loop['next_label'] : __( 'Next', 'md' );
-	$nxtlabel .= md_icon( 'angle-right', array( 'classes' => 'next-icon' ) );
+$nxtlabel = ! empty( $loop['next_label'] ) ? $loop['next_label'] : __( 'Next', 'md' );
+$nxtlabel .= md_icon( 'angle-right', array( 'classes' => 'next-icon' ) );
 ?>
 
-<nav class="pagination <?php echo esc_attr( $classes ); ?>">
+<nav class="pagination <?php echo esc_attr( $classes ); ?>" aria-label="<?php echo __( 'Previous and next pages', 'md' ); ?>">
 
 	<?php if ( $type == 'prev_next' ) {
 		previous_posts_link( $prelabel, $total );

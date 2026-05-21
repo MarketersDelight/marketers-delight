@@ -4,10 +4,15 @@
 	$WIDGETS
 \*------------------------------*/
 
+.sidebar, .panel {
+	color: <?php echo $colors['sidebar']['text']; ?>;
+	font-size: <?php echo $typography['sidebar']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['sidebar']['line_height']['desktop']; ?>px;
+}
+
 .format .widget:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
-.sidebar .widget ul, .sidebar .widget ol,
-.footer .widget ul, .footer .widget ol {
+.sidebar .widget :is(ul, ol), .footer .widget :is(ul, ol) {
 	list-style: none;
 	margin-inline-start: 0;
 }
@@ -16,20 +21,62 @@
 
 /* SIDEBAR */
 
-.sidebar {
-	<?php if ( ! empty( $colors['sidebar']['bg_color'] ) ) : ?>
-	background-color: <?php echo $colors['sidebar']['bg_color']; ?>;
-	<?php endif; ?>
-	color: <?php echo $colors['sidebar']['text']; ?>;
-	font-size: <?php echo $typography['sidebar']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['sidebar']['line_height']['desktop']; ?>px;
+<?php if ( ! empty( $colors['sidebar']['bg_color'] ) ) : ?>
+.sidebar { background-color: <?php echo $colors['sidebar']['bg_color']; ?>; }
+<?php endif; ?>
+
+.sidebar a, .panel a { color: <?php echo $colors['sidebar']['links']; ?>; }
+
+:is(.sidebar, .panel) :is(.widget-title, .wp-block-heading) { color: <?php echo $colors['sidebar']['title']; ?>; }
+
+:is(.sidebar, .panel) :is(.widget-title a, .wp-block-heading a) { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+
+/* PANELS */
+
+.panel {
+	background-color: <?php echo $colors['site']['accent']; ?>;
+	border-inline-end: 1px solid <?php echo $colors['site']['tertiary']; ?>;
+	padding-block: <?php echo $single; ?>px;
+	position: relative;
 }
 
-.sidebar a { color: <?php echo $colors['sidebar']['links']; ?>; }
+.panel:after {
+	background-color: inherit;
+	content: '';
+	position: absolute;
+		bottom: 0;
+		left: -100vw;
+		top: 0;
+		right: 0;
+	width: 100vw;
+}
 
-.sidebar .widget-title, .sidebar .wp-block-heading { color: <?php echo $colors['sidebar']['title']; ?>; }
+.toggle-panel .panel .wrap { display: none; }
 
-.sidebar .widget-title a, .sidebar .wp-block-heading a { color: <?php echo $colors['sidebar']['title_link']; ?>; }
+.panel .widget { padding: <?php echo $half; ?>px; }
+
+.panel .widget:first-child { padding-block-start: 0; }
+
+@media (min-width: <?php echo $site_width; ?>px) {
+	.panel-inline { --panel-col: <?php echo $panel_width; ?>px; }
+	.panel-inline.toggle-panel { --panel-col: min-content; }
+	.panel-inline .content-wrap { gap: <?php echo $single; ?>px; }
+	.panel-inline:not(.toggle-panel) .content-wrap {
+		justify-content: center;
+		max-width: 100%;
+	}
+	.compact.panel-inline .content-wrap { grid-template-columns: minmax(0, var(--panel-col)) <?php echo $content_width; ?>px minmax(0, <?php echo $sidebar_width; ?>px); }
+	.panel-inline.expanded {
+		display: grid;
+		gap: <?php echo $single; ?>px;
+		grid-template-columns: var(--panel-col) minmax(0, <?php echo $site_width; ?>px);
+		justify-content: center;
+	}
+	.panel-inline .panel {
+		margin-block: -<?php echo $single; ?>px;
+		order: -1;
+	}
+}
 
 /* FOOTER */
 
@@ -44,9 +91,9 @@
 
 .footer a { color: <?php echo $colors['footer']['links']; ?>; }
 
-.footer .widget-title, .footer .wp-block-heading { color: <?php echo $colors['footer']['title']; ?>; }
+.footer :is(.widget-title, .wp-block-heading) { color: <?php echo $colors['footer']['title']; ?>; }
 
-.footer .widget-title a, .footer .wp-block-heading a { color: <?php echo $colors['footer']['title_link']; ?>; }
+.footer :is(.widget-title a, .wp-block-heading a) { color: <?php echo $colors['footer']['title_link']; ?>; }
 
 .footer .columns { padding-block: <?php echo $mid; ?>px; }
 
@@ -62,7 +109,7 @@
 
 /* MENU */
 
-.format .widget_nav_menu .menu, .format .widget_nav_menu .sub-menu {
+.format .widget_nav_menu :is(.menu, .sub-menu) {
 	margin-inline-start: 0;
 	margin-block-start: 0;
 }
@@ -145,6 +192,7 @@
 }
 
 /* QUERIES */
+
 <?php foreach ( $queries as $w => $d ) {
 
 echo "@media (max-width: {$w}px) {\n";

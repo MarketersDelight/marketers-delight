@@ -287,10 +287,11 @@ class md_css {
 		$sidebar = $values['sidebar'];
 
 		$site_width = $values['colors']['width']['site'];
-		$site_width_full = $values['colors']['width']['site_full'];
+		$site_width_wide = $values['colors']['width']['site_wide'];
 		$content_width = $values['colors']['width']['content_width'];
 		$post_width = $values['colors']['width']['post'];
 		$sidebar_width = $values['colors']['width']['sidebar'];
+		$panel_width = $values['colors']['width']['panel_width'];
 
 		$font_size = $values['typography']['body']['font_size'];
 		$font_family = $values['typography']['body']['font_family'];

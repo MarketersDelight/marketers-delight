@@ -6,7 +6,7 @@
 
 .post-title:empty { display: none; }
 
-.page-title, .header-cover .article-wrap > .post-title { margin-block-end: <?php echo $single; ?>px; }
+.page-title, .header-cover .main > .post-title { margin-block-end: <?php echo $single; ?>px; }
 
 .entry-title, .title-wrap,
 .wide .inner, .wide .wrap,
@@ -94,7 +94,7 @@
 
 .cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text-main']; ?>; }
 
-.full-cover .page-title, .full-cover .article-wrap > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
+.full-cover .page-title, .full-cover .main > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
 
 /* QUERIES */
 

@@ -501,11 +501,18 @@ function md_get_builder( $id, $type = null, $key = null ) {
 		if ( $data )
 			$builder = unserialize( $data );
 	}
-	else foreach ( array( 'elements', 'data', 'locations' ) as $type ) {
-		$data = md_setting( array( $id, "builder_{$type}" ) );
+	else {
+		foreach ( array( 'elements', 'data', 'locations' ) as $type ) {
+			$data = md_setting( array( $id, "builder_{$type}" ) );
 
-		if ( $data )
-			$builder[$type] = unserialize( $data );
+			if ( $data )
+				$builder[$type] = unserialize( $data );
+		}
+
+		$fields = md_setting( array( $id, 'builder' ) );
+
+		if ( $fields )
+			$builder['fields'] = $fields;
 	}
 
 	if ( ! empty( $key ) )

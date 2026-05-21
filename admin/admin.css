@@ -1145,9 +1145,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md-color-picker-fill {
-	border-radius: 3px 0 0 3px;
 	border-right: 1px solid #999;
-	height: 28px;
+	height: 38px;
 	width: 33px;
 	display: block;
 	position: absolute;
@@ -1179,7 +1178,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 @media all and (min-width: 782px) {
 	.md-color-picker-reset {
-		top: 6px;
+		top: 10px;
 		right: 10px;
 	}
 	.md-color-picker-reset .dashicons { font-size: 17px; }

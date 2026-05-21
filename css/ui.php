@@ -136,52 +136,36 @@
 
 /* ACCORDION */
 
-summary {
-  position: relative;
-}
-summary::marker {
-  content: none;
-}
-summary::before,
-summary::after {
-  content: '';
-}
-summary::before,
-summary::after {
-    width: .75em;
-    height: 0;
-    border-bottom: 2px solid;
-    position: absolute;
-    top: calc(50% - 1px);
-    right: 0;
-    transform: translateY(-50%);
-  }
-summary::after {
-  transform: rotate(90deg);
-  transform-origin: 50% 50%;
-}
-[open] summary::after {
-  transform: rotate(0deg);
+.panel .accordion { margin-inline: -<?php echo $half; ?>px; }
+
+.accordion-item:not(:last-child),
+.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
+
+.accordion-title {
+	align-items: center;
+	color: <?php echo $colors['sidebar']['title']; ?>;
+	cursor: pointer;
+	display: flex;
+	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	font-weight: <?php echo $bold; ?>;
+	line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+	padding: <?php echo $half; ?>px;
 }
 
-  details {
-    border: 1px solid;
-	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
-    padding: 0 1rem;
-	border-radius: 8px;
-	border-color: <?php echo $colors['content']['border_color']; ?>;
-    background: white;
-  }
-  details:not(:last-child) { margin-bottom: <?php echo $half; ?>px; }
-  details[open] {
-      padding-bottom: 1em;
-  }
-  summary {
-    padding: 1rem 2em 1rem 0;
-    font-size: 1.25rem;
-    font-weight: bold;
-    cursor: pointer;
-  }
+.accordion-title::marker { content: none; }
+
+.accordion-title:after { content: '\e80e'; }
+
+[open] > .accordion-title:after { content: '\e817'; }
+
+.panel .accordion-item:first-child .accordion-title { padding-block-start: 0; }
+
+.accordion-label { flex: 1; }
+
+.accordion-item .menu-item { margin-block-end: 0; }
+
+.accordion-item .menu-item:hover a,
+.accordion-item .current-menu-item a { background-color: rgba(0, 0, 0, 0.03); }
 
 /* DISPLAYS */
 

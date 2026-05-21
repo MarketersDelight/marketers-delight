@@ -1,14 +1,13 @@
-<?php
-
-$header = md_get_builder( 'header' );
-$fields = md_setting( array( 'header', 'builder' ), array() );
-$mobile = md_setting( array( 'header', 'layout_mobile' ) );
-
-md_template( 'head' );
+<?php md_template( 'head' );
 
 md_hook_before_html();
 
-if ( md_has_header() ) : md_hook_before_header(); ?>
+if ( md_has_header() ) :
+	$header = md_get_builder( 'header' );
+	$mobile = md_setting( array( 'header', 'layout_mobile' ) );
+
+	md_hook_before_header();
+?>
 
 <header class="<?php echo md_header_classes(); ?>">
 
@@ -18,8 +17,16 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 
 		<div class="header-controls"><?php
 
-			if ( md_has_menu() && $mobile == 'expanded' )
-				md_trigger();
+			if ( md_has_panel() )
+				md_trigger( 'panel', array(
+					'parent'  => 'main',
+					'location' => 'header',
+					'icon' => 'sidebar',
+					'hide_label' => true,
+					'title'   => __( 'Toggle Panel', 'md' )
+				) );
+			elseif ( md_has_menu() && $mobile == 'expanded' )
+				md_trigger( 'menu', array( 'builder' => $header ) );
 
 			if ( md_has_logo() )
 				md_logo();
@@ -29,14 +36,14 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 				echo '<div class="header-triggers">';
 
 				if ( ! empty( $header['elements']['search'] ) )
-					md_trigger( 'search', array( 'title' => __( 'Search', 'md' ) ) );
+					md_trigger( 'search', array( 'title' => __( 'Search', 'md' ), 'builder' => $header ) );
 
-				if ( md_has_menu() && $mobile !== 'expanded' )
-					md_trigger();
+				if ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() )
+					md_trigger( 'menu', array( 'builder' => $header ) );
 
 				if ( ! empty( $header['elements']['link'] ) )
 					foreach ( $header['elements']['link'] as $c => $link_id ) {
-						$link = md_setting( array( 'header', 'builder', $link_id ) );
+						$link = $header['fields'][$link_id] ?? array();
 						md_link( $link );
 					}
 
@@ -59,12 +66,12 @@ if ( md_has_header() ) : md_hook_before_header(); ?>
 					$type = esc_attr( $items['type'] );
 					$id = esc_attr( $items['id'] );
 
-					if ( ! empty( $fields[$id] ) ) {
-						$fields[$id]['location'] = $section;
-						$fields[$id]['layout'] = md_setting( array( 'header', 'layout' ), 'standard' );
-						$fields[$id]['id'] = $id;
+					if ( ! empty( $header['fields'][$id] ) ) {
+						$header['fields'][$id]['location'] = $section;
+						$header['fields'][$id]['layout'] = md_setting( array( 'header', 'layout' ), 'standard' );
+						$header['fields'][$id]['id'] = $id;
 
-						call_user_func( 'md_' . esc_attr( $type ), $fields[$id] );
+						call_user_func( 'md_' . esc_attr( $type ), $header['fields'][$id] );
 					}
 				}
 

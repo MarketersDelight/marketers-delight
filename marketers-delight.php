@@ -207,7 +207,9 @@ final class marketers_delight {
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
 		// Load scripts
-		wp_register_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), true );
+		wp_register_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), array(
+			'in_footer' => true
+		) );
 		wp_enqueue_script( 'marketers-delight' );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
@@ -366,6 +368,17 @@ final class marketers_delight {
 			) );
 		}
 
+		// Main Sidebar
+		register_sidebar( array(
+			'name' => __( 'Main Panel', 'md' ),
+			'description' => __( 'The default panel used around your site.', 'md' ),
+			'id' => 'panel-main',
+			'before_widget' => '<div id="%1$s" class="widget %2$s">',
+			'after_widget' => '</div>',
+			'before_title' => '<h3 class="widget-title">',
+			'after_title' => '</h3>'
+		) );
+
 		// Footer Columns
 		foreach ( md_filter_footer_columns() as $w ) {
 			register_sidebar( array(
@@ -389,6 +402,10 @@ final class marketers_delight {
 			'before_title' => '<h3 class="widget-title">',
 			'after_title' => '</h3>'
 		) );
+
+		// Widgets
+		include_once MD_DIR . 'widgets.php';
+		register_widget( 'md_accordion_widget' );
 	}
 
 	/**

@@ -121,13 +121,20 @@ code, pre {
 
 .format .list { margin-inline-start: 0; }
 
-.format [class*="list"], .format [class*="list"] ul { list-style: none; }
+.format .list, .format [class*="list-"] { list-style: none; }
 
-[class*="list"] > :is(ul, ol):not(:last-child),
-[class*="list"] li:not(:last-child) {
+.list-links li a,
+.list li:not(:last-child),
+.list > :is(ul, ol):not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
 	padding-block-end: <?php echo $half; ?>px;
 }
+
+.list-links li { margin-block-end: 0; }
+
+.list-links li a { display: block; }
+
+.list-links li:last-child a { border-block-end: 0; }
 
 .list-check { margin-inline-start: <?php echo $single; ?>px; }
 

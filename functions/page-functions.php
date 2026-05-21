@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * Check if page has Builder enabled.
+ *
+ * @since 6.0
+ */
+
+function md_has_builder() {
+	return md_meta( array( 'layout', 'content', 'builder' ) );
+}
+
+/**
  * Callback function for get_searchform().
  *
  * @since 6.0

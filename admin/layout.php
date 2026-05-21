@@ -79,7 +79,7 @@ class md_layout extends md_api {
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
-				'options' => array( 'add', 'remove', 'global', 'left' )
+				'options' => array( 'add', 'remove', 'global', 'alt' )
 			),
 			'custom_sidebar' => array(
 				'type' => 'select',
@@ -188,7 +188,6 @@ class md_layout extends md_api {
 		}
 
 		$sidebar_classes = join( ' ', $sidebar_classes );
-
 		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
 
 		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )

@@ -1,4 +1,4 @@
-<nav class="post-nav<?php echo ! md_has_sidebar() ? ' inner format' : ''; ?>">
+<nav class="post-nav<?php echo ! md_has_sidebar() ? ' inner format' : ''; ?>" aria-label="<?php echo __( 'Previous and next posts', 'md' ); ?>">
 
 	<?php if ( get_previous_post_link() ) : ?>
 

@@ -29,7 +29,8 @@
 .list-check li:before,
 #cancel-comment-reply-link:before,
 .menu .trigger-icon:before,.menu .trigger-icon:after,
-.breadcrumbs li:not(:last-child):after, .breadcrumbs-home:before {
+.breadcrumbs-home:before, .breadcrumbs li:not(:last-child):after,
+.accordion-title:before, .accordion-title:after {
 	display: inline-block;
 	font-family: md-icon;
 	font-style: normal;

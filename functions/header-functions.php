@@ -152,19 +152,43 @@ function md_menu( $fields = array() ) {
  */
 
 function md_trigger( $type = 'menu', $args = array() ) {
-	$classes = array( 'trigger', "trigger-{$type}" );
-	$elements = md_get_builder( 'header', 'elements' );
-	$id = ! empty( $elements[$type][0] ) ? $elements[$type][0] : '';
-	$location = md_get_builder( 'header', 'locations', $id );
-	$location = ! empty( $location ) ? $location : 'primary';
-	$parent = isset( $args['parent'] ) ? $args['parent'] : 'header';
+	$attrs = '';
+	$args = wp_parse_args( $args, array(
+		'trigger' => $type,
+		'parent' => 'header',
+		'location' => '',
+		'title' => '',
+		'icon' => $type,
+		'hide_label' => null,
+		'hide_label_mobile' => null,
+		'builder' => null
+	) );
 
-	$title = isset( $args['title'] ) ? $args['title'] : '';
-	$title = empty( $title ) && $type == 'menu' ? md_get_menu_name( 'header' ) : $title;
-	$title = md_setting( array( 'header', 'builder', $id, 'name' ), $title );
+	$trigger = $args['trigger'];
+	$parent = $args['parent'];
+	$title = $args['title'];
+	$icon = $args['icon'];
+	$location = $args['location'];
+	$hide_label = $args['hide_label'];
+	$hide_label_mobile = $args['hide_label_mobile'];
 
-	$hide_label = md_setting( array( 'header', 'builder', $id, 'toggle', 'hide_label' ) );
-	$hide_label_mobile = md_setting( array( 'header', 'builder', $id, 'toggle', 'hide_label_mobile' ) );
+	$classes = array( 'trigger', "trigger-{$trigger}" );
+
+	if ( ! empty( $args['builder'] ) ) {
+		$builder = $args['builder'];
+		$id = ! empty( $builder['elements'][$type][0] ) ? $builder['elements'][$type][0] : '';
+		$fields = ! empty( $builder['fields'][$id] ) ? $builder['fields'][$id] : array();
+		$location = ! empty( $builder['locations'][$id] ) ? $builder['locations'][$id] : '';
+
+		if ( empty( $title ) && $type == 'menu' )
+			$title = md_get_menu_name( 'header' );
+
+		if ( empty( $hide_label ) && ! empty( $fields['toggle']['hide_label'] ) )
+			$hide_label = true;
+
+		if ( empty( $hide_label_mobile ) && ! empty( $fields['toggle']['hide_label_mobile'] ) )
+			$hide_label_mobile = true;
+	}
 
 	if ( $hide_label )
 		$classes[] = 'hide-label';
@@ -173,10 +197,19 @@ function md_trigger( $type = 'menu', $args = array() ) {
 
 	$classes = join( ' ', $classes );
 
-	echo
-		'<span class="' . esc_attr( $classes ) . '" title="' . esc_attr( $title ) . '" data-md-parent="' . esc_attr( $parent ) . '" data-md-trigger="' . esc_attr( $type ) . '" data-md-location="' . esc_attr( $location ) . '">'.
-			md_icon( $type, array( 'classes' => 'trigger-icon' ) ).
-			'<span class="trigger-text">' . wp_kses_data( $title ) . '</span>'.
+	$attrs .= ' class="' . esc_attr( $classes ) . '"';
+	$attrs .= ' data-md-trigger="' . esc_attr( $trigger ) . '"';
+	$attrs .= ' data-md-parent="' . esc_attr( $parent ) . '"';
+
+	if ( $location )
+		$attrs .= ' data-md-location="' . esc_attr( $location ) . '"';
+
+	if ( $title )
+		$attrs .= ' title="' . esc_attr( $title ) . '"';
+
+	echo "<span$attrs>".
+		 md_icon( $icon, array( 'classes' => 'trigger-icon' ) ).
+		 ( $title ? '<span class="trigger-text">' . wp_kses_data( $title ) . '</span>' : '' ).
 		'</span>';
 }
 

@@ -228,7 +228,7 @@ function md_get_loop( $args = array() ) {
 		if ( ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) )
 			$loop['by_category'] = true;
 
-		if ( md_meta( array( 'layout', 'content', 'builder' ) ) )
+		if ( md_has_builder() )
 			$loop['has_builder'] = true;
 
 		if ( md_has_sidebar() )

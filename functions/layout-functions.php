@@ -49,18 +49,30 @@ function md_content_box_classes() {
 
 	if ( md_has_sidebar() ) {
 		$classes[] = 'compact';
-		$show_on_left = md_post_type_field( array( 'layout', 'sidebar', 'left' ) );
-		$show_on_left = md_meta( array( 'layout', 'sidebar', 'left' ), get_queried_object_id(), $show_on_left );
 
-		if ( $show_on_left )
+		$show_on_left = md_post_type_field( array( 'layout', 'sidebar', 'alt' ) );
+		$single = md_meta( array( 'layout', 'sidebar', 'alt' ) );
+
+		if ( ( $show_on_left && empty( $single ) ) || ( empty( $show_on_left ) && $single ) )
 			$classes[] = 'left';
 	}
 	else $classes[] = 'expanded';
+
+	if ( md_has_panel() )
+		$classes[] = 'panel-inline';
 
 	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );
+}
+
+function md_panel() {
+	include md_template( 'panel', true );
+}
+
+function md_has_panel() {
+	return true;
 }
 
 /**

@@ -198,7 +198,7 @@
 					'type' => 'checkbox',
 					'wrap_classes' => 'md-sep-micro md-right',
 					'options' => array(
-						'left' => __( 'Show on left', 'md' )
+						'alt' => __( 'Flip direction', 'md' )
 					)
 				) ); ?>
 
@@ -262,7 +262,7 @@
 						'type' => 'checkbox',
 						'wrap_classes' => 'md-sep-micro',
 						'options' => array(
-							'left' => __( 'Show on left', 'md' )
+							'alt' => __( 'Flip direction', 'md' )
 						)
 					) ); ?>
 
