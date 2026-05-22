@@ -270,6 +270,9 @@ final class marketers_delight {
 		wp_add_inline_script( 'marketers-delight', "MD.triggers();" );
 		wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
 
+		if ( md_has_panel() )
+			wp_add_inline_script( 'marketers-delight', "MD.closeOverlay( 'panel', '.has-panel' );" );
+
 		if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.sticky(\'.header\');' );
 	}
@@ -321,6 +324,9 @@ final class marketers_delight {
 		$cover = md_cover( $context );
 
 		$classes[] = 'is-' . md_loop_style( array( 'body' => true ) ) . '-style';
+
+		if ( md_has_panel() )
+			$classes[] = 'has-panel toggle-panel';
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
 			$classes[] = 'header-cover';

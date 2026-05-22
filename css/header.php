@@ -50,7 +50,12 @@
 	justify-content: space-between;
 }
 
-.header-controls { padding-block: <?php echo $third; ?>px; }
+.header-controls {
+	align-items: center;
+	display: flex;
+	gap: <?php echo $half; ?>px;
+	padding-block: <?php echo $third; ?>px;
+}
 
 .header-triggers {
 	align-items: center;
@@ -173,14 +178,11 @@
 		flex-direction: column;
 		padding-inline: 0;
 	}
-	.header-primary, .header-aside { width: 100%; }
 	.header-controls {
-		align-items: center;
-		display: flex;
-		gap: <?php echo $half; ?>px;
 		padding-inline: <?php echo $half; ?>px;
 		width: 100%;
 	}
+	.header-primary, .header-aside { width: 100%; }
 	.header-triggers { flex: 1; }
 	.header .primary-menu, .header .aside-menu,
 	.header-primary .link, .header-aside .link { display: none; }
@@ -207,8 +209,4 @@
 
 /* STICKY */
 
-.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: <?php echo $admin_bar_height; ?>px; }
-
-@media all and (max-width: 782px) {
-	.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: <?php echo $admin_bar_height_mobile; ?>px; }
-}
+.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: var(--wp-admin--admin-bar--height); }

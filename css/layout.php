@@ -127,7 +127,7 @@
 	.compact .content-wrap {
 		display: grid;
 		gap: <?php echo $mid; ?>px;
-		grid-template-columns: <?php echo $content_width; ?>px minmax(0, <?php echo $sidebar_width; ?>px);
+		grid-template-columns: <?php echo round( $content_width / $site_width * 100 ); ?>% <?php echo round( $sidebar_width / $site_width * 100 ); ?>%;
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }

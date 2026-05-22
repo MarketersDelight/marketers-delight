@@ -155,19 +155,18 @@ function md_trigger( $type = 'menu', $args = array() ) {
 	$attrs = '';
 	$args = wp_parse_args( $args, array(
 		'trigger' => $type,
+		'icon' => $type,
 		'parent' => 'header',
 		'location' => '',
 		'title' => '',
-		'icon' => $type,
+		'classes' => '',
 		'hide_label' => null,
 		'hide_label_mobile' => null,
 		'builder' => null
 	) );
 
 	$trigger = $args['trigger'];
-	$parent = $args['parent'];
 	$title = $args['title'];
-	$icon = $args['icon'];
 	$location = $args['location'];
 	$hide_label = $args['hide_label'];
 	$hide_label_mobile = $args['hide_label_mobile'];
@@ -195,11 +194,14 @@ function md_trigger( $type = 'menu', $args = array() ) {
 	elseif ( $hide_label_mobile )
 		$classes[] = 'hide-label-mobile';
 
+	if ( ! empty( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
 	$classes = join( ' ', $classes );
 
 	$attrs .= ' class="' . esc_attr( $classes ) . '"';
 	$attrs .= ' data-md-trigger="' . esc_attr( $trigger ) . '"';
-	$attrs .= ' data-md-parent="' . esc_attr( $parent ) . '"';
+	$attrs .= ' data-md-parent="' . esc_attr( $args['parent'] ) . '"';
 
 	if ( $location )
 		$attrs .= ' data-md-location="' . esc_attr( $location ) . '"';
@@ -208,7 +210,7 @@ function md_trigger( $type = 'menu', $args = array() ) {
 		$attrs .= ' title="' . esc_attr( $title ) . '"';
 
 	echo "<span$attrs>".
-		 md_icon( $icon, array( 'classes' => 'trigger-icon' ) ).
+		 md_icon( $args['icon'], array( 'classes' => 'trigger-icon' ) ).
 		 ( $title ? '<span class="trigger-text">' . wp_kses_data( $title ) . '</span>' : '' ).
 		'</span>';
 }

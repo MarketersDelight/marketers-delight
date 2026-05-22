@@ -663,7 +663,7 @@ cite, .tiny {
 	.compact .content-wrap {
 		display: grid;
 		gap: 48px;
-		grid-template-columns: 768px minmax(0, 384px);
+		grid-template-columns: 64% 32%;
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact.left .content-wrap { direction: rtl; }

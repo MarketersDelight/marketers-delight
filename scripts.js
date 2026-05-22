@@ -93,6 +93,14 @@ clipboard: function() {
 		}
 	}
 },
+closeOverlay: function( name, parent ) {
+	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
+		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
+		var triggers = document.getElementsByClassName( 'trigger-' + name );
+		for ( var i = 0; i < triggers.length; i++ )
+			MD.removeClass( triggers[i], 'toggled' );
+	};
+},
 toggle: function() {
 	var toggles = document.getElementsByClassName( 'toggle' );
 	for ( var i = 0; i < toggles.length; i++ ) {
@@ -118,24 +126,24 @@ triggers: function() {
 	var triggers = document.getElementsByClassName( 'trigger' );
 	for ( var i = 0; i < triggers.length; i++ ) {
 		triggers[i].onclick = function( e ) {
-			for ( var t = 0; t < triggers.length; t++ )
-				triggers[t].classList.remove( 'active' );
-			if ( ! this.classList.contains( 'active' ) )
-				this.classList.add( 'active' );
 			var type = this.getAttribute( 'data-md-trigger' ),
 				location = this.getAttribute( 'data-md-location' ),
 				parent = this.getAttribute( 'data-md-parent' ),
 				container = document.querySelector( '.' + parent ),
 				toggleClass = 'toggle-' + type,
 				fromClass = 'from-' + location,
-				isActive = container.classList.contains( toggleClass ) && container.classList.contains( fromClass ),
+				isMobile = window.matchMedia( '(max-width: 1296px)' ).matches,
+				isActive = container.classList.contains( toggleClass ) && ( ! isMobile || container.classList.contains( fromClass ) ),
 				classes = Array.from( container.classList );
+			for ( var t = 0; t < triggers.length; t++ )
+				triggers[t].classList.remove( 'toggled' );
 			for ( var c = 0; c < classes.length; c++ )
 				if ( classes[c].startsWith( 'toggle' ) || classes[c].startsWith( 'from-' ) )
 					container.classList.remove( classes[c] );
 			if ( ! isActive ) {
-				MD.toggleClass( container, toggleClass );
-				MD.toggleClass( container, fromClass );
+				this.classList.add( 'toggled' );
+				container.classList.add( toggleClass );
+				container.classList.add( fromClass );
 			}
 			if ( type === 'search' )
 				container.querySelector( '.input' ).focus();

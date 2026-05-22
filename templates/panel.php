@@ -1,7 +1,4 @@
+<div class="panel-overlay"></div>
 <aside class="panel">
-
-    <div class="wrap">
-        <?php dynamic_sidebar( 'panel-main' ); ?>
-    </div>
-
+    <?php dynamic_sidebar( 'panel-main' ); ?>
 </aside>

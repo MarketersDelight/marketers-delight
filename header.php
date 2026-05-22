@@ -19,10 +19,11 @@ if ( md_has_header() ) :
 
 			if ( md_has_panel() )
 				md_trigger( 'panel', array(
-					'parent'  => 'main',
+					'parent'  => 'has-panel',
 					'location' => 'header',
 					'icon' => 'sidebar',
 					'hide_label' => true,
+//					'classes' => 'toggled',
 					'title'   => __( 'Toggle Panel', 'md' )
 				) );
 			elseif ( md_has_menu() && $mobile == 'expanded' )
@@ -36,7 +37,10 @@ if ( md_has_header() ) :
 				echo '<div class="header-triggers">';
 
 				if ( ! empty( $header['elements']['search'] ) )
-					md_trigger( 'search', array( 'title' => __( 'Search', 'md' ), 'builder' => $header ) );
+					md_trigger( 'search', array(
+						'title' => __( 'Search', 'md' ),
+						'builder' => $header
+					) );
 
 				if ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() )
 					md_trigger( 'menu', array( 'builder' => $header ) );
@@ -81,9 +85,9 @@ if ( md_has_header() ) :
 		} ?>
 
 		<?php if ( empty( $header['data'] ) )
-			md_menu( array( 'wrap' => 'header-primary' ) ); ?>
+			md_menu( array( 'wrap' => 'header-primary' ) );
 
-		<?php md_hook_after_header(); ?>
+		md_hook_after_header(); ?>
 
 	</div>
 

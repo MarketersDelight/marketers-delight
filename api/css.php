@@ -346,9 +346,6 @@ class md_css {
 		$breakout = ( $gutter_width / $post_width ) * 100;
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
 
-		$admin_bar_height = 32;
-		$admin_bar_height_mobile = 46;
-
 		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
 		$style_guide = $this->style_guide();
 

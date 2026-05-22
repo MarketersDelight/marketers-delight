@@ -58,9 +58,6 @@ function md_content_box_classes() {
 	}
 	else $classes[] = 'expanded';
 
-	if ( md_has_panel() )
-		$classes[] = 'panel-inline';
-
 	$classes[] = 'format';
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
