@@ -332,34 +332,25 @@ function md_get_layout_term( $layout = 'sidebar', $post_id = null ) {
 
 function md_has_layout( $layout = 'sidebar', $args = array() ) {
 	$show = false;
-	$post_id = isset( $args['post_id'] ) ? $args['post_id'] : get_queried_object_id();
-	$post_type = isset( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
-	$page = md_layout_context( $args );
+	$post_id = $args['post_id'] ?? get_queried_object_id();
+	$post_type = $args['post_type'] ?? md_get_post_type();
+	$page = md_layout_context( $args ) ?: 'single';
 
-	// If not template-hierarchy detected, suchas admin, set to single page view.
-	if ( empty( $page ) )
-		$page = 'single';
-
-	$display_key = sprintf( "{$layout}_%s_show", $page );
-	$display = md_post_type_field( array( 'layout', $display_key ), array(), $post_type );
 	$global = md_post_type_field( array( 'layout', $layout, 'global' ), null, $post_type );
+	$page_type = md_post_type_field( array( 'layout', sprintf( "{$layout}_%s_show", $page ) ), array(), $post_type );
 	$single = md_meta( array( 'layout', $layout ), $post_id, array() );
-	$display_disabled = ! empty( $display['disable'] );
-	$display_enabled = ! empty( $display['enable'] );
-	$single_add = ! empty( $single['add'] );
-	$single_remove = ! empty( $single['remove'] );
 
 	if ( isset( $args['exclude_single'] ) ) {
 		// Used in admin screens: ignore single overrides and only use global + page-type enable/disable rules
-		if ( ( $global && ! $display_disabled ) || ( ! $global && $display_enabled ) )
+		if ( ( $global && empty( $page_type['disable'] ) ) || ( ! $global && ! empty( $page_type['enable'] ) ) )
 			$show = true;
 	}
 	elseif ( $global ) {
-		// Enabled via global setting, so check for term-level or single override
-		if ( ! $display_disabled && ! $single_add && ! $single_remove )
+		// Enabled via global setting, so check for page type-level or single override
+		if ( empty( $page_type['disable'] ) && empty( $single['add'] ) && empty( $single['remove'] ) )
 			$show = true;
 	}
-	elseif ( ( $display_enabled && ! $single_remove ) || $single_add ) {
+	elseif ( ( ! empty( $page_type['enable'] ) && empty( $single['remove'] ) ) || ! empty( $single['add'] ) ) {
 		// No global layout, so single page rules can enable
 		$show = true;
 	}

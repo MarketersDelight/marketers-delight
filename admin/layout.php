@@ -8,14 +8,23 @@
 
 class md_layout extends md_api {
 
+	public $name;
+	private $page_types;
+
 	/**
-	 * Create meta box and terms.
+	 * Register admin page, meta box, and term interfaces
+	 * with accepted fields.
 	 *
 	 * @since 5.0
 	 */
 
 	public function register() {
 		$this->name = __( 'Layout', 'md' );
+		$this->page_types = array(
+			'archive' => __( 'Archive', 'md' ),
+			'term' => __( 'Categories', 'md' ),
+			'single' => __( 'Single', 'md' )
+		);
 
 		return array(
 			'admin_page' => array(
@@ -37,7 +46,7 @@ class md_layout extends md_api {
 	}
 
 	/**
-	 * Register Layout settings for save.
+	 * All known custom fields across the Layout interfaces.
 	 *
 	 * @since 4.7
 	 * @moved 6.0
@@ -46,12 +55,8 @@ class md_layout extends md_api {
 	public function fields() {
 		$menus = array();
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
-
 		foreach ( $nav_menus as $menu )
 			$menus[] = esc_attr( $menu->slug );
-
-		$custom_sidebars = md_get_sidebars( true );
-		$custom_panels = md_get_panels( true );
 
 		$fields = array(
 			'header' => array(
@@ -78,63 +83,54 @@ class md_layout extends md_api {
 				'type' => 'checkbox',
 				'options' => array( 'add', 'remove' )
 			),
-			'sidebar' => array(
-				'type' => 'checkbox',
-				'options' => array( 'add', 'remove', 'global', 'alt' )
-			),
-			'custom_sidebar' => array(
-				'type' => 'select',
-				'options' => $custom_sidebars
-			),
-			'entries_sidebar' => array(
-				'type' => 'select',
-				'options' => $custom_sidebars
-			),
-			'panel' => array(
-				'type' => 'checkbox',
-				'options' => array( 'add', 'remove', 'global', 'alt' )
-			),
-			'custom_panel' => array(
-				'type' => 'select',
-				'options' => $custom_panels
-			),
-			'entries_panel' => array(
-				'type' => 'select',
-				'options' => $custom_panels
-			),
 			'footer' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'columns' )
 			)
 		);
 
-		foreach ( array( 'archive', 'term', 'single' ) as $type ) {
-			$fields["sidebar_$type"] = array(
-				'type' => 'select',
-				'options' => $custom_sidebars
-			);
-			$fields["sidebar_{$type}_show"] = array(
-				'type' => 'checkbox',
-				'options' => array( 'enable', 'disable' )
-			);
-		}
+		$toggle_fields = array(
+			'sidebar' => array(
+				'options' => array( 'add', 'remove', 'global', 'alt' ),
+				'areas' => md_get_panels( true )
+			),
+			'panel' => array(
+				'options' => array( 'add', 'remove', 'global', 'alt', 'close' ),
+				'areas' => md_get_panels( true )
+			)
+		);
 
-		foreach ( array( 'archive', 'term', 'single' ) as $type ) {
-			$fields["panel_$type"] = array(
-				'type' => 'select',
-				'options' => $custom_panels
-			);
-			$fields["panel_{$type}_show"] = array(
+		foreach ( $toggle_fields as $id => $data ) {
+			$fields[$id] = array(
 				'type' => 'checkbox',
-				'options' => array( 'enable', 'disable' )
+				'options' => $data['options']
 			);
+			$fields["custom_$id"] = array(
+				'type' => 'select',
+				'options' => $data['areas']
+			);
+			$fields["entries_$id"] = array(
+				'type' => 'select',
+				'options' => $data['areas']
+			);
+
+			foreach ( array( 'archive', 'term', 'single' ) as $type ) {
+				$fields["{$id}_$type"] = array(
+					'type' => 'select',
+					'options' => $data['areas']
+				);
+				$fields["{$id}_{$type}_show"] = array(
+					'type' => 'checkbox',
+					'options' => array( 'enable', 'disable' )
+				);
+			}
 		}
 
 		return $fields;
 	}
 
 	/**
-	 * Meta box template and scripts callback.
+	 * Post screen meta box template callback.
 	 *
 	 * @since 5.0
 	 */
@@ -159,7 +155,7 @@ class md_layout extends md_api {
 	<?php }
 
 	/**
-	 * Build single admin fields with slight tweaks across screens.
+	 * The actual admin template rendered to each screen type.
 	 *
 	 * @since 4.7
 	 */
@@ -177,17 +173,13 @@ class md_layout extends md_api {
 		elseif ( $is_term )
 			$screen_id = isset( $_GET['tag_ID'] ) ? sanitize_key( $_GET['tag_ID'] ) : '';
 
-		$page_types = array(
-			'archive' => __( 'Archive', 'md' ),
-			'term' => __( 'Categories', 'md' ),
-			'single' => __( 'Single', 'md' )
-		);
-
 		$header = $this->fields->module( 'header' );
 		$content = $this->fields->module( 'content' );
 		$footer = $this->fields->module( 'footer' );
-		$sidebar = $this->get_layout( 'sidebar', $post_type, $screen_id, $is_post, $is_admin );
-		$panel = $this->get_layout( 'panel', $post_type, $screen_id, $is_post, $is_admin );
+
+		$sidebar = $this->get_layout_state( 'sidebar', $post_type, $screen_id, $is_post, $is_admin );
+		$panel = $this->get_layout_state( 'panel', $post_type, $screen_id, $is_post, $is_admin );
+		$toggles = $this->layout_toggles();
 
 		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
 
@@ -214,28 +206,75 @@ class md_layout extends md_api {
 	}
 
 	/**
-	 * Get data for the layout elements current global/local display state.
+	 * Layout Toggles are used for Sidebar and Panel, and open to other
+	 * elements. The purpose is to provide a simple way to reuse
+	 * interface options and visibility logic to show layout elements
+	 * across page types.
 	 *
 	 * @since 6.0
 	 */
 
-	private function get_layout( $id, $post_type, $screen_id, $is_post, $is_admin ) {
+	private function layout_toggles() {
+		return apply_filters( 'md_filter_layout_toggles', array(
+			'sidebar' => array(
+				'title' => __( 'Sidebar', 'md' ),
+				'settings' => array(
+					'alt' => array(
+						'default' => true,
+						'labels' => array(
+							true => __( 'Show on right', 'md' ),
+							false => __( 'Show on left', 'md' )
+						)
+					)
+				)
+			),
+			'panel' => array(
+				'title' => __( 'Panel', 'md' ),
+				'settings' => array(
+					'alt' => array(
+						'default' => true,
+						'labels' => array(
+							true => __( 'Show on right', 'md' ),
+							false => __( 'Show on left', 'md' )
+						)
+					),
+					'close' => array(
+						'default' => false,
+						'labels' => array(
+							true => __( 'Open by default', 'md' ),
+							false => __( 'Closed by default', 'md' )
+						)
+					)
+				)
+			)
+		) );
+	}
+
+	/**
+	 * Determines the display status of the layout across global and single views.
+	 * Delivers data relevant to making those decisions in the UI.
+	 *
+	 * @since 6.0
+	 */
+
+	private function get_layout_state( $id, $post_type, $screen_id, $is_post, $is_admin ) {
 		$layout = array(
+			'global' => false,
+			'display' => 'none',
+			'classes' => array( 'md-layouts', 'md-sep-small' ),
 			'areas' => md_layout_areas( $id ),
 			'has' => md_has_layout( $id, array(
 				'page' => ( $is_post ? 'single' : 'term' ),
 				'post_type' => $post_type,
 				'post_id' => $screen_id,
 				'exclude_single' => true
-			) ),
-			'display' => 'none',
-			'single_add' => $this->fields->module( array( $id, 'add' ) ),
-			'single_remove' => $this->fields->module( array( $id, 'remove' ) ),
-			'classes' => array( 'md-layouts', 'md-sep-small' ),
-			'global' => false
+			) )
 		);
 
-		if ( ( $layout['has'] || $layout['single_add'] ) && ! $layout['single_remove'] )
+		$single_add = $this->fields->module( array( $id, 'add' ) );
+		$single_remove = $this->fields->module( array( $id, 'remove' ) );
+
+		if ( ( $layout['has'] || $single_add ) && ! $single_remove )
 			$layout['display'] = 'block';
 
 		if ( $is_admin ) {
@@ -248,6 +287,42 @@ class md_layout extends md_api {
 		$layout['classes'] = join( ' ', $layout['classes'] );
 
 		return $layout;
+	}
+
+	/**
+	 * Determine reversible setting labels for single toggles based on global settings.
+	 *
+	 * @since 6.0
+	 */
+
+	private function layout_labels( $id, $settings, $post_type, $is_admin ) {
+		$options = array();
+
+		foreach ( $settings as $setting => $data ) {
+			$default = md_setting( array( 'layout', $id, $setting ), $data['default'] );
+
+			if ( $is_admin )
+				$current = ! empty( $default );
+			else
+				$current = md_post_type_field( array( 'layout', $id, $setting ), $default, $post_type );
+
+			$options[$setting] = $data['labels'][$current ? true : false];
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Render shared layout fields for sidebar and panel blocks.
+	 *
+	 * @since 6.0
+	 */
+
+	public function toggle_fields( $id, $layout, $post_type, $is_admin, $is_term ) {
+		$toggles = $this->layout_toggles();
+		$title = $toggles[$id]['title'];
+
+		include md_template( 'admin/fields/layout-toggle', true );
 	}
 
 	/**
@@ -272,76 +347,74 @@ class md_layout extends md_api {
 	?>
 
 	<script>
-		( function() {
+	( function() {
 
-			function toggleDisplay( id, show ) {
-				var element = document.getElementById( id );
+		function toggleDisplay( id, show ) {
+			var element = document.getElementById( id );
 
-				if ( element )
-					element.style.display = show ? 'block' : 'none';
-			}
+			if ( element )
+				element.style.display = show ? 'block' : 'none';
+		}
 
-			function toggleClass( id, className, state ) {
-				var element = document.getElementById( id );
+		function toggleClass( id, className, state ) {
+			var element = document.getElementById( id );
 
-				if ( element )
-					element.classList.toggle( className, state );
-			}
+			if ( element )
+				element.classList.toggle( className, state );
+		}
 
-			function bindToggle( id, handler ) {
-				var element = document.getElementById( id );
+		function bindToggle( id, handler ) {
+			var element = document.getElementById( id );
 
-				if ( element )
-					element.onchange = function() {
-						handler( this.checked, this );
-					};
-			}
+			if ( element )
+				element.onchange = function() { handler( this.checked, this ); };
+		}
 
-			bindToggle( '<?php echo $prefix; ?>_header_remove', function( checked ) {
-				toggleDisplay( 'header_options', ! checked );
+		bindToggle( '<?php echo $prefix; ?>_header_remove', function( checked ) {
+			toggleDisplay( 'header_options', ! checked );
+		} );
+
+		<?php if ( md_has_menu() ) : ?>
+		bindToggle( '<?php echo $prefix; ?>_header_menu', function( checked ) {
+			toggleDisplay( 'header_menu_options', ! checked );
+		} );
+		<?php endif; ?>
+
+		bindToggle( '<?php echo $prefix; ?>_content_remove', function( checked ) {
+			toggleClass( 'md_layout', 'remove-content-box', checked );
+			toggleDisplay( 'content_options', ! checked );
+			toggleDisplay( 'layout_fields_tabs', ! checked );
+		} );
+
+		<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
+		bindToggle( '<?php echo $prefix; ?>_content_headline', function( checked ) {
+			toggleDisplay( 'headline_options', ! checked );
+		} );
+		<?php endif; ?>
+
+		<?php foreach ( $layouts as $layout => $fields ) :
+			if ( empty( $fields['areas'] ) )
+				continue;
+
+			if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
+
+			bindToggle( '<?php echo "{$prefix}_{$layout}_" . ( $fields['has'] ? 'remove' : 'add' ); ?>', function( checked ) {
+				toggleDisplay( '<?php echo "{$layout}_options"; ?>', <?php echo $fields['has'] ? '! checked' : 'checked'; ?> );
 			} );
-
-			<?php if ( md_has_menu() ) : ?>
-			bindToggle( '<?php echo $prefix; ?>_header_menu', function( checked ) {
-				toggleDisplay( 'header_menu_options', ! checked );
-			} );
-			<?php endif; ?>
-
-			bindToggle( '<?php echo $prefix; ?>_content_remove', function( checked ) {
-				toggleClass( 'md_layout', 'remove-content-box', checked );
-				toggleDisplay( 'content_options', ! checked );
-				toggleDisplay( 'layout_fields_tabs', ! checked );
-			} );
-
-			<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
-			bindToggle( '<?php echo $prefix; ?>_content_headline', function( checked ) {
-				toggleDisplay( 'headline_options', ! checked );
-			} );
-			<?php endif; ?>
-
-			<?php foreach ( $layouts as $layout => $fields ) :
-				if ( empty( $fields['areas'] ) )
-					continue;
-
-				if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
-
-				bindToggle( '<?php echo "{$prefix}_{$layout}_" . ( $fields['has'] ? 'remove' : 'add' ); ?>', function( checked ) {
-					toggleDisplay( '<?php echo "{$layout}_options"; ?>', <?php echo $fields['has'] ? '! checked' : 'checked'; ?> );
-				} );
 
 			<?php else : ?>
 
-				bindToggle( '<?php echo "{$prefix}_{$layout}_global"; ?>', function( checked ) {
-					toggleClass( '<?php echo "{$layout}_fields"; ?>', 'is-global', checked );
-				} );
-
-			<?php endif; endforeach; ?>
-
-			bindToggle( '<?php echo $prefix; ?>_footer_remove', function( checked ) {
-				toggleDisplay( 'footer_options', ! checked );
+			bindToggle( '<?php echo "{$prefix}_{$layout}_global"; ?>', function( checked ) {
+				toggleClass( '<?php echo "{$layout}_fields"; ?>', 'is-global', checked );
 			} );
 
-		} )();
+		<?php endif; endforeach; ?>
+
+		bindToggle( '<?php echo $prefix; ?>_footer_remove', function( checked ) {
+			toggleDisplay( 'footer_options', ! checked );
+		} );
+
+	} )();
 	</script>
 
 	<?php }
