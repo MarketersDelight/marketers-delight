@@ -84,6 +84,7 @@ class md_css {
 			'page' => locate_template( 'css/page.php' ),
 			'comments' => locate_template( 'css/comments.php' ),
 			'widgets' => locate_template( 'css/widgets.php' ),
+			'panel' => locate_template( 'css/panel.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		);
 		$dropins = apply_filters( 'md_dropins_css_templates', array() );

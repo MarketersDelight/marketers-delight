@@ -152,6 +152,47 @@ function md_loop_classes( $loop = array() ) {
 }
 
 /**
+ * Calculate classes to apply to post box.
+ * Returns a string ($classes) to be used in post_class( $classes ) in template.
+ *
+ * @since 6.0
+ */
+
+function md_post_class( $loop = array(), $c = 1 ) {
+	$classes = array( 'entry' );
+	$cover = md_cover();
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
+
+	if ( ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) )
+		$classes[] = 'featured';
+	else
+		$classes[] = 'standard';
+
+	if ( ! is_singular() )
+		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
+
+	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ) ) ) {
+		$position = $loop['featured_image'];
+		$classes[] = 'image-' . str_replace( '_headline', '', $position );
+
+		if ( in_array( $position, array( 'left', 'right', 'center' ) ) )
+			$classes[] = 'image-inline';
+		elseif ( in_array( $position, array( 'above_headline', 'below_headline' ) ) )
+			$classes[] = 'image-full';
+		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ) ) )
+			$classes[] = 'image-title';
+	}
+
+	if ( isset( $cover['position'] ) )
+		$classes[] = 'has-cover';
+
+//	if ( empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
+//		$classes[] = 'inner';
+
+	return join( ' ', $classes );
+}
+
+/**
  * Build per-item loop settings from page-level defaults.
  *
  * @since 6.0

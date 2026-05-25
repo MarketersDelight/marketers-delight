@@ -81,7 +81,34 @@
 						'label' => __( 'Manage Sidebars', 'md' ),
 						'type' => 'group',
 						'description' => sprintf( __( 'Create new sidebar areas to use in the <a href="%s">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens.', 'md' ), admin_url( 'widgets.php' ) ),
-						'callback' => array( $this, 'sidebars' )
+						'callback' => function( $group, $field ) {
+							$this->fields->field( array( $group, $field, 'name' ), array(
+								'type' => 'text',
+								'placeholder' => __( 'Enter sidebar name...', 'md' ),
+								'classes' => 'md-focus'
+							) );
+						}
+					) ); ?>
+				</div>
+
+			</div>
+
+			<div class="md-widget md-toggle md-sep-small">
+
+				<h3 class="md-widget-title"><?php echo __( 'Panels', 'md' ); ?></h3>
+
+				<div class="md-widget-item">
+					<?php $this->fields->field( 'panels', array(
+						'label' => __( 'Manage Panels', 'md' ),
+						'type' => 'group',
+						'description' => sprintf( __( 'Create new Panel areas to use in the <a href="%s">Widgets</a> screen. You can assign custom panels to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens.', 'md' ), admin_url( 'widgets.php' ) ),
+						'callback' => function( $group, $field ) {
+							$this->fields->field( array( $group, $field, 'name' ), array(
+								'type' => 'text',
+								'placeholder' => __( 'Enter panel name...', 'md' ),
+								'classes' => 'md-focus'
+							) );
+						}
 					) ); ?>
 				</div>
 

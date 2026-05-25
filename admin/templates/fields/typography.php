@@ -24,8 +24,8 @@ $font_types = array(
 
 if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 	$font_types['typekit'] = array(
-		'name' => __( 'TypeKit', 'md' ),
-		'image' => MD_URL . 'admin/images/typekit-small.png'
+		'name' => __( 'Adobe Fonts', 'md' ),
+		'image' => MD_URL . 'admin/images/adobe-fonts.gif'
 	);
 ?>
 

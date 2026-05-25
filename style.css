@@ -22,16 +22,17 @@
 		12. Page
 		13. Comments
 		14. Widgets
-		15. Helpers
-		16. Cta
-		17. Floating_bars
-		18. Popups
-		19. Share
-		20. Changelog
-		21. Download
-		22. Footnotes
-		23. Glossary
-		24. Stream
+		15. Panel
+		16. Helpers
+		17. Cta
+		18. Floating_bars
+		19. Popups
+		20. Share
+		21. Changelog
+		22. Download
+		23. Footnotes
+		24. Glossary
+		25. Stream
 */
 /* TYPOGRAPHY */
 @font-face {
@@ -1574,100 +1575,15 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 .sidebar a, .panel a { color: #444444; }
 :is(.sidebar, .panel) :is(.widget-title, .wp-block-heading) { color: #1E1E1E; }
 :is(.sidebar, .panel) :is(.widget-title a, .wp-block-heading a) { color: #1E1E1E; }
-/* PANELS */
-.header .trigger-panel {
-	border-radius: 6px;
-	display: revert;
-	line-height: 1;
-	padding: 11px;
-	transition: 0.3s;
-}
-.trigger-panel:hover { background-color: rgba(0, 0, 0, 0.08); }
-.panel {
-	background-color: #FAF6EC;
-	border-inline-end: 1px solid #E6E0CF;
-	padding-block: 16px;
-	position: relative;
-}
-.panel .widget { padding: 16px; }
-.panel .widget:first-child { padding-block-start: 0; }
-@media (max-width: 1296px) {
-	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
-	.panel {
-		height: 100%;
-		overflow-y: auto;
-		position: fixed;
-			left: -320px;
-			top: 0;
-		transition: 0.3s;
-		width: 320px;
-		z-index: 100;
-	}
-	.panel-overlay {
-		background-color: rgba(0, 0, 0, 0.5);
-		height: 0;
-		inset: 0;
-		opacity: 0;
-		position: fixed;
-		transition: opacity 0.3s ease-in-out;
-		visibility: hidden;
-		z-index: 99;
-	}
-	.toggle-panel[class*="from-"] { overflow: hidden; }
-	.toggle-panel[class*="from-"] .panel { left: 0; }
-	.toggle-panel[class*="from-"] .panel-overlay {
-		height: 100%;
-		opacity: 1;
-		visibility: visible;
-	}
-	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
-}
-@media (min-width: 900px) and (max-width: 1472px) {
-	.toggle-panel .inner { padding-inline: 16px; }
-}
-@media (min-width: 1296px) {
-	.toggle-panel .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
-	.toggle-panel .inner { max-width: 1536px; }
-	.toggle-panel .content-wrap {
-		justify-content: center;
-		gap: 32px;
-		max-width: 1536px;
-	}
-	.toggle-panel .compact .content-wrap { grid-template-columns: minmax(0, 320px) 768px minmax(0, 384px); }
-	.toggle-panel .expanded {
-		display: grid;
-		gap: 32px;
-		grid-template-columns: 320px minmax(0, 1200px);
-		justify-content: center;
-	}
-	.panel {
-		display: none;
-		margin-block: -32px;
-		order: -1;
-		padding-block: 32px;
-	}
-	.panel:after {
-		background-color: inherit;
-		content: '';
-		position: absolute;
-			bottom: 0;
-			left: -100vw;
-			top: 0;
-			right: 0;
-		width: 100vw;
-	}
-	.toggle-panel .panel { display: block; }
-	.panel-overlay { display: none; }
-}
 /* FOOTER */
 .footer {
 		background-color: #101010;
-		color: #DDDDDD;
+		color: #1E1E1E;
 	font-size: 17px;
 	line-height: 27px;
 }
-.footer a { color: #CCCCCC; }
-.footer :is(.widget-title, .wp-block-heading) { color: #FFFFFF; }
+.footer a { color: #777777; }
+.footer :is(.widget-title, .wp-block-heading) { color: #1E1E1E; }
 .footer :is(.widget-title a, .wp-block-heading a) { color: #1E1E1E; }
 .footer .columns { padding-block: 48px; }
 .footer .list li:not(:last-child) { border-block-end-color: #CCCCCC; }
@@ -1741,6 +1657,99 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 @media (max-width: 900px) {
 }
 @media (max-width: 600px) {
+}
+/*------------------------------*\
+	$PANEL
+\*------------------------------*/
+.panel {
+	background-color: #FAF6EC;
+	border-inline-end: 1px solid #E6E0CF;
+	padding-block: 16px;
+	position: relative;
+}
+.panel .widget { padding: 16px; }
+.panel .widget:first-child { padding-block-start: 0; }
+/* TRIGGERS */
+.header .trigger-panel {
+	border-radius: 6px;
+	display: revert;
+	line-height: 1;
+	margin-inline: -8px;
+	padding: 11px;
+	transition: 0.3s;
+}
+.trigger-panel:hover { background-color: rgba(0, 0, 0, 0.08); }
+/* QUERIES */
+@media (max-width: 1296px) {
+	.panel {
+		height: 100%;
+		overflow-y: auto;
+		position: fixed;
+			left: -320px;
+			top: 0;
+		transition: 0.3s;
+		width: 320px;
+		z-index: 100;
+	}
+	.panel-overlay {
+		background-color: rgba(0, 0, 0, 0.5);
+		height: 0;
+		inset: 0;
+		opacity: 0;
+		position: fixed;
+		transition: opacity 0.3s ease-in-out;
+		visibility: hidden;
+		z-index: 99;
+	}
+	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.toggle-panel[class*="from-"] { overflow: hidden; }
+	.toggle-panel[class*="from-"] .panel { left: 0; }
+	.toggle-panel[class*="from-"] .panel-overlay {
+		height: 100%;
+		opacity: 1;
+		visibility: visible;
+	}
+	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
+}
+@media (min-width: 900px) and (max-width: 1472px) {
+	.toggle-panel .inner { padding-inline: 16px; }
+}
+@media (min-width: 1296px) {
+	.toggle-panel .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.toggle-panel .inner { max-width: 1536px; }
+	.toggle-panel .content-wrap {
+		justify-content: center;
+		gap: 32px;
+		max-width: 1536px;
+	}
+	.toggle-panel .compact .content-wrap { grid-template-columns: minmax(0, 320px) 768px minmax(0, 384px); }
+	.toggle-panel .expanded {
+		display: grid;
+		gap: 32px;
+		grid-template-columns: 320px minmax(0, 1200px);
+		justify-content: center;
+	}
+	.panel {
+		display: none;
+		order: -1;
+		padding-block: 32px;
+	}
+	.format .panel {
+		margin-block: -32px;
+		margin-inline-start: -16px;
+	}
+	.panel:after {
+		background-color: inherit;
+		content: '';
+		position: absolute;
+			bottom: 0;
+			left: -100vw;
+			top: 0;
+			right: 0;
+		width: 100vw;
+	}
+	.toggle-panel .panel { display: block; }
+	.panel-overlay { display: none; }
 }
 /*------------------------------*\
 	$HELPERS

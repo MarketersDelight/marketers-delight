@@ -23,7 +23,7 @@ if ( md_has_header() ) :
 					'location' => 'header',
 					'icon' => 'sidebar',
 					'hide_label' => true,
-//					'classes' => 'toggled',
+					'classes' => 'toggled',
 					'title'   => __( 'Toggle Panel', 'md' )
 				) );
 			elseif ( md_has_menu() && $mobile == 'expanded' )

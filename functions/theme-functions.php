@@ -7,10 +7,7 @@
  */
 
 function md_has( $dropin ) {
-	$enabled = md_get_dropins( 'active' );
-
-	if ( in_array( $dropin, $enabled ) )
-		return true;
+	return in_array( $dropin, md_get_dropins( 'active' ) );
 }
 
 /**
@@ -19,8 +16,9 @@ function md_has( $dropin ) {
  *
  * As of MD5.2 parent templates can now be stored outside of the main
  * templates folder but still be overridden from the child theme templates folder.
- * This is to be used for Core Drop-in functions, but will probably be changed
- * as of the creation of md_dropin_template() in MD5.3.
+ *
+ * For example, to change the path to /wp-content/md-dropins/ for calling Drop-in
+ * templates, use the following: md_template( 'dropins', 'admin/meta-box' );
  *
  * As of MD6.0, this function no longer looks for the deprecated /content/ folder.
  *

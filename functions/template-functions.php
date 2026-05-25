@@ -199,24 +199,16 @@ function md_web_fonts( $show_type = null ) {
 
 			if ( empty( $family ) ) {
 				// Make hx inherit h1
-				if ( in_array( $area, $headings ) && ! empty( $h1_f ) ) {
+				if ( in_array( $area, $headings ) && ! empty( $h1_f ) )
 					$fonts[$h1_t][$h1_f][] = $weight;
-//					if ( $font_s )
-//						$fonts[$h1_t][$h1_f][] = $font_s;
-				}
 				// Make font inherit body values
-				elseif ( ! empty( $body_f ) ) {
+				elseif ( ! empty( $body_f ) )
 					$fonts[$body_t][$body_f][] = $weight;
-//					if ( $font_s )
-//						$fonts[$body_t][$body_f][] = $font_s;
-				}
 			}
 			else {
 				// Directly assign setting to value
 				$fonts[$type][$family][] = $weight;
 				$fonts[$type][$family] = array_unique( $fonts[$type][$family] );
-//				if ( $font_s )
-//					$fonts[$type][$family][] = $font_s;
 			}
 		}
 		elseif ( ! empty( $family ) )

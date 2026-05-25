@@ -184,13 +184,18 @@
 
 	</div>
 
-	<!-- Sidebar -->
+	<!-- Sidebar / Panels -->
 
 	<div class="col col3">
 
-		<div id="sidebar_fields" class="<?php echo esc_attr( $sidebar_classes ); ?>" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
+		<div id="layout_fields_tabs" class="md-tabs" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php $this->fields->label( 'sidebar', array( 'label' => __( 'Sidebar', 'md' ) ) ); ?>
+		<div class="nav-tab-wrapper">
+			<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-layout-sidebar"><?php echo __( 'Sidebar', 'md' ); ?></a>
+			<a href="#" class="md-tab nav-tab" data-md-tab="md-layout-panel"><?php echo __( 'Panel', 'md' ); ?></a>
+		</div>
+
+		<div id="sidebar_fields" class="md-layout-sidebar md-tab-content active <?php echo esc_attr( $sidebar['classes'] ); ?>">
 
 			<?php if ( $is_admin ) : ?>
 
@@ -211,8 +216,8 @@
 				) ); ?>
 
 				<?php foreach ( $page_types as $type => $label ) : ?>
-				<div class="columns-2 md-sep-micro">
-					<div class="col">
+				<div class="md-flex-columns md-sep-micro">
+					<div class="md-flex-column">
 						<?php $this->fields->field( "sidebar_{$type}_show", array(
 							'type' => 'checkbox',
 							'inline' => true,
@@ -222,41 +227,36 @@
 							)
 						) ); ?>
 					</div>
-					<div class="col md-full-select">
+					<div class="md-flex-column md-full-select">
 						<?php $this->fields->field( "sidebar_$type", array(
 							'type' => 'select',
 							'empty_label' => __( 'Use Main sidebar', 'md' ),
-							'options' => $sidebars
+							'options' => $sidebar['areas']
 						) ); ?>
 					</div>
 				</div>
 				<?php endforeach; ?>
 
-			<?php else : ?>
-
-				<?php if ( $has_sidebar ) : ?>
-
-					<?php $this->fields->field( 'sidebar', array(
+			<?php else :
+				if ( $sidebar['has'] )
+					$this->fields->field( 'sidebar', array(
 						'type' => 'checkbox',
 						'options' => array(
-							'remove' => __( 'Remove <b>Sidebar</b>', 'md' ),
+							'remove' => __( 'Remove <b>Sidebar</b>', 'md' )
 						)
-					) ); ?>
-
-				<?php else : ?>
-
-					<?php $this->fields->field( 'sidebar', array(
+					) );
+				else
+					$this->fields->field( 'sidebar', array(
 						'type' => 'checkbox',
 						'options' => array(
 							'add' => __( 'Add <b>Main Sidebar</b>', 'md' )
 						)
-					) ); ?>
+					) );
+				?>
 
-				<?php endif; ?>
+				<?php if ( ! empty( $sidebar['areas'] ) ) : ?>
 
-				<?php if ( ! empty( $sidebars ) ) : ?>
-
-				<div id="sidebar_options" style="display: <?php echo $sidebar_display; ?>;">
+				<div id="sidebar_options" style="display: <?php echo $sidebar['display']; ?>;">
 
 					<?php $this->fields->field( 'sidebar', array(
 						'type' => 'checkbox',
@@ -271,20 +271,19 @@
 							'type' => 'select',
 							'empty_label' => __( 'Use Main sidebar', 'md' ),
 							'wrap_classes' => 'md-sep-micro',
-							'options' => $sidebars
+							'options' => $sidebar['areas']
 						) ); ?>
 					</div>
 
-					<?php if ( $is_term ) : ?>
-						<?php $this->fields->field( 'entries_sidebar', array(
+					<?php if ( $is_term )
+						$this->fields->field( 'entries_sidebar', array(
 							'type' => 'select',
 							'empty_label' => __( 'Posts in this category...', 'md' ),
 							'wrap_classes' => 'md-sep-micro',
-							'options' => $sidebars
+							'options' => $sidebar['areas']
 						) ); ?>
-					<?php endif; ?>
 
-					<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings&tab=md_sidebars' ) ); ?></p>
+					<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Sidebars</a>', 'md' ), admin_url( 'admin.php?page=md_settings' ) ); ?></p>
 
 				</div>
 
@@ -293,6 +292,112 @@
 			<?php endif; ?>
 
 		</div>
+
+		<div id="panel_fields" class="md-layout-panel md-tab-content <?php echo esc_attr( $panel['classes'] ); ?>">
+
+			<?php if ( $is_admin ) : ?>
+
+				<?php $this->fields->field( 'panel', array(
+					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro md-right',
+					'options' => array(
+						'alt' => __( 'Flip direction', 'md' )
+					)
+				) ); ?>
+
+				<?php $this->fields->field( 'panel', array(
+					'type' => 'checkbox',
+					'wrap_classes' => 'md-sep-micro',
+					'options' => array(
+						'global' => __( 'Enable on all pages', 'md' )
+					)
+				) ); ?>
+
+				<?php foreach ( $page_types as $type => $label ) : ?>
+				<div class="md-flex-columns md-sep-micro">
+					<div class="md-flex-column">
+						<?php $this->fields->field( "panel_{$type}_show", array(
+							'type' => 'checkbox',
+							'inline' => true,
+							'options' => array(
+								'enable' => sprintf( __( 'Enable on <strong>%s</strong>', 'md' ), $label ),
+								'disable' => sprintf( __( 'Disable on <strong>%s</strong>', 'md' ), $label ),
+							)
+						) ); ?>
+					</div>
+					<div class="md-flex-column md-full-select">
+						<?php $this->fields->field( "panel_$type", array(
+							'type' => 'select',
+							'empty_label' => __( 'Use Main panel', 'md' ),
+							'options' => $panel['areas']
+						) ); ?>
+					</div>
+				</div>
+				<?php endforeach; ?>
+
+			<?php else :
+				if ( $panel['has'] )
+					$this->fields->field( 'panel', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'remove' => __( 'Remove <b>Panel</b>', 'md' )
+						)
+					) );
+				else
+					$this->fields->field( 'panel', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'add' => __( 'Add <b>Main Panel</b>', 'md' )
+						)
+					) );
+				?>
+
+				<?php if ( ! empty( $panel['areas'] ) ) : ?>
+
+				<div id="panel_options" style="display: <?php echo $panel['display']; ?>;">
+
+					<?php $this->fields->field( 'panel', array(
+						'type' => 'checkbox',
+						'wrap_classes' => 'md-sep-micro',
+						'options' => array(
+							'alt' => __( 'Flip direction', 'md' )
+						)
+					) ); ?>
+
+					<div id="<?php echo $this->_id; ?>_custom_panel_option">
+						<?php $this->fields->field( 'custom_panel', array(
+							'type' => 'select',
+							'empty_label' => __( 'Use Main Panel', 'md' ),
+							'wrap_classes' => 'md-sep-micro',
+							'options' => $panel['areas']
+						) ); ?>
+					</div>
+
+					<?php if ( $is_term )
+						$this->fields->field( 'entries_panel', array(
+							'type' => 'select',
+							'empty_label' => __( 'Posts in this category...', 'md' ),
+							'wrap_classes' => 'md-sep-micro',
+							'options' => $panel['areas']
+						) ); ?>
+
+					<p class="description"><?php echo sprintf( __( '<a href="%s" target="_blank">Edit Custom Panels</a>', 'md' ), admin_url( 'admin.php?page=md_settings' ) ); ?></p>
+
+				</div>
+
+				<?php endif; ?>
+
+			<?php endif; ?>
+
+		</div>
+
+		</div>
+
+
+
+
+
+
 
 	</div>
 

@@ -375,6 +375,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-20-60-20 > .col2 { width: 60%; }
 	.md .col.col-right, .md-right{ float: right; }
 	.md .col.col-full { width: 100%; }
+	.md-flex-columns {
+		align-items: center;
+		display: flex;
+	}
+	.md-flex-column {
+		flex-basis: 0;
+		flex-grow: 1;
+	}
 }
 
 .md-alignright { float: right; }
@@ -569,7 +577,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 }
 
 .md .md-widget-item p {
-	margin-bottom: 7px;
+	margin-bottom: 10px;
 	margin-top: 0;
 }
 
@@ -627,9 +635,9 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	border-bottom-color: #fff;
 }
 
-.md-sidebars .md-checkboxes .md-checkbox-disable,
-.md-sidebars.is-global .md-checkbox-enable { display: none; }
-.md-sidebars.is-global .md-checkbox-disable { display: block; }
+.md-layouts .md-checkboxes .md-checkbox-disable,
+.md-layouts.is-global .md-checkbox-enable { display: none; }
+.md-layouts.is-global .md-checkbox-disable { display: block; }
 
 /* LICENSE */
 

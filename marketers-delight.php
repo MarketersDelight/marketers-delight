@@ -1,7 +1,8 @@
 <?php
 /**
- * The main Marketers Delight Class that activates all WP, MD
- * and other features throughout this WordPress website.
+ * The main MD class the performs high-level theme responsibilites
+ * like loading theme files, setting constants, wp_enqueue, <head>
+ * manipulation, register widgets/shortcodes and other main WP APIs.
  *
  * @since 4.0
  */
@@ -16,7 +17,7 @@ final class marketers_delight {
 
 	public function constants() {
 		define( 'MD_VERSION', '6.0' );
-		define( 'MD_THEME_NAME', 'Marketers Delight 4' );
+		define( 'MD_THEME_NAME', 'Marketers Delight' );
 		define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 		define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
@@ -26,6 +27,50 @@ final class marketers_delight {
 		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
 		define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 		define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
+	}
+
+	/**
+	 * Load all required files.
+	 *
+	 * @since 4.9.4
+	 */
+
+	public function includes() {
+		require_once MD_DIR . 'functions/theme-functions.php';
+		require_once MD_DIR . 'api/sanitize.php';
+		require_once MD_DIR . 'api/design.php';
+		require_once MD_DIR . 'api/css.php';
+		require_once MD_DIR . 'api/theme-json.php';
+		require_once MD_DIR . 'api/js.php';
+		require_once MD_DIR . 'api/data.php';
+		require_once MD_DIR . 'api/fields.php';
+		require_once MD_DIR . 'api/walker.php';
+		require_once MD_DIR . 'api/api.php';
+
+		require_once MD_DIR . 'functions/template-functions.php';
+		require_once MD_DIR . 'functions/media-functions.php';
+		require_once MD_DIR . 'functions/title-functions.php';
+		require_once MD_DIR . 'functions/comment-functions.php';
+		require_once MD_DIR . 'functions/page-functions.php';
+		require_once MD_DIR . 'functions/loop-functions.php';
+		require_once MD_DIR . 'functions/header-functions.php';
+		require_once MD_DIR . 'functions/layout-functions.php';
+
+		if ( is_admin() ) {
+			require_once MD_DIR . 'api/files.php';
+			require_once MD_DIR . 'api/requests.php';
+			require_once MD_DIR . 'admin/admin.php';
+		}
+
+		require_once MD_DIR . 'admin/featured-media.php';
+		require_once MD_DIR . 'admin/page-cover.php';
+		require_once MD_DIR . 'admin/page-cta.php';
+
+		$this->dropins();
+
+		require_once MD_DIR . 'blog.php';
+		require_once MD_DIR . 'actions.php';
+		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
 
 	/**
@@ -55,50 +100,6 @@ final class marketers_delight {
 			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
 			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
 		}
-	}
-
-	/**
-	 * Load all required files.
-	 *
-	 * @since 4.9.4
-	 */
-
-	public function includes() {
-		require_once MD_DIR . 'functions/theme-functions.php';
-		require_once MD_DIR . 'api/sanitize.php';
-		require_once MD_DIR . 'api/design.php';
-		require_once MD_DIR . 'api/css.php';
-		require_once MD_DIR . 'api/theme-json.php';
-		require_once MD_DIR . 'api/js.php';
-		require_once MD_DIR . 'api/data.php';
-		require_once MD_DIR . 'api/fields.php';
-		require_once MD_DIR . 'api/walker.php';
-		require_once MD_DIR . 'api/api.php';
-
-		require_once MD_DIR . 'functions/template-functions.php';
-		require_once MD_DIR . 'functions/media-functions.php';
-		require_once MD_DIR . 'functions/title-functions.php';
-		require_once MD_DIR . 'functions/comment-functions.php';
-		require_once MD_DIR . 'functions/loop-functions.php';
-		require_once MD_DIR . 'functions/page-functions.php';
-		require_once MD_DIR . 'functions/header-functions.php';
-		require_once MD_DIR . 'functions/layout-functions.php';
-
-		if ( is_admin() ) {
-			require_once MD_DIR . 'api/files.php';
-			require_once MD_DIR . 'api/requests.php';
-			require_once MD_DIR . 'admin/admin.php';
-		}
-
-		require_once MD_DIR . 'admin/featured-media.php';
-		require_once MD_DIR . 'admin/page-cover.php';
-		require_once MD_DIR . 'admin/page-cta.php';
-
-		$this->dropins();
-
-		require_once MD_DIR . 'blog.php';
-		require_once MD_DIR . 'actions.php';
-		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
 
 	/**
@@ -171,6 +172,18 @@ final class marketers_delight {
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
+	}
+
+	/**
+	 * Add custom query vars to known WP.
+	 *
+	 * @since 6.0
+	 */
+
+	public function query_vars( $vars ) {
+		$vars[] = 'filter';
+
+		return $vars;
 	}
 
 	/**
@@ -278,18 +291,6 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Add custom query vars to known WP.
-	 *
-	 * @since 6.0
-	 */
-
-	public function query_vars( $vars ) {
-		$vars[] = 'filter';
-
-		return $vars;
-	}
-
-	/**
 	 * Load inline CSS if enabled from user settings.
 	 *
 	 * @since 4.8
@@ -345,6 +346,42 @@ final class marketers_delight {
 	}
 
 	/**
+ 	 * Clean out unneeded CSS post classes.
+ 	 *
+ 	 * @since 4.1
+ 	 */
+
+	public function post_class( $classes ) {
+		// Remove excess WP classes
+		$classes = array_diff( $classes, array(
+			'format-standard',
+			'hentry',
+			'post-' . get_the_ID(),
+			'type-' . get_post_type(),
+			'status-' . get_post_status(),
+			'format-' . get_post_format()
+		) );
+
+		return $classes;
+	}
+
+	/**
+	 * Registers a Twitter user profile field. If Yoast SEO is enabled,
+	 * this field will not register and we'll just use the Twitter field
+	 * Yoast registers in their plugin. The user will never notice the
+	 * transition or need to reinsert their Twitter username to the field.
+	 *
+	 * @since 4.1
+	 */
+
+	public function profile_fields( $fields ) {
+		if ( ! defined( 'WPSEO_VERSION' ) )
+			$fields['twitter'] = __( 'Twitter username (without @)', 'md' );
+
+		return $fields;
+	}
+
+	/**
 	 * Register custom MD widgets and areas.
 	 *
 	 * @since 4.0
@@ -353,7 +390,7 @@ final class marketers_delight {
 	public function widgets() {
 		// Main Sidebar
 		register_sidebar( array(
-			'name' => __( 'Main Sidebar', 'md' ),
+			'name' => __( 'Sidebar: Default', 'md' ),
 			'description' => __( 'The default sidebar used around your site.', 'md' ),
 			'id' => 'sidebar-main',
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
@@ -363,20 +400,19 @@ final class marketers_delight {
 		) );
 
 		// Custom Sidebars
-		foreach ( md_get_sidebars() as $id => $name ) {
+		foreach ( md_get_sidebars() as $id => $name )
 			register_sidebar( array(
-				'name' => esc_html( $name ),
+				'name' => sprintf( __( 'Sidebar: %s', 'md' ), esc_html( $name ) ),
 				'id' => $id,
 				'before_widget' => '<div id="%1$s" class="widget %2$s">',
 				'after_widget' => '</div>',
 				'before_title' => '<h3 class="widget-title">',
 				'after_title' => '</h3>'
 			) );
-		}
 
-		// Main Sidebar
+		// Main Panel
 		register_sidebar( array(
-			'name' => __( 'Main Panel', 'md' ),
+			'name' => __( 'Panel: Default', 'md' ),
 			'description' => __( 'The default panel used around your site.', 'md' ),
 			'id' => 'panel-main',
 			'before_widget' => '<div id="%1$s" class="widget %2$s">',
@@ -384,6 +420,17 @@ final class marketers_delight {
 			'before_title' => '<h3 class="widget-title">',
 			'after_title' => '</h3>'
 		) );
+
+		// Custom Panels
+		foreach ( md_get_panels() as $id => $name )
+			register_sidebar( array(
+				'name' => sprintf( __( 'Panel: %s', 'md' ), esc_html( $name ) ),
+				'id' => $id,
+				'before_widget' => '<div id="%1$s" class="widget %2$s">',
+				'after_widget' => '</div>',
+				'before_title' => '<h3 class="widget-title">',
+				'after_title' => '</h3>'
+			) );
 
 		// Footer Columns
 		foreach ( md_filter_footer_columns() as $w ) {
@@ -425,33 +472,17 @@ final class marketers_delight {
 	public function template_shortcode( $atts, $content = null ) {
 		ob_start();
 
-		extract( shortcode_atts( array(
+		$atts = shortcode_atts( array(
 			'name' => '',
 			'dropin_name' => ''
-		), $atts, 'md_template' ) );
+		), $atts, 'md_template' );
 
-		if ( isset( $atts['dropin_name'] ) )
+		if ( ! empty( $atts['dropin_name'] ) )
 			include md_template( 'dropins', $atts['dropin_name'], true );
-		elseif ( isset( $atts['name'] ) )
+		elseif ( ! empty( $atts['name'] ) )
 			include md_template( $atts['name'], true );
 
 		return ob_get_clean();
-	}
-
-	/**
-	 * Registers a Twitter user profile field. If Yoast SEO is enabled,
-	 * this field will not register and we'll just use the Twitter field
-	 * Yoast registers in their plugin. The user will never notice the
-	 * transition or need to reinsert their Twitter username to the field.
-	 *
-	 * @since 4.1
-	 */
-
-	public function profile_fields( $fields ) {
-		if ( ! defined( 'WPSEO_VERSION' ) )
-			$fields['twitter'] = __( 'Twitter username (without @)', 'md' );
-
-		return $fields;
 	}
 
 	/**
@@ -500,9 +531,9 @@ final class marketers_delight {
 	 */
 
 	public function activate_dropin() {
-		$page = ! empty( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : false;
-		$action = ! empty( $_GET['action'] ) ? esc_attr( $_GET['action'] ) : false;
-		$dropin = ! empty( $_GET['dropin'] ) ? esc_attr( $_GET['dropin'] ) : false;
+		$page = ! empty( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : false;
+		$action = ! empty( $_GET['action'] ) ? sanitize_key( $_GET['action'] ) : false;
+		$dropin = ! empty( $_GET['dropin'] ) ? sanitize_key( $_GET['dropin'] ) : false;
 		$fields = md_setting( array( 'dropins', 'installed', $dropin ), false );
 
 		if ( ! $page || $page !== 'md_dropins' || $action !== 'activate' || ! $dropin || ! $fields || ! empty( $fields['status']['enable'] ) )
@@ -543,26 +574,6 @@ final class marketers_delight {
 
 	public function add_rss_link() {
 		echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo( 'sitename' ) . ' Feed" href="' . get_bloginfo( 'rss2_url' ) . '">';
-	}
-
-	/**
- 	 * Clean out unneeded CSS post classes.
- 	 *
- 	 * @since 4.1
- 	 */
-
-	public function post_class( $classes ) {
-		// Remove excess WP classes
-		$classes = array_diff( $classes, array(
-			'format-standard',
-			'hentry',
-			'post-' . get_the_ID(),
-			'type-' . get_post_type(),
-			'status-' . get_post_status(),
-			'format-' . get_post_format()
-		) );
-
-		return $classes;
 	}
 
 }

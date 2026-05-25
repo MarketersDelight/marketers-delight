@@ -1,6 +1,7 @@
 <?php
 /**
- * Add Layout options around various admin screens.
+ * Build layout options that appear across post and term meta,
+ * and admin settings with relationships.
  *
  * @since 4.7
  */
@@ -44,13 +45,13 @@ class md_layout extends md_api {
 
 	public function fields() {
 		$menus = array();
-		$sanitize = new md_sanitize;
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )
 			$menus[] = esc_attr( $menu->slug );
 
 		$custom_sidebars = md_get_sidebars( true );
+		$custom_panels = md_get_panels( true );
 
 		$fields = array(
 			'header' => array(
@@ -89,6 +90,18 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => $custom_sidebars
 			),
+			'panel' => array(
+				'type' => 'checkbox',
+				'options' => array( 'add', 'remove', 'global', 'alt' )
+			),
+			'custom_panel' => array(
+				'type' => 'select',
+				'options' => $custom_panels
+			),
+			'entries_panel' => array(
+				'type' => 'select',
+				'options' => $custom_panels
+			),
 			'footer' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'columns' )
@@ -101,6 +114,17 @@ class md_layout extends md_api {
 				'options' => $custom_sidebars
 			);
 			$fields["sidebar_{$type}_show"] = array(
+				'type' => 'checkbox',
+				'options' => array( 'enable', 'disable' )
+			);
+		}
+
+		foreach ( array( 'archive', 'term', 'single' ) as $type ) {
+			$fields["panel_$type"] = array(
+				'type' => 'select',
+				'options' => $custom_panels
+			);
+			$fields["panel_{$type}_show"] = array(
 				'type' => 'checkbox',
 				'options' => array( 'enable', 'disable' )
 			);
@@ -143,7 +167,6 @@ class md_layout extends md_api {
 	public function admin_template() {
 		$screen_id = '';
 		$screen = get_current_screen();
-		$sanitize = new md_sanitize;
 		$post_type = $screen->post_type;
 		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
 		$is_term = $screen->base == 'term' ? true : false;
@@ -163,31 +186,9 @@ class md_layout extends md_api {
 		$header = $this->fields->module( 'header' );
 		$content = $this->fields->module( 'content' );
 		$footer = $this->fields->module( 'footer' );
+		$sidebar = $this->get_layout( 'sidebar', $post_type, $screen_id, $is_post, $is_admin );
+		$panel = $this->get_layout( 'panel', $post_type, $screen_id, $is_post, $is_admin );
 
-		$sidebar_display = 'none';
-		$sidebars = md_get_sidebars();
-		$has_sidebar = md_has_sidebar( array(
-			'page' => ( $is_post ? 'single' : 'term' ),
-			'post_type' => $screen->post_type,
-			'post_id' => $screen_id,
-			'exclude_single' => true
-		) );
-		$single_add = $this->fields->module( array( 'sidebar', 'add' ) );
-		$single_remove = $this->fields->module( array( 'sidebar', 'remove' ) );
-
-		if ( ( $has_sidebar || $single_add ) && ! $single_remove )
-			$sidebar_display = 'block';
-
-		$sidebar_classes = array( 'md-sidebars', 'md-sep-small' );
-
-		if ( $is_admin ) {
-			$global = $this->fields->module( array( 'sidebar', 'global' ) );
-
-			if ( $global )
-				$sidebar_classes[] = 'is-global';
-		}
-
-		$sidebar_classes = join( ' ', $sidebar_classes );
 		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
 
 		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
@@ -209,7 +210,44 @@ class md_layout extends md_api {
 
 		do_action( 'md_layout_edit_screen_fields' );
 
-		$this->scripts( $has_sidebar );
+		$this->scripts( $sidebar, $panel );
+	}
+
+	/**
+	 * Get data for the layout elements current global/local display state.
+	 *
+	 * @since 6.0
+	 */
+
+	private function get_layout( $id, $post_type, $screen_id, $is_post, $is_admin ) {
+		$layout = array(
+			'areas' => md_layout_areas( $id ),
+			'has' => md_has_layout( $id, array(
+				'page' => ( $is_post ? 'single' : 'term' ),
+				'post_type' => $post_type,
+				'post_id' => $screen_id,
+				'exclude_single' => true
+			) ),
+			'display' => 'none',
+			'single_add' => $this->fields->module( array( $id, 'add' ) ),
+			'single_remove' => $this->fields->module( array( $id, 'remove' ) ),
+			'classes' => array( 'md-layouts', 'md-sep-small' ),
+			'global' => false
+		);
+
+		if ( ( $layout['has'] || $layout['single_add'] ) && ! $layout['single_remove'] )
+			$layout['display'] = 'block';
+
+		if ( $is_admin ) {
+			$layout['global'] = $this->fields->module( array( $id, 'global' ) );
+
+			if ( $layout['global'] )
+				$layout['classes'][] = 'is-global';
+		}
+
+		$layout['classes'] = join( ' ', $layout['classes'] );
+
+		return $layout;
 	}
 
 	/**
@@ -218,56 +256,93 @@ class md_layout extends md_api {
 	 * @since 4.7
 	 */
 
-	public function scripts( $has_sidebar ) {
-		$screen = get_current_screen();
+	public function scripts( $sidebar, $panel ) {
 		$prefix = $this->_prefix();
-		$sidebars = md_get_sidebars();
+		$screen = get_current_screen();
+		$layouts = array(
+			'sidebar' => array(
+				'areas' => $sidebar['areas'],
+				'has' => $sidebar['has']
+			),
+			'panel' => array(
+				'areas' => $panel['areas'],
+				'has' => $panel['has']
+			)
+		);
 	?>
 
-		<script>
-			( function() {
-				document.getElementById( '<?php echo $prefix; ?>_header_remove' ).onchange = function( e ) {
-					document.getElementById( 'header_options' ).style.display = this.checked ? 'none' : 'block';
-				}
-				<?php if ( md_has_menu() ) : ?>
-				document.getElementById( '<?php echo $prefix; ?>_header_menu' ).onchange = function( e ) {
-					document.getElementById( 'header_menu_options' ).style.display = this.checked ? 'none' : 'block';
-				}
-				<?php endif; ?>
-				document.getElementById( '<?php echo $prefix; ?>_content_remove' ).onchange = function( e ) {
-					document.getElementById( 'md_layout' ).classList.toggle( 'remove-content-box' );
-					document.getElementById( 'content_options' ).style.display = this.checked ? 'none' : 'block';
-					document.getElementById( 'sidebar_fields' ).style.display = this.checked ? 'none' : 'block';
-				}
-				<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
-				document.getElementById( '<?php echo $prefix; ?>_content_headline' ).onchange = function( e ) {
-					document.getElementById( 'headline_options' ).style.display = this.checked ? 'none' : 'block';
-				}
-				<?php endif; ?>
+	<script>
+		( function() {
 
-				<?php if ( ! empty( $sidebars ) ) : ?>
-					<?php if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
-						<?php if ( $has_sidebar ) : ?>
-						document.getElementById( '<?php echo $prefix; ?>_sidebar_remove' ).onchange = function( e ) {
-							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'none' : 'block';
-						}
-						<?php else : ?>
-						document.getElementById( '<?php echo $prefix; ?>_sidebar_add' ).onchange = function( e ) {
-							document.getElementById( 'sidebar_options' ).style.display = this.checked ? 'block' : 'none';
-						}
-						<?php endif; ?>
-					<?php else : ?>
-					document.getElementById( '<?php echo $prefix; ?>_sidebar_global' ).onchange = function() {
-						jQuery( '#sidebar_fields' ).toggleClass( 'is-global' );
-					}
-					<?php endif; ?>
-				<?php endif; ?>
+			function toggleDisplay( id, show ) {
+				var element = document.getElementById( id );
 
-				document.getElementById( '<?php echo $prefix; ?>_footer_remove' ).onchange = function( e ) {
-					document.getElementById( 'footer_options' ).style.display = this.checked ? 'none' : 'block';
-				}
-			} )();
-		</script>
+				if ( element )
+					element.style.display = show ? 'block' : 'none';
+			}
+
+			function toggleClass( id, className, state ) {
+				var element = document.getElementById( id );
+
+				if ( element )
+					element.classList.toggle( className, state );
+			}
+
+			function bindToggle( id, handler ) {
+				var element = document.getElementById( id );
+
+				if ( element )
+					element.onchange = function() {
+						handler( this.checked, this );
+					};
+			}
+
+			bindToggle( '<?php echo $prefix; ?>_header_remove', function( checked ) {
+				toggleDisplay( 'header_options', ! checked );
+			} );
+
+			<?php if ( md_has_menu() ) : ?>
+			bindToggle( '<?php echo $prefix; ?>_header_menu', function( checked ) {
+				toggleDisplay( 'header_menu_options', ! checked );
+			} );
+			<?php endif; ?>
+
+			bindToggle( '<?php echo $prefix; ?>_content_remove', function( checked ) {
+				toggleClass( 'md_layout', 'remove-content-box', checked );
+				toggleDisplay( 'content_options', ! checked );
+				toggleDisplay( 'layout_fields_tabs', ! checked );
+			} );
+
+			<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
+			bindToggle( '<?php echo $prefix; ?>_content_headline', function( checked ) {
+				toggleDisplay( 'headline_options', ! checked );
+			} );
+			<?php endif; ?>
+
+			<?php foreach ( $layouts as $layout => $fields ) :
+				if ( empty( $fields['areas'] ) )
+					continue;
+
+				if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
+
+				bindToggle( '<?php echo "{$prefix}_{$layout}_" . ( $fields['has'] ? 'remove' : 'add' ); ?>', function( checked ) {
+					toggleDisplay( '<?php echo "{$layout}_options"; ?>', <?php echo $fields['has'] ? '! checked' : 'checked'; ?> );
+				} );
+
+			<?php else : ?>
+
+				bindToggle( '<?php echo "{$prefix}_{$layout}_global"; ?>', function( checked ) {
+					toggleClass( '<?php echo "{$layout}_fields"; ?>', 'is-global', checked );
+				} );
+
+			<?php endif; endforeach; ?>
+
+			bindToggle( '<?php echo $prefix; ?>_footer_remove', function( checked ) {
+				toggleDisplay( 'footer_options', ! checked );
+			} );
+
+		} )();
+	</script>
 
 	<?php }
 

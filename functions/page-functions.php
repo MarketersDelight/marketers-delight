@@ -92,6 +92,41 @@ function md_breadcrumbs() {
 }
 
 /**
+ * Checks if the post content is enabled onpage.
+ *
+ * @since 6.0
+ */
+
+function md_has_post_content() {
+	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) )
+		return apply_filters( 'md_filter_has_the_content', true );
+}
+
+/**
+ * Outputs the_content with option enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_the_content( $loop ) {
+	include md_template( 'loop/the-content', true );
+}
+
+/**
+ * Outputs the WordPress excerpt with read more and
+ * length enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_excerpt( $loop ) {
+	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
+		( empty( $loop['excerpt_settings']['remove_text'] ) ?
+			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>'
+		: '' );
+}
+
+/**
  * Checks if author box is active on page.
  *
  * @since 4.5
@@ -171,30 +206,6 @@ function md_has_post_nav() {
 		( ! $disable || $single_add )
 	)
 		return true;
-}
-
-/**
- * Outputs the_content with option enhancements.
- *
- * @since 6.0
- */
-
-function md_the_content( $loop ) {
-	include md_template( 'loop/the-content', true );
-}
-
-/**
- * Outputs the WordPress excerpt with read more and
- * length enhancements.
- *
- * @since 6.0
- */
-
-function md_excerpt( $loop ) {
-	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
-		( empty( $loop['excerpt_settings']['remove_text'] ) ?
-			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>'
-		: '' );
 }
 
 /**

@@ -56,6 +56,13 @@ class md_settings extends md_api {
 						'fields' => array(
 							'name' => array( 'type' => 'text' )
 						)
+					),
+					'panels' => array(
+						'type' => 'group',
+						'group_key_lowercase' => true, // widgets must save all lowercase
+						'fields' => array(
+							'name' => array( 'type' => 'text' )
+						)
 					)
 				)
 			)
@@ -139,20 +146,6 @@ class md_settings extends md_api {
 		$page404 = $this->fields->get_field( array( 'settings', '404_page' ) );
 
 		include md_template( 'admin/dashboard', true );
-	}
-
-	/**
-	 * Widget areas for new sidebar areas.
-	 *
-	 * @since 4.6.2
-	 */
-
-	public function sidebars( $group, $field ) {
-		$this->fields->field( array( $group, $field, 'name' ), array(
-			'type' => 'text',
-			'placeholder' => __( 'Enter sidebar name...', 'md' ),
-			'classes' => 'md-focus'
-		) );
 	}
 
 }

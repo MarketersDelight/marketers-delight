@@ -387,7 +387,7 @@ class md_api {
 		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_scripts' ) )
 			$this->meta_scripts();
 
-		if ( $screen->base == 'term' && in_array( $_GET['taxonomy'], md_taxonomy_meta() ) && method_exists( $this, 'term_scripts' ) )
+		if ( $screen->base == 'term' && in_array( sanitize_key( $_GET['taxonomy'] ), md_taxonomy_meta() ) && method_exists( $this, 'term_scripts' ) )
 			$this->term_scripts();
 
 		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_scripts' ) )
