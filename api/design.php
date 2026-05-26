@@ -128,7 +128,7 @@ class md_design {
 		$panel_width = round( 10 * $line_height );
 
 		$site_width = round( $content_width + $sidebar_width + ( $line_height * 1.5 ) ); #add $line_height to account for gap
-		$site_width_wide = $content_width + $sidebar_width + $panel_width;
+		$site_width_wide = $content_width + $sidebar_width + $panel_width + ( $line_height * 2 );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 
 		// Finally, return list of default values

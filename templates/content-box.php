@@ -18,7 +18,7 @@ echo ( ! md_has_builder() ? '</div>' : '' );
 
 get_sidebar();
 
-md_panel();
+md_template( 'panel' );
 
 echo ( md_has_sidebar() ? '</div>' : '' );
 

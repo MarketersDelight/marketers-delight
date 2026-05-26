@@ -152,7 +152,7 @@ triggers: function() {
 				container = document.querySelector( '.' + parent ),
 				toggleClass = 'toggle-' + type,
 				fromClass = 'from-' + location,
-				isMobile = window.matchMedia( '(max-width: 1296px)' ).matches,
+				isMobile = window.matchMedia( '(max-width: 1200px)' ).matches,
 				isActive = container.classList.contains( toggleClass ) && ( ! isMobile || container.classList.contains( fromClass ) ),
 				classes = Array.from( container.classList );
 

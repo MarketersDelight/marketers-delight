@@ -326,8 +326,16 @@ final class marketers_delight {
 
 		$classes[] = 'is-' . md_loop_style( array( 'body' => true ) ) . '-style';
 
-		if ( md_has_panel() )
-			$classes[] = 'has-panel toggle-panel';
+		if ( md_has_panel() ) {
+			$show_on_right = md_get_layout_toggle( array( 'panel', 'alt' ) );
+			$closed = md_get_layout_toggle( array( 'panel', 'close' ) );
+
+			$classes[] = 'has-panel';
+			$classes[] = 'panel-' . ( $show_on_right ? 'right' : 'left' );
+
+			if ( ! $closed )
+				$classes[] = 'toggle-panel';
+		}
 
 		if ( ! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) ) ) {
 			$classes[] = 'header-cover';
@@ -400,7 +408,7 @@ final class marketers_delight {
 		) );
 
 		// Custom Sidebars
-		foreach ( md_get_sidebars() as $id => $name )
+		foreach ( md_layout_areas( 'sidebar' ) as $id => $name )
 			register_sidebar( array(
 				'name' => sprintf( __( 'Sidebar: %s', 'md' ), esc_html( $name ) ),
 				'id' => $id,
@@ -422,7 +430,7 @@ final class marketers_delight {
 		) );
 
 		// Custom Panels
-		foreach ( md_get_panels() as $id => $name )
+		foreach ( md_layout_areas( 'panel' ) as $id => $name )
 			register_sidebar( array(
 				'name' => sprintf( __( 'Panel: %s', 'md' ), esc_html( $name ) ),
 				'id' => $id,

@@ -23,8 +23,8 @@ if ( md_has_header() ) :
 					'location' => 'header',
 					'icon' => 'sidebar',
 					'hide_label' => true,
-					'classes' => 'toggled',
-					'title'   => __( 'Toggle Panel', 'md' )
+					'title' => __( 'Toggle Panel', 'md' ),
+					'classes' => ! md_get_layout_toggle( array( 'sidebar', 'close' ) ) ?? 'toggled'
 				) );
 			elseif ( md_has_menu() && $mobile == 'expanded' )
 				md_trigger( 'menu', array( 'builder' => $header ) );

@@ -51,11 +51,8 @@ function md_content_box_classes() {
 	if ( md_has_sidebar() ) {
 		$classes[] = 'compact';
 
-		$show_on_left = md_post_type_field( array( 'layout', 'sidebar', 'alt' ) );
-		$single = md_meta( array( 'layout', 'sidebar', 'alt' ) );
-
-		if ( ( $show_on_left && empty( $single ) ) || ( empty( $show_on_left ) && $single ) )
-			$classes[] = 'left';
+		if ( md_get_layout_toggle( array( 'sidebar', 'alt' ) ) )
+			$classes[] = 'sidebar-left';
 	}
 	else $classes[] = 'expanded';
 
@@ -63,22 +60,6 @@ function md_content_box_classes() {
 	$classes = apply_filters( 'md_filter_content_box_classes', $classes );
 
 	return join( ' ', $classes );
-}
-
-
-
-/*------------------------------*\
-	$SIDEBAR
-\*------------------------------*/
-
-/**
- * Return a list of sidebar names by unique IDs.
- *
- * @since 4.6.2
- */
-
-function md_get_sidebars( $keys = null ) {
-	return md_layout_areas( 'sidebar', $keys );
 }
 
 /**
@@ -94,33 +75,7 @@ function md_has_sidebar( $args = array() ) {
 }
 
 /**
- * Get active sidebar ID for current page.
- *
- * @since 4.6.2.1
- */
-
-function md_get_sidebar_id( $args = array() ) {
-	return md_get_layout_id( 'sidebar', $args );
-}
-
-
-
-/*------------------------------*\
-	$PANEL
-\*------------------------------*/
-
-/**
- * Return a list of panel names by unique IDs.
- *
- * @since 6.0
- */
-
-function md_get_panels( $keys = null ) {
-	return md_layout_areas( 'panel', $keys );
-}
-
-/**
- * Check if page has a panel.
+ * Checks page for active panel.
  *
  * @since 6.0
  */
@@ -129,26 +84,6 @@ function md_has_panel( $args = array() ) {
 	$show = md_has_layout( 'panel', $args );
 
 	return apply_filters( 'md_filter_has_panel', $show, $args );
-}
-
-/**
- * Get widget ID of panel on current page.
- *
- * @since 6.0
- */
-
-function md_get_panel_id( $args = array() ) {
-	return md_get_layout_id( 'panel', $args );
-}
-
-/**
- * Render the acttual panel template.
- *
- * @since 6.0
- */
-
-function md_panel() {
-	include md_template( 'panel', true );
 }
 
 
@@ -212,11 +147,7 @@ function md_footer_columns() {
  */
 
 function md_footer_classes() {
-	$classes = array( 'footer', 'format' );
-	$classes = apply_filters( 'md_filter_footer_classes', $classes );
-	$classes = join( ' ', $classes );
-
-	return $classes;
+	return join( ' ', apply_filters( 'md_filter_footer_classes', array( 'footer', 'format' ) ) );
 }
 
 /**
@@ -249,6 +180,29 @@ function md_footer_copy() {
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
+
+/**
+ * Get the result of the conditional options from the
+ * Layout Toggle. This computes the active state based on
+ * global, page type, down to single.
+ *
+ * @since 6.0
+ */
+
+function md_get_layout_toggle( $keys = array(), $args = array() ) {
+	if ( empty( $keys[0] ) || empty( $keys[1] ) )
+		return false;
+
+	$post_type = $args['post_type'] ?? md_get_post_type();
+	$post_id = $args['post_id'] ?? get_queried_object_id();
+	$default = md_post_type_field( array( 'layout', $keys[0], $keys[1] ), null, $post_type );
+	$single = md_meta( array( 'layout', $keys[0], $keys[1] ), $post_id );
+
+	if ( ( $default && empty( $single ) ) || ( empty( $default ) && $single ) )
+		return true;
+
+	return false;
+}
 
 /**
  * Determine which page type is open based on template hierarchy.

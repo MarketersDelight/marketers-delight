@@ -6,10 +6,13 @@
 
 .panel {
 	background-color: <?php echo $colors['site']['accent']; ?>;
-	border-inline-end: 1px solid <?php echo $colors['site']['tertiary']; ?>;
 	padding-block: <?php echo $half; ?>px;
 	position: relative;
 }
+
+.panel-left .panel { border-inline-end: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
+.panel-right { overflow-x: hidden; }
+.panel-right .panel { border-inline-start: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
 
 .panel .widget { padding: <?php echo $half; ?>px; }
 
@@ -30,76 +33,94 @@
 
 /* QUERIES */
 
-@media (max-width: <?php echo $site_width + $triple; ?>px) {
+@media (max-width: <?php echo $site_width; ?>px) {
 	.panel {
 		height: 100%;
 		overflow-y: auto;
 		position: fixed;
-			left: -<?php echo $panel_width; ?>px;
 			top: 0;
 		transition: 0.3s;
 		width: <?php echo $panel_width; ?>px;
 		z-index: 100;
 	}
+	.panel-left .panel { left: -<?php echo $panel_width; ?>px; }
+	.panel-right .panel { right: -<?php echo $panel_width; ?>px; }
+	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
+	.toggle-panel[class*="from-"] { overflow: hidden; }
+	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.panel-left.toggle-panel[class*="from-"] .panel { left: 0; }
+	.panel-right.toggle-panel[class*="from-"] .panel { right: 0; }
 	.panel-overlay {
 		background-color: rgba(0, 0, 0, 0.5);
 		height: 0;
-		inset: 0;
 		opacity: 0;
 		position: fixed;
+			inset: 0;
 		transition: opacity 0.3s ease-in-out;
 		visibility: hidden;
 		z-index: 99;
 	}
-	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
-	.toggle-panel[class*="from-"] { overflow: hidden; }
-	.toggle-panel[class*="from-"] .panel { left: 0; }
 	.toggle-panel[class*="from-"] .panel-overlay {
 		height: 100%;
 		opacity: 1;
 		visibility: visible;
 	}
-	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
 }
 
 @media (min-width: 900px) and (max-width: <?php echo $site_width_wide; ?>px) {
-	.toggle-panel .inner { padding-inline: <?php echo $half; ?>px; }
+	.toggle-panel .expanded,
+	.toggle-panel .inner:not(.content) { padding-inline: <?php echo $half; ?>px; }
 }
 
-@media (min-width: <?php echo $site_width + $triple; ?>px) {
-	.toggle-panel .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
-	.toggle-panel .inner { max-width: <?php echo $site_width_wide + $double; ?>px; }
-	.toggle-panel .content-wrap {
-		justify-content: center;
-		gap: <?php echo $single; ?>px;
-		max-width: <?php echo $site_width_wide + $double; ?>px;
-	}
-	.toggle-panel .compact .content-wrap { grid-template-columns: minmax(0, <?php echo $panel_width; ?>px) <?php echo $content_width; ?>px minmax(0, <?php echo $sidebar_width; ?>px); }
-	.toggle-panel .expanded {
-		display: grid;
-		gap: <?php echo $single; ?>px;
-		grid-template-columns: <?php echo $panel_width; ?>px minmax(0, <?php echo $site_width; ?>px);
-		justify-content: center;
-	}
+@media (min-width: <?php echo $site_width; ?>px) {
 	.panel {
 		display: none;
-		order: -1;
-		padding-block: <?php echo $single; ?>px;
-	}
-	.format .panel {
 		margin-block: -<?php echo $single; ?>px;
-		margin-inline-start: -<?php echo $half; ?>px;
+		padding-block: <?php echo $single; ?>px;
 	}
 	.panel:after {
 		background-color: inherit;
 		content: '';
 		position: absolute;
 			bottom: 0;
-			left: -100vw;
 			top: 0;
-			right: 0;
 		width: 100vw;
 	}
+	.panel-left .panel {
+		margin-inline-start: -<?php echo $half; ?>px;
+		order: -1;
+	}
+	.panel-left .panel:after { left: -100vw; }
+	.panel-right .panel {
+		margin-inline-end: -<?php echo $half; ?>px;
+		order: 3;
+	}
+	.panel-right .panel:after { right: -100vw; }
 	.toggle-panel .panel { display: block; }
+	.toggle-panel .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.toggle-panel .inner { max-width: <?php echo $site_width_wide; ?>px; }
+	.toggle-panel .content-wrap {
+		align-items: stretch;
+		display: flex;
+		justify-content: center;
+		gap: <?php echo $single; ?>px;
+	}
+	.toggle-panel :is(.panel, .content, .sidebar) { min-width: 0; }
+	.toggle-panel .compact .panel { flex: 0 1 <?php echo round( $panel_width / $site_width_wide * 100 ); ?>%; }
+	.toggle-panel .compact .content { flex: 0 1 <?php echo round( $content_width / $site_width_wide * 100 ); ?>%; }
+	.toggle-panel .compact .sidebar { flex: 0 1 <?php echo round( $sidebar_width / $site_width_wide * 100 ); ?>%; }
+/*
+	.sidebar-left.toggle-panel .content-wrap .sidebar { order: 1; }
+	.sidebar-left.toggle-panel .content-wrap .content { order: 2; }
+*/
+	.toggle-panel .expanded {
+		align-items: stretch;
+		display: flex;
+		gap: <?php echo $single; ?>px;
+		justify-content: center;
+		margin-inline: auto;
+		max-width: <?php echo $site_width_wide; ?>px;
+	}
+	.toggle-panel .expanded .panel { flex: 0 0 <?php echo $panel_width; ?>px; }
 	.panel-overlay { display: none; }
 }

@@ -38,7 +38,7 @@ class md_loop extends md_api {
 
 	public function fields() {
 		$block_ids = $cta_ids = array();
-		$sidebars = md_get_sidebars( true );
+		$sidebars = md_layout_areas( 'sidebar', true );
 		$cta = md_setting( array( 'cta', 'forms' ), array() );
 		$post_types = array_keys( get_post_types( array( 'public' => true ) ) );
 		$sanitize = new md_sanitize;

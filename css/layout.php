@@ -125,13 +125,21 @@
 
 @media (min-width: 900px) {
 	.compact .content-wrap {
-		display: grid;
+		display: flex;
+		align-items: stretch;
 		gap: <?php echo $mid; ?>px;
-		grid-template-columns: <?php echo round( $content_width / $site_width * 100 ); ?>% <?php echo round( $sidebar_width / $site_width * 100 ); ?>%;
 	}
+	.compact .content {
+		flex: 0 1 <?php echo round( $content_width / $site_width * 100 ); ?>%;
+		min-width: 0;
+	}
+	.compact .sidebar {
+		flex: 0 1 <?php echo round( $sidebar_width / $site_width * 100 ); ?>%;
+		min-width: 0;
+	}
+	.sidebar-left .sidebar { order: 1; }
+	.sidebar-left .content { order: 2; }
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
-	.compact.left .content-wrap { direction: rtl; }
-	.compact.left :is(.content, .sidebar) { direction: ltr; }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {

@@ -1,6 +1,8 @@
 <?php
 
 // Deprecated 6.0
+function md_get_sidebar_id( $args = array() ) { return md_get_layout_id( 'sidebar', $args ); }
+function md_get_sidebars( $keys = null ) { return md_layout_areas( 'sidebar', $keys ); }
 function md_content_classes() { return ''; }
 function md_text_field( $string ) { return wp_kses_post( $string ); }
 function md_featured_image_position( $context = null ) { md_media_position( $context ); }

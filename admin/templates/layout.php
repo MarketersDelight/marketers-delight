@@ -191,16 +191,16 @@
 		<div id="layout_fields_tabs" class="md-tabs" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<div class="nav-tab-wrapper">
-				<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-layout-sidebar"><?php echo esc_html( $toggles['sidebar']['title'] ); ?></a>
-				<a href="#" class="md-tab nav-tab" data-md-tab="md-layout-panel"><?php echo esc_html( $toggles['panel']['title'] ); ?></a>
+				<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-layout-sidebar"><?php echo esc_html( $context['toggles']['sidebar']['title'] ); ?></a>
+				<a href="#" class="md-tab nav-tab" data-md-tab="md-layout-panel"><?php echo esc_html( $context['toggles']['panel']['title'] ); ?></a>
 			</div>
 
 			<div id="sidebar_fields" class="md-layout-sidebar md-tab-content active <?php echo esc_attr( $sidebar['classes'] ); ?>">
-				<?php $this->toggle_fields( 'sidebar', $sidebar, $post_type, $is_admin, $is_term ); ?>
+				<?php $this->toggle_fields( 'sidebar', $sidebar, $context ); ?>
 			</div>
 
 			<div id="panel_fields" class="md-layout-panel md-tab-content <?php echo esc_attr( $panel['classes'] ); ?>">
-				<?php $this->toggle_fields( 'panel', $panel, $post_type, $is_admin, $is_term ); ?>
+				<?php $this->toggle_fields( 'panel', $panel, $context ); ?>
 			</div>
 
 		</div>

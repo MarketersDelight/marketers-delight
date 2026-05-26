@@ -1,4 +1,4 @@
-<?php if ( $is_admin ) {
+<?php if ( $context['is_admin'] ) {
 
 	$this->fields->field( $id, array(
 		'type' => 'checkbox',
@@ -8,7 +8,7 @@
 
 	foreach ( $this->page_types as $type => $label ) {
 		echo '<div class="md-flex-columns md-sep-micro">'.
-				'<div class="md-flex-column">';
+			 '<div class="md-flex-column">';
 
 		$this->fields->field( "{$id}_{$type}_show", array(
 			'type' => 'checkbox',
@@ -20,23 +20,23 @@
 		) );
 
 		echo '</div>'.
-				'<div class="md-flex-column md-full-select">';
+			 '<div class="md-flex-column md-full-select">';
 
 		$this->fields->field( "{$id}_$type", array(
 			'type' => 'select',
-			'empty_label' => sprintf( __( 'Use default %s', 'md' ), $title ),
+			'empty_label' => sprintf( __( 'Use default %s', 'md' ), $context['toggles'][$id]['title'] ),
 			'options' => $layout['areas']
 		) );
 
 		echo '</div>'.
-				'</div>';
+			 '</div>';
 	}
 
 	$this->fields->field( $id, array(
 		'type' => 'checkbox',
 		'label' => __( 'Settings', 'md' ),
 		'wrap_classes' => 'md-sep-micro',
-		'options' => $this->layout_labels( $id, $toggles[$id]['settings'], $post_type, true )
+		'options' => $this->layout_labels( $id, $context['toggles'][$id]['settings'], $context, true )
 	) );
 
 	return;
@@ -48,7 +48,7 @@ $toggle_label = $layout['has'] ? __( 'Remove', 'md' ) : __( 'Add', 'md' );
 $this->fields->field( $id, array(
 	'type' => 'checkbox',
 	'options' => array(
-		$toggle_action => sprintf( __( '%s <b>Default %s</b>', 'md' ), $toggle_label, $title )
+		$toggle_action => sprintf( __( '%s <b>%s</b>', 'md' ), $toggle_label, $context['toggles'][$id]['title'] )
 	)
 ) );
 
@@ -60,21 +60,21 @@ echo '<div id="' . esc_attr( "{$id}_options" ) . '" style="display: ' . esc_attr
 $this->fields->field( $id, array(
 	'type' => 'checkbox',
 	'wrap_classes' => 'md-sep-micro',
-	'options' => $this->layout_labels( $id, $toggles[$id]['settings'], $post_type, false )
+	'options' => $this->layout_labels( $id, $context['toggles'][$id]['settings'], $context, false )
 ) );
 
 echo '<div id="' . esc_attr( "{$this->_id}_custom_{$id}_option" ) . '">';
 
 $this->fields->field( "custom_$id", array(
 	'type' => 'select',
-	'empty_label' => sprintf( __( 'Use default %s', 'md' ), $title ),
+	'empty_label' => sprintf( __( 'Use default %s', 'md' ), $context['toggles'][$id]['title'] ),
 	'wrap_classes' => 'md-sep-micro',
 	'options' => $layout['areas']
 ) );
 
 echo '</div>';
 
-if ( $is_term ) {
+if ( $context['is_term'] ) {
 	$this->fields->field( "entries_$id", array(
 		'type' => 'select',
 		'empty_label' => __( 'Posts in this category...', 'md' ),
@@ -83,5 +83,5 @@ if ( $is_term ) {
 	) );
 }
 
-echo '<p class="description">' . sprintf( __( '<a href="%s" target="_blank">Edit %s</a>', 'md' ), admin_url( 'admin.php?page=md_settings' ), $title ) . '</p>'.
-		'</div>';
+echo '<p class="description">' . sprintf( __( '<a href="%s" target="_blank">Edit %s</a>', 'md' ), admin_url( 'admin.php?page=md_settings' ), $context['toggles'][$id]['title'] ) . '</p>'.
+	 '</div>';

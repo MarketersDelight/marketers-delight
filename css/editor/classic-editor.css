@@ -661,13 +661,21 @@ cite, .tiny {
 }
 @media (min-width: 900px) {
 	.compact .content-wrap {
-		display: grid;
+		display: flex;
+		align-items: stretch;
 		gap: 48px;
-		grid-template-columns: 64% 32%;
 	}
+	.compact .content {
+		flex: 0 1 64%;
+		min-width: 0;
+	}
+	.compact .sidebar {
+		flex: 0 1 32%;
+		min-width: 0;
+	}
+	.sidebar-left .sidebar { order: 1; }
+	.sidebar-left .content { order: 2; }
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
-	.compact.left .content-wrap { direction: rtl; }
-	.compact.left :is(.content, .sidebar) { direction: ltr; }
 }
 @media (max-width: 1200px) {
 	.inner { padding-inline: 16px; }
