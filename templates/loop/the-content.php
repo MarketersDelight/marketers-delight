@@ -4,7 +4,7 @@ if ( $loop['content'] === 'hide' || ( ! get_the_content() && ! get_the_excerpt()
     return;
 
 if ( empty( $loop['has_builder'] ) ) echo
-    "<div class=\"the-content item\">".
+    '<div' . ( is_singular() ? ' id="the_content"' : '' ) . ' class="the-content item">'.
     ( ! isset( $loop['is_slim'] ) ? '<div class="wrap">' : '' );
 
 md_hook_the_content_top();

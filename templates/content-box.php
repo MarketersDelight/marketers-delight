@@ -1,6 +1,6 @@
 <?php
 
-echo "<main class=\"" . md_content_box_classes() . '">';
+echo '<main id="main" class="' . md_content_box_classes() . '">';
 
 md_hook_content_box_top();
 
@@ -18,7 +18,8 @@ echo ( ! md_has_builder() ? '</div>' : '' );
 
 get_sidebar();
 
-md_template( 'panel' );
+if ( md_has_panel() )
+    md_template( 'panel' );
 
 echo ( md_has_sidebar() ? '</div>' : '' );
 

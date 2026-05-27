@@ -195,7 +195,7 @@ onScroll: function() {
 		pos = window.scrollY;
 		if ( ! ticking ) {
 			window.requestAnimationFrame( function() {
-				var contentBox = document.getElementById( 'content_box' );
+				var contentBox = document.getElementById( 'main' );
 				if ( contentBox == null ) return;
 				var contentBoxOffsetTop = contentBox.offsetTop,
 					content = document.getElementById( 'the_content' );

@@ -33,6 +33,7 @@
 		23. Footnotes
 		24. Glossary
 		25. Stream
+		26. Table of contents
 */
 /* TYPOGRAPHY */
 @font-face {
@@ -1586,12 +1587,12 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 /* FOOTER */
 .footer {
 		background-color: #101010;
-		color: #1E1E1E;
+		color: #FFFFFF;
 	font-size: 17px;
 	line-height: 27px;
 }
-.footer a { color: #777777; }
-.footer :is(.widget-title, .wp-block-heading) { color: #1E1E1E; }
+.footer a { color: #E6E0CF; }
+.footer :is(.widget-title, .wp-block-heading) { color: #FFFFFF; }
 .footer :is(.widget-title a, .wp-block-heading a) { color: #1E1E1E; }
 .footer .columns { padding-block: 48px; }
 .footer .list li:not(:last-child) { border-block-end-color: #CCCCCC; }
@@ -2787,6 +2788,57 @@ cite, .tiny {
 		width: 27px;
 	}
 	.thread .section-title { margin-inline-start: 0; }
+}
+/*------------------------------*\
+	$TABLE OF CONTENTS
+\*------------------------------*/
+.sidebar .widget_md_table_of_contents_widget {
+	position: sticky;
+		inset-block-start: 0;
+}
+.admin-bar .sidebar .widget_md_table_of_contents_widget { inset-block-start: calc(var(--wp-admin--admin-bar--height) + 32px); }
+.toc .widget-title {
+	align-items: center;
+	display: flex;
+	gap: 11px;
+}
+.toc .widget-title-label { flex: 1; }
+.toc-list { list-style: none; }
+.format .widget .toc-list { margin-inline-start: -16px; }
+.toc-list .toc-item { margin-block-end: 0; }
+.toc-item-title {
+	align-items: center;
+	display: flex;
+	transition: 0.2s;
+}
+.toc-item-title:hover {
+	background-color: rgba(0, 0, 0, 0.05);
+	border-radius: 6px;
+}
+.toc-item-label {
+	border-inline-start: 3px solid transparent;
+	display: block;
+	flex: 1;
+	padding: 5px 16px;
+	transition: 0.2s;
+}
+.toc-item-title:hover .toc-item-label { border-radius: 6px 0 0 6px; }
+.active > .toc-item-title .toc-item-label {
+	border-color: #C0392B;
+	color: #C0392B;
+	font-weight: 500;
+	text-decoration: none;
+}
+.toc-h3 .toc-item-label { padding-inline-start: 27px; }
+.toc-h4 .toc-item-label { padding-inline-start: 38px; }
+.toc-h5 .toc-item-label { padding-inline-start: 60px; }
+.toc-h6 .toc-item-label { padding-inline-start: 82px; }
+.toc-item .toggle { padding: 5px 16px; }
+.toc-sublist { display: none; }
+.toc-item:is(.active, .child-active, .toggle-toc-item) .toc-sublist { display: block; }
+.toc-item:is(.active, .child-active, .toggle-toc-item) .trigger-icon:before { content: '\e817'; }
+@media (min-width: 900px) {
+	.toc .toc-title-icon { display: none; }
 }
 /*
 	Theme Name:     MD.com

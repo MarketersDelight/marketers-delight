@@ -116,8 +116,8 @@ final class marketers_delight {
 		// Add WordPress Features
 		add_theme_support( 'title-tag' );
 		add_theme_support( 'post-thumbnails' );
-		add_theme_support( 'editor-styles' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
+		add_theme_support( 'editor-styles' );
 		add_editor_style( 'css/editor/font-icons.css' );
 		add_editor_style( 'css/editor/block-editor.css' );
 		add_editor_style( 'css/editor/classic-editor.css' );
@@ -282,6 +282,9 @@ final class marketers_delight {
 	public function inline_js() {
 		wp_add_inline_script( 'marketers-delight', "MD.triggers();" );
 		wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
+
+		if ( has_action( 'md_hook_js_onscroll' ) )
+			wp_add_inline_script( 'marketers-delight', "MD.onScroll();" );
 
 		if ( md_has_panel() )
 			wp_add_inline_script( 'marketers-delight', "MD.closeOverlay( 'panel', '.has-panel' );" );

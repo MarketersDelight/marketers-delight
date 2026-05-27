@@ -158,6 +158,39 @@ sticky: function( selector ) {
 	);
 	observer.observe( el );
 },
+onScroll: function() {
+	var pos = 0, ticking = false;
+	window.onscroll = function( e ) {
+		pos = window.scrollY;
+		if ( ! ticking ) {
+			window.requestAnimationFrame( function() {
+				var contentBox = document.getElementById( 'main' );
+				if ( contentBox == null ) return;
+				var contentBoxOffsetTop = contentBox.offsetTop,
+					content = document.getElementById( 'the_content' );
+				if ( content == null ) return;
+var toc = document.getElementById( 'table_of_contents' );
+if ( toc === null )
+    return;
+var active = 0,
+    tocItems = toc.getElementsByClassName( 'toc-item' ),
+    headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+for ( var i = 0; i < headings.length; i++ )
+    if ( headings[i].offsetTop - contentBoxOffsetTop <= pos + 20 )
+        active = i;
+for ( var c = 0; c < tocItems.length; c++ )
+    MD.removeClass( tocItems[c], 'active child-active' );
+if ( tocItems[active] ) {
+    MD.addClass( tocItems[active], 'active' );
+    var parentList = tocItems[active].parentNode;
+    if ( MD.hasClass( parentList, 'toc-sublist' ) )
+        MD.addClass( parentList.parentNode, 'child-active' );
+}				ticking = false;
+			});
+		}
+		ticking = true;
+	}
+},
 floatingBars: {
 	init: function( floatingBars ) {
 		this.opened = this.showing = false;
@@ -461,5 +494,30 @@ footnotes: function() {
 			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
 		}
 	}
+},
+tableOfContents: function() {
+	var headings = [],
+		toc = document.getElementById( 'table_of_contents' ),
+		tocItems = toc.getElementsByClassName( 'toc-item' ),
+		postContent = document.getElementById( 'the_content' ).getElementsByTagName( '*' );
+	for ( var i = 0, n = postContent.length; i < n; i++ )
+		if ( /^h[2-6]$/i.test( postContent[i].nodeName ) )
+			headings.push( postContent[i] );
+	for ( var i = 0, n = tocItems.length; i < n; i++ ) {
+		headings[i].setAttribute( 'id', tocItems[i].getAttribute( 'data-toc-id' ) );
+		var label = tocItems[i].querySelector( '.toc-item-label' );
+		if ( label ) label.onclick = (function( item, order ) {
+			return function( e ) {
+				e.preventDefault();
+				var contentBox = document.getElementById( 'main' );
+				window.scrollTo({
+					top: headings[order].offsetTop + contentBox.offsetTop,
+					behavior: 'smooth'
+				});
+				window.history.pushState( {}, '', '#' + item.getAttribute( 'data-toc-id' ) );
+			};
+		})( tocItems[i], i );
+	}
+	toc.querySelector( '.widget-title' ).onclick = function() { MD.toggleClass( toc, 'open' ); };
 },
 }
