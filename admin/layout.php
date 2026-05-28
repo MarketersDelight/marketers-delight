@@ -126,7 +126,7 @@ class md_layout extends md_api {
 			}
 		}
 
-		return $fields;
+		return apply_filters( 'md_filter_save_layout_fields', $fields );
 	}
 
 	/**
@@ -377,16 +377,6 @@ class md_layout extends md_api {
 				element.onchange = function() { handler( this.checked, this ); };
 		}
 
-		bindToggle( '<?php echo $prefix; ?>_header_remove', function( checked ) {
-			toggleDisplay( 'header_options', ! checked );
-		} );
-
-		<?php if ( md_has_menu() ) : ?>
-		bindToggle( '<?php echo $prefix; ?>_header_menu', function( checked ) {
-			toggleDisplay( 'header_menu_options', ! checked );
-		} );
-		<?php endif; ?>
-
 		bindToggle( '<?php echo $prefix; ?>_content_remove', function( checked ) {
 			toggleClass( 'md_layout', 'remove-content-box', checked );
 			toggleDisplay( 'content_options', ! checked );
@@ -416,10 +406,6 @@ class md_layout extends md_api {
 			} );
 
 		<?php endif; endforeach; ?>
-
-		bindToggle( '<?php echo $prefix; ?>_footer_remove', function( checked ) {
-			toggleDisplay( 'footer_options', ! checked );
-		} );
 
 	} )();
 	</script>

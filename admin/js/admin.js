@@ -202,14 +202,19 @@
 		},
 		conditional: function() {
 			$( document ).on( 'change', '.md-conditional-option', function( e ) {
-				var val = $( this ).val(),
-					parent = $( this ).closest( '.md-conditional' ),
+				var el = $( this ),
+					val = el.is( '[type="checkbox"]' ) ? ( this.checked ? el.val() : '' ) : el.val(),
+					parent = el.closest( '.md-conditional' ),
 					children = function() {
 						return $( this ).closest( '.md-conditional' ).is( parent );
 					};
+
+				if ( parent.hasClass( 'md-conditional-invert' ) )
+					val = val ? '' : '1';
+
 				parent.find( '.md-conditional-item' ).filter( children ).hide();
 				parent.find( '.md-conditional-' + val ).filter( children ).show();
-			});
+			} );
 		},
 		toggle: function() {
 			$( document ).on( 'click', 'h3.md-widget-title, .md-widget-handle, .md-toggle-arrow', function() {

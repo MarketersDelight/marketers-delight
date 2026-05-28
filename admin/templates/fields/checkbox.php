@@ -8,12 +8,9 @@ if ( isset( $args['multi'] ) )
 if ( isset( $args['inline'] ) )
 	$classes[] = 'md-inline-checkbox';
 
-if ( isset( $args['classes'] ) )
-	$classes[] = $args['classes'];
-
 $classes = join( ' ', $classes );
 
-$check_class = isset( $args['check_class'] ) ? ' class="' . $args['check_class'] . '"' : '';
+$input_class = isset( $args['classes'] ) ? ' class="' . esc_attr( $args['classes'] ) . '"' : '';
 
 ?>
 
@@ -24,7 +21,7 @@ $check_class = isset( $args['check_class'] ) ? ' class="' . $args['check_class']
 		$check = isset( $option[$val] ) ? esc_attr( $option[$val] ) : '';
 	?>
 		<p class="md-checkbox md-checkbox-<?php echo esc_attr( $val ); ?>">
-			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="1"<?php echo $check_class . checked( $check ); ?> />
+			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="1"<?php echo $input_class . checked( $check ); ?> />
 			<label for="<?php echo $idval; ?>"><?php echo $label; ?></label>
 		</p>
 	<?php endforeach; ?>

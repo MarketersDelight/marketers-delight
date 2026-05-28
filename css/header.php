@@ -25,6 +25,13 @@
 	<?php endif; ?>
 }
 
+.header.stuck {
+	position: sticky;
+		inset-block-start: 0;
+		inset-inline: 0;
+	z-index: 80;
+}
+
 .header a { text-decoration: none; }
 
 .cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: #fff; }
@@ -145,7 +152,7 @@
 
 /* QUERIES */
 
-@media all and (min-width: 900px) {
+@media (min-width: 900px) {
 	.header-primary, .header-aside {
 		align-items: center;
 		display: flex;
@@ -172,7 +179,7 @@
 	.toggle-search.from-primary .header-primary, .toggle-search.from-aside .header-aside { flex: 1; }
 }
 
-@media all and (max-width: 900px) {
+@media (max-width: 900px) {
 	.full-cover .header[class*="toggle-"] { position: static; }
 	.header .inner {
 		flex-direction: column;
@@ -201,12 +208,12 @@
 	.full-cover .header[class*="toggle-"] :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: inherit; }
 }
 
-@media all and (max-width: 600px) {
+@media (min-width: 600px) {
+		.admin-bar .header.stuck { padding-block-start: var(--wp-admin--admin-bar--height); }
+}
+
+@media (max-width: 600px) {
 	<?php echo md_setting( array( 'header', 'display', 'hide_title_mobile' ) ) ? '.site-name span { display: none; }' : ''; ?>
 	<?php echo md_setting( array( 'header', 'display', 'hide_tagline_mobile' ) ) ? '.tagline { display: none; }' : ''; ?>
 	<?php echo ! empty( $logo['logo_width']['mobile'] ) ? '.logo { flex-basis: ' . $logo['logo_width']['mobile'] . 'px; max-width: ' . $logo['logo_width']['mobile'] . 'px; }' : ''; ?>
 }
-
-/* STICKY */
-
-.admin-bar.full-cover .header, .admin-bar .stuck { inset-block-start: var(--wp-admin--admin-bar--height); }

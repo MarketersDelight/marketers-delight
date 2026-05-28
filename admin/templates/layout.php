@@ -4,79 +4,91 @@
 
 		<!-- Header -->
 
-		<?php $this->fields->field( 'header', array(
-			'type' => 'checkbox',
-			'label' => __( 'Header', 'md' ),
-			'options' => array(
-				'remove' => __( 'Remove <b>Header</b>', 'md' )
-			)
-		) ); ?>
-
-		<div id="header_options" class="md-sep-small" style="display: <?php echo ! empty( $header['remove'] ) ? 'none' : 'block'; ?>;">
+		<div class="md-conditional md-conditional-invert">
 
 			<?php $this->fields->field( 'header', array(
 				'type' => 'checkbox',
+				'label' => __( 'Header', 'md' ),
+				'classes' => 'md-conditional-option',
 				'options' => array(
-					'logo' => __( 'Remove <b>Logo</b>', 'md' ),
+					'remove' => __( 'Remove <b>Header</b>', 'md' )
 				)
 			) ); ?>
 
-			<?php if ( ! md_setting( array( 'header', 'display', 'site_tagline' ) ) ) : ?>
+			<div id="header_options" class="md-conditional-item md-conditional-1 md-sep-small<?php echo empty( $header['remove'] ) ? ' is-condition' : ''; ?>">
 
-				<?php $this->fields->field( 'header', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'tagline' => __( 'Remove <b>Tagline</b>', 'md' ),
-					)
-				) ); ?>
-
-			<?php endif; ?>
-
-			<?php if ( md_has_header_elements() )
+				<?php
 				$this->fields->field( 'header', array(
 					'type' => 'checkbox',
 					'options' => array(
-						'elements' => __( 'Remove <b>Elements</b>', 'md' )
+						'logo' => __( 'Remove <b>Logo</b>', 'md' ),
 					)
-				)
-			); ?>
+				) );
 
-			<?php if ( md_has_menu() ) : ?>
+				if ( ! md_setting( array( 'header', 'display', 'site_tagline' ) ) )
+					$this->fields->field( 'header', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'tagline' => __( 'Remove <b>Tagline</b>', 'md' )
+						)
+					) );
 
-				<?php $this->fields->field( 'header', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'menu' => __( 'Remove <b>Menu</b>', 'md' )
-					)
-				) ); ?>
+				if ( md_has_header_elements() )
+					$this->fields->field( 'header', array(
+						'type' => 'checkbox',
+						'options' => array(
+							'elements' => __( 'Remove <b>Elements</b>', 'md' )
+						)
+					) );
 
-				<div id="header_menu_options" style="display: <?php echo empty( $header['menu'] ) ? 'block' : 'none'; ?>;">
-					<?php $this->fields->field( 'header_menu', array(
+				if ( md_has_menu() ) {
+
+					echo '<div class="md-conditional md-conditional-invert">';
+
+					$this->fields->field( 'header', array(
+						'type' => 'checkbox',
+						'classes' => 'md-conditional-option',
+						'options' => array(
+							'menu' => __( 'Remove <b>Menu</b>', 'md' )
+						)
+					) );
+
+					echo '<div class="md-conditional-item md-conditional-1' . ( empty( $header['menu'] ) ? ' is-condition' : '' ) . '">';
+
+					$this->fields->field( 'header_menu', array(
 						'type' => 'select',
 						'empty_label' => __( 'Use default menu', 'md' ),
 						'options' => $menus
-					) ); ?>
-				</div>
+					) );
 
-			<?php endif; ?>
+					echo '</div></div>';
+
+				} ?>
+
+			</div>
 
 		</div>
 
-		<?php $this->fields->field( 'footer', array(
-			'type' => 'checkbox',
-			'label' => __( 'Footer', 'md' ),
-			'options' => array(
-				'remove' => __( 'Remove <b>Footer</b>', 'md' )
-			)
-		) ); ?>
+		<div class="md-conditional md-conditional-invert">
 
-		<div id="footer_options" style="display: <?php echo ! empty( $footer['remove'] ) ? 'none' : 'block'; ?>;">
 			<?php $this->fields->field( 'footer', array(
 				'type' => 'checkbox',
+				'label' => __( 'Footer', 'md' ),
+				'classes' => 'md-conditional-option',
 				'options' => array(
-					'columns' => __( 'Remove <b>Columns</b>', 'md' )
+					'remove' => __( 'Remove <b>Footer</b>', 'md' )
 				)
 			) ); ?>
+
+			<div id="footer_options" class="md-conditional-item md-conditional-1<?php echo empty( $footer['remove'] ) ? ' is-condition' : ''; ?>">
+				<?php $this->fields->field( 'footer', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'columns' => __( 'Remove <b>Columns</b>', 'md' )
+					)
+				) ); ?>
+			</div>
+
 		</div>
 
 	</div>
@@ -86,6 +98,8 @@
 	<div class="col col2">
 
 		<?php if ( $is_admin ) {
+
+			echo '<div class="md-sep-small">';
 
 			$this->fields->field( 'content', array(
 				'type' => 'checkbox',
@@ -101,9 +115,13 @@
 				'type' => 'select',
 				'label' => __( 'Featured image', 'md' ),
 				'empty_label' => __( 'Use default position', 'md' ),
-				'wrap_classes' => 'md-sep-small',
+				'wrap_classes' => 'md-sep-micro',
 				'options' => $this->fields->data->values['featured_image']
 			) );
+
+			do_action( 'md_hook_layout_admin_single_fields', $this->fields );
+
+			echo '</div>';
 
 		} ?>
 
@@ -167,13 +185,8 @@
 						'wpautop' => __( 'Disable <strong>WP formatting</strong>', 'md' )
 					)
 				) );
-			?>
 
-			<div class="md-sep-micro">
-				<?php do_action( 'md_post_layout_content_options' ); ?>
-			</div>
-
-			<?php $this->fields->field( 'content_style', array(
+			$this->fields->field( 'content_style', array(
 				'type' => 'select',
 				'empty_label' => __( 'Use default style', 'md' ),
 				'wrap_classes' => 'md-sep-micro',

@@ -73,17 +73,6 @@ tabs: function( parent ) {
 		}
 	}
 },
-accordion: function( parent ) {
-	var titles = document.getElementsByClassName( 'accordion-title' );
-	for ( var i = 0; i < titles.length; i++ ) {
-		titles[i].onclick = function( e ) {
-			var groups = document.querySelectorAll( '#' + parent + ' .accordion-group' ),
-				groupID = this.getAttribute( 'data-accordion' ),
-				group = document.getElementById( parent + '_' + groupID );
-			MD.toggleClass( group, 'active' );
-		}
-	}
-},
 clipboard: function() {
 	var copy = document.getElementsByClassName( 'copy' );
 	for ( var i = 0; i < copy.length; i++ ) {
@@ -92,14 +81,6 @@ clipboard: function() {
 			navigator.clipboard.writeText( val );
 		}
 	}
-},
-closeOverlay: function( name, parent ) {
-	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
-		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
-		var triggers = document.getElementsByClassName( 'trigger-' + name );
-		for ( var i = 0; i < triggers.length; i++ )
-			MD.removeClass( triggers[i], 'toggled' );
-	};
 },
 toggle: function() {
 	var toggles = document.getElementsByClassName( 'toggle' );
@@ -150,13 +131,28 @@ triggers: function() {
 					}
 	}
 },
-sticky: function( selector ) {
-	const el = document.querySelector( selector );
-	const observer = new IntersectionObserver(
-		( [e] ) => e.target.classList.toggle( 'stuck', e.intersectionRatio < 1 ),
-		{ threshold: [1] }
-	);
-	observer.observe( el );
+sticky: function( items ) {
+	if ( ! items ) return;
+	if ( typeof items === 'string' )
+		items = [items];
+	items.forEach( function( selector ) {
+		const el = document.querySelector( selector );
+		if ( ! el ) return;
+		const update = function() {
+			el.classList.toggle( 'stuck', el.getBoundingClientRect().top <= 0 );
+		};
+		update();
+		window.addEventListener( 'scroll', update, { passive: true } );
+		window.addEventListener( 'resize', update );
+	});
+},
+closeOverlay: function( name, parent ) {
+	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
+		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
+		var triggers = document.getElementsByClassName( 'trigger-' + name );
+		for ( var i = 0; i < triggers.length; i++ )
+			MD.removeClass( triggers[i], 'toggled' );
+	};
 },
 onScroll: function() {
 	var pos = 0, ticking = false;
@@ -170,21 +166,19 @@ onScroll: function() {
 					content = document.getElementById( 'the_content' );
 				if ( content == null ) return;
 var toc = document.getElementById( 'table_of_contents' );
-if ( toc === null )
-    return;
+if ( toc === null ) return;
 var active = 0,
-    tocItems = toc.getElementsByClassName( 'toc-item' ),
-    headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+	tocItems = toc.querySelectorAll( '.toc-item' ),
+	headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
 for ( var i = 0; i < headings.length; i++ )
-    if ( headings[i].offsetTop - contentBoxOffsetTop <= pos + 20 )
-        active = i;
+	if ( headings[i].offsetTop - contentBoxOffsetTop <= pos + 20 )
+		active = i;
 for ( var c = 0; c < tocItems.length; c++ )
-    MD.removeClass( tocItems[c], 'active child-active' );
+	MD.removeClass( tocItems[c], 'active child-active' );
 if ( tocItems[active] ) {
-    MD.addClass( tocItems[active], 'active' );
-    var parentList = tocItems[active].parentNode;
-    if ( MD.hasClass( parentList, 'toc-sublist' ) )
-        MD.addClass( parentList.parentNode, 'child-active' );
+	MD.addClass( tocItems[active], 'active' );
+	if ( MD.hasClass( tocItems[active].parentNode, 'toc-sublist' ) )
+		MD.addClass( tocItems[active].parentNode.parentNode, 'child-active' );
 }				ticking = false;
 			});
 		}
@@ -496,28 +490,35 @@ footnotes: function() {
 	}
 },
 tableOfContents: function() {
-	var headings = [],
+	var	contentBox = document.getElementById( 'main' ),
+		content = document.getElementById( 'the_content' ),
 		toc = document.getElementById( 'table_of_contents' ),
-		tocItems = toc.getElementsByClassName( 'toc-item' ),
-		postContent = document.getElementById( 'the_content' ).getElementsByTagName( '*' );
-	for ( var i = 0, n = postContent.length; i < n; i++ )
-		if ( /^h[2-6]$/i.test( postContent[i].nodeName ) )
-			headings.push( postContent[i] );
-	for ( var i = 0, n = tocItems.length; i < n; i++ ) {
-		headings[i].setAttribute( 'id', tocItems[i].getAttribute( 'data-toc-id' ) );
-		var label = tocItems[i].querySelector( '.toc-item-label' );
-		if ( label ) label.onclick = (function( item, order ) {
-			return function( e ) {
-				e.preventDefault();
-				var contentBox = document.getElementById( 'main' );
-				window.scrollTo({
-					top: headings[order].offsetTop + contentBox.offsetTop,
-					behavior: 'smooth'
-				});
-				window.history.pushState( {}, '', '#' + item.getAttribute( 'data-toc-id' ) );
-			};
-		})( tocItems[i], i );
-	}
+		labels = toc.querySelectorAll( '.toc-item-label' ),
+		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+	for ( var i = 0; i < labels.length; i++ )
+		headings[i].setAttribute( 'id', labels[i].getAttribute( 'href' ).slice( 1 ) );
+	toc.addEventListener( 'click', function( e ) {
+		var label = e.target.closest( '.toc-item-label' );
+		if ( ! label ) return;
+		e.preventDefault();
+		var id = label.getAttribute( 'href' ).slice( 1 ),
+			target = document.getElementById( id );
+		if ( ! target ) return;
+		window.scrollTo({ top: target.offsetTop + contentBox.offsetTop, behavior: 'smooth' });
+		window.history.pushState( {}, '', '#' + id );
+		MD.removeClass( toc, 'open' );
+	} );
 	toc.querySelector( '.widget-title' ).onclick = function() { MD.toggleClass( toc, 'open' ); };
+	if ( 'scrollRestoration' in history )
+		history.scrollRestoration = 'manual';
+	window.addEventListener( 'popstate', function() {
+		var hash = window.location.hash;
+		if ( hash ) {
+			var target = document.getElementById( hash.slice( 1 ) );
+			if ( target )
+				window.scrollTo({ top: target.offsetTop + contentBox.offsetTop, behavior: 'smooth' });
+		}
+		else window.scrollTo({ top: 0, behavior: 'smooth' });
+	} );
 },
 }

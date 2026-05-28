@@ -1,11 +1,5 @@
 <style type="text/css">
 
-.sticky {
-	position: sticky;
-		inset-block-start: -1px;
-	z-index: 50;
-}
-
 .overlay {
 	background-color: <?php echo $colors['content']['page_cover']; ?>;
 	content: '';

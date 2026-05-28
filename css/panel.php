@@ -75,9 +75,9 @@
 @media (min-width: <?php echo $site_width; ?>px) {
 	.panel {
 		display: none;
-		margin-block: -<?php echo $single; ?>px;
 		padding-block: <?php echo $single; ?>px;
 	}
+	.format .panel { margin-block: -<?php echo $single; ?>px; }
 	.panel:after {
 		background-color: inherit;
 		content: '';

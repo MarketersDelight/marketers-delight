@@ -20,9 +20,6 @@ function md_header_classes() {
 	else
 		$classes[] = 'simple';
 
-	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
-		$classes[] = 'sticky';
-
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 
 	return join( ' ', $classes );

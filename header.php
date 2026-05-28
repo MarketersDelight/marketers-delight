@@ -19,7 +19,7 @@ if ( md_has_header() ) :
 
 			if ( md_has_panel() )
 				md_trigger( 'panel', array(
-					'parent'  => 'has-panel',
+					'parent' => 'has-panel',
 					'location' => 'header',
 					'icon' => 'sidebar',
 					'hide_label' => true,

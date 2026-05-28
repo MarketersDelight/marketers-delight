@@ -14,7 +14,7 @@
 		<?php $this->fields->field( 'category_posts', array(
 			'type' => 'checkbox',
 			'wrap_classes' => 'md-sep-micro',
-			'check_class' => 'md-check-val',
+			'classes' => 'md-check-val',
 			'options' => array(
 				'enable' => __( 'List posts by category', 'md' )
 			)

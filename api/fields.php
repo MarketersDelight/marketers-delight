@@ -176,8 +176,8 @@ class md_fields {
 		$screen = get_current_screen();
 		$page_types = apply_filters( 'md_admin_groups', array() );
 
-		$page = isset( $_GET['page'] ) ? esc_attr( $_GET['page'] ) : '';
-		$tag_id = isset( $_GET['tag_ID'] ) ? esc_attr( $_GET['tag_ID'] ) : '';
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+		$tag_id = isset( $_GET['tag_ID'] ) ? sanitize_key( $_GET['tag_ID'] ) : '';
 
 		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) ) {
 			array_unshift( $keys, $this->_clean_id );

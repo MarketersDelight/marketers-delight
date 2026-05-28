@@ -92,17 +92,6 @@ tabs: function( parent ) {
 		}
 	}
 },
-accordion: function( parent ) {
-	var titles = document.getElementsByClassName( 'accordion-title' );
-	for ( var i = 0; i < titles.length; i++ ) {
-		titles[i].onclick = function( e ) {
-			var groups = document.querySelectorAll( '#' + parent + ' .accordion-group' ),
-				groupID = this.getAttribute( 'data-accordion' ),
-				group = document.getElementById( parent + '_' + groupID );
-			MD.toggleClass( group, 'active' );
-		}
-	}
-},
 clipboard: function() {
 	var copy = document.getElementsByClassName( 'copy' );
 	for ( var i = 0; i < copy.length; i++ ) {
@@ -111,14 +100,6 @@ clipboard: function() {
 			navigator.clipboard.writeText( val );
 		}
 	}
-},
-closeOverlay: function( name, parent ) {
-	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
-		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
-		var triggers = document.getElementsByClassName( 'trigger-' + name );
-		for ( var i = 0; i < triggers.length; i++ )
-			MD.removeClass( triggers[i], 'toggled' );
-	};
 },
 toggle: function() {
 	var toggles = document.getElementsByClassName( 'toggle' );
@@ -176,19 +157,30 @@ triggers: function() {
 		}
 	}
 },
-sticky: function( selector ) {
-	const el = document.querySelector( selector );
-
-	const observer = new IntersectionObserver(
-		( [e] ) => e.target.classList.toggle( 'stuck', e.intersectionRatio < 1 ),
-		{ threshold: [1] }
-	);
-
-	observer.observe( el );
+sticky: function( items ) {
+	if ( ! items ) return;
+	if ( typeof items === 'string' )
+		items = [items];
+	items.forEach( function( selector ) {
+		const el = document.querySelector( selector );
+		if ( ! el ) return;
+		const update = function() {
+			el.classList.toggle( 'stuck', el.getBoundingClientRect().top <= 0 );
+		};
+		update();
+		window.addEventListener( 'scroll', update, { passive: true } );
+		window.addEventListener( 'resize', update );
+	});
 },
-
+closeOverlay: function( name, parent ) {
+	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
+		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
+		var triggers = document.getElementsByClassName( 'trigger-' + name );
+		for ( var i = 0; i < triggers.length; i++ )
+			MD.removeClass( triggers[i], 'toggled' );
+	};
+},
 <?php if ( has_action( 'md_hook_js_onscroll' ) ) : ?>
-
 onScroll: function() {
 	var pos = 0, ticking = false;
 	window.onscroll = function( e ) {
@@ -207,5 +199,4 @@ onScroll: function() {
 		ticking = true;
 	}
 },
-
 <?php endif; ?>
