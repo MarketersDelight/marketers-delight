@@ -35,8 +35,12 @@ function md_has_content_box() {
  */
 
 function md_content_box() {
-	if ( md_has_content_box() )
-		include md_template( 'content-box', true );
+	if ( ! md_has_content_box() )
+		return;
+
+	$has_builder = md_has_builder();
+
+	include md_template( 'content-box', true );
 }
 
 /**

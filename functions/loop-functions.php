@@ -140,9 +140,6 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = 'full';
 	}
 
-	if ( ! isset( $loop['query'] ) && empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
-		$classes[] = 'inner';
-
 	if ( isset( $loop['classes'] ) )
 		$classes = array_merge( $classes, (array) $loop['classes'] );
 
@@ -185,9 +182,6 @@ function md_post_class( $loop = array(), $c = 1 ) {
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
-
-//	if ( empty( $loop['has_sidebar'] ) && empty( $loop['has_builder'] ) )
-//		$classes[] = 'inner';
 
 	return join( ' ', $classes );
 }
@@ -274,6 +268,9 @@ function md_get_loop( $args = array() ) {
 
 		if ( md_has_sidebar() )
 			$loop['has_sidebar'] = true;
+
+		if ( md_has_panel() )
+			$loop['has_panel'] = true;
 	}
 
 	if ( empty( $loop['columns'] ) )
@@ -290,7 +287,7 @@ function md_get_loop( $args = array() ) {
 	if ( ! isset( $loop['style'] ) )
 		$loop['style'] = ! empty( $args['query'] ) ? md_loop_style( array( 'body' => true ) ) : md_loop_style();
 
-	if ( $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ! empty( $loop['has_sidebar'] ) ) )
+	if ( ! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ! empty( $loop['has_sidebar'] ) ) )
 		$loop['is_slim'] = true;
 
 	$loop['loop_classes'] = md_loop_classes( $loop );

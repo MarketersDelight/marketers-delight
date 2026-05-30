@@ -9,16 +9,15 @@
 function md_the_title( $context = 'post', $args = array() ) {
 	$h = 'h1';
 	$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
-	$category_posts = md_module( array( 'loop', 'category_posts', 'enable' ) );
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
-		$h = $category_posts ? 'h3' : 'h2';
+		$h = ! empty( $args['loop']['category_posts']['enable'] ) ? 'h3' : 'h2';
 
 		if ( ! empty( $title ) )
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
 	}
 
-	include md_template( 'title', true );
+	include md_template( 'the-title', true );
 }
 
 /**
@@ -87,7 +86,6 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( $has_header_cover && in_the_loop() )
 		return;
 
-	$is_inline = false;
 	$classes = $style = array();
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
@@ -97,11 +95,10 @@ function md_title( $context = 'post', $args = array() ) {
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
+	$title_args = array( 'loop' => ! empty( $args['loop'] ) ? $args['loop'] : array() );
 
-	if ( ( $has_sidebar && ! $has_header_cover ) || ( $context == 'post' && ! is_singular() && isset( $loop['columns'] ) && $loop['columns'] > 2 ) ) {
-		$is_inline = true;
+	if ( ( $has_sidebar && ! $has_header_cover ) || ( $context == 'post' && ! is_singular() && isset( $loop['columns'] ) && $loop['columns'] > 2 ) )
 		$classes[] = 'inline';
-	}
 	else $classes[] = 'wide';
 
 	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) ) {
@@ -135,7 +132,7 @@ function md_title( $context = 'post', $args = array() ) {
 
 	do_action( "md_hook_{$context}_title_before" );
 
-	include md_template( "{$context}-title", true );
+	include md_template( 'title', true );
 
 	do_action( "md_hook_{$context}_title_after" );
 }

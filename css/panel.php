@@ -68,8 +68,7 @@
 }
 
 @media (min-width: 900px) and (max-width: <?php echo $site_width_wide; ?>px) {
-	.toggle-panel .expanded,
-	.toggle-panel .inner:not(.content) { padding-inline: <?php echo $half; ?>px; }
+	.toggle-panel .inner { padding-inline: <?php echo $half; ?>px; }
 }
 
 @media (min-width: <?php echo $site_width; ?>px) {
@@ -113,14 +112,7 @@
 	.sidebar-left.toggle-panel .content-wrap .sidebar { order: 1; }
 	.sidebar-left.toggle-panel .content-wrap .content { order: 2; }
 */
-	.toggle-panel .expanded {
-		align-items: stretch;
-		display: flex;
-		gap: <?php echo $single; ?>px;
-		justify-content: center;
-		margin-inline: auto;
-		max-width: <?php echo $site_width_wide; ?>px;
-	}
+	.toggle-panel .expanded .content { flex: 1; }
 	.toggle-panel .expanded .panel { flex: 0 0 <?php echo $panel_width; ?>px; }
 	.panel-overlay { display: none; }
 }

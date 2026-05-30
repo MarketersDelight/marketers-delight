@@ -1,7 +1,7 @@
 <?php
 
 echo '<nav class="breadcrumbs" aria-label="' . __( 'Breadcrumbs', 'md' ) . '">'.
-	 '<ol' . ( ! md_has_sidebar() && ! is_singular() ? ' class="inner"' : '' ) . '>'.
+	 '<ol>'.
 	 '<li class="breadcrumbs-home"><a href="' . get_site_url() . '" aria-label="' . __( 'Home', 'md' ) . '">' . get_bloginfo( 'name' ) . '</a></li>';
 
 if ( ! empty( $post_type ) && ! is_search() && ! is_page() && ! is_404() && ( ! empty( $blog_id ) || $post_type !== 'post' ) )

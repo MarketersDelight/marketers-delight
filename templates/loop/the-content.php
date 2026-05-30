@@ -7,12 +7,12 @@ if ( empty( $loop['has_builder'] ) ) echo
     '<div' . ( is_singular() ? ' id="the_content"' : '' ) . ' class="the-content item">'.
     ( ! isset( $loop['is_slim'] ) ? '<div class="wrap">' : '' );
 
-md_hook_the_content_top();
-
 md_featured_media( 'post', array(
     'loop' => $loop,
     'show_image' => array( 'left', 'right', 'center' )
 ) );
+
+md_hook_the_content_top();
 
 if ( $loop['content'] == 'full' || ( empty( $loop['query'] ) && ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) ) ) {
     if ( is_404() && ! md_has_custom_404() )

@@ -167,15 +167,15 @@ onScroll: function() {
 				if ( content == null ) return;
 var toc = document.getElementById( 'table_of_contents' );
 if ( toc === null ) return;
-var active = 0,
+var active = -1,
 	tocItems = toc.querySelectorAll( '.toc-item' ),
 	headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
 for ( var i = 0; i < headings.length; i++ )
-	if ( headings[i].offsetTop - contentBoxOffsetTop <= pos + 20 )
+	if ( headings[i].offsetTop + contentBoxOffsetTop <= pos + 20 )
 		active = i;
 for ( var c = 0; c < tocItems.length; c++ )
 	MD.removeClass( tocItems[c], 'active child-active' );
-if ( tocItems[active] ) {
+if ( active >= 0 && tocItems[active] ) {
 	MD.addClass( tocItems[active], 'active' );
 	if ( MD.hasClass( tocItems[active].parentNode, 'toc-sublist' ) )
 		MD.addClass( tocItems[active].parentNode.parentNode, 'child-active' );
@@ -490,11 +490,20 @@ footnotes: function() {
 	}
 },
 tableOfContents: function() {
-	var	contentBox = document.getElementById( 'main' ),
-		content = document.getElementById( 'the_content' ),
+	var	content = document.getElementById( 'the_content' ),
 		toc = document.getElementById( 'table_of_contents' ),
 		labels = toc.querySelectorAll( '.toc-item-label' ),
 		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+	function scrollTo( target ) {
+		var inEntry = !! toc.closest( '.entry' ),
+			simulate = inEntry && ! MD.hasClass( toc, 'stuck' );
+		if ( simulate ) MD.addClass( toc, 'stuck' );
+		var top = 0, el = target;
+		while ( el ) { top += el.offsetTop; el = el.offsetParent; }
+		var offset = inEntry ? toc.clientHeight : 0;
+		if ( simulate ) MD.removeClass( toc, 'stuck' );
+		window.scrollTo({ top: top - offset, behavior: 'smooth' });
+	}
 	for ( var i = 0; i < labels.length; i++ )
 		headings[i].setAttribute( 'id', labels[i].getAttribute( 'href' ).slice( 1 ) );
 	toc.addEventListener( 'click', function( e ) {
@@ -504,9 +513,9 @@ tableOfContents: function() {
 		var id = label.getAttribute( 'href' ).slice( 1 ),
 			target = document.getElementById( id );
 		if ( ! target ) return;
-		window.scrollTo({ top: target.offsetTop + contentBox.offsetTop, behavior: 'smooth' });
-		window.history.pushState( {}, '', '#' + id );
 		MD.removeClass( toc, 'open' );
+		scrollTo( target );
+		window.history.pushState( {}, '', '#' + id );
 	} );
 	toc.querySelector( '.widget-title' ).onclick = function() { MD.toggleClass( toc, 'open' ); };
 	if ( 'scrollRestoration' in history )
@@ -515,8 +524,7 @@ tableOfContents: function() {
 		var hash = window.location.hash;
 		if ( hash ) {
 			var target = document.getElementById( hash.slice( 1 ) );
-			if ( target )
-				window.scrollTo({ top: target.offsetTop + contentBox.offsetTop, behavior: 'smooth' });
+			if ( target ) scrollTo( target );
 		}
 		else window.scrollTo({ top: 0, behavior: 'smooth' });
 	} );

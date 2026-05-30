@@ -76,8 +76,8 @@ class md_menu_walker extends Walker_Nav_Menu {
 		}
 		$desc = $this->md_desc && ! empty( $item->description ) ? '<span class="menu-item-desc">' . esc_html( $item->description ) . '</span>' : '';
 		$item_output = $args->before;
-		$item_output .= '<a'. $attributes .' itemprop="url">';
-		$args->link_before = '<span class="menu-item-title" itemprop="name">';
+		$item_output .= '<a'. $attributes .'>';
+		$args->link_before = '<span class="menu-item-title">';
 		$args->link_after  = '</span>';
 		$item_output .= $this->md_title ? $args->link_before . wp_kses_data( $item->title, $item->ID ) . $args->link_after : '';
 		$item_output .= $desc . '</a>';

@@ -108,7 +108,7 @@
 	.image-inline.wide .inner,
 	.image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
 	.title-left .wrap, .title-right .wrap,
-	.image-inline.inline .wrap,
+	.image-inline.inline, .image-inline.inline .inner,
 	.image-inline.wide, .image-inline.wide .inner {
 		align-items: center;
 		flex-flow: row;
