@@ -496,12 +496,12 @@ tableOfContents: function() {
 		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
 	function scrollTo( target ) {
 		var inEntry = !! toc.closest( '.entry' ),
-			simulate = inEntry && ! MD.hasClass( toc, 'stuck' );
-		if ( simulate ) MD.addClass( toc, 'stuck' );
+			preStuck = inEntry && ! MD.hasClass( toc, 'stuck' );
+		if ( preStuck ) MD.addClass( toc, 'stuck' );
 		var top = 0, el = target;
 		while ( el ) { top += el.offsetTop; el = el.offsetParent; }
 		var offset = inEntry ? toc.clientHeight : 0;
-		if ( simulate ) MD.removeClass( toc, 'stuck' );
+		if ( preStuck ) MD.removeClass( toc, 'stuck' );
 		window.scrollTo({ top: top - offset, behavior: 'smooth' });
 	}
 	for ( var i = 0; i < labels.length; i++ )

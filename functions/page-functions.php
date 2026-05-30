@@ -53,40 +53,29 @@ function md_breadcrumbs() {
 	if ( ! md_has_breadcrumbs() )
 		return;
 
-	$post_type_title = $category_url = $category_title = '';
+	$term = null;
 	$post_id = get_the_ID();
 	$post_type = md_get_post_type();
 	$post_type_obj = get_post_type_object( $post_type );
-	$blog_id = get_option( 'page_for_posts' );
+	$post_type_title = $post_type_obj ? wp_kses_data( $post_type_obj->labels->name ) : '';
 
-	if ( ! empty( $post_type_obj ) )
-		$post_type_title = wp_kses_data( $post_type_obj->labels->name );
-
-	if ( $post_type == 'post' ) {
-		if ( ! empty( $blog_id ) )
-			$post_type_title = get_the_title( $blog_id );
-		else
-			$post_type_title = __( 'Blog', 'md' );
+	if ( $post_type === 'post' ) {
+		$blog_id = get_option( 'page_for_posts' );
+		$post_type_title = $blog_id ? get_the_title( $blog_id ) : __( 'Blog', 'md' );
 	}
 
-	if ( is_category() )
-		$terms = get_the_category();
-	elseif ( is_tag() )
-		$terms = get_tag( get_queried_object_id() );
-	else {
-		$taxonomies = get_taxonomies( array( 'public' => true ) );
-		$terms = wp_get_post_terms( $post_id, $taxonomies );
-	}
+	if ( is_category() || is_tag() || is_tax() )
+		$term = get_queried_object();
+	elseif ( is_singular() ) {
+		$taxonomies = get_object_taxonomies( $post_type );
 
-	if ( ! empty( $terms ) )
-		if ( is_tag() ) {
-			$category_url = get_term_link( $terms->term_id );
-			$category_title = $terms->name;
+		if ( ! empty( $taxonomies ) ) {
+			$post_terms = wp_get_post_terms( $post_id, $taxonomies[0], array( 'number' => 1 ) );
+
+			if ( ! empty( $post_terms ) && ! is_wp_error( $post_terms ) )
+				$term = $post_terms[0];
 		}
-		else {
-			$category_url = get_term_link( $terms[0]->term_id );
-			$category_title = $terms[0]->name;
-		}
+	}
 
 	include md_template( 'breadcrumbs', true );
 }

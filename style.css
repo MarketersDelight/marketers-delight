@@ -2854,7 +2854,12 @@ cite, .tiny {
 	}
 	.entry .toc.stuck { margin-inline: -48px; }
 	.entry .toc .widget-title, .entry .toc-list { padding: 16px 32px; }
-	.entry .toc.stuck .widget-title { cursor: pointer; }
+	.entry .toc.stuck .widget-title {
+		cursor: pointer;
+		font-size: 20px;
+		line-height: 30px;
+		padding-block: 5px;
+	}
 	.entry .toc:is(:not(.stuck), .stuck.open) .widget-title { border-block-end: 1px solid rgba(0, 0, 0, 0.1); }
 	.entry .toc:not(.stuck) .widget-title .toc-trigger, .entry .toc.stuck:not(.open) .toc-list { display: none; }
 }
