@@ -20,6 +20,15 @@
 			)
 		) ); ?>
 	</div>
+	<div class="col md-sep-top">
+		<?php $this->fields->field( 'subcategory', array(
+			'type'         => 'checkbox',
+			'wrap_classes' => 'md-sep-micro',
+			'options'      => array(
+				'enable' => __( 'Show subcategories', 'md' )
+			)
+		) ); ?>
+	</div>
 	<?php endif; ?>
 
 </div>

@@ -21,6 +21,11 @@ class md_page_cover extends md_api {
 				'child_of' => array( 'hero', 'page_settings' ),
 				'fields' => $this->fields()
 			),
+			'taxonomy' => array(
+				'name'     => $this->name,
+				'child_of' => true,
+				'fields'   => $this->fields()
+			),
 			'meta_box' => array(
 				'name' => $this->name,
 				'child_of' => array( 'hero', 'page_settings' ),

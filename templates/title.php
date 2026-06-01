@@ -15,12 +15,12 @@ if ( $media && in_array( $media['position'], $title_images ) ) {
 
 	echo '<div class="wrap">';
 
-	$title_args['wrap'] = true;
+	$args['wrap'] = true;
 
 	if ( $context == 'post' )
-		$title_args['byline'] = $title_args['description'] = $title_args['cta'] = true;
+		$args['byline'] = $args['description'] = $args['cta'] = true;
 
-	md_the_title( $context, $title_args );
+	md_the_title( $context, $args );
 
 	md_featured_media( $context );
 
@@ -35,12 +35,12 @@ if ( $media && in_array( $media['position'], $title_images ) ) {
 else {
 
 	if ( $context == 'post' )
-		$title_args['byline'] = true;
+		$args['byline'] = true;
 
 	if ( $has_wrap )
 		echo '<div class="wrap">';
 
-	md_the_title( $context, $title_args );
+	md_the_title( $context, $args );
 
 	if ( $context == 'page' )
 		md_featured_media( $context, array( 'show_image' => array( 'below_headline' ) ) );

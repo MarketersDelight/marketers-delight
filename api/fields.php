@@ -74,6 +74,30 @@ class md_fields {
 					$setting = ! empty( $setting[$page] ) ? $setting[$page] : '';
 					$name = "{$this->_option}[{$page}][$clean_id]";
 					$id = "{$this->_option}_{$page}_{$clean_id}";
+
+					if ( isset( $_GET['md_tab'] ) ) {
+						$taxonomy   = sanitize_key( $_GET['md_tab'] );
+						$raw_page   = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+						$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+						if ( ! empty( $tax_groups[$raw_page][$taxonomy] ) ) {
+							$setting = ! empty( $setting[$taxonomy] ) ? $setting[$taxonomy] : '';
+							$name    = "{$this->_option}[{$page}][{$taxonomy}][$clean_id]";
+							$id      = "{$this->_option}_{$page}_{$taxonomy}_{$clean_id}";
+						}
+					}
+				}
+				elseif ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy   = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
+						$full    = $setting;
+						$page    = md_clean_id( $page );
+						$name    = "{$this->_option}[$clean_id][{$taxonomy}]";
+						$id      = "{$this->_option}_{$clean_id}_{$taxonomy}";
+						$setting = array( $clean_id => ! empty( $full[$clean_id][$taxonomy] ) ? $full[$clean_id][$taxonomy] : array() );
+					}
 				}
 		}
 
@@ -140,8 +164,26 @@ class md_fields {
 
 			if ( ! empty( $page_types[$page] ) ) {
 				if ( $this->_clean_id !== md_clean_id( $page ) ) {
-					$page = md_clean_id( $page );
-					$option = ! empty( $option[$page] ) ? $option[$page] : array();
+					$raw_page = $page;
+					$page     = md_clean_id( $page );
+					$option   = ! empty( $option[$page] ) ? $option[$page] : array();
+
+					if ( isset( $_GET['md_tab'] ) ) {
+						$taxonomy   = sanitize_key( $_GET['md_tab'] );
+						$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+						if ( ! empty( $tax_groups[$raw_page][$taxonomy] ) )
+							$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
+					}
+				}
+				elseif ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy   = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
+						$page   = md_clean_id( $page );
+						$option = ! empty( $option[$page][$taxonomy] ) ? $option[$page][$taxonomy] : array();
+					}
 				}
 			}
 		}
@@ -190,10 +232,34 @@ class md_fields {
 		elseif ( ! empty( $page_types[$page] ) ) {
 			$page_id = md_clean_id( $page );
 
-			if ( $page_id == $this->_clean_id )
+			if ( $page_id == $this->_clean_id ) {
+				if ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy   = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
+						array_unshift( $keys, $page_id, $taxonomy );
+						$fields = md_setting( $keys, $default );
+						return $fields;
+					}
+				}
+
 				array_unshift( $keys, $page_id );
-			else
+			}
+			else {
+				if ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy   = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+
+					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
+						array_unshift( $keys, $page_id, $taxonomy, $this->_clean_id );
+						$fields = md_setting( $keys, $default );
+						return $fields;
+					}
+				}
+
 				array_unshift( $keys, $page_id, $this->_clean_id );
+			}
 
 			$fields = md_setting( $keys, $default );
 		}

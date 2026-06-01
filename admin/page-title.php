@@ -22,6 +22,10 @@ class md_hero extends md_api {
 				'parent_group' => 'page_settings',
 				'position' => 5
 			),
+			'taxonomy' => array(
+				'name' => $this->name,
+				'position' => 5
+			),
 			'term' => array(
 				'name' => $this->name,
 				'position' => 10,

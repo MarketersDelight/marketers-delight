@@ -81,7 +81,16 @@
 	<?php
 		settings_fields( 'marketers_delight' );
 
-		if ( isset( $admin_pages[$page_id]['callback'] ) )
+		if ( ! empty( $active_tax_tab ) && in_array( $active_tax_tab, $taxonomy_tabs, true ) ) {
+			echo '<input type="hidden" name="md_save_taxonomy_post_type" value="' . esc_attr( $page_id ) . '">';
+			echo '<input type="hidden" name="md_save_taxonomy" value="' . esc_attr( $active_tax_tab ) . '">';
+
+			if ( isset( $admin_pages[$page_id]['callback'] ) )
+				call_user_func( $admin_pages[$page_id]['callback'] );
+			else
+				do_action( "{$hook}_admin_page" );
+		}
+		elseif ( isset( $admin_pages[$page_id]['callback'] ) )
 			call_user_func( $admin_pages[$page_id]['callback'] );
 		else
 			do_action( "{$hook}_admin_page" );

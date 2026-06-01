@@ -295,9 +295,22 @@ class md_sanitize {
 	 */
 
 	public function admin_save( $input ) {
+		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
+			return $this->save_taxonomy( $input );
+
 		$save = $this->validate( 'admin_pages', $input );
 
 		return array_merge( md_setting(), $save );
+	}
+
+	private function save_taxonomy( $input ) {
+		$post_type  = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
+		$taxonomy   = sanitize_key( $_POST['md_save_taxonomy'] );
+		$components = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
+		$validated  = $this->validate( 'admin_pages', array( $post_type => $components ) );
+		$option     = md_setting();
+		$option[$post_type][$taxonomy] = $validated[$post_type];
+		return $option;
 	}
 
 	/**

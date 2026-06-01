@@ -56,6 +56,11 @@ class md_page_cta extends md_api {
 
 		return array(
 			'admin_page' => $args,
+			'taxonomy' => array(
+				'name'     => $this->name,
+				'child_of' => true,
+				'fields'   => $this->fields()
+			),
 			'term' => $args,
 			'meta_box' => $args
 		);

@@ -81,8 +81,11 @@ class md_api {
 		if ( method_exists( $this, 'post_meta' ) )
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 
-		if ( method_exists( $this, 'term_meta' ) || method_exists( $this, 'taxonomy_meta' ) )
-			add_filter( 'md_taxonomy_meta', array( $this, 'term_meta' ) );
+		if ( method_exists( $this, 'term_meta' ) )
+			add_filter( 'md_edit_term_meta', array( $this, 'term_meta' ) );
+
+		if ( method_exists( $this, 'taxonomy_meta' ) )
+			add_filter( 'md_taxonomy_meta', array( $this, 'taxonomy_meta' ) );
 
 		if ( method_exists( $this, 'blocks' ) )
 			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
@@ -191,6 +194,27 @@ class md_api {
 				add_action( $meta_hook, array( $this, $meta_callback ) );
 		}
 
+		// Taxonomy global defaults
+
+		if ( isset( $this->register['taxonomy'] ) ) {
+			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
+
+			$reg          = $this->register['taxonomy'];
+			$post_types   = ! empty( $reg['post_types'] ) ? $reg['post_types'] : md_post_type_meta();
+			$tax_priority = ! empty( $reg['position'] ) ? $reg['position'] : 10;
+
+			if ( method_exists( $this, 'admin_group' ) )
+				$tax_callback = 'admin_group';
+			elseif ( method_exists( $this, 'admin_fields' ) )
+				$tax_callback = 'admin_fields';
+			else
+				$tax_callback = 'admin_page';
+
+			if ( empty( $reg['child_of'] ) )
+				foreach ( $post_types as $pt )
+					add_action( "md_taxonomy_page_{$pt}", array( $this, $tax_callback ), $tax_priority );
+		}
+
 		// Terms
 
 		if ( isset( $this->register['term'] ) ) {
@@ -246,10 +270,39 @@ class md_api {
 					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
 				else
 					$prefix = "{$this->_option}_{$this->_clean_id}";
+
+				if ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy   = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+					$page_slug  = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+
+					if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
+						$prefix .= "_{$taxonomy}";
+				}
 			}
 		}
 
 		return $prefix;
+	}
+
+	public function _taxonomy_groups( $groups ) {
+		if ( empty( $this->register['admin_page']['has_groups'] ) )
+			return $groups;
+
+		$reg        = $this->register['taxonomy'];
+		$post_types = ! empty( $reg['post_types'] ) ? $reg['post_types'] : array( md_clean_id( $this->_id ) );
+		$taxonomies = ! empty( $reg['taxonomies'] ) ? $reg['taxonomies'] : md_taxonomy_meta();
+
+		foreach ( $post_types as $pt ) {
+			$page_slug   = 'md_' . $pt;
+			$object_taxs = get_object_taxonomies( $pt );
+
+			foreach ( $taxonomies as $tax )
+				if ( in_array( $tax, $object_taxs, true ) )
+					$groups[$page_slug][$tax] = true;
+		}
+
+		return $groups;
 	}
 
 	/**
@@ -363,7 +416,7 @@ class md_api {
 		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_enqueue' ) )
 			$this->meta_enqueue();
 
-		if ( $screen->base == 'term' && in_array( $_GET['taxonomy'], md_taxonomy_meta() ) && method_exists( $this, 'term_enqueue' ) )
+		if ( $screen->base == 'term' && in_array( $_GET['taxonomy'], md_edit_term_meta() ) && method_exists( $this, 'term_enqueue' ) )
 			$this->term_enqueue();
 
 		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_enqueue' ) )
@@ -387,7 +440,7 @@ class md_api {
 		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_scripts' ) )
 			$this->meta_scripts();
 
-		if ( $screen->base == 'term' && in_array( sanitize_key( $_GET['taxonomy'] ), md_taxonomy_meta() ) && method_exists( $this, 'term_scripts' ) )
+		if ( $screen->base == 'term' && in_array( sanitize_key( $_GET['taxonomy'] ), md_edit_term_meta() ) && method_exists( $this, 'term_scripts' ) )
 			$this->term_scripts();
 
 		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_scripts' ) )

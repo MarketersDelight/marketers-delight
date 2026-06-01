@@ -98,6 +98,15 @@ function md_has_post_content() {
  */
 
 function md_the_content( $loop ) {
+	if ( $loop['content'] === 'hide' || ( ! get_the_content() && ! get_the_excerpt() && ! is_404() ) )
+		return;
+
+	$has_wrap = ! isset( $loop['is_slim'] );
+	$has_builder = isset( $loop['has_builder'] );
+	$id = ( is_singular() ? ' id="the_content"' : '' );
+	$has_excerpt = ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) && get_the_excerpt();
+	$show_full_content = $loop['content'] == 'full' || ( empty( $loop['query'] ) && ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) );
+
 	include md_template( 'loop/the-content', true );
 }
 
@@ -109,7 +118,7 @@ function md_the_content( $loop ) {
  */
 
 function md_excerpt( $loop ) {
-	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ) .
+	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ).
 		( empty( $loop['excerpt_settings']['remove_text'] ) ?
 			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>'
 		: '' );
@@ -195,6 +204,81 @@ function md_has_post_nav() {
 		( ! $disable || $single_add )
 	)
 		return true;
+}
+
+/**
+ * Create pagination for use on home and archives pages.
+ *
+ * @since 4.0
+ */
+
+function md_pagination( $loop = array() ) {
+	if ( is_singular() )
+		return;
+
+	$big = 999999999;
+	$type = md_module( array( 'loop', 'pagination' ) );
+	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
+
+	if ( isset( $loop['by_category'] ) ) {
+		$taxonomies = get_object_taxonomies( md_get_post_type() );
+		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
+		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
+		$total = ceil( $total_terms / $category_per_page );
+	}
+	else {
+		global $wp_query;
+		$total = $wp_query->max_num_pages;
+	}
+
+	if ( $total <= 1 )
+		return;
+
+	include md_template( 'pagination', true );
+}
+
+/**
+ * Check if custom 404 page is enabled and published.
+ *
+ * @since 6.0
+ */
+
+function md_has_custom_404() {
+	$page_404 = md_setting( array( 'settings', '404_page' ) );
+
+	if ( is_404() && $page_404 && get_post_status( $page_404 ) )
+		return $page_404;
+}
+
+/**
+ * Render the 404 template based on user settings.
+ *
+ * @since 4.0
+ */
+
+function md_404() {
+	$page_404 = md_has_custom_404();
+
+	if ( $page_404 ) {
+		$query_404 = new WP_Query( array(
+			'post_type' => 'page',
+			'p' => $page_404,
+			'post_status' => array( 'publish' ),
+			'fields' => 'ids'
+		) );
+
+		if ( $query_404->have_posts() )
+			while ( $query_404->have_posts() ) {
+				$query_404->the_post();
+
+				md_loop( array( 'in_loop' => true ) );
+			}
+
+		wp_reset_postdata();
+	}
+	else md_loop( array( 'in_loop' => true ) );
 }
 
 /**

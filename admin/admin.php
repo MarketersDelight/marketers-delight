@@ -247,6 +247,11 @@ class md_admin {
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
 
+		$page_slug    = sanitize_key( $page );
+		$tax_groups   = apply_filters( 'md_taxonomy_groups', array() );
+		$taxonomy_tabs = ! empty( $tax_groups[$page_slug] ) ? array_keys( $tax_groups[$page_slug] ) : array();
+		$active_tax_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
+
 		include md_template( 'admin/admin', true );
 	}
 
@@ -347,7 +352,7 @@ class md_admin {
 	 */
 
 	public function add_terms() {
-		foreach ( md_taxonomy_meta() as $term ) {
+		foreach ( md_edit_term_meta() as $term ) {
 			add_action( "{$term}_edit_form_fields", array( $this, 'term' ) );
 			add_action( "edited_{$term}", array( $this->sanitize, 'term_save' ), 10, 2 );
 		}

@@ -115,7 +115,7 @@ class md_accordion_widget extends WP_Widget {
 			'order' => '',
 			'exclude' => ''
 		) );
-		$taxonomies = md_taxonomy_meta();
+		$taxonomies = md_edit_term_meta();
 	?>
 
     <p>

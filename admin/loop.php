@@ -23,6 +23,10 @@ class md_loop extends md_api {
 				'parent_group' => 'page_settings',
 				'fields' => $fields
 			),
+			'taxonomy' => array(
+				'name' => $this->name,
+				'fields' => $fields
+			),
 			'term' => array(
 				'name' => $this->name,
 				'fields' => $fields
@@ -88,6 +92,10 @@ class md_loop extends md_api {
 				'options' => array_keys( md_loops() )
 			),
 			'category_posts' => array(
+				'type' => 'checkbox',
+				'options' => array( 'enable' )
+			),
+			'subcategory' => array(
 				'type' => 'checkbox',
 				'options' => array( 'enable' )
 			),

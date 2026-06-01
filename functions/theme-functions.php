@@ -367,6 +367,30 @@ function md_post_type_field( $keys = null, $default = null, $post_type = null ) 
 }
 
 /**
+ * Get taxonomy-level global settings (middle tier between post type archive and individual term).
+ *
+ * @since 6.1
+ */
+
+function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $taxonomy = null ) {
+	if ( ! $post_type )
+		$post_type = md_get_post_type();
+
+	if ( ! $taxonomy ) {
+		$queried  = get_queried_object();
+		$taxonomy = isset( $queried->taxonomy ) ? $queried->taxonomy : null;
+	}
+
+	if ( ! $taxonomy )
+		return $default;
+
+	if ( is_string( $keys ) )
+		$keys = (array) $keys;
+
+	return md_setting( array_merge( (array) $post_type, (array) $taxonomy, (array) $keys ), $default );
+}
+
+/**
  * Access user meta.
  *
  * @since 5.3.1
@@ -441,8 +465,15 @@ function md_module( $keys = null, $default = null, $id = null ) {
 
 	if ( is_home() || is_post_type_archive() || is_author() )
 		$option = md_post_type_field( $keys, $default );
-	elseif ( is_category() || is_tax() )
-		$option = md_term_meta( $keys, $id, $default );
+	elseif ( is_category() || is_tax() ) {
+		$option = md_term_meta( $keys, $id, null );
+
+		if ( is_null( $option ) )
+			$option = md_taxonomy_field( $keys, null );
+
+		if ( is_null( $option ) )
+			$option = md_post_type_field( $keys, $default );
+	}
 	elseif ( is_singular() || is_404() )
 		$option = md_post_meta( $keys, $id, $default );
 	else

@@ -32,6 +32,10 @@ class md_layout extends md_api {
 				'parent_group' => 'page_settings',
 				'fields' => $this->fields()
 			),
+			'taxonomy' => array(
+				'name' => $this->name,
+				'fields' => $this->fields()
+			),
 			'meta_box' => array(
 				'name' => $this->name,
 				'child_of' => 'page_settings',

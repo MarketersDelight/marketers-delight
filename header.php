@@ -1,10 +1,24 @@
-<?php md_template( 'head' );
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<?php wp_head(); ?>
+</head>
+
+<body <?php body_class(); ?>>
+
+<?php
+
+wp_body_open();
 
 md_hook_before_html();
 
 if ( md_has_header() ) :
 	$header = md_get_builder( 'header' );
 	$mobile = md_setting( array( 'header', 'layout_mobile' ) );
+	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
+	$has_elements = md_has_header_elements();
 
 	md_hook_before_header();
 ?>
@@ -15,7 +29,7 @@ if ( md_has_header() ) :
 
 	<div class="inner">
 
-		<div class="header-controls"><?php
+		<div class="header-controls"><?php // Contains logo, mobile triggers
 
 			if ( md_has_panel() )
 				md_trigger( 'panel', array(
@@ -32,7 +46,7 @@ if ( md_has_header() ) :
 			if ( md_has_logo() )
 				md_logo();
 
-			if ( md_has_header_elements() ) {
+			if ( $has_elements ) {
 
 				echo '<div class="header-triggers">';
 
@@ -46,10 +60,8 @@ if ( md_has_header() ) :
 					md_trigger( 'menu', array( 'builder' => $header ) );
 
 				if ( ! empty( $header['elements']['link'] ) )
-					foreach ( $header['elements']['link'] as $c => $link_id ) {
-						$link = $header['fields'][$link_id] ?? array();
-						md_link( $link );
-					}
+					foreach ( $header['elements']['link'] as $c => $link_id )
+						md_link( $header['fields'][$link_id] ?? array() );
 
 				md_hook_header_triggers();
 
@@ -59,27 +71,28 @@ if ( md_has_header() ) :
 
 		?></div>
 
-		<?php if ( md_has_header_elements() )
+		<?php if ( $has_elements ) // Render Main and Aside sections with inner elements
 			foreach ( array_keys( $header['data'] ) as $section ) {
 				if ( empty( $header['data'][$section] ) )
 					continue;
 
-				echo '<div class="header-' . esc_attr( $section ) . '">';
+				echo "<div class=\"header-$section\">";
 
 				foreach ( $header['data'][$section] as $order => $items ) {
 					$type = esc_attr( $items['type'] );
 					$id = esc_attr( $items['id'] );
+					$field = $header['fields'][$id] ?? null;
 
-					if ( ! empty( $header['fields'][$id] ) ) {
-						$header['fields'][$id]['location'] = $section;
-						$header['fields'][$id]['layout'] = md_setting( array( 'header', 'layout' ), 'standard' );
-						$header['fields'][$id]['id'] = $id;
+					if ( $field ) {
+						$field['location'] = $section;
+						$field['layout'] = $layout;
+						$field['id'] = $id;
 
-						call_user_func( 'md_' . esc_attr( $type ), $header['fields'][$id] );
+						call_user_func( "md_$type", $field );
 					}
 				}
 
-				do_action( 'md_hook_' . esc_attr( $section ) );
+				do_action( "md_hook_$section" );
 
 				echo '</div>';
 		} ?>

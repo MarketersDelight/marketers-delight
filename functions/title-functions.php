@@ -95,7 +95,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
-	$title_args = array( 'loop' => ! empty( $args['loop'] ) ? $args['loop'] : array() );
+	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 
 	if ( ( $has_sidebar && ! $has_header_cover ) || ( $context == 'post' && ! is_singular() && isset( $loop['columns'] ) && $loop['columns'] > 2 ) )
 		$classes[] = 'inline';

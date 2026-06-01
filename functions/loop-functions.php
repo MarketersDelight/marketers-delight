@@ -75,40 +75,6 @@ function md_loop_style( $args = array() ) {
 }
 
 /**
- * Override portions of $loop when post is set to Featured.
- *
- * @since 6.0
- */
-
-function md_loop_featured( $loop ) {
-	$loop['is_featured'] = true;
-	$featured = array(
-		'featured_remove_byline' => 'remove_byline',
-		'featured_content' => 'content',
-		'featured_featured_image' => 'featured_image',
-		'featured_excerpt_more' => 'excerpt_more',
-		'featured_excerpt_length' => 'excerpt_length',
-		'featured_read_more' => 'read_more',
-		'featured_excerpt_settings' => 'excerpt_settings'
-	);
-
-	foreach ( $featured as $key => $loop_key ) {
-		if ( empty( $loop[$key] ) )
-			continue;
-
-		$loop[$loop_key] = $loop[$key];
-		unset( $loop[$key] );
-	}
-
-	if ( ! empty( $loop['featured_post_footer']['remove'] ) ) {
-		$loop['post_footer']['remove'] = true;
-		unset( $loop['featured_post_footer'] );
-	}
-
-	return $loop;
-}
-
-/**
  * Build loop wrapper classes.
  *
  * @since 6.0
@@ -225,6 +191,40 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 }
 
 /**
+ * Override portions of $loop when post is set to Featured.
+ *
+ * @since 6.0
+ */
+
+function md_loop_featured( $loop ) {
+	$loop['is_featured'] = true;
+	$featured = array(
+		'featured_remove_byline' => 'remove_byline',
+		'featured_content' => 'content',
+		'featured_featured_image' => 'featured_image',
+		'featured_excerpt_more' => 'excerpt_more',
+		'featured_excerpt_length' => 'excerpt_length',
+		'featured_read_more' => 'read_more',
+		'featured_excerpt_settings' => 'excerpt_settings'
+	);
+
+	foreach ( $featured as $key => $loop_key ) {
+		if ( empty( $loop[$key] ) )
+			continue;
+
+		$loop[$loop_key] = $loop[$key];
+		unset( $loop[$key] );
+	}
+
+	if ( ! empty( $loop['featured_post_footer']['remove'] ) ) {
+		$loop['post_footer']['remove'] = true;
+		unset( $loop['featured_post_footer'] );
+	}
+
+	return $loop;
+}
+
+/**
  * Return loop data with context awareness and user-set
  * options blended with global post type level data.
  *
@@ -252,8 +252,10 @@ function md_get_loop( $args = array() ) {
 
 		if ( is_singular() || is_404() )
 			$loop = array_merge( array( 'loop' => $loop_type ), $single );
-		else
-			$loop = array_merge( $post_type, $single );
+		else {
+			$tax_defaults = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
+			$loop         = array_merge( $post_type, $tax_defaults, $single );
+		}
 
 		$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 
@@ -263,14 +265,17 @@ function md_get_loop( $args = array() ) {
 		if ( ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) )
 			$loop['by_category'] = true;
 
+		if ( ( is_category() || is_tax() ) && ! empty( $loop['subcategory']['enable'] ) ) {
+			$queried = get_queried_object();
+			if ( $queried && ! empty( get_term_children( $queried->term_id, $queried->taxonomy ) ) )
+				$loop['subcategory'] = true;
+		}
+
 		if ( md_has_builder() )
 			$loop['has_builder'] = true;
 
 		if ( md_has_sidebar() )
 			$loop['has_sidebar'] = true;
-
-		if ( md_has_panel() )
-			$loop['has_panel'] = true;
 	}
 
 	if ( empty( $loop['columns'] ) )
@@ -296,6 +301,17 @@ function md_get_loop( $args = array() ) {
 }
 
 /**
+ * Hook custom content after Loop Item X.
+ *
+ * @since 5.1
+ */
+
+function md_hook_x_loop( $loop, $c ) {
+	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
+		do_action( 'md_hook_x_loop', $loop );
+}
+
+/**
  * The Main Loop Logic loaded to all posts, pages, and archives.
  * Meant to mirror native WP page hierarchy and loop accordingly.
  *
@@ -316,6 +332,9 @@ function md_loop( $args = array() ) {
 
 	md_hook_loop_before();
 
+	if ( ( is_category() || is_tax() ) && ! empty( $loop['subcategory'] ) )
+		include md_template( 'loop/subcategory', true );
+
 	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
 	elseif ( isset( $loop['by_category'] ) )
@@ -328,7 +347,6 @@ function md_loop( $args = array() ) {
 
 			while ( $query->have_posts() ) {
 				$query->the_post();
-
 				include md_template( 'loop/the-post', true );
 			}
 
@@ -359,90 +377,4 @@ function md_loop( $args = array() ) {
 	else md_404();
 
 	md_hook_loop_after();
-}
-
-/**
- * Hook custom content after Loop Item X.
- *
- * @since 5.1
- */
-
-function md_hook_x_loop( $loop, $c ) {
-	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
-		do_action( 'md_hook_x_loop', $loop );
-}
-
-/**
- * Render the 404 template based on user settings.
- *
- * @since 4.0
- */
-
-function md_404() {
-	$page_404 = md_has_custom_404();
-
-	if ( $page_404 ) {
-		$query_404 = new WP_Query( array(
-			'post_type' => 'page',
-			'p' => $page_404,
-			'post_status' => array( 'publish' ),
-			'fields' => 'ids'
-		) );
-
-		if ( $query_404->have_posts() )
-			while ( $query_404->have_posts() ) {
-				$query_404->the_post();
-
-				md_loop( array( 'in_loop' => true ) );
-			}
-
-		wp_reset_postdata();
-	}
-	else md_loop( array( 'in_loop' => true ) );
-}
-
-/**
- * Check if custom 404 page is enabled and published.
- *
- * @since 6.0
- */
-
-function md_has_custom_404() {
-	$page_404 = md_setting( array( 'settings', '404_page' ) );
-
-	if ( is_404() && $page_404 && get_post_status( $page_404 ) )
-		return $page_404;
-}
-
-/**
- * Create pagination for use on home and archives pages.
- *
- * @since 4.0
- */
-
-function md_pagination( $loop = array() ) {
-	if ( is_singular() )
-		return;
-
-	$big = 999999999;
-	$type = md_module( array( 'loop', 'pagination' ) );
-	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
-	$loop = ! empty( $loop ) ? $loop : md_get_loop();
-
-	if ( isset( $loop['by_category'] ) ) {
-		$taxonomies = get_object_taxonomies( md_get_post_type() );
-		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
-		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
-		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
-		$total = ceil( $total_terms / $category_per_page );
-	}
-	else {
-		global $wp_query;
-		$total = $wp_query->max_num_pages;
-	}
-
-	if ( $total <= 1 )
-		return;
-
-	include md_template( 'loop/pagination', true );
 }

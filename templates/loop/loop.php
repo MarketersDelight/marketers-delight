@@ -1,6 +1,6 @@
 <?php
 
-if ( empty( $builder ) )
+if ( ! isset( $loop['has_builder'] ) )
 	echo "<$html class=\"" . implode( ' ', get_post_class( $classes ) ) . '">';
 
 md_hook_content_top();
@@ -38,5 +38,5 @@ md_hook_content_item();
 
 md_hook_content_bottom();
 
-if ( empty( $builder ) )
+if ( ! isset( $loop['has_builder'] ) )
 	echo "</$html>";
