@@ -5,8 +5,8 @@
 			'type' => 'select',
 			'label' => __( 'Media Type', 'md' ),
 			'classes' => 'md-conditional-option',
+			'empty_label' => __( 'Featured Image', 'md' ),
 			'options' => array(
-				'image' => __( 'Featured Image', 'md' ),
 				'video' => __( 'Video Embed', 'md' ),
 				'custom_html' => __( 'Custom HTML', 'md' )
 			)

@@ -19,11 +19,7 @@ class md_hero extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
-				'position' => 5
-			),
-			'taxonomy' => array(
-				'name' => $this->name,
+				'group' => 'page_settings',
 				'position' => 5
 			),
 			'term' => array(

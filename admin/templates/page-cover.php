@@ -42,9 +42,7 @@
 		);
 		if ( $is_admin ) {
 			$display_options = array(
-				'archive' => __( 'Apply to <strong>Archive</strong>', 'md' ),
-				'term' => __( 'Apply to all <strong>Categories</strong>', 'md' ),
-				'single' => __( 'Apply to all <strong>Posts</strong>', 'md' ),
+				'single'       => __( 'Apply to all <strong>Posts</strong>', 'md' ),
 				'show_excerpt' => __( 'Show <strong>Excerpt</strong> in Post Titles', 'md' )
 			);
 		}

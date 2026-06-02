@@ -40,16 +40,17 @@ function md_get_title( $context = 'post' ) {
 		$post_type_title = post_type_archive_title( '', false );
 		$title = md_post_type_field( 'archives_title', $post_type_title );
 	}
-	elseif ( is_tax() && get_queried_object() ) {
+	elseif ( is_tax() || is_category() || is_tag() ) {
 		$term_title = single_term_title( '', false );
-		$title = md_term_meta( array( 'hero', 'archives_title' ), null, $term_title );
+		$title = md_term_meta( array( 'hero', 'archives_title' ) );
+
+		if ( ! $title ) {
+			$tax_title = md_taxonomy_field( 'archives_title' );
+			$title = $tax_title ? $tax_title : $term_title;
+		}
+
+		$title = str_replace( '{title}', $term_title, $title );
 	}
-	elseif ( is_category() ) {
-		$cat_title = single_cat_title( '', false );
-		$title = md_term_meta( array( 'hero', 'archives_title' ), null, $cat_title );
-	}
-	elseif ( is_tag() )
-		$title = single_tag_title( '', false );
 	elseif ( is_search() )
 		$title = sprintf( esc_html__( 'Search Results For: %s', 'md' ), '<span class="search-query">' . get_search_query() . '</span>' );
 	elseif ( is_author() )

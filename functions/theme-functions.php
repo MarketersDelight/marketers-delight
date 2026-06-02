@@ -377,7 +377,7 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 		$post_type = md_get_post_type();
 
 	if ( ! $taxonomy ) {
-		$queried  = get_queried_object();
+		$queried = get_queried_object();
 		$taxonomy = isset( $queried->taxonomy ) ? $queried->taxonomy : null;
 	}
 

@@ -526,17 +526,23 @@ class md_sanitize {
 						if ( isset( $group_fields['type'] ) && in_array( $group_fields['type'], array( 'group', 'builder' ) ) && isset( $input[$key][$group] ) ) {
 							unset( $input[$key][$group]['{clone}'] );
 
-							$save[$key][$group] = $this->clone_groups( $input[$key][$group], $data[$key]['fields'][$group]['fields'], isset( $group_fields['group_key_lowercase'] ), true );
+							$cloned = $this->clone_groups( $input[$key][$group], $data[$key]['fields'][$group]['fields'], isset( $group_fields['group_key_lowercase'] ), true );
 
 							if ( $group_fields['type'] == 'builder' ) {
-								$builder = $this->builder( $save[$key][$group] );
+								$save[$key][$group] = $cloned;
+								$builder = $this->builder( $cloned );
 								$save[$key]["{$group}_data"] = $builder['data'];
 								$save[$key]["{$group}_elements"] = $builder['elements'];
 								$save[$key]["{$group}_locations"] = $builder['locations'];
 							}
+							elseif ( ! empty( $cloned ) )
+								$save[$key][$group] = $cloned;
 						}
-						elseif ( isset( $group_fields['type'] ) && $this->has_value( $group_input ) )
-							$save[$key][$group] = $this->validate_field( $group_input, $group_fields );
+						elseif ( isset( $group_fields['type'] ) && $this->has_value( $group_input ) ) {
+							$validated = $this->validate_field( $group_input, $group_fields );
+							if ( $this->has_value( $validated ) )
+								$save[$key][$group] = $validated;
+						}
 						elseif ( is_array( $group_fields ) ) {
 							foreach ( $group_fields as $option_name => $option_fields ) {
 								$option_input = is_array( $group_input ) && isset( $group_input[$option_name] ) ? $group_input[$option_name] : null;
@@ -545,17 +551,25 @@ class md_sanitize {
 									if ( is_array( $input[$key][$group][$option_name] ) )
 										unset( $input[$key][$group][$option_name]['{clone}'] );
 
-									$save[$key][$group][$option_name] = $this->clone_groups( $input[$key][$group][$option_name], $data[$key]['fields'][$group][$option_name]['fields'], isset( $group_fields['group_key_lowercase'] ) );
+									$cloned = $this->clone_groups( $input[$key][$group][$option_name], $data[$key]['fields'][$group][$option_name]['fields'], isset( $group_fields['group_key_lowercase'] ) );
+									if ( ! empty( $cloned ) )
+										$save[$key][$group][$option_name] = $cloned;
 								}
-								elseif ( isset( $option_fields['type'] ) && $this->has_value( $option_input ) )
-									$save[$key][$group][$option_name] = $this->validate_field( $option_input, $option_fields );
+								elseif ( isset( $option_fields['type'] ) && $this->has_value( $option_input ) ) {
+									$validated = $this->validate_field( $option_input, $option_fields );
+									if ( $this->has_value( $validated ) )
+										$save[$key][$group][$option_name] = $validated;
+								}
 								elseif ( is_array( $option_fields ) )
 									foreach ( $option_fields as $val_name => $val_fields )
 										if ( isset( $val_fields['type'] ) ) {
 											$val_input = is_array( $option_input ) && isset( $option_input[$val_name] ) ? $option_input[$val_name] : null;
 
-											if ( $this->has_value( $val_input ) )
-												$save[$key][$group][$option_name][$val_name] = $this->validate_field( $val_input, $val_fields );
+											if ( $this->has_value( $val_input ) ) {
+												$validated = $this->validate_field( $val_input, $val_fields );
+												if ( $this->has_value( $validated ) )
+													$save[$key][$group][$option_name][$val_name] = $validated;
+											}
 										}
 							}
 						}

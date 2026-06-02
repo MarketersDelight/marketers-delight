@@ -21,11 +21,6 @@ class md_page_cover extends md_api {
 				'child_of' => array( 'hero', 'page_settings' ),
 				'fields' => $this->fields()
 			),
-			'taxonomy' => array(
-				'name'     => $this->name,
-				'child_of' => true,
-				'fields'   => $this->fields()
-			),
 			'meta_box' => array(
 				'name' => $this->name,
 				'child_of' => array( 'hero', 'page_settings' ),
@@ -58,7 +53,7 @@ class md_page_cover extends md_api {
 			'bg_color' => array( 'type' => 'color' ),
 			'display' => array(
 				'type' => 'checkbox',
-				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'archive', 'term', 'single', 'show_excerpt' )
+				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'single', 'show_excerpt' )
 			),
 			'title_content' => array( 'type' => 'text' )
 		);

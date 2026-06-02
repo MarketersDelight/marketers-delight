@@ -30,16 +30,12 @@ class md_byline extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
-				'fields' => $this->fields()
-			),
-			'taxonomy' => array(
-				'name' => $this->name,
+				'group' => 'page_settings',
 				'fields' => $this->fields()
 			),
 			'term' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
+				'group' => 'page_settings',
 				'fields' => $this->fields()
 			)
 		);

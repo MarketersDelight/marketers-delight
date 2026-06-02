@@ -9,7 +9,6 @@
 class md_layout extends md_api {
 
 	public $name;
-	private $page_types;
 
 	/**
 	 * Register admin page, meta box, and term interfaces
@@ -20,20 +19,11 @@ class md_layout extends md_api {
 
 	public function register() {
 		$this->name = __( 'Layout', 'md' );
-		$this->page_types = array(
-			'archive' => __( 'Archive', 'md' ),
-			'term' => __( 'Categories', 'md' ),
-			'single' => __( 'Single', 'md' )
-		);
 
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
-				'fields' => $this->fields()
-			),
-			'taxonomy' => array(
-				'name' => $this->name,
+				'group' => 'page_settings',
 				'fields' => $this->fields()
 			),
 			'meta_box' => array(
@@ -43,7 +33,7 @@ class md_layout extends md_api {
 			),
 			'term' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
+				'group' => 'page_settings',
 				'fields' => $this->fields()
 			)
 		);
@@ -332,6 +322,12 @@ class md_layout extends md_api {
 	public function toggle_fields( $id, $layout, $context ) {
 		if ( empty( $context['toggles'][$id] ) )
 			return;
+
+		$page_types = array(
+			'archive' => __( 'Archive', 'md' ),
+			'term' => __( 'Categories', 'md' ),
+			'single' => __( 'Single', 'md' )
+		);
 
 		include md_template( 'admin/fields/layout-toggle', true );
 	}

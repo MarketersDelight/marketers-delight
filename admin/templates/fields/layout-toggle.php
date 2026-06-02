@@ -6,7 +6,7 @@
 		'options' => array( 'global' => __( 'Enable on all pages', 'md' ) )
 	) );
 
-	foreach ( $this->page_types as $type => $label ) {
+	foreach ( $page_types as $type => $label ) {
 		echo '<div class="md-flex-columns md-sep-micro">'.
 			 '<div class="md-flex-column">';
 

@@ -5,18 +5,19 @@
  * all of the reusable components within the Marketers Delight theme and associated child theme.
  *
  * @since 4.0
- * @refactored 5.0
  */
 
 class md_api {
 
+	// Set important properties available in class extensions.
+
+	public $_option = 'marketers_delight';
+	public $register = array();
 	public $_id;
 	public $_clean_id;
-	public $_option = 'marketers_delight';
 	public $_prefix;
 	public $fields;
 	public $name;
-	public $register;
 	protected static $sanitize;
 	protected static $design;
 
@@ -96,213 +97,9 @@ class md_api {
 		if ( method_exists( $this, 'byline' ) )
 			add_filter( 'md_byline', array( $this, 'byline' ) );
 
+		// WP init
+
 		add_action( 'init', array( $this, '_init' ) );
-	}
-
-	/**
-	 * Setup init for admin environment.
-	 *
-	 * @since 6.0
-	 */
-
-	public function _init() {
-		if ( method_exists( $this, 'init' ) )
-			$this->init();
-
-		if ( ! is_admin() )
-			return;
-
-		// Set admin properties
-
-		$this->_clean_id = md_clean_id( $this->_id );
-		$this->_prefix = $this->_prefix();
-		$this->fields = new md_fields( array(
-			'id' => $this->_id,
-			'clean_id' => $this->_clean_id,
-			'prefix' => $this->_prefix
-		) );
-
-		// Register components and fields
-
-		$callback = 'admin_fields';
-
-		$this->register = $this->register();
-
-		add_filter( 'md_register', array( $this, '_register' ) );
-
-		// Admin pages
-
-		if ( isset( $this->register['admin_page'] ) ) {
-			$admin_callback = $admin_group_callback = method_exists( $this, 'admin_page' ) ? 'admin_page' : $callback;
-
-			if ( isset( $this->register['admin_page']['has_groups'] ) )
-				add_filter( 'md_admin_groups', array( $this, '_admin_groups' ) );
-
-			if ( isset( $this->register['admin_page']['parent_group'] ) || isset( $this->register['admin_page']['child_of'] ) ) {
-				$admin_group_priority = ! empty( $this->register['admin_page']['position'] ) ? $this->register['admin_page']['position'] : 10;
-
-				if ( method_exists( $this, 'admin_group' ) )
-					$admin_group_callback = 'admin_group';
-
-				if ( isset( $this->register['admin_page']['parent_group'] ) ) {
-					$group = $this->register['admin_page']['parent_group'];
-					$admin_hooks = array( "md_admin_page_{$group}" );
-					$groups = (array) $group;
-				}
-				elseif ( isset( $this->register['admin_page']['child_of'] ) ) {
-					$groups = $this->register['admin_page']['child_of'];
-					$groups = ! is_array( $groups ) ? (array) $groups : $groups;
-
-					foreach ( $groups as $group ) {
-						$admin_hooks[] = "md_admin_page_{$group}_fields";
-
-						add_filter( "md_admin_page_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
-					}
-				}
-
-				if ( method_exists( $this, 'fields' ) )
-					foreach ( $groups as $group )
-						add_filter( "md_filter_admin_page_$group", array( $this, '_admin_fields' ) );
-
-				foreach ( $admin_hooks as $admin_hook )
-					add_action( $admin_hook, array( $this, $admin_group_callback ), $admin_group_priority );
-			}
-
-			add_action( "{$this->_id}_admin_page", array( $this, $admin_callback ) );
-		}
-
-		if ( method_exists( $this, 'admin_page_before' ) ) #MD5.4, drop-ins page
-			add_action( "{$this->_id}_admin_page_before_form", array( $this, 'admin_page_before' ) );
-
-		// Meta boxes
-
-		if ( isset( $this->register['meta_box'] ) ) {
-			if ( isset( $this->register['meta_box']['child_of'] ) ) {
-				$groups = $this->register['meta_box']['child_of'];
-				$groups = ! is_array( $groups ) ? (array) $groups : $groups;
-
-				foreach ( $groups as $group ) {
-					$meta_hooks[] = "md_post_meta_{$group}_fields";
-
-					add_filter( "md_post_meta_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
-				}
-			} else $meta_hooks = array( "{$this->_id}_meta_box" );
-
-			$meta_callback = method_exists( $this, 'meta_box' ) ? 'meta_box' : $callback;
-
-			foreach ( $meta_hooks as $meta_hook )
-				add_action( $meta_hook, array( $this, $meta_callback ) );
-		}
-
-		// Taxonomy global defaults
-
-		if ( isset( $this->register['taxonomy'] ) ) {
-			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
-
-			$reg          = $this->register['taxonomy'];
-			$post_types   = ! empty( $reg['post_types'] ) ? $reg['post_types'] : md_post_type_meta();
-			$tax_priority = ! empty( $reg['position'] ) ? $reg['position'] : 10;
-
-			if ( method_exists( $this, 'admin_group' ) )
-				$tax_callback = 'admin_group';
-			elseif ( method_exists( $this, 'admin_fields' ) )
-				$tax_callback = 'admin_fields';
-			else
-				$tax_callback = 'admin_page';
-
-			if ( empty( $reg['child_of'] ) )
-				foreach ( $post_types as $pt )
-					add_action( "md_taxonomy_page_{$pt}", array( $this, $tax_callback ), $tax_priority );
-		}
-
-		// Terms
-
-		if ( isset( $this->register['term'] ) ) {
-			$term_callback = method_exists( $this, 'term' ) ? 'term' : $callback;
-			$position = ! empty( $this->register['term']['position'] ) ? $this->register['term']['position'] : 100;
-
-			if ( method_exists( $this, $term_callback ) )
-				if ( isset( $this->register['term']['child_of'] ) ) {
-					$groups = $this->register['term']['child_of'];
-					$groups = ! is_array( $groups ) ? (array) $groups : $groups;
-
-					foreach ( $groups as $group ) {
-						add_filter( "md_term_meta_{$group}_child_fields", array( $this, '_admin_child_fields' ) );
-						add_action( "md_term_meta_{$group}_fields", array( $this, $term_callback ), $position );
-					}
-				}
-				elseif ( isset( $_GET['taxonomy'] ) && isset( $_GET['tag_ID'] ) ) {
-					$taxonomy = sanitize_key( $_GET['taxonomy'] );
-					$term = intval( $_GET['tag_ID'] );
-
-					add_action( "md_{$taxonomy}_{$term}", array( $this, $term_callback ), $position );
-				}
-		}
-
-		// User meta
-
-		if ( method_exists( $this, 'user_meta' ) && isset( $this->register['user_meta'] ) )
-			add_action( 'md_user_meta_fields', array( $this, 'user_meta' ) );
-
-		// Scripts
-
-		add_action( 'admin_enqueue_scripts', array( $this, '_admin_enqueue' ) );
-		add_action( 'admin_print_footer_scripts', array( $this, '_admin_scripts' ), 100 );
-	}
-
-	/**
-	 * Get a prefix for option names and values across different contexts.
-	 *
-	 * @since 6.0
-	 */
-
-	public function _prefix() {
-		$prefix = "{$this->_option}_{$this->_clean_id}";
-
-		if ( isset( $_GET['page'] ) ) {
-			$page = sanitize_key( $_GET['page'] );
-			$page_types = apply_filters( 'md_admin_groups', array() );
-
-			if ( ! empty( $page_types[$page] ) ) {
-				$page = md_clean_id( $page );
-
-				if ( $page !== $this->_clean_id )
-					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
-				else
-					$prefix = "{$this->_option}_{$this->_clean_id}";
-
-				if ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy   = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-					$page_slug  = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-
-					if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
-						$prefix .= "_{$taxonomy}";
-				}
-			}
-		}
-
-		return $prefix;
-	}
-
-	public function _taxonomy_groups( $groups ) {
-		if ( empty( $this->register['admin_page']['has_groups'] ) )
-			return $groups;
-
-		$reg        = $this->register['taxonomy'];
-		$post_types = ! empty( $reg['post_types'] ) ? $reg['post_types'] : array( md_clean_id( $this->_id ) );
-		$taxonomies = ! empty( $reg['taxonomies'] ) ? $reg['taxonomies'] : md_taxonomy_meta();
-
-		foreach ( $post_types as $pt ) {
-			$page_slug   = 'md_' . $pt;
-			$object_taxs = get_object_taxonomies( $pt );
-
-			foreach ( $taxonomies as $tax )
-				if ( in_array( $tax, $object_taxs, true ) )
-					$groups[$page_slug][$tax] = true;
-		}
-
-		return $groups;
 	}
 
 	/**
@@ -332,6 +129,94 @@ class md_api {
 	}
 
 	/**
+	 * Run core API actions and filters on WP init.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _init() {
+		if ( method_exists( $this, 'init' ) )
+			$this->init();
+
+		if ( ! is_admin() )
+			return;
+
+		// Set important properties
+
+		$this->_clean_id = md_clean_id( $this->_id );
+		$this->_prefix = $this->_prefix();
+		$this->fields = new md_fields( array(
+			'id' => $this->_id,
+			'clean_id' => $this->_clean_id,
+			'prefix' => $this->_prefix
+		) );
+
+		if ( method_exists( $this, 'register' ) )
+			$this->register = $this->register();
+
+		// Render all settings fields hierarchy
+
+		add_filter( 'md_register', array( $this, '_register' ) );
+
+		// Render admin interfaces
+
+		$this->setup_admin_page();
+		$this->setup_meta_box();
+		$this->setup_term();
+
+		if ( isset( $this->register['taxonomy'] ) )
+			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
+
+		if ( method_exists( $this, 'user_meta' ) && isset( $this->register['user_meta'] ) )
+			add_action( 'md_user_meta_fields', array( $this, 'user_meta' ) );
+
+		// Fire admin enqueue and inline scripts/styles.
+
+		add_action( 'admin_enqueue_scripts', function() {
+			$this->_admin_assets( 'enqueue' );
+		} );
+
+		add_action( 'admin_print_footer_scripts', function() {
+			$this->_admin_assets( 'scripts' );
+		}, 100 );
+	}
+
+	/**
+	 * Get a prefix for option names and values across different page contexts.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _prefix() {
+		$prefix = "{$this->_option}_{$this->_clean_id}";
+
+		if ( isset( $_GET['page'] ) ) {
+			$page = sanitize_key( $_GET['page'] );
+			$page_types = apply_filters( 'md_admin_groups', array() );
+
+			if ( ! empty( $page_types[$page] ) ) {
+				$page = md_clean_id( $page );
+
+				if ( $page !== $this->_clean_id )
+					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
+				else
+					$prefix = "{$this->_option}_{$this->_clean_id}";
+
+				if ( isset( $_GET['md_tab'] ) ) {
+					$taxonomy = sanitize_key( $_GET['md_tab'] );
+					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+					$page_slug = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+
+					if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
+						$prefix .= "_{$taxonomy}";
+				}
+			}
+		}
+
+		return $prefix;
+	}
+
+	/**
 	 * If this instance creates new admin pages, tabs, meta, or terms
 	 * add it to the full collections below.
 	 *
@@ -339,8 +224,6 @@ class md_api {
 	 */
 
 	public function _register( $data ) {
-		$order = 10;
-
 		if ( isset( $this->register['admin_page'] ) ) {
 			$data['admin_pages'][$this->_clean_id] = $this->register['admin_page'];
 			$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
@@ -365,103 +248,271 @@ class md_api {
 	}
 
 	/**
-	 * Register custom components to be loaded throughout
-	 * the WordPress interface.
-	 *
-	 * @since 5.0
-	 */
-
-	public function register() {
-		return array();
-	}
-
-	/**
-	 * Add class extensions field data to shared array.
+	 * List of admin fields inside a parent group.
 	 *
 	 * @since 6.0
 	 */
 
-	// Groups of settings pages like Post Types (Blog, Stream, Docs, etc.)
-	public function _admin_groups( $settings ) {
-		$settings[$this->_id] = true;
+	public function _admin_fields( $fields ) {
+		if ( method_exists( $this, 'fields' ) )
+			$fields[$this->_clean_id] = $this->fields();
 
-		return $settings;
-	}
-
-	// List of admin fields inside a parent group
-	public function _admin_fields( $settings ) {
-		$settings[$this->_clean_id] = $this->fields();
-
-		return $settings;
-	}
-
-	// List of children admin settings pages with name
-	public function _admin_child_fields( $settings ) {
-		$settings[$this->_clean_id] = $this->name;
-
-		return $settings;
+		return $fields;
 	}
 
 	/**
-	 * Load class instance enqueue scripts across different admin screens.
+	 * Loads admin scripts and styles based on wp_enqueue or print_inline, on specified admin screen.
+	 * In md_api class extension, create methods named ${context}_scripts or ${context}_enqueue.
+	 * Examples: admin_enqueue, meta_enqueue, term_scripts, meta_scripts
 	 *
 	 * @since 5.0
 	 */
 
-	public function _admin_enqueue() {
-		$screen = get_current_screen();
-		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
-		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
-
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_enqueue' ) )
-			$this->meta_enqueue();
-
-		if ( $screen->base == 'term' && in_array( $_GET['taxonomy'], md_edit_term_meta() ) && method_exists( $this, 'term_enqueue' ) )
-			$this->term_enqueue();
-
-		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_enqueue' ) )
-			$this->admin_enqueue();
-
-		if ( in_array( $screen->base, array( 'profile' ) ) && method_exists( $this, 'user_meta_enqueue' ) )
-			$this->user_meta_enqueue();
-	}
-
-	/**
-	 * Print class instance inline scripts across different admin screens.
-	 *
-	 * @since 5.0
-	 */
-
-	public function _admin_scripts() {
+	private function _admin_assets( $suffix ) {
 		$screen = get_current_screen();
 		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
 		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
+		$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( $_GET['taxonomy'] ) : '';
 
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, 'meta_scripts' ) )
-			$this->meta_scripts();
+		// Load meta box
 
-		if ( $screen->base == 'term' && in_array( sanitize_key( $_GET['taxonomy'] ), md_edit_term_meta() ) && method_exists( $this, 'term_scripts' ) )
-			$this->term_scripts();
+		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, "meta_$suffix" ) )
+			call_user_func( array( $this, "meta_$suffix" ) );
 
-		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, 'admin_scripts' ) )
-			$this->admin_scripts();
+		// Load terms
 
-		if ( in_array( $screen->base, array( 'profile' ) ) && method_exists( $this, 'user_meta_scripts' ) )
-			$this->user_meta_scripts();
+		if ( $screen->base == 'term' && in_array( $taxonomy, md_edit_term_meta() ) && method_exists( $this, "term_$suffix" ) )
+			call_user_func( array( $this, "term_$suffix" ) );
+
+		// Load admin pages
+
+		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, "admin_$suffix" ) )
+			call_user_func( array( $this, "admin_$suffix" ) );
+
+		// Load user meta
+
+		if ( $screen->base == 'profile' && method_exists( $this, "user_meta_$suffix" ) )
+			call_user_func( array( $this, "user_meta_$suffix" ) );
 	}
 
-	// Inherited methods
-	public function construct() {}
-	public function includes() {}
-	public function actions() {}
-	public function init() {}
-	public function fields() {}
-	public function admin_enqueue() {}
-	public function meta_enqueue() {}
-	public function term_enqueue() {}
-	public function user_meta_enqueue() {}
-	public function admin_scripts() {}
-	public function meta_scripts() {}
-	public function term_scripts() {}
-	public function user_meta_scripts() {}
+	/**
+	 * Looks for admin interface callback between context-specific
+	 * template, or univeral method in class extension.
+	 *
+	 * Admin settings = admin_page()
+	 * Term settings  = term()
+	 * Post meta      = meta_box()
+	 * General        = admin_fields()
+	 *
+	 * @since 6.0
+	 */
+
+	private function _template_callback( $context ) {
+		if ( method_exists( $this, $context ) )
+			return $context;
+
+		if ( method_exists( $this, 'admin_fields' ) )
+			return 'admin_fields';
+
+		return;
+	}
+
+	/**
+	 * Wire admin page hooks for this instance based on register['admin_page'] parameters.
+	 * Render admin page settings fields in various nested formats. Based on the extensions
+	 * register() method, admin page fields can render inline, as children, or created as parents.
+	 *
+	 * has_groups : Marks as fields group host and allows children to add themselves.
+	 *              See blog.php for Core example, common pattern in Drop-ins.
+	 *
+	 * group      : Creates the group that can be added to group hosts, will inherit children.
+	 *              See page_settings for example of a Core group.
+	 *
+	 * child_of   : Add fields into a group.
+	 *
+	 * position   : add_action priority, changes the load order (default 10). ignored when child_of set.
+	 *
+	 * @since 6.0
+	 */
+
+	private function setup_admin_page() {
+		if ( ! isset( $this->register['admin_page'] ) )
+			return;
+
+		$callback = $this->_template_callback( 'admin_page' );
+
+		if ( ! $callback )
+			return;
+
+		$register = $this->register['admin_page'];
+
+		// Create a list of group hosts
+
+		if ( isset( $register['has_groups'] ) )
+			add_filter( 'md_admin_groups', function( $settings ) {
+				$settings[$this->_id] = true;
+				return $settings;
+			} );
+
+		// If admin groups or children are set, formulate fields data and template
+
+		if ( isset( $register['group'] ) || isset( $register['child_of'] ) ) {
+			$priority = ! empty( $register['position'] ) ? $register['position'] : 10;
+			$group_callback = method_exists( $this, 'admin_group' ) ? 'admin_group' : $callback;
+
+			// Assigned as group
+
+			if ( isset( $register['group'] ) ) {
+				$group = $register['group'];
+
+				if ( method_exists( $this, 'fields' ) )
+					foreach ( (array) $group as $field )
+						add_filter( "md_filter_admin_page_$field", array( $this, '_admin_fields' ) );
+
+				add_action( "md_admin_page_{$group}", array( $this, $group_callback ), $priority );
+			}
+
+			// Assigned as children to a group
+
+			elseif ( isset( $register['child_of'] ) ) {
+				$groups = (array) $register['child_of'];
+
+				foreach ( $groups as $group ) {
+					add_filter( "md_admin_page_{$group}_fields", function( $fields ) use( $group_callback ) {
+						$fields[$this->_clean_id] = array(
+							'name' => $this->name,
+							'callback' => array( $this, $group_callback )
+						);
+						return $fields;
+					} );
+				}
+
+				if ( method_exists( $this, 'fields' ) )
+					foreach ( $groups as $group )
+						add_filter( "md_filter_admin_page_$group", array( $this, '_admin_fields' ) );
+			}
+		}
+
+		if ( ! isset( $register['child_of'] ) )
+			add_action( "{$this->_id}_admin_page", array( $this, $callback ) );
+	}
+
+	/**
+	 * Meta boxes can be registered outright, or the contents of the post meta
+	 * can be applied to a metagroup with the child_of parameter. Since meta boxes are
+	 * inherently groups, the register() method doesn't need the same parameters as general
+	 * admin settings. Useful for when creating Single settings related to global admin settings.
+	 *
+	 * child_of : Add fields into a group.
+	 *
+	 * @since 6.0
+	 */
+
+	private function setup_meta_box() {
+		if ( ! isset( $this->register['meta_box'] ) )
+			return;
+
+		$callback = $this->_template_callback( 'meta_box' );
+
+		if ( ! $callback )
+			return;
+
+		$register = $this->register['meta_box'];
+
+		// Assigned as children to a group
+
+		if ( isset( $register['child_of'] ) ) {
+			$groups = (array) $register['child_of'];
+			$group_callback = $callback;
+
+			foreach ( $groups as $group ) {
+				add_filter( "md_post_meta_{$group}_fields", function( $fields ) use( $group_callback ) {
+					$fields[$this->_clean_id] = array(
+						'name' => $this->name,
+						'callback' => array( $this, $group_callback )
+					);
+					return $fields;
+				} );
+			}
+		}
+
+		// Just create a meta box
+
+		else add_action( "{$this->_id}_meta_box", array( $this, $callback ) );
+	}
+
+	/**
+	 * Term meta applies to edit category/tags type admin pages, and the WP Term API
+	 * is open like the Settings API but meant to be used contextually like the
+	 * Post Meta API, so registering fields has similar outcomes to both.
+	 *
+	 * child_of : Add fields into a group.
+	 * position : add_action priority, changes the load order (default 100).
+	 *
+	 * @since 6.0
+	 */
+
+	private function setup_term() {
+		if ( ! isset( $this->register['term'] ) )
+			return;
+
+		$callback = $this->_template_callback( 'term' );
+
+		if ( ! $callback )
+			return;
+
+		$register = $this->register['term'];
+		$position = ! empty( $register['position'] ) ? $register['position'] : 100;
+
+		// Assigned as children to a group
+
+		if ( isset( $register['child_of'] ) ) {
+			$group_callback = $callback;
+
+			foreach ( (array) $register['child_of'] as $group )
+				add_filter( "md_term_meta_{$group}_fields", function( $fields ) use ( $group_callback ) {
+					$fields[$this->_clean_id] = array(
+						'name' => $this->name,
+						'callback' => array( $this, $group_callback )
+					);
+					return $fields;
+				} );
+		}
+
+		// Just add fields to term pages
+
+		elseif ( isset( $_GET['taxonomy'] ) && isset( $_GET['tag_ID'] ) ) {
+			$taxonomy = sanitize_key( $_GET['taxonomy'] );
+			$term = intval( $_GET['tag_ID'] );
+
+			add_action( "md_{$taxonomy}_{$term}", array( $this, $callback ), $position );
+		}
+	}
+
+	/**
+	 * Taxonomy settings pages apply to every term in a post type's taxonomy.
+	 * They inherit admin settings since they live in the Settings API, and thus
+	 * inherit the same group/child structure, with the biggest difference being that
+	 * they must be applied to an accompanying post_types from a register_post_type() call.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _taxonomy_groups( $groups ) {
+		$register = $this->register['taxonomy'];
+		$post_types = $register['post_types'] ?? (array) $this->_clean_id;
+		$meta = $register['taxonomies'] ?? md_taxonomy_meta();
+
+		foreach ( $post_types as $post_type ) {
+			$page_slug = "md_{$post_type}";
+			$taxonomies = get_object_taxonomies( $post_type );
+
+			foreach ( $meta as $tax )
+				if ( in_array( $tax, $taxonomies, true ) )
+					$groups[$page_slug][$tax] = true;
+		}
+
+		return $groups;
+	}
+
 }

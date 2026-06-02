@@ -20,11 +20,7 @@ class md_loop extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
-				'parent_group' => 'page_settings',
-				'fields' => $fields
-			),
-			'taxonomy' => array(
-				'name' => $this->name,
+				'group' => 'page_settings',
 				'fields' => $fields
 			),
 			'term' => array(

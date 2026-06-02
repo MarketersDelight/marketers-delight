@@ -1,6 +1,16 @@
 <?php
 
 /**
+ * A list of page settings modules to add across various page types.
+ *
+ * @since 6.0
+ */
+
+function md_admin_settings() {
+	return apply_filters( 'md_admin_settings', array() );
+}
+
+/**
  * Default post type screens MD metaboxes are added to.
  *
  * @since 4.3.5
@@ -23,7 +33,7 @@ function md_edit_term_meta() {
 /**
  * Taxonomies that have global settings tabs on post-type admin pages.
  *
- * @since 6.1
+ * @since 6.0
  */
 
 function md_taxonomy_meta() {
@@ -53,16 +63,6 @@ function md_register( $group = null ) {
 		return ! empty( $data[$group] ) ? $data[$group] : array();
 
 	return $data;
-}
-
-/**
- * A list of page settings modules to add across various page types.
- *
- * @since 6.0
- */
-
-function md_admin_settings() {
-	return apply_filters( 'md_admin_settings', array() );
 }
 
 /**

@@ -16,8 +16,8 @@ $classes = join( ' ', $classes );
 		'label' => __( 'Type', 'md' ),
 		'classes' => 'md-conditional-option',
 		'wrap_classes' => 'md-sep-small',
+		'empty_label' => __( 'Page URL', 'md' ),
 		'options' => array(
-			'url' => __( 'Page URL', 'md' ),
 			'popup' => __( 'Open Popup', 'md' ),
 			'phone' => __( 'Phone Number', 'md' )
 		)
