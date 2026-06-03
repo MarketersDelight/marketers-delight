@@ -37,15 +37,7 @@ class md_loop extends md_api {
 	 */
 
 	public function fields() {
-		$block_ids = $cta_ids = array();
-		$sidebars = md_layout_areas( 'sidebar', true );
-		$cta = md_setting( array( 'cta', 'forms' ), array() );
-		$post_types = array_keys( get_post_types( array( 'public' => true ) ) );
-		$sanitize = new md_sanitize;
-
-		foreach ( $cta as $cta_id => $cta_fields )
-			$cta_ids[] = $cta_id;
-
+		$sanitize = $this->sanitize();
 		$post_content = array(
 			'featured_image' => array(
 				'type' => 'select',
@@ -93,7 +85,7 @@ class md_loop extends md_api {
 			),
 			'subcategory' => array(
 				'type' => 'checkbox',
-				'options' => array( 'enable' )
+				'options' => array( 'hide' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
@@ -117,7 +109,7 @@ class md_loop extends md_api {
 			'cta_x_loop' => array( 'type' => 'number' ),
 			'x_cta' => array(
 				'type' => 'select',
-				'options' => $cta_ids
+				'options' => array_keys( md_setting( array( 'cta', 'forms' ), array() ) )
 			),
 			'position' => array(
 				'type' => 'select',
@@ -130,7 +122,7 @@ class md_loop extends md_api {
 			),
 			'post_type' => array(
 				'type' => 'select',
-				'options' => $post_types
+				'options' => array_keys( get_post_types( array( 'public' => true ) ) )
 			),
 			'sidebar' => array(
 				'type' => 'checkbox',
@@ -138,7 +130,7 @@ class md_loop extends md_api {
 			),
 			'custom_sidebar' => array(
 				'type' => 'select',
-				'options' => $sidebars
+				'options' => md_layout_areas( 'sidebar', true )
 			),
 			'content_layout' => array(
 				'type' => 'select',
@@ -168,7 +160,7 @@ class md_loop extends md_api {
 	 */
 
 	public function admin_fields() {
-		$screen = get_current_screen();
+		$screen = $this->_get_screen;
 		$category_posts = $this->fields->module( 'category_posts' );
 		$featured = $this->fields->module( 'featured' );
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
@@ -190,10 +182,7 @@ class md_loop extends md_api {
 	 * @since 6.0
 	 */
 
-	public function scripts() {
-		$screen = get_current_screen();
-		$prefix = $this->_prefix;
-	?>
+	public function scripts() { ?>
 		<script>
 			jQuery( document ).ready( function( $ ) {
 				$( '.md-check-val' ).on( 'change', function( e ) {

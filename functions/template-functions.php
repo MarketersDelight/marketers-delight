@@ -106,23 +106,6 @@ function md_icon( $icon, $args = null ) {
 }
 
 /**
- * Enqueue MD's integrated web font services to <head> when needed.
- *
- * @since 4.8
- */
-
-function md_webfonts_loader() {
-	$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
-	$fonts = md_web_fonts();
-	$has_typekit = ( ! empty( $typekit ) && ! empty( $fonts['typekit'] ) ) ? true : false;
-	$has_google = ( ! empty( $fonts['google'] ) ) ? true : false;
-
-	if ( $has_google || $has_typekit )
-		return
-			"\t<script>WebFontConfig={" . ( $has_google ? 'google:{families:[' .  md_google_fonts( 'ids' ) . ']},' : '' ) . ( $has_typekit ? 'typekit:{id:\'' . esc_attr( $typekit['key'] ) . '\'}' : '' ) . '};(function(d){var wf=d.createElement(\'script\'),s=d.scripts[0];wf.src=\'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js\';wf.async=true;s.parentNode.insertBefore(wf,s);})(document);' . "</script>\n";
-}
-
-/**
  * Compile the needed Google Fonts by associated font weights.
  * Returns Google Font URL by default, set $format to 'ids'
  * to list font and weights by ID only.
@@ -130,40 +113,40 @@ function md_webfonts_loader() {
  * @since 4.8
  */
 
-function md_google_fonts( $format = null ) {
-	$string = '';
-	$f = 1;
+function md_google_fonts() {
+	$parts = array();
 	$fonts = md_web_fonts( 'google' );
-	$total_fonts = count( $fonts );
-	$google = 'https://fonts.googleapis.com/css?family=';
 
 	foreach ( $fonts as $name => $weights ) {
-		$string .= $format == 'ids' ? "'" : '';
-		$string .= $name;
+		$normal = $italic = array();
 
-		if ( ! empty( $weights ) ) {
-			$w = 1;
-			$total_weights = count( $weights );
-			$string .= ':';
-
-			foreach ( $weights as $weight ) {
-				$string .= $weight . ( $w < $total_weights ? ',' : '' );
-				$w++;
-			}
+		foreach ( $weights as $w ) {
+			if ( substr( $w, -1 ) === 'i' )
+				$italic[] = substr( $w, 0, -1 );
+			else
+				$normal[] = $w;
 		}
 
-		$string .= $format == 'ids' ? "'" : '';
+		if ( ! empty( $italic ) ) {
+			$combos = array();
 
-		if ( $f < $total_fonts )
-			$string .= $format == 'ids' ? ',' : '|';
+			foreach ( $normal as $w )
+				$combos[] = "0,$w";
 
-		$f++;
+			foreach ( $italic as $w )
+				$combos[] = "1,$w";
+
+			sort( $combos );
+
+			$parts[] = urlencode( $name ) . ':ital,wght@' . implode( ';', $combos );
+		}
+		elseif ( ! empty( $normal ) )
+			$parts[] = urlencode( $name ) . ':wght@' . implode( ';', $normal );
+		else
+			$parts[] = urlencode( $name );
 	}
 
-	if ( $format == 'ids' )
-		return $string;
-	else
-		return $google . urlencode( $string ) . '&display=swap';
+	return 'https://fonts.googleapis.com/css2?family=' . implode( '&family=', $parts ) . '&display=swap';
 }
 
 /**
@@ -175,41 +158,38 @@ function md_google_fonts( $format = null ) {
  */
 
 function md_web_fonts( $show_type = null ) {
-	$font_s = '';
 	$fonts = array();
+	$typography = md_setting( 'typography' );
 	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'header', 'sidebar_title', 'footer_title' );
 	$areas = array_merge( array( 'body', 'site_title', 'site_tagline', 'sidebar', 'footer' ), $headings );
-	$body_t = md_setting( array( 'typography', 'body', 'font_type' ) );
-	$body_f = md_setting( array( 'typography', 'body', 'font_family' ) );
-	$body_w = md_setting( array( 'typography', 'body', 'font_weight' ) );
-	$bold = md_setting( array( 'typography', 'body', 'bold' ) );
-	$h1_t = md_setting( array( 'typography', 'h1', 'font_type' ) );
-	$h1_f = md_setting( array( 'typography', 'h1', 'font_family' ) );
-	$h1_w = md_setting( array( 'typography', 'h1', 'font_weight' ) );
+	$body = $typography['body'] ?? array();
+	$h1 = $typography['h1'] ?? array();
+	$body_t = $body['font_type'] ?? '';
+	$body_f = $body['font_family'] ?? '';
+	$bold = $body['bold'] ?? '';
+	$h1_t = $h1['font_type'] ?? '';
+	$h1_f = $h1['font_family'] ?? '';
 
 	foreach ( $areas as $area ) {
-		$type = md_setting( array( 'typography', $area, 'font_type' ) );
-		$family = md_setting( array( 'typography', $area, 'font_family' ) );
-		$weight = md_setting( array( 'typography', $area, 'font_weight' ) );
-		$style = md_setting( array( 'typography', $area, 'font_style' ) );
+		$a = $typography[$area] ?? array();
+		$type = $a['font_type'] ?? '';
+		$family = $a['font_family'] ?? '';
+		$weight = $a['font_weight'] ?? '';
+		$style = $a['font_style'] ?? '';
 
 		if ( ! empty( $weight ) ) {
+			$weights = array( $weight );
+
 			if ( $type == 'google' && ! empty( $style ) )
-				$font_s = "{$weight}i";
+				$weights[] = "{$weight}i";
 
 			if ( empty( $family ) ) {
-				// Make hx inherit h1
 				if ( in_array( $area, $headings ) && ! empty( $h1_f ) )
-					$fonts[$h1_t][$h1_f][] = $weight;
-				// Make font inherit body values
+					$fonts[$h1_t][$h1_f] = array_merge( $fonts[$h1_t][$h1_f] ?? array(), $weights );
 				elseif ( ! empty( $body_f ) )
-					$fonts[$body_t][$body_f][] = $weight;
+					$fonts[$body_t][$body_f] = array_merge( $fonts[$body_t][$body_f] ?? array(), $weights );
 			}
-			else {
-				// Directly assign setting to value
-				$fonts[$type][$family][] = $weight;
-				$fonts[$type][$family] = array_unique( $fonts[$type][$family] );
-			}
+			else $fonts[$type][$family] = array_merge( $fonts[$type][$family] ?? array(), $weights );
 		}
 		elseif ( ! empty( $family ) )
 			$fonts[$type][$family] = array();
@@ -218,12 +198,119 @@ function md_web_fonts( $show_type = null ) {
 			$fonts[$type][$family][] = $bold;
 	}
 
-	if ( isset( $show_type ) )
-		$show = ! empty( $fonts[$show_type] ) ? $fonts[$show_type] : '';
-	else
-		$show = $fonts;
+	foreach ( $fonts as $type => $families )
+		foreach ( $families as $family => $weights )
+			$fonts[$type][$family] = array_unique( $weights );
 
-	return $show;
+	return isset( $show_type ) ? ( $fonts[$show_type] ?? '' ) : $fonts;
+}
+
+/**
+ * Replace archive tokens in a text string.
+ *
+ * @since 6.0
+ */
+
+function md_parse_text( $text, $context = '' ) {
+	if ( empty( $text ) )
+		return $text;
+
+	if ( empty( $context ) ) {
+		if ( is_tax() || is_category() || is_tag() )
+			$context = 'term';
+		elseif ( is_home() || is_post_type_archive() )
+			$context = 'archive';
+	}
+
+	$tokens = md_parse_tokens( array( 'context' => $context, 'text' => $text ) );
+
+	return empty( $tokens ) ? $text : strtr( $text, $tokens );
+}
+
+/**
+ * Get token key→value map (or key list) for archive text replacement.
+ *
+ * @since 6.0
+ */
+
+function md_parse_tokens( $args = array() ) {
+	$tokens = array();
+	$context = $args['context'] ?? '';
+	$text = $args['text'] ?? '';
+	$list = ! empty( $args['list'] );
+
+	if ( $context === 'term' ) {
+		$definitions = array(
+			'{name}' => __( 'Category name', 'md' ),
+			'{slug}' => __( 'Category slug', 'md' ),
+			'{count}' => __( 'Total posts in category', 'md' ),
+			'{description}' => __( 'Category description', 'md' ),
+			'{taxonomy}' => __( 'Taxonomy label', 'md' ),
+			'{label}' => __( 'Post type singular label', 'md' ),
+			'{post_type}' => __( 'Post type plural label', 'md' ),
+			'{url}' => __( 'Category URL', 'md' ),
+			'{parent}' => __( 'Parent category name', 'md' ),
+			'{total}' => __( 'Total published posts', 'md' )
+		);
+
+		if ( $list )
+			return apply_filters( 'md_parse_tokens', $definitions, $args );
+
+		$tokens = array_fill_keys( array_keys( $definitions ), '' );
+		$term   = get_queried_object();
+
+		if ( $term instanceof WP_Term ) {
+			$taxonomy  = get_taxonomy( $term->taxonomy );
+			$obj_type  = ! empty( $taxonomy->object_type ) ? $taxonomy->object_type[0] : '';
+			$post_type = $obj_type ? get_post_type_object( $obj_type ) : null;
+
+			$tokens = array(
+				'{name}' => $term->name,
+				'{description}' => $term->description,
+				'{url}' => get_term_link( $term ),
+				'{slug}' => $term->slug,
+				'{count}' => $term->count,
+				'{taxonomy}' => $taxonomy ? $taxonomy->labels->singular_name : '',
+				'{label}' => $post_type ? $post_type->labels->singular_name : '',
+				'{post_type}' => $post_type ? $post_type->labels->name : '',
+			);
+
+			if ( strpos( $text, '{parent}' ) !== false )
+				$tokens['{parent}'] = $term->parent ? get_term( $term->parent, $term->taxonomy )->name : '';
+
+			if ( strpos( $text, '{total}' ) !== false && $obj_type )
+				$tokens['{total}'] = (int) wp_count_posts( $obj_type )->publish;
+		}
+		else $tokens = array();
+	}
+	elseif ( $context === 'archive' ) {
+		$definitions = array(
+			'{name}' => __( 'Post type plural name', 'md' ),
+			'{label}' => __( 'Post type singular label', 'md' ),
+			'{url}' => __( 'Archive URL', 'md' ),
+			'{total}' => __( 'Total posts', 'md' )
+		);
+
+		if ( $list )
+			return apply_filters( 'md_parse_tokens', $definitions, $args );
+
+		$tokens    = array_fill_keys( array_keys( $definitions ), '' );
+		$post_type = get_post_type_object( get_queried_object()->name ?? '' );
+
+		if ( $post_type ) {
+			$tokens = array(
+				'{name}' => $post_type->labels->name,
+				'{label}' => $post_type->labels->singular_name,
+				'{url}' => get_post_type_archive_link( $post_type->name ),
+			);
+
+			if ( strpos( $text, '{total}' ) !== false )
+				$tokens['{total}'] = (int) wp_count_posts( $post_type->name )->publish;
+		}
+		else $tokens = array();
+	}
+
+	return apply_filters( 'md_parse_tokens', $tokens, $args );
 }
 
 /**
@@ -233,45 +320,40 @@ function md_web_fonts( $show_type = null ) {
  */
 
 function md_style( $fields ) {
-	$style = '';
 	$attributes = array();
 
 	if ( ! empty( $fields['bg_color'] ) )
-		$attributes['bg_color'] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
+		$attributes[] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
 
 	if ( ! empty( $fields['bg_image'] ) )
-		$attributes['bg_image'] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
+		$attributes[] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
 
 	if ( ! empty( $fields['bg_size'] ) )
-		$attributes['bg_size'] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
+		$attributes[] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
 
 	if ( ! empty( $fields['border_color'] ) )
-		$attributes['border_color'] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
+		$attributes[] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
 
-	if ( isset( $fields['border'] ) && ! empty( $fields['border'][2] ) ) {
+	if ( ! empty( $fields['border'][2] ) ) {
 		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
 		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
-		$border_color = ! empty( $fields['border'][2] ) ? $fields['border'][2] : '#1e1e1e';
-		$attributes['border'] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $border_color ) . ';';
+		$attributes[] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $fields['border'][2] ) . ';';
 	}
 
 	if ( ! empty( $fields['color'] ) )
-		$attributes['color'] = 'color:' . esc_attr( $fields['color'] ) . ';';
+		$attributes[] = 'color:' . esc_attr( $fields['color'] ) . ';';
 
 	if ( ! empty( $fields['width'] ) )
-		$attributes['width'] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
+		$attributes[] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
 
 	if ( ! empty( $fields['max_width'] ) )
-		$attributes['max_width'] = 'max-width:' . esc_attr( $fields['max_width'] ) . ';';
+		$attributes[] = 'max-width:' . esc_attr( $fields['max_width'] ) . ';';
 
 	if ( ! empty( $fields['flex'] ) )
-		$attributes['flex'] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
+		$attributes[] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
 
 	if ( ! empty( $fields['height'] ) )
-		$attributes['height'] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
+		$attributes[] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
 
-	if ( ! empty( $attributes ) )
-		$style = ' style="' . join( '', $attributes ) . '"';
-
-	return $style;
+	return ! empty( $attributes ) ? ' style="' . implode( '', $attributes ) . '"' : '';
 }

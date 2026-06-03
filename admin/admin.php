@@ -67,7 +67,6 @@ class md_admin {
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-		add_action( 'admin_head', array( $this, 'admin_head' ), 1 );
 		add_filter( 'post_row_actions',array( $this, 'admin_row'), 10, 2 );
 		add_filter( 'page_row_actions',array( $this, 'admin_row'), 10, 2 );
 
@@ -259,19 +258,6 @@ class md_admin {
 		$active_taxonomy_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
 
 		include md_template( 'admin/admin', true );
-	}
-
-	/**
-	 * If enabled, load Webfonts to Blocks.
-	 *
-	 * @since 4.9
-	 */
-
-	public function admin_head() {
-		$screen = get_current_screen();
-
-		if ( $screen->base == 'post' && md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
-			echo md_webfonts_loader();
 	}
 
 	/**

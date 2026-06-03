@@ -251,10 +251,12 @@ class md_api {
 			'is_user' => $is_user,
 			'is_admin' => $is_admin,
 			'is_taxonomy' => $is_admin && $md_tab && isset( $groups[$page][$md_tab] ),
+			'is_block_editor' => method_exists( $get, 'is_block_editor' ) && $get->is_block_editor(),
 			'screen_id' => $is_post ? sanitize_key( $_GET['post'] ?? '' ) : ( $is_term ? sanitize_key( $_GET['tag_ID'] ?? '' ) : '' ),
 			'post_type' => $get->post_type,
 			'page' => $page,
-			'md_tab' => $md_tab
+			'md_tab' => $md_tab,
+			'taxonomy_groups' => $groups
 		);
 	}
 

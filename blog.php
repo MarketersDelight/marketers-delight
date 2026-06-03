@@ -47,9 +47,14 @@ class md_post extends md_api {
 	 */
 
 	public function admin_page() {
-		echo '<h1>' . __( 'Blog Settings', 'md' ) . '</h1>'.
-			 '<hr class="md-sep-small" />'.
-			 '<div class="md-content-wrap-med">';
+		$this->fields->admin_header( array(
+			'archive' => array(
+				'title' => __( 'Blog Settings', 'md' ),
+				'description' => __( 'Adjust the global settings for blog posts. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' )
+			)
+		) );
+
+		echo '<div class="md-content-wrap-med">';
 
 		$this->fields->page_fields();
 

@@ -38,18 +38,17 @@ function md_get_title( $context = 'post' ) {
 
 	if ( is_home() || is_post_type_archive() || is_singular( 'post' ) ) {
 		$post_type_title = post_type_archive_title( '', false );
-		$title = md_post_type_field( 'archives_title', $post_type_title );
+		$title = md_parse_text( md_post_type_field( 'archives_title', $post_type_title ), 'archive' );
 	}
 	elseif ( is_tax() || is_category() || is_tag() ) {
-		$term_title = single_term_title( '', false );
 		$title = md_term_meta( array( 'hero', 'archives_title' ) );
 
 		if ( ! $title ) {
 			$tax_title = md_taxonomy_field( 'archives_title' );
-			$title = $tax_title ? $tax_title : $term_title;
+			$title = $tax_title ? $tax_title : single_term_title( '', false );
 		}
 
-		$title = str_replace( '{title}', $term_title, $title );
+		$title = md_parse_text( $title, 'term' );
 	}
 	elseif ( is_search() )
 		$title = sprintf( esc_html__( 'Search Results For: %s', 'md' ), '<span class="search-query">' . get_search_query() . '</span>' );
@@ -98,9 +97,13 @@ function md_title( $context = 'post', $args = array() ) {
 	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 
+	// Layout type classes
+
 	if ( ( $has_sidebar && ! $has_header_cover ) || ( $context == 'post' && ! is_singular() && isset( $loop['columns'] ) && $loop['columns'] > 2 ) )
 		$classes[] = 'inline';
 	else $classes[] = 'wide';
+
+	// Featured image related classes
 
 	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) ) {
 		$class_name = 'image-' . $media['position'];
@@ -119,6 +122,8 @@ function md_title( $context = 'post', $args = array() ) {
 		$classes[] = $class_name;
 	}
 
+	// Page cover classes
+
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context );
 
@@ -130,6 +135,8 @@ function md_title( $context = 'post', $args = array() ) {
 
 	$classes = join( ' ', $classes );
 	$style = md_style( $style );
+
+	// Render title
 
 	do_action( "md_hook_{$context}_title_before" );
 
@@ -151,22 +158,25 @@ function md_description( $context = 'post', $args = array() ) {
 	$description = '';
 
 	if ( $context == 'post' && is_singular() ) {
-		$show_excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) );
-
-		if ( has_excerpt() && $show_excerpt )
-			$description = get_the_excerpt();
-
-		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $description );
+		$excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) ) && has_excerpt() ? get_the_excerpt() : '';
+		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $excerpt );
 	}
-	elseif ( $context == 'page' )
+	elseif ( $context == 'page' ) {
 		if ( is_post_type_archive() || is_home() )
-			$description = md_post_type_field( 'archives_text' );
+			$description = md_parse_text( md_post_type_field( 'archives_text' ), 'archive' );
 		elseif ( ( is_category() || is_tax() ) && get_queried_object() ) {
-			$category_description = category_description();
-			$description = md_term_meta( array( 'hero', 'archives_text' ), null, $category_description );
+			$description = md_term_meta( array( 'hero', 'archives_text' ) );
+
+			if ( ! $description ) {
+				$tax_description = md_taxonomy_field( 'archives_text' );
+				$description = $tax_description ? $tax_description : category_description();
+			}
+
+			$description = md_parse_text( $description, 'term' );
 		}
 		elseif ( is_author() )
 			$description = get_the_author_meta( 'description' );
+	}
 
 	if ( empty( $description ) )
 		return;
@@ -187,19 +197,18 @@ function md_cta( $context = 'post', $cta = array() ) {
 
 	$html = '';
 
-    if ( empty( $cta ) )
-        if ( $context == 'page' )
-            $cta = md_module( 'page_cta' );
-        else {
-            if ( ! is_singular() )
-                return;
+	if ( empty( $cta ) ) {
+		if ( $context == 'page' )
+			$cta = md_module( 'page_cta' );
+		elseif ( ! is_singular() )
+			return;
+		else
+			$cta = md_post_meta( 'page_cta' );
+	}
 
-            $cta = md_post_meta( 'page_cta' );
-        }
+	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
 
-    $type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
-
-    if ( $type == 'links' && ! empty( $cta['links'] ) ) {
+	if ( $type == 'links' && ! empty( $cta['links'] ) ) {
 		foreach ( $cta['links'] as $group => $fields )
 			if ( ! empty( $cta['links'][$group] ) ) {
 				$cta['links'][$group]['classes'] = 'cta-link';

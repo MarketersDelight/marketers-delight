@@ -512,6 +512,16 @@ class md_fields {
 	}
 
 	/**
+	 * Render admin page header pattern often used on post type admin pages.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_header( $views ) {
+		include md_template( 'admin/fields/admin-header', true );
+	}
+
+	/**
 	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
 	 *
 	 * @since 5.3.1

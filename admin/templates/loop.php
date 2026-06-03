@@ -9,27 +9,29 @@
 		) ); ?>
 	</div>
 
-	<?php if ( $screen->base !== 'term' ) : ?>
-	<div class="col md-sep-top">
-		<?php $this->fields->field( 'category_posts', array(
-			'type' => 'checkbox',
-			'wrap_classes' => 'md-sep-micro',
-			'classes' => 'md-check-val',
-			'options' => array(
-				'enable' => __( 'List posts by category', 'md' )
-			)
-		) ); ?>
-	</div>
-	<div class="col md-sep-top">
-		<?php $this->fields->field( 'subcategory', array(
-			'type'         => 'checkbox',
-			'wrap_classes' => 'md-sep-micro',
-			'options'      => array(
-				'enable' => __( 'Show subcategories', 'md' )
-			)
-		) ); ?>
-	</div>
-	<?php endif; ?>
+	<?php if ( $screen['is_admin'] ) {
+		echo '<div class="col md-sep-top">';
+
+		if ( $screen['is_taxonomy'] )
+			$this->fields->field( 'subcategory', array(
+				'type' => 'checkbox',
+				'wrap_classes' => 'md-sep-micro',
+				'options' => array(
+					'hide' => __( 'Hide subcategories', 'md' )
+				)
+			) );
+		else
+			$this->fields->field( 'category_posts', array(
+				'type' => 'checkbox',
+				'wrap_classes' => 'md-sep-micro',
+				'classes' => 'md-check-val',
+				'options' => array(
+					'enable' => __( 'List posts by category', 'md' )
+				)
+			) );
+
+		echo '</div>';
+	} ?>
 
 </div>
 
@@ -40,8 +42,8 @@
 			'type' => 'select',
 			'label' => __( 'Orderby', 'md' ),
 			'description' => __( 'Sort order of posts.', 'md' ),
+			'empty_label' => __( 'Date', 'md' ),
 			'options' => array(
-				'' => __( 'Date', 'md' ),
 				'title' => __( 'Title', 'md' ),
 				'modified' => __( 'Last Modified', 'md' ),
 				'comment_count' => __( 'Comment Count', 'md' ),
@@ -62,7 +64,7 @@
 		) ); ?>
 	</div>
 
-	<?php if ( $screen->base !== 'term' ) : ?>
+	<?php if ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) : ?>
 
 	<div class="loop-category-field col md-sep-micro">
 		<?php $this->fields->field( 'category_per_page', array(
@@ -144,8 +146,9 @@
 						'full' => __( 'Show full content', 'md' ),
 						'hide' => __( 'Hide content', 'md' )
 					)
-				) ); ?>
-				<?php $this->fields->field( "{$p}inherit", array(
+				) );
+
+				$this->fields->field( "{$p}inherit", array(
 					'type' => 'checkbox',
 					'options' => array(
 						'position' => __( 'Inherit Media Position', 'md' ),
@@ -161,8 +164,8 @@
 					'empty_label' => __( 'Use default position', 'md' ),
 					'options' => $this->fields->data->values['featured_image'],
 					'wrap_classes' => 'md-sep-micro',
-				) ); ?>
-				<?php $this->fields->field( "{$p}featured_image_size", array(
+				) );
+				$this->fields->field( "{$p}featured_image_size", array(
 					'type' => 'select',
 					'empty_label' => __( 'Show full size image', 'md' ),
 					'options' => array_combine( $image_sizes, $image_sizes )
@@ -193,8 +196,8 @@
 					'type' => 'text',
 					'label' => __( 'Read More Text', 'md' ),
 					'placeholder' => __( 'Continue reading &rarr;', 'md' )
-				) ); ?>
-				<?php $this->fields->field( "{$p}excerpt_settings", array(
+				) );
+				$this->fields->field( "{$p}excerpt_settings", array(
 					'type' => 'checkbox',
 					'options' => array(
 						'remove_text' => __( 'Do not show', 'md' )
@@ -207,8 +210,8 @@
 					'type' => 'text',
 					'label' => __( 'Excerpt More', 'md' ),
 					'placeholder' => '[...]'
-				) ); ?>
-				<?php $this->fields->field( "{$p}excerpt_settings", array(
+				) );
+				$this->fields->field( "{$p}excerpt_settings", array(
 					'type' => 'checkbox',
 					'options' => array(
 						'remove_more' => __( 'Do not show', 'md' )

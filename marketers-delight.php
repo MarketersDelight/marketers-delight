@@ -90,7 +90,7 @@ final class marketers_delight {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
-		add_action( 'wp_head', array( $this, 'head_priority' ), 5 );
+		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 		add_action( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
@@ -311,14 +311,18 @@ final class marketers_delight {
 	/**
 	 * Load high priority assets and meta to top of WP <head>.
 	 *
-	 * @since 5.3.2
+	 * @since 6.0
 	 */
 
-	public function head_priority() {
-		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
-			echo md_webfonts_loader();
+	public function preload( $urls ) {
+		$urls[] = array(
+			'href' => md_font_icons_url(),
+			'as' => 'font',
+			'type' => 'font/woff2',
+			'crossorigin' => ''
+		);
 
-		echo '<link href="' . md_font_icons_url() . '">' . "\n";
+		return $urls;
 	}
 
 	/**

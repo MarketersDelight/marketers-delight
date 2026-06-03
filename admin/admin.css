@@ -123,6 +123,12 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin: 0 0 7px;
 }
 
+.md .md-description {
+	color: #777;
+	font-size: 16px;
+	margin-top: 5px;
+}
+
 .md-title + p { margin-top: 0; }
 
 .md .normal { font-weight: normal; }
@@ -648,6 +654,23 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-taxonomy-col > div {
 	flex-basis: 0;
 	flex-grow: 1;
+}
+
+.md-tokens-list {
+	display: grid;
+	gap: .5rem 1rem;
+}
+
+.md-token {
+	display: block;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+@media (min-width: 850px) {
+	.md-tokens-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* LICENSE */

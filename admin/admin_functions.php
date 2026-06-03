@@ -83,37 +83,6 @@ function md_admin_fields() {
 }
 
 /**
- * Render taxonomy tab navigation for an admin page.
- *
- * @since 6.0
- */
-
-function md_taxonomy_tabs( $taxonomy_tabs = null, $active_tab = null ) {
-	if ( is_null( $taxonomy_tabs ) ) {
-		$page_slug = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-		$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-		$taxonomy_tabs = ! empty( $tax_groups[$page_slug] ) ? array_keys( $tax_groups[$page_slug] ) : array();
-	}
-
-	if ( is_null( $active_tab ) )
-		$active_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
-
-	if ( empty( $taxonomy_tabs ) )
-		return;
-
-	echo '<div class="md-submenu md-sep">';
-
-	echo '<a href="' . esc_url( remove_query_arg( 'md_tab' ) ) . '" class="md-submenu-item' . ( empty( $active_tab ) ? ' md-submenu-active' : '' ) . '">' . esc_html__( 'Settings', 'md' ) . '</a>';
-
-	foreach ( $taxonomy_tabs as $tax_slug ) echo
-		'<a href="' . esc_url( add_query_arg( 'md_tab', $tax_slug ) ) . '" class="md-submenu-item' . ( $active_tab === $tax_slug ? ' md-submenu-active' : '' ) . '">'.
-		esc_html( ucwords( str_replace( array( '_', '-' ), ' ', $tax_slug ) ) ).
-		'</a>';
-
-	echo '</div>';
-}
-
-/**
  * Run this function to activate drop-ins to the MD Drop-ins
  * Manager. Not recommended for use outside of upgrader utilities.
  *
