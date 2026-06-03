@@ -63,30 +63,37 @@ class md_admin {
 		$this->files = new md_files;
 
 		add_action( 'wp_update_nav_menu', 'md_compile' );
+
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_action( 'admin_head', array( $this, 'admin_head' ), 1 );
 		add_filter( 'post_row_actions',array( $this, 'admin_row'), 10, 2 );
 		add_filter( 'page_row_actions',array( $this, 'admin_row'), 10, 2 );
+
 		// Editors
 		add_action( 'edit_form_after_editor', array( $this, 'nonce' ) );
 		add_action( 'block_editor_meta_box_hidden_fields', array( $this, 'nonce' ) );
+
 		// Meta Boxes
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
 		add_action( 'save_post', array( $this->sanitize, 'meta_save' ), 10, 2 );
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
+
 		// Terms
 		add_action( 'init', array( $this, 'add_terms' ) );
+
 		// User meta
 		add_action( 'show_user_profile', array( $this, 'user_meta' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_meta' ) );
 		add_action( 'profile_update', array( $this->sanitize, 'user_meta_save' ), 10, 2 );
+
 		// Enqueue
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+
 		// Upgrader hooks
 		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
 		add_filter( 'delete_site_transient_update_themes', array( $this->requests, 'delete_theme_update' ) );
@@ -94,6 +101,7 @@ class md_admin {
 		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
 		add_action( 'update-custom_upload-md-dropin', array( $this->requests, 'upload_dropin' ) );
 		add_action( 'update-custom_upload-dropin-cancel-overwrite', array( $this->requests, 'cancel_dropin_overwrite' ) );
+
 		// Actions + requests
 		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
 		add_action( 'wp_ajax_nopriv_md_action', array( $this->requests, 'request' ) );
@@ -153,6 +161,16 @@ class md_admin {
 	}
 
 	/**
+	 * Enqueue scripts and styles to the Block Editor.
+	 *
+	 * @since 6.0
+	 */
+
+	public function enqueue_block_editor() {
+		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready' ), MD_VERSION, true );
+	}
+
+	/**
 	 * Loads all scripts and styles throughout WP admin.
 	 *
 	 * @since 4.0
@@ -181,14 +199,13 @@ class md_admin {
 					'label_text' => __( 'Stick this post to the front page', 'md' ),
 					'sticky_visibility_text' => __( 'Public, Sticky', 'md' )
 				) );
-			else
-				$vars = array_merge( $vars, array(
-					'screen' => 'edit',
-					'post_type' => $screen->post_type,
-					'status_label_text' => __( 'Status', 'md' ),
-					'label_text' => __( 'Make this post sticky', 'md' ),
-					'sticky_text' => __( 'Sticky', 'md' )
-				) );
+			else $vars = array_merge( $vars, array(
+				'screen' => 'edit',
+				'post_type' => $screen->post_type,
+				'status_label_text' => __( 'Status', 'md' ),
+				'label_text' => __( 'Make this post sticky', 'md' ),
+				'sticky_text' => __( 'Sticky', 'md' )
+			) );
 
 			wp_add_inline_script( 'marketers-delight', 'MD.stickyPostTypes();' );
 		}
@@ -201,16 +218,6 @@ class md_admin {
 
 		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
 			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
-	}
-
-	/**
-	 * Enqueue scripts and styles to the Block Editor.
-	 *
-	 * @since 6.0
-	 */
-
-	public function enqueue_block_editor() {
-		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready' ), MD_VERSION, true );
 	}
 
 	/**
@@ -242,15 +249,14 @@ class md_admin {
 	public function admin_page() {
 		$admin_tabs = $admin_order = array();
 		$admin_pages = md_register( 'admin_pages' );
-		$page = isset( $_GET['page'] ) ? $_GET['page'] : '';
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
 
-		$page_slug    = sanitize_key( $page );
-		$tax_groups   = apply_filters( 'md_taxonomy_groups', array() );
-		$taxonomy_tabs = ! empty( $tax_groups[$page_slug] ) ? array_keys( $tax_groups[$page_slug] ) : array();
-		$active_tax_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
+		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
+		$taxonomy_tabs = ! empty( $taxonomies[$page] ) ? array_keys( $taxonomies[$page] ) : array();
+		$active_taxonomy_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
 
 		include md_template( 'admin/admin', true );
 	}
@@ -322,14 +328,16 @@ class md_admin {
 	 * @since 4.0
 	 */
 
-	public function meta_box( $post, $meta_box ) { ?>
-		<div class="md-meta-box md">
-			<?php if ( ! empty( $meta_box['args']['function_callback'] ) )
-				call_user_func( $meta_box['args']['function_callback'] );
-				else
-					do_action( $meta_box['id'] . '_meta_box' ); ?>
-		</div>
-	<?php }
+	public function meta_box( $post, $meta_box ) {
+		echo '<div class="md-meta-box md">';
+
+		if ( ! empty( $meta_box['args']['function_callback'] ) )
+			call_user_func( $meta_box['args']['function_callback'] );
+		else
+			do_action( $meta_box['id'] . '_meta_box' );
+
+		echo '</div>';
+	}
 
 	/**
 	 * So no meta values show up in the Custom Fields meta
@@ -352,7 +360,7 @@ class md_admin {
 	 */
 
 	public function add_terms() {
-		foreach ( md_edit_term_meta() as $term ) {
+		foreach ( md_taxonomy_meta() as $term ) {
 			add_action( "{$term}_edit_form_fields", array( $this, 'term' ) );
 			add_action( "edited_{$term}", array( $this->sanitize, 'term_save' ), 10, 2 );
 		}
@@ -364,14 +372,17 @@ class md_admin {
 	 * @since 4.3.5
 	 */
 
-	public function term( $term ) { ?>
-		<?php $this->nonce(); ?>
-		<tr class="form-field term-md-wrap md">
-			<td colspan="2">
-				<?php do_action( "md_{$term->taxonomy}_{$term->term_id}" ); ?>
-			</td>
-		</tr>
-	<?php }
+	public function term( $term ) {
+		$this->nonce();
+
+		echo '<tr class="form-field term-md-wrap md">'.
+			 '<td colspan="2">';
+
+		do_action( "md_{$term->taxonomy}_{$term->term_id}" );
+
+		echo '</td>'.
+			 '</tr>';
+	}
 
 	/**
 	 * Build callback to load custom options on taxonomy screens.

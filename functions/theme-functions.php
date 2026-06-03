@@ -369,7 +369,7 @@ function md_post_type_field( $keys = null, $default = null, $post_type = null ) 
 /**
  * Get taxonomy-level global settings (middle tier between post type archive and individual term).
  *
- * @since 6.1
+ * @since 6.0
  */
 
 function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $taxonomy = null ) {
@@ -441,10 +441,6 @@ function md_meta( $keys = null, $id = null, $default = null ) {
  *
  * @since 4.9
  */
-
-function md_block_field( $attributes, $field ) {
-	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
-}
 
 function md_has_class( $slug, $type ) {
 	return $slug ? 'has-' . $slug . '-' . $type : '';

@@ -65,8 +65,7 @@ class md_featured_media extends md_api {
 
 	public function admin_fields() {
 		$prefix = $this->_prefix;
-		$screen = get_current_screen();
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
+		$is_post = $this->_get_screen['is_post'];
 		$media_type = $this->fields->module( 'media_type' );
 		$classes = array( "md-$this->_clean_id", 'md-tab-content', 'md-conditional' );
 

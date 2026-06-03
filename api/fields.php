@@ -9,10 +9,11 @@
 
 class md_fields {
 
-	public $_id;
-	public $_clean_id;
-	public $_prefix;
-	public $_option;
+	protected $_id;
+	protected $_clean_id;
+	protected $_prefix;
+	protected $_option;
+	public $_get_screen;
 	public $data;
 
 	/**
@@ -22,11 +23,11 @@ class md_fields {
 	 */
 
 	public function __construct( $args ) {
-		$this->_id       = $args['id'];
+		$this->_id = $args['id'];
 		$this->_clean_id = $args['clean_id'];
-		$this->_prefix   = $args['prefix'];
-		$this->_option   = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
-		$this->data      = new md_fields_data;
+		$this->_prefix = $args['prefix'];
+		$this->_option = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
+		$this->data = new md_fields_data;
 	}
 
 	/**
@@ -41,7 +42,6 @@ class md_fields {
 	 */
 
 	public function field( $field, $args ) {
-		$page = $has_parent = false;
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
 
@@ -50,56 +50,51 @@ class md_fields {
 
 		$name = "{$this->_option}[$clean_id]";
 		$id = "{$this->_option}_{$clean_id}";
-		$screen = get_current_screen();
 		$args['field'] = $field;
+		$screen = $this->_get_screen;
 
-		if ( wp_doing_ajax() || in_array( $screen->base, array( 'post', 'post-new' ) ) )
+		// Determine screen context and build name/id/settings key
+
+		if ( $screen['is_post'] || wp_doing_ajax() )
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
-		elseif ( $screen->base == 'term' ) {
-			$tag_id = esc_attr( $_GET['tag_ID'] );
-			$setting = get_term_meta( $tag_id, $this->_option, true );
-		}
-		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) ) {
-			$user_id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : 1;
+		elseif ( $screen['is_term'] )
+			$setting = get_term_meta( $screen['screen_id'], $this->_option, true );
+		elseif ( $screen['is_user'] ) {
+			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : 1;
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {
 			$setting = get_option( $this->_option );
-			$page = esc_attr( $_GET['page'] );
+			$page = $screen['page'];
 			$page_types = apply_filters( 'md_admin_groups', array() );
 
-			if ( ! empty( $page_types[$page] ) )
-				if ( $clean_id !== md_clean_id( $page ) ) {
-					$page = md_clean_id( $page );
-					$setting = ! empty( $setting[$page] ) ? $setting[$page] : '';
-					$name = "{$this->_option}[{$page}][$clean_id]";
-					$id = "{$this->_option}_{$page}_{$clean_id}";
+			if ( ! empty( $page_types[$page] ) ) {
+				$taxonomy = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
+				$page_id  = md_clean_id( $page );
 
-					if ( isset( $_GET['md_tab'] ) ) {
-						$taxonomy   = sanitize_key( $_GET['md_tab'] );
-						$raw_page   = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-						$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+				if ( $clean_id !== $page_id ) {
+					$setting = ! empty( $setting[$page_id] ) ? $setting[$page_id] : array();
+					$name = "{$this->_option}[$page_id]";
+					$id = "{$this->_option}_{$page_id}";
 
-						if ( ! empty( $tax_groups[$raw_page][$taxonomy] ) ) {
-							$setting = ! empty( $setting[$taxonomy] ) ? $setting[$taxonomy] : '';
-							$name    = "{$this->_option}[{$page}][{$taxonomy}][$clean_id]";
-							$id      = "{$this->_option}_{$page}_{$taxonomy}_{$clean_id}";
-						}
+					if ( $taxonomy ) {
+						$setting = ! empty( $setting[$taxonomy] ) ? $setting[$taxonomy] : array();
+						$name .= "[$taxonomy]";
+						$id .= "_{$taxonomy}";
 					}
-				}
-				elseif ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy   = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
 
-					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
-						$full    = $setting;
-						$page    = md_clean_id( $page );
-						$name    = "{$this->_option}[$clean_id][{$taxonomy}]";
-						$id      = "{$this->_option}_{$clean_id}_{$taxonomy}";
-						$setting = array( $clean_id => ! empty( $full[$clean_id][$taxonomy] ) ? $full[$clean_id][$taxonomy] : array() );
-					}
+					$name .= "[$clean_id]";
+					$id .= "_{$clean_id}";
 				}
+				elseif ( $taxonomy ) {
+					$name = "{$this->_option}[$clean_id][$taxonomy]";
+					$id = "{$this->_option}_{$clean_id}_{$taxonomy}";
+					$setting = array( $clean_id => ! empty( $setting[$clean_id][$taxonomy] ) ? $setting[$clean_id][$taxonomy] : array() );
+				}
+			}
 		}
+
+		// Walk array and build attributes
 
 		$group = ! empty( $setting[$clean_id] ) ? $setting[$clean_id] : array();
 
@@ -117,6 +112,8 @@ class md_fields {
 			$id .= "_{$field}";
 			$option = isset( $setting[$clean_id][$field] ) ? $setting[$clean_id][$field] : '';
 		}
+
+		// Render output
 
 		if ( isset( $args['label'] ) && $args['type'] !== 'group' && ! isset( $args['multiple'] ) )
 			$this->label( $id, $args );
@@ -149,44 +146,38 @@ class md_fields {
 
 	public function get_field( $keys, $default = null ) {
 		$c = 0;
-		$screen = get_current_screen();
+		$screen = $this->_get_screen;
 
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) )
+		// Determine page context and set option level
+
+		if ( $screen['is_post'] )
 			$option = md_post_meta();
-		elseif ( $screen->base == 'term' )
+		elseif ( $screen['is_term'] )
 			$option = md_term_meta();
-		elseif ( in_array( $screen->base, array( 'profile', 'user-edit' ) ) )
+		elseif ( $screen['is_user'] )
 			$option = md_user_meta();
-		elseif ( ! empty( $_GET['page'] ) ) {
-			$page = esc_attr( $_GET['page'] );
+		else {
+			$page = $screen['page'];
 			$page_types = apply_filters( 'md_admin_groups', array() );
 			$option = md_setting();
 
 			if ( ! empty( $page_types[$page] ) ) {
-				if ( $this->_clean_id !== md_clean_id( $page ) ) {
-					$raw_page = $page;
-					$page     = md_clean_id( $page );
-					$option   = ! empty( $option[$page] ) ? $option[$page] : array();
+				$taxonomy = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
+				$page_id = md_clean_id( $page );
+				$is_child = $this->_clean_id !== $page_id;
 
-					if ( isset( $_GET['md_tab'] ) ) {
-						$taxonomy   = sanitize_key( $_GET['md_tab'] );
-						$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+				if ( $is_child ) {
+					$option = ! empty( $option[$page_id] ) ? $option[$page_id] : array();
 
-						if ( ! empty( $tax_groups[$raw_page][$taxonomy] ) )
-							$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
-					}
+					if ( $taxonomy )
+						$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
 				}
-				elseif ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy   = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-
-					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
-						$page   = md_clean_id( $page );
-						$option = ! empty( $option[$page][$taxonomy] ) ? $option[$page][$taxonomy] : array();
-					}
-				}
+				elseif ( $taxonomy )
+					$option = ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array();
 			}
 		}
+
+		// Walk options array
 
 		if ( isset( $keys ) ) {
 			if ( is_string( $keys ) )
@@ -196,6 +187,8 @@ class md_fields {
 				$c++;
 			}
 		}
+
+		// Set option or default
 
 		if ( empty( $option ) && isset( $default ) )
 			$option = $default;
@@ -213,62 +206,44 @@ class md_fields {
 		if ( is_string( $keys ) )
 			$keys = (array) $keys;
 
-		$c = 0;
-		$fields = array();
-		$screen = get_current_screen();
+		$screen = $this->_get_screen;
+
+		// Return if post meta
+
+		if ( $screen['is_post'] ) {
+			array_unshift( $keys, $this->_clean_id );
+
+			return md_post_meta( $keys, null, $default );
+		}
+
+		// Return if term meta
+
+		if ( $screen['is_term'] && ! empty( $screen['screen_id'] ) ) {
+			array_unshift( $keys, $this->_clean_id );
+
+			return md_term_meta( $keys, $screen['screen_id'], $default );
+		}
+
+		// Determine if admin group setting, taxonomy group, or just normal setting
+
+		$page = $screen['page'];
 		$page_types = apply_filters( 'md_admin_groups', array() );
 
-		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-		$tag_id = isset( $_GET['tag_ID'] ) ? sanitize_key( $_GET['tag_ID'] ) : '';
-
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) ) {
-			array_unshift( $keys, $this->_clean_id );
-			$fields = md_post_meta( $keys, null, $default );
-		}
-		elseif ( $screen->base == 'term' && ! empty( $tag_id ) ) {
-			array_unshift( $keys, $this->_clean_id );
-			$fields = md_term_meta( $keys, $tag_id, $default );
-		}
-		elseif ( ! empty( $page_types[$page] ) ) {
+		if ( ! empty( $page_types[$page] ) ) {
 			$page_id = md_clean_id( $page );
+			$prefix = array( $page_id );
 
-			if ( $page_id == $this->_clean_id ) {
-				if ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy   = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+			if ( $screen['is_taxonomy'] )
+				$prefix[] = $screen['md_tab'];
 
-					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
-						array_unshift( $keys, $page_id, $taxonomy );
-						$fields = md_setting( $keys, $default );
-						return $fields;
-					}
-				}
+			if ( $page_id !== $this->_clean_id )
+				$prefix[] = $this->_clean_id;
 
-				array_unshift( $keys, $page_id );
-			}
-			else {
-				if ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy   = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-
-					if ( ! empty( $tax_groups[$page][$taxonomy] ) ) {
-						array_unshift( $keys, $page_id, $taxonomy, $this->_clean_id );
-						$fields = md_setting( $keys, $default );
-						return $fields;
-					}
-				}
-
-				array_unshift( $keys, $page_id, $this->_clean_id );
-			}
-
-			$fields = md_setting( $keys, $default );
+			$keys = array_merge( $prefix, $keys );
 		}
-		else {
-			array_unshift( $keys, $this->_clean_id );
-			$fields = md_setting( $keys, $default );
-		}
+		else array_unshift( $keys, $this->_clean_id );
 
-		return $fields;
+		return md_setting( $keys, $default );
 	}
 
 	/**
@@ -277,7 +252,7 @@ class md_fields {
 	 * @since 4.7
 	 */
 
-	public function field_type( $type, $name, $id, $option, $args ) {
+	protected function field_type( $type, $name, $id, $option, $args ) {
 		if ( $type == 'text' )
 			$this->text( $name, $id, $option, $args );
 
@@ -330,7 +305,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function label( $id, $args ) {
+	protected function label( $id, $args ) {
 		include md_template( 'admin/fields/label', true );
 	}
 
@@ -345,12 +320,33 @@ class md_fields {
 	}
 
 	/**
+	 * Output MD Save button with optional flush rules.
+	 *
+	 * @since 5.0
+	 */
+
+	public function save( $label = null, $args = null ) {
+		include md_template( 'admin/fields/save', true );
+	}
+
+	/**
+	 * Devices toggle controls, adds device classes to .md.wrap
+	 * to toggle controls for different screen sizes.
+	 *
+	 * @since 5.0
+	 */
+
+	public function devices( $spacing = true ) {
+		include md_template( 'admin/fields/devices', true );
+	}
+
+	/**
 	 * Outputs a simple text input field with attributes.
 	 *
 	 * @since 4.0
 	 */
 
-	public function text( $name, $id, $option, $args ) {
+	protected function text( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/text', true );
 	}
 
@@ -360,7 +356,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function textarea( $name, $id, $option, $args ) {
+	protected function textarea( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/textarea', true );
 	}
 
@@ -370,7 +366,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function number( $name, $id, $option, $args ) {
+	protected function number( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/number', true );
 	}
 
@@ -380,7 +376,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function code( $name, $id, $option, $args ) {
+	protected function code( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/code', true );
 	}
 
@@ -390,7 +386,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function url( $name, $id, $option, $args ) {
+	protected function url( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/url', true );
 	}
 
@@ -400,7 +396,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function checkbox( $name, $id, $option, $args ) {
+	protected function checkbox( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/checkbox', true );
 	}
 
@@ -410,7 +406,7 @@ class md_fields {
 	 * @since 5.0
 	 */
 
-	public function radio( $name, $id, $option, $args ) {
+	protected function radio( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/radio', true );
 	}
 
@@ -420,7 +416,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function select( $name, $id, $option, $args ) {
+	protected function select( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/select', true );
 	}
 
@@ -430,7 +426,7 @@ class md_fields {
 	 * @since 5.0
 	 */
 
-	public function range( $name, $id, $option, $args ) {
+	protected function range( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/range', true );
 	}
 
@@ -441,7 +437,7 @@ class md_fields {
 	 * @since 4.8.4
 	 */
 
-	public function upload( $name, $id, $option, $args ) {
+	protected function upload( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/upload', true );
 	}
 
@@ -451,30 +447,8 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	public function color( $name, $id, $option, $args ) {
+	protected function color( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/color', true );
-	}
-
-	/**
-	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
-	 *
-	 * @since 5.3.1
-	 */
-
-	public function editor( $name, $id, $option, $args ) {
-		if ( isset( $args['init'] ) ) {
-			$args['classes'] = 'md-toggle-wp-editor';
-			$this->textarea( $name, $id, $option, $args );
-		}
-		else {
-			$settings = wp_parse_args( $args, array(
-				'textarea_name' => $name,
-				'textarea_rows' => 10
-			) );
-			wp_editor( $option, $id, $settings );
-		}
-
-		wp_enqueue_editor();
 	}
 
 	/**
@@ -483,23 +457,9 @@ class md_fields {
 	 * @since 5.3.1
 	 */
 
-	public function terms( $name, $id, $option, $args ) {
+	protected function terms( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/terms', true );
 	}
-
-	/**
-	 * Disable the automatic output of the clone button in $this->group()
-	 * to call this anywhere in custom settings controls.
-	 *
-	 * @since 5.0
-	 */
-
-	public function clone_button( $field, $args = null ) {
-		$label = ! empty( $args['button_text'] ) ? $args['button_text'] : __( 'Add New', 'md' );
-		$classes = ! empty( $args['classes'] ) ? ' ' . $args['classes'] : '';
-	?>
-		<span class="md-clone-add button<?php echo esc_attr( $classes ); ?>" data-clone-group="<?php echo esc_attr( "{$this->_id}_" .  $field ); ?>"><?php echo $label; ?></span>
-	<?php }
 
 	/**
 	 * Wrapper for clone/group fields.
@@ -507,7 +467,7 @@ class md_fields {
 	 * @since 5.0
 	 */
 
-	public function group( $name, $id, $option, $args ) {
+	protected function group( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/group', true );
 	}
 
@@ -519,53 +479,6 @@ class md_fields {
 
 	public function settings_group( $context ) {
 		include md_template( 'admin/fields/group-settings', true );
-	}
-
-	/**
-	 * Apply Builder template. Holds Elements tray for dragging new
-	 * elements and programmatically display drop areas.
-	 *
-	 * @since 6.0
-	 */
-
-	public function builder( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/builder', true );
-	}
-
-	/**
-	 * Render callback for each Builder Field Group.
-	 *
-	 * @since 6.0
-	 */
-
-	public function builder_field( $key, $group, $type, $fields ) {
-		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
-		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
-
-		include md_template( 'admin/fields/builder-field', true );
-	}
-
-	/**
-	 * Builder Fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function builder_menu( $group ) {
-		$sanitize = new md_sanitize;
-		$design = new md_design;
-		$menus = $sanitize->menus();
-		$values = $design->values();
-
-		include md_template( 'admin/fields/builder-menu', true );
-	}
-
-	public function builder_search( $group ) {
-		include md_template( 'admin/fields/builder-search', true );
-	}
-
-	public function builder_link( $group ) {
-		$this->link_fields( array( 'group' => array( 'builder', $group ) ) );
 	}
 
 	/**
@@ -599,6 +512,28 @@ class md_fields {
 	}
 
 	/**
+	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
+	 *
+	 * @since 5.3.1
+	 */
+
+	protected function editor( $name, $id, $option, $args ) {
+		if ( isset( $args['init'] ) ) {
+			$args['classes'] = 'md-toggle-wp-editor';
+			$this->textarea( $name, $id, $option, $args );
+		}
+		else {
+			$settings = wp_parse_args( $args, array(
+				'textarea_name' => $name,
+				'textarea_rows' => 10
+			) );
+			wp_editor( $option, $id, $settings );
+		}
+
+		wp_enqueue_editor();
+	}
+
+	/**
 	 * A valet method to render the Byline Position field
 	 * when adding custom byline items.
 	 *
@@ -622,31 +557,45 @@ class md_fields {
 			'options' => array(
 				'before_title' => __( 'Before Title', 'md' ),
 				'after_title' =>  __( 'After Title', 'md' ),
-				'before_post' =>  __( 'Before Post', 'md' ),
-				'after_post' =>  __( 'After Post', 'md' )
+				'before_post' => __( 'Before Post', 'md' ),
+				'after_post' => __( 'After Post', 'md' )
 			)
 		) );
 	}
 
 	/**
-	 * Devices toggle controls, adds device classes to .md.wrap
-	 * to toggle controls for different screen sizes.
+	 * Builder templates, including main wrapper, field group render,
+	 * and some valet methods for different elements.
 	 *
-	 * @since 5.0
+	 * @since 6.0
 	 */
 
-	public function devices( $spacing = true ) {
-		include md_template( 'admin/fields/devices', true );
+	protected function builder( $name, $id, $option, $args ) {
+		include md_template( 'admin/fields/builder', true );
 	}
 
-	/**
-	 * Output MD Save button with optional flush rules.
-	 *
-	 * @since 5.0
-	 */
+	protected function builder_field( $key, $group, $type, $fields ) {
+		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
+		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
 
-	public function save( $label = null, $args = null ) {
-		include md_template( 'admin/fields/save', true );
+		include md_template( 'admin/fields/builder-field', true );
+	}
+
+	protected function builder_search( $group ) {
+		include md_template( 'admin/fields/builder-search', true );
+	}
+
+	protected function builder_link( $group ) {
+		$this->link_fields( array( 'group' => array( 'builder', $group ) ) );
+	}
+
+	protected function builder_menu( $group ) {
+		$sanitize = new md_sanitize;
+		$design = new md_design;
+		$menus = $sanitize->menus();
+		$values = $design->values();
+
+		include md_template( 'admin/fields/builder-menu', true );
 	}
 
 }

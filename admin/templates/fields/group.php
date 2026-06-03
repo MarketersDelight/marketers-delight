@@ -36,8 +36,12 @@ $classes = join( ' ', $classes );
 	<?php if ( isset( $args['label'] ) )
 		$this->label( $id, $args ); ?>
 
-	<?php if ( ! isset( $args['sort'] ) && ! isset( $args['hide_button'] ) )
-		$this->clone_button( $group_id ); ?>
+	<?php if ( ! isset( $args['sort'] ) && ! isset( $args['hide_button'] ) ) {
+		$button_label = ! empty( $args['button_text'] ) ? $args['button_text'] : __( 'Add New', 'md' );
+		$button_classes = ! empty( $args['classes'] ) ? ' ' . $args['classes'] : '';
+
+		echo '<span class="md-clone-add button' . esc_attr( $button_classes ) . '" data-clone-group="' . esc_attr( "{$this->_id}_{$group_id}" ) . '">' . $button_label . '</span>';
+	} ?>
 
 </div>
 

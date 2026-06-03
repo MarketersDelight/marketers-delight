@@ -26,17 +26,18 @@ class md_byline extends md_api {
 
 	public function register() {
 		$this->name = __( 'Byline', 'md' );
+		$fields = $this->fields();
 
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
 				'group' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $fields
 			),
 			'term' => array(
 				'name' => $this->name,
 				'group' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $fields
 			)
 		);
 	}
@@ -89,13 +90,65 @@ class md_byline extends md_api {
 	 */
 
 	public function admin_fields() {
-		$tabs = array( 'archives' => __( 'Archives', 'md' ) );
-		$screen = get_current_screen();
+		$active_tab = '';
+		$tabs = $areas = array();
+		$screen = $this->_get_screen;
 
-		if ( ! in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) )
-			$tabs['single'] = __( 'Single', 'md' );
+		if ( $screen['is_taxonomy'] ) {
+			$active_tab = 'category';
+			$tabs = array(
+				'category' => __( 'Category', 'md' ),
+				'subcategory' => __( 'Subcategory', 'md' )
+			);
+			$areas = array(
+				'category' => array(
+					'title' => $tabs['category'],
+					'description' => __( 'Customize the byline items that show on all categories.', 'md' ),
+					'tab' => 'category'
+				),
+				'subcategory' => array(
+					'title' => $tabs['subcategory'],
+					'description' => __( 'Customize the byline items that show on subcategory boxes.', 'md' ),
+					'tab' => 'subcategory'
+				)
+			);
+		}
+		else {
+			$active_tab = 'archives';
+			$tabs['archives'] = __( 'Archives', 'md' );
+			$areas = array(
+				'archives' => array(
+					'title' => __( 'Archives', 'md' ),
+					'description' => __( 'Customize the byline items that show on archive and category pages.', 'md' ),
+					'tab' => 'archives'
+				)
+			);
 
-		include md_template( 'admin/byline', true );
+			if ( $screen['is_admin'] ) {
+				$tabs['single'] = __( 'Single', 'md' );
+				$areas['single'] = array(
+					'title' => __( 'Single', 'md' ),
+					'description' => __( 'Customize the byline items that show on single pages.', 'md' ),
+					'tab' => 'single'
+				);
+			}
+		}
+
+		echo
+			'<div class="md-widget md-toggle md-sep-small">'.
+			'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
+
+		$this->fields->field( 'builder', array(
+			'type' => 'builder',
+			'title' => __( 'Edit Byline', 'md' ),
+			'wrap_classes' => 'md-widget-item md-tabs',
+			'active_tab' => $active_tab,
+			'tabs' => $tabs,
+			'areas' => $areas,
+			'elements' => md_byline_items()
+		) );
+
+		echo '</div>';
 	}
 
 	/**
@@ -152,6 +205,54 @@ class md_byline extends md_api {
 	}
 
 	/**
+	 * Edit post link.
+	 *
+	 * @since 6.0
+	 */
+
+	public function edit( $group ) {
+		$this->fields->byline_fields( $group );
+	}
+
+	/**
+	 * Badge fields.
+	 *
+	 * @since 6.0
+	 */
+
+	public function badge( $group ) {
+		$this->fields->byline_fields( $group );
+
+		$this->fields->field( array( 'builder', $group, 'time' ), array(
+			'type' => 'number',
+			'label' => __( 'New duration', 'md' ),
+			'placeholder' => 7,
+			'unit' => __( 'days', 'md' )
+		) );
+	}
+
+	/**
+	 * Post date fields.
+	 *
+	 * @since 6.0
+	 */
+
+	public function date( $group ) {
+		$this->fields->byline_fields( $group );
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'label' => __( 'Show label', 'md' ),
+				'relative' => __( 'Show relative date', 'md' ),
+				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
+			)
+		) );
+	}
+
+	/**
 	 * Author fields.
 	 *
 	 * @since 6.0
@@ -176,27 +277,6 @@ class md_byline extends md_api {
 			'label' => __( 'Avatar size', 'md' ),
 			'unit' => 'px',
 			'placeholder' => 30
-		) );
-	}
-
-	/**
-	 * Post date fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function date( $group ) {
-		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
-			'options' => array(
-				'label' => __( 'Show label', 'md' ),
-				'relative' => __( 'Show relative date', 'md' ),
-				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
-			)
 		) );
 	}
 
@@ -271,33 +351,6 @@ class md_byline extends md_api {
 			'wrap_classes' => 'md-sep-micro',
 			'options' => $options
 		) );
-	}
-
-	/**
-	 * Badge fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function badge( $group ) {
-		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'time' ), array(
-			'type' => 'number',
-			'label' => __( 'New duration', 'md' ),
-			'placeholder' => 7,
-			'unit' => __( 'days', 'md' )
-		) );
-	}
-
-	/**
-	 * Edit fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function edit( $group ) {
-		$this->fields->byline_fields( $group );
 	}
 
 }

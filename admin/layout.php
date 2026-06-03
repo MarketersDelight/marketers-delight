@@ -124,93 +124,10 @@ class md_layout extends md_api {
 	}
 
 	/**
-	 * Post screen meta box template callback.
-	 *
-	 * @since 5.0
-	 */
-
-	public function meta_box() {
-		$this->admin_template();
-	}
-
-	/**
-	 * Add settings template and script to Page Settings sections.
-	 *
-	 * @since 6.0
-	 */
-
-	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
-			<div class="md-widget-item">
-				<?php $this->admin_template(); ?>
-			</div>
-		</div>
-	<?php }
-
-	/**
-	 * The actual admin template rendered to each screen type.
-	 *
-	 * @since 4.7
-	 */
-
-	public function admin_template() {
-		$screen_id = '';
-		$screen = get_current_screen();
-		$post_type = $screen->post_type;
-		$is_post = in_array( $screen->base, array( 'post', 'post-new' ) ) ? true : false;
-		$is_term = $screen->base == 'term' ? true : false;
-		$is_admin = ! in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ? true : false;
-
-		if ( $is_post )
-			$screen_id = isset( $_GET['post'] ) ? sanitize_key( $_GET['post'] ) : '';
-		elseif ( $is_term )
-			$screen_id = isset( $_GET['tag_ID'] ) ? sanitize_key( $_GET['tag_ID'] ) : '';
-
-		$header = $this->fields->module( 'header' );
-		$content = $this->fields->module( 'content' );
-		$footer = $this->fields->module( 'footer' );
-
-		$context = array(
-			'post_type' => $post_type,
-			'is_post' => $is_post,
-			'is_admin' => $is_admin,
-			'is_term' => $is_term,
-			'screen_id' => $screen_id,
-			'toggles' => $this->layout_toggles()
-		);
-		$sidebar = $this->get_layout_state( 'sidebar', $context );
-		$panel = $this->get_layout_state( 'panel', $context );
-
-		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
-
-		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
-			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
-
-		$author_box = md_post_type_field( array( 'layout', 'content', 'add_author_box' ), null, $post_type );
-		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
-
-		foreach ( $nav_menus as $menu )
-			$menus[$menu->slug] = $menu->name;
-
-		if ( $is_post )
-			echo "<div class=\"md-$this->_clean_id md-tab-content active\">";
-
-		include md_template( 'admin/layout', true );
-
-		if ( $is_post )
-			echo '</div>';
-
-		do_action( 'md_layout_edit_screen_fields' );
-
-		$this->scripts( $sidebar, $panel );
-	}
-
-	/**
 	 * Layout Toggles are used for Sidebar and Panel, and open to other
 	 * elements. The purpose is to provide a simple way to reuse
 	 * interface options and visibility logic to show layout elements
-	 * across page types.
+	 * across page types (post type, tax, single).
 	 *
 	 * @since 6.0
 	 */
@@ -333,6 +250,110 @@ class md_layout extends md_api {
 	}
 
 	/**
+	 * Post screen meta box template callback.
+	 *
+	 * @since 5.0
+	 */
+
+	public function meta_box() {
+		$this->admin_template();
+	}
+
+	/**
+	 * Add settings template and script to Page Settings sections.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_fields() { ?>
+		<div class="md-widget md-toggle md-sep-small">
+			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
+			<div class="md-widget-item">
+				<?php $this->admin_template(); ?>
+			</div>
+		</div>
+	<?php }
+
+	/**
+	 * The actual admin template rendered to each screen type.
+	 *
+	 * @since 4.7
+	 */
+
+	public function admin_template() {
+		$screen = $this->_get_screen;
+
+		$post_type = $screen['post_type'];
+		$is_admin = $screen['is_admin'];
+		$is_post = $screen['is_post'];
+		$is_term = $screen['is_term'];
+		$is_taxonomy = $screen['is_taxonomy'];
+
+		$context = array(
+			'post_type' => $post_type,
+			'is_admin' => $is_admin,
+			'is_post' => $is_post,
+			'is_term' => $is_term,
+			'screen_id' => $screen['screen_id'],
+			'toggles' => $this->layout_toggles()
+		);
+
+		// Get options for layout areas
+
+		$header = $this->fields->module( 'header' );
+		$content = $this->fields->module( 'content' );
+		$footer = $this->fields->module( 'footer' );
+		$sidebar = $this->get_layout_state( 'sidebar', $context );
+		$panel = $this->get_layout_state( 'panel', $context );
+
+		// Data for individual elements (note the pattern emerging)
+
+		$author_box = md_post_type_field( array( 'layout', 'content', 'add_author_box' ), null, $post_type );
+
+		$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
+
+		if ( md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type ) )
+			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
+
+		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
+
+		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
+			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
+
+		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+
+		foreach ( $nav_menus as $menu )
+			$menus[$menu->slug] = $menu->name;
+
+		// Determine HTML classes
+
+		$classes = array( 'md-layout-admin' );
+
+		if ( ! $is_taxonomy ) {
+			$classes[] = 'columns-' . ( $is_post ? 4 : 3 );
+			$classes[] = 'columns-mid';
+		}
+
+		$classes = join( ' ', $classes );
+
+		// Render template
+
+		if ( $is_post )
+			echo "<div class=\"md-$this->_clean_id md-tab-content active\">";
+
+		include md_template( 'admin/layout', true );
+
+		if ( $is_post )
+			echo '</div>';
+
+		do_action( 'md_layout_edit_screen_fields' );
+
+		// Conditional toggle scripts
+
+		$this->scripts( $sidebar, $panel );
+	}
+
+	/**
 	 * Print footer scripts to admin screens to toggle options.
 	 *
 	 * @since 4.7
@@ -340,7 +361,7 @@ class md_layout extends md_api {
 
 	public function scripts( $sidebar, $panel ) {
 		$prefix = $this->_prefix();
-		$screen = get_current_screen();
+		$screen = $this->_get_screen;
 		$layouts = array(
 			'sidebar' => array(
 				'areas' => $sidebar['areas'],
@@ -383,7 +404,7 @@ class md_layout extends md_api {
 			toggleDisplay( 'layout_fields_tabs', ! checked );
 		} );
 
-		<?php if ( in_array( $screen->post_type, array( 'post', 'page' ) ) && $screen->base !== 'term' ) : ?>
+		<?php if ( in_array( $screen['post_type'], array( 'post', 'page' ) ) && ! $screen['is_term'] ) : ?>
 		bindToggle( '<?php echo $prefix; ?>_content_headline', function( checked ) {
 			toggleDisplay( 'headline_options', ! checked );
 		} );
@@ -393,7 +414,7 @@ class md_layout extends md_api {
 			if ( empty( $fields['areas'] ) )
 				continue;
 
-			if ( in_array( $screen->base, array( 'post', 'post-new', 'term' ) ) ) : ?>
+			if ( $screen['is_post'] || $screen['is_term'] ) : ?>
 
 			bindToggle( '<?php echo "{$prefix}_{$layout}_" . ( $fields['has'] ? 'remove' : 'add' ); ?>', function( checked ) {
 				toggleDisplay( '<?php echo "{$layout}_options"; ?>', <?php echo $fields['has'] ? '! checked' : 'checked'; ?> );

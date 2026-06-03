@@ -16,6 +16,7 @@ class md_api {
 	public $_id;
 	public $_clean_id;
 	public $_prefix;
+	public $_get_screen;
 	public $fields;
 	public $name;
 	protected static $sanitize;
@@ -148,8 +149,13 @@ class md_api {
 		$this->fields = new md_fields( array(
 			'id' => $this->_id,
 			'clean_id' => $this->_clean_id,
-			'prefix' => $this->_prefix
+			'prefix' => $this->_prefix,
 		) );
+
+		add_action( 'current_screen', function() {
+			$this->_get_screen = $this->_get_screen();
+			$this->fields->_get_screen = $this->_get_screen;
+		} );
 
 		if ( method_exists( $this, 'register' ) )
 			$this->register = $this->register();
@@ -187,33 +193,69 @@ class md_api {
 	 * @since 6.0
 	 */
 
-	public function _prefix() {
+	protected function _prefix() {
 		$prefix = "{$this->_option}_{$this->_clean_id}";
 
-		if ( isset( $_GET['page'] ) ) {
-			$page = sanitize_key( $_GET['page'] );
-			$page_types = apply_filters( 'md_admin_groups', array() );
+		if ( ! isset( $_GET['page'] ) )
+			return $prefix;
 
-			if ( ! empty( $page_types[$page] ) ) {
-				$page = md_clean_id( $page );
+		$page = sanitize_key( $_GET['page'] );
+		$page_types = apply_filters( 'md_admin_groups', array() );
 
-				if ( $page !== $this->_clean_id )
-					$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
-				else
-					$prefix = "{$this->_option}_{$this->_clean_id}";
+		if ( ! empty( $page_types[$page] ) ) {
+			$page = md_clean_id( $page );
 
-				if ( isset( $_GET['md_tab'] ) ) {
-					$taxonomy = sanitize_key( $_GET['md_tab'] );
-					$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-					$page_slug = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+			if ( $page !== $this->_clean_id )
+				$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
+			else
+				$prefix = "{$this->_option}_{$this->_clean_id}";
 
-					if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
-						$prefix .= "_{$taxonomy}";
-				}
+			if ( isset( $_GET['md_tab'] ) ) {
+				$taxonomy = sanitize_key( $_GET['md_tab'] );
+				$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
+				$page_slug = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+
+				if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
+					$prefix .= "_{$taxonomy}";
 			}
 		}
 
 		return $prefix;
+	}
+
+	/**
+	 * Determine the admin page context and cache it so instances
+	 * can know where they are loading settings.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function _get_screen() {
+		static $screen = null;
+
+		if ( $screen !== null )
+			return $screen;
+
+		$get = get_current_screen();
+		$is_post = in_array( $get->base, array( 'post', 'post-new' ) );
+		$is_term = $get->base === 'term';
+		$is_user = in_array( $get->base, array( 'profile', 'user-edit' ) );
+		$is_admin = ! ( $is_post || $is_term || $is_user );
+		$page = sanitize_key( $_GET['page']   ?? '' );
+		$md_tab = sanitize_key( $_GET['md_tab'] ?? '' );
+		$groups = apply_filters( 'md_taxonomy_groups', array() );
+
+		return array(
+			'is_post' => $is_post,
+			'is_term' => $is_term,
+			'is_user' => $is_user,
+			'is_admin' => $is_admin,
+			'is_taxonomy' => $is_admin && $md_tab && isset( $groups[$page][$md_tab] ),
+			'screen_id' => $is_post ? sanitize_key( $_GET['post'] ?? '' ) : ( $is_term ? sanitize_key( $_GET['tag_ID'] ?? '' ) : '' ),
+			'post_type' => $get->post_type,
+			'page' => $page,
+			'md_tab' => $md_tab
+		);
 	}
 
 	/**
@@ -393,8 +435,7 @@ class md_api {
 			}
 		}
 
-		if ( ! isset( $register['child_of'] ) )
-			add_action( "{$this->_id}_admin_page", array( $this, $callback ) );
+		add_action( "{$this->_id}_admin_page", array( $this, $callback ) );
 	}
 
 	/**

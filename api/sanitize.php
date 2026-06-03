@@ -53,16 +53,6 @@ class md_sanitize {
 	}
 
 	/**
-	 * A list of accepted title sizes from h1-h6 selectors.
-	 *
-	 * @since 6.0
-	 */
-
-	public function h_ids() {
-		return array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'huge' );
-	}
-
-	/**
 	 * Checks Font Weight controls.
 	 *
 	 * @since 4.8
@@ -75,21 +65,6 @@ class md_sanitize {
 			$weights[] = $weight;
 
 		return in_array( $input, $weights ) ? $input : '';
-	}
-
-	/**
-	 * Checks Featured Image position settings.
-	 *
-	 * @since 4.5
-	 * @moved 4.5.4
-	 */
-
-	public function featured_image_position( $input ) {
-		return in_array( $input, array(
-			'right', 'left', 'center', 'remove',
-			'title_right', 'title_left', 'title_center',
-			'below_headline', 'above_headline'
-		) ) ? $input : '';
 	}
 
 	/**
@@ -142,8 +117,7 @@ class md_sanitize {
 				if ( ! empty( $val ) )
 					$save[$check] = true;
 		}
-		else
-			$save = $input == true ? true : false;
+		else $save = $input == true ? true : false;
 
 		return $save;
 	}
@@ -164,8 +138,7 @@ class md_sanitize {
 
 			return $values;
 		}
-		else
-			return in_array( $input, $options ) || $dynamic ? sanitize_text_field( $input ) : '';
+		else return in_array( $input, $options ) || $dynamic ? sanitize_text_field( $input ) : '';
 	}
 
 	/**
@@ -290,6 +263,7 @@ class md_sanitize {
 
 	/**
 	 * Save valid fields and merge fields on Settings API save.
+	 * Make room for taxonomy admin setting workaround in 6.0
 	 *
 	 * @since 4.0
 	 */
@@ -298,58 +272,52 @@ class md_sanitize {
 		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
 			return $this->save_taxonomy( $input );
 
+		$settings = md_setting();
 		$save = $this->validate( 'admin_pages', $input );
 
-		return array_merge( md_setting(), $save );
+		return $this->merge_settings( $settings, $save );
 	}
+
+	/**
+	 * Merge validated settings over existing, a safe check if combining
+	 * settings from other pages, suchas taxonomy options.
+	 *
+	 * @since 6.0
+	 */
+
+	private function merge_settings( $old, $save ) {
+		$new = array_merge( $old, $save );
+		$groups = apply_filters( 'md_taxonomy_groups', array() );
+
+		foreach ( $groups as $group_id => $group ) {
+			$group_id = md_clean_id( $group_id );
+
+			if ( ! isset( $save[$group_id] ) )
+				continue;
+
+			foreach ( array_keys( $group ) as $child_slug )
+				if ( isset( $old[$group_id][$child_slug] ) )
+					$new[$group_id][$child_slug] = $old[$group_id][$child_slug];
+		}
+
+		return $new;
+	}
+
+	/**
+	 * Save taxonomy options, which are derived from admin settings.
+	 *
+	 * @since 6.0
+	 */
 
 	private function save_taxonomy( $input ) {
-		$post_type  = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
-		$taxonomy   = sanitize_key( $_POST['md_save_taxonomy'] );
-		$components = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
-		$validated  = $this->validate( 'admin_pages', array( $post_type => $components ) );
-		$option     = md_setting();
-		$option[$post_type][$taxonomy] = $validated[$post_type];
+		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
+		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
+		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
+		$options = $this->validate( 'admin_pages', array( $post_type => $group ) );
+		$option = md_setting();
+		$option[$post_type][$taxonomy] = $options[$post_type];
+
 		return $option;
-	}
-
-	/**
-	 * Saves and sanitizes user meta fields.
-	 *
-	 * @since 5.3.1
-	 */
-
-	public function user_meta_save( $user_id, $old_meta ) {
-		$option = 'marketers_delight';
-
-		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
-			return;
-
-		$save = $this->validate( 'user_meta', $_POST[$option] );
-
-		if ( $save )
-			update_user_meta( $user_id, $option, $save );
-		elseif ( empty( $save ) )
-			delete_user_meta( $user_id, $option );
-	}
-
-	/**
-	 * Saves and sanitizes term fields.
-	 *
-	 * @since 4.3.5
-	 */
-
-	public function term_save( $term_id ) {
-		$option = 'marketers_delight';
-
-		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
-			$save = $this->validate( 'terms', $_POST[$option] );
-
-			if ( $save )
-				update_term_meta( $term_id, $option, $save );
-			elseif ( empty( $save ) )
-				delete_term_meta( $term_id, $option );
-		}
 	}
 
 	/**
@@ -380,6 +348,45 @@ class md_sanitize {
 			update_post_meta( $post_id, $option, $save );
 		elseif ( $save == '' && $value )
 			delete_post_meta( $post_id, $option, $value );
+	}
+
+	/**
+	 * Saves and sanitizes term fields.
+	 *
+	 * @since 4.3.5
+	 */
+
+	public function term_save( $term_id ) {
+		$option = 'marketers_delight';
+
+		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
+			$save = $this->validate( 'terms', $_POST[$option] );
+
+			if ( $save )
+				update_term_meta( $term_id, $option, $save );
+			elseif ( empty( $save ) )
+				delete_term_meta( $term_id, $option );
+		}
+	}
+
+	/**
+	 * Saves and sanitizes user meta fields.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function user_meta_save( $user_id, $old_meta ) {
+		$option = 'marketers_delight';
+
+		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
+			return;
+
+		$save = $this->validate( 'user_meta', $_POST[$option] );
+
+		if ( $save )
+			update_user_meta( $user_id, $option, $save );
+		elseif ( empty( $save ) )
+			delete_user_meta( $user_id, $option );
 	}
 
 	/**

@@ -1,10 +1,12 @@
-<div id="md_layout" class="columns-<?php echo $is_post ? 4 : 3; ?> columns-single<?php echo ( ! empty( $content['remove'] ) ? ' remove-content-box' : '' ) . ( $is_admin ? ' md-layout-admin' : '' ); ?>">
+<div id="md_layout" class="<?php echo esc_attr( $classes ); ?>">
+
+	<?php if ( ! $is_taxonomy ) : ?>
 
 	<div class="col col1">
 
 		<!-- Header -->
 
-		<div class="md-conditional md-conditional-invert">
+		<div class="md-conditional md-conditional-invert md-sep-small">
 
 			<?php $this->fields->field( 'header', array(
 				'type' => 'checkbox',
@@ -93,96 +95,100 @@
 
 	</div>
 
+	<?php endif; ?>
+
 	<!-- Content -->
 
-	<div class="col col2">
+	<div class="<?php echo $is_taxonomy ? 'md-taxonomy-col' : 'col col2'; ?>">
 
 		<?php if ( $is_admin ) {
 
-			echo '<div class="md-sep-small">';
+		echo '<div class="md-sep-micro">';
 
-			$this->fields->field( 'content', array(
-				'type' => 'checkbox',
-				'label' => __( 'Single', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
-					'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
-				)
-			) );
+		$this->fields->field( 'featured_image', array(
+			'type' => 'select',
+			'label' => __( 'Featured image', 'md' ),
+			'empty_label' => __( 'Use default position', 'md' ),
+			'options' => $this->fields->data->values['featured_image']
+		) );
 
-			$this->fields->field( 'featured_image', array(
-				'type' => 'select',
-				'label' => __( 'Featured image', 'md' ),
-				'empty_label' => __( 'Use default position', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'options' => $this->fields->data->values['featured_image']
-			) );
+		echo '</div>';
 
-			do_action( 'md_hook_layout_admin_single_fields', $this->fields );
+		echo '<div class="md-sep-micro">';
 
-			echo '</div>';
+		do_action( 'md_hook_layout_admin_single_fields', $this->fields );
+
+		echo '</div>';
 
 		} ?>
 
+		<div class="md-sep-micro">
+
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
-		<?php $this->fields->field( 'content', array(
+		<?php if ( ! $is_taxonomy ) :
+
+		$content_options = array(
+			'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
+			'the_content' => __( 'Remove <b>Post Content</b>', 'md' )
+		);
+
+		if ( $is_post ) {
+			$content_options['builder'] = __( 'Enable <b>Builder</b>', 'md' );
+			$content_options['wpautop'] = __( 'Disable <strong>WP format</strong>', 'md' );
+		}
+
+		$this->fields->field( 'content', array(
 			'type' => 'checkbox',
-			'options' => array(
-				'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
-				'the_content' => __( 'Remove <b>Content</b>', 'md' ),
-				'builder' => __( 'Enable <b>Builder</b>', 'md' )
-			)
-		) ); ?>
+			'options' => $content_options
+		) );
+
+		endif; ?>
 
 		<div id="content_options" class="md-sep-small" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php
-			$this->fields->field( 'breadcrumbs', array(
-				'type' => 'checkbox',
-				'options' => $breadcrumbs_options
-			) );
+			<?php if ( ! $is_taxonomy ) {
+				$this->fields->field( 'breadcrumbs', array(
+					'type' => 'checkbox',
+					'options' => $breadcrumbs_options
+				) );
 
-			$this->fields->field( 'content', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'headline' => __( 'Remove <b>Title</b>', 'md' )
-				)
-			) );
+				$this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'headline' => __( 'Remove <b>Title</b>', 'md' )
+					)
+				) );
+			}
 
-			if ( $post_type !== 'page' && ! $is_term ) {
-				if ( ! $is_admin ) {
-					if ( $author_box ) $this->fields->field( 'content', array(
+			if ( $post_type !== 'page' && $is_post ) {
+				if ( $author_box )
+					$this->fields->field( 'content', array(
 						'type' => 'checkbox',
 						'options' => array(
 							'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
 						)
 					) );
-					else $this->fields->field( 'content', array(
+				else
+					$this->fields->field( 'content', array(
 						'type' => 'checkbox',
 						'options' => array(
 							'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
 						)
 					) );
 
-					$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
-
-					if ( md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type ) )
-						$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
-
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => $post_nav_options
-					) );
-				}
+				$this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => $post_nav_options
+				) );
 			}
 
-			if ( $is_post )
+			if ( ! $is_taxonomy )
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
-						'wpautop' => __( 'Disable <strong>WP formatting</strong>', 'md' )
+						'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
+						'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
 					)
 				) );
 
@@ -197,7 +203,11 @@
 
 	</div>
 
+	</div>
+
 	<!-- Sidebar / Panels -->
+
+	<?php if ( ! $is_taxonomy ) : ?>
 
 	<div class="col col3">
 
@@ -219,5 +229,7 @@
 		</div>
 
 	</div>
+
+	<?php endif; ?>
 
 </div>
