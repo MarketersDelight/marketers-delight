@@ -254,7 +254,7 @@ function md_get_loop( $args = array() ) {
 			$loop = array_merge( array( 'loop' => $loop_type ), $single );
 		else {
 			$tax_defaults = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop         = array_merge( $post_type, $tax_defaults, $single );
+			$loop = array_merge( $post_type, $tax_defaults, $single );
 		}
 
 		$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;

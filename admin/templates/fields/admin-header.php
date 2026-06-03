@@ -27,12 +27,12 @@ else
     $tabs .= '<hr class="md-sep-small" />';
 
 echo
-    '<div class="md-sep-small">'.
-    '<div class="md-content-wrap-small">'.
+    '<div class="md-admin-header">'.
+    '<div class="md-admin-header-content">'.
     '<h1>' . $views[$view]['title'] . '</h1>'.
     '<p class="md-description">' . $views[$view]['description'] . '</p>'.
     '</div>'.
-    '<div class="md-content-wrap-med notice notice-info is-dismissible inline">'.
+    '<div class="md-admin-header-meta notice notice-info is-dismissible inline">'.
     '<p><b>' . __( 'Available tokens on this page:', 'md-docs' ) . '</b></p>'.
     '<div class="md-tokens-list">' . $tokens . '</div>'.
     '</div>'.

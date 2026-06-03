@@ -7,6 +7,9 @@
 
 class md_post extends md_api {
 
+	public $post_type = 'post';
+	public $taxonomy = 'category';
+
 	/**
 	 * Create admin page and meta box.
 	 *
@@ -24,6 +27,9 @@ class md_post extends md_api {
 					apply_filters( 'md_filter_admin_page_page_settings', array() ),
 					apply_filters( 'md_filter_admin_page_optins', array() ),
 				)
+			),
+			'taxonomy' => array(
+				'name' => __( 'Category Settings', 'md' )
 			)
 		);
 	}
@@ -51,6 +57,10 @@ class md_post extends md_api {
 			'archive' => array(
 				'title' => __( 'Blog Settings', 'md' ),
 				'description' => __( 'Adjust the global settings for blog posts. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' )
+			),
+			'term' => array(
+				'title' => __( 'Category Settings', 'md' ),
+				'description' => __( 'Adjust the global settings for blog categories. Most settings apply to the blog archive, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' )
 			)
 		) );
 
@@ -77,22 +87,36 @@ class md_post extends md_api {
 		} );
 	}
 
+	/**
+	 * We could just inherit the parse_query logic from md_api, but
+	 * we need to run specific checks for the post post type only,
+	 * since WP doesn't treat it the same as CPTs.
+	 *
+	 * @since 6.0
+	 */
+
 	public function parse_query( $wp ) {
-		$type = 'post';
+		if ( is_admin() || ! $wp->is_main_query() )
+			return $wp;
 
-		if ( ! is_admin() && $wp->is_main_query() && ( $wp->is_home || $wp->is_category ) ) {
-			$per_page = md_post_type_field( array( 'loop', 'posts_per_page' ), get_option( 'posts_per_page' ), $type );
-			$order = md_post_type_field( array( 'loop', 'order' ), null, $type );
-			$orderby = md_post_type_field( array( 'loop', 'orderby' ), null, $type );
+		$is_term = $wp->is_category || $wp->is_tag;
 
-			$wp->query_vars['posts_per_page'] = esc_attr( $per_page );
+		if ( ! $wp->is_home && ! $is_term )
+			return $wp;
 
-			if ( $order )
-				$wp->query_vars['order'] = esc_attr( $order );
+		$taxonomy = $wp->is_category ? 'category' : 'post_tag';
+		$term_id = $wp->is_category ? (int) $wp->get( 'cat' ) : (int) $wp->get( 'tag_id' );
 
-			if ( $orderby )
-				$wp->query_vars['orderby'] = esc_attr( $orderby );
+		if ( $is_term && ! $term_id ) {
+			$slug = $wp->is_category ? basename( $wp->get( 'category_name' ) ) : $wp->get( 'tag' );
+			$obj = $slug ? get_term_by( 'slug', $slug, $taxonomy ) : false;
+			$term_id = $obj ? $obj->term_id : 0;
 		}
+
+		if ( ! $is_term )
+			$taxonomy = '';
+
+		$this->loop_query_vars( $wp, $taxonomy, $term_id );
 
 		return $wp;
 	}

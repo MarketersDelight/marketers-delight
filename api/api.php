@@ -11,16 +11,21 @@ class md_api {
 
 	// Set important properties available in class extensions.
 
-	public $_option = 'marketers_delight';
-	public $register = array();
 	public $_id;
 	public $_clean_id;
 	public $_prefix;
 	public $_get_screen;
 	public $fields;
 	public $name;
+	public $post_type;
+	public $taxonomy;
+	public $slug;
+	public $plural;
+	public $singular;
 	protected static $sanitize;
 	protected static $design;
+	public $register = array();
+	public $_option = 'marketers_delight';
 
 	/**
 	 * Fires class extension actions, filters, and set core properties.
@@ -69,25 +74,28 @@ class md_api {
 		if ( method_exists( $this, 'template' ) )
 			add_action( 'template_redirect', array( $this, 'template' ) );
 
-		if ( method_exists( $this, 'parse_query' ) && ! is_admin() )
-			add_action( 'parse_query', array( $this, 'parse_query' ) );
-
 		if ( method_exists( $this, 'enqueue' ) )
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
 
 		if ( method_exists( $this, 'widgets' ) )
 			add_action( 'widgets_init', array( $this, 'widgets' ) );
 
-		// Filters
+		// Post Type + Taxonomy
 
-		if ( method_exists( $this, 'post_meta' ) )
+		if ( $this->post_type ) {
+			if ( ! is_admin() )
+				add_action( 'parse_query', array( $this, 'parse_query' ) );
+
+			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
+		}
 
-		if ( method_exists( $this, 'term_meta' ) )
+		if ( $this->taxonomy ) {
 			add_filter( 'md_edit_term_meta', array( $this, 'term_meta' ) );
-
-		if ( method_exists( $this, 'taxonomy_meta' ) )
 			add_filter( 'md_taxonomy_meta', array( $this, 'taxonomy_meta' ) );
+		}
+
+		// Filters
 
 		if ( method_exists( $this, 'blocks' ) )
 			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
@@ -104,38 +112,18 @@ class md_api {
 	}
 
 	/**
-	 * Get API sanitize class instance.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function sanitize() {
-		if ( ! isset( self::$sanitize ) )
-			self::$sanitize = new md_sanitize;
-
-		return self::$sanitize;
-	}
-
-	/**
-	 * Get API design class instance.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function design() {
-		if ( ! isset( self::$design ) )
-			self::$design = new md_design;
-
-		return self::$design;
-	}
-
-	/**
 	 * Run core API actions and filters on WP init.
 	 *
 	 * @since 6.0
 	 */
 
 	public function _init() {
+		if ( $this->taxonomy && method_exists( $this, 'taxonomy' ) )
+			$this->taxonomy();
+
+		if ( $this->post_type && method_exists( $this, 'post_type' ) )
+			$this->post_type();
+
 		if ( method_exists( $this, 'init' ) )
 			$this->init();
 
@@ -179,12 +167,265 @@ class md_api {
 		// Fire admin enqueue and inline scripts/styles.
 
 		add_action( 'admin_enqueue_scripts', function() {
-			$this->_admin_assets( 'enqueue' );
+			$this->admin_assets( 'enqueue' );
 		} );
 
 		add_action( 'admin_print_footer_scripts', function() {
-			$this->_admin_assets( 'scripts' );
+			$this->admin_assets( 'scripts' );
 		}, 100 );
+	}
+
+	/**
+	 * Get API sanitize class instance.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function sanitize() {
+		if ( ! isset( self::$sanitize ) )
+			self::$sanitize = new md_sanitize;
+
+		return self::$sanitize;
+	}
+
+	/**
+	 * Get API design class instance.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function design() {
+		if ( ! isset( self::$design ) )
+			self::$design = new md_design;
+
+		return self::$design;
+	}
+
+	/**
+	 * Determine the admin page context and cache it so instances
+	 * can know where they are loading settings.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function _get_screen() {
+		static $screen = null;
+
+		if ( $screen !== null )
+			return $screen;
+
+		$get = get_current_screen();
+		$base = $get->base;
+		$is_post = in_array( $base, array( 'post', 'post-new' ) );
+		$is_term = $base === 'term';
+		$is_user = in_array( $base, array( 'profile', 'user-edit' ) );
+		$is_admin = ! ( $is_post || $is_term || $is_user );
+		$page = sanitize_key( $_GET['page']   ?? '' );
+		$md_tab = sanitize_key( $_GET['md_tab'] ?? '' );
+		$groups = apply_filters( 'md_taxonomy_groups', array() );
+
+		return array(
+			'base' => $base,
+			'is_post' => $is_post,
+			'is_term' => $is_term,
+			'is_user' => $is_user,
+			'is_admin' => $is_admin,
+			'is_taxonomy' => $is_admin && $md_tab && isset( $groups[$page][$md_tab] ),
+			'is_block_editor' => method_exists( $get, 'is_block_editor' ) && $get->is_block_editor(),
+			'screen_id' => $is_post ? sanitize_key( $_GET['post'] ?? '' ) : ( $is_term ? sanitize_key( $_GET['tag_ID'] ?? '' ) : '' ),
+			'post_type' => $get->post_type,
+			'page' => $page,
+			'md_tab' => $md_tab,
+			'taxonomy_groups' => $groups
+		);
+	}
+
+	/**
+	 * Default post type labels with singular/plural context passed in.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function post_type_labels( $singular = null, $plural = null ) {
+		$singular = $singular ?: ( $this->singular ?: ucfirst( $this->post_type ) );
+		$plural = $plural ?: ( $this->plural ?: $singular );
+
+		return array(
+			'name' => $plural,
+			'singular_name' => $singular,
+			'menu_name' => $plural,
+			'name_admin_bar' => $plural,
+			'add_new_item' => sprintf( __( 'Add New %s', 'md' ), $singular ),
+			'edit_item' => sprintf( __( 'Edit %s', 'md' ), $singular ),
+			'new_item' => sprintf( __( 'New %s', 'md' ), $singular ),
+			'view_item' => sprintf( __( 'View %s', 'md' ), $singular ),
+			'view_items' => sprintf( __( 'View %s', 'md' ), $plural ),
+			'search_items' => sprintf( __( 'Search %s', 'md' ), $plural ),
+			'not_found' => sprintf( __( 'No %s found', 'md' ), strtolower( $plural ) ),
+			'not_found_in_trash' => sprintf( __( 'No %s found in trash', 'md' ), strtolower( $plural ) ),
+			'all_items' => sprintf( __( 'All %s', 'md' ), $plural )
+		);
+	}
+
+	/**
+	 * Register this post type with the MD meta box system.
+	 *
+	 * @since 6.0
+	 */
+
+	public function post_meta( $post_type ) {
+		$post_type[] = $this->post_type;
+
+		return $post_type;
+	}
+
+	/**
+	 * Default taxonomy labels with singular/plural context passed in.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function taxonomy_labels( $singular = null, $plural = null ) {
+		$singular = $singular ?: ( $this->singular ?: ucfirst( $this->post_type ) );
+		$plural = $plural ?: ( $this->plural ?: $singular );
+
+		return array(
+			'name' => sprintf( __( '%s Categories', 'md' ), $plural ),
+			'singular_name' => sprintf( __( '%s Category', 'md' ), $singular ),
+			'search_items' => sprintf( __( 'Search %s Categories', 'md' ), $plural ),
+			'all_items' => sprintf( __( 'All %s Categories', 'md' ), $plural ),
+			'parent_item' => __( 'Parent Category', 'md' ),
+			'parent_item_colon' => __( 'Parent Category:', 'md' ),
+			'edit_item' => sprintf( __( 'Edit %s Category', 'md' ), $singular ),
+			'update_item' => sprintf( __( 'Update %s Category', 'md' ), $singular ),
+			'add_new_item' => sprintf( __( 'Add New %s Category', 'md' ), $singular ),
+			'new_item_name' => sprintf( __( 'New %s Category', 'md' ), $singular ),
+			'menu_name' => sprintf( __( '%s Categories', 'md' ), $plural )
+		);
+	}
+
+	/**
+	 * Register this taxonomy with the MD term meta system.
+	 *
+	 * @since 6.0
+	 */
+
+	public function term_meta( $taxonomies ) {
+		$taxonomies[] = $this->taxonomy;
+
+		return $taxonomies;
+	}
+
+	/**
+	 * Register this taxonomy with the MD global settings tab system.
+	 *
+	 * @since 6.0
+	 */
+
+	public function taxonomy_meta( $taxonomies ) {
+		$taxonomies[] = $this->taxonomy;
+
+		return $taxonomies;
+	}
+
+	/**
+	 * Registered post types modify the Loop in common ways, and this implements
+	 * those values from all tiers of a CPT/taxonomy/term relationship.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function loop_query_vars( $wp, $taxonomy = '', $term_id = 0 ) {
+		$type = $this->post_type;
+		$keys = array(
+			'posts_per_page' => get_option( 'posts_per_page' ),
+			'order' => null,
+			'orderby' => null
+		);
+
+		foreach ( $keys as $key => $default ) {
+			$value = md_post_type_field( array( 'loop', $key ), $default, $type );
+
+			if ( $taxonomy )
+				$value = md_taxonomy_field( array( 'loop', $key ), $value, $type, $taxonomy );
+
+			if ( $term_id )
+				$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
+
+			if ( $value )
+				$wp->query_vars[$key] = $key === 'posts_per_page' ? absint( $value ) : sanitize_key( $value );
+		}
+	}
+
+	/**
+	 * Perform the actual loop modifications, with painstaking awareness
+	 * of which loop page/context we are actually on first.
+	 *
+	 * @since 6.0
+	 */
+
+	public function parse_query( $wp ) {
+		if ( is_admin() || ! $wp->is_main_query() || ! $this->post_type )
+			return $wp;
+
+		$type = $this->post_type;
+		$taxonomy = $this->taxonomy;
+
+		$context = ( $wp->is_post_type_archive || $wp->is_tax ) && (
+			( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == $type ) ||
+			( $taxonomy && isset( $wp->query[$taxonomy] ) )
+		);
+
+		if ( ! $context )
+			return $wp;
+
+		$term_id = 0;
+
+		if ( $wp->is_tax && $taxonomy && isset( $wp->query[$taxonomy] ) ) {
+			$term = get_term_by( 'slug', $wp->query[$taxonomy], $taxonomy );
+			$term_id = $term ? $term->term_id : 0;
+		}
+
+		$sticky = get_option( 'sticky_posts' );
+
+		$wp->query_vars['post_type'] = $this->post_type;
+		$wp->query_vars['paged'] = get_query_var( 'paged' );
+
+		if ( $sticky )
+			$wp->set( 'post__not_in', $sticky );
+
+		if ( ! $wp->is_tax )
+			$taxonomy = '';
+
+		$this->loop_query_vars( $wp, $taxonomy, $term_id );
+
+		return $wp;
+	}
+
+	/**
+	 * Add "View [post type]" link to the WP admin bar on the post type's settings screen.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_bar( $admin_bar ) {
+		if ( ! is_admin() || empty( $this->register['admin_page'] ) )
+			return;
+
+		if ( $this->_get_screen['base'] !== "{$this->post_type}_page_{$this->_id}" )
+			return;
+
+		$label = $this->plural ?: ucfirst( $this->post_type );
+
+		$admin_bar->add_menu( array(
+			'id' => "{$this->_prefix}-archives-link",
+			'title' => sprintf( __( 'View %s', 'md' ), $label ),
+			'href' => esc_url( get_site_url() . '/' . ( $this->slug ?: $this->post_type ) ),
+			'meta' => array(
+				'title'  => sprintf( __( 'View %s', 'md' ), $label ),
+				'target' => '_blank'
+			)
+		) );
 	}
 
 	/**
@@ -221,43 +462,6 @@ class md_api {
 		}
 
 		return $prefix;
-	}
-
-	/**
-	 * Determine the admin page context and cache it so instances
-	 * can know where they are loading settings.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function _get_screen() {
-		static $screen = null;
-
-		if ( $screen !== null )
-			return $screen;
-
-		$get = get_current_screen();
-		$is_post = in_array( $get->base, array( 'post', 'post-new' ) );
-		$is_term = $get->base === 'term';
-		$is_user = in_array( $get->base, array( 'profile', 'user-edit' ) );
-		$is_admin = ! ( $is_post || $is_term || $is_user );
-		$page = sanitize_key( $_GET['page']   ?? '' );
-		$md_tab = sanitize_key( $_GET['md_tab'] ?? '' );
-		$groups = apply_filters( 'md_taxonomy_groups', array() );
-
-		return array(
-			'is_post' => $is_post,
-			'is_term' => $is_term,
-			'is_user' => $is_user,
-			'is_admin' => $is_admin,
-			'is_taxonomy' => $is_admin && $md_tab && isset( $groups[$page][$md_tab] ),
-			'is_block_editor' => method_exists( $get, 'is_block_editor' ) && $get->is_block_editor(),
-			'screen_id' => $is_post ? sanitize_key( $_GET['post'] ?? '' ) : ( $is_term ? sanitize_key( $_GET['tag_ID'] ?? '' ) : '' ),
-			'post_type' => $get->post_type,
-			'page' => $page,
-			'md_tab' => $md_tab,
-			'taxonomy_groups' => $groups
-		);
 	}
 
 	/**
@@ -305,60 +509,29 @@ class md_api {
 	}
 
 	/**
-	 * Loads admin scripts and styles based on wp_enqueue or print_inline, on specified admin screen.
-	 * In md_api class extension, create methods named ${context}_scripts or ${context}_enqueue.
-	 * Examples: admin_enqueue, meta_enqueue, term_scripts, meta_scripts
-	 *
-	 * @since 5.0
-	 */
-
-	private function _admin_assets( $suffix ) {
-		$screen = get_current_screen();
-		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
-		$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( $_GET['taxonomy'] ) : '';
-
-		// Load meta box
-
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, "meta_$suffix" ) )
-			call_user_func( array( $this, "meta_$suffix" ) );
-
-		// Load terms
-
-		if ( $screen->base == 'term' && in_array( $taxonomy, md_edit_term_meta() ) && method_exists( $this, "term_$suffix" ) )
-			call_user_func( array( $this, "term_$suffix" ) );
-
-		// Load admin pages
-
-		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, "admin_$suffix" ) )
-			call_user_func( array( $this, "admin_$suffix" ) );
-
-		// Load user meta
-
-		if ( $screen->base == 'profile' && method_exists( $this, "user_meta_$suffix" ) )
-			call_user_func( array( $this, "user_meta_$suffix" ) );
-	}
-
-	/**
-	 * Looks for admin interface callback between context-specific
-	 * template, or univeral method in class extension.
-	 *
-	 * Admin settings = admin_page()
-	 * Term settings  = term()
-	 * Post meta      = meta_box()
-	 * General        = admin_fields()
+	 * Taxonomy settings pages apply to every term in a post type's taxonomy.
+	 * They inherit admin settings since they live in the Settings API, and thus
+	 * inherit the same group/child structure, with the biggest difference being that
+	 * they must be applied to an accompanying post_types from a register_post_type() call.
 	 *
 	 * @since 6.0
 	 */
 
-	private function _template_callback( $context ) {
-		if ( method_exists( $this, $context ) )
-			return $context;
+	public function _taxonomy_groups( $groups ) {
+		$register = $this->register['taxonomy'];
+		$post_types = $register['post_types'] ?? (array) $this->_clean_id;
+		$meta = $register['taxonomies'] ?? md_taxonomy_meta();
 
-		if ( method_exists( $this, 'admin_fields' ) )
-			return 'admin_fields';
+		foreach ( $post_types as $post_type ) {
+			$page_slug = "md_{$post_type}";
+			$taxonomies = get_object_taxonomies( $post_type );
 
-		return;
+			foreach ( $meta as $tax )
+				if ( in_array( $tax, $taxonomies, true ) )
+					$groups[$page_slug][$tax] = true;
+		}
+
+		return $groups;
 	}
 
 	/**
@@ -383,7 +556,7 @@ class md_api {
 		if ( ! isset( $this->register['admin_page'] ) )
 			return;
 
-		$callback = $this->_template_callback( 'admin_page' );
+		$callback = method_exists( $this, 'admin_page' ) ? 'admin_page' : ( method_exists( $this, 'admin_fields' ) ? 'admin_fields' : null );
 
 		if ( ! $callback )
 			return;
@@ -455,7 +628,7 @@ class md_api {
 		if ( ! isset( $this->register['meta_box'] ) )
 			return;
 
-		$callback = $this->_template_callback( 'meta_box' );
+		$callback = method_exists( $this, 'meta_box' ) ? 'meta_box' : ( method_exists( $this, 'admin_fields' ) ? 'admin_fields' : null );
 
 		if ( ! $callback )
 			return;
@@ -499,7 +672,7 @@ class md_api {
 		if ( ! isset( $this->register['term'] ) )
 			return;
 
-		$callback = $this->_template_callback( 'term' );
+		$callback = method_exists( $this, 'term' ) ? 'term' : ( method_exists( $this, 'admin_fields' ) ? 'admin_fields' : null );
 
 		if ( ! $callback )
 			return;
@@ -533,29 +706,38 @@ class md_api {
 	}
 
 	/**
-	 * Taxonomy settings pages apply to every term in a post type's taxonomy.
-	 * They inherit admin settings since they live in the Settings API, and thus
-	 * inherit the same group/child structure, with the biggest difference being that
-	 * they must be applied to an accompanying post_types from a register_post_type() call.
+	 * Loads admin scripts and styles based on wp_enqueue or print_inline, on specified admin screen.
+	 * In md_api class extension, create methods named ${context}_scripts or ${context}_enqueue.
+	 * Examples: admin_enqueue, meta_enqueue, term_scripts, meta_scripts
 	 *
-	 * @since 6.0
+	 * @since 5.0
 	 */
 
-	public function _taxonomy_groups( $groups ) {
-		$register = $this->register['taxonomy'];
-		$post_types = $register['post_types'] ?? (array) $this->_clean_id;
-		$meta = $register['taxonomies'] ?? md_taxonomy_meta();
+	private function admin_assets( $suffix ) {
+		$screen = get_current_screen();
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+		$tab = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
+		$taxonomy = isset( $_GET['taxonomy'] ) ? sanitize_key( $_GET['taxonomy'] ) : '';
 
-		foreach ( $post_types as $post_type ) {
-			$page_slug = "md_{$post_type}";
-			$taxonomies = get_object_taxonomies( $post_type );
+		// Load meta box
 
-			foreach ( $meta as $tax )
-				if ( in_array( $tax, $taxonomies, true ) )
-					$groups[$page_slug][$tax] = true;
-		}
+		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, "meta_$suffix" ) )
+			call_user_func( array( $this, "meta_$suffix" ) );
 
-		return $groups;
+		// Load terms
+
+		if ( $screen->base == 'term' && in_array( $taxonomy, md_edit_term_meta() ) && method_exists( $this, "term_$suffix" ) )
+			call_user_func( array( $this, "term_$suffix" ) );
+
+		// Load admin pages
+
+		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, "admin_$suffix" ) )
+			call_user_func( array( $this, "admin_$suffix" ) );
+
+		// Load user meta
+
+		if ( $screen->base == 'profile' && method_exists( $this, "user_meta_$suffix" ) )
+			call_user_func( array( $this, "user_meta_$suffix" ) );
 	}
 
 }

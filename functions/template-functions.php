@@ -242,15 +242,15 @@ function md_parse_tokens( $args = array() ) {
 	if ( $context === 'term' ) {
 		$definitions = array(
 			'{name}' => __( 'Category name', 'md' ),
+			'{description}' => __( 'Category description', 'md' ),
+			'{url}' => __( 'Category URL', 'md' ),
 			'{slug}' => __( 'Category slug', 'md' ),
 			'{count}' => __( 'Total posts in category', 'md' ),
-			'{description}' => __( 'Category description', 'md' ),
+			'{total}' => __( 'Total published posts', 'md' ),
 			'{taxonomy}' => __( 'Taxonomy label', 'md' ),
 			'{label}' => __( 'Post type singular label', 'md' ),
-			'{post_type}' => __( 'Post type plural label', 'md' ),
-			'{url}' => __( 'Category URL', 'md' ),
-			'{parent}' => __( 'Parent category name', 'md' ),
-			'{total}' => __( 'Total published posts', 'md' )
+			'{plural}' => __( 'Post type plural label', 'md' ),
+			'{parent}' => __( 'Parent category name', 'md' )
 		);
 
 		if ( $list )
@@ -270,9 +270,9 @@ function md_parse_tokens( $args = array() ) {
 				'{url}' => get_term_link( $term ),
 				'{slug}' => $term->slug,
 				'{count}' => $term->count,
-				'{taxonomy}' => $taxonomy ? $taxonomy->labels->singular_name : '',
 				'{label}' => $post_type ? $post_type->labels->singular_name : '',
-				'{post_type}' => $post_type ? $post_type->labels->name : '',
+				'{taxonomy}' => $taxonomy ? $taxonomy->labels->singular_name : '',
+				'{plural}' => $post_type ? $post_type->labels->name : ''
 			);
 
 			if ( strpos( $text, '{parent}' ) !== false )
