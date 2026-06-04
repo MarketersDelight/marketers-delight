@@ -33,7 +33,7 @@ class md_accordion_widget extends WP_Widget {
 	 */
 
 	public function widget( $args, $val ) {
-		$terms = $current = $terms_args = array();
+		$terms = $current = $terms_args = $get_terms = array();
 		$page_id = get_queried_object_id();
 		$current_post_type = md_get_post_type();
 		$page_taxonomies = get_object_taxonomies( $current_post_type );
@@ -67,7 +67,8 @@ class md_accordion_widget extends WP_Widget {
 				$get_terms = get_the_terms( $page_id, $tax );
 				$get_terms = ! empty( $get_terms ) ? $get_terms[0] : array();
 			}
-			else $get_terms = $terms[$page_id];
+			elseif ( ! empty( $terms[$page_id] ) )
+				$get_terms = $terms[$page_id];
 
 			if ( ! empty( $get_terms ) ) {
 				$current = $terms[$get_terms->term_id];

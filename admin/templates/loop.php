@@ -1,4 +1,4 @@
-<div class="columns-4 columns-single md-full-select md-sep-micro">
+<div class="columns-4 columns-single md-full-select">
 
 	<div class="col">
 		<?php $this->fields->field( 'loop', array(
@@ -13,17 +13,17 @@
 		echo '<div class="col md-sep-top">';
 
 		if ( $screen['is_taxonomy'] )
-			$this->fields->field( 'subcategory', array(
+			$this->fields->field( 'category_posts', array(
 				'type' => 'checkbox',
 				'wrap_classes' => 'md-sep-micro',
 				'options' => array(
-					'hide' => __( 'Hide subcategories', 'md' )
+					'subcategory' => __( 'Hide subcategories', 'md' )
 				)
 			) );
 		else
 			$this->fields->field( 'category_posts', array(
 				'type' => 'checkbox',
-				'wrap_classes' => 'md-sep-micro',
+				'wrap_classes' => 'md-sep-micro mt-micro',
 				'classes' => 'md-check-val',
 				'options' => array(
 					'enable' => __( 'List posts by category', 'md' )
@@ -35,83 +35,156 @@
 
 </div>
 
-<div class="columns-4 columns-single md-full-select md-sep-micro">
+<div class="md-loop-options md-tabs md-sep-micro">
 
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'orderby', array(
-			'type' => 'select',
-			'label' => __( 'Orderby', 'md' ),
-			'description' => __( 'Sort order of posts.', 'md' ),
-			'empty_label' => __( 'Date', 'md' ),
-			'options' => array(
-				'title' => __( 'Title', 'md' ),
-				'modified' => __( 'Last Modified', 'md' ),
-				'comment_count' => __( 'Comment Count', 'md' ),
-				'rand' => __( 'Random', 'md' )
-			)
-		) ); ?>
+	<?php if ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) : ?>
+	<div class="nav-tab-wrapper mt-half">
+		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-post-options"><?php echo __( 'Post Options', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-category-options"><?php echo __( 'Category Options', 'md' ); ?></a>
 	</div>
+	<?php endif; ?>
 
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'order', array(
-			'type' => 'select',
-			'label' => __( 'Order', 'md' ),
-			'description' => __( 'Lowest/highest value.', 'md' ),
-			'empty_label' => __( 'Descending', 'md' ),
-			'options' => array(
-				'ASC' => __( 'Ascending', 'md' )
-			)
-		) ); ?>
+	<div class="md-loop-post-options md-tab-content active">
+		<div class="columns-4 columns-single md-full-select">
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'orderby', array(
+					'type' => 'select',
+					'label' => __( 'Orderby', 'md' ),
+					'description' => __( 'Sort order of posts', 'md' ),
+					'empty_label' => __( 'Date', 'md' ),
+					'options' => array(
+						'title' => __( 'Title', 'md' ),
+//						'author' => __( 'Author', 'md' ),
+						'modified' => __( 'Last Modified', 'md' ),
+						'comment_count' => __( 'Comment Count', 'md' ),
+						'menu_order' => __( 'Menu Order', 'md' ),
+						'rand' => __( 'Random', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'order', array(
+					'type' => 'select',
+					'label' => __( 'Order', 'md' ),
+					'description' => __( 'Lowest/highest value', 'md' ),
+					'empty_label' => __( 'Descending', 'md' ),
+					'options' => array(
+						'ASC' => __( 'Ascending', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'posts_per_page', array(
+					'type' => 'number',
+					'label' => __( 'Posts Per Page', 'md' ),
+					'placeholder' => get_option( 'posts_per_page' ),
+					'description' => __( 'Show number of posts', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'featured', array(
+					'type' => 'number',
+					'label' => __( 'Featured Posts', 'md' ),
+					'description' => __( 'Feature the first X posts', 'md' ),
+					'classes' => 'md-num-val'
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'columns', array(
+					'type' => 'number',
+					'label' => __( 'Post Columns', 'md' ),
+					'placeholder' => '1',
+					'description' => __( 'Sort posts in columns', 'md' )
+				) ); ?>
+			</div>
+
+		</div>
 	</div>
 
 	<?php if ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) : ?>
+	<div class="md-loop-category-options md-tab-content">
+		<div class="columns-4 columns-single md-full-select">
 
-	<div class="loop-category-field col md-sep-micro">
-		<?php $this->fields->field( 'category_per_page', array(
-			'type' => 'number',
-			'label' => __( 'Categories Per Page', 'md' ),
-			'placeholder' => 5,
-			'description' => __( 'Show category sections.', 'md' )
-		) ); ?>
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_per_page', array(
+					'type' => 'number',
+					'label' => __( 'Categories Per Page', 'md' ),
+					'description' => __( 'Show category sections', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_columns', array(
+					'type' => 'number',
+					'label' => __( 'Category Columns', 'md' ),
+					'placeholder' => 1,
+					'description' => __( 'Show category columns', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_orderby', array(
+					'type' => 'select',
+					'label' => __( 'Orderby', 'md' ),
+					'description' => __( 'Sort order of categories', 'md' ),
+					'empty_label' => __( 'Name', 'md' ),
+					'options' => array(
+						'slug' => __( 'Slug', 'md' ),
+						'term_id' => __( 'Term ID', 'md' ),
+						'count' => __( 'Post Count', 'md' ),
+						'parent' => __( 'Parent', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_order', array(
+					'type' => 'select',
+					'label' => __( 'Order', 'md' ),
+					'description' => __( 'Lowest/highest value', 'md' ),
+					'empty_label' => __( 'Ascending', 'md' ),
+					'options' => array(
+						'DESC' => __( 'Descending', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_include', array(
+					'type' => 'text',
+					'label' => __( 'Include Categories', 'md' ),
+					'placeholder' => '1, 4, 7',
+					'description' => __( 'Comma-separated term IDs', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_exclude', array(
+					'type' => 'text',
+					'label' => __( 'Exclude Categories', 'md' ),
+					'placeholder' => '2, 5',
+					'description' => __( 'Comma-separated term IDs', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'category_posts', array(
+					'type' => 'checkbox',
+					'label' => __( 'Settings', 'md' ),
+					'options' => array(
+						'show_empty' => __( 'Show empty categories', 'md' )
+					)
+				) ); ?>
+			</div>
+
+		</div>
 	</div>
-
-	<div class="loop-category-field col md-sep-micro">
-		<?php $this->fields->field( 'category_columns', array(
-			'type' => 'number',
-			'label' => __( 'Category Columns', 'md' ),
-			'placeholder' => 1,
-			'description' => __( 'Show category columns.', 'md' )
-		) ); ?>
-	</div>
-
 	<?php endif; ?>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'posts_per_page', array(
-			'type' => 'number',
-			'label' => __( 'Posts Per Page', 'md' ),
-			'placeholder' => get_option( 'posts_per_page' ),
-			'description' => __( 'Show number of posts.', 'md' )
-		) ); ?>
-	</div>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'featured', array(
-			'type' => 'number',
-			'label' => __( 'Featured Posts', 'md' ),
-			'description' => __( 'Feature the first X posts.', 'md' ),
-			'classes' => 'md-num-val'
-		) ); ?>
-	</div>
-
-	<div class="col md-sep-micro">
-		<?php $this->fields->field( 'columns', array(
-			'type' => 'number',
-			'label' => __( 'Post Columns', 'md' ),
-			'placeholder' => '1',
-			'description' => __( 'Sort posts in columns.', 'md' )
-		) ); ?>
-	</div>
 
 </div>
 

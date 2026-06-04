@@ -81,17 +81,23 @@ class md_loop extends md_api {
 			),
 			'category_posts' => array(
 				'type' => 'checkbox',
-				'options' => array( 'enable' )
-			),
-			'subcategory' => array(
-				'type' => 'checkbox',
-				'options' => array( 'hide' )
+				'options' => array( 'enable', 'subcategory', 'show_empty' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
 			'posts_per_page' => array( 'type' => 'number' ),
 			'category_per_page' => array( 'type' => 'number' ),
 			'category_columns' => array( 'type' => 'number' ),
+			'category_orderby' => array(
+				'type' => 'select',
+				'options' => array( 'slug', 'term_id', 'count', 'parent' )
+			),
+			'category_order' => array(
+				'type' => 'select',
+				'options' => array( 'DESC' )
+			),
+			'category_include' => array( 'type' => 'text' ),
+			'category_exclude' => array( 'type' => 'text' ),
 			'orderby' => array(
 				'type' => 'select',
 				'options' => array( 'title', 'modified', 'comment_count', 'rand' )
@@ -185,18 +191,32 @@ class md_loop extends md_api {
 	public function scripts() { ?>
 		<script>
 			jQuery( document ).ready( function( $ ) {
+				function resetTabs( $tabs ) {
+					$tabs.find( '.md-tab' ).removeClass( 'nav-tab-active' ).first().addClass( 'nav-tab-active' );
+					$tabs.find( '.md-tab-content' ).removeClass( 'active' ).first().addClass( 'active' );
+				}
+
 				$( '.md-check-val' ).on( 'change', function( e ) {
-					$( this ).parents( '.md-loop' ).toggleClass( 'has-category-posts' );
+					var loop = $( this ).parents( '.md-loop' );
+					loop.toggleClass( 'has-category-posts' );
+
+					if ( ! loop.hasClass( 'has-category-posts' ) )
+						resetTabs( loop.find( '.md-loop-options' ) );
 				});
+
 				$( '.md-content-val' ).on( 'change', function() {
 					$( this ).parents( '.md-loop-post-group' ).find( '.md-loop-content-options' ).toggle( this.value !== 'hide' );
 				});
+
 				$( '.md-num-val' ).on( 'change', function( e ) {
 					var loop = $( this ).parents( '.md-loop' );
+
 					if ( this.value >= 1 )
 						loop.addClass( 'has-featured' );
-					else
+					else {
 						loop.removeClass( 'has-featured' );
+						resetTabs( loop.find( '.md-loop-post' ) );
+					}
 				});
 			} );
 		</script>

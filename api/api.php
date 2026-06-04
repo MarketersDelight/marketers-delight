@@ -97,6 +97,12 @@ class md_api {
 
 		// Filters
 
+		if ( method_exists( $this, 'setting_defaults' ) )
+			add_filter( 'md_setting_defaults', array( $this, 'setting_defaults' ) );
+
+		if ( method_exists( $this, 'register_loop' ) )
+			add_filter( 'md_filter_loops', array( $this, 'register_loop' ) );
+
 		if ( method_exists( $this, 'blocks' ) )
 			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
 
@@ -109,6 +115,12 @@ class md_api {
 		// WP init
 
 		add_action( 'init', array( $this, '_init' ) );
+
+		if ( $this->taxonomy && method_exists( $this, 'taxonomy' ) )
+			add_action( 'init', array( $this, 'taxonomy' ), 0 );
+
+		if ( $this->post_type && method_exists( $this, 'post_type' ) )
+			add_action( 'init', array( $this, 'post_type' ), 1 );
 	}
 
 	/**
@@ -118,12 +130,6 @@ class md_api {
 	 */
 
 	public function _init() {
-		if ( $this->taxonomy && method_exists( $this, 'taxonomy' ) )
-			$this->taxonomy();
-
-		if ( $this->post_type && method_exists( $this, 'post_type' ) )
-			$this->post_type();
-
 		if ( method_exists( $this, 'init' ) )
 			$this->init();
 
@@ -138,6 +144,13 @@ class md_api {
 			'id' => $this->_id,
 			'clean_id' => $this->_clean_id,
 			'prefix' => $this->_prefix,
+			'post_type' => array(
+				'name' => $this->post_type,
+				'taxonomy' => $this->taxonomy,
+				'slug' => $this->slug,
+				'plural' => $this->plural,
+				'singular' => $this->singular
+			)
 		) );
 
 		add_action( 'current_screen', function() {
@@ -268,7 +281,7 @@ class md_api {
 	}
 
 	/**
-	 * Register this post type with the MD meta box system.
+	 * Add registered MD meta boxes to this post type.
 	 *
 	 * @since 6.0
 	 */
@@ -305,7 +318,7 @@ class md_api {
 	}
 
 	/**
-	 * Register this taxonomy with the MD term meta system.
+	 * Add registered MD term meta boxes to this post type.
 	 *
 	 * @since 6.0
 	 */
@@ -317,7 +330,7 @@ class md_api {
 	}
 
 	/**
-	 * Register this taxonomy with the MD global settings tab system.
+	 * Give this taxonomy a edit settings screen.
 	 *
 	 * @since 6.0
 	 */

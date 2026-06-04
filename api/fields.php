@@ -15,6 +15,7 @@ class md_fields {
 	protected $_option;
 	public $_get_screen;
 	public $data;
+	public $post_type = array();
 
 	/**
 	 * Set properties of instance.
@@ -27,6 +28,7 @@ class md_fields {
 		$this->_clean_id = $args['clean_id'];
 		$this->_prefix = $args['prefix'];
 		$this->_option = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
+		$this->post_type = $args['post_type'] ?? array();
 		$this->data = new md_fields_data;
 	}
 
@@ -512,16 +514,6 @@ class md_fields {
 	}
 
 	/**
-	 * Render admin page header pattern often used on post type admin pages.
-	 *
-	 * @since 6.0
-	 */
-
-	public function admin_header( $views ) {
-		include md_template( 'admin/fields/admin-header', true );
-	}
-
-	/**
 	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
 	 *
 	 * @since 5.3.1
@@ -571,6 +563,30 @@ class md_fields {
 				'after_post' => __( 'After Post', 'md' )
 			)
 		) );
+	}
+
+	/**
+	 * Render admin page header pattern often used on post type admin pages.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_header( $views = array() ) {
+		$post_type = $this->post_type;
+		$plural = $post_type['plural'] ?? ( $post_type['singular'] ?? ucfirst( $post_type['name'] ?? $this->_clean_id ) );
+
+		$views['archive'] = array_merge( array(
+			'title' => sprintf( __( '%s Settings', 'md' ), $plural ),
+			'description' => sprintf( __( 'Adjust the global settings for the %s post type. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' ), "<strong>$plural</strong>" )
+		), $views['archive'] ?? array() );
+
+		if ( ! empty( $post_type['taxonomy'] ) )
+			$views['term'] = array_merge( array(
+				'title' => sprintf( __( '%s Category Settings', 'md' ), $plural ),
+				'description' => sprintf( __( 'Set the defaults for every category page in the %s post type. Settings will be inherited from the post type settings, and you can override further from any Edit Category screen.', 'md' ), "<strong>$plural</strong>" )
+			), $views['term'] ?? array() );
+
+		include md_template( 'admin/fields/admin-header', true );
 	}
 
 	/**

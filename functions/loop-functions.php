@@ -265,8 +265,9 @@ function md_get_loop( $args = array() ) {
 		if ( ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) )
 			$loop['by_category'] = true;
 
-		if ( ( is_category() || is_tax() ) && ! empty( $loop['subcategory']['enable'] ) ) {
+		if ( ( is_category() || is_tax() ) && ! empty( $loop['category_posts']['subcategory'] ) ) {
 			$queried = get_queried_object();
+
 			if ( $queried && ! empty( get_term_children( $queried->term_id, $queried->taxonomy ) ) )
 				$loop['subcategory'] = true;
 		}
@@ -322,7 +323,7 @@ function md_hook_x_loop( $loop, $c ) {
 function md_loop( $args = array() ) {
 	$c = 1;
 	$args = is_array( $args ) ? $args : array();
-	$post_type = get_post_type();
+	$post_type = md_get_post_type();
 	$html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();

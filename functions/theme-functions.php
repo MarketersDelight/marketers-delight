@@ -272,7 +272,7 @@ function md_ver( $file, $path = null ) {
 function md_setting( $keys = null, $default = null ) {
 	$c = 0;
 	$option = get_option( 'marketers_delight' );
-	$defaults = apply_filters( 'md_option_defaults', array() );
+	$defaults = apply_filters( 'md_setting_defaults', array() );
 
 	if ( ! empty( $defaults ) )
 		$option = array_replace_recursive( $defaults, (array) $option );

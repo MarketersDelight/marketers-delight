@@ -28,9 +28,7 @@ class md_post extends md_api {
 					apply_filters( 'md_filter_admin_page_optins', array() ),
 				)
 			),
-			'taxonomy' => array(
-				'name' => __( 'Category Settings', 'md' )
-			)
+			'taxonomy' => true
 		);
 	}
 
@@ -41,8 +39,11 @@ class md_post extends md_api {
 	 */
 
 	public function init() {
+		$this->plural = __( 'Blog', 'md' );
+		$this->singular = __( 'Post', 'md' );
+
     	$post_type = get_post_type_object( 'post' );
-		$post_type->labels->name = $post_type->labels->menu_name = __( 'Blog', 'md' );
+		$post_type->labels->name = $post_type->labels->menu_name = $this->plural;
 	}
 
 	/**
@@ -53,16 +54,7 @@ class md_post extends md_api {
 	 */
 
 	public function admin_page() {
-		$this->fields->admin_header( array(
-			'archive' => array(
-				'title' => __( 'Blog Settings', 'md' ),
-				'description' => __( 'Adjust the global settings for blog posts. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' )
-			),
-			'term' => array(
-				'title' => __( 'Category Settings', 'md' ),
-				'description' => __( 'Adjust the global settings for blog categories. Most settings apply to the blog archive, and categories inherit these defaults. Override these settings from any Edit Category or Post screen.', 'md' )
-			)
-		) );
+		$this->fields->admin_header();
 
 		echo '<div class="md-content-wrap-med">';
 
