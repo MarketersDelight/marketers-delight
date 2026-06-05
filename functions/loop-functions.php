@@ -11,6 +11,10 @@ function md_filter_loops() {
 		'article' => array(
 			'name' => __( 'Article view (default)', 'md' ),
 			'description' => __( 'A traditional blog with a flexible layout and styles.', 'md' )
+		),
+		'list' => array(
+			'name' => __( 'List view', 'md' ),
+			'description' => __( 'A simple list with a condensed post listing.', 'md' )
 		)
 	) );
 }
@@ -234,6 +238,8 @@ function md_loop_featured( $loop ) {
 function md_get_loop( $args = array() ) {
 	$loop = array();
 
+	// Build parameters if a manual loop query
+
 	if ( ! empty( $args['query'] ) ) {
 		$key = '';
 
@@ -245,31 +251,57 @@ function md_get_loop( $args = array() ) {
 		if ( $key )
 			$loop = md_post_type_field( 'loop', array(), $key );
 	}
+
+	// Build parameters for auto page detection and admin settings
+
 	else {
 		$post_type = md_post_type_field( 'loop', array() );
-		$loop_type = md_post_type_field( array( 'loop', 'loop' ), 'article' );
+		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article' );
 		$single = md_module( 'loop', array() );
 
-		if ( is_singular() || is_404() )
-			$loop = array_merge( array( 'loop' => $loop_type ), $single );
-		else {
-			$tax_defaults = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop = array_merge( $post_type, $tax_defaults, $single );
+		// Determine main loop keys from contextual admin settings
+
+		if ( is_singular() || is_404() ) {
+			$loops = md_loops();
+			$single_loop = ! empty( $loops[$loop_template]['single'] ) ? $loop_template : 'article';
+			$loop = array_merge( array( 'loop' => $single_loop ), $single );
 		}
+		else {
+			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
+			$loop = array_merge( $post_type, $tax, $single );
+		}
+
+		// Set additional parameters
 
 		$loop['paged'] = get_query_var( 'paged' ) ? get_query_var( 'paged' ) : 1;
 
 		if ( empty( $loop['posts_per_page'] ) )
 			$loop['posts_per_page'] = get_option( 'posts_per_page' );
 
-		if ( ! is_tax() && ! is_category() && ! empty( $loop['category_posts']['enable'] ) )
+		if ( empty( $loop['loop_type'] ) )
+			$loop['loop_type'] = '';
+
+		if ( is_category() || is_tax() ) {
+			$queried = get_queried_object();
+			$has_children = $queried && ! empty( get_term_children( $queried->term_id, $queried->taxonomy ) );
+
+			if ( $has_children ) {
+				if ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ) ) )
+					$loop['by_category'] = true;
+
+				if ( ! empty( $loop['category']['hide_subcategory'] ) )
+					$loop['subcategory'] = true;
+			}
+		}
+		elseif ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ) ) )
 			$loop['by_category'] = true;
 
-		if ( ( is_category() || is_tax() ) && ! empty( $loop['category_posts']['subcategory'] ) ) {
-			$queried = get_queried_object();
-
-			if ( $queried && ! empty( get_term_children( $queried->term_id, $queried->taxonomy ) ) )
-				$loop['subcategory'] = true;
+		// On a taxonomy page falling back to default listing, don't inherit
+		// archive-specific settings the post type set for category_posts mode.
+		if ( ( is_category() || is_tax() ) && ! isset( $loop['by_category'] ) ) {
+			foreach ( array( 'posts_per_page', 'columns', 'featured' ) as $key )
+				if ( isset( $post_type[$key] ) && ! isset( $tax[$key] ) )
+					unset( $loop[$key] );
 		}
 
 		if ( md_has_builder() )
@@ -285,11 +317,6 @@ function md_get_loop( $args = array() ) {
 	$loop = array_merge( $loop, $args );
 	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
 
-	if ( ! empty( $loop['query'] ) )
-		foreach ( array( 'posts_per_page', 'orderby', 'order' ) as $key )
-			if ( empty( $loop['query'][$key] ) && ! empty( $loop[$key] ) )
-				$loop['query'][$key] = $loop[$key];
-
 	if ( ! isset( $loop['style'] ) )
 		$loop['style'] = ! empty( $args['query'] ) ? md_loop_style( array( 'body' => true ) ) : md_loop_style();
 
@@ -297,6 +324,15 @@ function md_get_loop( $args = array() ) {
 		$loop['is_slim'] = true;
 
 	$loop['loop_classes'] = md_loop_classes( $loop );
+
+	// A manual query might want to inherit some settings
+
+	if ( ! empty( $loop['query'] ) )
+		foreach ( array( 'posts_per_page', 'orderby', 'order' ) as $key )
+			if ( empty( $loop['query'][$key] ) && ! empty( $loop[$key] ) )
+				$loop['query'][$key] = $loop[$key];
+
+	// Return loop data for any given page
 
 	return apply_filters( 'md_filter_set_loop', $loop );
 }
@@ -328,18 +364,30 @@ function md_loop( $args = array() ) {
 	$loop = $loop_base = md_get_loop( $args );
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
-	$loop_type = $loop['loop'];
+	$loop_template = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
 
 	md_hook_loop_before();
 
-	if ( ( is_category() || is_tax() ) && ! empty( $loop['subcategory'] ) )
+	// Show subcategory listing
+
+	$show_subcategory = ( is_category() || is_tax() ) ? empty( $loop['category']['hide_subcategory'] ) : ! empty( $loop['category']['show_subcategory'] );
+
+	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory )
 		include md_template( 'loop/subcategory', true );
+
+	// Sticky post, or a loop called within a loop (see 404)
 
 	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
+
+	// If listing by category
+
 	elseif ( isset( $loop['by_category'] ) )
 		include md_template( 'loop/category-posts', true );
+
+	// Calling a manual query loop
+
 	elseif ( isset( $args['query'] ) ) {
 		$query = new WP_Query( $loop['query'] );
 
@@ -359,6 +407,9 @@ function md_loop( $args = array() ) {
 
 		md_pagination( $loop );
 	}
+
+	// Every default loop on a page
+
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '">' : '';
 
@@ -375,6 +426,9 @@ function md_loop( $args = array() ) {
 			md_pagination( $loop );
 		}
 	}
+
+	// Things that don't exist have to go somewhere too
+
 	else md_404();
 
 	md_hook_loop_after();

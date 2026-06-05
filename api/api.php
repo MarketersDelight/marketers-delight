@@ -86,7 +86,9 @@ class md_api {
 			if ( ! is_admin() )
 				add_action( 'parse_query', array( $this, 'parse_query' ) );
 
-			add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
+			if ( method_exists( $this, 'register' ) )
+				add_action( 'admin_bar_menu', array( $this, 'admin_bar' ), 100 );
+
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 		}
 
@@ -349,18 +351,32 @@ class md_api {
 	 */
 
 	protected function loop_query_vars( $wp, $taxonomy = '', $term_id = 0 ) {
-		$type = $this->post_type;
+		$post_type = $this->post_type;
 		$keys = array(
 			'posts_per_page' => get_option( 'posts_per_page' ),
 			'order' => null,
 			'orderby' => null
 		);
 
-		foreach ( $keys as $key => $default ) {
-			$value = md_post_type_field( array( 'loop', $key ), $default, $type );
+		// Sometimes post_type -> taxonony settings shouldn't inherit
 
-			if ( $taxonomy )
-				$value = md_taxonomy_field( array( 'loop', $key ), $value, $type, $taxonomy );
+		$use_tax_defaults = (bool) $taxonomy;
+
+		if ( $taxonomy ) {
+			$loop_type = md_post_type_field( array( 'loop', 'loop_type' ), '', $post_type );
+			$tax_loop_type = md_taxonomy_field( array( 'loop', 'loop_type' ), $loop_type, $post_type, $taxonomy );
+
+			if ( $term_id && in_array( $tax_loop_type, array( 'category_posts', 'category' ) ) )
+				$use_tax_defaults = empty( get_term_children( $term_id, $taxonomy ) );
+		}
+
+		foreach ( $keys as $key => $default ) {
+			$value = md_post_type_field( array( 'loop', $key ), $default, $post_type );
+
+			if ( $taxonomy ) {
+				$default = $use_tax_defaults ? $default : $value;
+				$value = md_taxonomy_field( array( 'loop', $key ), $default, $post_type, $taxonomy );
+			}
 
 			if ( $term_id )
 				$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
@@ -381,11 +397,11 @@ class md_api {
 		if ( is_admin() || ! $wp->is_main_query() || ! $this->post_type )
 			return $wp;
 
-		$type = $this->post_type;
+		$post_type = $this->post_type;
 		$taxonomy = $this->taxonomy;
 
 		$context = ( $wp->is_post_type_archive || $wp->is_tax ) && (
-			( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == $type ) ||
+			( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == $post_type ) ||
 			( $taxonomy && isset( $wp->query[$taxonomy] ) )
 		);
 
@@ -422,23 +438,21 @@ class md_api {
 	 */
 
 	public function admin_bar( $admin_bar ) {
-		if ( ! is_admin() || empty( $this->register['admin_page'] ) )
-			return;
-
-		if ( $this->_get_screen['base'] !== "{$this->post_type}_page_{$this->_id}" )
-			return;
-
 		$label = $this->plural ?: ucfirst( $this->post_type );
 
-		$admin_bar->add_menu( array(
-			'id' => "{$this->_prefix}-archives-link",
-			'title' => sprintf( __( 'View %s', 'md' ), $label ),
-			'href' => esc_url( get_site_url() . '/' . ( $this->slug ?: $this->post_type ) ),
-			'meta' => array(
-				'title'  => sprintf( __( 'View %s', 'md' ), $label ),
-				'target' => '_blank'
-			)
-		) );
+		if ( is_admin() && ! empty( $this->register['admin_page'] ) && $this->_get_screen['base'] === "{$this->post_type}_page_{$this->_id}" )
+			$admin_bar->add_menu( array(
+				'id' => "{$this->_prefix}-archives-link",
+				'title' => sprintf( __( 'View %s', 'md' ), $label ),
+				'href' => esc_url( get_site_url() . '/' . ( $this->slug ?: $this->post_type ) ),
+				'meta' => array( 'title' => sprintf( __( 'View %s', 'md' ), $label ), 'target' => '_blank' )
+			) );
+		elseif ( ! is_admin() && ( is_post_type_archive( $this->post_type ) || ( $this->post_type === 'post' && is_home() ) ) )
+			$admin_bar->add_menu( array(
+				'id' => "{$this->_id}-settings-link",
+				'title' => '<span class="ab-icon dashicons dashicons-edit"></span>' . sprintf( __( 'Edit %s Settings', 'md' ), $label ),
+				'href' => esc_url( admin_url( 'admin.php?page=' . $this->_id ) )
+			) );
 	}
 
 	/**

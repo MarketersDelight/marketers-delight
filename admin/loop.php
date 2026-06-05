@@ -79,13 +79,18 @@ class md_loop extends md_api {
 				'type' => 'radio',
 				'options' => array_keys( md_loops() )
 			),
-			'category_posts' => array(
+			'loop_type' => array(
+				'type' => 'select',
+				'options' => array( 'post_listing', 'category_posts', 'category' )
+			),
+			'category' => array(
 				'type' => 'checkbox',
-				'options' => array( 'enable', 'subcategory', 'show_empty' )
+				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
 			'posts_per_page' => array( 'type' => 'number' ),
+			'posts_per_category' => array( 'type' => 'number' ),
 			'category_per_page' => array( 'type' => 'number' ),
 			'category_columns' => array( 'type' => 'number' ),
 			'category_orderby' => array(
@@ -167,13 +172,15 @@ class md_loop extends md_api {
 
 	public function admin_fields() {
 		$screen = $this->_get_screen;
-		$category_posts = $this->fields->module( 'category_posts' );
+		$loop_type = $this->fields->module( 'loop_type' );
 		$featured = $this->fields->module( 'featured' );
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
 		$image_sizes = get_intermediate_image_sizes();
+		$subcat_key = ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) ? 'show_subcategory' : 'hide_subcategory';
+		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show subcategories', 'md' ) : __( 'Hide subcategories', 'md' );
 	?>
 
-	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo $category_posts ? ' has-category-posts' : ''; ?>">
+	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts' : ''; ?>">
 		<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 		<div class="md-widget-item">
 			<?php include md_template( 'admin/loop', true ); ?>
@@ -198,9 +205,10 @@ class md_loop extends md_api {
 
 				$( '.md-check-val' ).on( 'change', function( e ) {
 					var loop = $( this ).parents( '.md-loop' );
-					loop.toggleClass( 'has-category-posts' );
+					var active = this.value === 'category' || this.value === 'category_posts';
+					loop.toggleClass( 'has-category-posts', active );
 
-					if ( ! loop.hasClass( 'has-category-posts' ) )
+					if ( ! active )
 						resetTabs( loop.find( '.md-loop-options' ) );
 				});
 

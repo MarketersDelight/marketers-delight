@@ -1,4 +1,4 @@
-<div class="columns-4 columns-single md-full-select">
+<div class="columns-3 columns-single md-full-select">
 
 	<div class="col">
 		<?php $this->fields->field( 'loop', array(
@@ -9,29 +9,33 @@
 		) ); ?>
 	</div>
 
-	<?php if ( $screen['is_admin'] ) {
-		echo '<div class="col md-sep-top">';
+	<?php echo '<div class="col">';
 
-		if ( $screen['is_taxonomy'] )
-			$this->fields->field( 'category_posts', array(
-				'type' => 'checkbox',
-				'wrap_classes' => 'md-sep-micro',
-				'options' => array(
-					'subcategory' => __( 'Hide subcategories', 'md' )
-				)
-			) );
-		else
-			$this->fields->field( 'category_posts', array(
-				'type' => 'checkbox',
-				'wrap_classes' => 'md-sep-micro mt-micro',
-				'classes' => 'md-check-val',
-				'options' => array(
-					'enable' => __( 'List posts by category', 'md' )
-				)
-			) );
+	$this->fields->field( 'loop_type', array(
+		'type' => 'select',
+		'label' => __( 'Loop type', 'md' ),
+		'wrap_classes' => 'md-sep-micro',
+		'classes' => 'md-check-val',
+		'empty_label' => __( 'Use default', 'md' ),
+		'options' => array(
+			'post_listing'   => __( 'Post listing (default)', 'md' ),
+			'category_posts' => __( 'List posts by category', 'md' ),
+			'category'       => __( 'Category overview', 'md' )
+		)
+	) );
 
-		echo '</div>';
-	} ?>
+	echo '</div>'.
+		 '<div class="col">';
+
+	$this->fields->field( 'category', array(
+		'type' => 'checkbox',
+		'wrap_classes' => 'md-sep-micro md-sep-top-med',
+		'options' => array( $subcat_key => $subcat_label )
+	) );
+
+	echo '</div>';
+
+?>
 
 </div>
 
@@ -119,6 +123,15 @@
 			</div>
 
 			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'posts_per_category', array(
+					'type' => 'number',
+					'label' => __( 'Posts Per Category', 'md' ),
+					'placeholder' => get_option( 'posts_per_page' ),
+					'description' => __( 'Posts per category section', 'md' )
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
 				<?php $this->fields->field( 'category_columns', array(
 					'type' => 'number',
 					'label' => __( 'Category Columns', 'md' ),
@@ -173,7 +186,7 @@
 			</div>
 
 			<div class="col md-sep-micro">
-				<?php $this->fields->field( 'category_posts', array(
+				<?php $this->fields->field( 'category', array(
 					'type' => 'checkbox',
 					'label' => __( 'Settings', 'md' ),
 					'options' => array(
@@ -278,7 +291,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-small">
+			<div class="col md-sep-micro">
 				<?php $this->fields->field( "{$p}excerpt_more", array(
 					'type' => 'text',
 					'label' => __( 'Excerpt More', 'md' ),

@@ -10,13 +10,15 @@
 		</div>
 		<?php endif; ?>
 
+		<?php if ( $show_subcategory ) include md_template( 'loop/subcategory', true ); ?>
+
 	</div>
 
 	<div class="<?php echo esc_attr( $loop_classes ); ?>">
-		<?php while ( $posts->have_posts() ) :
+		<?php while ( $posts->have_posts() ) {
 			$posts->the_post();
 			include md_template( 'loop/the-post', true );
-		endwhile; ?>
+		} ?>
 	</div>
 
 </section>

@@ -7,8 +7,8 @@ $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 
 // Build Term_Query args
 
+$term_args['parent']   = ( is_tax() || is_category() ) ? get_queried_object_id() : 0;
 $term_args['taxonomy'] = $taxonomy;
-$term_args['parent']   = 0;
 
 if ( ! empty( $loop['category_orderby'] ) )
 	$term_args['orderby'] = $loop['category_orderby'];
@@ -26,7 +26,7 @@ foreach ( array( 'include', 'exclude' ) as $sort )
 	if ( ! empty( $loop["category_$sort"] ) )
 		$term_args[$sort] = array_map( 'intval', array_filter( explode( ',', $loop["category_$sort"] ) ) );
 
-if ( ! empty( $loop['category_posts']['show_empty'] ) )
+if ( ! empty( $loop['category']['show_empty'] ) )
 	$term_args['hide_empty'] = false;
 
 // Compile loop classes
@@ -57,30 +57,35 @@ echo '<div id="loop" class="' . esc_attr( $categories_classes ) . '">';
 
 foreach ( $categories->terms as $category ) {
 	$c = 1;
-	$posts = new WP_Query( array(
-		'post_type' => $post_type,
-		'posts_per_page' => absint( $loop['posts_per_page'] ),
-		'no_found_rows' => true,
-		'tax_query' => array(
-			array(
-				'taxonomy' => $taxonomy,
-				'field' => 'slug',
-				'terms' => $category->slug
-			)
-		)
-	) );
-
 	$category_id = $category->term_id;
 	$category_description = term_description( $category_id );
+	$queried = $category;
 
-	if ( $posts->have_posts() || ! empty( $loop['category_posts']['show_empty'] ) )
-		include md_template( 'loop/category-post', true );
+	if ( $loop['loop_type'] === 'category_posts' ) {
+		$posts = new WP_Query( array(
+			'post_type' => $post_type,
+			'posts_per_page' => absint( ! empty( $loop['posts_per_category'] ) ? $loop['posts_per_category'] : $loop['posts_per_page'] ),
+			'no_found_rows' => true,
+			'tax_query' => array(
+				array(
+					'field' => 'slug',
+					'taxonomy' => $taxonomy,
+					'terms' => $category->slug
+				)
+			)
+		) );
+
+		if ( $posts->have_posts() || ! empty( $loop['category']['show_empty'] ) )
+			include md_template( 'loop/category-post', true );
+
+		wp_reset_postdata();
+
+	}
+	else include md_template( 'loop/category-post', true );
 
 	md_hook_x_loop( $loop, $t );
 
 	$t++;
-
-	wp_reset_postdata();
 }
 
 echo '</div>';

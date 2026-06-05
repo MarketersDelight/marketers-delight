@@ -11,7 +11,7 @@ function md_the_title( $context = 'post', $args = array() ) {
 	$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
-		$h = ! empty( $args['loop']['category_posts']['enable'] ) ? 'h3' : 'h2';
+		$h = ! empty( $args['loop']['by_category'] ) ? 'h3' : 'h2';
 
 		if ( ! empty( $title ) )
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';

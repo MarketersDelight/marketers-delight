@@ -1,18 +1,27 @@
 <?php
 
-$queried = get_queried_object();
-$child_terms = get_terms( array(
-	'taxonomy' => $queried->taxonomy,
-	'parent' => $queried->term_id,
+if ( ! isset( $queried ) )
+	$queried = get_queried_object();
+
+$taxonomies = get_object_taxonomies( $post_type );
+$children = get_terms( array(
+	'taxonomy' => ( ! empty( $taxonomies[0] ) ? $taxonomies[0] : '' ),
+	'parent' => ( isset( $queried->term_id ) ? $queried->term_id : 0 ),
 	'hide_empty' => false
 ) );
 
-if ( empty( $child_terms ) || is_wp_error( $child_terms ) )
+if ( empty( $children ) || is_wp_error( $children ) )
 	return;
 
-echo '<nav class="subcategory-nav">';
+//echo '<div class="subcategory ' . md_loop_classes() . '">';
 
-foreach ( $child_terms as $child )
-	echo '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
+echo '<div class="subcategory loop box-style full columns columns-4">';
 
-echo '</nav>';
+foreach ( $children as $child ) {
+	echo
+		'<div class="entry"><div class="item">'.
+		'<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>'.
+		'</div></div>';
+}
+
+echo '</div>';
