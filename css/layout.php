@@ -142,7 +142,16 @@
 
 /* CATEGORY VIEWS */
 
+body:not(.toggle-panel) .category.columns.full { gap: <?php echo $mid; ?>px; }
+
 .category-title { margin-block-end: <?php echo $half; ?>px; }
+
+.category-title .title {
+	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
+	line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;
+}
+
+.category-title .title:not(:last-child) { margin-block-end: <?php echo $third; ?>px; }
 
 /* QUERIES */
 

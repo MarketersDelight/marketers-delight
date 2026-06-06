@@ -129,6 +129,7 @@ line-height: 30px;
 	color: #1E1E1E;
 	text-decoration: none;
 }
+:is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a:hover { text-decoration: underline; }
 .mce-content-body h1, .mce-content-body h2, .mce-content-body h3, .mce-content-body h4, .mce-content-body h5, .mce-content-body h6 { margin-block-end: 16px; }
 .mce-content-body :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading):is(.alignwide, .alignfull) { text-align: center; }
 .the-content :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading):not(:first-child) { margin-block-start: 48px; }
@@ -677,7 +678,13 @@ cite, .tiny {
 }
 .loop-list .title a:hover { text-decoration: none; }
 /* CATEGORY VIEWS */
+body:not(.toggle-panel) .category.columns.full { gap: 48px; }
 .category-title { margin-block-end: 16px; }
+.category-title .title {
+	font-size: 32px;
+	line-height: 45px;
+}
+.category-title .title:not(:last-child) { margin-block-end: 11px; }
 /* QUERIES */
 @media (min-width: 672px) {
 	.cover, .box-entry.full .item { padding: 48px; }

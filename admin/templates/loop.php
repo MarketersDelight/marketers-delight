@@ -41,7 +41,7 @@
 
 <div class="md-loop-options md-tabs md-sep-micro">
 
-	<?php if ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) : ?>
+	<?php if ( $screen['is_admin'] || $screen['is_term'] ) : ?>
 	<div class="nav-tab-wrapper mt-half">
 		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-loop-post-options"><?php echo __( 'Post Options', 'md' ); ?></a>
 		<a href="#" class="md-tab nav-tab" data-md-tab="md-loop-category-options"><?php echo __( 'Category Options', 'md' ); ?></a>
@@ -110,7 +110,7 @@
 		</div>
 	</div>
 
-	<?php if ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) : ?>
+	<?php if ( $screen['is_admin'] || $screen['is_term'] ) : ?>
 	<div class="md-loop-category-options md-tab-content">
 		<div class="columns-4 columns-single md-full-select">
 

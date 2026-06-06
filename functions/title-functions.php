@@ -99,7 +99,7 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Layout type classes
 
-	if ( ! empty( $loop['is_slim'] ) && ! $has_header_cover )
+	if ( ! $has_header_cover && ( ( $context === 'page' && $has_sidebar ) || ( $context !== 'page' && ! empty( $loop['is_slim'] ) ) ) )
 		$classes[] = 'inline';
 	else
 		$classes[] = 'wide';
@@ -168,10 +168,11 @@ function md_description( $context = 'post', $args = array() ) {
 		elseif ( ( is_category() || is_tax() ) && get_queried_object() ) {
 			$description = md_term_meta( array( 'hero', 'archives_text' ) );
 
-			if ( ! $description ) {
-				$tax_description = md_taxonomy_field( 'archives_text' );
-				$description = $tax_description ? $tax_description : category_description();
-			}
+			if ( ! $description )
+				$description = category_description();
+
+			if ( ! $description )
+				$description = md_taxonomy_field( 'archives_text' );
 
 			$description = md_parse_text( $description, 'term' );
 		}

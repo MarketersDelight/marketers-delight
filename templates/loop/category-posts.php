@@ -8,22 +8,20 @@ $term_args = array(
 	'taxonomy' => $taxonomy
 );
 
-// Sort order
+// Set query ordering by category_{order} fields
 
 foreach ( array( 'orderby' => 'category_orderby', 'order' => 'category_order' ) as $arg => $key )
 	if ( ! empty( $loop[$key] ) )
 		$term_args[$arg] = $loop[$key];
-
-// Visibility
-
-if ( ! empty( $loop['category']['show_empty'] ) )
-	$term_args['hide_empty'] = false;
 
 // Filter to specific term IDs
 
 foreach ( array( 'include', 'exclude' ) as $sort )
 	if ( ! empty( $loop["category_$sort"] ) )
 		$term_args[$sort] = array_map( 'intval', array_filter( explode( ',', $loop["category_$sort"] ) ) );
+
+if ( ! empty( $loop['category']['show_empty'] ) )
+	$term_args['hide_empty'] = false;
 
 // Pagination
 
@@ -45,7 +43,6 @@ if ( empty( $categories->terms ) ) {
 echo '<div id="loop" class="' . esc_attr( $loop['category_classes'] ) . '">';
 
 foreach ( $categories->terms as $category ) {
-	$c = 1;
 	$category_description = term_description( $category->term_id );
 
 	if ( $loop['loop_type'] === 'category_posts' ) {
@@ -76,6 +73,8 @@ foreach ( $categories->terms as $category ) {
 }
 
 echo '</div>';
+
+// Category pagination
 
 if ( ! isset( $args['query'] ) && ! empty( $loop['category_per_page'] ) )
 	md_pagination( $loop );

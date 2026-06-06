@@ -78,6 +78,8 @@ code, pre {
 	text-decoration: none;
 }
 
+:is(<?php echo $heading_selectors ?>) a:hover { text-decoration: underline; }
+
 .format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-block-end: <?php echo $half; ?>px; }
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
