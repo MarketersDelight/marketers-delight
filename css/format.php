@@ -217,6 +217,15 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 
 .slim ul, .slim ol { margin-inline-start: <?php echo $half; ?>px; }
 
+.slim .entry-title, .slim .title-wrap { row-gap: <?php echo $small; ?>px; }
+
+.slim .entry-title .wrap { column-gap: <?php echo $half; ?>px; }
+
+.slim .byline {
+	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
+}
+
 @media (min-width: <?php echo $post_width; ?>px) {
 	.slim .title {
 		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;

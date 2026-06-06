@@ -14,7 +14,9 @@ function md_filter_loops() {
 		),
 		'list' => array(
 			'name' => __( 'List view', 'md' ),
-			'description' => __( 'A simple list with a condensed post listing.', 'md' )
+			'description'  => __( 'A simple list with a condensed post listing.', 'md' ),
+			'style_target' => 'group',
+			'classes' => 'slim'
 		)
 	) );
 }
@@ -88,34 +90,54 @@ function md_loop_classes( $loop = array() ) {
 	if ( empty( $loop ) )
 		$loop = md_get_loop();
 
+	$loops = md_loops();
 	$post_type = ! empty( $loop['post_type'] ) ? $loop['post_type'] : md_get_post_type();
-	$class = 'loop-' . str_replace( '_', '-', $post_type );
-	$style = isset( $loop['style'] ) ? $loop['style'] : md_loop_style();
-	$classes = array( 'loop', $class, 'loop-' . $loop['loop'] );
+	$post_type = str_replace( '_', '-', $post_type );
+	$style = $loop['style'] ?? md_loop_style();
+	$target = $loop['style_target'] ?? 'entry';
 
-	if ( $style )
-		$classes[] = "{$style}-style";
+	// Loop classes
+
+	$classes = array( 'loop', "loop-$post_type", 'loop-' . $loop['loop'], "{$style}-style", "{$style}-{$target}" );
 
 	if ( $loop['columns'] > 1 ) {
 		$classes[] = 'columns';
 		$classes[] = 'columns-' . $loop['columns'];
-
-		if ( ! empty( $loop['is_slim'] ) )
-			$classes[] = 'slim';
-		else
-			$classes[] = 'full';
+		$classes[] = ! empty( $loop['is_slim'] ) ? 'slim' : 'full';
 	}
 	else {
 		$classes[] = 'row';
 		$classes[] = 'full';
 	}
 
-	if ( isset( $loop['classes'] ) )
-		$classes = array_merge( $classes, (array) $loop['classes'] );
+	if ( ! empty( $loops[$loop['loop']]['classes'] ) )
+		$classes = array_merge( $classes, (array) $loops[$loop['loop']]['classes'] );
 
-	$classes = apply_filters( 'md_filter_loop_classes', $classes );
+	$classes = array_unique( apply_filters( 'md_filter_loop_classes', $classes ) );
 
-	return join( ' ', $classes );
+	// Category wrapper classes
+
+	$category_columns = ! empty( $loop['category_columns'] ) ? (int) $loop['category_columns'] : 1;
+	$category_classes = array( 'category', 'category-' . $loop['loop'], "{$style}-style" );
+
+	if ( $category_columns > 1 ) {
+		$category_classes[] = 'columns';
+		$category_classes[] = 'columns-' . $category_columns;
+		$category_classes[] = ( $category_columns >= 3 || ! empty( $loop['has_sidebar'] ) ) ? 'slim' : 'full';
+	}
+	else {
+		$category_classes[] = 'row';
+		$category_classes[] = 'full';
+	}
+
+	$category_classes = array_unique( apply_filters( 'md_filter_category_loop_classes', $category_classes ) );
+
+	// Return class sets
+
+	return array(
+		'loop' => join( ' ', $classes ),
+		'category' => join( ' ', $category_classes )
+	);
 }
 
 /**
@@ -296,20 +318,23 @@ function md_get_loop( $args = array() ) {
 		elseif ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ) ) )
 			$loop['by_category'] = true;
 
-		// On a taxonomy page falling back to default listing, don't inherit
-		// archive-specific settings the post type set for category_posts mode.
-		if ( ( is_category() || is_tax() ) && ! isset( $loop['by_category'] ) ) {
-			foreach ( array( 'posts_per_page', 'columns', 'featured' ) as $key )
-				if ( isset( $post_type[$key] ) && ! isset( $tax[$key] ) )
-					unset( $loop[$key] );
-		}
-
 		if ( md_has_builder() )
 			$loop['has_builder'] = true;
 
 		if ( md_has_sidebar() )
 			$loop['has_sidebar'] = true;
+
+		// Reset defaults if category inherits a "category" view, but has no subcats
+
+		if ( ( is_category() || is_tax() ) && ! isset( $loop['by_category'] ) ) {
+			foreach ( array( 'posts_per_page', 'columns', 'featured' ) as $key )
+				if ( isset( $post_type[$key] ) && ! isset( $tax[$key] ) )
+					unset( $loop[$key] );
+		}
 	}
+
+	if ( ! isset( $loop['loop_type'] ) )
+		$loop['loop_type'] = '';
 
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
@@ -317,13 +342,20 @@ function md_get_loop( $args = array() ) {
 	$loop = array_merge( $loop, $args );
 	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
 
-	if ( ! isset( $loop['style'] ) )
-		$loop['style'] = ! empty( $args['query'] ) ? md_loop_style( array( 'body' => true ) ) : md_loop_style();
+	if ( ! isset( $loop['style'] ) ) {
+		$loop_args = ! empty( $args['query'] ) ? array( 'body' => true ) : array();
+		$loop['style'] = md_loop_style( $loop_args );
+	}
 
-	if ( ! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 || ( $loop['columns'] == 2 && ! empty( $loop['has_sidebar'] ) ) )
+	if ( ! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 || ( ! empty( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) )
 		$loop['is_slim'] = true;
 
-	$loop['loop_classes'] = md_loop_classes( $loop );
+	$loops = md_loops();
+	$loop['style_target'] = ! empty( $loops[$loop['loop']]['style_target'] ) ? $loops[$loop['loop']]['style_target'] : 'entry';
+
+	$classes = md_loop_classes( $loop );
+	$loop['loop_classes']     = $classes['loop'];
+	$loop['category_classes'] = $classes['category'];
 
 	// A manual query might want to inherit some settings
 

@@ -438,20 +438,32 @@ class md_api {
 	 */
 
 	public function admin_bar( $admin_bar ) {
-		$label = $this->plural ?: ucfirst( $this->post_type );
+		$id = $this->_id;
+		$screen = $this->_get_screen;
+		$register = $this->register;
+		$post_type = $this->post_type;
+		$label = $this->plural ?: ucfirst( $post_type );
 
-		if ( is_admin() && ! empty( $this->register['admin_page'] ) && $this->_get_screen['base'] === "{$this->post_type}_page_{$this->_id}" )
+		if ( is_admin() && ! empty( $register['admin_page'] ) && ! empty( $screen['page'] ) && $screen['page'] === $id ) {
+			$href = get_site_url() . '/' . ( $this->slug ?: $post_type );
+
+			if ( $post_type === 'post' ) {
+				$page_for_posts = get_option( 'page_for_posts' );
+				$href = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
+			}
+
 			$admin_bar->add_menu( array(
 				'id' => "{$this->_prefix}-archives-link",
 				'title' => sprintf( __( 'View %s', 'md' ), $label ),
-				'href' => esc_url( get_site_url() . '/' . ( $this->slug ?: $this->post_type ) ),
+				'href' => esc_url( $href ),
 				'meta' => array( 'title' => sprintf( __( 'View %s', 'md' ), $label ), 'target' => '_blank' )
 			) );
-		elseif ( ! is_admin() && ( is_post_type_archive( $this->post_type ) || ( $this->post_type === 'post' && is_home() ) ) )
+		}
+		elseif ( ! is_admin() && ( is_post_type_archive( $post_type ) || ( $post_type === 'post' && is_home() ) ) )
 			$admin_bar->add_menu( array(
-				'id' => "{$this->_id}-settings-link",
+				'id' => "{$id}-settings-link",
 				'title' => '<span class="ab-icon dashicons dashicons-edit"></span>' . sprintf( __( 'Edit %s Settings', 'md' ), $label ),
-				'href' => esc_url( admin_url( 'admin.php?page=' . $this->_id ) )
+				'href' => esc_url( admin_url( "admin.php?page=$id" ) )
 			) );
 	}
 

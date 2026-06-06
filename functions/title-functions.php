@@ -91,7 +91,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
 	$loop = md_get_loop();
-	$media = md_has_media( $context );
+	$media = md_has_media( $context, array( 'loop' => $loop ) );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
@@ -99,9 +99,10 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Layout type classes
 
-	if ( ( $has_sidebar && ! $has_header_cover ) || ( $context == 'post' && ! is_singular() && isset( $loop['columns'] ) && $loop['columns'] > 2 ) )
+	if ( ! empty( $loop['is_slim'] ) && ! $has_header_cover )
 		$classes[] = 'inline';
-	else $classes[] = 'wide';
+	else
+		$classes[] = 'wide';
 
 	// Featured image related classes
 

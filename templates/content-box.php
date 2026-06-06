@@ -6,7 +6,7 @@ md_hook_content_box_top();
 
 echo '<div class="content-wrap' . ( ! $has_builder ? ' inner' : '' ) . '">';
 
-echo ( ! $has_builder ? '<div class="content' . ( is_singular() ? ' ' . md_loop_classes() : '' ) . '">' : '' );
+echo ( ! $has_builder ? '<div class="content' . ( is_singular() ? " $loop_classes" : '' ) . '">' : '' );
 
 md_hook_before_content();
 

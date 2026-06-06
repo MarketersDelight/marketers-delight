@@ -39,6 +39,8 @@ function md_content_box() {
 		return;
 
 	$has_builder = md_has_builder();
+	$loop_classes = md_loop_classes();
+	$loop_classes = $loop_classes['loop'];
 
 	include md_template( 'content-box', true );
 }

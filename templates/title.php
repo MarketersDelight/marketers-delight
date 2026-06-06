@@ -11,6 +11,8 @@ if ( $context == 'page' )
 
 do_action( "md_hook_{$context}_title_top" );
 
+// If media position is set to align directly with the title
+
 if ( $media && in_array( $media['position'], $title_images ) ) {
 
 	echo '<div class="wrap">';
@@ -32,6 +34,9 @@ if ( $media && in_array( $media['position'], $title_images ) ) {
 	}
 
 }
+
+// Default markup
+
 else {
 
 	if ( $context == 'post' )

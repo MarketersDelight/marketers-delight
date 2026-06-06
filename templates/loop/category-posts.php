@@ -1,47 +1,36 @@
 <?php
 
 $t = 1;
-$loop_class = 'loop-' . str_replace( '_', '-', $post_type );
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+$term_args = array(
+	'parent' => ( is_tax() || is_category() ) ? get_queried_object_id() : 0,
+	'taxonomy' => $taxonomy
+);
 
-// Build Term_Query args
+// Sort order
 
-$term_args['parent']   = ( is_tax() || is_category() ) ? get_queried_object_id() : 0;
-$term_args['taxonomy'] = $taxonomy;
+foreach ( array( 'orderby' => 'category_orderby', 'order' => 'category_order' ) as $arg => $key )
+	if ( ! empty( $loop[$key] ) )
+		$term_args[$arg] = $loop[$key];
 
-if ( ! empty( $loop['category_orderby'] ) )
-	$term_args['orderby'] = $loop['category_orderby'];
+// Visibility
 
-if ( ! empty( $loop['category_per_page'] ) ) {
-	$category_per_page = (int) $loop['category_per_page'];
-	$term_args['number'] = $category_per_page;
-	$term_args['offset'] = $category_per_page * ( $loop['paged'] - 1 );
-}
+if ( ! empty( $loop['category']['show_empty'] ) )
+	$term_args['hide_empty'] = false;
 
-if ( ! empty( $loop['category_order'] ) )
-	$term_args['order'] = $loop['category_order'];
+// Filter to specific term IDs
 
 foreach ( array( 'include', 'exclude' ) as $sort )
 	if ( ! empty( $loop["category_$sort"] ) )
 		$term_args[$sort] = array_map( 'intval', array_filter( explode( ',', $loop["category_$sort"] ) ) );
 
-if ( ! empty( $loop['category']['show_empty'] ) )
-	$term_args['hide_empty'] = false;
+// Pagination
 
-// Compile loop classes
-
-$categories_classes = array( 'categories', "category-$loop_class" );
-
-if ( isset( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) {
-	$categories_classes[] = 'columns';
-	$categories_classes[] = 'columns-' . $loop['category_columns'];
-
-	if ( $loop['category_columns'] >= 3 )
-		$categories_classes[] = 'slim';
+if ( ! empty( $loop['category_per_page'] ) ) {
+	$term_args['number'] = (int) $loop['category_per_page'];
+	$term_args['offset'] = $term_args['number'] * ( $loop['paged'] - 1 );
 }
-
-$categories_classes = join( ' ', $categories_classes );
 
 // Render category loop listing
 
@@ -53,13 +42,11 @@ if ( empty( $categories->terms ) ) {
 	return false;
 }
 
-echo '<div id="loop" class="' . esc_attr( $categories_classes ) . '">';
+echo '<div id="loop" class="' . esc_attr( $loop['category_classes'] ) . '">';
 
 foreach ( $categories->terms as $category ) {
 	$c = 1;
-	$category_id = $category->term_id;
-	$category_description = term_description( $category_id );
-	$queried = $category;
+	$category_description = term_description( $category->term_id );
 
 	if ( $loop['loop_type'] === 'category_posts' ) {
 		$posts = new WP_Query( array(

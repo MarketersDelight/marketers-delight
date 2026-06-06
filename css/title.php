@@ -29,8 +29,7 @@
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
 
-.wide .byline + .lede,
-.row.full .byline + .lede { margin-block-start: <?php echo $single; ?>px; }
+.wide .byline + .lede, .row.full .byline + .lede { margin-block-start: <?php echo $single; ?>px; }
 
 .subtitle {
 	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;

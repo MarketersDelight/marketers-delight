@@ -189,6 +189,12 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
 .slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: 16px; }
 .slim ul, .slim ol { margin-inline-start: 16px; }
+.slim .entry-title, .slim .title-wrap { row-gap: 5px; }
+.slim .entry-title .wrap { column-gap: 16px; }
+.slim .byline {
+	font-size: 16px;
+	line-height: 28px;
+}
 @media (min-width: 672px) {
 	.slim .title {
 		font-size: 27px;
