@@ -154,6 +154,42 @@ closeOverlay: function( name, parent ) {
 			MD.removeClass( triggers[i], 'toggled' );
 	};
 },
+scrollerNav: function() {
+	var wraps = document.getElementsByClassName( 'scroller-nav' );
+	for ( var i = 0; i < wraps.length; i++ ) {
+		( function( wrap ) {
+			var list = wrap.querySelector( '.scroller-list' ),
+				prev = wrap.querySelector( '.scroller-arrow-prev' ),
+				next = wrap.querySelector( '.scroller-arrow-next' );
+			function updateArrows() {
+				var overflow = list.scrollWidth > wrap.clientWidth,
+					start = list.scrollLeft <= 0,
+					end = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
+				if ( prev )
+					if ( ! overflow || start )
+						MD.addClass( prev, 'arrow-hidden' );
+					else
+						MD.removeClass( prev, 'arrow-hidden' );
+				if ( next )
+					if ( ! overflow || end )
+						MD.addClass( next, 'arrow-hidden' );
+					else
+						MD.removeClass( next, 'arrow-hidden' );
+			}
+			if ( prev )
+				prev.onclick = function() {
+					list.scrollBy( { left: -160, behavior: 'smooth' } );
+				};
+			if ( next )
+				next.onclick = function() {
+					list.scrollBy( { left: 160, behavior: 'smooth' } );
+				};
+			list.addEventListener( 'scroll', updateArrows, { passive: true } );
+			window.addEventListener( 'resize', updateArrows );
+			updateArrows();
+		})( wraps[i] );
+	}
+},
 onScroll: function() {
 	var pos = 0, ticking = false;
 	window.onscroll = function( e ) {

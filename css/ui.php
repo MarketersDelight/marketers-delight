@@ -26,32 +26,51 @@
 
 .close:hover { background-color: rgba(0, 0, 0, 0.2); }
 
-/* SCROLLER NAV */
+/* SCROLLER */
 
 .scroller-nav {
 	align-items: center;
-	background-color: <?php echo $colors['site']['tertiary']; ?>;
 	display: flex;
-	height: 100%;
-	font-size: 33px;
-	padding-inline: <?php echo $half; ?>px;
-	position: absolute;
-		inset-block-start: 0;
-		inset-inline-end: 0;
+	min-width: 0;
 }
 
-.scroller-nav i { font-size: inherit; }
-
-@media all and (min-width: <?php echo $site_width; ?>px) {
-	.scroller-nav { display: none; }
+.scroller-arrow {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	cursor: pointer;
+	flex-shrink: 0;
+	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	padding: 0 <?php echo $third; ?>px;
+	transform: none;
+	transition: color 0.2s;
 }
 
-@media all and (max-width: <?php echo $site_width; ?>px) {
-	.scroller {
-		overflow-x: auto;
-		white-space: nowrap;
-	}
+.scroller-arrow:hover {
+	background: transparent;
+	box-shadow: none;
+	color: <?php echo $colors['site']['links']; ?>;
+	transform: none;
 }
+
+.scroller-list {
+	display: flex;
+	flex: 1;
+	flex-wrap: nowrap;
+	gap: <?php echo $third; ?>px;
+	min-width: 0;
+	overflow-x: auto;
+	scroll-behavior: smooth;
+	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
+}
+
+.scroller-list::-webkit-scrollbar { display: none; }
+
+.scroller-arrow.arrow-hidden { display: none; }
 
 /* TOOLTIP */
 

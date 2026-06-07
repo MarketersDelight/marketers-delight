@@ -117,25 +117,33 @@ function md_loop_classes( $loop = array() ) {
 
 	// Category wrapper classes
 
+	$category_type = 'category-' . ( $loop['loop_type'] == 'category_posts' ? 'posts' : 'view' );
 	$category_columns = ! empty( $loop['category_columns'] ) ? (int) $loop['category_columns'] : 1;
-	$category_classes = array( 'category', 'category-' . $loop['loop'], "{$style}-style" );
+
+	$categories_classes = array( 'categories', $category_type, 'category-' . $loop['loop'], "{$style}-style" );
 
 	if ( $category_columns > 1 ) {
-		$category_classes[] = 'columns';
-		$category_classes[] = 'columns-' . $category_columns;
-		$category_classes[] = ( $category_columns >= 3 || ! empty( $loop['has_sidebar'] ) ) ? 'slim' : 'full';
+		$categories_classes[] = 'columns';
+		$categories_classes[] = 'columns-' . $category_columns;
+		$categories_classes[] = ( $category_columns >= 3 || ! empty( $loop['has_sidebar'] ) ) ? 'slim' : 'full';
 	}
 	else {
-		$category_classes[] = 'row';
-		$category_classes[] = 'full';
+		$categories_classes[] = 'row';
+		$categories_classes[] = 'full';
 	}
 
-	$category_classes = array_unique( apply_filters( 'md_filter_category_loop_classes', $category_classes ) );
+	$categories_classes = array_unique( apply_filters( 'md_filter_category_loop_classes', $categories_classes ) );
+
+	$category_classes = array( 'entry' );
+
+	if ( $loop['loop_type'] == 'category' )
+		$category_classes[] = "{$style}-{$target}";
 
 	// Return class sets
 
 	return array(
 		'loop' => join( ' ', $classes ),
+		'categories' => join( ' ', $categories_classes ),
 		'category' => join( ' ', $category_classes )
 	);
 }
@@ -354,7 +362,8 @@ function md_get_loop( $args = array() ) {
 	$loop['style_target'] = ! empty( $loops[$loop['loop']]['style_target'] ) ? $loops[$loop['loop']]['style_target'] : 'entry';
 
 	$classes = md_loop_classes( $loop );
-	$loop['loop_classes']     = $classes['loop'];
+	$loop['loop_classes'] = $classes['loop'];
+	$loop['categories_classes'] = $classes['categories'];
 	$loop['category_classes'] = $classes['category'];
 
 	// A manual query might want to inherit some settings
@@ -401,9 +410,11 @@ function md_loop( $args = array() ) {
 
 	md_hook_loop_before();
 
-	// Show subcategory listing
+	// Show subcategory listing on post types / categoriess
 
-	$show_subcategory = ( is_category() || is_tax() ) ? empty( $loop['category']['hide_subcategory'] ) : ! empty( $loop['category']['show_subcategory'] );
+	$show_subcategory = is_category() || is_tax()
+		? empty( $loop['category']['hide_subcategory'] )
+		: ! empty( $loop['category']['show_subcategory'] );
 
 	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory )
 		include md_template( 'loop/subcategory', true );
@@ -420,25 +431,8 @@ function md_loop( $args = array() ) {
 
 	// Calling a manual query loop
 
-	elseif ( isset( $args['query'] ) ) {
-		$query = new WP_Query( $loop['query'] );
-
-		if ( $query->have_posts() ) {
-			echo '<div class="' . esc_attr( $loop_classes ) . '">';
-
-			while ( $query->have_posts() ) {
-				$query->the_post();
-				include md_template( 'loop/the-post', true );
-			}
-
-			echo '</div>';
-		}
-		else md_404();
-
-		wp_reset_postdata();
-
-		md_pagination( $loop );
-	}
+	elseif ( isset( $args['query'] ) )
+		include md_template( 'loop/the-query', true );
 
 	// Every default loop on a page
 

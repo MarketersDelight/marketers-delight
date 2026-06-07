@@ -11,12 +11,28 @@ $children = get_terms( array(
 if ( empty( $children ) || is_wp_error( $children ) )
 	return;
 
-echo '<div class="subcategory loop box-style full columns columns-4">';
+// Show subcategories on "list posts by category" view
 
-foreach ( $children as $child ) { echo
-	'<div class="entry"><div class="item">'.
-	'<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>'.
-	'</div></div>';
+if ( isset( $posts ) ) {
+
+	$scroller_args = array();
+
+	foreach ( $children as $child )
+		$scroller_args[] = '<a href="' . esc_url( get_term_link( $child ) ) . '" class="tag">' . esc_html( $child->name ) . '</a>';
+
+	md_scroller_nav( $scroller_args );
+
 }
 
-echo '</div>';
+// Show listing of categories
+
+else {
+
+	echo '<ul class="subcategory list">';
+
+	foreach ( $children as $child )
+		echo '<li><a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a></li>';
+
+	echo '</ul>';
+
+}

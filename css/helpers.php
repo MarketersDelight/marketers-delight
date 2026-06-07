@@ -183,6 +183,7 @@ cite, .tiny {
 [class*="columns-"].slim { gap: <?php echo $half; ?>px; }
 
 .entry, .col {
+	min-width: 0;
 	position: relative;
 	width: 100%;
 }

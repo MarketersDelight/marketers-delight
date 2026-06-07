@@ -72,6 +72,7 @@
 }
 
 @media (min-width: <?php echo $site_width; ?>px) {
+	body:not(.toggle-panel) .category.columns.full { gap: <?php echo $mid; ?>px; }
 	.panel {
 		display: none;
 		padding-block: <?php echo $single; ?>px;
@@ -108,10 +109,6 @@
 	.toggle-panel .compact .panel { flex: 0 1 <?php echo round( $panel_width / $site_width_wide * 100 ); ?>%; }
 	.toggle-panel .compact .content { flex: 0 1 <?php echo round( $content_width / $site_width_wide * 100 ); ?>%; }
 	.toggle-panel .compact .sidebar { flex: 0 1 <?php echo round( $sidebar_width / $site_width_wide * 100 ); ?>%; }
-/*
-	.sidebar-left.toggle-panel .content-wrap .sidebar { order: 1; }
-	.sidebar-left.toggle-panel .content-wrap .content { order: 2; }
-*/
 	.toggle-panel .expanded .content { flex: 1; }
 	.toggle-panel .expanded .panel { flex: 0 0 <?php echo $panel_width; ?>px; }
 	.panel-overlay { display: none; }

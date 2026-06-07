@@ -1,5 +1,7 @@
 <?php
 
+// Start building WP_Term_Query args
+
 $t = 1;
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
@@ -23,14 +25,14 @@ foreach ( array( 'include', 'exclude' ) as $sort )
 if ( ! empty( $loop['category']['show_empty'] ) )
 	$term_args['hide_empty'] = false;
 
-// Pagination
+// Set pagination
 
 if ( ! empty( $loop['category_per_page'] ) ) {
 	$term_args['number'] = (int) $loop['category_per_page'];
 	$term_args['offset'] = $term_args['number'] * ( $loop['paged'] - 1 );
 }
 
-// Render category loop listing
+// Fire query, early check for a 404 error
 
 $categories = new WP_Term_Query( $term_args );
 
@@ -40,10 +42,14 @@ if ( empty( $categories->terms ) ) {
 	return false;
 }
 
-echo '<div id="loop" class="' . esc_attr( $loop['category_classes'] ) . '">';
+// Render category loop template
+
+echo '<div id="loop" class="' . esc_attr( $loop['categories_classes'] ) . '">';
 
 foreach ( $categories->terms as $category ) {
 	$category_description = term_description( $category->term_id );
+
+	// Show categories on "list posts by category" view
 
 	if ( $loop['loop_type'] === 'category_posts' ) {
 		$posts = new WP_Query( array(
@@ -65,7 +71,12 @@ foreach ( $categories->terms as $category ) {
 		wp_reset_postdata();
 
 	}
+
+	// or show listing of categories
+
 	else include md_template( 'loop/category-post', true );
+
+	// You can insert things in-between categories
 
 	md_hook_x_loop( $loop, $t );
 

@@ -5,7 +5,7 @@
 \*------------------------------*/
 
 button, input[type="submit"]
-.link, .button, .wp-element-button {
+.link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
@@ -38,6 +38,24 @@ button, input[type="submit"]
 .link-subtitle {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
 	font-weight: normal;
+}
+
+/* TAGS */
+
+.tag {
+	background-color: <?php echo $colors['site']['tertiary']; ?>;
+	border-radius: 50px;
+	color: <?php echo $colors['site']['text-main']; ?>;
+	flex-shrink: 0;
+	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
+	text-decoration: none;
+	transition: 0.3s;
+}
+
+.tag:hover {
+	background-color: <?php echo $colors['content']['border_color']; ?>;
+	color: <?php echo $colors['site']['links']; ?>;
 }
 
 /* BUTTONS */

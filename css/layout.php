@@ -142,16 +142,28 @@
 
 /* CATEGORY VIEWS */
 
-body:not(.toggle-panel) .category.columns.full { gap: <?php echo $mid; ?>px; }
-
-.category-title { margin-block-end: <?php echo $half; ?>px; }
+.category-posts .category-title,
+.category .scroller-nav { margin-block-end: <?php echo $half; ?>px; }
 
 .category-title .title {
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;
 }
 
-.category-title .title:not(:last-child) { margin-block-end: <?php echo $third; ?>px; }
+.category-title .title:not(:last-child) { margin-block-end: <?php echo $small; ?>px; }
+
+.category-more a {
+	display: block;
+	padding: <?php echo $half; ?>px;
+	text-align: center;
+	width: 100%;
+}
+
+.category-view .category-title { margin-block-end: <?php echo $single; ?>px; }
+
+.category-view .box-group {
+	padding: <?php echo $single; ?>px;
+}
 
 /* QUERIES */
 

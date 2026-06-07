@@ -206,6 +206,34 @@ function md_web_fonts( $show_type = null ) {
 }
 
 /**
+ * Pass a list of links to create a scrolling navigation element.
+ *
+ * @since 6.0
+ */
+
+function md_scroller_nav( $items = array() ) {
+	static $js_enqueued = false;
+
+	echo
+		'<div class="scroller-nav">' .
+		'<button class="scroller-arrow scroller-arrow-prev" aria-label="' . __( 'Scroll left', 'md' ) . '">' . md_icon( 'angle-left' ) . '</button>' .
+		'<div class="scroller-list">';
+
+	foreach ( $items as $item )
+		echo $item;
+
+	echo
+		'</div>' .
+		'<button class="scroller-arrow scroller-arrow-next" aria-label="' . __( 'Scroll right', 'md' ) . '">' . md_icon( 'angle-right' ) . '</button>' .
+		'</div>';
+
+	if ( ! $js_enqueued ) {
+		wp_add_inline_script( 'marketers-delight', 'MD.scrollerNav();' );
+		$js_enqueued = true;
+	}
+}
+
+/**
  * Replace archive tokens in a text string.
  *
  * @since 6.0
