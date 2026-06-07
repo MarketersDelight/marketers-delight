@@ -343,9 +343,6 @@ function md_get_byline( $position, $args = array() ) {
 	$byline = $items = array();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
-	if ( empty( $args['context'] ) )
-		$args['context'] = 'parent';
-
 	// Skip build if no byline on page
 
 	if ( ! empty( $loop['remove_byline'][$position] ) || ! empty( $loop['remove_byline']['remove'] ) )
@@ -355,8 +352,13 @@ function md_get_byline( $position, $args = array() ) {
 
 	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
 
-	if ( is_category() || is_tax() )
+	if ( is_category() || is_tax() ) {
+		$tax_builder = md_taxonomy_field( array( 'byline', 'builder' ), array() );
+		if ( ! empty( $tax_builder ) )
+			$builder = $tax_builder;
+
 		$builder = md_term_meta( array( 'byline', 'builder' ), null, $builder );
+	}
 
 	// Check if items set manually in $args, or show default items while options empty
 
@@ -371,7 +373,23 @@ function md_get_byline( $position, $args = array() ) {
 		foreach ( $items as $item => $item_fields )
 			$byline[$item][] = $item_fields;
 	else {
-		$context = is_home() || is_archive() ? 'archives' : 'single';
+		$context = ( is_home() || is_archive() ? 'archives' : 'single' );
+		$context = ! empty( $args['context'] ) ? $args['context'] : $context;
+
+		// Single inherits Archives builder entirely if empty
+
+		if ( $context === 'single' ) {
+			$has_single = false;
+
+			foreach ( $builder as $fields )
+				if ( $fields['builder_area'] === 'single' ) {
+					$has_single = true;
+					break;
+				}
+
+			if ( ! $has_single )
+				$context = 'archives';
+		}
 
 		foreach ( $builder as $id => $fields )
 			if ( $context == $fields['builder_area'] && $position == $fields['position'] ) {

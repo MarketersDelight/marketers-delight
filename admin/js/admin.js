@@ -187,17 +187,30 @@
 						}
 					});
 				MD.clone.delete( '.md-builder-group' );
+				$( '.md-builder-tabs .nav-tab-active' ).each( function() {
+					MD.filterPalette( $( this ) );
+				});
 			}
 		},
 		tabs: function() {
 			$( document ).on( 'click', '.md-tab', function( e ) {
 				e.preventDefault();
-				var tab = $( this ).data( 'md-tab' ),
+				var tab    = $( this ).data( 'md-tab' ),
 					parent = $( this ).closest( '.md-tabs' );
 				parent.find( '.md-tab' ).removeClass( 'nav-tab-active' );
 				$( this ).addClass( 'nav-tab-active' );
 				parent.children( '.md-tab-content' ).removeClass( 'active' );
 				parent.children( '.' + tab ).addClass( 'active' );
+				MD.filterPalette( $( this ) );
+			});
+		},
+		filterPalette: function( tab ) {
+			var context = tab.data( 'context' ),
+				palette = tab.closest( '.md-builder-tabs' ).prev( '.md-builder-controls' ).find( '.md-builder-elements' );
+			if ( ! palette.length || ! context ) return;
+			palette.children().each( function() {
+				var elContext = $( this ).data( 'context' );
+				$( this ).toggle( ! elContext || elContext === context );
 			});
 		},
 		conditional: function() {

@@ -1,4 +1,4 @@
-<div class="md-builder-group">
+<div class="md-builder-group"<?php echo $group === '{clone}' && ! empty( $fields['context'] ) ? ' data-context="' . esc_attr( $fields['context'] ) . '"' : ''; ?>>
 
 	<div class="md-builder-tab md-reorder">
 		<p class="md-builder-tab-icon"<?php echo md_style( array( 'color' => $color ) ); ?>>

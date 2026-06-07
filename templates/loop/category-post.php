@@ -2,9 +2,19 @@
 
 	<div class="category-title">
 
+		<?php md_byline( 'before_title', array(
+			'context' => 'category_entry',
+			'category' => $category
+		) ); ?>
+
 		<h2 class="title">
 			<a href="<?php echo get_term_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a>
 		</h2>
+
+		<?php md_byline( 'after_title', array(
+			'context' => 'category_entry',
+			'category' => $category
+		) ); ?>
 
 		<?php if ( $category_description ) : ?>
 		<div class="description">

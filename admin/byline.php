@@ -94,44 +94,64 @@ class md_byline extends md_api {
 		$tabs = $areas = array();
 		$screen = $this->_get_screen;
 
-		if ( $screen['is_taxonomy'] ) {
-			$active_tab = 'category';
+		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
+			$active_tab = 'archives';
 			$tabs = array(
-				'category' => __( 'Category', 'md' ),
-				'subcategory' => __( 'Subcategory', 'md' )
-			);
-			$areas = array(
-				'category' => array(
-					'title' => $tabs['category'],
-					'description' => __( 'Customize the byline items that show on all categories.', 'md' ),
-					'tab' => 'category'
+				'archives' => array(
+					'label' => __( 'Archives', 'md' ),
+					'context' => 'post'
 				),
-				'subcategory' => array(
-					'title' => $tabs['subcategory'],
-					'description' => __( 'Customize the byline items that show on subcategory boxes.', 'md' ),
-					'tab' => 'subcategory'
+				'category_entry' => array(
+					'label' => __( 'Category Entry', 'md' ),
+					'context' => 'category_entry'
 				)
 			);
-		}
-		else {
-			$active_tab = 'archives';
-			$tabs['archives'] = __( 'Archives', 'md' );
 			$areas = array(
 				'archives' => array(
 					'title' => __( 'Archives', 'md' ),
-					'description' => __( 'Customize the byline items that show on archive and category pages.', 'md' ),
+					'description' => __( 'Override post bylines for this taxonomy\'s archive pages.', 'md' ),
 					'tab' => 'archives'
+				),
+				'category_entry' => array(
+					'title' => __( 'Category Entry', 'md' ),
+					'description' => __( 'Override category entry bylines for this taxonomy.', 'md' ),
+					'tab' => 'category_entry'
 				)
 			);
-
-			if ( $screen['is_admin'] ) {
-				$tabs['single'] = __( 'Single', 'md' );
-				$areas['single'] = array(
+		}
+		elseif ( $screen['is_admin'] ) {
+			$active_tab = 'archives';
+			$tabs = array(
+				'archives' => array(
+					'label' => __( 'Archives', 'md' ),
+					'context' => 'post'
+				),
+				'single' => array(
+					'label' => __( 'Single', 'md' ),
+					'context' => 'post'
+				),
+				'category_entry' => array(
+					'label' => __( 'Category Entry', 'md' ),
+					'context' => 'category_entry'
+				)
+			);
+			$areas = array(
+				'archives' => array(
+					'title' => __( 'Archives', 'md' ),
+					'description' => __( 'Byline items shown in post listing loops.', 'md' ),
+					'tab' => 'archives'
+				),
+				'single' => array(
 					'title' => __( 'Single', 'md' ),
-					'description' => __( 'Customize the byline items that show on single pages.', 'md' ),
+					'description' => __( 'Byline items shown on single post pages.', 'md' ),
 					'tab' => 'single'
-				);
-			}
+				),
+				'category_entry' => array(
+					'title' => __( 'Category Entry', 'md' ),
+					'description' => __( 'Byline items shown on category section headers. Applies when loop type is set to List Posts by Category.', 'md' ),
+					'tab' => 'category_entry'
+				)
+			);
 		}
 
 		echo
@@ -161,6 +181,7 @@ class md_byline extends md_api {
 		return array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
+				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#a424ec',
 				'icon' => 'admin-users',
@@ -168,6 +189,7 @@ class md_byline extends md_api {
 			),
 			'date' => array(
 				'title' => __( 'Date', 'md' ),
+				'context'  => 'post',
 				'hide_title' => false,
 				'color' => '#d44c3c',
 				'icon' => 'calendar',
@@ -175,6 +197,7 @@ class md_byline extends md_api {
 			),
 			'comments' => array(
 				'title' => __( 'Comments', 'md' ),
+				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#ff6000',
 				'icon' => 'admin-comments',
@@ -182,6 +205,7 @@ class md_byline extends md_api {
 			),
 			'category' => array(
 				'title' => __( 'Category', 'md' ),
+				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#7d695c',
 				'icon' => 'category',
@@ -189,6 +213,7 @@ class md_byline extends md_api {
 			),
 			'badge' => array(
 				'title' => __( 'Badge', 'md' ),
+				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#1eb54b',
 				'icon' => 'warning',
@@ -196,10 +221,25 @@ class md_byline extends md_api {
 			),
 			'edit' => array(
 				'title' => __( 'Edit', 'md' ),
+				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#2772af',
 				'icon' => 'edit',
 				'callback' => array( $this, 'edit' )
+			),
+			'category/post-count' => array(
+				'title' => __( 'Post Count', 'md' ),
+				'context' => 'category_entry',
+				'color' => '#e07b2a',
+				'icon' => 'editor-ul',
+				'callback' => array( $this, 'post_count' )
+			),
+			'category/last-updated' => array(
+				'title' => __( 'Last Updated', 'md' ),
+				'context' => 'category_entry',
+				'color' => '#d44c3c',
+				'icon' => 'calendar-alt',
+				'callback' => array( $this, 'last_updated' )
 			)
 		);
 	}
@@ -211,6 +251,26 @@ class md_byline extends md_api {
 	 */
 
 	public function edit( $group ) {
+		$this->fields->byline_fields( $group );
+	}
+
+	/**
+	 * Category post count fields.
+	 *
+	 * @since 6.0
+	 */
+
+	public function post_count( $group ) {
+		$this->fields->byline_fields( $group );
+	}
+
+	/**
+	 * Category last updated fields.
+	 *
+	 * @since 6.0
+	 */
+
+	public function last_updated( $group ) {
 		$this->fields->byline_fields( $group );
 	}
 

@@ -695,7 +695,7 @@ cite, .tiny {
 .loop-list .title a:hover { text-decoration: none; }
 /* CATEGORY VIEWS */
 .category-posts .category-title,
-.category .scroller-nav { margin-block-end: 16px; }
+.categories .scroller-nav { margin-block-end: 16px; }
 .category-title .title {
 	font-size: 32px;
 	line-height: 45px;
@@ -708,9 +708,7 @@ cite, .tiny {
 	width: 100%;
 }
 .category-view .category-title { margin-block-end: 32px; }
-.category-view .box-group {
-	padding: 32px;
-}
+.category-view .box-group { padding: 32px; }
 /* QUERIES */
 @media (min-width: 672px) {
 	.cover, .box-entry.full .item { padding: 48px; }

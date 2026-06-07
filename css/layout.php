@@ -143,7 +143,7 @@
 /* CATEGORY VIEWS */
 
 .category-posts .category-title,
-.category .scroller-nav { margin-block-end: <?php echo $half; ?>px; }
+.categories .scroller-nav { margin-block-end: <?php echo $half; ?>px; }
 
 .category-title .title {
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
@@ -161,9 +161,7 @@
 
 .category-view .category-title { margin-block-end: <?php echo $single; ?>px; }
 
-.category-view .box-group {
-	padding: <?php echo $single; ?>px;
-}
+.category-view .box-group { padding: <?php echo $single; ?>px; }
 
 /* QUERIES */
 

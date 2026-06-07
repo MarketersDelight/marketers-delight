@@ -25,9 +25,12 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
 <?php if ( isset( $args['tabs'] ) && ( count( $args['tabs'] ) > 1 ) ) : ?>
 <div class="md-builder-tabs nav-tab-wrapper">
-	<?php $t = 0; foreach ( $args['tabs'] as $tab_id => $tab_name ) : ?>
-	<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>"><?php echo esc_html( $tab_name ); ?></a>
-	<?php $t++; endforeach; ?>
+	<?php foreach ( $args['tabs'] as $tab_id => $tab ) :
+		$tab_label = is_array( $tab ) ? $tab['label'] : $tab;
+		$tab_context = is_array( $tab ) ? ( $tab['context'] ?? '' ) : '';
+	?>
+	<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>" data-context="<?php echo esc_attr( $tab_context ); ?>"><?php echo esc_html( $tab_label ); ?></a>
+	<?php endforeach; ?>
 </div>
 <?php endif; ?>
 
