@@ -35,6 +35,7 @@
 }
 
 .scroller-arrow {
+	align-self: stretch;
 	appearance: none;
 	background: transparent;
 	border: 0;

@@ -160,7 +160,7 @@
 	width: 100%;
 }
 
-.category-view .category-title { margin-block-end: <?php echo $single; ?>px; }
+.category-view .category-title:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .category-view .box-group {
 	display: flex;

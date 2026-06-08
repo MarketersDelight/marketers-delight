@@ -7,6 +7,8 @@
 
 class md_accordion_widget extends WP_Widget {
 
+	private $terms_order = array();
+
 	/**
 	 * Create widget attributes and fire any needed actions.
 	 *
@@ -20,6 +22,7 @@ class md_accordion_widget extends WP_Widget {
 			'id' => __( 'Category ID', 'md' ),
 			'term_order' => __( 'Category Order', 'md' )
 		);
+
 		parent::__construct( 'md_accordion_widget', __( 'MD &rarr; Accordion Nav', 'md' ), array(
 			'description' => __( 'List category links in a highly organized accordion widget.', 'md' ),
 			'customize_selective_refresh' => true
@@ -27,16 +30,22 @@ class md_accordion_widget extends WP_Widget {
 	}
 
 	/**
-	 * Frontend template with passed data.
+	 * Build the frontend template with lots of sorting possibilities.
 	 *
 	 * @since 5.2
 	 */
 
 	public function widget( $args, $val ) {
-		$terms = $current = $terms_args = $get_terms = array();
+
+		// Setup main variables
+
+		$c = 1;
+		$terms = $current = $terms_args = $get_terms = $filter_post_ids = array();
 		$page_id = get_queried_object_id();
-		$current_post_type = md_get_post_type();
-		$page_taxonomies = get_object_taxonomies( $current_post_type );
+		$page_taxonomies = get_object_taxonomies( md_get_post_type() );
+
+		// Determine desired taxonomy
+
 		$tax = 'category';
 
 		if ( ! empty( $val['taxonomy'] ) )
@@ -46,21 +55,65 @@ class md_accordion_widget extends WP_Widget {
 
 		$taxonomy = get_taxonomy( $tax );
 		$post_type = $taxonomy->object_type;
+
+		// Set Term_Query args
+
 		$terms_args['taxonomy'] = $tax;
 
 		if ( ! empty( $val['direction'] ) )
 			$terms_args['order'] = 'DESC';
 
 		if ( ! empty( $val['order'] ) )
-			$terms_args['orderby'] = esc_attr( $val['order'] );
+			$terms_args['orderby'] = sanitize_key( $val['order'] );
 
 		if ( ! empty( $val['exclude'] ) )
 			$terms_args['exclude'] = esc_html( $val['exclude'] );
 
-		$terms_data = get_terms( $terms_args );
+		// Option: restrict terms to only show posts that share term
 
-		foreach ( $terms_data as $term_count => $term )
+		$filter_term_id = 0;
+
+		if ( ! empty( $val['filter_term'] ) )
+			$filter_term_id = absint( $val['filter_term'] );
+		elseif ( ! empty( $val['auto_filter'] ) && ! empty( $val['filter_taxonomy'] ) && ( $page_dropin = get_the_terms( $page_id, $val['filter_taxonomy'] ) ) )
+			$filter_term_id = $page_dropin[0]->term_id;
+
+		if ( $filter_term_id ) {
+			$filter_term_query = new WP_Term_Query( array(
+				'include' => array( $filter_term_id ),
+				'hide_empty' => false
+			) );
+			$filter_terms = $filter_term_query->get_terms();
+			$filter_tax = ! empty( $filter_terms ) ? $filter_terms[0]->taxonomy : null;
+
+			if ( $filter_tax ) {
+				$filter_post_query = new WP_Query( array(
+					'post_type' => $post_type,
+					'posts_per_page' => -1,
+					'fields' => 'ids',
+					'tax_query' => array( array(
+						'taxonomy' => $filter_tax,
+						'field' => 'term_id',
+						'terms' => $filter_term_id,
+					) )
+				) );
+				$filter_post_ids = $filter_post_query->posts;
+			}
+		}
+
+		// Build terms list, scoped to filtered posts when a filter term is active
+
+		if ( ! empty( $filter_post_ids ) )
+			$terms_data = wp_get_object_terms( $filter_post_ids, $tax, $terms_args );
+		elseif ( $filter_term_id )
+			$terms_data = array();
+		else
+			$terms_data = get_terms( $terms_args );
+
+		foreach ( $terms_data as $term )
 			$terms[$term->term_id] = $term;
+
+		// Push the current term to the top of the list
 
 		if ( is_tax() || is_singular() ) {
 			if ( is_singular() ) {
@@ -77,6 +130,8 @@ class md_accordion_widget extends WP_Widget {
 			}
 		}
 
+		// Render template
+
 		include md_template( 'accordion', true );
 	}
 
@@ -87,16 +142,21 @@ class md_accordion_widget extends WP_Widget {
 	 */
 
 	public function update( $new, $val ) {
-        /*
-		$sanitize = new md_sanitize;
-		$val['title'] = $sanitize->text( $new['title'] );
-		$val['see_more'] = $sanitize->text( $new['see_more'] );
-		$val['taxonomy'] = $sanitize->select( $new['taxonomy'], md_taxonomy_meta() );
-		$val['posts_per_category'] = $sanitize->number( $new['posts_per_category'] );
-		$val['direction'] = $sanitize->select( $new['direction'], array( 'DESC' ) );
-		$val['order'] = $sanitize->select( $new['order'], array_keys( $this->terms_order ) );
-		$val['exclude'] = esc_html( $new['exclude'] );
-*/
+		$valid_taxonomies = array_keys( get_taxonomies( array( 'public' => true ) ) );
+		$directions = array( 'DESC' );
+		$orders = array_keys( $this->terms_order );
+
+		$val['title'] = sanitize_text_field( $new['title'] );
+		$val['see_more'] = sanitize_text_field( $new['see_more'] );
+		$val['taxonomy'] = in_array( $new['taxonomy'], $valid_taxonomies, true ) ? $new['taxonomy'] : '';
+		$val['filter_term'] = absint( $new['filter_term'] ) ?: '';
+		$val['filter_taxonomy'] = in_array( $new['filter_taxonomy'], $valid_taxonomies, true ) ? $new['filter_taxonomy'] : '';
+		$val['auto_filter'] = ! empty( $new['auto_filter'] ) ? '1' : '';
+		$val['posts_per_category'] = absint( $new['posts_per_category'] ) ?: '';
+		$val['direction'] = in_array( $new['direction'], $directions, true ) ? $new['direction'] : '';
+		$val['order'] = in_array( $new['order'], $orders, true ) ? $new['order'] : '';
+		$val['exclude'] = sanitize_text_field( $new['exclude'] );
+
 		return $val;
 	}
 
@@ -111,66 +171,18 @@ class md_accordion_widget extends WP_Widget {
 			'title' => '',
 			'see_more' => '',
 			'taxonomy' => '',
+			'filter_term' => '',
+			'filter_taxonomy' => '',
+			'auto_filter' => '',
 			'posts_per_category' => '',
 			'direction' => '',
 			'order' => '',
 			'exclude' => ''
 		) );
-		$taxonomies = md_edit_term_meta();
-	?>
 
-    <p>
-        <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php echo __( 'Title', 'md' ); ?>:</label><br />
-        <input type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $val['title'] ); ?>" class="widefat" />
-    </p>
+		$taxonomies = get_taxonomies( array( 'public' => true ) );
 
-    <p>
-        <label for="<?php echo $this->get_field_id( 'taxonomy' ); ?>"><?php echo __( 'Category type', 'md' ); ?>:</label><br />
-        <select id="<?php echo $this->get_field_id( 'taxonomy' ); ?>" name="<?php echo $this->get_field_name( 'taxonomy' ); ?>">
-            <option value=""><?php echo __( 'Auto-detect categories', 'md' ); ?></option>
-            <?php foreach ( $taxonomies as $count => $tax ) :
-                $taxonomy = get_taxonomy( $tax );
-            ?>
-             <option value="<?php echo esc_attr( $tax ); ?>"<?php echo selected( $val['taxonomy'], esc_attr( $tax ), false ); ?>><?php echo esc_html( $taxonomy->labels->singular_name ); ?></option>
-            <?php endforeach; ?>
-        </select>
-    </p>
-
-    <p>
-        <label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php echo __( 'List direction', 'md' ); ?>:</label><br />
-        <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
-            <option value=""><?php echo __( 'Ascending (default)', 'md' ); ?></option>
-            <option value="DESC"<?php echo selected( $val['direction'], 'DESC', false ); ?>><?php echo __( 'Descending', 'md' ); ?></option>
-        </select>
-    </p>
-
-    <p>
-        <label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php echo __( 'Order by', 'md' ); ?>:</label><br />
-        <select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
-            <option value=""><?php echo __( 'Name (default)', 'md' ); ?></option>
-            <?php foreach ( $this->terms_order as $term_slug => $term_name ) : ?>
-                <option value="<?php echo esc_attr( $term_slug ); ?>"<?php echo selected( $val['order'], esc_attr( $term_slug ), false ); ?>><?php echo esc_html( $term_name ); ?></option>
-            <?php endforeach; ?>
-        </select>
-    </p>
-
-    <p>
-        <label for="<?php echo $this->get_field_id( 'posts_per_category' ); ?>"><?php echo __( 'Posts per category', 'md' ); ?>:</label><br />
-        <input type="number" id="<?php echo $this->get_field_id( 'posts_per_category' ); ?>" name="<?php echo $this->get_field_name( 'posts_per_category' ); ?>" value="<?php echo esc_attr( $val['posts_per_category'] ); ?>" class="widefat" placeholder="5" style="width: 25%;" />
-    </p>
-
-    <p>
-        <label for="<?php echo $this->get_field_id( 'exclude' ); ?>"><?php echo __( 'Exclude', 'md' ); ?>:</label><br />
-        <input type="text" id="<?php echo $this->get_field_id( 'exclude' ); ?>" name="<?php echo $this->get_field_name( 'exclude' ); ?>" value="<?php echo esc_attr( $val['exclude'] ); ?>" placeholder="23, 45, 345" class="widefat" />
-        <span class="description"><?php echo __( 'Enter categories to exclude by the category ID. Separate IDs by a comma <code>,</code>', 'md' ); ?></span>
-    </p>
-
-    <p>
-        <label for="<?php echo $this->get_field_id( 'see_more' ); ?>"><?php echo __( 'See more text', 'md' ); ?>:</label><br />
-        <input type="text" id="<?php echo $this->get_field_id( 'see_more' ); ?>" name="<?php echo $this->get_field_name( 'see_more' ); ?>" value="<?php echo esc_attr( $val['see_more'] ); ?>" class="widefat" />
-        <span class="description" style="padding:0"><?php echo __( '<b>Default:</b> <i>See all {count} {category} &rarr;</i>', 'md' ); ?></span>
-    </p>
-
-	<?php }
+		include md_template( 'admin/widget-accordion', true );
+	}
 
 }

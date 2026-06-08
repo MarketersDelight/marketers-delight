@@ -573,8 +573,7 @@ function md_optins_locations( $sort = null ) {
 				$locations[$id] = $label;
 		}
 	}
-	else
-		$locations = $data;
+	else $locations = $data;
 
 	return $locations;
 }
@@ -622,35 +621,43 @@ function md_filter_popups() {
  */
 
 function md_get_dropins( $status = null, $key = null ) {
-	$dropins = $priority = array();
+	$installed = md_setting( array( 'dropins', 'installed' ), array() );
 
-	foreach ( md_setting( array( 'dropins', 'installed' ), array() ) as $dropin => $fields ) {
-		if (
-			( ( $status == null || $status == 'active' ) && ! empty( $fields['status']['enable'] ) ) ||
-			( ( $status == 'inactive' ) && empty( $fields['status']['enable'] ) ) ||
-			$status == null
-		) {
-			if ( isset( $fields['priority'] ) )
-				$priority[] = esc_attr( $dropin );
-			else
-				$dropins[] = esc_attr( $dropin );
-		}
-		elseif ( $status == 'files' ) {
+	if ( $status === 'files' ) {
+		$dropins = array();
+
+		foreach ( $installed as $dropin => $fields ) {
 			foreach ( $fields as $header => $field ) {
-				$header = ucwords( $header );
-				$dropins["$dropin/$dropin.php"][$header] = $field;
+				$title = ucwords( $header );
+				$dropins["$dropin/$dropin.php"][$title] = $field;
 			}
+
 			$dropins["$dropin/$dropin.php"]['ID'] = $dropin;
 		}
+
+		return ! empty( $key ) ? $dropins["$key/$key.php"] : $dropins;
 	}
 
-	$dropins = array_merge( $priority, $dropins );
+	$dropins = $priority = array();
 
-	if ( ! empty( $key ) ) {
-		if ( $status == 'files' )
-			return $dropins["$key/$key.php"];
-		return $dropins[$key];
+	foreach ( $installed as $dropin => $fields ) {
+		$enabled = ! empty( $fields['status']['enable'] );
+
+		if ( $status === null || ( $status === 'active' && $enabled ) || ( $status === 'inactive' && ! $enabled ) ) {
+			if ( is_numeric( $fields['priority'] ?? null ) )
+				$priority[$fields['priority']][] = sanitize_key( $dropin );
+			else
+				$dropins[] = sanitize_key( $dropin );
+		}
 	}
 
-	return $dropins;
+	ksort( $priority );
+	$sorted_priority = array();
+
+	foreach ( $priority as $group )
+		$sorted_priority = array_merge( $sorted_priority, $group );
+
+	$dropins = array_merge( $sorted_priority, $dropins );
+
+	return ! empty( $key ) ? $dropins[$key] : $dropins;
 }

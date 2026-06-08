@@ -586,6 +586,7 @@ select {
 	min-width: 0;
 }
 .scroller-arrow {
+	align-self: stretch;
 	appearance: none;
 	background: transparent;
 	border: 0;
@@ -1166,7 +1167,7 @@ select {
 	text-align: center;
 	width: 100%;
 }
-.category-view .category-title { margin-block-end: 32px; }
+.category-view .category-title:not(:last-child) { margin-block-end: 32px; }
 .category-view .box-group {
 	display: flex;
 	flex-direction: column;
@@ -2503,10 +2504,9 @@ cite, .tiny {
 	margin-block-end: 16px;
 	padding-block-end: 16px;
 }
-.single .dropin-title .byline.after-title {
-	color: #f58f2a;
-	font-weight: 500;
-}
+.dropin-title .byline.after-title { color: #f58f2a; }
+.dropin-title .byline i { amrgin: 0; }
+.archive .dropin-title .byline-item span { display: none; }
 .expanded .dropin-title.item .wrap { max-width: 100%; }
 .columns .edd-download .cta {
     border-block-start: 1px dashed #E6E0CF;
@@ -2516,6 +2516,40 @@ cite, .tiny {
 }
 .single .edd-download .dropin-title .cta { margin-inline-start: auto; }
 .edd-download .cta .link { flex: 1; }
+/* DROPIN DETAILS */
+.dropin-details {
+	background-color: #FAF6EC;
+	border-block: 1px solid #E6E0CF;
+}
+.dropin-details .scroller-list { padding: 16px; }
+.dropin-details [open] > .accordion-title { border-block-end: 1px solid #E6E0CF; }
+.dropin-details .accordion-title [class*="md-icon"] {
+	color: #C0392B;
+	margin-inline-end: 5px;
+}
+.dropin-details .scroller-arrow { padding-inline: 16px; }
+.box-style .entry .dropin-details .changelog-list.item:nth-child(1 of .item) {
+	border-radius: 0;
+	padding: 32px;
+}
+/* IMAGE GALLERY */
+.image-gallery-preview {
+	background-color: #E6E0CF;
+	border-radius: 6px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+	cursor: pointer;
+	flex-shrink: 0;
+	padding: 5px;
+	transition: 0.3s;
+}
+.image-gallery-preview:hover { transform: scale(1.05); }
+.image-gallery-preview img { border-radius: 6px; }
+.lg-fullscreen:after { content: "\e20c"; }
+.lg-fullscreen-on .lg-fullscreen:after { content: "\e20d"; }
+@media (min-width: 600px) {
+    .admin-bar .lg-outer { top: var(--wp-admin--admin-bar--height); }
+    .admin-bar .lg-components { bottom: var(--wp-admin--admin-bar--height); }
+}
 /* SIDEBAR */
 .widget_md_post_details_widget .list li > .byline-item {
 	display: flex;

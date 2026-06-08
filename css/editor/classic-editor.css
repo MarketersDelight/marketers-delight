@@ -708,7 +708,7 @@ cite, .tiny {
 	text-align: center;
 	width: 100%;
 }
-.category-view .category-title { margin-block-end: 32px; }
+.category-view .category-title:not(:last-child) { margin-block-end: 32px; }
 .category-view .box-group {
 	display: flex;
 	flex-direction: column;

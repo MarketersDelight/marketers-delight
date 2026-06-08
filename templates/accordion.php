@@ -5,24 +5,31 @@ if ( ! empty( $val['title'] ) )
 
 echo '<div class="accordion">';
 
-$c = 1; foreach ( $terms as $term ) :
+foreach ( $terms as $term ) :
 
-$posts = new WP_Query( array(
-    'post_type' => $post_type,
-    'posts_per_page' => ! empty( $val['posts_per_category'] ) ? (int) $val['posts_per_category'] : 5,
-    'tax_query' => array( array(
-        'taxonomy' => $tax,
-        'field' => 'slug',
-        'terms' => ! empty( $term->slug ) ? $term->slug : ''
-    ) )
-) );
+    $posts_query = array(
+        'post_type' => $post_type,
+        'posts_per_page' => ! empty( $val['posts_per_category'] ) ? $val['posts_per_category'] : 5,
+        'tax_query' => array( array(
+            'taxonomy' => $tax,
+            'field' => 'slug',
+            'terms' => ! empty( $term->slug ) ? $term->slug : ''
+        ) )
+    );
 
-$string = sprintf( __( 'See all <b>%s</b> %1s &rarr;', 'md' ), $term->count, $term->name );
+    if ( ! empty( $filter_post_ids ) )
+        $posts_query['post__in'] = $filter_post_ids;
 
-if ( ! empty( $val['see_more'] ) )
-    $string = strtr( $val['see_more'], array( '{count}' => $term->count, '{category}' => $term->name ) );
+    $posts = new WP_Query( $posts_query );
+    $count  = ! empty( $filter_post_ids ) ? $posts->found_posts : $term->count;
+    $string = sprintf( __( 'All <b>%s</b> %1s &rarr;', 'md' ), $count, $term->name );
 
-if ( $posts->have_posts() ) : ?>
+    if ( ! empty( $val['see_more'] ) )
+        $string = strtr( $val['see_more'], array( '{count}' => $count, '{category}' => $term->name ) );
+
+    if ( $posts->have_posts() ) :
+
+?>
 
 <details name="<?php echo esc_attr( $args['widget_id'] ); ?>" class="accordion-item"<?php echo $c == 1 && ! is_post_type_archive() ? ' open' : ''; ?>>
     <summary class="accordion-title">
