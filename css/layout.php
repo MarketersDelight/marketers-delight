@@ -65,10 +65,6 @@
 	box-shadow: none;
 }
 
-.box-entry .byline.post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
-.box-entry .post-footer:not(:last-child) { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
-
 .box, .box-entry .entry { width: auto; }
 
 .box-entry.row.full > .item:not(:last-child),
@@ -77,6 +73,11 @@
 .box-entry .item { padding: <?php echo $single; ?>px <?php echo $half; ?>px; }
 
 .box-entry .entry .byline.post-footer { padding: <?php echo $half; ?>px; }
+
+.box-entry .byline.post-footer,
+.box-style.category-view .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+
+.box-entry .post-footer:not(:last-child) { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-entry .entry-title:not(.cover):not(:empty) + .the-content { padding-block-start: 0; }
 
@@ -142,6 +143,8 @@
 
 /* CATEGORY VIEWS */
 
+.category-title { row-gap: <?php echo $small; ?>px; }
+
 .category-posts .category-title,
 .categories .scroller-nav { margin-block-end: <?php echo $half; ?>px; }
 
@@ -149,8 +152,6 @@
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['h3']['line_height']['desktop']; ?>px;
 }
-
-.category-title .title:not(:last-child) { margin-block-end: <?php echo $small; ?>px; }
 
 .category-more a {
 	display: block;
@@ -161,7 +162,16 @@
 
 .category-view .category-title { margin-block-end: <?php echo $single; ?>px; }
 
-.category-view .box-group { padding: <?php echo $single; ?>px; }
+.category-view .box-group {
+	display: flex;
+	flex-direction: column;
+	padding: <?php echo $single; ?>px;
+}
+
+.category-view.box-style .post-footer {
+	margin-top: auto;
+	padding-block-start: <?php echo $half; ?>px;
+}
 
 /* QUERIES */
 

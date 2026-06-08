@@ -18,9 +18,9 @@
 		'classes' => 'md-check-val',
 		'empty_label' => __( 'Use default', 'md' ),
 		'options' => array(
-			'post_listing'   => __( 'Post listing (default)', 'md' ),
-			'category_posts' => __( 'List posts by category', 'md' ),
-			'category'       => __( 'Category overview', 'md' )
+			'post_listing' => __( 'Post listing (default)', 'md' ),
+			'category' => __( 'Category overview', 'md' ),
+			'category_posts' => __( 'List posts by category', 'md' )
 		)
 	) );
 
@@ -190,6 +190,7 @@
 					'type' => 'checkbox',
 					'label' => __( 'Settings', 'md' ),
 					'options' => array(
+						'hide_description' => __( 'Hide description', 'md' ),
 						'show_empty' => __( 'Show empty categories', 'md' )
 					)
 				) ); ?>

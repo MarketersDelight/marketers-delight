@@ -391,6 +391,8 @@ function md_get_byline( $position, $args = array() ) {
 				$context = 'archives';
 		}
 
+		// Build bylines by area
+
 		foreach ( $builder as $id => $fields )
 			if ( $context == $fields['builder_area'] && $position == $fields['position'] ) {
 				$type = $fields['builder_type'];

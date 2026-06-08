@@ -54,6 +54,7 @@ class md_byline extends md_api {
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
+			'title' => array( 'type' => 'text' ),
 			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
@@ -234,12 +235,12 @@ class md_byline extends md_api {
 				'icon' => 'editor-ul',
 				'callback' => array( $this, 'post_count' )
 			),
-			'category/last-updated' => array(
-				'title' => __( 'Last Updated', 'md' ),
+			'category/date' => array(
+				'title' => __( 'Date', 'md' ),
 				'context' => 'category_entry',
 				'color' => '#d44c3c',
 				'icon' => 'calendar-alt',
-				'callback' => array( $this, 'last_updated' )
+				'callback' => array( $this, 'category_date' )
 			)
 		);
 	}
@@ -262,16 +263,55 @@ class md_byline extends md_api {
 
 	public function post_count( $group ) {
 		$this->fields->byline_fields( $group );
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'label' => __( 'Show label', 'md' ),
+				'hide' => __( 'Hide if zero', 'md' )
+			)
+		) );
+
+		echo '<div class="columns-2 columns-single"><div class="col">';
+
+		$this->fields->field( array( 'builder', $group, 'title' ), array(
+			'type' => 'text',
+			'label' => __( 'Singular label', 'md' ),
+			'placeholder' => __( 'post', 'md' )
+		) );
+
+		echo '</div><div class="col">';
+
+		$this->fields->field( array( 'builder', $group, 'label' ), array(
+			'type' => 'text',
+			'label' => __( 'Plural label', 'md' ),
+			'placeholder' => __( 'posts', 'md' )
+		) );
+
+		echo '</div></div>';
 	}
 
 	/**
-	 * Category last updated fields.
+	 * Category date fields.
 	 *
 	 * @since 6.0
 	 */
 
-	public function last_updated( $group ) {
+	public function category_date( $group ) {
 		$this->fields->byline_fields( $group );
+
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array(
+				'label' => __( 'Show label', 'md' ),
+				'relative' => __( 'Show relative date', 'md' ),
+				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
+			)
+		) );
 	}
 
 	/**

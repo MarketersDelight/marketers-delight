@@ -1,6 +1,11 @@
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
 
-	<div class="category-title">
+	<?php md_byline( 'before_post', array(
+		'context' => 'category_entry',
+		'category' => $category
+	) ); ?>
+
+	<div class="category-title entry-title">
 
 		<?php md_byline( 'before_title', array(
 			'context' => 'category_entry',
@@ -16,7 +21,7 @@
 			'category' => $category
 		) ); ?>
 
-		<?php if ( $category_description ) : ?>
+		<?php if ( $category_description && empty( $loop['category']['hide_description'] ) ) : ?>
 		<div class="description">
 			<?php echo wpautop( $category_description ); ?>
 		</div>
@@ -56,5 +61,11 @@
 		include md_template( 'loop/subcategory', true );
 
 	endif; ?>
+
+	<?php md_byline( 'after_post', array(
+		'context' => 'category_entry',
+		'category' => $category,
+		'classes' => 'post-footer'
+	) ); ?>
 
 </section>

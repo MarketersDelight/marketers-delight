@@ -85,7 +85,7 @@ class md_loop extends md_api {
 			),
 			'category' => array(
 				'type' => 'checkbox',
-				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty' )
+				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty', 'hide_description' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
