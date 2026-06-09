@@ -15,7 +15,7 @@ class md_requests {
 	 */
 
 	public function request() {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) )
+		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
 			return;
 
 		$option = md_setting();

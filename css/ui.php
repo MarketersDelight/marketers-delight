@@ -150,8 +150,6 @@
 
 /* ACCORDION */
 
-.panel .accordion { margin-inline: -<?php echo $half; ?>px; }
-
 .accordion-item:not(:last-child),
 .accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
 

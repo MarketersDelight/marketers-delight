@@ -3,7 +3,7 @@
 if ( ! empty( $val['title'] ) )
 	echo $args['before_title'] . $val['title'] . $args['after_title'];
 
-echo '<div class="accordion">';
+echo '<div class="accordion' . ( ! empty( $val['classes'] ) ? ' ' . esc_attr( $val['classes'] ) : '' ) . '">';
 
 foreach ( $terms as $term ) :
 
@@ -22,7 +22,7 @@ foreach ( $terms as $term ) :
 
     $posts = new WP_Query( $posts_query );
     $count  = ! empty( $filter_post_ids ) ? $posts->found_posts : $term->count;
-    $string = sprintf( __( 'All <b>%s</b> %1s &rarr;', 'md' ), $count, $term->name );
+    $string = sprintf( __( 'See more in %s &rarr;', 'md' ), $term->name );
 
     if ( ! empty( $val['see_more'] ) )
         $string = strtr( $val['see_more'], array( '{count}' => $count, '{category}' => $term->name ) );
@@ -31,9 +31,12 @@ foreach ( $terms as $term ) :
 
 ?>
 
-<details name="<?php echo esc_attr( $args['widget_id'] ); ?>" class="accordion-item"<?php echo $c == 1 && ! is_post_type_archive() ? ' open' : ''; ?>>
+<details name="<?php echo esc_attr( $args['widget_id'] ); ?>" class="accordion-item"<?php echo $c == 1 && ! empty( $val['settings']['open'] ) ? ' open' : ''; ?>>
+
     <summary class="accordion-title">
-        <span class="accordion-label"><?php echo sanitize_text_field( $term->name ); ?></span>
+        <span class="accordion-label">
+            <?php echo sanitize_text_field( $term->name ); ?>
+            <?php echo ! empty( $val['settings']['show_count'] ) ? ' <span class="accordion-count small text-sec">(' . $count . ')</span>' : ''; ?></span>
     </summary>
 
     <ul class="accordion-content">

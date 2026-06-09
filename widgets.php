@@ -143,19 +143,25 @@ class md_accordion_widget extends WP_Widget {
 
 	public function update( $new, $val ) {
 		$valid_taxonomies = array_keys( get_taxonomies( array( 'public' => true ) ) );
-		$directions = array( 'DESC' );
-		$orders = array_keys( $this->terms_order );
+		$order = array_keys( $this->terms_order );
 
-		$val['title'] = sanitize_text_field( $new['title'] );
-		$val['see_more'] = sanitize_text_field( $new['see_more'] );
+		foreach ( array( 'title', 'see_more', 'exclude', 'classes' ) as $text )
+			$val[$text] = sanitize_text_field( $new[$text] );
+
+		foreach ( array( 'filter_term', 'posts_per_category' ) as $number )
+			$val[$number] = absint( $new[$number] ) ?: '';
+
+		$val['settings']  = array();
+
+		foreach ( array( 'open', 'show_count' ) as $key )
+			if ( ! empty( $new['settings'][ $key ] ) )
+				$val['settings'][ $key ] = true;
+
 		$val['taxonomy'] = in_array( $new['taxonomy'], $valid_taxonomies, true ) ? $new['taxonomy'] : '';
-		$val['filter_term'] = absint( $new['filter_term'] ) ?: '';
 		$val['filter_taxonomy'] = in_array( $new['filter_taxonomy'], $valid_taxonomies, true ) ? $new['filter_taxonomy'] : '';
-		$val['auto_filter'] = ! empty( $new['auto_filter'] ) ? '1' : '';
-		$val['posts_per_category'] = absint( $new['posts_per_category'] ) ?: '';
-		$val['direction'] = in_array( $new['direction'], $directions, true ) ? $new['direction'] : '';
-		$val['order'] = in_array( $new['order'], $orders, true ) ? $new['order'] : '';
-		$val['exclude'] = sanitize_text_field( $new['exclude'] );
+		$val['auto_filter'] = ! empty( $new['auto_filter'] ) ? true : '';
+		$val['direction'] = in_array( $new['direction'], array( 'DESC' ), true ) ? $new['direction'] : '';
+		$val['order'] = in_array( $new['order'], $order, true ) ? $new['order'] : '';
 
 		return $val;
 	}
@@ -177,7 +183,9 @@ class md_accordion_widget extends WP_Widget {
 			'posts_per_category' => '',
 			'direction' => '',
 			'order' => '',
-			'exclude' => ''
+			'exclude' => '',
+			'classes' => '',
+			'settings' => array()
 		) );
 
 		$taxonomies = get_taxonomies( array( 'public' => true ) );

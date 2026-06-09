@@ -73,7 +73,6 @@ class md_integrations extends md_api {
 
 	public function actions() {
 		add_action( "wp_ajax_{$this->_id}", array( $this, 'connect' ) );
-		add_action( "wp_ajax_nopriv_{$this->_id}", array( $this, 'connect' ) );
 	}
 
 	/**

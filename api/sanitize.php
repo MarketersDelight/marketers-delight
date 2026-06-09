@@ -481,37 +481,6 @@ class md_sanitize {
 	}
 
 	/**
-	 * Build the required builder index arrays from saved builder rows.
-	 *
-	 * @since 6.0
-	 */
-
-	private function builder( $input ) {
-		$data = $elements = $locations = array();
-
-		foreach ( $input as $id => $fields ) {
-			if ( empty( $fields['builder_type'] ) || ! isset( $fields['builder_area'] ) )
-				continue;
-
-			$builder_type = esc_attr( $fields['builder_type'] );
-			$builder_area = $fields['builder_area'];
-			$data[$builder_area][] = array(
-				'type' => $builder_type,
-				'id' => $id
-			);
-
-			$elements[$builder_type][] = $id;
-			$locations[$id] = $builder_area;
-		}
-
-		return array(
-			'data' => serialize( $data ),
-			'elements' => serialize( $elements ),
-			'locations' => serialize( $locations )
-		);
-	}
-
-	/**
 	 * A big function to save all fields type data safely and expectedley.
 	 * Handles single level fields, clone/group, and unique builder fields.
 	 *
@@ -537,10 +506,6 @@ class md_sanitize {
 
 							if ( $group_fields['type'] == 'builder' ) {
 								$save[$key][$group] = $cloned;
-								$builder = $this->builder( $cloned );
-								$save[$key]["{$group}_data"] = $builder['data'];
-								$save[$key]["{$group}_elements"] = $builder['elements'];
-								$save[$key]["{$group}_locations"] = $builder['locations'];
 							}
 							elseif ( ! empty( $cloned ) )
 								$save[$key][$group] = $cloned;

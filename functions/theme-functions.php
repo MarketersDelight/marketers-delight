@@ -328,7 +328,7 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
 
 function md_term_meta( $keys = null, $id = null, $default = null ) {
 	if ( is_admin() )
-		$id = isset( $_GET['tag_ID'] ) ? $_GET['tag_ID'] : '';
+		$id = isset( $_GET['tag_ID'] ) ? intval( $_GET['tag_ID'] ) : '';
 	else
 		$id = isset( $id ) ? $id : get_queried_object_id();
 
@@ -399,7 +399,7 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 function md_user_meta( $keys = null, $id = null, $default = null ) {
 	if ( empty( $id ) )
 		if ( is_admin() )
-			$id = isset( $_GET['user_id'] ) ? esc_attr( $_GET['user_id'] ) : '';
+			$id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : '';
 		else
 			$id = get_current_user_id();
 
@@ -518,27 +518,32 @@ function md_get_post_type( $post_id = null ) {
  */
 
 function md_get_builder( $id, $type = null, $key = null ) {
-	$builder = array();
+	$rows = md_setting( array( $id, 'builder' ) );
+	$builder = array(
+		'data' => array(),
+		'elements' => array(),
+		'locations' => array(),
+		'fields' => array()
+	);
 
-	if ( $type ) {
-		$data = md_setting( array( $id, "builder_{$type}" ) );
+	if ( $rows ) {
+		$builder['fields'] = $rows;
 
-		if ( $data )
-			$builder = unserialize( $data );
-	}
-	else {
-		foreach ( array( 'elements', 'data', 'locations' ) as $type ) {
-			$data = md_setting( array( $id, "builder_{$type}" ) );
+		foreach ( $rows as $row_id => $fields ) {
+			if ( empty( $fields['builder_type'] ) || ! isset( $fields['builder_area'] ) )
+				continue;
 
-			if ( $data )
-				$builder[$type] = unserialize( $data );
+			$row_type = $fields['builder_type'];
+			$row_area = $fields['builder_area'];
+
+			$builder['data'][$row_area][] = array( 'type' => $row_type, 'id' => $row_id );
+			$builder['elements'][$row_type][] = $row_id;
+			$builder['locations'][$row_id] = $row_area;
 		}
-
-		$fields = md_setting( array( $id, 'builder' ) );
-
-		if ( $fields )
-			$builder['fields'] = $fields;
 	}
+
+	if ( $type )
+		$builder = isset( $builder[$type] ) ? $builder[$type] : array();
 
 	if ( ! empty( $key ) )
 		$builder = ! empty( $builder[$key] ) ? $builder[$key] : array();

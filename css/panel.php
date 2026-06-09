@@ -18,6 +18,10 @@
 
 .panel .widget:first-child { padding-block-start: 0; }
 
+/* WIDGETS */
+
+.panel .accordion { margin-inline: -<?php echo $half; ?>px; }
+
 /* TRIGGERS */
 
 .header .trigger-panel {

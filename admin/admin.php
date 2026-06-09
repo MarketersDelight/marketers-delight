@@ -44,11 +44,7 @@ class md_admin {
 		include_once 'loop.php';
 		include_once 'logo.php';
 		include_once 'header.php';
-		include_once MD_DIR . 'api/upgrade/dropin-upgrader.php';
-		include_once MD_DIR . 'api/upgrade/md-upgrader.php';
-
-		if ( md_setting( 'version' ) < '5.0' )
-			require_once 'upgrade/upgrade.php';
+		include_once 'upgrade/dropin-upgrader.php';
 	}
 
 	/**
@@ -103,9 +99,7 @@ class md_admin {
 
 		// Actions + requests
 		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
-		add_action( 'wp_ajax_nopriv_md_action', array( $this->requests, 'request' ) );
 		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
-		add_action( 'wp_ajax_nopriv_md_file', array( $this->files, 'file_action' ) );
 	}
 
 	/**
@@ -210,8 +204,8 @@ class md_admin {
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_register_script( 'md-color', MD_URL . 'api/js/jscolor.js', array(), '', true );
-		wp_register_script( 'md-sortable', MD_URL . 'api/js/sortable.js', array(), '', true );
+		wp_register_script( 'md-color', MD_URL . 'admin/js/jscolor.js', array(), '', true );
+		wp_register_script( 'md-sortable', MD_URL . 'admin/js/sortable.js', array(), '', true );
 		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
 		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
 
