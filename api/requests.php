@@ -345,7 +345,7 @@ class md_requests {
 	 */
 
 	public function upload_dropin() {
-		if ( ! current_user_can( 'upload_plugins' ) )
+		if ( ! current_user_can( 'manage_options' ) )
 			wp_die( __( 'Sorry, you are not allowed to install drop-ins on this site.' ) );
 
 		check_admin_referer( 'dropin-upload' );
@@ -384,7 +384,7 @@ class md_requests {
 	 */
 
 	public function update_dropin() {
-		if ( ! current_user_can( 'update_plugins' ) )
+		if ( ! current_user_can( 'manage_options' ) )
 			wp_die( __( 'Sorry, you are not allowed to update drop-ins for this website.', 'md' ) );
 
 		if ( empty( $_GET['dropin'] ) )
@@ -418,7 +418,7 @@ class md_requests {
 	 */
 
 	public function cancel_dropin_overwrite() {
-		if ( ! current_user_can( 'upload_plugins' ) )
+		if ( ! current_user_can( 'manage_options' ) )
 			wp_die( __( 'Sorry, you are not allowed to install drop-ins on this site.' ) );
 
 		check_admin_referer( 'dropin-upload-cancel-overwrite' );

@@ -464,46 +464,6 @@
 				);
 			}
 		},
-		moveDropins: function() {
-			var formData = new FormData();
-			formData.append( 'action', 'md_file' );
-			formData.append( 'upload_action', 'move-dropins' );
-			formData.append( 'nonce', MDJS.nonce );
-			$.ajax({
-				url: ajaxurl,
-				type: 'POST',
-				data: formData,
-				contentType: false,
-				processData: false
-			});
-		},
-		migrateDropins: function( dropinsURL ) {
-			$( document ).on( 'click', '#md_updater_button', function( e ) {
-				e.preventDefault();
-				var button = $( this ),
-					formData = new FormData(),
-					notice = $( '#md_updater_notice' );
-				formData.append( 'action', 'md_file' );
-				formData.append( 'upload_action', 'move-dropins' );
-				formData.append( 'nonce', MDJS.nonce );
-				$.ajax({
-					url: ajaxurl,
-					type: 'POST',
-					data: formData,
-					contentType: false,
-					processData: false,
-					beforeSend: function() {
-						button.prop( 'disabled', true );
-						notice.addClass( 'md-updating' );
-					},
-					success: function( response ) {
-						notice.removeClass( 'md-updating notice-error' );
-						notice.addClass( 'md-updated notice-success' );
-						window.location.replace( dropinsURL );
-					}
-				});
-			});
-		},
 		media: function() {
 			var getUploadPreviewSrc = function( upload ) {
 				var attrs = upload && upload.attributes ? upload.attributes : {},

@@ -23,7 +23,8 @@
 							'description' => sprintf( __( 'If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD\'s stylesheet file. For further optimization you can print your stylesheets inline to your site\'s %s.', 'md' ), '<code>&lt;head&gt;</code>' ),
 							'options' => array(
 								'child' => sprintf( __( 'Combine child theme CSS into %s', 'md' ), '<code>style.css</code>' ),
-								'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' )
+								'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' ),
+								'critical' => sprintf( __( 'Inline Critical CSS (defer %s)', 'md' ), '<code>style.css</code>' )
 							)
 						) ); ?>
 					</div>
@@ -41,17 +42,6 @@
 								echo $this->fields->description( sprintf( __( 'Create a custom 404 page by attaching a new <a href="%s">Page ID</a> here.', 'md' ), admin_url( 'edit.php?post_type=page' ) ) );
 						 ?>
 
-					</div>
-
-					<div class="md-sep-small">
-						<?php $this->fields->field( 'webfonts', array(
-							'type' => 'checkbox',
-							'label' => __( 'Web Fonts', 'md' ),
-							'description' => __( 'By default MD loads all Google and Typekit web fonts through a stylesheet and prefetch method. To <b>attempt</b> to improve font performance and fight off "Flash of invisible text," enable the WebFont loader script here.', 'md' ),
-							'options' => array(
-								'loader' => __( 'Enable WebFont Loader', 'md' )
-							)
-						) ); ?>
 					</div>
 
 					<div class="md-sep-small">

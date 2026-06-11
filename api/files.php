@@ -37,8 +37,6 @@ class md_files {
 	 		$this->file_upload( $action, $_FILES, $wp_filesystem, array(
 		 		'accept' => ! empty( $_POST['accept'] ) ? $_POST['accept'] : array()
 	 		) );
-	 	elseif ( $action == 'move-dropins' )
-	 		$this->move_dropins( $wp_filesystem );
 	 	elseif ( $action == 'delete-dropin' )
 	 		$this->delete_dropin( $dropin_id, $wp_filesystem );
 
@@ -91,40 +89,6 @@ class md_files {
 	}
 
 	/**
-	 * Move Core Drop-ins to /wp-content/md-dropins/ folder.
-	 *
-	 * @since 5.3
-	 */
-
-	public function move_dropins( $wp_filesystem ) {
-		$core_dir = MD_DROPINS_DIR;
-		$installed_dir = MD_INSTALLED_DROPINS;
-		$option = md_setting();
-		if ( $wp_filesystem->exists( $core_dir ) ) {
-			if ( $wp_filesystem->exists( $installed_dir ) )
-				$wp_filesystem->delete( $core_dir, true );
-			else {
-				$core_dropins = $wp_filesystem->dirlist( $core_dir );
-				if ( ! $wp_filesystem->exists( $installed_dir ) ) {
-					$wp_filesystem->mkdir( $installed_dir, 0777 );
-					$this->create_protection_file( $installed_dir );
-				}
-				foreach ( $core_dropins as $file => $fields ) {
-					$wp_filesystem->move( "{$core_dir}$file", "$installed_dir/$file" );
-					$option = $this->activate_dropin( $file, $installed_dir, $option, $wp_filesystem );
-				}
-				if ( empty( $wp_filesystem->dirlist( $core_dir ) ) )
-					$wp_filesystem->delete( $core_dir );
-			}
-		}
-		unset( $option['dropins']['features'] );
-		unset( $option['dropins']['move_dropins'] );
-		unset( $option['dropins']['migrate_dropins'] );
-		$option['dropins']['moved_dropins'] = true;
-		update_option( 'marketers_delight', $option );
-	}
-
-	/**
 	 * Verify Drop-in into MD's system by saving config data,
 	 * activate if told to.
 	 *
@@ -134,7 +98,6 @@ class md_files {
 	public function activate_dropin( $file, $uploads_dir, $option, $wp_filesystem ) {
 		$upload_file = "$uploads_dir/$file/$file.php";
 		$upload_dir = "$uploads_dir/$file";
-		$old_dropins = $this->old_dropins();
 
 		if ( $wp_filesystem->is_dir( $upload_dir ) )
 			$this->create_protection_file( $upload_dir );
@@ -149,7 +112,7 @@ class md_files {
 				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'priority', 'active' ) as $setting ) {
 					if ( ! empty( $data[$setting] ) )
 						$option['dropins']['installed'][$file][$setting] = $data[$setting];
-					if ( ( $setting == 'active' && ! empty( $data[$setting] ) ) || in_array( $file, $old_dropins ) )
+					if ( ( $setting == 'active' && ! empty( $data[$setting] ) ) )
 						$option['dropins']['installed'][$file]['status']['enable'] = true;
 					if ( ! empty( $data[$setting]['priority'] ) )
 						$option['dropins']['priority'][$file] = true;
@@ -158,27 +121,6 @@ class md_files {
 		}
 
 		return $option;
-	}
-
-	/**
-	 * If Drop-ins data from versions older than MD5.3 exist, move
-	 * them into the new format. Backwards compatibility method.
-	 *
-	 * @since 5.3
-	 */
-
-	public function old_dropins() {
-		$old_dropins = array_keys( md_setting( array( 'dropins', 'features' ), array() ) );
-
-		if ( ! empty( $old_dropins ) ) {
-			$old_dropins[] = 'optins';
-			$old_dropins[] = 'share';
-
-			if ( in_array( 'admin_bar', $old_dropins ) )
-				$old_dropins[] = 'admin-bar';
-		}
-
-		return $old_dropins;
 	}
 
 	/**
@@ -235,7 +177,7 @@ class md_files {
 	 * @since 5.3
 	 */
 
-	public function create_protection_file( $upload_dir = MD_DROPINS_DIR ) {
+	public function create_protection_file( $upload_dir = MD_INSTALLED_DROPINS ) {
 		if ( ! file_exists( "$upload_dir/index.php" ) && wp_is_writable( $upload_dir ) )
 			file_put_contents( "$upload_dir/index.php", "<?php\n// Silence is golden." );
 	}

@@ -88,12 +88,6 @@
 					</div>
 				</div>
 			<?php endforeach; ?>
-			<?php foreach ( array( 'move_dropins', 'migrate_dropins', 'moved_dropins' ) as $dropin_status ) : ?>
-				<?php $this->fields->field( $dropin_status, array(
-					'type' => 'text',
-					'hidden' => true
-				) ); ?>
-			<?php endforeach; ?>
 		<?php else : ?>
 			<div class="md-dropin">
 				<p class="md-dropin-inner"><?php echo __( 'No Drop-ins found.', 'md' ); ?></p>

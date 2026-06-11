@@ -23,7 +23,6 @@ final class marketers_delight {
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
 		define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 		define( 'MD_PLUGIN_DIR', '' );
-		define( 'MD_DROPINS_DIR', MD_DIR . 'dropins/' ); #4.7
 		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
 		define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 		define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
@@ -90,6 +89,7 @@ final class marketers_delight {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
+		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
 		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 		add_action( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
@@ -259,9 +259,6 @@ final class marketers_delight {
  	 */
 
 	public function enqueue_fonts() {
-		if ( md_setting( array( 'settings', 'webfonts', 'loader' ) ) )
-			return;
-
 		$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
 
 		if ( md_web_fonts( 'google' ) ) {
@@ -304,8 +301,44 @@ final class marketers_delight {
 	 */
 
 	public function head() {
+		$critical = MD_DIR . 'css/critical.css';
+
+		if ( md_setting( array( 'settings', 'css', 'critical' ) ) && file_exists( $critical ) ) {
+			$css = file_get_contents( $critical );
+
+			if ( $css !== '' )
+				echo '<style id="md-critical-css">' . $css . "</style>\n";
+		}
+
 		if ( md_setting( array( 'settings', 'css', 'inline' ) ) )
 			echo '<style type="text/css">' . get_option( 'marketers_delight_style_css' ) . "</style>\n";
+	}
+
+	/**
+	 * Load stylesheets async (preload + onload swap) when Critical CSS is enabled,
+	 * so the inlined critical styles render without a blocking stylesheet.
+	 *
+	 * Dropins and child themes can defer their own stylesheets — including ones
+	 * that depend on the 'marketers-delight' handle — by adding their handle to
+	 * the 'md_deferred_styles' filter.
+	 *
+	 * @since 6.0
+	 */
+
+	public function defer_style( $tag, $handle ) {
+		$deferred = apply_filters( 'md_deferred_styles', array( 'marketers-delight' ) );
+
+		// The 'marketers-delight' handle is reused for admin.css in wp-admin, so
+		// never defer in the admin context.
+		if ( is_admin() || ! md_setting( array( 'settings', 'css', 'critical' ) ) || ! in_array( $handle, $deferred ) )
+			return $tag;
+
+		// Pull the href from the tag so each handle defers its own stylesheet.
+		if ( ! preg_match( '/href=([\'"])(.*?)\1/', $tag, $href ) )
+			return $tag;
+
+		return '<link rel="preload" as="style" href="' . esc_url( $href[2] ) . '" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n"
+			. '<noscript>' . $tag . '</noscript>';
 	}
 
 	/**
@@ -505,42 +538,26 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Load MD Drop-ins after theme is setup. Supports old Drop-ins
-	 * locations pre-MD5.3.
+	 * Load active MD Drop-ins after theme is setup.
 	 *
 	 * @since 4.6
 	 */
 
 	public function dropins() {
 		$dropins = md_get_dropins( 'active' );
-		$old_dropins = md_setting( array( 'dropins', 'features' ), array() ); #EOL
 
-		if ( ! empty( $dropins ) ) {
-			foreach ( $dropins as $dropin )
-				if ( md_has( $dropin ) )
-					if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
-						require_once( $file );
-					else {
-						$option = md_setting();
-						unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-						update_option( 'marketers_delight', $option );
-					}
-		}
-		else {
-			$old_dropins['optins'] = true;
-			$old_dropins['share'] = true;
-			$old_dropins['scripts'] = true;
-			$old_dropins['footnotes'] = true;
+		if ( empty( $dropins ) )
+			return;
 
-			if ( isset( $old_dropins['admin_bar'] ) ) {
-				unset( $old_dropins['admin_bar'] );
-				$old_dropins['admin-bar'] = true;
-			}
-
-			foreach ( $old_dropins as $old_dropin => $old_dropin_val )
-				if ( file_exists( $old_dropin_file = MD_DROPINS_DIR . "/$old_dropin/$old_dropin.php" ) )
-					require_once $old_dropin_file;
-		}
+		foreach ( $dropins as $dropin )
+			if ( md_has( $dropin ) )
+				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+					require_once( $file );
+				else {
+					$option = md_setting();
+					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
+					update_option( 'marketers_delight', $option );
+				}
 	}
 
 	/**

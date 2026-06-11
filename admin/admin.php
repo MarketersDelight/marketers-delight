@@ -208,9 +208,6 @@ class md_admin {
 		wp_register_script( 'md-sortable', MD_URL . 'admin/js/sortable.js', array(), '', true );
 		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
 		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
-
-		if ( md_setting( array( 'dropins', 'move_dropins' ) ) )
-			wp_add_inline_script( 'marketers-delight', 'MD.moveDropins();' );
 	}
 
 	/**

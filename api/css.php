@@ -26,10 +26,12 @@ class md_css {
 	 */
 
 	public function files() {
+
+		// All dynamically rendered CSS files
+
 		$files = array(
 			'style' => array(
 				'path' => MD_DIR . 'style.css',
-				'icons' => true,
 				'templates' => $this->style_css(),
 			),
 			'classic-editor' => array(
@@ -52,14 +54,48 @@ class md_css {
 			),
 			'font-icons' => array(
 				'path' => MD_DIR . 'css/editor/font-icons.css',
-				'icons' => true,
 				'templates' => array(
 					'font-icons' => locate_template( 'css/font-icons.php' )
 				)
 			)
 		);
 
+		// Generate a critical CSS file which we inline later
+
+		if ( $this->critical_enabled() ) {
+			$keys = $this->critical_keys();
+
+			$files['critical'] = array(
+				'path' => MD_DIR . 'css/critical.css',
+				'static' => true, // always generate to file, never DB option
+				'minify' => true, // write minified output
+				'templates' => array_intersect_key( $this->css_files(), array_flip( $keys ) )
+			);
+		}
+
 		return array_merge( $files, apply_filters( 'md_css_files', array() ) );
+	}
+
+	/**
+	 * The CSS template parts to inline as Critical CSS.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function critical_keys() {
+		return apply_filters( 'md_critical_css_templates', array(
+			'style', 'font-icons', 'format', 'header', 'menus', 'buttons'
+		) );
+	}
+
+	/**
+	 * Whether the Critical CSS feature is enabled.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function critical_enabled() {
+		return md_setting( array( 'settings', 'css', 'critical' ) );
 	}
 
 	/**
@@ -112,6 +148,9 @@ class md_css {
 				$templates['child_dynamic'] = $child_dynamic;
 		}
 
+		if ( $this->critical_enabled() )
+			$templates = array_diff_key( $templates, array_flip( $this->critical_keys() ) );
+
 		return $templates;
 	}
 
@@ -125,6 +164,11 @@ class md_css {
 		$inline = md_setting( array( 'settings', 'css', 'inline' ) );
 
 		foreach ( $this->files as $file => $fields ) {
+			if ( ! empty( $fields['static'] ) ) {
+				$this->generate( $file );
+				continue;
+			}
+
 			if ( empty( $inline ) ) {
 				if ( isset( $delete ) )
 					delete_option( "marketers_delight_{$file}_css" );
@@ -132,6 +176,13 @@ class md_css {
 			}
 			else
 				$this->save( $file );
+		}
+
+		if ( ! $this->critical_enabled() ) {
+			$critical = MD_DIR . 'css/critical.css';
+
+			if ( file_exists( $critical ) )
+				file_put_contents( $critical, '' );
 		}
 
 		$theme_json = new md_theme_json;
@@ -149,17 +200,23 @@ class md_css {
 	public function generate( $file ) {
 		$path = $this->files[$file]['path'];
 
-		if ( file_exists( $path ) ) {
-			ob_start();
+		if ( ! file_exists( $path ) )
+			return;
 
-			$this->templates( $file );
-
-			$css = ob_get_clean();
-			$css = $this->replace( $css, $file );
-			$css = $this->clean( $css );
-
-			file_put_contents( $path, $css );
+		if ( ! empty( $this->files[$file]['minify'] ) ) {
+			file_put_contents( $path, $this->minify( $file ) );
+			return;
 		}
+
+		ob_start();
+
+		$this->templates( $file );
+
+		$css = ob_get_clean();
+		$css = $this->replace( $css, $file );
+		$css = $this->clean( $css );
+
+		file_put_contents( $path, $css );
 	}
 
 	/**
@@ -171,7 +228,7 @@ class md_css {
 	public function save( $file ) {
 		$css = $this->minify( $file );
 
-		update_option( "marketers_delight_{$file}_css", $css );
+		update_option( "marketers_delight_{$file}_css", $css, false );
 	}
 
 	/**
@@ -372,7 +429,8 @@ class md_css {
 			echo "\n\n";
 		}
 
-		if ( ! empty( $this->files[$file]['icons'] ) )
+		// Glyph rules always travel with the font-icons @font-face.
+		if ( isset( $this->files[$file]['templates']['font-icons'] ) )
 			$this->icons_css();
 	}
 

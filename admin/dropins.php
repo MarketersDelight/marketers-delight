@@ -17,9 +17,6 @@ class md_dropins extends md_api {
 	public function register() {
 		$name = __( 'Drop-ins', 'md' );
 		$fields = array(
-			'move_dropins' => array( 'type' => 'text' ),
-			'migrate_dropins' => array( 'type' => 'text' ),
-			'moved_dropins' => array( 'type' => 'text' ),
 			'installed' => array(
 				'type' => 'group',
 				'fields' => array(
