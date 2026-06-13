@@ -211,15 +211,22 @@ function md_web_fonts( $show_type = null ) {
  * @since 6.0
  */
 
-function md_scroller_nav( $items = array() ) {
+function md_scroller_nav( $args = array() ) {
 	static $js_enqueued = false;
 
+	$classes = array( 'scroller-nav' );
+
+	if ( isset( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
+	$classes = join( ' ', $classes );
+
 	echo
-		'<div class="scroller-nav">' .
+		'<div class="' . esc_attr( $classes ) . '">' .
 		'<button class="scroller-arrow scroller-arrow-prev" aria-label="' . __( 'Scroll left', 'md' ) . '">' . md_icon( 'angle-left' ) . '</button>' .
 		'<div class="scroller-list">';
 
-	foreach ( $items as $item )
+	foreach ( $args['items'] as $item )
 		echo $item;
 
 	echo
@@ -231,6 +238,25 @@ function md_scroller_nav( $items = array() ) {
 		wp_add_inline_script( 'marketers-delight', 'MD.scrollerNav();' );
 		$js_enqueued = true;
 	}
+}
+
+/**
+ * Get a list of Sticky posts by post type.
+ *
+ * @since 6.0
+ */
+
+function md_get_sticky( $post_type = null ) {
+	if ( empty( $post_type ) )
+		$post_type = get_post_type();
+
+	$sticky = array();
+
+	foreach ( get_option( 'sticky_posts', array() ) as $id )
+		if ( $post_type === get_post_type( $id ) )
+			$sticky[] = $id;
+
+	return $sticky;
 }
 
 /**

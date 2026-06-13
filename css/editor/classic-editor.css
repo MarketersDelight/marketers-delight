@@ -37,7 +37,7 @@
 	font-style: normal;
 	font-weight: 700;
 }
-.md, .mce-content-body .md a { font-family: 'Marketing'; }
+.md, .mce-content-body :is(.md, .md a) { font-family: 'Marketing'; }
 /*------------------------------*\
 	$FORMAT
 \*------------------------------*/
@@ -696,8 +696,7 @@ cite, .tiny {
 .loop-list .title a:hover { text-decoration: none; }
 /* CATEGORY VIEWS */
 .category-title { row-gap: 5px; }
-.category-posts .category-title,
-.categories .scroller-nav { margin-block-end: 16px; }
+.category-posts .category-title { margin-block-end: 16px; }
 .category-title .title {
 	font-size: 32px;
 	line-height: 45px;

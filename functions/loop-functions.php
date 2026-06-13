@@ -168,6 +168,9 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	if ( ! is_singular() )
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
+	if ( ! is_singular() && is_sticky() )
+		$classes[] = 'sticky';
+
 	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ) ) ) {
 		$position = $loop['featured_image'];
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
@@ -419,9 +422,9 @@ function md_loop( $args = array() ) {
 	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory )
 		include md_template( 'loop/subcategory', true );
 
-	// Sticky post, or a loop called within a loop (see 404)
+	// A loop called within a loop (see 404)
 
-	if ( ! empty( $loop['sticky'] ) || ! empty( $loop['in_loop'] ) )
+	if ( ! empty( $loop['in_loop'] ) )
 		include md_template( 'loop/the-post', true );
 
 	// If listing by category

@@ -114,6 +114,9 @@ class md_api {
 		if ( method_exists( $this, 'byline' ) )
 			add_filter( 'md_byline', array( $this, 'byline' ) );
 
+		if ( method_exists( $this, 'save_post_meta' ) )
+			add_filter( 'md_post_meta_save', array( $this, 'save_post_meta' ), 10, 2 );
+
 		// WP init
 
 		add_action( 'init', array( $this, '_init' ) );
@@ -344,6 +347,62 @@ class md_api {
 	}
 
 	/**
+	 * Change any user-set Loop settings on post type archive and terms.
+	 *
+	 * @since 6.0
+	 */
+
+	public function parse_query( $wp ) {
+		if ( is_admin() || ! $wp->is_main_query() || ! $this->post_type )
+			return $wp;
+
+		// Only manipulate post type archives
+
+		$post_type = $this->post_type;
+		$taxonomy = $this->taxonomy;
+
+		$context = ( $wp->is_post_type_archive || $wp->is_tax ) && (
+			( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == $post_type ) ||
+			( $taxonomy && isset( $wp->query[$taxonomy] ) )
+		);
+
+		if ( ! $context )
+			return $wp;
+
+		// If taxonomy, determine which term we are on
+
+		$term_id = 0;
+
+		if ( $wp->is_tax && $taxonomy && isset( $wp->query[$taxonomy] ) ) {
+			$term = get_term_by( 'slug', $wp->query[$taxonomy], $taxonomy );
+			$term_id = $term ? $term->term_id : 0;
+		}
+
+		if ( ! $wp->is_tax )
+			$taxonomy = '';
+
+		// Consider sticky posts since CPTs dont natively support
+
+		$sticky = md_get_sticky( $post_type );
+
+		if ( $sticky ) {
+			$wp->set( 'post__not_in', $sticky );
+
+			if ( ! get_query_var( 'paged' ) )
+				add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
+		}
+
+		// Set final query vars
+
+		$wp->query_vars['post_type'] = $this->post_type;
+		$wp->query_vars['paged'] = get_query_var( 'paged' );
+
+		$this->loop_query_vars( $wp, $taxonomy, $term_id );
+
+		return $wp;
+	}
+
+	/**
 	 * Registered post types modify the Loop in common ways, and this implements
 	 * those values from all tiers of a CPT/taxonomy/term relationship.
 	 *
@@ -360,7 +419,7 @@ class md_api {
 
 		// Sometimes post_type -> taxonony settings shouldn't inherit
 
-		$use_tax_defaults = (bool) $taxonomy;
+		$use_tax_defaults = $taxonomy;
 
 		if ( $taxonomy ) {
 			$loop_type = md_post_type_field( array( 'loop', 'loop_type' ), '', $post_type );
@@ -369,6 +428,8 @@ class md_api {
 			if ( $term_id && in_array( $tax_loop_type, array( 'category_posts', 'category' ) ) )
 				$use_tax_defaults = empty( get_term_children( $term_id, $taxonomy ) );
 		}
+
+		// Set inherited query vars from proper context
 
 		foreach ( $keys as $key => $default ) {
 			$value = md_post_type_field( array( 'loop', $key ), $default, $post_type );
@@ -387,52 +448,36 @@ class md_api {
 	}
 
 	/**
-	 * Perform the actual loop modifications, with painstaking awareness
-	 * of which loop page/context we are actually on first.
+	 * Prepend sticky CPT posts to the front of the main query results on page 1.
+	 * Mirrors how WP core handles sticky posts for the native post type.
 	 *
 	 * @since 6.0
 	 */
 
-	public function parse_query( $wp ) {
-		if ( is_admin() || ! $wp->is_main_query() || ! $this->post_type )
-			return $wp;
+	public function _prepend_sticky( $posts, $query ) {
+		if ( ! $query->is_main_query() )
+			return $posts;
 
-		$post_type = $this->post_type;
-		$taxonomy = $this->taxonomy;
+		remove_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10 );
 
-		$context = ( $wp->is_post_type_archive || $wp->is_tax ) && (
-			( isset( $wp->query['post_type'] ) && $wp->query['post_type'] == $post_type ) ||
-			( $taxonomy && isset( $wp->query[$taxonomy] ) )
-		);
+		$sticky = md_get_sticky( $this->post_type );
 
-		if ( ! $context )
-			return $wp;
+		if ( empty( $sticky ) )
+			return $posts;
 
-		$term_id = 0;
+		$sticky_posts = get_posts( array(
+			'post_type' => $this->post_type,
+			'post__in' => $sticky,
+			'posts_per_page' => count( $sticky ),
+			'ignore_sticky_posts' => true,
+			'orderby' => 'post__in'
+		) );
 
-		if ( $wp->is_tax && $taxonomy && isset( $wp->query[$taxonomy] ) ) {
-			$term = get_term_by( 'slug', $wp->query[$taxonomy], $taxonomy );
-			$term_id = $term ? $term->term_id : 0;
-		}
-
-		$sticky = get_option( 'sticky_posts' );
-
-		$wp->query_vars['post_type'] = $this->post_type;
-		$wp->query_vars['paged'] = get_query_var( 'paged' );
-
-		if ( $sticky )
-			$wp->set( 'post__not_in', $sticky );
-
-		if ( ! $wp->is_tax )
-			$taxonomy = '';
-
-		$this->loop_query_vars( $wp, $taxonomy, $term_id );
-
-		return $wp;
+		return array_merge( $sticky_posts, $posts );
 	}
 
 	/**
-	 * Add "View [post type]" link to the WP admin bar on the post type's settings screen.
+	 * Add matching admin links in admin bar to CPT archive pages front/backend.
 	 *
 	 * @since 6.0
 	 */

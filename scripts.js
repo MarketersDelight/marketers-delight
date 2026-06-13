@@ -526,8 +526,10 @@ footnotes: function() {
 	}
 },
 tableOfContents: function() {
+	var toc = document.getElementById( 'table_of_contents' );
+	if ( ! toc )
+		return;
 	var	content = document.getElementById( 'the_content' ),
-		toc = document.getElementById( 'table_of_contents' ),
 		labels = toc.querySelectorAll( '.toc-item-label' ),
 		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
 	function scrollTo( target ) {

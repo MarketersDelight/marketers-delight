@@ -145,8 +145,7 @@
 
 .category-title { row-gap: <?php echo $small; ?>px; }
 
-.category-posts .category-title,
-.categories .scroller-nav { margin-block-end: <?php echo $half; ?>px; }
+.category-posts .category-title { margin-block-end: <?php echo $half; ?>px; }
 
 .category-title .title {
 	font-size: <?php echo $typography['h3']['font_size']['desktop']; ?>px;

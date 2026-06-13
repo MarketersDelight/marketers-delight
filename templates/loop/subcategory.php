@@ -11,22 +11,7 @@ $children = get_terms( array(
 if ( empty( $children ) || is_wp_error( $children ) )
 	return;
 
-// Show subcategories on "list posts by category" view
-
-if ( isset( $posts ) ) {
-
-	$scroller_args = array();
-
-	foreach ( $children as $child )
-		$scroller_args[] = '<a href="' . esc_url( get_term_link( $child ) ) . '" class="tag">' . esc_html( $child->name ) . '</a>';
-
-	md_scroller_nav( $scroller_args );
-
-}
-
-// Show listing of categories
-
-else {
+if ( ! empty( $loop['loop_type'] ) && $loop['loop_type'] === 'category' ) {
 
 	echo '<ul class="subcategory list">';
 
@@ -34,5 +19,16 @@ else {
 		echo '<li><a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a></li>';
 
 	echo '</ul>';
+
+}
+
+else {
+
+	$scroller_args = array();
+
+	foreach ( $children as $child )
+		$scroller_args['items'][] = '<a href="' . esc_url( get_term_link( $child ) ) . '" class="tag">' . esc_html( $child->name ) . '</a>';
+
+	md_scroller_nav( $scroller_args );
 
 }

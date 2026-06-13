@@ -63,8 +63,8 @@ class md_admin {
 		// Admin pages
 		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
-		add_filter( 'post_row_actions',array( $this, 'admin_row'), 10, 2 );
-		add_filter( 'page_row_actions',array( $this, 'admin_row'), 10, 2 );
+		add_filter( 'post_row_actions', array( $this, 'admin_row'), 10, 2 );
+		add_filter( 'page_row_actions', array( $this, 'admin_row'), 10, 2 );
 
 		// Editors
 		add_action( 'edit_form_after_editor', array( $this, 'nonce' ) );
@@ -86,6 +86,7 @@ class md_admin {
 		// Enqueue
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
+
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 
@@ -160,7 +161,7 @@ class md_admin {
 	 */
 
 	public function enqueue_block_editor() {
-		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready' ), MD_VERSION, true );
+		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready', 'wp-plugins', 'wp-editor', 'wp-element', 'wp-components', 'wp-data' ), MD_VERSION, true );
 	}
 
 	/**

@@ -19,7 +19,7 @@ class md_requests {
 			return;
 
 		$option = md_setting();
-		$item_id = isset( $_POST['dropin_id'] ) ? esc_attr( $_POST['dropin_id'] ) : '';
+		$item_id = isset( $_POST['dropin_id'] ) ? sanitize_key( $_POST['dropin_id'] ) : '';
 
 		if ( isset( $_POST['action_type'] ) ) {
 			$action_type = esc_attr( $_POST['action_type'] );
@@ -37,7 +37,9 @@ class md_requests {
 					$option = $this->deactivate_license( $item_id, $option );
 				elseif ( $action_type == 'check-updates' )
 					$option = $this->check_for_updates( $option );
+
 				update_option( 'marketers_delight', $option );
+
 				$dashboard = new md_settings;
 				$dashboard->updater( $option );
 			}
@@ -53,7 +55,7 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	public function get_api( $api_params ) {
+	private function get_api( $api_params ) {
 		$update_data = new stdClass;
 	 	$license_input = $this->license();
 		$response = wp_remote_post( $license_input['remote_api_url'], array(
@@ -77,13 +79,14 @@ class md_requests {
 	 */
 
 	public function license( $field = null ) {
-		$license = array();
-		$license['remote_api_url'] = esc_url( MD_THEME_UPDATER_URL );
-		$license['theme_slug'] = sanitize_key( 'marketers-delight' );
-		$license['version'] = esc_html( MD_VERSION );
-		$license['item_name'] = esc_html( MD_THEME_NAME );
-		$license['author'] = esc_html( MD_THEME_AUTHOR );
-		$license['download_id'] = esc_html( 63289 );
+		$license = array(
+			'download_id' => 63289,
+			'theme_slug' => 'marketers-delight',
+			'remote_api_url' => MD_THEME_UPDATER_URL,
+			'version' => MD_VERSION,
+			'item_name' => MD_THEME_NAME,
+			'author' => MD_THEME_AUTHOR
+		);
 
 		if ( empty( $license['version'] ) ) {
 			$theme = wp_get_theme( $license['theme_slug'] );
@@ -102,7 +105,7 @@ class md_requests {
 	 * @since 5.4
 	 */
 
-	public function reset_icons( $option ) {
+	private function reset_icons( $option ) {
 		$option['icons'] = $option['custom_icons'] = array();
 
 		return $option;
@@ -114,7 +117,7 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	public function check_license( $option ) {
+	private function check_license( $option ) {
 	 	$license_input = $this->license();
 	 	$license_data = $this->get_api( array(
 			'edd_action' => 'check_license',
@@ -146,7 +149,7 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	 public function activate_license( $license_key, $option ) {
+	private function activate_license( $license_key, $option ) {
 	 	$license = md_setting( array( 'settings', 'license_key' ), $license_key );
 
 	 	if ( ! empty( $license ) ) {
@@ -171,8 +174,7 @@ class md_requests {
 				$option['settings']['license_key'] = esc_attr( $license );
 			}
 		}
-		else
-			$option['license']['status'] = 'error';
+		else $option['license']['status'] = 'error';
 
 		return $option;
 	}
@@ -184,7 +186,7 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	 public function deactivate_license( $license_key, $option ) {
+	private function deactivate_license( $license_key, $option ) {
 	 	$license = md_setting( array( 'settings', 'license_key' ), $license_key );
 
 	 	if ( ! empty( $license ) ) {
@@ -204,6 +206,7 @@ class md_requests {
 		unset( $option['license']['limit'] );
 		unset( $option['license']['updates'] );
 		unset( $option['license']['dropins'] );
+
 		$option['license']['status'] = esc_attr( $license_data->license );
 
 		delete_site_transient( 'update_themes' );
@@ -255,7 +258,7 @@ class md_requests {
 	 * @since 5.4
 	 */
 
-	public function check_for_updates( $option = null ) {
+	private function check_for_updates( $option = null ) {
 		if ( empty( $option ) )
 			$option = md_setting();
 
@@ -272,7 +275,7 @@ class md_requests {
 				'version' => $license_input['version'],
 				'author' => $license_input['author'],
 				'php_version' => phpversion(),
-				'wp_version' => get_bloginfo( 'version' ),
+				'wp_version' => get_bloginfo( 'version' )
 			) );
 
 			if ( ! empty( $response->failed ) )
@@ -283,22 +286,23 @@ class md_requests {
 			unset( $option['license']['updates'] );
 			unset( $option['license']['dropins'] );
 
-			// has update
+			// Has update
 
 			if ( ! empty( $update_data ) ) {
 
-				// theme
+				// Theme
+
 				if ( version_compare( $license_input['version'], $update_data->new_version, '<' ) )
 					$option['license']['updates']['theme'] = array(
-						'name' => esc_html( $update_data->name ),
-						'theme' => esc_attr( $license_input['theme_slug'] ),
-						'new_version' => esc_attr( $update_data->new_version ),
-						'stable_version' => esc_attr( $update_data->stable_version ),
-						'slug' => esc_attr( $update_data->slug ),
-						'url' => esc_url( $update_data->url ),
-						'last_updated' => esc_attr( $update_data->last_updated ),
-						'package' => esc_url( $update_data->package ),
-						'download_link' => esc_url( $update_data->download_link )
+						'name' => sanitize_text_field( $update_data->name ),
+						'theme' => sanitize_key( $license_input['theme_slug'] ),
+						'new_version' => sanitize_text_field( $update_data->new_version ),
+						'stable_version' => sanitize_text_field( $update_data->stable_version ),
+						'slug' => sanitize_key( $update_data->slug ),
+						'url' => esc_url_raw( $update_data->url ),
+						'last_updated' => sanitize_text_field( $update_data->last_updated ),
+						'package' => esc_url_raw( $update_data->package ),
+						'download_link'  => esc_url_raw( $update_data->download_link )
 					);
 
 				// drop-ins
@@ -309,19 +313,18 @@ class md_requests {
 						if ( ! isset( $dropin_fields->slug ) || empty( $installed_dropins[$dropin_fields->slug] ) )
 							continue;
 
-						$dropin_slug = esc_attr( $dropin_fields->slug );
-						$dropin_name = esc_attr( $dropin_fields->name );
-						$dropin_version = ! empty( $installed_dropins[$dropin_slug]['version'] ) ? esc_attr( $installed_dropins[$dropin_slug]['version'] ) : '';
+						$dropin_slug = sanitize_key( $dropin_fields->slug );
+						$dropin_version = ! empty( $installed_dropins[$dropin_slug]['version'] ) ? sanitize_text_field( $installed_dropins[$dropin_slug]['version'] ) : '';
 						$new_version = ! empty( $dropin_fields->version ) ? $dropin_fields->version : $dropin_version;
 						$option['license']['dropins'][] = $dropin_slug;
 
 						if ( version_compare( $dropin_version, $new_version, '<' ) )
 							$option['license']['updates']['dropins']["$dropin_slug/$dropin_slug.php"] = array(
-								'name' => $dropin_name,
+								'name' => sanitize_text_field( $dropin_fields->name ),
 								'slug' => $dropin_slug,
-								'version' => esc_attr( $new_version ),
-								'new_version' => $new_version,
-								'package' => $dropin_fields->package
+								'version' => sanitize_text_field( $new_version ),
+								'new_version' => sanitize_text_field( $new_version ),
+								'package' => esc_url_raw( $dropin_fields->package )
 							);
 					}
 				}
@@ -329,8 +332,7 @@ class md_requests {
 			}
 
 		}
-		else
-			unset( $option['license']['updates'] );
+		else unset( $option['license']['updates'] );
 
 		delete_site_transient( 'update_themes' );
 //		delete_site_transient( 'update_md_dropins' );
@@ -350,7 +352,7 @@ class md_requests {
 
 		check_admin_referer( 'dropin-upload' );
 
-		$title = __( 'Upload Drop-in' );
+		$title = __( 'Upload Drop-in', 'md' );
 		$parent_file = 'plugins.php';
 		$submenu_file = 'plugin-install.php';
 		$file_upload = new File_Upload_Upgrader( 'dropinzip', 'package' );
@@ -358,7 +360,7 @@ class md_requests {
 		require_once ABSPATH . 'wp-admin/admin-header.php';
 
 		$filename = esc_html( basename( $file_upload->filename ) );
-		$title = sprintf( __( 'Installing drop-in from uploaded file: %s' ), $filename );
+		$title = sprintf( __( 'Installing drop-in from uploaded file: %s', 'md' ), $filename );
 		$nonce = 'dropin-upload';
 		$url = add_query_arg( array( 'package' => $file_upload->id ), 'update.php?action=upload-md-dropin' );
 		$type = 'upload';
@@ -418,7 +420,7 @@ class md_requests {
 	 */
 
 	public function cancel_dropin_overwrite() {
-		if ( ! current_user_can( 'manage_options' ) )
+		if ( ! current_user_can( 'upload_plugins' ) )
 			wp_die( __( 'Sorry, you are not allowed to install drop-ins on this site.' ) );
 
 		check_admin_referer( 'dropin-upload-cancel-overwrite' );
@@ -444,7 +446,7 @@ class md_requests {
 	 * @since 5.4
 	 */
 
-	public function delete_dropin() {
+	private function delete_dropin() {
 		$files = new md_files;
 		$files->file_action( array( 'action' => 'delete-dropin' ) );
 	}
@@ -455,7 +457,7 @@ class md_requests {
 	 * @since 5.4
 	 */
 /*
-	public function dropins_updater() {
+	private function dropins_updater() {
 		if ( ! current_user_can( 'update_plugins' ) )
 			wp_die( __( 'Sorry, you are not allowed to update plugins for this site.' ) );
 

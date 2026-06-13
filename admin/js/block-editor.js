@@ -1,7 +1,7 @@
-( function() {
-	'use strict';
+( function() { 'use strict';
 
 	// Get MD classes to iFrame onload
+
 	function syncToIframe() {
 		var iframe = document.querySelector( 'iframe[name="editor-canvas"]' );
 
@@ -13,11 +13,15 @@
 		} );
 	}
 
+	// Mirror frontend main Layout classes
+
 	function applySidebarClass( hasSidebar ) {
 		document.body.classList.toggle( 'expanded', ! hasSidebar );
 		document.body.classList.toggle( 'compact', !! hasSidebar );
 		syncToIframe();
 	}
+
+	// Find checkbox options in MD meta boxes
 
 	function attachListeners( doc ) {
 		var builderCheckbox = doc.getElementById( 'marketers_delight_layout_content_builder' ),
@@ -43,6 +47,8 @@
 		return !! ( builderCheckbox || sidebarAdd || sidebarRemove );
 	}
 
+	// Execute toggles while accounting for iFrame madness
+
 	wp.domReady( function() {
 		var canvasIframe = document.querySelector( 'iframe[name="editor-canvas"]' );
 
@@ -67,6 +73,7 @@
 		}
 
 		// Account for timing of Gutenberg moving meta box into iFrame
+
 		if ( attachListeners( document ) )
 			return;
 

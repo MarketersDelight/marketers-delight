@@ -343,6 +343,7 @@ class md_sanitize {
 
 		$value = get_post_meta( $post_id, $option, true );
 		$save = $this->validate( 'meta_boxes', $_POST[$option] );
+		$save = apply_filters( 'md_post_meta_save', $save, $post );
 
 		if ( $save )
 			update_post_meta( $post_id, $option, $save );

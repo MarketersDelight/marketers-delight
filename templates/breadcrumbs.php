@@ -13,7 +13,7 @@ if ( ! empty( $term ) ) {
 		echo '<li><a href="' . esc_url( get_term_link( $ancestor ) ) . '">' . esc_html( $ancestor->name ) . '</a></li>';
 	}
 
-	if ( is_singular() )
+	if ( is_singular() || is_paged() )
 		echo '<li><a href="' . esc_url( get_term_link( $term ) ) . '">' . esc_html( $term->name ) . '</a></li>';
 	else
 		echo '<li>' . esc_html( $term->name ) . '</li>';

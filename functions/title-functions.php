@@ -94,7 +94,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$media = md_has_media( $context, array( 'loop' => $loop ) );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
-	$has_wrap = $media && ! in_array( $media['position'], $full_width ) ? true : false;
+	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width ) ? true : false;
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 
 	// Layout type classes

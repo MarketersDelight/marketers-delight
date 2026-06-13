@@ -34,6 +34,8 @@
 	min-width: 0;
 }
 
+.scroller-nav:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+
 .scroller-arrow {
 	align-self: stretch;
 	appearance: none;
@@ -70,6 +72,8 @@
 }
 
 .scroller-list::-webkit-scrollbar { display: none; }
+
+.expanded .scroller-list { justify-content: center; }
 
 .scroller-arrow.arrow-hidden { display: none; }
 

@@ -3,6 +3,7 @@
 // Start building WP_Term_Query args
 
 $t = 1;
+$stickies = array();
 $taxonomies = get_object_taxonomies( $post_type );
 $taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
 $term_args = array(
@@ -42,6 +43,16 @@ if ( empty( $categories->terms ) ) {
 	return false;
 }
 
+// Build sticky post map grouped by category slug (category_posts only)
+
+if ( $loop['loop_type'] === 'category_posts' && $taxonomy ) {
+	$sticky_ids = md_get_sticky( $post_type );
+
+	if ( $sticky_ids )
+		foreach ( wp_get_object_terms( $sticky_ids, $taxonomy, array( 'fields' => 'all_with_object_id' ) ) as $term )
+			$stickies[$term->slug][] = (int) $term->object_id;
+}
+
 // Render category loop template
 
 echo '<div id="loop" class="' . esc_attr( $loop['categories_classes'] ) . '">';
@@ -52,7 +63,9 @@ foreach ( $categories->terms as $category ) {
 	// Show categories on "list posts by category" view
 
 	if ( $loop['loop_type'] === 'category_posts' ) {
-		$posts = new WP_Query( array(
+		$category_stickies = ! empty( $stickies[$category->slug] ) ? $stickies[$category->slug] : array();
+
+		$query_args = array(
 			'post_type' => $post_type,
 			'posts_per_page' => absint( ! empty( $loop['posts_per_category'] ) ? $loop['posts_per_category'] : $loop['posts_per_page'] ),
 			'no_found_rows' => true,
@@ -63,7 +76,27 @@ foreach ( $categories->terms as $category ) {
 					'terms' => $category->slug
 				)
 			)
-		) );
+		);
+
+		if ( $category_stickies )
+			$query_args['post__not_in'] = $category_stickies;
+
+		$posts = new WP_Query( $query_args );
+
+		if ( $category_stickies ) {
+			$pinned = get_posts( array(
+				'post_type' => $post_type,
+				'post__in' => $category_stickies,
+				'posts_per_page' => count( $category_stickies ),
+				'ignore_sticky_posts' => 1,
+				'orderby' => 'post__in'
+			) );
+
+			if ( $pinned ) {
+				$posts->posts = array_merge( $pinned, $posts->posts );
+				$posts->post_count += count( $pinned );
+			}
+		}
 
 		if ( $posts->have_posts() || ! empty( $loop['category']['show_empty'] ) )
 			include md_template( 'loop/category-post', true );
