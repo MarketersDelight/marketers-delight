@@ -23,6 +23,7 @@ if ( $show_full_content ) {
     wp_link_pages();
 
 }
+
 elseif ( $has_excerpt )
     echo md_excerpt( $loop );
 

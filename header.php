@@ -8,9 +8,7 @@
 
 <body <?php body_class(); ?>>
 
-<?php
-
-wp_body_open();
+<?php wp_body_open();
 
 md_hook_before_html();
 
@@ -19,8 +17,6 @@ if ( md_has_header() ) :
 	$mobile = md_setting( array( 'header', 'layout_mobile' ) );
 	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
 	$has_elements = md_has_header_elements();
-
-	md_hook_before_header();
 ?>
 
 <header class="<?php echo md_header_classes(); ?>">
@@ -28,6 +24,8 @@ if ( md_has_header() ) :
 	<?php md_hook_header_top(); ?>
 
 	<div class="inner">
+
+		<?php md_hook_before_header(); ?>
 
 		<div class="header-controls"><?php // Contains logo, mobile triggers
 
@@ -108,7 +106,7 @@ if ( md_has_header() ) :
 
 </header>
 
-<?php md_hook_after_header(); endif;
+<?php endif;
 
 if ( md_filter_template() !== false )
 	md_hook_before_content_box();

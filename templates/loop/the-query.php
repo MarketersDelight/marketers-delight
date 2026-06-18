@@ -1,6 +1,6 @@
 <?php
 
-$query = new WP_Query( $loop['query'] );
+$query = $loop['query'] instanceof WP_Query ? $loop['query'] : new WP_Query( $loop['query'] );
 
 if ( $query->have_posts() ) {
     echo '<div class="' . esc_attr( $loop_classes ) . '">';
@@ -13,7 +13,15 @@ if ( $query->have_posts() ) {
 
     echo '</div>';
 }
-else md_404();
+
+else {
+    $not_found = $args['not_found'] ?? null;
+
+    if ( is_callable( $not_found ) )
+        call_user_func( $not_found );
+    elseif ( $not_found )
+        echo $not_found;
+}
 
 wp_reset_postdata();
 

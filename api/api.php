@@ -24,6 +24,7 @@ class md_api {
 	public $singular;
 	protected static $sanitize;
 	protected static $design;
+	public $_args = array();
 	public $register = array();
 	public $_option = 'marketers_delight';
 
@@ -33,9 +34,10 @@ class md_api {
 	 * @since 4.0
 	 */
 
-	public function __construct( $id = null ) {
+	public function __construct( $id = null, $args = array() ) {
 
 		$this->_id = isset( $id ) ? $id : get_class( $this );
+		$this->_args = $args;
 
 		/**
 		 * Load subclass' pseudo-constructor, if it exists.
@@ -386,10 +388,22 @@ class md_api {
 		$sticky = md_get_sticky( $post_type );
 
 		if ( $sticky ) {
-			$wp->set( 'post__not_in', $sticky );
+			if ( $term_id && $taxonomy ) {
+				$term_sticky = array();
 
-			if ( ! get_query_var( 'paged' ) )
-				add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
+				foreach ( $sticky as $id )
+					if ( has_term( $term_id, $taxonomy, $id ) )
+						$term_sticky[] = $id;
+
+				$sticky = $term_sticky;
+			}
+
+			if ( $sticky ) {
+				$wp->set( 'post__not_in', $sticky );
+
+				if ( ! get_query_var( 'paged' ) )
+					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
+			}
 		}
 
 		// Set final query vars
@@ -461,6 +475,25 @@ class md_api {
 		remove_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10 );
 
 		$sticky = md_get_sticky( $this->post_type );
+
+		if ( empty( $sticky ) )
+			return $posts;
+
+		$taxonomy = $this->taxonomy;
+
+		if ( $query->is_tax && $taxonomy ) {
+			$queried = $query->get_queried_object();
+
+			if ( $queried instanceof WP_Term ) {
+				$term_sticky = array();
+
+				foreach ( $sticky as $id )
+					if ( has_term( $queried->term_id, $taxonomy, $id ) )
+						$term_sticky[] = $id;
+
+				$sticky = $term_sticky;
+			}
+		}
 
 		if ( empty( $sticky ) )
 			return $posts;

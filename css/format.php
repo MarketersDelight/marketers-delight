@@ -109,10 +109,11 @@ code, pre {
 
 .format ul { list-style: square; }
 
+.list-check,
 .the-content :is(ul, ol) { margin-inline-start: <?php echo $single; ?>px; }
 
-.format li {
-	margin-block-end: <?php echo $half; ?>px;
+.format li, .list-check li:not(:last-child) {
+	margin-block-end: <?php echo $third; ?>px;
 	position: relative;
 }
 
@@ -123,6 +124,7 @@ code, pre {
 
 .format .list { margin-inline-start: 0; }
 
+.list, .list-check,
 .format .list, .format [class*="list-"] { list-style: none; }
 
 .list-links li a,
@@ -137,8 +139,6 @@ code, pre {
 .list-links li a { display: block; }
 
 .list-links li:last-child a { border-block-end: 0; }
-
-.list-check { margin-inline-start: <?php echo $single; ?>px; }
 
 .list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
@@ -217,7 +217,7 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
 .slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: <?php echo $half; ?>px; }
 
-.slim ul, .slim ol { margin-inline-start: <?php echo $half; ?>px; }
+.slim :last-child { margin-block-end: 0; }
 
 .slim .entry-title, .slim .title-wrap { row-gap: <?php echo $small; ?>px; }
 
@@ -226,13 +226,6 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim .byline {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
-}
-
-@media (min-width: <?php echo $post_width; ?>px) {
-	.slim .title {
-		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
-	}
 }
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>

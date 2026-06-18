@@ -30,6 +30,8 @@
 
 .loop:not(.content):not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
+.loop.columns.slim { gap: <?php echo $half; ?>px; }
+
 /* BOX STYLE */
 
 .main:has(.box-style.loop) { background-color: <?php echo $colors['content']['body_color']; ?>; }
@@ -175,13 +177,18 @@
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.cover, .box-entry.full .item { padding: <?php echo $mid; ?>px; }
+	.box-entry.full .item { padding: <?php echo $mid; ?>px; }
+	.cover { padding-block: <?php echo $mid; ?>px; }
 	.compact .box-entry.full .post-title { padding-block-end: <?php echo $single; ?>px; }
-	.slim .cover { padding-inline: <?php echo $half; ?>px; }
+	.entry .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item:not(.post-title) .wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;
 		width: 100%;
+	}
+	.loop.slim .title {
+		font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
+		line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
 	}
 }
 
@@ -206,9 +213,5 @@
 
 @media (max-width: <?php echo $site_width; ?>px) {
 	.inner { padding-inline: <?php echo $half; ?>px; }
-	.cover .inner {
-		padding-inline: 0;
-		width: 100%;
-	}
 	.box-entry.loop-article.full .entry { margin-inline: -<?php echo $half; ?>px; }
 }

@@ -59,6 +59,7 @@ class md_accordion_widget extends WP_Widget {
 		// Set Term_Query args
 
 		$terms_args['taxonomy'] = $tax;
+		$terms_args['parent'] = 0;
 
 		if ( ! empty( $val['direction'] ) )
 			$terms_args['order'] = 'DESC';

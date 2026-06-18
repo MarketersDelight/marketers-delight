@@ -31,16 +31,6 @@
 
 .wide .byline + .lede, .row.full .byline + .lede { margin-block-start: <?php echo $single; ?>px; }
 
-.subtitle {
-	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['h5']['line_height']['desktop']; ?>px;
-}
-
-.columns .subtitle {
-	font-size: inherit;
-	line-height: inherit;
-}
-
 /* BYLINE */
 
 .byline {
@@ -81,19 +71,21 @@
 .cover {
 	background-position: center center;
 	background-size: cover;
-	padding: <?php echo $single; ?>px <?php echo $half; ?>px;
+	padding-block: <?php echo $single; ?>px;
 	position: relative;
 }
 
+.entry .cover { padding-inline: <?php echo $half; ?>px; }
+
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
-.cover, .cover :is(a, .byline, .title, .lede) { color: #fff; }
+.cover.text-white,
+.cover.text-white :is(a, .byline, .title, .lede) { color: #fff; }
 
-.cover .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
+.cover.text-white .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
 
-.cover.alt, .cover.alt a, .cover.alt .byline { color: <?php echo $colors['site']['text-main']; ?>; }
-
-.full-cover .page-title, .full-cover .main > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
+.full-cover .page-title,
+.full-cover .main > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
 
 /* QUERIES */
 

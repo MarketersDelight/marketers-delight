@@ -57,26 +57,36 @@ cookie: {
 		this.create( name, '', -1 );
 	}
 },
-tabs: function( parent ) {
-	var tabs = document.getElementsByClassName( 'md-tab' );
-	for ( var i = 0; i < tabs.length; i++ ) {
-		tabs[i].onclick = function( e ) {
-			var tabID = this.getAttribute( 'data-tab' ),
-				parentTabs = document.querySelectorAll( '#' + parent + ' .md-tab' ),
-				parentContent = document.querySelectorAll( '#' + parent + ' .md-tab-content' );
-			for ( var i = 0; i < parentTabs.length; i++ )
-				MD.removeClass( parentTabs[i], 'active' );
-			for ( var i = 0; i < parentContent.length; i++ )
-				MD.removeClass( parentContent[i], 'active' );
-			MD.addClass( document.getElementById( tabID ), 'active' );
-			MD.addClass( document.getElementById( tabID + '_tab' ), 'active' );
-		}
+tabs: function() {
+	var tabs = document.querySelectorAll( '.md-tabs' );
+	for ( var t = 0; t < tabs.length; t++ ) {
+		( function( tab ) {
+			var tabs = tab.querySelectorAll( '.md-tab' );
+			for ( var i = 0; i < tabs.length; i++ ) {
+				tabs[i].onclick = function( e ) {
+					e.preventDefault();
+					var allTabs = tab.querySelectorAll( '.md-tab' ),
+						allContent = tab.querySelectorAll( '.md-tab-content' );
+					for ( var j = 0; j < allTabs.length; j++ )
+						MD.removeClass( allTabs[j], 'active' );
+					for ( var k = 0; k < allContent.length; k++ )
+						MD.removeClass( allContent[k], 'active' );
+					MD.removeClassByPrefix( tab, 'has-' );
+					MD.addClass( this, 'active' );
+					MD.addClass( tab, 'has-' + this.getAttribute( 'data-md-tab' ) );
+					var content = tab.querySelector( '[data-md-tab-content="' + this.getAttribute( 'data-md-tab' ) + '"]' );
+					if ( content )
+						MD.addClass( content, 'active' );
+				};
+			}
+		} )( tabs[t] );
 	}
 },
 clipboard: function() {
 	var copy = document.getElementsByClassName( 'copy' );
 	for ( var i = 0; i < copy.length; i++ ) {
 		copy[i].onclick = function( e ) {
+			e.preventDefault();
 			var val = this.getAttribute( 'data-md-copy' );
 			navigator.clipboard.writeText( val );
 		}
@@ -221,235 +231,6 @@ if ( active >= 0 && tocItems[active] ) {
 		ticking = true;
 	}
 },
-floatingBars: {
-	init: function( floatingBars ) {
-		this.opened = this.showing = false;
-		this.data = floatingBars;
-		MD.floatingBars.open.events();
-		MD.floatingBars.close.events();
-	},
-	open: {
-		events: function() {
-			for ( var id in MD.floatingBars.data ) {
-				if ( MD.floatingBars.opened )
-					break;
-				MD.floatingBar = MD.floatingBars.data[id];
-				if ( MD.floatingBar.show === 'seconds' )
-					this.timer();
-				if ( MD.floatingBar.show === 'percent' )
-					this.percent();
-				MD.floatingBars.opened = MD.floatingBar.id;
-			}
-		},
-		show: function() {
-			var id = MD.floatingBar.id,
-				el = document.getElementById( id );
-			MD.removeClass( el, 'hide' );
-			MD.addClass( el, 'active' );
-			MD.floatingBars.showing = id;
-			if ( MD.hasClass( el, 'sticky' ) )
-				MD.sticky( '#' + id );
-			delete MD.floatingBars.data[id];
-			MD.floatingBars.close.events();
-		},
-		percent: function() {
-			window.onscroll = function() {
-				var pos = window.scrollY,
-					el = document.getElementById( MD.floatingBar.id );
-				if ( ! MD.hasClass( el, 'closed' ) ) {
-					window.requestAnimationFrame( function() {
-						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
-						if ( MD.floatingBar.delay <= percent )
-							MD.floatingBars.open.show();
-						else if ( MD.hasClass( el, 'active' ) )
-							MD.removeClass( el, 'active' );
-					});
-				}
-			}
-		},
-		timer: function( ) {
-			setTimeout( function() {
-				MD.floatingBars.open.show();
-			}, MD.floatingBar.delay * 1000 );
-		}
-	},
-	close: {
-		events: function() {
-			this.trigger();
-		},
-		trigger: function() {
-			var triggers = document.getElementsByClassName( 'bar-close' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
-					var bar_id = this.getAttribute( 'data-bar' ),
-						expires = this.getAttribute( 'data-bar-expires' ),
-						el = document.getElementById( bar_id );
-					MD.removeClass( el, 'active' );
-					MD.addClass( el, 'hide' );
-					MD.floatingBars.close.close( bar_id, expires );
-				}
-			}
-		},
-		close: function( bar_id, expires ) {
-			MD.addClass( document.getElementById( bar_id ), 'closed' );
-			if ( ! MD.cookie.get( bar_id ) && expires !== '0' )
-				MD.cookie.create( bar_id, true, expires );
-//			delete MD.floatingBars.data[bar_id];
-			delete MD.floatingBars.opened;
-			delete MD.floatingBars.showing;
-			MD.removeClass( document.getElementById( bar_id ), 'active' );
-			MD.floatingBars.open.events();
-		}
-	}
-},
-focusInputs: function( id ) {
-	var search = document.querySelector( '#' + id + ' .search-input' ),
-		name = document.querySelector( '#' + id + ' .form-input-name' ),
-		email = document.querySelector( '#' + id + ' .form-input-email' );
-	if ( search )
-		search.focus();
-	else if ( name )
-		name.focus();
-	else if ( email )
-		email.focus();
-},
-popups: {
-	init: function( popups ) {
-		this.opened = this.showing = false;
-		this.data = popups;
-		MD.popups.open.events();
-	},
-	open: {
-		events: function() {
-			this.triggers();
-			for ( var id in MD.popups.data ) {
-				if ( MD.popups.opened )
-					break;
-				MD.popup = MD.popups.data[id];
-				if ( MD.popup.show === 'seconds' )
-					this.timer();
-				else if ( MD.popup.show === 'percent' )
-					this.percent();
-				else if ( MD.popup.show === 'exit' )
-					this.exit();
-				MD.popups.opened = MD.popup.id;
-			}
-		},
-		triggers: function() {
-			var triggers = document.getElementsByClassName( 'popup-trigger' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
-					MD.popups.trigger = this.getAttribute( 'data-popup' );
-					MD.popups.open.show();
-					return false;
-				}
-			}
-		},
-		percent: function() {
-			var shown = false;
-			window.onscroll = function() {
-				if ( shown || MD.popups.trigger )
-					return;
-				var pos = window.scrollY,
-					el = document.getElementById( MD.popup.id );
-				if ( el !== null )
-					window.requestAnimationFrame( function() {
-						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
-						if ( MD.popup.delay <= percent ) {
-							shown = true;
-							MD.popups.open.show();
-						}
-					});
-			}
-		},
-		timer: function() {
-			setTimeout( function() {
-				if ( ! MD.popups.trigger )
-					MD.popups.open.show();
-			}, MD.popup.delay * 1000 );
-		},
-		exit: function() {
-			var shown = false;
-			window.document.onmousemove = function( e ) {
-				if ( shown || MD.popups.trigger )
-					return;
-				var scroll = window.pageYOffset || document.documentElement.scrollTop;
-				if ( ( e.pageY - scroll ) < 7 ) {
-					shown = true;
-					MD.popups.open.show();
-				}
-			}
-		},
-		show: function() {
-			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
-			MD.addClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
-			if ( MD.popups.showing && MD.popups.trigger )
-				MD.removeClass( document.getElementById( MD.popups.showing ), 'active' );
-			MD.addClass( document.getElementById( id ), 'active' );
-			MD.focusInputs( id );
-			MD.popups.showing = id;
-			if ( ! MD.popups.trigger )
-				delete MD.popups.data[MD.popup.id];
-			MD.popups.close.events();
-		}
-	},
-	close: {
-		events: function() {
-			this.trigger();
-			this.bg();
-			this.esc();
-		},
-		trigger: function() {
-			var triggers = document.getElementsByClassName( 'close' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
-					MD.popups.close.close();
-				}
-			}
-		},
-		bg: function() {
-			document.getElementById( 'popup_bg' ).onclick = function() {
-				MD.popups.close.close();
-			}
-		},
-		esc: function() {
-			window.document.onkeydown = function( e ) {
-				e = e || window.event;
-				if ( e.keyCode == 27 )
-					MD.popups.close.close();
-			};
-		},
-		close: function() {
-			MD.removeClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
-			if ( MD.popups.trigger ) {
-				var id = MD.popups.trigger;
-				delete MD.popups.trigger;
-			}
-			else {
-				if ( ! MD.popup )
-					return;
-				var id = MD.popup.id;
-				if ( MD.popup.cookieExp && ! MD.cookie.get( id ) )
-					MD.cookie.create( id, true, MD.popup.cookieExp );
-			}
-			delete MD.popups.opened;
-			delete MD.popups.showing;
-			MD.removeClass( document.getElementById( id ), 'active' );
-			MD.popups.toggleVideo( id );
-			MD.popups.open.events();
-		}
-	},
-	toggleVideo: function( id ) {
-		var iframe = document.querySelector( '#' + id + ' iframe' ),
-			video = document.querySelector( '#' + id + ' video' );
-	    if ( iframe !== null ) {
-	        var iframeSrc = iframe.src;
-	        iframe.src = iframeSrc;
-	    }
-	    if ( video !== null )
-	        video.pause();
-	}
-},
 like: function() {
 	var name = 'md_likes',
 		likes = document.getElementsByClassName( 'share-like' ),
@@ -516,6 +297,47 @@ like: function() {
 			} );
 		}
 	}
+},
+download: function( config ) {
+	MD.tabs();
+	MD.clipboard();
+	document.addEventListener( 'click', function( e ) {
+		var btn = e.target.closest( '[data-download-id]' );
+		if ( ! btn )
+			return;
+		var card = btn.closest( '.edd-download, li' );
+		if ( ! card )
+			return;
+		var counter = card.querySelector( '.byline-download' );
+		if ( ! counter )
+			return;
+		var count = MD.number( counter.textContent ) + 1,
+			id = btn.getAttribute( 'data-download-id' );
+		document.querySelectorAll( '[data-download-id="' + id + '"]' ).forEach( function( el ) {
+			var c = el.closest( '.edd-download, li' );
+			if ( c ) {
+				var n = c.querySelector( '.byline-download' );
+				if ( n )
+					n.textContent = count;
+			}
+		} );
+	} );
+	if ( ! config || ! config.nonce )
+		return;
+	var licenseSwitch = document.getElementById( 'license_switch' );
+	if ( ! licenseSwitch )
+		return;
+	licenseSwitch.onclick = function( e ) {
+		e.preventDefault();
+		this.classList.add( 'md-loading' );
+		var data = new FormData();
+		data.append( 'action', 'md_license_switch' );
+		data.append( 'nonce', config.nonce );
+		fetch( MDJS.ajaxurl, {
+			method: 'POST',
+			body: data
+		} ).then( function() { window.location.reload(); } );
+	};
 },
 footnotes: function() {
 	var footnotes = document.getElementsByClassName( 'footnote' );

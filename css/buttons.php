@@ -116,6 +116,7 @@ button:hover, input[type="submit"]:hover,
 
 .button.button-small {
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	gap: <?php echo $third; ?>px;
 	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
 }
 
@@ -137,8 +138,6 @@ button:hover, input[type="submit"]:hover,
 
 .button.pill { border-radius: 50px; }
 
-.button.width-full { justify-content: center; }
-
 .button-arrow { flex-direction: row; }
 
 .button.button-arrow:after {
@@ -152,5 +151,3 @@ button:hover, input[type="submit"]:hover,
 .button-arrow.down:after { content: '\e80e'; }
 
 .button-arrow.down:hover:after { transform: none; }
-
-.button-arrow.width-full:after { margin-left: auto; }

@@ -172,6 +172,10 @@ return array(
 		'unicode' => 'e832',
 		'label' => __( 'Loading', 'md' )
 	),
+	'lock' => array(
+		'unicode' => 'e918',
+		'label' => __( 'Lock', 'md' )
+	),
 	'mail-alt' => array(
 		'unicode' => 'e814',
 		'label' => __( 'Mail', 'md' )

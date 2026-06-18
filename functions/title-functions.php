@@ -130,6 +130,8 @@ function md_title( $context = 'post', $args = array() ) {
 
 		if ( ! empty( $cover['photo']['id'] ) )
 			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
+		elseif ( ! empty( $cover['bg_color'] ) )
+			$style['bg_color'] = $cover['bg_color'];
 	}
 	elseif ( $context == 'post' )
 		$classes[] = 'item';

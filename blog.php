@@ -97,7 +97,7 @@ class md_post extends md_api {
 			return $wp;
 
 		$taxonomy = $wp->is_category ? 'category' : 'post_tag';
-		$term_id = $wp->is_category ? (int) $wp->get( 'cat' ) : (int) $wp->get( 'tag_id' );
+		$term_id = $wp->is_category ? $wp->get( 'cat' ) : (int) $wp->get( 'tag_id' );
 
 		if ( $is_term && ! $term_id ) {
 			$slug = $wp->is_category ? basename( $wp->get( 'category_name' ) ) : $wp->get( 'tag' );
@@ -107,6 +107,29 @@ class md_post extends md_api {
 
 		if ( ! $is_term )
 			$taxonomy = '';
+
+		// Make accommodations to show sticky posts on category pages
+
+		$sticky = md_get_sticky( 'post' );
+
+		if ( $sticky ) {
+			if ( $term_id && $taxonomy ) {
+				$term_sticky = array();
+
+				foreach ( $sticky as $id )
+					if ( has_term( $term_id, $taxonomy, $id ) )
+						$term_sticky[] = $id;
+
+				$sticky = $term_sticky;
+			}
+
+			if ( $sticky ) {
+				$wp->set( 'post__not_in', $sticky );
+
+				if ( ! get_query_var( 'paged' ) )
+					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
+			}
+		}
 
 		$this->loop_query_vars( $wp, $taxonomy, $term_id );
 

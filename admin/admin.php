@@ -40,8 +40,8 @@ class md_admin {
 		include_once 'typography.php';
 		include_once 'design.php';
 		include_once 'layout.php';
-		include_once 'byline.php';
 		include_once 'loop.php';
+		include_once 'byline.php';
 		include_once 'logo.php';
 		include_once 'header.php';
 		include_once 'upgrade/dropin-upgrader.php';

@@ -17,6 +17,11 @@
 	z-index: 50;
 }
 
+.clickout {
+	position: relative;
+	z-index: 50;
+}
+
 .close {
 	background-color: transparent;
 	color: #ae2525;
@@ -113,27 +118,21 @@
 
 /* TABS */
 
-.md-tab { cursor: pointer; }
-
-.md-tab-content { display: none; }
-
-.md-tab-content.active { display: block; }
-
 .tabs {
 	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	margin-block-end: <?php echo $single; ?>px;
 }
 
 .tab {
+	align-items: center;
 	background-color: #f7f7f7;
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-width: 1px 1px 0;
 	border-radius: 5px 5px 0 0;
 	color: <?php echo $colors['site']['text-sec']; ?>;
 	cursor: pointer;
-	display: inline-block;
-	line-height: 1;
-	margin-inline-end: <?php echo $third; ?>px;
+	display: inline-flex;
+	gap: <?php echo $third; ?>px;
 	padding: <?php echo $half; ?>px;
 	text-decoration: none;
 }
@@ -150,7 +149,11 @@
 	margin-block-end: -1px;
 }
 
-.tab i { margin-inline-end: <?php echo $third; ?>px; }
+.md-tab { cursor: pointer; }
+
+.md-tab-content { display: none; }
+
+.md-tab-content.active { display: block; }
 
 /* ACCORDION */
 

@@ -16,6 +16,8 @@
 
 .italic { font-style: italic; }
 
+.body-font { font-family: <?php echo $font_family; ?>; }
+
 .h-font { font-family: <?php echo $h1_font_family; ?>; }
 
 .text-left { text-align: left; }
@@ -24,6 +26,8 @@
 
 .text-center, .has-text-align-center { text-align: center; }
 
+.line-height { line-height: 1; }
+
 .caps { text-transform: uppercase; }
 
 a.no-underline, .no-underline a { text-decoration: none; }
@@ -31,6 +35,11 @@ a.no-underline, .no-underline a { text-decoration: none; }
 .small, .text-sec {
 	font-size: 0.9em;
 	line-height: 1.5em;
+}
+
+.title .small {
+	font-size: 0.6em;
+	line-height: 1;
 }
 
 .text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
@@ -121,11 +130,12 @@ cite, .tiny {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
 	color: <?php echo $colors['site']['text-main']; ?>;
-	height: <?php echo $single + $small; ?>px;
-	width: <?php echo $single + $small; ?>px;
+	height: <?php echo $single; ?>px;
+	width: <?php echo $single; ?>px;
 }
 
 .square-icon, a.square-icon {
+	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	height: <?php echo $mid; ?>px;
 	width: <?php echo $mid; ?>px;
@@ -136,6 +146,13 @@ cite, .tiny {
 	height: <?php echo $mid + $small; ?>px;
 	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
 	width: <?php echo $mid + $small; ?>px;
+}
+
+.circle-icon.large, .square-icon.large {
+	flex: 1 0 <?php echo $double; ?>px;
+	height: <?php echo $double; ?>px;
+	font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
+	width: <?php echo $double; ?>px;
 }
 
 /* LAYOUT */
@@ -180,13 +197,13 @@ cite, .tiny {
 	width: 100%;
 }
 
-[class*="columns-"].slim { gap: <?php echo $half; ?>px; }
-
 .entry, .col {
 	min-width: 0;
 	position: relative;
 	width: 100%;
 }
+
+.col-full { grid-column: 1 / -1; }
 
 <?php for ( $g = 6; $g <= 6; $g++ ) : ?>
 .columns-<?php echo $g; ?> { grid-template-columns: repeat(<?php echo $g; ?>, 1fr); }
@@ -237,12 +254,12 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 
 /* GAPS */
 
-foreach ( array( 'half', 'single', 'mid', 'double' ) as $size )
+foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'double' ) as $size )
 	echo ".gap-$size, .columns-$size { gap: {$spacers[$size]}px; }\n";
 
 /* BLOCKS / PADDING */
 
-foreach ( array( 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size )
+foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size )
 	echo
 		".block-$size { padding: {$spacers[$size]}px; }\n".
 		".block-$size-tb { padding-block: {$spacers[$size]}px; }\n".

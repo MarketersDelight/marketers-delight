@@ -107,9 +107,10 @@ line-height: 30px;
 }
 /* LISTS */
 .editor-styles-wrapper ul { list-style: square; }
+.list-check,
 .the-content :is(ul, ol) { margin-inline-start: 32px; }
-.editor-styles-wrapper li {
-	margin-block-end: 16px;
+.editor-styles-wrapper li, .list-check li:not(:last-child) {
+	margin-block-end: 11px;
 	position: relative;
 }
 .editor-styles-wrapper ul ul {
@@ -117,6 +118,7 @@ line-height: 30px;
 	margin-inline-start: 16px;
 }
 .editor-styles-wrapper .list { margin-inline-start: 0; }
+.list, .list-check,
 .editor-styles-wrapper .list, .editor-styles-wrapper [class*="list-"] { list-style: none; }
 .list-links li a,
 .list li:not(:last-child),
@@ -127,7 +129,6 @@ line-height: 30px;
 .list-links li { margin-block-end: 0; }
 .list-links li a { display: block; }
 .list-links li:last-child a { border-block-end: 0; }
-.list-check { margin-inline-start: 32px; }
 .list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
 	border-radius: 50%;
@@ -189,18 +190,12 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim ul, .slim ol, .slim p, .slim hr,
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
 .slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: 16px; }
-.slim ul, .slim ol { margin-inline-start: 16px; }
+.slim :last-child { margin-block-end: 0; }
 .slim .entry-title, .slim .title-wrap { row-gap: 5px; }
 .slim .entry-title .wrap { column-gap: 16px; }
 .slim .byline {
 	font-size: 16px;
 	line-height: 28px;
-}
-@media (min-width: 672px) {
-	.slim .title {
-		font-size: 27px;
-		line-height: 38px;
-	}
 }
 .editor-styles-wrapper *:last-child { margin-block-end: 0; }
 /*------------------------------*\
@@ -212,15 +207,21 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .normal { font-weight: 400; }
 .bold { font-weight: 500; }
 .italic { font-style: italic; }
+.body-font { font-family: 'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif; }
 .h-font { font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif; }
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 .text-center, .has-text-align-center { text-align: center; }
+.line-height { line-height: 1; }
 .caps { text-transform: uppercase; }
 a.no-underline, .no-underline a { text-decoration: none; }
 .small, .text-sec {
 	font-size: 0.9em;
 	line-height: 1.5em;
+}
+.title .small {
+	font-size: 0.6em;
+	line-height: 1;
 }
 .text-sec { color: #777777; }
 cite, .tiny {
@@ -288,10 +289,11 @@ cite, .tiny {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
 	color: #5A5A5A;
-	height: 37px;
-	width: 37px;
+	height: 32px;
+	width: 32px;
 }
 .square-icon, a.square-icon {
+	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	height: 48px;
 	width: 48px;
@@ -301,6 +303,12 @@ cite, .tiny {
 	height: 53px;
 	font-size: 27px;
 	width: 53px;
+}
+.circle-icon.large, .square-icon.large {
+	flex: 1 0 64px;
+	height: 64px;
+	font-size: 38px;
+	width: 64px;
 }
 /* LAYOUT */
 .fl {
@@ -327,12 +335,12 @@ cite, .tiny {
 	gap: 32px;
 	width: 100%;
 }
-[class*="columns-"].slim { gap: 16px; }
 .entry, .col {
 	min-width: 0;
 	position: relative;
 	width: 100%;
 }
+.col-full { grid-column: 1 / -1; }
 .columns-6 { grid-template-columns: repeat(6, 1fr); }
 @media all and (min-width: 600px) {
 		.columns-3 { grid-template-columns: repeat(2, 1fr); }
@@ -371,10 +379,22 @@ cite, .tiny {
 .mr-half { margin-inline-end: 16px; }
 .mr-third { margin-inline-end: 11px; }
 .mr-small { margin-inline-end: 5px; }
+.gap-small, .columns-small { gap: 5px; }
+.gap-third, .columns-third { gap: 11px; }
 .gap-half, .columns-half { gap: 16px; }
 .gap-single, .columns-single { gap: 32px; }
 .gap-mid, .columns-mid { gap: 48px; }
 .gap-double, .columns-double { gap: 64px; }
+.block-small { padding: 5px; }
+.block-small-tb { padding-block: 5px; }
+.block-small-lr { padding-inline: 5px; }
+.block-small-top { padding-block-start: 5px; }
+.block-small-bot { padding-block-end: 5px; }
+.block-third { padding: 11px; }
+.block-third-tb { padding-block: 11px; }
+.block-third-lr { padding-inline: 11px; }
+.block-third-top { padding-block-start: 11px; }
+.block-third-bot { padding-block-end: 11px; }
 .block-half { padding: 16px; }
 .block-half-tb { padding-block: 16px; }
 .block-half-lr { padding-inline: 16px; }

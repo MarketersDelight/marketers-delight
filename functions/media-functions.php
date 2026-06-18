@@ -247,11 +247,11 @@ function md_cover_classes( $context = 'post' ) {
 
 	$classes[] = 'cover';
 
+	if ( empty( $cover['display']['alternate'] ) )
+		$classes[] = 'text-white';
+
 	if ( $context == 'page' && $cover['position'] == 'headline_cover' )
 		$classes[] = 'inner';
-
-	if ( ! empty( $cover['display']['alternate'] ) )
-		$classes[] = 'alt';
 
 	if ( ! empty( $cover['display']['bg_repeat'] ) )
 		$classes[] = 'repeat';
@@ -290,7 +290,7 @@ function md_overlay( $context = 'post' ) {
 	$style = array();
 	$cover = md_cover( $context );
 
-	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_overlay'] ) )
+	if ( empty( $cover['photo'] ) || empty( $cover['position'] ) || ! empty( $cover['display']['disable_overlay'] ) )
 		return;
 
 	if ( ! empty( $cover['bg_color'] ) )

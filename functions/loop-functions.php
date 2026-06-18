@@ -94,7 +94,7 @@ function md_loop_classes( $loop = array() ) {
 	$post_type = ! empty( $loop['post_type'] ) ? $loop['post_type'] : md_get_post_type();
 	$post_type = str_replace( '_', '-', $post_type );
 	$style = $loop['style'] ?? md_loop_style();
-	$target = $loop['style_target'] ?? 'entry';
+	$target = $loop['style_target'];
 
 	// Loop classes
 
@@ -278,7 +278,9 @@ function md_get_loop( $args = array() ) {
 
 		if ( ! empty( $args['post_type'] ) )
 			$key = $args['post_type'];
-		elseif ( ! empty( $args['query']['post_type'] ) )
+		elseif ( $args['query'] instanceof WP_Query && ! empty( $args['query']->query['post_type'] ) )
+			$key = $args['query']->query['post_type'];
+		elseif ( is_array( $args['query'] ) && ! empty( $args['query']['post_type'] ) )
 			$key = $args['query']['post_type'];
 
 		if ( $key )
@@ -362,7 +364,16 @@ function md_get_loop( $args = array() ) {
 		$loop['is_slim'] = true;
 
 	$loops = md_loops();
-	$loop['style_target'] = ! empty( $loops[$loop['loop']]['style_target'] ) ? $loops[$loop['loop']]['style_target'] : 'entry';
+
+	if ( ! empty( $loops[$loop['loop']]['style_target'] ) )
+		$loop['style_target'] = $loops[$loop['loop']]['style_target'];
+	elseif ( $loop['loop_type'] == 'category' )
+		$loop['style_target'] = 'group';
+	else
+		$loop['style_target'] = 'entry';
+
+	if ( ! empty( $loops[$loop['loop']]['args'] ) )
+		$loop['template'] = $loops[$loop['loop']]['args'];
 
 	$classes = md_loop_classes( $loop );
 	$loop['loop_classes'] = $classes['loop'];
@@ -371,7 +382,7 @@ function md_get_loop( $args = array() ) {
 
 	// A manual query might want to inherit some settings
 
-	if ( ! empty( $loop['query'] ) )
+	if ( ! empty( $loop['query'] ) && is_array( $loop['query'] ) )
 		foreach ( array( 'posts_per_page', 'orderby', 'order' ) as $key )
 			if ( empty( $loop['query'][$key] ) && ! empty( $loop[$key] ) )
 				$loop['query'][$key] = $loop[$key];
