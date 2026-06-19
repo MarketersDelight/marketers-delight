@@ -97,9 +97,9 @@
 					'title' => __( 'Header Aside', 'md' ),
 					'description' => __( 'A secondary content area for the header area.', 'md' ),
 					'tab' => 'header'
-				),
+				)
 			),
-			'elements' => array(
+			'elements' => apply_filters( 'md_header_builder_elements', array(
 				'link' => array(
 					'title' => __( 'Link', 'md' ),
 					'subtitle' => true,
@@ -119,7 +119,7 @@
 					'icon' => 'menu',
 					'callback' => array( $this->fields, 'builder_menu' )
 				)
-			)
+			) )
 		) ); ?>
 
 	<?php $this->fields->save(); ?>

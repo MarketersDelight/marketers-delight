@@ -528,6 +528,7 @@ function md_get_builder( $id, $type = null, $key = null ) {
 
 	if ( $rows ) {
 		$builder['fields'] = $rows;
+		$elements = apply_filters( "md_{$id}_builder_elements", array() );
 
 		foreach ( $rows as $row_id => $fields ) {
 			if ( empty( $fields['builder_type'] ) || ! isset( $fields['builder_area'] ) )
@@ -535,8 +536,12 @@ function md_get_builder( $id, $type = null, $key = null ) {
 
 			$row_type = $fields['builder_type'];
 			$row_area = $fields['builder_area'];
+			$item = array( 'type' => $row_type, 'id' => $row_id );
 
-			$builder['data'][$row_area][] = array( 'type' => $row_type, 'id' => $row_id );
+			if ( ! empty( $elements[$row_type]['render'] ) )
+				$item['render'] = $elements[$row_type]['render'];
+
+			$builder['data'][$row_area][] = $item;
 			$builder['elements'][$row_type][] = $row_id;
 			$builder['locations'][$row_id] = $row_area;
 		}

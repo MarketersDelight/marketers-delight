@@ -298,6 +298,19 @@ like: function() {
 		}
 	}
 },
+beacon_menu: function() {
+	document.querySelectorAll( '.beacon-open' ).forEach( function( trigger ) {
+		trigger.addEventListener( 'click', function() {
+			var wrap = this.closest( '[data-md-beacon], [data-md-beacon-target]' );
+			var id = wrap && wrap.dataset.mdBeaconTarget;
+			var menu = id
+				? document.querySelector( '[data-md-beacon="' + id + '"]' )
+				: this.closest( '.beacon-menu' );
+			if ( menu ) MD.toggleClass( menu, 'beacon-toggle' );
+			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
+		} );
+	} );
+},
 download: function( config ) {
 	MD.tabs();
 	MD.clipboard();

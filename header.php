@@ -86,7 +86,10 @@ if ( md_has_header() ) :
 						$field['layout'] = $layout;
 						$field['id'] = $id;
 
-						call_user_func( "md_$type", $field );
+						if ( ! empty( $items['render'] ) )
+							call_user_func( $items['render'], $field );
+						else
+							call_user_func( "md_$type", $field );
 					}
 				}
 

@@ -27,6 +27,13 @@ class md_header extends md_api {
 				'type' => 'select',
 				'options' => $menus['ids']
 			),
+
+
+			'button_text' => array( 'type' => 'text' ),
+			'button_url' => array( 'type' => 'url' ),
+
+
+
 			'toggle' => array(
 				'type' => 'checkbox',
 				'options' => array( 'search' )

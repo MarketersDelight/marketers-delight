@@ -53,7 +53,7 @@
 					'default' => $group
 				) );
 
-				call_user_func( $fields['callback'], $group, $type );
+				call_user_func( $fields['callback'], $group, $type, $this );
 			?>
 		</div>
 
