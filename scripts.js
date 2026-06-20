@@ -97,8 +97,10 @@ toggle: function() {
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
 			var toggle = this.getAttribute( 'data-toggle' ),
-				parent = this.closest( '.' + toggle ),
+				target = this.getAttribute( 'data-toggle-target' ),
+				parent = target ? document.querySelector( target ) : this.closest( '.' + toggle ),
 				className = 'toggle-' + toggle;
+			if ( ! parent ) return;
 			if ( ! parent.classList.contains( className ) ) {
 				var isOpen = document.querySelectorAll( '.' + className );
 				for ( var j = 0; j < isOpen.length; j++ )
@@ -298,19 +300,6 @@ like: function() {
 		}
 	}
 },
-beacon_menu: function() {
-	document.querySelectorAll( '.beacon-open' ).forEach( function( trigger ) {
-		trigger.addEventListener( 'click', function() {
-			var wrap = this.closest( '[data-md-beacon], [data-md-beacon-target]' );
-			var id = wrap && wrap.dataset.mdBeaconTarget;
-			var menu = id
-				? document.querySelector( '[data-md-beacon="' + id + '"]' )
-				: this.closest( '.beacon-menu' );
-			if ( menu ) MD.toggleClass( menu, 'beacon-toggle' );
-			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
-		} );
-	} );
-},
 download: function( config ) {
 	MD.tabs();
 	MD.clipboard();
@@ -335,6 +324,27 @@ download: function( config ) {
 			}
 		} );
 	} );
+	if ( config.cart !== undefined ) {
+		document.querySelectorAll( '.beacon-avatar' ).forEach( function( avatar ) {
+			var badge = document.createElement( 'a' );
+			badge.href = config.checkout;
+			badge.className = 'beacon-cart-count';
+			badge.textContent = config.cart;
+			badge.hidden = config.cart < 1;
+			avatar.appendChild( badge );
+		} );
+		var tracker = document.createElement( 'span' );
+		tracker.className = 'edd-cart-quantity';
+		tracker.hidden = true;
+		document.body.appendChild( tracker );
+		new MutationObserver( function() {
+			var qty = parseInt( tracker.textContent, 10 ) || 0;
+			document.querySelectorAll( '.beacon-cart-count' ).forEach( function( badge ) {
+				badge.textContent = qty;
+				badge.hidden = qty < 1;
+			} );
+		} ).observe( tracker, { childList: true, characterData: true, subtree: true } );
+	}
 	if ( ! config || ! config.nonce )
 		return;
 	var licenseSwitch = document.getElementById( 'license_switch' );

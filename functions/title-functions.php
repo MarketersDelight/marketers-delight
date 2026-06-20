@@ -261,7 +261,7 @@ function md_get_link( $fields, $p = '' ) {
 		)
 	) );
 
-	if ( ( $fields['user'] == 'logged_out' && is_user_logged_in() ) || ( $fields['user'] == 'logged_in' && ! is_user_logged_in() ) )
+	if ( ! md_check_condition( $fields['user'] ) )
 		return;
 
 	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) )

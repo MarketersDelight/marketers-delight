@@ -241,22 +241,52 @@ function md_scroller_nav( $args = array() ) {
 }
 
 /**
- * Get a list of Sticky posts by post type.
+ * Check visibility conditions applied to an element and show/hide.
  *
  * @since 6.0
  */
 
-function md_get_sticky( $post_type = null ) {
-	if ( empty( $post_type ) )
-		$post_type = get_post_type();
+function md_check_condition( $values ) {
+	if ( empty( $values ) )
+		return true;
 
-	$sticky = array();
+	$registered = apply_filters( 'md_visibility_conditions', array(
+		'logged_in' => array( 'check' => function() { return is_user_logged_in(); } ),
+		'logged_out' => array( 'check' => function() { return ! is_user_logged_in(); } )
+	) );
 
-	foreach ( get_option( 'sticky_posts', array() ) as $id )
-		if ( $post_type === get_post_type( $id ) )
-			$sticky[] = $id;
+	foreach ( $values as $key => $selected ) {
+		if ( ! $selected )
+			continue;
 
-	return $sticky;
+		if ( isset( $registered[$key]['check'] ) && ! call_user_func( $registered[$key]['check'] ) )
+			return false;
+	}
+
+	return true;
+}
+
+/**
+ * Some visibility conditions are HTML class based, and are compiled here.
+ *
+ * @since 6.0
+ */
+
+function md_get_visibility_classes( $values ) {
+	if ( empty( $values ) )
+		return array();
+
+	$classes = array();
+	$registered = apply_filters( 'md_visibility_conditions', array(
+		'desktop' => array( 'class' => 'show-desktop' ),
+		'mobile' => array( 'class' => 'show-mobile' )
+	) );
+
+	foreach ( $values as $key => $selected )
+		if ( $selected && isset( $registered[$key]['class'] ) )
+			$classes[] = $registered[$key]['class'];
+
+	return $classes;
 }
 
 /**

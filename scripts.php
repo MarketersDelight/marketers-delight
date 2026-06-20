@@ -116,8 +116,10 @@ toggle: function() {
 	for ( var i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
 			var toggle = this.getAttribute( 'data-toggle' ),
-				parent = this.closest( '.' + toggle ),
+				target = this.getAttribute( 'data-toggle-target' ),
+				parent = target ? document.querySelector( target ) : this.closest( '.' + toggle ),
 				className = 'toggle-' + toggle;
+			if ( ! parent ) return;
 			if ( ! parent.classList.contains( className ) ) {
 				var isOpen = document.querySelectorAll( '.' + className );
 				for ( var j = 0; j < isOpen.length; j++ )

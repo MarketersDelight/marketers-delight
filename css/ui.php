@@ -85,36 +85,57 @@
 /* TOOLTIP */
 
 .tooltip {
-	background-color: rgba(0, 0, 0, 0.8);
-	border-radius: 5px;
+	align-items: center;
+	background-color: rgba(0, 0, 0, 0.75);
+	border-radius: 8px;
 	color: #fff;
 	cursor: default;
 	display: none;
-	font-size: 14px;
-	line-height: 21px;
-	margin-inline-start: -80px;
+	font-size: 0.75em;
+	gap: <?php echo $third; ?>px;
+	line-height: 1;
 	padding: <?php echo $third; ?>px;
 	position: absolute;
-		inset-inline-start: 50%;
-		inset-block-start: -40px;
 	text-align: center;
 	width: 160px;
 }
 
 .tooltip:after {
-	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
 	border-style: solid;
 	border-width: 5px;
 	content: '';
-	margin-inline-start: -5px;
 	position: absolute;
-		inset-inline-start: 50%;
-		inset-block-start: 100%;
+}
+
+.tooltip-center {
+	inset-block-end: calc(100% + 8px);
+	inset-inline-start: 50%;
+	transform: translateX(-50%);
+}
+
+.tooltip-center:after {
+	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+	inset-block-start: 100%;
+	inset-inline-start: 50%;
+	transform: translateX(-50%);
+}
+
+.tooltip-left {
+	inset-block-start: 50%;
+	inset-inline-end: calc(100% + 8px);
+	transform: translateY(-50%);
+}
+
+.tooltip-left:after {
+	border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
+	inset-block-start: 50%;
+	inset-inline-start: 100%;
+	transform: translateY(-50%);
 }
 
 .tooltip-parent { position: relative; }
 
-.tooltip-parent:hover .tooltip { display: block; }
+.tooltip-parent:hover .tooltip { display: inline-flex; }
 
 /* TABS */
 

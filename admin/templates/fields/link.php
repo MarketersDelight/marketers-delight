@@ -152,30 +152,8 @@ $classes = join( ' ', $classes );
 
 	</div>
 
-	<div class="columns-3 columns-single">
-		<div class="col">
-			<?php $this->field( $fields['user']['field'], array(
-				'type' => 'select',
-				'label' => __( 'Show to...', 'md' ),
-				'empty_label' => __( 'All visitors', 'md' ),
-				'options' => array(
-					'logged_in' => __( 'Logged in users only', 'md' ),
-					'logged_out' => __( 'Logged out users only', 'md' ),
-				)
-			) ); ?>
-		</div>
-		<div class="col">
-			<?php $this->field( $fields['display']['field'], array(
-				'type' => 'select',
-				'label' => __( 'Visibility', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
-				'empty_label' => __( 'Always show', 'md' ),
-				'options' => array(
-					'desktop' => __( 'Show on desktop only', 'md' ),
-					'mobile' => __( 'Show on mobile only', 'md' )
-				)
-			) ); ?>
-		</div>
-	</div>
+	<hr class="md-sep-small" />
+
+	<?php $this->visibility_condition( $fields['user']['field'], $fields['display']['field'] ); ?>
 
 </div>

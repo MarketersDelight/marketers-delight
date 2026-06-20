@@ -57,8 +57,8 @@ if ( $fields['toggle']['hide_label_mobile'] )
 
 $attrs .= md_style( $styles );
 
-if ( $fields['display'] )
-	$classes[] = 'show-' . $fields['display'];
+foreach ( md_get_visibility_classes( $fields['display'] ) as $class )
+	$classes[] = $class;
 
 if ( $fields['icon'] )
 	$classes[] = 'has-icon';

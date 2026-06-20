@@ -589,6 +589,25 @@ function md_optins_locations( $sort = null ) {
 }
 
 /**
+ * Get a list of Sticky posts by post type.
+ *
+ * @since 6.0
+ */
+
+function md_get_sticky( $post_type = null ) {
+	if ( empty( $post_type ) )
+		$post_type = get_post_type();
+
+	$sticky = array();
+
+	foreach ( get_option( 'sticky_posts', array() ) as $id )
+		if ( $post_type === get_post_type( $id ) )
+			$sticky[] = $id;
+
+	return $sticky;
+}
+
+/**
  * Get MD Popups data in various formats.
  *
  * @since 5.0
