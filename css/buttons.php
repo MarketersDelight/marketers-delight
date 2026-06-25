@@ -4,7 +4,7 @@
 	$BUTTONS
 \*------------------------------*/
 
-button, input[type="submit"]
+button, input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
@@ -15,7 +15,7 @@ button, input[type="submit"]
 .cta, .wp-block-buttons {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px;
+	gap: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
 	justify-content: center;
 }
 

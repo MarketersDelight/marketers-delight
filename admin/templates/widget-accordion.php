@@ -81,6 +81,11 @@
 </p>
 
 <p>
+    <input type="checkbox" id="<?php echo $this->get_field_id( 'settings_parent' ); ?>" name="<?php echo $this->get_field_name( 'settings' ); ?>[parent]" value="1"<?php checked( ! empty( $val['settings']['parent'] ), true ); ?> />
+    <label for="<?php echo $this->get_field_id( 'settings_parent' ); ?>"><?php echo __( 'Show parent categories only', 'md' ); ?></label>
+</p>
+
+<p>
     <input type="checkbox" id="<?php echo $this->get_field_id( 'settings_show_count' ); ?>" name="<?php echo $this->get_field_name( 'settings' ); ?>[show_count]" value="1"<?php checked( ! empty( $val['settings']['show_count'] ), true ); ?> />
     <label for="<?php echo $this->get_field_id( 'settings_show_count' ); ?>"><?php echo __( 'Show post count per category', 'md' ); ?></label>
 </p>
@@ -98,19 +103,19 @@
 
 <script>
 ( function( $ ) {
-    function syncAutoFilter( $checkbox ) {
-        var $scope = $checkbox.closest( '.widget-content, form' );
-        var checked = $checkbox.is( ':checked' );
-        $scope.find( '.md-auto-filter-taxonomy' ).toggle( checked );
-        $scope.find( '.md-auto-filter-manual' ).toggle( ! checked );
+    function syncAutoFilter( checkbox ) {
+        var scope = checkbox.closest( '.widget-content, form' ),
+            checked = checkbox.is( ':checked' );
+        scope.find( '.md-auto-filter-taxonomy' ).toggle( checked );
+        scope.find( '.md-auto-filter-manual' ).toggle( ! checked );
     }
 
     $( document )
         .on( 'change', '.md-auto-filter-toggle', function() {
             syncAutoFilter( $( this ) );
         } )
-        .on( 'widget-added widget-updated', function( e, $widget ) {
-            $widget.find( '.md-auto-filter-toggle' ).each( function() {
+        .on( 'widget-added widget-updated', function( e, widget ) {
+            widget.find( '.md-auto-filter-toggle' ).each( function() {
                 syncAutoFilter( $( this ) );
             } );
         } );

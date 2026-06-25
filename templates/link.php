@@ -57,7 +57,7 @@ if ( $fields['toggle']['hide_label_mobile'] )
 
 $attrs .= md_style( $styles );
 
-foreach ( md_get_visibility_classes( $fields['display'] ) as $class )
+foreach ( md_get_visibility_classes( $fields['visibility'] ) as $class )
 	$classes[] = $class;
 
 if ( $fields['icon'] )
@@ -77,7 +77,7 @@ $html =
 	"<$h{$attrs}>".
 	( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
 	( $has_wrap ? '<span class="link-wrap">' : '' ).
-	( $fields['name'] ? '<span class="link-name">' . wp_kses_data( $fields['name'] ) . '</span>' : '' ).
-	( $fields['subtitle'] ? '<span class="link-subtitle">' . wp_kses_data( $fields['subtitle'] ) . '</span>' : '' ).
+	( $fields['name'] ? '<span class="link-name">' . wp_kses_post( $fields['name'] ) . '</span>' : '' ).
+	( $fields['subtitle'] ? '<span class="link-subtitle">' . wp_kses_post( $fields['subtitle'] ) . '</span>' : '' ).
 	( $has_wrap ? '</span>' : '' ).
 	"</$h>";

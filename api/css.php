@@ -8,6 +8,7 @@
 class md_css {
 
 	public $files;
+	public int $site_width;
 
 	/**
 	 * Set properties.
@@ -344,7 +345,7 @@ class md_css {
 		$logo = $values['logo'];
 		$sidebar = $values['sidebar'];
 
-		$site_width = $values['colors']['width']['site'];
+		$site_width = $this->site_width = $values['colors']['width']['site'];
 		$site_width_wide = $values['colors']['width']['site_wide'];
 		$content_width = $values['colors']['width']['content_width'];
 		$post_width = $values['colors']['width']['post'];
@@ -366,6 +367,16 @@ class md_css {
 			'h5' => 'h5, .h5',
 			'h6' => 'h6, .h6'
 		);
+		$heading_sizes = array(
+			'huge' => '.huge-size',
+			'h1'   => '.h1-size',
+			'h2'   => '.h2-size',
+			'h3'   => '.h3-size',
+			'h4'   => '.h4-size',
+			'h5'   => '.h5-size',
+			'h6'   => '.h6-size'
+		);
+
 		$heading_selectors = array_values( $headings );
 		$heading_selectors[] = '.wp-block-heading';
 		$heading_selectors = join( ', ', $heading_selectors );
@@ -432,6 +443,11 @@ class md_css {
 		// Glyph rules always travel with the font-icons @font-face.
 		if ( isset( $this->files[$file]['templates']['font-icons'] ) )
 			$this->icons_css();
+	}
+
+	public function fluid( $desktop, $mobile ) {
+		if ( empty( $mobile ) || $mobile >= $desktop ) return "{$desktop}px";
+		return 'clamp(' . $mobile . 'px, ' . round( $desktop / $this->site_width * 100, 2 ) . 'vw, ' . $desktop . 'px)';
 	}
 
 }

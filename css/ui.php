@@ -198,14 +198,31 @@
 
 [open] > .accordion-title:after { content: '\e817'; }
 
-.panel .accordion-item:first-child .accordion-title { padding-block-start: 0; }
-
 .accordion-label { flex: 1; }
 
 .accordion-item .menu-item { margin-block-end: 0; }
 
+.accordion-content.small .menu-item a {
+	padding-block: <?php echo $third; ?>px;
+}
+
+.accordion-title:hover,
 .accordion-item .menu-item:hover a,
 .accordion-item .current-menu-item a { background-color: rgba(0, 0, 0, 0.03); }
+
+.accordion-nested .accordion-title {
+	font-size: inherit;
+	line-height: inherit;
+}
+
+.accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) {
+	padding-left: <?php echo $single; ?>px;
+}
+
+.accordion-label-icon {
+	color: <?php echo $colors['site']['text-sec']; ?>;
+	margin-inline-end: <?php echo $third; ?>px;
+}
 
 /* DISPLAYS */
 

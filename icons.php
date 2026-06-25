@@ -102,6 +102,10 @@ return array(
 		'label' => __( 'Facebook', 'md' ),
 		'classes' => array( '.md-icon-facebook-squared' )
 	),
+	'file' => array(
+		'unicode' => 'e91a',
+		'label' => __( 'File', 'md' )
+	),
 	'filter' => array(
 		'unicode' => 'e90f',
 		'label' => __( 'Filter', 'md' )
@@ -109,6 +113,10 @@ return array(
 	'font' => array(
 		'unicode' => 'e90b',
 		'label' => __( 'Font', 'md' )
+	),
+	'folder' => array(
+		'unicode' => 'e919',
+		'label' => __( 'Folder', 'md' )
 	),
 	'forum' => array(
 		'unicode' => 'e902',
@@ -197,6 +205,7 @@ return array(
 		'label' => __( 'OK', 'md' ),
 		'classes' => array( '.md-icon-ok-circled', '.list-check li' )
 	),
+
 	'pencil' => array(
 		'unicode' => 'e80d',
 		'label' => __( 'Pencil', 'md' )

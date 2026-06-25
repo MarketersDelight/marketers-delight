@@ -26,7 +26,7 @@
 
 .text-center, .has-text-align-center { text-align: center; }
 
-.line-height { line-height: 1; }
+.lh1 { line-height: 1; }
 
 .caps { text-transform: uppercase; }
 
@@ -121,6 +121,7 @@ cite, .tiny {
 .circle-icon, .square-icon {
 	align-items: center;
 	display: inline-flex;
+	flex-shrink: 0;
 	justify-content: center;
 	line-height: 1;
 	position: relative;

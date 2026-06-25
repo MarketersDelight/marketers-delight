@@ -250,8 +250,7 @@ function md_get_link( $fields, $p = '' ) {
 		'phone' => '',
 		'size' => '',
 		'color' => '',
-		'display' => '',
-		'user' => '',
+		'visibility' => array(),
 		'popup' => '',
 		'classes' => '',
 		'button_style' => array(),
@@ -261,7 +260,7 @@ function md_get_link( $fields, $p = '' ) {
 		)
 	) );
 
-	if ( ! md_check_condition( $fields['user'] ) )
+	if ( ! md_check_condition( $fields['visibility'] ) )
 		return;
 
 	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) )

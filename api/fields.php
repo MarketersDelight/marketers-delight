@@ -351,52 +351,18 @@ class md_fields {
 	 * @since 6.0
 	 */
 
-	public function visibility_condition( $condition, $visibility ) {
-		$condition_options = $visibility_options = array();
-		$registered = apply_filters( 'md_visibility_conditions', array(
-			'logged_in' => array(
-				'label' => __( 'Logged in users only', 'md' ),
-				'check' => function() { return is_user_logged_in(); }
-			),
-			'logged_out' => array(
-				'label' => __( 'Logged out users only', 'md' ),
-				'check' => function() { return ! is_user_logged_in(); }
-			),
-			'desktop' => array(
-				'label' => __( 'Show on desktop only', 'md' ),
-				'class' => 'show-desktop'
-			),
-			'mobile' => array(
-				'label' => __( 'Show on mobile only', 'md' ),
-				'class' => 'show-mobile'
-			)
+	public function visibility_condition( $field ) {
+		$options = array();
+
+		foreach ( md_visibility_conditions() as $key => $item )
+			$options[$key] = $item['label'];
+
+		$this->field( $field, array(
+			'type' => 'checkbox',
+			'multi' => true,
+			'label' => __( 'Visibility', 'md' ),
+			'options' => $options
 		) );
-
-		foreach ( $registered as $key => $item ) {
-			if ( isset( $item['check'] ) )
-				$condition_options[$key] = $item['label'];
-
-			if ( isset( $item['class'] ) )
-				$visibility_options[$key] = $item['label'];
-		}
-
-		?><div class="columns-3 columns-single">
-			<div class="col">
-				<?php $this->field( $condition, array(
-					'type' => 'checkbox',
-					'label' => __( 'Show to...', 'md' ),
-					'options' => $condition_options
-				) ); ?>
-			</div>
-			<div class="col">
-				<?php $this->field( $visibility, array(
-					'type' => 'checkbox',
-					'label' => __( 'Visibility', 'md' ),
-					'wrap_classes' => 'md-sep-micro',
-					'options' => $visibility_options
-				) ); ?>
-			</div>
-		</div><?php
 	}
 
 	/**

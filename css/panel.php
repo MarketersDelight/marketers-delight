@@ -20,7 +20,9 @@
 
 /* WIDGETS */
 
-.panel .accordion { margin-inline: -<?php echo $half; ?>px; }
+.panel .widget_md_accordion_widget:first-child { margin-block-start: -<?php echo $single; ?>px; }
+
+.panel .widget > .accordion { margin-inline: -<?php echo $half; ?>px; }
 
 /* TRIGGERS */
 

@@ -4,12 +4,12 @@ echo "<header class=\"$context-title entry-title " . esc_attr( $classes ) . "\"$
 
 md_overlay( $context );
 
+do_action( "md_hook_{$context}_title_top" );
+
 echo $has_header_cover ? '<div class="inner">' : '';
 
 if ( $context == 'page' )
 	md_featured_media( $context, array( 'show_image' => array( 'above_headline' ) ) );
-
-do_action( "md_hook_{$context}_title_top" );
 
 // If media position is set to align directly with the title
 
@@ -63,8 +63,8 @@ else {
 
 }
 
-do_action( "md_hook_{$context}_title_bottom" );
-
 echo $has_header_cover ? '</div>' : '';
+
+do_action( "md_hook_{$context}_title_bottom" );
 
 echo '</header>';

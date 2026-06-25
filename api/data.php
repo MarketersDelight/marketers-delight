@@ -92,45 +92,9 @@ class md_fields_data {
 	 */
 
 	public function visibility_condition() {
-		$conditions = $visibility = array();
-		$registered = apply_filters( 'md_visibility_conditions', array(
-			'logged_in' => array(
-				'label' => __( 'Logged in users only', 'md' ),
-				'check' => function() {
-					return is_user_logged_in();
-				} ),
-			'logged_out' => array(
-				'label' => __( 'Logged out users only', 'md' ),
-				'check' => function() {
-					return ! is_user_logged_in();
-				} ),
-			'desktop' => array(
-				'label' => __( 'Show on desktop only', 'md' ),
-				'class' => 'show-desktop'
-			),
-			'mobile' => array(
-				'label' => __( 'Show on mobile only', 'md' ),
-				'class' => 'show-mobile'
-			)
-		) );
-
-		foreach ( $registered as $key => $item ) {
-			if ( isset( $item['check'] ) )
-				$conditions[] = $key;
-
-			if ( isset( $item['class'] ) )
-				$visibility[] = $key;
-		}
-
 		return array(
-			'condition' => array(
-				'type' => 'checkbox',
-				'options' => $conditions
-			),
-			'visibility' => array(
-				'type' => 'checkbox',
-				'options' => $visibility
-			)
+			'type' => 'checkbox',
+			'options' => array_keys( md_visibility_conditions() )
 		);
 	}
 
@@ -142,11 +106,10 @@ class md_fields_data {
 
 	public function links( $args = array() ) {
 		$group = isset( $args['group'] ) ? $args['group'] : array();
-		$vc    = $this->visibility_condition();
 		$fields = array(
-			'display' => array(
-				'field' => 'display',
-				'save'  => $vc['visibility']
+			'visibility' => array(
+				'field' => 'visibility',
+				'save'  => $this->visibility_condition()
 			),
 			'name' => array(
 				'field' => 'name',
@@ -228,10 +191,6 @@ class md_fields_data {
 					'options' => array( 'outline', 'frame' )
 				)
 			),
-			'user' => array(
-				'field' => 'user',
-				'save'  => $vc['condition']
-			)
 		);
 
 		if ( $group )

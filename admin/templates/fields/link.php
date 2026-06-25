@@ -152,8 +152,6 @@ $classes = join( ' ', $classes );
 
 	</div>
 
-	<hr class="md-sep-small" />
-
-	<?php $this->visibility_condition( $fields['user']['field'], $fields['display']['field'] ); ?>
+	<?php $this->visibility_condition( $fields['visibility']['field'] ); ?>
 
 </div>

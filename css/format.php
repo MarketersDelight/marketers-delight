@@ -63,14 +63,27 @@ code, pre {
 
 /* HEADINGS */
 
-<?php foreach ( $headings as $attribute => $selector ) {
-	echo "$selector {".
-		'color: ' . $colors['site']['headline'] . ";\n".
-		'font-family: ' . ( ! empty( $typography[$attribute]['font_family'] ) ? $typography[$attribute]['font_family'] : $h1_font_family ) . ";\n".
-		'font-size: ' . $typography[$attribute]['font_size']['desktop'] . "px;\n".
-		'font-weight: ' . ( ! empty( $typography[$attribute]['font_weight'] ) ? $typography[$attribute]['font_weight'] : $h1_font_weight ) . ";\n".
-		'line-height: ' . $typography[$attribute]['line_height']['desktop'] . "px;\n".
-	"}\n";
+<?php echo implode( ', ', array_values( $headings ) ) . " { color: {$colors['site']['headline']}; font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
+
+foreach ( $headings as $attribute => $selector ) {
+	$combined = isset( $heading_sizes[$attribute] ) ? "$selector, {$heading_sizes[$attribute]}" : $selector;
+
+	$overrides = '';
+
+	if ( ! empty( $typography[$attribute]['font_family'] ) && $typography[$attribute]['font_family'] !== $h1_font_family )
+		$overrides .= 'font-family: ' . $typography[$attribute]['font_family'] . ";\n";
+
+	if ( ! empty( $typography[$attribute]['font_weight'] ) && $typography[$attribute]['font_weight'] !== $h1_font_weight )
+		$overrides .= 'font-weight: ' . $typography[$attribute]['font_weight'] . ";\n";
+
+	echo "$combined { font-size: " . $this->fluid( $typography[$attribute]['font_size']['desktop'], $typography[$attribute]['font_size']['mobile'] ?? null ) . "; line-height: " . $this->fluid( $typography[$attribute]['line_height']['desktop'], $typography[$attribute]['line_height']['mobile'] ?? null ) . "; }\n";
+
+	if ( $overrides )
+		echo "$selector {\n{$overrides}}\n";
+}
+
+foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector ) {
+	echo "$selector { font-size: " . $this->fluid( $typography[$attribute]['font_size']['desktop'], $typography[$attribute]['font_size']['mobile'] ?? null ) . "; line-height: " . $this->fluid( $typography[$attribute]['line_height']['desktop'], $typography[$attribute]['line_height']['mobile'] ?? null ) . "; }\n";
 } ?>
 
 :is(<?php echo $heading_selectors ?>) a {
@@ -86,24 +99,6 @@ code, pre {
 
 .the-content :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
 
-<?php foreach ( $queries as $w => $d ) {
-	echo "@media (max-width: {$w}px) {\n";
-
-	foreach ( $headings as $h => $selector ) {
-		if ( ! empty( $typography[$h]['font_size'][$d] ) || ! empty( $typography[$h]['line_height'][$d] ) ) {
-			echo "\t$selector { ".
-				( ! empty( $typography[$h]['font_size'][$d] ) ?
-					'font-size: ' . $typography[$h]['font_size'][$d] . 'px; '
-				: '' ).
-				( ! empty( $typography[$h]['line_height'][$d] ) ?
-					'line-height: ' . $typography[$h]['line_height'][$d] . 'px; '
-				: '' ).
-			"}\n";
-		}
-	}
-
-	echo "}\n";
-} ?>
 
 /* LISTS */
 
@@ -184,8 +179,6 @@ blockquote:after {
 	inset-inline-end: <?php echo $half; ?>px;
 }
 
-:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
-
 .wp-block-pullquote { text-align: center; }
 
 blockquote.is-style-plain, .is-style-plain blockquote {
@@ -204,6 +197,10 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .format blockquote p + cite {
 	display: block;
 	margin-block-start: -<?php echo $half; ?>px;
+}
+
+@media (min-width: 900px) {
+	:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
 }
 
 /* SLIM */

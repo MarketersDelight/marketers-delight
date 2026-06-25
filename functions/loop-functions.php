@@ -110,8 +110,10 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = 'full';
 	}
 
-	if ( ! empty( $loops[$loop['loop']]['classes'] ) )
-		$classes = array_merge( $classes, (array) $loops[$loop['loop']]['classes'] );
+	$classes = array_merge( $classes,
+		(array) ( $loops[$loop['loop']]['classes'] ?? array() ),
+		(array) ( $loop['classes'] ?? array() )
+	);
 
 	$classes = array_unique( apply_filters( 'md_filter_loop_classes', $classes ) );
 

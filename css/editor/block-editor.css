@@ -46,48 +46,14 @@ code, pre {
 .editor-styles-wrapper :is(ul, ol, p, hr, table, blockquote, pre),
 .editor-styles-wrapper :is(.wp-caption, .wp-block-image) { margin-block-end: 32px; }
 /* HEADINGS */
-.huge-title {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 68px;
-font-weight: 500;
-line-height: 90px;
-}
-h1, .h1, .wp-block-post-title {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 45px;
-font-weight: 500;
-line-height: 59px;
-}
-h2, .h2 {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 38px;
-font-weight: 500;
-line-height: 51px;
-}
-h3, .h3 {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 32px;
-font-weight: 500;
-line-height: 45px;
-}
-h4, .h4, .widget-title, .widget .wp-block-heading {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 27px;
-font-weight: 500;
-line-height: 38px;
-}
-h5, .h5 {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 23px;
-font-weight: 500;
-line-height: 36px;
-}
-h6, .h6 {color: #1E1E1E;
-font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif;
-font-size: 20px;
-font-weight: 500;
-line-height: 30px;
-}
+.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6 { color: #1E1E1E; font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif; font-weight: 500; }
+.huge-title, .huge-size { font-size: clamp(49px, 5.67vw, 68px); line-height: clamp(59px, 7.5vw, 90px); }
+h1, .h1, .wp-block-post-title, .h1-size { font-size: clamp(39px, 3.75vw, 45px); line-height: clamp(51px, 4.92vw, 59px); }
+h2, .h2, .h2-size { font-size: clamp(33px, 3.17vw, 38px); line-height: clamp(45px, 4.25vw, 51px); }
+h3, .h3, .h3-size { font-size: clamp(27px, 2.67vw, 32px); line-height: clamp(38px, 3.75vw, 45px); }
+h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size { font-size: clamp(23px, 2.25vw, 27px); line-height: clamp(33px, 3.17vw, 38px); }
+h5, .h5, .h5-size { font-size: 23px; line-height: 36px; }
+h6, .h6, .h6-size { font-size: 20px; line-height: 30px; }
 :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a {
 	color: #1E1E1E;
 	text-decoration: none;
@@ -96,15 +62,6 @@ line-height: 30px;
 .editor-styles-wrapper h1, .editor-styles-wrapper h2, .editor-styles-wrapper h3, .editor-styles-wrapper h4, .editor-styles-wrapper h5, .editor-styles-wrapper h6 { margin-block-end: 16px; }
 .editor-styles-wrapper :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading):is(.alignwide, .alignfull) { text-align: center; }
 .the-content :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading):not(:first-child) { margin-block-start: 48px; }
-@media (max-width: 900px) {
-}
-@media (max-width: 600px) {
-	.huge-title { font-size: 49px; line-height: 59px; }
-	h1, .h1, .wp-block-post-title { font-size: 39px; line-height: 51px; }
-	h2, .h2 { font-size: 33px; line-height: 45px; }
-	h3, .h3 { font-size: 27px; line-height: 38px; }
-	h4, .h4, .widget-title, .widget .wp-block-heading { font-size: 23px; line-height: 33px; }
-}
 /* LISTS */
 .editor-styles-wrapper ul { list-style: square; }
 .list-check,
@@ -166,7 +123,6 @@ blockquote:after {
 	content: close-quote;
 	inset-inline-end: 16px;
 }
-:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: 192px; }
 .wp-block-pullquote { text-align: center; }
 blockquote.is-style-plain, .is-style-plain blockquote {
 	background-color: transparent;
@@ -181,6 +137,9 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .editor-styles-wrapper blockquote p + cite {
 	display: block;
 	margin-block-start: -16px;
+}
+@media (min-width: 900px) {
+	:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: 192px; }
 }
 /* SLIM */
 .slim {
@@ -212,7 +171,7 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .text-left { text-align: left; }
 .text-right { text-align: right; }
 .text-center, .has-text-align-center { text-align: center; }
-.line-height { line-height: 1; }
+.lh1 { line-height: 1; }
 .caps { text-transform: uppercase; }
 a.no-underline, .no-underline a { text-decoration: none; }
 .small, .text-sec {
@@ -281,6 +240,7 @@ cite, .tiny {
 .circle-icon, .square-icon {
 	align-items: center;
 	display: inline-flex;
+	flex-shrink: 0;
 	justify-content: center;
 	line-height: 1;
 	position: relative;

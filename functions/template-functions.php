@@ -241,6 +241,33 @@ function md_scroller_nav( $args = array() ) {
 }
 
 /**
+ * Setup visibility filter with various conditions.
+ *
+ * @since 6.0
+ */
+
+function md_visibility_conditions() {
+	return apply_filters( 'md_visibility_conditions', array(
+		'logged_in' => array(
+			'label' => __( 'Logged in users only', 'md' ),
+			'check' => function() { return is_user_logged_in(); }
+		),
+		'logged_out' => array(
+			'label' => __( 'Logged out users only', 'md' ),
+			'check' => function() { return ! is_user_logged_in(); }
+		),
+		'desktop' => array(
+			'label' => __( 'Show on desktop only', 'md' ),
+			'class' => 'show-desktop'
+		),
+		'mobile' => array(
+			'label' => __( 'Show on mobile only', 'md' ),
+			'class' => 'show-mobile'
+		)
+	) );
+}
+
+/**
  * Check visibility conditions applied to an element and show/hide.
  *
  * @since 6.0
@@ -250,16 +277,11 @@ function md_check_condition( $values ) {
 	if ( empty( $values ) )
 		return true;
 
-	$registered = apply_filters( 'md_visibility_conditions', array(
-		'logged_in' => array( 'check' => function() { return is_user_logged_in(); } ),
-		'logged_out' => array( 'check' => function() { return ! is_user_logged_in(); } )
-	) );
-
-	foreach ( $values as $key => $selected ) {
-		if ( ! $selected )
+	foreach ( md_visibility_conditions() as $key => $item ) {
+		if ( empty( $values[$key] ) || ! isset( $item['check'] ) )
 			continue;
 
-		if ( isset( $registered[$key]['check'] ) && ! call_user_func( $registered[$key]['check'] ) )
+		if ( ! call_user_func( $item['check'] ) )
 			return false;
 	}
 
@@ -277,14 +299,10 @@ function md_get_visibility_classes( $values ) {
 		return array();
 
 	$classes = array();
-	$registered = apply_filters( 'md_visibility_conditions', array(
-		'desktop' => array( 'class' => 'show-desktop' ),
-		'mobile' => array( 'class' => 'show-mobile' )
-	) );
 
-	foreach ( $values as $key => $selected )
-		if ( $selected && isset( $registered[$key]['class'] ) )
-			$classes[] = $registered[$key]['class'];
+	foreach ( md_visibility_conditions() as $key => $item )
+		if ( ! empty( $values[$key] ) && isset( $item['class'] ) )
+			$classes[] = $item['class'];
 
 	return $classes;
 }
@@ -299,12 +317,11 @@ function md_parse_text( $text, $context = '' ) {
 	if ( empty( $text ) )
 		return $text;
 
-	if ( empty( $context ) ) {
+	if ( empty( $context ) )
 		if ( is_tax() || is_category() || is_tag() )
 			$context = 'term';
 		elseif ( is_home() || is_post_type_archive() )
 			$context = 'archive';
-	}
 
 	$tokens = md_parse_tokens( array( 'context' => $context, 'text' => $text ) );
 
