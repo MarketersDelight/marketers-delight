@@ -34,7 +34,6 @@ class md_logo extends md_api {
 			),
 			'logo_width' => array(
 				'desktop' => array( 'type' => 'range' ),
-				'tablet' => array( 'type' => 'range' ),
 				'mobile' => array( 'type' => 'range' )
 			),
 			'logo_html' => array( 'type' => 'code' ),

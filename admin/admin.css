@@ -50,6 +50,8 @@
 
 .md .large-text { width: 100%; }
 
+.md-field .regular-text[readonly] { cursor: not-allowed; }
+
 .md-hide, .md-hidden, .md-conditional-item { display: none; }
 
 .md-conditional-item.is-condition { display: block; }
@@ -837,17 +839,15 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-group-list:not(:last-child) { margin-bottom: 15px; }
 
 .md-group-head {
+	align-items: center;
 	border-bottom: 1px solid #ccc;
+	display: flex;
+	gap: 15px;
 	margin-bottom: 20px;
 	padding-bottom: 10px;
 }
 
-.md-group-head .md-label-wrap {
-	display: inline-block;
-	margin-bottom: 7px;
-	margin-top: 0;
-	margin-right: 10px;
-}
+.md .md-group-head :is(.md-label-wrap, label) { margin: 0; }
 
 .md-meta-box .md-group-head .md-label-wrap { margin-top: 8px; }
 
@@ -1049,10 +1049,10 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-device:not(:last-child) { border-right: 1px solid #ccc; }
 
-.md-tablet, .md-mobile, .tablet .md-desktop, .mobile .md-desktop { display: none; }
+.md-mobile, .mobile .md-desktop { display: none; }
 
-.desktop .md-desktop, .tablet .md-tablet, .mobile .md-mobile { display: block; }
-.desktop .md-desktop.col, .tablet .md-tablet.col, .mobile .md-mobile.col { display: inline-block; }
+.desktop .md-desktop, .mobile .md-mobile { display: block; }
+.desktop .md-desktop.col, .mobile .md-mobile.col { display: inline-block; }
 
 /* BASIC FIELDS */
 
@@ -1203,12 +1203,15 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-color-picker-wrap { position: relative; }
 
+.md-color-picker-wrap .md-color-picker { border-radius: 6px; }
+
 .md-color-picker-wrap, .md-color-picker {
 	max-width: 100%;
 	width: 205px;
 }
 
 .md-color-picker-fill {
+	border-radius: 5px 0 0 5px;
 	border-right: 1px solid #999;
 	height: 38px;
 	width: 33px;
@@ -1255,6 +1258,56 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	}
 	.md-color-picker-fill { height: 38px; }
 }
+
+/* COLOR SCHEME INHERIT */
+
+.md-color-scheme-wrap {
+	align-items: stretch;
+	display: flex;
+	width: 100%;
+}
+
+.md-color-scheme-swatch {
+	border: 1px solid #999;
+	border-right: 0;
+	border-radius: 8px 0 0 8px;
+	display: block;
+	width: 36px;
+	min-width: 36px;
+}
+
+.md-color-scheme-wrap .md-color-scheme-select {
+	border-inline: 0;
+	border-radius: 0;
+	flex: 1;
+	margin-inline: 0;
+	min-width: 0;
+}
+
+.md-color-scheme-picker {
+	flex: 1;
+	position: relative;
+	min-width: 0;
+}
+
+.md-color-scheme-picker :is(.md-color-picker-wrap, .md-color-picker) {
+	border-radius: 6px 0 0 6px;
+	border-right: 0;
+	margin-inline: 0;
+	max-width: none;
+	width: 100%;
+}
+
+.md-color-scheme-wrap .md-color-scheme-toggle {
+	border-radius: 0 6px 6px 0;
+	height: 30px;
+	margin-left: 0;
+	white-space: nowrap;
+}
+
+.md-color-scheme-wrap.is-inherit .md-color-scheme-picker,
+.md-color-scheme-wrap.is-custom .md-color-scheme-select,
+.md-color-scheme-wrap.is-custom .md-color-scheme-swatch { display: none; }
 
 /* UPLOAD */
 

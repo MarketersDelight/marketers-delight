@@ -8,7 +8,7 @@
 class md_css {
 
 	public $files;
-	public int $site_width;
+	public $site_width;
 
 	/**
 	 * Set properties.
@@ -337,7 +337,7 @@ class md_css {
 		$defaults = $design->defaults();
 		$values = $design->values();
 		$theme_url = get_stylesheet_directory_uri();
-		$queries = array( 900 => 'tablet', 600 => 'mobile' );
+		$queries = array( 600 => 'mobile' );
 
 		$colors = $values['colors'];
 		$typography = $values['typography'];

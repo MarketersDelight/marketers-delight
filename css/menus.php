@@ -58,7 +58,7 @@
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $colors['submenu']['bg_color']; ?>;
-		border-radius: 5px;
+		border-radius: 8px;
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
@@ -80,16 +80,15 @@
 		inset-inline-start: -<?php echo $submenu_width; ?>px;
 	}
 	.sub-menu .menu-item { align-items: end; }
-	.sub-menu .menu-item a:hover {
+	.sub-menu .menu-item:hover {
 		background-color: rgba(0, 0, 0, 0.08);
 		<?php if ( ! empty( $colors['submenu']['hover'] ) ) : ?>
 		color: <?php echo $colors['submenu']['hover']; ?>;
 		<?php endif; ?>
 	}
-	.sub-menu .menu-item:first-child a:hover { border-radius: 6px 6px 0 0; }
-	.sub-menu .menu-item:last-child a:hover { border-radius: 0 0 6px 6px; }
-	.sub-menu .menu-item:not(:last-child) a,
-	.sub-menu .menu-item:not(:last-child) .trigger { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+	.sub-menu .menu-item:first-child:hover { border-radius: 8px 8px 0 0; }
+	.sub-menu .menu-item:last-child:hover { border-radius: 0 0 8px 8px; }
+	.sub-menu .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
 	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
 	.sub-menu .trigger-icon:after { content: '\e816'; }
 	/* SUB MENU ALT DIRECTION */

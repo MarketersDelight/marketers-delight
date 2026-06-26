@@ -212,6 +212,16 @@ final class marketers_delight {
 	 */
 
 	public function enqueue() {
+
+
+			$vinnie = md_setting();
+
+//		unset( $vinnie['colors'] );
+
+//		update_option( 'marketers_delight', $vinnie );
+
+		print_r( $vinnie['colors'] );
+
 		// Load styles
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
 			wp_enqueue_style( 'marketers-delight', MD_URL . 'style.css', array(), md_ver( 'style.css' ) );

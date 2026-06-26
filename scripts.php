@@ -119,11 +119,13 @@ toggle: function() {
 				target = this.getAttribute( 'data-toggle-target' ),
 				parent = target ? document.querySelector( target ) : this.closest( '.' + toggle ),
 				className = 'toggle-' + toggle;
-			if ( ! parent ) return;
+			if ( ! parent )
+				return;
 			if ( ! parent.classList.contains( className ) ) {
 				var isOpen = document.querySelectorAll( '.' + className );
 				for ( var j = 0; j < isOpen.length; j++ )
-					MD.removeClass( isOpen[j], className );
+					if ( ! isOpen[j].contains( parent ) )
+						MD.removeClass( isOpen[j], className );
 			}
 			MD.toggleClass( parent, className );
 			if ( this.getAttribute( 'data-toggle-close' ) )
@@ -136,7 +138,6 @@ toggle: function() {
 },
 triggers: function() {
 	var triggers = document.getElementsByClassName( 'trigger' );
-
 	for ( var i = 0; i < triggers.length; i++ ) {
 		triggers[i].onclick = function( e ) {
 			var type = this.getAttribute( 'data-md-trigger' ),

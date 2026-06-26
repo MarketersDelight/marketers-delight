@@ -42,7 +42,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec { color: <?php echo $colors['site']['text-sec']; ?>; }
+.text-sec { color: <?php echo $colors['site']['text-secondary']; ?>; }
 
 cite, .tiny {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;

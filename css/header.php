@@ -34,10 +34,6 @@
 
 .header a { text-decoration: none; }
 
-.cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: #fff; }
-
-.cover-alt .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: <?php echo $colors['site']['text-main']; ?>; }
-
 <?php if ( ! empty ( $colors['header']['bg_color'] ) ) : ?>
 .is-box-style .header.cover { background-color: transparent; }
 <?php endif; ?>
@@ -50,6 +46,8 @@
 	width: 100%;
 	z-index: 10;
 }
+
+.admin-bar.full-cover .header { inset-block-start: var(--wp-admin--admin-bar--height); }
 
 .header .inner {
 	align-items: center;
@@ -194,7 +192,6 @@
 	.header .primary-menu, .header .aside-menu,
 	.header-primary .link, .header-aside .link { display: none; }
 	.toggle-menu .primary-menu, .toggle-menu .aside-menu { display: block; }
-	<?php echo ! empty( $logo['logo_width']['tablet'] ) ? '.logo { flex-basis: ' . $logo['logo_width']['tablet'] . 'px; max-width: ' . $logo['logo_width']['tablet'] . 'px; }' : ''; ?>
 	/* SEARCH */
 	.header .search-form {
 		display: none;

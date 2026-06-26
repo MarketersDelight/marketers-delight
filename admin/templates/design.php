@@ -7,73 +7,124 @@
 	<hr class="md-sep" />
 
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Branding', 'md' ); ?></h3>
+
 		<div class="md-widget-item">
+
 			<p class="description"><?php echo __( '<b>Tip:</b> Save any changes you make to your brand colors to see how they apply across your site.', 'md' ); ?></p>
+
 			<hr class="md-sep-small" />
-			<div class="columns-3 columns-single">
-				<?php foreach ( $options['site'] as $field => $label ) : ?>
-					<div class="col md-sep-small">
-						<?php $this->fields->field( array( 'site', $field ), array(
-							'type' => 'color',
-							'label' => $label,
-							'default' => $defaults['colors']['site'][$field]
-						) ); ?>
-					</div>
-				<?php endforeach; ?>
+
+			<div class="columns-2 columns-30-70 columns-half md-sep-micro">
+				<b class="col col1"><?php echo __( 'Color', 'md' ); ?></b>
+				<b class="col col2"><?php echo __( 'Name', 'md' ); ?></b>
 			</div>
-			<?php $this->fields->save(); ?>
+
+			<?php foreach ( $palette as $color_key => $color ) : ?>
+			<div class="columns-2 columns-30-70 columns-half md-sep">
+				<div class="col col1">
+					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
+						'type' => 'color',
+						'default' => $color
+					) ); ?>
+				</div>
+				<div class="col col2">
+					<?php $this->fields->field( array( 'palette', $color_key, 'name' ), array(
+						'type' => 'text',
+						'readonly' => true,
+						'placeholder' => ucwords( str_replace( '-', ' ', $color_key ) )
+					) ); ?>
+				</div>
+			</div>
+			<?php endforeach;
+
+			$this->fields->field( 'custom', array(
+				'type' => 'group',
+				'label' => __( 'Custom Colors', 'md' ),
+				'wrap_classes' => 'md-sep',
+				'callback' => function( $group, $field ) {
+					echo '<div class="columns-2 columns-half columns-30-70">'.
+						 '<div class="col col1">';
+
+					$this->fields->field( array( $group, $field, 'hex' ), array(
+						'type' => 'color',
+					) );
+
+					echo '</div>'.
+						 '<div class="col col2">';
+
+					$this->fields->field( array( $group, $field, 'name' ), array(
+						'type' => 'text',
+					) );
+
+					echo '</div>'.
+						 '</div>';
+				}
+			) );
+
+			$this->fields->save(); ?>
+
 		</div>
+
 	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Text', 'md' ); ?></h3>
-		<div class="md-widget-item columns-3 columns-single">
-			<?php foreach ( $options['text'] as $field => $label ) : ?>
+
+		<div class="md-widget-item columns-2 columns-single">
+			<?php foreach ( $options['text'] as $field => $opts ) : ?>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'site', $field ), array(
+					'type' => 'color',
+					'label' => $opts['label'],
+					'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null
+				) ); ?>
+			</div>
+			<?php endforeach; ?>
+		</div>
+
+	</div>
+
+	<div class="md-widget md-toggle md-sep-small">
+
+		<h3 class="md-widget-title"><?php echo __( 'Buttons', 'md' ); ?></h3>
+
+		<div class="md-widget-item">
+
+			<h4><?php echo __( 'Main Button', 'md' ); ?></h4>
+
+			<div class="columns-2 columns-single">
+				<?php foreach ( $options['button'] as $field => $opts ) : ?>
 				<div class="col md-sep-small">
 					<?php $this->fields->field( array( 'site', $field ), array(
 						'type' => 'color',
-						'label' => $label,
-						'default' => $defaults['colors']['site'][$field]
+						'label' => $opts['label'],
+						'default' => $opts['default']
 					) ); ?>
 				</div>
-			<?php endforeach; ?>
-		</div>
-	</div>
+				<?php endforeach; ?>
+			</div>
 
-	<div class="md-widget md-toggle md-sep-small">
-		<h3 class="md-widget-title"><?php echo __( 'Buttons', 'md' ); ?></h3>
-		<div class="md-widget-item">
-			<h4><?php echo __( 'Main Button', 'md' ); ?></h4>
-			<div class="columns-3 columns-single">
-				<?php foreach ( $options['button'] as $field => $label ) : ?>
-					<?php if ( in_array( $field, array( 'button', 'button-text' ) ) ) : ?>
-						<div class="col md-sep-small">
-							<?php $this->fields->field( array( 'site', $field ), array(
-								'type' => 'color',
-								'label' => $label,
-								'default' => $defaults['colors']['site'][$field]
-							) ); ?>
-						</div>
-					<?php endif; ?>
-				<?php endforeach; ?>
-			</div>
 			<hr class="md-sep-small" />
+
 			<h4><?php echo __( 'Secondary Button', 'md' ); ?></h4>
-			<div class="columns-3 columns-single">
-				<?php foreach ( $options['button'] as $field => $label ) : ?>
-					<?php if ( in_array( $field, array( 'button-sec', 'button-sec-text' ) ) ) : ?>
-						<div class="col md-sep-small">
-							<?php $this->fields->field( array( 'site', $field ), array(
-								'type' => 'color',
-								'label' => $label,
-								'default' => $defaults['colors']['site'][$field]
-							) ); ?>
-						</div>
-					<?php endif; ?>
+
+			<div class="columns-2 columns-single">
+				<?php foreach ( $options['button-secondary'] as $field => $opts ) : ?>
+				<div class="col md-sep-small">
+					<?php $this->fields->field( array( 'site', $field ), array(
+						'type' => 'color',
+						'label' => $opts['label'],
+						'default' => $opts['default']
+					) ); ?>
+				</div>
 				<?php endforeach; ?>
 			</div>
+
 		</div>
+
 	</div>
 
 	<hr class="md-sep-small" />
@@ -84,10 +135,7 @@
 
 		<div class="md-widget-item">
 
-			<?php
-			$content_style = md_filter_loop_styles();
-			unset( $content_style['box'] );
-			$this->fields->field( 'design', array(
+			<?php $this->fields->field( 'design', array(
 				'type' => 'select',
 				'label' => __( 'Site style', 'md' ),
 				'empty_label' => __( 'Box style', 'md' ),
@@ -131,33 +179,17 @@
 
 			<p class="description"><?php echo __( '<b>Tip:</b> To calculate your own site width you must add any extra spacing within the content and sidebar, which can change based on the <b>Site style</b>.', 'md' ); ?></p>
 
-			<?php
+			<?php echo '<p class="description"><code>';
 
-		$design = md_setting( array( 'colors', 'design' ) );
+			if ( $design )
+				echo "<b>$post_width</b> + <b>$sidebar_width</b> + <b>$gap</b> = <b>$site_width</b>";
+			else
+				echo "<b>( $post_width + $layout_spacing )</b> + <b>$sidebar_width</b> + <b>$gap</b> = <b>$site_width</b>";
 
-		$post_width = round( 21 * $line_height );
-		$layout_spacing = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
-		$content_width = $post_width + $layout_spacing;
-		$content_width = apply_filters( 'md_filter_css_content_width', $content_width, $post_width, $line_height );
-		$sidebar_width = round( 12 * $line_height );
-
-		$site_width = $content_width + $sidebar_width + $line_height; #add $line_height to account for gap
-
-		echo '<p class="description"><code>';
-
-		if ( $design )
-			echo "<b>$post_width</b> + <b>$sidebar_width</b> + <b>$line_height</b> = <b>$site_width</b>";
-		else
-			echo "<b>( $post_width + $layout_spacing )</b> + <b>$sidebar_width</b> + <b>$line_height</b> = <b>$site_width</b>";
-
-		echo '</code></p>';
-
-		// 651 + 372 + 94 = 1054
-
-		// <br /><br /><code><b>%s</b> + <b>%2s</b>%3s = <b>%4s</b></code>', 'md' ), $values['colors']['width']['post'], $values['colors']['width']['sidebar'], ( md_setting( array( 'content', 'style' ) ) == '' ? ' + <b>' . ( $layout_spacing * 2 ) . '</b>' : '' ), $values['colors']['width']['site']
-			?>
+			echo '</code></p>'; ?>
 
 		</div>
+
 	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
@@ -166,160 +198,112 @@
 
 		<div class="md-widget-item">
 
-			<div class="columns-3 columns-single">
+			<div class="columns-2 columns-single md-sep-small">
+				<?php foreach ( $options['header'] as $field => $opts ) : ?>
 				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'header', 'bg_color' ), array(
+					<?php $this->fields->field( array( 'header', $field ), array(
 						'type' => 'color',
-						'label' => __( 'Background', 'md' ),
-						'default' => $defaults['colors']['header']['bg_color']
+						'label' => $opts['label'],
+						'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+						'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 					) ); ?>
 				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'header', 'color' ), array(
-						'type' => 'color',
-						'label' => __( 'Text', 'md' ),
-						'default' => $defaults['colors']['header']['color']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'header', 'border_color' ), array(
-						'type' => 'color',
-						'label' => __( 'Border', 'md' ),
-						'default' => $defaults['colors']['header']['border_color']
-					) ); ?>
-				</div>
+				<?php endforeach; ?>
 			</div>
 
 			<hr class="md-sep-small" />
 
 			<h4><?php echo __( 'Menu', 'md' ); ?></h4>
 
-			<div class="columns-3 columns-single">
+			<div class="columns-2 columns-single md-sep-small">
+				<?php foreach ( $options['menu'] as $field => $opts ) : ?>
 				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'menu', 'links' ), array(
+					<?php $this->fields->field( array( 'menu', $field ), array(
 						'type' => 'color',
-						'label' => __( 'Links', 'md' ),
-						'default' => $defaults['colors']['menu']['links']
+						'label' => $opts['label'],
+						'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+						'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 					) ); ?>
 				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'menu', 'hover' ), array(
-						'type' => 'color',
-						'label' => __( 'Links Hover', 'md' ),
-						'default' => $defaults['colors']['menu']['hover']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'menu', 'active' ), array(
-						'type' => 'color',
-						'label' => __( 'Links Active', 'md' ),
-						'default' => $defaults['colors']['menu']['active']
-					) ); ?>
-				</div>
+				<?php endforeach; ?>
 			</div>
 
 			<hr class="md-sep-small" />
 
 			<h4><?php echo __( 'Sub Menu', 'md' ); ?></h4>
 
-			<div class="columns-3 columns-single">
+			<div class="columns-2 columns-single md-sep-small">
+				<?php foreach ( $options['submenu'] as $field => $opts ) : ?>
 				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'submenu', 'bg_color' ), array(
+					<?php $this->fields->field( array( 'submenu', $field ), array(
 						'type' => 'color',
-						'label' => __( 'Background', 'md' ),
-						'default' => $defaults['colors']['submenu']['bg_color']
+						'label' => $opts['label'],
+						'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+						'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 					) ); ?>
 				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'submenu', 'links' ), array(
-						'type' => 'color',
-						'label' => __( 'Links', 'md' ),
-						'default' => $defaults['colors']['submenu']['links']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'submenu', 'hover' ), array(
-						'type' => 'color',
-						'label' => __( 'Links Hover', 'md' )
-					) ); ?>
-				</div>
+				<?php endforeach; ?>
 			</div>
 
-			<?php do_action( 'md_design_header_settings' ); ?>
-
 		</div>
+
 	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
 
 		<h3 class="md-widget-title"><?php echo __( 'Content', 'md' ); ?></h3>
 
-		<div class="md-widget-item">
-
-			<div class="columns-3 columns-single">
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'content', 'body_color' ), array(
-						'type' => 'color',
-						'label' => __( 'Content Body', 'md' ),
-						'default' => $defaults['colors']['content']['body_color']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'content', 'bg_color' ), array(
-						'type' => 'color',
-						'label' => __( 'Content Box', 'md' ),
-						'default' => $defaults['colors']['content']['bg_color']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'content', 'border_color' ), array(
-						'type' => 'color',
-						'label' => __( 'Border', 'md' ),
-						'default' => $defaults['colors']['content']['border_color']
-					) ); ?>
-				</div>
-				<div class="col md-sep-small">
-					<?php $this->fields->field( array( 'content', 'page_cover' ), array(
-						'type' => 'color',
-						'label' => __( 'Page Cover', 'md' ),
-						'default' => $defaults['colors']['content']['page_cover']
-					) ); ?>
-				</div>
+		<div class="md-widget-item columns-2 columns-single">
+			<?php foreach ( $options['content'] as $field => $opts ) : ?>
+			<div class="col md-sep-small">
+				<?php $this->fields->field( array( 'content', $field ), array(
+					'type' => 'color',
+					'label' => $opts['label'],
+					'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+					'default' => isset( $opts['default'] ) ? $opts['default'] : ''
+				) ); ?>
 			</div>
-
+			<?php endforeach; ?>
 		</div>
+
 	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
-		<div class="md-widget-item columns-3 columns-single">
-			<?php foreach ( $options['sidebar'] as $field => $label ) :
-				$default = $field !== 'bg_color' ? $defaults['colors']['sidebar'][$field] : '';
-			?>
+
+		<div class="md-widget-item columns-2 columns-single">
+			<?php foreach ( $options['sidebar'] as $field => $opts ) : ?>
 			<div class="col md-sep-small">
 				<?php $this->fields->field( array( 'sidebar', $field ), array(
 					'type' => 'color',
-					'label' => $label,
-					'default' => $default
+					'label' => $opts['label'],
+					'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+					'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 				) ); ?>
 			</div>
 			<?php endforeach; ?>
 		</div>
+
 	</div>
 
 	<div class="md-widget md-toggle md-sep-small">
+
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
-		<div class="md-widget-item columns-3 columns-single">
-			<?php foreach ( $options['footer'] as $field => $label ) : ?>
+
+		<div class="md-widget-item columns-2 columns-single">
+			<?php foreach ( $options['footer'] as $field => $opts ) : ?>
 			<div class="col md-sep-small">
 				<?php $this->fields->field( array( 'footer', $field ), array(
 					'type' => 'color',
-					'label' => $label,
-					'default' => $defaults['colors']['footer'][$field]
+					'label' => $opts['label'],
+					'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+					'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 				) ); ?>
 			</div>
 			<?php endforeach; ?>
 		</div>
+
 	</div>
 
 	<hr class="md-sep-small" />

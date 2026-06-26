@@ -21,7 +21,7 @@
 
 	<div class="columns-2 columns-single">
 		<div class="col md-sep-small">
-			<?php foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) : ?>
+			<?php foreach ( array( 'desktop', 'mobile' ) as $device ) : ?>
 				<div class="md-<?php echo $device; ?>">
 					<?php $this->fields->field( array( 'logo_width', $device ), array(
 						'type' => 'range',

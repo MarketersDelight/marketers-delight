@@ -52,7 +52,7 @@ class md_fields_data {
 	public function typography() {
 		$fields = array();
 
-		foreach ( array( 'desktop', 'tablet', 'mobile' ) as $device ) {
+		foreach ( array( 'desktop', 'mobile' ) as $device ) {
 			$fields['font_size'][$device]['type'] = 'range';
 			$fields['line_height'][$device]['type'] = 'range';
 		}

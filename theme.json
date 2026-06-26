@@ -9,17 +9,17 @@
                 {
                     "name": "Primary",
                     "slug": "primary",
-                    "color": "#C0392B"
+                    "color": "#AE2525"
                 },
                 {
                     "name": "Secondary",
                     "slug": "secondary",
-                    "color": "#101010"
+                    "color": "#2E2E2E"
                 },
                 {
                     "name": "Tertiary",
                     "slug": "tertiary",
-                    "color": "#E6E0CF"
+                    "color": "#DDDDDD"
                 },
                 {
                     "name": "Action",
@@ -29,27 +29,22 @@
                 {
                     "name": "Accent",
                     "slug": "accent",
-                    "color": "#FAF6EC"
-                },
-                {
-                    "name": "White",
-                    "slug": "white",
-                    "color": "#FFFFFF"
+                    "color": "#FFFBCC"
                 },
                 {
                     "name": "Text",
                     "slug": "text-main",
-                    "color": "#5A5A5A"
+                    "color": "#1E1E1E"
                 },
                 {
                     "name": "Secondary Text",
-                    "slug": "text-sec",
+                    "slug": "text-secondary",
                     "color": "#777777"
                 },
                 {
                     "name": "Links",
                     "slug": "links",
-                    "color": "#C0392B"
+                    "color": "#AE2525"
                 },
                 {
                     "name": "Button",
@@ -58,8 +53,13 @@
                 },
                 {
                     "name": "Button Secondary",
-                    "slug": "button-sec",
+                    "slug": "button-secondary",
                     "color": "#999999"
+                },
+                {
+                    "name": "White",
+                    "slug": "white",
+                    "color": "#FFFFFF"
                 }
             ]
         },
@@ -69,55 +69,55 @@
                 {
                     "name": "Small",
                     "slug": "small",
-                    "size": "20px"
+                    "size": "22px"
                 },
                 {
                     "name": "Normal",
                     "slug": "normal",
-                    "size": "20px"
+                    "size": "19px"
                 },
                 {
                     "name": "Intro",
                     "slug": "intro",
-                    "size": "24px"
+                    "size": "23px"
                 },
                 {
                     "name": "H3",
                     "slug": "h3",
-                    "size": "32px"
+                    "size": "34px"
                 },
                 {
                     "name": "H2",
                     "slug": "h2",
-                    "size": "38px"
+                    "size": "41px"
                 },
                 {
                     "name": "H1",
                     "slug": "h1",
-                    "size": "45px"
+                    "size": "48px"
                 },
                 {
                     "name": "Huge",
                     "slug": "huge",
-                    "size": "68px"
+                    "size": "72px"
                 }
             ],
             "fontFamilies": [
                 {
-                    "fontFamily": "'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
                     "name": "Body",
                     "slug": "body"
                 },
                 {
-                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
+                    "fontFamily": "PT Serif",
                     "name": "Heading",
                     "slug": "heading"
                 }
             ]
         },
         "layout": {
-            "contentSize": "672px",
-            "wideSize": "896px"
+            "contentSize": "651px",
+            "wideSize": "868px"
         },
         "spacing": {
             "padding": false
@@ -137,9 +137,9 @@
                 "spacing": {
                     "padding": {
                         "top": "16px",
-                        "right": "27px",
+                        "right": "26px",
                         "bottom": "16px",
-                        "left": "27px"
+                        "left": "26px"
                     }
                 },
                 "typography": {
@@ -155,9 +155,9 @@
             },
             "core/post-title": {
                 "typography": {
-                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
-                    "fontSize": "45px",
-                    "fontWeight": "500",
+                    "fontFamily": "PT Serif",
+                    "fontSize": "48px",
+                    "fontWeight": "700",
                     "lineHeight": 1
                 }
             }

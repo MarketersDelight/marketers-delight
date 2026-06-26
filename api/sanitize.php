@@ -156,11 +156,43 @@ class md_sanitize {
 
 	/**
 	 * Properly save color values to color fields as hex or RGBA.
+	 * As of 6.0, colors can now be saved as references, which is a text string.
 	 *
 	 * @since 4.7
 	 */
 
-	public function color( $input ) {
+	public function color( $input, $fields = array() ) {
+
+		// Save a color field with inheritance
+
+		if ( is_array( $input ) ) {
+			$palette = apply_filters( 'md_color_palette', array() );
+
+			// Don't save default/empty values!
+
+			if ( ! empty( $input['inherit'] ) && in_array( $input['inherit'], array_keys( $palette ) ) ) {
+				$saved = sanitize_key( $input['inherit'] );
+
+				if ( ! empty( $fields['inherit'] ) && $saved === sanitize_key( $fields['inherit'] ) )
+					return null;
+
+				return array( 'inherit' => $saved );
+			}
+
+			// Re-run this function if user sets a custom hex code
+
+			if ( ! empty( $input['hex'] ) ) {
+				$hex = $this->color( $input['hex'] );
+
+				if ( $hex )
+					return array( 'hex' => $hex );
+			}
+
+			return null;
+		}
+
+		// Save regular hex/rgba color
+
 		if ( strpos( $input, 'rgba' ) === false )
 			if ( strlen( $input ) == 7 ) // HEX
 				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
@@ -436,12 +468,15 @@ class md_sanitize {
 			$field = $this->upload( $val, $fields );
 		}
 
-		if ( $type == 'color' ) {
-			$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
+		if ( $type == 'color' )
+			if ( is_array( $val ) )
+				$field = $this->color( $val, $fields );
+			else {
+				$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
 
-			if ( $default !== $val )
-				$field = $this->color( $val );
-		}
+				if ( $default !== $val )
+					$field = $this->color( $val );
+			}
 
 		return $field;
 	}

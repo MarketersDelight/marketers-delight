@@ -28,7 +28,7 @@
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
 .lede {
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
@@ -45,7 +45,7 @@
 	gap: <?php echo $half; ?>px;
 }
 
-.byline, .byline a, .byline .circle-icon { color: <?php echo $colors['site']['text-sec']; ?>; }
+.byline, .byline a, .byline .circle-icon { color: <?php echo $colors['site']['text-secondary']; ?>; }
 
 .byline a { text-decoration-color: rgba(0, 0, 0, 0.2); }
 
@@ -79,17 +79,13 @@
 	position: relative;
 }
 
-.entry .cover { padding-inline: <?php echo $half; ?>px; }
-
 .cover > *:not(.inner):not(.overlay) { position: relative; }
 
-.cover.text-white,
-.cover.text-white :is(a, .byline, .title, .lede) { color: #fff; }
+.cover.text-white, .cover.text-white :is(a, .byline, .title, .lede) { color: #fff; }
 
 .cover.text-white .byline a { text-decoration-color: rgba(255, 255, 255, 0.5); }
 
-.full-cover .page-title,
-.full-cover .main > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
+.cover-text .header :is(.header-triggers, .site-name a, .tagline, .menu > .menu-item > .trigger, .menu > .menu-item > a) { color: #fff; }
 
 /* QUERIES */
 

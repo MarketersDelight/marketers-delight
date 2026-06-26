@@ -2,7 +2,7 @@
 
 $g = 1.618;
 $field = is_array( $field ) ? $field : (array) $field;
-$devices = isset( $args['devices'] ) ? $args['devices'] : array( 'desktop', 'tablet', 'mobile' );
+$devices = isset( $args['devices'] ) ? $args['devices'] : array( 'desktop', 'mobile' );
 $sanitize = new md_sanitize;
 $design = new md_design;
 $defaults = $design->defaults();

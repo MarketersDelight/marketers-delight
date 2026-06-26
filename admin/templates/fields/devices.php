@@ -2,9 +2,6 @@
 	<span id="desktop" class="md-device desktop active" title="<?php echo __( 'Switch to Desktop controls', 'md' ); ?>">
 		<i class="dashicons dashicons-desktop"></i>
 	</span>
-	<span id="tablet" class="md-device tablet" title="<?php echo __( 'Switch to Tablet controls', 'md' ); ?>">
-		<i class="dashicons dashicons-tablet"></i>
-	</span>
 	<span id="mobile" class="md-device mobile" title="<?php echo __( 'Switch to Mobile controls', 'md' ); ?>">
 		<i class="dashicons dashicons-smartphone"></i>
 	</span>

@@ -96,7 +96,7 @@
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	padding: <?php echo $small; ?>px <?php echo $third; ?>px;
 	text-decoration: none;
@@ -112,7 +112,7 @@
 /* TOGGLE */
 
 .comment .toggle {
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	cursor: pointer;
 	display: none;
 	float: right;

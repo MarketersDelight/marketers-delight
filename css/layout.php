@@ -26,11 +26,18 @@
 	padding-block: <?php echo $single; ?>px;
 }
 
-.header-cover .main { padding-block-start: 0; }
-
 .loop:not(.content):not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
 
 .loop.columns.slim { gap: <?php echo $half; ?>px; }
+
+/* COVER */
+
+.entry .cover, .content .page-title.cover { padding-inline: <?php echo $half; ?>px; }
+
+.full-cover .page-title,
+.full-cover .main > .post-title { padding-block: <?php echo $quad * 2; ?>px <?php echo $double; ?>px; }
+
+.header-cover .main { padding-block-start: 0; }
 
 /* BOX STYLE */
 
@@ -79,7 +86,7 @@
 .box-entry .byline.post-footer,
 .box-style.category-view .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
-.box-entry .post-footer:not(:last-child) { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
+.box-entry .post-footer { border-block-start: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 .box-entry .entry-title:not(.cover):not(:empty) + .the-content { padding-block-start: 0; }
 
@@ -179,8 +186,8 @@
 @media (min-width: <?php echo $post_width; ?>px) {
 	.box-entry.full .item { padding: <?php echo $mid; ?>px; }
 	.cover { padding-block: <?php echo $mid; ?>px; }
+	.entry .cover, .content .page-title.cover { padding-inline: <?php echo $mid; ?>px; }
 	.compact .box-entry.full .post-title { padding-block-end: <?php echo $single; ?>px; }
-	.entry .cover { padding-inline: <?php echo $half; ?>px; }
 	.expanded .item:not(.post-title) .wrap {
 		margin-inline: auto;
 		max-width: <?php echo $post_width; ?>px;

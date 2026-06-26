@@ -48,7 +48,7 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	cursor: pointer;
 	flex-shrink: 0;
 	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
@@ -150,7 +150,7 @@
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-width: 1px 1px 0;
 	border-radius: 5px 5px 0 0;
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	cursor: pointer;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px;
@@ -159,7 +159,7 @@
 }
 
 .tab a {
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	text-decoration: none;
 }
 
@@ -200,11 +200,14 @@
 
 .accordion-label { flex: 1; }
 
+.accordion-label-icon {
+	color: <?php echo $colors['site']['text-secondary']; ?>;
+	margin-inline-end: <?php echo $third; ?>px;
+}
+
 .accordion-item .menu-item { margin-block-end: 0; }
 
-.accordion-content.small .menu-item a {
-	padding-block: <?php echo $third; ?>px;
-}
+.accordion-content.small .menu-item a { padding-block: <?php echo $third; ?>px; }
 
 .accordion-title:hover,
 .accordion-item .menu-item:hover a,
@@ -215,14 +218,7 @@
 	line-height: inherit;
 }
 
-.accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) {
-	padding-left: <?php echo $single; ?>px;
-}
-
-.accordion-label-icon {
-	color: <?php echo $colors['site']['text-sec']; ?>;
-	margin-inline-end: <?php echo $third; ?>px;
-}
+.accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) { padding-left: <?php echo $single; ?>px; }
 
 /* DISPLAYS */
 

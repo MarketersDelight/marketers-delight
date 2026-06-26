@@ -25,7 +25,7 @@ iframe, video, object { max-width: 100%; }
 
 abbr { cursor: help; }
 
-cite { color: <?php echo $colors['site']['text-sec']; ?>; }
+cite { color: <?php echo $colors['site']['text-secondary']; ?>; }
 
 sup { line-height: 1; }
 
@@ -153,7 +153,7 @@ blockquote {
 	border-inline-start-width: 7px;
 	border-radius: 5px;
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	color: <?php echo $colors['site']['text-sec']; ?>;
+	color: <?php echo $colors['site']['text-secondary']; ?>;
 	display: block;
 	font-style: italic;
 	margin-inline: 0;

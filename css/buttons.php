@@ -91,8 +91,8 @@ button:hover, input[type="submit"]:hover,
 }
 
 .button.button-sec {
-	background-color: <?php echo $colors['site']['button-sec']; ?>;
-	color: <?php echo $colors['site']['button-sec-text']; ?>;
+	background-color: <?php echo $colors['site']['button-secondary']; ?>;
+	color: <?php echo $colors['site']['button-secondary-text']; ?>;
 }
 
 .button.button-outline,
