@@ -5,7 +5,7 @@
 \*------------------------------*/
 
 .panel {
-	background-color: <?php echo $colors['site']['accent']; ?>;
+	background-color: <?php echo $colors['palette']['surface']; ?>;
 	padding-block: <?php echo $half; ?>px;
 	position: relative;
 }

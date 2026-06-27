@@ -2,14 +2,25 @@
 /**
  * Create Site Design admin page.
  *
- * @todo Rename to design, merge $this->colors and phase out $this->options
  * @since 5.0
  */
 
 class md_colors extends md_api {
 
+	// Setup properties
+
 	private $colors;
 	private $defaults;
+
+	/**
+	 * Run high level actions, filters, and define dynamic properties.
+	 *
+	 * @since 5.0
+	 */
+
+	public function actions() {
+		$this->defaults = $this->design()->defaults();
+	}
 
 	/**
 	 * Register admin page.
@@ -18,6 +29,8 @@ class md_colors extends md_api {
 	 */
 
 	public function register() {
+		$this->build_colors();
+
 		$fields = $this->colors;
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
@@ -25,8 +38,9 @@ class md_colors extends md_api {
 		$fields['palette'] = $fields['custom'] = array(
 			'type' => 'group',
 			'fields' => array(
-				'hex'  => array( 'type' => 'color' ),
-				'name' => array( 'type' => 'text' )
+				'hex' => array( 'type' => 'color' ),
+				'name' => array( 'type' => 'text' ),
+				'key' => array( 'type' => 'text' )
 			)
 		);
 
@@ -57,8 +71,7 @@ class md_colors extends md_api {
 		$options = $this->options();
 		$defaults = $this->defaults;
 		$line_height = $this->design()->values()['typography']['body']['line_height']['desktop'];
-		$palette = apply_filters( 'md_color_palette', array() );
-
+		$palette = $this->design()->palette();
 		$design = md_setting( array( 'colors', 'design' ) );
 
 		$post_width = round( 21 * $line_height );
@@ -74,234 +87,65 @@ class md_colors extends md_api {
 	}
 
 	/**
-	 * Actions, filters, and properties.
+	 * Format all known colors from the master list into a register[$fields]
+	 * format for proper nd safe save.
 	 *
-	 * @since 5.0
+	 * @since 6.0
 	 */
 
-	public function actions() {
-		$this->defaults = $this->design()->defaults();
-		$this->colors = array(
-			'site' => array(
-				'text-main' => array( 'inherit' => 'text-main' ),
-				'text-secondary' => array( 'inherit' => 'text-secondary' ),
-				'links' => array( 'inherit' => 'primary' ),
-				'links-secondary' => array( 'inherit' => 'text-secondary' ),
-				'headline' => array( 'inherit' => 'text-main' ),
-				'headline-links' => array( 'inherit' => 'text-main' ),
-				'button' => array(),
-				'button-text' => array(),
-				'button-secondary' => array(),
-				'button-secondary-text' => array()
-			),
-			'header' => array(
-				'bg_color' => array(),
-				'border_color' => array( 'inherit' => 'border' ),
-				'color' => array( 'inherit' => 'text-main' )
-			),
-			'menu' => array(
-				'links' => array( 'inherit' => 'text-main' ),
-				'hover' => array( 'inherit' => 'primary' ),
-				'active' => array( 'inherit' => 'primary' )
-			),
-			'submenu' => array(
-				'bg_color' => array( 'inherit' => 'background' ),
-				'links' => array( 'inherit' => 'text-secondary' ),
-				'hover' => array( 'inherit' => 'primary' )
-			),
-			'content' => array(
-				'bg_color' => array( 'inherit' => 'background' ),
-				'body_color' => array( 'inherit' => 'surface' ),
-				'border_color' => array( 'inherit' => 'border' ),
-				'page_cover' => array()
-			),
-			'sidebar' => array(
-				'bg_color' => array(),
-				'text' => array( 'inherit' => 'text-secondary' ),
-				'title' => array( 'inherit' => 'text-main' ),
-				'title_link' => array( 'inherit' => 'text-main' ),
-				'links' => array( 'inherit' => 'text-secondary' )
-			),
-			'footer' => array(
-				'bg_color' => array(),
-				'border_color' => array( 'inherit' => 'border' ),
-				'text' => array( 'inherit' => 'text-main' ),
-				'title' => array( 'inherit' => 'text-main' ),
-				'title_link' => array( 'inherit' => 'text-main' ),
-				'links' => array( 'inherit' => 'muted' )
-			)
-		);
+	private function build_colors() {
+		$palette = apply_filters( 'md_color_palette', array() );
 
-		foreach ( $this->colors as $group => $fields )
-			foreach ( $fields as $field => $args ) {
-				$args['type'] = 'color';
+		$this->colors = array();
 
-				if ( ! empty( $this->defaults['colors'][$group][$field] ) )
-					$args['default'] = esc_attr( $this->defaults['colors'][$group][$field] );
+		foreach ( $this->design()->color_groups() as $group => $fields )
+			foreach ( $fields as $field => $options ) {
+				$args = array( 'type' => 'color' );
+
+				if ( ! empty( $options['inherit'] ) )
+					$args['inherit'] = $options['inherit'];
+
+				$default = isset( $this->defaults['colors'][$group][$field] ) ? $this->defaults['colors'][$group][$field] : '';
+
+				if ( is_array( $default ) )
+					$default = ! empty( $default['inherit'] ) && isset( $palette[$default['inherit']] ) ? $palette[$default['inherit']]['hex'] : '';
+
+				if ( ! $default && ! empty( $options['default'] ) )
+					$default = $options['default'];
+
+				if ( $default )
+					$args['default'] = esc_attr( $default );
 
 				$this->colors[$group][$field] = $args;
 			}
 	}
 
 	/**
-	 * Organize options with labels.
+	 * Format options from master color list to render as admin fields.
 	 *
 	 * @since 5.0
 	 */
 
 	public function options() {
-		return array(
-			'text' => array(
-				'text-main' => array(
-					'label'   => __( 'Text', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'text-secondary' => array(
-					'label'   => __( 'Text Secondary', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'links' => array(
-					'label'   => __( 'Links', 'md' ),
-					'inherit' => 'primary'
-				),
-				'links-secondary' => array(
-					'label'   => __( 'Links Secondary', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'headline' => array(
-					'label'   => __( 'Headline', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'headline-links' => array(
-					'label'   => __( 'Headline Links', 'md' ),
-					'inherit' => 'text-main'
-				)
-			),
-			'button' => array(
-				'button' => array(
-					'label'   => __( 'Background', 'md' ),
-					'default' => $this->defaults['colors']['site']['button']
-				),
-				'button-text' => array(
-					'label'   => __( 'Text', 'md' ),
-					'default' => $this->defaults['colors']['site']['button-text']
-				)
-			),
-			'button-secondary' => array(
-				'button-secondary' => array(
-					'label'   => __( 'Background', 'md' ),
-					'default' => $this->defaults['colors']['site']['button-secondary']
-				),
-				'button-secondary-text' => array(
-					'label'   => __( 'Text', 'md' ),
-					'default' => $this->defaults['colors']['site']['button-secondary-text']
-				)
-			),
-			'header' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' )
-				),
-				'border_color' => array(
-					'label'   => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'color' => array(
-					'label'   => __( 'Text', 'md' ),
-					'inherit' => 'text-main'
-				)
-			),
-			'menu' => array(
-				'links' => array(
-					'label'   => __( 'Links', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'hover' => array(
-					'label'   => __( 'Links Hover', 'md' ),
-					'inherit' => 'primary'
-				),
-				'active' => array(
-					'label'   => __( 'Links Active', 'md' ),
-					'inherit' => 'primary'
-				)
-			),
-			'submenu' => array(
-				'bg_color' => array(
-					'label'   => __( 'Background', 'md' ),
-					'inherit' => 'background'
-				),
-				'links' => array(
-					'label'   => __( 'Links', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'hover' => array(
-					'label'   => __( 'Links Hover', 'md' ),
-					'inherit' => 'primary'
-				)
-			),
-			'content' => array(
-				'body_color' => array(
-					'label'   => __( 'Content Body', 'md' ),
-					'inherit' => 'surface'
-				),
-				'bg_color' => array(
-					'label'   => __( 'Content Box', 'md' ),
-					'inherit' => 'background'
-				),
-				'border_color' => array(
-					'label'   => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'page_cover' => array(
-					'label' => __( 'Page Cover', 'md' )
-				)
-			),
-			'sidebar' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' )
-				),
-				'text' => array(
-					'label'   => __( 'Text', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'title' => array(
-					'label'   => __( 'Title', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title_link' => array(
-					'label'   => __( 'Title Link', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'links' => array(
-					'label'   => __( 'Links', 'md' ),
-					'inherit' => 'text-secondary'
-				)
-			),
-			'footer' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' )
-				),
-				'border_color' => array(
-					'label'   => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'text' => array(
-					'label'   => __( 'Text', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title' => array(
-					'label'   => __( 'Title', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title_link' => array(
-					'label'   => __( 'Title Link', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'links' => array(
-					'label'   => __( 'Links', 'md' ),
-					'inherit' => 'muted'
-				)
-			)
-		);
+		$sections = array();
+
+		foreach ( $this->design()->color_groups() as $group => $fields )
+			foreach ( $fields as $field => $options ) {
+				$section = ! empty( $options['section'] ) ? $options['section'] : $group;
+				$entry = array( 'label' => $options['label'] );
+
+				if ( ! empty( $options['inherit'] ) )
+					$entry['inherit'] = $options['inherit'];
+
+				if ( ! empty( $options['default'] ) )
+					$entry['default'] = $options['default'];
+				elseif ( ! empty( $this->colors[$group][$field]['default'] ) )
+					$entry['default'] = $this->colors[$group][$field]['default'];
+
+				$sections[$section][$field] = $entry;
+			}
+
+		return $sections;
 	}
 
 }

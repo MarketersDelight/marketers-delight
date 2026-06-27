@@ -358,7 +358,7 @@ function md_parse_tokens( $args = array() ) {
 			return apply_filters( 'md_parse_tokens', $definitions, $args );
 
 		$tokens = array_fill_keys( array_keys( $definitions ), '' );
-		$term   = get_queried_object();
+		$term = get_queried_object();
 
 		if ( $term instanceof WP_Term ) {
 			$taxonomy  = get_taxonomy( $term->taxonomy );
@@ -415,6 +415,41 @@ function md_parse_tokens( $args = array() ) {
 }
 
 /**
+ * Return a hex code, whether it's from an array or string.
+ *
+ * @since 6.0
+ */
+
+function md_color_hex( $value ) {
+	if ( is_array( $value ) )
+		return ! empty( $value['hex'] ) ? $value['hex'] : '';
+
+	return $value;
+}
+
+/**
+ * Renders the proper color type class from color option data.
+ * $value = array( 'inherit' => 'color-group' );
+ *
+ * @since 6.0
+ */
+
+function md_color_class( $value = array(), $type = 'color' ) {
+	if ( ! is_array( $value ) || empty( $value['inherit'] ) )
+		return '';
+
+	$suffixes = array(
+		'color' => 'color',
+		'bg_color' => 'background-color',
+		'border_color' => 'border-color'
+	);
+
+	$suffix = isset( $suffixes[$type] ) ? $suffixes[$type] : $type;
+
+	return 'has-' . sanitize_html_class( $value['inherit'] ) . '-' . $suffix;
+}
+
+/**
  * Return inline style selector with sanitized values.
  *
  * @since 5.0
@@ -423,8 +458,11 @@ function md_parse_tokens( $args = array() ) {
 function md_style( $fields ) {
 	$attributes = array();
 
-	if ( ! empty( $fields['bg_color'] ) )
-		$attributes[] = 'background-color:' . esc_attr( $fields['bg_color'] ) . ';';
+	if ( ! empty( $fields['bg_color'] ) ) {
+		$val = md_color_hex( $fields['bg_color'] );
+		if ( $val )
+			$attributes[] = 'background-color:' . esc_attr( $val ) . ';';
+	}
 
 	if ( ! empty( $fields['bg_image'] ) )
 		$attributes[] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
@@ -432,8 +470,11 @@ function md_style( $fields ) {
 	if ( ! empty( $fields['bg_size'] ) )
 		$attributes[] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
 
-	if ( ! empty( $fields['border_color'] ) )
-		$attributes[] = 'border-color:' . esc_attr( $fields['border_color'] ) . ';';
+	if ( ! empty( $fields['border_color'] ) ) {
+		$val = md_color_hex( $fields['border_color'] );
+		if ( $val )
+			$attributes[] = 'border-color:' . esc_attr( $val ) . ';';
+	}
 
 	if ( ! empty( $fields['border'][2] ) ) {
 		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
@@ -441,8 +482,11 @@ function md_style( $fields ) {
 		$attributes[] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $fields['border'][2] ) . ';';
 	}
 
-	if ( ! empty( $fields['color'] ) )
-		$attributes[] = 'color:' . esc_attr( $fields['color'] ) . ';';
+	if ( ! empty( $fields['color'] ) ) {
+		$val = md_color_hex( $fields['color'] );
+		if ( $val )
+			$attributes[] = 'color:' . esc_attr( $val ) . ';';
+	}
 
 	if ( ! empty( $fields['width'] ) )
 		$attributes[] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';

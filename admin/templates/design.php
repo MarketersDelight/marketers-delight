@@ -8,21 +8,22 @@
 
 	<div class="md-widget md-toggle md-sep-small">
 
-		<h3 class="md-widget-title"><?php echo __( 'Branding', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><?php echo __( 'Color Palette', 'md' ); ?></h3>
 
 		<div class="md-widget-item">
 
-			<p class="description"><?php echo __( '<b>Tip:</b> Save any changes you make to your brand colors to see how they apply across your site.', 'md' ); ?></p>
+			<p class="description"><?php echo __( '<b>Tip:</b> Set the core colors of your website here. You can reuse these and change them later here all in one place. Need more colors? Add custom colors below.', 'md' ); ?></p>
 
 			<hr class="md-sep-small" />
 
-			<div class="columns-2 columns-30-70 columns-half md-sep-micro">
+			<div class="columns-3 columns-25-50-25 columns-half md-sep-micro">
 				<b class="col col1"><?php echo __( 'Color', 'md' ); ?></b>
 				<b class="col col2"><?php echo __( 'Name', 'md' ); ?></b>
+				<b class="col col3"><?php echo __( 'Key', 'md' ); ?></b>
 			</div>
 
 			<?php foreach ( $palette as $color_key => $color ) : ?>
-			<div class="columns-2 columns-30-70 columns-half md-sep">
+			<div class="columns-3 columns-25-50-25 columns-half md-sep">
 				<div class="col col1">
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
 						'type' => 'color',
@@ -33,7 +34,16 @@
 					<?php $this->fields->field( array( 'palette', $color_key, 'name' ), array(
 						'type' => 'text',
 						'readonly' => true,
+						'wrap_classes' => 'md-field-flex',
 						'placeholder' => ucwords( str_replace( '-', ' ', $color_key ) )
+					) ); ?>
+				</div>
+				<div class="col col3">
+					<?php $this->fields->field( array( 'palette', $color_key, 'key' ), array(
+						'type' => 'text',
+						'readonly' => true,
+						'hide_icon' => true,
+						'placeholder' => $color_key
 					) ); ?>
 				</div>
 			</div>
@@ -44,18 +54,29 @@
 				'label' => __( 'Custom Colors', 'md' ),
 				'wrap_classes' => 'md-sep',
 				'callback' => function( $group, $field ) {
-					echo '<div class="columns-2 columns-half columns-30-70">'.
+					$color = md_setting( array( 'colors', $group, $field ) );
+					$key = ! empty( $color['key'] ) ? $color['key'] : ( ! empty( $color['name'] ) ? $color['name'] : '' );
+
+					echo '<div class="columns-3 columns-25-50-25 columns-half">'.
 						 '<div class="col col1">';
 
-					$this->fields->field( array( $group, $field, 'hex' ), array(
-						'type' => 'color',
-					) );
+					$this->fields->field( array( $group, $field, 'hex' ), array( 'type' => 'color' ) );
 
 					echo '</div>'.
 						 '<div class="col col2">';
 
 					$this->fields->field( array( $group, $field, 'name' ), array(
 						'type' => 'text',
+						'wrap_classes' => 'md-field-flex',
+						'readonly_after_save' => true
+					) );
+
+					echo '</div>'.
+						 '<div class="col col3">';
+
+					$this->fields->field( array( $group, $field, 'key' ), array(
+						'type' => 'text',
+						'placeholder' => sanitize_title( $key )
 					) );
 
 					echo '</div>'.
@@ -101,7 +122,8 @@
 					<?php $this->fields->field( array( 'site', $field ), array(
 						'type' => 'color',
 						'label' => $opts['label'],
-						'default' => $opts['default']
+						'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+						'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 					) ); ?>
 				</div>
 				<?php endforeach; ?>
@@ -117,7 +139,8 @@
 					<?php $this->fields->field( array( 'site', $field ), array(
 						'type' => 'color',
 						'label' => $opts['label'],
-						'default' => $opts['default']
+						'inherit' => isset( $opts['inherit'] ) ? $opts['inherit'] : null,
+						'default' => isset( $opts['default'] ) ? $opts['default'] : ''
 					) ); ?>
 				</div>
 				<?php endforeach; ?>

@@ -1,20 +1,26 @@
 <?php
 /**
- * Customize the output of a link or button displayed from any MD button settings page
- * or the md_get_link and md_link() function with passed data.
+ * Would you believe all the things a link can do? Customize the output
+ * of a link or button displayed from any MD button settings page or
+ * the md_get_link and md_link() function with passed data.
  *
  * @since 6.0
  */
 
 $h = 'span';
 $classes = array( 'link' );
-$has_wrap = $fields['name'] && $fields['subtitle'] && $fields['icon'] ? true : false;
+$has_wrap = $fields['name'] && $fields['subtitle'] && $fields['icon'];
+
+// Plain link
 
 if ( $fields['type'] == 'url' && $fields['url'] ) {
 	$h = 'a';
 	$attrs .= ' href="' . esc_url( $fields['url'] ) . '"';
 	$attrs .= isset( $fields['settings']['new'] ) ? ' target="_blank"' : '';
 }
+
+// Phone number
+
 elseif ( $fields['type'] == 'phone' ) {
 	$h = 'a';
 	$attrs .= ' href="tel:' . esc_html( $fields['phone'] ) . '"';
@@ -23,11 +29,16 @@ elseif ( $fields['type'] == 'phone' ) {
 	if ( empty( $fields['name'] ) )
 		$fields['name'] = esc_html( $phone );
 }
+
+// Popup
+
 elseif ( $fields['type'] == 'popup' && $fields['popup'] && function_exists( 'md_popup' ) ) {
 	$attrs .= ' data-popup="' . $fields['popup'] . '"';
 	$classes[] = 'popup-trigger';
 	md_popup( array( 'id' => $fields['popup'] ) );
 }
+
+// Turn link into a button
 
 if ( $fields['style'] == 'button' ) {
 	$classes[] = 'button';
@@ -39,23 +50,41 @@ if ( $fields['style'] == 'button' ) {
 		foreach ( $fields['button_style'] as $button_style => $val )
 			$classes[] = 'button-' . $button_style;
 
-	if ( $fields['color'] )
-		if ( in_array( 'outline', $fields['button_style'] ) )
-			$styles['color'] = $styles['border_color'] = $fields['color'];
-		else
-			$styles['bg_color'] = $fields['color'];
+	if ( $fields['color'] ) {
+		if ( in_array( 'outline', $fields['button_style'] ) ) {
+			if ( $class = md_color_class( $fields['color'], 'color' ) ) {
+				$classes[] = $class;
+				$classes[] = md_color_class( $fields['color'], 'border_color' );
+			}
+			elseif ( $hex = md_color_hex( $fields['color'] ) )
+				$styles['color'] = $styles['border_color'] = $hex;
+		}
+		else {
+			if ( $class = md_color_class( $fields['color'], 'bg_color' ) )
+				$classes[] = $class;
+			elseif ( $hex = md_color_hex( $fields['color'] ) )
+				$styles['bg_color'] = $hex;
+		}
+	}
 
 }
-elseif ( $fields['color'] )
-	$styles['color'] = $fields['color'];
+
+// Set a color on regular links
+
+elseif ( $fields['color'] ) {
+	if ( $class = md_color_class( $fields['color'] ) )
+		$classes[] = $class;
+	elseif ( $hex = md_color_hex( $fields['color'] ) )
+		$styles['color'] = $hex;
+}
+
+// Visibility options
 
 if ( $fields['toggle']['hide_label'] )
 	$classes[] = 'hide-label';
 
 if ( $fields['toggle']['hide_label_mobile'] )
 	$classes[] = 'hide-label-mobile';
-
-$attrs .= md_style( $styles );
 
 foreach ( md_get_visibility_classes( $fields['visibility'] ) as $class )
 	$classes[] = $class;
@@ -69,9 +98,10 @@ if ( isset( $fields['settings']['icon_end'] ) )
 if ( $fields['classes'] )
 	$classes[] = $fields['classes'];
 
-$classes = join( ' ', $classes );
+// Finally, render link with its final attributes
 
-$attrs .= ' class="' . esc_attr( $classes ) . '"';
+$attrs .= ' class="' . esc_attr( join( ' ', $classes ) ) . '"';
+$attrs .= md_style( $styles );
 
 $html =
 	"<$h{$attrs}>".

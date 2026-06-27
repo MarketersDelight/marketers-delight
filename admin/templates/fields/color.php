@@ -8,7 +8,7 @@ if ( $inherit_key ) :
 	$inherit_val = is_array( $option ) && isset( $option['inherit'] ) ? $option['inherit'] : $inherit_key;
 	$hex_val = is_array( $option ) && isset( $option['hex'] ) ? $option['hex'] : '';
 	$is_inherit = empty( $hex_val );
-	$swatch_hex = $is_inherit && isset( $palette[$inherit_val] ) ? $palette[$inherit_val] : $hex_val;
+	$swatch_hex = $is_inherit && isset( $palette[$inherit_val] ) ? $palette[$inherit_val]['hex'] : $hex_val;
 ?>
 
 <div class="md-color-picker-wrap md-color-scheme-wrap <?php echo $is_inherit ? 'is-inherit' : 'is-custom'; ?>" data-default-inherit="<?php echo esc_attr( $inherit_key ); ?>">
@@ -16,8 +16,8 @@ if ( $inherit_key ) :
 
 	<select name="<?php echo esc_attr( $name ); ?>[inherit]" class="md-color-scheme-select">
 		<?php foreach ( $palette as $key => $color ) : ?>
-		<option value="<?php echo esc_attr( $key ); ?>" data-hex="<?php echo esc_attr( $color ); ?>" <?php selected( $inherit_val, $key ); ?>>
-			<?php echo esc_html( ucwords( str_replace( '-', ' ', $key ) ) ); ?>
+		<option value="<?php echo esc_attr( $key ); ?>" data-hex="<?php echo esc_attr( $color['hex'] ); ?>" <?php selected( $inherit_val, $key ); ?>>
+			<?php echo esc_html( $color['name'] ); ?>
 		</option>
 		<?php endforeach; ?>
 	</select>

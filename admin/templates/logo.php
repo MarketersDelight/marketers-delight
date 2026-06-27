@@ -19,8 +19,8 @@
 		</div>
 	</div>
 
-	<div class="columns-2 columns-single">
-		<div class="col md-sep-small">
+	<div class="columns-2 columns-single md-sep-small">
+		<div class="col">
 			<?php foreach ( array( 'desktop', 'mobile' ) as $device ) : ?>
 				<div class="md-<?php echo $device; ?>">
 					<?php $this->fields->field( array( 'logo_width', $device ), array(
@@ -42,7 +42,7 @@
 		</div>
 	</div>
 
-	<div class="md-header-logo-html">
+	<div class="md-header-logo-html md-sep-small">
 		<?php $this->fields->field( 'logo_html', array(
 			'type' => 'code',
 			'rows' => 8,
@@ -62,7 +62,7 @@
 					<?php $this->fields->field( array( 'site_title', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'default' => $defaults['logo']['site_title']['color']
+						'inherit' => 'text-main'
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">
@@ -98,7 +98,7 @@
 					<?php $this->fields->field( array( 'site_tagline', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'default' => $defaults['logo']['site_tagline']['color']
+						'inherit' => 'text-secondary'
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">

@@ -43,6 +43,7 @@ $classes = join( ' ', $classes );
 				<div class="col col2 field-no-label">
 					<?php $this->field( $fields['settings']['field'], array(
 						'type' => 'checkbox',
+						'wrap_classes' => 'mt-half',
 						'options' => array(
 							'new' => __( 'Open in new tab', 'md' ),
 							'icon_end' => __( 'Show icon at end', 'md' )
@@ -89,7 +90,7 @@ $classes = join( ' ', $classes );
 	</div>
 	<?php endif; ?>
 
-	<div class="columns-4 columns-half md-full-select md-sep-small">
+	<div class="columns-2 columns-single md-full-select md-sep-small">
 
 		<div class="col">
 			<?php $this->field( $fields['style']['field'], array(
@@ -106,24 +107,26 @@ $classes = join( ' ', $classes );
 		<div class="col">
 			<?php $this->field( $fields['color']['field'], array(
 				'type' => 'color',
-				'label' => __( 'Color', 'md' )
-			) ); ?>
-		</div>
-
-		<div class="col">
-			<?php $this->field( $fields['toggle']['field'], array(
-				'type' => 'checkbox',
-				'classes' => 'md-sep-top-small',
-				'options' => array(
-					'hide_label' => __( 'Hide label', 'md' ),
-					'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
-				)
+				'label' => __( 'Color', 'md' ),
+				'inherit' => 'secondary'
 			) ); ?>
 		</div>
 
 	</div>
 
-	<div class="is-button columns-4 columns-single md-sep-small">
+	<div class="md-sep-small">
+		<?php $this->field( $fields['toggle']['field'], array(
+			'type' => 'checkbox',
+			'classes' => 'md-sep-top-small',
+			'inline' => true,
+			'options' => array(
+				'hide_label' => __( 'Hide label', 'md' ),
+				'hide_label_mobile' => __( 'Hide label on mobile', 'md' )
+			)
+		) ); ?>
+	</div>
+
+	<div class="is-button columns-4 columns-single md-sep-micro">
 
 		<div class="col">
 			<?php $this->field( $fields['button_style']['field'], array(

@@ -7,6 +7,16 @@
             "defaultGradients": false,
             "palette": [
                 {
+                    "name": "Background",
+                    "slug": "background",
+                    "color": "#FFFFFF"
+                },
+                {
+                    "name": "Surface",
+                    "slug": "surface",
+                    "color": "#F0F0F0"
+                },
+                {
                     "name": "Primary",
                     "slug": "primary",
                     "color": "#AE2525"
@@ -22,29 +32,24 @@
                     "color": "#DDDDDD"
                 },
                 {
-                    "name": "Action",
-                    "slug": "action",
-                    "color": "#EDF6FD"
-                },
-                {
                     "name": "Accent",
                     "slug": "accent",
                     "color": "#FFFBCC"
                 },
                 {
-                    "name": "Text",
+                    "name": "Border",
+                    "slug": "border",
+                    "color": "#CCCCCC"
+                },
+                {
+                    "name": "Text Main",
                     "slug": "text-main",
                     "color": "#1E1E1E"
                 },
                 {
-                    "name": "Secondary Text",
+                    "name": "Text Secondary",
                     "slug": "text-secondary",
                     "color": "#777777"
-                },
-                {
-                    "name": "Links",
-                    "slug": "links",
-                    "color": "#AE2525"
                 },
                 {
                     "name": "Button",
@@ -52,14 +57,14 @@
                     "color": "#22A340"
                 },
                 {
-                    "name": "Button Secondary",
-                    "slug": "button-secondary",
-                    "color": "#999999"
+                    "name": "My own custom color",
+                    "slug": "my-own-custom-color",
+                    "color": "#2DFF3C"
                 },
                 {
-                    "name": "White",
-                    "slug": "white",
-                    "color": "#FFFFFF"
+                    "name": "Vin's Color",
+                    "slug": "vins-color",
+                    "color": "#CE96FF"
                 }
             ]
         },

@@ -8,7 +8,7 @@ button, input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
-	gap: <?php echo $third; ?>px <?php echo $half; ?>px;
+	gap: <?php echo $third; ?>px;
 	line-height: 1;
 }
 
@@ -43,7 +43,7 @@ button, input[type="submit"],
 /* TAGS */
 
 .tag {
-	background-color: <?php echo $colors['site']['tertiary']; ?>;
+	background-color: <?php echo $colors['palette']['tertiary']; ?>;
 	border-radius: 50px;
 	color: <?php echo $colors['site']['text-main']; ?>;
 	flex-shrink: 0;

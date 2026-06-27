@@ -1,13 +1,14 @@
-<div class="columns-2 columns-single md-sep-small">
+<div class="columns-2 columns-60-40 columns-single md-sep-small">
 
 	<div class="col col1">
 
-		<div class="columns-2 columns-half mb-half">
+		<div class="columns-2 columns-single mb-half">
 
 			<div class="col">
 				<?php $this->fields->field( 'position', array(
 					'type' => 'select',
 					'label' => __( 'Position', 'md' ),
+					'style' => 'width: 100%',
 					'empty_label' => $position_label,
 					'options' => $position_options
 				) ); ?>
@@ -17,7 +18,7 @@
 				<?php $this->fields->field( 'bg_color', array(
 					'type' => 'color',
 					'label' =>  __( 'Overlay Color', 'md' ),
-					'default' => md_setting( array( 'colors', 'content', 'page_cover' ), 'rgba(0, 0, 0, 0.5)' )
+					'default' => $this->design()->values()['colors']['content']['page_cover']
 				) ); ?>
 			</div>
 

@@ -30,39 +30,31 @@ class md_design {
 			'primary' => '#AE2525',
 			'secondary' => '#2E2E2E',
 			'tertiary' => '#DDDDDD',
-			'action' => '#EDF6FD',
 			'accent' => '#FFFBCC',
 			'border' => '#CCCCCC',
-			'muted' => '#777777',
 			'text-main' => '#1E1E1E',
-			'text-secondary' => '#777777'
+			'text-secondary' => '#777777',
+			'button' => '#22A340'
 		);
 	}
 
 	/**
-	 * Return the live palette: hardcoded base overridden by any user Branding saves.
-	 * colors.main overrides existing keys; colors.palette adds custom ones.
+	 * Register color palette in Blocks Editor.
 	 *
-	 * @since 6.0
+	 * since 4.9
 	 */
 
-	public function active_palette() {
-		$palette = $this->palette();
-		$colors = md_setting( 'colors' );
+	public function editor_colors() {
+		$colors = array();
 
-		if ( ! empty( $colors['palette'] ) )
-			foreach ( $colors['palette'] as $key => $data )
-				if ( ! empty( $data['hex'] ) )
-					$palette[$key] = $data['hex'];
+		foreach ( $this->active_palette() as $key => $color )
+			$colors[] = array(
+				'name' => $color['name'],
+				'slug' => $key,
+				'color' => $color['hex']
+			);
 
-		if ( ! empty( $colors['custom'] ) )
-			foreach ( $colors['custom'] as $data )
-				if ( ! empty( $data['name'] ) && ! empty( $data['hex'] ) ) {
-					$key = sanitize_key( $data['name'] );
-					$palette[$key] = $data['hex'];
-				}
-
-		return $palette;
+		return $colors;
 	}
 
 	/**
@@ -84,7 +76,48 @@ class md_design {
 
 		$values['colors'] = $this->resolve_colors( $values['colors'] );
 
+		$palette = apply_filters( 'md_color_palette', array() );
+
+		foreach ( $palette as $key => $color )
+			$values['colors']['palette'][$key] = $color['hex'];
+
 		return $values;
+	}
+
+	/**
+	 * Return the live palette: hardcoded base overridden by any user Branding saves.
+	 * colors.main overrides existing keys; colors.palette adds custom ones.
+	 *
+	 * @since 6.0
+	 */
+
+	public function active_palette() {
+		$palette = array();
+
+		foreach ( $this->palette() as $key => $hex )
+			$palette[$key] = array(
+				'hex' => $hex,
+				'name' => ucwords( str_replace( '-', ' ', $key ) )
+			);
+
+		$colors = md_setting( 'colors' );
+
+		if ( ! empty( $colors['palette'] ) )
+			foreach ( $colors['palette'] as $key => $data )
+				if ( ! empty( $data['hex'] ) && isset( $palette[$key] ) )
+					$palette[$key]['hex'] = $data['hex'];
+
+		if ( ! empty( $colors['custom'] ) )
+			foreach ( $colors['custom'] as $data )
+				if ( ! empty( $data['name'] ) && ! empty( $data['hex'] ) ) {
+					$key = sanitize_title( ! empty( $data['key'] ) ? $data['key'] : $data['name'] );
+					$palette[$key] = array(
+						'hex' => $data['hex'],
+						'name' => $data['name']
+					);
+				}
+
+		return $palette;
 	}
 
 	/**
@@ -94,7 +127,7 @@ class md_design {
 	 * @since 6.0
 	 */
 
-	private function resolve_colors( $colors =array() ) {
+	private function resolve_colors( $colors = array() ) {
 		$palette = apply_filters( 'md_color_palette', array() );
 
 		foreach ( $colors as $group => $fields ) {
@@ -106,7 +139,7 @@ class md_design {
 					continue;
 
 				if ( ! empty( $value['inherit'] ) && isset( $palette[$value['inherit']] ) )
-					$colors[$group][$key] = $palette[$value['inherit']];
+					$colors[$group][$key] = $palette[$value['inherit']]['hex'];
 				elseif ( isset( $value['hex'] ) )
 					$colors[$group][$key] = $value['hex'];
 				else
@@ -118,48 +151,171 @@ class md_design {
 	}
 
 	/**
-	 * Register color palette in Blocks Editor.
+	 * Single source of truth for all user-configurable color fields.
+	 * Drives admin field registration and admin UI labels.
 	 *
-	 * since 4.9
+	 * @since 6.0
 	 */
 
-	public function editor_colors() {
-		$colors = array();
-		$values = $this->values();
-		$keys = array(
-			'primary' => __( 'Primary', 'md' ),
-			'secondary' => __( 'Secondary', 'md' ),
-			'tertiary' => __( 'Tertiary', 'md' ),
-			'action' => __( 'Action', 'md' ),
-			'accent' => __( 'Accent', 'md' ),
-			'text-main' => __( 'Text', 'md' ),
-			'text-secondary' => __( 'Secondary Text', 'md' ),
-			'links' => __( 'Links', 'md' ),
-			'button' => __( 'Button', 'md' ),
-			'button-secondary' => __( 'Button Secondary', 'md' ),
-			'white' => array(
-				'name' => __( 'White', 'md' ),
-				'color' => '#FFFFFF'
+	public function color_groups() {
+		return array(
+			'site' => array(
+				'text-main' => array(
+					'label' => __( 'Text', 'md' ),
+					'inherit' => 'text-main',
+					'section' => 'text'
+				),
+				'text-secondary' => array(
+					'label' => __( 'Text Secondary', 'md' ),
+					'inherit' => 'text-secondary',
+					'section' => 'text'
+				),
+				'links' => array(
+					'label' => __( 'Links', 'md' ),
+					'inherit' => 'primary',
+					'section' => 'text'
+				),
+				'links-secondary' => array(
+					'label' => __( 'Links Secondary', 'md' ),
+					'inherit' => 'text-secondary',
+					'section' => 'text'
+				),
+				'headline' => array(
+					'label' => __( 'Headline', 'md' ),
+					'inherit' => 'text-main',
+					'section' => 'text'
+				),
+				'headline-links' => array(
+					'label' => __( 'Headline Links', 'md' ),
+					'inherit' => 'text-main',
+					'section' => 'text'
+				),
+				'button' => array(
+					'label' => __( 'Background', 'md' ),
+					'inherit' => 'button',
+					'section' => 'button'
+				),
+				'button-text' => array(
+					'label' => __( 'Text', 'md' ),
+					'default' => '#FFFFFF',
+					'section' => 'button'
+				),
+				'button-secondary' => array(
+					'label' => __( 'Background', 'md' ),
+					'inherit' => 'secondary',
+					'section' => 'button-secondary'
+				),
+				'button-secondary-text' => array(
+					'label' => __( 'Text', 'md' ),
+					'default' => '#FFFFFF',
+					'section' => 'button-secondary'
+				)
+			),
+			'header' => array(
+				'bg_color' => array(
+					'label' => __( 'Background', 'md' )
+				),
+				'border_color' => array(
+					'label' => __( 'Border', 'md' ),
+					'inherit' => 'border'
+				),
+				'color' => array(
+					'label' => __( 'Text', 'md' ),
+					'inherit' => 'text-main'
+				)
+			),
+			'menu' => array(
+				'links' => array(
+					'label' => __( 'Links', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'hover' => array(
+					'label' => __( 'Links Hover', 'md' ),
+					'inherit' => 'primary'
+				),
+				'active' => array(
+					'label' => __( 'Links Active', 'md' ),
+					'inherit' => 'primary'
+				)
+			),
+			'submenu' => array(
+				'bg_color' => array(
+					'label' => __( 'Background', 'md' ),
+					'inherit' => 'background'
+				),
+				'links' => array(
+					'label' => __( 'Links', 'md' ),
+					'inherit' => 'text-secondary'
+				),
+				'hover' => array(
+					'label' => __( 'Links Hover', 'md' ),
+					'inherit' => 'primary'
+				)
+			),
+			'content' => array(
+				'body_color' => array(
+					'label' => __( 'Content Body', 'md' ),
+					'inherit' => 'surface'
+				),
+				'bg_color' => array(
+					'label' => __( 'Content Box', 'md' ),
+					'inherit' => 'background'
+				),
+				'border_color' => array(
+					'label' => __( 'Border', 'md' ),
+					'inherit' => 'border'
+				),
+				'page_cover' => array(
+					'label' => __( 'Page Cover', 'md' )
+				)
+			),
+			'sidebar' => array(
+				'bg_color' => array(
+					'label' => __( 'Background', 'md' )
+				),
+				'text' => array(
+					'label' => __( 'Text', 'md' ),
+					'inherit' => 'text-secondary'
+				),
+				'title' => array(
+					'label' => __( 'Title', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'title_link' => array(
+					'label' => __( 'Title Link', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'links' => array(
+					'label' => __( 'Links', 'md' ),
+					'inherit' => 'text-secondary'
+				)
+			),
+			'footer' => array(
+				'bg_color' => array(
+					'label' => __( 'Background', 'md' )
+				),
+				'border_color' => array(
+					'label' => __( 'Border', 'md' ),
+					'inherit' => 'border'
+				),
+				'text' => array(
+					'label' => __( 'Text', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'title' => array(
+					'label' => __( 'Title', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'title_link' => array(
+					'label' => __( 'Title Link', 'md' ),
+					'inherit' => 'text-main'
+				),
+				'links' => array(
+					'label' => __( 'Links', 'md' ),
+					'inherit' => 'text-secondary'
+				)
 			)
 		);
-
-		foreach ( $keys as $key => $group ) {
-			if ( is_array( $group ) ) {
-				$color = $group['color'];
-				$name = $group['name'];
-			}
-			else {
-				$color = $values['colors']['site'][$key];
-				$name = $group;
-			}
-			$colors[] = array(
-				'name' => $name,
-				'slug' => $key,
-				'color' => $color
-			);
-		}
-
-		return $colors;
 	}
 
 	/**
@@ -199,7 +355,6 @@ class md_design {
 		// colors
 
 		$colors = $this->palette();
-		$primary_color = md_setting( array( 'colors', 'site', 'primary' ), $colors['primary'] );
 		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
 
 		// calculate layout widths
@@ -227,52 +382,53 @@ class md_design {
 					'primary' => $colors['primary'],
 					'secondary' => $colors['secondary'],
 					'tertiary' => $colors['tertiary'],
-					'action' => $colors['action'],
 					'accent' => $colors['accent'],
-					'text-main' => $colors['text-main'],
-					'text-secondary' => $colors['text-secondary'],
-					'links' => $primary_color,
-					'links-secondary' => $colors['muted'],
-					'button' => '#22A340',
+					'text-main' => array( 'inherit' => 'text-main' ),
+					'text-secondary' => array( 'inherit' => 'text-secondary' ),
+					'links' => array( 'inherit' => 'primary' ),
+					'links-secondary' => array( 'inherit' => 'text-secondary' ),
+					'button' => $colors['button'],
 					'button-text' => '#FFFFFF',
-					'button-secondary' => '#999999',
+					'button-secondary' => $colors['secondary'],
 					'button-secondary-text' => '#FFFFFF',
-					'headline' => $colors['text-main'],
-					'headline-links' => $colors['text-main']
+					'headline' => array( 'inherit' => 'text-main' ),
+					'headline-links' => array( 'inherit' => 'text-main' )
 				),
 				'header' => array(
 					'bg_color' => '',
-					'border_color' => $colors['border'],
-					'color' => $colors['text-main']
+					'border_color' => array( 'inherit' => 'border' ),
+					'color' => array( 'inherit' => 'text-main' )
 				),
 				'menu' => array(
-					'links' => $colors['text-secondary'],
-					'hover' => $primary_color,
-					'active' => $primary_color
+					'links' => array( 'inherit' => 'text-main' ),
+					'hover' => array( 'inherit' => 'primary' ),
+					'active' => array( 'inherit' => 'primary' )
 				),
 				'submenu' => array(
-					'bg_color' => '#FFFFFF',
-					'links' => $colors['text-secondary']
+					'bg_color' => array( 'inherit' => 'background' ),
+					'links' => array( 'inherit' => 'text-secondary' ),
+					'hover' => array( 'inherit' => 'primary' )
 				),
 				'content' => array(
-					'body_color' => $colors['surface'],
-					'bg_color' => '#FFFFFF',
-					'border_color' => $colors['border'],
-					'page_cover' => 'rgba(0, 0, 0, 0.5)'
+					'body_color' => array( 'inherit' => 'surface' ),
+					'bg_color' => array( 'inherit' => 'background' ),
+					'border_color' => array( 'inherit' => 'border' ),
+					'page_cover' => '#00000080'
 				),
 				'sidebar' => array(
-					'text' => $colors['text-secondary'],
-					'title' => $colors['text-main'],
-					'title_link' => $colors['text-main'],
-					'links' => $colors['text-secondary']
+					'bg_color' => '',
+					'text' => array( 'inherit' => 'text-secondary' ),
+					'title' => array( 'inherit' => 'text-main' ),
+					'title_link' => array( 'inherit' => 'text-main' ),
+					'links' => array( 'inherit' => 'text-secondary' )
 				),
 				'footer' => array(
 					'bg_color' => '',
-					'border_color' => $colors['border'],
-					'text' => $colors['text-main'],
-					'title' => $colors['text-main'],
-					'title_link' => $colors['text-main'],
-					'links' => $colors['muted']
+					'border_color' => array( 'inherit' => 'border' ),
+					'text' => array( 'inherit' => 'text-main' ),
+					'title' => array( 'inherit' => 'text-main' ),
+					'title_link' => array( 'inherit' => 'text-main' ),
+					'links' => array( 'inherit' => 'text-secondary' )
 				),
 				'width' => array(
 					'site' => $site_width,
@@ -397,7 +553,7 @@ class md_design {
 					)
 				),
 				'site_tagline' => array(
-					'color' => $colors['muted']
+					'color' => $colors['text-secondary']
 				)
 			)
 		);

@@ -164,7 +164,7 @@ button, input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
-	gap: 10px 16px;
+	gap: 10px;
 	line-height: 1;
 }
 .cta, .wp-block-buttons {
@@ -231,7 +231,7 @@ button:hover, input[type="submit"]:hover,
 	color: inherit;
 }
 .button.button-sec {
-	background-color: #999999;
+	background-color: #2E2E2E;
 	color: #FFFFFF;
 }
 .button.button-outline,
@@ -310,7 +310,7 @@ cite, .tiny {
 	line-height: 33px;
 }
 .highlight {
-	background-color: #EDF6FD;
+	background-color: #FFFBCC;
 	padding-inline: 5px;
 }
 .note {
@@ -504,6 +504,12 @@ cite, .tiny {
 .block-quad-top { padding-block-start: 124px; }
 .block-quad-bot { padding-block-end: 124px; }
 .pb-none { padding-block-end: 0; }
+.has-background-background-color { background-color: #FFFFFF; }
+.has-background-border-color { border-color: #FFFFFF; }
+.has-background-color, a.has-background-color { color: #FFFFFF; }
+.has-surface-background-color { background-color: #F0F0F0; }
+.has-surface-border-color { border-color: #F0F0F0; }
+.has-surface-color, a.has-surface-color { color: #F0F0F0; }
 .has-primary-background-color { background-color: #AE2525; }
 .has-primary-border-color { border-color: #AE2525; }
 .has-primary-color, a.has-primary-color { color: #AE2525; }
@@ -513,30 +519,27 @@ cite, .tiny {
 .has-tertiary-background-color { background-color: #DDDDDD; }
 .has-tertiary-border-color { border-color: #DDDDDD; }
 .has-tertiary-color, a.has-tertiary-color { color: #DDDDDD; }
-.has-action-background-color { background-color: #EDF6FD; }
-.has-action-border-color { border-color: #EDF6FD; }
-.has-action-color, a.has-action-color { color: #EDF6FD; }
 .has-accent-background-color { background-color: #FFFBCC; }
 .has-accent-border-color { border-color: #FFFBCC; }
 .has-accent-color, a.has-accent-color { color: #FFFBCC; }
+.has-border-background-color { background-color: #CCCCCC; }
+.has-border-border-color { border-color: #CCCCCC; }
+.has-border-color, a.has-border-color { color: #CCCCCC; }
 .has-text-main-background-color { background-color: #1E1E1E; }
 .has-text-main-border-color { border-color: #1E1E1E; }
 .has-text-main-color, a.has-text-main-color { color: #1E1E1E; }
 .has-text-secondary-background-color { background-color: #777777; }
 .has-text-secondary-border-color { border-color: #777777; }
 .has-text-secondary-color, a.has-text-secondary-color { color: #777777; }
-.has-links-background-color { background-color: #AE2525; }
-.has-links-border-color { border-color: #AE2525; }
-.has-links-color, a.has-links-color { color: #AE2525; }
 .has-button-background-color { background-color: #22A340; }
 .has-button-border-color { border-color: #22A340; }
 .has-button-color, a.has-button-color { color: #22A340; }
-.has-button-secondary-background-color { background-color: #999999; }
-.has-button-secondary-border-color { border-color: #999999; }
-.has-button-secondary-color, a.has-button-secondary-color { color: #999999; }
-.has-white-background-color { background-color: #FFFFFF; }
-.has-white-border-color { border-color: #FFFFFF; }
-.has-white-color, a.has-white-color { color: #FFFFFF; }
+.has-my-own-custom-color-background-color { background-color: #2DFF3C; }
+.has-my-own-custom-color-border-color { border-color: #2DFF3C; }
+.has-my-own-custom-color-color, a.has-my-own-custom-color-color { color: #2DFF3C; }
+.has-vins-color-background-color { background-color: #CE96FF; }
+.has-vins-color-border-color { border-color: #CE96FF; }
+.has-vins-color-color, a.has-vins-color-color { color: #CE96FF; }
 /*------------------------------*\
 	$LAYOUT
 \*------------------------------*/
@@ -554,6 +557,7 @@ cite, .tiny {
 	width: 100%;
 }
 .main {
+		background-color: #F0F0F0;
 		padding-block: 31px;
 }
 .loop:not(.content):not(:last-child) { margin-block-end: 31px; }
