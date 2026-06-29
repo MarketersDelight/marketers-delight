@@ -72,7 +72,7 @@
 
 .entry .wp-caption-text, .wp-element-caption {
 	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	color: <?php echo $colors['site']['text-secondary']; ?>;
+	color: <?php echo $colors['palette']['text-secondary']; ?>;
 }
 
 .cover .wp-caption-text {
@@ -185,7 +185,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	padding: 0;
 }
 
-.page-numbers:not(.prev):not(.next):not(.current) { color: <?php echo $colors['site']['text-secondary']; ?>; }
+.page-numbers:not(.prev):not(.next):not(.current) { color: <?php echo $colors['palette']['text-secondary']; ?>; }
 
 .prev-icon, .page-numbers.prev { margin-inline-end: <?php echo $third; ?>px; }
 

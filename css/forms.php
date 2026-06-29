@@ -92,7 +92,7 @@ select {
 .input-field { gap: 0; }
 
 .input-icon {
-	color: <?php echo $colors['site']['text-main']; ?>;
+	color: <?php echo $colors['palette']['text-main']; ?>;
 	padding-inline: <?php echo $half; ?>px;
 	justify-content: center;
 }
@@ -127,7 +127,7 @@ select {
 .toggle-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 
 .toggle-search:not(.cover) .trigger-search .trigger-icon:before,
-.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['site']['primary']; ?>; }
+.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['palette']['primary']; ?>; }
 
 /* TOGGLES */
 

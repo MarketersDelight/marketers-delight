@@ -43,9 +43,9 @@ button, input[type="submit"],
 /* TAGS */
 
 .tag {
-	background-color: <?php echo $colors['palette']['tertiary']; ?>;
+	background-color: <?php echo $colors['palette']['border']; ?>;
 	border-radius: 50px;
-	color: <?php echo $colors['site']['text-main']; ?>;
+	color: <?php echo $colors['palette']['text-main']; ?>;
 	flex-shrink: 0;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	padding: <?php echo $third; ?>px <?php echo $half; ?>px;

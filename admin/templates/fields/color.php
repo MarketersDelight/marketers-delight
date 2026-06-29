@@ -1,19 +1,19 @@
 <?php
-$default = isset( $args['default'] ) ? $args['default'] : '';
-$placeholder = isset( $args['placeholder'] ) ? $args['placeholder'] : $default;
-$inherit_key = isset( $args['inherit'] ) ? $args['inherit'] : '';
+$inherit  = isset( $args['inherit'] ) ? $args['inherit'] : '';
+$default  = isset( $args['default'] ) ? $args['default'] : '';
+$hex_only = ! empty( $args['hex_only'] );
 
-if ( $inherit_key ) :
-	$palette = apply_filters( 'md_color_palette', array() );
-	$inherit_val = is_array( $option ) && isset( $option['inherit'] ) ? $option['inherit'] : $inherit_key;
-	$hex_val = is_array( $option ) && isset( $option['hex'] ) ? $option['hex'] : '';
-	$is_inherit = empty( $hex_val );
-	$swatch_hex = $is_inherit && isset( $palette[$inherit_val] ) ? $palette[$inherit_val]['hex'] : $hex_val;
+$palette     = apply_filters( 'md_color_palette', array() );
+$is_inherit  = ! $hex_only && ! empty( $inherit ) && ( empty( $option ) || isset( $palette[$option] ) );
+$inherit_val = $is_inherit && ! empty( $option ) ? $option : $inherit;
+$hex         = $is_inherit ? '' : $option;
+$swatch_hex  = isset( $palette[$inherit_val] ) ? $palette[$inherit_val]['hex'] : $hex;
 ?>
 
-<div class="md-color-picker-wrap md-color-scheme-wrap <?php echo $is_inherit ? 'is-inherit' : 'is-custom'; ?>" data-default-inherit="<?php echo esc_attr( $inherit_key ); ?>">
-	<span class="md-color-scheme-swatch" style="background-color: <?php echo esc_attr( $swatch_hex ?: '#FFF' ); ?>;"></span>
+<div class="md-color-picker-wrap<?php echo ! $hex_only ? ' md-color-scheme-wrap ' . ( $is_inherit ? 'is-inherit' : 'is-custom' ) : ''; ?>" data-default-inherit="<?php echo esc_attr( $inherit ); ?>">
 
+	<?php if ( ! $hex_only ) : ?>
+	<span class="md-color-scheme-swatch" style="background-color: <?php echo esc_attr( $swatch_hex ?: '#FFF' ); ?>;"></span>
 	<select name="<?php echo esc_attr( $name ); ?>[inherit]" class="md-color-scheme-select">
 		<?php foreach ( $palette as $key => $color ) : ?>
 		<option value="<?php echo esc_attr( $key ); ?>" data-hex="<?php echo esc_attr( $color['hex'] ); ?>" <?php selected( $inherit_val, $key ); ?>>
@@ -21,30 +21,21 @@ if ( $inherit_key ) :
 		</option>
 		<?php endforeach; ?>
 	</select>
+	<?php endif; ?>
 
 	<div class="md-color-scheme-picker">
-		<input type="text" name="<?php echo esc_attr( $name ); ?>[hex]" id="<?php echo esc_attr( $id ); ?>" class="md-color-picker<?php echo ! empty( $hex_val ) ? ' md-has-color-value' : ''; ?>" value="<?php echo esc_attr( $hex_val ); ?>" data-jscolor="{ value: '<?php echo esc_attr( $hex_val ); ?>' }" />
+		<input type="text" name="<?php echo esc_attr( $name ); ?>[hex]" id="<?php echo esc_attr( $id ); ?>" class="md-color-picker<?php echo ! empty( $hex ) ? ' md-has-color-value' : ''; ?>" placeholder="<?php echo esc_attr( $default ); ?>" value="<?php echo esc_attr( $hex ); ?>" data-jscolor="{ value: '<?php echo esc_attr( $hex ); ?>' }" />
 		<div class="md-color-picker-controls">
-			<span class="md-color-picker-fill"></span>
+			<span class="md-color-picker-fill"<?php echo md_style( array( 'bg_color' => $default ) ); ?>></span>
 			<span class="md-color-picker-reset" title="<?php echo __( 'Restore default color', 'md' ); ?>">
 				<i class="dashicons dashicons-undo"></i>
 			</span>
 		</div>
 	</div>
 
+	<?php if ( ! $hex_only ) : ?>
 	<button type="button" class="md-color-scheme-toggle button">
 		<?php echo $is_inherit ? __( 'Palette', 'md' ) : __( 'Custom', 'md' ); ?>
 	</button>
+	<?php endif; ?>
 </div>
-
-<?php else : ?>
-
-<div class="md-color-picker-wrap">
-	<input type="text" name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" class="md-color-picker<?php echo ! empty( $option ) ? ' md-has-color-value' : ''; ?>" placeholder="<?php echo esc_html( $placeholder ); ?>" value="<?php echo esc_attr( $option ); ?>" data-jscolor="{ value: '<?php echo esc_attr( $option ); ?>' }" />
-	<div class="md-color-picker-controls">
-		<span class="md-color-picker-fill"<?php echo md_style( array( 'bg_color' => $default ) ); ?>></span>
-		<span class="md-color-picker-reset" title="<?php echo __( 'Restore default color', 'md' ); ?>"><i class="dashicons dashicons-undo"></i></span>
-	</div>
-</div>
-
-<?php endif; ?>

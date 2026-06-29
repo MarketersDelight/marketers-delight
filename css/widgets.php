@@ -34,7 +34,7 @@
 /* FOOTER */
 
 .footer {
-	<?php if ( $colors['footer']['bg_color'] !== $colors['site']['bg_color'] ) : ?>
+	<?php if ( $colors['footer']['bg_color'] !== $colors['palette']['background'] ) : ?>
 	background-color: <?php echo $colors['footer']['bg_color']; ?>;
 	<?php endif; ?>
 	color: <?php echo $colors['footer']['text']; ?>;
@@ -134,7 +134,7 @@
 	background-color: <?php echo $colors['content']['bg_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-	color: <?php echo $colors['site']['text-main']; ?>;
+	color: <?php echo $colors['palette']['text-main']; ?>;
 }
 
 #wp-calendar td { padding: <?php echo $third; ?>px; }
@@ -148,7 +148,7 @@
 #wp-calendar thead tr, #wp-calendar tbody td { border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>; }
 
 #wp-calendar caption {
-	background-color: <?php echo $colors['site']['primary']; ?>;
+	background-color: <?php echo $colors['palette']['primary']; ?>;
 	border-radius: 2px 2px 0 0;
 	color: #fff;
 	padding: <?php echo $half; ?>px;

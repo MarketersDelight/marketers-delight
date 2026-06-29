@@ -166,26 +166,21 @@ class md_sanitize {
 		// Save a color field with inheritance
 
 		if ( is_array( $input ) ) {
+			if ( ! empty( $input['hex'] ) ) {
+				$color = $this->color( $input['hex'] );
+
+				if ( $color ) return $color;
+			}
+
 			$palette = apply_filters( 'md_color_palette', array() );
 
-			// Don't save default/empty values!
-
-			if ( ! empty( $input['inherit'] ) && in_array( $input['inherit'], array_keys( $palette ) ) ) {
+			if ( ! empty( $input['inherit'] ) && isset( $palette[$input['inherit']] ) ) {
 				$saved = sanitize_key( $input['inherit'] );
 
 				if ( ! empty( $fields['inherit'] ) && $saved === sanitize_key( $fields['inherit'] ) )
 					return null;
 
-				return array( 'inherit' => $saved );
-			}
-
-			// Re-run this function if user sets a custom hex code
-
-			if ( ! empty( $input['hex'] ) ) {
-				$hex = $this->color( $input['hex'] );
-
-				if ( $hex )
-					return array( 'hex' => $hex );
+				return $saved;
 			}
 
 			return null;

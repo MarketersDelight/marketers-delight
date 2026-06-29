@@ -415,27 +415,31 @@ function md_parse_tokens( $args = array() ) {
 }
 
 /**
- * Return a hex code, whether it's from an array or string.
+ * Return a usable color value. Resolves palette key references to their hex.
  *
  * @since 6.0
  */
 
 function md_color_hex( $value ) {
-	if ( is_array( $value ) )
-		return ! empty( $value['hex'] ) ? $value['hex'] : '';
+	if ( empty( $value ) )
+		return '';
 
-	return $value;
+	$palette = apply_filters( 'md_color_palette', array() );
+
+	return isset( $palette[$value] ) ? $palette[$value]['hex'] : $value;
 }
 
 /**
- * Renders the proper color type class from color option data.
- * $value = array( 'inherit' => 'color-group' );
+ * Returns the block editor color class for a palette reference, e.g. has-primary-color.
+ * Returns empty string for direct hex/rgba values.
  *
  * @since 6.0
  */
 
-function md_color_class( $value = array(), $type = 'color' ) {
-	if ( ! is_array( $value ) || empty( $value['inherit'] ) )
+function md_color_class( $value = '', $type = 'color' ) {
+	$palette = apply_filters( 'md_color_palette', array() );
+
+	if ( empty( $value ) || ! isset( $palette[$value] ) )
 		return '';
 
 	$suffixes = array(
@@ -446,7 +450,7 @@ function md_color_class( $value = array(), $type = 'color' ) {
 
 	$suffix = isset( $suffixes[$type] ) ? $suffixes[$type] : $type;
 
-	return 'has-' . sanitize_html_class( $value['inherit'] ) . '-' . $suffix;
+	return 'has-' . sanitize_html_class( $value ) . '-' . $suffix;
 }
 
 /**

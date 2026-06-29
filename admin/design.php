@@ -38,7 +38,7 @@ class md_colors extends md_api {
 		$fields['palette'] = $fields['custom'] = array(
 			'type' => 'group',
 			'fields' => array(
-				'hex' => array( 'type' => 'color' ),
+				'hex' => array( 'type' => 'color', 'hex_only' => true ),
 				'name' => array( 'type' => 'text' ),
 				'key' => array( 'type' => 'text' )
 			)
@@ -88,7 +88,7 @@ class md_colors extends md_api {
 
 	/**
 	 * Format all known colors from the master list into a register[$fields]
-	 * format for proper nd safe save.
+	 * format for a safe save.
 	 *
 	 * @since 6.0
 	 */
@@ -107,8 +107,8 @@ class md_colors extends md_api {
 
 				$default = isset( $this->defaults['colors'][$group][$field] ) ? $this->defaults['colors'][$group][$field] : '';
 
-				if ( is_array( $default ) )
-					$default = ! empty( $default['inherit'] ) && isset( $palette[$default['inherit']] ) ? $palette[$default['inherit']]['hex'] : '';
+				if ( isset( $palette[$default] ) )
+					$default = $palette[$default]['hex'];
 
 				if ( ! $default && ! empty( $options['default'] ) )
 					$default = $options['default'];

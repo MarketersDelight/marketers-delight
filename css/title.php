@@ -28,7 +28,7 @@
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
 .lede {
-	color: <?php echo $colors['site']['text-secondary']; ?>;
+	color: <?php echo $colors['palette']['text-secondary']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
 }
@@ -45,7 +45,7 @@
 	gap: <?php echo $half; ?>px;
 }
 
-.byline, .byline a, .byline .circle-icon { color: <?php echo $colors['site']['text-secondary']; ?>; }
+.byline, .byline a, .byline .circle-icon { color: <?php echo $colors['palette']['text-secondary']; ?>; }
 
 .byline a { text-decoration-color: rgba(0, 0, 0, 0.2); }
 

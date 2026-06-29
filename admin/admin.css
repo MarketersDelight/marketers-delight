@@ -1230,6 +1230,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 		top: 1px;
 }
 
+.md-meta-box .md-color-picker-fill { left: 1px; }
+
 .md-has-color-value + .md-color-picker-controls .md-color-picker-fill { border-right: 0; }
 
 .md-color-picker-reset {
@@ -1299,7 +1301,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	min-width: 0;
 }
 
-.md-color-scheme-picker :is(.md-color-picker-wrap, .md-color-picker) {
+.md-color-scheme-wrap .md-color-scheme-picker :is(.md-color-picker-wrap, .md-color-picker) {
 	border-radius: 6px 0 0 6px;
 	border-right: 0;
 	margin-inline: 0;

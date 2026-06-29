@@ -10,9 +10,9 @@
 	position: relative;
 }
 
-.panel-left .panel { border-inline-end: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
+.panel-left .panel { border-inline-end: 1px solid <?php echo $colors['palette']['border']; ?>; }
 .panel-right { overflow-x: hidden; }
-.panel-right .panel { border-inline-start: 1px solid <?php echo $colors['site']['tertiary']; ?>; }
+.panel-right .panel { border-inline-start: 1px solid <?php echo $colors['palette']['border']; ?>; }
 
 .panel .widget { padding: <?php echo $half; ?>px; }
 

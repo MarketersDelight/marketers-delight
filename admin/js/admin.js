@@ -321,8 +321,9 @@
 				else {
 					wrap.removeClass( 'is-custom' ).addClass( 'is-inherit' );
 					$( this ).text( 'Palette' );
-					select.val( select.data( 'saved-val' ) || wrap.data( 'default-inherit' ) );
+					select.val( select.data( 'saved-val' ) || wrap.data( 'default-inherit' ) || select.find( 'option:first' ).val() );
 					wrap.find( '.md-color-scheme-swatch' ).css( 'background-color', select.find( ':selected' ).data( 'hex' ) || '' );
+					wrap.find( '.md-color-picker' ).removeClass( 'md-has-color-value' ).val( '' );
 				}
 			} );
 			$( document ).on( 'change', '.md-color-scheme-select', function() {

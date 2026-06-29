@@ -283,6 +283,19 @@ class md_css {
 	}
 
 	/**
+	 * Calculate fluid typography values with clamp CSS.
+	 *
+	 * @since 6.0
+	 */
+
+	public function fluid( $desktop, $mobile ) {
+		if ( empty( $mobile ) || $mobile >= $desktop )
+			return "{$desktop}px";
+
+		return 'clamp(' . $mobile . 'px, ' . round( $desktop / $this->site_width * 100, 2 ) . 'vw, ' . $desktop . 'px)';
+	}
+
+	/**
 	 * Render a list of CSS files to generate a
 	 * table of contents at the top of the stylesheet.
 	 *
@@ -305,10 +318,10 @@ class md_css {
 	}
 
 	/**
- 	* Print icons CSS styles by class names.
- 	*
- 	* @since 6.0
- 	*/
+ 	 * Print icons CSS styles by class names.
+ 	 *
+ 	 * @since 6.0
+ 	 */
 
 	private function icons_css() {
 		foreach ( md_icons() as $icon => $fields ) {
@@ -369,12 +382,12 @@ class md_css {
 		);
 		$heading_sizes = array(
 			'huge' => '.huge-size',
-			'h1'   => '.h1-size',
-			'h2'   => '.h2-size',
-			'h3'   => '.h3-size',
-			'h4'   => '.h4-size',
-			'h5'   => '.h5-size',
-			'h6'   => '.h6-size'
+			'h1' => '.h1-size',
+			'h2' => '.h2-size',
+			'h3' => '.h3-size',
+			'h4' => '.h4-size',
+			'h5' => '.h5-size',
+			'h6' => '.h6-size'
 		);
 
 		$heading_selectors = array_values( $headings );
@@ -440,14 +453,8 @@ class md_css {
 			echo "\n\n";
 		}
 
-		// Glyph rules always travel with the font-icons @font-face.
 		if ( isset( $this->files[$file]['templates']['font-icons'] ) )
 			$this->icons_css();
-	}
-
-	public function fluid( $desktop, $mobile ) {
-		if ( empty( $mobile ) || $mobile >= $desktop ) return "{$desktop}px";
-		return 'clamp(' . $mobile . 'px, ' . round( $desktop / $this->site_width * 100, 2 ) . 'vw, ' . $desktop . 'px)';
 	}
 
 }

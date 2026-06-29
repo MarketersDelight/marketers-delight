@@ -27,6 +27,7 @@
 				<div class="col col1">
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
 						'type' => 'color',
+						'hex_only' => true,
 						'default' => $color
 					) ); ?>
 				</div>
@@ -60,7 +61,10 @@
 					echo '<div class="columns-3 columns-25-50-25 columns-half">'.
 						 '<div class="col col1">';
 
-					$this->fields->field( array( $group, $field, 'hex' ), array( 'type' => 'color' ) );
+					$this->fields->field( array( $group, $field, 'hex' ), array(
+						'type' => 'color',
+						'hex_only' => true
+					) );
 
 					echo '</div>'.
 						 '<div class="col col2">';

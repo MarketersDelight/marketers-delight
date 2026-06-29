@@ -42,7 +42,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec { color: <?php echo $colors['site']['text-secondary']; ?>; }
+.text-sec { color: <?php echo $colors['palette']['text-secondary']; ?>; }
 
 cite, .tiny {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
@@ -55,7 +55,7 @@ cite, .tiny {
 }
 
 .highlight {
-	background-color: <?php echo $colors['site']['highlight']; ?>;
+	background-color: <?php echo $colors['palette']['highlight']; ?>;
 	padding-inline: <?php echo $small; ?>px;
 }
 
@@ -95,7 +95,7 @@ cite, .tiny {
 
 .circle { border-radius: 50%; }
 
-.border, [class*="border-"] {
+.border, .border-tb, .border-bottom {
 	border-style: solid;
 	border-width: 1px;
 }
@@ -130,7 +130,7 @@ cite, .tiny {
 .circle-icon, a.circle-icon {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
-	color: <?php echo $colors['site']['text-main']; ?>;
+	color: <?php echo $colors['palette']['text-main']; ?>;
 	height: <?php echo $single; ?>px;
 	width: <?php echo $single; ?>px;
 }

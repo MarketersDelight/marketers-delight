@@ -53,7 +53,7 @@
 
 .comment-details {
 	align-items: center;
-	background-color: <?php echo $colors['site']['bg_color']; ?>;
+	background-color: <?php echo $colors['palette']['background']; ?>;
 	display: flex;
 	padding-block-end: <?php echo $half; ?>px;
 	position: relative;
@@ -61,7 +61,7 @@
 }
 
 .comment-author, .comment-author a {
-	color: <?php echo $colors['site']['text-main']; ?>;
+	color: <?php echo $colors['palette']['text-main']; ?>;
 	font-weight: <?php echo $bold; ?>;
 	text-decoration: none;
 }
@@ -79,7 +79,7 @@
 }
 
 .comment .comment-awaiting-moderation {
-	background-color: <?php echo $colors['site']['highlight']; ?>;
+	background-color: <?php echo $colors['palette']['highlight']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	font-style: italic;
@@ -96,7 +96,7 @@
 	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-	color: <?php echo $colors['site']['text-secondary']; ?>;
+	color: <?php echo $colors['palette']['text-secondary']; ?>;
 	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
 	padding: <?php echo $small; ?>px <?php echo $third; ?>px;
 	text-decoration: none;
@@ -112,7 +112,7 @@
 /* TOGGLE */
 
 .comment .toggle {
-	color: <?php echo $colors['site']['text-secondary']; ?>;
+	color: <?php echo $colors['palette']['text-secondary']; ?>;
 	cursor: pointer;
 	display: none;
 	float: right;
@@ -138,7 +138,7 @@
 }
 
 .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['site']['bg_color']; ?> 80%);
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, <?php echo $colors['palette']['background']; ?> 80%);
 	content: '';
 	display: block;
 	height: <?php echo $single; ?>px;
