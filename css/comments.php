@@ -79,7 +79,7 @@
 }
 
 .comment .comment-awaiting-moderation {
-	background-color: <?php echo $colors['site']['accent']; ?>;
+	background-color: <?php echo $colors['site']['highlight']; ?>;
 	border-radius: 5px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	font-style: italic;

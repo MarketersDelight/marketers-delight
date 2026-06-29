@@ -67,8 +67,7 @@
 
 					$this->fields->field( array( $group, $field, 'name' ), array(
 						'type' => 'text',
-						'wrap_classes' => 'md-field-flex',
-						'readonly_after_save' => true
+						'wrap_classes' => 'md-field-flex'
 					) );
 
 					echo '</div>'.

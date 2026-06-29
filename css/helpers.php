@@ -55,7 +55,7 @@ cite, .tiny {
 }
 
 .highlight {
-	background-color: <?php echo $colors['site']['accent']; ?>;
+	background-color: <?php echo $colors['site']['highlight']; ?>;
 	padding-inline: <?php echo $small; ?>px;
 }
 

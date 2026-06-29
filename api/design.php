@@ -30,8 +30,8 @@ class md_design {
 			'primary' => '#AE2525',
 			'secondary' => '#2E2E2E',
 			'tertiary' => '#DDDDDD',
-			'accent' => '#FFFBCC',
 			'border' => '#CCCCCC',
+			'highlight' => '#FFFBCC',
 			'text-main' => '#1E1E1E',
 			'text-secondary' => '#777777',
 			'button' => '#22A340'
@@ -382,7 +382,7 @@ class md_design {
 					'primary' => $colors['primary'],
 					'secondary' => $colors['secondary'],
 					'tertiary' => $colors['tertiary'],
-					'accent' => $colors['accent'],
+					'highlight' => $colors['highlight'],
 					'text-main' => array( 'inherit' => 'text-main' ),
 					'text-secondary' => array( 'inherit' => 'text-secondary' ),
 					'links' => array( 'inherit' => 'primary' ),

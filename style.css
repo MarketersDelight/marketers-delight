@@ -2042,12 +2042,12 @@ cite, .tiny {
 .has-tertiary-background-color { background-color: #DDDDDD; }
 .has-tertiary-border-color { border-color: #DDDDDD; }
 .has-tertiary-color, a.has-tertiary-color { color: #DDDDDD; }
-.has-accent-background-color { background-color: #FFFBCC; }
-.has-accent-border-color { border-color: #FFFBCC; }
-.has-accent-color, a.has-accent-color { color: #FFFBCC; }
 .has-border-background-color { background-color: #CCCCCC; }
 .has-border-border-color { border-color: #CCCCCC; }
 .has-border-color, a.has-border-color { color: #CCCCCC; }
+.has-highlight-background-color { background-color: #FFFBCC; }
+.has-highlight-border-color { border-color: #FFFBCC; }
+.has-highlight-color, a.has-highlight-color { color: #FFFBCC; }
 .has-text-main-background-color { background-color: #1E1E1E; }
 .has-text-main-border-color { border-color: #1E1E1E; }
 .has-text-main-color, a.has-text-main-color { color: #1E1E1E; }

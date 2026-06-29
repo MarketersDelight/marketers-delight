@@ -32,14 +32,14 @@
                     "color": "#DDDDDD"
                 },
                 {
-                    "name": "Accent",
-                    "slug": "accent",
-                    "color": "#FFFBCC"
-                },
-                {
                     "name": "Border",
                     "slug": "border",
                     "color": "#CCCCCC"
+                },
+                {
+                    "name": "Highlight",
+                    "slug": "highlight",
+                    "color": "#FFFBCC"
                 },
                 {
                     "name": "Text Main",
