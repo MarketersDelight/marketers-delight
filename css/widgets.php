@@ -62,14 +62,6 @@
 	text-align: center;
 }
 
-/* ACCORDION */
-
-.sidebar .accordion:not(.box-group) .accordion-title { padding-inline: 0; }
-
-.sidebar .accordion:not(.box-group) .menu-item a { padding-inline: 0; }
-
-.sidebar .accordion:not(.box-group) .menu-item a:hover { background-color: transparent; }
-
 /* MENU */
 
 .format .widget_nav_menu :is(.menu, .sub-menu) {

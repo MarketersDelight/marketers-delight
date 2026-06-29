@@ -71,7 +71,7 @@ class md_colors extends md_api {
 		$options = $this->options();
 		$defaults = $this->defaults;
 		$line_height = $this->design()->values()['typography']['body']['line_height']['desktop'];
-		$palette = $this->design()->palette();
+		$palette = $this->design()->active_palette();
 		$design = md_setting( array( 'colors', 'design' ) );
 
 		$post_width = round( 21 * $line_height );

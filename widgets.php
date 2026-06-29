@@ -73,11 +73,14 @@ class md_accordion_widget extends WP_Widget {
 
 		if ( ! empty( $val['filter_term'] ) )
 			$filter_term_id = absint( $val['filter_term'] );
-		elseif ( ! empty( $val['auto_filter'] ) && ! empty( $val['filter_taxonomy'] ) && ( $page_dropin = get_the_terms( $page_id, $val['filter_taxonomy'] ) ) )
+		elseif ( ! empty( $val['auto_filter'] ) && ! empty( $val['filter_taxonomy'] ) && ( $page_dropin = get_the_terms( $page_id, $val['filter_taxonomy'] ) ) ) {
 			$filter_term_id = $page_dropin[0]->term_id;
+			$filter_term = $page_dropin[0];
+		}
 
 		if ( $filter_term_id ) {
-			$filter_term = get_term( $filter_term_id );
+			if ( empty( $filter_term ) )
+				$filter_term = get_term( $filter_term_id );
 
 			if ( $filter_term && ! is_wp_error( $filter_term ) ) {
 				$filter_posts = new WP_Query( array(
@@ -97,12 +100,31 @@ class md_accordion_widget extends WP_Widget {
 
 		// Get terms scoped by any relevant filter
 
-		if ( ! empty( $filter_post_ids ) )
+		if ( ! empty( $filter_post_ids ) ) {
 			$terms_data = wp_get_object_terms( $filter_post_ids, $tax, $terms_args );
+
+			$ancestor_ids = array();
+
+			foreach ( $terms_data as $term )
+				if ( $term->parent )
+					$ancestor_ids = array_merge( $ancestor_ids, get_ancestors( $term->term_id, $tax, 'taxonomy' ) );
+
+			if ( $ancestor_ids ) {
+				$existing_ids = array_column( $terms_data, 'term_id' );
+				$missing = array_diff( array_unique( $ancestor_ids ), $existing_ids );
+
+				if ( $missing ) {
+					$ancestors = get_terms( array( 'taxonomy' => $tax, 'include' => $missing, 'hide_empty' => false ) );
+					$terms_data = array_merge( $terms_data, $ancestors );
+				}
+			}
+		}
 		elseif ( $filter_term_id )
 			$terms_data = array();
-		else
+		else {
+			$terms_args['pad_counts'] = true;
 			$terms_data = get_terms( $terms_args );
+		}
 
 		// Group terms by parent ID, used recursively
 
@@ -163,6 +185,7 @@ class md_accordion_widget extends WP_Widget {
 			$prefetch_args = array(
 				'post_type' => $post_type,
 				'posts_per_page' => -1,
+				'fields' => 'ids',
 				'no_found_rows' => true,
 				'update_post_meta_cache' => false,
 				'update_post_term_cache' => false,
@@ -178,7 +201,7 @@ class md_accordion_widget extends WP_Widget {
 				$prefetch_args['post__in'] = $filter_post_ids;
 
 			$prefetch = new WP_Query( $prefetch_args );
-			$all_post_ids = wp_list_pluck( $prefetch->posts, 'ID' );
+			$all_post_ids = $prefetch->posts;
 
 			if ( ! empty( $all_post_ids ) ) {
 				$object_terms = wp_get_object_terms( $all_post_ids, $tax, array(
@@ -193,6 +216,22 @@ class md_accordion_widget extends WP_Widget {
 					$counts_by_term[$term_id] = count( $parent_ids );
 					$posts_by_term[$term_id] = array_slice( $parent_ids, 0, $limit );
 				}
+
+				// Roll each term's own count up into all of its ancestors
+
+				foreach ( $counts_by_term as $term_id => $count )
+					foreach ( get_ancestors( $term_id, $tax, 'taxonomy' ) as $ancestor_id )
+						$counts_by_term[$ancestor_id] = ( $counts_by_term[$ancestor_id] ?? 0 ) + $count;
+
+				// Batch-load post objects only for what's actually displayed
+
+				$displayed_ids = array();
+
+				foreach ( $posts_by_term as $term_id => $ids )
+					foreach ( $ids as $id )
+						$displayed_ids[] = $id;
+
+				_prime_post_caches( $displayed_ids, false, false );
 			}
 		}
 
@@ -259,7 +298,7 @@ class md_accordion_widget extends WP_Widget {
 
 			$in_path = $term->term_id === $data['current_term_id'] || isset( $data['current_ancestors'][$term->term_id] );
 			$open = $c === 1 && ! empty( $val['settings']['open'] ) && ( $depth === 1 || $in_path ) ? ' open' : '';
-			$name = $depth === 1 ? ' name="' . esc_attr( $data['widget_id'] ) . '"' : '';
+			$name = ' name="' . esc_attr( $data['widget_id'] . ( $depth > 1 ? '_' . $parent_id : '' ) ) . '"';
 
 			echo
 				 "<details$name class=\"accordion-item" . ( $can_nest ? ' has-children' : '' ) . "\"$open>".
