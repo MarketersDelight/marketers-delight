@@ -6,7 +6,7 @@ echo '<div class="cta">';
 
 do_action( "md_hook_{$context}_cta_top" );
 
-echo wp_kses_post( $html );
+echo $html;
 
 do_action( "md_hook_{$context}_cta_bottom" );
 

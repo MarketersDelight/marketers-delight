@@ -46,7 +46,9 @@
 /* FEATURED IMAGE */
 
 .featured-media {
+	/*
 	margin-inline: auto;
+	*/
 	position: relative;
 	z-index: 5;
 }

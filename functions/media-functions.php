@@ -11,7 +11,17 @@
 function md_featured_media( $context = 'post', $args = array() ) {
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 	$args['loop'] = $loop;
-	$media = md_has_media( $context, $args );
+
+	if ( array_key_exists( 'media', $args ) ) {
+		if ( empty( $args['media'] ) )
+			return;
+
+		$media = $args['media'];
+
+		if ( isset( $args['show_image'] ) && ! in_array( $media['position'], $args['show_image'] ) )
+			return;
+	}
+	else $media = md_has_media( $context, $args );
 
 	if ( empty( $media ) )
 		return;
@@ -35,6 +45,34 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	$style = ! empty( $media['image_width'] ) ? md_style( array( 'max_width' => $media['image_width'] . 'px' ) ) : '';
 
 	include md_template( 'featured-media', true );
+}
+
+/**
+ * Return class names for any given image position.
+ *
+ * @since 6.0
+ */
+
+function md_get_image_position_classes( $position ) {
+	$classes = array();
+	$inline_images = array( 'left', 'right' );
+	$full_images = array( 'center', 'above_headline', 'below_headline' );
+	$title_images = array( 'title_left', 'title_right', 'title_center' );
+
+	if ( in_array( $position, $title_images ) ) {
+		$classes[] = 'image-title';
+		$classes[] = str_replace( '_', '-', $position );
+	}
+	elseif ( in_array( $position, $inline_images ) ) {
+		$classes[] = 'image-inline';
+		$classes[] = "image-{$position}";
+	}
+	elseif ( in_array( $position, $full_images ) ) {
+		$classes[] = 'image-full';
+		$classes[] = 'image-' . str_replace( '_headline', '', $position );
+	}
+
+	return $classes;
 }
 
 /**

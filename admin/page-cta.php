@@ -32,7 +32,12 @@ class md_page_cta extends md_api {
 				'fields' => array(
 					'custom_html' => array( 'type' => 'code' )
 				),
-				'admin_callback' => array( $this, 'custom_html' )
+				'admin_callback' => function() {
+					$this->fields->field( 'custom_html', array(
+						'type' => 'code',
+						'label' => __( 'Custom HTML', 'md' )
+					) );
+				}
 			)
 		);
 
@@ -108,19 +113,6 @@ class md_page_cta extends md_api {
 			'callback' => function( $group, $field ) {
 				$this->fields->link_fields( array( 'group' => array( $group, $field ) ) );
 			}
-		) );
-	}
-
-	/**
-	 * Default Custom HTML CTA admin fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function custom_html() {
-		$this->fields->field( 'custom_html', array(
-			'type' => 'code',
-			'label' => __( 'Custom HTML', 'md' )
 		) );
 	}
 

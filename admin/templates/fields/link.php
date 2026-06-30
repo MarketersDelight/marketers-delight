@@ -58,6 +58,7 @@ $classes = join( ' ', $classes );
 					'placeholder' => __( '(999) 999-9999', 'md' )
 				) ); ?>
 			</div>
+			<?php if ( function_exists( 'md_get_popups' ) ) : ?>
 			<div class="md-conditional-item md-conditional-popup<?php echo $link_type == 'popup' ? ' is-condition' : ''; ?>">
 				<?php $this->field( $fields['popup']['field'], array(
 					'type' => 'select',
@@ -66,6 +67,7 @@ $classes = join( ' ', $classes );
 					'options' => md_get_popups( 'options' )
 				) ); ?>
 			</div>
+			<?php endif; ?>
 		</div>
 	</div>
 

@@ -54,12 +54,11 @@ else {
 
 	md_cta( $context );
 
-	if ( $has_wrap ) {
+	if ( $has_wrap )
 		echo '</div>';
 
-		if ( $context == 'page' )
-			md_featured_media( $context, array( 'show_image' => array( 'left', 'right', 'center' ) ) );
-	}
+	if ( $context == 'page' )
+		md_featured_media( $context, array( 'show_image' => array( 'left', 'right', 'center' ) ) );
 
 }
 

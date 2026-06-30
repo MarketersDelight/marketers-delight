@@ -106,22 +106,8 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Featured image related classes
 
-	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) ) {
-		$class_name = 'image-' . $media['position'];
-
-		if ( in_array( $media['position'], $inline_images ) )
-			$classes[] = 'image-inline';
-		elseif ( in_array( $media['position'], $full_width ) ) {
-			$classes[] = 'image-full';
-			$class_name = str_replace( '_headline', '', $media['position'] );
-		}
-		elseif ( in_array( $media['position'], $title_images ) ) {
-			$classes[] = 'image-title';
-			$class_name = str_replace( '_', '-', $media['position'] );
-		}
-
-		$classes[] = $class_name;
-	}
+	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) )
+		$classes = array_merge( $classes, md_get_image_position_classes( $media['position'] ) );
 
 	// Page cover classes
 
@@ -160,7 +146,9 @@ function md_description( $context = 'post', $args = array() ) {
 
 	$description = '';
 
-	if ( $context == 'post' && is_singular() ) {
+	if ( ! empty( $args['description'] ) )
+		$description = $args['description'];
+	elseif ( $context == 'post' && is_singular() ) {
 		$excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) ) && has_excerpt() ? get_the_excerpt() : '';
 		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $excerpt );
 	}
@@ -250,15 +238,18 @@ function md_get_link( $fields, $p = '' ) {
 		'phone' => '',
 		'size' => '',
 		'color' => '',
-		'visibility' => array(),
 		'popup' => '',
 		'classes' => '',
+		'visibility' => array(),
 		'button_style' => array(),
 		'toggle' => array(
 			'hide_label' => '',
 			'hide_label_mobile' => ''
 		)
 	) );
+
+	if ( empty( $fields['type'] ) )
+		$fields['type'] = 'url';
 
 	if ( ! md_check_condition( $fields['visibility'] ) )
 		return;

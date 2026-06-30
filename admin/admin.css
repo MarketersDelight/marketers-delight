@@ -1320,6 +1320,14 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-color-scheme-wrap.is-custom .md-color-scheme-select,
 .md-color-scheme-wrap.is-custom .md-color-scheme-swatch { display: none; }
 
+.md-color-scheme-swatch.is-empty,
+.md-color-picker-fill.is-empty {
+	background-color: #fff;
+	background-image: linear-gradient( 45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75% ), linear-gradient( 45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75% );
+	background-position: 0 0, 6px 6px;
+	background-size: 12px 12px;
+}
+
 /* UPLOAD */
 
 .md-upload.is-single {

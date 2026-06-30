@@ -608,40 +608,6 @@ function md_get_sticky( $post_type = null ) {
 }
 
 /**
- * Get MD Popups data in various formats.
- *
- * @since 5.0
- */
-
-function md_get_popups( $show = null ) {
-	$popups = array();
-	$option = md_setting( array( 'popups', 'popups' ), array() );
-
-	if ( ! empty( $option ) ) {
-		foreach ( $option as $popup => $fields )
-			if ( ! empty( $popup ) )
-				if ( $show == 'ids' )
-					$popups[] = $popup;
-				elseif ( $show == 'options' )
-					$popups[$popup] = isset( $fields['name'] ) ? $fields['name'] : __( 'Untitled', 'md' );
-
-		return $popups;
-	}
-
-	return $option;
-}
-
-/**
- * Compile Popups to load on any given page.
- *
- * @since 5.0
- */
-
-function md_filter_popups() {
-	return apply_filters( 'md_filter_popups', array() );
-}
-
-/**
  * Returns list of enabled Drop-ins, sortable by a variety of statuses.
  * $status === active, inactive, files
  * `files` returns list of drop-ins in Drop-in CodeBlock format.

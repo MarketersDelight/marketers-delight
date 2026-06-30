@@ -61,7 +61,7 @@ function md_hook_css_data() { // 5.3.1.1
 }
 
 function md_hook_before_html() {
-	do_action( 'md_hook_before_html', 'before_html' );
+	do_action( 'md_hook_before_html' );
 }
 
 function md_hook_header() {
@@ -105,11 +105,11 @@ function md_hook_after_site_title() {
 }
 
 function md_hook_before_content_box() {
-	do_action( 'md_hook_before_content_box', 'before_content_box' );
+	do_action( 'md_hook_before_content_box' );
 }
 
 function md_hook_content_box_top() {
-	do_action( 'md_hook_content_box_top', 'content_box_top' );
+	do_action( 'md_hook_content_box_top' );
 }
 
 function md_hook_content_box_bottom() {
@@ -119,7 +119,7 @@ function md_hook_content_box_bottom() {
 function md_hook_content() {
 	$data = apply_filters( 'md_content_data', array() );
 
-	do_action( 'md_hook_content', 'content', $data );
+	do_action( 'md_hook_content', $data );
 }
 
 function md_hook_content_top() {
@@ -131,11 +131,11 @@ function md_hook_content_bottom() {
 }
 
 function md_hook_before_content() {
-	do_action( 'md_hook_before_content', 'before_content' );
+	do_action( 'md_hook_before_content' );
 }
 
 function md_hook_after_content() {
-	do_action( 'md_hook_after_content', 'content' );
+	do_action( 'md_hook_after_content' );
 }
 
 function md_hook_loop_top() {
@@ -151,8 +151,7 @@ function md_hook_loop_after() {
 }
 
 function md_hook_content_item() {
-	$data = apply_filters( 'md_content_item_data', array() );
-	do_action( 'md_hook_content_item', 'content_item', $data );
+	do_action( 'md_hook_content_item' );
 }
 
 function md_hook_the_content() {
@@ -176,11 +175,11 @@ function md_hook_the_content_bottom() {
 }
 
 function md_hook_before_title() {
-	do_action( 'md_hook_before_title', 'before_headline' );
+	do_action( 'md_hook_before_title' );
 }
 
 function md_hook_after_title() {
-	do_action( 'md_hook_after_title', 'after_headline' );
+	do_action( 'md_hook_after_title' );
 }
 
 function md_hook_byline_top() {
@@ -216,15 +215,15 @@ function md_hook_after_comments_list() {
 }
 
 function md_hook_before_sidebar() {
-	do_action( 'md_hook_before_sidebar', 'before_sidebar' );
+	do_action( 'md_hook_before_sidebar' );
 }
 
 function md_hook_after_sidebar() {
-	do_action( 'md_hook_after_sidebar', 'after_sidebar' );
+	do_action( 'md_hook_after_sidebar' );
 }
 
 function md_hook_before_footer() {
-	do_action( 'md_hook_before_footer', 'before_footer' );
+	do_action( 'md_hook_before_footer' );
 }
 
 function md_hook_footer() {

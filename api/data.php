@@ -174,7 +174,7 @@ class md_fields_data {
 				'field' => 'popup',
 				'save' => array(
 					'type' => 'select',
-					'options' => md_get_popups( 'ids' )
+					'options' => function_exists( 'md_get_popups' ) ? md_get_popups( 'ids' ) : array()
 				)
 			),
 			'size' => array(
