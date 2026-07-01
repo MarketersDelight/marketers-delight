@@ -78,7 +78,7 @@
 
 	<?php endif;
 
-	settings_fields( 'marketers_delight' );
+	settings_fields( $option );
 
 	if ( $active_taxonomy_tab && in_array( $active_taxonomy_tab, $taxonomy_tabs ) ) {
 		echo '<input type="hidden" name="md_save_taxonomy_post_type" value="' . esc_attr( $page_id ) . '">';

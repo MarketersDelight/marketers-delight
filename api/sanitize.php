@@ -13,7 +13,7 @@ class md_sanitize {
 	 * @since 4.8
 	 */
 
-	private $whitelist = array( 'version', 'integrations', 'popups_data', 'license', 'custom_icons' );
+	private $whitelist = array( 'version', 'integrations', 'license', 'custom_icons' );
 
 	public $_font_weights = array(
 		'normal' => 'Regular',
@@ -139,19 +139,6 @@ class md_sanitize {
 			return $values;
 		}
 		else return in_array( $input, $options ) || $dynamic ? sanitize_text_field( $input ) : '';
-	}
-
-	/**
-	 * Return select values for Customizer fields.
-	 *
-	 * @since 5.0
-	 */
-
-	public function customize_select( $input, $setting ) {
-		$input = sanitize_key( $input );
-		$choices = $setting->manager->get_control( $setting->id )->choices;
-
-		return array_key_exists( $input, $choices ) ? $input : $setting->default;
 	}
 
 	/**
@@ -303,6 +290,44 @@ class md_sanitize {
 		$save = $this->validate( 'admin_pages', $input );
 
 		return $this->merge_settings( $settings, $save );
+	}
+
+	/**
+	 * Run Settings API data through validation when called from a different
+	 * option key from custom child theme/dropin developers not using the
+	 * marketers_delight key.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_save_custom( $input ) {
+		$option = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : '';
+
+		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
+			return $this->taxonomy_save_custom( $input, $option );
+
+		$settings = get_option( $option, array() );
+		$save = $this->validate( 'admin_pages', $input );
+
+		return array_merge( $settings, $save );
+	}
+
+	/**
+	 * Save taxonomy group options to keys other than marketers_delight for child theme
+	 * and custom dropin developers who want to use taxonomy group settings.
+	 *
+	 * @since 6.0
+	 */
+
+	private function taxonomy_save_custom( $input, $option ) {
+		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
+		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
+		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
+		$options = $this->validate( 'admin_pages', array( $post_type => $group ) );
+		$settings = get_option( $option, array() );
+		$settings[$post_type][$taxonomy] = $options[$post_type];
+
+		return $settings;
 	}
 
 	/**

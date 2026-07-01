@@ -250,7 +250,7 @@ floatingBars: {
 				MD.floatingBar = MD.floatingBars.data[id];
 				if ( MD.floatingBar.show === 'seconds' )
 					this.timer();
-				if ( MD.floatingBar.show === 'percent' )
+				else if ( MD.floatingBar.show === 'percent' )
 					this.percent();
 				MD.floatingBars.opened = MD.floatingBar.id;
 			}
@@ -281,7 +281,7 @@ floatingBars: {
 				}
 			}
 		},
-		timer: function( ) {
+		timer: function() {
 			setTimeout( function() {
 				MD.floatingBars.open.show();
 			}, MD.floatingBar.delay * 1000 );
@@ -289,30 +289,20 @@ floatingBars: {
 	},
 	close: {
 		events: function() {
-			this.trigger();
-		},
-		trigger: function() {
-			var triggers = document.getElementsByClassName( 'bar-close' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
+			document.querySelectorAll( '.bar-close' ).forEach( function( trigger ) {
+				trigger.onclick = function() {
 					var bar_id = this.getAttribute( 'data-bar' ),
 						expires = this.getAttribute( 'data-bar-expires' ),
 						el = document.getElementById( bar_id );
 					MD.removeClass( el, 'active' );
 					MD.addClass( el, 'hide' );
-					MD.floatingBars.close.close( bar_id, expires );
+					MD.addClass( el, 'closed' );
+					if ( ! MD.cookie.get( bar_id ) && expires !== '0' )
+						MD.cookie.create( bar_id, true, expires );
+					MD.floatingBars.opened = MD.floatingBars.showing = false;
+					MD.floatingBars.open.events();
 				}
-			}
-		},
-		close: function( bar_id, expires ) {
-			MD.addClass( document.getElementById( bar_id ), 'closed' );
-			if ( ! MD.cookie.get( bar_id ) && expires !== '0' )
-				MD.cookie.create( bar_id, true, expires );
-//			delete MD.floatingBars.data[bar_id];
-			delete MD.floatingBars.opened;
-			delete MD.floatingBars.showing;
-			MD.removeClass( document.getElementById( bar_id ), 'active' );
-			MD.floatingBars.open.events();
+			});
 		}
 	}
 },

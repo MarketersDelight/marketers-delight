@@ -293,6 +293,29 @@ function md_setting( $keys = null, $default = null ) {
 }
 
 /**
+ * To pull data from custom options, use this function with
+ * your declared option key name.
+ *
+ * @since 6.0
+ */
+
+function md_option( $option, $keys = null, $default = null ) {
+	$c = 0;
+	$data = get_option( $option, array() );
+
+	if ( isset( $keys ) ) {
+		if ( is_string( $keys ) )
+			$keys = (array) $keys;
+		foreach ( $keys as $key ) {
+			$data = ! empty( $data[$key] ) ? $data[$key] : ( $c == 0 ? array() : $default );
+			$c++;
+		}
+	}
+
+	return $data;
+}
+
+/**
  * A simple way to get various levels of post meta.
  *
  * @since 4.7
@@ -486,7 +509,6 @@ function md_module( $keys = null, $default = null, $id = null ) {
 
 function md_editor_colors() {
 	$design = new md_design;
-
 	return $design->editor_colors();
 }
 

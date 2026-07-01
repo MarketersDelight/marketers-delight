@@ -11,6 +11,7 @@ class md_admin {
 	public $sanitize;
 	public $requests;
 	public $files;
+	public $_option = 'marketers_delight';
 
 	/**
 	 * Call this method to instantiate class.
@@ -110,7 +111,22 @@ class md_admin {
 	 */
 
 	public function register_setting() {
-		register_setting( 'marketers_delight', 'marketers_delight', array( $this->sanitize, 'admin_save' ) );
+		register_setting( $this->_option, $this->_option, array( $this->sanitize, 'admin_save' ) );
+
+		// Register settings for custom option keys
+
+		$custom = array();
+
+		foreach ( md_register( 'admin_pages' ) as $fields ) {
+			$option = isset( $fields['_option'] ) ? $fields['_option'] : $this->_option;
+
+			if ( $option === $this->_option || isset( $custom[$option] ) )
+				continue;
+
+			$custom[$option] = true;
+
+			register_setting( $option, $option, array( $this->sanitize, 'admin_save_custom' ) );
+		}
 	}
 
 	/**
@@ -120,7 +136,7 @@ class md_admin {
 	 */
 
 	public function nonce() {
-		wp_nonce_field( 'marketers_delight_nonce', 'marketers_delight_nonce' );
+		wp_nonce_field( "{$this->_option}_nonce", "{$this->_option}_nonce" );
 	}
 
 	/**
@@ -180,7 +196,7 @@ class md_admin {
 
 		$vars = array(
 			'user_id' => get_current_user_id(),
-			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
+			'nonce' => wp_create_nonce( "{$this->_option}_nonce" ),
 			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
 
@@ -244,6 +260,8 @@ class md_admin {
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
+		$hook_id = md_clean_id( $hook );
+		$option = isset( $admin_pages[$hook_id]['_option'] ) ? $admin_pages[$hook_id]['_option'] : $this->_option;
 
 		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
 		$taxonomy_tabs = ! empty( $taxonomies[$page] ) ? array_keys( $taxonomies[$page] ) : array();

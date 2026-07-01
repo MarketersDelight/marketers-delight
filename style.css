@@ -2200,6 +2200,9 @@ cite, .tiny {
 	font-size: 20px;
 }
 /* QUERIES */
+@media (min-width: 1200px) {
+	body:not(.toggle-panel) .floating-bar.full .inner { padding-inline: 16px; }
+}
 @media (max-width: 900px) {
 	.floating-bar .wrap { flex-wrap: wrap; }
 	.bar-media { flex-shrink: 0; }
@@ -3009,6 +3012,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 	align-items: center;
 	flex-flow: wrap;
 	gap: 5px 16px;
+	justify-content: start;
 }
 .account.logged-in .post-title .title {
 	font-size: 32px;
@@ -3367,7 +3371,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 /*------------------------------*\
 	$TABLE OF CONTENTS
 \*------------------------------*/
-.toc { background-color: #FFFBCC; }
+.toc { background-color: #F9F7E8; }
 .toc .widget-title {
 	align-items: center;
 	display: flex;
@@ -3439,13 +3443,13 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 		line-height: 30px;
 		padding-block: 5px;
 	}
-	.entry .toc:is(:not(.stuck), .stuck.open) .widget-title { border-block-end: 1px solid rgba(0, 0, 0, 0.1); }
+	.entry .toc:is(:not(.stuck), .stuck.open) .widget-title { border-block-end: 1px solid #E1DFCF; }
 	.entry .toc:not(.stuck) .widget-title .toc-trigger, .entry .toc.stuck:not(.open) .toc-list { display: none; }
 	.entry .toc-list { padding: 16px; }
 }
 @media (max-width: 900px) {
 	.toc {
-		border-block-start: 1px solid #F9F7E8;
+		border-block-start: 1px solid #E1DFCF;
 		position: fixed;
 			inset-block-end: 0;
 			inset-inline: 0;
@@ -3455,7 +3459,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 		cursor: pointer;
 		padding: 16px;
 	}
-	.toc.open .widget-title { border-block-end: 1px solid #F9F7E8; }
+	.toc.open .widget-title { border-block-end: 1px solid #E1DFCF; }
 	.toc .toc-list {
 		display: none;
 		padding: 16px;
@@ -3477,7 +3481,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 	font-size: 1.2em;
 	margin-inline-end: 5px;
 }
-.header { border-block-end: 1px solid #E1DFCF; }
+body:not(.header-cover) .header { border-block-end: 1px solid #E1DFCF; }
 .color-wordpress { color: #00749C; }
 .badge-tier {
 	background-color: rgba(0, 0, 0, 0.06);

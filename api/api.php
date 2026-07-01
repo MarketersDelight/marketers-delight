@@ -151,6 +151,7 @@ class md_api {
 			'id' => $this->_id,
 			'clean_id' => $this->_clean_id,
 			'prefix' => $this->_prefix,
+			'option' => $this->_option,
 			'post_type' => array(
 				'name' => $this->post_type,
 				'taxonomy' => $this->taxonomy,
@@ -592,6 +593,7 @@ class md_api {
 		if ( isset( $this->register['admin_page'] ) ) {
 			$data['admin_pages'][$this->_clean_id] = $this->register['admin_page'];
 			$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
+			$data['admin_pages'][$this->_clean_id]['_option'] = $this->_option;
 		}
 
 		if ( isset( $this->register['meta_box'] ) ) {
