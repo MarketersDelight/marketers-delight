@@ -50,6 +50,7 @@
 		z-index: 100;
 	}
 	.panel-left .panel { left: -<?php echo $panel_width; ?>px; }
+
 	.panel-right .panel { right: -<?php echo $panel_width; ?>px; }
 	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
 	.toggle-panel[class*="from-"] { overflow: hidden; }
@@ -64,7 +65,7 @@
 			inset: 0;
 		transition: opacity 0.3s ease-in-out;
 		visibility: hidden;
-		z-index: 99;
+		z-index: 95;
 	}
 	.toggle-panel[class*="from-"] .panel-overlay {
 		height: 100%;

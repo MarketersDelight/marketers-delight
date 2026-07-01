@@ -396,6 +396,13 @@ button:hover, input[type="submit"]:hover,
 .button.button-arrow:hover:after { transform: translateX(4px); }
 .button-arrow.down:after { content: '\e80e'; }
 .button-arrow.down:hover:after { transform: none; }
+/* QUERIES */
+@media (max-width: 900px) {
+	.cta .link {
+		flex: 1;
+		justify-content: center;
+	}
+}
 /*------------------------------*\
 	$FORMS
 \*------------------------------*/
@@ -1665,7 +1672,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	font-size: 17px;
 	line-height: 27px;
 	position: relative;
-	z-index: 90;
+	z-index: 88;
 }
 .footer a { color: #F9F7E8; }
 .footer :is(.widget-title, .wp-block-heading) { color: #FFFFFF; }
@@ -1793,7 +1800,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 			inset: 0;
 		transition: opacity 0.3s ease-in-out;
 		visibility: hidden;
-		z-index: 99;
+		z-index: 95;
 	}
 	.toggle-panel[class*="from-"] .panel-overlay {
 		height: 100%;
@@ -2139,110 +2146,73 @@ cite, .tiny {
 	$FLOATING_BARS
 \*------------------------------*/
 .floating-bar {
-	background-color: #101010;
-	color: #fff;
-	padding-bottom: 16px;
-	padding-top: 16px;
-	transition: all 0.2s ease-in-out;
+	transition: all 0.3s ease-in-out;
 	width: 100%;
 }
+.floating-bar .inner { padding-block: 16px; }
+.floating-bar.full .inner { max-width: 100%; }
+.floating-bar .wrap {
+	align-items: center;
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+}
+/* TOGGLED */
 .floating-bar.hide {
 	height: 0;
 	opacity: 0;
 	padding: 0;
 	visibility: hidden;
 }
-.floating-bar.hide .inner, .floating-bar.hide .bar-wrap, .floating-bar.hide .bar-close { display: none; }
 .floating-bar.active {
 	height: auto;
 	opacity: 1;
 	visibility: visible;
 }
-.floating-bar.sticky { z-index: 100; }
-.admin-bar .floating-bar.stuck { padding-top: var(--wp-admin--admin-bar--height); }
-.floating-bar.sticky.bottom { bottom: 0; }
-.floating-bar a { color: #fffbcc; }
-.bar-wrap, .bar-cta {
-	align-items: center;
-	display: flex;
+/* STICKY */
+.floating-bar.sticky {
+	inset-inline: 0;
+	z-index: 85;
 }
+.floating-bar.sticky.top.stuck {
+	position: sticky;
+		inset-block-start: 0;
+}
+.floating-bar.sticky.bottom {
+	position: fixed;
+		inset-block-end: 0;
+}
+.admin-bar .floating-bar.stuck { padding-block-start: var(--wp-admin--admin-bar--height); }
+/* CONTENT */
+.bar-content { flex-grow: 1; }
 .bar-content .title {
 	font-size: 23px;
 	font-weight: 500;
 	line-height: 36px;
-	margin-bottom: 0;
 }
 .bar-content .description {
 	font-size: 18px;
 	line-height: 29px;
 }
-.bar-icon {
-	background-color: rgba(255, 255, 255, 0.4);
-	color: inherit;
-	font-size: 27px;
-	line-height: 1;
-}
-.media-image .bar-media { padding-right: 16px; }
-.bar-cta .email-form { flex: 1; }
 .bar-close {
-	background-color: transparent;
-	color: #fff;
 	cursor: pointer;
-	font-size: 20px;
 	flex-shrink: 0;
+	font-size: 20px;
 }
-.bar-close:hover { background-color: rgba(255, 255, 255, 0.3); }
-@media all and (min-width: 800px) {
-	.floating-bar, .floating-bar .inner {
-		align-items: center;
-		display: flex;
-	}
-	.bar-media { padding-right: 32px; }
-	.bar-cta { min-width: 40%; }
-	.bar-cta, .bar-cta-link + .bar-cta-link { margin-left: 32px; }
-}
-@media all and (max-width: 800px) {
-	.bar-wrap { flex-flow: wrap; }
-	.media-icon .bar-wrap {
-		justify-content: center;
-		text-align: center;
-	}
-	.media-icon .bar-media {
-		flex-basis: 100%;
-		margin-bottom: 16px;
-	}
-	.media-image .bar-media { flex-basis: 20%; }
-	.media-image .bar-content { flex-basis: 80%; }
-	.bar-cta {
-		flex-basis: 100%;
-		margin-top: 16px;
-	}
-	.bar-cta-link {
+/* QUERIES */
+@media (max-width: 900px) {
+	.floating-bar .wrap { flex-wrap: wrap; }
+	.bar-media { flex-shrink: 0; }
+	.bar-content {
 		flex: 1;
-		text-align: center;
+		min-width: 0;
 	}
-	.bar-cta-link + .bar-cta-link { margin-left: 16px; }
+	.floating-bar .cta { flex-basis: 100%; }
 	.bar-close {
 		position: absolute;
-			top: 0;
-			right: 0;
+			inset-block-start: 11px;
+			inset-inline-end: 11px;
 	}
-	.floating-bar.full .bar-close { top: 16px; }
-}
-@media all and (min-width: 1200px) {
-	.floating-bar.full {
-		justify-content: center;
-		padding-left: 16px;
-		padding-right: 16px;
-	}
-	.bar-close { margin-left: 16px; }
-}
-@media all and (max-width: 1200px) {
-	.bar-wrap {
-		padding-left: 16px;
-		padding-right: 16px;
-	}
-	.bar-close { margin-right: 16px; }
 }
 /*------------------------------*\
 	$POPUPS
@@ -2260,7 +2230,7 @@ cite, .tiny {
 	transition: opacity 0.2s ease-in-out;
 	visibility: hidden;
 	width: 100%;
-	z-index: 100;
+	z-index: 90;
 }
 .popup {
 	display: none;
@@ -2423,7 +2393,7 @@ cite, .tiny {
 	padding: 16px;
 	position: absolute;
 		inset-inline-end: -11px;
-	z-index: 100;
+	z-index: 85;
 }
 .toggle-share .share-menu-wrap { display: block; }
 .share .toggle {
@@ -2441,14 +2411,14 @@ cite, .tiny {
 		inset-block-end: -22px;
 		inset-inline-end: 48px;
 	width: 0;
-	z-index: 102;
+	z-index: 87;
 }
 .share .link.toggle.hide-label:before,
 .share .link.toggle.hide-label:after { inset-inline-end: 11px; }
 .share .toggle:after {
 	border-block-end-color: #E1DFCF;
 	inset-block-end: -21px;
-	z-index: 101;
+	z-index: 86;
 }
 .toggle-share .toggle:before, .toggle-share .toggle:after { display: block; }
 .share-menu .share-menu-title {
@@ -3479,7 +3449,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 		position: fixed;
 			inset-block-end: 0;
 			inset-inline: 0;
-		z-index: 85;
+		z-index: 82;
 	}
 	.toc .widget-title {
 		cursor: pointer;

@@ -151,3 +151,12 @@ button:hover, input[type="submit"]:hover,
 .button-arrow.down:after { content: '\e80e'; }
 
 .button-arrow.down:hover:after { transform: none; }
+
+/* QUERIES */
+
+@media (max-width: 900px) {
+	.cta .link {
+		flex: 1;
+		justify-content: center;
+	}
+}

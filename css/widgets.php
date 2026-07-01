@@ -41,7 +41,7 @@
 	font-size: <?php echo $typography['footer']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['footer']['line_height']['desktop']; ?>px;
 	position: relative;
-	z-index: 90;
+	z-index: 88;
 }
 
 .footer a { color: <?php echo $colors['footer']['links']; ?>; }
