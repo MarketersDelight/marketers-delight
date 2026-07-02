@@ -327,7 +327,7 @@ button:hover, input[type="submit"]:hover,
 .no-underline { text-decoration: none; }
 .normal { font-weight: 400; }
 .bold { font-weight: 500; }
-.italic { font-style: italic; }
+.italic, .foot { font-style: italic; }
 .body-font { font-family: 'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif; }
 .h-font { font-family: Albra, Droid Serif, Source Serif Pro, Times New Roman, serif; }
 .text-left { text-align: left; }
@@ -336,7 +336,7 @@ button:hover, input[type="submit"]:hover,
 .lh1 { line-height: 1; }
 .caps { text-transform: uppercase; }
 a.no-underline, .no-underline a { text-decoration: none; }
-.small, .text-sec {
+.small, .text-sec, .foot {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
@@ -344,7 +344,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	font-size: 0.6em;
 	line-height: 1;
 }
-.text-sec { color: #777777; }
+.text-sec, .foot { color: #777777; }
 cite, .tiny {
 	font-size: 16px;
 	line-height: 28px;

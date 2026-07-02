@@ -156,7 +156,8 @@ class md_sanitize {
 			if ( ! empty( $input['hex'] ) ) {
 				$color = $this->color( $input['hex'] );
 
-				if ( $color ) return $color;
+				if ( $color )
+					return $color;
 			}
 
 			$palette = apply_filters( 'md_color_palette', array() );
@@ -173,17 +174,12 @@ class md_sanitize {
 			return null;
 		}
 
-		// Save regular hex/rgba color
-
 		if ( strpos( $input, 'rgba' ) === false )
-			if ( strlen( $input ) == 7 ) // HEX
-				return preg_match( '/^#[a-f0-9]{6}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
-			elseif ( strlen( $input ) == 9 ) // HEXA
-				return preg_match( '/^#[a-f0-9]{8}$/i', $input ) ? stripslashes( strip_tags( $input ) ) : '';
+			return sanitize_hex_color( $input ) ?: '';
 
 		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
 
-		return "rgba({$r}, {$g}, {$b}, {$a})"; // RGBA
+		return "rgba({$r}, {$g}, {$b}, {$a})";
 	}
 
 	/**

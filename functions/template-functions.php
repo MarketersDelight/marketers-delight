@@ -454,6 +454,22 @@ function md_color_class( $value = '', $type = 'color' ) {
 }
 
 /**
+ * It can be tedious to apply classes and styles separately, so get
+ * your color value with this function to get a resolved state.
+ *
+ * @since 6.0
+ */
+
+function md_get_color( $value, $type = 'color' ) {
+	$class = empty( $value ) ? '' : md_color_class( $value, $type );
+
+	return array(
+		'class' => $class,
+		'style' => $class || empty( $value ) ? array() : array( $type => $value )
+	);
+}
+
+/**
  * Return inline style selector with sanitized values.
  *
  * @since 5.0

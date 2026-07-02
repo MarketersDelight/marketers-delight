@@ -14,7 +14,7 @@
 
 .bold { font-weight: <?php echo $bold; ?>; }
 
-.italic { font-style: italic; }
+.italic, .foot { font-style: italic; }
 
 .body-font { font-family: <?php echo $font_family; ?>; }
 
@@ -32,7 +32,7 @@
 
 a.no-underline, .no-underline a { text-decoration: none; }
 
-.small, .text-sec {
+.small, .text-sec, .foot {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
@@ -42,7 +42,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec { color: <?php echo $colors['palette']['text-secondary']; ?>; }
+.text-sec, .foot { color: <?php echo $colors['palette']['text-secondary']; ?>; }
 
 cite, .tiny {
 	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;

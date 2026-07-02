@@ -26,6 +26,11 @@
 
 .image-title.title-left .featured-media { order: -1; }
 
+.image-title.title-center .wrap {
+	align-items: center;
+	flex-direction: column;
+}
+
 /* TITLE, LEDE, SUBTITLE, DESC */
 
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
@@ -93,26 +98,27 @@
 /* QUERIES */
 
 @media (min-width: 800px) {
-	.wide, .wide .inner, .title-center .title-wrap {
+	.wide, .wide .inner {
 		align-items: center;
 		text-align: center;
 	}
-	.image-inline.wide, .image-inline.wide .inner { justify-content: center; }
-	.image-inline.wide .inner, .image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
 	.title-left .wrap, .title-right .wrap,
-	.image-inline.inline, .image-inline.inline .inner,
-	.image-inline.wide, .image-inline.wide .inner {
+	.image-inline.inline, .image-inline.inline .inner {
 		align-items: center;
 		flex-flow: row;
 	}
+	.image-inline.wide, .image-inline.wide .inner {
+		align-items: center;
+		flex-flow: row;
+		justify-content: center;
+		text-align: inherit;
+	}
+	.image-inline.wide .inner, .image-title.wide .wrap { column-gap: <?php echo $mid; ?>px; }
+	.image-inline.wide .wrap { max-width: <?php echo $post_width; ?>px; }
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
-	.wide :is(.subtitle, .description),
-	.image-inline.wide :is(.title, .lede),
-	.image-title.wide .title-wrap {
-		margin-inline: auto;
-		max-width: <?php echo $post_width; ?>px;
-	}
+	.wide :is(.subtitle, .description, .byline) { max-width: <?php echo $post_width; ?>px; }
+	.wide:not(.image-inline) :is(.subtitle, .description, .byline) { margin-inline: auto; }
 	.image-title.wide .subtitle {
 		margin: 0;
 		max-width: 100%;

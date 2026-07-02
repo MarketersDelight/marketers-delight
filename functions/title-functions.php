@@ -203,7 +203,7 @@ function md_cta( $context = 'post', $cta = array() ) {
 	if ( $type == 'links' && ! empty( $cta['links'] ) ) {
 		foreach ( $cta['links'] as $group => $fields )
 			if ( ! empty( $cta['links'][$group] ) ) {
-				$cta['links'][$group]['classes'] = 'cta-link';
+				$cta['links'][$group]['classes'][] = 'cta-link';
 				$html .= md_get_link( $cta['links'][$group] );
 			}
 	}

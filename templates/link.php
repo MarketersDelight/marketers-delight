@@ -9,7 +9,7 @@
 
 $h = 'span';
 $classes = array( 'link' );
-$has_wrap = $fields['name'] && $fields['subtitle'] && $fields['icon'];
+$has_wrap = $fields['name'] && $fields['subtitle'];
 
 // Plain link
 
@@ -48,10 +48,11 @@ if ( $fields['style'] == 'button' ) {
 
 	if ( $fields['button_style'] )
 		foreach ( $fields['button_style'] as $button_style => $val )
-			$classes[] = 'button-' . $button_style;
+			if ( $val )
+				$classes[] = "button-$button_style";
 
 	if ( $fields['color'] ) {
-		if ( in_array( 'outline', $fields['button_style'] ) ) {
+		if ( ! empty( $fields['button_style']['outline'] ) ) {
 			if ( $class = md_color_class( $fields['color'], 'color' ) ) {
 				$classes[] = $class;
 				$classes[] = md_color_class( $fields['color'], 'border_color' );
@@ -96,7 +97,7 @@ if ( isset( $fields['settings']['icon_end'] ) )
 	$classes[] = 'reverse';
 
 if ( $fields['classes'] )
-	$classes[] = $fields['classes'];
+	$classes = array_merge( $classes, (array) $fields['classes'] );
 
 // Finally, render link with its final attributes
 
