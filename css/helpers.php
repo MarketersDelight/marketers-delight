@@ -12,7 +12,7 @@
 
 .normal { font-weight: <?php echo $font_weight; ?>; }
 
-.bold { font-weight: <?php echo $bold; ?>; }
+.bold { font-weight: var(--md-bold); }
 
 .italic, .foot { font-style: italic; }
 
@@ -42,42 +42,42 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec, .foot { color: <?php echo $colors['palette']['text-secondary']; ?>; }
+.text-sec, .foot { color: var(--md-color-text-sec); }
 
 cite, .tiny {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
+	font-size: calc(var(--md-font-size-sm) - 2px);
+	line-height: calc(var(--md-line-height-sm) - 1px);
 }
 
 .intro {
-	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+	font-size: var(--md-h6);
+	line-height: var(--md-lh-h6);
 }
 
 .highlight {
-	background-color: <?php echo $colors['palette']['highlight']; ?>;
-	padding-inline: <?php echo $small; ?>px;
+	background-color: var(--md-color-highlight);
+	padding-inline: var(--md-small);
 }
 
 .note {
-	background-color: #ddd;
-	border-radius: 5px;
+	background-color: var(--md-color-tertiary);
+	border-radius: var(--md-radius);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-	padding: <?php echo $half; ?>px;
+	padding: var(--md-half);
 }
 
 .alert {
 	background-color: #fefbd1;
-	border-radius: 5px;
+	border-radius: var(--md-radius);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-	padding: <?php echo $half; ?>px;
+	padding: var(--md-half);
 }
 
 .badge {
     background-color: #f58f2a;
-    border-radius: 5px;
+    border-radius: var(--md-radius);
     color: #fff;
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	font-size: calc(var(--md-font-size-sm) - 2px);
 	font-weight: normal;
 	line-height: 1;
 	padding: 4px 7px;
@@ -91,7 +91,7 @@ cite, .tiny {
 
 /* BORDERS */
 
-.radius, .radius img { border-radius: 6px; }
+.radius, .radius img { border-radius: var(--md-radius); }
 
 .circle { border-radius: 50%; }
 
@@ -107,13 +107,13 @@ cite, .tiny {
 /* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
-.shadow-small { box-shadow: 0 1px  3px rgba(0, 0, 0, 0.10); }
+.shadow-small { box-shadow: var(--md-shadow); }
 .shadow-medium { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
 .shadow-large { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
 .shadow-huge { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20); }
 .shadow-none, .wp-block-image.shadow { box-shadow: none; }
 
-.shadow-grow { transition: 0.3s; }
+.shadow-grow { transition: var(--md-transition); }
 .shadow-grow:hover { box-shadow: 0 6px 18px rgba(0, 0, 0,.05); }
 
 /* ICON SHAPES */
@@ -130,30 +130,30 @@ cite, .tiny {
 .circle-icon, a.circle-icon {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
-	color: <?php echo $colors['palette']['text-main']; ?>;
-	height: <?php echo $single; ?>px;
-	width: <?php echo $single; ?>px;
+	color: var(--md-color-text);
+	height: var(--md-single);
+	width: var(--md-single);
 }
 
 .square-icon, a.square-icon {
 	background-color: rgba(0, 0, 0, 0.1);
-	border-radius: 10px;
-	height: <?php echo $mid; ?>px;
-	width: <?php echo $mid; ?>px;
+	border-radius: var(--md-radius);
+	height: var(--md-mid);
+	width: var(--md-mid);
 }
 
 .circle-icon.mid, .square-icon.mid {
-	flex: 1 0 <?php echo $mid + $small; ?>px;
-	height: <?php echo $mid + $small; ?>px;
-	font-size: <?php echo $typography['h3']['font_size']['mobile']; ?>px;
-	width: <?php echo $mid + $small; ?>px;
+	flex: 1 0 calc(var(--md-mid) + var(--md-small));
+	height: calc(var(--md-mid) + var(--md-small));
+	font-size: <?php echo $h3['font_size']['mobile']; ?>px;
+	width: calc(var(--md-mid) + var(--md-small));
 }
 
 .circle-icon.large, .square-icon.large {
-	flex: 1 0 <?php echo $double; ?>px;
-	height: <?php echo $double; ?>px;
-	font-size: <?php echo $typography['h2']['font_size']['desktop']; ?>px;
-	width: <?php echo $double; ?>px;
+	flex: 1 0 var(--md-double);
+	height: var(--md-double);
+	font-size: var(--md-h2);
+	width: var(--md-double);
 }
 
 /* LAYOUT */
@@ -161,7 +161,7 @@ cite, .tiny {
 .fl {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px;
+	gap: var(--md-half);
 }
 
 .auto { margin-inline: auto; }
@@ -182,11 +182,11 @@ cite, .tiny {
 
 /* WIDTHS */
 
-.content-width { max-width: <?php echo $content_width; ?>px; }
+.content-width { max-width: var(--md-content-width); }
 
-.post-width { max-width: <?php echo $post_width; ?>px; }
+.post-width { max-width: var(--md-post-width); }
 
-.sidebar-width { max-width: <?php echo $sidebar_width; ?>px; }
+.sidebar-width { max-width: var(--md-sidebar-width); }
 
 .width-full { width: 100%; }
 
@@ -194,7 +194,7 @@ cite, .tiny {
 
 [class*="columns-"] {
 	display: grid;
-	gap: <?php echo $single; ?>px;
+	gap: var(--md-single);
 	width: 100%;
 }
 
@@ -303,7 +303,7 @@ foreach ( md_editor_colors() as $color_group => $color_fields ) {
 	to { opacity: 1; transform: none; }
 }
 
-.animate-fade { animation: md-fade 0.5s ease-out both; }
-.animate-slide-up { animation: md-slide-up 0.5s ease-out both; }
-.animate-slide-down { animation: md-slide-down 0.5s ease-out both; }
-.animate-zoom { animation: md-zoom 0.5s ease-out both; }
+.animate-fade { animation: md-fade var(--md-transition-slow) ease-out both; }
+.animate-slide-up { animation: md-slide-up var(--md-transition-slow) ease-out both; }
+.animate-slide-down { animation: md-slide-down var(--md-transition-slow) ease-out both; }
+.animate-zoom { animation: md-zoom var(--md-transition-slow) ease-out both; }

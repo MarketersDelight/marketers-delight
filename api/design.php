@@ -126,6 +126,49 @@ class md_design {
 	}
 
 	/**
+	 * Calculate common spacing values from single line height.
+	 *
+	 * @since 6.0
+	 */
+
+	public function spacers() {
+		$values = $this->values();
+		$single = $values['typography']['body']['line_height']['desktop'];
+		$half = round( $single / 2 );
+
+		return array(
+			'small' => round( $single / 6 ),
+			'third' => round( $single / 3 ),
+			'half' => $half,
+			'single' => $single,
+			'mid' => $single + $half,
+			'double' => round( $single * 2 ),
+			'triple' => round( $single * 3 ),
+			'quad' => round( $single * 4 )
+		);
+	}
+
+	/**
+	 * Returns layout widths.
+	 *
+	 * @since 6.0
+	 */
+
+	public function widths() {
+		$values = $this->values();
+		$w = $values['colors']['width'];
+
+		return array(
+			'site_width' => $w['site'],
+			'site_width_wide' => $w['site_wide'],
+			'content_width' => $w['content_width'],
+			'post_width' => $w['post'],
+			'sidebar_width' => $w['sidebar'],
+			'panel_width' => $w['panel_width']
+		);
+	}
+
+	/**
 	 * Default design values — merged with user settings in values().
 	 *
 	 * @since 4.8

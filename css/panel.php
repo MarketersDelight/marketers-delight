@@ -5,16 +5,16 @@
 \*------------------------------*/
 
 .panel {
-	background-color: <?php echo $colors['palette']['surface']; ?>;
-	padding-block: <?php echo $half; ?>px;
+	background-color: var(--md-color-surface);
+	padding-block: var(--md-half);
 	position: relative;
 }
 
-.panel-left .panel { border-inline-end: 1px solid <?php echo $colors['palette']['border']; ?>; }
+.panel-left .panel { border-inline-end: 1px solid var(--md-color-border); }
 .panel-right { overflow-x: hidden; }
-.panel-right .panel { border-inline-start: 1px solid <?php echo $colors['palette']['border']; ?>; }
+.panel-right .panel { border-inline-start: 1px solid var(--md-color-border); }
 
-.panel .widget { padding: <?php echo $half; ?>px; }
+.panel .widget { padding: var(--md-half); }
 
 .panel .widget:first-child { padding-block-start: 0; }
 
@@ -27,12 +27,12 @@
 /* TRIGGERS */
 
 .header .trigger-panel {
-	border-radius: 6px;
+	border-radius: var(--md-radius);
 	display: revert;
 	line-height: 1;
 	margin-inline: -<?php echo round( $half / 2 ); ?>px;
-	padding: <?php echo $third; ?>px;
-	transition: 0.3s;
+	padding: var(--md-third);
+	transition: var(--md-transition);
 }
 
 .trigger-panel:hover { background-color: rgba(0, 0, 0, 0.08); }
@@ -45,8 +45,8 @@
 		overflow-y: auto;
 		position: fixed;
 			top: 0;
-		transition: 0.3s;
-		width: <?php echo $panel_width; ?>px;
+		transition: var(--md-transition);
+		width: var(--md-panel-width);
 		z-index: 100;
 	}
 	.panel-left .panel { left: -<?php echo $panel_width; ?>px; }
@@ -55,15 +55,15 @@
 	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
 	.toggle-panel[class*="from-"] { overflow: hidden; }
 	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
-	.panel-left.toggle-panel[class*="from-"] .panel { left: 0; }
-	.panel-right.toggle-panel[class*="from-"] .panel { right: 0; }
+	.panel-left.toggle-panel[class*="from-"] .panel { inset-inline-start: 0; }
+	.panel-right.toggle-panel[class*="from-"] .panel { inset-inline-end: 0; }
 	.panel-overlay {
 		background-color: rgba(0, 0, 0, 0.5);
 		height: 0;
 		opacity: 0;
 		position: fixed;
 			inset: 0;
-		transition: opacity 0.3s ease-in-out;
+		transition: opacity var(--md-transition) ease-in-out;
 		visibility: hidden;
 		z-index: 95;
 	}
@@ -75,14 +75,14 @@
 }
 
 @media (min-width: 900px) and (max-width: <?php echo $site_width_wide; ?>px) {
-	.toggle-panel .inner { padding-inline: <?php echo $half; ?>px; }
+	.toggle-panel .inner { padding-inline: var(--md-half); }
 }
 
 @media (min-width: <?php echo $site_width; ?>px) {
-	body:not(.toggle-panel) .category.columns.full { gap: <?php echo $mid; ?>px; }
+	body:not(.toggle-panel) .category.columns.full { gap: var(--md-mid); }
 	.panel {
 		display: none;
-		padding-block: <?php echo $single; ?>px;
+		padding-block: var(--md-single);
 	}
 	.format .panel { margin-block: -<?php echo $single; ?>px; }
 	.panel:after {
@@ -110,13 +110,13 @@
 		align-items: stretch;
 		display: flex;
 		justify-content: center;
-		gap: <?php echo $single; ?>px;
+		gap: var(--md-single);
 	}
 	.toggle-panel :is(.panel, .content, .sidebar) { min-width: 0; }
 	.toggle-panel .compact .panel { flex: 0 1 <?php echo round( $panel_width / $site_width_wide * 100 ); ?>%; }
 	.toggle-panel .compact .content { flex: 0 1 <?php echo round( $content_width / $site_width_wide * 100 ); ?>%; }
 	.toggle-panel .compact .sidebar { flex: 0 1 <?php echo round( $sidebar_width / $site_width_wide * 100 ); ?>%; }
 	.toggle-panel .expanded .content { flex: 1; }
-	.toggle-panel .expanded .panel { flex: 0 0 <?php echo $panel_width; ?>px; }
+	.toggle-panel .expanded .panel { flex: 0 0 var(--md-panel-width); }
 	.panel-overlay { display: none; }
 }

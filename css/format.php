@@ -7,13 +7,13 @@
 /* ATTRIBUTES */
 
 a {
-	color: <?php echo $colors['site']['links']; ?>;
+	color: var(--md-color-links);
 	text-decoration: underline;
 }
 
 a:hover { text-decoration: none; }
 
-strong, b { font-weight: <?php echo $bold; ?>; }
+strong, b { font-weight: var(--md-bold); }
 
 img, a img {
 	height: auto;
@@ -25,7 +25,7 @@ iframe, video, object { max-width: 100%; }
 
 abbr { cursor: help; }
 
-cite { color: <?php echo $colors['palette']['text-secondary']; ?>; }
+cite { color: var(--md-color-text-sec); }
 
 sup { line-height: 1; }
 
@@ -37,14 +37,14 @@ hr {
 }
 
 code {
-	border-radius: 6px;
+	border-radius: var(--md-radius);
 	padding: 2px 5px;
 }
 
 pre {
-	margin-block-end: <?php echo $single; ?>px;
+	margin-block-end: var(--md-single);
 	overflow: auto;
-	padding: <?php echo $single; ?>px;
+	padding: var(--md-single);
 }
 
 code, pre {
@@ -59,7 +59,7 @@ code, pre {
 .format { word-wrap: break-word; }
 
 .format :is(ul, ol, p, hr, table, blockquote, pre),
-.format :is(.wp-caption, .wp-block-image) { margin-block-end: <?php echo $single; ?>px; }
+.format :is(.wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
 
 /* HEADINGS */
 
@@ -93,11 +93,11 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 
 :is(<?php echo $heading_selectors ?>) a:hover { text-decoration: underline; }
 
-.format h1, .format h2, .format h3, .format h4, .format h5, .format h6 { margin-block-end: <?php echo $half; ?>px; }
+.format :is(h1, h2, h3, h4, h5, h6) { margin-block-end: var(--md-half); }
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
-.the-content :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+.the-content :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: var(--md-mid); }
 
 
 /* LISTS */
@@ -105,16 +105,16 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 .format ul { list-style: square; }
 
 .list-check,
-.the-content :is(ul, ol) { margin-inline-start: <?php echo $single; ?>px; }
+.the-content :is(ul, ol) { margin-inline-start: var(--md-single); }
 
 .format li, .list-check li:not(:last-child) {
-	margin-block-end: <?php echo $third; ?>px;
+	margin-block-end: var(--md-third);
 	position: relative;
 }
 
 .format ul ul {
-	margin-block-end: <?php echo $half; ?>px;
-	margin-inline-start: <?php echo $half; ?>px;
+	margin-block-end: var(--md-half);
+	margin-inline-start: var(--md-half);
 }
 
 .format .list { margin-inline-start: 0; }
@@ -126,7 +126,7 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 .list li:not(:last-child),
 .list > :is(ul, ol):not(:last-child) {
 	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
-	padding-block-end: <?php echo $half; ?>px;
+	padding-block-end: var(--md-half);
 }
 
 .list-links li { margin-block-end: 0; }
@@ -138,9 +138,9 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 .list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
 	border-radius: 50%;
-	color: #22a340;
-	margin-inline: -<?php echo $single + $small + 2; ?>px <?php echo $third; ?>px;;
-	padding: <?php echo $small; ?>px;
+	color: var(--md-color-button);
+	margin-inline: -<?php echo $single + $small + 2; ?>px var(--md-third);
+	padding: var(--md-small);
 }
 
 .text-center ul, .text-center ol, .text-center [class^="list"] { text-align: left; }
@@ -148,35 +148,35 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 /* BLOCK/PULL QUOTES */
 
 blockquote {
-	background-color: #fff;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	background-color: var(--md-color-white);
+	border: 1px solid var(--md-color-content-border);
 	border-inline-start-width: 7px;
-	border-radius: 5px;
+	border-radius: var(--md-radius);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	color: var(--md-color-text-sec);
 	display: block;
 	font-style: italic;
 	margin-inline: 0;
-	padding: <?php echo $single; ?>px;
+	padding: var(--md-single);
 	position: relative;
 }
 
 blockquote:before, blockquote:after {
 	color: #ddd;
 	font-family: Georgia, serif;
-	font-size: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
-	font-weight: <?php echo $bold; ?>;
+	font-size: var(--md-huge);
+	font-weight: var(--md-bold);
 	position: absolute;
 }
 
 blockquote:before {
 	content: open-quote;
-	inset-inline-start: <?php echo $small; ?>px;
+	inset-inline-start: var(--md-small);
 }
 
 blockquote:after {
 	content: close-quote;
-	inset-inline-end: <?php echo $half; ?>px;
+	inset-inline-end: var(--md-half);
 }
 
 .wp-block-pullquote { text-align: center; }
@@ -192,7 +192,7 @@ blockquote.is-style-plain, .is-style-plain blockquote {
 blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .is-style-plain blockquote:before, .is-style-plain blockquote:after { content: ''; }
 
-.format blockquote p { margin-block-end: <?php echo $half; ?>px; }
+.format blockquote p { margin-block-end: var(--md-half); }
 
 .format blockquote p + cite {
 	display: block;
@@ -206,23 +206,23 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 /* SLIM */
 
 .slim {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
+	font-size: var(--md-font-size-sm);
+	line-height: calc(var(--md-line-height-sm) - 1px);
 }
 
 .slim ul, .slim ol, .slim p, .slim hr,
 .slim table, .slim blockquote, .slim pre, .slim .wp-caption,
-.slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: <?php echo $half; ?>px; }
+.slim .wp-block-image, .slim .the-content .featured-media { margin-block-end: var(--md-half); }
 
 .slim :last-child { margin-block-end: 0; }
 
-.slim .entry-title, .slim .title-wrap { row-gap: <?php echo $small; ?>px; }
+.slim .entry-title, .slim .title-wrap { row-gap: var(--md-small); }
 
-.slim .entry-title .wrap { column-gap: <?php echo $half; ?>px; }
+.slim .entry-title .wrap { column-gap: var(--md-half); }
 
 .slim .byline {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile'] - 1; ?>px;
+	font-size: calc(var(--md-font-size-sm) - 2px);
+	line-height: calc(var(--md-line-height-sm) - 1px);
 }
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>

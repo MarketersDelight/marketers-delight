@@ -8,14 +8,14 @@ button, input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
-	gap: <?php echo $third; ?>px;
+	gap: var(--md-third);
 	line-height: 1;
 }
 
 .cta, .wp-block-buttons {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
+	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
 	justify-content: center;
 }
 
@@ -26,7 +26,7 @@ button, input[type="submit"],
 .link-wrap {
 	display: inline-flex;
 	flex-direction: column;
-	gap: <?php echo $third; ?>px;
+	gap: var(--md-third);
 	text-align: initial;
 }
 
@@ -36,26 +36,26 @@ button, input[type="submit"],
 }
 
 .link-subtitle {
-	font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px;
+	font-size: calc(var(--md-font-size-sm) - 2px);
 	font-weight: normal;
 }
 
 /* TAGS */
 
 .tag {
-	background-color: <?php echo $colors['palette']['border']; ?>;
+	background-color: var(--md-color-border);
 	border-radius: 50px;
-	color: <?php echo $colors['palette']['text-main']; ?>;
+	color: var(--md-color-text);
 	flex-shrink: 0;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
+	font-size: var(--md-font-size-sm);
+	padding: var(--md-third) var(--md-half);
 	text-decoration: none;
-	transition: 0.3s;
+	transition: var(--md-transition);
 }
 
 .tag:hover {
-	background-color: <?php echo $colors['content']['border_color']; ?>;
-	color: <?php echo $colors['site']['links']; ?>;
+	background-color: var(--md-color-content-border);
+	color: var(--md-color-links);
 }
 
 /* BUTTONS */
@@ -63,9 +63,9 @@ button, input[type="submit"],
 button, input[type="submit"],
 .button, .wp-element-button {
 	appearance: none;
-    background-color: <?php echo $colors['site']['button']; ?>;
+    background-color: var(--md-color-button);
 	border: 0;
-	border-radius: 6px;
+	border-radius: var(--md-radius);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 	color: <?php echo $colors['site']['button-text']; ?>;
 	cursor: pointer;
@@ -73,9 +73,9 @@ button, input[type="submit"],
 	font-family: inherit;
 	font-style: normal;
 	justify-content: center;
-	padding: <?php echo $half; ?>px <?php echo $half + $third; ?>px;
+	padding: var(--md-half) calc(var(--md-half) + var(--md-third));
 	text-decoration: none;
-	transition: 0.3s;
+	transition: var(--md-transition);
 }
 
 a.button { text-decoration: none; }
@@ -98,38 +98,38 @@ button:hover, input[type="submit"]:hover,
 .button.button-outline,
 .is-style-outline .wp-element-button {
 	background-color: transparent;
-	border: 3px solid <?php echo $colors['site']['button']; ?>;
-	color: <?php echo $colors['site']['button']; ?>;
+	border: 3px solid var(--md-color-button);
+	color: var(--md-color-button);
 }
 
 .button.button-outline.white {
-	border-color: #fff;
-	color: #fff;
+	border-color: var(--md-color-white);
+	color: var(--md-color-white);
 }
 
-.button.button-outline.has-links-color{
-	border-color: <?php echo $colors['site']['links']; ?>;
-	color: <?php echo $colors['site']['links']; ?>;
+.button.button-outline.has-links-color {
+	border-color: var(--md-color-links);
+	color: var(--md-color-links);
 }
 
 /* SIZES */
 
 .button.button-small {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	gap: <?php echo $third; ?>px;
-	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
+	font-size: var(--md-font-size-sm);
+	gap: var(--md-third);
+	padding: var(--md-third) var(--md-half);
 }
 
-.button-small .link-icon { font-size: <?php echo $typography['body']['font_size']['desktop'] + 2; ?>px; }
+.button-small .link-icon { font-size: calc(var(--md-font-size) + 2px); }
 
 .button.button-large {
 	font-size: 1.4em;
-	padding: <?php echo $half + $small; ?>px <?php echo $single; ?>px;
+	padding: calc(var(--md-half) + var(--md-small)) var(--md-single);
 }
 
 /* STYLES */
 
-.button.button-cancel { background-color: #ae2525; }
+.button.button-cancel { background-color: var(--md-color-primary); }
 
 .button.button-disabled {
 	background-color: #999;
@@ -143,7 +143,7 @@ button:hover, input[type="submit"]:hover,
 .button.button-arrow:after {
 	content: '\e80f';
 	font-family: 'md-icon';
-	transition: 0.3s;
+	transition: var(--md-transition);
 }
 
 .button.button-arrow:hover:after { transform: translateX(4px); }

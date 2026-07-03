@@ -24,9 +24,9 @@
 
 .close {
 	background-color: transparent;
-	color: #ae2525;
+	color: var(--md-color-primary);
 	cursor: pointer;
-	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	font-size: var(--md-h6);
 }
 
 .close:hover { background-color: rgba(0, 0, 0, 0.2); }
@@ -48,10 +48,10 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	color: var(--md-color-text-sec);
 	cursor: pointer;
 	flex-shrink: 0;
-	font-size: <?php echo $typography['h5']['font_size']['desktop']; ?>px;
+	font-size: var(--md-h5);
 	padding: 0 <?php echo $third; ?>px;
 	transform: none;
 	transition: color 0.2s;
@@ -87,7 +87,7 @@
 .tooltip {
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.75);
-	border-radius: 8px;
+	border-radius: var(--md-radius);
 	color: #fff;
 	cursor: default;
 	display: none;
@@ -140,17 +140,17 @@
 /* TABS */
 
 .tabs {
-	border-block-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border-block-end: 1px solid var(--md-color-content-border);
 	margin-block-end: <?php echo $single; ?>px;
 }
 
 .tab {
 	align-items: center;
 	background-color: #f7f7f7;
-	border: 1px solid <?php echo $colors['content']['border_color']; ?>;
+	border: 1px solid var(--md-color-content-border);
 	border-width: 1px 1px 0;
-	border-radius: 5px 5px 0 0;
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	border-radius: var(--md-radius) var(--md-radius) 0 0;
+	color: var(--md-color-text-sec);
 	cursor: pointer;
 	display: inline-flex;
 	gap: <?php echo $third; ?>px;
@@ -159,13 +159,13 @@
 }
 
 .tab a {
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	color: var(--md-color-text-sec);
 	text-decoration: none;
 }
 
 .tab.active {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
-	border-bottom-color: <?php echo $colors['content']['bg_color']; ?>;
+	background-color: var(--md-color-content-box);
+	border-bottom-color: var(--md-color-content-box);
 	border-bottom-width: 1px;
 	margin-block-end: -1px;
 }
@@ -179,16 +179,16 @@
 /* ACCORDION */
 
 .accordion-item:not(:last-child),
-.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid <?php echo $colors['palette']['border']; ?>; }
+.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid var(--md-color-border); }
 
 .accordion-title {
 	align-items: center;
 	color: <?php echo $colors['sidebar']['title']; ?>;
 	cursor: pointer;
 	display: flex;
-	font-size: <?php echo $typography['h6']['font_size']['desktop']; ?>px;
+	font-size: var(--md-h6);
 	font-weight: <?php echo $bold; ?>;
-	line-height: <?php echo $typography['h6']['line_height']['desktop']; ?>px;
+	line-height: var(--md-lh-h6);
 	padding: <?php echo $half; ?>px;
 }
 
@@ -201,7 +201,7 @@
 .accordion-label { flex: 1; }
 
 .accordion-label-icon {
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	color: var(--md-color-text-sec);
 	margin-inline-end: <?php echo $third; ?>px;
 }
 

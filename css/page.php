@@ -3,9 +3,9 @@
 /* BREADCRUMBS */
 
 .breadcrumbs {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	margin-block-end: <?php echo $half; ?>px;
+	font-size: var(--md-font-size-sm);
+	line-height: var(--md-line-height-sm);
+	margin-block-end: var(--md-half);
 }
 
 .breadcrumbs ol {
@@ -22,12 +22,12 @@
 
 .breadcrumbs li:not(:last-child):after {
 	content: '\e80f';
-	margin-inline: <?php echo $third; ?>px;
+	margin-inline: var(--md-third);
 }
 
 .breadcrumbs-home:before {
 	content: '\e907';
-	margin-inline-end: <?php echo $third; ?>px;
+	margin-inline-end: var(--md-third);
 }
 
 .breadcrumbs a { text-decoration: underline; }
@@ -36,11 +36,11 @@
 
 @media (max-width: <?php echo $post_width; ?>px) {
 	.is-box-style .expanded .breadcrumbs:first-child,
-	.is-box-style .cover + .breadcrumbs { margin-top: -<?php echo $half; ?>px; }
+	.is-box-style .cover + .breadcrumbs { margin-block-start: -<?php echo $half; ?>px; }
 }
 
 @media (max-width: 900px) {
-	.is-box-style .compact .breadcrumbs:first-child { margin-top: -<?php echo $half; ?>px; }
+	.is-box-style .compact .breadcrumbs:first-child { margin-block-start: -<?php echo $half; ?>px; }
 }
 
 /* FEATURED IMAGE */
@@ -55,7 +55,7 @@
 
 :is(.image-center, .image-full) .featured-media { text-align: center; }
 
-.full .the-content .featured-media { margin-block-end: <?php echo $single; ?>px; }
+.full .the-content .featured-media { margin-block-end: var(--md-single); }
 
 /* CAPTIONS */
 
@@ -65,16 +65,16 @@
 }
 
 .wp-caption-text, .wp-element-caption {
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
+	font-size: var(--md-font-size-sm);
 	font-style: italic;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
-	padding: <?php echo $third; ?>px;
+	line-height: var(--line-height-sm);
+	padding: var(--md-third);
 	text-align: center;
 }
 
 .entry .wp-caption-text, .wp-element-caption {
-	border-bottom: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	color: <?php echo $colors['palette']['text-secondary']; ?>;
+	border-bottom: 1px solid var(--md-color-content-border);
+	color: var(--md-color-text-sec);
 }
 
 .cover .wp-caption-text {
@@ -90,23 +90,23 @@
 .author-meta {
 	align-items: center;
 	display: flex;
-	margin-block-end: <?php echo $half; ?>px;
+	margin-block-end: var(--md-half);
 }
 
-.author-box .circle-icon { margin-inline-end: <?php echo $third; ?>px; }
+.author-box .circle-icon { margin-inline-end: var(--md-third); }
 
 .author-title {
-	font-size: <?php echo $typography['h4']['font_size']['desktop']; ?>px;
-	font-weight: <?php echo $bold; ?>;
-	line-height: <?php echo $typography['h4']['line_height']['desktop']; ?>px;
-	margin-block-end: <?php echo $small; ?>px;
+	font-size: var(--md-h4);
+	font-weight: var(--md-bold);
+	line-height: var(--md-h4-lh);
+	margin-block-end: var(--md-small);
 }
 
-.author-description { margin-block-end: <?php echo $half + $small; ?>px; }
+.author-description { margin-block-end: calc(var(--md-half) + var(--md-small)); }
 
 .author-avatar {
-	flex: 0 1 <?php echo $double; ?>px;
-	margin-inline-end: <?php echo $half; ?>px;
+	flex: 0 1 var(--md-double);
+	margin-inline-end: var(--md-half);
 }
 
 .author-avatar img { width: 100%; }
@@ -114,30 +114,30 @@
 .author-links {
 	align-items: center;
 	display: flex;
-	font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-	gap: <?php echo $half; ?>px;
-	line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+	font-size: var(--md-font-size-sm);
+	gap: var(--md-half);
+	line-height: var(--md-line-height-sm);
 }
 
-.author-link:not(:last-child) { margin-inline-end: <?php echo $small; ?>px; }
+.author-link:not(:last-child) { margin-inline-end: var(--md-small); }
 
 .author-link.twitter .circle-icon {
 	background-color: #000;
-	color: #fff;
+	color: var(--md-color-white);
 }
 
-.author-link.twitter .md-icon-twitter { color: #fff; }
+.author-link.twitter .md-icon-twitter { color: var(--md-color-white); }
 
 .author-link.twitter a { color: #1da1f2; }
 
 @media all and (max-width: 700px) {
 	.author-links { flex-flow: wrap; }
-	.author-link { flex-basis: calc(50% - <?php echo $half; ?>px); }
+	.author-link { flex-basis: calc(50% - var(--md-half)); }
 }
 
 /* PAGINATION */
 
-.pagination:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.pagination:not(:last-child) { margin-block-end: var(--md-single); }
 
 .prev-next {
 	display: flex;
@@ -147,8 +147,8 @@
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);
 	border-radius: 8px;
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-	padding: <?php echo $half; ?>px;
+	box-shadow: var(--md-shadow);
+	padding: var(--md-half);
 }
 
 .pagination .page-numbers { text-decoration: none; }
@@ -157,15 +157,15 @@ ul.page-numbers {
 	align-items: center;
 	display: flex;
 	justify-content: center;
-	gap: <?php echo $third; ?>px;
+	gap: var(--md-third);
 	list-style: none;
 }
 
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
-	background-color: <?php echo $colors['content']['bg_color']; ?>;
+	background-color: var(--md-color-content-box);
 	border-radius: 8px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-	padding: <?php echo $third; ?>px <?php echo $half; ?>px;
+	padding: var(--md-third) var(--md-half);
 }
 
 .page-numbers li { margin-block-end: 0; }
@@ -187,11 +187,11 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	padding: 0;
 }
 
-.page-numbers:not(.prev):not(.next):not(.current) { color: <?php echo $colors['palette']['text-secondary']; ?>; }
+.page-numbers:not(.prev):not(.next):not(.current) { color: var(--md-color-text-sec); }
 
-.prev-icon, .page-numbers.prev { margin-inline-end: <?php echo $third; ?>px; }
+.prev-icon, .page-numbers.prev { margin-inline-end: var(--md-third); }
 
-.next-icon, .page-numbers.next { margin-inline-start: <?php echo $third; ?>px; }
+.next-icon, .page-numbers.next { margin-inline-start: var(--md-third); }
 
 /* POST NAV */
 
@@ -210,5 +210,5 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {
-	.post-nav-previous:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+	.post-nav-previous:not(:last-child) { margin-block-end: var(--md-single); }
 }

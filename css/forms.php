@@ -10,30 +10,20 @@ input, textarea {
 	font-family: inherit;
 	font-size: inherit;
 	line-height: 1;
-	padding: <?php echo $half; ?>px;
+	padding: var(--md-half);
 }
 
-input[type="text"],
-input[type="url"],
-input[type="email"],
-input[type="search"],
-input[type="password"],
-textarea,
+input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea,
 .form-icons .input-field {
-	background-color: #fff;
-	border-radius: 5px;
+	background-color: var(--md-color-white);
+	border-radius: var(--md-radius);
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	position: relative;
 	width: 100%;
 	-webkit-appearance: none;
 }
 
-input[type="text"]:focus,
-input[type="url"]:focus,
-input[type="email"]:focus,
-input[type="search"]:focus,
-input[type="password"]:focus,
-textarea:focus {
+input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 	outline: none;
 }
@@ -46,29 +36,25 @@ input.no-style, input.no-style:focus {
 	padding: 0;
 }
 
-textarea { padding: <?php echo $single; ?>px; }
+textarea { padding: var(--md-single); }
 
 select {
 	font-size: inherit;
 	max-width: 100%;
-	padding: <?php echo $third; ?>px;
+	padding: var(--md-third);
 	width: 100%;
 }
 
-.required { color: #ae2525; }
+.required { color: var(--md-color-primary); }
 
 /* STRUCTURES */
 
 .form { width: 100%; }
 
-.form,
-.inputs,
-.input-field,
-.input-icon,
-.search-form {
+.form, .inputs, .input-field, .input-icon, .search-form {
 	align-items: center;
 	display: flex;
-	gap: <?php echo $half; ?>px;
+	gap: var(--md-half);
 }
 
 .form-full { flex-direction: column; }
@@ -83,27 +69,27 @@ select {
 	padding-inline-start: 0;
 }
 
-.form-small .input { font-size: <?php echo $typography['body']['font_size']['mobile'] - 2; ?>px; }
+.form-small .input { font-size: calc(var(--md-font-size-sm) - 2px); }
 
 .form-icons .input:focus { box-shadow: none; }
 
-.form-small .input, .form-small .input-icon { padding-block: <?php echo $small; ?>px; }
+.form-small .input, .form-small .input-icon { padding-block: var(--md-small); }
 
 .input-field { gap: 0; }
 
 .input-icon {
-	color: <?php echo $colors['palette']['text-main']; ?>;
-	padding-inline: <?php echo $half; ?>px;
+	color: var(--md-color-text);
+	padding-inline: var(--md-half);
 	justify-content: center;
 }
 
-.form-style .input { padding-inline-start: <?php echo $half; ?>px; }
+.form-style .input { padding-inline-start: var(--md-half); }
 
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
-	border-inline-end: 1px solid <?php echo $colors['content']['border_color']; ?>;
-	border-radius: 5px 0 0 5px;
-	padding-inline-end: <?php echo $half; ?>px;
+	border-inline-end: 1px solid var(--md-color-content-border);
+	border-radius: var(--md-radius) 0 0 var(--md-radius);
+	padding-inline-end: var(--md-half);
 }
 
 /* TRIGGERS */
@@ -119,7 +105,7 @@ select {
 	text-align: center;
 }
 
-.trigger-text { margin-inline-start: <?php echo $small; ?>px; }
+.trigger-text { margin-inline-start: var(--md-small); }
 
 .hide-label .link-text, .hide-label .trigger-text { display: none; }
 
@@ -127,7 +113,7 @@ select {
 .toggle-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 
 .toggle-search:not(.cover) .trigger-search .trigger-icon:before,
-.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: <?php echo $colors['palette']['primary']; ?>; }
+.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: var(--md-color-primary); }
 
 /* TOGGLES */
 

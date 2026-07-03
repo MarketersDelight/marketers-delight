@@ -358,12 +358,13 @@ class md_css {
 		$logo = $values['logo'];
 		$sidebar = $values['sidebar'];
 
-		$site_width = $this->site_width = $values['colors']['width']['site'];
-		$site_width_wide = $values['colors']['width']['site_wide'];
-		$content_width = $values['colors']['width']['content_width'];
-		$post_width = $values['colors']['width']['post'];
-		$sidebar_width = $values['colors']['width']['sidebar'];
-		$panel_width = $values['colors']['width']['panel_width'];
+		$widths = $design->widths();
+		$site_width = $this->site_width = $widths['site_width'];
+		$site_width_wide = $widths['site_width_wide'];
+		$content_width = $widths['content_width'];
+		$post_width = $widths['post_width'];
+		$sidebar_width = $widths['sidebar_width'];
+		$panel_width = $widths['panel_width'];
 
 		$font_size = $values['typography']['body']['font_size'];
 		$font_family = $values['typography']['body']['font_family'];
@@ -404,24 +405,15 @@ class md_css {
 		$h1_font_family = ! empty( $h1['font_family'] ) ? $h1['font_family'] : $font_family;
 		$h1_font_weight = ! empty( $h1['font_weight'] ) ? $h1['font_weight'] : $bold;
 
-		$single = $lh = $line_height['desktop'];
-		$small = $lhsm = round( $single / 6 );
-		$third = $lhth = round( $single / 3 );
-		$half = $lhh = round( $single / 2 );
-		$mid = $lhm = $single + $half;
-		$double = $lhd = round( $single * 2 );
-		$triple = $lht = round( $single * 3 );
-		$quad = $lhq = round( $single * 4 );
-		$spacers = array(
-			'small' => $small,
-			'third' => $third,
-			'half' => $half,
-			'single' => $single,
-			'mid' => $mid,
-			'double' => $double,
-			'triple' => $triple,
-			'quad' => $quad
-		);
+		$spacers = $design->spacers();
+		$small = $spacers['small'];
+		$third = $spacers['third'];
+		$half = $spacers['half'];
+		$single = $spacers['single'];
+		$mid = $spacers['mid'];
+		$double = $spacers['double'];
+		$triple = $spacers['triple'];
+		$quad = $spacers['quad'];
 
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );

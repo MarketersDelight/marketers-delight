@@ -7,7 +7,7 @@
 .alignleft, .alignright, .aligncenter, .alignnone {
 	display: block;
 	position: relative;
-	margin-block-end: <?php echo $single; ?>px;
+	margin-block-end: var(--md-single);
 	z-index: 10;
 }
 
@@ -36,11 +36,11 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 @media (min-width: 700px) {
 	.alignleft, .format .left {
 		float: left;
-		margin-inline-end: <?php echo $half; ?>px;
+		margin-inline-end: var(--md-half);
 	}
 	.alignright, .format .right {
 		float: right;
-		margin-inline-start: <?php echo $half; ?>px;
+		margin-inline-start: var(--md-half);
 	}
 }
 
@@ -101,16 +101,16 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 @media (min-width: <?php echo $post_width; ?>px) {
 	.entry.image-left .featured-media {
 		float: left;
-		margin-inline-end: <?php echo $single; ?>px;
+		margin-inline-end: var(--md-single);
 	}
 	.entry.image-right .featured-media {
 		float: right;
-		margin-inline-start: <?php echo $single; ?>px;
+		margin-inline-start: var(--md-single);
 	}
-	.columns .image-left .featured-media { margin-inline-end: <?php echo $half; ?>px; }
-	.columns .image-right .featured-media { margin-inline-start: <?php echo $half; ?>px; }
+	.columns .image-left .featured-media { margin-inline-end: var(--md-half); }
+	.columns .image-right .featured-media { margin-inline-start: var(--md-half); }
 	.columns :is(.image-inline, .image-title) .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
-	.slim :is(.image-inline, .image-title) .featured-media { max-width: <?php echo $quad; ?>px; }
+	.slim :is(.image-inline, .image-title) .featured-media { max-width: var(--md-quad); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
 	.compact .box-style .entry.full .image-left .featured-media,
 	.box-style.columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }

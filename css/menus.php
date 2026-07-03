@@ -14,7 +14,7 @@
 }
 
 .menu-item a {
-	padding: <?php echo $half; ?>px;
+	padding: var(--md-half);
 	position: relative;
 	width: 100%;
 }
@@ -23,7 +23,7 @@
 
 .menu-item-has-children > a { flex: 1; }
 
-.menu-item-has-children > .trigger { padding-inline: <?php echo $half; ?>px; }
+.menu-item-has-children > .trigger { padding-inline: var(--md-half); }
 
 .menu .trigger-icon:after { content: '\e80e'; }
 
@@ -58,10 +58,10 @@
 	/* SUB MENU */
 	.sub-menu {
 		background-color: <?php echo $colors['submenu']['bg_color']; ?>;
-		border-radius: 8px;
+		border-radius: var(--md-radius);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		font-size: <?php echo $typography['body']['font_size']['mobile']; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['mobile']; ?>px;
+		font-size: var(--md-font-size-sm);
+		line-height: var(--md-line-height-sm);
 		position: absolute;
 			inset-inline-end: 0;
 		width: <?php echo $submenu_width; ?>px;
@@ -86,10 +86,10 @@
 		color: <?php echo $colors['submenu']['hover']; ?>;
 		<?php endif; ?>
 	}
-	.sub-menu .menu-item:first-child:hover { border-radius: 8px 8px 0 0; }
-	.sub-menu .menu-item:last-child:hover { border-radius: 0 0 8px 8px; }
-	.sub-menu .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
-	.sub-menu .trigger { padding: <?php echo $half; ?>px; }
+	.sub-menu .menu-item:first-child:hover { border-radius: var(--md-radius) var(--md-radius) 0 0; }
+	.sub-menu .menu-item:last-child:hover { border-radius: 0 0 var(--md-radius) var(--md-radius); }
+	.sub-menu .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-border); }
+	.sub-menu .trigger { padding: var(--md-half); }
 	.sub-menu .trigger-icon:after { content: '\e816'; }
 	/* SUB MENU ALT DIRECTION */
 	.sub-alt .sub-menu { inset-inline-end: inherit; }
@@ -104,10 +104,10 @@
 	.menu-item { flex-flow: wrap; }
 	.menu-item:not(.toggle-menu-item):hover > :is(a, .toggle) { background-color: rgba(0, 0, 0, 0.08); }
     .header.center.toggle-menu .header-primary:not(:last-child),
-    .menu-item:not(:last-child) { border-block-end: 1px solid <?php echo $colors['header']['border_color']; ?>; }
+    .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-border); }
 	/* TOGGLE */
 	.menu .toggle {
-		border: 1px solid <?php echo $colors['header']['border_color']; ?>;
+		border: 1px solid var(--md-header-border);
 		border-width: 0 0 0 1px;
 	}
 	.toggle-menu-item > .trigger .trigger-icon:after { content: '\e817'; }
@@ -122,8 +122,8 @@
 		visibility: visible;
 	}
 	.sub-menu .menu-item a {
-		font-size: <?php echo $typography['body']['font_size']['mobile'] - 1; ?>px;
-		line-height: <?php echo $typography['body']['line_height']['mobile'] - 2; ?>px;
-		padding-block: <?php echo $third; ?>px;
+		font-size: calc(var(--md-font-size-sm) - 1px);
+		line-height: calc(var(--md-line-height-sm) - 2px);
+		padding-block: var(--md-third);
 	}
 }

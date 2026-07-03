@@ -13,6 +13,8 @@
 
 if ( locate_template( 'css/fonts.php' ) )
 	include locate_template( 'css/fonts.php' );
+
+include locate_template( 'css/--vars.php' );
 ?>
 
 *, *:before, *:after {
@@ -21,22 +23,11 @@ if ( locate_template( 'css/fonts.php' ) )
 	padding: 0;
 }
 
-:root {
-	--md-small: <?php echo $small; ?>px;
-	--md-third: <?php echo $third; ?>px;
-	--md-half: <?php echo $half; ?>px;
-	--md-single: <?php echo $single; ?>px;
-	--md-mid: <?php echo $mid; ?>px;
-	--md-double: <?php echo $double; ?>px;
-	--md-triple: <?php echo $triple; ?>px;
-	--md-quad: <?php echo $quad; ?>px;
-}
-
 body {
-	background-color: <?php echo $colors['palette']['background']; ?>;
-	color: <?php echo $colors['palette']['text-main']; ?>;
+	background-color: var(--md-color-background);
+	color: var(--md-color-text);
 	font-family: <?php echo $typography['body']['font_family']; ?>;
-	font-size: <?php echo $typography['body']['font_size']['desktop']; ?>px;
+	font-size: var(--md-font-size);
 	font-weight: <?php echo $font_weight; ?>;
-	line-height: <?php echo $typography['body']['line_height']['desktop']; ?>px;
+	line-height: var(--md-line-height);
 }
