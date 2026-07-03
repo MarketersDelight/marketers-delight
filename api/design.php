@@ -158,15 +158,15 @@ class md_design {
 
 		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
 
-		$design= md_setting( array( 'colors', 'design' ) );
-		$cw= md_setting( array( 'colors', 'width', 'content' ) );
-		$sw= md_setting( array( 'colors', 'width', 'sidebar' ) );
+		$design = md_setting( array( 'colors', 'design' ) );
+		$cw = md_setting( array( 'colors', 'width', 'content' ) );
+		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
 		$post_width= ! empty( $cw ) ? $cw : round( 21 * $line_height );
-		$gutter= ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
+		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
 		$content_width = apply_filters( 'md_filter_css_content_width', $post_width + $gutter, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
-		$panel_width= round( 10 * $line_height );
-		$site_width= round( $content_width + $sidebar_width + ( $line_height * 1.5 ) );
+		$panel_width = round( 10 * $line_height );
+		$site_width = round( $content_width + $sidebar_width + ( $line_height * 1.5 ) );
 		$site_width_wide = $content_width + $sidebar_width + $panel_width + ( $line_height * 2 );
 
 		return array(

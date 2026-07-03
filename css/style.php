@@ -21,6 +21,17 @@ if ( locate_template( 'css/fonts.php' ) )
 	padding: 0;
 }
 
+:root {
+	--md-small: <?php echo $small; ?>px;
+	--md-third: <?php echo $third; ?>px;
+	--md-half: <?php echo $half; ?>px;
+	--md-single: <?php echo $single; ?>px;
+	--md-mid: <?php echo $mid; ?>px;
+	--md-double: <?php echo $double; ?>px;
+	--md-triple: <?php echo $triple; ?>px;
+	--md-quad: <?php echo $quad; ?>px;
+}
+
 body {
 	background-color: <?php echo $colors['palette']['background']; ?>;
 	color: <?php echo $colors['palette']['text-main']; ?>;

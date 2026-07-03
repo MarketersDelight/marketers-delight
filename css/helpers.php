@@ -107,7 +107,7 @@ cite, .tiny {
 /* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
-.shadow-small    box-shadow: 0 1px  3px rgba(0, 0, 0, 0.10); }
+.shadow-small { box-shadow: 0 1px  3px rgba(0, 0, 0, 0.10); }
 .shadow-medium { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
 .shadow-large { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
 .shadow-huge { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20); }
@@ -236,37 +236,37 @@ cite, .tiny {
 /* MARGIN BOTTOM */
 
 foreach ( array_keys( $spacers ) as $size )
-	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: {$spacers[$size]}px; }\n";
+	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: var(--md-$size); }\n";
 
 foreach ( array( 'double', 'mid', 'single', 'half' ) as $size )
-	echo ".break-$size, .format .break-$size { margin-block-end: -{$spacers[$size]}px; }\n";
+	echo ".break-$size, .format .break-$size { margin-block-end: calc(-1 * var(--md-$size)); }\n";
 
 echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 
 /* MARGIN LEFT */
 
 foreach ( array( 'half', 'third', 'small' ) as $size )
-	echo ".ml-$size { margin-inline-start: {$spacers[$size]}px; }\n";
+	echo ".ml-$size { margin-inline-start: var(--md-$size); }\n";
 
 /* MARGIN RIGHT */
 
 foreach ( array( 'half', 'third', 'small' ) as $size )
-	echo ".mr-$size { margin-inline-end: {$spacers[$size]}px; }\n";
+	echo ".mr-$size { margin-inline-end: var(--md-$size); }\n";
 
 /* GAPS */
 
 foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'double' ) as $size )
-	echo ".gap-$size, .columns-$size { gap: {$spacers[$size]}px; }\n";
+	echo ".gap-$size, .columns-$size { gap: var(--md-$size); }\n";
 
 /* BLOCKS / PADDING */
 
 foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size )
 	echo
-		".block-$size { padding: {$spacers[$size]}px; }\n".
-		".block-$size-tb { padding-block: {$spacers[$size]}px; }\n".
-		".block-$size-lr { padding-inline: {$spacers[$size]}px; }\n".
-		".block-$size-top { padding-block-start: {$spacers[$size]}px; }\n".
-		".block-$size-bot { padding-block-end: {$spacers[$size]}px; }\n";
+		".block-$size { padding: var(--md-$size); }\n".
+		".block-$size-tb { padding-block: var(--md-$size); }\n".
+		".block-$size-lr { padding-inline: var(--md-$size); }\n".
+		".block-$size-top { padding-block-start: var(--md-$size); }\n".
+		".block-$size-bot { padding-block-end: var(--md-$size); }\n";
 
 echo ".pb-none { padding-block-end: 0; }\n";
 
@@ -282,8 +282,6 @@ foreach ( md_editor_colors() as $color_group => $color_fields ) {
 } ?>
 
 /* ANIMATIONS */
-
-/* ANIMATION */
 
 @keyframes md-fade {
 	from { opacity: 0; }

@@ -11,6 +11,9 @@
 function md_featured_media( $context = 'post', $args = array() ) {
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 	$args['loop'] = $loop;
+	$classes = array( 'featured-media' );
+
+	// Determine visibility on page
 
 	if ( array_key_exists( 'media', $args ) ) {
 		if ( empty( $args['media'] ) )
@@ -26,9 +29,11 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	if ( empty( $media ) )
 		return;
 
+	// Set properties
+
 	$permalink = '';
+	$attr = $style = array();
 	$type = $media['media_type'];
-	$type_class = str_replace( '_', '-', $type );
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() )
 		$permalink = get_permalink();
@@ -42,7 +47,32 @@ function md_featured_media( $context = 'post', $args = array() ) {
     elseif ( is_author() )
 		$size = 250;
 
-	$style = ! empty( $media['image_width'] ) ? md_style( array( 'max_width' => $media['image_width'] . 'px' ) ) : '';
+	if ( ! empty( $media['image_width'] ) ) {
+		$image_width = $media['image_width'] . 'px';
+
+		if ( $type !== 'image' )
+			$style['max_width'] = $image_width;
+
+		$attr['style'] = "max-width: $image_width";
+	}
+
+	// Set classes
+
+	$classes[] = 'media-' . str_replace( '_', '-', $type );
+
+	if ( isset( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
+	$classes = join( ' ', $classes );
+
+	// Set inline style
+
+	if ( isset( $args['style'] ) )
+		$style = array_merge( $style, $args['style'] );
+
+	$style = md_style( $style );
+
+	// Render template
 
 	include md_template( 'featured-media', true );
 }

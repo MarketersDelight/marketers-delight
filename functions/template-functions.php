@@ -323,7 +323,7 @@ function md_parse_text( $text, $context = '' ) {
 		elseif ( is_home() || is_post_type_archive() )
 			$context = 'archive';
 
-	$tokens = md_parse_tokens( array( 'context' => $context, 'text' => $text ) );
+	$tokens = md_parse_tokens( array( 'context' => $context, 'text' => $text )  );
 
 	return empty( $tokens ) ? $text : strtr( $text, $tokens );
 }
@@ -380,7 +380,7 @@ function md_parse_tokens( $args = array() ) {
 				$tokens['{parent}'] = $term->parent ? get_term( $term->parent, $term->taxonomy )->name : '';
 
 			if ( strpos( $text, '{total}' ) !== false && $obj_type )
-				$tokens['{total}'] = (int) wp_count_posts( $obj_type )->publish;
+				$tokens['{total}'] = wp_count_posts( $obj_type )->publish;
 		}
 		else $tokens = array();
 	}
@@ -395,7 +395,7 @@ function md_parse_tokens( $args = array() ) {
 		if ( $list )
 			return apply_filters( 'md_parse_tokens', $definitions, $args );
 
-		$tokens    = array_fill_keys( array_keys( $definitions ), '' );
+		$tokens = array_fill_keys( array_keys( $definitions ), '' );
 		$post_type = get_post_type_object( get_queried_object()->name ?? '' );
 
 		if ( $post_type ) {
@@ -406,7 +406,7 @@ function md_parse_tokens( $args = array() ) {
 			);
 
 			if ( strpos( $text, '{total}' ) !== false )
-				$tokens['{total}'] = (int) wp_count_posts( $post_type->name )->publish;
+				$tokens['{total}'] = wp_count_posts( $post_type->name )->publish;
 		}
 		else $tokens = array();
 	}
@@ -477,6 +477,10 @@ function md_get_color( $value, $type = 'color' ) {
 
 function md_style( $fields ) {
 	$attributes = array();
+
+	if ( ! empty( $fields['vars'] ) )
+		foreach ( $fields['vars'] as $prop => $val )
+			$attributes[] = '--' . esc_attr( $prop ) . ': ' . esc_attr( $val ) . ';';
 
 	if ( ! empty( $fields['bg_color'] ) ) {
 		$val = md_color_hex( $fields['bg_color'] );
