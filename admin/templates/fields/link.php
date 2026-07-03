@@ -63,7 +63,6 @@ $classes = join( ' ', $classes );
 				<?php $this->field( $fields['popup']['field'], array(
 					'type' => 'select',
 					'label' => __( 'Open popup', 'md' ),
-					'empty_label' => __( 'Select a popup...', 'md' ),
 					'options' => md_get_popups( 'options' )
 				) ); ?>
 			</div>

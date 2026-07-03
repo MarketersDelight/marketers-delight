@@ -481,44 +481,51 @@ function md_style( $fields ) {
 	if ( ! empty( $fields['bg_color'] ) ) {
 		$val = md_color_hex( $fields['bg_color'] );
 		if ( $val )
-			$attributes[] = 'background-color:' . esc_attr( $val ) . ';';
+			$attributes[] = 'background-color: ' . esc_attr( $val ) . ';';
 	}
 
 	if ( ! empty( $fields['bg_image'] ) )
-		$attributes[] = 'background-image:url(' . esc_url( $fields['bg_image'] ) . ');';
+		$attributes[] = 'background-image: url(' . esc_url( $fields['bg_image'] ) . ');';
 
 	if ( ! empty( $fields['bg_size'] ) )
-		$attributes[] = 'background-size:' . esc_attr( $fields['bg_size'] ) . ';';
+		$attributes[] = 'background-size: ' . esc_attr( $fields['bg_size'] ) . ';';
+
+	if ( ! empty( $fields['border'][0] ) ) {
+		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
+
+		if ( ! empty( $fields['border'][2] ) )
+			$attributes[] = 'border: ' . esc_attr( $fields['border'][0] ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $fields['border'][2] ) . ';';
+		else
+			$attributes[] = 'border-width: ' . esc_attr( $fields['border'][0] ) . 'px; border-style: ' . esc_attr( $border_style ) . ';';
+	}
 
 	if ( ! empty( $fields['border_color'] ) ) {
 		$val = md_color_hex( $fields['border_color'] );
+
 		if ( $val )
-			$attributes[] = 'border-color:' . esc_attr( $val ) . ';';
+			$attributes[] = 'border-color: ' . esc_attr( $val ) . ';';
 	}
 
-	if ( ! empty( $fields['border'][2] ) ) {
-		$border_width = ! empty( $fields['border'][0] ) ? $fields['border'][0] : 1;
-		$border_style = ! empty( $fields['border'][1] ) ? $fields['border'][1] : 'solid';
-		$attributes[] = 'border:' . esc_attr( $border_width ) . 'px ' . esc_attr( $border_style ) . ' ' . esc_attr( $fields['border'][2] ) . ';';
-	}
+	if ( ! empty( $fields['border_radius'] ) )
+		$attributes[] = 'border-radius: ' . intval( $fields['border_radius'] ) . 'px';
 
 	if ( ! empty( $fields['color'] ) ) {
 		$val = md_color_hex( $fields['color'] );
 		if ( $val )
-			$attributes[] = 'color:' . esc_attr( $val ) . ';';
+			$attributes[] = 'color: ' . esc_attr( $val ) . ';';
 	}
 
-	if ( ! empty( $fields['width'] ) )
-		$attributes[] = 'width:' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
-
-	if ( ! empty( $fields['max_width'] ) )
-		$attributes[] = 'max-width:' . esc_attr( $fields['max_width'] ) . ';';
-
 	if ( ! empty( $fields['flex'] ) )
-		$attributes[] = 'flex:' . esc_attr( $fields['flex'] ) . ';';
+		$attributes[] = 'flex: ' . esc_attr( $fields['flex'] ) . ';';
 
 	if ( ! empty( $fields['height'] ) )
-		$attributes[] = 'height:' . esc_attr( $fields['height'] ) . 'px;';
+		$attributes[] = 'height: ' . esc_attr( $fields['height'] ) . 'px;';
+
+	if ( ! empty( $fields['max_width'] ) )
+		$attributes[] = 'max-width: ' . esc_attr( $fields['max_width'] ) . ';';
+
+	if ( ! empty( $fields['width'] ) )
+		$attributes[] = 'width: ' . esc_attr( $fields['width'] ) . ( isset( $fields['width_unit'] ) ? $fields['width_unit'] : 'px' ) . ';';
 
 	return ! empty( $attributes ) ? ' style="' . implode( '', $attributes ) . '"' : '';
 }

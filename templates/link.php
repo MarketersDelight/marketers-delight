@@ -93,7 +93,7 @@ foreach ( md_get_visibility_classes( $fields['visibility'] ) as $class )
 if ( $fields['icon'] )
 	$classes[] = 'has-icon';
 
-if ( isset( $fields['settings']['icon_end'] ) )
+if ( ! empty( $fields['settings']['icon_end'] ) )
 	$classes[] = 'reverse';
 
 if ( $fields['classes'] )

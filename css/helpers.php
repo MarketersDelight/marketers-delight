@@ -106,15 +106,15 @@ cite, .tiny {
 
 /* SHADOWS */
 
-.shadow, .wp-block-image.shadow img { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); }
-
-.shadow-large { box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; }
+.shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
+.shadow-small    box-shadow: 0 1px  3px rgba(0, 0, 0, 0.10); }
+.shadow-medium { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
+.shadow-large { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
+.shadow-huge { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20); }
+.shadow-none, .wp-block-image.shadow { box-shadow: none; }
 
 .shadow-grow { transition: 0.3s; }
-
 .shadow-grow:hover { box-shadow: 0 6px 18px rgba(0, 0, 0,.05); }
-
-.wp-block-image.shadow { box-shadow: none; }
 
 /* ICON SHAPES */
 
@@ -280,3 +280,32 @@ foreach ( md_editor_colors() as $color_group => $color_fields ) {
 		 ".has-$color_slug-border-color { border-color: $color_val; }\n".
 		 ".has-$color_slug-color, a.has-$color_slug-color { color: $color_val; }\n";
 } ?>
+
+/* ANIMATIONS */
+
+/* ANIMATION */
+
+@keyframes md-fade {
+	from { opacity: 0; }
+	to { opacity: 1; }
+}
+
+@keyframes md-slide-up {
+	from { opacity: 0; transform: translateY(60px); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes md-slide-down {
+	from { opacity: 0; transform: translateY(-60px); }
+	to { opacity: 1; transform: none; }
+}
+
+@keyframes md-zoom {
+	from { opacity: 0; transform: scale(0.8); }
+	to { opacity: 1; transform: none; }
+}
+
+.animate-fade { animation: md-fade 0.5s ease-out both; }
+.animate-slide-up { animation: md-slide-up 0.5s ease-out both; }
+.animate-slide-down { animation: md-slide-down 0.5s ease-out both; }
+.animate-zoom { animation: md-zoom 0.5s ease-out both; }
