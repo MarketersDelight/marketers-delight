@@ -16,7 +16,7 @@ input, textarea {
 input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea,
 .form-icons .input-field {
 	background-color: var(--md-color-white);
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	position: relative;
 	width: 100%;
@@ -88,7 +88,7 @@ select {
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
 	border-inline-end: 1px solid var(--md-color-content-border);
-	border-radius: var(--md-radius) 0 0 var(--md-radius);
+	border-radius: var(--md-border-radius) 0 0 var(--md-border-radius);
 	padding-inline-end: var(--md-half);
 }
 

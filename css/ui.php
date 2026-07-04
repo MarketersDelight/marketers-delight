@@ -1,7 +1,7 @@
 <style type="text/css">
 
 .overlay {
-	background-color: <?php echo $colors['content']['page_cover']; ?>;
+	background-color: var(--md-color-page-cover);
 	content: '';
 	display: block;
 	inset: 0;
@@ -39,7 +39,7 @@
 	min-width: 0;
 }
 
-.scroller-nav:not(:last-child) { margin-block-end: <?php echo $single; ?>px; }
+.scroller-nav:not(:last-child) { margin-block-end: var(--md-single); }
 
 .scroller-arrow {
 	align-self: stretch;
@@ -48,11 +48,11 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 	cursor: pointer;
 	flex-shrink: 0;
 	font-size: var(--md-h5);
-	padding: 0 <?php echo $third; ?>px;
+	padding: 0 var(--md-third);
 	transform: none;
 	transition: color 0.2s;
 }
@@ -60,7 +60,7 @@
 .scroller-arrow:hover {
 	background: transparent;
 	box-shadow: none;
-	color: <?php echo $colors['site']['links']; ?>;
+	color: var(--md-color-links);
 	transform: none;
 }
 
@@ -68,7 +68,7 @@
 	display: flex;
 	flex: 1;
 	flex-wrap: nowrap;
-	gap: <?php echo $third; ?>px;
+	gap: var(--md-third);
 	min-width: 0;
 	overflow-x: auto;
 	scroll-behavior: smooth;
@@ -87,14 +87,14 @@
 .tooltip {
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.75);
-	border-radius: var(--md-radius);
-	color: #fff;
+	border-radius: var(--md-border-radius);
+	color: var(--md-color-white);
 	cursor: default;
 	display: none;
 	font-size: 0.75em;
-	gap: <?php echo $third; ?>px;
+	gap: var(--md-third);
 	line-height: 1;
-	padding: <?php echo $third; ?>px;
+	padding: var(--md-third);
 	position: absolute;
 	text-align: center;
 	width: 160px;
@@ -108,7 +108,7 @@
 }
 
 .tooltip-center {
-	inset-block-end: calc(100% + 8px);
+	inset-block-end: calc(100% + var(--md-small));
 	inset-inline-start: 50%;
 	transform: translateX(-50%);
 }
@@ -122,7 +122,7 @@
 
 .tooltip-left {
 	inset-block-start: 50%;
-	inset-inline-end: calc(100% + 8px);
+	inset-inline-end: calc(100% + var(--md-small));
 	transform: translateY(-50%);
 }
 
@@ -141,7 +141,7 @@
 
 .tabs {
 	border-block-end: 1px solid var(--md-color-content-border);
-	margin-block-end: <?php echo $single; ?>px;
+	margin-block-end: var(--md-single);
 }
 
 .tab {
@@ -149,17 +149,17 @@
 	background-color: #f7f7f7;
 	border: 1px solid var(--md-color-content-border);
 	border-width: 1px 1px 0;
-	border-radius: var(--md-radius) var(--md-radius) 0 0;
-	color: var(--md-color-text-sec);
+	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
+	color: var(--md-color-text-secondary);
 	cursor: pointer;
 	display: inline-flex;
-	gap: <?php echo $third; ?>px;
-	padding: <?php echo $half; ?>px;
+	gap: var(--md-third);
+	padding: var(--md-half);
 	text-decoration: none;
 }
 
 .tab a {
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 	text-decoration: none;
 }
 
@@ -183,13 +183,13 @@
 
 .accordion-title {
 	align-items: center;
-	color: <?php echo $colors['sidebar']['title']; ?>;
+	color: var(--md-sidebar-title);
 	cursor: pointer;
 	display: flex;
 	font-size: var(--md-h6);
-	font-weight: <?php echo $bold; ?>;
-	line-height: var(--md-lh-h6);
-	padding: <?php echo $half; ?>px;
+	font-weight: var(--md-bold);
+	line-height: var(--md-h6-line-height);
+	padding: var(--md-half);
 }
 
 .accordion-title::marker { content: none; }
@@ -201,13 +201,13 @@
 .accordion-label { flex: 1; }
 
 .accordion-label-icon {
-	color: var(--md-color-text-sec);
-	margin-inline-end: <?php echo $third; ?>px;
+	color: var(--md-color-text-secondary);
+	margin-inline-end: var(--md-third);
 }
 
 .accordion-item .menu-item { margin-block-end: 0; }
 
-.accordion-content.small .menu-item a { padding-block: <?php echo $third; ?>px; }
+.accordion-content.small .menu-item a { padding-block: var(--md-third); }
 
 .accordion-title:hover,
 .accordion-item .menu-item:hover a,
@@ -218,7 +218,7 @@
 	line-height: inherit;
 }
 
-.accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) { padding-left: <?php echo $single; ?>px; }
+.accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) { padding-left: var(--md-single); }
 
 /* DISPLAYS */
 

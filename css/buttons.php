@@ -65,9 +65,9 @@ button, input[type="submit"],
 	appearance: none;
     background-color: var(--md-color-button);
 	border: 0;
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	color: <?php echo $colors['site']['button-text']; ?>;
+	color: var(--md-color-button-text);
 	cursor: pointer;
 	font-size: inherit;
 	font-family: inherit;
@@ -86,13 +86,13 @@ button:hover, input[type="submit"]:hover,
 /* COLORS */
 
 .button.white {
-	background-color: #fff;
+	background-color: var(--md-color-white);
 	color: inherit;
 }
 
 .button.button-sec {
-	background-color: <?php echo $colors['site']['button-secondary']; ?>;
-	color: <?php echo $colors['site']['button-secondary-text']; ?>;
+	background-color: var(--md-color-button-secondary);
+	color: var(--md-color-button-secondary-text);
 }
 
 .button.button-outline,

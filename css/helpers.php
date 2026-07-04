@@ -42,7 +42,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec, .foot { color: var(--md-color-text-sec); }
+.text-sec, .foot { color: var(--md-color-text-secondary); }
 
 cite, .tiny {
 	font-size: calc(var(--md-font-size-sm) - 2px);
@@ -51,7 +51,7 @@ cite, .tiny {
 
 .intro {
 	font-size: var(--md-h6);
-	line-height: var(--md-lh-h6);
+	line-height: var(--md-h6-line-height);
 }
 
 .highlight {
@@ -61,22 +61,22 @@ cite, .tiny {
 
 .note {
 	background-color: var(--md-color-tertiary);
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	padding: var(--md-half);
 }
 
 .alert {
 	background-color: #fefbd1;
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 	padding: var(--md-half);
 }
 
 .badge {
-    background-color: #f58f2a;
-    border-radius: var(--md-radius);
-    color: #fff;
+    background-color: var(--md-color-warning);
+    border-radius: var(--md-border-radius);
+    color: var(--md-color-white);
 	font-size: calc(var(--md-font-size-sm) - 2px);
 	font-weight: normal;
 	line-height: 1;
@@ -91,7 +91,7 @@ cite, .tiny {
 
 /* BORDERS */
 
-.radius, .radius img { border-radius: var(--md-radius); }
+.radius, .radius img { border-radius: var(--md-border-radius); }
 
 .circle { border-radius: 50%; }
 
@@ -107,7 +107,7 @@ cite, .tiny {
 /* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
-.shadow-small { box-shadow: var(--md-shadow); }
+.shadow-small { box-shadow: var(--md-box-shadow); }
 .shadow-medium { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
 .shadow-large { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
 .shadow-huge { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20); }
@@ -137,7 +137,7 @@ cite, .tiny {
 
 .square-icon, a.square-icon {
 	background-color: rgba(0, 0, 0, 0.1);
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	height: var(--md-mid);
 	width: var(--md-mid);
 }
@@ -182,11 +182,11 @@ cite, .tiny {
 
 /* WIDTHS */
 
-.content-width { max-width: var(--md-content-width); }
+.content-width { max-width: var(--md-width-content); }
 
-.post-width { max-width: var(--md-post-width); }
+.post-width { max-width: var(--md-width-post); }
 
-.sidebar-width { max-width: var(--md-sidebar-width); }
+.sidebar-width { max-width: var(--md-width-sidebar); }
 
 .width-full { width: 100%; }
 

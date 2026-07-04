@@ -6,9 +6,7 @@
 
 .header {
 	background-color: var(--md-header-background);
-	<?php if ( ! empty( $colors['header']['color'] ) ) : ?>
-	color: <?php echo $colors['header']['color']; ?>;
-	<?php endif; ?>
+	color: var(--md-header-color);
 	<?php if ( ! empty( $typography['header']['font_family'] ) ) : ?>
 	font-family: <?php echo $typography['header']['font_family']; ?>;
 	<?php endif; ?>

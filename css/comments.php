@@ -29,14 +29,14 @@
 .content-title .title {
 	flex: 1;
 	font-size: var(--md-h4);
-	line-height: var(--md-h4-lh);
+	line-height: var(--md-h4-line-height);
 	margin-block-end: 0;
 }
 
 .comments .comment-reply-title {
 	font-size: var(--md-h4);
 	font-weight: var(--md-bold);
-	line-height: var(--md-h4-lh);
+	line-height: var(--md-h4-line-height);
 	margin-block-end: var(--md-half);
 }
 
@@ -78,7 +78,7 @@
 
 .comment .comment-awaiting-moderation {
 	background-color: var(--md-color-highlight);
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	font-style: italic;
 	margin-block-end: var(--md-half);
@@ -92,9 +92,9 @@
 .comment-controls a {
 	background-color: var(--md-color-content-box);
 	border: 1px solid var(--md-color-content-border);
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 	font-size: var(--md-font-size-sm);
 	padding: var(--md-small) var(--md-third);
 	text-decoration: none;
@@ -110,7 +110,7 @@
 /* TOGGLE */
 
 .comment .toggle {
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 	cursor: pointer;
 	display: none;
 	float: right;

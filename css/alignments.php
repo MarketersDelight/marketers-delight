@@ -113,8 +113,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.slim :is(.image-inline, .image-title) .featured-media { max-width: var(--md-quad); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
 	.compact .box-style .entry.full .image-left .featured-media,
-	.box-style.columns.full .image-left .featured-media { margin-inline-start: -<?php echo $mid; ?>px; }
+	.box-style.columns.full .image-left .featured-media { margin-inline-start: calc(-1 * var(--md-mid)); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignright.wrap,
 	.compact .box-style .entry.full .image-right .featured-media,
-	.box-style.columns.full .image-right .featured-media { margin-inline-end: -<?php echo $mid; ?>px; }
+	.box-style.columns.full .image-right .featured-media { margin-inline-end: calc(-1 * var(--md-mid)); }
 }

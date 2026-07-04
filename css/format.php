@@ -25,7 +25,7 @@ iframe, video, object { max-width: 100%; }
 
 abbr { cursor: help; }
 
-cite { color: var(--md-color-text-sec); }
+cite { color: var(--md-color-text-secondary); }
 
 sup { line-height: 1; }
 
@@ -37,7 +37,7 @@ hr {
 }
 
 code {
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	padding: 2px 5px;
 }
 
@@ -63,7 +63,7 @@ code, pre {
 
 /* HEADINGS */
 
-<?php echo implode( ', ', array_values( $headings ) ) . " { color: {$colors['site']['headline']}; font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
+<?php echo implode( ', ', array_values( $headings ) ) . " { color: var(--md-color-headline); font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
 
 foreach ( $headings as $attribute => $selector ) {
 	$combined = isset( $heading_sizes[$attribute] ) ? "$selector, {$heading_sizes[$attribute]}" : $selector;
@@ -87,7 +87,7 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 } ?>
 
 :is(<?php echo $heading_selectors ?>) a {
-	color: <?php echo $colors['site']['headline-links']; ?>;
+	color: var(--md-color-headline-links);
 	text-decoration: none;
 }
 
@@ -151,9 +151,9 @@ blockquote {
 	background-color: var(--md-color-white);
 	border: 1px solid var(--md-color-content-border);
 	border-inline-start-width: 7px;
-	border-radius: var(--md-radius);
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 	display: block;
 	font-style: italic;
 	margin-inline: 0;

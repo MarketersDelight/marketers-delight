@@ -67,14 +67,14 @@
 .wp-caption-text, .wp-element-caption {
 	font-size: var(--md-font-size-sm);
 	font-style: italic;
-	line-height: var(--line-height-sm);
+	line-height: var(--md-line-height-sm);
 	padding: var(--md-third);
 	text-align: center;
 }
 
 .entry .wp-caption-text, .wp-element-caption {
 	border-bottom: 1px solid var(--md-color-content-border);
-	color: var(--md-color-text-sec);
+	color: var(--md-color-text-secondary);
 }
 
 .cover .wp-caption-text {
@@ -98,7 +98,7 @@
 .author-title {
 	font-size: var(--md-h4);
 	font-weight: var(--md-bold);
-	line-height: var(--md-h4-lh);
+	line-height: var(--md-h4-line-height);
 	margin-block-end: var(--md-small);
 }
 
@@ -146,8 +146,8 @@
 
 .post-nav-links {
 	background-color: rgba(0, 0, 0, 0.05);
-	border-radius: 8px;
-	box-shadow: var(--md-shadow);
+	border-radius: var(--md-border-radius);
+	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
 }
 
@@ -163,7 +163,7 @@ ul.page-numbers {
 
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
 	background-color: var(--md-color-content-box);
-	border-radius: 8px;
+	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	padding: var(--md-third) var(--md-half);
 }
@@ -187,7 +187,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	padding: 0;
 }
 
-.page-numbers:not(.prev):not(.next):not(.current) { color: var(--md-color-text-sec); }
+.page-numbers:not(.prev):not(.next):not(.current) { color: var(--md-color-text-secondary); }
 
 .prev-icon, .page-numbers.prev { margin-inline-end: var(--md-third); }
 

@@ -14,21 +14,21 @@
 .content :is(.page-title.cover, .page-title.cover .overlay),
 .entry :is(.cover, .cover .overlay),
 .featured-media, .featured-media img,
-.box-style .entry .item:nth-child(1 of .item):nth-last-child(1 of .item) { border-radius: var(--md-radius); }
+.box-style .entry .item:nth-child(1 of .item):nth-last-child(1 of .item) { border-radius: var(--md-border-radius); }
 
 .box-style .entry .item:nth-child(1 of .item),
 .box-style .entry :is(.cover, .overlay),
 .box-style .image-above :is(.featured-media, .featured-media img),
-.header-cover .box-style .image-full :is(.featured-media, .featured-media img) { border-radius: var(--md-radius) var(--md-radius) 0 0; }
+.header-cover .box-style .image-full :is(.featured-media, .featured-media img) { border-radius: var(--md-border-radius) var(--md-border-radius) 0 0; }
 
 .box-style .entry .item:nth-last-child(1 of .item),
-.box-style .image-above :is(.cover, .overlay, .featured-media + .item) { border-radius: 0 0 var(--md-radius) var(--md-radius); }
+.box-style .image-above :is(.cover, .overlay, .featured-media + .item) { border-radius: 0 0 var(--md-border-radius) var(--md-border-radius); }
 
 .box-style .image-below .featured-media img,
 .box-style .entry.image-below .featured-media + .the-content { border-radius: 0; }
 
 .box, .box-style .entry,
-.cover, .featured-media img { box-shadow: var(--md-shadow); }
+.cover, .featured-media img { box-shadow: var(--md-box-shadow); }
 
 .box, .box-style .item,
 .box-style .image-full .featured-media,
