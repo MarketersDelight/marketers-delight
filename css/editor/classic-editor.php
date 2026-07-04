@@ -8,10 +8,12 @@
 if ( locate_template( 'css/fonts.php' ) )
 	include locate_template( 'css/fonts.php' );
 
+include locate_template( 'css/--vars.php' );
 include md_css( 'format', true );
 include md_css( 'buttons', true );
 include md_css( 'helpers', true );
-include md_css( 'layout', true );
+include md_css( 'widgets', true );
+include md_css( 'loop', true );
 ?>
 
 /* CLASSIC EDITOR */
@@ -26,4 +28,4 @@ include md_css( 'layout', true );
 	margin-inline: auto;
 }
 
-.mce-content-body :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+.mce-content-body :is(h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }

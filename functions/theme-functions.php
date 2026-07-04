@@ -465,8 +465,8 @@ function md_meta( $keys = null, $id = null, $default = null ) {
  * @since 4.9
  */
 
-function md_has_class( $slug, $type ) {
-	return $slug ? 'has-' . $slug . '-' . $type : '';
+function md_block_field( $attributes, $field ) {
+	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
 }
 
 /**
@@ -576,38 +576,6 @@ function md_get_builder( $id, $type = null, $key = null ) {
 		$builder = ! empty( $builder[$key] ) ? $builder[$key] : array();
 
 	return $builder;
-}
-
-/**
- * A list of post types and taxonomies to enable MD Optins features to.
- *
- * @since 5.0
- */
-
-function md_optins_locations( $sort = null ) {
-	$locations = array();
-	$data = apply_filters( 'md_optins_locations', array(
-		'sitewide' => __( 'Sitewide', 'md' ),
-		'front' => __( 'Front Page', 'md' ),
-		'home' => __( 'Blog Page', 'md' ),
-		'post' => __( 'All Posts', 'md' ),
-		'category' => __( 'All Categories', 'md' ),
-		'page' => __( 'All Pages', 'md' ),
-		'author' => __( 'All Author Pages', 'md' ),
-		'search' => __( 'Search Results', 'md' )
-	) );
-
-	if ( isset( $sort ) ) {
-		foreach ( $data as $id => $label ) {
-			if ( $sort == 'ids' )
-				$locations[] = $id;
-			elseif ( $sort == 'options' )
-				$locations[$id] = $label;
-		}
-	}
-	else $locations = $data;
-
-	return $locations;
 }
 
 /**

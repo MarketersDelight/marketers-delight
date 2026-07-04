@@ -120,7 +120,7 @@ cite, .tiny {
 
 .circle-icon, .square-icon {
 	align-items: center;
-	display: inline-flex;
+	display: flex;
 	flex-shrink: 0;
 	justify-content: center;
 	line-height: 1;
@@ -149,11 +149,18 @@ cite, .tiny {
 	width: calc(var(--md-mid) + var(--md-small));
 }
 
-.circle-icon.large, .square-icon.large {
+.circle-icon.double, .square-icon.double {
 	flex: 1 0 var(--md-double);
 	height: var(--md-double);
 	font-size: var(--md-h2);
 	width: var(--md-double);
+}
+
+.circle-icon.triple, .square-icon.triple {
+	flex: 1 0 var(--md-triple);
+	height: var(--md-triple);
+	font-size: var(--md-h1);
+	width: var(--md-triple);
 }
 
 /* LAYOUT */
@@ -233,6 +240,16 @@ cite, .tiny {
 
 <?php
 
+/* MARGIN TOP */
+
+foreach ( array_keys( $spacers ) as $size )
+	echo ".mt-$size:not(:first-child) { margin-block-start: var(--md-$size); }\n";
+
+/* MARGIN RIGHT */
+
+foreach ( array( 'half', 'third', 'small' ) as $size )
+	echo ".mr-$size { margin-inline-end: var(--md-$size); }\n";
+
 /* MARGIN BOTTOM */
 
 foreach ( array_keys( $spacers ) as $size )
@@ -248,14 +265,9 @@ echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 foreach ( array( 'half', 'third', 'small' ) as $size )
 	echo ".ml-$size { margin-inline-start: var(--md-$size); }\n";
 
-/* MARGIN RIGHT */
-
-foreach ( array( 'half', 'third', 'small' ) as $size )
-	echo ".mr-$size { margin-inline-end: var(--md-$size); }\n";
-
 /* GAPS */
 
-foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'double' ) as $size )
+foreach ( array_keys( $spacers ) as $size )
 	echo ".gap-$size, .columns-$size { gap: var(--md-$size); }\n";
 
 /* BLOCKS / PADDING */

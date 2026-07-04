@@ -47,9 +47,9 @@
 		width: var(--md-width-panel);
 		z-index: 100;
 	}
-	.panel-left .panel { left: calc(-1 * var(--md-width-panel)); }
-	.panel-right .panel { right: calc(-1 * var(--md-width-panel)); }
-	.admin-bar .panel { top: var(--wp-admin--admin-bar--height); }
+	.panel-left .panel { inset-inline-start: calc(-1 * var(--md-width-panel)); }
+	.panel-right .panel { inset-inline-end: calc(-1 * var(--md-width-panel)); }
+	.admin-bar .panel { inset-block-start: var(--wp-admin--admin-bar--height); }
 	.toggle-panel[class*="from-"] { overflow: hidden; }
 	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
 	.panel-left.toggle-panel[class*="from-"] .panel { inset-inline-start: 0; }

@@ -117,6 +117,7 @@ class md_css {
 			'header' => locate_template( 'css/header.php' ),
 			'title' => locate_template( 'css/title.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
+			'loop' => locate_template( 'css/loop.php' ),
 			'alignments' => locate_template( 'css/alignments.php' ),
 			'page' => locate_template( 'css/page.php' ),
 			'comments' => locate_template( 'css/comments.php' ),

@@ -4,58 +4,26 @@
 	$WIDGETS
 \*------------------------------*/
 
-.sidebar, .panel {
-	color: var(--md-sidebar-text);
-	font-size: <?php echo $typography['sidebar']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['sidebar']['line_height']['desktop']; ?>px;
-}
-
 .format .widget:not(:last-child) { margin-block-end: var(--md-single); }
-
-.sidebar .widget :is(ul, ol), .footer .widget :is(ul, ol) {
-	list-style: none;
-	margin-inline-start: 0;
-}
 
 .wp-block-latest-comments__comment { line-height: inherit; }
 
-/* SIDEBAR */
+/* BLOCKS */
 
-.sidebar { background-color: var(--md-sidebar-background); }
-
-.sidebar a, .panel a { color: var(--md-sidebar-links); }
-
-:is(.sidebar, .panel) :is(.widget-title, .wp-block-heading) { color: var(--md-sidebar-title); }
-
-:is(.sidebar, .panel) :is(.widget-title a, .wp-block-heading a) { color: var(--md-sidebar-title-links); }
-
-/* FOOTER */
-
-.footer {
-	background-color: var(--md-footer-background);
-	color: var(--md-footer-text);
-	font-size: <?php echo $typography['footer']['font_size']['desktop']; ?>px;
-	line-height: <?php echo $typography['footer']['line_height']['desktop']; ?>px;
+.callout {
+	border-style: solid;
+	border-width: 4px;
+	border-radius: var(--md-border-radius);
 	position: relative;
-	z-index: 88;
 }
 
-.footer a { color: var(--md-footer-links); }
+.callout.has-icon { padding-block-start: 0; }
 
-.footer :is(.widget-title, .wp-block-heading) { color: var(--md-footer-title); }
+.callout.has-icon:not(:first-child) { margin-block-start: var(--md-double); }
 
-.footer :is(.widget-title a, .wp-block-heading a) { color: var(--md-footer-title-links); }
-
-.footer .columns { padding-block: var(--md-mid); }
-
-.footer .list li:not(:last-child) { border-block-end-color: var(--md-footer-border); }
-
-.footer .list a { display: block; }
-
-.footer-copy {
-	border-block-start: 1px solid var(--md-footer-border);
-	padding-block: var(--md-single);
-	text-align: center;
+.callout-icon {
+	margin-block-start: calc(calc(-1 * var(--md-triple)) / 2);
+	margin-inline: auto;
 }
 
 /* MENU */
@@ -141,24 +109,3 @@
 	color: var(--md-color-white);
 	padding: var(--md-half);
 }
-
-/* QUERIES */
-
-<?php foreach ( $queries as $w => $d ) {
-
-echo "@media (max-width: {$w}px) {\n";
-
-foreach ( array( 'sidebar', 'footer' ) as $aside )
-	if ( ! empty( $typography[$aside]['font_size'][$d] ) || ! empty( $typography[$aside]['line_height'][$d] ) ) {
-		echo ".{$aside} { ".
-			( ! empty( $typography[$aside]['font_size'][$d] ) ?
-				'font-size: ' . $typography[$aside]['font_size'][$d] . 'px; '
-			: '' ).
-			( ! empty( $typography[$aside]['line_height'][$d] ) ?
-				'line-height: ' . $typography[$aside]['line_height'][$d] . 'px; '
-			: '' ) . '}';
-	}
-
-echo "}\n";
-
-} ?>

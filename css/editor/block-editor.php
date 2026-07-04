@@ -25,8 +25,6 @@ body.expanded .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
 
 /* SPACING */
 
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol, .list-check) { margin-inline-start: <?php echo $quad; ?>px; }
-
 .editor-styles-wrapper .wp-block-post-content > .wp-block { margin-block-start: 0; }
 
 .editor-styles-wrapper .wp-block-post-content > .wp-block:not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }

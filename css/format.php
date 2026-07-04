@@ -31,8 +31,8 @@ sup { line-height: 1; }
 
 hr {
 	border: 0;
-	border-block-start: 1px solid rgba(0, 0, 0, 0.1);
 	border-block-end: 1px solid rgba(255, 255, 255, 0.3);
+	border-block-start: 1px solid rgba(0, 0, 0, 0.1);
 	height: 0;
 }
 
@@ -97,15 +97,14 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
-.the-content :is(<?php echo $heading_selectors ?>):not(:first-child) { margin-block-start: var(--md-mid); }
+.the-content :is(h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: var(--md-mid); }
 
 
 /* LISTS */
 
 .format ul { list-style: square; }
 
-.list-check,
-.the-content :is(ul, ol) { margin-inline-start: var(--md-single); }
+.list-check, .the-content :is(ul, ol) { margin-inline-start: var(--md-single); }
 
 .format li, .list-check li:not(:last-child) {
 	margin-block-end: var(--md-third);
@@ -119,8 +118,7 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 
 .format .list { margin-inline-start: 0; }
 
-.list, .list-check,
-.format .list, .format [class*="list-"] { list-style: none; }
+ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 
 .list-links li a,
 .list li:not(:last-child),
