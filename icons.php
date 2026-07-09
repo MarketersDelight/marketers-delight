@@ -21,6 +21,10 @@ return array(
 		'unicode' => 'f0f3',
 		'label' => __( 'Bell', 'md' )
 	),
+	'bluesky' => array(
+		'unicode' => 'e91c',
+		'label' => __( 'Bluesky', 'md' )
+	),
 	'bolt' => array(
 		'unicode' => 'e823',
 		'label' => __( 'Bolt', 'md' )
@@ -41,9 +45,17 @@ return array(
 		'unicode' => 'e811',
 		'label' => __( 'Chat', 'md' )
 	),
+	'chatgpt' => array(
+		'unicode' => 'e920',
+		'label' => __( 'ChatGPT', 'md' )
+	),
 	'check' => array(
 		'unicode' => 'e90',
 		'label' => __( 'Check', 'md' )
+	),
+	'claude' => array(
+		'unicode' => 'e921',
+		'label' => __( 'Claude', 'md' )
 	),
 	'clock' => array(
 		'unicode' => 'e812',
@@ -125,6 +137,10 @@ return array(
 	'game' => array(
 		'unicode' => 'e911',
 		'label' => __( 'Game', 'md' )
+	),
+	'gemini' => array(
+		'unicode' => 'e91d',
+		'label' => __( 'Gemini', 'md' )
 	),
 	'github' => array(
 		'unicode' => 'e802',
@@ -242,6 +258,10 @@ return array(
 	'quote' => array(
 		'unicode' => 'f10e',
 		'label' => __( 'Quote', 'md' )
+	),
+	'reddit' => array(
+		'unicode' => 'e91b',
+		'label' => __( 'Reddit', 'md' )
 	),
 	'reply' => array(
 		'unicode' => 'f112',

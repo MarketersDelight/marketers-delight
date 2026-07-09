@@ -87,7 +87,7 @@ button:hover, input[type="submit"]:hover,
 
 .button.white {
 	background-color: var(--md-color-white);
-	color: inherit;
+	color: var(--md-color-text);
 }
 
 .button.button-sec {

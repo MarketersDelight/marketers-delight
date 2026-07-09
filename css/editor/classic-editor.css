@@ -113,11 +113,11 @@
 	--md-sidebar-title: #1E1E1E;
 	--md-sidebar-title-links: #1E1E1E;
 	--md-footer-border: #E1DFCF;
-	--md-footer-text: #FFFFFF;
-	--md-footer-links: #F9F7E8;
-	--md-footer-title: #FFFFFF;
-	--md-footer-title-links: #FFFFFF;
-	--md-footer-background: #101010;
+	--md-footer-text: #1E1E1E;
+	--md-footer-links: #777777;
+	--md-footer-title: #1E1E1E;
+	--md-footer-title-links: #1E1E1E;
+	--md-footer-background: #FFFFFF;
 }
 /*------------------------------*\
 	$FORMAT
@@ -344,7 +344,7 @@ button:hover, input[type="submit"]:hover,
 /* COLORS */
 .button.white {
 	background-color: var(--md-color-white);
-	color: inherit;
+	color: var(--md-color-text);
 }
 .button.button-sec {
 	background-color: var(--md-color-button-secondary);

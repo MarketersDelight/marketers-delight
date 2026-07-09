@@ -46,8 +46,9 @@ class md_css {
 			),
 			'block-editor' => array(
 				'path' => MD_DIR . 'css/editor/block-editor.css',
-				'templates' => array(
-					'block-editor' => locate_template( 'css/editor/block-editor.php' )
+				'templates' => array_merge(
+					array( 'block-editor' => locate_template( 'css/editor/block-editor.php' ) ),
+					apply_filters( 'md_block_editor_css_templates', array() )
 				),
 				'replace' => array(
 					'.format' => '.editor-styles-wrapper'
@@ -437,7 +438,10 @@ class md_css {
 			)
 		);
 
-		foreach ( $this->files[$file]['templates'] as $template => $path ) {
+		foreach ( $this->files[$file]['templates'] as $template => $fields ) {
+			$path = is_array( $fields ) ? $fields['path'] : $fields;
+			$data = is_array( $fields ) ? ( $fields['data'] ?? null ) : null;
+
 			if ( ! file_exists( $path ) )
 				continue;
 
