@@ -7,7 +7,7 @@
 /* ATTRIBUTES */
 
 a {
-	color: var(--md-color-links);
+	color: var(--md-links);
 	text-decoration: underline;
 }
 
@@ -63,7 +63,7 @@ code, pre {
 
 /* HEADINGS */
 
-<?php echo implode( ', ', array_values( $headings ) ) . " { color: var(--md-color-headline); font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
+<?php echo implode( ', ', array_values( $headings ) ) . " { color: var(--md-headline); font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
 
 foreach ( $headings as $attribute => $selector ) {
 	$combined = isset( $heading_sizes[$attribute] ) ? "$selector, {$heading_sizes[$attribute]}" : $selector;
@@ -87,7 +87,7 @@ foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector
 } ?>
 
 :is(<?php echo $heading_selectors ?>) a {
-	color: var(--md-color-headline-links);
+	color: var(--md-headline-links);
 	text-decoration: none;
 }
 
@@ -136,7 +136,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 .list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
 	border-radius: 50%;
-	color: var(--md-color-button);
+	color: var(--md-button);
 	margin-inline: -<?php echo $single + $small + 2; ?>px var(--md-third);
 	padding: var(--md-small);
 }
@@ -147,7 +147,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 
 blockquote {
 	background-color: var(--md-color-white);
-	border: 1px solid var(--md-color-content-border);
+	border: 1px solid var(--md-content-border);
 	border-inline-start-width: 7px;
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);

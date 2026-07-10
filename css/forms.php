@@ -87,7 +87,7 @@ select {
 
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
-	border-inline-end: 1px solid var(--md-color-content-border);
+	border-inline-end: 1px solid var(--md-content-border);
 	border-radius: var(--md-border-radius) 0 0 var(--md-border-radius);
 	padding-inline-end: var(--md-half);
 }

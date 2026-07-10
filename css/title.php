@@ -72,7 +72,7 @@
 .byline-item .md-icon-twitter { color: #1da1f2; }
 
 .byline-sticky {
-	color: var(--md-color-button);
+	color: var(--md-button);
 	display: block;
 	font-weight: var(--md-bold);
 	margin-block-end: var(--md-half);

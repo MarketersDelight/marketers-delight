@@ -146,7 +146,7 @@ class md_integrations extends md_api {
 
 		$form = $this->sanitize()->recursive( $form );
 
-		if ( ! wp_verify_nonce( $form['_wpnonce'], $form['option_page'] . '-options' ) )
+		if ( ! wp_verify_nonce( $form['_wpnonce'] ?? '', $form['option_page'] . '-options' ) || ! current_user_can( 'manage_options' ) )
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );
 
 		$option = md_setting();

@@ -73,7 +73,7 @@
 }
 
 .entry .wp-caption-text, .wp-element-caption {
-	border-bottom: 1px solid var(--md-color-content-border);
+	border-bottom: 1px solid var(--md-content-border);
 	color: var(--md-color-text-secondary);
 }
 
@@ -162,7 +162,7 @@ ul.page-numbers {
 }
 
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
-	background-color: var(--md-color-content-box);
+	background-color: var(--md-content);
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	padding: var(--md-third) var(--md-half);

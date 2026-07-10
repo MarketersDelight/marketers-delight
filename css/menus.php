@@ -57,7 +57,7 @@
 	.menu-item-has-children a { padding-inline-end: 0; }
 	/* SUB MENU */
 	.sub-menu {
-		background-color: var(--md-submenu-background);
+		background-color: var(--md-submenu);
 		border-radius: var(--md-border-radius);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 		font-size: var(--md-font-size-sm);

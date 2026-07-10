@@ -24,7 +24,7 @@
 	line-height: <?php echo $typography['sidebar']['line_height']['desktop']; ?>px;
 }
 
-.sidebar { background-color: var(--md-sidebar-background); }
+.sidebar { background-color: var(--md-sidebar); }
 
 .sidebar a, .panel a { color: var(--md-sidebar-links); }
 
@@ -41,7 +41,7 @@
 /* FOOTER */
 
 .footer {
-	background-color: var(--md-footer-background);
+	background-color: var(--md-footer);
 	color: var(--md-footer-text);
 	font-size: <?php echo $typography['footer']['font_size']['desktop']; ?>px;
 	line-height: <?php echo $typography['footer']['line_height']['desktop']; ?>px;

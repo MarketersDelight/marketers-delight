@@ -62,14 +62,14 @@ cite, .tiny {
 .note {
 	background-color: var(--md-color-tertiary);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
 }
 
 .alert {
 	background-color: #fefbd1;
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
 }
 
@@ -108,9 +108,9 @@ cite, .tiny {
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
 .shadow-small { box-shadow: var(--md-box-shadow); }
-.shadow-medium { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
-.shadow-large { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15); }
-.shadow-huge { box-shadow: 0 16px 48px rgba(0, 0, 0, 0.20); }
+.shadow-medium { box-shadow: var(--md-box-shadow-medium); }
+.shadow-large { box-shadow: var(--md-box-shadow-large); }
+.shadow-huge { box-shadow: var(--md-box-shadow-huge); }
 .shadow-none, .wp-block-image.shadow { box-shadow: none; }
 
 .shadow-grow { transition: var(--md-transition); }

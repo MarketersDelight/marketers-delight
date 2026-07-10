@@ -68,7 +68,7 @@ final class marketers_delight {
 		$this->dropins();
 
 		require_once MD_DIR . 'blog.php';
-		require_once MD_DIR . 'actions.php';
+		require_once MD_DIR . 'functions/actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
 
@@ -196,7 +196,7 @@ final class marketers_delight {
 		if ( is_admin() )
 			$this->activate_dropin();
 
-		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) )
+		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) )
 			if ( $_GET['md'] == 'compile' )
 				md_compile();
 			elseif ( $_GET['md'] == 'compile_css' )
@@ -404,7 +404,6 @@ final class marketers_delight {
  	 */
 
 	public function post_class( $classes ) {
-		// Remove excess WP classes
 		$classes = array_diff( $classes, array(
 			'format-standard',
 			'hentry',
@@ -596,7 +595,7 @@ final class marketers_delight {
 	public function disable_embed_rewrites( $rules ) {
 		foreach ( $rules as $rule => $rewrite )
 			if ( false !== strpos( $rewrite, 'embed=true' ) )
-				unset( $rules[ $rule ] );
+				unset( $rules[$rule] );
 
 		return $rules;
 	}

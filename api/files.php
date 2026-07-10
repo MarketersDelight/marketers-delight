@@ -14,7 +14,7 @@ class md_files {
 	 */
 
 	public function file_action( $args = null ) {
-		if ( ! wp_verify_nonce( $_POST['nonce'], 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
+		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
 			return;
 
 		$url = wp_nonce_url( 'admin.php?page=md_dropins', 'marketers-delight' );

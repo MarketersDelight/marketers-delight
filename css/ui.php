@@ -1,7 +1,7 @@
 <style type="text/css">
 
 .overlay {
-	background-color: var(--md-color-page-cover);
+	background-color: var(--md-page-cover);
 	content: '';
 	display: block;
 	inset: 0;
@@ -60,7 +60,7 @@
 .scroller-arrow:hover {
 	background: transparent;
 	box-shadow: none;
-	color: var(--md-color-links);
+	color: var(--md-links);
 	transform: none;
 }
 
@@ -140,14 +140,14 @@
 /* TABS */
 
 .tabs {
-	border-block-end: 1px solid var(--md-color-content-border);
+	border-block-end: 1px solid var(--md-content-border);
 	margin-block-end: var(--md-single);
 }
 
 .tab {
 	align-items: center;
 	background-color: #f7f7f7;
-	border: 1px solid var(--md-color-content-border);
+	border: 1px solid var(--md-content-border);
 	border-width: 1px 1px 0;
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
 	color: var(--md-color-text-secondary);
@@ -164,8 +164,8 @@
 }
 
 .tab.active {
-	background-color: var(--md-color-content-box);
-	border-bottom-color: var(--md-color-content-box);
+	background-color: var(--md-content);
+	border-bottom-color: var(--md-content);
 	border-bottom-width: 1px;
 	margin-block-end: -1px;
 }

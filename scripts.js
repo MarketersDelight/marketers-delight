@@ -239,8 +239,20 @@ floatingBars: {
 	init: function( floatingBars ) {
 		this.opened = this.showing = false;
 		this.data = floatingBars;
+		document.addEventListener( 'click', function( e ) {
+			var trigger = e.target.closest( '.bar-close' );
+			if ( ! trigger ) return;
+			var bar_id = trigger.getAttribute( 'data-bar' ),
+				el = document.getElementById( bar_id );
+			MD.removeClass( el, 'active' );
+			MD.addClass( el, 'hide' );
+			MD.addClass( el, 'closed' );
+			if ( MD.floatingBar && MD.floatingBar.cookieExp && ! MD.cookie.get( bar_id ) )
+				MD.cookie.create( bar_id, true, MD.floatingBar.cookieExp );
+			MD.floatingBars.opened = MD.floatingBars.showing = false;
+			MD.floatingBars.open.events();
+		} );
 		MD.floatingBars.open.events();
-		MD.floatingBars.close.events();
 	},
 	open: {
 		events: function() {
@@ -264,10 +276,9 @@ floatingBars: {
 			if ( MD.hasClass( el, 'sticky' ) )
 				MD.sticky( '#' + id );
 			delete MD.floatingBars.data[id];
-			MD.floatingBars.close.events();
 		},
 		percent: function() {
-			window.onscroll = function() {
+			window.addEventListener( 'scroll', function() {
 				var pos = window.scrollY,
 					el = document.getElementById( MD.floatingBar.id );
 				if ( ! MD.hasClass( el, 'closed' ) ) {
@@ -279,7 +290,7 @@ floatingBars: {
 							MD.removeClass( el, 'active' );
 					});
 				}
-			}
+			} );
 		},
 		timer: function() {
 			setTimeout( function() {
@@ -287,24 +298,6 @@ floatingBars: {
 			}, MD.floatingBar.delay * 1000 );
 		}
 	},
-	close: {
-		events: function() {
-			document.querySelectorAll( '.bar-close' ).forEach( function( trigger ) {
-				trigger.onclick = function() {
-					var bar_id = this.getAttribute( 'data-bar' ),
-						expires = this.getAttribute( 'data-bar-expires' ),
-						el = document.getElementById( bar_id );
-					MD.removeClass( el, 'active' );
-					MD.addClass( el, 'hide' );
-					MD.addClass( el, 'closed' );
-					if ( ! MD.cookie.get( bar_id ) && expires !== '0' )
-						MD.cookie.create( bar_id, true, expires );
-					MD.floatingBars.opened = MD.floatingBars.showing = false;
-					MD.floatingBars.open.events();
-				}
-			});
-		}
-	}
 },
 focusInputs: function( id ) {
 	var search = document.querySelector( '#' + id + ' .search-input' ),
@@ -321,11 +314,26 @@ popups: {
 	init: function( popups ) {
 		this.opened = this.showing = false;
 		this.data = popups;
+		document.addEventListener( 'click', function( e ) {
+			var trigger = e.target.closest( '.popup-trigger' );
+			if ( trigger ) {
+				e.preventDefault();
+				MD.popups.trigger = trigger.getAttribute( 'data-popup' );
+				MD.popups.open.show();
+			}
+		} );
+		document.addEventListener( 'click', function( e ) {
+			if ( e.target.closest( '.close' ) || e.target.closest( '.popup-bg' ) )
+				MD.popups.close.close();
+		} );
+		document.addEventListener( 'keydown', function( e ) {
+			if ( e.key === 'Escape' )
+				MD.popups.close.close();
+		} );
 		MD.popups.open.events();
 	},
 	open: {
 		events: function() {
-			this.triggers();
 			for ( var id in MD.popups.data ) {
 				if ( MD.popups.opened )
 					break;
@@ -339,19 +347,9 @@ popups: {
 				MD.popups.opened = MD.popup.id;
 			}
 		},
-		triggers: function() {
-			var triggers = document.getElementsByClassName( 'popup-trigger' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
-					MD.popups.trigger = this.getAttribute( 'data-popup' );
-					MD.popups.open.show();
-					return false;
-				}
-			}
-		},
 		percent: function() {
 			var shown = false;
-			window.onscroll = function() {
+			window.addEventListener( 'scroll', function() {
 				if ( shown || MD.popups.trigger )
 					return;
 				var pos = window.scrollY,
@@ -363,8 +361,8 @@ popups: {
 							shown = true;
 							MD.popups.open.show();
 						}
-					});
-			}
+					} );
+			} );
 		},
 		timer: function() {
 			setTimeout( function() {
@@ -374,7 +372,7 @@ popups: {
 		},
 		exit: function() {
 			var shown = false;
-			window.document.onmousemove = function( e ) {
+			window.addEventListener( 'mousemove', function( e ) {
 				if ( shown || MD.popups.trigger )
 					return;
 				var scroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -382,11 +380,11 @@ popups: {
 					shown = true;
 					MD.popups.open.show();
 				}
-			}
+			} );
 		},
 		show: function() {
 			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
-			MD.addClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
+			MD.addClass( document.documentElement, 'has-popup' );
 			if ( MD.popups.showing && MD.popups.trigger )
 				MD.removeClass( document.getElementById( MD.popups.showing ), 'active' );
 			MD.addClass( document.getElementById( id ), 'active' );
@@ -394,37 +392,11 @@ popups: {
 			MD.popups.showing = id;
 			if ( ! MD.popups.trigger )
 				delete MD.popups.data[MD.popup.id];
-			MD.popups.close.events();
 		}
 	},
 	close: {
-		events: function() {
-			this.trigger();
-			this.bg();
-			this.esc();
-		},
-		trigger: function() {
-			var triggers = document.getElementsByClassName( 'close' );
-			for ( var i = 0; i < triggers.length; i++ ) {
-				triggers[i].onclick = function() {
-					MD.popups.close.close();
-				}
-			}
-		},
-		bg: function() {
-			document.getElementById( 'popup_bg' ).onclick = function() {
-				MD.popups.close.close();
-			}
-		},
-		esc: function() {
-			window.document.onkeydown = function( e ) {
-				e = e || window.event;
-				if ( e.keyCode == 27 )
-					MD.popups.close.close();
-			};
-		},
 		close: function() {
-			MD.removeClass( document.getElementsByTagName( 'html' )[0], 'has-popup' );
+			MD.removeClass( document.documentElement, 'has-popup' );
 			if ( MD.popups.trigger ) {
 				var id = MD.popups.trigger;
 				delete MD.popups.trigger;
@@ -446,12 +418,12 @@ popups: {
 	toggleVideo: function( id ) {
 		var iframe = document.querySelector( '#' + id + ' iframe' ),
 			video = document.querySelector( '#' + id + ' video' );
-	    if ( iframe !== null ) {
-	        var iframeSrc = iframe.src;
-	        iframe.src = iframeSrc;
-	    }
-	    if ( video !== null )
-	        video.pause();
+		if ( iframe !== null ) {
+			var iframeSrc = iframe.src;
+			iframe.src = iframeSrc;
+		}
+		if ( video !== null )
+			video.pause();
 	}
 },
 like: function() {
@@ -524,13 +496,12 @@ like: function() {
 beacon_menu: function() {
 	document.querySelectorAll( '.beacon-open' ).forEach( function( trigger ) {
 		trigger.addEventListener( 'click', function() {
-			var wrap = this.closest( '[data-md-beacon], [data-md-beacon-target]' );
-			var id = wrap && wrap.dataset.mdBeaconTarget;
-			var menu = id
-				? document.querySelector( '[data-md-beacon="' + id + '"]' )
-				: this.closest( '.beacon-menu' );
-			if ( menu ) MD.toggleClass( menu, 'beacon-toggle' );
-			MD.removeClass( document.getElementById( 'header' ), 'has-mobile-menu' );
+			var wrap = this.closest( '[data-md-beacon], [data-md-beacon-target]' ),
+				id = wrap && wrap.dataset.mdBeaconTarget,
+				menu = id ? document.querySelector( '[data-md-beacon="' + id + '"]' ) : this.closest( '.beacon-menu' );
+			if ( menu )
+				MD.toggleClass( menu, 'beacon-toggle' );
+			MD.removeClass( document.getElementById( 'header' ), 'toggle-menu' );
 		} );
 	} );
 },

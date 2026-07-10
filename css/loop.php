@@ -51,9 +51,9 @@
 
 .box, .box-entry .item,
 .box-entry .image-full .featured-media,
-.box-entry.columns .entry { background-color: var(--md-color-content-box); }
+.box-entry.columns .entry { background-color: var(--md-content); }
 
-.box-style .comment-details { background-color: var(--md-color-content-box); }
+.box-style .comment-details { background-color: var(--md-content); }
 
 .box-entry.columns .entry .item {
 	background-color: transparent;
@@ -79,7 +79,7 @@
 .box-group {
 	border-radius: var(--md-border-radius);
 	box-shadow: var(--md-box-shadow);
-	background-color: var(--md-color-content-box);
+	background-color: var(--md-content);
 }
 
 /* PLAIN + BORDER STYLES */
@@ -130,7 +130,7 @@
 }
 
 .loop-list .title a {
-	color: var(--md-color-links);
+	color: var(--md-links);
 	text-decoration: underline;
 }
 

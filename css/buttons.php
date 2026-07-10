@@ -54,8 +54,8 @@ button, input[type="submit"],
 }
 
 .tag:hover {
-	background-color: var(--md-color-content-border);
-	color: var(--md-color-links);
+	background-color: var(--md-content-border);
+	color: var(--md-links);
 }
 
 /* BUTTONS */
@@ -63,11 +63,11 @@ button, input[type="submit"],
 button, input[type="submit"],
 .button, .wp-element-button {
 	appearance: none;
-    background-color: var(--md-color-button);
+    background-color: var(--md-button);
 	border: 0;
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	color: var(--md-color-button-text);
+	color: var(--md-button-text);
 	cursor: pointer;
 	font-size: inherit;
 	font-family: inherit;
@@ -91,15 +91,15 @@ button:hover, input[type="submit"]:hover,
 }
 
 .button.button-sec {
-	background-color: var(--md-color-button-secondary);
-	color: var(--md-color-button-secondary-text);
+	background-color: var(--md-button-secondary);
+	color: var(--md-button-secondary-text);
 }
 
 .button.button-outline,
 .is-style-outline .wp-element-button {
 	background-color: transparent;
-	border: 3px solid var(--md-color-button);
-	color: var(--md-color-button);
+	border: 3px solid var(--md-button);
+	color: var(--md-button);
 }
 
 .button.button-outline.white {
@@ -108,8 +108,8 @@ button:hover, input[type="submit"]:hover,
 }
 
 .button.button-outline.has-links-color {
-	border-color: var(--md-color-links);
-	color: var(--md-color-links);
+	border-color: var(--md-links);
+	color: var(--md-links);
 }
 
 /* SIZES */

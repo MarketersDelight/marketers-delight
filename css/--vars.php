@@ -18,7 +18,11 @@
 	--md-width-site-wide: <?php echo $site_width_wide; ?>px;
 
 	--md-border-radius: 8px;
-	--md-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+	--md-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	--md-box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.15);
+	--md-box-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
+	--md-box-shadow-large: 0 8px 32px rgba(0, 0, 0, 0.15);
+	--md-box-shadow-huge: 0 16px 48px rgba(0, 0, 0, 0.20);
 
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
@@ -53,44 +57,45 @@
 	--md-color-highlight: <?php echo $colors['palette']['highlight']; ?>;
 	--md-color-text: <?php echo $colors['palette']['text-main']; ?>;
 	--md-color-text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;
-	--md-color-links: <?php echo $colors['site']['links']; ?>;
-	--md-color-button: <?php echo $colors['palette']['button']; ?>;
 	--md-color-warning: #f58f2a;
+	--md-color-danger: #ae2525;
 	--md-color-white: <?php echo $colors['palette']['white']; ?>;
 
-	--md-header-background: <?php echo $colors['header']['bg_color']; ?>;
+	--md-links: <?php echo $colors['site']['links']; ?>;
+	--md-button: <?php echo $colors['palette']['button']; ?>;
+	--md-button-text: <?php echo $colors['site']['button-text']; ?>;
+	--md-button-secondary: <?php echo $colors['site']['button-secondary']; ?>;
+	--md-button-secondary-text: <?php echo $colors['site']['button-secondary-text']; ?>;
+
+	--md-headline: <?php echo $colors['site']['headline']; ?>;
+	--md-headline-links: <?php echo $colors['site']['headline-links']; ?>;
+
+	--md-header: <?php echo $colors['header']['bg_color']; ?>;
 	--md-header-border: <?php echo $colors['header']['border_color']; ?>;
 	--md-header-color: <?php echo ! empty( $colors['header']['color'] ) ? $colors['header']['color'] : 'inherit'; ?>;
 
 	--md-menu-links: <?php echo $colors['menu']['links']; ?>;
 	--md-menu-active: <?php echo $colors['menu']['active']; ?>;
 	--md-menu-hover: <?php echo $colors['menu']['hover']; ?>;
-
 	--md-submenu-links: <?php echo $colors['submenu']['links']; ?>;
-	--md-submenu-background: <?php echo $colors['submenu']['bg_color']; ?>;
+	--md-submenu: <?php echo $colors['submenu']['bg_color']; ?>;
 	--md-submenu-hover: <?php echo ! empty( $colors['submenu']['hover'] ) ? $colors['submenu']['hover'] : 'inherit'; ?>;
 
-	--md-color-content-box: <?php echo $colors['content']['bg_color']; ?>;
-	--md-color-content-body: <?php echo $colors['content']['body_color']; ?>;
-	--md-color-content-border: <?php echo $colors['content']['border_color']; ?>;
-	--md-color-page-cover: <?php echo $colors['content']['page_cover']; ?>;
+	--md-content-body: <?php echo $colors['content']['body_color']; ?>;
+	--md-content: <?php echo $colors['content']['bg_color']; ?>;
+	--md-content-border: <?php echo $colors['content']['border_color']; ?>;
+	--md-page-cover: <?php echo $colors['content']['page_cover']; ?>;
 
-	--md-color-headline: <?php echo $colors['site']['headline']; ?>;
-	--md-color-headline-links: <?php echo $colors['site']['headline-links']; ?>;
-	--md-color-button-text: <?php echo $colors['site']['button-text']; ?>;
-	--md-color-button-secondary: <?php echo $colors['site']['button-secondary']; ?>;
-	--md-color-button-secondary-text: <?php echo $colors['site']['button-secondary-text']; ?>;
-
-	--md-sidebar-background: <?php echo ! empty( $colors['sidebar']['bg_color'] ) ? $colors['sidebar']['bg_color'] : 'transparent'; ?>;
+	--md-sidebar: <?php echo ! empty( $colors['sidebar']['bg_color'] ) ? $colors['sidebar']['bg_color'] : 'transparent'; ?>;
 	--md-sidebar-text: <?php echo $colors['sidebar']['text']; ?>;
 	--md-sidebar-links: <?php echo $colors['sidebar']['links']; ?>;
 	--md-sidebar-title: <?php echo $colors['sidebar']['title']; ?>;
 	--md-sidebar-title-links: <?php echo $colors['sidebar']['title_link']; ?>;
 
+	--md-footer: <?php echo $colors['footer']['bg_color']; ?>;
 	--md-footer-border: <?php echo $colors['footer']['border_color']; ?>;
 	--md-footer-text: <?php echo $colors['footer']['text']; ?>;
 	--md-footer-links: <?php echo $colors['footer']['links']; ?>;
 	--md-footer-title: <?php echo $colors['footer']['title']; ?>;
 	--md-footer-title-links: <?php echo $colors['footer']['title_link']; ?>;
-	--md-footer-background: <?php echo $colors['footer']['bg_color']; ?>;
 }
