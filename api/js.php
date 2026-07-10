@@ -29,7 +29,7 @@ class md_js {
 		return array_merge( array(
 			'script' => array(
 				'templates' => $this->script_js(),
-				'path' => MD_DIR . 'scripts.js'
+				'path' => MD_DIR . 'compile/scripts.js'
 			)
 		), apply_filters( 'md_js_files', array() ) );
 	}

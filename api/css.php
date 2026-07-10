@@ -36,18 +36,18 @@ class md_css {
 				'templates' => $this->style_css(),
 			),
 			'classic-editor' => array(
-				'path' => MD_DIR . 'css/editor/classic-editor.css',
+				'path' => MD_DIR . 'compile/classic-editor.css',
 				'templates' => array(
-					'classic-editor' => locate_template( 'css/editor/classic-editor.php' )
+					'classic-editor' => locate_template( 'css/classic-editor.php' )
 				),
 				'replace' => array(
 					'.format' => '.mce-content-body'
 				)
 			),
 			'block-editor' => array(
-				'path' => MD_DIR . 'css/editor/block-editor.css',
+				'path' => MD_DIR . 'compile/block-editor.css',
 				'templates' => array_merge(
-					array( 'block-editor' => locate_template( 'css/editor/block-editor.php' ) ),
+					array( 'block-editor' => locate_template( 'css/block-editor.php' ) ),
 					apply_filters( 'md_block_editor_css_templates', array() )
 				),
 				'replace' => array(
@@ -55,7 +55,7 @@ class md_css {
 				)
 			),
 			'font-icons' => array(
-				'path' => MD_DIR . 'css/editor/font-icons.css',
+				'path' => MD_DIR . 'compile/font-icons.css',
 				'templates' => array(
 					'font-icons' => locate_template( 'css/font-icons.php' )
 				)
@@ -68,7 +68,7 @@ class md_css {
 			$keys = $this->critical_keys();
 
 			$files['critical'] = array(
-				'path' => MD_DIR . 'css/critical.css',
+				'path' => MD_DIR . 'compile/critical.css',
 				'static' => true, // always generate to file, never DB option
 				'minify' => true, // write minified output
 				'templates' => array_intersect_key( $this->css_files(), array_flip( $keys ) )
@@ -182,7 +182,7 @@ class md_css {
 		}
 
 		if ( ! $this->critical_enabled() ) {
-			$critical = MD_DIR . 'css/critical.css';
+			$critical = MD_DIR . 'compile/critical.css';
 
 			if ( file_exists( $critical ) )
 				file_put_contents( $critical, '' );

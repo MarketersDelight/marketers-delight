@@ -118,9 +118,9 @@ final class marketers_delight {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		add_theme_support( 'editor-styles' );
-		add_editor_style( 'css/editor/font-icons.css' );
-		add_editor_style( 'css/editor/block-editor.css' );
-		add_editor_style( 'css/editor/classic-editor.css' );
+		add_editor_style( 'compile/font-icons.css' );
+		add_editor_style( 'compile/block-editor.css' );
+		add_editor_style( 'compile/classic-editor.css' );
 		add_post_type_support( 'page', 'excerpt' );
 
 		// Register Nav Menus
@@ -220,7 +220,7 @@ final class marketers_delight {
 			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
 
 		// Load scripts
-		wp_register_script( 'marketers-delight', MD_URL . 'scripts.js', array(), md_ver( 'scripts.js' ), array(
+		wp_register_script( 'marketers-delight', MD_URL . 'compile/scripts.js', array(), md_ver( 'compile/scripts.js' ), array(
 			'in_footer' => true
 		) );
 		wp_enqueue_script( 'marketers-delight' );
@@ -301,7 +301,7 @@ final class marketers_delight {
 	 */
 
 	public function head() {
-		$critical = MD_DIR . 'css/critical.css';
+		$critical = MD_DIR . 'compile/critical.css';
 
 		if ( md_setting( array( 'settings', 'css', 'critical' ) ) && file_exists( $critical ) ) {
 			$css = file_get_contents( $critical );
