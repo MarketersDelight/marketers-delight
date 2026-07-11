@@ -53,7 +53,7 @@
 		align-items: center;
 		display: flex;
 	}
-	.menu-item:hover, .menu-item:hover > a { color: var(--md-menu-hover); }
+	.menu-item:hover, .menu-item:hover > a, .menu-item:hover > .toggle { color: var(--md-menu-hover); }
 	.menu-item-has-children a { padding-inline-end: 0; }
 	/* SUB MENU */
 	.sub-menu {

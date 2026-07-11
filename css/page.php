@@ -1,5 +1,23 @@
 <style type="text/css">
 
+/* SKIP TO CONTENT */
+
+.skip-to-content {
+    background-color: var(--md-color-secondary);
+	border-radius: var(--md-border-radius);
+    color: var(--md-color-white);
+    position: absolute;
+	    inset-inline-start: var(--md-small);
+	    inset-block-start: -100%;
+    padding: var(--md-half) var(--md-single);
+    transition: top var(--md-transition);
+    z-index: 100;
+}
+
+.skip-to-content:focus { top: var(--md-small); }
+
+.admin-bar :is(.skip-to-conten, .skip-to-content:focus) { top: calc(var(--wp-admin--admin-bar--height) + var(--md-small)); }
+
 /* BREADCRUMBS */
 
 .breadcrumbs {

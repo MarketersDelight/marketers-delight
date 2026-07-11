@@ -50,6 +50,24 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$this->md_title = $title;
 		$this->md_desc  = $desc;
 	}
+	function start_lvl( &$output, $depth = 0, $args = null ) {
+		if ( isset( $args->item_spacing ) && 'discard' === $args->item_spacing ) {
+			$t = '';
+			$n = '';
+		}
+		else {
+			$t = "\t";
+			$n = "\n";
+		}
+		$indent = str_repeat( $t, $depth );
+		$atts = array(
+			'id' => ! empty( $this->submenu_id ) ? $this->submenu_id : '',
+			'class' => 'sub-menu'
+		);
+		$atts = apply_filters( 'nav_menu_submenu_attributes', $atts, $args, $depth );
+		$attributes = $this->build_atts( $atts );
+		$output .= "{$n}{$indent}<ul{$attributes}>{$n}";
+	}
 	function start_el( &$output, $item, $depth = 0, $args = array(), $id = 0 ) {
 		$indent = ( $depth ) ? str_repeat( "\t", $depth ) : '';
 		$class_names = '';
@@ -70,7 +88,7 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$attributes = '';
 		foreach ( $atts as $attr => $value ) {
 			if ( ! empty( $value ) ) {
-				$value      = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
+				$value = ( 'href' === $attr ) ? esc_url( $value ) : esc_attr( $value );
 				$attributes .= ' ' . $attr . '="' . $value . '"';
 			}
 		}
@@ -79,10 +97,13 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$item_output .= '<a'. $attributes .'>';
 		$args->link_before = '<span class="menu-item-title">';
 		$args->link_after  = '</span>';
-		$item_output .= $this->md_title ? $args->link_before . wp_kses_data( $item->title, $item->ID ) . $args->link_after : '';
+		$item_title = wp_kses_data( $item->title );
+		$item_output .= $this->md_title ? $args->link_before . $item_title . $args->link_after : '';
 		$item_output .= $desc . '</a>';
-		if ( in_array( 'menu-item-has-children', $item->classes ) )
-			$item_output .= '<span class="toggle trigger" data-toggle="menu-item"><i class="trigger-icon"></i></span>';
+		if ( in_array( 'menu-item-has-children', $item->classes ) ) {
+			$this->submenu_id = 'submenu-' . $item->ID;
+			$item_output .= '<button class="toggle trigger" data-toggle="menu-item" aria-expanded="false" aria-controls="' . esc_attr( $this->submenu_id ) . '" aria-label="' . sprintf( __( 'Toggle the %s submenu', 'md' ), $item_title ) . '"><i class="trigger-icon"></i></button>';
+		}
 		$item_output .= $args->after;
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );
 	}

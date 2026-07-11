@@ -203,13 +203,15 @@ function md_trigger( $type = 'menu', $args = array() ) {
 	if ( $location )
 		$attrs .= ' data-md-location="' . esc_attr( $location ) . '"';
 
-	if ( $title )
+	if ( $title ) {
 		$attrs .= ' title="' . esc_attr( $title ) . '"';
+		$attrs .= ' aria-label="' . esc_attr( $title ) . '"';
+	}
 
-	echo "<span$attrs>".
+	echo "<button$attrs>".
 		 md_icon( $args['icon'], array( 'classes' => 'trigger-icon' ) ).
 		 ( $title ? '<span class="trigger-text">' . wp_kses_data( $title ) . '</span>' : '' ).
-		'</span>';
+		'</button>';
 }
 
 /**

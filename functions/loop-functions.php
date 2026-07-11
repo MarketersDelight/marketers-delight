@@ -369,7 +369,7 @@ function md_get_loop( $args = array() ) {
 
 	if ( ! empty( $loops[$loop['loop']]['style_target'] ) )
 		$loop['style_target'] = $loops[$loop['loop']]['style_target'];
-	elseif ( $loop['loop_type'] == 'category' )
+	elseif ( isset( $loop['by_category'] ) )
 		$loop['style_target'] = 'group';
 	else
 		$loop['style_target'] = 'entry';

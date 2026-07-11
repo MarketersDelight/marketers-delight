@@ -367,7 +367,13 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 /*------------------------------*\
 	$BUTTONS
 \*------------------------------*/
-button, input[type="submit"],
+button {
+	appearance: none;
+	background-color: transparent;
+	border: 0;
+	font: inherit;
+}
+input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
@@ -412,7 +418,7 @@ button, input[type="submit"],
 	color: var(--md-links);
 }
 /* BUTTONS */
-button, input[type="submit"],
+input[type="submit"],
 .button, .wp-element-button {
 	appearance: none;
     background-color: var(--md-button);
@@ -430,7 +436,7 @@ button, input[type="submit"],
 	transition: var(--md-transition);
 }
 a.button { text-decoration: none; }
-button:hover, input[type="submit"]:hover,
+input[type="submit"]:hover,
 .button:hover, .wp-element-button:hover { transform: translateY(1px); }
 /* COLORS */
 .button.white {
@@ -813,7 +819,7 @@ select {
 		align-items: center;
 		display: flex;
 	}
-	.menu-item:hover, .menu-item:hover > a { color: var(--md-menu-hover); }
+	.menu-item:hover, .menu-item:hover > a, .menu-item:hover > .toggle { color: var(--md-menu-hover); }
 	.menu-item-has-children a { padding-inline-end: 0; }
 	/* SUB MENU */
 	.sub-menu {
@@ -1431,6 +1437,20 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.compact .box-style .entry.full .image-right .featured-media,
 	.box-style.columns.full .image-right .featured-media { margin-inline-end: calc(-1 * var(--md-mid)); }
 }
+/* SKIP TO CONTENT */
+.skip-to-content {
+    background-color: var(--md-color-secondary);
+	border-radius: var(--md-border-radius);
+    color: var(--md-color-white);
+    position: absolute;
+	    inset-inline-start: var(--md-small);
+	    inset-block-start: -100%;
+    padding: var(--md-half) var(--md-single);
+    transition: top var(--md-transition);
+    z-index: 100;
+}
+.skip-to-content:focus { top: var(--md-small); }
+.admin-bar :is(.skip-to-conten, .skip-to-content:focus) { top: calc(var(--wp-admin--admin-bar--height) + var(--md-small)); }
 /* BREADCRUMBS */
 .breadcrumbs {
 	font-size: var(--md-font-size-sm);
@@ -2623,7 +2643,7 @@ cite, .tiny {
 	transition: var(--md-transition);
 	z-index: 75;
 }
-.beacon-menu, .beacon-content, .beacon-toggle .beacon-avatar { display: none; }
+.beacon-menu, .beacon-content, .toggle-beacon-menu .beacon-avatar { display: none; }
 .beacon-trigger { position: relative; }
 /* PULSE */
 .beacon-pulse {
@@ -2659,7 +2679,7 @@ cite, .tiny {
 	z-index: 5;
 }
 /* CONTENT */
-.beacon-toggle .beacon-content { display: block; }
+.toggle-beacon-menu .beacon-content { display: block; }
 .beacon-menu .beacon-content {
 	background-color: var(--md-header);
 	border-radius: 5px;
@@ -2712,9 +2732,9 @@ cite, .tiny {
 	border-inline-start-color: var(--md-color-primary);
 }
 /* QUERIES */
-@media (min-width: 800px) {
+@media (min-width: 900px) {
 	.beacon-menu { display: block; }
-	.beacon-menu.beacon-toggle {
+	.beacon-menu.toggle-beacon-menu {
 		border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
 		transition: 0.2s;
 	}
@@ -2725,16 +2745,16 @@ cite, .tiny {
 	.header-triggers .beacon-trigger { display: none; }
 	.beacon-menu .beacon-avatar { display: block; }
 }
-@media all and (max-width: 800px) {
-	.beacon-toggle { display: block; }
-	.beacon-menu.beacon-toggle .beacon-pulse { display: none; }
+@media all and (max-width: 900px) {
+	.toggle-beacon-menu { display: block; }
+	.beacon-menu.toggle-beacon-menu .beacon-pulse { display: none; }
 }
 @media all and (min-width: 600px) {
 	.beacon-menu .beacon-content {
 		margin-block-start: var(--md-third);
 		position: absolute;
 			inset-inline-end: 0;
-		transition: 0.2s;
+		transition: var(--md-transition);
 		width: var(--md-width-sidebar);
 	}
 }
@@ -3652,7 +3672,7 @@ body:not(.single) .dropin-title .byline-item span { display: none; }
 	font-size: 1.2em;
 	margin-inline-end: 5px;
 }
-body:not(.header-cover) .header { border-block-end: 1px solid #E1DFCF; }
+.header { border-block-end: 1px solid #E1DFCF; }
 .color-wordpress { color: #00749C; }
 .badge-tier {
 	background-color: rgba(0, 0, 0, 0.06);

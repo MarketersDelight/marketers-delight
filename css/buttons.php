@@ -4,7 +4,14 @@
 	$BUTTONS
 \*------------------------------*/
 
-button, input[type="submit"],
+button {
+	appearance: none;
+	background-color: transparent;
+	border: 0;
+	font: inherit;
+}
+
+input[type="submit"],
 .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
@@ -60,7 +67,7 @@ button, input[type="submit"],
 
 /* BUTTONS */
 
-button, input[type="submit"],
+input[type="submit"],
 .button, .wp-element-button {
 	appearance: none;
     background-color: var(--md-button);
@@ -80,7 +87,7 @@ button, input[type="submit"],
 
 a.button { text-decoration: none; }
 
-button:hover, input[type="submit"]:hover,
+input[type="submit"]:hover,
 .button:hover, .wp-element-button:hover { transform: translateY(1px); }
 
 /* COLORS */

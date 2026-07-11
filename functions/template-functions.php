@@ -36,7 +36,7 @@ function md_font_icons_url() {
  */
 
 function md_icons( $show_defaults = null ) {
-	$icons = locate_template( 'icons.php', true );
+	$icons = locate_template( 'api/icons.php', true );
 	$icons = $icons ? include $icons : array();
 	$data = md_setting( array( 'icons', 'data' ), array() );
 	$custom = md_setting( 'custom_icons', array() );

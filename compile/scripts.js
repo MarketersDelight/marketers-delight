@@ -1,127 +1,116 @@
 window.MD = {
-foreach: function( items, fn ) {
-	if ( Object.prototype.toString.call( items ) !== '[object Array]' )
-		items = items.split( ' ' );
-	for ( var i = 0; i < items.length; i++ )
-		fn( items[i], i );
-},
 number: function( value ) {
-	var parsed = parseInt( value, 10 );
+	const parsed = parseInt( value, 10 );
 	return isNaN( parsed ) ? 0 : parsed;
 },
 hasClass: function( el, className ) {
-	return new RegExp( '(^|\\s)' + className + '(\\s|$)').test( el.className );
+	return el.classList.contains( className );
 },
-addClass: function( el, classes ) {
-	MD.foreach( classes, function( className ) {
-		if ( ! MD.hasClass( el, className ) )
-			el.className += ( el.className ? ' ' : '' ) + className;
-	});
+addClass: function( el, className ) {
+	el.classList.add( className );
 },
-removeClass: function( el, classes ) {
-	MD.foreach( classes, function( className ) {
-		if ( MD.hasClass( el, className ) )
-			el.className = el.className.replace( new RegExp( '(?:^|\\s)' + className + '(?!\\S)' ), '' );
-	});
+removeClass: function( el, className ) {
+	el.classList.remove( className );
 },
 removeClassByPrefix: function( el, prefix ) {
-	var regex = new RegExp( '(' + prefix + '(\\s|(-)?(\\w*)(\\s)?)).*?', 'g' );
-	el.className = el.className.replace( regex, '' );
-},
-toggleClass: function( el, classes ) {
-	MD.foreach( classes, function( className ) {
-		( MD.hasClass( el, className ) ? MD.removeClass : MD.addClass )( el, className );
+	Array.from( el.classList ).forEach( function( className ) {
+		if ( className.indexOf( prefix ) === 0 )
+			el.classList.remove( className );
 	});
+},
+toggleClass: function( el, className ) {
+	el.classList.toggle( className );
 },
 cookie: {
 	create: function( name, value, days ) {
-		var expires = '';
+		let expires = '';
 		if ( days ) {
-			var date = new Date();
+			const date = new Date();
 			date.setTime( date.getTime() + ( days * 24 * 60 * 60 * 1000 ) );
-			expires = '; expires=' + date.toGMTString();
+			expires = '; expires=' + date.toUTCString();
 		}
 		document.cookie = name + '=' + value + expires + '; SameSite=None; Secure; path=/';
 	},
 	get: function( name ) {
-		var nameEQ = name + '=';
-		var ca = document.cookie.split( ';' );
-		for ( var i = 0; i < ca.length; i++ ) {
-			var c = ca[i];
-			while ( c.charAt(0) == ' ' ) c = c.substring( 1, c.length );
-			if ( c.indexOf( nameEQ ) === 0 ) return c.substring( nameEQ.length, c.length );
-		}
-		return null;
+		const match = document.cookie.split( '; ' ).find( function( row ) {
+			return row.indexOf( name + '=' ) === 0;
+		});
+		return match ? match.substring( name.length + 1 ) : null;
 	},
 	erase: function( name ) {
 		this.create( name, '', -1 );
 	}
 },
 tabs: function() {
-	var tabs = document.querySelectorAll( '.md-tabs' );
-	for ( var t = 0; t < tabs.length; t++ ) {
-		( function( tab ) {
-			var tabs = tab.querySelectorAll( '.md-tab' );
-			for ( var i = 0; i < tabs.length; i++ ) {
-				tabs[i].onclick = function( e ) {
-					e.preventDefault();
-					var allTabs = tab.querySelectorAll( '.md-tab' ),
-						allContent = tab.querySelectorAll( '.md-tab-content' );
-					for ( var j = 0; j < allTabs.length; j++ )
-						MD.removeClass( allTabs[j], 'active' );
-					for ( var k = 0; k < allContent.length; k++ )
-						MD.removeClass( allContent[k], 'active' );
-					MD.removeClassByPrefix( tab, 'has-' );
-					MD.addClass( this, 'active' );
-					MD.addClass( tab, 'has-' + this.getAttribute( 'data-md-tab' ) );
-					var content = tab.querySelector( '[data-md-tab-content="' + this.getAttribute( 'data-md-tab' ) + '"]' );
-					if ( content )
-						MD.addClass( content, 'active' );
-				};
-			}
-		} )( tabs[t] );
+	const tabs = document.querySelectorAll( '.md-tabs' );
+	for ( let t = 0; t < tabs.length; t++ ) {
+		let tab = tabs[t],
+			items = tab.querySelectorAll( '.md-tab' );
+		for ( let i = 0; i < items.length; i++ ) {
+			items[i].onclick = function( e ) {
+				e.preventDefault();
+				const allTabs = tab.querySelectorAll( '.md-tab' ),
+					  allContent = tab.querySelectorAll( '.md-tab-content' );
+				for ( let j = 0; j < allTabs.length; j++ )
+					allTabs[j].classList.remove( 'active' );
+				for ( let k = 0; k < allContent.length; k++ )
+					allContent[k].classList.remove( 'active' );
+				MD.removeClassByPrefix( tab, 'has-' );
+				this.classList.add( 'active' );
+				tab.classList.add( 'has-' + this.getAttribute( 'data-md-tab' ) );
+				const content = tab.querySelector( '[data-md-tab-content="' + this.getAttribute( 'data-md-tab' ) + '"]' );
+				if ( content )
+					content.classList.add( 'active' );
+			};
+		}
 	}
 },
 clipboard: function() {
-	var copy = document.getElementsByClassName( 'copy' );
-	for ( var i = 0; i < copy.length; i++ ) {
+	const copy = document.getElementsByClassName( 'copy' );
+	for ( let i = 0; i < copy.length; i++ ) {
 		copy[i].onclick = function( e ) {
 			e.preventDefault();
-			var val = this.getAttribute( 'data-md-copy' );
+			const val = this.getAttribute( 'data-md-copy' );
 			navigator.clipboard.writeText( val );
 		}
 	}
 },
 toggle: function() {
-	var toggles = document.getElementsByClassName( 'toggle' );
-	for ( var i = 0; i < toggles.length; i++ ) {
+	const toggles = document.getElementsByClassName( 'toggle' );
+	for ( let i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
-			var toggle = this.getAttribute( 'data-toggle' ),
+			const toggle = this.getAttribute( 'data-toggle' ),
 				target = this.getAttribute( 'data-toggle-target' ),
 				parent = target ? document.querySelector( target ) : this.closest( '.' + toggle ),
 				className = 'toggle-' + toggle;
 			if ( ! parent )
 				return;
 			if ( ! parent.classList.contains( className ) ) {
-				var isOpen = document.querySelectorAll( '.' + className );
-				for ( var j = 0; j < isOpen.length; j++ )
+				const isOpen = document.querySelectorAll( '.' + className );
+				for ( let j = 0; j < isOpen.length; j++ )
 					if ( ! isOpen[j].contains( parent ) )
-						MD.removeClass( isOpen[j], className );
+						isOpen[j].classList.remove( className );
 			}
-			MD.toggleClass( parent, className );
+			parent.classList.toggle( className );
+			this.setAttribute( 'aria-expanded', parent.classList.contains( className ) );
 			if ( this.getAttribute( 'data-toggle-close' ) )
 				document.onclick = function( e ) {
 					if ( ! parent.contains( e.target ) )
-						MD.removeClass( parent, 'toggle-' + toggle );
+						parent.classList.remove( 'toggle-' + toggle );
 				}
 		}
+		let menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
+		if ( menuItem )
+			menuItem.onmouseenter = menuItem.onmouseleave = function( e ) {
+				menuItem.querySelector( '.toggle' ).setAttribute( 'aria-expanded', e.type === 'mouseenter' );
+			}
 	}
 },
 triggers: function() {
-	var triggers = document.getElementsByClassName( 'trigger' );
-	for ( var i = 0; i < triggers.length; i++ ) {
+	const triggers = document.getElementsByClassName( 'trigger' );
+	for ( let i = 0; i < triggers.length; i++ ) {
 		triggers[i].onclick = function( e ) {
-			var type = this.getAttribute( 'data-md-trigger' ),
+			const type = this.getAttribute( 'data-md-trigger' ),
 				location = this.getAttribute( 'data-md-location' ),
 				parent = this.getAttribute( 'data-md-parent' ),
 				container = document.querySelector( '.' + parent ),
@@ -130,9 +119,9 @@ triggers: function() {
 				isMobile = window.matchMedia( '(max-width: 1200px)' ).matches,
 				isActive = container.classList.contains( toggleClass ) && ( ! isMobile || container.classList.contains( fromClass ) ),
 				classes = Array.from( container.classList );
-			for ( var t = 0; t < triggers.length; t++ )
+			for ( let t = 0; t < triggers.length; t++ )
 				triggers[t].classList.remove( 'toggled' );
-			for ( var c = 0; c < classes.length; c++ )
+			for ( let c = 0; c < classes.length; c++ )
 				if ( classes[c].startsWith( 'toggle' ) || classes[c].startsWith( 'from-' ) )
 					container.classList.remove( classes[c] );
 			if ( ! isActive ) {
@@ -162,57 +151,56 @@ sticky: function( items ) {
 },
 closeOverlay: function( name, parent ) {
 	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
-		MD.removeClass( document.querySelector( parent ), 'toggle-' + name );
-		var triggers = document.getElementsByClassName( 'trigger-' + name );
-		for ( var i = 0; i < triggers.length; i++ )
-			MD.removeClass( triggers[i], 'toggled' );
+		document.querySelector( parent ).classList.remove( 'toggle-' + name );
+		const triggers = document.getElementsByClassName( 'trigger-' + name );
+		for ( let i = 0; i < triggers.length; i++ )
+			triggers[i].classList.remove( 'toggled' );
 	};
 },
 scrollerNav: function() {
-	var wraps = document.getElementsByClassName( 'scroller-nav' );
-	for ( var i = 0; i < wraps.length; i++ ) {
-		( function( wrap ) {
-			var list = wrap.querySelector( '.scroller-list' ),
-				prev = wrap.querySelector( '.scroller-arrow-prev' ),
-				next = wrap.querySelector( '.scroller-arrow-next' );
-			function updateArrows() {
-				var overflow = list.scrollWidth > wrap.clientWidth,
-					start = list.scrollLeft <= 0,
-					end = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
-				if ( prev )
-					if ( ! overflow || start )
-						MD.addClass( prev, 'arrow-hidden' );
-					else
-						MD.removeClass( prev, 'arrow-hidden' );
-				if ( next )
-					if ( ! overflow || end )
-						MD.addClass( next, 'arrow-hidden' );
-					else
-						MD.removeClass( next, 'arrow-hidden' );
-			}
+	const wraps = document.getElementsByClassName( 'scroller-nav' );
+	for ( let i = 0; i < wraps.length; i++ ) {
+		let wrap = wraps[i],
+			list = wrap.querySelector( '.scroller-list' ),
+			prev = wrap.querySelector( '.scroller-arrow-prev' ),
+			next = wrap.querySelector( '.scroller-arrow-next' );
+		function updateArrows() {
+			const overflow = list.scrollWidth > wrap.clientWidth,
+				start = list.scrollLeft <= 0,
+				end = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
 			if ( prev )
-				prev.onclick = function() {
-					list.scrollBy( { left: -160, behavior: 'smooth' } );
-				};
+				if ( ! overflow || start )
+					prev.classList.add( 'arrow-hidden' );
+				else
+					prev.classList.remove( 'arrow-hidden' );
 			if ( next )
-				next.onclick = function() {
-					list.scrollBy( { left: 160, behavior: 'smooth' } );
-				};
-			list.addEventListener( 'scroll', updateArrows, { passive: true } );
-			window.addEventListener( 'resize', updateArrows );
-			updateArrows();
-		})( wraps[i] );
+				if ( ! overflow || end )
+					next.classList.add( 'arrow-hidden' );
+				else
+					next.classList.remove( 'arrow-hidden' );
+		}
+		if ( prev )
+			prev.onclick = function() {
+				list.scrollBy( { left: -160, behavior: 'smooth' } );
+			};
+		if ( next )
+			next.onclick = function() {
+				list.scrollBy( { left: 160, behavior: 'smooth' } );
+			};
+		list.addEventListener( 'scroll', updateArrows, { passive: true } );
+		window.addEventListener( 'resize', updateArrows );
+		updateArrows();
 	}
 },
 onScroll: function() {
-	var pos = 0, ticking = false;
+	let pos = 0, ticking = false;
 	window.onscroll = function( e ) {
 		pos = window.scrollY;
 		if ( ! ticking ) {
 			window.requestAnimationFrame( function() {
-				var contentBox = document.getElementById( 'main' );
+				const contentBox = document.getElementById( 'main' );
 				if ( contentBox == null ) return;
-				var contentBoxOffsetTop = contentBox.offsetTop,
+				const contentBoxOffsetTop = contentBox.offsetTop,
 					content = document.getElementById( 'the_content' );
 				if ( content == null ) return;
 var toc = document.getElementById( 'table_of_contents' );
@@ -223,12 +211,14 @@ var active = -1,
 for ( var i = 0; i < headings.length; i++ )
 	if ( headings[i].offsetTop + contentBoxOffsetTop <= pos + 20 )
 		active = i;
-for ( var c = 0; c < tocItems.length; c++ )
-	MD.removeClass( tocItems[c], 'active child-active' );
+for ( var c = 0; c < tocItems.length; c++ ) {
+	tocItems[c].classList.remove( 'active' );
+	tocItems[c].classList.remove( 'child-active' );
+}
 if ( active >= 0 && tocItems[active] ) {
-	MD.addClass( tocItems[active], 'active' );
-	if ( MD.hasClass( tocItems[active].parentNode, 'toc-sublist' ) )
-		MD.addClass( tocItems[active].parentNode.parentNode, 'child-active' );
+	tocItems[active].classList.add( 'active' );
+	if ( tocItems[active].parentNode.classList.contains( 'toc-sublist' ) )
+		tocItems[active].parentNode.parentNode.classList.add( 'child-active' );
 }				ticking = false;
 			});
 		}
@@ -244,9 +234,9 @@ floatingBars: {
 			if ( ! trigger ) return;
 			var bar_id = trigger.getAttribute( 'data-bar' ),
 				el = document.getElementById( bar_id );
-			MD.removeClass( el, 'active' );
-			MD.addClass( el, 'hide' );
-			MD.addClass( el, 'closed' );
+			el.classList.remove( 'active' );
+			el.classList.add( 'hide' );
+			el.classList.add( 'closed' );
 			if ( MD.floatingBar && MD.floatingBar.cookieExp && ! MD.cookie.get( bar_id ) )
 				MD.cookie.create( bar_id, true, MD.floatingBar.cookieExp );
 			MD.floatingBars.opened = MD.floatingBars.showing = false;
@@ -270,10 +260,10 @@ floatingBars: {
 		show: function() {
 			var id = MD.floatingBar.id,
 				el = document.getElementById( id );
-			MD.removeClass( el, 'hide' );
-			MD.addClass( el, 'active' );
+			el.classList.remove( 'hide' );
+			el.classList.add( 'active' );
 			MD.floatingBars.showing = id;
-			if ( MD.hasClass( el, 'sticky' ) )
+			if ( el.classList.contains( 'sticky' ) )
 				MD.sticky( '#' + id );
 			delete MD.floatingBars.data[id];
 		},
@@ -281,13 +271,13 @@ floatingBars: {
 			window.addEventListener( 'scroll', function() {
 				var pos = window.scrollY,
 					el = document.getElementById( MD.floatingBar.id );
-				if ( ! MD.hasClass( el, 'closed' ) ) {
+				if ( ! el.classList.contains( 'closed' ) ) {
 					window.requestAnimationFrame( function() {
 						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
 						if ( MD.floatingBar.delay <= percent )
 							MD.floatingBars.open.show();
-						else if ( MD.hasClass( el, 'active' ) )
-							MD.removeClass( el, 'active' );
+						else if ( el.classList.contains( 'active' ) )
+							el.classList.remove( 'active' );
 					});
 				}
 			} );
@@ -384,10 +374,10 @@ popups: {
 		},
 		show: function() {
 			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
-			MD.addClass( document.documentElement, 'has-popup' );
+			document.documentElement.classList.add( 'has-popup' );
 			if ( MD.popups.showing && MD.popups.trigger )
-				MD.removeClass( document.getElementById( MD.popups.showing ), 'active' );
-			MD.addClass( document.getElementById( id ), 'active' );
+				document.getElementById( MD.popups.showing ).classList.remove( 'active' );
+			document.getElementById( id ).classList.add( 'active' );
 			MD.focusInputs( id );
 			MD.popups.showing = id;
 			if ( ! MD.popups.trigger )
@@ -396,7 +386,7 @@ popups: {
 	},
 	close: {
 		close: function() {
-			MD.removeClass( document.documentElement, 'has-popup' );
+			document.documentElement.classList.remove( 'has-popup' );
 			if ( MD.popups.trigger ) {
 				var id = MD.popups.trigger;
 				delete MD.popups.trigger;
@@ -410,7 +400,7 @@ popups: {
 			}
 			delete MD.popups.opened;
 			delete MD.popups.showing;
-			MD.removeClass( document.getElementById( id ), 'active' );
+			document.getElementById( id ).classList.remove( 'active' );
 			MD.popups.toggleVideo( id );
 			MD.popups.open.events();
 		}
@@ -434,8 +424,8 @@ like: function() {
 			for ( var i = 0; i < counts.length; i++ ) {
 				var el = counts[i].parentElement;
 				if ( el.getAttribute( 'data-share-id' ) === post_id ) {
-					MD.addClass( el, 'liked' );
-					if ( ! MD.hasClass( el, 'share-like-total' ) )
+					el.classList.add( 'liked' );
+					if ( ! el.classList.contains( 'share-like-total' ) )
 						counts[i].innerHTML = increment ? MD.number( counts[i].innerHTML ) + 1 : count;
 				}
 			}
@@ -449,7 +439,7 @@ like: function() {
 	for ( var i = 0; i < likes.length; i++ ) {
 		likes[i].onclick = function( e ) {
 			e.preventDefault();
-			if ( MD.hasClass( this, 'liked' ) )
+			if ( this.classList.contains( 'liked' ) )
 				return;
 			var post_id = this.getAttribute( 'data-share-id' );
 			if ( post_id == null )
@@ -460,7 +450,7 @@ like: function() {
 				return;
 			updateCounts( post_id, null, true );
 			updateTotals( post_type, null, true );
-			MD.addClass( this, 'liked' );
+			this.classList.add( 'liked' );
 			fetch( endpoint, {
 				method: 'POST',
 				credentials: 'include',
@@ -494,14 +484,9 @@ like: function() {
 	}
 },
 beacon_menu: function() {
-	document.querySelectorAll( '.beacon-open' ).forEach( function( trigger ) {
+	document.querySelectorAll( '[data-toggle="beacon-menu"]' ).forEach( function( trigger ) {
 		trigger.addEventListener( 'click', function() {
-			var wrap = this.closest( '[data-md-beacon], [data-md-beacon-target]' ),
-				id = wrap && wrap.dataset.mdBeaconTarget,
-				menu = id ? document.querySelector( '[data-md-beacon="' + id + '"]' ) : this.closest( '.beacon-menu' );
-			if ( menu )
-				MD.toggleClass( menu, 'beacon-toggle' );
-			MD.removeClass( document.getElementById( 'header' ), 'toggle-menu' );
+			document.getElementById( 'header' ).classList.remove( 'toggle-menu' );
 		} );
 	} );
 },
@@ -571,7 +556,7 @@ footnotes: function() {
 	var footnotes = document.getElementsByClassName( 'footnote' );
 	for ( var i = 0; i < footnotes.length; i++ ) {
 		footnotes[i].onclick = function( e ) {
-			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
+			document.getElementById( this.id ).classList.toggle( 'footnote-show' );
 		}
 	}
 },
@@ -584,12 +569,12 @@ tableOfContents: function() {
 		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
 	function scrollTo( target ) {
 		var inEntry = !! toc.closest( '.entry' ),
-			preStuck = inEntry && ! MD.hasClass( toc, 'stuck' );
-		if ( preStuck ) MD.addClass( toc, 'stuck' );
+			preStuck = inEntry && ! toc.classList.contains( 'stuck' );
+		if ( preStuck ) toc.classList.add( 'stuck' );
 		var top = 0, el = target;
 		while ( el ) { top += el.offsetTop; el = el.offsetParent; }
 		var offset = inEntry ? toc.clientHeight : 0;
-		if ( preStuck ) MD.removeClass( toc, 'stuck' );
+		if ( preStuck ) toc.classList.remove( 'stuck' );
 		window.scrollTo({ top: top - offset, behavior: 'smooth' });
 	}
 	for ( var i = 0; i < labels.length; i++ )
@@ -601,11 +586,11 @@ tableOfContents: function() {
 		var id = label.getAttribute( 'href' ).slice( 1 ),
 			target = document.getElementById( id );
 		if ( ! target ) return;
-		MD.removeClass( toc, 'open' );
+		toc.classList.remove( 'open' );
 		scrollTo( target );
 		window.history.pushState( {}, '', '#' + id );
 	} );
-	toc.querySelector( '.widget-title' ).onclick = function() { MD.toggleClass( toc, 'open' ); };
+	toc.querySelector( '.widget-title' ).onclick = function() { toc.classList.toggle( 'open' ); };
 	if ( 'scrollRestoration' in history )
 		history.scrollRestoration = 'manual';
 	window.addEventListener( 'popstate', function() {
