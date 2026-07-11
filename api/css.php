@@ -374,29 +374,6 @@ class md_css {
 		$font_weight = ! empty( $typography['body']['font_weight'] ) ? $typography['body']['font_weight'] : 'normal';
 		$bold = ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : 'bold';
 
-		$headings = array(
-			'huge' => '.huge-title',
-			'h1' => 'h1, .h1, .wp-block-post-title',
-			'h2' => 'h2, .h2',
-			'h3' => 'h3, .h3',
-			'h4' => 'h4, .h4, .widget-title, .widget .wp-block-heading',
-			'h5' => 'h5, .h5',
-			'h6' => 'h6, .h6'
-		);
-		$heading_sizes = array(
-			'huge' => '.huge-size',
-			'h1' => '.h1-size',
-			'h2' => '.h2-size',
-			'h3' => '.h3-size',
-			'h4' => '.h4-size',
-			'h5' => '.h5-size',
-			'h6' => '.h6-size'
-		);
-
-		$heading_selectors = array_values( $headings );
-		$heading_selectors[] = '.wp-block-heading';
-		$heading_selectors = join( ', ', $heading_selectors );
-
 		$h1 = $values['typography']['h1'];
 		$h2 = $values['typography']['h2'];
 		$h3 = $values['typography']['h3'];

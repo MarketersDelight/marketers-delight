@@ -229,6 +229,13 @@ cite, .tiny {
 	<?php endfor; ?>
 }
 
+<?php for ( $g = 2; $g <= 6; $g++ ) {
+	$col_min = max( 150, round( ( 800 - $single * ( $g - 1 ) ) / $g ) );
+	$col_gap = $g - 1;
+
+	echo ".columns-fluid-$g { grid-template-columns: repeat(auto-fit, minmax(max({$col_min}px, calc((100% - ($col_gap * var(--md-single))) / $g)), 1fr)); }\n";
+} ?>
+
 /* WP COLUMNS (EXPERIMENTAL) */
 
 .wp-block-columns { display: flex; }

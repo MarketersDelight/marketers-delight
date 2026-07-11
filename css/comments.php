@@ -218,6 +218,6 @@
 		clear: both;
 		width: 100%;
 	}
-	.comment-form-author { padding-inline-end:var(--md-third); }
+	.comment-form-author { padding-inline-end: var(--md-third); }
 	.comment-form-email { padding-inline-start: var(--md-third); }
 }

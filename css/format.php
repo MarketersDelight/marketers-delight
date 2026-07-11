@@ -61,44 +61,7 @@ code, pre {
 .format :is(ul, ol, p, hr, table, blockquote, pre),
 .format :is(.wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
 
-/* HEADINGS */
-
-<?php echo implode( ', ', array_values( $headings ) ) . " { color: var(--md-headline); font-family: $h1_font_family; font-weight: $h1_font_weight; }\n";
-
-foreach ( $headings as $attribute => $selector ) {
-	$combined = isset( $heading_sizes[$attribute] ) ? "$selector, {$heading_sizes[$attribute]}" : $selector;
-
-	$overrides = '';
-
-	if ( ! empty( $typography[$attribute]['font_family'] ) && $typography[$attribute]['font_family'] !== $h1_font_family )
-		$overrides .= 'font-family: ' . $typography[$attribute]['font_family'] . ";\n";
-
-	if ( ! empty( $typography[$attribute]['font_weight'] ) && $typography[$attribute]['font_weight'] !== $h1_font_weight )
-		$overrides .= 'font-weight: ' . $typography[$attribute]['font_weight'] . ";\n";
-
-	echo "$combined { font-size: " . $this->fluid( $typography[$attribute]['font_size']['desktop'], $typography[$attribute]['font_size']['mobile'] ?? null ) . "; line-height: " . $this->fluid( $typography[$attribute]['line_height']['desktop'], $typography[$attribute]['line_height']['mobile'] ?? null ) . "; }\n";
-
-	if ( $overrides )
-		echo "$selector {\n{$overrides}}\n";
-}
-
-foreach ( array_diff_key( $heading_sizes, $headings ) as $attribute => $selector ) {
-	echo "$selector { font-size: " . $this->fluid( $typography[$attribute]['font_size']['desktop'], $typography[$attribute]['font_size']['mobile'] ?? null ) . "; line-height: " . $this->fluid( $typography[$attribute]['line_height']['desktop'], $typography[$attribute]['line_height']['mobile'] ?? null ) . "; }\n";
-} ?>
-
-:is(<?php echo $heading_selectors ?>) a {
-	color: var(--md-headline-links);
-	text-decoration: none;
-}
-
-:is(<?php echo $heading_selectors ?>) a:hover { text-decoration: underline; }
-
-.format :is(h1, h2, h3, h4, h5, h6) { margin-block-end: var(--md-half); }
-
-.format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
-
-.the-content :is(h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: var(--md-mid); }
-
+<?php include md_css( 'headings', true ); ?>
 
 /* LISTS */
 
@@ -197,9 +160,7 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 	margin-block-start: -<?php echo $half; ?>px;
 }
 
-@media (min-width: 900px) {
-	:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
-}
+:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: clamp(200px, 50%, <?php echo ( $single * 6 ); ?>px); }
 
 /* SLIM */
 

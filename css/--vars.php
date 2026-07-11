@@ -27,9 +27,9 @@
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
 
-	--md-font-size: <?php echo $font_size['desktop']; ?>px;
+	--md-font-size: <?php echo $this->fluid( $font_size['desktop'], $font_size['mobile'] ); ?>;
 	--md-font-size-sm: <?php echo $font_size['mobile']; ?>px;
-	--md-line-height: <?php echo $line_height['desktop']; ?>px;
+	--md-line-height: <?php echo $this->fluid( $line_height['desktop'], $line_height['mobile'] ); ?>;
 	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
 	--md-bold: <?php echo $bold; ?>;
 

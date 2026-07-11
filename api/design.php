@@ -177,8 +177,9 @@ class md_design {
 	public function defaults() {
 		$g = 1.618;
 		$font_size = md_setting( array( 'typography', 'body', 'font_size', 'desktop' ), 19 );
-		$mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
+		$font_size_mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
 		$line_height = round( $font_size * $g );
+		$line_height_mobile = round( $font_size_mobile * $g );
 
 		$h1 = array(
 			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.4 ) ) ),
@@ -196,15 +197,21 @@ class md_design {
 			'desktop' => round( $h1['desktop'] * 0.6 ),
 			'mobile' => round( $h1['mobile'] * 0.6 )
 		);
-		$h5 = array( 'desktop' => round( $h1['desktop'] * 0.5 ) );
-		$h6 = array( 'desktop' => round( $h1['desktop'] * 0.45 ) );
+		$h5 = array(
+			'desktop' => round( $h1['desktop'] * 0.5 ),
+			'mobile' => round( $h1['mobile'] * 0.5 )
+		);
+		$h6 = array(
+			'desktop' => round( $h1['desktop'] * 0.45 ),
+			'mobile' => round( $h1['mobile'] * 0.45 )
+		);
 
 		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );
 
 		$design = md_setting( array( 'colors', 'design' ) );
 		$cw = md_setting( array( 'colors', 'width', 'content' ) );
 		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
-		$post_width= ! empty( $cw ) ? $cw : round( 21 * $line_height );
+		$post_width = ! empty( $cw ) ? $cw : round( 21 * $line_height );
 		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
 		$content_width = apply_filters( 'md_filter_css_content_width', $post_width + $gutter, $post_width, $line_height );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
@@ -271,8 +278,14 @@ class md_design {
 			),
 			'typography' => array(
 				'body' => array(
-					'font_size' => array( 'desktop' => $font_size,   'mobile' => $mobile ),
-					'line_height' => array( 'desktop' => $line_height, 'mobile' => round( $mobile * $g ) ),
+					'font_size' => array(
+						'desktop' => $font_size,
+						'mobile' => $font_size_mobile
+					),
+					'line_height' => array(
+						'desktop' => $line_height,
+						'mobile' => $line_height_mobile
+					),
 					'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
 				),
 				'huge' => array(
@@ -327,15 +340,23 @@ class md_design {
 				),
 				'h5' => array(
 					'font_size' => array(
-						'desktop' => $h5['desktop']
+						'desktop' => $h5['desktop'],
+						'mobile' => $h5['mobile']
 					),
 					'line_height' => array(
-						'desktop' => round( $h5['desktop'] * 1.55 )
+						'desktop' => round( $h5['desktop'] * 1.55 ),
+						'mobile' => round( $h5['mobile'] * 1.55 )
 					)
 				),
 				'h6' => array(
-					'font_size' => array( 'desktop' => $h6['desktop'] ),
-					'line_height' => array( 'desktop' => round( $h6['desktop'] * 1.5 ) )
+					'font_size' => array(
+						'desktop' => $h6['desktop'],
+						'mobile' => $h6['mobile']
+					),
+					'line_height' => array(
+						'desktop' => round( $h6['desktop'] * 1.5 ),
+						'mobile' => round( $h6['mobile'] * 1.5 )
+					)
 				),
 				'header' => array(
 					'font_size' => array( 'desktop' => $font_size ),

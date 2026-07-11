@@ -52,12 +52,9 @@
 
 .breadcrumbs a:hover { text-decoration: none; }
 
-@media (max-width: <?php echo $post_width; ?>px) {
-	.is-box-style .expanded .breadcrumbs:first-child,
-	.is-box-style .cover + .breadcrumbs { margin-block-start: -<?php echo $half; ?>px; }
-}
-
 @media (max-width: 900px) {
+	.is-box-style .expanded .breadcrumbs:first-child,
+	.is-box-style .cover + .breadcrumbs,
 	.is-box-style .compact .breadcrumbs:first-child { margin-block-start: -<?php echo $half; ?>px; }
 }
 
