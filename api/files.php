@@ -63,7 +63,7 @@ class md_files {
 
 		if ( $action == 'md_dropin' && $extension == 'zip' ) {
 			$uploads_dir = MD_INSTALLED_DROPINS;
-			$option = md_setting();
+			$option = md_setting_part( 'dropins' );
 
 			if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
 				$wp_filesystem->mkdir( $uploads_dir, 0777 );
@@ -132,7 +132,7 @@ class md_files {
 
 	public function delete_dropin( $dropin_id, $wp_filesystem ) {
 		$uploads_dir = MD_INSTALLED_DROPINS;
-		$option = md_setting();
+		$option = md_setting_part( array( 'dropins', 'license' ) );
 
 		if ( $wp_filesystem->exists( "$uploads_dir/$dropin_id" ) )
 			$wp_filesystem->delete( "$uploads_dir/$dropin_id", true );
@@ -153,13 +153,12 @@ class md_files {
 
 	public function update_icons( $file ) {
 		$custom_icons = array();
-		$option = md_setting();
-		$icons = md_icons();
+		$option = md_setting_part( 'icons' );
 		$default_icons_ids = md_get_icons( 'ids', true );
 
 		foreach ( $file->icons as $icon => $fields ) {
-			$name = esc_attr( $fields->properties->name );
-			$custom_icons[] = esc_attr( $name );
+			$name = sanitize_text_field( $fields->properties->name );
+			$custom_icons[] = sanitize_text_field( $name );
 
 			if ( ! in_array( $name, $default_icons_ids ) )
 				$option['icons']['data'][$name]['unicode'] = esc_attr( dechex( $fields->properties->code ) );

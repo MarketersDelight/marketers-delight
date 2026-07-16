@@ -55,7 +55,7 @@ class md_admin {
 	 */
 
 	public function actions() {
-		$this->sanitize = new md_sanitize;
+		$this->sanitize = new md_save( new md_validate( new md_sanitize ) );
 		$this->requests = new md_requests;
 		$this->files = new md_files;
 

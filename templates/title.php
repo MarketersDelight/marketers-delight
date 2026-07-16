@@ -1,6 +1,6 @@
 <?php
 
-echo "<div class=\"$context-title entry-title " . esc_attr( $classes ) . "\"$style>";
+echo "<header class=\"$context-title entry-title " . esc_attr( $classes ) . "\"$style>";
 
 md_overlay( $context );
 
@@ -66,4 +66,4 @@ echo $has_header_cover ? '</div>' : '';
 
 do_action( "md_hook_{$context}_title_bottom" );
 
-echo '</div>';
+echo '</header>';

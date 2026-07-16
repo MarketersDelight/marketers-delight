@@ -50,7 +50,7 @@
 	display: flex;
 	flex-flow: wrap;
 	font-size: var(--md-font-size-sm);
-	gap: var(--md-half);
+	gap: var(--md-small) var(--md-half);
 }
 
 .byline, .byline a, .byline .circle-icon { color: var(--md-color-text-secondary); }

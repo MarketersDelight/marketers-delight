@@ -293,6 +293,32 @@ function md_setting( $keys = null, $default = null ) {
 }
 
 /**
+ * Get a raw, un-hydrated slice of the marketers_delight option containing
+ * only the given top-level keys, each defaulting to an empty array if unset.
+ *
+ * Use this (instead of md_setting()) when you need to mutate and save back
+ * a specific branch of settings programmatically — e.g. dropin install/
+ * uninstall, license activation, icon resets. marketers_delight is a
+ * registered setting, so update_option() re-runs its sanitize callback on
+ * whatever you pass it; writing back only the keys you actually touched
+ * (via this function) keeps that re-validation scoped to those keys instead
+ * of silently re-processing — and potentially corrupting — every other
+ * setting in the tree.
+ *
+ * @since 6.0
+ */
+
+function md_setting_part( $keys ) {
+	$stored = get_option( 'marketers_delight', array() );
+	$slice = array();
+
+	foreach ( (array) $keys as $key )
+		$slice[$key] = isset( $stored[$key] ) ? $stored[$key] : array();
+
+	return $slice;
+}
+
+/**
  * To pull data from custom options, use this function with
  * your declared option key name.
  *
@@ -499,17 +525,6 @@ function md_module( $keys = null, $default = null, $id = null ) {
 		$option = md_setting( $keys, $default );
 
 	return $option;
-}
-
-/**
- * A function to access Block Editor colors.
- *
- * since 4.9
- */
-
-function md_editor_colors() {
-	$design = new md_design;
-	return $design->editor_colors();
 }
 
 /**

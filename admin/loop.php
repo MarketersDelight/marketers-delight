@@ -37,7 +37,6 @@ class md_loop extends md_api {
 	 */
 
 	public function fields() {
-		$sanitize = $this->sanitize();
 		$post_content = array(
 			'featured_image' => array(
 				'type' => 'select',
@@ -154,11 +153,11 @@ class md_loop extends md_api {
 			'tags' => array( 'type' => 'text' ),
 			'include_cats' => array(
 				'type' => 'checkbox',
-				'options' => $sanitize->terms()
+				'options' => $this->fields->data->terms()
 			),
 			'exclude_cats' => array(
 				'type' => 'checkbox',
-				'options' => $sanitize->terms()
+				'options' => $this->fields->data->terms()
 			),
 			'classes' => array( 'type' => 'text' )
 		), $post_content );

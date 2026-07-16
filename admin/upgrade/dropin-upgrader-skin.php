@@ -48,7 +48,7 @@ class Dropin_Upgrader_Skin extends WP_Upgrader_Skin {
 		// Update MD Drop-ins data
 		$dropin_slug = str_replace( '.php', '', basename( $dropin_info ) );
 		$dropin_path = MD_INSTALLED_DROPINS . "/$dropin_info";
-		$option = md_setting();
+		$option = md_setting_part( array( 'dropins', 'license' ) );
 		$new_dropin = md_get_dropin_data( $dropin_path );
 		$new_version = ! empty( $new_dropin['Version'] ) ? $new_dropin['Version'] : '';
 		$option['dropins']['installed'][$dropin_slug]['version'] = esc_htmL( $new_version );

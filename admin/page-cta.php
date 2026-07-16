@@ -25,7 +25,7 @@ class md_page_cta extends md_api {
 						'fields' => $this->fields->data->links( array( 'sort' => 'save' ) )
 					)
 				),
-				'admin_callback' => array( $this, 'links' )
+				'admin_callback' => array( $this->fields, 'links_group' )
 			),
 			'custom' => array(
 				'label' => __( 'Custom HTML', 'md' ),
@@ -77,7 +77,6 @@ class md_page_cta extends md_api {
 		$save = array(
 			'page_cta' => array(
 				'type' => 'select',
-				'options' => array_keys( $types ),
 				'dynamic' => true
 			)
 		);
@@ -87,33 +86,6 @@ class md_page_cta extends md_api {
 				$save = array_merge( $save, $fields['fields'] );
 
 		return $save;
-	}
-
-	/**
-	 * Default Links CTA admin fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function links() {
-		$this->fields->field( 'links', array(
-			'type' => 'group',
-			'sort' => true,
-			'style' => 'boxes',
-			'secondary' => true,
-			'subtitle' => true,
-			'elements' => array(
-				'primary' => array(
-					'label' => __( 'Primary Link', 'md' )
-				),
-				'secondary' => array(
-					'label' => __( 'Secondary Link', 'md' )
-				)
-			),
-			'callback' => function( $group, $field ) {
-				$this->fields->link_fields( array( 'group' => array( $group, $field ) ) );
-			}
-		) );
 	}
 
 	/**

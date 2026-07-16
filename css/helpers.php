@@ -187,6 +187,13 @@ cite, .tiny {
 
 .start { align-items: start; }
 
+@media (max-width: 900px) {
+	.c-mobile {
+		flex-flow: wrap;
+		justify-content: center;
+	}
+}
+
 /* WIDTHS */
 
 .content-width { max-width: var(--md-width-content); }

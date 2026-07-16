@@ -32,7 +32,7 @@
 				$colors = isset( $fields['colors'] ) ? explode( ',', trim( $fields['colors'] ) ) : array();
 				$bg_color = isset( $colors[0] ) ? $colors[0] : '';
 				$color = isset( $colors[1] ) ? $colors[1] : '';
-				$needs_plugin = isset( $fields['plugin_name'] ) && ! class_exists( $fields['plugin_class'] ) ? true : false;
+				$needs_plugin = ! empty( $fields['plugin_name'] ) && ! class_exists( $fields['plugin_class'] ) ? true : false;
 				$dropin_name = esc_html( $fields['name'] );
 				$path = "$dropin/$dropin.php";
 				$has_updates = ! empty( $updates[$path] ) ? true : false;

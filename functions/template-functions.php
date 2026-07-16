@@ -415,6 +415,26 @@ function md_parse_tokens( $args = array() ) {
 }
 
 /**
+ * A function to access Block Editor colors.
+ *
+ * since 4.9
+ */
+
+function md_editor_colors() {
+	return md_design::editor_colors();
+}
+
+/**
+ * Resolve the active color palette, filterable for extensions.
+ *
+ * since 6.0
+ */
+
+function md_color_palette() {
+	return apply_filters( 'md_color_palette', md_design::active_palette() );
+}
+
+/**
  * Return a usable color value. Resolves palette key references to their hex.
  *
  * @since 6.0
@@ -424,7 +444,7 @@ function md_color_hex( $value ) {
 	if ( empty( $value ) )
 		return '';
 
-	$palette = apply_filters( 'md_color_palette', array() );
+	$palette = md_color_palette();
 
 	return isset( $palette[$value] ) ? $palette[$value]['hex'] : $value;
 }
@@ -437,7 +457,7 @@ function md_color_hex( $value ) {
  */
 
 function md_color_class( $value = '', $type = 'color' ) {
-	$palette = apply_filters( 'md_color_palette', array() );
+	$palette = md_color_palette();
 
 	if ( empty( $value ) || ! isset( $palette[$value] ) )
 		return '';

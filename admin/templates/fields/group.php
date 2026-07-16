@@ -3,8 +3,10 @@
 if ( empty( $option ) )
 	$option = array();
 
-$clone = '{clone}';
-$group_id = $args['field'];
+$field_path = $args['field'];
+$group_id = is_array( $field_path ) ? implode( '_', $field_path ) : $field_path;
+$group_key = "{$this->_id}_$group_id";
+$clone = "{clone:$group_key}";
 $sort = "{$group_id}_sort";
 $elements = isset( $args['elements'] ) ? $args['elements'] : array();
 $style = isset( $args['style'] ) ? esc_attr( $args['style'] ) : 'list';
@@ -58,13 +60,13 @@ $classes = join( ' ', $classes );
 			<?php if ( $style == 'boxes' ) {
 				echo '<div class="md-widget-edit">';
 
-				$this->field( array( $group_id, $group, 'name' ), array(
+				$this->field( array_merge( (array) $field_path, array( $group, 'name' ) ), array(
 					'type' => 'text',
 					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' )
 				) );
 
 				if ( isset( $args['subtitle'] ) )
-					$this->field( array( $group_id, $group, 'subtitle' ), array(
+					$this->field( array_merge( (array) $field_path, array( $group, 'subtitle' ) ), array(
 						'type' => 'text',
 						'placeholder' => __( 'Add subtitle (optional)', 'md' ),
 						'classes' => 'small-text'
@@ -88,7 +90,7 @@ $classes = join( ' ', $classes );
 		</div>
 
 		<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-			<?php call_user_func( $args['callback'], $group_id, $group, $callback_args ); ?>
+			<?php call_user_func( $args['callback'], $field_path, $group, $callback_args ); ?>
 		</div>
 
 	</div>

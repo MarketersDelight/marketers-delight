@@ -149,7 +149,7 @@ class md_integrations extends md_api {
 		if ( ! wp_verify_nonce( $form['_wpnonce'] ?? '', $form['option_page'] . '-options' ) || ! current_user_can( 'manage_options' ) )
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );
 
-		$option = md_setting();
+		$option = md_setting_part( 'integrations' );
 		$api_keys = $form['marketers_delight']['integrations']['api_keys'];
 		$integration = esc_attr( $_POST['integration'] );
 		$action = esc_attr( $_POST['action_type'] );

@@ -16,7 +16,7 @@ class md_typography extends md_api {
 	public function actions() {
 		// Build Google Fonts URL after save.
 		if ( isset( $_GET['settings-updated'] ) && md_web_fonts( 'google' ) ) {
-			$option = md_setting();
+			$option = md_setting_part( 'typography' );
 			$option['typography']['google_fonts'] = md_google_fonts();
 
 			update_option( 'marketers_delight', $option );
@@ -37,10 +37,9 @@ class md_typography extends md_api {
 			$fields[$group] = $this->fields->data->typography();
 
 			if ( $group == 'body' ) {
-				$sanitize = new md_sanitize;
 				$fields[$group]['bold'] = array(
 					'type' => 'select',
-					'options' => array_keys( $sanitize->_font_weights )
+					'options' => array_keys( $this->fields->data->font_weights() )
 				);
 			}
 		}

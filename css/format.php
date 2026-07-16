@@ -160,7 +160,9 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 	margin-block-start: -<?php echo $half; ?>px;
 }
 
-:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: clamp(200px, 50%, <?php echo ( $single * 6 ); ?>px); }
+@media (min-width: 700px) {
+	:is(blockquote, .wp-block-pullquote):is(.alignleft, .alignright) { width: <?php echo ( $single * 6 ); ?>px; }
+}
 
 /* SLIM */
 

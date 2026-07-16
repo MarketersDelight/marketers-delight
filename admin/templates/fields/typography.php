@@ -3,7 +3,6 @@
 $g = 1.618;
 $field = is_array( $field ) ? $field : (array) $field;
 $devices = isset( $args['devices'] ) ? $args['devices'] : array( 'desktop', 'mobile' );
-$sanitize = new md_sanitize;
 $design = new md_design;
 $defaults = $design->defaults();
 $default = ! empty( $defaults[$this->_clean_id] ) ? $defaults[$this->_clean_id] : array();
@@ -74,7 +73,7 @@ if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 				'type' => 'select',
 				'label' => __( 'Font Weight', 'md' ),
 				'empty_label' => isset( $args['font_weight']['empty_label'] ) ? $args['font_weight']['empty_label'] : __( 'Select font weight...', 'md' ),
-				'options' => $sanitize->_font_weights
+				'options' => $this->data->font_weights()
 			) ); ?>
 		</div>
 
@@ -84,7 +83,7 @@ if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 				'type' => 'select',
 				'label' => __( 'Bold Text', 'md' ),
 				'empty_label' => isset( $args['font_weight']['empty_label'] ) ? $args['font_weight']['empty_label'] : __( 'Select font weight...', 'md' ),
-				'options' => $sanitize->_font_weights
+				'options' => $this->data->font_weights()
 			) ); ?>
 		</div>
 		<?php endif; ?>

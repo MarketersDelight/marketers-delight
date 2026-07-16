@@ -3,7 +3,7 @@ $inherit  = isset( $args['inherit'] ) ? $args['inherit'] : '';
 $default  = isset( $args['default'] ) ? $args['default'] : '';
 $hex_only = ! empty( $args['hex_only'] );
 
-$palette = apply_filters( 'md_color_palette', array() );
+$palette = md_color_palette();
 $is_inherit = ! $hex_only && ( isset( $palette[$option] ) || ( ! empty( $inherit ) && empty( $option ) ) );
 $inherit_val = $is_inherit && ! empty( $option ) ? $option : $inherit;
 $hex = $is_inherit ? '' : $option;

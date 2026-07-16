@@ -527,6 +527,33 @@ class md_fields {
 	}
 
 	/**
+	 * Render a repeater of links — 0 to N link configs, each rendered via
+	 * link_fields(). $field is the full path to the repeater field itself,
+	 * same convention as field() — defaults to the plain 'links' field key
+	 * (the common top-level case), or pass an array path when it's a new
+	 * field nested inside a clone item's own fields (e.g.
+	 * array($group, $field, 'links') for a floating bar/CTA form).
+	 * type=>'group' is a repeater at any depth, so both work identically.
+	 *
+	 * @since 6.0
+	 */
+
+	public function links_group( $field = 'links', $args = array() ) {
+		$this->field( $field, array_merge( array(
+			'type' => 'group',
+			'style' => 'boxes',
+			'subtitle' => true,
+			'new_label' => __( 'Edit link name...', 'md' ),
+			'fields' => $this->data->links( array( 'sort' => 'save' ) ),
+			'callback' => function( $group_id, $group ) {
+				$this->link_fields( array(
+					'group' => array_merge( (array) $group_id, array( $group ) )
+				) );
+			}
+		), $args ) );
+	}
+
+	/**
 	 * Build generic Page fields for standard components of a web page.
 	 *
 	 * @since 6.0
@@ -639,9 +666,8 @@ class md_fields {
 	}
 
 	protected function builder_menu( $group ) {
-		$sanitize = new md_sanitize;
 		$design = new md_design;
-		$menus = $sanitize->menus();
+		$menus = $this->data->menus();
 		$values = $design->values();
 
 		include md_template( 'admin/fields/builder-menu', true );

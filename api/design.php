@@ -13,7 +13,7 @@ class md_design {
 	 * @since 6.0
 	 */
 
-	private $palette = array(
+	private static $palette = array(
 		'background' => '#FFFFFF',
 		'surface' => '#F0F0F0',
 		'primary' => '#AE2525',
@@ -28,16 +28,6 @@ class md_design {
 	);
 
 	/**
-	 * Ryun actions when class is loaded.
-	 *
-	 * @since 6.0
-	 */
-
-	public function __construct() {
-		add_filter( 'md_color_palette', array( $this, 'active_palette' ) );
-	}
-
-	/**
 	 * Compare hard-set default values to user admin options and
 	 * return a complete list of design values to use in a
 	 * dynamic CSS file.
@@ -46,7 +36,7 @@ class md_design {
 	 */
 
 	public function values() {
-		$values = array_replace_recursive( $this->defaults(), array(
+		$values = $this->merge_defaults( $this->defaults(), array(
 			'colors' => md_setting( 'colors' ),
 			'typography' => md_setting( 'typography' ),
 			'header' => md_setting( 'header' ),
@@ -70,17 +60,42 @@ class md_design {
 	}
 
 	/**
-	 * The master color router - takes the default color palette and
-	 * returns user-selected colors when applicable. If custom colors
-	 * exist, they are also appplied to the final, usable color palette.
+	 * Layer saved settings on top of the computed defaults. A saved value
+	 * wins wherever it's set — but a blank/null value is treated as if the
+	 * user never touched that field, so the computed default shows through
+	 * instead of a blank.
 	 *
 	 * @since 6.0
 	 */
 
-	public function active_palette() {
+	private function merge_defaults( $defaults, $override ) {
+		foreach ( $override as $key => $value ) {
+			if ( is_array( $value ) ) {
+				if ( isset( $defaults[$key] ) && is_array( $defaults[$key] ) )
+					$defaults[$key] = $this->merge_defaults( $defaults[$key], $value );
+				else
+					$defaults[$key] = $value;
+			}
+			elseif ( $value !== '' && $value !== null )
+				$defaults[$key] = $value;
+		}
+
+		return $defaults;
+	}
+
+	/**
+	 * The master color list - fixed palette keys only, with user-selected
+	 * overrides applied. Used to render/prefill the master palette admin
+	 * fields, which custom colors don't belong in (they have their own
+	 * group).
+	 *
+	 * @since 6.0
+	 */
+
+	public static function base_palette() {
 		$palette = array();
 
-		foreach ( $this->palette as $key => $hex )
+		foreach ( self::$palette as $key => $hex )
 			$palette[$key] = array(
 				'hex' => $hex,
 				'name' => ucwords( str_replace( '-', ' ', $key ) )
@@ -92,6 +107,21 @@ class md_design {
 			foreach ( $colors['palette'] as $key => $data )
 				if ( ! empty( $data['hex'] ) && isset( $palette[$key] ) )
 					$palette[$key]['hex'] = $data['hex'];
+
+		return $palette;
+	}
+
+	/**
+	 * The master color router - the master palette plus any custom colors
+	 * layered on top, forming the full set of colors selectable/resolvable
+	 * anywhere a color can be picked or referenced.
+	 *
+	 * @since 6.0
+	 */
+
+	public static function active_palette() {
+		$palette = self::base_palette();
+		$colors = md_setting( 'colors' );
 
 		if ( ! empty( $colors['custom'] ) )
 			foreach ( $colors['custom'] as $data )
@@ -112,10 +142,10 @@ class md_design {
 	 * @since 4.9
 	 */
 
-	public function editor_colors() {
+	public static function editor_colors() {
 		$colors = array();
 
-		foreach ( $this->active_palette() as $key => $color )
+		foreach ( self::active_palette() as $key => $color )
 			$colors[] = array(
 				'name' => $color['name'],
 				'slug' => $key,

@@ -18,7 +18,6 @@ class md_requests {
 		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
 			return;
 
-		$option = md_setting();
 		$item_id = isset( $_POST['dropin_id'] ) ? sanitize_key( $_POST['dropin_id'] ) : '';
 
 		if ( isset( $_POST['action_type'] ) ) {
@@ -27,10 +26,12 @@ class md_requests {
 			if ( $action_type == 'delete-dropin' )
 				$this->delete_dropin();
 			elseif ( $action_type == 'reset-icons' ) {
-				$option = $this->reset_icons( $option );
+				$option = $this->reset_icons( md_setting_part( array( 'icons', 'custom_icons' ) ) );
 				update_option( 'marketers_delight', $option );
 			}
 			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ) ) ) {
+				$option = md_setting_part( array( 'license', 'settings' ) );
+
 				if ( $action_type == 'activate-license' )
 					$option = $this->activate_license( $item_id, $option );
 				elseif ( $action_type == 'deactivate-license' )
@@ -243,7 +244,7 @@ class md_requests {
 	 */
 
 	public function delete_theme_update() {
-		$option = md_setting();
+		$option = md_setting_part( 'license' );
 
 		unset( $option['license']['updates']['theme'] );
 

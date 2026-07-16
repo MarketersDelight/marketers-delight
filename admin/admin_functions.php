@@ -90,7 +90,7 @@ function md_admin_fields() {
  */
 
 function md_activate_dropin( $dropin ) {
-	$option = md_setting();
+	$option = md_setting_part( 'dropins' );
 
 	if ( empty( $option['dropins']['installed'][$dropin] ) )
 		return false;

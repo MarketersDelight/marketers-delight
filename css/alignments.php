@@ -109,8 +109,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 	.columns .image-left .featured-media { margin-inline-end: var(--md-half); }
 	.columns .image-right .featured-media { margin-inline-start: var(--md-half); }
-	.columns :is(.image-inline, .image-title) .featured-media { max-width: <?php echo round( $sidebar_width / 2 ); ?>px; }
-	.slim :is(.image-inline, .image-title) .featured-media { max-width: var(--md-quad); }
+	.slim :is(.image-left, .image-right, .image-title) .featured-media { max-width: var(--md-quad); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
 	.compact .box-style .entry.full .image-left .featured-media,
 	.box-style.columns.full .image-left .featured-media { margin-inline-start: calc(-1 * var(--md-mid)); }

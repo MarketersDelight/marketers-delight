@@ -81,10 +81,10 @@ elseif ( $fields['color'] ) {
 
 // Visibility options
 
-if ( $fields['toggle']['hide_label'] )
+if ( ! empty( $fields['toggle']['hide_label'] ) )
 	$classes[] = 'hide-label';
 
-if ( $fields['toggle']['hide_label_mobile'] )
+if ( ! empty( $fields['toggle']['hide_label_mobile'] ) )
 	$classes[] = 'hide-label-mobile';
 
 foreach ( md_get_visibility_classes( $fields['visibility'] ) as $class )

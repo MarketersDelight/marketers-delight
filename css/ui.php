@@ -78,8 +78,6 @@
 
 .scroller-list::-webkit-scrollbar { display: none; }
 
-.expanded .scroller-list { justify-content: center; }
-
 .scroller-arrow.arrow-hidden { display: none; }
 
 /* TOOLTIP */
@@ -220,9 +218,10 @@
 
 .accordion-nested > .accordion-item :is(.accordion-title, .menu-item a) { padding-left: var(--md-single); }
 
-/* DISPLAYS */
+/* QUERIES */
 
 @media all and (min-width: 700px) {
+	.expanded .scroller-list { justify-content: center; }
 	.show-mobile { display: none !important; }
 }
 

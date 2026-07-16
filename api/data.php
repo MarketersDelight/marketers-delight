@@ -7,7 +7,6 @@
 
 class md_fields_data {
 
-	public $sanitize;
 	public $values;
 
 	/**
@@ -17,7 +16,6 @@ class md_fields_data {
  	 */
 
 	public function __construct() {
-		$this->sanitize = new md_sanitize;
 		$this->values = $this->values();
 	}
 
@@ -66,10 +64,69 @@ class md_fields_data {
 
 		$fields['font_weight'] = array(
 			'type' => 'select',
-			'options' => array_keys( $this->sanitize->_font_weights )
+			'options' => array_keys( $this->font_weights() )
 		);
 
 		return $fields;
+	}
+
+	/**
+	 * Font weight options used by weight-select fields (label keyed by value).
+	 *
+	 * @since 4.8
+	 */
+
+	public function font_weights() {
+		return array(
+			'normal' => 'Regular',
+			'bold' => 'Bold',
+			'100' => '100',
+			'200' => '200',
+			'300' => '300',
+			'400' => '400',
+			'500' => '500',
+			'600' => '600',
+			'700' => '700',
+			'800' => '800',
+			'900' => '900'
+		);
+	}
+
+	/**
+	 * Return a list of term IDs for a given taxonomy.
+	 *
+	 * @since 5.3.1
+	 */
+
+	public function terms( $taxonomy = 'category' ) {
+		$cats = array();
+		$terms = get_terms( $taxonomy );
+
+		foreach ( $terms as $term )
+			if ( isset( $term->term_id ) )
+				$cats[] = intval( $term->term_id );
+
+		return $cats;
+	}
+
+	/**
+	 * Return a save ready list of WP menus.
+	 *
+	 * @since 6.0
+	 */
+
+	public function menus() {
+		$menus = array( 'ids' => array(), 'options' => array() );
+		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+
+		if ( ! empty( $nav_menus ) )
+			foreach ( $nav_menus as $menu ) {
+				$menu_id = intval( $menu->term_id );
+				$menus['ids'][] = $menu_id;
+				$menus['options'][$menu_id] = sanitize_text_field( $menu->name );
+			}
+
+		return $menus;
 	}
 
 	/**

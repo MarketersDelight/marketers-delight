@@ -29,6 +29,8 @@
 	line-height: <?php echo $this->fluid( $typography['h4']['line_height']['desktop'], $typography['h4']['line_height']['mobile'] ); ?>;
 }
 
+.slim.box-entry .entry-title:not(.cover):not(:empty) { padding-block-end: var(--md-half); }
+
 /* COVER */
 
 .entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }

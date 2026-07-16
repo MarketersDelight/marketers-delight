@@ -78,10 +78,11 @@
 				$( document ).on( 'click', '.md-clone-add', function( e ) {
 					var group = $( this ).data( 'clone-group' ),
 						groupID = $( '#md_group_' + group ),
-						empty = groupID.find( '.md-group.empty' ),
-						clone = empty.clone( true );
-					MD.clone.filter( clone );
-					clone.insertAfter( groupID.find( '.md-group' ).last() );
+						empty = groupID.children( '.md-group.empty' ).first(),
+						clone = empty.clone( true ),
+						token = '{clone:' + group + '}';
+					MD.clone.filter( clone, token );
+					clone.insertAfter( groupID.children( '.md-group' ).last() );
 					clone.addClass( 'md-clone-new' );
 					clone.removeClass( 'empty' );
 					clone.show();
@@ -91,19 +92,24 @@
 					MD.clone.delete( '.md-group' );
 					MD.linkFields.init();
 					jscolor.install();
+					clone.find( '.md-groups, .md-sort' ).each( function() {
+						new Sortable( this, { handle: '.md-reorder', animation: 150 } );
+					});
 				});
 			},
-			filter: function( e ) {
+			filter: function( e, token ) {
+				token = token || '{clone}';
+
 				var newID = MD.uniqueID(),
 					tags = e.find( 'label, input, textarea, select' ),
-					attrs = [ 'for', 'name', 'id' ];
+					attrs = [ 'for', 'name', 'id', 'data-clone-group' ];
 				e.find( '.md-clone-label' ).html( newID );
 				tags.each( function() {
 					var tag = $( this );
 					$.each( attrs, function( i, attr ) {
 						var val = tag.attr( attr );
-						if ( val )
-							tag.attr( attr, val.replace( '{clone}', newID ) );
+						if ( val && val.indexOf( token ) > -1 )
+							tag.attr( attr, val.split( token ).join( newID ) );
 					});
 				});
 				e.find( '.md-populate-date' ).val( Math.round( new Date().getTime() / 1000 ) );
@@ -111,7 +117,7 @@
 			},
 			delete: function( parent ) {
 				$( document ).on( 'click', '.md-delete', function( e ) {
-					$( this ).parents( parent ).slideUp( 'fast', function() {
+					$( this ).closest( parent ).slideUp( 'fast', function() {
 						$( this ).remove();
 					});
 				});
@@ -197,7 +203,7 @@
 		tabs: function() {
 			$( document ).on( 'click', '.md-tab', function( e ) {
 				e.preventDefault();
-				var tab    = $( this ).data( 'md-tab' ),
+				var tab = $( this ).data( 'md-tab' ),
 					parent = $( this ).closest( '.md-tabs' );
 				parent.find( '.md-tab' ).removeClass( 'nav-tab-active' );
 				$( this ).addClass( 'nav-tab-active' );
@@ -237,7 +243,7 @@
 				if ( toggle.parent().hasClass( 'open' ) )
 					toggle.parent().removeClass( 'open' );
 				else {
-					toggle.parent().parent().find( '.md-toggle' ).removeClass( 'open' );
+					toggle.closest( '.md-toggle' ).siblings( '.md-toggle' ).removeClass( 'open' );
 					toggle.closest( '.md-toggle' ).toggleClass( 'open');
 				}
 				jscolor.install();

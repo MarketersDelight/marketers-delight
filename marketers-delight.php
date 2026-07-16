@@ -37,6 +37,8 @@ final class marketers_delight {
 	public function includes() {
 		require_once MD_DIR . 'functions/theme-functions.php';
 		require_once MD_DIR . 'api/sanitize.php';
+		require_once MD_DIR . 'api/validate.php';
+		require_once MD_DIR . 'api/save.php';
 		require_once MD_DIR . 'api/design.php';
 		require_once MD_DIR . 'api/css.php';
 		require_once MD_DIR . 'api/theme-json.php';
@@ -553,7 +555,7 @@ final class marketers_delight {
 				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
 					require_once( $file );
 				else {
-					$option = md_setting();
+					$option = md_setting_part( 'dropins' );
 					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
 					update_option( 'marketers_delight', $option );
 				}
