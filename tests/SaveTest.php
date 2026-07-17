@@ -14,7 +14,7 @@ class SaveTest extends MD_TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->save = new md_save( new md_validate( new md_sanitize ) );
+		$this->save = new md_save;
 	}
 
 	private function merge( $old, $new ) {

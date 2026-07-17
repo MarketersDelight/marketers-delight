@@ -1,0 +1,166 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "settings": {
+        "color": {
+            "defaultPalette": false,
+            "defaultGradients": false,
+            "palette": [
+                {
+                    "name": "Background",
+                    "slug": "background",
+                    "color": "#FFFFFF"
+                },
+                {
+                    "name": "Surface",
+                    "slug": "surface",
+                    "color": "#FDFAF1"
+                },
+                {
+                    "name": "Primary",
+                    "slug": "primary",
+                    "color": "#C0392B"
+                },
+                {
+                    "name": "Secondary",
+                    "slug": "secondary",
+                    "color": "#101010"
+                },
+                {
+                    "name": "Tertiary",
+                    "slug": "tertiary",
+                    "color": "#F9F7E8"
+                },
+                {
+                    "name": "Border",
+                    "slug": "border",
+                    "color": "#E1DFCF"
+                },
+                {
+                    "name": "Highlight",
+                    "slug": "highlight",
+                    "color": "#FFFBCC"
+                },
+                {
+                    "name": "Text Main",
+                    "slug": "text-main",
+                    "color": "#1E1E1E"
+                },
+                {
+                    "name": "Text Secondary",
+                    "slug": "text-secondary",
+                    "color": "#777777"
+                },
+                {
+                    "name": "Button",
+                    "slug": "button",
+                    "color": "#22A340"
+                },
+                {
+                    "name": "White",
+                    "slug": "white",
+                    "color": "#FFFFFF"
+                }
+            ]
+        },
+        "typography": {
+            "defaultFontSizes": false,
+            "fontSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "20px"
+                },
+                {
+                    "name": "Normal",
+                    "slug": "normal",
+                    "size": "20px"
+                },
+                {
+                    "name": "Intro",
+                    "slug": "intro",
+                    "size": "24px"
+                },
+                {
+                    "name": "H3",
+                    "slug": "h3",
+                    "size": "32px"
+                },
+                {
+                    "name": "H2",
+                    "slug": "h2",
+                    "size": "38px"
+                },
+                {
+                    "name": "H1",
+                    "slug": "h1",
+                    "size": "45px"
+                },
+                {
+                    "name": "Huge",
+                    "slug": "huge",
+                    "size": "68px"
+                }
+            ],
+            "fontFamilies": [
+                {
+                    "fontFamily": "'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "name": "Body",
+                    "slug": "body"
+                },
+                {
+                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
+                    "name": "Heading",
+                    "slug": "heading"
+                }
+            ]
+        },
+        "layout": {
+            "contentSize": "672px",
+            "wideSize": "896px"
+        },
+        "spacing": {
+            "padding": false
+        }
+    },
+    "styles": {
+        "blocks": {
+            "core/button": {
+                "border": {
+                    "radius": "6px"
+                },
+                "color": {
+                    "background": "#22A340",
+                    "text": "#FFFFFF"
+                },
+                "shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",
+                "spacing": {
+                    "padding": {
+                        "top": "16px",
+                        "right": "27px",
+                        "bottom": "16px",
+                        "left": "27px"
+                    }
+                },
+                "typography": {
+                    "lineHeight": "1"
+                },
+                "variations": {
+                    "outline": {
+                        "border": {
+                            "width": "3px"
+                        }
+                    }
+                }
+            },
+            "core/post-title": {
+                "typography": {
+                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
+                    "fontSize": "45px",
+                    "fontWeight": "500",
+                    "lineHeight": 1
+                }
+            }
+        }
+    }
+}

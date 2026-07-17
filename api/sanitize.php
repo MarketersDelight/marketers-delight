@@ -1,9 +1,10 @@
 <?php
 /**
  * Per-type field value sanitizers. Pure functions of (value, field-config)
- * to a clean, storable value — no $_POST, no WP option/meta access. See
- * validate_field() in schema-validator.php for the full type reference and
- * the null-vs-value return convention every sanitizer here follows.
+ * to a clean, storable value — no $_POST, no WP option/meta access. Called
+ * from md_validate::validate_field() (api/validate.php), one method per
+ * field type. Most return null when there's no value to save, and the
+ * sanitized value otherwise (including '' or false for a cleared field).
  *
  * @since 6.0
  */

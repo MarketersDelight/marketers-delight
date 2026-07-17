@@ -102,7 +102,7 @@ class md_menu_walker extends Walker_Nav_Menu {
 		$item_output .= $desc . '</a>';
 		if ( in_array( 'menu-item-has-children', $item->classes ) ) {
 			$this->submenu_id = 'submenu-' . $item->ID;
-			$item_output .= '<button class="toggle trigger" data-toggle="menu-item" aria-expanded="false" aria-controls="' . esc_attr( $this->submenu_id ) . '" aria-label="' . sprintf( __( 'Toggle the %s submenu', 'md' ), $item_title ) . '"><i class="trigger-icon"></i></button>';
+			$item_output .= '<button class="toggle trigger" data-toggle="menu-item" aria-expanded="false" aria-haspopup="true" aria-controls="' . esc_attr( $this->submenu_id ) . '" aria-label="' . sprintf( __( 'Toggle the %s submenu', 'md' ), $item_title ) . '"><i class="trigger-icon"></i></button>';
 		}
 		$item_output .= $args->after;
 		$output .= apply_filters( 'walker_nav_menu_start_el', $item_output, $item, $depth, $args );

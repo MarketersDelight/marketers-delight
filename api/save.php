@@ -1,61 +1,50 @@
 <?php
 /**
- * WP hook callbacks that save validated settings to their target: the
- * marketers_delight option (or a custom option key), post meta, term meta,
- * or user meta. The only class in this pipeline that touches
- * get_option()/update_option()/post-meta/etc. directly.
+ * Houses the save functions across various settings screen types.
  *
- * Call chain for the admin-settings path (admin_save/admin_save_custom):
+ * Call chain for the Admin Settings API:
  *   admin_save( $input )                                — WP Settings API hook
- *     -> validator->validate( 'admin_pages', $input )    — see api/validate.php's call-chain map
- *     -> merge_settings( $old, $save )                   — admin_save() only; wraps merge_recursive()
- *          -> merge_recursive( $old, $save )             — resolves each top-level key's schema
- *               -> merge_fields( $old, $save, $schema )  — the recursive walker; dispatches per key
- *                    -> merge_clone_items( ... )          — group/builder: merge each item...
- *                         -> merge_fields( ... )          — ...by recursing back into the walker
- * admin_save_custom() skips merge_settings()'s taxonomy-group handling and
- * calls merge_recursive() directly — same walker underneath either way.
+ *     -> validate->validate( 'admin_pages', $input )     — see api/validate.php
+ *     -> merge_settings( $old, $save )
+ *          -> merge_recursive( $old, $save )             — top-level keys
+ *               -> merge_fields( $old, $save, $schema )  — recurses per field
+ *                    -> merge_clone_items( ... )         — group/builder fields
+ *                         -> merge_fields( ... )          — merges each item
  *
- * meta_save()/term_save()/user_meta_save() are separate, simpler entry
- * points (post meta, term meta, user meta) — each just validates and writes
- * directly, without going through the merge chain above at all.
+ * admin_save_custom works the same, but for a custom option key and without
+ * meta/term/user are standalone with far simpler save requirements.
  *
  * @since 6.0
  */
 
 class md_save {
 
-	private $validator;
+	private $validate;
 
-	/**
-	 * @since 6.0
-	 */
-
-	public function __construct( $validator ) {
-		$this->validator = $validator;
+	public function __construct() {
+		$this->validate = new md_validate;
 	}
 
 	/**
-	 * Save valid fields and merge fields on Settings API save.
-	 * Make room for taxonomy admin setting workaround in 6.0
+	 * Save the main option on Settings API save.
 	 *
 	 * @since 4.0
 	 */
 
 	public function admin_save( $input ) {
-		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
-			return $this->save_taxonomy( $input, md_setting() );
-
 		$settings = md_setting();
-		$save = $this->validator->validate( 'admin_pages', $input );
+
+		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
+			return $this->save_taxonomy( $input, $settings );
+
+		$save = $this->validate->validate( 'admin_pages', $input );
 
 		return $this->merge_settings( $settings, $save );
 	}
 
 	/**
-	 * Run Settings API data through validation when called from a different
-	 * option key from custom child theme/dropin developers not using the
-	 * marketers_delight key.
+	 * Same as admin_save(), for a custom option key registered by a child
+	 * theme or dropin instead of the main option key.
 	 *
 	 * @since 6.0
 	 */
@@ -67,95 +56,15 @@ class md_save {
 			return $this->save_taxonomy( $input, get_option( $option, array() ) );
 
 		$settings = get_option( $option, array() );
-		$save = $this->validator->validate( 'admin_pages', $input );
+		$save = $this->validate->validate( 'admin_pages', $input );
 
 		return $this->merge_recursive( $settings, $save );
 	}
 
 	/**
-	 * Merge $save over $old using the admin_pages schema to decide how: a
-	 * top-level key with no registered schema (version, license,
-	 * integrations, icons, custom_icons — programmatic data) is replaced
-	 * wholesale, matching how validate() passes those through unvalidated.
-	 * A key with a schema is merged field-by-field via merge_fields().
-	 *
-	 * @since 6.0
-	 */
-
-	private function merge_recursive( $old, $save ) {
-		$schema = md_register( 'admin_pages' );
-
-		foreach ( $save as $key => $value ) {
-			if ( ! empty( $schema[$key]['fields'] ) && is_array( $value ) && isset( $old[$key] ) && is_array( $old[$key] ) )
-				$old[$key] = $this->merge_fields( $old[$key], $value, $schema[$key]['fields'] );
-			else
-				$old[$key] = $value;
-		}
-
-		return $old;
-	}
-
-	/**
-	 * Merge $save over $old using $fields_schema — same schema-node rule as
-	 * md_validate::validate_fields() (its docblock has the full reasoning,
-	 * including why type=>'group'/'builder' is always a repeater at any
-	 * depth, never a fixed sub-object). The merge-specific difference: any
-	 * typed leaf field replaces wholesale, even array-shaped values,
-	 * since array_replace_recursive's "only overlay matching keys" can't
-	 * express that a key was removed from within it. A type-less node
-	 * recurses, using its own value as the next level's $fields_schema, so
-	 * a sibling leaf survives if one field elsewhere fails to validate.
-	 *
-	 * @since 6.0
-	 */
-
-	private function merge_fields( $old, $save, $fields_schema ) {
-		foreach ( $save as $key => $value ) {
-			$field = isset( $fields_schema[$key] ) ? $fields_schema[$key] : null;
-			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
-
-			if ( in_array( $type, array( 'group', 'builder' ) ) && is_array( $value ) ) {
-				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
-				$old[$key] = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
-			}
-			elseif ( $type !== null || ! is_array( $field ) || ! is_array( $value ) || ! isset( $old[$key] ) || ! is_array( $old[$key] ) )
-				$old[$key] = $value;
-			else
-				$old[$key] = $this->merge_fields( $old[$key], $value, $field );
-		}
-
-		return $old;
-	}
-
-	/**
-	 * Merge a clone-style group/builder field's items. The set and order of
-	 * item keys in $save is authoritative — fixes deleting/reordering items,
-	 * since every clone item is dynamically keyed and the whole list is
-	 * always resubmitted together. But each item's OWN fields are merged
-	 * individually against $old's version of that same item (via the item's
-	 * fixed field schema, shared across every dynamically-keyed item) — so a
-	 * field not resubmitted for a given item (display-only data set
-	 * programmatically elsewhere, not part of this page's editable form)
-	 * survives instead of being wiped, exactly like any other sibling field.
-	 *
-	 * @since 6.0
-	 */
-
-	private function merge_clone_items( $old, $save, $item_schema ) {
-		$merged = array();
-
-		foreach ( $save as $item_key => $item_value ) {
-			$merged[$item_key] = ( isset( $old[$item_key] ) && is_array( $old[$item_key] ) && is_array( $item_value ) )
-				? $this->merge_fields( $old[$item_key], $item_value, $item_schema )
-				: $item_value;
-		}
-
-		return $merged;
-	}
-
-	/**
-	 * Merge validated settings over existing, a safe check if combining
-	 * settings from other pages, such as taxonomy options.
+	 * Standard swapping of old data to new, with special handling so
+	 * settings pages that share top level keys across different forms
+	 * don't empty on save (eventual AJAX saving will simplify this).
 	 *
 	 * @since 6.0
 	 */
@@ -179,9 +88,74 @@ class md_save {
 	}
 
 	/**
-	 * Save taxonomy group options, derived from admin settings, over
-	 * $settings — the marketers_delight option for admin_save(), or a
-	 * custom option key for admin_save_custom().
+	 * Merge save into old at top level of array. A key with registered
+	 * fields is merged recursively, otherwise data is overwritten.
+	 *
+	 * @since 6.0
+	 */
+
+	private function merge_recursive( $old, $save ) {
+		$schema = md_register( 'admin_pages' );
+
+		foreach ( $save as $key => $value ) {
+			if ( ! empty( $schema[$key]['fields'] ) && is_array( $value ) && isset( $old[$key] ) && is_array( $old[$key] ) )
+				$old[$key] = $this->merge_fields( $old[$key], $value, $schema[$key]['fields'] );
+			else
+				$old[$key] = $value;
+		}
+
+		return $old;
+	}
+
+	/**
+	 * Traverses down as many array keys as needed to validate fields.
+	 * Detects when groups/builder fields are defined and handles cloneable
+	 * field scenarios, otherwise replace values outright.
+	 *
+	 * @since 6.0
+	 */
+
+	private function merge_fields( $old, $save, $fields_schema ) {
+		foreach ( $save as $key => $value ) {
+			$field = isset( $fields_schema[$key] ) ? $fields_schema[$key] : null;
+			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
+
+			if ( in_array( $type, array( 'group', 'builder' ) ) && is_array( $value ) ) {
+				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
+				$old[$key] = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
+			}
+			elseif ( $type !== null || ! is_array( $field ) || ! is_array( $value ) || ! isset( $old[$key] ) || ! is_array( $old[$key] ) )
+				$old[$key] = $value;
+			else
+				$old[$key] = $this->merge_fields( $old[$key], $value, $field );
+		}
+
+		return $old;
+	}
+
+	/**
+	 * Merge fields from group/builder fields to retain presence and order
+	 * as these fields are repeatable/sortable.
+	 *
+	 * @since 6.0
+	 */
+
+	private function merge_clone_items( $old, $save, $item_schema ) {
+		$merged = array();
+
+		foreach ( $save as $item_key => $item_value ) {
+			$merged[$item_key] = ( isset( $old[$item_key] ) && is_array( $old[$item_key] ) && is_array( $item_value ) )
+				? $this->merge_fields( $old[$item_key], $item_value, $item_schema )
+				: $item_value;
+		}
+
+		return $merged;
+	}
+
+	/**
+	 * Taxonomy settings pages are attached to main settings pages
+	 * and come from a different form, so detect that and save onto
+	 * the same key level admin page settings group.
 	 *
 	 * @since 6.0
 	 */
@@ -190,14 +164,14 @@ class md_save {
 		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
 		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
 		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
-		$options = $this->validator->validate( 'admin_pages', array( $post_type => $group ) );
+		$options = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
 		$settings[$post_type][$taxonomy] = $options[$post_type];
 
 		return $settings;
 	}
 
 	/**
-	 * Saves all types of post meta fields.
+	 * Save custom post meta fields.
 	 *
 	 * @since 4.0
 	 */
@@ -218,7 +192,7 @@ class md_save {
 			return $post_id;
 
 		$value = get_post_meta( $post_id, $option, true );
-		$save = $this->validator->validate( 'meta_boxes', $_POST[$option] );
+		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );
 		$save = apply_filters( 'md_post_meta_save', $save, $post );
 
 		if ( $save )
@@ -228,7 +202,7 @@ class md_save {
 	}
 
 	/**
-	 * Saves and sanitizes term fields.
+	 * Saves term meta fields.
 	 *
 	 * @since 4.3.5
 	 */
@@ -237,7 +211,7 @@ class md_save {
 		$option = 'marketers_delight';
 
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
-			$save = $this->validator->validate( 'terms', $_POST[$option] );
+			$save = $this->validate->validate( 'terms', $_POST[$option] );
 
 			if ( $save )
 				update_term_meta( $term_id, $option, $save );
@@ -247,7 +221,7 @@ class md_save {
 	}
 
 	/**
-	 * Saves and sanitizes user meta fields.
+	 * Saves user meta fields.
 	 *
 	 * @since 5.3.1
 	 */
@@ -258,7 +232,7 @@ class md_save {
 		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
 			return;
 
-		$save = $this->validator->validate( 'user_meta', $_POST[$option] );
+		$save = $this->validate->validate( 'user_meta', $_POST[$option] );
 
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );

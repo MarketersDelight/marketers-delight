@@ -13,7 +13,7 @@ class ValidateTest extends MD_TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->validate = new md_validate( new md_sanitize );
+		$this->validate = new md_validate;
 	}
 
 	private function register_schema( $schema ) {
@@ -376,7 +376,7 @@ class ValidateTest extends MD_TestCase {
 
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $merge_schema ) );
 
-		$save_class = new md_save( $this->validate );
+		$save_class = new md_save;
 		$merge = $this->call( $save_class, 'merge_recursive', array( array(), $save ) );
 
 		$this->assertSame(

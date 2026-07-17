@@ -67,7 +67,8 @@
 		width: <?php echo $submenu_width; ?>px;
 	}
 	.sub-menu .menu-item-has-children { flex-direction: row-reverse; }
-	.menu-item-has-children:hover > .sub-menu {
+	.menu-item-has-children:hover > .sub-menu,
+	.menu-item-has-children.toggle-menu-item > .sub-menu {
 		height: auto;
 		opacity: 1;
 		transition: opacity 200ms linear,transform 200ms ease-out;

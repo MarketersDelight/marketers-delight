@@ -208,6 +208,11 @@ function md_trigger( $type = 'menu', $args = array() ) {
 		$attrs .= ' aria-label="' . esc_attr( $title ) . '"';
 	}
 
+	$attrs .= ' aria-expanded="false"';
+
+	if ( ! empty( $args['controls'] ) )
+		$attrs .= ' aria-controls="' . esc_attr( $args['controls'] ) . '"';
+
 	echo "<button$attrs>".
 		 md_icon( $args['icon'], array( 'classes' => 'trigger-icon' ) ).
 		 ( $title ? '<span class="trigger-text">' . wp_kses_data( $title ) . '</span>' : '' ).

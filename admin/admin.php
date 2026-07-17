@@ -8,7 +8,7 @@
 
 class md_admin {
 
-	public $sanitize;
+	public $save;
 	public $requests;
 	public $files;
 	public $_option = 'marketers_delight';
@@ -55,7 +55,7 @@ class md_admin {
 	 */
 
 	public function actions() {
-		$this->sanitize = new md_save( new md_validate( new md_sanitize ) );
+		$this->save = new md_save;
 		$this->requests = new md_requests;
 		$this->files = new md_files;
 
@@ -73,7 +73,7 @@ class md_admin {
 
 		// Meta Boxes
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
-		add_action( 'save_post', array( $this->sanitize, 'meta_save' ), 10, 2 );
+		add_action( 'save_post', array( $this->save, 'meta_save' ), 10, 2 );
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
 
 		// Terms
@@ -82,7 +82,7 @@ class md_admin {
 		// User meta
 		add_action( 'show_user_profile', array( $this, 'user_meta' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_meta' ) );
-		add_action( 'profile_update', array( $this->sanitize, 'user_meta_save' ), 10, 2 );
+		add_action( 'profile_update', array( $this->save, 'user_meta_save' ), 10, 2 );
 
 		// Enqueue
 		if ( ! is_customize_preview() )
@@ -111,7 +111,7 @@ class md_admin {
 	 */
 
 	public function register_setting() {
-		register_setting( $this->_option, $this->_option, array( $this->sanitize, 'admin_save' ) );
+		register_setting( $this->_option, $this->_option, array( $this->save, 'admin_save' ) );
 
 		// Register settings for custom option keys
 
@@ -125,7 +125,7 @@ class md_admin {
 
 			$custom[$option] = true;
 
-			register_setting( $option, $option, array( $this->sanitize, 'admin_save_custom' ) );
+			register_setting( $option, $option, array( $this->save, 'admin_save_custom' ) );
 		}
 	}
 
@@ -358,7 +358,7 @@ class md_admin {
 	public function add_terms() {
 		foreach ( md_taxonomy_meta() as $term ) {
 			add_action( "{$term}_edit_form_fields", array( $this, 'term' ) );
-			add_action( "edited_{$term}", array( $this->sanitize, 'term_save' ), 10, 2 );
+			add_action( "edited_{$term}", array( $this->save, 'term_save' ), 10, 2 );
 		}
 	}
 

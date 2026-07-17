@@ -121,6 +121,8 @@ toggle: function() {
 		let menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
 		if ( menuItem )
 			menuItem.onmouseenter = menuItem.onmouseleave = function( e ) {
+				if ( e.type === 'mouseleave' )
+					menuItem.classList.remove( 'toggle-menu-item' );
 				menuItem.querySelector( '.toggle' ).setAttribute( 'aria-expanded', e.type === 'mouseenter' );
 			}
 	}
@@ -150,7 +152,15 @@ triggers: function() {
 				this.classList.add( 'toggled' );
 				container.classList.add( toggleClass );
 				container.classList.add( fromClass );
+
+				const controls = this.getAttribute( 'aria-controls' ),
+					  target = controls ? document.getElementById( controls ) : null;
+
+				if ( target )
+					target.focus();
 			}
+
+			this.setAttribute( 'aria-expanded', ! isActive );
 
 			if ( type === 'search' )
 				container.querySelector( '.input' ).focus();
