@@ -79,10 +79,11 @@ toggle: function() {
 	const toggles = document.getElementsByClassName( 'toggle' );
 	for ( let i = 0; i < toggles.length; i++ ) {
 		toggles[i].onclick = function( e ) {
-			const toggle = this.getAttribute( 'data-toggle' ),
-				target = this.getAttribute( 'data-toggle-target' ),
-				parent = target ? document.querySelector( target ) : this.closest( '.' + toggle ),
-				className = 'toggle-' + toggle;
+			const trigger = this,
+				  toggle = trigger.getAttribute( 'data-toggle' ),
+				  target = trigger.getAttribute( 'data-toggle-target' ),
+				  parent = target ? document.querySelector( target ) : trigger.closest( '.' + toggle ),
+				  className = 'toggle-' + toggle;
 			if ( ! parent )
 				return;
 			if ( ! parent.classList.contains( className ) ) {
@@ -92,11 +93,13 @@ toggle: function() {
 						isOpen[j].classList.remove( className );
 			}
 			parent.classList.toggle( className );
-			this.setAttribute( 'aria-expanded', parent.classList.contains( className ) );
-			if ( this.getAttribute( 'data-toggle-close' ) )
+			trigger.setAttribute( 'aria-expanded', parent.classList.contains( className ) );
+			if ( trigger.getAttribute( 'data-toggle-close' ) )
 				document.onclick = function( e ) {
-					if ( ! parent.contains( e.target ) )
+					if ( ! parent.contains( e.target ) ) {
 						parent.classList.remove( 'toggle-' + toggle );
+						trigger.setAttribute( 'aria-expanded', false );
+					}
 				}
 		}
 		let menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
@@ -160,8 +163,10 @@ closeOverlay: function( name, parent ) {
 	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
 		document.querySelector( parent ).classList.remove( 'toggle-' + name );
 		const triggers = document.getElementsByClassName( 'trigger-' + name );
-		for ( let i = 0; i < triggers.length; i++ )
+		for ( let i = 0; i < triggers.length; i++ ) {
 			triggers[i].classList.remove( 'toggled' );
+			triggers[i].setAttribute( 'aria-expanded', false );
+		}
 	};
 },
 scrollerNav: function() {

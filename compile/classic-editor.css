@@ -175,16 +175,16 @@ code, pre {
 	font-weight: 500;
 }
 .huge-title, .huge-size {
-	font-size: clamp(49px, 5.67vw, 68px);
-	line-height: clamp(59px, 7.5vw, 90px);
+	font-size: clamp(43px, 5.67vw, 68px);
+	line-height: clamp(51px, 7.5vw, 90px);
 }
 h1, .h1, .wp-block-post-title, .h1-size {
-	font-size: clamp(39px, 3.75vw, 45px);
-	line-height: clamp(51px, 4.92vw, 59px);
+	font-size: clamp(34px, 3.75vw, 45px);
+	line-height: clamp(44px, 4.92vw, 59px);
 }
 h2, .h2, .h2-size {
-	font-size: clamp(33px, 3.17vw, 38px);
-	line-height: clamp(45px, 4.25vw, 51px);
+	font-size: clamp(31px, 3.17vw, 38px);
+	line-height: clamp(42px, 4.25vw, 51px);
 }
 h3, .h3, .h3-size {
 	font-size: clamp(27px, 2.67vw, 32px);
@@ -195,12 +195,12 @@ h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size {
 	line-height: clamp(33px, 3.17vw, 38px);
 }
 h5, .h5, .h5-size {
-	font-size: clamp(20px, 1.92vw, 23px);
-	line-height: clamp(31px, 3vw, 36px);
+	font-size: clamp(19px, 1.92vw, 23px);
+	line-height: clamp(29px, 3vw, 36px);
 }
 h6, .h6, .h6-size {
-	font-size: clamp(18px, 1.67vw, 20px);
-	line-height: clamp(27px, 2.5vw, 30px);
+	font-size: clamp(17px, 1.67vw, 20px);
+	line-height: clamp(26px, 2.5vw, 30px);
 }
 :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a {
 	color: var(--md-headline-links);
@@ -843,10 +843,6 @@ cite, .tiny {
 }
 /* SLIM */
 .loop.columns.slim { gap: var(--md-half); }
-.loop.slim .title {
-	font-size: clamp(23px, 2.25vw, 27px);
-	line-height: clamp(33px, 3.17vw, 38px);
-}
 .slim.box-entry .entry-title:not(.cover):not(:empty) { padding-block-end: var(--md-half); }
 /* COVER */
 .entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }
@@ -960,6 +956,10 @@ cite, .tiny {
 	.box-entry.full .item { padding: var(--md-mid); }
 	.cover { padding-block: var(--md-mid); }
 	.entry .cover, .content .page-title.cover { padding-inline: var(--md-mid); }
+	.loop.slim .title {
+		font-size: var(--md-h4);
+		line-height: var(--md-h4-line-height);
+	}
 }
 /* CLASSIC EDITOR */
 .mce-content-body {

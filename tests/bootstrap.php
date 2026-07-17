@@ -11,6 +11,9 @@
 $GLOBALS['__test_filters'] = array();
 $GLOBALS['__test_settings'] = array();
 $GLOBALS['__test_options'] = array();
+$GLOBALS['__test_post_meta'] = array();
+$GLOBALS['__test_term_meta'] = array();
+$GLOBALS['__test_user_meta'] = array();
 
 /**
  * Test helpers, not WP stubs — call these from a test's setUp()/methods
@@ -21,7 +24,11 @@ function md_test_reset() {
 	$GLOBALS['__test_filters'] = array();
 	$GLOBALS['__test_settings'] = array();
 	$GLOBALS['__test_options'] = array();
+	$GLOBALS['__test_post_meta'] = array();
+	$GLOBALS['__test_term_meta'] = array();
+	$GLOBALS['__test_user_meta'] = array();
 	$_POST = array();
+	$_GET = array();
 }
 
 function md_test_set_filter( $tag, $value ) {
@@ -34,6 +41,18 @@ function md_test_set_settings( $settings ) {
 
 function md_test_set_option( $key, $value ) {
 	$GLOBALS['__test_options'][$key] = $value;
+}
+
+function md_test_set_post_meta( $meta ) {
+	$GLOBALS['__test_post_meta'] = $meta;
+}
+
+function md_test_set_term_meta( $meta ) {
+	$GLOBALS['__test_term_meta'] = $meta;
+}
+
+function md_test_set_user_meta( $meta ) {
+	$GLOBALS['__test_user_meta'] = $meta;
 }
 
 // WP function stubs
@@ -69,6 +88,46 @@ function md_setting( $keys = null, $default = null ) {
 
 function get_option( $key, $default = false ) {
 	return array_key_exists( $key, $GLOBALS['__test_options'] ) ? $GLOBALS['__test_options'][$key] : $default;
+}
+
+/**
+ * Walk a $GLOBALS-backed meta array by $keys, same lookup shape as
+ * md_setting() above — shared by the md_post_meta/md_term_meta/
+ * md_user_meta stubs below.
+ */
+
+function md_test_walk_meta( $store, $keys, $default ) {
+	$value = $store;
+
+	if ( ! isset( $keys ) )
+		return $value;
+
+	foreach ( (array) $keys as $key ) {
+		if ( is_array( $value ) && array_key_exists( $key, $value ) )
+			$value = $value[$key];
+		else
+			return $default;
+	}
+
+	return $value;
+}
+
+function md_post_meta( $keys = null, $id = null, $default = null ) {
+	return md_test_walk_meta( $GLOBALS['__test_post_meta'], $keys, $default );
+}
+
+function md_term_meta( $keys = null, $id = null, $default = null ) {
+	return md_test_walk_meta( $GLOBALS['__test_term_meta'], $keys, $default );
+}
+
+function md_user_meta( $keys = null, $id = null, $default = null ) {
+	return md_test_walk_meta( $GLOBALS['__test_user_meta'], $keys, $default );
+}
+
+if ( ! function_exists( '__' ) ) {
+	function __( $text, $domain = 'default' ) {
+		return $text;
+	}
 }
 
 function md_clean_id( $id ) {
@@ -119,6 +178,8 @@ function wp_verify_nonce( $nonce, $action ) {
 require_once dirname( __DIR__ ) . '/api/sanitize.php';
 require_once dirname( __DIR__ ) . '/api/validate.php';
 require_once dirname( __DIR__ ) . '/api/save.php';
+require_once dirname( __DIR__ ) . '/api/data.php';
+require_once dirname( __DIR__ ) . '/api/fields.php';
 
 /**
  * Base test case: reflection helper for exercising the private merge/

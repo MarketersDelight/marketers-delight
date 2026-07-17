@@ -206,34 +206,36 @@ class md_design {
 
 	public function defaults() {
 		$g = 1.618;
-		$font_size = md_setting( array( 'typography', 'body', 'font_size', 'desktop' ), 19 );
+		$font_size = md_setting( array( 'typography', 'body', 'font_size', 'desktop' ), 20 );
 		$font_size_mobile = md_setting( array( 'typography', 'body', 'font_size', 'mobile' ), round( $font_size * 0.9 ) );
 		$line_height = round( $font_size * $g );
 		$line_height_mobile = round( $font_size_mobile * $g );
 
+		$h1_desktop = md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.4 ) ) );
+
 		$h1 = array(
-			'desktop' => md_setting( array( 'typography', 'h1', 'font_size', 'desktop' ), round( $font_size * ( $g * 1.4 ) ) ),
-			'mobile'  => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $font_size * ( $g * 1.2 ) ) )
+			'desktop' => $h1_desktop,
+			'mobile'  => md_setting( array( 'typography', 'h1', 'font_size', 'mobile' ), round( $h1_desktop * 0.75 ) )
 		);
 		$h2 = array(
 			'desktop' => round( $h1['desktop'] * 0.85 ),
-			'mobile' => round( $h1['mobile'] * 0.85 )
+			'mobile' => round( $h1['desktop'] * 0.85 * 0.80 )
 			);
 		$h3 = array(
 			'desktop' => round( $h1['desktop'] * 0.7 ),
-			'mobile' => round( $h1['mobile'] * 0.7 )
+			'mobile' => round( $h1['desktop'] * 0.7 * 0.85 )
 		);
 		$h4 = array(
 			'desktop' => round( $h1['desktop'] * 0.6 ),
-			'mobile' => round( $h1['mobile'] * 0.6 )
+			'mobile' => round( $h1['desktop'] * 0.6 * 0.857 )
 		);
 		$h5 = array(
 			'desktop' => round( $h1['desktop'] * 0.5 ),
-			'mobile' => round( $h1['mobile'] * 0.5 )
+			'mobile' => round( $h1['desktop'] * 0.5 * 0.857 )
 		);
 		$h6 = array(
 			'desktop' => round( $h1['desktop'] * 0.45 ),
-			'mobile' => round( $h1['mobile'] * 0.45 )
+			'mobile' => round( $h1['desktop'] * 0.45 * 0.857 )
 		);
 
 		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $h4['desktop'] );

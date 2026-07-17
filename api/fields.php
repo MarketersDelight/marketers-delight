@@ -33,6 +33,43 @@ class md_fields {
 	}
 
 	/**
+	 * Determine the admin screeen context to render the correct field
+	 * settings based on the admin pages needs. We also check if a field
+	 * belongs to an admin group, nested, or a taxonomy settings screen.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function resolve_context() {
+		$screen = $this->_get_screen;
+
+		$context = array(
+			'is_post' => $screen['is_post'],
+			'is_term' => $screen['is_term'],
+			'is_user' => $screen['is_user'],
+			'is_group' => false,
+			'page_id' => null,
+			'is_child' => false,
+			'taxonomy' => ''
+		);
+
+		if ( $context['is_post'] || $context['is_term'] || $context['is_user'] )
+			return $context;
+
+		$page = $screen['page'];
+		$page_types = apply_filters( 'md_admin_groups', array() );
+
+		if ( ! empty( $page_types[$page] ) ) {
+			$context['is_group'] = true;
+			$context['page_id']  = md_clean_id( $page );
+			$context['is_child'] = $this->_clean_id !== $context['page_id'];
+			$context['taxonomy'] = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
+		}
+
+		return $context;
+	}
+
+	/**
 	 * Versatile in nature, this is the method called to load every field
 	 * within the MD API. To support many nested option formats field()
 	 * switches up how it processes data based on the user's needs.
@@ -57,24 +94,24 @@ class md_fields {
 
 		// Determine screen context and build name/id/settings key
 
-		if ( $screen['is_post'] || wp_doing_ajax() )
+		$context = $this->resolve_context();
+
+		if ( $context['is_post'] || wp_doing_ajax() )
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
-		elseif ( $screen['is_term'] )
+		elseif ( $context['is_term'] )
 			$setting = get_term_meta( $screen['screen_id'], $this->_option, true );
-		elseif ( $screen['is_user'] ) {
+		elseif ( $context['is_user'] ) {
 			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : 1;
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {
 			$setting = get_option( $this->_option );
-			$page = $screen['page'];
-			$page_types = apply_filters( 'md_admin_groups', array() );
 
-			if ( ! empty( $page_types[$page] ) ) {
-				$taxonomy = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
-				$page_id  = md_clean_id( $page );
+			if ( $context['is_group'] ) {
+				$taxonomy = $context['taxonomy'];
+				$page_id  = $context['page_id'];
 
-				if ( $clean_id !== $page_id ) {
+				if ( $context['is_child'] ) {
 					$setting = ! empty( $setting[$page_id] ) ? $setting[$page_id] : array();
 					$name = "{$this->_option}[$page_id]";
 					$id = "{$this->_option}_{$page_id}";
@@ -148,35 +185,30 @@ class md_fields {
 
 	public function get_field( $keys, $default = null ) {
 		$c = 0;
-		$screen = $this->_get_screen;
 
 		// Determine page context and set option level
 
-		if ( $screen['is_post'] )
+		$context = $this->resolve_context();
+		$option = md_setting();
+
+		if ( $context['is_post'] )
 			$option = md_post_meta();
-		elseif ( $screen['is_term'] )
+		elseif ( $context['is_term'] )
 			$option = md_term_meta();
-		elseif ( $screen['is_user'] )
+		elseif ( $context['is_user'] )
 			$option = md_user_meta();
-		else {
-			$page = $screen['page'];
-			$page_types = apply_filters( 'md_admin_groups', array() );
-			$option = md_setting();
+		elseif ( $context['is_group'] ) {
+			$taxonomy = $context['taxonomy'];
+			$page_id = $context['page_id'];
 
-			if ( ! empty( $page_types[$page] ) ) {
-				$taxonomy = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
-				$page_id = md_clean_id( $page );
-				$is_child = $this->_clean_id !== $page_id;
+			if ( $context['is_child'] ) {
+				$option = ! empty( $option[$page_id] ) ? $option[$page_id] : array();
 
-				if ( $is_child ) {
-					$option = ! empty( $option[$page_id] ) ? $option[$page_id] : array();
-
-					if ( $taxonomy )
-						$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
-				}
-				elseif ( $taxonomy )
-					$option = ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array();
+				if ( $taxonomy )
+					$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
 			}
+			elseif ( $taxonomy )
+				$option = ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array();
 		}
 
 		// Walk options array
@@ -209,10 +241,11 @@ class md_fields {
 			$keys = (array) $keys;
 
 		$screen = $this->_get_screen;
+		$context = $this->resolve_context();
 
 		// Return if post meta
 
-		if ( $screen['is_post'] ) {
+		if ( $context['is_post'] ) {
 			array_unshift( $keys, $this->_clean_id );
 
 			return md_post_meta( $keys, null, $default );
@@ -220,7 +253,7 @@ class md_fields {
 
 		// Return if term meta
 
-		if ( $screen['is_term'] && ! empty( $screen['screen_id'] ) ) {
+		if ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) {
 			array_unshift( $keys, $this->_clean_id );
 
 			return md_term_meta( $keys, $screen['screen_id'], $default );
@@ -228,17 +261,13 @@ class md_fields {
 
 		// Determine if admin group setting, taxonomy group, or just normal setting
 
-		$page = $screen['page'];
-		$page_types = apply_filters( 'md_admin_groups', array() );
+		if ( $context['is_group'] ) {
+			$prefix = array( $context['page_id'] );
 
-		if ( ! empty( $page_types[$page] ) ) {
-			$page_id = md_clean_id( $page );
-			$prefix = array( $page_id );
+			if ( $context['taxonomy'] )
+				$prefix[] = $context['taxonomy'];
 
-			if ( $screen['is_taxonomy'] )
-				$prefix[] = $screen['md_tab'];
-
-			if ( $page_id !== $this->_clean_id )
+			if ( $context['is_child'] )
 				$prefix[] = $this->_clean_id;
 
 			$keys = array_merge( $prefix, $keys );
@@ -527,13 +556,7 @@ class md_fields {
 	}
 
 	/**
-	 * Render a repeater of links — 0 to N link configs, each rendered via
-	 * link_fields(). $field is the full path to the repeater field itself,
-	 * same convention as field() — defaults to the plain 'links' field key
-	 * (the common top-level case), or pass an array path when it's a new
-	 * field nested inside a clone item's own fields (e.g.
-	 * array($group, $field, 'links') for a floating bar/CTA form).
-	 * type=>'group' is a repeater at any depth, so both work identically.
+	 * Use this method to call a repeatable link group fields.
 	 *
 	 * @since 6.0
 	 */

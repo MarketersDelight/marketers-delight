@@ -24,11 +24,6 @@
 
 .loop.columns.slim { gap: var(--md-half); }
 
-.loop.slim .title {
-	font-size: <?php echo $this->fluid( $typography['h4']['font_size']['desktop'], $typography['h4']['font_size']['mobile'] ); ?>;
-	line-height: <?php echo $this->fluid( $typography['h4']['line_height']['desktop'], $typography['h4']['line_height']['mobile'] ); ?>;
-}
-
 .slim.box-entry .entry-title:not(.cover):not(:empty) { padding-block-end: var(--md-half); }
 
 /* COVER */
@@ -191,4 +186,8 @@
 	.box-entry.full .item { padding: var(--md-mid); }
 	.cover { padding-block: var(--md-mid); }
 	.entry .cover, .content .page-title.cover { padding-inline: var(--md-mid); }
+	.loop.slim .title {
+		font-size: var(--md-h4);
+		line-height: var(--md-h4-line-height);
+	}
 }
