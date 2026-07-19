@@ -40,7 +40,7 @@ class md_fields {
 	 * @since 6.0
 	 */
 
-	protected function resolve_context() {
+	protected function get_context() {
 		$screen = $this->_get_screen;
 
 		$context = array(
@@ -94,7 +94,7 @@ class md_fields {
 
 		// Determine screen context and build name/id/settings key
 
-		$context = $this->resolve_context();
+		$context = $this->get_context();
 
 		if ( $context['is_post'] || wp_doing_ajax() )
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
@@ -188,7 +188,7 @@ class md_fields {
 
 		// Determine page context and set option level
 
-		$context = $this->resolve_context();
+		$context = $this->get_context();
 		$option = md_setting();
 
 		if ( $context['is_post'] )
@@ -241,7 +241,7 @@ class md_fields {
 			$keys = (array) $keys;
 
 		$screen = $this->_get_screen;
-		$context = $this->resolve_context();
+		$context = $this->get_context();
 
 		// Return if post meta
 
@@ -251,12 +251,19 @@ class md_fields {
 			return md_post_meta( $keys, null, $default );
 		}
 
-		// Return if term meta
+		// Return for term and taxonomy inheritance
 
 		if ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) {
-			array_unshift( $keys, $this->_clean_id );
+			$field_keys = array_merge( array( $this->_clean_id ), $keys );
+			$value = md_term_meta( $field_keys, $screen['screen_id'], null );
 
-			return md_term_meta( $keys, $screen['screen_id'], $default );
+			if ( is_null( $value ) )
+				$value = md_taxonomy_field( $field_keys, null, $screen['post_type'], $screen['taxonomy'] );
+
+			if ( is_null( $value ) )
+				$value = md_post_type_field( $field_keys, $default, $screen['post_type'] );
+
+			return $value;
 		}
 
 		// Determine if admin group setting, taxonomy group, or just normal setting
@@ -264,8 +271,18 @@ class md_fields {
 		if ( $context['is_group'] ) {
 			$prefix = array( $context['page_id'] );
 
-			if ( $context['taxonomy'] )
-				$prefix[] = $context['taxonomy'];
+			if ( $context['taxonomy'] ) {
+				$tax_prefix = $prefix;
+				$tax_prefix[] = $context['taxonomy'];
+
+				if ( $context['is_child'] )
+					$tax_prefix[] = $this->_clean_id;
+
+				$value = md_setting( array_merge( $tax_prefix, $keys ), null );
+
+				if ( ! is_null( $value ) )
+					return $value;
+			}
 
 			if ( $context['is_child'] )
 				$prefix[] = $this->_clean_id;
@@ -275,6 +292,27 @@ class md_fields {
 		else array_unshift( $keys, $this->_clean_id );
 
 		return md_setting( $keys, $default );
+	}
+
+	/**
+	 * Display a specialized label that labels if an option has an inheritance
+	 * (designed with select in mind) and show that in the select for user reference.
+	 *
+	 * @since 6.0
+	 */
+
+	public function inherit_label( $keys, $default_label, $options ) {
+		$context = $this->get_context();
+
+		if ( ! $context['taxonomy'] && ! $context['is_term'] )
+			return $default_label;
+
+		$value = $this->module( $keys );
+
+		if ( is_null( $value ) || ! isset( $options[ $value ] ) )
+			return $default_label;
+
+		return sprintf( __( 'Use default (%s)', 'md' ), $options[ $value ] );
 	}
 
 	/**

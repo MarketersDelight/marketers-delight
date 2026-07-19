@@ -164,6 +164,38 @@ class md_loop extends md_api {
 	}
 
 	/**
+	 * Load scripts to admin pages.
+	 *
+	 * @since 6.0
+	 */
+
+	public function admin_enqueue() {
+		$this->enqueue_script();
+	}
+
+	/**
+	 * Load scripts to Edit Term pages.
+	 *
+	 * @since 6.0
+	 */
+
+	public function term_enqueue() {
+		$this->enqueue_script();
+	}
+
+	/**
+	 * Register/enqueue the toggle script.
+	 *
+	 * @since 6.0
+	 */
+
+	private function enqueue_script() {
+		$script = 'admin/js/loop.js';
+
+		wp_enqueue_script( 'md-loop', MD_URL . $script, array( 'jquery' ), md_ver( $script ), true );
+	}
+
+	/**
 	 * Add settings template and script to Page Settings sections.
 	 *
 	 * @since 5.1
@@ -179,54 +211,13 @@ class md_loop extends md_api {
 		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show subcategories', 'md' ) : __( 'Hide subcategories', 'md' );
 	?>
 
-	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts' : ''; ?>">
+	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts is-category-inherited' : ''; ?>">
 		<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 		<div class="md-widget-item">
 			<?php include md_template( 'admin/loop', true ); ?>
 		</div>
 	</div>
 
-	<?php $this->scripts(); }
-
-	/**
-	 * Print footer scripts to admin screens to toggle options.
-	 *
-	 * @since 6.0
-	 */
-
-	public function scripts() { ?>
-		<script>
-			jQuery( document ).ready( function( $ ) {
-				function resetTabs( $tabs ) {
-					$tabs.find( '.md-tab' ).removeClass( 'nav-tab-active' ).first().addClass( 'nav-tab-active' );
-					$tabs.find( '.md-tab-content' ).removeClass( 'active' ).first().addClass( 'active' );
-				}
-
-				$( '.md-check-val' ).on( 'change', function( e ) {
-					var loop = $( this ).parents( '.md-loop' );
-					var active = this.value === 'category' || this.value === 'category_posts';
-					loop.toggleClass( 'has-category-posts', active );
-
-					if ( ! active )
-						resetTabs( loop.find( '.md-loop-options' ) );
-				});
-
-				$( '.md-content-val' ).on( 'change', function() {
-					$( this ).parents( '.md-loop-post-group' ).find( '.md-loop-content-options' ).toggle( this.value !== 'hide' );
-				});
-
-				$( '.md-num-val' ).on( 'change', function( e ) {
-					var loop = $( this ).parents( '.md-loop' );
-
-					if ( this.value >= 1 )
-						loop.addClass( 'has-featured' );
-					else {
-						loop.removeClass( 'has-featured' );
-						resetTabs( loop.find( '.md-loop-post' ) );
-					}
-				});
-			} );
-		</script>
 	<?php }
 
 }

@@ -1,11 +1,11 @@
 <?php
 /**
- * Tests md_fields::resolve_context() — the single shared branching for
+ * Tests md_fields::get_context() — the single shared branching for
  * post/term/user meta vs. admin-group settings pages (with nested child
  * fields and taxonomy tabs) — plus get_field() and module(), the two
  * public read paths built on top of it. field() itself renders HTML via
  * templates and isn't covered here; its behavior depends on the same
- * resolve_context() output already exercised through get_field()/module().
+ * get_context() output already exercised through get_field()/module().
  *
  * @since 6.1
  */
@@ -32,28 +32,28 @@ class FieldsContextTest extends MD_TestCase {
 		return $fields;
 	}
 
-	private function resolve_context( $fields ) {
-		return $this->call( $fields, 'resolve_context' );
+	private function get_context( $fields ) {
+		return $this->call( $fields, 'get_context' );
 	}
 
 	// Post/term/user screens short-circuit before any admin-group lookup.
 
 	public function test_post_screen_resolves_is_post_only() {
-		$context = $this->resolve_context( $this->make_fields( array( 'is_post' => true ) ) );
+		$context = $this->get_context( $this->make_fields( array( 'is_post' => true ) ) );
 
 		$this->assertTrue( $context['is_post'] );
 		$this->assertFalse( $context['is_group'] );
 	}
 
 	public function test_term_screen_resolves_is_term_only() {
-		$context = $this->resolve_context( $this->make_fields( array( 'is_term' => true ) ) );
+		$context = $this->get_context( $this->make_fields( array( 'is_term' => true ) ) );
 
 		$this->assertTrue( $context['is_term'] );
 		$this->assertFalse( $context['is_group'] );
 	}
 
 	public function test_user_screen_resolves_is_user_only() {
-		$context = $this->resolve_context( $this->make_fields( array( 'is_user' => true ) ) );
+		$context = $this->get_context( $this->make_fields( array( 'is_user' => true ) ) );
 
 		$this->assertTrue( $context['is_user'] );
 		$this->assertFalse( $context['is_group'] );
@@ -64,7 +64,7 @@ class FieldsContextTest extends MD_TestCase {
 	public function test_non_group_admin_page_resolves_no_group() {
 		md_test_set_filter( 'md_admin_groups', array() );
 
-		$context = $this->resolve_context( $this->make_fields( array( 'page' => 'my_page' ) ) );
+		$context = $this->get_context( $this->make_fields( array( 'page' => 'my_page' ) ) );
 
 		$this->assertFalse( $context['is_group'] );
 		$this->assertNull( $context['page_id'] );
@@ -75,7 +75,7 @@ class FieldsContextTest extends MD_TestCase {
 	public function test_admin_group_root_is_not_child() {
 		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
 
-		$context = $this->resolve_context( $this->make_fields( array( 'page' => 'my_page' ), 'my_page' ) );
+		$context = $this->get_context( $this->make_fields( array( 'page' => 'my_page' ), 'my_page' ) );
 
 		$this->assertTrue( $context['is_group'] );
 		$this->assertSame( 'my_page', $context['page_id'] );
@@ -87,7 +87,7 @@ class FieldsContextTest extends MD_TestCase {
 	public function test_admin_group_child_field_is_child() {
 		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
 
-		$context = $this->resolve_context( $this->make_fields( array( 'page' => 'my_page' ), 'child_field' ) );
+		$context = $this->get_context( $this->make_fields( array( 'page' => 'my_page' ), 'child_field' ) );
 
 		$this->assertTrue( $context['is_group'] );
 		$this->assertSame( 'my_page', $context['page_id'] );
@@ -100,7 +100,7 @@ class FieldsContextTest extends MD_TestCase {
 	public function test_admin_group_taxonomy_tab_resolves_taxonomy() {
 		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
 
-		$context = $this->resolve_context( $this->make_fields( array(
+		$context = $this->get_context( $this->make_fields( array(
 			'page' => 'my_page',
 			'is_taxonomy' => true,
 			'md_tab' => 'category',
@@ -112,7 +112,7 @@ class FieldsContextTest extends MD_TestCase {
 	public function test_admin_group_without_taxonomy_flag_has_blank_taxonomy() {
 		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
 
-		$context = $this->resolve_context( $this->make_fields( array(
+		$context = $this->get_context( $this->make_fields( array(
 			'page' => 'my_page',
 			'is_taxonomy' => false,
 			'md_tab' => 'category',

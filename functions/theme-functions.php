@@ -505,7 +505,11 @@ function md_block_field( $attributes, $field ) {
  * @since 4.7
  */
 
-function md_module( $keys = null, $default = null, $id = null ) {
+function md_module( $keys = null, $default = null, $id = null, $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'inherit_post_type' => true
+	) );
+
 	$id = apply_filters( 'md_setting_id', $id );
 
 	if ( is_home() || is_post_type_archive() || is_author() )
@@ -517,10 +521,14 @@ function md_module( $keys = null, $default = null, $id = null ) {
 			$option = md_taxonomy_field( $keys, null );
 
 		if ( is_null( $option ) )
-			$option = md_post_type_field( $keys, $default );
+			$option = $args['inherit_post_type'] ? md_post_type_field( $keys, $default ) : $default;
 	}
-	elseif ( is_singular() || is_404() )
-		$option = md_post_meta( $keys, $id, $default );
+	elseif ( is_singular() || is_404() ) {
+		$option = md_post_meta( $keys, $id, null );
+
+		if ( is_null( $option ) )
+			$option = $args['inherit_post_type'] ? md_post_type_field( $keys, $default ) : $default;
+	}
 	else
 		$option = md_setting( $keys, $default );
 

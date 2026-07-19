@@ -258,6 +258,7 @@ class md_api {
 			'is_block_editor' => method_exists( $get, 'is_block_editor' ) && $get->is_block_editor(),
 			'screen_id' => $is_post ? sanitize_key( $_GET['post'] ?? '' ) : ( $is_term ? sanitize_key( $_GET['tag_ID'] ?? '' ) : '' ),
 			'post_type' => $get->post_type,
+			'taxonomy' => $get->taxonomy,
 			'page' => $page,
 			'md_tab' => $md_tab,
 			'taxonomy_groups' => $groups
@@ -435,27 +436,13 @@ class md_api {
 			'orderby' => null
 		);
 
-		// Sometimes post_type -> taxonony settings shouldn't inherit
-
-		$use_tax_defaults = $taxonomy;
-
-		if ( $taxonomy ) {
-			$loop_type = md_post_type_field( array( 'loop', 'loop_type' ), '', $post_type );
-			$tax_loop_type = md_taxonomy_field( array( 'loop', 'loop_type' ), $loop_type, $post_type, $taxonomy );
-
-			if ( $term_id && in_array( $tax_loop_type, array( 'category_posts', 'category' ) ) )
-				$use_tax_defaults = empty( get_term_children( $term_id, $taxonomy ) );
-		}
-
 		// Set inherited query vars from proper context
 
 		foreach ( $keys as $key => $default ) {
 			$value = md_post_type_field( array( 'loop', $key ), $default, $post_type );
 
-			if ( $taxonomy ) {
-				$default = $use_tax_defaults ? $default : $value;
-				$value = md_taxonomy_field( array( 'loop', $key ), $default, $post_type, $taxonomy );
-			}
+			if ( $taxonomy )
+				$value = md_taxonomy_field( array( 'loop', $key ), $value, $post_type, $taxonomy );
 
 			if ( $term_id )
 				$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
@@ -853,7 +840,10 @@ class md_api {
 
 		// Load admin pages
 
-		if ( in_array( $this->_id, array( $page, $tab ) ) && method_exists( $this, "admin_$suffix" ) )
+		$is_own_page = in_array( $this->_id, array( $page, $tab ) );
+		$is_group_child = isset( $this->register['admin_page']['group'] ) && ! empty( apply_filters( 'md_admin_groups', array() )[$page] );
+
+		if ( ( $is_own_page || $is_group_child ) && method_exists( $this, "admin_$suffix" ) )
 			call_user_func( array( $this, "admin_$suffix" ) );
 
 		// Load user meta

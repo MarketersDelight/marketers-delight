@@ -43,10 +43,8 @@ function md_get_title( $context = 'post' ) {
 	elseif ( is_tax() || is_category() || is_tag() ) {
 		$title = md_term_meta( array( 'hero', 'archives_title' ) );
 
-		if ( ! $title ) {
-			$tax_title = md_taxonomy_field( 'archives_title' );
-			$title = $tax_title ? $tax_title : single_term_title( '', false );
-		}
+		if ( ! $title )
+			$title = md_module( 'archives_title', single_term_title( '', false ), null, array( 'inherit_post_type' => false ) );
 
 		$title = md_parse_text( $title, 'term' );
 	}
@@ -344,13 +342,8 @@ function md_get_byline( $position, $args = array() ) {
 
 	$builder = md_post_type_field( array( 'byline', 'builder' ), array() );
 
-	if ( is_category() || is_tax() ) {
-		$tax_builder = md_taxonomy_field( array( 'byline', 'builder' ), array() );
-		if ( ! empty( $tax_builder ) )
-			$builder = $tax_builder;
-
-		$builder = md_term_meta( array( 'byline', 'builder' ), null, $builder );
-	}
+	if ( is_category() || is_tax() )
+		$builder = md_module( array( 'byline', 'builder' ), $builder );
 
 	// Check if items set manually in $args, or show default items while options empty
 

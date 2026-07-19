@@ -318,9 +318,6 @@ function md_cover_classes( $context = 'post' ) {
 	if ( empty( $cover['display']['alternate'] ) )
 		$classes[] = 'text-white';
 
-//	if ( $context == 'page' && $cover['position'] == 'headline_cover' )
-//		$classes[] = 'inner';
-
 	if ( ! empty( $cover['display']['bg_repeat'] ) )
 		$classes[] = 'repeat';
 

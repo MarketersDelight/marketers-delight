@@ -76,6 +76,7 @@
 
 .box, .box-entry .entry { width: auto; }
 
+.full > .box-group:not(:last-child),
 .box-entry.row.full > .item:not(:last-child),
 .box-entry.row.full .entry:not(:last-child) { margin-block-end: var(--md-single); }
 

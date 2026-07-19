@@ -305,7 +305,7 @@ function md_get_loop( $args = array() ) {
 		}
 		else {
 			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop = array_merge( $post_type, $tax, $single );
+			$loop = array_merge( $post_type, array_filter( $tax ), array_filter( $single ) );
 		}
 
 		// Set additional parameters
@@ -339,13 +339,9 @@ function md_get_loop( $args = array() ) {
 		if ( md_has_sidebar() )
 			$loop['has_sidebar'] = true;
 
-		// Reset defaults if category inherits a "category" view, but has no subcats
-
-		if ( ( is_category() || is_tax() ) && ! isset( $loop['by_category'] ) ) {
-			foreach ( array( 'posts_per_page', 'columns', 'featured' ) as $key )
-				if ( isset( $post_type[$key] ) && ! isset( $tax[$key] ) )
-					unset( $loop[$key] );
-		}
+		if ( is_category() || is_tax() )
+			foreach ( array( 'category_include', 'category_exclude', 'include_cats', 'exclude_cats' ) as $key )
+				$loop[$key] = md_module( array( 'loop', $key ), null, null, array( 'inherit_post_type' => false ) );
 	}
 
 	if ( ! isset( $loop['loop_type'] ) )

@@ -111,7 +111,7 @@
 	--md-content-body: #FDFAF1;
 	--md-content: #FFFFFF;
 	--md-content-border: #E1DFCF;
-	--md-page-cover: #FFFFFF;
+	--md-page-cover: #00000080;
 	--md-sidebar: transparent;
 	--md-sidebar-text: #777777;
 	--md-sidebar-links: #777777;
@@ -878,6 +878,7 @@ cite, .tiny {
 .box-style.category-view .post-footer { border-block-start: 1px solid var(--md-color-border); }
 .box-entry .post-footer { border-block-start: 1px solid var(--md-color-border); }
 .box, .box-entry .entry { width: auto; }
+.full > .box-group:not(:last-child),
 .box-entry.row.full > .item:not(:last-child),
 .box-entry.row.full .entry:not(:last-child) { margin-block-end: var(--md-single); }
 .box-entry.loop-article.full .entry { margin-inline: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half))); }
