@@ -273,13 +273,13 @@ function md_cover( $context = 'post' ) {
 	if ( is_post_type_archive() || is_home() )
 		$cover = $post_type_cover ?: array();
 	elseif ( is_category() || is_tax() ) {
-		$tax_cover = md_taxonomy_field( 'page_cover' ) ?: array();
+		$tax_cover = array_filter( md_taxonomy_field( 'page_cover' ) ?: array() );
 		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
-		$cover = array_merge( $tax_cover, $term_cover );
+		$cover = array_merge( $post_type_cover, $tax_cover, $term_cover );
 	}
 	elseif ( $context === 'post' ) {
 		$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
-		$single_cover = md_post_meta( 'page_cover', null, array() );
+		$single_cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
 
 		if ( is_category() || is_tax() )
 			$inherit = md_term_meta( array( 'loop', 'inherit', 'page_cover' ), null, $inherit );

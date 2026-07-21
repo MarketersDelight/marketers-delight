@@ -294,7 +294,7 @@ function md_get_loop( $args = array() ) {
 	else {
 		$post_type = md_post_type_field( 'loop', array() );
 		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article' );
-		$single = md_module( 'loop', array() );
+		$single = md_module( 'loop', array(), null, array( 'inherit_post_type' => false ) );
 
 		// Determine main loop keys from contextual admin settings
 
@@ -358,7 +358,9 @@ function md_get_loop( $args = array() ) {
 		$loop['style'] = md_loop_style( $loop_args );
 	}
 
-	if ( ! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 || ( ! empty( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) )
+	if (
+		! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 ||
+		( ! empty( $loop['by_category'] ) && ! empty( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) )
 		$loop['is_slim'] = true;
 
 	$loops = md_loops();

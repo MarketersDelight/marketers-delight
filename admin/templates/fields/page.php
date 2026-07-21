@@ -4,7 +4,8 @@
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
-		'description' => __( 'The main <code>h1</code> title that displays prominently on this page.', 'md' )
+		'description' => __( 'The main <code>h1</code> title that displays prominently on this page.', 'md' ),
+		'placeholder' => md_taxonomy_field( 'archives_title', null, $this->_get_screen['post_type'], $this->_get_screen['taxonomy'] )
 	) ); ?>
 </div>
 

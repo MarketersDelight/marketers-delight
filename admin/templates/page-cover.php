@@ -9,7 +9,7 @@
 					'type' => 'select',
 					'label' => __( 'Position', 'md' ),
 					'style' => 'width: 100%',
-					'empty_label' => $position_label,
+					'empty_label' => $this->fields->inherit_label( 'position', $position_label, $position_options ),
 					'options' => $position_options
 				) ); ?>
 			</div>
@@ -17,19 +17,29 @@
 			<div class="col">
 				<?php $this->fields->field( 'bg_color', array(
 					'type' => 'color',
-					'label' =>  __( 'Overlay Color', 'md' ),
-					'default' => $this->design()->values()['colors']['content']['page_cover']
+					'label' =>  __( 'Overlay Color', 'md' )
 				) ); ?>
 			</div>
 
 		</div>
 
-		<?php $this->fields->field( 'display', array(
+		<?php
+		$this->fields->field( 'display', array(
 			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
 			'inline' => true,
+			'wrap_classes' => 'md-sep-micro',
 			'options' => $display_options
-		) ); ?>
+		) );
+
+		if ( $inherit_options )
+			$this->fields->field( 'display', array(
+				'type' => 'checkbox',
+				'label' => __( 'Single posts', 'md' ),
+				'inline' => true,
+				'options' => $inherit_options
+			) );
+		?>
 
 	</div>
 

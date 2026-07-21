@@ -212,6 +212,11 @@ class md_sanitize {
 		if ( $default === $input )
 			return null;
 
+		$hex = ltrim( $input, '#' );
+
+		if ( ctype_xdigit( $hex ) && in_array( strlen( $hex ), array( 3, 4, 6, 8 ), true ) )
+			return '#' . strtolower( $hex );
+
 		if ( strpos( $input, 'rgba' ) === false )
 			return sanitize_hex_color( $input ) ?: '';
 

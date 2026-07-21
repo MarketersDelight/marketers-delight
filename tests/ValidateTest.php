@@ -122,6 +122,73 @@ class ValidateTest extends MD_TestCase {
 		$this->assertTrue( $save['dropins']['installed']['my-dropin']['status'] );
 	}
 
+	// Regression: the admin JS submits a template row (e.g. "{clone:md_cta_forms}")
+	// for the "add new item" button's own clone source, alongside real items.
+	// This used to only be stripped when the key was exactly '{clone}' — the
+	// real submitted key is parametrized per field ('{clone:$field_id}', or
+	// nested one level deeper for a clone-inside-a-clone), so the old check
+	// never matched and the blank template row got saved and later rendered
+	// on the frontend as if it were a real item.
+
+	public function test_clone_template_placeholder_key_is_stripped() {
+		$this->register_schema( array(
+			'cta' => array( 'fields' => array(
+				'forms' => array(
+					'type' => 'group',
+					'fields' => array(
+						'name' => array( 'type' => 'text' )
+					)
+				)
+			) )
+		) );
+
+		$save = $this->validate->validate( 'admin_pages', array(
+			'cta' => array( 'forms' => array(
+				'{clone:md_cta_forms}' => array( 'name' => '' ),
+				'primary' => array( 'name' => 'Sign up' )
+			) )
+		) );
+
+		$this->assertArrayNotHasKey( '{clone:md_cta_forms}', $save['cta']['forms'] );
+		$this->assertSame( 'Sign up', $save['cta']['forms']['primary']['name'] );
+	}
+
+	// Nested clone (e.g. a link inside a CTA item) uses a doubly-parametrized
+	// key -- confirm the prefix match still catches it at the nested level.
+
+	public function test_nested_clone_template_placeholder_key_is_stripped() {
+		$this->register_schema( array(
+			'cta' => array( 'fields' => array(
+				'forms' => array(
+					'type' => 'group',
+					'fields' => array(
+						'name' => array( 'type' => 'text' ),
+						'links' => array(
+							'type' => 'group',
+							'fields' => array(
+								'name' => array( 'type' => 'text' )
+							)
+						)
+					)
+				)
+			) )
+		) );
+
+		$save = $this->validate->validate( 'admin_pages', array(
+			'cta' => array( 'forms' => array(
+				'primary' => array( 'name' => 'Sign up', 'links' => array(
+					'{clone:md_cta_forms_{clone:md_cta_forms}_links}' => array( 'name' => '' ),
+					'link-1' => array( 'name' => 'Get started' )
+				) )
+			) )
+		) );
+
+		$links = $save['cta']['forms']['primary']['links'];
+
+		$this->assertArrayNotHasKey( '{clone:md_cta_forms_{clone:md_cta_forms}_links}', $links );
+		$this->assertSame( 'Get started', $links['link-1']['name'] );
+	}
+
 	// Builder fields always wrote their cloned result even when empty
 	// (unlike group, before the fix above) — confirm that still holds.
 

@@ -190,10 +190,10 @@ function md_cta( $context = 'post', $cta = array() ) {
 	if ( empty( $cta ) ) {
 		if ( $context == 'page' )
 			$cta = md_module( 'page_cta' );
-		elseif ( ! is_singular() )
-			return;
-		else
+		elseif ( $context == 'post' && is_singular() )
 			$cta = md_post_meta( 'page_cta' );
+		else
+			return;
 	}
 
 	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';

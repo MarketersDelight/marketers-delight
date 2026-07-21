@@ -73,7 +73,9 @@ class md_validate {
 				$items = $input[$key];
 
 				if ( is_array( $items ) )
-					unset( $items['{clone}'] );
+					foreach ( array_keys( $items ) as $item_key )
+						if ( is_string( $item_key ) && strpos( $item_key, '{clone' ) === 0 )
+							unset( $items[$item_key] );
 
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
 				$save[$key] = $this->clone_groups( $items, $item_schema, isset( $field['group_key_lowercase'] ) );

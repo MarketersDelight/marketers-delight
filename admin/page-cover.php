@@ -68,7 +68,9 @@ class md_page_cover extends md_api {
 
 	public function admin_fields() {
 		$is_admin = $this->_get_screen['is_admin'];
+		$is_taxonomy = $this->_get_screen['is_taxonomy'];
 		$is_post = $this->_get_screen['is_post'];
+		$is_top_level = $is_admin && ! $is_taxonomy;
 
 		$position_label = __( 'Do not use cover', 'md' );
 		$position_options = array(
@@ -77,7 +79,7 @@ class md_page_cover extends md_api {
 			'header_cover_full' => __( 'Full Header Cover', 'md' ),
 		);
 
-		if ( ! $is_admin ) {
+		if ( ! $is_top_level ) {
 			$position_label = __( 'Use default cover', 'md' );
 			$position_options['remove'] = __( 'Do not use cover', 'md' );
 		}
@@ -88,8 +90,10 @@ class md_page_cover extends md_api {
 			'disable_overlay' => __( 'Remove overlay', 'md' )
 		);
 
-		if ( $is_admin )
-			$display_options = array(
+		$inherit_options = array();
+
+		if ( $is_top_level )
+			$inherit_options = array(
 				'single' => __( 'Apply to all <strong>Posts</strong>', 'md' ),
 				'show_excerpt' => __( 'Show <strong>Excerpt</strong> in Post Titles', 'md' )
 			);

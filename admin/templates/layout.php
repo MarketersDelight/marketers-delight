@@ -105,11 +105,13 @@
 
 		echo '<div class="md-sep-micro">';
 
+		$featured_image_options = $this->fields->data->values['featured_image'];
+
 		$this->fields->field( 'featured_image', array(
 			'type' => 'select',
 			'label' => __( 'Featured image', 'md' ),
-			'empty_label' => __( 'Use default position', 'md' ),
-			'options' => $this->fields->data->values['featured_image']
+			'empty_label' => $this->fields->inherit_label( 'featured_image', __( 'Use default position', 'md' ), $featured_image_options ),
+			'options' => $featured_image_options
 		) );
 
 		echo '</div>';
@@ -192,11 +194,13 @@
 					)
 				) );
 
+			$content_style_options = md_filter_loop_styles();
+
 			$this->fields->field( 'content_style', array(
 				'type' => 'select',
-				'empty_label' => __( 'Use default style', 'md' ),
+				'empty_label' => $this->fields->inherit_label( 'content_style', __( 'Use default style', 'md' ), $content_style_options ),
 				'wrap_classes' => 'md-sep-micro',
-				'options' => md_filter_loop_styles()
+				'options' => $content_style_options
 			) ); ?>
 
 		</div>
