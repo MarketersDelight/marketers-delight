@@ -17,7 +17,9 @@
 			<div class="col">
 				<?php $this->fields->field( 'bg_color', array(
 					'type' => 'color',
-					'label' =>  __( 'Overlay Color', 'md' )
+//					'hex_only' => true,
+					'label' =>  __( 'Overlay Color', 'md' ),
+					'default' => $overlay_color
 				) ); ?>
 			</div>
 

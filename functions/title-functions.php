@@ -44,7 +44,7 @@ function md_get_title( $context = 'post' ) {
 		$title = md_term_meta( array( 'hero', 'archives_title' ) );
 
 		if ( ! $title )
-			$title = md_module( 'archives_title', single_term_title( '', false ), null, array( 'inherit_post_type' => false ) );
+			$title = md_module( 'archives_title', single_term_title( '', false ), array( 'inherit_post_type' => false ) );
 
 		$title = md_parse_text( $title, 'term' );
 	}

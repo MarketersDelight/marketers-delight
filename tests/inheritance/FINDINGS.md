@@ -67,7 +67,7 @@ the same category of problem as the `loop_type`/`by_category` render-mode switch
 rendering `loop_type = category` must fall back to a post listing, or the page is structurally
 broken). That switch is a rendering-mode decision and was untouched by this fix.
 
-These four fields resolve via `md_module( $keys, null, null, array( 'inherit_post_type' => false )
+These four fields resolve via `md_module( $keys, null, array( 'inherit_post_type' => false )
 )` in `md_get_loop()` instead of riding the wholesale tier merge — term's own value, else the
 taxonomy tab's own value, else nothing; never the post-type tier. Verified by
 `GetLoopTest::test_post_type_tier_category_exclude_does_not_leak_onto_taxonomy_archive` and

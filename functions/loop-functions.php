@@ -75,7 +75,7 @@ function md_loop_style( $args = array() ) {
 		return $body;
 
 	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
-	$style = md_module( array( 'layout', 'content_style' ), $post_type, get_queried_object_id() ) ?: $body;
+	$style = md_module( array( 'layout', 'content_style' ), $post_type, array( 'id' => get_queried_object_id() ) ) ?: $body;
 
 	return $style;
 }
@@ -294,7 +294,7 @@ function md_get_loop( $args = array() ) {
 	else {
 		$post_type = md_post_type_field( 'loop', array() );
 		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article' );
-		$single = md_module( 'loop', array(), null, array( 'inherit_post_type' => false ) );
+		$single = md_module( 'loop', array(), array( 'inherit_post_type' => false ) );
 
 		// Determine main loop keys from contextual admin settings
 
@@ -341,7 +341,7 @@ function md_get_loop( $args = array() ) {
 
 		if ( is_category() || is_tax() )
 			foreach ( array( 'category_include', 'category_exclude', 'include_cats', 'exclude_cats' ) as $key )
-				$loop[$key] = md_module( array( 'loop', $key ), null, null, array( 'inherit_post_type' => false ) );
+				$loop[$key] = md_module( array( 'loop', $key ), null, array( 'inherit_post_type' => false ) );
 	}
 
 	if ( ! isset( $loop['loop_type'] ) )

@@ -499,18 +499,16 @@ function md_block_field( $attributes, $field ) {
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.
  *
- * $default and $id are reversed order relative to other get functions
- * due to lesser use of $id here.
- *
  * @since 4.7
  */
 
-function md_module( $keys = null, $default = null, $id = null, $args = array() ) {
+function md_module( $keys = null, $default = null, $args = array() ) {
 	$args = wp_parse_args( $args, array(
+		'id' => null,
 		'inherit_post_type' => true
 	) );
 
-	$id = apply_filters( 'md_setting_id', $id );
+	$id = apply_filters( 'md_setting_id', $args['id'] );
 
 	if ( is_home() || is_post_type_archive() || is_author() )
 		$option = md_post_type_field( $keys, $default );

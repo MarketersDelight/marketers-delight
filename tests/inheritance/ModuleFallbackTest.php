@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_module() (functions/theme-functions.php:508-528) -- the third,
+ * Tests md_module() (functions/theme-functions.php:508-528) -- the
  * general-purpose tier-fallback helper (term_meta -> taxonomy -> post_type on
  * a category/tax page). Unlike md_taxonomy_field()/md_post_type_field(), its
  * taxonomy-tier fallback call omits explicit $post_type/$taxonomy args and
@@ -25,7 +25,7 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 			'post_type' => 'post',
 		) );
 
-		$this->assertSame( 3, md_module( array( 'loop', 'columns' ), null, 42 ) );
+		$this->assertSame( 3, md_module( array( 'loop', 'columns' ), null, array( 'id' => 42 ) ) );
 	}
 
 	/**
@@ -58,7 +58,7 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 		// fallback, not term 99's own context -- the $id argument only
 		// controls the term_meta lookup, not the taxonomy-tier one.
 
-		$result = md_module( array( 'loop', 'columns' ), null, 99 );
+		$result = md_module( array( 'loop', 'columns' ), null, array( 'id' => 99 ) );
 
 		// term_meta(99) resolves correctly (7) because md_term_meta() does
 		// accept an explicit $id -- it's specifically the taxonomy-tier
@@ -80,7 +80,7 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 			'post_type' => 'post',
 		) );
 
-		$this->assertSame( 3, md_module( array( 'loop', 'columns' ), null, 42 ) );
+		$this->assertSame( 3, md_module( array( 'loop', 'columns' ), null, array( 'id' => 42 ) ) );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 			'post_type' => 'post',
 		) );
 
-		$result = md_module( array( 'loop', 'category_exclude' ), null, 42, array( 'inherit_post_type' => false ) );
+		$result = md_module( array( 'loop', 'category_exclude' ), null, array( 'id' => 42, 'inherit_post_type' => false ) );
 
 		$this->assertNull( $result );
 	}

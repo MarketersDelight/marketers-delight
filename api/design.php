@@ -13,7 +13,7 @@ class md_design {
 	 * @since 6.0
 	 */
 
-	private static $palette = array(
+	public static $palette = array(
 		'background' => '#FFFFFF',
 		'surface' => '#F0F0F0',
 		'primary' => '#AE2525',

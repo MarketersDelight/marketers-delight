@@ -6,7 +6,7 @@ $hex_only = ! empty( $args['hex_only'] );
 $palette = md_color_palette();
 $is_inherit = ! $hex_only && ( isset( $palette[$option] ) || ( ! empty( $inherit ) && empty( $option ) ) );
 $inherit_val = $is_inherit && ! empty( $option ) ? $option : $inherit;
-$hex = $is_inherit ? '' : $option;
+$hex = $is_inherit ? '' : md_color_hex( $option );
 $swatch_hex  = isset( $palette[$inherit_val] ) ? $palette[$inherit_val]['hex'] : $hex;
 ?>
 

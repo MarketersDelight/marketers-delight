@@ -28,7 +28,7 @@
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
 						'type' => 'color',
 						'hex_only' => true,
-						'default' => $color['hex']
+						'default' => $palette_defaults[$color_key]
 					) ); ?>
 				</div>
 				<div class="col col2">
