@@ -268,7 +268,7 @@ function md_get_caption( $id = null ) {
 function md_cover( $context = 'post' ) {
 	$cover = array();
 	$inherit = false;
-	$post_type_cover = md_post_type_field( 'page_cover' );
+	$post_type_cover = md_post_type_field( 'page_cover', array() );
 
 	if ( is_post_type_archive() || is_home() )
 		$cover = $post_type_cover ?: array();
