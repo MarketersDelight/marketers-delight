@@ -59,7 +59,7 @@ function md_get_title( $context = 'post' ) {
 	elseif ( is_day() )
 		$title = get_the_date( 'F j, Y' );
 
-	return trim( $title );
+	return trim( (string) $title );
 }
 
 /**

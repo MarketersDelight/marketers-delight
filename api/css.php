@@ -285,16 +285,28 @@ class md_css {
 	}
 
 	/**
-	 * Calculate fluid typography values with clamp CSS.
+	 * Calculate fluid clamp CSS via two-point linear interpolation between
+	 * a floor value/width and a desktop value/width. Omitting floor_width
+	 * derives it the same way the original formula implicitly did (floor
+	 * * site_width / desktop); pass it explicitly to pin the floor at an
+	 * exact, chosen viewport width instead.
 	 *
 	 * @since 6.0
 	 */
 
-	public function fluid( $desktop, $mobile ) {
-		if ( empty( $mobile ) || $mobile >= $desktop )
+	public function fluid( $desktop, $floor, $floor_width = null, $desktop_width = null ) {
+		if ( empty( $floor ) || $floor >= $desktop )
 			return "{$desktop}px";
 
-		return 'clamp(' . $mobile . 'px, ' . round( $desktop / $this->site_width * 100, 2 ) . 'vw, ' . $desktop . 'px)';
+		$desktop_width = $desktop_width ?: $this->site_width;
+		$floor_width = $floor_width ?: ( $floor * $desktop_width / $desktop );
+
+		$slope = ( $desktop - $floor ) / ( $desktop_width - $floor_width );
+		$intercept = round( $floor - ( $slope * $floor_width ), 2 );
+		$vw = round( $slope * 100, 2 ) . 'vw';
+		$preferred = $intercept ? $intercept . 'px + ' . $vw : $vw;
+
+		return 'clamp(' . $floor . 'px, ' . $preferred . ', ' . $desktop . 'px)';
 	}
 
 	/**
@@ -385,14 +397,14 @@ class md_css {
 		$h1_font_weight = ! empty( $h1['font_weight'] ) ? $h1['font_weight'] : $bold;
 
 		$spacers = $design->spacers();
-		$small = $spacers['small'];
-		$third = $spacers['third'];
-		$half = $spacers['half'];
-		$single = $spacers['single'];
-		$mid = $spacers['mid'];
-		$double = $spacers['double'];
-		$triple = $spacers['triple'];
-		$quad = $spacers['quad'];
+		$small = $spacers['small']['desktop'];
+		$third = $spacers['third']['desktop'];
+		$half = $spacers['half']['desktop'];
+		$single = $spacers['single']['desktop'];
+		$mid = $spacers['mid']['desktop'];
+		$double = $spacers['double']['desktop'];
+		$triple = $spacers['triple']['desktop'];
+		$quad = $spacers['quad']['desktop'];
 
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );

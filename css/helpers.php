@@ -187,11 +187,14 @@ cite, .tiny {
 
 .start { align-items: start; }
 
+.end { justify-content: end; }
+
 @media (max-width: 900px) {
-	.c-mobile {
+	.center-mobile {
 		flex-flow: wrap;
 		justify-content: center;
 	}
+    .column-mobile { flex-direction: column; }
 }
 
 /* WIDTHS */
@@ -286,13 +289,16 @@ foreach ( array_keys( $spacers ) as $size )
 
 /* BLOCKS / PADDING */
 
-foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size )
+foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size ) {
+	$inline_var = in_array( $size, array( 'single', 'mid', 'double', 'triple', 'quad' ) ) ? "--md-$size-x" : "--md-$size";
+
 	echo
 		".block-$size { padding: var(--md-$size); }\n".
 		".block-$size-tb { padding-block: var(--md-$size); }\n".
-		".block-$size-lr { padding-inline: var(--md-$size); }\n".
+		".block-$size-lr { padding-inline: var($inline_var); }\n".
 		".block-$size-top { padding-block-start: var(--md-$size); }\n".
 		".block-$size-bot { padding-block-end: var(--md-$size); }\n";
+}
 
 echo ".pb-none { padding-block-end: 0; }\n";
 

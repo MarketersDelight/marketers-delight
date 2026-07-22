@@ -127,7 +127,7 @@ function md_get_media( $context = 'post' ) {
 	else {
 		$option = md_post_meta( 'featured_media', true, array() );
 
-		if ( get_post_thumbnail_id() )
+        if ( get_post_thumbnail_id() )
 			$option['image']['id'] = get_post_thumbnail_id();
 	}
 

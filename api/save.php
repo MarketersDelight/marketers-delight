@@ -229,7 +229,7 @@ class md_save {
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
 
-		if ( isset( $_POST["{$option}_nonce"] ) && ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) || empty( $_POST[$option] ) )
+		if ( empty( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
 			return;
 
 		$save = $this->validate->validate( 'user_meta', $_POST[$option] );

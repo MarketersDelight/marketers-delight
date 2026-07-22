@@ -35,6 +35,9 @@ function md_template( $file, $path = null, $include = null ) {
 		$file = $path;
 	}
 
+	if ( validate_file( $file ) !== 0 || ( $dir && validate_file( $dir ) !== 0 ) )
+		return;
+
 	$template = locate_template( "templates/$file.php" );
 
 	if ( ! $template ) {
@@ -48,9 +51,7 @@ function md_template( $file, $path = null, $include = null ) {
 		$directory = trailingslashit( $directory );
 		$template_path = '';
 		$parts = explode( '/', $file );
-		$total = count( $parts );
-		$parts_keys = array_keys( $parts );
-		$file_key = end( $parts_keys );
+		$file_key = count( $parts ) - 1;
 
 		foreach ( $parts as $part_key => $part )
 			if ( $part_key == 0 )

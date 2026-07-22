@@ -21,7 +21,7 @@ foreach ( $args['options'] as $val => $label ) {
 		<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_html( $text ); ?>" class="md-radio-image" />
 	<?php endif; ?>
 	<span class="md-radio-input">
-		<input type="radio" name="<?php echo $name; ?>" id="<?php echo $idval; ?>" class="md-radio-check" value="<?php echo esc_attr( $val ); ?>"<?php echo checked( $option, $val ); ?> />
+		<input type="radio" name="<?php echo esc_attr( $name ); ?>" id="<?php echo $idval; ?>" class="md-radio-check" value="<?php echo esc_attr( $val ); ?>"<?php echo checked( $option, $val ); ?> />
 		<span class="md-radio-label"<?php echo $bg_image; ?>>
 			<span class="md-radio-text"><?php echo esc_html( $text ); ?></span>
 		</span>

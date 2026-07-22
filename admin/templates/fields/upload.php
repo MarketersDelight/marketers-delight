@@ -77,7 +77,7 @@ if ( $type == 'media' ) :
 	<?php endif; ?>
 
 	<div class="md-upload-values">
-		<input type="hidden" class="md-upload-id regular-text" name="<?php echo $name; ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
+		<input type="hidden" class="md-upload-id regular-text" name="<?php echo esc_attr( $name ); ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
 	</div>
 
 </div>

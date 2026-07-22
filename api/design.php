@@ -156,14 +156,12 @@ class md_design {
 	}
 
 	/**
-	 * Calculate common spacing values from single line height.
+	 * Calculate the common spacing scale from a given line-height value.
 	 *
-	 * @since 6.0
+	 * @since 6.1
 	 */
 
-	public function spacers() {
-		$values = $this->values();
-		$single = $values['typography']['body']['line_height']['desktop'];
+	private function spacer_scale( $single ) {
 		$half = round( $single / 2 );
 
 		return array(
@@ -176,6 +174,32 @@ class md_design {
 			'triple' => round( $single * 3 ),
 			'quad' => round( $single * 4 )
 		);
+	}
+
+	/**
+	 * Calculate common spacing values from single line height,
+	 * as desktop/mobile pairs for fluid scaling.
+	 *
+	 * @since 6.0
+	 */
+
+	public function spacers() {
+		$values = $this->values();
+		$lh_desktop = $values['typography']['body']['line_height']['desktop'];
+
+		// Independent of typography's own desktop/mobile ratio, which shrinks
+		// far too little (~9%) to matter for large spacers like quad.
+		$lh_mobile = round( $lh_desktop * 0.65 );
+
+		$desktop = $this->spacer_scale( $lh_desktop );
+		$mobile = $this->spacer_scale( $lh_mobile );
+
+		$spacers = array();
+
+		foreach ( $desktop as $key => $value )
+			$spacers[ $key ] = array( 'desktop' => $value, 'mobile' => $mobile[ $key ] );
+
+		return $spacers;
 	}
 
 	/**

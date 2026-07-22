@@ -33,7 +33,7 @@ if ( isset( $args['select2'] ) ) { // Select2 Init field
 	echo '<input type="text" class="md-select2-init regular-text" placeholder="' . esc_html( $init_label ) . '" />';
 } ?>
 
-<select name="<?php echo $name . $b; ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple; ?><?php echo $style; ?>>
+<select name="<?php echo esc_attr( $name . $b ); ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple; ?><?php echo $style; ?>>
 
 	<?php if ( isset( $args['empty_label'] ) ) : ?>
 	<option value=""><?php echo esc_html( $args['empty_label'] ); ?></option>

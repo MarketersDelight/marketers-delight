@@ -72,7 +72,7 @@ h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size {
 	line-height: clamp(33px, 3.17vw, 38px);
 }
 h5, .h5, .h5-size {
-	font-size: clamp(19px, 1.92vw, 23px);
+	font-size: clamp(19px, 2.33vw, 28px);
 	line-height: clamp(29px, 3vw, 36px);
 }
 h6, .h6, .h6-size {
@@ -316,11 +316,13 @@ cite, .tiny {
 .fl-center { justify-content: center; }
 .is-vertically-aligned-center { align-self: center; }
 .start { align-items: start; }
+.end { justify-content: end; }
 @media (max-width: 900px) {
-	.c-mobile {
+	.center-mobile {
 		flex-flow: wrap;
 		justify-content: center;
 	}
+    .column-mobile { flex-direction: column; }
 }
 /* WIDTHS */
 .content-width { max-width: var(--md-width-content); }
@@ -415,27 +417,27 @@ cite, .tiny {
 .block-half-bot { padding-block-end: var(--md-half); }
 .block-single { padding: var(--md-single); }
 .block-single-tb { padding-block: var(--md-single); }
-.block-single-lr { padding-inline: var(--md-single); }
+.block-single-lr { padding-inline: var(--md-single-x); }
 .block-single-top { padding-block-start: var(--md-single); }
 .block-single-bot { padding-block-end: var(--md-single); }
 .block-mid { padding: var(--md-mid); }
 .block-mid-tb { padding-block: var(--md-mid); }
-.block-mid-lr { padding-inline: var(--md-mid); }
+.block-mid-lr { padding-inline: var(--md-mid-x); }
 .block-mid-top { padding-block-start: var(--md-mid); }
 .block-mid-bot { padding-block-end: var(--md-mid); }
 .block-triple { padding: var(--md-triple); }
 .block-triple-tb { padding-block: var(--md-triple); }
-.block-triple-lr { padding-inline: var(--md-triple); }
+.block-triple-lr { padding-inline: var(--md-triple-x); }
 .block-triple-top { padding-block-start: var(--md-triple); }
 .block-triple-bot { padding-block-end: var(--md-triple); }
 .block-double { padding: var(--md-double); }
 .block-double-tb { padding-block: var(--md-double); }
-.block-double-lr { padding-inline: var(--md-double); }
+.block-double-lr { padding-inline: var(--md-double-x); }
 .block-double-top { padding-block-start: var(--md-double); }
 .block-double-bot { padding-block-end: var(--md-double); }
 .block-quad { padding: var(--md-quad); }
 .block-quad-tb { padding-block: var(--md-quad); }
-.block-quad-lr { padding-inline: var(--md-quad); }
+.block-quad-lr { padding-inline: var(--md-quad-x); }
 .block-quad-top { padding-block-start: var(--md-quad); }
 .block-quad-bot { padding-block-end: var(--md-quad); }
 .pb-none { padding-block-end: 0; }

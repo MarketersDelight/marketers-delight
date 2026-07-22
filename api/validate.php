@@ -160,6 +160,11 @@ class md_validate {
 		$save = array();
 
 		foreach ( $groups as $group => $submitted ) {
+			$group = preg_replace( '/[^A-Za-z0-9_-]/', '', $group );
+
+			if ( $group === '' )
+				continue;
+
 			if ( $lowercase )
 				$group = strtolower( $group );
 

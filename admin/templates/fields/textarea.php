@@ -7,4 +7,4 @@ $classes = join( ' ', $classes );
 $rows = ! empty( $args['rows'] ) ? intval( $args['rows'] ) : 6;
 ?>
 
-<textarea name="<?php echo $name; ?>" id="<?php echo esc_attr( $id ); ?>" class="<?php echo esc_attr( $classes ); ?>" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $option ); ?></textarea>
+<textarea name="<?php echo esc_attr( $name ); ?>" id="<?php echo esc_attr( $id ); ?>" class="<?php echo esc_attr( $classes ); ?>" rows="<?php echo esc_attr( $rows ); ?>"><?php echo esc_textarea( $option ); ?></textarea>
