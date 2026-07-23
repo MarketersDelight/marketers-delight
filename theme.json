@@ -14,27 +14,27 @@
                 {
                     "name": "Surface",
                     "slug": "surface",
-                    "color": "#FDFAF1"
+                    "color": "#F0F0F0"
                 },
                 {
                     "name": "Primary",
                     "slug": "primary",
-                    "color": "#C0392B"
+                    "color": "#AE2525"
                 },
                 {
                     "name": "Secondary",
                     "slug": "secondary",
-                    "color": "#101010"
+                    "color": "#2E2E2E"
                 },
                 {
                     "name": "Tertiary",
                     "slug": "tertiary",
-                    "color": "#F9F7E8"
+                    "color": "#DDDDDD"
                 },
                 {
                     "name": "Border",
                     "slug": "border",
-                    "color": "#E1DFCF"
+                    "color": "#CCCCCC"
                 },
                 {
                     "name": "Highlight",
@@ -69,7 +69,7 @@
                 {
                     "name": "Small",
                     "slug": "small",
-                    "size": "20px"
+                    "size": "22px"
                 },
                 {
                     "name": "Normal",
@@ -84,32 +84,32 @@
                 {
                     "name": "H3",
                     "slug": "h3",
-                    "size": "32px"
+                    "size": "34px"
                 },
                 {
                     "name": "H2",
                     "slug": "h2",
-                    "size": "38px"
+                    "size": "41px"
                 },
                 {
                     "name": "H1",
                     "slug": "h1",
-                    "size": "45px"
+                    "size": "48px"
                 },
                 {
                     "name": "Huge",
                     "slug": "huge",
-                    "size": "68px"
+                    "size": "72px"
                 }
             ],
             "fontFamilies": [
                 {
-                    "fontFamily": "'Geomanist', system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
+                    "fontFamily": "system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif",
                     "name": "Body",
                     "slug": "body"
                 },
                 {
-                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
+                    "fontFamily": "PT Serif",
                     "name": "Heading",
                     "slug": "heading"
                 }
@@ -155,9 +155,9 @@
             },
             "core/post-title": {
                 "typography": {
-                    "fontFamily": "Albra, Droid Serif, Source Serif Pro, Times New Roman, serif",
-                    "fontSize": "45px",
-                    "fontWeight": "500",
+                    "fontFamily": "PT Serif",
+                    "fontSize": "48px",
+                    "fontWeight": "700",
                     "lineHeight": 1
                 }
             }

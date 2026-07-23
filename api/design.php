@@ -186,9 +186,6 @@ class md_design {
 	public function spacers() {
 		$values = $this->values();
 		$lh_desktop = $values['typography']['body']['line_height']['desktop'];
-
-		// Independent of typography's own desktop/mobile ratio, which shrinks
-		// far too little (~9%) to matter for large spacers like quad.
 		$lh_mobile = round( $lh_desktop * 0.65 );
 
 		$desktop = $this->spacer_scale( $lh_desktop );
@@ -197,7 +194,7 @@ class md_design {
 		$spacers = array();
 
 		foreach ( $desktop as $key => $value )
-			$spacers[ $key ] = array( 'desktop' => $value, 'mobile' => $mobile[ $key ] );
+			$spacers[$key] = array( 'desktop' => $value, 'mobile' => $mobile[$key] );
 
 		return $spacers;
 	}

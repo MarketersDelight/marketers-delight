@@ -33,8 +33,12 @@ class md_sanitize {
 	public function text( $input, $fields = array() ) {
 		if ( isset( $fields['map'] ) )
 			$save = $this->ids( $input );
-		else
+		else {
+			if ( is_array( $input ) )
+				$input = implode( ', ', array_filter( $input ) );
+
 			$save = wp_kses_post( $input );
+		}
 
 		return $save;
 	}

@@ -127,8 +127,12 @@ function md_get_media( $context = 'post' ) {
 	else {
 		$option = md_post_meta( 'featured_media', true, array() );
 
-        if ( get_post_thumbnail_id() )
+		if ( get_post_thumbnail_id() ) {
+			if ( empty( $option['image'] ) || ! is_array( $option['image'] ) )
+				$option['image'] = array();
+
 			$option['image']['id'] = get_post_thumbnail_id();
+		}
 	}
 
 	$media = wp_parse_args( $option, $defaults );

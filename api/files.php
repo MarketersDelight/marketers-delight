@@ -41,11 +41,11 @@ class md_files {
 		$dropin_id = ! empty( $_POST['dropin_id'] ) ? sanitize_file_name( $_POST['dropin_id'] ) : '';
 
 		if ( in_array( $action, array( 'md_icons', 'md_dropin' ) ) )
-	 		$this->file_upload( $action, $_FILES, $wp_filesystem, array(
-		 		'accept' => ! empty( $_POST['accept'] ) ? $_POST['accept'] : array()
-	 		) );
-	 	elseif ( $action == 'delete-dropin' )
-	 		$this->delete_dropin( $dropin_id, $wp_filesystem );
+			$this->file_upload( $action, $_FILES, $wp_filesystem, array(
+				'accept' => $action === 'md_dropin' ? array( 'zip' ) : array( 'json' )
+			) );
+		elseif ( $action == 'delete-dropin' )
+			$this->delete_dropin( $dropin_id, $wp_filesystem );
 
 		wp_die();
 	}
@@ -65,7 +65,7 @@ class md_files {
 		)
 			return;
 
-		$accept = explode( ',', trim( str_replace( '.', '', $args['accept'] ) ) );
+		$accept = $args['accept'];
 		$file_name = sanitize_file_name( $files['file']['name'] );
 		$parts = explode( '.', $file_name );
 		$extension = end( $parts );
@@ -128,12 +128,30 @@ class md_files {
 				$json = $wp_filesystem->get_contents( $config );
 				$data = json_decode( $json, true );
 
+				if ( ! is_array( $data ) )
+					return $option;
+
+				$url_settings = array( 'dropin_url', 'author_url', 'settings_url' );
+
 				foreach ( array( 'name', 'author', 'version', 'description', 'dropin_url', 'author_url', 'settings_url', 'icon', 'colors', 'plugin_name', 'plugin_class', 'priority', 'active' ) as $setting ) {
-					if ( ! empty( $data[$setting] ) )
-						$option['dropins']['installed'][$file][$setting] = $data[$setting];
+					if ( ! empty( $data[$setting] ) ) {
+						if ( in_array( $setting, $url_settings, true ) )
+							$value = esc_url_raw( $data[$setting] );
+						elseif ( $setting === 'colors' ) {
+							$colors = array_filter( array_map( 'sanitize_hex_color', array_map( 'trim', explode( ',', $data[$setting] ) ) ) );
+							$value = implode( ', ', $colors );
+						}
+						elseif ( $setting === 'active' )
+							$value = (bool) $data[$setting];
+						else
+							$value = sanitize_text_field( $data[$setting] );
+
+						if ( ! empty( $value ) )
+							$option['dropins']['installed'][$file][$setting] = $value;
+					}
 					if ( $setting == 'active' && ! empty( $data[$setting] ) && current_user_can( 'activate_plugins' ) )
 						$option['dropins']['installed'][$file]['status']['enable'] = true;
-					if ( ! empty( $data[$setting]['priority'] ) )
+					if ( $setting === 'priority' && ! empty( $data[$setting] ) )
 						$option['dropins']['priority'][$file] = true;
 				}
 			}
