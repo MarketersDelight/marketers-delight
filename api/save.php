@@ -210,6 +210,9 @@ class md_save {
 	public function term_save( $term_id ) {
 		$option = 'marketers_delight';
 
+		if ( ! current_user_can( 'edit_term', $term_id ) )
+			return;
+
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
 			$save = $this->validate->validate( 'terms', $_POST[$option] );
 
@@ -228,6 +231,9 @@ class md_save {
 
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
+
+		if ( ! current_user_can( 'edit_user', $user_id ) )
+			return;
 
 		if ( empty( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
 			return;
