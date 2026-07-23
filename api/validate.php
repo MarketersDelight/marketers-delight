@@ -27,9 +27,8 @@ class md_validate {
 	/**
 	 * Validates $input against the schema registered under $settings (e.g.
 	 * 'admin_pages', 'meta_boxes', 'terms', 'user_meta' — see
-	 * md_register()). A top-level key with no registered schema is
-	 * dropped rather than saved, since $input is form-submitted data and
-	 * every legitimate key is schema-registered by construction.
+	 * md_register()). A top-level key with no registered schema is preserved
+	 * for programmatic settings branches.
 	 *
 	 * @since 4.7
 	 */
@@ -41,6 +40,8 @@ class md_validate {
 		foreach ( array_keys( $input ) as $key ) {
 			if ( ! empty( $data[$key]['fields'] ) )
 				$save[$key] = $this->validate_fields( $input[$key], $data[$key]['fields'] );
+			else
+				$save[$key] = $input[$key];
 		}
 
 		return $save;

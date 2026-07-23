@@ -358,11 +358,9 @@
 				var upload = $( this ),
 					formData = new FormData(),
 					file = upload.prop( 'files' )[0],
-					accept = upload.attr( 'accept' ),
 					parent = upload.parents( '.md-file-upload' );
 				formData.append( 'action', 'md_file' );
 				formData.append( 'upload_action', uploadAction );
-				formData.append( 'accept', accept );
 				formData.append( 'nonce', MDJS.nonce );
 				formData.append( 'file', file );
 				$.ajax({

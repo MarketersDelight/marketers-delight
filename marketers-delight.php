@@ -263,10 +263,8 @@ final class marketers_delight {
 	public function enqueue_fonts() {
 		$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
 
-		if ( md_web_fonts( 'google' ) ) {
-			$url = md_setting( array( 'typography', 'google_fonts' ) );
-			wp_enqueue_style( 'marketers-delight-google-fonts', $url );
-		}
+		if ( md_web_fonts( 'google' ) )
+			wp_enqueue_style( 'marketers-delight-google-fonts', md_google_fonts() );
 
 		if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
 			wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );

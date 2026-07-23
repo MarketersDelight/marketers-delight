@@ -108,11 +108,6 @@
 
 	</div>
 
-	<?php $this->fields->field( 'google_fonts', array(
-		'type' => 'text',
-		'hidden' => true
-	) ); ?>
-
 	<hr class="md-sep-small" />
 
 	<?php $this->fields->save(); ?>

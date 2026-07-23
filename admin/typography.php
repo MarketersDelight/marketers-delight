@@ -8,22 +8,6 @@
 class md_typography extends md_api {
 
 	/**
-	 * Actions, filters, and properties.
-	 *
-	 * @since 5.0
-	 */
-
-	public function actions() {
-		// Build Google Fonts URL after save.
-		if ( isset( $_GET['settings-updated'] ) && md_web_fonts( 'google' ) ) {
-			$option = md_setting_part( 'typography' );
-			$option['typography']['google_fonts'] = md_google_fonts();
-
-			update_option( 'marketers_delight', $option );
-		}
-	}
-
-	/**
 	 * Register admin page.
 	 *
 	 * @since 5.0
@@ -43,8 +27,6 @@ class md_typography extends md_api {
 				);
 			}
 		}
-
-		$fields['google_fonts']['type'] = 'text';
 
 		return array(
 			'admin_page' => array(

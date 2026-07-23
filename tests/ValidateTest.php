@@ -456,7 +456,7 @@ class ValidateTest extends MD_TestCase {
 	// repeater too, merged via merge_clone_items()) is covered in
 	// SaveTest.php — test_nested_group_inside_clone_item_merges_as_repeater.
 
-	// Top-level keys with no registered schema pass through unvalidated.
+	// Top-level keys without a registered schema pass through unchanged.
 
 	public function test_unregistered_top_level_key_passes_through_as_is() {
 		$this->register_schema( array() );

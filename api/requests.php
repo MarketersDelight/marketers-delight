@@ -449,7 +449,7 @@ class md_requests {
 
 	private function delete_dropin() {
 		$files = new md_files;
-		$files->file_action( array( 'action' => 'delete-dropin' ) );
+		$files->file_action( 'delete-dropin' );
 	}
 
 	/**
