@@ -204,4 +204,270 @@ scrollerNav: function() {
 		updateArrows();
 	}
 },
+floatingBars: {
+	init: function( floatingBars ) {
+		this.opened = this.showing = false;
+		this.data = floatingBars;
+		document.addEventListener( 'click', function( e ) {
+			var trigger = e.target.closest( '.bar-close' );
+			if ( ! trigger ) return;
+			var bar_id = trigger.getAttribute( 'data-bar' ),
+				el = document.getElementById( bar_id );
+			el.classList.remove( 'active' );
+			el.classList.add( 'hide' );
+			el.classList.add( 'closed' );
+			if ( MD.floatingBar && MD.floatingBar.cookieExp && ! MD.cookie.get( bar_id ) )
+				MD.cookie.create( bar_id, true, MD.floatingBar.cookieExp );
+			MD.floatingBars.opened = MD.floatingBars.showing = false;
+			MD.floatingBars.open.events();
+		} );
+		MD.floatingBars.open.events();
+	},
+	open: {
+		events: function() {
+			for ( var id in MD.floatingBars.data ) {
+				if ( MD.floatingBars.opened )
+					break;
+				MD.floatingBar = MD.floatingBars.data[id];
+				if ( MD.floatingBar.show === 'seconds' )
+					this.timer();
+				else if ( MD.floatingBar.show === 'percent' )
+					this.percent();
+				MD.floatingBars.opened = MD.floatingBar.id;
+			}
+		},
+		show: function() {
+			var id = MD.floatingBar.id,
+				el = document.getElementById( id );
+			el.classList.remove( 'hide' );
+			el.classList.add( 'active' );
+			MD.floatingBars.showing = id;
+			if ( el.classList.contains( 'sticky' ) )
+				MD.sticky( '#' + id );
+			delete MD.floatingBars.data[id];
+		},
+		percent: function() {
+			window.addEventListener( 'scroll', function() {
+				var pos = window.scrollY,
+					el = document.getElementById( MD.floatingBar.id );
+				if ( ! el.classList.contains( 'closed' ) ) {
+					window.requestAnimationFrame( function() {
+						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
+						if ( MD.floatingBar.delay <= percent )
+							MD.floatingBars.open.show();
+						else if ( el.classList.contains( 'active' ) )
+							el.classList.remove( 'active' );
+					});
+				}
+			} );
+		},
+		timer: function() {
+			setTimeout( function() {
+				MD.floatingBars.open.show();
+			}, MD.floatingBar.delay * 1000 );
+		}
+	},
+},
+focusInputs: function( id ) {
+	var search = document.querySelector( '#' + id + ' .search-input' ),
+		name = document.querySelector( '#' + id + ' .form-input-name' ),
+		email = document.querySelector( '#' + id + ' .form-input-email' );
+	if ( search )
+		search.focus();
+	else if ( name )
+		name.focus();
+	else if ( email )
+		email.focus();
+},
+popups: {
+	init: function( popups ) {
+		this.opened = this.showing = false;
+		this.data = popups;
+		document.addEventListener( 'click', function( e ) {
+			var trigger = e.target.closest( '.popup-trigger' );
+			if ( trigger ) {
+				e.preventDefault();
+				MD.popups.trigger = trigger.getAttribute( 'data-popup' );
+				MD.popups.open.show();
+			}
+		} );
+		document.addEventListener( 'click', function( e ) {
+			if ( e.target.closest( '.close' ) || e.target.closest( '.popup-bg' ) )
+				MD.popups.close.close();
+		} );
+		document.addEventListener( 'keydown', function( e ) {
+			if ( e.key === 'Escape' )
+				MD.popups.close.close();
+		} );
+		MD.popups.open.events();
+	},
+	open: {
+		events: function() {
+			for ( var id in MD.popups.data ) {
+				if ( MD.popups.opened )
+					break;
+				MD.popup = MD.popups.data[id];
+				if ( MD.popup.show === 'seconds' )
+					this.timer();
+				else if ( MD.popup.show === 'percent' )
+					this.percent();
+				else if ( MD.popup.show === 'exit' )
+					this.exit();
+				MD.popups.opened = MD.popup.id;
+			}
+		},
+		percent: function() {
+			var shown = false;
+			window.addEventListener( 'scroll', function() {
+				if ( shown || MD.popups.trigger )
+					return;
+				var pos = window.scrollY,
+					el = document.getElementById( MD.popup.id );
+				if ( el !== null )
+					window.requestAnimationFrame( function() {
+						var percent = Math.round( ( pos / document.body.scrollHeight ) * 100 );
+						if ( MD.popup.delay <= percent ) {
+							shown = true;
+							MD.popups.open.show();
+						}
+					} );
+			} );
+		},
+		timer: function() {
+			setTimeout( function() {
+				if ( ! MD.popups.trigger )
+					MD.popups.open.show();
+			}, MD.popup.delay * 1000 );
+		},
+		exit: function() {
+			var shown = false;
+			window.addEventListener( 'mousemove', function( e ) {
+				if ( shown || MD.popups.trigger )
+					return;
+				var scroll = window.pageYOffset || document.documentElement.scrollTop;
+				if ( ( e.pageY - scroll ) < 7 ) {
+					shown = true;
+					MD.popups.open.show();
+				}
+			} );
+		},
+		show: function() {
+			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
+			document.documentElement.classList.add( 'has-popup' );
+			if ( MD.popups.showing && MD.popups.trigger )
+				document.getElementById( MD.popups.showing ).classList.remove( 'active' );
+			document.getElementById( id ).classList.add( 'active' );
+			MD.focusInputs( id );
+			MD.popups.showing = id;
+			if ( ! MD.popups.trigger )
+				delete MD.popups.data[MD.popup.id];
+		}
+	},
+	close: {
+		close: function() {
+			document.documentElement.classList.remove( 'has-popup' );
+			if ( MD.popups.trigger ) {
+				var id = MD.popups.trigger;
+				delete MD.popups.trigger;
+			}
+			else {
+				if ( ! MD.popup )
+					return;
+				var id = MD.popup.id;
+				if ( MD.popup.cookieExp && ! MD.cookie.get( id ) )
+					MD.cookie.create( id, true, MD.popup.cookieExp );
+			}
+			delete MD.popups.opened;
+			delete MD.popups.showing;
+			document.getElementById( id ).classList.remove( 'active' );
+			MD.popups.toggleVideo( id );
+			MD.popups.open.events();
+		}
+	},
+	toggleVideo: function( id ) {
+		var iframe = document.querySelector( '#' + id + ' iframe' ),
+			video = document.querySelector( '#' + id + ' video' );
+		if ( iframe !== null ) {
+			var iframeSrc = iframe.src;
+			iframe.src = iframeSrc;
+		}
+		if ( video !== null )
+			video.pause();
+	}
+},
+like: function() {
+	var name = 'md_likes',
+		likes = document.getElementsByClassName( 'share-like' ),
+		updateCounts = function( post_id, count, increment ) {
+			var counts = document.getElementsByClassName( 'share-count' );
+			for ( var i = 0; i < counts.length; i++ ) {
+				var el = counts[i].parentElement;
+				if ( el.getAttribute( 'data-share-id' ) === post_id ) {
+					el.classList.add( 'liked' );
+					if ( ! el.classList.contains( 'share-like-total' ) )
+						counts[i].innerHTML = increment ? MD.number( counts[i].innerHTML ) + 1 : count;
+				}
+			}
+		},
+		updateTotals = function( post_type, total, increment ) {
+			var totals = document.getElementsByClassName( 'share-total' );
+			for ( var i = 0; i < totals.length; i++ )
+				if ( totals[i].parentElement.getAttribute( 'data-share-type' ) === post_type )
+					totals[i].innerHTML = increment ? MD.number( totals[i].innerHTML ) + 1 : total;
+		};
+	for ( var i = 0; i < likes.length; i++ ) {
+		likes[i].onclick = function( e ) {
+			e.preventDefault();
+			if ( this.classList.contains( 'liked' ) )
+				return;
+			var post_id = this.getAttribute( 'data-share-id' );
+			if ( post_id == null )
+				return;
+			var post_type = this.getAttribute( 'data-share-type' ),
+				endpoint = MDJS.rest.likes ? MDJS.rest.likes + post_id + '/like' : null
+			if ( ! endpoint )
+				return;
+			updateCounts( post_id, null, true );
+			updateTotals( post_type, null, true );
+			this.classList.add( 'liked' );
+			fetch( endpoint, {
+				method: 'POST',
+				credentials: 'include',
+				headers: {
+					'X-WP-Nonce': MDJS.rest.nonce
+				},
+				body: new URLSearchParams({
+					type: post_type
+				})
+			} )
+			.then( function( response ) {
+				if ( ! response.ok )
+					return null;
+				return response.json().catch( function() {
+					return null;
+				} );
+			} )
+			.then( function( response ) {
+				if ( ! response )
+					return;
+				var liked = MD.cookie.get( name ) ? JSON.parse( MD.cookie.get( name ) ) : [];
+				if ( response.data ) {
+					updateCounts( post_id, response.data.likes );
+					updateTotals( post_type, response.data.total );
+				}
+				if ( liked.indexOf( post_id ) === -1 )
+					liked.push( post_id );
+				MD.cookie.create( name, JSON.stringify( liked ), 365 );
+			} );
+		}
+	}
+},
+footnotes: function() {
+	var footnotes = document.getElementsByClassName( 'footnote' );
+	for ( var i = 0; i < footnotes.length; i++ ) {
+		footnotes[i].onclick = function( e ) {
+			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
+		}
+	}
+},
 }

@@ -40,8 +40,8 @@
 				<div class="md-dropin md-tab-content active md-all <?php echo ( $is_enabled ? 'dropin-enabled' : 'dropin-inactive' ) . ( $has_updates ? ' dropin-has-updates' : '' ); ?>">
 					<?php if ( $has_updates ) : ?>
 						<div class="md-update md-update-theme update-message notice inline notice-warning">
-							<span><?php echo sprintf( __( 'There is a new version of <strong>%s</strong> available.', 'md' ), $dropin_name ); ?></span>
-							<a href="<?php echo admin_url( wp_nonce_url( 'update.php?action=update-md-dropins&amp;dropin=' . urlencode( $path ), 'upgrade-dropin_' . $path ) ); ?>" class="md-update-button"  data-md-alert="<?php echo sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $dropin_name ); ?>"><?php echo sprintf( __( 'Upgrade to <b>%s</b>', 'md' ), $updates[$path]['new_version'] ); ?> <i class="dashicons dashicons-update-alt"></i></a>
+							<span><?php printf( __( 'There is a new version of <strong>%s</strong> available.', 'md' ), $dropin_name ); ?></span>
+							<a href="<?php echo esc_url( admin_url( wp_nonce_url( 'update.php?action=update-md-dropins&amp;dropin=' . urlencode( $path ), 'upgrade-dropin_' . $path ) ) ); ?>" class="md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $fields['name'] ) ); ?>"><?php printf( __( 'Upgrade to <b>%s</b>', 'md' ), esc_html( $updates[$path]['new_version'] ) ); ?> <i class="dashicons dashicons-update-alt"></i></a>
 						</div>
 					<?php endif; ?>
 					<div class="md-dropin-inner">
@@ -52,7 +52,7 @@
 								</span>
 							</div>
 							<div class="md-dropin-content col col2">
-								<h4 class="md-title"><a href="<?php echo esc_url( $fields['dropin_url'] ); ?>" target="_blank"><?php echo esc_html( $fields['name'] ); ?> <small><?php echo $fields['version']; ?></small></a></h4>
+								<h4 class="md-title"><a href="<?php echo esc_url( $fields['dropin_url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $fields['name'] ); ?> <small><?php echo esc_html( $fields['version'] ); ?></small></a></h4>
 								<div class="md-dropin-controls">
 									<?php if ( ! $needs_plugin ) : ?>
 										<?php $this->fields->field( array( 'installed', $dropin, 'status' ), array(
@@ -62,18 +62,18 @@
 											)
 										) ); ?>
 									<?php else : ?>
-										<span class="md-dropin-plugin"><i class="dashicons dashicons-no"></i> <?php echo sprintf( __( 'Requires <b>%s</b> plugin', 'md' ), $fields['plugin_name'] ); ?></span>
+										<span class="md-dropin-plugin"><i class="dashicons dashicons-no"></i> <?php printf( __( 'Requires <b>%s</b> plugin', 'md' ), esc_html( $fields['plugin_name'] ) ); ?></span>
 									<?php endif; ?>
 								</div>
-								<span class="md-delete md-action" data-md-action="delete-dropin" data-md-dropin-id="<?php echo esc_attr( $dropin ); ?>" data-md-alert="<?php echo sprintf( __( "You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\nand not all data will be saved. Do you want to proceed?", 'md' ), $fields['name'] ); ?>"><i class="dashicons dashicons-no"></i> <?php echo __( 'Delete', 'md' ); ?></span>
+								<span class="md-delete md-action" data-md-action="delete-dropin" data-md-dropin-id="<?php echo esc_attr( $dropin ); ?>" data-md-alert="<?php echo esc_attr( sprintf( __( "You are about to delete the %s Drop-in. All Drop-in files will be deleted, except from your child theme,\nand not all data will be saved. Do you want to proceed?", 'md' ), $fields['name'] ) ); ?>"><i class="dashicons dashicons-no"></i> <?php echo __( 'Delete', 'md' ); ?></span>
 								<p class="md-dropin-description"><?php echo esc_html( $fields['description'] ); ?></p>
 								<p class="md-dropin-byline">
 									<?php if ( $is_enabled ) : ?>
 										<?php if ( isset( $fields['settings_url'] ) ) : ?>
-											<a href="<?php echo admin_url( $fields['settings_url'] ); ?>" class="button button-icon"><i class="dashicons dashicons-admin-generic"></i> <?php echo __( 'Settings', 'md' ); ?></a>
+											<a href="<?php echo esc_url( admin_url( $fields['settings_url'] ) ); ?>" class="button button-icon"><i class="dashicons dashicons-admin-generic"></i> <?php echo __( 'Settings', 'md' ); ?></a>
 										<?php endif; ?>
 									<?php endif; ?>
-									<?php echo sprintf( __( '<i>by</i> <a href="%s" target="_blank">%1s</a>', 'md' ), $fields['author_url'], $fields['author'] ); ?></b>
+									<?php printf( __( '<i>by</i> <a href="%s" target="_blank" rel="noopener noreferrer">%s</a>', 'md' ), esc_url( $fields['author_url'] ), esc_html( $fields['author'] ) ); ?>
 								</p>
 							</div>
 							<div style="display: none;">
