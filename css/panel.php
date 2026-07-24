@@ -51,7 +51,6 @@
 	}
 	.panel-left .panel { inset-inline-start: calc(-1 * var(--md-width-panel)); }
 	.panel-right .panel { inset-inline-end: calc(-1 * var(--md-width-panel)); }
-	.admin-bar .panel { inset-block-start: var(--wp-admin--admin-bar--height); }
 	.toggle-panel[class*="from-"] { overflow: hidden; }
 	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
 	.panel-left.toggle-panel[class*="from-"] .panel { inset-inline-start: 0; }
@@ -71,6 +70,10 @@
 		opacity: 1;
 		visibility: visible;
 	}
+}
+
+@media (min-width: 600px) and (max-width: <?php echo $site_width; ?>px) {
+	.admin-bar .panel { inset-block-start: var(--wp-admin--admin-bar--height); }
 }
 
 @media (min-width: 900px) and (max-width: <?php echo $site_width_wide; ?>px) {
