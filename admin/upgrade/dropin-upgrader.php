@@ -91,7 +91,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 		$this->init();
 		$this->upgrade_strings();
 
-		$current = md_setting( array( 'license', 'updates', 'dropins' ) );
+		$current = md_license_setting( array( 'updates', 'dropins' ) );
 
 		if ( empty( $current[$dropin] ) ) {
 			$this->skin->before();

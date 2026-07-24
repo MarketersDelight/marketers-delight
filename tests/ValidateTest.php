@@ -46,6 +46,18 @@ class ValidateTest extends MD_TestCase {
 		$this->assertSame( '', $save['page']['title'] );
 	}
 
+	public function test_leaf_field_blank_does_not_save_schema_default() {
+		$this->register_schema( array(
+			'page' => array( 'fields' => array(
+				'title' => array( 'type' => 'text', 'default' => 'Default title' )
+			) )
+		) );
+
+		$save = $this->validate->validate( 'admin_pages', array( 'page' => array( 'title' => '' ) ) );
+
+		$this->assertSame( '', $save['page']['title'] );
+	}
+
 	// Regression: emptying a type=>'group' field (e.g. Custom Colors) didn't
 	// persist the deletion, because validate() only wrote the group's cloned
 	// result into $save when it was non-empty — so deleting every item never
@@ -235,7 +247,7 @@ class ValidateTest extends MD_TestCase {
 	// sanitizer — confirm end-to-end dispatch still behaves the same now
 	// that logic moved into md_sanitize::color()/select()/upload().
 
-	public function test_color_field_matching_default_is_omitted() {
+	public function test_color_field_matching_default_returns_clear_signal() {
 		$this->register_schema( array(
 			'colors' => array( 'fields' => array(
 				'primary' => array( 'type' => 'color', 'default' => '#AE2525' )
@@ -244,7 +256,7 @@ class ValidateTest extends MD_TestCase {
 
 		$save = $this->validate->validate( 'admin_pages', array( 'colors' => array( 'primary' => '#AE2525' ) ) );
 
-		$this->assertArrayNotHasKey( 'primary', $save['colors'] );
+		$this->assertSame( '', $save['colors']['primary'] );
 	}
 
 	public function test_color_field_override_saves() {
@@ -256,7 +268,7 @@ class ValidateTest extends MD_TestCase {
 
 		$save = $this->validate->validate( 'admin_pages', array( 'colors' => array( 'primary' => '#FF0000' ) ) );
 
-		$this->assertSame( '#FF0000', $save['colors']['primary'] );
+		$this->assertSame( '#ff0000', $save['colors']['primary'] );
 	}
 
 	public function test_upload_field_with_wrong_type_is_omitted() {
@@ -456,14 +468,14 @@ class ValidateTest extends MD_TestCase {
 	// repeater too, merged via merge_clone_items()) is covered in
 	// SaveTest.php — test_nested_group_inside_clone_item_merges_as_repeater.
 
-	// Top-level keys without a registered schema pass through unchanged.
+	// Top-level keys without a registered schema are discarded.
 
-	public function test_unregistered_top_level_key_passes_through_as_is() {
+	public function test_unregistered_top_level_key_is_discarded() {
 		$this->register_schema( array() );
 
 		$save = $this->validate->validate( 'admin_pages', array( 'integrations' => array( 'foo' => 'bar' ) ) );
 
-		$this->assertSame( array( 'foo' => 'bar' ), $save['integrations'] );
+		$this->assertSame( array(), $save );
 	}
 
 }

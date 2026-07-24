@@ -18,31 +18,33 @@ class md_requests {
 		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
 			return;
 
-		$item_id = isset( $_POST['dropin_id'] ) ? sanitize_key( $_POST['dropin_id'] ) : '';
+		$license_key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
 
 		if ( isset( $_POST['action_type'] ) ) {
-			$action_type = esc_attr( $_POST['action_type'] );
+			$action_type = sanitize_key( $_POST['action_type'] );
 
 			if ( $action_type == 'delete-dropin' )
 				$this->delete_dropin();
 			elseif ( $action_type == 'reset-icons' ) {
 				$option = $this->reset_icons( md_setting_part( array( 'icons', 'custom_icons' ) ) );
-				update_option( 'marketers_delight', $option );
+				md_update_setting_part( $option );
 			}
 			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ) ) ) {
-				$option = md_setting_part( array( 'license', 'settings' ) );
+				$license = md_license_setting();
 
 				if ( $action_type == 'activate-license' )
-					$option = $this->activate_license( $item_id, $option );
+					$license = $this->activate_license( $license_key, $license );
 				elseif ( $action_type == 'deactivate-license' )
-					$option = $this->deactivate_license( $item_id, $option );
+					$license = $this->deactivate_license( $license_key, $license );
 				elseif ( $action_type == 'check-updates' )
-					$option = $this->check_for_updates( $option );
+					$license = $this->check_for_updates( $license );
 
-				update_option( 'marketers_delight', $option );
+				if ( ! is_array( $license ) )
+					wp_die();
 
-				$dashboard = new md_settings;
-				$dashboard->updater( $option );
+				md_update_license( $license );
+
+				do_action( 'md_license_updater', $license );
 			}
 		}
 
@@ -118,30 +120,39 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	private function check_license( $option ) {
+	private function check_license( $license ) {
+		$license_key = isset( $license['key'] ) ? trim( $license['key'] ) : '';
+
+		if ( ! $license_key ) {
+			$license['status'] = 'error';
+			$license['last_sync'] = time();
+
+			return $license;
+		}
+
 	 	$license_input = $this->license();
 	 	$license_data = $this->get_api( array(
 			'edd_action' => 'check_license',
-			'license' => trim( $option['settings']['license_key'] ),
+			'license' => $license_key,
 			'item_name' => urlencode( $license_input['item_name'] ),
 			'url' => home_url()
 		) );
 
-		if ( ! empty( $license_data->error ) ) {
-			$option['license']['status'] = 'error';
-			unset( $option['license']['updates'] );
-			unset( $option['license']['dropins'] );
+		if ( ! empty( $license_data->failed ) || ! empty( $license_data->error ) ) {
+			$license['status'] = 'error';
+			unset( $license['updates'] );
+			unset( $license['dropins'] );
 		}
 		elseif ( ! empty( $license_data->success ) ) {
-			$option['license']['status'] = $license_data->license;
-			$option['license']['expire'] = $license_data->expires;
-			$option['license']['sites'] = $license_data->site_count;
-			$option['license']['limit'] = $license_data->license_limit;
+			$license['status'] = sanitize_text_field( $license_data->license );
+			$license['expire'] = sanitize_text_field( $license_data->expires );
+			$license['sites'] = sanitize_text_field( $license_data->site_count );
+			$license['limit'] = sanitize_text_field( $license_data->license_limit );
 		}
 
-		$option['license']['last_sync'] = time();
+		$license['last_sync'] = time();
 
-		return $option;
+		return $license;
 	}
 
 	/**
@@ -150,34 +161,33 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	private function activate_license( $license_key, $option ) {
-	 	$license = md_setting( array( 'settings', 'license_key' ), $license_key );
+	private function activate_license( $license_key, $license ) {
+		$license_key = trim( $license_key );
 
-	 	if ( ! empty( $license ) ) {
-			$option['license'] = array();
-			$license_input = $this->license();
-			$license_data = $this->get_api( array(
-				'edd_action' => 'activate_license',
-				'license' => trim( $license ),
-				'item_name' => urlencode( $license_input['item_name'] )
-			) );
+		if ( ! $license_key ) {
+			$license['status'] = 'error';
 
-			if ( ! empty( $license_data->error ) ) {
-				$option['license'] = 'error';
-				unset( $option['license']['updates'] );
-				unset( $option['license']['dropins'] );
-			}
-			elseif ( ! empty( $license_data->success ) ) {
-				$option['license']['status'] = esc_attr( $license_data->license );
-				$option['license']['expire'] = esc_attr( $license_data->expires );
-				$option['license']['sites'] = esc_attr( $license_data->site_count );
-				$option['license']['limit'] = esc_attr( $license_data->license_limit );
-				$option['settings']['license_key'] = esc_attr( $license );
-			}
+			return $license;
 		}
-		else $option['license']['status'] = 'error';
 
-		return $option;
+		$license = array( 'key' => $license_key );
+		$license_input = $this->license();
+		$license_data = $this->get_api( array(
+			'edd_action' => 'activate_license',
+			'license' => $license_key,
+			'item_name' => urlencode( $license_input['item_name'] )
+		) );
+
+		if ( ! empty( $license_data->failed ) || ! empty( $license_data->error ) )
+			$license['status'] = 'error';
+		elseif ( ! empty( $license_data->success ) ) {
+			$license['status'] = sanitize_text_field( $license_data->license );
+			$license['expire'] = sanitize_text_field( $license_data->expires );
+			$license['sites'] = sanitize_text_field( $license_data->site_count );
+			$license['limit'] = sanitize_text_field( $license_data->license_limit );
+		}
+
+		return $license;
 	}
 
 	/**
@@ -187,33 +197,30 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	private function deactivate_license( $license_key, $option ) {
-	 	$license = md_setting( array( 'settings', 'license_key' ), $license_key );
+	private function deactivate_license( $license_key, $license ) {
+	 	$license_key = trim( $license_key ?: ( isset( $license['key'] ) ? $license['key'] : '' ) );
+		$status = 'deactivated';
 
-	 	if ( ! empty( $license ) ) {
+	 	if ( $license_key ) {
 		 	$license_data = $this->get_api( array(
 				'edd_action' => 'deactivate_license',
-				'license' => trim( $license ),
+				'license' => $license_key,
 				'item_name' => urlencode( $this->license( 'item_name' ) )
 			) );
 
 			if ( ! empty( $license_data->failed ) )
 				return false;
+
+			if ( ! empty( $license_data->license ) )
+				$status = sanitize_text_field( $license_data->license );
 		}
 
-		unset( $option['settings']['license_key'] );
-		unset( $option['license']['sites'] );
-		unset( $option['license']['expire'] );
-		unset( $option['license']['limit'] );
-		unset( $option['license']['updates'] );
-		unset( $option['license']['dropins'] );
-
-		$option['license']['status'] = esc_attr( $license_data->license );
+		$license = array( 'status' => $status );
 
 		delete_site_transient( 'update_themes' );
 //		delete_site_transient( 'update_md_dropins' );
 
-		return $option;
+		return $license;
 	}
 
 	/**
@@ -224,7 +231,7 @@ class md_requests {
 	 */
 
 	public function set_theme_update( $transient ) {
-		$updates = md_setting( array( 'license', 'updates' ) );
+		$updates = md_license_setting( 'updates' );
 		$license_input = $this->license();
 		$theme_slug = $license_input['theme_slug'];
 
@@ -244,11 +251,11 @@ class md_requests {
 	 */
 
 	public function delete_theme_update() {
-		$option = md_setting_part( 'license' );
+		$license = md_license_setting();
 
-		unset( $option['license']['updates']['theme'] );
+		unset( $license['updates']['theme'] );
 
-		update_option( 'marketers_delight', $option );
+		md_update_license( $license );
 	}
 
 	/**
@@ -259,18 +266,16 @@ class md_requests {
 	 * @since 5.4
 	 */
 
-	private function check_for_updates( $option = null ) {
-		if ( empty( $option ) )
-			$option = md_setting();
-
-		$option = $this->check_license( $option );
-		$license_status = ! empty( $option['license']['status'] ) ? $option['license']['status'] : 'invalid';
+	private function check_for_updates( $license = null ) {
+		$license = is_array( $license ) ? $license : md_license_setting();
+		$license = $this->check_license( $license );
+		$license_status = ! empty( $license['status'] ) ? $license['status'] : 'invalid';
 
 		if ( $license_status == 'valid' ) {
 			$license_input = $this->license();
 			$response = $this->get_api( array(
 				'edd_action'  => 'get_version',
-				'license' => trim( md_setting( array( 'settings', 'license_key' ) ) ),
+				'license' => trim( $license['key'] ),
 				'name' => $license_input['item_name'],
 				'slug' => $license_input['theme_slug'],
 				'version' => $license_input['version'],
@@ -284,8 +289,8 @@ class md_requests {
 
 			$update_data = $response;
 
-			unset( $option['license']['updates'] );
-			unset( $option['license']['dropins'] );
+			unset( $license['updates'] );
+			unset( $license['dropins'] );
 
 			// Has update
 
@@ -294,7 +299,7 @@ class md_requests {
 				// Theme
 
 				if ( version_compare( $license_input['version'], $update_data->new_version, '<' ) )
-					$option['license']['updates']['theme'] = array(
+					$license['updates']['theme'] = array(
 						'name' => sanitize_text_field( $update_data->name ),
 						'theme' => sanitize_key( $license_input['theme_slug'] ),
 						'new_version' => sanitize_text_field( $update_data->new_version ),
@@ -308,7 +313,7 @@ class md_requests {
 
 				// drop-ins
 				if ( ! empty( $update_data->dropins ) ) {
-					$installed_dropins = md_setting( array( 'dropins', 'installed' ) );
+					$installed_dropins = md_dropins_setting( 'installed' );
 
 					foreach ( $update_data->dropins as $dropin_id => $dropin_fields ) {
 						if ( ! isset( $dropin_fields->slug ) || empty( $installed_dropins[$dropin_fields->slug] ) )
@@ -317,10 +322,10 @@ class md_requests {
 						$dropin_slug = sanitize_key( $dropin_fields->slug );
 						$dropin_version = ! empty( $installed_dropins[$dropin_slug]['version'] ) ? sanitize_text_field( $installed_dropins[$dropin_slug]['version'] ) : '';
 						$new_version = ! empty( $dropin_fields->version ) ? $dropin_fields->version : $dropin_version;
-						$option['license']['dropins'][] = $dropin_slug;
+						$license['dropins'][] = $dropin_slug;
 
 						if ( version_compare( $dropin_version, $new_version, '<' ) )
-							$option['license']['updates']['dropins']["$dropin_slug/$dropin_slug.php"] = array(
+							$license['updates']['dropins']["$dropin_slug/$dropin_slug.php"] = array(
 								'name' => sanitize_text_field( $dropin_fields->name ),
 								'slug' => $dropin_slug,
 								'version' => sanitize_text_field( $new_version ),
@@ -333,12 +338,12 @@ class md_requests {
 			}
 
 		}
-		else unset( $option['license']['updates'] );
+		else unset( $license['updates'] );
 
 		delete_site_transient( 'update_themes' );
 //		delete_site_transient( 'update_md_dropins' );
 
-		return $option;
+		return $license;
 	}
 
 	/**

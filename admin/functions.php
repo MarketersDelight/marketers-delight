@@ -1,7 +1,7 @@
 <?php
 
 /**
- * A list of page settings modules to add across various page types.
+ * Page settings modules available across various admin screens.
  *
  * @since 6.0
  */
@@ -90,14 +90,14 @@ function md_admin_fields() {
  */
 
 function md_activate_dropin( $dropin ) {
-	$option = md_setting_part( 'dropins' );
+	$dropins = md_dropins_setting();
 
-	if ( empty( $option['dropins']['installed'][$dropin] ) )
+	if ( empty( $dropins['installed'][$dropin] ) )
 		return false;
 
-	$option['dropins']['installed'][$dropin]['status']['enable'] = true;
+	$dropins['installed'][$dropin]['status']['enable'] = true;
 
-	update_option( 'marketers_delight', $option );
+	md_update_dropins( $dropins );
 }
 
 /**

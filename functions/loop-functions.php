@@ -81,6 +81,25 @@ function md_loop_style( $args = array() ) {
 }
 
 /**
+ * Get a list of Sticky posts by post type.
+ *
+ * @since 6.0
+ */
+
+function md_get_sticky( $post_type = null ) {
+	if ( empty( $post_type ) )
+		$post_type = get_post_type();
+
+	$sticky = array();
+
+	foreach ( get_option( 'sticky_posts', array() ) as $id )
+		if ( $post_type === get_post_type( $id ) )
+			$sticky[] = $id;
+
+	return $sticky;
+}
+
+/**
  * Build loop wrapper classes.
  *
  * @since 6.0
@@ -192,6 +211,40 @@ function md_post_class( $loop = array(), $c = 1 ) {
 }
 
 /**
+ * Override portions of $loop when post is set to Featured.
+ *
+ * @since 6.0
+ */
+
+function md_loop_featured( $loop ) {
+	$loop['is_featured'] = true;
+	$featured = array(
+		'featured_remove_byline' => 'remove_byline',
+		'featured_content' => 'content',
+		'featured_featured_image' => 'featured_image',
+		'featured_excerpt_more' => 'excerpt_more',
+		'featured_excerpt_length' => 'excerpt_length',
+		'featured_read_more' => 'read_more',
+		'featured_excerpt_settings' => 'excerpt_settings'
+	);
+
+	foreach ( $featured as $key => $loop_key ) {
+		if ( empty( $loop[$key] ) )
+			continue;
+
+		$loop[$loop_key] = $loop[$key];
+		unset( $loop[$key] );
+	}
+
+	if ( ! empty( $loop['featured_post_footer']['remove'] ) ) {
+		$loop['post_footer']['remove'] = true;
+		unset( $loop['featured_post_footer'] );
+	}
+
+	return $loop;
+}
+
+/**
  * Build per-item loop settings from page-level defaults.
  *
  * @since 6.0
@@ -230,37 +283,14 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 }
 
 /**
- * Override portions of $loop when post is set to Featured.
+ * Hook custom content after Loop Item X.
  *
- * @since 6.0
+ * @since 5.1
  */
 
-function md_loop_featured( $loop ) {
-	$loop['is_featured'] = true;
-	$featured = array(
-		'featured_remove_byline' => 'remove_byline',
-		'featured_content' => 'content',
-		'featured_featured_image' => 'featured_image',
-		'featured_excerpt_more' => 'excerpt_more',
-		'featured_excerpt_length' => 'excerpt_length',
-		'featured_read_more' => 'read_more',
-		'featured_excerpt_settings' => 'excerpt_settings'
-	);
-
-	foreach ( $featured as $key => $loop_key ) {
-		if ( empty( $loop[$key] ) )
-			continue;
-
-		$loop[$loop_key] = $loop[$key];
-		unset( $loop[$key] );
-	}
-
-	if ( ! empty( $loop['featured_post_footer']['remove'] ) ) {
-		$loop['post_footer']['remove'] = true;
-		unset( $loop['featured_post_footer'] );
-	}
-
-	return $loop;
+function md_hook_x_loop( $loop, $c ) {
+	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
+		do_action( 'md_hook_x_loop', $loop );
 }
 
 /**
@@ -305,7 +335,7 @@ function md_get_loop( $args = array() ) {
 		}
 		else {
 			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop = array_merge( $post_type, array_filter( $tax ), array_filter( $single ) );
+			$loop = array_merge( $post_type, $tax, array_filter( $single ) );
 		}
 
 		// Set additional parameters
@@ -390,17 +420,6 @@ function md_get_loop( $args = array() ) {
 	// Return loop data for any given page
 
 	return apply_filters( 'md_filter_set_loop', $loop );
-}
-
-/**
- * Hook custom content after Loop Item X.
- *
- * @since 5.1
- */
-
-function md_hook_x_loop( $loop, $c ) {
-	if ( ! empty( $loop['cta_x_loop'] ) && $c == $loop['cta_x_loop'] && $loop['paged'] == 1 )
-		do_action( 'md_hook_x_loop', $loop );
 }
 
 /**

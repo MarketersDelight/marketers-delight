@@ -1,9 +1,8 @@
 <?php
 /**
  * Pins down md_sanitize's null-vs-blank return convention per field type:
- * null means "no value, don't save"; '' / false / empty array are real,
- * storable "cleared" values. See the docblock on md_validate::validate_field()
- * for the full convention this was written to protect.
+ * null means "invalid or not submitted"; '' / false / empty arrays are
+ * clearing signals removed by md_save.
  *
  * @since 6.0
  */
@@ -28,6 +27,17 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( array( 'a' => true ), $this->sanitize->checkbox( $input, array( 'options' => array( 'a', 'b' ) ) ) );
 	}
 
+	public function test_checkbox_group_rejects_unregistered_keys() {
+		$input = array( 'a' => true, 'injected' => true );
+		$this->assertSame( array( 'a' => true ), $this->sanitize->checkbox( $input, array( 'options' => array( 'a', 'b' ) ) ) );
+	}
+
+	public function test_checkbox_group_accepts_associative_option_keys() {
+		$input = array( 'a' => true );
+		$fields = array( 'options' => array( 'a' => 'Option A', 'b' => 'Option B' ) );
+		$this->assertSame( array( 'a' => true ), $this->sanitize->checkbox( $input, $fields ) );
+	}
+
 	public function test_single_checkbox_unchecked_returns_false_not_null() {
 		$this->assertFalse( $this->sanitize->checkbox( null ) );
 	}
@@ -44,13 +54,6 @@ class SanitizeTest extends MD_TestCase {
 
 	public function test_text_sanitizes_via_wp_kses_post() {
 		$this->assertSame( 'hello', $this->sanitize->text( 'hello' ) );
-	}
-
-	public function test_text_map_mode_routes_through_ids() {
-		$result = $this->sanitize->text( '1,2,3', array( 'map' => true ) );
-
-		$this->assertSame( '1,2,3', $result['value'] );
-		$this->assertSame( array( '1', '2', '3' ), $result['values'] );
 	}
 
 	// number()
@@ -83,40 +86,61 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( array( 'a' ), $this->sanitize->select( array( 'a', 'nope' ), array( 'a', 'b' ) ) );
 	}
 
-	public function test_select_dynamic_bypasses_options_whitelist() {
-		$this->assertSame( 'anything', $this->sanitize->select( 'anything', array(), true ) );
+	public function test_select_normalizes_numeric_ids_to_strings() {
+		$this->assertSame( '123', $this->sanitize->select( '123', array( 123 ) ) );
+		$this->assertSame( array( '123' ), $this->sanitize->select( array( 123 ), array( '123' ) ) );
 	}
 
-	public function test_select_non_array_options_falls_back_to_empty_list() {
-		$this->assertSame( '', $this->sanitize->select( 'a', null ) );
+	public function test_select_does_not_match_false_to_zero() {
+		$this->assertSame( '', $this->sanitize->select( false, array( 0 ) ) );
+	}
+
+	public function test_select_multi_rejects_nested_and_boolean_values() {
+		$this->assertSame(
+			array( '0' ),
+			$this->sanitize->select( array( array( 'a' ), false, '0' ), array( 'a', 0 ) )
+		);
 	}
 
 	// color()
 
-	// A color field represents "no override" as omitting the field
-	// entirely (null), not as an empty string — unlike text/number/url,
-	// where '' is itself a legitimate stored "cleared" value. Blank input
-	// with no 'default' configured matches the implicit '' default, so
-	// it's treated as "no override to store."
+	// A color matching its default is a clearing signal so md_save can
+	// remove a previously stored override.
 
-	public function test_color_blank_with_no_default_returns_null() {
-		$this->assertNull( $this->sanitize->color( '' ) );
+	public function test_color_blank_with_no_default_returns_empty_string() {
+		$this->assertSame( '', $this->sanitize->color( '' ) );
 	}
 
-	public function test_color_matching_explicit_default_returns_null() {
-		$this->assertNull( $this->sanitize->color( '#AE2525', array( 'default' => '#AE2525' ) ) );
+	public function test_color_matching_explicit_default_returns_empty_string() {
+		$this->assertSame( '', $this->sanitize->color( '#AE2525', array( 'default' => '#AE2525' ) ) );
 	}
 
 	public function test_color_differing_from_default_returns_sanitized_value() {
-		$this->assertSame( '#FF0000', $this->sanitize->color( '#FF0000', array( 'default' => '#AE2525' ) ) );
+		$this->assertSame( '#ff0000', $this->sanitize->color( '#FF0000', array( 'default' => '#AE2525' ) ) );
 	}
 
 	public function test_color_valid_hex_passes_through() {
-		$this->assertSame( '#FF0000', $this->sanitize->color( '#FF0000' ) );
+		$this->assertSame( '#ff0000', $this->sanitize->color( '#FF0000' ) );
+	}
+
+	public function test_color_valid_rgba_passes_through() {
+		$this->assertSame( 'rgba(255, 10, 0, 0.5)', $this->sanitize->color( 'rgba(255, 10, 0, 0.5)' ) );
+	}
+
+	public function test_color_rejects_invalid_rgba() {
+		$this->assertSame( '', $this->sanitize->color( 'rgba(256, 10, 0, 0.5)' ) );
+		$this->assertSame( '', $this->sanitize->color( 'rgba(255, 10, 0, 2)' ) );
+		$this->assertSame( '', $this->sanitize->color( 'rgba(255, 10, 0, 0.5)junk' ) );
 	}
 
 	public function test_color_invalid_hex_returns_empty_string_not_null() {
 		$this->assertSame( '', $this->sanitize->color( 'not-a-color' ) );
+	}
+
+	public function test_color_scalar_palette_reference_returns_sanitized_key() {
+		md_test_set_filter( 'md_color_palette', array( 'primary' => array( 'hex' => '#AE2525', 'name' => 'Primary' ) ) );
+
+		$this->assertSame( 'primary', $this->sanitize->color( 'primary' ) );
 	}
 
 	public function test_color_inherit_reference_returns_sanitized_key() {

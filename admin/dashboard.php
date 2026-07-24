@@ -18,6 +18,8 @@ class md_settings extends md_api {
 	public function actions() {
 		$requests = new md_requests;
 		$this->license = $requests->license();
+
+		add_action( 'md_license_updater', array( $this, 'updater' ) );
 	}
 
 	/**
@@ -36,7 +38,6 @@ class md_settings extends md_api {
 				'parent_slug' => 'themes.php',
 				'icon' => 'dashicons-marketers-delight',
 				'fields' => array(
-					'license_key' => array( 'type' => 'text' ),
 					'404_page' => array( 'type' => 'number' ),
 					'head' => array(
 						'type' => 'checkbox',
@@ -73,14 +74,14 @@ class md_settings extends md_api {
 
 	public function license_message() {
 		$message = array();
-		$status = md_setting( array( 'license', 'status' ) );
+		$status = md_license_setting( 'status' );
 
 		$message['status'] = __( 'Inactive', 'md' );
 
 		if ( $status == 'valid' ) {
-			$expire = md_setting( array( 'license', 'expire' ) );
-			$sites = md_setting( array( 'license', 'sites' ) );
-			$limit = md_setting( array( 'license', 'limit' ) );
+			$expire = md_license_setting( 'expire' );
+			$sites = md_license_setting( 'sites' );
+			$limit = md_license_setting( 'limit' );
 			if ( $expire == 'lifetime' )
 				$expires = '<b>Lifetime</b>';
 			else
@@ -104,7 +105,7 @@ class md_settings extends md_api {
 			$message['text'] = sprintf( __( 'You\'ve reached your license activation limit. Please purchase more sites or disable other sites from your <a href="%s" target="_blank">MD account</a>.', 'md' ), 'https://marketersdelight.com/downloads/' );
 
 		if ( $status == 'expired' ) {
-			$license = trim( md_setting( array( 'settings', 'license_key' ) ) );
+			$license = trim( md_license_setting( 'key', '' ) );
 			$url = esc_url( $this->license['remote_api_url'] ) . '/checkout/?edd_license_key=' . $license . '&download_id=' . $this->license['download_id'];
 			$message['status'] = __( 'Expired', 'md' );
 			$message['text'] = 'Your <b>MD license key has expired!</b> Renew now to get MD updates sent to your site. <a href="' . esc_url( $url ) . '" class="md-renew-link" target="_blank">' . __( 'Renew now (save 40%).', 'md' ) . '</a>';
@@ -119,15 +120,12 @@ class md_settings extends md_api {
 	 * @since 4.7
 	 */
 
-	public function updater( $option = null ) {
-		$update_data = array();
-		if ( empty( $option ) )
-			$option = md_setting();
+	public function updater( $license = null ) {
+		$license = is_array( $license ) ? $license : md_license_setting();
 		$license_message = $this->license_message();
-		$license_status = md_setting( array( 'license', 'status' ) );
 		$slug = $this->license['theme_slug'];
-		$theme = ! empty( $option['license']['updates']['theme'] ) ? $option['license']['updates']['theme'] : array();
-		$dropins = ! empty( $option['license']['updates']['dropins'] ) ? $option['license']['updates']['dropins'] : array();
+		$theme = ! empty( $license['updates']['theme'] ) ? $license['updates']['theme'] : array();
+		$dropins = ! empty( $license['updates']['dropins'] ) ? $license['updates']['dropins'] : array();
 
 		include md_template( 'admin/license-key', true );
 	}

@@ -48,13 +48,15 @@ class Dropin_Upgrader_Skin extends WP_Upgrader_Skin {
 		// Update MD Drop-ins data
 		$dropin_slug = str_replace( '.php', '', basename( $dropin_info ) );
 		$dropin_path = MD_INSTALLED_DROPINS . "/$dropin_info";
-		$option = md_setting_part( array( 'dropins', 'license' ) );
+		$dropins = md_dropins_setting();
+		$license = md_license_setting();
 		$new_dropin = md_get_dropin_data( $dropin_path );
 		$new_version = ! empty( $new_dropin['Version'] ) ? $new_dropin['Version'] : '';
-		$option['dropins']['installed'][$dropin_slug]['version'] = esc_htmL( $new_version );
+		$dropins['installed'][$dropin_slug]['version'] = esc_html( $new_version );
 
-		unset( $option['license']['updates']['dropins'][$dropin_info] );
-		update_option( 'marketers_delight', $option );
+		unset( $license['updates']['dropins'][$dropin_info] );
+		md_update_dropins( $dropins );
+		md_update_license( $license );
 		md_compile();
 
 		// Back to WP processors

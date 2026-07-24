@@ -4,25 +4,13 @@
  * to a clean, storable value — no $_POST, no WP option/meta access. Called
  * from md_validate::validate_field() (api/validate.php), one method per
  * field type. Most return null when there's no value to save, and the
- * sanitized value otherwise (including '' or false for a cleared field).
+ * sanitized value otherwise. Empty results are clearing signals removed by
+ * md_save rather than values intended for storage.
  *
  * @since 6.0
  */
 
 class md_sanitize {
-
-	/**
-	 * Run through an array down to sanitize a text field.
-	 *
-	 * @since 6.0
-	 */
-
-	public function recursive( $value ) {
-		if ( is_array( $value ) )
-			return array_map( array( $this, 'recursive' ), $value );
-
-		return sanitize_text_field( $value );
-	}
 
 	/**
 	 * Save a generic text string and special formatted strings.
@@ -31,49 +19,18 @@ class md_sanitize {
 	 */
 
 	public function text( $input, $fields = array() ) {
-		if ( isset( $fields['map'] ) )
-			$save = $this->ids( $input );
-		else {
-			if ( is_array( $input ) )
-				$input = implode( ', ', array_filter( $input ) );
+		if ( is_null( $input ) )
+			return null;
 
-			$save = wp_kses_post( $input );
-		}
-
-		return $save;
-	}
-
-	/**
-	 * Save a list of IDs as a comma-separated text field and array list.
-	 * Only reachable via text()'s 'map' mode — not its own field type.
-	 *
-	 * @since 6.0
-	 */
-
-	private function ids( $input ) {
 		if ( is_array( $input ) ) {
-			$value = '';
-			$values = array();
-
-			if ( isset( $input['values'] ) )
-				$values = $input['values'];
-			elseif ( isset( $input['value'] ) )
-				$values = explode( ',', $input['value'] );
-
-			if ( isset( $input['value'] ) )
-				$value = $input['value'];
-			else
-				$value = join( ',', $values ) . ',';
-		}
-		else {
-			$value = $input;
-			$values = explode( ',', $value );
+			$input = array_filter( $input, 'is_scalar' );
+			$input = implode( ', ', $input );
 		}
 
-		return array(
-			'value' => sanitize_text_field( $value ),
-			'values' => $values
-		);
+		if ( ! is_scalar( $input ) )
+			$input = '';
+
+		return wp_kses_post( $input );
 	}
 
 	/**
@@ -83,7 +40,10 @@ class md_sanitize {
 	 */
 
 	public function number( $input ) {
-		return preg_replace( '/\D/', '', $input );
+		if ( is_null( $input ) )
+			return null;
+
+		return preg_replace( '/\D/', '', is_scalar( $input ) ? (string) $input : '' );
 	}
 
 	/**
@@ -93,7 +53,10 @@ class md_sanitize {
 	 */
 
 	public function url( $input ) {
-		return wp_kses_bad_protocol( $input, array( 'http', 'https' ) );
+		if ( is_null( $input ) )
+			return null;
+
+		return wp_kses_bad_protocol( is_scalar( $input ) ? (string) $input : '', array( 'http', 'https' ) );
 	}
 
 	/**
@@ -106,10 +69,14 @@ class md_sanitize {
 	public function checkbox( $input, $fields = array() ) {
 		if ( isset( $fields['options'] ) ) {
 			$save = array();
+			$options = $fields['options'];
+			$option_keys = array_keys( $options );
+			$is_list = $option_keys === ( empty( $options ) ? array() : range( 0, count( $options ) - 1 ) );
+			$allowed = array_map( 'strval', $is_list ? $options : $option_keys );
 
 			if ( is_array( $input ) )
 				foreach ( $input as $check => $val )
-					if ( ! empty( $val ) )
+					if ( ! empty( $val ) && in_array( (string) $check, $allowed, true ) )
 						$save[$check] = true;
 		}
 		else $save = $input == true ? true : false;
@@ -123,20 +90,23 @@ class md_sanitize {
 	 * @since 4.7
 	 */
 
-	public function select( $input, $options, $dynamic = false ) {
-		if ( ! is_array( $options ) )
-			$options = array();
+	public function select( $input, $options ) {
+		$multiple = is_array( $input );
+		$input = $multiple ? $input : array( $input );
+		$options = array_map( 'strval', $options );
+		$save = array();
 
-		if ( is_array( $input ) ) {
-			$values = array();
+		foreach ( $input as $value ) {
+			if ( ! is_scalar( $value ) )
+				continue;
 
-			foreach ( $input as $key )
-				if ( in_array( $key, $options ) )
-					$values[] = sanitize_text_field( $key );
+			$value = sanitize_text_field( (string) $value );
 
-			return $values;
+			if ( in_array( $value, $options, true ) )
+				$save[] = $value;
 		}
-		else return in_array( $input, $options ) || $dynamic ? sanitize_text_field( $input ) : '';
+
+		return $multiple ? $save : ( $save[0] ?? '' );
 	}
 
 	/**
@@ -172,7 +142,13 @@ class md_sanitize {
 	 */
 
 	public function color( $input, $fields = array() ) {
-		return is_array( $input ) ? $this->color_inherit( $input, $fields ) : $this->color_value( $input, $fields );
+		if ( is_array( $input ) )
+			return $this->color_inherit( $input, $fields );
+
+		if ( is_scalar( $input ) && isset( md_color_palette()[$input] ) )
+			return sanitize_key( $input );
+
+		return $this->color_value( $input, $fields );
 	}
 
 	/**
@@ -211,20 +187,30 @@ class md_sanitize {
 	 */
 
 	private function color_value( $input, $fields ) {
+		if ( is_null( $input ) )
+			return null;
+
+		$input = is_scalar( $input ) ? (string) $input : '';
 		$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
 
 		if ( $default === $input )
-			return null;
+			return '';
 
 		$hex = ltrim( $input, '#' );
 
 		if ( ctype_xdigit( $hex ) && in_array( strlen( $hex ), array( 3, 4, 6, 8 ), true ) )
 			return '#' . strtolower( $hex );
 
-		if ( strpos( $input, 'rgba' ) === false )
+		if ( ! preg_match( '/^rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([0-9]*\.?[0-9]+)\s*\)$/', $input, $rgba ) )
 			return sanitize_hex_color( $input ) ?: '';
 
-		sscanf( $input, 'rgba(%d,%d,%d,%f)', $r, $g, $b, $a );
+		$r = intval( $rgba[1] );
+		$g = intval( $rgba[2] );
+		$b = intval( $rgba[3] );
+		$a = floatval( $rgba[4] );
+
+		if ( $r > 255 || $g > 255 || $b > 255 || $a > 1 )
+			return '';
 
 		return "rgba({$r}, {$g}, {$b}, {$a})";
 	}

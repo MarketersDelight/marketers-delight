@@ -7,8 +7,7 @@
  */
 
 function md_header_classes() {
-	$classes = array();
-	$classes[] = 'header';
+	$classes = array( 'header' );
 	$has = count( array_filter( array(
 		md_has_menu(),
 		md_has_logo(),
@@ -32,8 +31,7 @@ function md_header_classes() {
  */
 
 function md_header_wrap_classes() {
-	$classes = array();
-	$classes[] = 'wrap';
+	$classes = array( 'wrap' );
 	$classes = apply_filters( 'md_header_wrap_classes', $classes );
 
 	return join( ' ', $classes );
@@ -46,8 +44,10 @@ function md_header_wrap_classes() {
  */
 
 function md_has_header() {
-	if ( ! md_module( array( 'layout', 'header', 'remove' ) ) && ( md_has_logo() || md_has_menu() ) )
-		return apply_filters( 'md_filter_has_header', true );
+	$show = ! md_module( array( 'layout', 'header', 'remove' ) ) &&
+		( md_has_logo() || md_has_menu() || md_has_header_elements() );
+
+	return (bool) apply_filters( 'md_filter_has_header', $show );
 }
 
 /**
@@ -62,10 +62,10 @@ function md_has_header_elements() {
 	if ( ! md_has_menu() )
 		unset( $elements['menu'] );
 
-	if ( $elements &&
+	return (bool) ( $elements &&
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&
 		! md_module( array( 'layout', 'header', 'elements' ) )
-	) return true;
+	);
 }
 
 /**
@@ -76,6 +76,7 @@ function md_has_header_elements() {
 
 function md_get_menu_name( $menu ) {
 	$menus = get_nav_menu_locations();
+	$menu_name = '';
 
 	if ( ! empty( $menus[$menu] ) ) {
 		$menu_object = wp_get_nav_menu_object( $menus[$menu] );
@@ -97,11 +98,11 @@ function md_get_menu_name( $menu ) {
 function md_has_menu() {
 	$elements = md_get_builder( 'header', 'elements' );
 
-	if (
+	return (bool) (
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&
 		! md_module( array( 'layout', 'header', 'menu' ) ) &&
 		( ! empty( $elements['menu'] ) || ( empty( $elements ) && has_nav_menu( 'header' ) ) )
-	) return true;
+	);
 }
 
 /**
@@ -114,11 +115,19 @@ function md_menu( $fields = array() ) {
 	if ( ! md_has_menu() )
 		return;
 
-	$location = isset( $fields['area'] ) ? $fields['area'] : 'primary';
-	$menu_id = isset( $fields['menu'] ) ? $fields['menu'] : '';
+	$fields = wp_parse_args( $fields, array(
+		'area' => 'primary',
+		'menu' => '',
+		'layout' => '',
+		'location' => '',
+		'wrap' => null
+	) );
+
+	$location = $fields['area'];
+	$menu_id = $fields['menu'];
 	$menu_class = 'menu menu-' . esc_attr( $location );
 
-	if ( ( isset( $fields['layout'] ) || isset( $fields['location'] ) ) && ( $fields['layout'] == 'right' || ( $fields['layout'] == 'center' && $fields['location'] == 'primary' ) ) )
+	if ( $fields['layout'] == 'right' || ( $fields['layout'] == 'center' && $fields['location'] == 'primary' ) )
 		$menu_class .= ' sub-alt';
 
 	$args = array(
@@ -137,9 +146,9 @@ function md_menu( $fields = array() ) {
 	$menu = wp_nav_menu( $args );
 
 	if ( $menu ) echo
-		( isset( $fields['wrap'] ) ? '<div class="' . esc_attr( $fields['wrap'] ) . '">' : '' ).
+		( $fields['wrap'] !== null ? '<div class="' . esc_attr( $fields['wrap'] ) . '">' : '' ).
 		$menu.
-		( isset( $fields['wrap'] ) ? '</div>' : '' );
+		( $fields['wrap'] !== null ? '</div>' : '' );
 }
 
 /**
@@ -179,10 +188,10 @@ function md_trigger( $type = 'menu', $args = array() ) {
 		if ( empty( $title ) && $type == 'menu' )
 			$title = md_get_menu_name( 'header' );
 
-		if ( empty( $hide_label ) && ! empty( $fields['toggle']['hide_label'] ) )
+		if ( is_null( $hide_label ) && ! empty( $fields['toggle']['hide_label'] ) )
 			$hide_label = true;
 
-		if ( empty( $hide_label_mobile ) && ! empty( $fields['toggle']['hide_label_mobile'] ) )
+		if ( is_null( $hide_label_mobile ) && ! empty( $fields['toggle']['hide_label_mobile'] ) )
 			$hide_label_mobile = true;
 	}
 
@@ -236,8 +245,7 @@ function md_logo() {
  */
 
 function md_has_site_title() {
-	if ( ! md_setting( array( 'header', 'display', 'site_title' ) ) )
-		return true;
+	return ! md_setting( array( 'header', 'display', 'site_title' ) );
 }
 
 /**
@@ -258,8 +266,9 @@ function md_site_title() {
  */
 
 function md_has_tagline() {
-	if ( get_bloginfo( 'description' ) && ! md_setting( array( 'header', 'display', 'site_tagline' ) ) && ! md_module( array( 'layout', 'header', 'tagline' ) ) )
-		return true;
+	return (bool) get_bloginfo( 'description' ) &&
+		! md_setting( array( 'header', 'display', 'site_tagline' ) ) &&
+		! md_module( array( 'layout', 'header', 'tagline' ) );
 }
 
 /**
@@ -279,8 +288,8 @@ function md_site_tagline() {
  */
 
 function md_has_logo() {
-	if ( ( md_custom_logo() || md_has_site_title() || md_has_tagline() ) && ! md_module( array( 'layout', 'header', 'logo' ) ) )
-		return true;
+	return (bool) ( md_custom_logo() || md_has_site_title() || md_has_tagline() ) &&
+		! md_module( array( 'layout', 'header', 'logo' ) );
 }
 
 /**
@@ -300,19 +309,21 @@ function md_custom_logo() {
         $logo_id = $logo['logo']['id'];
 		$cover = md_cover();
 
-		if ( ! empty( $logo['logo_alt']['id'] ) && $cover['position'] == 'header_cover_full' )
+		if ( ! empty( $logo['logo_alt']['id'] ) && ! empty( $cover['position'] ) && $cover['position'] == 'header_cover_full' )
 			$logo_id = $logo['logo_alt']['id'];
 
 		$custom_logo = wp_get_attachment_image( $logo_id, 'full' );
 	}
 
-	if ( $custom_logo )
+	if ( $custom_logo ) {
+		$has_site_title = md_has_site_title();
 		$custom_logo =
         '<div class="logo">'.
-        ( ! md_has_site_title() ? '<a href="' . home_url( '/' ) . '">' : '' ).
+        ( ! $has_site_title ? '<a href="' . home_url( '/' ) . '">' : '' ).
         $custom_logo.
-        ( ! md_has_site_title() ? '</a>' : '' ).
+        ( ! $has_site_title ? '</a>' : '' ).
         '</div>';
+	}
 
 	return $custom_logo;
 }

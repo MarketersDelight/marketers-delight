@@ -1,18 +1,18 @@
-<div class="md-license md-widget md-toggle <?php echo ( ! empty( $option['license']['status'] ) && $option['license']['status'] == 'valid' ? 'valid' : 'invalid open' ); ?> <?php echo ( ! empty( $theme ) || ! empty( $dropins ) ) ? 'has-updates open' : 'no-updates'; ?>">
+<div class="md-license md-widget md-toggle <?php echo ( ! empty( $license['status'] ) && $license['status'] == 'valid' ? 'valid' : 'invalid open' ); ?> <?php echo ( ! empty( $theme ) || ! empty( $dropins ) ) ? 'has-updates open' : 'no-updates'; ?>">
 
 	<h3 class="md-widget-title">
 
 		<span><?php echo __( 'Updates', 'md' ); ?></span>
 
-		<?php if ( ! empty( $option['license']['status'] ) ) : ?>
-			<?php if ( $option['license']['status'] == 'valid' ) : ?>
+		<?php if ( ! empty( $license['status'] ) ) : ?>
+			<?php if ( $license['status'] == 'valid' ) : ?>
 				<?php if ( ! empty( $theme ) || ! empty( $dropins ) ) : ?>
 				<span class="badge"><?php echo __( 'New!', 'md' ); ?></span>
 				<?php else : ?>
 				<span class="badge"><?php echo __( 'Up to date', 'md' ); ?></span>
 				<?php endif; ?>
 			<?php else : ?>
-			<span class="badge"><?php echo $option['license']['status']; ?></span>
+			<span class="badge"><?php echo esc_html( $license['status'] ); ?></span>
 			<?php endif; ?>
 		<?php endif; ?>
 
@@ -52,7 +52,7 @@
 				$dropin_name = $dropin_update['name'];
 				$dropin_version = $dropin_update['version'];
 				$dropin_slug = $dropin_update['slug'];
-				$dropin_fields = md_setting( array( 'dropins', 'installed', $dropin_slug ) );
+				$dropin_fields = md_dropins_setting( array( 'installed', $dropin_slug ) );
 				$icon = isset( $dropin_fields['icon'] ) ? $dropin_fields['icon'] : '';
 				$colors = isset( $dropin_fields['colors'] ) ? explode( ',', trim( $dropin_fields['colors'] ) ) : array();
 				$bg_color = isset( $colors[0] ) ? $colors[0] : '';
@@ -79,10 +79,10 @@
 
 		</div>
 
-		<div class="md-license-fields md-toggle<?php echo ( ! empty( $option['license']['status'] ) && $option['license']['status'] != 'valid' ? ' invalid open' : '' ); ?>">
+		<div class="md-license-fields md-toggle<?php echo ( ! empty( $license['status'] ) && $license['status'] != 'valid' ? ' invalid open' : '' ); ?>">
 
-			<?php if ( ! empty( $option['license']['status'] ) && $option['license']['status'] == 'valid' ) :
-				$last_sync = md_setting( array( 'license', 'last_sync' ) );
+			<?php if ( ! empty( $license['status'] ) && $license['status'] == 'valid' ) :
+				$last_sync = isset( $license['last_sync'] ) ? $license['last_sync'] : 0;
 				$can_check = $last_sync <= strtotime( "-5 minutes" ) ? true : false;
 				$html_data = $can_check ? 'data-md-action="check-updates" data-md-canvas="#md_update"' : ' title="' . __( 'Please wait upto 5 minutes to check again.', 'md' ) . '"';
 				$html_class = $can_check ? 'md-action' : 'md-action-disabled';
@@ -98,9 +98,9 @@
 					'type' => 'text',
 					'label' => __( 'Enter MD license key', 'md' ),
 					'placeholder' => __( 'Enter license key here...', 'md' ),
-					'option' => wp_doing_ajax() && ! empty( $option['settings']['license_key'] ) ? $option['settings']['license_key'] : '',
+					'option' => ! empty( $license['key'] ) ? $license['key'] : '',
 					'wrap_classes' => 'md-spacer-small',
-					'readonly_after_save' => ( ! empty( $option['license']['status'] ) && $option['license']['status'] == 'valid' ? true : false )
+					'readonly_after_save' => ( ! empty( $license['status'] ) && $license['status'] == 'valid' ? true : false )
 				) ); ?>
 
 				<div class="md-license-button md-spacer-small">

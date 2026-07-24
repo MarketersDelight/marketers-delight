@@ -11,8 +11,8 @@
  *                    -> merge_clone_items( ... )         — group/builder fields
  *                         -> merge_fields( ... )          — merges each item
  *
- * admin_save_custom works the same, but for a custom option key and without
- * meta/term/user are standalone with far simpler save requirements.
+ * admin_save_custom works the same for a custom option key.
+ * Meta, term, and user saves use their own registered field schemas.
  *
  * @since 6.0
  */
@@ -32,11 +32,17 @@ class md_save {
 	 */
 
 	public function admin_save( $input ) {
-		$settings = md_setting();
+		$settings = get_option( 'marketers_delight', array() );
+		$settings = is_array( $settings ) ? $settings : array();
+		$input = is_array( $input ) ? $input : array();
 
 		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
 			return $this->save_taxonomy( $input, $settings );
 
+		if ( ! $this->is_settings_save( 'marketers_delight' ) )
+			return $input;
+
+		$input = $this->settings_input( $input, 'marketers_delight' );
 		$save = $this->validate->validate( 'admin_pages', $input );
 
 		return $this->merge_settings( $settings, $save );
@@ -51,14 +57,57 @@ class md_save {
 
 	public function admin_save_custom( $input ) {
 		$option = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : '';
+		$input = is_array( $input ) ? $input : array();
 
 		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
 			return $this->save_taxonomy( $input, get_option( $option, array() ) );
 
+		if ( ! $this->is_settings_save( $option ) )
+			return $input;
+
 		$settings = get_option( $option, array() );
+		$settings = is_array( $settings ) ? $settings : array();
+		$input = $this->settings_input( $input, $option );
 		$save = $this->validate->validate( 'admin_pages', $input );
 
-		return $this->merge_recursive( $settings, $save );
+		$settings = $this->merge_recursive( $settings, $save );
+
+		return apply_filters( "md_save_{$option}", $settings );
+	}
+
+	/**
+	 * Only registered top-level settings may come from an options.php form.
+	 * Programmatic option updates can contain internal data branches that do
+	 * not have admin fields and are validated by their own write handlers.
+	 *
+	 * @since 6.0
+	 */
+
+	private function is_settings_save( $option ) {
+		$option_page = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : '';
+		$action = isset( $_POST['action'] ) ? sanitize_key( $_POST['action'] ) : '';
+
+		return $option_page === $option && $action === 'update';
+	}
+
+	/**
+	 * Limit an options.php submission to fields owned by its option.
+	 *
+	 * @since 6.0
+	 */
+
+	private function settings_input( $input, $option ) {
+		$registered = md_register( 'admin_pages' );
+		$allowed = array();
+
+		foreach ( $registered as $key => $settings ) {
+			$settings_option = isset( $settings['_option'] ) ? $settings['_option'] : 'marketers_delight';
+
+			if ( $settings_option === $option && ! empty( $settings['fields'] ) )
+				$allowed[$key] = true;
+		}
+
+		return array_intersect_key( $input, $allowed );
 	}
 
 	/**
@@ -94,12 +143,25 @@ class md_save {
 	 * @since 6.0
 	 */
 
-	private function merge_recursive( $old, $save ) {
-		$schema = md_register( 'admin_pages' );
+	private function merge_recursive( $old, $save, $settings = 'admin_pages' ) {
+		$schema = md_register( $settings );
+		$old = is_array( $old ) ? $old : array();
 
 		foreach ( $save as $key => $value ) {
-			if ( ! empty( $schema[$key]['fields'] ) && is_array( $value ) && isset( $old[$key] ) && is_array( $old[$key] ) )
-				$old[$key] = $this->merge_fields( $old[$key], $value, $schema[$key]['fields'] );
+			if ( ! empty( $schema[$key]['fields'] ) && is_array( $value ) ) {
+				$merged = $this->merge_fields(
+					isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(),
+					$value,
+					$schema[$key]['fields']
+				);
+
+				if ( empty( $merged ) )
+					unset( $old[$key] );
+				else
+					$old[$key] = $merged;
+			}
+			elseif ( $this->is_empty_value( $value ) )
+				unset( $old[$key] );
 			else
 				$old[$key] = $value;
 		}
@@ -122,12 +184,31 @@ class md_save {
 
 			if ( in_array( $type, array( 'group', 'builder' ) ) && is_array( $value ) ) {
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
-				$old[$key] = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
+				$merged = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
+
+				if ( empty( $merged ) )
+					unset( $old[$key] );
+				else
+					$old[$key] = $merged;
 			}
-			elseif ( $type !== null || ! is_array( $field ) || ! is_array( $value ) || ! isset( $old[$key] ) || ! is_array( $old[$key] ) )
-				$old[$key] = $value;
-			else
-				$old[$key] = $this->merge_fields( $old[$key], $value, $field );
+			elseif ( $type !== null || ! is_array( $field ) || ! is_array( $value ) ) {
+				if ( $this->is_empty_value( $value ) )
+					unset( $old[$key] );
+				else
+					$old[$key] = $value;
+			}
+			else {
+				$merged = $this->merge_fields(
+					isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(),
+					$value,
+					$field
+				);
+
+				if ( empty( $merged ) )
+					unset( $old[$key] );
+				else
+					$old[$key] = $merged;
+			}
 		}
 
 		return $old;
@@ -144,12 +225,52 @@ class md_save {
 		$merged = array();
 
 		foreach ( $save as $item_key => $item_value ) {
-			$merged[$item_key] = ( isset( $old[$item_key] ) && is_array( $old[$item_key] ) && is_array( $item_value ) )
-				? $this->merge_fields( $old[$item_key], $item_value, $item_schema )
+			$item = is_array( $item_value )
+				? $this->merge_fields(
+					isset( $old[$item_key] ) && is_array( $old[$item_key] ) ? $old[$item_key] : array(),
+					$item_value,
+					$item_schema
+				)
 				: $item_value;
+
+			if ( ! $this->is_empty_value( $item ) )
+				$merged[$item_key] = $item;
 		}
 
 		return $merged;
+	}
+
+	/**
+	 * Values with no stored meaning are deletion signals. Use exact
+	 * comparisons so valid zero values remain saved.
+	 *
+	 * @since 6.0
+	 */
+
+	private function is_empty_value( $value ) {
+		return $value === '' || $value === false || $value === null || $value === array();
+	}
+
+	/**
+	 * Recursively remove empty values after a settings or meta merge.
+	 *
+	 * @since 6.0
+	 */
+
+	private function prune_empty( $value ) {
+		if ( ! is_array( $value ) )
+			return $value;
+
+		foreach ( $value as $key => $item ) {
+			$item = $this->prune_empty( $item );
+
+			if ( $this->is_empty_value( $item ) )
+				unset( $value[$key] );
+			else
+				$value[$key] = $item;
+		}
+
+		return $value;
 	}
 
 	/**
@@ -161,11 +282,21 @@ class md_save {
 	 */
 
 	private function save_taxonomy( $input, $settings ) {
+		$settings = is_array( $settings ) ? $settings : array();
 		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
 		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
 		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
 		$options = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
-		$settings[$post_type][$taxonomy] = $options[$post_type];
+		$options = isset( $options[$post_type] ) ? $this->prune_empty( $options[$post_type] ) : array();
+
+		if ( ! empty( $options ) )
+			$settings[$post_type][$taxonomy] = $options;
+		else {
+			unset( $settings[$post_type][$taxonomy] );
+
+			if ( empty( $settings[$post_type] ) )
+				unset( $settings[$post_type] );
+		}
 
 		return $settings;
 	}
@@ -192,13 +323,16 @@ class md_save {
 			return $post_id;
 
 		$value = get_post_meta( $post_id, $option, true );
+		$value = is_array( $value ) ? $value : array();
 		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );
 		$save = apply_filters( 'md_post_meta_save', $save, $post );
+		$save = $this->merge_recursive( $value, $save, 'meta_boxes' );
+		$save = $this->prune_empty( $save );
 
 		if ( $save )
 			update_post_meta( $post_id, $option, $save );
-		elseif ( $save == '' && $value )
-			delete_post_meta( $post_id, $option, $value );
+		elseif ( $value )
+			delete_post_meta( $post_id, $option );
 	}
 
 	/**
@@ -214,11 +348,15 @@ class md_save {
 			return;
 
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
+			$value = get_term_meta( $term_id, $option, true );
+			$value = is_array( $value ) ? $value : array();
 			$save = $this->validate->validate( 'terms', $_POST[$option] );
+			$save = $this->merge_recursive( $value, $save, 'terms' );
+			$save = $this->prune_empty( $save );
 
 			if ( $save )
 				update_term_meta( $term_id, $option, $save );
-			elseif ( empty( $save ) )
+			else
 				delete_term_meta( $term_id, $option );
 		}
 	}
@@ -235,14 +373,18 @@ class md_save {
 		if ( ! current_user_can( 'edit_user', $user_id ) )
 			return;
 
-		if ( empty( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
+		if ( ! isset( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
 			return;
 
+		$value = get_user_meta( $user_id, $option, true );
+		$value = is_array( $value ) ? $value : array();
 		$save = $this->validate->validate( 'user_meta', $_POST[$option] );
+		$save = $this->merge_recursive( $value, $save, 'user_meta' );
+		$save = $this->prune_empty( $save );
 
 		if ( $save )
 			update_user_meta( $user_id, $option, $save );
-		elseif ( empty( $save ) )
+		else
 			delete_user_meta( $user_id, $option );
 	}
 

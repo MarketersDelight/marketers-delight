@@ -121,7 +121,7 @@ class md_integrations extends md_api {
 
 	public function admin_template( $args = null ) {
 		$integrations = $this->data( $args );
-		$option = md_setting( array( 'integrations' ) );
+		$option = md_integration_data();
 		$error = isset( $args['error'] ) ? true : '';
 
 		foreach ( $integrations as $id => $fields ) {
@@ -142,26 +142,51 @@ class md_integrations extends md_api {
 	 */
 
 	public function connect() {
-		wp_parse_str( wp_unslash( $_POST['form'] ), $form );
+		$form_data = isset( $_POST['form'] ) && is_string( $_POST['form'] ) ? wp_unslash( $_POST['form'] ) : '';
+		wp_parse_str( $form_data, $form );
 
-		$form = $this->sanitize()->recursive( $form );
+		$option_page = isset( $form['option_page'] ) && is_string( $form['option_page'] ) ? sanitize_key( $form['option_page'] ) : '';
+		$nonce = isset( $form['_wpnonce'] ) && is_string( $form['_wpnonce'] ) ? $form['_wpnonce'] : '';
+		$integration = isset( $_POST['integration'] ) && is_string( $_POST['integration'] ) ? sanitize_key( $_POST['integration'] ) : '';
+		$action = isset( $_POST['action_type'] ) && is_string( $_POST['action_type'] ) ? sanitize_key( $_POST['action_type'] ) : '';
+		$integrations = $this->data();
 
-		if ( ! wp_verify_nonce( $form['_wpnonce'] ?? '', $form['option_page'] . '-options' ) || ! current_user_can( 'manage_options' ) )
+		if (
+			$option_page !== 'marketers_delight' ||
+			! wp_verify_nonce( $nonce, 'marketers_delight-options' ) ||
+			! current_user_can( 'manage_options' ) ||
+			! isset( $integrations[$integration] ) ||
+			! in_array( $action, array( 'connect', 'refresh', 'disconnect' ), true )
+		)
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );
 
-		$option = md_setting_part( 'integrations' );
-		$api_keys = $form['marketers_delight']['integrations']['api_keys'];
-		$integration = esc_attr( $_POST['integration'] );
-		$action = esc_attr( $_POST['action_type'] );
-		$api_url = isset( $api_keys[$integration]['account_url'] ) ? $api_keys[$integration]['account_url'] : null;
+		$submitted = $form['marketers_delight']['integrations']['api_keys'][$integration] ?? array();
+		$submitted = is_array( $submitted ) ? $submitted : array();
+		$allowed = array( 'key' );
+		$credentials = array();
+
+		if ( ! empty( $integrations[$integration]['fields'] ) && is_array( $integrations[$integration]['fields'] ) )
+			$allowed = array_merge( $allowed, $integrations[$integration]['fields'] );
+
+		foreach ( $allowed as $key ) {
+			$key = is_string( $key ) ? sanitize_key( $key ) : '';
+
+			if ( $key !== '' && isset( $submitted[$key] ) && is_scalar( $submitted[$key] ) )
+				$credentials[$key] = sanitize_text_field( $submitted[$key] );
+		}
+
+		$api_keys = array(
+			$integration => $credentials
+		);
+		$api_url = isset( $credentials['account_url'] ) ? $credentials['account_url'] : null;
 
 		if ( $action == 'connect' || $action == 'refresh' ) {
 			do_action( 'md_integrations_actions', $integration, $api_keys );
-			if ( in_array( $integration, array( 'typekit', 'google_analytics' ) ) )
-				$this->save_api_key( $integration, $option, $api_keys[$integration]['key'], $api_url );
+			if ( in_array( $integration, array( 'typekit', 'google_analytics' ), true ) && isset( $credentials['key'] ) )
+				$this->save_api_key( $integration, $credentials['key'], $api_url );
 		}
 		elseif ( $action == 'disconnect' )
-			$this->disconnect( $integration, $option );
+			$this->disconnect( $integration );
 
 		$this->admin_template( array( 'service' => $integration ) );
 
@@ -174,12 +199,8 @@ class md_integrations extends md_api {
 	 * @since 4.1
 	 */
 
-	public function disconnect( $integration, $option ) {
-		unset( $option['integrations']['services'][$integration] );
-		unset( $option['integrations']['api_keys'][$integration] );
-		unset( $option['integrations']['enabled'][$integration] );
-
-		update_option( 'marketers_delight', $option );
+	public function disconnect( $integration ) {
+		md_delete_integration( $integration );
 	}
 
 	/**
@@ -188,18 +209,24 @@ class md_integrations extends md_api {
 	 * @since 4.9
 	 */
 
-	public function save_api_key( $service, $option, $api_key, $api_url = null ) {
+	public function save_api_key( $service, $api_key, $api_url = null ) {
 		if ( empty( $api_key ) )
 			$this->error( $service );
 
-		$option['integrations']['api_keys'][$service]['key'] = esc_attr( $api_key );
+		$settings = array( 'key' => esc_attr( $api_key ) );
 
 		if ( $api_url )
-			$option['integrations']['api_keys'][$service]['url'] = esc_attr( $api_url );
+			$settings['url'] = esc_attr( $api_url );
 
-		$option['integrations']['enabled'][$service] = true;
+		$public = array( 'enabled' => true );
+		$private = $settings;
 
-		update_option( 'marketers_delight', $option );
+		if ( in_array( $service, array( 'typekit', 'google_analytics' ), true ) ) {
+			$public['api_keys'] = $settings;
+			$private = null;
+		}
+
+		md_update_integration( $service, $private, $public );
 	}
 
 	/**

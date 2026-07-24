@@ -136,7 +136,7 @@ class md_files {
 
 		$option['custom_icons'] = $custom_icons;
 
-		update_option( 'marketers_delight', $option );
+		md_update_setting_part( $option );
 
 		md_compile_css();
 	}
@@ -174,16 +174,16 @@ class md_files {
 		if ( true !== unzip_file( $upload['tmp_name'], $uploads_dir ) )
 			return;
 
-		$option = md_setting_part( 'dropins' );
+		$dropins = md_dropins_setting();
 
 		foreach ( (array) $wp_filesystem->dirlist( $uploads_dir ) as $file => $fields ) {
 			$file = sanitize_file_name( $file );
 
 			if ( $file && $this->path_is_contained( "$uploads_dir/$file", $uploads_dir ) )
-				$option = $this->register_dropin( $file, $option, $wp_filesystem );
+				$dropins = $this->register_dropin( $file, $dropins, $wp_filesystem );
 		}
 
-		update_option( 'marketers_delight', $option );
+		md_update_dropins( $dropins );
 	}
 
 	/**
@@ -192,34 +192,34 @@ class md_files {
 	 * @since 5.3
 	 */
 
-	private function register_dropin( $dropin_id, $option, $wp_filesystem ) {
+	private function register_dropin( $dropin_id, $dropins, $wp_filesystem ) {
 		$dropin_dir = MD_INSTALLED_DROPINS . "/$dropin_id";
 		$dropin_file = "$dropin_dir/$dropin_id.php";
 		$config_file = "$dropin_dir/config.json";
 
 		if ( ! $wp_filesystem->is_dir( $dropin_dir ) || ! $wp_filesystem->exists( $dropin_file ) )
-			return $option;
+			return $dropins;
 
 		$this->protect_directory( $dropin_dir, $wp_filesystem );
 
 		if ( ! $wp_filesystem->exists( $config_file ) )
-			return $option;
+			return $dropins;
 
 		$data = json_decode( $wp_filesystem->get_contents( $config_file ), true );
 
 		if ( ! is_array( $data ) )
-			return $option;
+			return $dropins;
 
 		foreach ( $this->sanitize_dropin_config( $data ) as $setting => $value )
-			$option['dropins']['installed'][$dropin_id][$setting] = $value;
+			$dropins['installed'][$dropin_id][$setting] = $value;
 
 		if ( ! empty( $data['active'] ) && current_user_can( 'activate_plugins' ) )
-			$option['dropins']['installed'][$dropin_id]['status']['enable'] = true;
+			$dropins['installed'][$dropin_id]['status']['enable'] = true;
 
 		if ( ! empty( $data['priority'] ) )
-			$option['dropins']['priority'][$dropin_id] = true;
+			$dropins['priority'][$dropin_id] = true;
 
-		return $option;
+		return $dropins;
 	}
 
 	/**
@@ -276,12 +276,14 @@ class md_files {
 		if ( $wp_filesystem->exists( $dropin_dir ) )
 			$wp_filesystem->delete( $dropin_dir, true );
 
-		$option = md_setting_part( array( 'dropins', 'license' ) );
+		$dropins = md_dropins_setting();
+		$license = md_license_setting();
 
-		unset( $option['dropins']['installed'][$dropin_id] );
-		unset( $option['license']['updates']['dropins']["$dropin_id/$dropin_id.php"] );
+		unset( $dropins['installed'][$dropin_id] );
+		unset( $license['updates']['dropins']["$dropin_id/$dropin_id.php"] );
 
-		update_option( 'marketers_delight', $option );
+		md_update_dropins( $dropins );
+		md_update_license( $license );
 		md_compile();
 	}
 

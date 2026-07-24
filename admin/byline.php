@@ -68,7 +68,10 @@ class md_byline extends md_api {
 			'image_size' => array( 'type' => 'number' ),
 			'term' => array(
 				'type' => 'select',
-				'dynamic' => true
+				'options' => array_merge(
+					array( 'all' ),
+					array_values( get_taxonomies() )
+				)
 			)
 		);
 

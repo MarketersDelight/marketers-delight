@@ -35,7 +35,11 @@ final class marketers_delight {
 	 */
 
 	public function includes() {
-		require_once MD_DIR . 'functions/theme-functions.php';
+		require_once MD_DIR . 'functions/option-functions.php';
+		require_once MD_DIR . 'functions/meta-functions.php';
+		require_once MD_DIR . 'functions/dropin-functions.php';
+		require_once MD_DIR . 'functions/asset-functions.php';
+		require_once MD_DIR . 'functions/migrations.php';
 		require_once MD_DIR . 'api/sanitize.php';
 		require_once MD_DIR . 'api/validate.php';
 		require_once MD_DIR . 'api/save.php';
@@ -49,23 +53,19 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/api.php';
 
 		require_once MD_DIR . 'functions/template-functions.php';
+		require_once MD_DIR . 'functions/layout-functions.php';
 		require_once MD_DIR . 'functions/media-functions.php';
 		require_once MD_DIR . 'functions/title-functions.php';
-		require_once MD_DIR . 'functions/comment-functions.php';
+		require_once MD_DIR . 'functions/header-functions.php';
 		require_once MD_DIR . 'functions/page-functions.php';
 		require_once MD_DIR . 'functions/loop-functions.php';
-		require_once MD_DIR . 'functions/header-functions.php';
-		require_once MD_DIR . 'functions/layout-functions.php';
+		require_once MD_DIR . 'functions/comment-functions.php';
 
 		if ( is_admin() ) {
 			require_once MD_DIR . 'api/files.php';
 			require_once MD_DIR . 'api/requests.php';
 			require_once MD_DIR . 'admin/admin.php';
 		}
-
-		require_once MD_DIR . 'admin/featured-media.php';
-		require_once MD_DIR . 'admin/page-cover.php';
-		require_once MD_DIR . 'admin/page-cta.php';
 
 		$this->dropins();
 
@@ -229,7 +229,7 @@ final class marketers_delight {
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) ? md_setting( array( 'dropins', 'installed', 'admin-bar', 'status', 'enable' ), false ) : false,
+			'hasAdminBar' => current_user_can( 'administrator' ) ? md_has( 'admin-bar' ) : false,
 			'userID' => get_current_user_id()
 		) );
 
@@ -543,6 +543,8 @@ final class marketers_delight {
 	 */
 
 	public function dropins() {
+		md_migrate_dropins_storage();
+
 		$dropins = md_get_dropins( 'active' );
 
 		if ( empty( $dropins ) )
@@ -553,9 +555,9 @@ final class marketers_delight {
 				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
 					require_once( $file );
 				else {
-					$option = md_setting_part( 'dropins' );
-					unset( $option['dropins']['installed'][$dropin]['status']['enable'] );
-					update_option( 'marketers_delight', $option );
+					$dropins = md_dropins_setting();
+					unset( $dropins['installed'][$dropin]['status']['enable'] );
+					md_update_dropins( $dropins );
 				}
 	}
 
@@ -569,7 +571,7 @@ final class marketers_delight {
 		$page = ! empty( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : false;
 		$action = ! empty( $_GET['action'] ) ? sanitize_key( $_GET['action'] ) : false;
 		$dropin = ! empty( $_GET['dropin'] ) ? sanitize_key( $_GET['dropin'] ) : false;
-		$fields = md_setting( array( 'dropins', 'installed', $dropin ), false );
+		$fields = md_dropins_setting( array( 'installed', $dropin ), false );
 
 		if ( ! $page || $page !== 'md_dropins' || $action !== 'activate' || ! $dropin || ! $fields || ! empty( $fields['status']['enable'] ) )
 			return;

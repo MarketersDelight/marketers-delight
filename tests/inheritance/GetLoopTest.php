@@ -48,27 +48,6 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertSame( 3, $loop['columns'] );
 	}
 
-	/**
-	 * Regression (found via live verification, not a fixture guess): a
-	 * taxonomy tab that's been opened/saved in the admin -- even with every
-	 * field left blank -- stores its FULL field schema padded with '' for
-	 * each unset field, not a sparse/missing entry. That '' must NOT win
-	 * over the post-type tier's real value the way a genuinely-set value
-	 * would; a "saved blank" tab has to behave identically to a
-	 * never-touched one.
-	 */
-
-	public function test_saved_but_blank_taxonomy_tab_does_not_override_post_type_tier() {
-		// Simulate a taxonomy tab that was opened and saved blank: the
-		// FULL schema is present with '' rather than the key being absent.
-		$this->set_option_loop( array( 'columns' => 3 ), array( 'columns' => '', 'posts_per_page' => '' ) );
-		$this->set_taxonomy_query();
-
-		$loop = md_get_loop();
-
-		$this->assertSame( 3, $loop['columns'] );
-	}
-
 	// An explicit taxonomy-tier override still wins over the post-type tier.
 
 	public function test_explicit_taxonomy_tier_columns_overrides_post_type_tier() {

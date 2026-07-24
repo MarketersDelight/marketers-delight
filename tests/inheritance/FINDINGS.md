@@ -78,7 +78,7 @@ siblings.
 Considered adding a dedicated function for the "don't inherit from post type" need (used by #2
 above), but that would grow an already-easy-to-confuse family
 (`md_module`/`md_post_type_field`/`md_taxonomy_field`/`md_term_meta`) to five near-synonymous
-names. Instead, `md_module()` (`functions/theme-functions.php:508-`) — already the general "give me
+names. Instead, `md_module()` (`functions/meta-functions.php`) — already the general "give me
 this field for wherever we currently are" reader, already implementing the term_meta → taxonomy →
 post_type cascade — gained one optional `array $args` parameter (an array, not a single boolean, so
 a future need is "add a key," not a new parameter or function). `array( 'inherit_post_type' =>

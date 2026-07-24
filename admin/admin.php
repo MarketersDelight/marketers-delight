@@ -31,7 +31,7 @@ class md_admin {
 	 */
 
 	public function includes() {
-		include_once 'admin_functions.php';
+		include_once 'functions.php';
 		include_once 'dashboard.php';
 		include_once 'icons.php';
 		include_once 'integrations.php';
@@ -46,6 +46,9 @@ class md_admin {
 		include_once 'logo.php';
 		include_once 'header.php';
 		include_once 'upgrade/dropin-upgrader.php';
+		include_once 'featured-media.php';
+		include_once 'page-cover.php';
+		include_once 'page-cta.php';
 	}
 
 	/**
@@ -411,9 +414,9 @@ class md_admin {
 	 */
 
 	public function update_nag() {
-		$license_status = md_setting( array( 'license', 'status' ) );
-		$theme = md_setting( array( 'license', 'updates', 'theme' ) );
-		$new_version = md_setting( array( 'license', 'updates', 'theme', 'new_version' ) );
+		$license_status = md_license_setting( 'status' );
+		$theme = md_license_setting( array( 'updates', 'theme' ) );
+		$new_version = md_license_setting( array( 'updates', 'theme', 'new_version' ) );
 
 		if ( $license_status !== 'valid' || empty( $theme ) || version_compare( MD_VERSION, $new_version, '>=' ) )
 			return;

@@ -447,18 +447,18 @@ cite, .tiny {
 .has-surface-background-color { background-color: #F0F0F0; }
 .has-surface-border-color { border-color: #F0F0F0; }
 .has-surface-color, a.has-surface-color { color: #F0F0F0; }
-.has-primary-background-color { background-color: #AE2525; }
-.has-primary-border-color { border-color: #AE2525; }
-.has-primary-color, a.has-primary-color { color: #AE2525; }
-.has-secondary-background-color { background-color: #2E2E2E; }
-.has-secondary-border-color { border-color: #2E2E2E; }
-.has-secondary-color, a.has-secondary-color { color: #2E2E2E; }
+.has-primary-background-color { background-color: #43ff59; }
+.has-primary-border-color { border-color: #43ff59; }
+.has-primary-color, a.has-primary-color { color: #43ff59; }
+.has-secondary-background-color { background-color: #a43cff; }
+.has-secondary-border-color { border-color: #a43cff; }
+.has-secondary-color, a.has-secondary-color { color: #a43cff; }
 .has-tertiary-background-color { background-color: #DDDDDD; }
 .has-tertiary-border-color { border-color: #DDDDDD; }
 .has-tertiary-color, a.has-tertiary-color { color: #DDDDDD; }
-.has-border-background-color { background-color: #CCCCCC; }
-.has-border-border-color { border-color: #CCCCCC; }
-.has-border-color, a.has-border-color { color: #CCCCCC; }
+.has-border-background-color { background-color: #ff2f65; }
+.has-border-border-color { border-color: #ff2f65; }
+.has-border-color, a.has-border-color { color: #ff2f65; }
 .has-highlight-background-color { background-color: #FFFBCC; }
 .has-highlight-border-color { border-color: #FFFBCC; }
 .has-highlight-color, a.has-highlight-color { color: #FFFBCC; }
@@ -474,6 +474,9 @@ cite, .tiny {
 .has-white-background-color { background-color: #FFFFFF; }
 .has-white-border-color { border-color: #FFFFFF; }
 .has-white-color, a.has-white-color { color: #FFFFFF; }
+.has-test-custom-color-background-color { background-color: #49ccff; }
+.has-test-custom-color-border-color { border-color: #49ccff; }
+.has-test-custom-color-color, a.has-test-custom-color-color { color: #49ccff; }
 /* ANIMATIONS */
 @keyframes md-fade {
 	from { opacity: 0; }

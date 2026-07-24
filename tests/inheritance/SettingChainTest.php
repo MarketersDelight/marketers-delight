@@ -2,11 +2,12 @@
 /**
  * Tests the raw storage primitives the whole inheritance system is built on:
  * md_setting(), md_post_type_field(), md_taxonomy_field(), md_term_meta().
- * These are exercised directly (not re-implemented) from functions/theme-functions.php.
+ * These are exercised directly (not re-implemented) from functions/meta-functions.php.
  *
  * @since 6.0
  */
 
+#[\PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses]
 class SettingChainTest extends MD_InheritanceTestCase {
 
 	// md_setting() falls back to the md_setting_defaults filter when the
@@ -23,6 +24,24 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_option( 'marketers_delight', array( 'loop' => array( 'columns' => 4 ) ) );
 
 		$this->assertSame( 4, md_setting( array( 'loop', 'columns' ) ) );
+	}
+
+	public function test_setting_preserves_stored_falsey_values() {
+		md_test_set_option( 'marketers_delight', array(
+			'disabled' => false,
+			'count' => 0,
+			'value' => '0'
+		) );
+
+		$this->assertFalse( md_setting( 'disabled', true ) );
+		$this->assertSame( 0, md_setting( 'count', 10 ) );
+		$this->assertSame( '0', md_setting( 'value', 'fallback' ) );
+	}
+
+	public function test_setting_uses_caller_default_for_missing_path() {
+		md_test_set_option( 'marketers_delight', array() );
+
+		$this->assertSame( 'fallback', md_setting( array( 'missing', 'value' ), 'fallback' ) );
 	}
 
 	// md_post_type_field() reads marketers_delight[$post_type][...] and falls

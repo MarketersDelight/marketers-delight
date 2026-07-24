@@ -275,9 +275,9 @@ function md_cover( $context = 'post' ) {
 	$post_type_cover = md_post_type_field( 'page_cover', array() );
 
 	if ( is_post_type_archive() || is_home() )
-		$cover = $post_type_cover ?: array();
+		$cover = $post_type_cover;
 	elseif ( is_category() || is_tax() ) {
-		$tax_cover = array_filter( md_taxonomy_field( 'page_cover', array() ) );
+		$tax_cover = md_taxonomy_field( 'page_cover', array() );
 		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
 		$cover = array_merge( $post_type_cover, $tax_cover, $term_cover );
 	}
@@ -359,7 +359,7 @@ function md_overlay( $context = 'post' ) {
 	$style = array();
 	$cover = md_cover( $context );
 
-	if ( empty( $cover['photo'] ) || empty( $cover['position'] ) || ! empty( $cover['display']['disable_overlay'] ) )
+	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_overlay'] ) )
 		return;
 
 	if ( ! empty( $cover['bg_color'] ) )

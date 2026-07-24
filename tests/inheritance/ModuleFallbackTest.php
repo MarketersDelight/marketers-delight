@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_module() (functions/theme-functions.php:508-528) -- the
+ * Tests md_module() from functions/meta-functions.php -- the
  * general-purpose tier-fallback helper (term_meta -> taxonomy -> post_type on
  * a category/tax page). Unlike md_taxonomy_field()/md_post_type_field(), its
  * taxonomy-tier fallback call omits explicit $post_type/$taxonomy args and
@@ -33,7 +33,7 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 	 * md_post_type_field() both accept explicit $post_type/$taxonomy
 	 * arguments so a caller can resolve a value for ANY term, independent of
 	 * what page is currently rendering. md_module()'s taxonomy-tier fallback
-	 * (theme-functions.php:517, `md_taxonomy_field( $keys, null )`) does not
+	 * (`md_taxonomy_field( $keys, null )`) does not
 	 * -- it always reads get_queried_object() internally. So calling
 	 * md_module() for a term other than the one actually being viewed
 	 * silently resolves against the WRONG taxonomy context (or none at all),

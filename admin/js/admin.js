@@ -405,9 +405,10 @@
 					action = trigger.data( 'md-action' ),
 					alert = trigger.data( 'md-alert' ),
 					canvas = trigger.data( 'md-canvas' ),
-					itemID = trigger.data( 'md-dropin-id' );
+					itemID = trigger.data( 'md-dropin-id' ),
+					licenseKey = '';
 				if ( action == 'activate-license' || action == 'deactivate-license' )
-					itemID = $( '#marketers_delight_settings_license_key' ).val();
+					licenseKey = $( '#marketers_delight_settings_license_key' ).val();
 				if ( alert && ! confirm( alert ) )
 					return;
 				$.ajax({
@@ -418,7 +419,8 @@
 						nonce: MDJS.nonce,
 						action_type: action,
 						canvas: canvas,
-						dropin_id: itemID
+						dropin_id: itemID,
+						license_key: licenseKey
 					},
 					beforeSend: function() {
 						trigger.find( '.dashicons' ).addClass( 'md-loading' );

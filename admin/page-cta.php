@@ -77,7 +77,7 @@ class md_page_cta extends md_api {
 		$save = array(
 			'page_cta' => array(
 				'type' => 'select',
-				'dynamic' => true
+				'options' => array_keys( $types )
 			)
 		);
 

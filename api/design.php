@@ -433,7 +433,9 @@ class md_design {
 				'site_tagline' => array(
 					'color' => 'text-secondary'
 				)
-			)
+			),
+			'header' => array(),
+			'sidebar' => array()
 		);
 	}
 

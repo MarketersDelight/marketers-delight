@@ -8,6 +8,8 @@
 
 class md_dropins extends md_api {
 
+	public $_option = 'marketers_delight_dropins';
+
 	/**
 	 * Register admin page.
 	 *
@@ -40,7 +42,7 @@ class md_dropins extends md_api {
 				)
 			)
 		);
-		$total_updates = md_setting( array( 'license', 'updates', 'dropins' ), 0 );
+		$total_updates = md_license_setting( array( 'updates', 'dropins' ), 0 );
 		$updates_badge = ! empty( $total_updates ) && count( $total_updates ) > 0 ? " <span class=\"update-plugins count-" . count( $total_updates ) . "\"><span class=\"plugin-count\">" . count( $total_updates ) . "</span></span>" : '';
 
 		return array(
@@ -81,8 +83,8 @@ class md_dropins extends md_api {
 	 */
 
 	public function admin_page() {
-		$installed = md_setting( array( 'dropins', 'installed' ), array() );
-		$updates = md_setting( array( 'license', 'updates', 'dropins' ) );
+		$installed = md_dropins_setting( 'installed', array() );
+		$updates = md_license_setting( array( 'updates', 'dropins' ) );
 
 		ksort( $installed );
 

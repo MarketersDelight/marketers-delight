@@ -27,7 +27,7 @@
 		</div>
 		<?php if ( ! empty( $installed ) ) : ?>
 			<?php foreach ( $installed as $dropin => $fields ) :
-				$is_enabled = md_setting( array( 'dropins', 'installed', $dropin, 'status', 'enable' ) ) ? true : false;
+				$is_enabled = md_dropins_setting( array( 'installed', $dropin, 'status', 'enable' ) ) ? true : false;
 				$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';
 				$colors = isset( $fields['colors'] ) ? explode( ',', trim( $fields['colors'] ) ) : array();
 				$bg_color = isset( $colors[0] ) ? $colors[0] : '';

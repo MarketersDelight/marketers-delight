@@ -27,8 +27,8 @@ class md_validate {
 	/**
 	 * Validates $input against the schema registered under $settings (e.g.
 	 * 'admin_pages', 'meta_boxes', 'terms', 'user_meta' — see
-	 * md_register()). A top-level key with no registered schema is preserved
-	 * for programmatic settings branches.
+	 * md_register()). Top-level keys without a registered field schema are
+	 * discarded.
 	 *
 	 * @since 4.7
 	 */
@@ -36,12 +36,11 @@ class md_validate {
 	public function validate( $settings, $input ) {
 		$save = array();
 		$data = md_register( $settings );
+		$input = is_array( $input ) ? $input : array();
 
 		foreach ( array_keys( $input ) as $key ) {
 			if ( ! empty( $data[$key]['fields'] ) )
 				$save[$key] = $this->validate_fields( $input[$key], $data[$key]['fields'] );
-			else
-				$save[$key] = $input[$key];
 		}
 
 		return $save;
@@ -58,13 +57,11 @@ class md_validate {
 
 	private function validate_fields( $input, $fields_schema ) {
 		$save = array();
+		$input = is_array( $input ) ? $input : array();
 
 		foreach ( $fields_schema as $key => $field ) {
-			if ( ! is_array( $field ) )
-				continue;
-
 			$type = isset( $field['type'] ) ? $field['type'] : null;
-			$field_input = is_array( $input ) && isset( $input[$key] ) ? $input[$key] : null;
+			$field_input = isset( $input[$key] ) ? $input[$key] : null;
 
 			if ( in_array( $type, array( 'group', 'builder' ) ) ) {
 				if ( ! isset( $input[$key] ) )
@@ -77,8 +74,7 @@ class md_validate {
 						if ( is_string( $item_key ) && strpos( $item_key, '{clone' ) === 0 )
 							unset( $items[$item_key] );
 
-				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
-				$save[$key] = $this->clone_groups( $items, $item_schema, isset( $field['group_key_lowercase'] ) );
+				$save[$key] = $this->clone_groups( $items, $field['fields'], isset( $field['group_key_lowercase'] ) );
 			}
 			elseif ( $type !== null ) {
 				$validated = $this->validate_field( $field_input, $field );
@@ -100,8 +96,8 @@ class md_validate {
 	/**
 	 * Sanitizes one field's value based on its 'type'. Returns null if the
 	 * value shouldn't be saved (e.g. an upload field with the wrong
-	 * upload_type) — otherwise returns the sanitized value, including ''
-	 * or false for a field that was legitimately cleared.
+	 * upload_type) — otherwise returns the sanitized value. Empty results
+	 * tell md_save to remove a field that was legitimately cleared.
 	 *
 	 * @since 5.0
 	 */
@@ -110,25 +106,18 @@ class md_validate {
 		$field = null;
 		$type = isset( $fields['type'] ) ? $fields['type'] : '';
 		$sub_options = isset( $fields['options'] ) ? $fields['options'] : array();
-		$dynamic = isset( $fields['dynamic'] ) ? true : false;
-
-		if ( $val == '' && isset( $fields['default'] ) )
-			$val = $fields['default'];
 
 		if ( in_array( $type, array( 'text', 'textarea' ) ) )
 			$field = $this->sanitize->text( $val, $fields );
 
 		if ( in_array( $type, array( 'editor', 'code' ) ) )
-			$field = wp_kses_post( $val );
+			$field = is_null( $val ) ? null : wp_kses_post( is_scalar( $val ) ? (string) $val : '' );
 
 		if ( in_array( $type, array( 'number', 'range' ) ) )
 			$field = $this->sanitize->number( $val );
 
 		if ( in_array( $type, array( 'hidden', 'data' ) ) )
 			$field = sanitize_text_field( $val );
-
-		if ( $type == 'recursive' )
-			$field = $this->sanitize->recursive( $val );
 
 		if ( $type == 'url' )
 			$field = $this->sanitize->url( $val );
@@ -137,7 +126,7 @@ class md_validate {
 			$field = $this->sanitize->checkbox( $val, $fields );
 
 		if ( in_array( $type, array( 'select', 'radio' ) ) )
-			$field = $this->sanitize->select( $val, $sub_options, $dynamic );
+			$field = $this->sanitize->select( $val, $sub_options );
 
 		if ( $type == 'upload' )
 			$field = $this->sanitize->upload( $val, $fields );
@@ -158,6 +147,9 @@ class md_validate {
 
 	private function clone_groups( $groups, $item_schema, $lowercase = false ) {
 		$save = array();
+
+		if ( ! is_array( $groups ) )
+			return $save;
 
 		foreach ( $groups as $group => $submitted ) {
 			$group = (string) $group;
