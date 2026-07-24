@@ -7,7 +7,7 @@
  */
 
 function md_has_builder() {
-	return md_meta( array( 'layout', 'content', 'builder' ) );
+	return (bool) md_meta( array( 'layout', 'content', 'builder' ) );
 }
 
 /**
@@ -32,13 +32,13 @@ function md_has_breadcrumbs() {
 	$single_remove = md_meta( array( 'layout', 'breadcrumbs', 'remove' ) );
 
 	if ( $single_remove )
-		return;
+		return false;
 
 	if ( ! $global_add && ! $single_add )
-		return;
+		return false;
 
 	if ( ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )
-		return;
+		return false;
 
 	return true;
 }
@@ -87,8 +87,10 @@ function md_breadcrumbs() {
  */
 
 function md_has_post_content() {
-	if ( ! md_module( array( 'layout', 'content', 'the_content' ) ) )
-		return apply_filters( 'md_filter_has_the_content', true );
+	if ( md_module( array( 'layout', 'content', 'the_content' ) ) )
+		return false;
+
+	return (bool) apply_filters( 'md_filter_has_the_content', true );
 }
 
 /**
@@ -133,13 +135,13 @@ function md_excerpt( $loop ) {
 function md_has_author_box() {
 	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );
 
-	if ( is_singular() ) {
-		$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
-		$remove = md_post_meta( array( 'layout', 'content', 'author_box' ) );
+	if ( ! is_singular() )
+		return false;
 
-		if ( ( $enable && ! $remove ) || $add )
-			return true;
-	}
+	$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
+	$remove = md_post_meta( array( 'layout', 'content', 'author_box' ) );
+
+	return ( $enable && ! $remove ) || $add;
 }
 
 /**
@@ -198,12 +200,10 @@ function md_has_post_nav() {
 	$single_remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
 	$single_add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
 
-	if (
+	return
 		! is_page() && is_singular() && ( get_previous_post() || get_next_post() ) &&
 		! $single_remove &&
-		( ! $disable || $single_add )
-	)
-		return true;
+		( ! $disable || $single_add );
 }
 
 /**

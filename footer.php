@@ -1,4 +1,4 @@
-<?php if ( md_filter_template() !== false ) : md_hook_before_footer(); ?>
+<?php if ( md_filter_template() ) : md_hook_before_footer(); ?>
 
 	<?php if ( md_has_footer() ) : ?>
 

@@ -7,8 +7,7 @@
  */
 
 function md_has_comments() {
-	if ( ( comments_open() || get_comments_number() != 0 ) && ! post_password_required() )
-		return true;
+	return ( comments_open() || get_comments_number() != 0 ) && ! post_password_required();
 }
 
 /**
@@ -36,7 +35,7 @@ function md_comment( $comment, $args, $depth ) {
 	$GLOBALS['comment'] = $comment;
 	$comment_id = get_comment_ID();
 	$comment_link = get_comment_link( $comment->comment_ID );
-	$is_author = $comment->user_id == $post->post_author ? true : false;
+	$is_author = $comment->user_id == $post->post_author;
 	$avatar_size = intval( $args['avatar_size'] );
 
 	if ( ! empty( $args['has_children'] ) )

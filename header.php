@@ -114,5 +114,5 @@ if ( md_has_header() ) :
 
 <?php endif;
 
-if ( md_filter_template() !== false )
+if ( md_filter_template() )
 	md_hook_before_content_box();

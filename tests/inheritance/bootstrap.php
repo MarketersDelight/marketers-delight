@@ -34,6 +34,13 @@ $GLOBALS['__test_query'] = array(
 	'is_tax' => false,
 	'is_search' => false,
 	'is_archive' => false,
+	'is_page' => false,
+	'post_parent_id' => 0,
+	'previous_post' => false,
+	'next_post' => false,
+	'comments_open' => false,
+	'comments_number' => 0,
+	'post_password_required' => false,
 	'queried_object' => null,
 	'queried_object_id' => 0,
 	'query_var' => array(),
@@ -68,6 +75,13 @@ function md_test_reset() {
 		'is_tax' => false,
 		'is_search' => false,
 		'is_archive' => false,
+		'is_page' => false,
+		'post_parent_id' => 0,
+		'previous_post' => false,
+		'next_post' => false,
+		'comments_open' => false,
+		'comments_number' => 0,
+		'post_password_required' => false,
 		'queried_object' => null,
 		'queried_object_id' => 0,
 		'query_var' => array(),
@@ -91,6 +105,10 @@ function md_test_set_term_meta( $term_id, $meta ) {
 
 function md_test_set_post_meta( $meta, $post_id = 1 ) {
 	$GLOBALS['__test_post_meta'][$post_id] = $meta;
+}
+
+function md_test_set_user_meta( $user_id, $meta ) {
+	$GLOBALS['__test_user_meta'][$user_id] = $meta;
 }
 
 function md_test_set_filter( $tag, $value ) {
@@ -209,6 +227,10 @@ function is_archive() {
 		$GLOBALS['__test_query']['is_tax'];
 }
 
+function is_page() {
+	return $GLOBALS['__test_query']['is_page'];
+}
+
 function is_active_sidebar( $sidebar ) {
 	return in_array( $sidebar, $GLOBALS['__test_active_sidebars'], true );
 }
@@ -223,6 +245,30 @@ function get_queried_object_id() {
 
 function get_the_ID() {
 	return 1;
+}
+
+function wp_get_post_parent_id( $post_id ) {
+	return $GLOBALS['__test_query']['post_parent_id'];
+}
+
+function get_previous_post() {
+	return $GLOBALS['__test_query']['previous_post'];
+}
+
+function get_next_post() {
+	return $GLOBALS['__test_query']['next_post'];
+}
+
+function comments_open() {
+	return $GLOBALS['__test_query']['comments_open'];
+}
+
+function get_comments_number() {
+	return $GLOBALS['__test_query']['comments_number'];
+}
+
+function post_password_required() {
+	return $GLOBALS['__test_query']['post_password_required'];
 }
 
 function get_query_var( $var ) {
@@ -272,10 +318,6 @@ function is_wp_error( $value ) {
 	return false;
 }
 
-function md_has_builder() {
-	return false;
-}
-
 function absint( $value ) {
 	return abs( (int) $value );
 }
@@ -302,6 +344,8 @@ if ( ! function_exists( '__' ) ) {
 
 require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
+require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
+require_once dirname( __DIR__, 2 ) . '/functions/comment-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/layout-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/loop-functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';

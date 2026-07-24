@@ -180,12 +180,12 @@ class md_integrations extends md_api {
 		);
 		$api_url = isset( $credentials['account_url'] ) ? $credentials['account_url'] : null;
 
-		if ( $action == 'connect' || $action == 'refresh' ) {
+		if ( $action === 'connect' || $action === 'refresh' ) {
 			do_action( 'md_integrations_actions', $integration, $api_keys );
 			if ( in_array( $integration, array( 'typekit', 'google_analytics' ), true ) && isset( $credentials['key'] ) )
 				$this->save_api_key( $integration, $credentials['key'], $api_url );
 		}
-		elseif ( $action == 'disconnect' )
+		elseif ( $action === 'disconnect' )
 			$this->disconnect( $integration );
 
 		$this->admin_template( array( 'service' => $integration ) );

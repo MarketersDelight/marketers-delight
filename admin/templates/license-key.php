@@ -83,7 +83,7 @@
 
 			<?php if ( ! empty( $license['status'] ) && $license['status'] == 'valid' ) :
 				$last_sync = isset( $license['last_sync'] ) ? $license['last_sync'] : 0;
-				$can_check = $last_sync <= strtotime( "-5 minutes" ) ? true : false;
+				$can_check = $last_sync <= strtotime( "-5 minutes" );
 				$html_data = $can_check ? 'data-md-action="check-updates" data-md-canvas="#md_update"' : ' title="' . __( 'Please wait upto 5 minutes to check again.', 'md' ) . '"';
 				$html_class = $can_check ? 'md-action' : 'md-action-disabled';
 			?>
@@ -100,7 +100,7 @@
 					'placeholder' => __( 'Enter license key here...', 'md' ),
 					'option' => ! empty( $license['key'] ) ? $license['key'] : '',
 					'wrap_classes' => 'md-spacer-small',
-					'readonly_after_save' => ( ! empty( $license['status'] ) && $license['status'] == 'valid' ? true : false )
+					'readonly_after_save' => ! empty( $license['status'] ) && $license['status'] == 'valid'
 				) ); ?>
 
 				<div class="md-license-button md-spacer-small">

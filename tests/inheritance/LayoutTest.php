@@ -247,4 +247,31 @@ class LayoutTest extends MD_InheritanceTestCase {
 		$this->assertTrue( md_has_content_box() );
 	}
 
+	public function test_layout_predicate_filters_return_booleans() {
+		md_test_set_filter( 'md_filter_has_content_box', 0 );
+		$this->assertSame( false, md_has_content_box() );
+		md_test_set_filter( 'md_filter_has_content_box', 1 );
+		$this->assertSame( true, md_has_content_box() );
+
+		md_test_set_filter( 'md_filter_has_sidebar', 0 );
+		$this->assertSame( false, md_has_sidebar() );
+		md_test_set_filter( 'md_filter_has_sidebar', 1 );
+		$this->assertSame( true, md_has_sidebar() );
+
+		md_test_set_filter( 'md_filter_has_panel', 0 );
+		$this->assertSame( false, md_has_panel() );
+		md_test_set_filter( 'md_filter_has_panel', 1 );
+		$this->assertSame( true, md_has_panel() );
+
+		md_test_set_filter( 'md_filter_has_footer', 0 );
+		$this->assertSame( false, md_has_footer() );
+		md_test_set_filter( 'md_filter_has_footer', 1 );
+		$this->assertSame( true, md_has_footer() );
+
+		md_test_set_filter( 'md_filter_has_footer_columns', 0 );
+		$this->assertSame( false, md_has_footer_columns() );
+		md_test_set_filter( 'md_filter_has_footer_columns', 1 );
+		$this->assertSame( true, md_has_footer_columns() );
+	}
+
 }

@@ -43,7 +43,9 @@ class md_sanitize {
 		if ( is_null( $input ) )
 			return null;
 
-		return preg_replace( '/\D/', '', is_scalar( $input ) ? (string) $input : '' );
+		$number = preg_replace( '/\D/', '', is_scalar( $input ) ? (string) $input : '' );
+
+		return $number === '' ? '' : (int) $number;
 	}
 
 	/**
@@ -79,7 +81,7 @@ class md_sanitize {
 					if ( ! empty( $val ) && in_array( (string) $check, $allowed, true ) )
 						$save[$check] = true;
 		}
-		else $save = $input == true ? true : false;
+		else $save = (bool) $input;
 
 		return $save;
 	}
@@ -121,17 +123,29 @@ class md_sanitize {
 		if ( $upload_type !== 'media' )
 			return null;
 
-		if ( empty( $input['id'] ) )
+		if ( ! is_array( $input ) || empty( $input['id'] ) )
 			return '';
 
-        if ( isset( $fields['multiple'] ) ) {
-            $ids = explode( ',', $input['id'] );
-            $save['ids'] = array_map( 'intval', $ids );
-        }
+		if ( isset( $fields['multiple'] ) ) {
+			$ids = explode( ',', $input['id'] );
+			$ids = array_values( array_filter( array_map( 'intval', $ids ) ) );
 
-        $save['id'] = sanitize_text_field( $input['id'] );
+			if ( empty( $ids ) )
+				return '';
 
-        return $save;
+			$save['id'] = implode( ',', $ids );
+			$save['ids'] = $ids;
+		}
+		else {
+			$id = $this->number( $input['id'] );
+
+			if ( $id === '' )
+				return '';
+
+			$save['id'] = $id;
+		}
+
+		return $save;
 	}
 
 	/**

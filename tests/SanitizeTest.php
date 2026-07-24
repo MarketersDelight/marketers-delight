@@ -59,11 +59,15 @@ class SanitizeTest extends MD_TestCase {
 	// number()
 
 	public function test_number_strips_non_digits() {
-		$this->assertSame( '42', $this->sanitize->number( 'a4b2c' ) );
+		$this->assertSame( 42, $this->sanitize->number( 'a4b2c' ) );
 	}
 
 	public function test_number_blank_returns_empty_string() {
 		$this->assertSame( '', $this->sanitize->number( '' ) );
+	}
+
+	public function test_number_zero_returns_integer() {
+		$this->assertSame( 0, $this->sanitize->number( '0' ) );
 	}
 
 	// url()
@@ -170,13 +174,28 @@ class SanitizeTest extends MD_TestCase {
 	public function test_upload_valid_id_returns_array() {
 		$result = $this->sanitize->upload( array( 'id' => '42' ), array( 'upload_type' => 'media' ) );
 
-		$this->assertSame( '42', $result['id'] );
+		$this->assertSame( 42, $result['id'] );
 	}
 
 	public function test_upload_defaults_to_media_type_when_unset() {
 		$result = $this->sanitize->upload( array( 'id' => '42' ), array() );
 
-		$this->assertSame( '42', $result['id'] );
+		$this->assertSame( 42, $result['id'] );
+	}
+
+	public function test_upload_invalid_id_returns_empty_string() {
+		$this->assertSame( '', $this->sanitize->upload( array( 'id' => 'invalid' ), array() ) );
+	}
+
+	public function test_upload_rejects_non_array_input() {
+		$this->assertSame( '', $this->sanitize->upload( '42', array() ) );
+	}
+
+	public function test_upload_multiple_preserves_id_list_contract() {
+		$result = $this->sanitize->upload( array( 'id' => '4,7' ), array( 'multiple' => true ) );
+
+		$this->assertSame( '4,7', $result['id'] );
+		$this->assertSame( array( 4, 7 ), $result['ids'] );
 	}
 
 }

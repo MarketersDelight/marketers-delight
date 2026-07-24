@@ -192,15 +192,15 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	if ( ! is_singular() && is_sticky() )
 		$classes[] = 'sticky';
 
-	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ) ) ) {
+	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) ) {
 		$position = $loop['featured_image'];
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 
-		if ( in_array( $position, array( 'left', 'right', 'center' ) ) )
+		if ( in_array( $position, array( 'left', 'right', 'center' ), true ) )
 			$classes[] = 'image-inline';
-		elseif ( in_array( $position, array( 'above_headline', 'below_headline' ) ) )
+		elseif ( in_array( $position, array( 'above_headline', 'below_headline' ), true ) )
 			$classes[] = 'image-full';
-		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ) ) )
+		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ), true ) )
 			$classes[] = 'image-title';
 	}
 
@@ -353,14 +353,14 @@ function md_get_loop( $args = array() ) {
 			$has_children = $queried && ! empty( get_term_children( $queried->term_id, $queried->taxonomy ) );
 
 			if ( $has_children ) {
-				if ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ) ) )
+				if ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ), true ) )
 					$loop['by_category'] = true;
 
 				if ( ! empty( $loop['category']['hide_subcategory'] ) )
 					$loop['subcategory'] = true;
 			}
 		}
-		elseif ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ) ) )
+		elseif ( in_array( $loop['loop_type'], array( 'category_posts', 'category' ), true ) )
 			$loop['by_category'] = true;
 
 		if ( md_has_builder() )

@@ -59,6 +59,16 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( 12, md_post_type_field( array( 'loop', 'posts_per_page' ), 12, 'post' ) );
 	}
 
+	public function test_post_type_field_without_keys_returns_full_namespace() {
+		$post_type = array(
+			'loop' => array( 'posts_per_page' => 6 ),
+			'layout' => array( 'sidebar' => true )
+		);
+		md_test_set_option( 'marketers_delight', array( 'post' => $post_type ) );
+
+		$this->assertSame( $post_type, md_post_type_field( null, array(), 'post' ) );
+	}
+
 	// md_taxonomy_field() reads marketers_delight[$post_type][$taxonomy][...] —
 	// a distinct storage path one level deeper than the post-type tier, matching
 	// where md_save::save_taxonomy() writes taxonomy-tab submissions.
@@ -105,6 +115,31 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_term_meta( 42, array() );
 
 		$this->assertSame( 9, md_term_meta( array( 'loop', 'posts_per_page' ), 42, 9 ) );
+	}
+
+	public function test_meta_readers_accept_single_multiple_and_omitted_keys() {
+		$meta = array(
+			'profile' => array(
+				'name' => 'Alex'
+			)
+		);
+		md_test_set_post_meta( $meta );
+		md_test_set_term_meta( 42, $meta );
+		md_test_set_user_meta( 7, $meta );
+
+		$this->assertSame( $meta['profile'], md_post_meta( 'profile', 1 ) );
+		$this->assertSame( 'Alex', md_term_meta( array( 'profile', 'name' ), 42 ) );
+		$this->assertSame( $meta, md_user_meta( null, 7 ) );
+	}
+
+	public function test_post_meta_true_selects_queried_object_only() {
+		md_test_set_query( array( 'queried_object_id' => 42 ) );
+		md_test_set_post_meta( array( 'source' => 'current' ), 1 );
+		md_test_set_post_meta( array( 'source' => 'queried' ), 42 );
+
+		$this->assertSame( 'queried', md_post_meta( 'source', true ) );
+		$this->assertSame( 'current', md_post_meta( 'source', false ) );
+		$this->assertSame( 'current', md_post_meta( 'source', array( 42 ) ) );
 	}
 
 }

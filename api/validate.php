@@ -63,7 +63,7 @@ class md_validate {
 			$type = isset( $field['type'] ) ? $field['type'] : null;
 			$field_input = isset( $input[$key] ) ? $input[$key] : null;
 
-			if ( in_array( $type, array( 'group', 'builder' ) ) ) {
+			if ( in_array( $type, array( 'group', 'builder' ), true ) ) {
 				if ( ! isset( $input[$key] ) )
 					continue;
 
@@ -103,38 +103,44 @@ class md_validate {
 	 */
 
 	private function validate_field( $val, $fields ) {
-		$field = null;
 		$type = isset( $fields['type'] ) ? $fields['type'] : '';
 		$sub_options = isset( $fields['options'] ) ? $fields['options'] : array();
 
-		if ( in_array( $type, array( 'text', 'textarea' ) ) )
-			$field = $this->sanitize->text( $val, $fields );
+		switch ( $type ) {
+			case 'text':
+			case 'textarea':
+				return $this->sanitize->text( $val, $fields );
 
-		if ( in_array( $type, array( 'editor', 'code' ) ) )
-			$field = is_null( $val ) ? null : wp_kses_post( is_scalar( $val ) ? (string) $val : '' );
+			case 'editor':
+			case 'code':
+				return is_null( $val ) ? null : wp_kses_post( is_scalar( $val ) ? (string) $val : '' );
 
-		if ( in_array( $type, array( 'number', 'range' ) ) )
-			$field = $this->sanitize->number( $val );
+			case 'number':
+			case 'range':
+				return $this->sanitize->number( $val );
 
-		if ( in_array( $type, array( 'hidden', 'data' ) ) )
-			$field = sanitize_text_field( $val );
+			case 'hidden':
+			case 'data':
+				return sanitize_text_field( $val );
 
-		if ( $type == 'url' )
-			$field = $this->sanitize->url( $val );
+			case 'url':
+				return $this->sanitize->url( $val );
 
-		if ( $type == 'checkbox' )
-			$field = $this->sanitize->checkbox( $val, $fields );
+			case 'checkbox':
+				return $this->sanitize->checkbox( $val, $fields );
 
-		if ( in_array( $type, array( 'select', 'radio' ) ) )
-			$field = $this->sanitize->select( $val, $sub_options );
+			case 'select':
+			case 'radio':
+				return $this->sanitize->select( $val, $sub_options );
 
-		if ( $type == 'upload' )
-			$field = $this->sanitize->upload( $val, $fields );
+			case 'upload':
+				return $this->sanitize->upload( $val, $fields );
 
-		if ( $type == 'color' )
-			$field = $this->sanitize->color( $val, $fields );
+			case 'color':
+				return $this->sanitize->color( $val, $fields );
+		}
 
-		return $field;
+		return null;
 	}
 
 	/**

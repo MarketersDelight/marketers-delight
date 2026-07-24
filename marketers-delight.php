@@ -197,13 +197,16 @@ final class marketers_delight {
 		if ( is_admin() )
 			$this->activate_dropin();
 
-		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) )
-			if ( $_GET['md'] == 'compile' )
+		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) ) {
+			$compile = sanitize_key( wp_unslash( $_GET['md'] ) );
+
+			if ( $compile === 'compile' )
 				md_compile();
-			elseif ( $_GET['md'] == 'compile_css' )
+			elseif ( $compile === 'compile_css' )
 				md_compile_css();
-			elseif ( $_GET['md'] == 'compile_js' )
+			elseif ( $compile === 'compile_js' )
 				md_compile_js();
+		}
 	}
 
 	/**

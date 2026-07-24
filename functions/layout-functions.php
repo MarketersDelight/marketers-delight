@@ -7,7 +7,7 @@
  */
 
 function md_filter_template() {
-	return apply_filters( 'md_filter_has_template', true );
+	return apply_filters( 'md_filter_has_template', true ) !== false;
 }
 
 
@@ -26,7 +26,7 @@ function md_filter_template() {
 function md_has_content_box() {
 	$show = ! md_module( array( 'layout', 'content', 'remove' ) );
 
-	return apply_filters( 'md_filter_has_content_box', $show );
+	return (bool) apply_filters( 'md_filter_has_content_box', $show );
 }
 
 /**
@@ -78,7 +78,7 @@ function md_content_box_classes() {
 function md_has_sidebar( $args = array() ) {
 	$show = md_has_layout( 'sidebar', $args );
 
-	return apply_filters( 'md_filter_has_sidebar', $show, $args );
+	return (bool) apply_filters( 'md_filter_has_sidebar', $show, $args );
 }
 
 /**
@@ -90,7 +90,7 @@ function md_has_sidebar( $args = array() ) {
 function md_has_panel( $args = array() ) {
 	$show = md_has_layout( 'panel', $args );
 
-	return apply_filters( 'md_filter_has_panel', $show, $args );
+	return (bool) apply_filters( 'md_filter_has_panel', $show, $args );
 }
 
 
@@ -108,7 +108,7 @@ function md_has_panel( $args = array() ) {
 function md_has_footer() {
 	$show = ! md_module( array( 'layout', 'footer', 'remove' ) ) && ( md_has_footer_columns() || is_active_sidebar( 'footer-copy' ) );
 
-	return apply_filters( 'md_filter_has_footer', $show );
+	return (bool) apply_filters( 'md_filter_has_footer', $show );
 }
 
 /**
@@ -120,7 +120,7 @@ function md_has_footer() {
 function md_has_footer_columns() {
 	$show = ! empty( md_footer_columns() ) && ! md_module( array( 'layout', 'footer', 'columns' ) );
 
-	return apply_filters( 'md_filter_has_footer_columns', $show );
+	return (bool) apply_filters( 'md_filter_has_footer_columns', $show );
 }
 
 /**

@@ -23,20 +23,20 @@ class md_requests {
 		if ( isset( $_POST['action_type'] ) ) {
 			$action_type = sanitize_key( $_POST['action_type'] );
 
-			if ( $action_type == 'delete-dropin' )
+			if ( $action_type === 'delete-dropin' )
 				$this->delete_dropin();
-			elseif ( $action_type == 'reset-icons' ) {
+			elseif ( $action_type === 'reset-icons' ) {
 				$option = $this->reset_icons( md_setting_part( array( 'icons', 'custom_icons' ) ) );
 				md_update_setting_part( $option );
 			}
-			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ) ) ) {
+			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ), true ) ) {
 				$license = md_license_setting();
 
-				if ( $action_type == 'activate-license' )
+				if ( $action_type === 'activate-license' )
 					$license = $this->activate_license( $license_key, $license );
-				elseif ( $action_type == 'deactivate-license' )
+				elseif ( $action_type === 'deactivate-license' )
 					$license = $this->deactivate_license( $license_key, $license );
-				elseif ( $action_type == 'check-updates' )
+				elseif ( $action_type === 'check-updates' )
 					$license = $this->check_for_updates( $license );
 
 				if ( ! is_array( $license ) )
@@ -271,7 +271,7 @@ class md_requests {
 		$license = $this->check_license( $license );
 		$license_status = ! empty( $license['status'] ) ? $license['status'] : 'invalid';
 
-		if ( $license_status == 'valid' ) {
+		if ( $license_status === 'valid' ) {
 			$license_input = $this->license();
 			$response = $this->get_api( array(
 				'edd_action'  => 'get_version',

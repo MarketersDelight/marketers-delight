@@ -27,15 +27,15 @@
 		</div>
 		<?php if ( ! empty( $installed ) ) : ?>
 			<?php foreach ( $installed as $dropin => $fields ) :
-				$is_enabled = md_dropins_setting( array( 'installed', $dropin, 'status', 'enable' ) ) ? true : false;
+				$is_enabled = (bool) md_dropins_setting( array( 'installed', $dropin, 'status', 'enable' ) );
 				$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';
 				$colors = isset( $fields['colors'] ) ? explode( ',', trim( $fields['colors'] ) ) : array();
 				$bg_color = isset( $colors[0] ) ? $colors[0] : '';
 				$color = isset( $colors[1] ) ? $colors[1] : '';
-				$needs_plugin = ! empty( $fields['plugin_name'] ) && ! class_exists( $fields['plugin_class'] ) ? true : false;
+				$needs_plugin = ! empty( $fields['plugin_name'] ) && ! class_exists( $fields['plugin_class'] );
 				$dropin_name = esc_html( $fields['name'] );
 				$path = "$dropin/$dropin.php";
-				$has_updates = ! empty( $updates[$path] ) ? true : false;
+				$has_updates = ! empty( $updates[$path] );
 			?>
 				<div class="md-dropin md-tab-content active md-all <?php echo ( $is_enabled ? 'dropin-enabled' : 'dropin-inactive' ) . ( $has_updates ? ' dropin-has-updates' : '' ); ?>">
 					<?php if ( $has_updates ) : ?>

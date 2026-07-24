@@ -207,7 +207,7 @@ class md_admin {
 			if ( $screen->base == 'post' )
 				$vars = array_merge( $vars, array(
 					'screen' => 'post',
-					'is_sticky' => is_sticky() ? true : false,
+					'is_sticky' => (bool) is_sticky(),
 					'checked_attribute' => checked( is_sticky(), true, false ),
 					'label_text' => __( 'Stick this post to the front page', 'md' ),
 					'sticky_visibility_text' => __( 'Public, Sticky', 'md' )

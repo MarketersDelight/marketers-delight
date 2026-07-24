@@ -224,7 +224,7 @@ class md_layout extends md_api {
 			else
 				$current = md_post_type_field( array( 'layout', $id, $setting ), $default, $context['post_type'] );
 
-			$options[$setting] = $data['labels'][$current ? false : true];
+			$options[$setting] = $data['labels'][! $current];
 		}
 
 		return $options;

@@ -7,10 +7,10 @@
  */
 
 function md_post_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_string( $id ) || is_int( $id ) )
-		$id = $id;
-	else
-		$id = $id == true ? get_queried_object_id() : get_the_ID();
+	if ( $id === true )
+		$id = get_queried_object_id();
+	elseif ( ! is_string( $id ) && ! is_int( $id ) )
+		$id = get_the_ID();
 
 	$id = apply_filters( 'md_setting_id', $id );
 	$meta = get_post_meta( $id, 'marketers_delight', true );
@@ -19,8 +19,7 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
 		$meta = array();
 
 	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
+		$keys = (array) $keys;
 		foreach ( $keys as $key )
 			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
 	}
@@ -47,8 +46,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 		$meta = array();
 
 	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
+		$keys = (array) $keys;
 		foreach ( $keys as $key )
 			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
 	}
@@ -66,9 +64,7 @@ function md_post_type_field( $keys = null, $default = null, $post_type = null ) 
 	if ( ! isset( $post_type ) )
 		$post_type = md_get_post_type();
 
-	if ( is_string( $keys ) )
-		$keys = (array) $keys;
-
+	$keys = (array) $keys;
 	array_unshift( $keys, $post_type );
 
 	return md_setting( $keys, $default );
@@ -92,10 +88,9 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 	if ( ! $taxonomy )
 		return $default;
 
-	if ( is_string( $keys ) )
-		$keys = (array) $keys;
+	$keys = (array) $keys;
 
-	return md_setting( array_merge( (array) $post_type, (array) $taxonomy, (array) $keys ), $default );
+	return md_setting( array_merge( (array) $post_type, (array) $taxonomy, $keys ), $default );
 }
 
 /**
@@ -117,8 +112,7 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
 		$meta = array();
 
 	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
+		$keys = (array) $keys;
 		foreach ( $keys as $key )
 			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
 	}

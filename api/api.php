@@ -240,9 +240,9 @@ class md_api {
 
 		$get = get_current_screen();
 		$base = $get->base;
-		$is_post = in_array( $base, array( 'post', 'post-new' ) );
+		$is_post = in_array( $base, array( 'post', 'post-new' ), true );
 		$is_term = $base === 'term';
-		$is_user = in_array( $base, array( 'profile', 'user-edit' ) );
+		$is_user = in_array( $base, array( 'profile', 'user-edit' ), true );
 		$is_admin = ! ( $is_post || $is_term || $is_user );
 		$page = sanitize_key( $_GET['page']   ?? '' );
 		$md_tab = sanitize_key( $_GET['md_tab'] ?? '' );
@@ -830,12 +830,12 @@ class md_api {
 
 		// Load meta box
 
-		if ( in_array( $screen->base, array( 'post', 'post-new' ) ) && in_array( get_post_type(), md_post_type_meta() ) && method_exists( $this, "meta_$suffix" ) )
+		if ( in_array( $screen->base, array( 'post', 'post-new' ), true ) && in_array( get_post_type(), md_post_type_meta(), true ) && method_exists( $this, "meta_$suffix" ) )
 			call_user_func( array( $this, "meta_$suffix" ) );
 
 		// Load terms
 
-		if ( $screen->base == 'term' && in_array( $taxonomy, md_edit_term_meta() ) && method_exists( $this, "term_$suffix" ) )
+		if ( $screen->base === 'term' && in_array( $taxonomy, md_edit_term_meta(), true ) && method_exists( $this, "term_$suffix" ) )
 			call_user_func( array( $this, "term_$suffix" ) );
 
 		// Load admin pages

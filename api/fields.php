@@ -322,49 +322,49 @@ class md_fields {
 	 */
 
 	protected function field_type( $type, $name, $id, $option, $args ) {
-		if ( $type == 'text' )
+		if ( $type === 'text' )
 			$this->text( $name, $id, $option, $args );
 
-		if ( $type == 'textarea' )
+		if ( $type === 'textarea' )
 			$this->textarea( $name, $id, $option, $args );
 
-		if ( $type == 'number' )
+		if ( $type === 'number' )
 			$this->number( $name, $id, $option, $args );
 
-		if ( $type == 'code' )
+		if ( $type === 'code' )
 			$this->code( $name, $id, $option, $args );
 
-		if ( $type == 'url' )
+		if ( $type === 'url' )
 			$this->url( $name, $id, $option, $args );
 
-		if ( $type == 'checkbox' )
+		if ( $type === 'checkbox' )
 			$this->checkbox( $name, $id, $option, $args );
 
-		if ( $type == 'radio' )
+		if ( $type === 'radio' )
 			$this->radio( $name, $id, $option, $args );
 
-		if ( $type == 'select' )
+		if ( $type === 'select' )
 			$this->select( $name, $id, $option, $args );
 
-		if ( $type == 'range' )
+		if ( $type === 'range' )
 			$this->range( $name, $id, $option, $args );
 
-		if ( $type == 'color' )
+		if ( $type === 'color' )
 			$this->color( $name, $id, $option, $args );
 
-		if ( $type == 'editor' )
+		if ( $type === 'editor' )
 			$this->editor( $name, $id, $option, $args );
 
-		if ( in_array( $type, array( 'media', 'upload' ) ) )
+		if ( in_array( $type, array( 'media', 'upload' ), true ) )
 			$this->upload( $name, $id, $option, $args );
 
-		if ( $type == 'group' )
+		if ( $type === 'group' )
 			$this->group( $name, $id, $option, $args );
 
-		if ( $type == 'builder' )
+		if ( $type === 'builder' )
 			$this->builder( $name, $id, $option, $args );
 
-		if ( $type == 'terms' )
+		if ( $type === 'terms' )
 			$this->terms( $name, $id, $option, $args );
 	}
 

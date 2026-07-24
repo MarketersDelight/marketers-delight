@@ -182,7 +182,7 @@ class md_save {
 			$field = isset( $fields_schema[$key] ) ? $fields_schema[$key] : null;
 			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
 
-			if ( in_array( $type, array( 'group', 'builder' ) ) && is_array( $value ) ) {
+			if ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
 				$merged = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
 

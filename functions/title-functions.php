@@ -92,7 +92,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$media = md_has_media( $context, array( 'loop' => $loop ) );
 	$cover = md_cover( $context );
 	$has_sidebar = md_has_sidebar();
-	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width ) ? true : false;
+	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 
 	// Layout type classes
@@ -104,7 +104,7 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Featured image related classes
 
-	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images ) ) ) )
+	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images, true ) ) ) )
 		$classes = array_merge( $classes, md_get_image_position_classes( $media['position'] ) );
 
 	// Page cover classes

@@ -7,7 +7,7 @@
  */
 
 function md_has( $dropin ) {
-	return in_array( $dropin, md_get_dropins( 'active' ) );
+	return in_array( $dropin, md_get_dropins( 'active' ), true );
 }
 
 /**
@@ -112,5 +112,5 @@ function md_is_dropin_active( $path ) {
 	$active = md_get_dropins( 'active' );
 	$basename = str_replace( '.php', '', basename( $path ) );
 
-	return in_array( $basename, $active );
+	return in_array( $basename, $active, true );
 }

@@ -21,7 +21,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 
 		$media = $args['media'];
 
-		if ( isset( $args['show_image'] ) && ! in_array( $media['position'], $args['show_image'] ) )
+		if ( isset( $args['show_image'] ) && ! in_array( $media['position'], $args['show_image'], true ) )
 			return;
 	}
 	else $media = md_has_media( $context, $args );
@@ -89,15 +89,15 @@ function md_get_image_position_classes( $position ) {
 	$full_images = array( 'center', 'above_headline', 'below_headline' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
 
-	if ( in_array( $position, $title_images ) ) {
+	if ( in_array( $position, $title_images, true ) ) {
 		$classes[] = 'image-title';
 		$classes[] = str_replace( '_', '-', $position );
 	}
-	elseif ( in_array( $position, $inline_images ) ) {
+	elseif ( in_array( $position, $inline_images, true ) ) {
 		$classes[] = 'image-inline';
 		$classes[] = "image-{$position}";
 	}
-	elseif ( in_array( $position, $full_images ) ) {
+	elseif ( in_array( $position, $full_images, true ) ) {
 		$classes[] = 'image-full';
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 	}
@@ -166,7 +166,7 @@ function md_has_media( $context = 'post', $args = array() ) {
 	if ( $position == 'remove' )
 		return;
 
-	if ( ! empty( $args['loop']['content'] ) && $args['loop']['content'] === 'hide' && in_array( $position, array( 'left', 'right', 'center' ) ) )
+	if ( ! empty( $args['loop']['content'] ) && $args['loop']['content'] === 'hide' && in_array( $position, array( 'left', 'right', 'center' ), true ) )
 		return;
 
 	if (
@@ -175,10 +175,10 @@ function md_has_media( $context = 'post', $args = array() ) {
 	)
 		return;
 
-	if ( isset( $media['show_image'] ) && ! in_array( $position, $media['show_image'] ) )
+	if ( isset( $media['show_image'] ) && ! in_array( $position, $media['show_image'], true ) )
 		return;
 
-	if ( isset( $media['hide_image'] ) && in_array( $position, $media['hide_image'] ) )
+	if ( isset( $media['hide_image'] ) && in_array( $position, $media['hide_image'], true ) )
 		return;
 
 	return $media;
@@ -344,7 +344,7 @@ function md_has_header_cover( $context = null ) {
 
 	if (
 		( ( $context == 'post' && ( is_singular() || is_404() ) ) || $context == 'page' ) &&
-		! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ) )
+		! empty( $cover['position'] ) && in_array( $cover['position'], array( 'header_cover', 'header_cover_full' ), true )
 	)
 		return esc_attr( $cover['position'] );
 }
