@@ -19,12 +19,12 @@
                 {
                     "name": "Primary",
                     "slug": "primary",
-                    "color": "#43ff59"
+                    "color": "#AE2525"
                 },
                 {
                     "name": "Secondary",
                     "slug": "secondary",
-                    "color": "#a43cff"
+                    "color": "#2E2E2E"
                 },
                 {
                     "name": "Tertiary",
@@ -34,7 +34,7 @@
                 {
                     "name": "Border",
                     "slug": "border",
-                    "color": "#ff2f65"
+                    "color": "#CCCCCC"
                 },
                 {
                     "name": "Highlight",
@@ -60,11 +60,6 @@
                     "name": "White",
                     "slug": "white",
                     "color": "#FFFFFF"
-                },
-                {
-                    "name": "Test Custom Color",
-                    "slug": "test-custom-color",
-                    "color": "#49ccff"
                 }
             ]
         },

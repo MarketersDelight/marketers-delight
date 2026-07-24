@@ -86,7 +86,7 @@ class md_css {
 
 	protected function critical_keys() {
 		return apply_filters( 'md_critical_css_templates', array(
-			'style', 'font-icons', 'format', 'header', 'menus', 'buttons'
+			'style', 'header', 'menus', 'buttons', 'layout', 'title', 'page'
 		) );
 	}
 

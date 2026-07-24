@@ -1,16 +1,6 @@
 <?php
 
 /**
- * Page settings modules available across various admin screens.
- *
- * @since 6.0
- */
-
-function md_admin_settings() {
-	return apply_filters( 'md_admin_settings', array() );
-}
-
-/**
  * Default post type screens MD metaboxes are added to.
  *
  * @since 4.3.5
@@ -63,58 +53,6 @@ function md_register( $group = null ) {
 		return ! empty( $data[$group] ) ? $data[$group] : array();
 
 	return $data;
-}
-
-/**
- * A reverse list of admin settings locations by fields.
- *
- * @since 6.0
- */
-
-function md_admin_fields() {
-	$fields = array();
-	$settings = md_admin_settings();
-
-	foreach ( $settings as $setting => $options )
-		foreach ( $options as $field )
-			$fields[$field][] = $setting;
-
-	return $fields;
-}
-
-/**
- * Run this function to activate drop-ins to the MD Drop-ins
- * Manager. Not recommended for use outside of upgrader utilities.
- *
- * @since 5.4
- */
-
-function md_activate_dropin( $dropin ) {
-	$dropins = md_dropins_setting();
-
-	if ( empty( $dropins['installed'][$dropin] ) )
-		return false;
-
-	$dropins['installed'][$dropin]['status']['enable'] = true;
-
-	md_update_dropins( $dropins );
-}
-
-/**
- * Check if any given drop-in is active by looking up drop-in
- * file path (ex: pass `dropin-name/dropin-name.php` as $path).
- *
- * @since 5.4
- */
-
-function md_is_dropin_active( $path ) {
-	$active = md_get_dropins( 'active' );
-	$basename = str_replace( '.php', '', basename( $path ) );
-
-	if ( in_array( $basename, $active ) )
-		return true;
-
-	return false;
 }
 
 /**

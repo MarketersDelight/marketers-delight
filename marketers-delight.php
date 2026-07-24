@@ -39,7 +39,6 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/meta-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
-		require_once MD_DIR . 'functions/migrations.php';
 		require_once MD_DIR . 'api/sanitize.php';
 		require_once MD_DIR . 'api/validate.php';
 		require_once MD_DIR . 'api/save.php';
@@ -543,8 +542,6 @@ final class marketers_delight {
 	 */
 
 	public function dropins() {
-		md_migrate_dropins_storage();
-
 		$dropins = md_get_dropins( 'active' );
 
 		if ( empty( $dropins ) )
