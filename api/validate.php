@@ -113,7 +113,10 @@ class md_validate {
 
 			case 'editor':
 			case 'code':
-				return is_null( $val ) ? null : wp_kses_post( is_scalar( $val ) ? (string) $val : '' );
+				if ( is_null( $val ) )
+					return null;
+				$val = is_scalar( $val ) ? (string) $val : '';
+				return wp_kses_post( $val );
 
 			case 'number':
 			case 'range':

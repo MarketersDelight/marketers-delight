@@ -1,20 +1,20 @@
 <style type="text/css">
 
 :root {
-	--md-small: <?php echo $this->fluid( $spacers['small']['desktop'], $spacers['small']['mobile'] ); ?>;
-	--md-third: <?php echo $this->fluid( $spacers['third']['desktop'], $spacers['third']['mobile'] ); ?>;
-	--md-half: <?php echo $this->fluid( $spacers['half']['desktop'], $spacers['half']['mobile'] ); ?>;
-	--md-single: <?php echo $this->fluid( $spacers['single']['desktop'], $spacers['single']['mobile'] ); ?>;
-	--md-mid: <?php echo $this->fluid( $spacers['mid']['desktop'], $spacers['mid']['mobile'] ); ?>;
-	--md-double: <?php echo $this->fluid( $spacers['double']['desktop'], $spacers['double']['mobile'] ); ?>;
-	--md-triple: <?php echo $this->fluid( $spacers['triple']['desktop'], $spacers['triple']['mobile'] ); ?>;
-	--md-quad: <?php echo $this->fluid( $spacers['quad']['desktop'], $spacers['quad']['mobile'] ); ?>;
+	--md-small: <?php echo $spacers['small']['desktop']; ?>px;
+	--md-third: <?php echo $spacers['third']['desktop']; ?>px;
+	--md-half: <?php echo $spacers['half']['desktop']; ?>px;
+	--md-single: <?php echo $spacers['single']['desktop']; ?>px;
+	--md-mid: <?php echo $spacers['mid']['desktop']; ?>px;
+	--md-double: <?php echo $spacers['double']['desktop']; ?>px;
+	--md-triple: <?php echo $spacers['triple']['desktop']; ?>px;
+	--md-quad: <?php echo $spacers['quad']['desktop']; ?>px;
 
-	--md-single-x: <?php echo $this->fluid( $spacers['single']['desktop'], $spacers['half']['mobile'], 600 ); ?>;
-	--md-mid-x: <?php echo $this->fluid( $spacers['mid']['desktop'], $spacers['half']['mobile'], 600 ); ?>;
-	--md-double-x: <?php echo $this->fluid( $spacers['double']['desktop'], $spacers['half']['mobile'], 600 ); ?>;
-	--md-triple-x: <?php echo $this->fluid( $spacers['triple']['desktop'], $spacers['half']['mobile'], 600 ); ?>;
-	--md-quad-x: <?php echo $this->fluid( $spacers['quad']['desktop'], $spacers['half']['mobile'], 600 ); ?>;
+	--md-single-x: <?php echo $this->fluid( $spacers['single']['desktop'], $spacers['half']['desktop'], 600 ); ?>;
+	--md-mid-x: <?php echo $this->fluid( $spacers['mid']['desktop'], $spacers['half']['desktop'], 600 ); ?>;
+	--md-double-x: <?php echo $this->fluid( $spacers['double']['desktop'], $spacers['half']['desktop'], 600 ); ?>;
+	--md-triple-x: <?php echo $this->fluid( $spacers['triple']['desktop'], $spacers['half']['desktop'], 600 ); ?>;
+	--md-quad-x: <?php echo $this->fluid( $spacers['quad']['desktop'], $spacers['half']['desktop'], 600 ); ?>;
 
 	--md-width-site: <?php echo $site_width; ?>px;
 	--md-width-content: <?php echo $content_width; ?>px;

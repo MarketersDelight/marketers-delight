@@ -301,12 +301,11 @@ class md_css {
 		$desktop_width = $desktop_width ?: $this->site_width;
 		$floor_width = $floor_width ?: ( $floor * $desktop_width / $desktop );
 
-		$slope = ( $desktop - $floor ) / ( $desktop_width - $floor_width );
-		$intercept = round( $floor - ( $slope * $floor_width ), 2 );
-		$vw = round( $slope * 100, 2 ) . 'vw';
-		$preferred = $intercept ? $intercept . 'px + ' . $vw : $vw;
+		$vw = round( ( $desktop - $floor ) / ( $desktop_width - $floor_width ) * 100, 6 );
+		$px = round( $floor - ( $vw * $floor_width / 100 ), 5 );
+		$preferred = $px ? "{$px}px + {$vw}vw" : "{$vw}vw";
 
-		return 'clamp(' . $floor . 'px, ' . $preferred . ', ' . $desktop . 'px)';
+		return "clamp({$floor}px, {$preferred}, {$desktop}px)";
 	}
 
 	/**
