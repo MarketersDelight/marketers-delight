@@ -176,21 +176,6 @@ triggers: function() {
 		}
 	}
 },
-sticky: function( items ) {
-	if ( ! items ) return;
-	if ( typeof items === 'string' )
-		items = [items];
-	items.forEach( function( selector ) {
-		const el = document.querySelector( selector );
-		if ( ! el ) return;
-		const update = function() {
-			el.classList.toggle( 'stuck', el.getBoundingClientRect().top <= 0 );
-		};
-		update();
-		window.addEventListener( 'scroll', update, { passive: true } );
-		window.addEventListener( 'resize', update );
-	});
-},
 closeOverlay: function( name, parent ) {
 	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
 		document.querySelector( parent ).classList.remove( 'toggle-' + name );

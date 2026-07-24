@@ -14,6 +14,9 @@ function md_header_classes() {
 		md_has_header_elements()
 	) ) );
 
+	if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
+		$classes[] = 'sticky';
+
 	if ( $has > 1 )
 		$classes[] = md_setting( array( 'header', 'layout' ), 'left' );
 	else

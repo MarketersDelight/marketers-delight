@@ -21,7 +21,7 @@
 	<?php endif; ?>
 }
 
-.header.stuck {
+.header.sticky {
 	position: sticky;
 		inset-block-start: 0;
 		inset-inline: 0;
@@ -202,7 +202,7 @@
 }
 
 @media (min-width: 600px) {
-		.admin-bar .header.stuck { padding-block-start: var(--wp-admin--admin-bar--height); }
+		.admin-bar .header.sticky { inset-block-start: var(--wp-admin--admin-bar--height); }
 }
 
 @media (max-width: 600px) {

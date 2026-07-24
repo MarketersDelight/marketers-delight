@@ -144,21 +144,6 @@ triggers: function() {
 					}
 	}
 },
-sticky: function( items ) {
-	if ( ! items ) return;
-	if ( typeof items === 'string' )
-		items = [items];
-	items.forEach( function( selector ) {
-		const el = document.querySelector( selector );
-		if ( ! el ) return;
-		const update = function() {
-			el.classList.toggle( 'stuck', el.getBoundingClientRect().top <= 0 );
-		};
-		update();
-		window.addEventListener( 'scroll', update, { passive: true } );
-		window.addEventListener( 'resize', update );
-	});
-},
 closeOverlay: function( name, parent ) {
 	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
 		document.querySelector( parent ).classList.remove( 'toggle-' + name );
@@ -204,6 +189,40 @@ scrollerNav: function() {
 		updateArrows();
 	}
 },
+onScroll: function() {
+	let pos = 0, ticking = false;
+	window.onscroll = function( e ) {
+		pos = window.scrollY;
+		if ( ! ticking ) {
+			window.requestAnimationFrame( function() {
+				const contentBox = document.getElementById( 'main' );
+				if ( contentBox == null ) return;
+				const contentBoxOffsetTop = contentBox.offsetTop,
+					content = document.getElementById( 'the_content' );
+				if ( content == null ) return;
+var toc = document.getElementById( 'table_of_contents' );
+if ( toc === null ) return;
+var active = -1,
+	tocItems = toc.querySelectorAll( '.toc-item' ),
+	headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+for ( var i = 0; i < headings.length; i++ )
+	if ( headings[i].offsetTop + contentBoxOffsetTop <= pos + 20 )
+		active = i;
+for ( var c = 0; c < tocItems.length; c++ ) {
+	tocItems[c].classList.remove( 'active' );
+	tocItems[c].classList.remove( 'child-active' );
+}
+if ( active >= 0 && tocItems[active] ) {
+	tocItems[active].classList.add( 'active' );
+	if ( tocItems[active].parentNode.classList.contains( 'toc-sublist' ) )
+		tocItems[active].parentNode.parentNode.classList.add( 'child-active' );
+}
+				ticking = false;
+			});
+		}
+		ticking = true;
+	}
+},
 floatingBars: {
 	init: function( floatingBars ) {
 		this.opened = this.showing = false;
@@ -242,8 +261,6 @@ floatingBars: {
 			el.classList.remove( 'hide' );
 			el.classList.add( 'active' );
 			MD.floatingBars.showing = id;
-			if ( el.classList.contains( 'sticky' ) )
-				MD.sticky( '#' + id );
 			delete MD.floatingBars.data[id];
 		},
 		percent: function() {
@@ -469,5 +486,55 @@ footnotes: function() {
 			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
 		}
 	}
+},
+tableOfContents: function() {
+	var toc = document.getElementById( 'table_of_contents' );
+	if ( ! toc )
+		return;
+	var	content = document.getElementById( 'the_content' ),
+		labels = toc.querySelectorAll( '.toc-item-label' ),
+		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+	if ( toc.classList.contains( 'sticky' ) ) {
+		var threshold = toc.getBoundingClientRect().top + window.scrollY;
+		var updateSticky = function() {
+			toc.classList.toggle( 'stuck', window.scrollY >= threshold );
+		};
+		updateSticky();
+		window.addEventListener( 'scroll', updateSticky, { passive: true } );
+	}
+	function scrollTo( target ) {
+		var inEntry = !! toc.closest( '.entry' ),
+			preStuck = inEntry && ! toc.classList.contains( 'stuck' );
+		if ( preStuck ) toc.classList.add( 'stuck' );
+		var top = 0, el = target;
+		while ( el ) { top += el.offsetTop; el = el.offsetParent; }
+		var offset = inEntry ? toc.clientHeight : 0;
+		if ( preStuck ) toc.classList.remove( 'stuck' );
+		window.scrollTo({ top: top - offset, behavior: 'smooth' });
+	}
+	for ( var i = 0; i < labels.length; i++ )
+		headings[i].setAttribute( 'id', labels[i].getAttribute( 'href' ).slice( 1 ) );
+	toc.addEventListener( 'click', function( e ) {
+		var label = e.target.closest( '.toc-item-label' );
+		if ( ! label ) return;
+		e.preventDefault();
+		var id = label.getAttribute( 'href' ).slice( 1 ),
+			target = document.getElementById( id );
+		if ( ! target ) return;
+		toc.classList.remove( 'open' );
+		scrollTo( target );
+		window.history.pushState( {}, '', '#' + id );
+	} );
+	toc.querySelector( '.widget-title' ).onclick = function() { toc.classList.toggle( 'open' ); };
+	if ( 'scrollRestoration' in history )
+		history.scrollRestoration = 'manual';
+	window.addEventListener( 'popstate', function() {
+		var hash = window.location.hash;
+		if ( hash ) {
+			var target = document.getElementById( hash.slice( 1 ) );
+			if ( target ) scrollTo( target );
+		}
+		else window.scrollTo({ top: 0, behavior: 'smooth' });
+	} );
 },
 }

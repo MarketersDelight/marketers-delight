@@ -282,13 +282,6 @@ final class marketers_delight {
 		if ( has_action( 'md_hook_js_onscroll' ) )
 			wp_add_inline_script( 'marketers-delight', "MD.onScroll();" );
 
-		$sticky = apply_filters( 'md_filter_sticky_elements', array() );
-		if ( md_setting( array( 'header', 'display', 'sticky' ) ) )
-			$sticky[] = '.header';
-
-		if ( ! empty( $sticky ) )
-			wp_add_inline_script( 'marketers-delight', 'MD.sticky(' . wp_json_encode( $sticky ) . ');' );
-
 		if ( md_has_panel() )
 			wp_add_inline_script( 'marketers-delight', "MD.closeOverlay( 'panel', '.has-panel' );" );
 	}
