@@ -86,6 +86,7 @@ final class marketers_delight {
 		add_action( 'init', array( $this, 'wp_init' ) );
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
+		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
@@ -173,6 +174,24 @@ final class marketers_delight {
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
+	}
+
+	/**
+	 * Recompile all assets after the theme is uploaded via
+	 * manual installation or upgrade.
+	 *
+	 * @since 6.0
+	 */
+
+	public function compile_on_upgrade( $upgrader, $options ) {
+		if ( ( $options['type'] ?? '' ) !== 'theme' )
+			return;
+
+		$themes = (array) ( $options['themes'] ?? array() );
+		$themes[] = $upgrader->result['destination_name'] ?? '';
+
+		if ( in_array( get_template(), $themes, true ) )
+			md_compile();
 	}
 
 	/**

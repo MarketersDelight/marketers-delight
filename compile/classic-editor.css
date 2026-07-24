@@ -2,19 +2,19 @@
 	$CLASSIC_EDITOR
 \*------------------------------*/
 :root {
-	--md-small: clamp(4px, 0.42vw, 5px);
-	--md-third: clamp(7px, 0.92vw, 11px);
-	--md-half: clamp(11px, 1.33vw, 16px);
-	--md-single: clamp(21px, 2.67vw, 32px);
-	--md-mid: clamp(32px, 4vw, 48px);
-	--md-double: clamp(42px, 5.33vw, 64px);
-	--md-triple: clamp(63px, 8vw, 96px);
-	--md-quad: clamp(84px, 10.67vw, 128px);
-	--md-single-x: clamp(11px, -10px + 3.5vw, 32px);
-	--md-mid-x: clamp(11px, -26px + 6.17vw, 48px);
-	--md-double-x: clamp(11px, -42px + 8.83vw, 64px);
-	--md-triple-x: clamp(11px, -74px + 14.17vw, 96px);
-	--md-quad-x: clamp(11px, -106px + 19.5vw, 128px);
+	--md-small: 5px;
+	--md-third: 11px;
+	--md-half: 16px;
+	--md-single: 32px;
+	--md-mid: 48px;
+	--md-double: 64px;
+	--md-triple: 96px;
+	--md-quad: 128px;
+	--md-single-x: clamp(16px, 2.666667vw, 32px);
+	--md-mid-x: clamp(16px, -16px + 5.333333vw, 48px);
+	--md-double-x: clamp(16px, -32px + 8vw, 64px);
+	--md-triple-x: clamp(16px, -64px + 13.333333vw, 96px);
+	--md-quad-x: clamp(16px, -96px + 18.666667vw, 128px);
 	--md-width-site: 1200px;
 	--md-width-content: 768px;
 	--md-width-post: 672px;
@@ -29,9 +29,9 @@
 	--md-box-shadow-huge: 0 16px 48px rgba(0, 0, 0, 0.20);
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
-	--md-font-size: clamp(18px, 1.67vw, 20px);
+	--md-font-size: clamp(18px, 1.666667vw, 20px);
 	--md-font-size-sm: 18px;
-	--md-line-height: clamp(29px, 2.67vw, 32px);
+	--md-line-height: clamp(29px, 2.666667vw, 32px);
 	--md-line-height-sm: 29px;
 	--md-bold: bold;
 	--md-huge: 72px;
@@ -148,26 +148,26 @@ code, pre {
 }
 h1, .h1, .wp-block-post-title, .h1-size {
 	font-size: clamp(36px, 4vw, 48px);
-	line-height: clamp(47px, 5.17vw, 62px);
+	line-height: clamp(47px, 5.166667vw, 62px);
 }
 h2, .h2, .h2-size {
-	font-size: clamp(33px, 3.42vw, 41px);
-	line-height: clamp(45px, 4.58vw, 55px);
+	font-size: clamp(33px, 3.416667vw, 41px);
+	line-height: clamp(45px, 4.583333vw, 55px);
 }
 h3, .h3, .h3-size {
-	font-size: clamp(29px, 2.83vw, 34px);
+	font-size: clamp(29px, 2.833333vw, 34px);
 	line-height: clamp(41px, 4vw, 48px);
 }
 h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size {
-	font-size: clamp(25px, 2.42vw, 29px);
-	line-height: clamp(36px, 3.42vw, 41px);
+	font-size: clamp(25px, 2.416667vw, 29px);
+	line-height: clamp(36px, 3.416667vw, 41px);
 }
 h5, .h5, .h5-size {
 	font-size: clamp(21px, 2vw, 24px);
-	line-height: clamp(33px, 3.08vw, 37px);
+	line-height: clamp(33px, 3.083333vw, 37px);
 }
 h6, .h6, .h6-size {
-	font-size: clamp(19px, 1.83vw, 22px);
+	font-size: clamp(19px, 1.833333vw, 22px);
 	line-height: clamp(29px, 2.75vw, 33px);
 }
 :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a {
