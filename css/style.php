@@ -14,6 +14,9 @@
 if ( locate_template( 'css/fonts.php' ) )
 	include locate_template( 'css/fonts.php' );
 
+if ( locate_template( 'css/font-icons.php' ) )
+	include locate_template( 'css/font-icons.php' );
+
 include locate_template( 'css/--vars.php' );
 ?>
 

@@ -109,7 +109,6 @@ class md_css {
 	protected function css_files() {
 		$templates = array(
 			'style' => locate_template( 'css/style.php' ),
-			'font-icons' => locate_template( 'css/font-icons.php' ),
 			'format' => locate_template( 'css/format.php' ),
 			'buttons' => locate_template( 'css/buttons.php' ),
 			'forms' => locate_template( 'css/forms.php' ),
@@ -438,7 +437,7 @@ class md_css {
 			echo "\n\n";
 		}
 
-		if ( isset( $this->files[$file]['templates']['font-icons'] ) )
+		if ( in_array( $file, array( 'style', 'font-icons' ) ) )
 			$this->icons_css();
 	}
 

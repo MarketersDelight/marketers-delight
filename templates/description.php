@@ -6,7 +6,7 @@ echo '<div class="description">';
 
 do_action( "md_hook_{$context}_description_top" );
 
-echo wpautop( apply_filters( "md_{$context}_description", $description ) );
+echo wpautop( wp_kses_post( apply_filters( "md_{$context}_description", $description ) ) );
 
 if ( isset( $args['show_cta'] ) )
 	md_cta( $context );
