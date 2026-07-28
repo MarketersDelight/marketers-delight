@@ -359,18 +359,19 @@ class md_css {
 	public function templates( $file ) {
 		$g = 1.618;
 		$design = new md_design;
-		$defaults = $design->defaults();
 		$values = $design->values();
 		$theme_url = get_stylesheet_directory_uri();
 		$queries = array( 600 => 'mobile' );
 
 		$colors = $values['colors'];
 		$typography = $values['typography'];
+		$fonts = $design->fonts( $values );
+		$effects = $design->effects();
 		$header = $values['header'];
 		$logo = $values['logo'];
 		$sidebar = $values['sidebar'];
 
-		$widths = $design->widths();
+		$widths = $design->widths( $values );
 		$site_width = $this->site_width = $widths['site_width'];
 		$site_width_wide = $widths['site_width_wide'];
 		$content_width = $widths['content_width'];
@@ -379,10 +380,10 @@ class md_css {
 		$panel_width = $widths['panel_width'];
 
 		$font_size = $values['typography']['body']['font_size'];
-		$font_family = $values['typography']['body']['font_family'];
+		$font_family = $fonts['body']['font_family'];
 		$line_height = $values['typography']['body']['line_height'];
-		$font_weight = ! empty( $typography['body']['font_weight'] ) ? $typography['body']['font_weight'] : 'normal';
-		$bold = ! empty( $typography['body']['bold'] ) ? $typography['body']['bold'] : 'bold';
+		$font_weight = $fonts['body']['font_weight'];
+		$bold = $fonts['body']['bold'];
 
 		$h1 = $values['typography']['h1'];
 		$h2 = $values['typography']['h2'];
@@ -391,10 +392,10 @@ class md_css {
 		$h5 = $values['typography']['h5'];
 		$h6 = $values['typography']['h6'];
 
-		$h1_font_family = ! empty( $h1['font_family'] ) ? $h1['font_family'] : $font_family;
-		$h1_font_weight = ! empty( $h1['font_weight'] ) ? $h1['font_weight'] : $bold;
+		$h1_font_family = $fonts['heading']['font_family'];
+		$h1_font_weight = $fonts['heading']['font_weight'];
 
-		$spacers = $design->spacers();
+		$spacers = $design->spacers( $values );
 		$small = $spacers['small']['desktop'];
 		$third = $spacers['third']['desktop'];
 		$half = $spacers['half']['desktop'];
@@ -403,6 +404,7 @@ class md_css {
 		$double = $spacers['double']['desktop'];
 		$triple = $spacers['triple']['desktop'];
 		$quad = $spacers['quad']['desktop'];
+		$alignwide_breakout = $content_width > 0 ? ( $quad / $content_width ) * 100 : 0;
 
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );

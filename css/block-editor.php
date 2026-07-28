@@ -38,7 +38,7 @@ body.expanded .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
 .editor-styles-wrapper .is-layout-flow > .alignright { margin-inline: <?php echo $single; ?>px 0; }
 
 @media (min-width: 900px) {
-	.expanded.editor-styles-wrapper .wp-block-group .alignwide { margin-inline: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+	.expanded.editor-styles-wrapper .wp-block-group .alignwide { margin-inline: -<?php echo $alignwide_breakout; ?>%; }
 	.expanded.editor-styles-wrapper .wp-block-group .alignright {
 		margin-inline-end: -50vw;
 		right: 50%;

@@ -72,8 +72,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 }
 
 @media (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
-	.expanded :is(.alignwide, .alignright.wrap-small) { margin-inline-end: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
-	.expanded :is(.alignwide, .alignleft.wrap-small) { margin-inline-start: -<?php echo ( $quad / $content_width ) * 100; ?>%; }
+	.expanded :is(.alignwide, .alignright.wrap-small) { margin-inline-end: -<?php echo $alignwide_breakout; ?>%; }
+	.expanded :is(.alignwide, .alignleft.wrap-small) { margin-inline-start: -<?php echo $alignwide_breakout; ?>%; }
 }
 
 @media (min-width: <?php echo $site_width; ?>px) {

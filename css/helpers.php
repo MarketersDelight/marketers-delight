@@ -107,7 +107,7 @@ cite, .tiny {
 /* SHADOWS */
 
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
-.shadow-small { box-shadow: var(--md-box-shadow); }
+.shadow-small { box-shadow: var(--md-box-shadow-small); }
 .shadow-medium { box-shadow: var(--md-box-shadow-medium); }
 .shadow-large { box-shadow: var(--md-box-shadow-large); }
 .shadow-huge { box-shadow: var(--md-box-shadow-huge); }

@@ -7,7 +7,7 @@
  * templates and isn't covered here; its behavior depends on the same
  * get_context() output already exercised through get_field()/module().
  *
- * @since 6.1
+ * @since 6.0
  */
 
 class FieldsContextTest extends MD_TestCase {

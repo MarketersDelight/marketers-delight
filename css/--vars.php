@@ -1,6 +1,27 @@
 <style type="text/css">
 
 :root {
+	--md-font-size: <?php echo $this->fluid( $font_size['desktop'], $font_size['mobile'] ); ?>;
+	--md-font-size-sm: <?php echo $font_size['mobile']; ?>px;
+	--md-line-height: <?php echo $this->fluid( $line_height['desktop'], $line_height['mobile'] ); ?>;
+	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
+	--md-bold: <?php echo $bold; ?>;
+
+	--md-huge: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
+	--md-huge-line-height: <?php echo $typography['huge']['line_height']['desktop']; ?>px;
+	--md-h1: <?php echo $h1['font_size']['desktop']; ?>px;
+	--md-h1-line-height: <?php echo $h1['line_height']['desktop']; ?>px;
+	--md-h2: <?php echo $h2['font_size']['desktop']; ?>px;
+	--md-h2-line-height: <?php echo $h2['line_height']['desktop']; ?>px;
+	--md-h3: <?php echo $h3['font_size']['desktop']; ?>px;
+	--md-h3-line-height: <?php echo $h3['line_height']['desktop']; ?>px;
+	--md-h4: <?php echo $h4['font_size']['desktop']; ?>px;
+	--md-h4-line-height: <?php echo $h4['line_height']['desktop']; ?>px;
+	--md-h5: <?php echo $h5['font_size']['desktop']; ?>px;
+	--md-h5-line-height: <?php echo $h5['line_height']['desktop']; ?>px;
+	--md-h6: <?php echo $h6['font_size']['desktop']; ?>px;
+	--md-h6-line-height: <?php echo $h6['line_height']['desktop']; ?>px;
+
 	--md-small: <?php echo $spacers['small']['desktop']; ?>px;
 	--md-third: <?php echo $spacers['third']['desktop']; ?>px;
 	--md-half: <?php echo $spacers['half']['desktop']; ?>px;
@@ -23,36 +44,14 @@
 	--md-width-panel: <?php echo $panel_width; ?>px;
 	--md-width-site-wide: <?php echo $site_width_wide; ?>px;
 
-	--md-border-radius: 8px;
-	--md-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-	--md-box-shadow-small: 0 1px 3px rgba(0, 0, 0, 0.15);
-	--md-box-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.12);
-	--md-box-shadow-large: 0 8px 32px rgba(0, 0, 0, 0.15);
-	--md-box-shadow-huge: 0 16px 48px rgba(0, 0, 0, 0.20);
-
+	--md-border-radius: <?php echo $effects['border_radius']; ?>;
+	--md-box-shadow: <?php echo $effects['box_shadow']['default']; ?>;
+	--md-box-shadow-small: <?php echo $effects['box_shadow']['small']; ?>;
+	--md-box-shadow-medium: <?php echo $effects['box_shadow']['medium']; ?>;
+	--md-box-shadow-large: <?php echo $effects['box_shadow']['large']; ?>;
+	--md-box-shadow-huge: <?php echo $effects['box_shadow']['huge']; ?>;
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
-
-	--md-font-size: <?php echo $this->fluid( $font_size['desktop'], $font_size['mobile'] ); ?>;
-	--md-font-size-sm: <?php echo $font_size['mobile']; ?>px;
-	--md-line-height: <?php echo $this->fluid( $line_height['desktop'], $line_height['mobile'] ); ?>;
-	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
-	--md-bold: <?php echo $bold; ?>;
-
-	--md-huge: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
-	--md-huge-line-height: <?php echo $typography['huge']['line_height']['desktop']; ?>px;
-	--md-h1: <?php echo $h1['font_size']['desktop']; ?>px;
-	--md-h1-line-height: <?php echo $h1['line_height']['desktop']; ?>px;
-	--md-h2: <?php echo $h2['font_size']['desktop']; ?>px;
-	--md-h2-line-height: <?php echo $h2['line_height']['desktop']; ?>px;
-	--md-h3: <?php echo $h3['font_size']['desktop']; ?>px;
-	--md-h3-line-height: <?php echo $h3['line_height']['desktop']; ?>px;
-	--md-h4: <?php echo $h4['font_size']['desktop']; ?>px;
-	--md-h4-line-height: <?php echo $h4['line_height']['desktop']; ?>px;
-	--md-h5: <?php echo $h5['font_size']['desktop']; ?>px;
-	--md-h5-line-height: <?php echo $h5['line_height']['desktop']; ?>px;
-	--md-h6: <?php echo $h6['font_size']['desktop']; ?>px;
-	--md-h6-line-height: <?php echo $h6['line_height']['desktop']; ?>px;
 
 	--md-color-background: <?php echo $colors['palette']['background']; ?>;
 	--md-color-surface: <?php echo $colors['palette']['surface']; ?>;

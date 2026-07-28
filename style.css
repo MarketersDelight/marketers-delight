@@ -68,6 +68,25 @@
 }
 .md-icon.icon-data:before { content: attr(data-md-icon); }
 :root {
+	--md-font-size: clamp(18px, 1.666667vw, 20px);
+	--md-font-size-sm: 18px;
+	--md-line-height: clamp(29px, 2.666667vw, 32px);
+	--md-line-height-sm: 29px;
+	--md-bold: bold;
+	--md-huge: 72px;
+	--md-huge-line-height: 96px;
+	--md-h1: 48px;
+	--md-h1-line-height: 62px;
+	--md-h2: 41px;
+	--md-h2-line-height: 55px;
+	--md-h3: 36px;
+	--md-h3-line-height: 50px;
+	--md-h4: 31px;
+	--md-h4-line-height: 43px;
+	--md-h5: 27px;
+	--md-h5-line-height: 42px;
+	--md-h6: 23px;
+	--md-h6-line-height: 35px;
 	--md-small: 5px;
 	--md-third: 11px;
 	--md-half: 16px;
@@ -95,25 +114,6 @@
 	--md-box-shadow-huge: 0 16px 48px rgba(0, 0, 0, 0.20);
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
-	--md-font-size: clamp(18px, 1.666667vw, 20px);
-	--md-font-size-sm: 18px;
-	--md-line-height: clamp(29px, 2.666667vw, 32px);
-	--md-line-height-sm: 29px;
-	--md-bold: bold;
-	--md-huge: 72px;
-	--md-huge-line-height: 96px;
-	--md-h1: 48px;
-	--md-h1-line-height: 62px;
-	--md-h2: 41px;
-	--md-h2-line-height: 55px;
-	--md-h3: 34px;
-	--md-h3-line-height: 48px;
-	--md-h4: 29px;
-	--md-h4-line-height: 41px;
-	--md-h5: 24px;
-	--md-h5-line-height: 37px;
-	--md-h6: 22px;
-	--md-h6-line-height: 33px;
 	--md-color-background: #FFFFFF;
 	--md-color-surface: #F0F0F0;
 	--md-color-primary: #AE2525;
@@ -230,24 +230,24 @@ h1, .h1, .wp-block-post-title, .h1-size {
 	line-height: clamp(47px, 5.166667vw, 62px);
 }
 h2, .h2, .h2-size {
-	font-size: clamp(33px, 3.416667vw, 41px);
-	line-height: clamp(45px, 4.583333vw, 55px);
+	font-size: clamp(32px, 3.416667vw, 41px);
+	line-height: clamp(43px, 4.583333vw, 55px);
 }
 h3, .h3, .h3-size {
-	font-size: clamp(29px, 2.833333vw, 34px);
-	line-height: clamp(41px, 4vw, 48px);
+	font-size: clamp(29px, 3vw, 36px);
+	line-height: clamp(41px, 4.166667vw, 50px);
 }
 h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size {
-	font-size: clamp(25px, 2.416667vw, 29px);
-	line-height: clamp(36px, 3.416667vw, 41px);
+	font-size: clamp(25px, 2.583333vw, 31px);
+	line-height: clamp(36px, 3.583333vw, 43px);
 }
 h5, .h5, .h5-size {
-	font-size: clamp(21px, 2vw, 24px);
-	line-height: clamp(33px, 3.083333vw, 37px);
+	font-size: clamp(23px, 2.25vw, 27px);
+	line-height: clamp(36px, 3.5vw, 42px);
 }
 h6, .h6, .h6-size {
-	font-size: clamp(19px, 1.833333vw, 22px);
-	line-height: clamp(29px, 2.75vw, 33px);
+	font-size: clamp(20px, 1.916667vw, 23px);
+	line-height: clamp(30px, 2.916667vw, 35px);
 }
 :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a {
 	color: var(--md-headline-links);
@@ -948,8 +948,8 @@ select {
 	width: 100%;
 }
 .site-name {
-		font-size: 29px;
-		line-height: 32px;
+		font-size: 31px;
+		line-height: 34px;
 }
 .site-name, .site-name a, .site-name a:hover { color: #1E1E1E; }
 .tagline {
@@ -2019,7 +2019,7 @@ cite, .tiny {
 .border-bottom { border-width: 0 0 1px; }
 /* SHADOWS */
 .shadow, .wp-block-image.shadow img { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10); }
-.shadow-small { box-shadow: var(--md-box-shadow); }
+.shadow-small { box-shadow: var(--md-box-shadow-small); }
 .shadow-medium { box-shadow: var(--md-box-shadow-medium); }
 .shadow-large { box-shadow: var(--md-box-shadow-large); }
 .shadow-huge { box-shadow: var(--md-box-shadow-huge); }
@@ -2331,7 +2331,7 @@ cite, .tiny {
 .bar-content .title {
 	font-size: var(--md-h5);
 	font-weight: 700;
-	line-height: 37px;
+	line-height: 42px;
 }
 .bar-content .description {
 	font-size: var(--md-font-size-sm);

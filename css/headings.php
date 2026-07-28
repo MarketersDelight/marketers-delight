@@ -45,12 +45,13 @@ foreach ( $headings as $attribute => $selector ) {
     "}\n";
 
 	$overrides = '';
+	$font = isset( $fonts['heading_overrides'][$attribute] ) ? $fonts['heading_overrides'][$attribute] : array();
 
-	if ( ! empty( $typography[$attribute]['font_family'] ) && $typography[$attribute]['font_family'] !== $h1_font_family )
-		$overrides .= "\tfont-family: {$typography[$attribute]['font_family']};\n";
+	if ( isset( $font['font_family'] ) )
+		$overrides .= "\tfont-family: {$font['font_family']};\n";
 
-	if ( ! empty( $typography[$attribute]['font_weight'] ) && $typography[$attribute]['font_weight'] !== $h1_font_weight )
-		$overrides .= "\tfont-weight: {$typography[$attribute]['font_weight']};\n";
+	if ( isset( $font['font_weight'] ) )
+		$overrides .= "\tfont-weight: {$font['font_weight']};\n";
 
 	if ( $overrides )
 		echo "$selector {\n$overrides}\n";

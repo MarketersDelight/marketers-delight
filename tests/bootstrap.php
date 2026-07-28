@@ -138,6 +138,10 @@ function md_color_palette() {
 	return apply_filters( 'md_color_palette', array() );
 }
 
+function md_editor_colors() {
+	return ( new md_design )->editor_colors();
+}
+
 function sanitize_text_field( $str ) {
 	return is_string( $str ) ? trim( strip_tags( $str ) ) : $str;
 }
@@ -180,6 +184,8 @@ require_once dirname( __DIR__ ) . '/api/validate.php';
 require_once dirname( __DIR__ ) . '/api/save.php';
 require_once dirname( __DIR__ ) . '/api/data.php';
 require_once dirname( __DIR__ ) . '/api/fields.php';
+require_once dirname( __DIR__ ) . '/api/design.php';
+require_once dirname( __DIR__ ) . '/api/theme-json.php';
 
 /**
  * Base test case: reflection helper for exercising the private merge/

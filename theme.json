@@ -1,7 +1,17 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/theme.json",
-    "version": 2,
+    "$schema": "https://schemas.wp.org/wp/7.0/theme.json",
+    "version": 3,
     "settings": {
+        "border": {
+            "radius": true,
+            "radiusSizes": [
+                {
+                    "name": "Rounded",
+                    "slug": "rounded",
+                    "size": "8px"
+                }
+            ]
+        },
         "color": {
             "defaultPalette": false,
             "defaultGradients": false,
@@ -64,42 +74,97 @@
             ]
         },
         "typography": {
-            "defaultFontSizes": false,
+            "fluid": true,
             "fontSizes": [
                 {
                     "name": "Small",
                     "slug": "small",
-                    "size": "22px"
+                    "size": "18px",
+                    "fluid": {
+                        "min": "16px",
+                        "max": "18px"
+                    }
                 },
                 {
                     "name": "Normal",
                     "slug": "normal",
-                    "size": "20px"
+                    "size": "20px",
+                    "fluid": {
+                        "min": "18px",
+                        "max": "20px"
+                    }
                 },
                 {
                     "name": "Intro",
                     "slug": "intro",
-                    "size": "24px"
+                    "size": "24px",
+                    "fluid": {
+                        "min": "22px",
+                        "max": "24px"
+                    }
+                },
+                {
+                    "name": "H6",
+                    "slug": "h6",
+                    "size": "23px",
+                    "fluid": {
+                        "min": "20px",
+                        "max": "23px"
+                    }
+                },
+                {
+                    "name": "H5",
+                    "slug": "h5",
+                    "size": "27px",
+                    "fluid": {
+                        "min": "23px",
+                        "max": "27px"
+                    }
+                },
+                {
+                    "name": "H4",
+                    "slug": "h4",
+                    "size": "31px",
+                    "fluid": {
+                        "min": "25px",
+                        "max": "31px"
+                    }
                 },
                 {
                     "name": "H3",
                     "slug": "h3",
-                    "size": "34px"
+                    "size": "36px",
+                    "fluid": {
+                        "min": "29px",
+                        "max": "36px"
+                    }
                 },
                 {
                     "name": "H2",
                     "slug": "h2",
-                    "size": "41px"
+                    "size": "41px",
+                    "fluid": {
+                        "min": "32px",
+                        "max": "41px"
+                    }
                 },
                 {
                     "name": "H1",
                     "slug": "h1",
-                    "size": "48px"
+                    "size": "48px",
+                    "fluid": {
+                        "min": "36px",
+                        "max": "48px"
+                    }
                 },
                 {
                     "name": "Huge",
                     "slug": "huge",
-                    "size": "72px"
+                    "size": "72px",
+                    "fluid": {
+                        "min": "45px",
+                        "max": "72px"
+                    }
                 }
             ],
             "fontFamilies": [
@@ -119,15 +184,156 @@
             "contentSize": "672px",
             "wideSize": "896px"
         },
+        "shadow": {
+            "defaultPresets": false,
+            "presets": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "shadow": "0 1px 3px rgba(0, 0, 0, 0.15)"
+                },
+                {
+                    "name": "Medium",
+                    "slug": "medium",
+                    "shadow": "0 4px 16px rgba(0, 0, 0, 0.12)"
+                },
+                {
+                    "name": "Large",
+                    "slug": "large",
+                    "shadow": "0 8px 32px rgba(0, 0, 0, 0.15)"
+                },
+                {
+                    "name": "Huge",
+                    "slug": "huge",
+                    "shadow": "0 16px 48px rgba(0, 0, 0, 0.20)"
+                }
+            ]
+        },
         "spacing": {
-            "padding": false
+            "padding": false,
+            "spacingSizes": [
+                {
+                    "name": "Small",
+                    "slug": "small",
+                    "size": "5px"
+                },
+                {
+                    "name": "Third",
+                    "slug": "third",
+                    "size": "11px"
+                },
+                {
+                    "name": "Half",
+                    "slug": "half",
+                    "size": "16px"
+                },
+                {
+                    "name": "Single",
+                    "slug": "single",
+                    "size": "32px"
+                },
+                {
+                    "name": "Mid",
+                    "slug": "mid",
+                    "size": "48px"
+                },
+                {
+                    "name": "Double",
+                    "slug": "double",
+                    "size": "64px"
+                },
+                {
+                    "name": "Triple",
+                    "slug": "triple",
+                    "size": "96px"
+                },
+                {
+                    "name": "Quad",
+                    "slug": "quad",
+                    "size": "128px"
+                }
+            ]
         }
     },
     "styles": {
-        "blocks": {
-            "core/button": {
+        "color": {
+            "background": "#FFFFFF",
+            "text": "#1E1E1E"
+        },
+        "typography": {
+            "fontFamily": "var:preset|font-family|body",
+            "fontSize": "var:preset|font-size|normal",
+            "fontWeight": "normal",
+            "lineHeight": "1.6"
+        },
+        "elements": {
+            "link": {
+                "color": {
+                    "text": "#AE2525"
+                },
+                "typography": {
+                    "textDecoration": "underline"
+                },
+                ":hover": {
+                    "typography": {
+                        "textDecoration": "none"
+                    }
+                }
+            },
+            "heading": {
+                "color": {
+                    "text": "#1E1E1E"
+                },
+                "typography": {
+                    "fontFamily": "PT Serif",
+                    "fontWeight": "700"
+                }
+            },
+            "h1": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h1",
+                    "fontWeight": "700",
+                    "lineHeight": "1.29"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h2",
+                    "fontWeight": "700",
+                    "lineHeight": "1.34"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h3",
+                    "fontWeight": "700",
+                    "lineHeight": "1.39"
+                }
+            },
+            "h4": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h4",
+                    "fontWeight": "700",
+                    "lineHeight": "1.39"
+                }
+            },
+            "h5": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h5",
+                    "fontWeight": "700",
+                    "lineHeight": "1.56"
+                }
+            },
+            "h6": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h6",
+                    "fontWeight": "700",
+                    "lineHeight": "1.52"
+                }
+            },
+            "button": {
                 "border": {
-                    "radius": "6px"
+                    "radius": "8px"
                 },
                 "color": {
                     "background": "#22A340",
@@ -144,11 +350,20 @@
                 },
                 "typography": {
                     "lineHeight": "1"
-                },
+                }
+            }
+        },
+        "blocks": {
+            "core/button": {
                 "variations": {
                     "outline": {
                         "border": {
+                            "color": "#22A340",
                             "width": "3px"
+                        },
+                        "color": {
+                            "background": "transparent",
+                            "text": "#22A340"
                         }
                     }
                 }
@@ -156,9 +371,9 @@
             "core/post-title": {
                 "typography": {
                     "fontFamily": "PT Serif",
-                    "fontSize": "48px",
+                    "fontSize": "var:preset|font-size|h1",
                     "fontWeight": "700",
-                    "lineHeight": 1
+                    "lineHeight": "1.29"
                 }
             }
         }
