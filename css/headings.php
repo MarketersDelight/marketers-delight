@@ -36,12 +36,10 @@ echo implode( ', ', $headings ) . " {\n".
 
 foreach ( $headings as $attribute => $selector ) {
 	$combined = "$selector, {$heading_sizes[$attribute]}";
-	$heading_font_size = $this->fluid( $typography[$attribute]['font_size']['desktop'], $typography[$attribute]['font_size']['mobile'] );
-	$heading_line_height = $this->fluid( $typography[$attribute]['line_height']['desktop'], $typography[$attribute]['line_height']['mobile'] );
 
 	echo "$combined {\n".
-         "\tfont-size: $heading_font_size;\n".
-         "\tline-height: $heading_line_height;\n".
+         "\tfont-size: var(--md-{$attribute});\n".
+         "\tline-height: var(--md-{$attribute}-line-height);\n".
     "}\n";
 
 	$overrides = '';

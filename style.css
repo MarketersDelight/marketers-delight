@@ -28,10 +28,9 @@
 		18. Floating_bars
 		19. Popups
 		20. Share
-		21. Share notice
-		22. Footnotes
-		23. Stream
-		24. Table of contents
+		21. Footnotes
+		22. Stream
+		23. Table of contents
 */
 /*------------------------------*\
 	$FONT_ICONS
@@ -73,20 +72,20 @@
 	--md-line-height: clamp(29px, 2.666667vw, 32px);
 	--md-line-height-sm: 29px;
 	--md-bold: bold;
-	--md-huge: 72px;
-	--md-huge-line-height: 96px;
-	--md-h1: 48px;
-	--md-h1-line-height: 62px;
-	--md-h2: 41px;
-	--md-h2-line-height: 55px;
-	--md-h3: 36px;
-	--md-h3-line-height: 50px;
-	--md-h4: 31px;
-	--md-h4-line-height: 43px;
-	--md-h5: 27px;
-	--md-h5-line-height: 42px;
-	--md-h6: 23px;
-	--md-h6-line-height: 35px;
+	--md-huge: clamp(45px, 6vw, 72px);
+	--md-huge-line-height: clamp(54px, 8vw, 96px);
+	--md-h1: clamp(36px, 4vw, 48px);
+	--md-h1-line-height: clamp(47px, 5.166667vw, 62px);
+	--md-h2: clamp(32px, 3.416667vw, 41px);
+	--md-h2-line-height: clamp(43px, 4.583333vw, 55px);
+	--md-h3: clamp(29px, 3vw, 36px);
+	--md-h3-line-height: clamp(41px, 4.166667vw, 50px);
+	--md-h4: clamp(25px, 2.583333vw, 31px);
+	--md-h4-line-height: clamp(36px, 3.583333vw, 43px);
+	--md-h5: clamp(23px, 2.25vw, 27px);
+	--md-h5-line-height: clamp(36px, 3.5vw, 42px);
+	--md-h6: clamp(20px, 1.916667vw, 23px);
+	--md-h6-line-height: clamp(30px, 2.916667vw, 35px);
 	--md-small: 5px;
 	--md-third: 11px;
 	--md-half: 16px;
@@ -222,32 +221,32 @@ code, pre {
 	font-weight: 700;
 }
 .huge-title, .huge-size {
-	font-size: clamp(45px, 6vw, 72px);
-	line-height: clamp(54px, 8vw, 96px);
+	font-size: var(--md-huge);
+	line-height: var(--md-huge-line-height);
 }
 h1, .h1, .wp-block-post-title, .h1-size {
-	font-size: clamp(36px, 4vw, 48px);
-	line-height: clamp(47px, 5.166667vw, 62px);
+	font-size: var(--md-h1);
+	line-height: var(--md-h1-line-height);
 }
 h2, .h2, .h2-size {
-	font-size: clamp(32px, 3.416667vw, 41px);
-	line-height: clamp(43px, 4.583333vw, 55px);
+	font-size: var(--md-h2);
+	line-height: var(--md-h2-line-height);
 }
 h3, .h3, .h3-size {
-	font-size: clamp(29px, 3vw, 36px);
-	line-height: clamp(41px, 4.166667vw, 50px);
+	font-size: var(--md-h3);
+	line-height: var(--md-h3-line-height);
 }
 h4, .h4, .widget-title, .widget .wp-block-heading, .h4-size {
-	font-size: clamp(25px, 2.583333vw, 31px);
-	line-height: clamp(36px, 3.583333vw, 43px);
+	font-size: var(--md-h4);
+	line-height: var(--md-h4-line-height);
 }
 h5, .h5, .h5-size {
-	font-size: clamp(23px, 2.25vw, 27px);
-	line-height: clamp(36px, 3.5vw, 42px);
+	font-size: var(--md-h5);
+	line-height: var(--md-h5-line-height);
 }
 h6, .h6, .h6-size {
-	font-size: clamp(20px, 1.916667vw, 23px);
-	line-height: clamp(30px, 2.916667vw, 35px);
+	font-size: var(--md-h6);
+	line-height: var(--md-h6-line-height);
 }
 :is(.huge-title, h1, .h1, .wp-block-post-title, h2, .h2, h3, .h3, h4, .h4, .widget-title, .widget .wp-block-heading, h5, .h5, h6, .h6, .wp-block-heading) a {
 	color: var(--md-headline-links);
@@ -1128,8 +1127,7 @@ select {
 .sidebar, .panel { color: var(--md-sidebar-text); }
 .sidebar { background-color: var(--md-sidebar); }
 .sidebar a, .panel a { color: var(--md-sidebar-links); }
-.sidebar .widget :is(ul, ol),
-.footer .widget :is(ul, ol) {
+.sidebar .widget :is(ul, ol), .footer .widget :is(ul, ol) {
 	list-style: none;
 	margin-inline-start: 0;
 }
@@ -2587,18 +2585,6 @@ cite, .tiny {
 	height: var(--md-mid);
 	width: var(--md-mid);
 }
-/* QUERIES */
-@media all and (min-width: 900px) {
-	.share:first-child .share-menu-wrap { left: calc(-1 * var(--md-small)); }
-}
-@media all and (max-width: 900px) {
-	.share-menu { position: static; }
-	.share-menu-wrap {
-		inset-inline-end: 0;
-		min-width: 100%;
-		width: 100%;
-	}
-}
 /* SHARE NOTICE */
 .share-notice {
 	border-radius: var(--md-border-radius);
@@ -2627,8 +2613,20 @@ cite, .tiny {
 }
 .share-notice-full,
 .share-notice-outline .button:not(.button-outline) {
-    background-color: var(--share-color);
-    color: var(--md-color-white);
+	background-color: var(--share-color);
+	color: var(--md-color-white);
+}
+/* QUERIES */
+@media all and (min-width: 900px) {
+	.share:first-child .share-menu-wrap { left: calc(-1 * var(--md-small)); }
+}
+@media all and (max-width: 900px) {
+	.share-menu { position: static; }
+	.share-menu-wrap {
+		inset-inline-end: 0;
+		min-width: 100%;
+		width: 100%;
+	}
 }
 /*------------------------------*\
 	$FOOTNOTES

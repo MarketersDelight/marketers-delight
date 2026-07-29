@@ -1,0 +1,227 @@
+<?php
+/**
+ * Tests CSS template registration and destination routing.
+ *
+ * @since 6.0
+ */
+
+class CssTest extends MD_TestCase {
+
+	private $css;
+
+	protected function setUp(): void {
+		parent::setUp();
+		$this->css = ( new ReflectionClass( 'md_css' ) )->newInstanceWithoutConstructor();
+	}
+
+	private function source( $path ) {
+		return file_get_contents( dirname( __DIR__ ) . "/{$path}" );
+	}
+
+	public function test_canonical_templates_include_registered_dropins_and_child_styles_last() {
+		md_test_set_child_theme( true );
+		md_test_set_settings( array(
+			'settings' => array(
+				'css' => array( 'child' => true )
+			)
+		) );
+		md_test_set_filter( 'md_dropins_css_templates', array(
+			'component' => array(
+				'path' => '/tmp/component.php',
+				'data' => array( 'color' => 'blue' )
+			)
+		) );
+
+		$templates = $this->call( $this->css, 'css_templates' );
+
+		$this->assertSame(
+			array(
+				'path' => '/tmp/component.php',
+				'data' => array( 'color' => 'blue' )
+			),
+			$templates['component']
+		);
+		$this->assertSame(
+			array( 'component', 'child', 'child_dynamic' ),
+			array_slice( array_keys( $templates ), -3 )
+		);
+	}
+
+	public function test_block_editor_uses_the_complete_canonical_list_then_its_adapter() {
+		$templates = array(
+			'style' => '/tmp/style.php',
+			'component' => '/tmp/component.php',
+			'child' => '/tmp/child.css'
+		);
+
+		$block = $this->call( $this->css, 'block_editor_css', array( $templates ) );
+
+		$this->assertSame(
+			array( 'style', 'component', 'child', 'block-editor' ),
+			array_keys( $block )
+		);
+		$this->assertStringEndsWith( '/css/block-editor.php', $block['block-editor'] );
+	}
+
+	public function test_editor_stylesheets_compile_minified() {
+		$css = $this->source( 'api/css.php' );
+
+		foreach ( array( 'classic-editor', 'block-editor' ) as $file ) {
+			$this->assertMatchesRegularExpression(
+				"/'{$file}' => array\\(\\s*'path' => MD_DIR \\. 'compile\\/{$file}\\.css',\\s*'minify' => true,/",
+				$css
+			);
+		}
+	}
+
+	public function test_classic_editor_stays_curated_and_auto_detects_dropin_opt_ins() {
+		md_test_set_dropins( array( 'example' ) );
+		md_test_set_filter( 'md_dropins_css_templates', array(
+			'component' => '/tmp/component.php'
+		) );
+
+		$classic = $this->call( $this->css, 'classic_editor_css' );
+
+		$this->assertSame(
+			array( 'classic-editor', 'example-classic-editor' ),
+			array_keys( $classic )
+		);
+		$this->assertArrayNotHasKey( 'component', $classic );
+	}
+
+	public function test_critical_pruning_only_changes_the_frontend_stylesheet() {
+		md_test_set_settings( array(
+			'settings' => array(
+				'css' => array( 'critical' => true )
+			)
+		) );
+		$templates = array(
+			'style' => '/tmp/style.php',
+			'format' => '/tmp/format.php',
+			'component' => '/tmp/component.php'
+		);
+
+		$frontend = $this->css->style_css( $templates );
+		$block = $this->call( $this->css, 'block_editor_css', array( $templates ) );
+
+		$this->assertArrayNotHasKey( 'style', $frontend );
+		$this->assertArrayHasKey( 'format', $frontend );
+		$this->assertArrayHasKey( 'component', $frontend );
+		$this->assertArrayHasKey( 'style', $block );
+		$this->assertArrayHasKey( 'component', $block );
+	}
+
+	public function test_render_applies_file_replacements_before_cleanup() {
+		$css = new class extends md_css {
+			public function __construct() {}
+
+			public function templates( $file ) {
+				echo "<style type=\"text/css\">\n.format { color: red; }\n</style>";
+			}
+		};
+		$css->files = array(
+			'classic-editor' => array(
+				'replace' => array( '.format' => '.mce-content-body' )
+			)
+		);
+
+		$rendered = $this->call( $css, 'render', array( 'classic-editor' ) );
+
+		$this->assertStringContainsString( '.mce-content-body { color: red; }', $rendered );
+		$this->assertStringNotContainsString( '.format', $rendered );
+		$this->assertSame( '.mce-content-body { color: red; }', $css->clean( $rendered ) );
+		$this->assertSame( '.mce-content-body{color:red;}', $css->minify( 'classic-editor' ) );
+	}
+
+	public function test_block_styles_use_a_cacheable_settings_import() {
+		$theme = $this->source( 'marketers-delight.php' );
+
+		$this->assertStringContainsString(
+			"add_filter( 'block_editor_settings_all', array( \$this, 'block_editor_styles' ) );",
+			$theme
+		);
+		$this->assertStringContainsString( '@import url("', $theme );
+		$this->assertStringContainsString( 'set_url_scheme( MD_URL . $file )', $theme );
+		$this->assertStringContainsString( 'esc_url_raw( $url )', $theme );
+		$this->assertStringNotContainsString( 'file_get_contents( $path )', $theme );
+		$this->assertStringNotContainsString( '__unstableResolvedAssets', $theme );
+	}
+
+	public function test_block_layout_classes_are_available_before_iframe_renders() {
+		$admin = $this->source( 'admin/admin.php' );
+		$block = $this->source( 'css/block-editor.php' );
+		$script = $this->source( 'admin/js/block-editor.js' );
+
+		$this->assertStringContainsString(
+			"add_action( 'enqueue_block_assets', array( \$this, 'enqueue_block_editor_layout' ) );",
+			$admin
+		);
+		$this->assertStringContainsString(
+			"'document.documentElement.classList.add(' . wp_json_encode( \$layout )",
+			$admin
+		);
+		$this->assertStringContainsString(
+			"[ 'md-builder', 'expanded', 'compact' ]",
+			$script
+		);
+		$this->assertStringContainsString( 'iframeDoc.documentElement.classList.toggle(', $script );
+		$this->assertStringNotContainsString( 'iframeDoc.body.classList.toggle(', $script );
+		$this->assertStringContainsString( '.expanded .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper', $block );
+		$this->assertStringContainsString( ':is(.expanded, .md-builder) .editor-styles-wrapper .wp-block-post-title', $block );
+		$this->assertStringNotContainsString( 'block_editor_layout_styles', $admin );
+		$this->assertStringNotContainsString( 'syncLayoutVariables', $script );
+		$this->assertStringNotContainsString( '--md-editor-', $block );
+	}
+
+	public function test_alignment_breakouts_keep_theme_selectors_and_leave_editor_widths_to_theme_json() {
+		$alignments = $this->source( 'css/alignments.php' );
+		$block = $this->source( 'css/block-editor.php' );
+
+		$this->assertStringContainsString( '.expanded .alignfull', $alignments );
+		$this->assertStringContainsString( '.expanded .alignwide', $alignments );
+		$this->assertStringContainsString( '.compact :is(.alignwide, .alignfull)', $alignments );
+		$this->assertStringNotContainsString( '.expanded.editor-styles-wrapper .wp-block-group .alignwide', $block );
+		$this->assertStringNotContainsString( '--md-editor-wide-width', $block );
+		$this->assertStringNotContainsString( '--md-editor-full-width', $block );
+	}
+
+	public function test_heading_tokens_are_fluid_and_heading_rules_consume_them() {
+		$variables = $this->source( 'css/--vars.php' );
+		$headings = $this->source( 'css/headings.php' );
+
+		foreach ( array( 'huge', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $heading ) {
+			$this->assertStringContainsString(
+				'--md-' . $heading . ': <?php echo $this->fluid(',
+				$variables
+			);
+			$this->assertStringContainsString(
+				'--md-' . $heading . '-line-height: <?php echo $this->fluid(',
+				$variables
+			);
+		}
+
+		$this->assertStringContainsString( 'font-size: var(--md-{$attribute});', $headings );
+		$this->assertStringContainsString( 'line-height: var(--md-{$attribute}-line-height);', $headings );
+		$this->assertStringNotContainsString( '$this->fluid(', $headings );
+		$this->assertStringNotContainsString( '$file', $headings );
+	}
+
+	public function test_classic_resolves_desktop_typography_above_the_admin_breakpoint() {
+		$classic = $this->source( 'css/classic-editor.php' );
+		$block = $this->source( 'css/block-editor.php' );
+
+		$this->assertStringContainsString( 'font-size: var(--md-font-size);', $classic );
+		$this->assertStringContainsString( 'line-height: var(--md-line-height);', $classic );
+		$this->assertStringContainsString( '@media (min-width: 783px)', $classic );
+		$this->assertStringContainsString(
+			"--md-h2: <?php echo \$typography['h2']['font_size']['desktop']; ?>px;",
+			$classic
+		);
+		$this->assertStringNotContainsString( '--md-single-x:', $classic );
+
+		$this->assertStringContainsString( 'font-size: var(--md-font-size);', $block );
+		$this->assertStringContainsString( 'line-height: var(--md-line-height);', $block );
+		$this->assertStringNotContainsString( '--md-h2:', $block );
+	}
+
+}

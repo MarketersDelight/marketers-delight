@@ -14,6 +14,12 @@ $GLOBALS['__test_options'] = array();
 $GLOBALS['__test_post_meta'] = array();
 $GLOBALS['__test_term_meta'] = array();
 $GLOBALS['__test_user_meta'] = array();
+$GLOBALS['__test_dropins'] = array();
+$GLOBALS['__test_child_theme'] = false;
+$GLOBALS['__test_stylesheet_directory'] = '';
+
+if ( ! defined( 'MD_INSTALLED_DROPINS' ) )
+	define( 'MD_INSTALLED_DROPINS', __DIR__ . '/fixtures/dropins' );
 
 /**
  * Test helpers, not WP stubs — call these from a test's setUp()/methods
@@ -27,6 +33,9 @@ function md_test_reset() {
 	$GLOBALS['__test_post_meta'] = array();
 	$GLOBALS['__test_term_meta'] = array();
 	$GLOBALS['__test_user_meta'] = array();
+	$GLOBALS['__test_dropins'] = array();
+	$GLOBALS['__test_child_theme'] = false;
+	$GLOBALS['__test_stylesheet_directory'] = __DIR__ . '/fixtures/child';
 	$_POST = array();
 	$_GET = array();
 }
@@ -53,6 +62,14 @@ function md_test_set_term_meta( $meta ) {
 
 function md_test_set_user_meta( $meta ) {
 	$GLOBALS['__test_user_meta'] = $meta;
+}
+
+function md_test_set_dropins( $dropins ) {
+	$GLOBALS['__test_dropins'] = $dropins;
+}
+
+function md_test_set_child_theme( $enabled ) {
+	$GLOBALS['__test_child_theme'] = $enabled;
 }
 
 // WP function stubs
@@ -88,6 +105,24 @@ function md_setting( $keys = null, $default = null ) {
 
 function get_option( $key, $default = false ) {
 	return array_key_exists( $key, $GLOBALS['__test_options'] ) ? $GLOBALS['__test_options'][$key] : $default;
+}
+
+function md_get_dropins( $status = null ) {
+	return $status === 'active' ? $GLOBALS['__test_dropins'] : array();
+}
+
+function is_child_theme() {
+	return $GLOBALS['__test_child_theme'];
+}
+
+function get_stylesheet_directory() {
+	return $GLOBALS['__test_stylesheet_directory'];
+}
+
+function locate_template( $template ) {
+	$path = dirname( __DIR__ ) . '/' . ltrim( $template, '/' );
+
+	return file_exists( $path ) ? $path : '';
 }
 
 /**
@@ -186,6 +221,7 @@ require_once dirname( __DIR__ ) . '/api/data.php';
 require_once dirname( __DIR__ ) . '/api/fields.php';
 require_once dirname( __DIR__ ) . '/api/design.php';
 require_once dirname( __DIR__ ) . '/api/theme-json.php';
+require_once dirname( __DIR__ ) . '/api/css.php';
 
 /**
  * Base test case: reflection helper for exercising the private merge/

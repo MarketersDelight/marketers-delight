@@ -92,6 +92,7 @@ class md_admin {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
 		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor' ) );
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_layout' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 
 		// Upgrader hooks
@@ -228,6 +229,42 @@ class md_admin {
 		wp_register_script( 'md-sortable', MD_URL . 'admin/js/sortable.js', array(), '', true );
 		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
 		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
+	}
+
+	/**
+	 * Add the initial layout class before the Block Editor iframe renders.
+	 *
+	 * @since 6.0
+	 */
+
+	public function enqueue_block_editor_layout() {
+		if ( ! is_admin() || wp_should_load_block_editor_scripts_and_styles() )
+			return;
+
+		$post_id = get_the_ID();
+
+		if ( empty( $post_id ) )
+			return;
+
+		$layout = md_has_sidebar( array(
+			'post_id' => $post_id,
+			'post_type' => get_post_type( $post_id ),
+			'page' => 'single'
+		) ) ? 'compact' : 'expanded';
+		$script = 'document.documentElement.classList.add(' . wp_json_encode( $layout );
+
+		if ( md_post_meta( array( 'layout', 'content', 'builder' ), $post_id ) )
+			$script .= ', "md-builder"';
+
+		$script .= ');';
+
+		wp_register_script( 'md-block-editor-layout', false, array(), false );
+		wp_enqueue_script( 'md-block-editor-layout' );
+		wp_add_inline_script(
+			'md-block-editor-layout',
+			$script,
+			'before'
+		);
 	}
 
 	/**

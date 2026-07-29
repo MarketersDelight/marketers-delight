@@ -27,29 +27,28 @@ class md_css {
 	 */
 
 	public function files() {
+		$templates = $this->css_templates();
 
 		// All dynamically rendered CSS files
 
 		$files = array(
 			'style' => array(
 				'path' => MD_DIR . 'style.css',
-				'templates' => $this->style_css(),
+				'templates' => $this->style_css( $templates ),
+				'style_guide' => $this->style_guide( $templates )
 			),
 			'classic-editor' => array(
 				'path' => MD_DIR . 'compile/classic-editor.css',
-				'templates' => array(
-					'classic-editor' => locate_template( 'css/classic-editor.php' )
-				),
+				'minify' => true,
+				'templates' => $this->classic_editor_css(),
 				'replace' => array(
 					'.format' => '.mce-content-body'
 				)
 			),
 			'block-editor' => array(
 				'path' => MD_DIR . 'compile/block-editor.css',
-				'templates' => array_merge(
-					array( 'block-editor' => locate_template( 'css/block-editor.php' ) ),
-					apply_filters( 'md_block_editor_css_templates', array() )
-				),
+				'minify' => true,
+				'templates' => $this->block_editor_css( $templates ),
 				'replace' => array(
 					'.format' => '.editor-styles-wrapper'
 				)
@@ -69,9 +68,8 @@ class md_css {
 
 			$files['critical'] = array(
 				'path' => MD_DIR . 'compile/critical.css',
-				'static' => true, // always generate to file, never DB option
-				'minify' => true, // write minified output
-				'templates' => array_intersect_key( $this->css_files(), array_flip( $keys ) )
+				'minify' => true,
+				'templates' => array_intersect_key( $templates, array_flip( $keys ) )
 			);
 		}
 
@@ -79,34 +77,12 @@ class md_css {
 	}
 
 	/**
-	 * The CSS template parts to inline as Critical CSS.
+	 * Build the complete ordered list of authored CSS templates.
 	 *
 	 * @since 6.0
 	 */
 
-	protected function critical_keys() {
-		return apply_filters( 'md_critical_css_templates', array(
-			'style', 'header', 'menus', 'buttons', 'layout', 'title', 'page'
-		) );
-	}
-
-	/**
-	 * Whether the Critical CSS feature is enabled.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function critical_enabled() {
-		return md_setting( array( 'settings', 'css', 'critical' ) );
-	}
-
-	/**
-	 * Build list of stylesheets to include in style.css.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function css_files() {
+	protected function css_templates() {
 		$templates = array(
 			'style' => locate_template( 'css/style.php' ),
 			'format' => locate_template( 'css/format.php' ),
@@ -125,35 +101,94 @@ class md_css {
 			'panel' => locate_template( 'css/panel.php' ),
 			'helpers' => locate_template( 'css/helpers.php' )
 		);
-		$dropins = apply_filters( 'md_dropins_css_templates', array() );
-		$templates = array_merge( $templates, $dropins );
 
-		return apply_filters( 'md_style_css_templates', $templates );
-	}
+		$templates = array_merge( $templates, apply_filters( 'md_dropins_css_templates', array() ) );
+		$templates = apply_filters( 'md_style_css_templates', $templates );
 
-	/**
-	 * Core style.css template files to load in order
-	 * with Drop-ins filter.
-	 *
-	 * @since 4.9.4
-	 */
-
-	public function style_css() {
-		$templates = $this->css_files();
 		$child = get_stylesheet_directory() . '/style.css';
 
 		if ( is_child_theme() && file_exists( $child ) && md_setting( array( 'settings', 'css', 'child' ) ) ) {
-			$child_dynamic = get_stylesheet_directory() . '/style.php';
 			$templates['child'] = $child;
+
+			$child_dynamic = get_stylesheet_directory() . '/style.php';
 
 			if ( file_exists( $child_dynamic ) )
 				$templates['child_dynamic'] = $child_dynamic;
 		}
 
+		return $templates;
+	}
+
+	/**
+	 * Remove Critical CSS templates from the frontend file when they
+	 * are already rendered into the inline critical stylesheet.
+	 *
+	 * @since 4.9.4
+	 */
+
+	public function style_css( $templates ) {
 		if ( $this->critical_enabled() )
 			$templates = array_diff_key( $templates, array_flip( $this->critical_keys() ) );
 
 		return $templates;
+	}
+
+	/**
+	 * Compile the full canonical stylesheet into the Block Editor,
+	 * then load editor-only corrections last.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function block_editor_css( $templates ) {
+		$templates['block-editor'] = locate_template( 'css/block-editor.php' );
+
+		return $templates;
+	}
+
+	/**
+	 * Build the intentionally limited Classic Editor stylesheet.
+	 * Active Drop-ins may opt in with css/classic-editor.php.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function classic_editor_css() {
+		$templates = array(
+			'classic-editor' => locate_template( 'css/classic-editor.php' )
+		);
+
+		foreach ( md_get_dropins( 'active' ) as $dropin ) {
+			$dropin = sanitize_key( $dropin );
+			$path = MD_INSTALLED_DROPINS . "/{$dropin}/css/classic-editor.php";
+
+			if ( file_exists( $path ) )
+				$templates["{$dropin}-classic-editor"] = $path;
+		}
+
+		return apply_filters( 'md_classic_editor_css_templates', $templates );
+	}
+
+	/**
+	 * Whether the Critical CSS feature is enabled.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function critical_enabled() {
+		return md_setting( array( 'settings', 'css', 'critical' ) );
+	}
+
+	/**
+	 * The CSS template parts to inline as Critical CSS.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function critical_keys() {
+		return apply_filters( 'md_critical_css_templates', array(
+			'style', 'header', 'menus', 'buttons', 'layout', 'title', 'page'
+		) );
 	}
 
 	/**
@@ -166,18 +201,17 @@ class md_css {
 		$inline = md_setting( array( 'settings', 'css', 'inline' ) );
 
 		foreach ( $this->files as $file => $fields ) {
-			if ( ! empty( $fields['static'] ) ) {
-				$this->generate( $file );
-				continue;
+			if ( $file === 'style' ) {
+				if ( ! empty( $inline ) ) {
+					$this->save( $file );
+					continue;
+				}
+
+				if ( isset( $delete ) )
+					delete_option( 'marketers_delight_style_css' );
 			}
 
-			if ( empty( $inline ) ) {
-				if ( isset( $delete ) )
-					delete_option( "marketers_delight_{$file}_css" );
-				$this->generate( $file );
-			}
-			else
-				$this->save( $file );
+			$this->generate( $file );
 		}
 
 		if ( ! $this->critical_enabled() ) {
@@ -210,13 +244,7 @@ class md_css {
 			return;
 		}
 
-		ob_start();
-
-		$this->templates( $file );
-
-		$css = ob_get_clean();
-		$css = $this->replace( $css, $file );
-		$css = $this->clean( $css );
+		$css = $this->clean( $this->render( $file ) );
 
 		file_put_contents( $path, $css );
 	}
@@ -241,12 +269,7 @@ class md_css {
 	 */
 
 	public function minify( $file ) {
-		ob_start();
-
-		$this->templates( $file );
-
-		$css = ob_get_clean();
-		$css = $this->replace( $css, $file );
+		$css = $this->render( $file );
 		$css = preg_replace( '!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $css );
 		$s = array( "\r", "\n", "\t", ' }', '{ ', ' {', '; ', ': ', ', ', '   ' );
 		$r = array( '', '', '', '}', '{', '{', ';', ':', ',', '' );
@@ -258,100 +281,21 @@ class md_css {
 	}
 
 	/**
-	 * Clean up CSS before saving.
-	 *
-	 * @since 4.9.4
-	 */
-
-	public function clean( $css ) {
-		$css = str_replace( array( '<style type="text/css">', '<style type=\'text/css\'>', '<style>', '</style>' ), '', $css );
-		$css = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $css );
-
-		return trim( $css );
-	}
-
-	/**
-	 * Apply file-level string swaps to rendered CSS.
+	 * Render and adapt all CSS templates registered to a file.
 	 *
 	 * @since 6.0
 	 */
 
-	private function replace( $css, $file ) {
-		if ( empty( $this->files[$file]['replace'] ) )
-			return $css;
+	private function render( $file ) {
+		ob_start();
 
-		return str_replace( array_keys( $this->files[$file]['replace'] ), $this->files[$file]['replace'], $css );
+		$this->templates( $file );
+
+		return $this->replace( ob_get_clean(), $file );
 	}
 
 	/**
-	 * Calculate fluid clamp CSS via two-point linear interpolation between
-	 * a floor value/width and a desktop value/width. Omitting floor_width
-	 * derives it the same way the original formula implicitly did (floor
-	 * * site_width / desktop); pass it explicitly to pin the floor at an
-	 * exact, chosen viewport width instead.
-	 *
-	 * @since 6.0
-	 */
-
-	public function fluid( $desktop, $floor, $floor_width = null, $desktop_width = null ) {
-		if ( empty( $floor ) || $floor >= $desktop )
-			return "{$desktop}px";
-
-		$desktop_width = $desktop_width ?: $this->site_width;
-		$floor_width = $floor_width ?: ( $floor * $desktop_width / $desktop );
-
-		$vw = round( ( $desktop - $floor ) / ( $desktop_width - $floor_width ) * 100, 6 );
-		$px = round( $floor - ( $vw * $floor_width / 100 ), 5 );
-		$preferred = $px ? "{$px}px + {$vw}vw" : "{$vw}vw";
-
-		return "clamp({$floor}px, {$preferred}, {$desktop}px)";
-	}
-
-	/**
-	 * Render a list of CSS files to generate a
-	 * table of contents at the top of the stylesheet.
-	 *
-	 * @since 6.0
-	 */
-
-	private function style_guide() {
-		$c = 1;
-		$style_guide = '';
-		$css_files = $this->css_files();
-
-		foreach ( $css_files as $css_group => $css_path ) {
-			$style_group_name = str_replace( '-', ' ', ucwords( $css_group ) );
-			$style_guide .= "\t\t{$c}. $style_group_name\n";
-
-			$c++;
-		}
-
-		return "\n$style_guide";
-	}
-
-	/**
- 	 * Print icons CSS styles by class names.
- 	 *
- 	 * @since 6.0
- 	 */
-
-	private function icons_css() {
-		foreach ( md_icons() as $icon => $fields ) {
-			if ( ! isset( $fields['unicode'] ) )
-				continue;
-
-			$selectors = '';
-
-			if ( isset( $fields['classes'] ) )
-				foreach ( $fields['classes'] as $selector )
-					$selectors .= ",{$selector}:before";
-
-			echo '.md-icon-' . esc_attr( $icon ) . ":before{$selectors}{content:'\\" . esc_attr( $fields['unicode'] ) . '\'}';
-		}
-	}
-
-	/**
-	 * Get CSS template.
+	 * Render the CSS templates registered to one output file.
 	 *
 	 * @since 4.9
 	 */
@@ -412,7 +356,7 @@ class md_css {
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
 
 		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
-		$style_guide = $this->style_guide();
+		$style_guide = $this->files['style']['style_guide'] ?? '';
 
 		$cover_colors = array(
 			'default' => array(
@@ -439,8 +383,100 @@ class md_css {
 			echo "\n\n";
 		}
 
-		if ( in_array( $file, array( 'style', 'font-icons' ) ) )
+		if ( in_array( $file, array( 'style', 'block-editor', 'font-icons' ) ) )
 			$this->icons_css();
+	}
+
+	/**
+	 * Clean up CSS before saving.
+	 *
+	 * @since 4.9.4
+	 */
+
+	public function clean( $css ) {
+		$css = str_replace( array( '<style type="text/css">', '<style type=\'text/css\'>', '<style>', '</style>' ), '', $css );
+		$css = preg_replace( "/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $css );
+
+		return trim( $css );
+	}
+
+	/**
+	 * Apply file-level string swaps to rendered CSS.
+	 *
+	 * @since 6.0
+	 */
+
+	private function replace( $css, $file ) {
+		if ( empty( $this->files[$file]['replace'] ) )
+			return $css;
+
+		return str_replace( array_keys( $this->files[$file]['replace'] ), $this->files[$file]['replace'], $css );
+	}
+
+	/**
+	 * Calculate fluid clamp CSS via two-point linear interpolation between
+	 * a floor value/width and a desktop value/width. Omitting floor_width
+	 * derives it the same way the original formula implicitly did (floor
+	 * * site_width / desktop); pass it explicitly to pin the floor at an
+	 * exact, chosen viewport width instead.
+	 *
+	 * @since 6.0
+	 */
+
+	public function fluid( $desktop, $floor, $floor_width = null, $desktop_width = null ) {
+		if ( empty( $floor ) || $floor >= $desktop )
+			return "{$desktop}px";
+
+		$desktop_width = $desktop_width ?: $this->site_width;
+		$floor_width = $floor_width ?: ( $floor * $desktop_width / $desktop );
+
+		$vw = round( ( $desktop - $floor ) / ( $desktop_width - $floor_width ) * 100, 6 );
+		$px = round( $floor - ( $vw * $floor_width / 100 ), 5 );
+		$preferred = $px ? "{$px}px + {$vw}vw" : "{$vw}vw";
+
+		return "clamp({$floor}px, {$preferred}, {$desktop}px)";
+	}
+
+	/**
+	 * Render a list of CSS files to generate a
+	 * table of contents at the top of the stylesheet.
+	 *
+	 * @since 6.0
+	 */
+
+	private function style_guide( $css_files ) {
+		$c = 1;
+		$style_guide = '';
+
+		foreach ( $css_files as $css_group => $css_path ) {
+			$style_group_name = str_replace( '-', ' ', ucwords( $css_group ) );
+			$style_guide .= "\t\t{$c}. $style_group_name\n";
+
+			$c++;
+		}
+
+		return "\n$style_guide";
+	}
+
+	/**
+	 * Print icons CSS styles by class names.
+	 *
+	 * @since 6.0
+	 */
+
+	private function icons_css() {
+		foreach ( md_icons() as $icon => $fields ) {
+			if ( ! isset( $fields['unicode'] ) )
+				continue;
+
+			$selectors = '';
+
+			if ( isset( $fields['classes'] ) )
+				foreach ( $fields['classes'] as $selector )
+					$selectors .= ",{$selector}:before";
+
+			echo '.md-icon-' . esc_attr( $icon ) . ":before{$selectors}{content:'\\" . esc_attr( $fields['unicode'] ) . '\'}';
+		}
 	}
 
 }

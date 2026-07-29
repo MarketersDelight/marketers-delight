@@ -90,6 +90,8 @@ final class marketers_delight {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
+		add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
+		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
 		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
 		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
@@ -120,9 +122,6 @@ final class marketers_delight {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		add_theme_support( 'editor-styles' );
-		add_editor_style( 'compile/font-icons.css' );
-		add_editor_style( 'compile/block-editor.css' );
-		add_editor_style( 'compile/classic-editor.css' );
 		add_post_type_support( 'page', 'excerpt' );
 
 		// Register Nav Menus
@@ -174,6 +173,47 @@ final class marketers_delight {
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
+	}
+
+	/**
+	 * Import MD's compiled stylesheet into Block Editor canvases.
+	 *
+	 * @since 6.0
+	 */
+
+	public function block_editor_styles( $settings ) {
+		$file = 'compile/block-editor.css';
+
+		if ( ! is_file( MD_DIR . $file ) )
+			return $settings;
+
+		if ( empty( $settings['styles'] ) )
+			$settings['styles'] = array();
+
+		$url = add_query_arg( 'ver', md_ver( $file ), set_url_scheme( MD_URL . $file ) );
+		$settings['styles'][] = array(
+			'css' => '@import url("' . esc_url_raw( $url ) . '");',
+			'__unstableType' => 'theme',
+			'isGlobalStyles' => false
+		);
+
+		return $settings;
+	}
+
+	/**
+	 * Add MD's compiled content styles only to TinyMCE editors.
+	 *
+	 * @since 6.0
+	 */
+
+	public function classic_editor_styles( $stylesheets ) {
+		$editor_styles = array();
+
+		foreach ( array( 'compile/font-icons.css', 'compile/classic-editor.css' ) as $file )
+			if ( is_file( MD_DIR . $file ) )
+				$editor_styles[] = add_query_arg( 'ver', md_ver( $file ), MD_URL . $file );
+
+		return trim( $stylesheets . ',' . implode( ',', $editor_styles ), ' ,' );
 	}
 
 	/**

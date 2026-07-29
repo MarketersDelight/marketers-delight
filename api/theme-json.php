@@ -70,6 +70,16 @@ class md_theme_json {
 	}
 
 	/**
+	 * Match WordPress's kebab-case CSS slug for heading presets.
+	 *
+	 * @since 6.0
+	 */
+
+	private function heading_slug( $heading ) {
+		return 'h-' . substr( $heading, 1 );
+	}
+
+	/**
 	 * Build font size presets from the MD typography scale.
 	 *
 	 * @since 6.0
@@ -95,9 +105,9 @@ class md_theme_json {
 			'h1' => __( 'H1', 'md' )
 		);
 
-		foreach ( $headings as $slug => $name ) {
-			$size = $this->typography[$slug]['font_size'];
-			$font_sizes[] = $this->font_size( $name, $slug, $size['desktop'], $size['mobile'] );
+		foreach ( $headings as $heading => $name ) {
+			$size = $this->typography[$heading]['font_size'];
+			$font_sizes[] = $this->font_size( $name, $this->heading_slug( $heading ), $size['desktop'], $size['mobile'] );
 		}
 
 		$huge = $this->typography['huge']['font_size'];
@@ -211,7 +221,7 @@ class md_theme_json {
 		$heading = $this->typography[$type];
 		$font = isset( $this->fonts['heading_overrides'][$type] ) ? $this->fonts['heading_overrides'][$type] : array();
 		$typography = array(
-			'fontSize' => "var:preset|font-size|{$type}",
+			'fontSize' => 'var:preset|font-size|' . $this->heading_slug( $type ),
 			'fontWeight' => isset( $font['font_weight'] ) ? $font['font_weight'] : $this->fonts['heading']['font_weight'],
 			'lineHeight' => $this->line_height( $heading['font_size']['desktop'], $heading['line_height']['desktop'] )
 		);

@@ -52,10 +52,6 @@ function md_page_title() {
  * @since 4.0
  */
 
-function md_block_editor_css() {
-	do_action( 'md_block_editor_css' );
-}
-
 function md_hook_css_data() { // 5.3.1.1
 	do_action( 'md_hook_css_data' );
 }

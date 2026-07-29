@@ -3,13 +3,16 @@
 	// Get MD classes to iFrame onload
 
 	function syncToIframe() {
-		var iframe = document.querySelector( 'iframe[name="editor-canvas"]' );
+		var iframe = document.querySelector( 'iframe[name="editor-canvas"]' ),
+			iframeDoc;
 
 		if ( ! iframe || ! iframe.contentDocument || ! iframe.contentDocument.body )
 			return;
 
+		iframeDoc = iframe.contentDocument;
+
 		[ 'md-builder', 'expanded', 'compact' ].forEach( function( cls ) {
-			iframe.contentDocument.body.classList.toggle( cls, document.body.classList.contains( cls ) );
+			iframeDoc.documentElement.classList.toggle( cls, document.body.classList.contains( cls ) );
 		} );
 	}
 

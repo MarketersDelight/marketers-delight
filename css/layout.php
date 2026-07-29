@@ -32,8 +32,7 @@
 
 .sidebar a, .panel a { color: var(--md-sidebar-links); }
 
-.sidebar .widget :is(ul, ol),
-.footer .widget :is(ul, ol) {
+.sidebar .widget :is(ul, ol), .footer .widget :is(ul, ol) {
 	list-style: none;
 	margin-inline-start: 0;
 }

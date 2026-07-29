@@ -33,8 +33,18 @@ class ThemeJsonTest extends MD_TestCase {
 		$font_sizes = $this->presets_by_slug( $this->json['settings']['typography']['fontSizes'] );
 
 		$this->assertSame( array( 'min' => '18px', 'max' => '20px' ), $font_sizes['normal']['fluid'] );
-		$this->assertSame( array( 'min' => '34px', 'max' => '45px' ), $font_sizes['h1']['fluid'] );
-		$this->assertSame( 'var:preset|font-size|h1', $this->json['styles']['elements']['h1']['typography']['fontSize'] );
+		$this->assertSame( array( 'min' => '34px', 'max' => '45px' ), $font_sizes['h-1']['fluid'] );
+
+		foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $heading ) {
+			$slug = 'h-' . substr( $heading, 1 );
+
+			$this->assertArrayHasKey( $slug, $font_sizes );
+			$this->assertSame(
+				"var:preset|font-size|{$slug}",
+				$this->json['styles']['elements'][$heading]['typography']['fontSize']
+			);
+		}
+
 		$this->assertIsString( $this->json['styles']['elements']['h1']['typography']['lineHeight'] );
 	}
 

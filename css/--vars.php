@@ -7,20 +7,20 @@
 	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
 	--md-bold: <?php echo $bold; ?>;
 
-	--md-huge: <?php echo $typography['huge']['font_size']['desktop']; ?>px;
-	--md-huge-line-height: <?php echo $typography['huge']['line_height']['desktop']; ?>px;
-	--md-h1: <?php echo $h1['font_size']['desktop']; ?>px;
-	--md-h1-line-height: <?php echo $h1['line_height']['desktop']; ?>px;
-	--md-h2: <?php echo $h2['font_size']['desktop']; ?>px;
-	--md-h2-line-height: <?php echo $h2['line_height']['desktop']; ?>px;
-	--md-h3: <?php echo $h3['font_size']['desktop']; ?>px;
-	--md-h3-line-height: <?php echo $h3['line_height']['desktop']; ?>px;
-	--md-h4: <?php echo $h4['font_size']['desktop']; ?>px;
-	--md-h4-line-height: <?php echo $h4['line_height']['desktop']; ?>px;
-	--md-h5: <?php echo $h5['font_size']['desktop']; ?>px;
-	--md-h5-line-height: <?php echo $h5['line_height']['desktop']; ?>px;
-	--md-h6: <?php echo $h6['font_size']['desktop']; ?>px;
-	--md-h6-line-height: <?php echo $h6['line_height']['desktop']; ?>px;
+	--md-huge: <?php echo $this->fluid( $typography['huge']['font_size']['desktop'], $typography['huge']['font_size']['mobile'] ); ?>;
+	--md-huge-line-height: <?php echo $this->fluid( $typography['huge']['line_height']['desktop'], $typography['huge']['line_height']['mobile'] ); ?>;
+	--md-h1: <?php echo $this->fluid( $typography['h1']['font_size']['desktop'], $typography['h1']['font_size']['mobile'] ); ?>;
+	--md-h1-line-height: <?php echo $this->fluid( $typography['h1']['line_height']['desktop'], $typography['h1']['line_height']['mobile'] ); ?>;
+	--md-h2: <?php echo $this->fluid( $typography['h2']['font_size']['desktop'], $typography['h2']['font_size']['mobile'] ); ?>;
+	--md-h2-line-height: <?php echo $this->fluid( $typography['h2']['line_height']['desktop'], $typography['h2']['line_height']['mobile'] ); ?>;
+	--md-h3: <?php echo $this->fluid( $typography['h3']['font_size']['desktop'], $typography['h3']['font_size']['mobile'] ); ?>;
+	--md-h3-line-height: <?php echo $this->fluid( $typography['h3']['line_height']['desktop'], $typography['h3']['line_height']['mobile'] ); ?>;
+	--md-h4: <?php echo $this->fluid( $typography['h4']['font_size']['desktop'], $typography['h4']['font_size']['mobile'] ); ?>;
+	--md-h4-line-height: <?php echo $this->fluid( $typography['h4']['line_height']['desktop'], $typography['h4']['line_height']['mobile'] ); ?>;
+	--md-h5: <?php echo $this->fluid( $typography['h5']['font_size']['desktop'], $typography['h5']['font_size']['mobile'] ); ?>;
+	--md-h5-line-height: <?php echo $this->fluid( $typography['h5']['line_height']['desktop'], $typography['h5']['line_height']['mobile'] ); ?>;
+	--md-h6: <?php echo $this->fluid( $typography['h6']['font_size']['desktop'], $typography['h6']['font_size']['mobile'] ); ?>;
+	--md-h6-line-height: <?php echo $this->fluid( $typography['h6']['line_height']['desktop'], $typography['h6']['line_height']['mobile'] ); ?>;
 
 	--md-small: <?php echo $spacers['small']['desktop']; ?>px;
 	--md-third: <?php echo $spacers['third']['desktop']; ?>px;

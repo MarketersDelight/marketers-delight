@@ -105,7 +105,7 @@
                 },
                 {
                     "name": "H6",
-                    "slug": "h6",
+                    "slug": "h-6",
                     "size": "23px",
                     "fluid": {
                         "min": "20px",
@@ -114,7 +114,7 @@
                 },
                 {
                     "name": "H5",
-                    "slug": "h5",
+                    "slug": "h-5",
                     "size": "27px",
                     "fluid": {
                         "min": "23px",
@@ -123,7 +123,7 @@
                 },
                 {
                     "name": "H4",
-                    "slug": "h4",
+                    "slug": "h-4",
                     "size": "31px",
                     "fluid": {
                         "min": "25px",
@@ -132,7 +132,7 @@
                 },
                 {
                     "name": "H3",
-                    "slug": "h3",
+                    "slug": "h-3",
                     "size": "36px",
                     "fluid": {
                         "min": "29px",
@@ -141,7 +141,7 @@
                 },
                 {
                     "name": "H2",
-                    "slug": "h2",
+                    "slug": "h-2",
                     "size": "41px",
                     "fluid": {
                         "min": "32px",
@@ -150,7 +150,7 @@
                 },
                 {
                     "name": "H1",
-                    "slug": "h1",
+                    "slug": "h-1",
                     "size": "48px",
                     "fluid": {
                         "min": "36px",
@@ -291,42 +291,42 @@
             },
             "h1": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h1",
+                    "fontSize": "var:preset|font-size|h-1",
                     "fontWeight": "700",
                     "lineHeight": "1.29"
                 }
             },
             "h2": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h2",
+                    "fontSize": "var:preset|font-size|h-2",
                     "fontWeight": "700",
                     "lineHeight": "1.34"
                 }
             },
             "h3": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h3",
+                    "fontSize": "var:preset|font-size|h-3",
                     "fontWeight": "700",
                     "lineHeight": "1.39"
                 }
             },
             "h4": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h4",
+                    "fontSize": "var:preset|font-size|h-4",
                     "fontWeight": "700",
                     "lineHeight": "1.39"
                 }
             },
             "h5": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h5",
+                    "fontSize": "var:preset|font-size|h-5",
                     "fontWeight": "700",
                     "lineHeight": "1.56"
                 }
             },
             "h6": {
                 "typography": {
-                    "fontSize": "var:preset|font-size|h6",
+                    "fontSize": "var:preset|font-size|h-6",
                     "fontWeight": "700",
                     "lineHeight": "1.52"
                 }
