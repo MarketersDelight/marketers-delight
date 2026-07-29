@@ -150,7 +150,8 @@ class CssTest extends MD_TestCase {
 	public function test_block_layout_classes_are_available_before_iframe_renders() {
 		$admin = $this->source( 'admin/admin.php' );
 		$block = $this->source( 'css/block-editor.php' );
-		$script = $this->source( 'admin/js/block-editor.js' );
+		$script = $this->source( 'admin/js/editors.js' );
+		$admin_script = $this->source( 'admin/js/admin.js' );
 
 		$this->assertStringContainsString(
 			"add_action( 'enqueue_block_assets', array( \$this, 'enqueue_block_editor_layout' ) );",
@@ -161,16 +162,47 @@ class CssTest extends MD_TestCase {
 			$admin
 		);
 		$this->assertStringContainsString(
-			"[ 'md-builder', 'expanded', 'compact' ]",
+			"blockEditorClasses = [ 'md-builder', 'expanded', 'compact' ]",
 			$script
 		);
-		$this->assertStringContainsString( 'iframeDoc.documentElement.classList.toggle(', $script );
-		$this->assertStringNotContainsString( 'iframeDoc.body.classList.toggle(', $script );
+		$this->assertStringContainsString( "wp_enqueue_script( 'md-editors'", $admin );
+		$this->assertStringContainsString( "'isBlockEditor' => (bool) \$screen->is_block_editor()", $admin );
+		$this->assertStringNotContainsString( 'enqueue_block_editor_assets', $admin );
+		$this->assertStringContainsString( "'is-' . \$this->editor_content_style( \$post_id ) . '-style'", $admin );
+		$this->assertStringContainsString( "add_filter( 'tiny_mce_before_init', array( \$this, 'classic_editor_layout' ) );", $admin );
+		$this->assertStringContainsString( "'marketers_delight_layout_content_style'", $script );
+		$this->assertStringContainsString( "'is-' + style + '-style'", $script );
+		$this->assertStringContainsString( 'editorContext.inheritedContentStyle', $script );
+		$this->assertStringContainsString( 'iframe.contentDocument.documentElement', $script );
+		$this->assertStringContainsString( "'tinymce-editor-setup.mdEditorClasses'", $script );
+		$this->assertStringContainsString( 'function getContentStyle( contentStyle, builderCheckbox )', $script );
+		$this->assertStringContainsString( "return 'plain';", $script );
+		$this->assertStringContainsString( "! \$exclude_single && md_post_meta( array( 'layout', 'content', 'builder' ), \$post_id )", $admin );
+		$this->assertStringNotContainsString( 'classicEditorStyle', $admin_script );
 		$this->assertStringContainsString( '.expanded .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper', $block );
 		$this->assertStringContainsString( ':is(.expanded, .md-builder) .editor-styles-wrapper .wp-block-post-title', $block );
 		$this->assertStringNotContainsString( 'block_editor_layout_styles', $admin );
 		$this->assertStringNotContainsString( 'syncLayoutVariables', $script );
 		$this->assertStringNotContainsString( '--md-editor-', $block );
+	}
+
+	public function test_editor_surfaces_follow_existing_content_style_classes() {
+		$theme = $this->source( 'marketers-delight.php' );
+		$layout = $this->source( 'css/layout.php' );
+		$loop = $this->source( 'css/loop.php' );
+		$block = $this->source( 'css/block-editor.php' );
+		$classic = $this->source( 'css/classic-editor.php' );
+
+		$this->assertStringContainsString( "'is-' . md_loop_style() . '-style'", $theme );
+		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $layout );
+		$this->assertStringNotContainsString( '.is-box-style .main', $layout );
+		$this->assertStringNotContainsString( '.main:has(.box-style.loop)', $loop );
+		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $block );
+		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $classic );
+		$this->assertStringContainsString( '.is-box-style .editor-styles-wrapper { background-color: var(--md-content); }', $block );
+		$this->assertStringContainsString( '.mce-content-body.is-box-style { background-color: var(--md-content); }', $classic );
+		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $block );
+		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $classic );
 	}
 
 	public function test_alignment_breakouts_keep_theme_selectors_and_leave_editor_widths_to_theme_json() {

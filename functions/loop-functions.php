@@ -64,15 +64,32 @@ function md_filter_loop_styles() {
 
 /**
  * Determine the current loop/content box style.
+ * Pass a post ID to resolve the same inheritance from an admin editor.
+ * Exclude the single value to get the post type/global fallback.
  *
  * @since 5.1
  */
 
 function md_loop_style( $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'post_id' => null,
+		'post_type' => null,
+		'exclude_single' => false
+	) );
 	$body = md_setting( array( 'colors', 'design' ), 'box' );
 
 	if ( isset( $args['body'] ) )
 		return $body;
+
+	if ( ! empty( $args['post_id'] ) ) {
+		$post_type = $args['post_type'] ?: md_get_post_type( $args['post_id'] );
+		$inherited = md_post_type_field( array( 'layout', 'content_style' ), $body, $post_type ) ?: $body;
+
+		if ( ! empty( $args['exclude_single'] ) )
+			return $inherited;
+
+		return md_post_meta( array( 'layout', 'content_style' ), $args['post_id'] ) ?: $inherited;
+	}
 
 	$post_type = md_post_type_field( array( 'layout', 'content_style' ) );
 	$style = md_module( array( 'layout', 'content_style' ), $post_type, array( 'id' => get_queried_object_id() ) ) ?: $body;

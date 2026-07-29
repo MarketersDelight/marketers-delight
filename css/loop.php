@@ -37,8 +37,6 @@
 
 /* BOX STYLE */
 
-.main:has(.box-style.loop) { background-color: var(--md-color-surface); }
-
 .box, .box-entry .entry,
 .content :is(.page-title.cover, .page-title.cover .overlay),
 .entry :is(.cover, .cover .overlay),

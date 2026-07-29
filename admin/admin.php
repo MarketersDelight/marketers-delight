@@ -91,9 +91,9 @@ class md_admin {
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
-		add_action( 'enqueue_block_editor_assets', array( $this, 'enqueue_block_editor' ) );
 		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_layout' ) );
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
+		add_filter( 'tiny_mce_before_init', array( $this, 'classic_editor_layout' ) );
 
 		// Upgrader hooks
 		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
@@ -175,16 +175,6 @@ class md_admin {
 	}
 
 	/**
-	 * Enqueue scripts and styles to the Block Editor.
-	 *
-	 * @since 6.0
-	 */
-
-	public function enqueue_block_editor() {
-		wp_enqueue_script( 'md-block-editor', MD_URL . 'admin/js/block-editor.js', array( 'wp-dom-ready', 'wp-plugins', 'wp-editor', 'wp-element', 'wp-components', 'wp-data' ), MD_VERSION, true );
-	}
-
-	/**
 	 * Loads all scripts and styles throughout WP admin.
 	 *
 	 * @since 4.0
@@ -197,6 +187,18 @@ class md_admin {
 
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
+
+		if ( $screen->base === 'post' ) {
+			$post_id = get_the_ID();
+			$editor = 'admin/js/editors.js';
+
+			wp_enqueue_script( 'md-editors', MD_URL . $editor, array( 'jquery' ), md_ver( $editor ), true );
+			wp_localize_script( 'md-editors', 'mdEditorContext', array(
+				'isBlockEditor' => (bool) $screen->is_block_editor(),
+				'contentStyles' => array_keys( md_filter_loop_styles() ),
+				'inheritedContentStyle' => empty( $post_id ) ? 'box' : $this->editor_content_style( $post_id, true )
+			) );
+		}
 
 		$vars = array(
 			'user_id' => get_current_user_id(),
@@ -251,7 +253,8 @@ class md_admin {
 			'post_type' => get_post_type( $post_id ),
 			'page' => 'single'
 		) ) ? 'compact' : 'expanded';
-		$script = 'document.documentElement.classList.add(' . wp_json_encode( $layout );
+		$style = 'is-' . $this->editor_content_style( $post_id ) . '-style';
+		$script = 'document.documentElement.classList.add(' . wp_json_encode( $layout ) . ', ' . wp_json_encode( $style );
 
 		if ( md_post_meta( array( 'layout', 'content', 'builder' ), $post_id ) )
 			$script .= ', "md-builder"';
@@ -268,18 +271,57 @@ class md_admin {
 	}
 
 	/**
+	 * Resolve the active content style for an editor post.
+	 *
+	 * @since 6.0
+	 */
+
+	private function editor_content_style( $post_id, $exclude_single = false ) {
+		if ( ! $exclude_single && md_post_meta( array( 'layout', 'content', 'builder' ), $post_id ) )
+			return 'plain';
+
+		return md_loop_style( array(
+			'post_id' => $post_id,
+			'post_type' => get_post_type( $post_id ),
+			'exclude_single' => $exclude_single
+		) );
+	}
+
+	/**
+	 * Add the active content style class to the Classic Editor body.
+	 *
+	 * @since 6.0
+	 */
+
+	public function classic_editor_layout( $settings ) {
+		$post_id = get_the_ID();
+
+		if ( empty( $post_id ) )
+			return $settings;
+
+		$style = 'is-' . $this->editor_content_style( $post_id ) . '-style';
+		$settings['body_class'] = trim( ( $settings['body_class'] ?? '' ) . " $style" );
+
+		return $settings;
+	}
+
+	/**
 	 * Add body class to the admin panel.
 	 *
 	 * @since 6.0
 	 */
 
 	public function admin_body_class( $classes ) {
-		$builder = md_post_meta( array( 'layout', 'content', 'builder' ) );
+		$post_id = get_the_ID();
+		$builder = md_post_meta( array( 'layout', 'content', 'builder' ), $post_id );
+
+		if ( ! empty( $post_id ) )
+			$classes .= ' is-' . $this->editor_content_style( $post_id ) . '-style';
 
 		if ( ! empty( $builder ) )
 			$classes .= ' md-builder';
 
-		if ( md_has_sidebar( array( 'post_id' => get_the_ID() ) ) )
+		if ( md_has_sidebar( array( 'post_id' => $post_id ) ) )
 			$classes .= ' compact';
 		else
 			$classes .= ' expanded';

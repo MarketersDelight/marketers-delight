@@ -24,6 +24,33 @@ class LayoutTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'single', md_layout_context() );
 	}
 
+	public function test_explicit_editor_post_resolves_content_style_inheritance() {
+		md_test_set_option( 'marketers_delight', array(
+			'colors' => array(
+				'design' => 'plain'
+			),
+			'post' => array(
+				'layout' => array(
+					'content_style' => 'border'
+				)
+			)
+		) );
+		md_test_set_post_meta( array(
+			'layout' => array(
+				'content_style' => 'box'
+			)
+		), 7 );
+
+		$args = array(
+			'post_id' => 7,
+			'post_type' => 'post'
+		);
+
+		$this->assertSame( 'box', md_loop_style( $args ) );
+		$this->assertSame( 'border', md_loop_style( array_merge( $args, array( 'exclude_single' => true ) ) ) );
+		$this->assertSame( 'border', md_loop_style( array( 'post_id' => 8, 'post_type' => 'post' ) ) );
+	}
+
 	public function test_single_add_overrides_page_type_disable() {
 		md_test_set_query( array(
 			'is_singular' => true,

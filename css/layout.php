@@ -13,7 +13,7 @@
 }
 
 .main {
-	background-color: var(--md-color-surface);
+	background-color: var(--md-content-body);
 	padding-block: var(--md-single);
 }
 

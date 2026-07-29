@@ -17,7 +17,7 @@ include md_css( 'helpers', true );
 /* CLASSIC EDITOR */
 
 .mce-content-body {
-	background-color: <?php echo $colors['content']['body_color'] ?: $colors['palette']['background']; ?>;
+	background-color: var(--md-content-body);
 	color: <?php echo $colors['palette']['text-main']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
@@ -25,6 +25,8 @@ include md_css( 'helpers', true );
 	max-width: <?php echo $post_width; ?>px;
 	margin-inline: auto;
 }
+
+.mce-content-body.is-box-style { background-color: var(--md-content); }
 
 @media (min-width: 783px) {
 	.mce-content-body {
