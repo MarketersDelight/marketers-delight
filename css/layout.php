@@ -13,7 +13,7 @@
 }
 
 .main {
-	background-color: var(--md-content-body);
+	background-color: var(--md-content-main-background);
 	padding-block: var(--md-single);
 }
 
@@ -26,25 +26,33 @@
 
 /* SIDEBAR / PANEL */
 
-.sidebar, .panel { color: var(--md-sidebar-text); }
+.sidebar { color: var(--md-sidebar-text); }
 
-.sidebar { background-color: var(--md-sidebar); }
+.sidebar { background-color: var(--md-sidebar-background); }
 
-.sidebar a, .panel a { color: var(--md-sidebar-links); }
+.sidebar a { color: var(--md-sidebar-links); }
+
+.panel {
+	background-color: var(--md-panel-background);
+	border-color: var(--md-panel-border);
+	color: var(--md-panel-text);
+}
+
+.panel a { color: var(--md-panel-links); }
 
 .sidebar .widget :is(ul, ol), .footer .widget :is(ul, ol) {
 	list-style: none;
 	margin-inline-start: 0;
 }
 
-:is(.sidebar, .panel) :is(.widget-title, .wp-block-heading) { color: var(--md-sidebar-title); }
+.sidebar :is(.widget-title, .wp-block-heading) { color: var(--md-sidebar-title); }
 
-:is(.sidebar, .panel) :is(.widget-title a, .wp-block-heading a) { color: var(--md-sidebar-title-links); }
+.sidebar :is(.widget-title a, .wp-block-heading a) { color: var(--md-sidebar-title-links); }
 
 /* FOOTER */
 
 .footer {
-	background-color: var(--md-footer);
+	background-color: var(--md-footer-background);
 	color: var(--md-footer-text);
 	position: relative;
 	z-index: 88;

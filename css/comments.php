@@ -51,7 +51,7 @@
 
 .comment-details {
 	align-items: center;
-	background-color: var(--md-color-background);
+	background-color: var(--md-content-main-background);
 	display: flex;
 	padding-block-end: var(--md-half);
 	position: relative;
@@ -59,7 +59,7 @@
 }
 
 .comment-author, .comment-author a {
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 	font-weight: var(--md-bold);
 	text-decoration: none;
 }
@@ -90,11 +90,11 @@
 .comment-respond + .comment-controls { display: none; }
 
 .comment-controls a {
-	background-color: var(--md-content);
+	background-color: var(--md-content-box-background);
 	border: 1px solid var(--md-content-border);
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	font-size: var(--md-font-size-sm);
 	padding: var(--md-small) var(--md-third);
 	text-decoration: none;
@@ -110,7 +110,7 @@
 /* TOGGLE */
 
 .comment .toggle {
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	cursor: pointer;
 	display: none;
 	float: right;
@@ -135,7 +135,7 @@
 }
 
 .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-color-background) 80%);
+	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-content-main-background) 80%);
 	content: '';
 	display: block;
 	height: var(--md-single);
@@ -145,7 +145,7 @@
 	width: 100%;
 }
 
-.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-content) 80%); }
+.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-content-box-background) 80%); }
 
 /* TIMELINE */
 
@@ -191,7 +191,7 @@
 .comment-form .comment-form-comment { margin-block-end: var(--md-half); }
 
 #cancel-comment-reply-link {
-	color: var(--md-links);
+	color: var(--md-site-links);
 	float: right;
 	font-weight: normal;
 	font-size: 0.8em;

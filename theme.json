@@ -29,7 +29,7 @@
                 {
                     "name": "Primary",
                     "slug": "primary",
-                    "color": "#AE2525"
+                    "color": "#3923ff"
                 },
                 {
                     "name": "Secondary",
@@ -70,6 +70,11 @@
                     "name": "White",
                     "slug": "white",
                     "color": "#FFFFFF"
+                },
+                {
+                    "name": "My Own Color",
+                    "slug": "my-own-color",
+                    "color": "#5d8cff"
                 }
             ]
         },
@@ -279,7 +284,7 @@
         "elements": {
             "link": {
                 "color": {
-                    "text": "#AE2525"
+                    "text": "#3923ff"
                 },
                 "typography": {
                     "textDecoration": "underline"
@@ -346,7 +351,7 @@
                     "radius": "var:preset|border-radius|rounded"
                 },
                 "color": {
-                    "background": "var:preset|color|button",
+                    "background": "#22A340",
                     "text": "#FFFFFF"
                 },
                 "shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",

@@ -10,17 +10,8 @@ class md_colors extends md_api {
 	// Setup properties
 
 	private $colors;
-	private $defaults;
-
-	/**
-	 * Run high level actions, filters, and define dynamic properties.
-	 *
-	 * @since 5.0
-	 */
-
-	public function actions() {
-		$this->defaults = $this->design()->defaults();
-	}
+	private $fallbacks;
+	private $palette;
 
 	/**
 	 * Register admin page.
@@ -29,13 +20,19 @@ class md_colors extends md_api {
 	 */
 
 	public function register() {
-		$this->build_colors();
-
-		$fields = $this->colors;
+		$this->colors = new md_design_colors;
+		$this->palette = $this->colors->base_palette();
+		$fields = $this->build_color_fields( $this->colors->roles );
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
 		$fields['width']['sidebar'] = array( 'type' => 'range' );
-		$fields['palette'] = $fields['custom'] = array(
+		$fields['palette'] = array(
+			'type' => 'group',
+			'fields' => array(
+				'hex' => array( 'type' => 'color', 'hex_only' => true )
+			)
+		);
+		$fields['custom'] = array(
 			'type' => 'group',
 			'fields' => array(
 				'hex' => array( 'type' => 'color', 'hex_only' => true ),
@@ -68,11 +65,15 @@ class md_colors extends md_api {
 	 */
 
 	public function admin_page() {
-		$options = $this->options();
-		$defaults = $this->defaults;
-		$line_height = $this->design()->values()['typography']['body']['line_height']['desktop'];
-		$palette = $this->design()->base_palette();
-		$palette_defaults = $this->design()->palette;
+		$this->colors = new md_design_colors;
+		$options = $this->colors->roles;
+		$defaults = $this->design()->defaults();
+		$values = $this->design()->values();
+		$this->fallbacks = $this->colors->inheritance( $values['colors'] );
+		$line_height = $values['typography']['body']['line_height']['desktop'];
+		$this->palette = $this->colors->base_palette();
+		$palette = $this->palette;
+		$palette_defaults = $this->colors->palette;
 		$design = md_setting( array( 'colors', 'design' ) );
 
 		$post_width = round( 21 * $line_height );
@@ -88,65 +89,79 @@ class md_colors extends md_api {
 	}
 
 	/**
-	 * Format all known colors from the master list into a register[$fields]
-	 * format for a safe save.
+	 * Project the normalized semantic role tree into the field schema used to
+	 * sanitize saved Design settings. An entry containing `default` is a color
+	 * field. Palette-key defaults retain a `palette` marker so choosing that
+	 * built-in swatch is saved as no override; literal and empty defaults are
+	 * registered directly. Group nesting and setting paths remain unchanged.
 	 *
 	 * @since 6.0
 	 */
 
-	private function build_colors() {
-		$palette = md_color_palette();
+	private function build_color_fields( $roles ) {
+		if ( array_key_exists( 'default', $roles ) ) {
+			$field = array( 'type' => 'color' );
+			$default = $roles['default'];
 
-		$this->colors = array();
+			if ( isset( $this->palette[$default] ) )
+				$field['palette'] = $default;
+			else
+				$field['default'] = $default;
 
-		foreach ( $this->design()->color_groups() as $group => $fields )
-			foreach ( $fields as $field => $options ) {
-				$args = array( 'type' => 'color' );
+			return $field;
+		}
 
-				if ( ! empty( $options['inherit'] ) )
-					$args['inherit'] = $options['inherit'];
+		$fields = array();
 
-				$default = isset( $this->defaults['colors'][$group][$field] ) ? $this->defaults['colors'][$group][$field] : '';
+		foreach ( $roles as $key => $children )
+			$fields[$key] = $this->build_color_fields( $children );
 
-				if ( isset( $palette[$default] ) )
-					$default = $palette[$default]['hex'];
-
-				if ( ! $default && ! empty( $options['default'] ) )
-					$default = $options['default'];
-
-				if ( $default )
-					$args['default'] = esc_attr( $default );
-
-				$this->colors[$group][$field] = $args;
-			}
+		return $fields;
 	}
 
 	/**
-	 * Format options from master color list to render as admin fields.
+	 * Translate one semantic role into color-picker arguments. Palette defaults
+	 * display the current built-in palette value, literal defaults pass through,
+	 * and inherited fields read their fallback value and label from the role's
+	 * functional `inherit` path.
 	 *
-	 * @since 5.0
+	 * @since 6.0
 	 */
 
-	public function options() {
-		$sections = array();
+	public function color_field( $path, $options ) {
+		$source = $options['default'];
+		$palette = isset( $this->palette[$source] ) ? $source : '';
 
-		foreach ( $this->design()->color_groups() as $group => $fields )
-			foreach ( $fields as $field => $options ) {
-				$section = ! empty( $options['section'] ) ? $options['section'] : $group;
-				$entry = array( 'label' => $options['label'] );
+		if ( ! empty( $options['inherit'] ) ) {
+			$default = $this->fallbacks;
 
-				if ( ! empty( $options['inherit'] ) )
-					$entry['inherit'] = $options['inherit'];
+			foreach ( $path as $key ) {
+				if ( ! is_array( $default ) || ! array_key_exists( $key, $default ) ) {
+					$default = '';
+					break;
+				}
 
-				if ( ! empty( $options['default'] ) )
-					$entry['default'] = $options['default'];
-				elseif ( ! empty( $this->colors[$group][$field]['default'] ) )
-					$entry['default'] = $this->colors[$group][$field]['default'];
-
-				$sections[$section][$field] = $entry;
+				$default = $default[$key];
 			}
+		}
+		elseif ( $palette )
+			$default = $this->palette[$palette]['hex'];
+		else
+			$default = $source;
 
-		return $sections;
+		$args = array(
+			'type' => 'color',
+			'label' => __( $options['label'], 'md' ),
+			'default' => $default
+		);
+
+		if ( $palette )
+			$args['palette'] = $palette;
+
+		if ( ! empty( $options['inherit'] ) )
+			$args['fallback_label'] = __( $this->colors->role_label( $options['inherit'] ), 'md' );
+
+		$this->fields->field( $path, $args );
 	}
 
 }

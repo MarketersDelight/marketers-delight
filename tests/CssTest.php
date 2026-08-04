@@ -29,6 +29,7 @@ class CssTest extends MD_TestCase {
 			$spacers = $design->spacers( $values );
 			$widths = $design->widths( $values );
 			$site_width = $widths['site_width'];
+			$this->site_width = $site_width;
 			$site_width_wide = $widths['site_width_wide'];
 			$content_width = $widths['content_width'];
 			$post_width = $widths['post_width'];
@@ -183,7 +184,7 @@ class CssTest extends MD_TestCase {
 			'small', 'third', 'half', 'single', 'mid', 'double', 'triple', 'quad',
 			'border-radius', 'box-shadow-small', 'box-shadow-medium', 'box-shadow-large', 'box-shadow-huge',
 			'color-background', 'color-surface', 'color-primary', 'color-secondary', 'color-tertiary',
-			'color-border', 'color-highlight', 'color-text', 'color-text-secondary', 'color-white', 'button'
+			'color-border', 'color-highlight', 'color-text', 'color-text-secondary', 'color-white'
 		);
 
 		foreach ( $shared as $token )
@@ -193,8 +194,41 @@ class CssTest extends MD_TestCase {
 			$this->assertStringContainsString( '--md-' . $token . '-x:', $variables );
 
 		$this->assertStringContainsString( '--md-box-shadow:', $variables );
-		$this->assertStringContainsString( '--md-button-text:', $variables );
-		$this->assertStringContainsString( '--md-button-secondary:', $variables );
+		foreach ( array(
+			'site-background', 'site-text', 'site-text-muted', 'site-text-contrast', 'site-links',
+			'action-primary', 'action-primary-text', 'action-secondary', 'action-secondary-text',
+			'color-danger', 'color-warning',
+			'header-background', 'header-submenu-background',
+			'content-main-background', 'content-box-background',
+			'sidebar-background', 'panel-background', 'footer-background'
+		) as $token )
+			$this->assertStringContainsString( '--md-' . $token . ':', $variables );
+	}
+
+	public function test_status_action_colors_compile_into_shared_state_tokens() {
+		md_test_set_settings( array(
+			'colors' => array(
+				'actions' => array(
+					'status' => array(
+						'danger_color' => '#B91C1C',
+						'warning_color' => '#D97706'
+					)
+				)
+			)
+		) );
+
+		$variables = $this->render_variables();
+
+		$this->assertStringContainsString( '--md-color-danger: #B91C1C;', $variables );
+		$this->assertStringContainsString( '--md-color-warning: #D97706;', $variables );
+	}
+
+	public function test_muted_links_use_their_semantic_site_color() {
+		$helpers = $this->source( 'css/helpers.php' );
+
+		$this->assertStringContainsString( '.has-muted-color, .foot { color: var(--md-site-text-muted); }', $helpers );
+		$this->assertStringContainsString( 'color: var(--md-site-links-muted);', $helpers );
+		$this->assertStringNotContainsString( '.text-sec', $helpers );
 	}
 
 	public function test_classic_editor_stays_curated_and_auto_detects_dropin_opt_ins() {
@@ -309,6 +343,21 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '--md-editor-', $block );
 	}
 
+	public function test_nested_clone_groups_do_not_use_css_id_selectors() {
+		$script = $this->source( 'admin/js/admin.js' );
+
+		$this->assertStringContainsString(
+			"groupID = \$( document.getElementById( 'md_group_' + group ) )",
+			$script
+		);
+		$this->assertStringContainsString(
+			"tags = e.find( '[for], [name], [id], [data-clone-group]' )",
+			$script
+		);
+		$this->assertStringNotContainsString( "\$( '#md_group_' + group )", $script );
+		$this->assertStringNotContainsString( "e.find( 'label, input, textarea, select' )", $script );
+	}
+
 	public function test_editor_surfaces_follow_existing_content_style_classes() {
 		$theme = $this->source( 'marketers-delight.php' );
 		$layout = $this->source( 'css/layout.php' );
@@ -317,13 +366,13 @@ class CssTest extends MD_TestCase {
 		$classic = $this->source( 'css/classic-editor.php' );
 
 		$this->assertStringContainsString( "'is-' . md_loop_style() . '-style'", $theme );
-		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $layout );
+		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $layout );
 		$this->assertStringNotContainsString( '.is-box-style .main', $layout );
 		$this->assertStringNotContainsString( '.main:has(.box-style.loop)', $loop );
-		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $block );
-		$this->assertStringContainsString( 'background-color: var(--md-content-body);', $classic );
-		$this->assertStringContainsString( '.is-box-style .editor-styles-wrapper { background-color: var(--md-content); }', $block );
-		$this->assertStringContainsString( '.mce-content-body.is-box-style { background-color: var(--md-content); }', $classic );
+		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $block );
+		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $classic );
+		$this->assertStringContainsString( '.is-box-style .editor-styles-wrapper { background-color: var(--md-content-box-background); }', $block );
+		$this->assertStringContainsString( '.mce-content-body.is-box-style { background-color: var(--md-content-box-background); }', $classic );
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $block );
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $classic );
 	}

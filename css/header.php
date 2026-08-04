@@ -5,8 +5,8 @@
 \*------------------------------*/
 
 .header {
-	background-color: var(--md-header);
-	color: var(--md-header-color);
+	background-color: var(--md-header-background);
+	color: var(--md-header-text);
 	<?php if ( ! empty( $typography['header']['font_family'] ) ) : ?>
 	font-family: <?php echo $typography['header']['font_family']; ?>;
 	<?php endif; ?>

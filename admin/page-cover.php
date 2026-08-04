@@ -92,7 +92,7 @@ class md_page_cover extends md_api {
 
 		$inherit_options = array();
 
-		$overlay_default = $this->design()->values()['colors']['content']['page_cover'];
+		$overlay_default = $this->design()->values()['colors']['content']['page_cover_overlay_color'];
 
 		if ( $is_post )
 			$overlay_default = md_post_type_field( array( $this->_clean_id, 'bg_color' ), $overlay_default, $this->_get_screen['post_type'] );

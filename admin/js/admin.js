@@ -77,7 +77,7 @@
 			new: function() {
 				$( document ).on( 'click', '.md-clone-add', function( e ) {
 					var group = $( this ).data( 'clone-group' ),
-						groupID = $( '#md_group_' + group ),
+						groupID = $( document.getElementById( 'md_group_' + group ) ),
 						empty = groupID.children( '.md-group.empty' ).first(),
 						clone = empty.clone( true ),
 						token = '{clone:' + group + '}';
@@ -101,7 +101,7 @@
 				token = token || '{clone}';
 
 				var newID = MD.uniqueID(),
-					tags = e.find( 'label, input, textarea, select' ),
+					tags = e.find( '[for], [name], [id], [data-clone-group]' ),
 					attrs = [ 'for', 'name', 'id', 'data-clone-group' ];
 				e.find( '.md-clone-label' ).html( newID );
 				tags.each( function() {
@@ -306,6 +306,10 @@
 						$( el ).addClass( 'md-has-color-value' );
 					else
 						$( el ).removeClass( 'md-has-color-value ' );
+
+					var sourceWrap = $( el ).closest( '.md-color-source-wrap' );
+					if ( sourceWrap.length )
+						MD.syncColorSourceCustom( sourceWrap, el.value );
 				},
 				palette: MDJS.colors.colors,
 			};
@@ -315,30 +319,147 @@
 			});
 		},
 		colorScheme: function() {
-			var setSwatch = function( swatch, hex ) {
-				swatch.toggleClass( 'is-empty', ! hex ).css( 'background-color', hex || '' );
-			};
-
-			$( document ).on( 'click', '.md-color-scheme-toggle', function( e ) {
+			$( document ).on( 'click', '.md-color-source-trigger', function( e ) {
 				e.preventDefault();
-				var wrap = $( this ).closest( '.md-color-scheme-wrap' ),
-					select = wrap.find( '.md-color-scheme-select' );
-				if ( wrap.hasClass( 'is-inherit' ) ) {
-					wrap.removeClass( 'is-inherit' ).addClass( 'is-custom' );
-					$( this ).text( 'Custom' );
-					select.data( 'saved-val', select.val() ).val( '' );
-				}
-				else {
-					wrap.removeClass( 'is-custom' ).addClass( 'is-inherit' );
-					$( this ).text( 'Palette' );
-					select.val( select.data( 'saved-val' ) || wrap.data( 'default-inherit' ) || select.find( 'option:first' ).val() );
-					setSwatch( wrap.find( '.md-color-scheme-swatch' ), select.find( ':selected' ).data( 'hex' ) );
-					wrap.find( '.md-color-picker' ).removeClass( 'md-has-color-value' ).val( '' );
+				e.stopPropagation();
+
+				var trigger = $( this ),
+					wrap = trigger.closest( '.md-color-source-wrap' ),
+					isOpen = wrap.hasClass( 'is-open' );
+
+				MD.closeColorSources();
+
+				if ( ! isOpen ) {
+					wrap.addClass( 'is-open' );
+					trigger.attr( 'aria-expanded', 'true' );
+					wrap.find( '.md-color-source-menu' ).prop( 'hidden', false );
 				}
 			} );
-			$( document ).on( 'change', '.md-color-scheme-select', function() {
-				setSwatch( $( this ).closest( '.md-color-scheme-wrap' ).find( '.md-color-scheme-swatch' ), $( this ).find( ':selected' ).data( 'hex' ) );
+
+			$( document ).on( 'click', '.md-color-source-option, .md-color-source-palette-option', function() {
+				var option = $( this ),
+					wrap = option.closest( '.md-color-source-wrap' ),
+					mode = option.data( 'mode' );
+
+				wrap.find( '.md-color-source-mode' ).val( mode );
+
+				if ( mode === 'palette' )
+					wrap.find( '.md-color-source-palette-value' ).val( option.data( 'palette-key' ) );
+
+				MD.updateColorSource( wrap );
+				MD.closeColorSources();
+				wrap.find( '.md-color-source-trigger' ).trigger( 'focus' );
 			} );
+
+			$( document ).on( 'input change', '.md-color-source-custom .md-color-picker', function() {
+				MD.syncColorSourceCustom( $( this ).closest( '.md-color-source-wrap' ), $( this ).val() );
+			} );
+
+			$( document ).on( 'click', '.md-color-source-reset', function() {
+				var wrap = $( this ).closest( '.md-color-source-wrap' ),
+					input = wrap.find( '.md-color-source-custom .md-color-picker' );
+
+				input.removeClass( 'md-has-color-value' ).css( 'background-image', 'none' ).val( '' );
+				MD.syncColorSourceCustom( wrap, '' );
+				jscolor.hide();
+			} );
+
+			$( document ).on( 'click', '.md-color-source-apply', function() {
+				var wrap = $( this ).closest( '.md-color-source-wrap' ),
+					input = wrap.find( '.md-color-source-custom .md-color-picker' );
+
+				if ( ! input.val() ) {
+					input.trigger( 'focus' );
+					return;
+				}
+
+				MD.setColorSourceCustom( wrap );
+				MD.closeColorSources();
+				wrap.find( '.md-color-source-trigger' ).trigger( 'focus' );
+			} );
+
+			$( document ).on( 'keydown', '.md-color-source-custom .md-color-picker', function( e ) {
+				if ( e.key === 'Enter' ) {
+					e.preventDefault();
+					$( this ).closest( '.md-color-source-custom' ).find( '.md-color-source-apply' ).trigger( 'click' );
+				}
+			} );
+
+			$( document ).on( 'keydown', function( e ) {
+				if ( e.key === 'Escape' ) {
+					var open = $( '.md-color-source-wrap.is-open' );
+					MD.closeColorSources();
+					open.find( '.md-color-source-trigger' ).trigger( 'focus' );
+				}
+			} );
+
+			$( document ).on( 'click', function( e ) {
+				if ( $( '.md-color-source-wrap.is-open' ).length && ! $( e.target ).closest( '.md-color-source-wrap, .jscolor-wrap' ).length )
+					MD.closeColorSources();
+			} );
+		},
+		closeColorSources: function() {
+			$( '.md-color-source-wrap.is-open' ).each( function() {
+				$( this ).removeClass( 'is-open' ).find( '.md-color-source-trigger' ).attr( 'aria-expanded', 'false' );
+				$( this ).find( '.md-color-source-menu' ).prop( 'hidden', true );
+			} );
+
+			jscolor.hide();
+		},
+		setColorSourceCustom: function( wrap ) {
+			wrap.find( '.md-color-source-mode' ).val( 'custom' );
+			MD.updateColorSource( wrap );
+		},
+		syncColorSourceCustom: function( wrap, value ) {
+			var input = wrap.find( '.md-color-source-custom .md-color-picker' );
+
+			wrap.find( '.md-color-source-reset' ).prop( 'disabled', ! value );
+			input.toggleClass( 'md-has-color-value', !! value );
+
+			if ( value )
+				MD.setColorSourceCustom( wrap );
+			else if ( wrap.find( '.md-color-source-mode' ).val() === 'custom' ) {
+				input.css( 'background-image', 'none' );
+				wrap.find( '.md-color-source-mode' ).val( 'default' );
+				MD.updateColorSource( wrap );
+			}
+		},
+		updateColorSource: function( wrap ) {
+			var mode = wrap.find( '.md-color-source-mode' ).val(),
+				option = wrap.find( '.md-color-source-default' ),
+				hex = option.data( 'hex' ),
+				title = option.data( 'summary-title' ),
+				meta = option.data( 'summary-meta' );
+
+			if ( mode === 'palette' ) {
+				var paletteKey = wrap.find( '.md-color-source-palette-value' ).val();
+				option = wrap.find( '.md-color-source-palette-option' ).filter( function() {
+					return String( $( this ).data( 'palette-key' ) ) === paletteKey;
+				} ).first();
+				hex = option.data( 'hex' );
+				title = option.data( 'summary-title' );
+				meta = option.data( 'summary-meta' );
+			}
+			else if ( mode === 'custom' ) {
+				hex = wrap.find( '.md-color-source-custom .md-color-picker' ).val();
+				title = wrap.data( 'custom-label' ) + ( hex ? ' · ' + String( hex ).toUpperCase() : '' );
+				meta = wrap.data( 'independent-label' );
+			}
+
+			wrap.find( '.md-color-source-title' ).first().text( title );
+			wrap.find( '.md-color-source-meta' ).first().text( meta );
+			wrap.find( '.md-color-source-option, .md-color-source-palette-option' ).removeClass( 'is-selected' ).attr( 'aria-pressed', 'false' );
+			wrap.find( '.md-color-source-custom' ).toggleClass( 'is-selected', mode === 'custom' );
+
+			if ( mode !== 'custom' )
+				option.addClass( 'is-selected' ).attr( 'aria-pressed', 'true' );
+
+			var swatch = wrap.find( '.md-color-source-swatch' );
+
+			if ( hex )
+				swatch.removeClass( 'is-empty' ).css( 'background-color', hex );
+			else
+				swatch.addClass( 'is-empty' ).css( 'background-color', '' );
 		},
 		codeEditor: function() {
 			$( '.md-code-editor textarea' ).keydown( function( e ) {

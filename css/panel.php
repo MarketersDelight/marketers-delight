@@ -5,16 +5,16 @@
 \*------------------------------*/
 
 .panel {
-	background-color: var(--md-color-surface);
+	background-color: var(--md-panel-background);
 	padding-block: var(--md-half);
 	position: relative;
 }
 
-.panel-left .panel { border-inline-end: 1px solid var(--md-color-border); }
+.panel-left .panel { border-inline-end: 1px solid var(--md-panel-border); }
 
 .panel-right { overflow-x: hidden; }
 
-.panel-right .panel { border-inline-start: 1px solid var(--md-color-border); }
+.panel-right .panel { border-inline-start: 1px solid var(--md-panel-border); }
 
 /* WIDGETS */
 

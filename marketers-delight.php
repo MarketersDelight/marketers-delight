@@ -42,6 +42,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/sanitize.php';
 		require_once MD_DIR . 'api/validate.php';
 		require_once MD_DIR . 'api/save.php';
+		require_once MD_DIR . 'api/colors.php';
 		require_once MD_DIR . 'api/design.php';
 		require_once MD_DIR . 'api/css.php';
 		require_once MD_DIR . 'api/theme-json.php';

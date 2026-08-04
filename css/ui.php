@@ -1,7 +1,7 @@
 <style type="text/css">
 
 .overlay {
-	background-color: var(--md-page-cover);
+	background-color: var(--md-page-cover-overlay);
 	content: '';
 	display: block;
 	inset: 0;
@@ -22,9 +22,10 @@
 	z-index: 50;
 }
 
-.close {
+.close,
+.close.circle-icon {
 	background-color: transparent;
-	color: var(--md-color-primary);
+	color: var(--md-color-danger);
 	cursor: pointer;
 	font-size: var(--md-h6);
 }
@@ -48,7 +49,7 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	cursor: pointer;
 	flex-shrink: 0;
 	font-size: var(--md-h5);
@@ -60,7 +61,7 @@
 .scroller-arrow:hover {
 	background: transparent;
 	box-shadow: none;
-	color: var(--md-links);
+	color: var(--md-site-links);
 	transform: none;
 }
 
@@ -86,7 +87,7 @@
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.75);
 	border-radius: var(--md-border-radius);
-	color: var(--md-color-white);
+	color: var(--md-site-text-contrast);
 	cursor: default;
 	display: none;
 	font-size: 0.75em;
@@ -148,7 +149,7 @@
 	border: 1px solid var(--md-content-border);
 	border-width: 1px 1px 0;
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	cursor: pointer;
 	display: inline-flex;
 	gap: var(--md-third);
@@ -157,13 +158,13 @@
 }
 
 .tab a {
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	text-decoration: none;
 }
 
 .tab.active {
-	background-color: var(--md-content);
-	border-bottom-color: var(--md-content);
+	background-color: var(--md-content-box-background);
+	border-bottom-color: var(--md-content-box-background);
 	border-bottom-width: 1px;
 	margin-block-end: -1px;
 }
@@ -177,7 +178,7 @@
 /* ACCORDION */
 
 .accordion-item:not(:last-child),
-.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid var(--md-color-border); }
+.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid var(--md-content-border); }
 
 .accordion-title {
 	align-items: center;
@@ -199,7 +200,7 @@
 .accordion-label { flex: 1; }
 
 .accordion-label-icon {
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	margin-inline-end: var(--md-third);
 }
 

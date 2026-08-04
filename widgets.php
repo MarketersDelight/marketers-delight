@@ -304,7 +304,7 @@ class md_accordion_widget extends WP_Widget {
 				 "<details$name class=\"accordion-item" . ( $can_nest ? ' has-children' : '' ) . "\"$open>".
 				 '<summary class="accordion-title">'.
 				 '<span class="accordion-label">' . ( $depth > 1 ? md_icon( 'folder', array( 'classes' => 'accordion-label-icon' ) ) : '' ) . sanitize_text_field( $term->name ).
-				 ( ! empty( $val['settings']['show_count'] ) ? ' <span class="accordion-count small text-sec">(' . $count . ')</span>' : '' ).
+				 ( ! empty( $val['settings']['show_count'] ) ? ' <span class="accordion-count small has-muted-color">(' . $count . ')</span>' : '' ).
 				 '</span>'.
 				 '</summary>';
 

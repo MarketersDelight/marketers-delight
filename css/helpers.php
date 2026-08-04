@@ -37,7 +37,7 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: var(--md-line-height);
 }
 
-.small, .text-sec, .foot {
+.small, .foot {
 	font-size: 0.9em;
 	line-height: 1.5em;
 }
@@ -47,7 +47,9 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.text-sec, .foot { color: var(--md-color-text-secondary); }
+.has-muted-color, .foot { color: var(--md-site-text-muted); }
+
+.has-muted-color a, .foot a, a.has-muted-color, a.foot { color: var(--md-site-links-muted); }
 
 cite, .tiny {
 	font-size: calc(var(--md-font-size-sm) - 2px);
@@ -65,7 +67,7 @@ cite, .tiny {
 }
 
 .note {
-	background-color: var(--md-color-tertiary);
+	background-color: var(--md-content-main-background);
 	border-radius: var(--md-border-radius);
 	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
@@ -81,7 +83,7 @@ cite, .tiny {
 .badge {
     background-color: var(--md-color-warning);
     border-radius: var(--md-border-radius);
-    color: var(--md-color-white);
+	color: var(--md-site-text-contrast);
 	font-size: calc(var(--md-font-size-sm) - 2px);
 	font-weight: normal;
 	line-height: 1;
@@ -136,7 +138,7 @@ cite, .tiny {
 .circle-icon, a.circle-icon {
 	background-color: rgba(0, 0, 0, 0.1);
 	border-radius: 50%;
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 	height: var(--md-single);
 	width: var(--md-single);
 }

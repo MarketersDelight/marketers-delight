@@ -225,13 +225,11 @@ class md_save {
 		$merged = array();
 
 		foreach ( $save as $item_key => $item_value ) {
-			$item = is_array( $item_value )
-				? $this->merge_fields(
-					isset( $old[$item_key] ) && is_array( $old[$item_key] ) ? $old[$item_key] : array(),
-					$item_value,
-					$item_schema
-				)
-				: $item_value;
+			$item = is_array( $item_value ) ? $this->merge_fields(
+				isset( $old[$item_key] ) && is_array( $old[$item_key] ) ? $old[$item_key] : array(),
+				$item_value,
+				$item_schema
+			) : $item_value;
 
 			if ( ! $this->is_empty_value( $item ) )
 				$merged[$item_key] = $item;

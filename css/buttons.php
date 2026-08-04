@@ -50,9 +50,9 @@ input[type="submit"],
 /* TAGS */
 
 .tag {
-	background-color: var(--md-color-border);
+	background-color: var(--md-content-border);
 	border-radius: 50px;
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 	flex-shrink: 0;
 	font-size: var(--md-font-size-sm);
 	padding: var(--md-third) var(--md-half);
@@ -62,7 +62,7 @@ input[type="submit"],
 
 .tag:hover {
 	background-color: var(--md-content-border);
-	color: var(--md-links);
+	color: var(--md-site-links);
 }
 
 /* BUTTONS */
@@ -70,11 +70,11 @@ input[type="submit"],
 input[type="submit"],
 .button, .wp-element-button {
 	appearance: none;
-    background-color: var(--md-button);
+	background-color: var(--md-action-primary);
 	border: 0;
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	color: var(--md-button-text);
+	color: var(--md-action-primary-text);
 	cursor: pointer;
 	font-size: inherit;
 	font-family: inherit;
@@ -94,29 +94,24 @@ input[type="submit"]:hover,
 
 .button.white {
 	background-color: var(--md-color-white);
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 }
 
 .button.button-sec {
-	background-color: var(--md-button-secondary);
-	color: var(--md-button-secondary-text);
+	background-color: var(--md-action-secondary);
+	color: var(--md-action-secondary-text);
 }
 
 .button.button-outline,
 .is-style-outline .wp-element-button {
 	background-color: transparent;
-	border: 3px solid var(--md-button);
-	color: var(--md-button);
+	border: 3px solid var(--md-action-primary);
+	color: var(--md-action-primary);
 }
 
 .button.button-outline.white {
 	border-color: var(--md-color-white);
 	color: var(--md-color-white);
-}
-
-.button.button-outline.has-links-color {
-	border-color: var(--md-links);
-	color: var(--md-links);
 }
 
 /* SIZES */
@@ -136,7 +131,7 @@ input[type="submit"]:hover,
 
 /* STYLES */
 
-.button.button-cancel { background-color: var(--md-color-primary); }
+.button.button-cancel { background-color: var(--md-color-danger); }
 
 .button.button-disabled {
 	background-color: #999;

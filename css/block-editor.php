@@ -7,14 +7,14 @@
 /* TYPOGRAPHY */
 
 .editor-styles-wrapper {
-	background-color: var(--md-content-body);
-	color: <?php echo $colors['palette']['text-main']; ?>;
+	background-color: var(--md-content-main-background);
+	color: <?php echo $colors['site']['text_color']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
 }
 
-.is-box-style .editor-styles-wrapper { background-color: var(--md-content); }
+.is-box-style .editor-styles-wrapper { background-color: var(--md-content-box-background); }
 
 .edit-post-visual-editor__post-title-wrapper { margin-block-end: <?php echo $mid; ?>px; }
 

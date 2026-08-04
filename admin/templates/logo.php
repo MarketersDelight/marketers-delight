@@ -62,7 +62,8 @@
 					<?php $this->fields->field( array( 'site_title', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'inherit' => 'text-main'
+						'default' => $values['colors']['header']['text_color'],
+						'fallback_label' => __( 'Header Text', 'md' )
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">
@@ -98,7 +99,8 @@
 					<?php $this->fields->field( array( 'site_tagline', 'color' ), array(
 						'type' => 'color',
 						'label' => __( 'Color', 'md' ),
-						'inherit' => 'text-secondary'
+						'default' => $values['colors']['site']['muted_text_color'],
+						'fallback_label' => __( 'Site Muted Text', 'md' )
 					) ); ?>
 				</div>
 				<div class="col col2 md-sep-micro">

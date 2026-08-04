@@ -147,18 +147,43 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( 'primary', $this->sanitize->color( 'primary' ) );
 	}
 
-	public function test_color_inherit_reference_returns_sanitized_key() {
+	public function test_color_palette_mode_returns_sanitized_key() {
 		md_test_set_filter( 'md_color_palette', array( 'primary' => array( 'hex' => '#AE2525', 'name' => 'Primary' ) ) );
 
-		$this->assertSame( 'primary', $this->sanitize->color( array( 'inherit' => 'primary' ) ) );
+		$this->assertSame( 'primary', $this->sanitize->color( array(
+			'mode' => 'palette',
+			'palette' => 'primary'
+		) ) );
 	}
 
-	public function test_color_inherit_matching_fields_default_returns_empty_string() {
+	public function test_color_palette_matching_field_default_returns_empty_string() {
 		md_test_set_filter( 'md_color_palette', array( 'primary' => array( 'hex' => '#AE2525', 'name' => 'Primary' ) ) );
 
-		$result = $this->sanitize->color( array( 'inherit' => 'primary' ), array( 'inherit' => 'primary' ) );
+		$result = $this->sanitize->color( array(
+			'mode' => 'palette',
+			'palette' => 'primary'
+		), array( 'palette' => 'primary' ) );
 
 		$this->assertSame( '', $result );
+	}
+
+	public function test_color_default_mode_returns_empty_string() {
+		$this->assertSame( '', $this->sanitize->color( array( 'mode' => 'default' ) ) );
+	}
+
+	public function test_color_custom_mode_returns_color_value() {
+		$this->assertSame( '#123456', $this->sanitize->color( array(
+			'mode' => 'custom',
+			'custom' => '#123456'
+		) ) );
+	}
+
+	public function test_color_rejects_unknown_selection_mode() {
+		$this->assertSame( '', $this->sanitize->color( array(
+			'mode' => 'inherit',
+			'palette' => 'primary',
+			'custom' => '#123456'
+		) ) );
 	}
 
 	// upload()

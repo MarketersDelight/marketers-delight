@@ -7,7 +7,7 @@
 /* ATTRIBUTES */
 
 a {
-	color: var(--md-links);
+	color: var(--md-site-links);
 	text-decoration: underline;
 }
 
@@ -25,7 +25,7 @@ iframe, video, object { max-width: 100%; }
 
 abbr { cursor: help; }
 
-cite { color: var(--md-color-text-secondary); }
+cite { color: var(--md-site-text-muted); }
 
 sup { line-height: 1; }
 
@@ -99,7 +99,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 .list-check li:before {
 	background-color: rgba(0, 0, 0, 0.08);
 	border-radius: 50%;
-	color: var(--md-button);
+	color: var(--md-action-primary);
 	margin-inline: -<?php echo $single + $small + 2; ?>px var(--md-third);
 	padding: var(--md-small);
 }
@@ -109,12 +109,12 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 /* BLOCK/PULL QUOTES */
 
 blockquote {
-	background-color: var(--md-color-white);
+	background-color: var(--md-content-box-background);
 	border: 1px solid var(--md-content-border);
 	border-inline-start-width: 7px;
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 	display: block;
 	font-style: italic;
 	margin-inline: 0;

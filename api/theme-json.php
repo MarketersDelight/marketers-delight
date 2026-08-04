@@ -244,7 +244,7 @@ class md_theme_json {
 		$elements = array(
 			'link' => array(
 				'color' => array(
-					'text' => $this->colors['site']['links']
+					'text' => $this->colors['site']['link_color']
 				),
 				'typography' => array(
 					'textDecoration' => 'underline'
@@ -257,7 +257,7 @@ class md_theme_json {
 			),
 			'heading' => array(
 				'color' => array(
-					'text' => $this->colors['site']['headline']
+					'text' => $this->colors['site']['headline_color']
 				),
 				'typography' => array(
 					'fontFamily' => $this->fonts['heading']['font_family'],
@@ -274,8 +274,8 @@ class md_theme_json {
 				'radius' => 'var:preset|border-radius|rounded'
 			),
 			'color' => array(
-				'background' => 'var:preset|color|button',
-				'text' => $this->colors['site']['button-text']
+				'background' => $this->colors['actions']['primary']['bg_color'],
+				'text' => $this->colors['actions']['primary']['text_color']
 			),
 			'shadow' => '0 2px 4px rgba(0, 0, 0, 0.2)',
 			'spacing' => array(
@@ -359,8 +359,8 @@ class md_theme_json {
 			),
 			'styles' => apply_filters( 'md_theme_json_styles', array(
 				'color' => array(
-					'background' => $this->colors['palette']['background'],
-					'text' => $this->colors['palette']['text-main']
+					'background' => $this->colors['site']['bg_color'],
+					'text' => $this->colors['site']['text_color']
 				),
 				'typography' => array(
 					'fontFamily' => 'var:preset|font-family|body',
@@ -374,12 +374,12 @@ class md_theme_json {
 						'variations' => array(
 							'outline' => array(
 								'border' => array(
-									'color' => $this->colors['site']['button'],
+									'color' => $this->colors['actions']['primary']['bg_color'],
 									'width' => '3px'
 								),
 								'color' => array(
 									'background' => 'transparent',
-									'text' => $this->colors['site']['button']
+									'text' => $this->colors['actions']['primary']['bg_color']
 								)
 							)
 						)

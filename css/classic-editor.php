@@ -17,8 +17,8 @@ include md_css( 'helpers', true );
 /* CLASSIC EDITOR */
 
 .mce-content-body {
-	background-color: var(--md-content-body);
-	color: <?php echo $colors['palette']['text-main']; ?>;
+	background-color: var(--md-content-main-background);
+	color: <?php echo $colors['site']['text_color']; ?>;
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
@@ -26,7 +26,7 @@ include md_css( 'helpers', true );
 	margin-inline: auto;
 }
 
-.mce-content-body.is-box-style { background-color: var(--md-content); }
+.mce-content-body.is-box-style { background-color: var(--md-content-box-background); }
 
 @media (min-width: 783px) {
 	.mce-content-body {

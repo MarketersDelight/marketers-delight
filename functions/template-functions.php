@@ -161,9 +161,9 @@ function md_parse_tokens( $args = array() ) {
  */
 
 function md_editor_colors() {
-	$design = new md_design;
+	$colors = new md_design_colors;
 
-	return $design->editor_colors();
+	return $colors->editor_colors();
 }
 
 /**
@@ -173,9 +173,9 @@ function md_editor_colors() {
  */
 
 function md_color_palette() {
-	$design = new md_design;
+	$colors = new md_design_colors;
 
-	return apply_filters( 'md_color_palette', $design->active_palette() );
+	return apply_filters( 'md_color_palette', $colors->active_palette() );
 }
 
 /**

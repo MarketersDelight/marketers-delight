@@ -87,10 +87,10 @@
 }
 
 .style-default #wp-calendar {
-	background-color: var(--md-content);
+	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 }
 
 #wp-calendar td { padding: var(--md-third); }
@@ -104,8 +104,8 @@
 #wp-calendar thead tr, #wp-calendar tbody td { border-block-end: 1px solid var(--md-content-border); }
 
 #wp-calendar caption {
-	background-color: var(--md-color-primary);
+	background-color: var(--md-action-primary);
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
-	color: var(--md-color-white);
+	color: var(--md-action-primary-text);
 	padding: var(--md-half);
 }

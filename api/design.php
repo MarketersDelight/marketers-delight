@@ -1,31 +1,26 @@
 <?php
 /**
- * This class holds data that makes up the Design and Typography system.
+ * Combine typography, layout, effects, and resolved colors into the final
+ * values consumed by MD's CSS and theme.json compilers.
  *
  * @since 4.8
  */
 
 class md_design {
 
+	// Setup properties
+
+	private $colors;
+
 	/**
-	 * Main Theme colors, form the global color palette.
+	 * Set the color system used to build and resolve Design values.
 	 *
 	 * @since 6.0
 	 */
 
-	public $palette = array(
-		'background' => '#FFFFFF',
-		'surface' => '#F0F0F0',
-		'primary' => '#AE2525',
-		'secondary' => '#2E2E2E',
-		'tertiary' => '#DDDDDD',
-		'border' => '#CCCCCC',
-		'highlight' => '#FFFBCC',
-		'text-main' => '#1E1E1E',
-		'text-secondary' => '#777777',
-		'button' => '#22A340',
-		'white' => '#FFFFFF'
-	);
+	public function __construct() {
+		$this->colors = new md_design_colors;
+	}
 
 	/**
 	 * Merge saved design settings over the calculated defaults.
@@ -45,14 +40,23 @@ class md_design {
 			'sidebar' => md_setting( 'sidebars' )
 		) );
 
-		// Resolve palette references to CSS-ready color values.
+		// Resolve semantic color fallbacks and palette references.
 
-		$palette = $this->active_palette();
+		$palette = $this->colors->active_palette();
+		$values['colors'] = $this->colors->resolve( $values['colors'], $palette );
 
-		array_walk_recursive( $values, function( &$value ) use ( $palette ) {
+		if ( empty( $values['logo']['site_title']['color'] ) )
+			$values['logo']['site_title']['color'] = $values['colors']['header']['text_color'];
+
+		if ( empty( $values['logo']['site_tagline']['color'] ) )
+			$values['logo']['site_tagline']['color'] = $values['colors']['site']['muted_text_color'];
+
+		foreach ( array( 'site_title', 'site_tagline' ) as $logo ) {
+			$value = $values['logo'][$logo]['color'];
+
 			if ( is_string( $value ) && isset( $palette[$value] ) )
-				$value = $palette[$value]['hex'];
-		} );
+				$values['logo'][$logo]['color'] = $palette[$value]['hex'];
+		}
 
 		foreach ( $palette as $key => $color )
 			$values['colors']['palette'][$key] = $color['hex'];
@@ -123,73 +127,28 @@ class md_design {
 		$site_width = round( $content_width + $sidebar_width + ( $line_height * 1.5 ) );
 		$site_width_wide = $content_width + $sidebar_width + $panel_width + ( $line_height * 2 );
 
+		$colors = $this->colors->defaults();
+		$colors['width'] = array(
+			'site' => $site_width,
+			'site_wide' => $site_width_wide,
+			'alignwide' => $alignwide_width,
+			'content_width' => $content_width,
+			'panel_width' => $panel_width,
+			'post' => $post_width,
+			'sidebar' => $sidebar_width
+		);
+
 		return array(
-			'colors' => array(
-				'site' => array(
-					'links' => 'primary',
-					'links-secondary' => 'text-secondary',
-					'button' => 'button',
-					'button-text' => 'white',
-					'button-secondary' => 'secondary',
-					'button-secondary-text' => 'white',
-					'headline' => 'text-main',
-					'headline-links' => 'text-main'
-				),
-				'header' => array(
-					'bg_color' => 'background',
-					'border_color' => 'border',
-					'color' => 'text-main'
-				),
-				'menu' => array(
-					'links' => 'text-main',
-					'hover' => 'primary',
-					'active' => 'primary'
-				),
-				'submenu' => array(
-					'bg_color' => 'background',
-					'links' => 'text-secondary',
-					'hover' => 'primary'
-				),
-				'content' => array(
-					'body_color' => 'surface',
-					'bg_color' => 'background',
-					'border_color' => 'border',
-					'page_cover' => '#00000080'
-				),
-				'sidebar' => array(
-					'bg_color' => '',
-					'text' => 'text-secondary',
-					'title' => 'text-main',
-					'title_link' => 'text-main',
-					'links' => 'text-secondary'
-				),
-				'footer' => array(
-					'bg_color' => 'background',
-					'border_color' => 'border',
-					'text' => 'text-main',
-					'title' => 'text-main',
-					'title_link' => 'text-main',
-					'links' => 'text-secondary'
-				),
-				'width' => array(
-					'site' => $site_width,
-					'site_wide' => $site_width_wide,
-					'alignwide' => $alignwide_width,
-					'content_width' => $content_width,
-					'panel_width' => $panel_width,
-					'post' => $post_width,
-					'sidebar' => $sidebar_width
-				)
-			),
+			'colors' => $colors,
 			'typography' => $typography,
 			'logo' => array(
 				'site_title' => array(
-					'color' => 'text-main',
+					'color' => '',
 					'font_size' => array( 'desktop' => $site_title ),
 					'line_height' => array( 'desktop' => round( $site_title * 1.1 ) )
 				),
 				'site_tagline' => array(
-					'color' => 'text-secondary'
+					'color' => ''
 				)
 			),
 			'header' => array(),
@@ -490,237 +449,6 @@ class md_design {
 			'double' => round( $single * 2 ),
 			'triple' => round( $single * 3 ),
 			'quad' => round( $single * 4 )
-		);
-	}
-
-	/**
-	 * The master color list - fixed palette keys only, with user-selected
-	 * overrides applied. Used to render/prefill the master palette admin
-	 * fields, which custom colors don't belong in (they have their own
-	 * group).
-	 *
-	 * @since 6.0
-	 */
-
-	public function base_palette() {
-		$palette = array();
-
-		foreach ( $this->palette as $key => $hex )
-			$palette[$key] = array(
-				'hex' => $hex,
-				'name' => ucwords( str_replace( '-', ' ', $key ) )
-			);
-
-		$colors = md_setting( 'colors' );
-
-		if ( ! empty( $colors['palette'] ) )
-			foreach ( $colors['palette'] as $key => $data )
-				if ( ! empty( $data['hex'] ) && isset( $palette[$key] ) )
-					$palette[$key]['hex'] = $data['hex'];
-
-		return $palette;
-	}
-
-	/**
-	 * The master color router - the master palette plus any custom colors
-	 * layered on top, forming the full set of colors selectable/resolvable
-	 * anywhere a color can be picked or referenced.
-	 *
-	 * @since 6.0
-	 */
-
-	public function active_palette() {
-		$palette = $this->base_palette();
-		$colors = md_setting( 'colors' );
-
-		if ( ! empty( $colors['custom'] ) )
-			foreach ( $colors['custom'] as $data )
-				if ( ! empty( $data['name'] ) && ! empty( $data['hex'] ) ) {
-					$key = sanitize_title( ! empty( $data['key'] ) ? $data['key'] : $data['name'] );
-					$palette[$key] = array(
-						'hex' => $data['hex'],
-						'name' => $data['name']
-					);
-				}
-
-		return $palette;
-	}
-
-	/**
-	 * Register color palette in the Block Editor.
-	 *
-	 * @since 4.9
-	 */
-
-	public function editor_colors() {
-		$colors = array();
-
-		foreach ( $this->active_palette() as $key => $color )
-			$colors[] = array(
-				'name' => $color['name'],
-				'slug' => $key,
-				'color' => $color['hex']
-			);
-
-		return $colors;
-	}
-
-	/**
-	 * Organize colors by admin settings.
-	 *
-	 * @since 6.0
-	 */
-
-	public function color_groups() {
-		return array(
-			'site' => array(
-				'links' => array(
-					'label' => __( 'Links', 'md' ),
-					'inherit' => 'primary',
-					'section' => 'text'
-				),
-				'links-secondary' => array(
-					'label' => __( 'Links Secondary', 'md' ),
-					'inherit' => 'text-secondary',
-					'section' => 'text'
-				),
-				'headline' => array(
-					'label' => __( 'Headline', 'md' ),
-					'inherit' => 'text-main',
-					'section' => 'text'
-				),
-				'headline-links' => array(
-					'label' => __( 'Headline Links', 'md' ),
-					'inherit' => 'text-main',
-					'section' => 'text'
-				),
-				'button' => array(
-					'label' => __( 'Background', 'md' ),
-					'inherit' => 'button',
-					'section' => 'button'
-				),
-				'button-text' => array(
-					'label' => __( 'Text', 'md' ),
-					'inherit' => 'white',
-					'section' => 'button'
-				),
-				'button-secondary' => array(
-					'label' => __( 'Background', 'md' ),
-					'inherit' => 'secondary',
-					'section' => 'button-secondary'
-				),
-				'button-secondary-text' => array(
-					'label' => __( 'Text', 'md' ),
-					'inherit' => 'white',
-					'section' => 'button-secondary'
-				)
-			),
-			'header' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' ),
-					'inherit' => 'background'
-				),
-				'border_color' => array(
-					'label' => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'color' => array(
-					'label' => __( 'Text', 'md' ),
-					'inherit' => 'text-main'
-				)
-			),
-			'menu' => array(
-				'links' => array(
-					'label' => __( 'Links', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'hover' => array(
-					'label' => __( 'Links Hover', 'md' ),
-					'inherit' => 'primary'
-				),
-				'active' => array(
-					'label' => __( 'Links Active', 'md' ),
-					'inherit' => 'primary'
-				)
-			),
-			'submenu' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' ),
-					'inherit' => 'background'
-				),
-				'links' => array(
-					'label' => __( 'Links', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'hover' => array(
-					'label' => __( 'Links Hover', 'md' ),
-					'inherit' => 'primary'
-				)
-			),
-			'content' => array(
-				'body_color' => array(
-					'label' => __( 'Content Body', 'md' ),
-					'inherit' => 'surface'
-				),
-				'bg_color' => array(
-					'label' => __( 'Content Box', 'md' ),
-					'inherit' => 'background'
-				),
-				'border_color' => array(
-					'label' => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'page_cover' => array(
-					'label' => __( 'Page Cover', 'md' )
-				)
-			),
-			'sidebar' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' )
-				),
-				'text' => array(
-					'label' => __( 'Text', 'md' ),
-					'inherit' => 'text-secondary'
-				),
-				'title' => array(
-					'label' => __( 'Title', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title_link' => array(
-					'label' => __( 'Title Link', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'links' => array(
-					'label' => __( 'Links', 'md' ),
-					'inherit' => 'text-secondary'
-				)
-			),
-			'footer' => array(
-				'bg_color' => array(
-					'label' => __( 'Background', 'md' ),
-					'inherit' => 'background'
-				),
-				'border_color' => array(
-					'label' => __( 'Border', 'md' ),
-					'inherit' => 'border'
-				),
-				'text' => array(
-					'label' => __( 'Text', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title' => array(
-					'label' => __( 'Title', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'title_link' => array(
-					'label' => __( 'Title Link', 'md' ),
-					'inherit' => 'text-main'
-				),
-				'links' => array(
-					'label' => __( 'Links', 'md' ),
-					'inherit' => 'text-secondary'
-				)
-			)
 		);
 	}
 

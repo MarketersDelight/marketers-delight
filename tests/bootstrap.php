@@ -174,7 +174,7 @@ function md_color_palette() {
 }
 
 function md_editor_colors() {
-	return ( new md_design )->editor_colors();
+	return ( new md_design_colors )->editor_colors();
 }
 
 function sanitize_text_field( $str ) {
@@ -185,6 +185,13 @@ function sanitize_key( $key ) {
 	$key = strtolower( (string) $key );
 
 	return preg_replace( '/[^a-z0-9_\-]/', '', $key );
+}
+
+function sanitize_title( $title ) {
+	$title = strtolower( trim( (string) $title ) );
+	$title = preg_replace( '/[^a-z0-9_\-\s]/', '', $title );
+
+	return preg_replace( '/[\s_]+/', '-', $title );
 }
 
 function sanitize_html_class( $class ) {
@@ -219,6 +226,7 @@ require_once dirname( __DIR__ ) . '/api/validate.php';
 require_once dirname( __DIR__ ) . '/api/save.php';
 require_once dirname( __DIR__ ) . '/api/data.php';
 require_once dirname( __DIR__ ) . '/api/fields.php';
+require_once dirname( __DIR__ ) . '/api/colors.php';
 require_once dirname( __DIR__ ) . '/api/design.php';
 require_once dirname( __DIR__ ) . '/api/theme-json.php';
 require_once dirname( __DIR__ ) . '/api/css.php';

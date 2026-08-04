@@ -366,7 +366,7 @@ class md_css {
 			),
 			'alt' => array(
 				'class' => '.alt',
-				'color' => $colors['header'],
+				'color' => $colors['header']['text_color'],
 				'border' => 'rgba(0, 0, 0, 0.2)'
 			)
 		);

@@ -3,9 +3,9 @@
 /* SKIP TO CONTENT */
 
 .skip-to-content {
-    background-color: var(--md-color-secondary);
+	background-color: var(--md-action-secondary);
 	border-radius: var(--md-border-radius);
-    color: var(--md-color-white);
+	color: var(--md-action-secondary-text);
     position: absolute;
 	    inset-inline-start: var(--md-small);
 	    inset-block-start: -100%;
@@ -89,7 +89,7 @@
 
 .entry .wp-caption-text, .wp-element-caption {
 	border-bottom: 1px solid var(--md-content-border);
-	color: var(--md-color-text-secondary);
+	color: var(--md-site-text-muted);
 }
 
 .cover .wp-caption-text {
@@ -138,10 +138,10 @@
 
 .author-link.twitter .circle-icon {
 	background-color: #000;
-	color: var(--md-color-white);
+	color: var(--md-site-text-contrast);
 }
 
-.author-link.twitter .md-icon-twitter { color: var(--md-color-white); }
+.author-link.twitter .md-icon-twitter { color: var(--md-site-text-contrast); }
 
 .author-link.twitter a { color: #1da1f2; }
 
@@ -177,7 +177,7 @@ ul.page-numbers {
 }
 
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
-	background-color: var(--md-content);
+	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 	padding: var(--md-third) var(--md-half);
@@ -202,7 +202,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	padding: 0;
 }
 
-.page-numbers:not(.prev):not(.next):not(.current) { color: var(--md-color-text-secondary); }
+.page-numbers:not(.prev):not(.next):not(.current) { color: var(--md-site-text-muted); }
 
 .prev-icon, .page-numbers.prev { margin-inline-end: var(--md-third); }
 

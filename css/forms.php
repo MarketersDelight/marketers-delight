@@ -15,7 +15,7 @@ input, textarea {
 
 input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea,
 .form-icons .input-field {
-	background-color: var(--md-color-white);
+	background-color: var(--md-form-background);
 	border-radius: var(--md-border-radius);
 	border: 1px solid rgba(0, 0, 0, 0.2);
 	position: relative;
@@ -45,7 +45,7 @@ select {
 	width: 100%;
 }
 
-.required { color: var(--md-color-primary); }
+.required { color: var(--md-color-danger); }
 
 /* STRUCTURES */
 
@@ -78,7 +78,7 @@ select {
 .input-field { gap: 0; }
 
 .input-icon {
-	color: var(--md-color-text);
+	color: var(--md-site-text);
 	padding-inline: var(--md-half);
 	justify-content: center;
 }
@@ -113,7 +113,7 @@ select {
 .toggle-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
 
 .toggle-search:not(.cover) .trigger-search .trigger-icon:before,
-.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: var(--md-color-primary); }
+.toggle-menu:not(.cover) .trigger-menu .trigger-icon:before { color: var(--md-header-menu-hover); }
 
 /* TOGGLES */
 

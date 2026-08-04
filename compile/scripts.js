@@ -223,6 +223,21 @@ if ( active >= 0 && tocItems[active] ) {
 		ticking = true;
 	}
 },
+ctas: {
+	init: function() {
+		document.addEventListener( 'click', function( e ) {
+			var trigger = e.target.closest( '.cta-close' );
+			if ( ! trigger ) return;
+			var ctaId = trigger.getAttribute( 'data-cta' ),
+				cta = document.getElementById( ctaId ),
+				cookieExp = parseInt( trigger.getAttribute( 'data-cookie' ), 10 ) || 0;
+			if ( ! cta ) return;
+			cta.hidden = true;
+			if ( cookieExp && ! MD.cookie.get( ctaId ) )
+				MD.cookie.create( ctaId, true, cookieExp );
+		} );
+	},
+},
 floatingBars: {
 	init: function( floatingBars ) {
 		this.opened = this.showing = false;

@@ -149,15 +149,14 @@ class md_sanitize {
 	}
 
 	/**
-	 * Properly save color values to color fields as hex or RGBA.
-	 * As of 6.0, colors can now be saved as inheritances, which is a text string.
+	 * Save color values as explicit default, palette, or custom selections.
 	 *
 	 * @since 4.7
 	 */
 
 	public function color( $input, $fields = array() ) {
 		if ( is_array( $input ) )
-			return $this->color_inherit( $input, $fields );
+			return $this->color_selection( $input, $fields );
 
 		if ( is_scalar( $input ) && isset( md_color_palette()[$input] ) )
 			return sanitize_key( $input );
@@ -166,30 +165,34 @@ class md_sanitize {
 	}
 
 	/**
-	 * Resolve a color field submitted as an inheritance reference: an
-	 * explicit hex override, or a palette key to inherit from.
+	 * Resolve an explicit color field mode: configured default, palette
+	 * reference, or custom color value.
 	 *
 	 * @since 6.0
 	 */
 
-	private function color_inherit( $input, $fields ) {
-		$result = '';
+	private function color_selection( $input, $fields ) {
+		$mode = ! empty( $input['mode'] ) ? sanitize_key( $input['mode'] ) : '';
 
-		if ( ! empty( $input['hex'] ) )
-			$result = $this->color_value( $input['hex'], array() );
+		if ( $mode === 'default' )
+			return '';
 
-		if ( ! $result && ! empty( $input['inherit'] ) ) {
+		if ( $mode === 'palette' ) {
+			$key = ! empty( $input['palette'] ) ? sanitize_key( $input['palette'] ) : '';
 			$palette = md_color_palette();
 
-			if ( isset( $palette[$input['inherit']] ) ) {
-				$saved = sanitize_key( $input['inherit'] );
-				$is_default = ! empty( $fields['inherit'] ) && $saved === sanitize_key( $fields['inherit'] );
+			if ( ! isset( $palette[$key] ) )
+				return '';
 
-				$result = $is_default ? '' : $saved;
-			}
+			$is_default = ! empty( $fields['palette'] ) && $key === sanitize_key( $fields['palette'] );
+
+			return $is_default ? '' : $key;
 		}
 
-		return $result;
+		if ( $mode === 'custom' )
+			return $this->color_value( isset( $input['custom'] ) ? $input['custom'] : '', $fields );
+
+		return '';
 	}
 
 	/**
