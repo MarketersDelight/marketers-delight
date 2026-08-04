@@ -104,3 +104,33 @@
 	--md-footer-title: <?php echo $colors['footer']['title']; ?>;
 	--md-footer-title-links: <?php echo $colors['footer']['title_link']; ?>;
 }
+
+/* Portable fallbacks for presets registered in theme.json. */
+:where(:root) {
+	--wp--preset--spacing--small: <?php echo $spacers['small']['desktop']; ?>px;
+	--wp--preset--spacing--third: <?php echo $spacers['third']['desktop']; ?>px;
+	--wp--preset--spacing--half: <?php echo $spacers['half']['desktop']; ?>px;
+	--wp--preset--spacing--single: <?php echo $spacers['single']['desktop']; ?>px;
+	--wp--preset--spacing--mid: <?php echo $spacers['mid']['desktop']; ?>px;
+	--wp--preset--spacing--double: <?php echo $spacers['double']['desktop']; ?>px;
+	--wp--preset--spacing--triple: <?php echo $spacers['triple']['desktop']; ?>px;
+	--wp--preset--spacing--quad: <?php echo $spacers['quad']['desktop']; ?>px;
+
+	--wp--preset--border-radius--rounded: <?php echo $effects['border_radius']; ?>;
+	--wp--preset--shadow--small: <?php echo $effects['box_shadow']['small']; ?>;
+	--wp--preset--shadow--medium: <?php echo $effects['box_shadow']['medium']; ?>;
+	--wp--preset--shadow--large: <?php echo $effects['box_shadow']['large']; ?>;
+	--wp--preset--shadow--huge: <?php echo $effects['box_shadow']['huge']; ?>;
+
+	--wp--preset--color--background: <?php echo $colors['palette']['background']; ?>;
+	--wp--preset--color--surface: <?php echo $colors['palette']['surface']; ?>;
+	--wp--preset--color--primary: <?php echo $colors['palette']['primary']; ?>;
+	--wp--preset--color--secondary: <?php echo $colors['palette']['secondary']; ?>;
+	--wp--preset--color--tertiary: <?php echo $colors['palette']['tertiary']; ?>;
+	--wp--preset--color--border: <?php echo $colors['palette']['border']; ?>;
+	--wp--preset--color--highlight: <?php echo $colors['palette']['highlight']; ?>;
+	--wp--preset--color--text-main: <?php echo $colors['palette']['text-main']; ?>;
+	--wp--preset--color--text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;
+	--wp--preset--color--button: <?php echo $colors['palette']['button']; ?>;
+	--wp--preset--color--white: <?php echo $colors['palette']['white']; ?>;
+}

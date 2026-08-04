@@ -20,10 +20,11 @@
 
 /* SPACING */
 
+:root :where(.is-layout-flow) > *,
 .editor-styles-wrapper .wp-block-post-content > .wp-block,
 .md-builder .editor-styles-wrapper .wp-block-post-content .wp-block-heading:not(:first-child) { margin-block-start: 0; }
 
-.editor-styles-wrapper .wp-block-post-content > .wp-block:not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
+.editor-styles-wrapper .wp-block-post-content > .wp-block-paragraph:not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
 
 .editor-styles-wrapper .wp-block-post-content .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 

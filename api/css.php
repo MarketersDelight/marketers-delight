@@ -414,11 +414,9 @@ class md_css {
 	}
 
 	/**
-	 * Calculate fluid clamp CSS via two-point linear interpolation between
-	 * a floor value/width and a desktop value/width. Omitting floor_width
-	 * derives it the same way the original formula implicitly did (floor
-	 * * site_width / desktop); pass it explicitly to pin the floor at an
-	 * exact, chosen viewport width instead.
+	 * Calculate a fluid clamp CSS output between a floor/mobile and large/desktop value.
+	 * Add a floor_width (like sidebar / content / panel) to change width of calculations
+	 * there, or omit for site_width.
 	 *
 	 * @since 6.0
 	 */

@@ -18,6 +18,36 @@ class CssTest extends MD_TestCase {
 		return file_get_contents( dirname( __DIR__ ) . "/{$path}" );
 	}
 
+	private function render_variables() {
+		$file = dirname( __DIR__ ) . '/css/--vars.php';
+		$render = function() use ( $file ) {
+			$design = new md_design;
+			$values = $design->values();
+			$colors = $values['colors'];
+			$typography = $values['typography'];
+			$effects = $design->effects();
+			$spacers = $design->spacers( $values );
+			$widths = $design->widths( $values );
+			$site_width = $widths['site_width'];
+			$site_width_wide = $widths['site_width_wide'];
+			$content_width = $widths['content_width'];
+			$post_width = $widths['post_width'];
+			$sidebar_width = $widths['sidebar_width'];
+			$panel_width = $widths['panel_width'];
+			$font_size = $typography['body']['font_size'];
+			$line_height = $typography['body']['line_height'];
+			$fonts = $design->fonts( $values );
+			$bold = $fonts['body']['bold'];
+
+			ob_start();
+			include $file;
+
+			return ob_get_clean();
+		};
+
+		return $render->call( $this->css );
+	}
+
 	public function test_canonical_templates_include_registered_dropins_and_child_styles_last() {
 		md_test_set_child_theme( true );
 		md_test_set_settings( array(
@@ -72,6 +102,99 @@ class CssTest extends MD_TestCase {
 				$css
 			);
 		}
+	}
+
+	public function test_helpers_expose_the_canonical_layout_contract() {
+		$helpers = $this->source( 'css/helpers.php' );
+
+		foreach ( array(
+			'.wrap',
+			'.justify-start',
+			'.justify-center',
+			'.justify-end',
+			'.justify-between',
+			'.items-start',
+			'.items-center',
+			'.items-end',
+			'.items-stretch',
+			'.self-center',
+			'.column-mobile',
+			'.reverse-mobile',
+			'.wrap-mobile',
+			'.justify-center-mobile',
+			'.items-center-mobile',
+			'.items-stretch-mobile',
+			'.width-full-mobile',
+			'.text-center-mobile'
+		) as $class )
+			$this->assertStringContainsString( $class, $helpers );
+
+		$this->assertStringNotContainsString( '.fl-center', $helpers );
+		$this->assertStringNotContainsString( '.center-mobile', $helpers );
+		$this->assertStringContainsString( '[class*="columns-"]', $helpers );
+		$this->assertStringContainsString( '.columns-fluid-$g', $helpers );
+		$this->assertStringContainsString( '$g = 3; $g <= 6', $helpers );
+		$this->assertStringContainsString( 'var(--md-$size)', $helpers );
+	}
+
+	public function test_helper_effects_use_shared_tokens_and_respect_reduced_motion() {
+		$helpers = $this->source( 'css/helpers.php' );
+
+		$this->assertStringContainsString( '.shadow, .wp-block-image.shadow img { box-shadow: var(--md-box-shadow); }', $helpers );
+		$this->assertStringContainsString( '.shadow-grow:hover { box-shadow: var(--md-box-shadow-medium); }', $helpers );
+		$this->assertStringContainsString( '.wp-block-image.radius img { border-radius: var(--md-border-radius); }', $helpers );
+		$this->assertStringContainsString( '@media (prefers-reduced-motion: reduce)', $helpers );
+	}
+
+	public function test_theme_json_presets_have_matching_portable_css_fallbacks() {
+		$json = ( new md_theme_json )->build();
+		$css = $this->render_variables();
+
+		$this->assertStringContainsString( ':where(:root)', $css );
+
+		foreach ( $json['settings']['spacing']['spacingSizes'] as $preset )
+			$this->assertStringContainsString(
+				'--wp--preset--spacing--' . $preset['slug'] . ': ' . $preset['size'] . ';',
+				$css
+			);
+
+		foreach ( $json['settings']['border']['radiusSizes'] as $preset )
+			$this->assertStringContainsString(
+				'--wp--preset--border-radius--' . $preset['slug'] . ': ' . $preset['size'] . ';',
+				$css
+			);
+
+		foreach ( $json['settings']['shadow']['presets'] as $preset )
+			$this->assertStringContainsString(
+				'--wp--preset--shadow--' . $preset['slug'] . ': ' . $preset['shadow'] . ';',
+				$css
+			);
+
+		foreach ( $json['settings']['color']['palette'] as $preset )
+			$this->assertStringContainsString(
+				'--wp--preset--color--' . $preset['slug'] . ': ' . $preset['color'] . ';',
+				$css
+			);
+	}
+
+	public function test_shared_presets_keep_md_variables_as_the_internal_theme_api() {
+		$variables = $this->source( 'css/--vars.php' );
+		$shared = array(
+			'small', 'third', 'half', 'single', 'mid', 'double', 'triple', 'quad',
+			'border-radius', 'box-shadow-small', 'box-shadow-medium', 'box-shadow-large', 'box-shadow-huge',
+			'color-background', 'color-surface', 'color-primary', 'color-secondary', 'color-tertiary',
+			'color-border', 'color-highlight', 'color-text', 'color-text-secondary', 'color-white', 'button'
+		);
+
+		foreach ( $shared as $token )
+			$this->assertStringContainsString( '--md-' . $token . ':', $variables );
+
+		foreach ( array( 'single', 'mid', 'double', 'triple', 'quad' ) as $token )
+			$this->assertStringContainsString( '--md-' . $token . '-x:', $variables );
+
+		$this->assertStringContainsString( '--md-box-shadow:', $variables );
+		$this->assertStringContainsString( '--md-button-text:', $variables );
+		$this->assertStringContainsString( '--md-button-secondary:', $variables );
 	}
 
 	public function test_classic_editor_stays_curated_and_auto_detects_dropin_opt_ins() {

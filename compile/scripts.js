@@ -189,6 +189,40 @@ scrollerNav: function() {
 		updateArrows();
 	}
 },
+onScroll: function() {
+	let pos = 0, ticking = false;
+	window.onscroll = function( e ) {
+		pos = window.scrollY;
+		if ( ! ticking ) {
+			window.requestAnimationFrame( function() {
+				const contentBox = document.getElementById( 'main' );
+				if ( contentBox == null ) return;
+				const contentBoxOffsetTop = contentBox.offsetTop,
+					content = document.getElementById( 'the_content' );
+				if ( content == null ) return;
+var toc = document.getElementById( 'table_of_contents' );
+if ( toc === null ) return;
+var active = -1,
+	tocItems = toc.querySelectorAll( '.toc-item' ),
+	headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+for ( var i = 0; i < headings.length; i++ )
+	if ( headings[i].offsetTop + contentBoxOffsetTop <= pos + 20 )
+		active = i;
+for ( var c = 0; c < tocItems.length; c++ ) {
+	tocItems[c].classList.remove( 'active' );
+	tocItems[c].classList.remove( 'child-active' );
+}
+if ( active >= 0 && tocItems[active] ) {
+	tocItems[active].classList.add( 'active' );
+	if ( tocItems[active].parentNode.classList.contains( 'toc-sublist' ) )
+		tocItems[active].parentNode.parentNode.classList.add( 'child-active' );
+}
+				ticking = false;
+			});
+		}
+		ticking = true;
+	}
+},
 floatingBars: {
 	init: function( floatingBars ) {
 		this.opened = this.showing = false;
@@ -445,83 +479,6 @@ like: function() {
 		}
 	}
 },
-beacon_menu: function() {
-	document.querySelectorAll( '[data-toggle="beacon-menu"]' ).forEach( function( trigger ) {
-		trigger.addEventListener( 'click', function() {
-			document.getElementById( 'header' ).classList.remove( 'toggle-menu' );
-		} );
-	} );
-},
-download: function( config ) {
-	MD.tabs();
-	MD.clipboard();
-	document.addEventListener( 'click', function( e ) {
-		var btn = e.target.closest( '[data-download-id]' );
-		if ( ! btn )
-			return;
-		var card = btn.closest( '.edd-download, li' );
-		if ( ! card )
-			return;
-		var counter = card.querySelector( '.byline-download' );
-		if ( ! counter )
-			return;
-		var count = MD.number( counter.textContent ) + 1,
-			id = btn.getAttribute( 'data-download-id' );
-		document.querySelectorAll( '[data-download-id="' + id + '"]' ).forEach( function( el ) {
-			var c = el.closest( '.edd-download, li' );
-			if ( c ) {
-				var n = c.querySelector( '.byline-download' );
-				if ( n )
-					n.textContent = count;
-			}
-		} );
-	} );
-	if ( config.cart !== undefined ) {
-		document.querySelectorAll( '.beacon-avatar' ).forEach( function( avatar ) {
-			var badge = document.createElement( 'a' );
-			badge.href = config.checkout;
-			badge.className = 'beacon-cart-count';
-			badge.textContent = config.cart;
-			badge.hidden = config.cart < 1;
-			avatar.appendChild( badge );
-		} );
-		var tracker = document.createElement( 'span' );
-		tracker.className = 'edd-cart-quantity';
-		tracker.hidden = true;
-		document.body.appendChild( tracker );
-		new MutationObserver( function() {
-			var qty = parseInt( tracker.textContent, 10 ) || 0;
-			document.querySelectorAll( '.beacon-cart-count' ).forEach( function( badge ) {
-				badge.textContent = qty;
-				badge.hidden = qty < 1;
-			} );
-		} ).observe( tracker, { childList: true, characterData: true, subtree: true } );
-	}
-	if ( ! config || ! config.nonce )
-		return;
-	var licenseSwitch = document.getElementById( 'license_switch' );
-	if ( ! licenseSwitch )
-		return;
-	licenseSwitch.onclick = function( e ) {
-		e.preventDefault();
-		this.classList.add( 'md-loading' );
-		var data = new FormData();
-		data.append( 'action', 'md_license_switch' );
-		data.append( 'nonce', config.nonce );
-		fetch( MDJS.ajaxurl, {
-			method: 'POST',
-			body: data
-		} )
-			.then( function( response ) { return response.json(); } )
-			.then( function( response ) {
-				if ( response && response.success )
-					window.location.reload();
-				else
-					licenseSwitch.classList.remove( 'md-loading' );
-			} )
-			.catch( function() { licenseSwitch.classList.remove( 'md-loading' ); } );
-	};
-},
 footnotes: function() {
 	var footnotes = document.getElementsByClassName( 'footnote' );
 	for ( var i = 0; i < footnotes.length; i++ ) {
@@ -529,5 +486,55 @@ footnotes: function() {
 			MD.toggleClass( document.getElementById( this.id ), 'footnote-show' );
 		}
 	}
+},
+tableOfContents: function() {
+	var toc = document.getElementById( 'table_of_contents' );
+	if ( ! toc )
+		return;
+	var	content = document.getElementById( 'the_content' ),
+		labels = toc.querySelectorAll( '.toc-item-label' ),
+		headings = content.querySelectorAll( 'h2, h3, h4, h5, h6' );
+	if ( toc.classList.contains( 'sticky' ) ) {
+		var threshold = toc.getBoundingClientRect().top + window.scrollY;
+		var updateSticky = function() {
+			toc.classList.toggle( 'stuck', window.scrollY >= threshold );
+		};
+		updateSticky();
+		window.addEventListener( 'scroll', updateSticky, { passive: true } );
+	}
+	function scrollTo( target ) {
+		var inEntry = !! toc.closest( '.entry' ),
+			preStuck = inEntry && ! toc.classList.contains( 'stuck' );
+		if ( preStuck ) toc.classList.add( 'stuck' );
+		var top = 0, el = target;
+		while ( el ) { top += el.offsetTop; el = el.offsetParent; }
+		var offset = inEntry ? toc.clientHeight : 0;
+		if ( preStuck ) toc.classList.remove( 'stuck' );
+		window.scrollTo({ top: top - offset, behavior: 'smooth' });
+	}
+	for ( var i = 0; i < labels.length; i++ )
+		headings[i].setAttribute( 'id', labels[i].getAttribute( 'href' ).slice( 1 ) );
+	toc.addEventListener( 'click', function( e ) {
+		var label = e.target.closest( '.toc-item-label' );
+		if ( ! label ) return;
+		e.preventDefault();
+		var id = label.getAttribute( 'href' ).slice( 1 ),
+			target = document.getElementById( id );
+		if ( ! target ) return;
+		toc.classList.remove( 'open' );
+		scrollTo( target );
+		window.history.pushState( {}, '', '#' + id );
+	} );
+	toc.querySelector( '.widget-title' ).onclick = function() { toc.classList.toggle( 'open' ); };
+	if ( 'scrollRestoration' in history )
+		history.scrollRestoration = 'manual';
+	window.addEventListener( 'popstate', function() {
+		var hash = window.location.hash;
+		if ( hash ) {
+			var target = document.getElementById( hash.slice( 1 ) );
+			if ( target ) scrollTo( target );
+		}
+		else window.scrollTo({ top: 0, behavior: 'smooth' });
+	} );
 },
 }

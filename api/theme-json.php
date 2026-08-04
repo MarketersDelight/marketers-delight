@@ -271,19 +271,19 @@ class md_theme_json {
 
 		$elements['button'] = array(
 			'border' => array(
-				'radius' => $this->effects['border_radius']
+				'radius' => 'var:preset|border-radius|rounded'
 			),
 			'color' => array(
-				'background' => $this->colors['site']['button'],
+				'background' => 'var:preset|color|button',
 				'text' => $this->colors['site']['button-text']
 			),
 			'shadow' => '0 2px 4px rgba(0, 0, 0, 0.2)',
 			'spacing' => array(
 				'padding' => array(
-					'top' => $this->spacing['half']['desktop'] . 'px',
-					'right' => ( $this->spacing['half']['desktop'] + $this->spacing['third']['desktop'] ) . 'px',
-					'bottom' => $this->spacing['half']['desktop'] . 'px',
-					'left' => ( $this->spacing['half']['desktop'] + $this->spacing['third']['desktop'] ) . 'px'
+					'top' => 'var:preset|spacing|half',
+					'right' => 'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))',
+					'bottom' => 'var:preset|spacing|half',
+					'left' => 'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))'
 				)
 			),
 			'typography' => array(
@@ -329,6 +329,9 @@ class md_theme_json {
 					'defaultGradients' => false,
 					'palette' => md_editor_colors()
 				),
+				'dimensions' => array(
+					'aspectRatio' => true
+				),
 				'typography' => array(
 					'fluid' => true,
 					'fontSizes' => $this->font_sizes(),
@@ -343,7 +346,14 @@ class md_theme_json {
 					'presets' => $this->shadow_presets()
 				),
 				'spacing' => array(
-					'padding' => false,
+					'blockGap' => true,
+					'customSpacingSize' => false,
+					'defaultSpacingSizes' => false,
+					'margin' => true,
+					'padding' => true,
+					'spacingScale' => array(
+						'steps' => 0
+					),
 					'spacingSizes' => $this->spacing_sizes()
 				)
 			),

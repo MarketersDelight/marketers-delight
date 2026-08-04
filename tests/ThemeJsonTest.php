@@ -49,13 +49,31 @@ class ThemeJsonTest extends MD_TestCase {
 	}
 
 	public function test_spacing_and_button_styles_use_md_tokens() {
-		$spacing = $this->presets_by_slug( $this->json['settings']['spacing']['spacingSizes'] );
+		$settings = $this->json['settings']['spacing'];
+		$spacing = $this->presets_by_slug( $settings['spacingSizes'] );
 		$button = $this->json['styles']['elements']['button'];
 
+		$this->assertTrue( $settings['blockGap'] );
+		$this->assertTrue( $settings['margin'] );
+		$this->assertTrue( $settings['padding'] );
+		$this->assertFalse( $settings['customSpacingSize'] );
+		$this->assertFalse( $settings['defaultSpacingSizes'] );
+		$this->assertSame( 0, $settings['spacingScale']['steps'] );
 		$this->assertCount( 8, $spacing );
 		$this->assertSame( '32px', $spacing['single']['size'] );
-		$this->assertSame( '8px', $button['border']['radius'] );
+		$this->assertSame( 'var:preset|border-radius|rounded', $button['border']['radius'] );
+		$this->assertSame( 'var:preset|color|button', $button['color']['background'] );
+		$this->assertSame( 'var:preset|spacing|half', $button['spacing']['padding']['top'] );
+		$this->assertSame(
+			'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))',
+			$button['spacing']['padding']['right']
+		);
 		$this->assertArrayNotHasKey( 'border', $this->json['styles']['blocks']['core/button'] );
+	}
+
+	public function test_dimension_controls_expose_aspect_ratio_only() {
+		$this->assertTrue( $this->json['settings']['dimensions']['aspectRatio'] );
+		$this->assertArrayNotHasKey( 'minHeight', $this->json['settings']['dimensions'] );
 	}
 
 	public function test_effect_presets_use_the_md_radius_and_shadow_scale() {
