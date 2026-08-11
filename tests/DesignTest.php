@@ -72,11 +72,19 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '', $colors['header']['menu']['link_color'] );
 		$this->assertSame( 'surface', $colors['content']['main_bg_color'] );
 		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
+		$this->assertSame( '', $colors['content']['box_border_color'] );
+		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
+		$this->assertSame( '#777777', $colors['content']['box_muted_text_color'] );
+		$this->assertSame( 'primary', $colors['content']['box_link_color'] );
+		$this->assertArrayNotHasKey( 'box_headline_color', $roles['content'] );
+		$this->assertArrayNotHasKey( 'box_headline_link_color', $roles['content'] );
 		$this->assertSame( '', $colors['sidebar']['bg_color'] );
 		$this->assertSame( 'surface', $colors['panel']['bg_color'] );
 		$this->assertArrayHasKey( 'border_color', $colors['header']['submenu'] );
 		$this->assertSame( array( 'site', 'muted_text_color' ), $roles['site']['muted_link_color']['inherit'] );
 		$this->assertSame( 'Muted Text', $this->colors->role_label( $roles['site']['muted_link_color']['inherit'] ) );
+		$this->assertSame( array( 'content', 'border_color' ), $roles['content']['box_border_color']['inherit'] );
+		$this->assertSame( 'Content Border', $this->colors->role_label( $roles['content']['box_border_color']['inherit'] ) );
 	}
 
 	public function test_new_inherited_role_resolves_from_its_role_definition() {
@@ -91,6 +99,23 @@ class DesignTest extends MD_TestCase {
 
 		$this->assertSame( '#777777', $colors['content']['meta_color'] );
 		$this->assertSame( 'Muted Text', $this->colors->role_label( array( 'site', 'muted_text_color' ) ) );
+	}
+
+	public function test_content_box_foreground_stays_independent_from_a_light_site_text_palette() {
+		md_test_set_settings( array(
+			'colors' => array(
+				'palette' => array(
+					'text-main' => array( 'hex' => '#FFFFFF' )
+				)
+			)
+		) );
+
+		$colors = $this->design->values()['colors'];
+
+		$this->assertSame( '#FFFFFF', $colors['site']['text_color'] );
+		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
+		$this->assertSame( '#CCCCCC', $colors['content']['box_border_color'] );
+		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
 	}
 
 	public function test_circular_color_inheritance_returns_an_empty_fallback() {
@@ -168,6 +193,12 @@ class DesignTest extends MD_TestCase {
 				),
 				'panel' => array(
 					'text_color' => '#505050'
+				),
+				'content' => array(
+					'border_color' => '#909090',
+					'box_text_color' => '#606060',
+					'box_muted_text_color' => '#707070',
+					'box_link_color' => '#808080'
 				)
 			)
 		) );
@@ -184,6 +215,10 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '#404040', $colors['sidebar']['title_link_color'] );
 		$this->assertSame( '#303030', $colors['sidebar']['link_color'] );
 		$this->assertSame( '#505050', $colors['panel']['link_color'] );
+		$this->assertSame( '#909090', $colors['content']['box_border_color'] );
+		$this->assertSame( '#606060', $colors['content']['box_text_color'] );
+		$this->assertSame( '#707070', $colors['content']['box_muted_text_color'] );
+		$this->assertSame( '#808080', $colors['content']['box_link_color'] );
 		$this->assertSame( '#112233', $colors['footer']['title_color'] );
 		$this->assertSame( '#112233', $colors['footer']['title_link_color'] );
 	}

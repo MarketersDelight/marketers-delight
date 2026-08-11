@@ -19,7 +19,7 @@
 
 .content-title {
 	align-items: center;
-	border-block-end: 1px solid var(--md-content-border);
+	border-block-end: 1px solid var(--md-border);
 	display: flex;
 	gap: var(--md-half);
 	margin-block-end: var(--md-single);
@@ -59,7 +59,7 @@
 }
 
 .comment-author, .comment-author a {
-	color: var(--md-site-text);
+	color: var(--md-text);
 	font-weight: var(--md-bold);
 	text-decoration: none;
 }
@@ -91,10 +91,10 @@
 
 .comment-controls a {
 	background-color: var(--md-content-box-background);
-	border: 1px solid var(--md-content-border);
+	border: 1px solid var(--md-border);
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-	color: var(--md-site-text-muted);
+	color: var(--md-content-box-text-muted);
 	font-size: var(--md-font-size-sm);
 	padding: var(--md-small) var(--md-third);
 	text-decoration: none;
@@ -110,7 +110,7 @@
 /* TOGGLE */
 
 .comment .toggle {
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	cursor: pointer;
 	display: none;
 	float: right;
@@ -159,7 +159,7 @@
 	width: 5px;
 }
 
-.comment-timeline:hover, .comment:hover > .comment-timeline { background-color: var(--md-content-border); }
+.comment-timeline:hover, .comment:hover > .comment-timeline { background-color: var(--md-border); }
 
 .comment-timeline-text { display: none; }
 
@@ -191,7 +191,7 @@
 .comment-form .comment-form-comment { margin-block-end: var(--md-half); }
 
 #cancel-comment-reply-link {
-	color: var(--md-site-links);
+	color: var(--md-links);
 	float: right;
 	font-weight: normal;
 	font-size: 0.8em;

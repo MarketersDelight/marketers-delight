@@ -75,6 +75,14 @@
 	--md-site-headlines: <?php echo $colors['site']['headline_color']; ?>;
 	--md-site-headline-links: <?php echo $colors['site']['headline_link_color']; ?>;
 
+	--md-text: var(--md-site-text);
+	--md-text-muted: var(--md-site-text-muted);
+	--md-links: var(--md-site-links);
+	--md-links-muted: var(--md-site-links-muted);
+	--md-headlines: var(--md-site-headlines);
+	--md-headline-links: var(--md-site-headline-links);
+	--md-border: var(--md-content-border);
+
 	--md-action-primary: <?php echo $colors['actions']['primary']['bg_color']; ?>;
 	--md-action-primary-text: <?php echo $colors['actions']['primary']['text_color']; ?>;
 	--md-action-secondary: <?php echo $colors['actions']['secondary']['bg_color']; ?>;
@@ -93,6 +101,10 @@
 
 	--md-content-main-background: <?php echo $colors['content']['main_bg_color']; ?>;
 	--md-content-box-background: <?php echo $colors['content']['box_bg_color']; ?>;
+	--md-content-box-border: <?php echo $colors['content']['box_border_color']; ?>;
+	--md-content-box-text: <?php echo $colors['content']['box_text_color']; ?>;
+	--md-content-box-text-muted: <?php echo $colors['content']['box_muted_text_color']; ?>;
+	--md-content-box-links: <?php echo $colors['content']['box_link_color']; ?>;
 	--md-content-border: <?php echo $colors['content']['border_color']; ?>;
 	--md-page-cover-overlay: <?php echo $colors['content']['page_cover_overlay_color']; ?>;
 	--md-form-background: #fff;

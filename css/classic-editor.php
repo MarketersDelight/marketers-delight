@@ -18,7 +18,7 @@ include md_css( 'helpers', true );
 
 .mce-content-body {
 	background-color: var(--md-content-main-background);
-	color: <?php echo $colors['site']['text_color']; ?>;
+	color: var(--md-text);
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
@@ -26,7 +26,17 @@ include md_css( 'helpers', true );
 	margin-inline: auto;
 }
 
-.mce-content-body.is-box-style { background-color: var(--md-content-box-background); }
+.mce-content-body.is-box-style {
+	--md-text: var(--md-content-box-text);
+	--md-text-muted: var(--md-content-box-text-muted);
+	--md-links: var(--md-content-box-links);
+	--md-links-muted: var(--md-content-box-text-muted);
+	--md-headlines: var(--md-content-box-text);
+	--md-headline-links: var(--md-content-box-text);
+	--md-border: var(--md-content-box-border);
+	background-color: var(--md-content-box-background);
+	color: var(--md-text);
+}
 
 @media (min-width: 783px) {
 	.mce-content-body {

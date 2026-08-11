@@ -7,7 +7,7 @@
 /* ATTRIBUTES */
 
 a {
-	color: var(--md-site-links);
+	color: var(--md-links);
 	text-decoration: underline;
 }
 
@@ -25,7 +25,7 @@ iframe, video, object { max-width: 100%; }
 
 abbr { cursor: help; }
 
-cite { color: var(--md-site-text-muted); }
+cite { color: var(--md-text-muted); }
 
 sup { line-height: 1; }
 
@@ -109,12 +109,19 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 /* BLOCK/PULL QUOTES */
 
 blockquote {
+	--md-text: var(--md-content-box-text);
+	--md-text-muted: var(--md-content-box-text-muted);
+	--md-links: var(--md-content-box-links);
+	--md-links-muted: var(--md-content-box-text-muted);
+	--md-headlines: var(--md-content-box-text);
+	--md-headline-links: var(--md-content-box-text);
+	--md-border: var(--md-content-box-border);
 	background-color: var(--md-content-box-background);
-	border: 1px solid var(--md-content-border);
+	border: 1px solid var(--md-border);
 	border-inline-start-width: 7px;
 	border-radius: var(--md-border-radius);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	display: block;
 	font-style: italic;
 	margin-inline: 0;

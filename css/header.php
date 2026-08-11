@@ -64,6 +64,8 @@
 	gap: var(--md-half);
 }
 
+.header .trigger { color: var(--md-header-text); }
+
 /* LAYOUTS */
 
 .header.simple :is(.inner, .header-primary, .header-aside, .header-controls, .header-triggers) { justify-content: center; }

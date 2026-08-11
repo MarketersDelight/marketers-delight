@@ -19,7 +19,7 @@
 	width: 100%;
 }
 
-.menu-item a, .menu .sub-menu .trigger { color: var(--md-header-menu-links); }
+.menu-item a { color: var(--md-header-menu-links); }
 
 .menu-item-has-children > a { flex: 1; }
 
@@ -43,8 +43,11 @@
 	z-index: 50;
 }
 
-.sub-menu .menu-item a {
+.sub-menu .menu-item a, .menu .sub-menu .trigger {
 	color: var(--md-header-submenu-links);
+}
+
+.sub-menu .menu-item a {
 	display: block;
 }
 

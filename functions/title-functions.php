@@ -109,6 +109,9 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Page cover classes
 
+	if ( $context == 'post' )
+		$classes[] = 'item';
+
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context );
 
@@ -117,8 +120,6 @@ function md_title( $context = 'post', $args = array() ) {
 		elseif ( ! empty( $cover['bg_color'] ) )
 			$style['bg_color'] = $cover['bg_color'];
 	}
-	elseif ( $context == 'post' )
-		$classes[] = 'item';
 
 	$classes = join( ' ', $classes );
 	$style = md_style( $style );

@@ -443,7 +443,7 @@
 			else if ( mode === 'custom' ) {
 				hex = wrap.find( '.md-color-source-custom .md-color-picker' ).val();
 				title = wrap.data( 'custom-label' ) + ( hex ? ' · ' + String( hex ).toUpperCase() : '' );
-				meta = wrap.data( 'independent-label' );
+				meta = wrap.data( 'hex-meta' );
 			}
 
 			wrap.find( '.md-color-source-title' ).first().text( title );

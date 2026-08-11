@@ -8,12 +8,7 @@
  */
 
 function md_setting( $keys = null, $default = null ) {
-	static $defaults = null;
-
-	if ( is_null( $defaults ) )
-		$defaults = apply_filters( 'md_setting_defaults', array() );
-
-	$defaults = is_array( $defaults ) ? $defaults : array();
+	$defaults = md_setting_defaults();
 	$option = get_option( 'marketers_delight', array() );
 	$option = array_replace_recursive( $defaults, (array) $option );
 
@@ -31,17 +26,25 @@ function md_setting( $keys = null, $default = null ) {
 }
 
 /**
- * Get a raw, un-hydrated slice of the marketers_delight option containing
- * only the given top-level keys, each defaulting to an empty array if unset.
+ * Default settings can be set with a filter, so not a bad idea
+ * to cache when modifying the main options array.
  *
- * Use this (instead of md_setting()) when you need to mutate and save back
- * a specific branch of settings programmatically — e.g. dropin install/
- * uninstall, license activation, icon resets. marketers_delight is a
- * registered setting, so update_option() re-runs its sanitize callback on
- * whatever you pass it; writing back only the keys you actually touched
- * (via this function) keeps that re-validation scoped to those keys instead
- * of silently re-processing — and potentially corrupting — every other
- * setting in the tree.
+ * @since 6.0
+ */
+
+function md_setting_defaults( $refresh = false ) {
+	static $defaults = null;
+
+	if ( $refresh || is_null( $defaults ) )
+		$defaults = apply_filters( 'md_setting_defaults', array() );
+
+	return is_array( $defaults ) ? $defaults : array();
+}
+
+/**
+ * Instead of overwriting get_option to update a slice of the MD setting,
+ * call this function with a list of keys to access and modify data and
+ * pass back to an update_option call.
  *
  * @since 6.0
  */

@@ -71,8 +71,9 @@ function md_dropin_list( $dropins, $status = null ) {
 
 function md_get_dropins( $status = null, $key = null ) {
 	if ( $status === 'active' ) {
-		$dropins = md_setting( array( 'dropins', 'active' ), array() );
-		$dropins = is_array( $dropins ) ? $dropins : array();
+		$dropins = md_setting_part( array( 'dropins' ) );
+		$active = isset( $dropins['dropins']['active'] ) ? $dropins['dropins']['active'] : array();
+		$dropins = is_array( $active ) ? $active : array();
 	}
 	else
 		$dropins = md_dropin_list( md_dropins_setting(), $status );

@@ -78,7 +78,7 @@ select {
 .input-field { gap: 0; }
 
 .input-icon {
-	color: var(--md-site-text);
+	color: var(--md-text);
 	padding-inline: var(--md-half);
 	justify-content: center;
 }
@@ -87,7 +87,7 @@ select {
 
 .form-style .input-icon {
 	background-color: rgba(0, 0, 0, 0.15);
-	border-inline-end: 1px solid var(--md-content-border);
+	border-inline-end: 1px solid var(--md-border);
 	border-radius: var(--md-border-radius) 0 0 var(--md-border-radius);
 	padding-inline-end: var(--md-half);
 }

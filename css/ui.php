@@ -8,8 +8,6 @@
 	position: absolute;
 }
 
-.repeat { background-repeat: repeat; }
-
 .clickable:after, .post-nav a:after {
 	content: '';
 	position: absolute;
@@ -49,7 +47,7 @@
 	border: 0;
 	border-radius: 0;
 	box-shadow: none;
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	cursor: pointer;
 	flex-shrink: 0;
 	font-size: var(--md-h5);
@@ -61,7 +59,7 @@
 .scroller-arrow:hover {
 	background: transparent;
 	box-shadow: none;
-	color: var(--md-site-links);
+	color: var(--md-links);
 	transform: none;
 }
 
@@ -92,10 +90,10 @@
 	display: none;
 	font-size: 0.75em;
 	gap: var(--md-third);
+	justify-content: center;
 	line-height: 1;
 	padding: var(--md-third);
 	position: absolute;
-	text-align: center;
 	width: 160px;
 }
 
@@ -139,17 +137,17 @@
 /* TABS */
 
 .tabs {
-	border-block-end: 1px solid var(--md-content-border);
+	border-block-end: 1px solid var(--md-border);
 	margin-block-end: var(--md-single);
 }
 
 .tab {
 	align-items: center;
 	background-color: #f7f7f7;
-	border: 1px solid var(--md-content-border);
+	border: 1px solid var(--md-border);
 	border-width: 1px 1px 0;
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	cursor: pointer;
 	display: inline-flex;
 	gap: var(--md-third);
@@ -158,7 +156,7 @@
 }
 
 .tab a {
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	text-decoration: none;
 }
 
@@ -169,6 +167,8 @@
 	margin-block-end: -1px;
 }
 
+.tab.active a { color: var(--md-content-box-text-muted); }
+
 .md-tab { cursor: pointer; }
 
 .md-tab-content { display: none; }
@@ -178,7 +178,7 @@
 /* ACCORDION */
 
 .accordion-item:not(:last-child),
-.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid var(--md-content-border); }
+.accordion-item .menu-item:not(:last-child) { border-bottom: 1px solid var(--md-border); }
 
 .accordion-title {
 	align-items: center;
@@ -200,7 +200,7 @@
 .accordion-label { flex: 1; }
 
 .accordion-label-icon {
-	color: var(--md-site-text-muted);
+	color: var(--md-text-muted);
 	margin-inline-end: var(--md-third);
 }
 

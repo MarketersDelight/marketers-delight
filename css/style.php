@@ -28,7 +28,7 @@ include locate_template( 'css/--vars.php' );
 
 body {
 	background-color: var(--md-site-background);
-	color: var(--md-site-text);
+	color: var(--md-text);
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	font-weight: <?php echo $font_weight; ?>;

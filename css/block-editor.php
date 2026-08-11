@@ -8,13 +8,23 @@
 
 .editor-styles-wrapper {
 	background-color: var(--md-content-main-background);
-	color: <?php echo $colors['site']['text_color']; ?>;
+	color: var(--md-text);
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
 }
 
-.is-box-style .editor-styles-wrapper { background-color: var(--md-content-box-background); }
+.is-box-style .editor-styles-wrapper {
+	--md-text: var(--md-content-box-text);
+	--md-text-muted: var(--md-content-box-text-muted);
+	--md-links: var(--md-content-box-links);
+	--md-links-muted: var(--md-content-box-text-muted);
+	--md-headlines: var(--md-content-box-text);
+	--md-headline-links: var(--md-content-box-text);
+	--md-border: var(--md-content-box-border);
+	background-color: var(--md-content-box-background);
+	color: var(--md-text);
+}
 
 .edit-post-visual-editor__post-title-wrapper { margin-block-end: <?php echo $mid; ?>px; }
 

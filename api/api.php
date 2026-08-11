@@ -52,6 +52,11 @@ class md_api {
 		if ( method_exists( $this, 'includes' ) )
 			$this->includes();
 
+		// Register setting defaults before subclass setup reads any settings.
+
+		if ( method_exists( $this, 'setting_defaults' ) )
+			add_filter( 'md_setting_defaults', array( $this, 'setting_defaults' ) );
+
 		// Run instance actions and filters
 
 		if ( method_exists( $this, 'actions' ) )
@@ -100,9 +105,6 @@ class md_api {
 		}
 
 		// Filters
-
-		if ( method_exists( $this, 'setting_defaults' ) )
-			add_filter( 'md_setting_defaults', array( $this, 'setting_defaults' ) );
 
 		if ( method_exists( $this, 'register_loop' ) )
 			add_filter( 'md_filter_loops', array( $this, 'register_loop' ) );

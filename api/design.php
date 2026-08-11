@@ -301,8 +301,8 @@ class md_design {
 				'line_height' => array( 'desktop' => $line_height )
 			),
 			'sidebar' => array(
-				'font_size' => array( 'desktop' => round( $font_size * 0.95 ) ),
-				'line_height' => array( 'desktop' => round( $line_height * 0.9 ) )
+				'font_size' => array( 'desktop' => round( $font_size * 0.9 ) ),
+				'line_height' => array( 'desktop' => round( $line_height * 0.85 ) )
 			),
 			'footer' => array(
 				'font_size' => array( 'desktop' => round( $font_size * 0.95 ) ),

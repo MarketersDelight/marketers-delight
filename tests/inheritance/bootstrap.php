@@ -348,6 +348,7 @@ require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/comment-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/layout-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/loop-functions.php';
+require_once dirname( __DIR__, 2 ) . '/functions/media-functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
 
 /**

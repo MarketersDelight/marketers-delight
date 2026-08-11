@@ -159,13 +159,30 @@ class md_design_colors {
 				'label' => 'Main Background',
 				'default' => 'surface'
 			),
+			'border_color' => array(
+				'label' => 'Content Border',
+				'default' => 'border'
+			),
 			'box_bg_color' => array(
 				'label' => 'Content Box',
 				'default' => '#FFFFFF'
 			),
-			'border_color' => array(
-				'label' => 'Border',
-				'default' => 'border'
+			'box_border_color' => array(
+				'label' => 'Box Border',
+				'default' => '',
+				'inherit' => array( 'content', 'border_color' )
+			),
+			'box_text_color' => array(
+				'label' => 'Text',
+				'default' => '#1E1E1E'
+			),
+			'box_muted_text_color' => array(
+				'label' => 'Muted Text',
+				'default' => '#777777'
+			),
+			'box_link_color' => array(
+				'label' => 'Links',
+				'default' => 'primary'
 			),
 			'page_cover_overlay_color' => array(
 				'label' => 'Page Cover Overlay',

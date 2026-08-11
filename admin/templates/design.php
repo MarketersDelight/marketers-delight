@@ -220,6 +220,7 @@
 	</div>
 
 	<?php foreach ( array( 'content' => __( 'Content', 'md' ), 'sidebar' => __( 'Sidebar', 'md' ), 'panel' => __( 'Panel', 'md' ), 'footer' => __( 'Footer', 'md' ) ) as $group => $label ) : ?>
+
 	<div class="md-widget md-toggle md-color-widget md-sep-small">
 
 		<h3 class="md-widget-title"><?php echo esc_html( $label ); ?></h3>
@@ -233,6 +234,7 @@
 		</div>
 
 	</div>
+
 	<?php endforeach; ?>
 
 	<hr class="md-sep-small" />

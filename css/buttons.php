@@ -50,9 +50,9 @@ input[type="submit"],
 /* TAGS */
 
 .tag {
-	background-color: var(--md-content-border);
+	background-color: var(--md-border);
 	border-radius: 50px;
-	color: var(--md-site-text);
+	color: var(--md-text);
 	flex-shrink: 0;
 	font-size: var(--md-font-size-sm);
 	padding: var(--md-third) var(--md-half);
@@ -61,8 +61,8 @@ input[type="submit"],
 }
 
 .tag:hover {
-	background-color: var(--md-content-border);
-	color: var(--md-site-links);
+	background-color: var(--md-border);
+	color: var(--md-links);
 }
 
 /* BUTTONS */
@@ -94,7 +94,7 @@ input[type="submit"]:hover,
 
 .button.white {
 	background-color: var(--md-color-white);
-	color: var(--md-site-text);
+	color: var(--md-text);
 }
 
 .button.button-sec {

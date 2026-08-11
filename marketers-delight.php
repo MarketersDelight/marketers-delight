@@ -612,6 +612,9 @@ final class marketers_delight {
 					unset( $dropins['installed'][$dropin]['status']['enable'] );
 					md_update_dropins( $dropins );
 				}
+
+		// Refresh cached defaults after all active Drop-ins loaded
+		md_setting_defaults( true );
 	}
 
 	/**

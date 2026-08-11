@@ -196,10 +196,12 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( '--md-box-shadow:', $variables );
 		foreach ( array(
 			'site-background', 'site-text', 'site-text-muted', 'site-text-contrast', 'site-links',
+			'text', 'text-muted', 'links', 'links-muted', 'headlines', 'headline-links', 'border',
 			'action-primary', 'action-primary-text', 'action-secondary', 'action-secondary-text',
 			'color-danger', 'color-warning',
 			'header-background', 'header-submenu-background',
-			'content-main-background', 'content-box-background',
+			'content-main-background', 'content-border', 'content-box-background', 'content-box-border',
+			'content-box-text', 'content-box-text-muted', 'content-box-links',
 			'sidebar-background', 'panel-background', 'footer-background'
 		) as $token )
 			$this->assertStringContainsString( '--md-' . $token . ':', $variables );
@@ -223,12 +225,35 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( '--md-color-warning: #D97706;', $variables );
 	}
 
-	public function test_muted_links_use_their_semantic_site_color() {
+	public function test_muted_links_use_the_active_context_colors() {
 		$helpers = $this->source( 'css/helpers.php' );
 
-		$this->assertStringContainsString( '.has-muted-color, .foot { color: var(--md-site-text-muted); }', $helpers );
-		$this->assertStringContainsString( 'color: var(--md-site-links-muted);', $helpers );
+		$this->assertStringContainsString( '.has-muted-color, .foot { color: var(--md-text-muted); }', $helpers );
+		$this->assertStringContainsString( 'color: var(--md-links-muted);', $helpers );
 		$this->assertStringNotContainsString( '.text-sec', $helpers );
+	}
+
+	public function test_content_box_surfaces_establish_their_own_color_context() {
+		$variables = $this->source( 'css/--vars.php' );
+		$loop = $this->source( 'css/loop.php' );
+		$blockquote = $this->source( 'css/format.php' );
+
+		foreach ( array( 'text', 'text-muted', 'links', 'links-muted', 'headlines', 'headline-links' ) as $token )
+			$this->assertStringContainsString( "--md-{$token}: var(--md-site-{$token});", $variables );
+		$this->assertStringContainsString( '--md-border: var(--md-content-border);', $variables );
+
+		foreach ( array( $loop, $blockquote ) as $surface ) {
+			$this->assertStringContainsString( '--md-text: var(--md-content-box-text);', $surface );
+			$this->assertStringContainsString( '--md-text-muted: var(--md-content-box-text-muted);', $surface );
+			$this->assertStringContainsString( '--md-links: var(--md-content-box-links);', $surface );
+			$this->assertStringContainsString( '--md-links-muted: var(--md-content-box-text-muted);', $surface );
+			$this->assertStringContainsString( '--md-headlines: var(--md-content-box-text);', $surface );
+			$this->assertStringContainsString( '--md-headline-links: var(--md-content-box-text);', $surface );
+			$this->assertStringContainsString( '--md-border: var(--md-content-box-border);', $surface );
+		}
+
+		$this->assertStringContainsString( 'color: var(--md-text);', $loop );
+		$this->assertStringContainsString( 'color: var(--md-text-muted);', $blockquote );
 	}
 
 	public function test_classic_editor_stays_curated_and_auto_detects_dropin_opt_ins() {
@@ -371,8 +396,15 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '.main:has(.box-style.loop)', $loop );
 		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $block );
 		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $classic );
-		$this->assertStringContainsString( '.is-box-style .editor-styles-wrapper { background-color: var(--md-content-box-background); }', $block );
-		$this->assertStringContainsString( '.mce-content-body.is-box-style { background-color: var(--md-content-box-background); }', $classic );
+		$this->assertStringContainsString( '.is-box-style .editor-styles-wrapper {', $block );
+		$this->assertStringContainsString( '.mce-content-body.is-box-style {', $classic );
+
+		foreach ( array( $block, $classic ) as $editor ) {
+			$this->assertStringContainsString( '--md-text: var(--md-content-box-text);', $editor );
+			$this->assertStringContainsString( '--md-border: var(--md-content-box-border);', $editor );
+			$this->assertStringContainsString( 'background-color: var(--md-content-box-background);', $editor );
+			$this->assertStringContainsString( 'color: var(--md-text);', $editor );
+		}
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $block );
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $classic );
 	}

@@ -195,7 +195,7 @@ function md_loop_classes( $loop = array() ) {
 
 function md_post_class( $loop = array(), $c = 1 ) {
 	$classes = array( 'entry' );
-	$cover = md_cover();
+	$cover = md_cover( 'post' );
 	$loop = ! empty( $loop ) ? $loop : md_get_loop();
 
 	if ( ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) )

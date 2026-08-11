@@ -29,7 +29,7 @@ $heading_selectors[] = '.wp-block-heading';
 $heading_selectors = join( ', ', $heading_selectors );
 
 echo implode( ', ', $headings ) . " {\n".
-	     "\tcolor: var(--md-site-headlines);\n".
+	     "\tcolor: var(--md-headlines);\n".
      "\tfont-family: $h1_font_family;\n".
      "\tfont-weight: $h1_font_weight;\n".
 "}\n";
@@ -57,7 +57,7 @@ foreach ( $headings as $attribute => $selector ) {
 ?>
 
 :is(<?php echo $heading_selectors ?>) a {
-	color: var(--md-site-headline-links);
+	color: var(--md-headline-links);
 	text-decoration: none;
 }
 

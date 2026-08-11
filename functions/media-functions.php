@@ -269,29 +269,34 @@ function md_get_caption( $id = null ) {
  * @renamed 6.0 (md_featured_image_style)
  */
 
-function md_cover( $context = 'post' ) {
+function md_cover( $context = null ) {
+	if ( ! isset( $context ) )
+		$context = is_singular() || is_404() ? 'post' : 'page';
+
 	$cover = array();
 	$inherit = false;
 	$post_type_cover = md_post_type_field( 'page_cover', array() );
 
-	if ( is_post_type_archive() || is_home() )
-		$cover = $post_type_cover;
-	elseif ( is_category() || is_tax() ) {
-		$tax_cover = md_taxonomy_field( 'page_cover', array() );
-		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
-		$cover = array_merge( $post_type_cover, $tax_cover, $term_cover );
-	}
-	elseif ( $context === 'post' ) {
+	if ( $context === 'post' ) {
 		$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
 		$single_cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
 
-		if ( is_category() || is_tax() )
+		if ( is_category() || is_tax() ) {
+			$inherit = md_taxonomy_field( array( 'loop', 'inherit', 'page_cover' ), $inherit );
 			$inherit = md_term_meta( array( 'loop', 'inherit', 'page_cover' ), null, $inherit );
+		}
 
 		if ( ! empty( $post_type_cover['display']['single'] ) )
 			$cover = array_merge( $post_type_cover, $single_cover );
 		else
 			$cover = $single_cover;
+	}
+	elseif ( is_post_type_archive() || is_home() )
+		$cover = $post_type_cover;
+	elseif ( is_category() || is_tax() ) {
+		$tax_cover = md_taxonomy_field( 'page_cover', array() );
+		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
+		$cover = array_merge( $post_type_cover, $tax_cover, $term_cover );
 	}
 	else $cover = md_post_meta( 'page_cover', true, array() );
 

@@ -66,10 +66,10 @@ elseif ( $mode === 'custom' ) {
 	$source_meta = __( 'Independent value', 'md' );
 }
 
-$menu_id = $id . '_source_menu';
+$menu_id = "{$id}_source_menu";
 ?>
 
-<div class="md-color-source-wrap" data-custom-label="<?php echo esc_attr( __( 'Custom', 'md' ) ); ?>" data-independent-label="<?php echo esc_attr( __( 'Independent value', 'md' ) ); ?>">
+<div class="md-color-source-wrap" data-custom-label="<?php echo esc_attr( __( 'Custom', 'md' ) ); ?>" data-hex-meta="<?php echo esc_attr( __( 'Not linked to palette', 'md' ) ); ?>">
 
 	<input type="hidden" name="<?php echo esc_attr( $name ); ?>[mode]" class="md-color-source-mode" value="<?php echo esc_attr( $mode ); ?>" />
 	<input type="hidden" name="<?php echo esc_attr( $name ); ?>[palette]" class="md-color-source-palette-value" value="<?php echo esc_attr( $palette_value ); ?>" />
