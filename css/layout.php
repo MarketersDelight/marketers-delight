@@ -26,7 +26,10 @@
 
 /* SIDEBAR / PANEL */
 
-.sidebar { color: var(--md-sidebar-text); }
+.sidebar {
+	color: var(--md-sidebar-text);
+	position: relative;
+}
 
 .sidebar { background-color: var(--md-sidebar-background); }
 
