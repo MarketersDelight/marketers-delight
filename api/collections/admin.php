@@ -1,6 +1,7 @@
 <?php
 /**
- * Render and manage registered Collections in post editors.
+ * Build the meta box and other admin requirements to make the
+ * functions of a Collections group work.
  *
  * @since 6.0
  */
@@ -96,7 +97,7 @@ class md_collection_admin {
 			echo '<a href="' . esc_url( get_edit_post_link( $parent_id ) ) . '">' . esc_html( get_the_title( $parent_id ) ) . '</a></p>';
 		}
 
-		echo $collection->render_fields( $post->ID, true );
+		$collection->render_fields( $post->ID, true );
 	}
 
 	/**

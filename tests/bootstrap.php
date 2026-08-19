@@ -163,6 +163,12 @@ function get_post_meta( $post_id, $meta_key, $single = false ) {
 }
 
 function update_post_meta( $post_id, $meta_key, $value ) {
+	$post_type = $GLOBALS['__test_posts'][$post_id]->post_type ?? '';
+	$registered = $GLOBALS['__test_registered_meta'][$post_type][$meta_key] ?? array();
+
+	if ( isset( $registered['sanitize_callback'] ) )
+		$value = call_user_func( $registered['sanitize_callback'], $value, $meta_key, 'post', $post_type );
+
 	$GLOBALS['__test_object_meta'][$post_id][$meta_key] = $value;
 
 	return true;
@@ -203,8 +209,15 @@ function current_user_can( $capability, $post_id = null ) {
 function get_post_type_object( $post_type ) {
 	return (object) array(
 		'name' => $post_type,
-		'cap' => (object) array( 'create_posts' => "edit_{$post_type}s" )
+		'cap' => (object) array(
+			'create_posts' => "edit_{$post_type}s",
+			'edit_others_posts' => "edit_others_{$post_type}s"
+		)
 	);
+}
+
+function get_current_user_id() {
+	return $GLOBALS['__test_current_user'] ?? 1;
 }
 
 function wp_get_post_parent_id( $post_id ) {
@@ -509,14 +522,16 @@ function wp_verify_nonce( $nonce, $action ) {
 	return true;
 }
 
-require_once dirname( __DIR__ ) . '/api/sanitize.php';
-require_once dirname( __DIR__ ) . '/api/validate.php';
-require_once dirname( __DIR__ ) . '/api/save.php';
-require_once dirname( __DIR__ ) . '/api/data.php';
-require_once dirname( __DIR__ ) . '/api/collections.php';
-require_once dirname( __DIR__ ) . '/api/collection-rest.php';
-require_once dirname( __DIR__ ) . '/api/fields.php';
-require_once dirname( __DIR__ ) . '/admin/collections.php';
+require_once dirname( __DIR__ ) . '/api/save/sanitize.php';
+require_once dirname( __DIR__ ) . '/api/save/validate.php';
+require_once dirname( __DIR__ ) . '/api/save/save.php';
+require_once dirname( __DIR__ ) . '/api/fields/data.php';
+require_once dirname( __DIR__ ) . '/api/fields/render.php';
+require_once dirname( __DIR__ ) . '/api/fields/fields.php';
+require_once dirname( __DIR__ ) . '/api/collections/fields.php';
+require_once dirname( __DIR__ ) . '/api/collections/collections.php';
+require_once dirname( __DIR__ ) . '/api/collections/rest.php';
+require_once dirname( __DIR__ ) . '/api/collections/admin.php';
 require_once dirname( __DIR__ ) . '/api/colors.php';
 require_once dirname( __DIR__ ) . '/api/design.php';
 require_once dirname( __DIR__ ) . '/api/theme-json.php';

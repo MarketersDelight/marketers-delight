@@ -325,12 +325,42 @@ class md_save {
 		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );
 		$save = apply_filters( 'md_post_meta_save', $save, $post );
 		$save = $this->merge_recursive( $value, $save, 'meta_boxes' );
+		$save = $this->save_standalone_meta( $post_id, $save );
 		$save = $this->prune_empty( $save );
 
 		if ( $save )
 			update_post_meta( $post_id, $option, $save );
 		elseif ( $value )
 			delete_post_meta( $post_id, $option );
+	}
+
+	/**
+	 * For maximum query compatibility, we may want to save standalone
+	 * meta keys outside of the single post_meta key we usually save to,
+	 * so a simple standalone => true flag does just that.
+	 *
+	 * @since 6.0
+	 */
+
+	private function save_standalone_meta( $post_id, $save ) {
+		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
+			if ( empty( $save[$id] ) || empty( $meta_box['fields'] ) )
+				continue;
+
+			foreach ( $meta_box['fields'] as $key => $field ) {
+				if ( empty( $field['standalone'] ) || ! array_key_exists( $key, $save[$id] ) )
+					continue;
+
+				if ( $save[$id][$key] === '' )
+					delete_post_meta( $post_id, $key );
+				else
+					update_post_meta( $post_id, $key, $save[$id][$key] );
+
+				unset( $save[$id][$key] );
+			}
+		}
+
+		return $save;
 	}
 
 	/**

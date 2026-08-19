@@ -31,7 +31,6 @@ class md_admin {
 	 */
 
 	public function includes() {
-		include_once 'functions.php';
 		include_once 'dashboard.php';
 		include_once 'icons.php';
 		include_once 'integrations.php';

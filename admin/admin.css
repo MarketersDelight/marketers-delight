@@ -1092,6 +1092,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	padding: 14px 0;
 }
 
+.md-collection-item:last-child { padding-bottom: 0; }
+
 .md-collection-preview {
 	font-size: 14px;
 	margin: 0;

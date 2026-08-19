@@ -1,6 +1,9 @@
 <?php
 /**
- * Read and write one registered MD Collection.
+ * Collections are a bold interface added to the post editor that
+ * let's users create posts from a single post. This featureset
+ * is used in Drop-ins suchas the Bookshelf and Stream where creating
+ * micro posts within a page are useful.
  *
  * @since 6.0
  */
@@ -10,23 +13,16 @@ class md_collection {
 	public $id;
 	public $parent;
 	public $post_type;
-	public $fields = array();
+	public $fields_callback;
 	public $count = false;
 	public $per_page = 10;
-	public $fields_callback;
+	public $fields = array();
 	public $meta_fields = array();
-	protected $sources = array(
-		'meta',
-		'post_title',
-		'post_content',
-		'post_date',
-		'post_status',
-		'post_author',
-		'taxonomy'
-	);
+	protected $sources = array( 'meta', 'post_title', 'post_content', 'post_date', 'post_status', 'post_author', 'taxonomy' );
 
 	/**
-	 * Resolve and normalize one Collection definition.
+	 * Setup data passed into this Collection and make sure we know
+	 * what we are working with moving downwards.
 	 *
 	 * @since 6.0
 	 */
@@ -41,35 +37,45 @@ class md_collection {
 			'fields_callback' => null
 		) );
 
+		// Class properties
+
 		$this->id = sanitize_key( $id );
 		$this->parent = sanitize_key( $args['parent'] );
 		$this->post_type = sanitize_key( $args['post_type'] );
 		$this->count = (bool) $args['count'];
 		$this->per_page = absint( $args['per_page'] );
 		$this->fields_callback = $args['fields_callback'];
-		$args['fields']['status'] = array(
-			'type' => 'select',
-			'label' => __( 'Status', 'md' ),
-			'source' => 'post_status',
-			'options' => array(
-				'publish' => __( 'Published', 'md' ),
-				'draft' => __( 'Draft', 'md' ),
-				'pending' => __( 'Pending Review', 'md' ),
-				'private' => __( 'Private', 'md' )
-			),
-			'default' => 'publish'
-		);
-		$args['fields']['date'] = array(
-			'type' => 'date',
-			'label' => __( 'Update Date', 'md' ),
-			'source' => 'post_date',
-			'default' => current_time( 'Y-m-d' )
-		);
-		$this->fields = $this->normalize_fields( $args['fields'] );
+
+		// Status and date are editable fields that are added to each collection
+
+		if ( ! isset( $args['fields']['status'] ) )
+			$args['fields']['status'] = array(
+				'type' => 'select',
+				'label' => __( 'Status', 'md' ),
+				'source' => 'post_status',
+				'options' => array(
+					'publish' => __( 'Published', 'md' ),
+					'draft' => __( 'Draft', 'md' ),
+					'pending' => __( 'Pending Review', 'md' ),
+					'private' => __( 'Private', 'md' )
+				),
+				'default' => 'publish'
+			);
+
+		if ( ! isset( $args['fields']['date'] ) )
+			$args['fields']['date'] = array(
+				'type' => 'date',
+				'label' => __( 'Update Date', 'md' ),
+				'source' => 'post_date',
+				'default' => current_time( 'Y-m-d' )
+			);
+
+		$this->fields = $this->clean_fields( $args['fields'] );
 	}
 
 	/**
-	 * Register standalone Collection fields with WordPress metadata.
+	 * Each collection sets its own custom fields. Here we register them
+	 * into the system, sanitize them, and determine REST API exposure.
 	 *
 	 * @since 6.0
 	 */
@@ -82,8 +88,16 @@ class md_collection {
 				'sanitize_callback' => array( $this, 'sanitize_meta' )
 			);
 
-			if ( $field['default'] !== '' )
+			if ( $field['default'] !== '' && $field['default'] !== array() )
 				$args['default'] = $field['default'];
+
+			if ( $field['show_in_rest'] )
+				$args['show_in_rest'] = $field['meta_type'] === 'array' ? array(
+					'schema' => array(
+						'type' => 'array',
+						'items' => array( 'type' => 'string' )
+					)
+				) : true;
 
 			register_post_meta( $this->post_type, $meta_key, $args );
 		}
@@ -92,15 +106,13 @@ class md_collection {
 			add_action( 'wp_after_insert_post', array( $this, 'item_saved' ), 10, 4 );
 			add_action( 'deleted_post', array( $this, 'item_deleted' ), 10, 2 );
 		}
-
-		if ( is_admin() ) {
-			$admin = new md_collection_admin( $this );
-			$admin->register();
-		}
 	}
 
 	/**
-	 * Render this Collection's field controls.
+	 * The wrapper that renders the actual Ccollections meta box,
+	 * including user set custom fields and predefined fields.
+	 * Set meta_only to true when dealing with fields on a post screen,
+	 * not the quick editor.
 	 *
 	 * @since 6.0
 	 */
@@ -111,37 +123,26 @@ class md_collection {
 		foreach ( $this->fields as $id => $field )
 			$values[$id] = $post_id ? $this->get( $id, $post_id, $field['default'] ) : $field['default'];
 
-		$fields = new md_fields( array(
-			'id' => $this->id,
-			'clean_id' => $this->id,
-			'prefix' => "md_collection_{$this->id}",
-			'collection' => array(
-				'object' => $this,
-				'post_id' => absint( $post_id ),
-				'values' => $values
-			)
-		) );
-
-		ob_start();
+		$fields = new md_collection_fields( $this, $post_id, $values );
 
 		if ( $meta_only ) {
 			foreach ( $this->meta_fields as $field )
 				$fields->field( $field['id'], array() );
-		}
-		else {
-			call_user_func( $this->fields_callback, $fields, $post_id ? get_post( $post_id ) : null, $values );
 
-			echo '<div class="md-collection-field-columns mt-half">';
-			$fields->field( 'status', array() );
-			$fields->field( 'date', array() );
-			echo '</div>';
+			return;
 		}
 
-		return ob_get_clean();
+		call_user_func( $this->fields_callback, $fields, $post_id ? get_post( $post_id ) : null, $values );
+
+		echo '<div class="md-collection-field-columns mt-half">';
+		$fields->field( 'status', array() );
+		$fields->field( 'date', array() );
+		echo '</div>';
 	}
 
 	/**
-	 * Render one Collection item for an editor list.
+	 * Render an individual collection item list, which includes
+	 * user defined fields.
 	 *
 	 * @since 6.0
 	 */
@@ -163,7 +164,7 @@ class md_collection {
 	}
 
 	/**
-	 * Query items belonging to a Collection parent.
+	 * Get an item collection by a post query.
 	 *
 	 * @since 6.0
 	 */
@@ -172,7 +173,6 @@ class md_collection {
 		$args = wp_parse_args( $args, array(
 			'post_status' => array( 'publish', 'future', 'draft', 'pending', 'private' ),
 			'posts_per_page' => $this->per_page,
-			'paged' => 1,
 			'orderby' => 'date',
 			'order' => 'DESC'
 		) );
@@ -183,13 +183,16 @@ class md_collection {
 	}
 
 	/**
-	 * Count Collection items belonging to a parent.
+	 * Count number of items in a collection. Cache later.
 	 *
 	 * @since 6.0
 	 */
 
 	public function count_items( $parent_id, $post_status = null ) {
-		$args = array( 'posts_per_page' => 1 );
+		$args = array(
+			'posts_per_page' => 1,
+			'fields' => 'ids'
+		);
 
 		if ( isset( $post_status ) )
 			$args['post_status'] = $post_status;
@@ -198,7 +201,7 @@ class md_collection {
 	}
 
 	/**
-	 * Refresh the cached published item count for a Collection parent.
+	 * Change the latest count of collection items after an official update.
 	 *
 	 * @since 6.0
 	 */
@@ -212,7 +215,7 @@ class md_collection {
 	}
 
 	/**
-	 * Refresh parent counts after Collection item writes.
+	 * The actual method hooked into collection altering actions.
 	 *
 	 * @since 6.0
 	 */
@@ -231,7 +234,7 @@ class md_collection {
 	}
 
 	/**
-	 * Refresh parent counts after permanent Collection item deletion.
+	 * Refresh parent counts after item deletion.
 	 *
 	 * @since 6.0
 	 */
@@ -242,12 +245,14 @@ class md_collection {
 	}
 
 	/**
-	 * Normalize field definitions and generate standalone meta keys.
+	 * Run fields data through formats we know we need later to save
+	 * confusion later. Ensure we only keep data we need and not accept
+	 * from an unknown source and proper prefixing.
 	 *
 	 * @since 6.0
 	 */
 
-	protected function normalize_fields( $fields ) {
+	protected function clean_fields( $fields ) {
 		$normalized = array();
 
 		foreach ( (array) $fields as $id => $field ) {
@@ -261,6 +266,7 @@ class md_collection {
 				'type' => 'text',
 				'source' => 'meta',
 				'required' => false,
+				'show_in_rest' => false,
 				'default' => null
 			) );
 
@@ -281,7 +287,13 @@ class md_collection {
 
 			if ( $field['source'] === 'meta' ) {
 				$field['meta_key'] = strpos( $id, "{$this->post_type}_" ) === 0 ? $id : "{$this->post_type}_{$id}";
-				$field['meta_type'] = $is_number ? 'integer' : 'string';
+				$field['meta_type'] = 'string';
+
+				if ( $is_number )
+					$field['meta_type'] = 'integer';
+				elseif ( $field['type'] === 'terms' )
+					$field['meta_type'] = 'array';
+
 				$this->meta_fields[$field['meta_key']] = $field;
 			}
 
@@ -292,7 +304,7 @@ class md_collection {
 	}
 
 	/**
-	 * Sanitize registered Collection meta from its field definition.
+	 * Callback for collection sanitize fields.
 	 *
 	 * @since 6.0
 	 */
@@ -302,7 +314,7 @@ class md_collection {
 	}
 
 	/**
-	 * Read one field or a full normalized Collection item.
+	 * The top level helper for accessing collections data.
 	 *
 	 * @since 6.0
 	 */
@@ -316,7 +328,7 @@ class md_collection {
 		if ( isset( $field ) ) {
 			$definition = $this->fields[$field] ?? array();
 
-			return $definition ? $this->read_field( $post_id, $definition, $default ) : $default;
+			return $definition ? $this->read_field( $post_id, $definition, $default ?? $definition['default'] ) : $default;
 		}
 
 		$item = array();
@@ -328,7 +340,8 @@ class md_collection {
 	}
 
 	/**
-	 * Read a field from its registered source.
+	 * Collections access various WP core fields and meta, so
+	 * figure out which source to pull from.
 	 *
 	 * @since 6.0
 	 */
@@ -360,7 +373,7 @@ class md_collection {
 	}
 
 	/**
-	 * Validate, sanitize, and save a normalized Collection item.
+	 * Validate, sanitize, and save a Collection item.
 	 *
 	 * @since 6.0
 	 */
@@ -378,10 +391,15 @@ class md_collection {
 
 			$field = $this->fields[$id];
 			$value = $this->sanitize_field( $field, $value );
+
 			if ( $field['type'] === 'date' && $value !== '' && ( ! preg_match( '/^(\d{4})-(\d{2})-(\d{2})$/', $value, $date ) || ! wp_checkdate( $date[2], $date[3], $date[1], $value ) ) )
 				return new WP_Error( 'md_collection_date', sprintf( __( '%s must be a valid date.', 'md' ), $field['label'] ?? $field['id'] ), array( 'status' => 400 ) );
+
 			if ( $field['source'] === 'post_status' && ! isset( $field['options'][$value] ) )
 				return new WP_Error( 'md_collection_status', __( 'Select a valid publication status.', 'md' ), array( 'status' => 400 ) );
+
+			if ( $field['source'] === 'post_author' && $value !== '' && (int) $value !== get_current_user_id() && ! current_user_can( get_post_type_object( $this->post_type )->cap->edit_others_posts ) )
+				return new WP_Error( 'md_collection_author', __( 'You cannot assign this item to another user.', 'md' ), array( 'status' => 403 ) );
 
 			$resolved[$id] = $value;
 		}
@@ -408,7 +426,7 @@ class md_collection {
 				if ( $value === '' )
 					delete_post_meta( $post_id, $field['meta_key'] );
 				else
-					update_post_meta( $post_id, $field['meta_key'], $value );
+					update_post_meta( $post_id, $field['meta_key'], $values[$id] );
 			}
 			elseif ( $source === 'taxonomy' ) {
 				$terms = wp_set_object_terms( $post_id, (array) $value, $field['taxonomy'], false );
@@ -426,20 +444,8 @@ class md_collection {
 			}
 		}
 
-		$uses_post_title = false;
-
-		foreach ( $this->fields as $field )
-			if ( $field['source'] === 'post_title' ) {
-				$uses_post_title = true;
-				break;
-			}
-
-		if ( ! $uses_post_title )
-			foreach ( $resolved as $id => $value )
-				if ( $this->fields[$id]['source'] === 'post_content' ) {
-					$post['post_title'] = $this->item_title( $resolved );
-					break;
-				}
+		if ( isset( $post['post_content'] ) && ! $this->has_source( 'post_title' ) )
+			$post['post_title'] = $this->item_title( $resolved );
 
 		if ( count( $post ) > 1 ) {
 			$saved = wp_update_post( $post, true );
@@ -452,7 +458,23 @@ class md_collection {
 	}
 
 	/**
-	 * Resolve a Collection item's native post title.
+	 * Check the source of data a collection may be modyfing, such as
+	 * post_title, post_content, post_date, etc.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function has_source( $source ) {
+		foreach ( $this->fields as $field )
+			if ( $field['source'] === $source )
+				return true;
+
+		return false;
+	}
+
+	/**
+	 * Not all collection items come with titles, so this is a way to
+	 * fill out potentially useful titles (not sure the best, though...).
 	 *
 	 * @since 6.0
 	 */
@@ -476,7 +498,7 @@ class md_collection {
 	}
 
 	/**
-	 * Sanitize a field using its declared callback, source, or control type.
+	 * Sanitize specific fields based on their declared type.
 	 *
 	 * @since 6.0
 	 */

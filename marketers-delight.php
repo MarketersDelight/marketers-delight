@@ -39,16 +39,17 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/meta-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
-		require_once MD_DIR . 'api/sanitize.php';
-		require_once MD_DIR . 'api/validate.php';
-		require_once MD_DIR . 'api/save.php';
+		require_once MD_DIR . 'api/save/sanitize.php';
+		require_once MD_DIR . 'api/save/validate.php';
+		require_once MD_DIR . 'api/save/save.php';
 		require_once MD_DIR . 'api/colors.php';
 		require_once MD_DIR . 'api/design.php';
 		require_once MD_DIR . 'api/css.php';
 		require_once MD_DIR . 'api/theme-json.php';
 		require_once MD_DIR . 'api/js.php';
-		require_once MD_DIR . 'api/data.php';
-		require_once MD_DIR . 'api/fields.php';
+		require_once MD_DIR . 'api/fields/data.php';
+		require_once MD_DIR . 'api/fields/render.php';
+		require_once MD_DIR . 'api/fields/fields.php';
 		require_once MD_DIR . 'api/walker.php';
 		require_once MD_DIR . 'api/api.php';
 
@@ -121,19 +122,25 @@ final class marketers_delight {
 		if ( empty( $collections ) )
 			return;
 
-		require_once MD_DIR . 'api/collections.php';
+		require_once MD_DIR . 'api/collections/fields.php';
+		require_once MD_DIR . 'api/collections/collections.php';
 
 		if ( is_admin() )
-			require_once MD_DIR . 'admin/collections.php';
+			require_once MD_DIR . 'api/collections/admin.php';
 
 		foreach ( $collections as $id => $args ) {
 			$collection = new md_collection( $id, $args );
 			$collection->register();
+
+			if ( is_admin() ) {
+				$admin = new md_collection_admin( $collection );
+				$admin->register();
+			}
 		}
 
 		add_action( 'rest_api_init', function() {
-			require_once MD_DIR . 'api/collection-rest.php';
-			$controller = new md_collection_rest_controller;
+			require_once MD_DIR . 'api/collections/rest.php';
+			$controller = new md_collections_rest;
 			$controller->register_routes();
 		} );
 	}

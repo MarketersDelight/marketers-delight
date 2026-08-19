@@ -1,22 +1,20 @@
 <?php
 /**
- * Organize different admin HTML fields and their respective data
- * into this class. Pulls data from MDAPI $this->field() method and
- * is used exclusively to create admin options throughout MD.
+ * Shapes the data of markup rendered on custom fields. The same fields
+ * can be used across multiple WordPress APIs, and flat/structured levels
+ * of fields for groups/repeater/builder/collections need their own handling.
  *
  * @since 4.7
  */
 
-class md_fields {
+class md_fields extends md_fields_render {
 
 	protected $_id;
 	protected $_clean_id;
 	protected $_prefix;
 	protected $_option;
 	public $_get_screen;
-	public $data;
 	public $post_type = array();
-	public $collection = array();
 
 	/**
 	 * Set properties of instance.
@@ -25,13 +23,13 @@ class md_fields {
 	 */
 
 	public function __construct( $args ) {
+		parent::__construct();
+
 		$this->_id = $args['id'];
 		$this->_clean_id = $args['clean_id'];
 		$this->_prefix = $args['prefix'];
 		$this->_option = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
 		$this->post_type = $args['post_type'] ?? array();
-		$this->collection = $args['collection'] ?? array();
-		$this->data = new md_fields_data;
 	}
 
 	/**
@@ -83,9 +81,6 @@ class md_fields {
 	 */
 
 	public function field( $field, $args ) {
-		if ( $this->collection )
-			return $this->collection_field( $field, $args );
-
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
 
@@ -101,8 +96,18 @@ class md_fields {
 
 		$context = $this->get_context();
 
-		if ( $context['is_post'] || wp_doing_ajax() )
+		if ( $context['is_post'] || wp_doing_ajax() ) {
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
+
+			if ( is_string( $field ) && $this->is_standalone( $field, $clean_id ) ) {
+				$standalone = get_post_meta( get_the_ID(), $field, true );
+
+				if ( $standalone !== '' ) {
+					$setting = is_array( $setting ) ? $setting : array();
+					$setting[$clean_id][$field] = $standalone;
+				}
+			}
+		}
 		elseif ( $context['is_term'] )
 			$setting = get_term_meta( $screen['screen_id'], $this->_option, true );
 		elseif ( $context['is_user'] ) {
@@ -158,64 +163,6 @@ class md_fields {
 		}
 
 		$this->render_field( $name, $id, $option, $args, $wrap_classes );
-	}
-
-	/**
-	 * Resolve a registered Collection field without using MD option storage.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function collection_field( $field, $args ) {
-		$collection = $this->collection['object'];
-		$definition = $collection->fields[$field];
-		$args = wp_parse_args( $args, $definition );
-		$post_id = $this->collection['post_id'];
-		$suffix = $post_id ? $post_id : 'new';
-		$name = "md_collection[{$collection->id}][$field]";
-		$id = "md_collection_{$collection->id}_{$suffix}_{$field}";
-		$option = $this->collection['values'][$field];
-		$attributes = $args['attributes'] ?? array();
-		$attributes['data-md-collection-field'] = $field;
-		$attributes['data-md-collection-type'] = $definition['type'];
-
-		if ( $definition['required'] )
-			$attributes['aria-required'] = 'true';
-
-		$args['field'] = $field;
-		$args['attributes'] = $attributes;
-
-		echo '<div class="md md-collection-control mt-small">';
-		$this->render_field( $name, $id, $option, $args, array( 'md-field', 'md-collection-field' ) );
-		echo '</div>';
-	}
-
-	/**
-	 * Render the common label, control, description, and field wrapper.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function render_field( $name, $id, $option, $args, $wrap_classes ) {
-		if ( isset( $args['label'] ) && $args['type'] !== 'group' && ! isset( $args['multiple'] ) )
-			$this->label( $id, $args );
-
-		$wrap_classes[] = 'md-field-' . esc_attr( $args['type'] );
-
-		if ( isset( $args['wrap_classes'] ) )
-			$wrap_classes[] = $args['wrap_classes'];
-
-		if ( isset( $args['hidden'] ) )
-			$wrap_classes[] = 'md-hidden';
-
-		echo '<div class="' . esc_attr( join( ' ', $wrap_classes ) ) . '">';
-
-		$this->field_type( $args['type'], $name, $id, $option, $args );
-
-		if ( isset( $args['description'] ) && $args['type'] !== 'builder' )
-			$this->description( $args['description'] );
-
-		echo '</div>';
 	}
 
 	/**
@@ -336,6 +283,18 @@ class md_fields {
 	}
 
 	/**
+	 * Check if a field is saving as its own post meta key.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function is_standalone( $field, $clean_id ) {
+		$meta_box = md_register( 'meta_boxes' )[$clean_id] ?? array();
+
+		return ! empty( $meta_box['fields'][$field]['standalone'] );
+	}
+
+	/**
 	 * Display a specialized label that labels if an option has an inheritance
 	 * (designed with select in mind) and show that in the select for user reference.
 	 *
@@ -354,79 +313,6 @@ class md_fields {
 			return $default_label;
 
 		return sprintf( __( 'Use default (%s)', 'md' ), $options[ $value ] );
-	}
-
-	/**
-	 * Get field based on type and trickle data down to display field HTML.
-	 *
-	 * @since 4.7
-	 */
-
-	protected function field_type( $type, $name, $id, $option, $args ) {
-		if ( in_array( $type, array( 'text', 'date' ), true ) )
-			$this->text( $name, $id, $option, $args );
-
-		if ( $type === 'textarea' )
-			$this->textarea( $name, $id, $option, $args );
-
-		if ( $type === 'number' )
-			$this->number( $name, $id, $option, $args );
-
-		if ( $type === 'code' )
-			$this->code( $name, $id, $option, $args );
-
-		if ( $type === 'url' )
-			$this->url( $name, $id, $option, $args );
-
-		if ( $type === 'checkbox' )
-			$this->checkbox( $name, $id, $option, $args );
-
-		if ( $type === 'radio' )
-			$this->radio( $name, $id, $option, $args );
-
-		if ( $type === 'select' )
-			$this->select( $name, $id, $option, $args );
-
-		if ( $type === 'range' )
-			$this->range( $name, $id, $option, $args );
-
-		if ( $type === 'color' )
-			$this->color( $name, $id, $option, $args );
-
-		if ( $type === 'editor' )
-			$this->editor( $name, $id, $option, $args );
-
-		if ( in_array( $type, array( 'media', 'upload' ), true ) )
-			$this->upload( $name, $id, $option, $args );
-
-		if ( $type === 'group' )
-			$this->group( $name, $id, $option, $args );
-
-		if ( $type === 'builder' )
-			$this->builder( $name, $id, $option, $args );
-
-		if ( $type === 'terms' )
-			$this->terms( $name, $id, $option, $args );
-	}
-
-	/**
-	 * Easily create a label for fields.
-	 *
-	 * @since 4.0
-	 */
-
-	public function label( $id, $args ) {
-		include md_template( 'admin/fields/label', true );
-	}
-
-	/**
-	 * Easily create a description for fields.
-	 *
-	 * @since 5.0
-	 */
-
-	public function description( $description ) {
-		echo '<p class="description">' . wp_kses_data( $description ) . '</p>';
 	}
 
 	/**
@@ -471,137 +357,6 @@ class md_fields {
 			'label' => __( 'Visibility', 'md' ),
 			'options' => $options
 		) );
-	}
-
-	/**
-	 * Outputs a simple text input field with attributes.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function text( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/text', true );
-	}
-
-	/**
-	 * Outputs a simple textarea.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function textarea( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/textarea', true );
-	}
-
-	/**
-	 * Outputs a simple number input field with attributes.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function number( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/number', true );
-	}
-
-	/**
-	 * Outputs a simple textarea to paste code into.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function code( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/code', true );
-	}
-
-	/**
-	 * Outputs a simple text field for URL entry.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function url( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/url', true );
-	}
-
-	/**
-	 * Outputs a multi-checkbox field.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function checkbox( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/checkbox', true );
-	}
-
-	/**
-	 * Outputs single-select radio fields.
-	 *
-	 * @since 5.0
-	 */
-
-	protected function radio( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/radio', true );
-	}
-
-	/**
-	 * Outputs a simple select field.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function select( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/select', true );
-	}
-
-	/**
-	 * Create a range field with reset value.
-	 *
-	 * @since 5.0
-	 */
-
-	protected function range( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/range', true );
-	}
-
-	/**
-	 * Outputs upload field. Only built to support
-	 * media, will be expanding to other file types soon.
-	 *
-	 * @since 4.8.4
-	 */
-
-	protected function upload( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/upload', true );
-	}
-
-	/**
-	 * Outputs a simple text input field with attributes.
-	 *
-	 * @since 4.0
-	 */
-
-	protected function color( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/color', true );
-	}
-
-	/**
-	 * Return terms hierarchy category structure.
-	 *
-	 * @since 5.3.1
-	 */
-
-	protected function terms( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/terms', true );
-	}
-
-	/**
-	 * Wrapper for clone/group fields.
-	 *
-	 * @since 5.0
-	 */
-
-	protected function group( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/group', true );
 	}
 
 	/**
@@ -666,28 +421,6 @@ class md_fields {
 	}
 
 	/**
-	 * WP Editor field. Accepts _WP_Editors::parse_settings( $settings ).
-	 *
-	 * @since 5.3.1
-	 */
-
-	protected function editor( $name, $id, $option, $args ) {
-		if ( isset( $args['init'] ) ) {
-			$args['classes'] = 'md-toggle-wp-editor';
-			$this->textarea( $name, $id, $option, $args );
-		}
-		else {
-			$settings = wp_parse_args( $args, array(
-				'textarea_name' => $name,
-				'textarea_rows' => 10
-			) );
-			wp_editor( $option, $id, $settings );
-		}
-
-		wp_enqueue_editor();
-	}
-
-	/**
 	 * A valet method to render the Byline Position field
 	 * when adding custom byline items.
 	 *
@@ -739,6 +472,17 @@ class md_fields {
 			), $views['term'] ?? array() );
 
 		include md_template( 'admin/fields/admin-header', true );
+	}
+
+	/**
+	 * Wrapper for clone/group fields. Group and builder controls read
+	 * nested MD option storage, so only md_fields can render them.
+	 *
+	 * @since 5.0
+	 */
+
+	protected function group( $name, $id, $option, $args ) {
+		include md_template( 'admin/fields/group', true );
 	}
 
 	/**

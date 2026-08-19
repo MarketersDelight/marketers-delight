@@ -1,6 +1,61 @@
 <?php
 
 /**
+ * Return ID without MD_ prefix.
+ *
+ * @since 5.0
+ */
+
+function md_clean_id( $id ) {
+	return ( ! empty( $id ) ? preg_replace( '/^' . preg_quote( 'md_', '/' ) . '/', '', $id ) : '' );
+}
+
+/**
+ * Default post type screens MD metaboxes are added to.
+ *
+ * @since 4.3.5
+ */
+
+function md_post_type_meta() {
+	return apply_filters( 'md_post_type_meta', array( 'post', 'page' ) );
+}
+
+/**
+ * Default taxonomy screens MD metaboxes are added to.
+ *
+ * @since 4.5.4
+ */
+
+function md_edit_term_meta() {
+	return apply_filters( 'md_edit_term_meta', array( 'category' ) );
+}
+
+/**
+ * Taxonomies that have global settings tabs on post-type admin pages.
+ *
+ * @since 6.0
+ */
+
+function md_taxonomy_meta() {
+	return apply_filters( 'md_taxonomy_meta', array() );
+}
+
+/**
+ * A collection of all registered components and fields for build and save.
+ *
+ * @since 5.0
+ */
+
+function md_register( $group = null ) {
+	$data = apply_filters( 'md_register', array() );
+
+	if ( isset( $group ) )
+		return ! empty( $data[$group] ) ? $data[$group] : array();
+
+	return $data;
+}
+
+/**
  * Get all registered MD Collections or one Collection definition.
  *
  * @since 6.0

@@ -128,6 +128,43 @@ class CollectionsTest extends MD_TestCase {
 		$this->assertSame( '', $threads->item_title( array( 'text' => 'Untitled content.' ) ) );
 	}
 
+	public function test_author_reassignment_requires_edit_others_posts() {
+		md_test_set_filter( 'md_filter_collections', array(
+			'stream_threads' => array(
+				'parent' => 'stream',
+				'post_type' => 'stream_thread',
+				'fields' => array(
+					'text' => array( 'type' => 'textarea', 'source' => 'post_content' ),
+					'user_id' => array( 'type' => 'number', 'source' => 'post_author' )
+				)
+			)
+		) );
+		$threads = new md_collection( 'stream_threads' );
+
+		md_test_set_post( array(
+			'ID' => 40,
+			'post_type' => 'stream_thread',
+			'post_author' => 1
+		) );
+		md_test_set_capability( 'edit_others_stream_threads', false );
+
+		$error = $threads->save( 40, array( 'user_id' => 7 ) );
+
+		$this->assertSame( 'md_collection_author', $error->get_error_code() );
+		$this->assertSame( 1, $GLOBALS['__test_posts'][40]->post_author );
+
+		$saved = $threads->save( 40, array( 'user_id' => get_current_user_id() ) );
+
+		$this->assertFalse( is_wp_error( $saved ) );
+
+		md_test_set_capability( 'edit_others_stream_threads', true );
+
+		$saved = $threads->save( 40, array( 'user_id' => 7 ) );
+
+		$this->assertFalse( is_wp_error( $saved ) );
+		$this->assertSame( 7, $GLOBALS['__test_posts'][40]->post_author );
+	}
+
 	public function test_normalizes_media_upload_values_from_standard_forms() {
 		md_test_set_filter( 'md_filter_collections', array(
 			'stream_threads' => array(
@@ -139,6 +176,7 @@ class CollectionsTest extends MD_TestCase {
 			)
 		) );
 		$threads = new md_collection( 'stream_threads' );
+		$threads->register();
 
 		md_test_set_post( array(
 			'ID' => 40,

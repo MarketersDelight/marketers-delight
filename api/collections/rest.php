@@ -1,14 +1,16 @@
 <?php
 /**
- * REST controller for registered MD Collections.
+ * The Collections functionality uses the WP REST API
+ * for its interactive and storage functionality. Extra
+ * handling is just needed for dealing with the REST API.
  *
  * @since 6.0
  */
 
-class md_collection_rest_controller {
+class md_collections_rest {
 
 	/**
-	 * Register Collection and item CRUD routes.
+	 * Register Collection and accessible routes.
 	 *
 	 * @since 6.0
 	 */
@@ -44,7 +46,7 @@ class md_collection_rest_controller {
 	}
 
 	/**
-	 * Confirm the Collection, parent, and current editor are valid.
+	 * Make sure we are in the expected collection, post, and editor session.
 	 *
 	 * @since 6.0
 	 */
@@ -105,7 +107,7 @@ class md_collection_rest_controller {
 	}
 
 	/**
-	 * Create or update a Collection item.
+	 * Create or update a collection item.
 	 *
 	 * @since 6.0
 	 */
@@ -157,7 +159,7 @@ class md_collection_rest_controller {
 	}
 
 	/**
-	 * Move a Collection item to Trash.
+	 * Move a collection item to Trash.
 	 *
 	 * @since 6.0
 	 */
@@ -177,7 +179,7 @@ class md_collection_rest_controller {
 	}
 
 	/**
-	 * Check assign/create capabilities before changing Collection terms.
+	 * Check assign/create capabilities before changing collection terms.
 	 *
 	 * @since 6.0
 	 */

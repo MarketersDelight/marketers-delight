@@ -145,9 +145,6 @@ class md_api {
 		if ( method_exists( $this, 'init' ) )
 			$this->init();
 
-		if ( ! is_admin() )
-			return;
-
 		// Set important properties
 
 		$this->_clean_id = md_clean_id( $this->_id );
@@ -166,17 +163,24 @@ class md_api {
 			)
 		) );
 
-		add_action( 'current_screen', function() {
-			$this->_get_screen = $this->_get_screen();
-			$this->fields->_get_screen = $this->_get_screen;
-		} );
-
 		if ( method_exists( $this, 'register' ) )
 			$this->register = $this->register();
 
 		// Render all settings fields hierarchy
 
 		add_filter( 'md_register', array( $this, '_register' ) );
+
+		// Register standalone meta box fields with WordPress and the REST API
+
+		$this->_register_standalone_meta();
+
+		if ( ! is_admin() )
+			return;
+
+		add_action( 'current_screen', function() {
+			$this->_get_screen = $this->_get_screen();
+			$this->fields->_get_screen = $this->_get_screen;
+		} );
 
 		// Render admin interfaces
 
@@ -199,6 +203,32 @@ class md_api {
 		add_action( 'admin_print_footer_scripts', function() {
 			$this->admin_assets( 'scripts' );
 		}, 100 );
+	}
+
+	/**
+	 * Register standalone meta box fields with WordPress metadata so they
+	 * are readable and writable through the REST API.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function _register_standalone_meta() {
+		$meta_box = $this->register['meta_box'] ?? array();
+
+		foreach ( $meta_box['fields'] ?? array() as $key => $field ) {
+			if ( empty( $field['standalone'] ) )
+				continue;
+
+			$is_number = in_array( $field['type'], array( 'number', 'range', 'upload' ), true );
+
+			foreach ( (array) $meta_box['post_type'] as $post_type )
+				register_post_meta( $post_type, $key, array(
+					'type' => $is_number ? 'integer' : 'string',
+					'single' => true,
+					'show_in_rest' => $field['show_in_rest'] ?? true,
+					'sanitize_callback' => $is_number ? 'absint' : 'sanitize_text_field'
+				) );
+		}
 	}
 
 	/**

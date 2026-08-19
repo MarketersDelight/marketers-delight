@@ -299,6 +299,28 @@ class SaveTest extends MD_TestCase {
 		$this->assertSame( array( 'count' => '0' ), $result );
 	}
 
+	public function test_standalone_fields_save_to_their_own_meta_keys() {
+		$this->schema = array( 'bookshelf' => array( 'fields' => array(
+			'review_title' => array( 'type' => 'text' ),
+			'book_rating' => array( 'type' => 'number', 'standalone' => true ),
+			'book_author' => array( 'type' => 'text', 'standalone' => true )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		$GLOBALS['__test_object_meta'][25]['book_author'] = 'Old Author';
+
+		$save = $this->call( $this->save, 'save_standalone_meta', array( 25, array(
+			'bookshelf' => array(
+				'review_title' => 'Great read',
+				'book_rating' => '5',
+				'book_author' => ''
+			)
+		) ) );
+
+		$this->assertSame( array( 'bookshelf' => array( 'review_title' => 'Great read' ) ), $save );
+		$this->assertSame( '5', $GLOBALS['__test_object_meta'][25]['book_rating'] );
+		$this->assertArrayNotHasKey( 'book_author', $GLOBALS['__test_object_meta'][25] );
+	}
+
 	public function test_post_meta_save_preserves_unsubmitted_internal_branches() {
 		$this->schema = array( 'page' => array( 'fields' => array(
 			'title' => array( 'type' => 'text' )

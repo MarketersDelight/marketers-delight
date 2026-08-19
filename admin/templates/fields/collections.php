@@ -13,7 +13,7 @@
 	<?php if ( $can_add ) : ?>
 
 	<div class="md-collection-add">
-		<?php echo $collection->render_fields(); ?>
+		<?php $collection->render_fields(); ?>
 
 		<p class="md-collection-actions">
 			<button type="button" class="button button-primary" data-md-collection-action="add"><?php echo esc_html( sprintf( __( 'Add %s', 'md' ), $singular ) ); ?></button>

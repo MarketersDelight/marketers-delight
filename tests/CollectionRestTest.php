@@ -19,7 +19,7 @@ class CollectionRestTest extends MD_TestCase {
 		) );
 		$collection = new md_collection( 'book_quotes' );
 		$collection->register();
-		$this->controller = new md_collection_rest_controller;
+		$this->controller = new md_collections_rest;
 
 		md_test_set_post( array(
 			'ID' => 10,
