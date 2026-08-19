@@ -4,6 +4,10 @@ $classes = array( 'md-select' );
 $style = isset( $args['style'] ) ? ' style="' . esc_attr( $args['style'] ) . '"' : '';
 $multiple = isset( $args['multiple'] ) ? ' multiple' : '';
 $b = isset( $args['multiple'] ) ? '[]' : '';
+$attributes = '';
+
+foreach ( $args['attributes'] ?? array() as $key => $value )
+	$attributes .= $value === true ? ' ' . esc_attr( $key ) : ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
 
 if ( isset( $args['classes'] ) )
 	$classes[] = $args['classes'];
@@ -33,7 +37,7 @@ if ( isset( $args['select2'] ) ) { // Select2 Init field
 	echo '<input type="text" class="md-select2-init regular-text" placeholder="' . esc_html( $init_label ) . '" />';
 } ?>
 
-<select name="<?php echo esc_attr( $name . $b ); ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple; ?><?php echo $style; ?>>
+<select name="<?php echo esc_attr( $name . $b ); ?>" id="<?php echo $id; ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $multiple . $style . $attributes; ?>>
 
 	<?php if ( isset( $args['empty_label'] ) ) : ?>
 	<option value=""><?php echo esc_html( $args['empty_label'] ); ?></option>

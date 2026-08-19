@@ -16,6 +16,7 @@ class md_fields {
 	public $_get_screen;
 	public $data;
 	public $post_type = array();
+	public $collection = array();
 
 	/**
 	 * Set properties of instance.
@@ -29,6 +30,7 @@ class md_fields {
 		$this->_prefix = $args['prefix'];
 		$this->_option = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
 		$this->post_type = $args['post_type'] ?? array();
+		$this->collection = $args['collection'] ?? array();
 		$this->data = new md_fields_data;
 	}
 
@@ -81,6 +83,9 @@ class md_fields {
 	 */
 
 	public function field( $field, $args ) {
+		if ( $this->collection )
+			return $this->collection_field( $field, $args );
+
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
 
@@ -152,8 +157,46 @@ class md_fields {
 			$option = isset( $setting[$clean_id][$field] ) ? $setting[$clean_id][$field] : '';
 		}
 
-		// Render output
+		$this->render_field( $name, $id, $option, $args, $wrap_classes );
+	}
 
+	/**
+	 * Resolve a registered Collection field without using MD option storage.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function collection_field( $field, $args ) {
+		$collection = $this->collection['object'];
+		$definition = $collection->fields[$field];
+		$args = wp_parse_args( $args, $definition );
+		$post_id = $this->collection['post_id'];
+		$suffix = $post_id ? $post_id : 'new';
+		$name = "md_collection[{$collection->id}][$field]";
+		$id = "md_collection_{$collection->id}_{$suffix}_{$field}";
+		$option = $this->collection['values'][$field];
+		$attributes = $args['attributes'] ?? array();
+		$attributes['data-md-collection-field'] = $field;
+		$attributes['data-md-collection-type'] = $definition['type'];
+
+		if ( $definition['required'] )
+			$attributes['aria-required'] = 'true';
+
+		$args['field'] = $field;
+		$args['attributes'] = $attributes;
+
+		echo '<div class="md md-collection-control mt-small">';
+		$this->render_field( $name, $id, $option, $args, array( 'md-field', 'md-collection-field' ) );
+		echo '</div>';
+	}
+
+	/**
+	 * Render the common label, control, description, and field wrapper.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function render_field( $name, $id, $option, $args, $wrap_classes ) {
 		if ( isset( $args['label'] ) && $args['type'] !== 'group' && ! isset( $args['multiple'] ) )
 			$this->label( $id, $args );
 
@@ -165,9 +208,7 @@ class md_fields {
 		if ( isset( $args['hidden'] ) )
 			$wrap_classes[] = 'md-hidden';
 
-		$wrap_classes = join( ' ', $wrap_classes );
-
-		echo '<div class="' . esc_attr( $wrap_classes ) . '">';
+		echo '<div class="' . esc_attr( join( ' ', $wrap_classes ) ) . '">';
 
 		$this->field_type( $args['type'], $name, $id, $option, $args );
 
@@ -322,7 +363,7 @@ class md_fields {
 	 */
 
 	protected function field_type( $type, $name, $id, $option, $args ) {
-		if ( $type === 'text' )
+		if ( in_array( $type, array( 'text', 'date' ), true ) )
 			$this->text( $name, $id, $option, $args );
 
 		if ( $type === 'textarea' )
@@ -374,7 +415,7 @@ class md_fields {
 	 * @since 4.0
 	 */
 
-	protected function label( $id, $args ) {
+	public function label( $id, $args ) {
 		include md_template( 'admin/fields/label', true );
 	}
 

@@ -46,23 +46,31 @@ tabs: function() {
 	for ( let t = 0; t < tabs.length; t++ ) {
 		let tab = tabs[t],
 			items = tab.querySelectorAll( '.md-tab' );
+		const activate = function( item ) {
+			const allTabs = tab.querySelectorAll( '.md-tab' ),
+				  allContent = tab.querySelectorAll( '.md-tab-content' );
+			for ( let j = 0; j < allTabs.length; j++ ) {
+				allTabs[j].classList.remove( 'active' );
+				allTabs[j].setAttribute( 'aria-selected', 'false' );
+			}
+			for ( let k = 0; k < allContent.length; k++ )
+				allContent[k].classList.remove( 'active' );
+			MD.removeClassByPrefix( tab, 'has-' );
+			item.classList.add( 'active' );
+			item.setAttribute( 'aria-selected', 'true' );
+			tab.classList.add( 'has-' + item.getAttribute( 'data-md-tab' ) );
+			const content = tab.querySelector( '[data-md-tab-content="' + item.getAttribute( 'data-md-tab' ) + '"]' );
+			if ( content )
+				content.classList.add( 'active' );
+		};
 		for ( let i = 0; i < items.length; i++ ) {
+			items[i].setAttribute( 'aria-selected', items[i].classList.contains( 'active' ) ? 'true' : 'false' );
 			items[i].onclick = function( e ) {
 				e.preventDefault();
-				const allTabs = tab.querySelectorAll( '.md-tab' ),
-					  allContent = tab.querySelectorAll( '.md-tab-content' );
-				for ( let j = 0; j < allTabs.length; j++ )
-					allTabs[j].classList.remove( 'active' );
-				for ( let k = 0; k < allContent.length; k++ )
-					allContent[k].classList.remove( 'active' );
-				MD.removeClassByPrefix( tab, 'has-' );
-				this.classList.add( 'active' );
-				tab.classList.add( 'has-' + this.getAttribute( 'data-md-tab' ) );
-				const content = tab.querySelector( '[data-md-tab-content="' + this.getAttribute( 'data-md-tab' ) + '"]' );
-				if ( content )
-					content.classList.add( 'active' );
+				activate( this );
 			};
 		}
+		tab.classList.add( 'is-tabs-ready' );
 	}
 },
 clipboard: function() {

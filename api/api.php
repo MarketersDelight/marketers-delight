@@ -109,6 +109,9 @@ class md_api {
 		if ( method_exists( $this, 'register_loop' ) )
 			add_filter( 'md_filter_loops', array( $this, 'register_loop' ) );
 
+		if ( method_exists( $this, 'collections' ) )
+			add_filter( 'md_filter_collections', array( $this, '_collections' ) );
+
 		if ( method_exists( $this, 'blocks' ) )
 			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
 
@@ -601,6 +604,19 @@ class md_api {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * Add Collections declared by this API extension to the shared registry.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _collections( $collections ) {
+		foreach ( (array) $this->collections() as $id => $args )
+			$collections[$id] = $args;
+
+		return $collections;
 	}
 
 	/**

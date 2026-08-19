@@ -238,6 +238,10 @@ function md_get_link( $fields, $p = '' ) {
 		'size' => '',
 		'color' => '',
 		'popup' => '',
+		'popup_args' => array(),
+		'html' => '',
+		'content' => '',
+		'attributes' => array(),
 		'classes' => '',
 		'visibility' => array(),
 		'button_style' => array(),
@@ -253,7 +257,7 @@ function md_get_link( $fields, $p = '' ) {
 	if ( ! md_check_condition( $fields['visibility'] ) )
 		return;
 
-	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) )
+	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) && empty( $fields['content'] ) )
 		return;
 
 	include md_template( 'link', true );
@@ -266,13 +270,23 @@ function md_link( $fields, $p = '' ) {
 }
 
 /**
- * Get list of items that can be used in a Byline.
+ * Get list of items that can be used in a Byline, optionally
+ * limited to items available for a post type.
  *
  * @since 6.0
  */
 
-function md_byline_items() {
-	return apply_filters( 'md_byline', array() );
+function md_byline_items( $post_type = null ) {
+	$items = apply_filters( 'md_byline', array() );
+
+	if ( $post_type === null )
+		return $items;
+
+	foreach ( $items as $id => $fields )
+		if ( ! empty( $fields['post_types'] ) && ( ! $post_type || ! in_array( $post_type, (array) $fields['post_types'], true ) ) )
+			unset( $items[$id] );
+
+	return $items;
 }
 
 /**
@@ -301,13 +315,18 @@ function md_byline( $location = 'before_title', $args = array() ) {
 	if ( empty( $items ) )
 		return;
 
+	$post_type = $args['loop']['post_type'] ?? get_post_type();
+	$data = md_byline_items( $post_type );
+	$items = array_intersect_key( $items, $data );
+
+	if ( empty( $items ) )
+		return;
+
 	$c = 1;
 	$classes = array( 'byline' );
 	$classes[] = str_replace( '_', '-', $location );
 	$html = isset( $args['html'] ) ? $args['html'] : 'div';
 	$total = count( $items );
-	$data = md_byline_items();
-
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
 

@@ -1,8 +1,9 @@
 <?php
 
-$type = ! empty( $args['hidden'] ) ? 'hidden' : 'text';
-$option = ! empty( $args['option'] ) ? $args['option'] : $option;
-$value = isset( $args['default'] ) && $option == '' ? $args['default'] : $option;
+$type = ! empty( $args['hidden'] ) ? 'hidden' : ( $args['type'] === 'date' ? 'date' : 'text' );
+$has_option = array_key_exists( 'option', $args );
+$option = $has_option ? $args['option'] : $option;
+$value = ! $has_option && isset( $args['default'] ) && $option == '' ? $args['default'] : $option;
 $value = isset( $args['map'] ) && is_array( $option ) ? $option['value'] : $value;
 $readonly = isset( $args['readonly'] ) || ( ! empty( $args['readonly_after_save'] ) && ! empty( $option ) );
 $classes = array( 'regular-text' );
@@ -29,6 +30,9 @@ if ( ! empty( $args['style'] ) )
 
 if ( ! empty( $args['disabled'] ) )
     $attrs['disabled'] = true;
+
+foreach ( $args['attributes'] ?? array() as $key => $val )
+	$attrs[$key] = $val;
 
 if ( $readonly ) {
     $attrs['readonly'] = true;

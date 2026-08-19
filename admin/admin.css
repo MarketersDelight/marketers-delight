@@ -1027,6 +1027,123 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 #side-sortables #md_featured_media .col { width: 100%; }
 
+/* COLLECTIONS */
+
+.md-collection-add {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	padding: 16px;
+}
+
+.md-collection-control + .md-collection-control { margin-top: 12px; }
+
+.md-collection-control .md-label { cursor: pointer; }
+
+.md-collection-details { margin-top: 12px; }
+
+.md-collection-details > summary {
+	cursor: pointer;
+	font-weight: 600;
+	width: fit-content;
+}
+
+.md-collection-details[open] > summary { margin-bottom: 12px; }
+
+.md-collection-details > :not(summary) + :not(summary) { margin-top: 12px; }
+
+.md-collection-field-columns {
+	display: grid;
+	gap: 12px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.md-collection-field-columns > .md-collection-control { margin-top: 0; }
+
+.md-collection-status {
+	min-height: 20px;
+	padding-top: 8px;
+}
+
+.md-collection-status:empty {
+	min-height: 0;
+	padding-top: 0;
+}
+
+.md-collection-status.is-error { color: #b32d2e; }
+
+.md-collection-head {
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+}
+
+.md-collection-count {
+	background: #dcdcde;
+	border-radius: 10px;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 20px;
+	min-width: 20px;
+	text-align: center;
+}
+
+.md-collection-item {
+	border-top: 1px solid #dcdcde;
+	padding: 14px 0;
+}
+
+.md-collection-preview {
+	font-size: 14px;
+	margin: 0;
+}
+
+.md-collection-summary-meta,
+.md-collection-actions {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px 12px;
+}
+
+.md-collection-summary-meta {
+	color: #646970;
+	font-size: 12px;
+}
+
+.md-collection-post-status {
+	align-items: center;
+	display: inline-flex;
+	gap: 6px;
+}
+
+.md-collection-post-status::before {
+	background-color: #dba617;
+	border-radius: 50%;
+	content: '';
+	flex: 0 0 8px;
+	height: 8px;
+}
+
+.md-collection-post-status.status-publish::before { background-color: #00a32a; }
+
+.md-collection-actions { margin-bottom: 0; }
+
+.md-collection-actions .dashicons-before::before {
+	font-size: 16px;
+	height: 16px;
+	margin-right: 2px;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	width: 16px;
+}
+
+.md-collection-more { text-align: center; }
+
+@media screen and (max-width: 600px) {
+	.md-collection-field-columns { grid-template-columns: 1fr; }
+	.md-collection-head { align-items: flex-start; display: block; }
+}
+
 /* DEVICE FIELDS */
 
 .md-devices {

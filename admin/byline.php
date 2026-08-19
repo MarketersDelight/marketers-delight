@@ -169,7 +169,7 @@ class md_byline extends md_api {
 			'active_tab' => $active_tab,
 			'tabs' => $tabs,
 			'areas' => $areas,
-			'elements' => md_byline_items()
+			'elements' => md_byline_items( $screen['post_type'] )
 		) );
 
 		echo '</div>';

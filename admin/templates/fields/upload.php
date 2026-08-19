@@ -3,11 +3,15 @@
 $type = isset( $args['upload_type'] ) ? $args['upload_type'] : 'media';
 
 if ( $type == 'media' ) :
-	$upload_id = ! empty( $option['id'] ) ? esc_attr( $option['id'] ) : '';
-	$upload_ids = ! empty( $option['ids'] ) ? $option['ids'] : array();
+	$upload_id = is_array( $option ) ? ( $option['id'] ?? '' ) : $option;
+	$upload_ids = is_array( $option ) ? ( $option['ids'] ?? array() ) : array();
 	$upload_url = wp_get_attachment_image_url( $upload_id );
 	$multiple = isset( $args['multiple'] ) ? ' data-md-multiple="true"' : '';
 	$classes = array( 'md-upload', "md-upload-{$type}" );
+	$attributes = '';
+
+	foreach ( $args['attributes'] ?? array() as $key => $value )
+		$attributes .= $value === true ? ' ' . esc_attr( $key ) : ' ' . esc_attr( $key ) . '="' . esc_attr( $value ) . '"';
 
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
@@ -77,7 +81,7 @@ if ( $type == 'media' ) :
 	<?php endif; ?>
 
 	<div class="md-upload-values">
-		<input type="hidden" class="md-upload-id regular-text" name="<?php echo esc_attr( $name ); ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder="">
+		<input type="hidden" class="md-upload-id regular-text" name="<?php echo esc_attr( $name ); ?>[id]" id="<?php echo "{$id}_id"; ?>" value="<?php echo esc_attr( $upload_id ); ?>" placeholder=""<?php echo $attributes; ?>>
 	</div>
 
 </div>

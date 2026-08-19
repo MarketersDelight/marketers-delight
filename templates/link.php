@@ -7,7 +7,8 @@
  * @since 6.0
  */
 
-$h = 'span';
+$allowed_html = array( 'a', 'button', 'span' );
+$h = in_array( $fields['html'], $allowed_html, true ) ? $fields['html'] : 'span';
 $classes = array( 'link' );
 $has_wrap = $fields['name'] && $fields['subtitle'];
 
@@ -33,9 +34,13 @@ elseif ( $fields['type'] == 'phone' ) {
 // Popup
 
 elseif ( $fields['type'] == 'popup' && $fields['popup'] && function_exists( 'md_popup' ) ) {
-	$attrs .= ' data-popup="' . $fields['popup'] . '"';
+	$h = $fields['html'] ? $h : 'button';
+	$popup_args = wp_parse_args( $fields['popup_args'], array( 'id' => $fields['popup'] ) );
+	$popup_args['id'] = $fields['popup'];
+	$attrs .= $h === 'button' ? ' type="button"' : '';
+	$attrs .= ' data-popup="popup_' . esc_attr( $fields['popup'] ) . '"';
 	$classes[] = 'popup-trigger';
-	md_popup( array( 'id' => $fields['popup'] ) );
+	md_popup( $popup_args );
 }
 
 // Turn link into a button
@@ -99,6 +104,16 @@ if ( ! empty( $fields['settings']['icon_end'] ) )
 if ( $fields['classes'] )
 	$classes = array_merge( $classes, (array) $fields['classes'] );
 
+if ( $fields['attributes'] )
+	foreach ( $fields['attributes'] as $attribute => $value ) {
+		$attribute = sanitize_key( $attribute );
+
+		if ( ! $attribute || in_array( $attribute, array( 'class', 'style' ), true ) || $value === false || ! is_scalar( $value ) )
+			continue;
+
+		$attrs .= $value === true ? ' ' . $attribute : ' ' . $attribute . '="' . esc_attr( $value ) . '"';
+	}
+
 // Finally, render link with its final attributes
 
 $attrs .= ' class="' . esc_attr( join( ' ', $classes ) ) . '"';
@@ -106,9 +121,11 @@ $attrs .= md_style( $styles );
 
 $html =
 	"<$h{$attrs}>".
-	( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
-	( $has_wrap ? '<span class="link-wrap">' : '' ).
-	( $fields['name'] ? '<span class="link-name">' . wp_kses_post( $fields['name'] ) . '</span>' : '' ).
-	( $fields['subtitle'] ? '<span class="link-subtitle">' . wp_kses_post( $fields['subtitle'] ) . '</span>' : '' ).
-	( $has_wrap ? '</span>' : '' ).
+	( $fields['content'] ? wp_kses_post( $fields['content'] ) :
+		( $fields['icon'] ? md_icon( $fields['icon'], array( 'classes' => 'link-icon' ) ) : '' ).
+		( $has_wrap ? '<span class="link-wrap">' : '' ).
+		( $fields['name'] ? '<span class="link-name">' . wp_kses_post( $fields['name'] ) . '</span>' : '' ).
+		( $fields['subtitle'] ? '<span class="link-subtitle">' . wp_kses_post( $fields['subtitle'] ) . '</span>' : '' ).
+		( $has_wrap ? '</span>' : '' )
+	).
 	"</$h>";

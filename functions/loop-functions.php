@@ -319,6 +319,8 @@ function md_hook_x_loop( $loop, $c ) {
 
 function md_get_loop( $args = array() ) {
 	$loop = array();
+	$loops = md_loops();
+	$post_type = ! empty( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
 
 	// Build parameters if a manual loop query
 
@@ -332,27 +334,28 @@ function md_get_loop( $args = array() ) {
 		elseif ( is_array( $args['query'] ) && ! empty( $args['query']['post_type'] ) )
 			$key = $args['query']['post_type'];
 
-		if ( $key )
+		if ( $key ) {
+			$post_type = $key;
 			$loop = md_post_type_field( 'loop', array(), $key );
+		}
 	}
 
 	// Build parameters for auto page detection and admin settings
 
 	else {
-		$post_type = md_post_type_field( 'loop', array() );
+		$post_type_loop = md_post_type_field( 'loop', array() );
 		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article' );
 		$single = md_module( 'loop', array(), array( 'inherit_post_type' => false ) );
 
 		// Determine main loop keys from contextual admin settings
 
 		if ( is_singular() || is_404() ) {
-			$loops = md_loops();
 			$single_loop = ! empty( $loops[$loop_template]['single'] ) ? $loop_template : 'article';
 			$loop = array_merge( array( 'loop' => $single_loop ), $single );
 		}
 		else {
 			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop = array_merge( $post_type, $tax, array_filter( $single ) );
+			$loop = array_merge( $post_type_loop, $tax, array_filter( $single ) );
 		}
 
 		// Set additional parameters
@@ -391,26 +394,32 @@ function md_get_loop( $args = array() ) {
 				$loop[$key] = md_module( array( 'loop', $key ), null, array( 'inherit_post_type' => false ) );
 	}
 
+	$loop = array_merge( $loop, $args );
+	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
+	$loop = array_merge( $loops[$loop['loop']]['defaults'] ?? array(), $loop );
+	$loop['post_type'] = $post_type;
+
 	if ( ! isset( $loop['loop_type'] ) )
 		$loop['loop_type'] = '';
 
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
-	$loop = array_merge( $loop, $args );
-	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
-
 	if ( ! isset( $loop['style'] ) ) {
-		$loop_args = ! empty( $args['query'] ) ? array( 'body' => true ) : array();
-		$loop['style'] = md_loop_style( $loop_args );
+		$archive_style = $loops[$loop['loop']]['archive_style'] ?? null;
+
+		if ( $archive_style && ( is_archive() || is_home() ) )
+			$loop['style'] = $archive_style;
+		else {
+			$loop_args = ! empty( $args['query'] ) ? array( 'body' => true ) : array();
+			$loop['style'] = md_loop_style( $loop_args );
+		}
 	}
 
 	if (
 		! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 ||
 		( ! empty( $loop['by_category'] ) && ! empty( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) )
 		$loop['is_slim'] = true;
-
-	$loops = md_loops();
 
 	if ( ! empty( $loops[$loop['loop']]['style_target'] ) )
 		$loop['style_target'] = $loops[$loop['loop']]['style_target'];
@@ -450,9 +459,9 @@ function md_get_loop( $args = array() ) {
 function md_loop( $args = array() ) {
 	$c = 1;
 	$args = is_array( $args ) ? $args : array();
-	$post_type = md_get_post_type();
 	$html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
 	$loop = $loop_base = md_get_loop( $args );
+	$post_type = $loop['post_type'];
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_template = $loop['loop'];

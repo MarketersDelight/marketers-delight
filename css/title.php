@@ -54,8 +54,6 @@
 	gap: var(--md-small) var(--md-half);
 }
 
-.byline :is(a, .circle-icon) { color: inherit; }
-
 .byline .circle-icon { background-color: color-mix(in srgb, currentColor 12%, transparent); }
 
 .byline a {

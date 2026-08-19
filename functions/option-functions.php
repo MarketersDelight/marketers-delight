@@ -1,6 +1,37 @@
 <?php
 
 /**
+ * Get all registered MD Collections or one Collection definition.
+ *
+ * @since 6.0
+ */
+
+function md_collections( $id = null ) {
+	$collections = apply_filters( 'md_filter_collections', array() );
+
+	if ( isset( $id ) )
+		return $collections[sanitize_key( $id )] ?? array();
+
+	return $collections;
+}
+
+/**
+ * Get a normalized field or full item from a registered MD Collection.
+ *
+ * Collection fields may be backed by native post columns, taxonomies,
+ * or registered post meta. This accessor keeps those storage details
+ * out of frontend templates.
+ *
+ * @since 6.0
+ */
+
+function md_collection_field( $collection, $field = null, $id = null, $default = null ) {
+	$collection = new md_collection( $collection );
+
+	return $collection->get( $field, $id, $default );
+}
+
+/**
  * Pull data from the Marketers Delight options array. For
  * best performance, always pull MD settings from here.
  *

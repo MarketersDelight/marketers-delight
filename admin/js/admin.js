@@ -3,6 +3,8 @@
 		init: function() {
 			this.clone.init();
 			this.sortable.init();
+			if ( document.querySelector( '[data-md-collection]' ) )
+				this.collections();
 			this.action();
 			this.toggle();
 			this.tabs();
@@ -60,6 +62,109 @@
 				navigator.clipboard.writeText( text );
 				$( this ).next( '.md-tooltip' ).html( 'Copied!' );
 			});
+		},
+		collections: function() {
+			$( document ).on( 'click', '[data-md-collection-action]', function() {
+				var button = $( this ),
+					collection = button.closest( '[data-md-collection]' ),
+					action = button.data( 'md-collection-action' ),
+					item = button.closest( '[data-md-collection-item]' );
+
+				if ( action === 'edit' || action === 'cancel' ) {
+					var editing = action === 'edit';
+					item.find( '[data-md-collection-summary]' ).prop( 'hidden', editing );
+					item.find( '[data-md-collection-editor]' ).prop( 'hidden', ! editing );
+					return;
+				}
+
+				if ( action === 'trash' && ! confirm( collection.data( 'md-collection-confirm' ) ) )
+					return;
+
+				var fields, fieldRoot,
+					items = collection.find( '[data-md-collection-items]' ),
+					itemID = item.data( 'md-collection-item' ),
+					endpoint = collection.data( 'md-collection-endpoint' ),
+					url = itemID ? endpoint + '/' + itemID : endpoint,
+					status = collection.find( '[data-md-collection-status]' );
+
+				if ( action === 'add' || action === 'save' ) {
+					fields = {};
+					fieldRoot = action === 'add' ? button.closest( '.md-collection-add' ) : item;
+
+					fieldRoot.find( '[data-md-collection-field]' ).each( function() {
+						var field = $( this ),
+							value = field.val();
+
+						if ( field.data( 'md-collection-type' ) === 'terms' )
+							value = value.split( ',' ).map( function( term ) {
+								return term.trim();
+							} ).filter( Boolean );
+
+						fields[field.data( 'md-collection-field' )] = value;
+					} );
+				}
+
+				if ( action === 'more' ) {
+					var exclude = items.find( '[data-md-collection-item]' ).map( function() {
+						return $( this ).data( 'md-collection-item' );
+					} ).get();
+
+					url += '?exclude=' + encodeURIComponent( exclude.join( ',' ) );
+				}
+
+				status.text( '' ).removeClass( 'is-error' );
+				button.prop( 'disabled', true ).addClass( 'is-busy' );
+
+				$.ajax( {
+					url: url,
+					type: {
+						add: 'POST',
+						save: 'PATCH',
+						trash: 'DELETE',
+						more: 'GET'
+					}[action],
+					headers: { 'X-WP-Nonce': collection.data( 'md-collection-nonce' ) },
+					contentType: fields ? 'application/json' : undefined,
+					data: fields ? JSON.stringify( { fields: fields } ) : undefined
+				} ).done( function( result ) {
+					if ( action === 'add' ) {
+						items.prepend( result.html );
+						fieldRoot.find( '[data-md-collection-field]' ).each( function() {
+							var field = $( this ),
+								type = field.data( 'md-collection-type' );
+
+							if ( this.type === 'date' )
+								return;
+
+							if ( type === 'upload' )
+								field.closest( '.md-upload' ).find( '.md-upload-remove' ).trigger( 'click' );
+							else
+								field.val( '' ).trigger( 'change' );
+						} );
+						collection.find( '[data-md-collection-empty]' ).prop( 'hidden', true );
+						status.text( collection.data( 'md-collection-added' ) );
+					}
+					else if ( action === 'save' ) {
+						item.replaceWith( result.html );
+						status.text( collection.data( 'md-collection-saved' ) );
+					}
+					else if ( action === 'trash' ) {
+						item.remove();
+						collection.find( '[data-md-collection-empty]' ).prop( 'hidden', !! items.find( '[data-md-collection-item]' ).length );
+						status.text( collection.data( 'md-collection-trashed' ) );
+					}
+					else if ( ! result.has_more )
+						button.closest( '.md-collection-more' ).remove();
+
+					if ( action !== 'more' )
+						collection.find( '[data-md-collection-count]' ).text( result.count );
+				} ).fail( function( request ) {
+					var message = request.responseJSON && request.responseJSON.message ? request.responseJSON.message : collection.data( 'md-collection-error' );
+					status.text( message ).addClass( 'is-error' );
+				} ).always( function() {
+					button.prop( 'disabled', false ).removeClass( 'is-busy' );
+				} );
+			} );
 		},
 		uniqueID: function() {
 			var ret = '',
@@ -274,17 +379,17 @@
 			}
 		},
 		range: function() {
-			$( '.md-range-field' ).on( 'input change', function() {
+			$( document ).on( 'input change', '.md-range-field', function() {
 				var parent = $( this ).parents( '.md-range' ),
 					number = parent.find( '.md-range-number' );
 				number.val( $( this ).val() );
 			});
-			$( '.md-range-number' ).on( 'input change', function() {
+			$( document ).on( 'input change', '.md-range-number', function() {
 				var parent = $( this ).parents( '.md-range' ),
 					range = parent.find( '.md-range-field' );
 				range.val( $( this ).val() );
 			});
-			$( '.md-range-reset' ).on( 'click', function() {
+			$( document ).on( 'click', '.md-range-reset', function() {
 				var data = $( this ).data( 'default' ),
 					parent = $( this ).parents( '.md-range' )
 					number = parent.find( '.md-range-number' ),

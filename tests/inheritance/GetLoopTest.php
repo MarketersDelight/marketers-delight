@@ -35,6 +35,27 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		) );
 	}
 
+	private function register_collection_loop() {
+		md_test_set_filter( 'md_filter_loops', array(
+			'article' => array(
+				'name' => 'Article'
+			),
+			'collection' => array(
+				'name' => 'Collection',
+				'single' => true,
+				'archive_style' => 'plain',
+				'style_target' => 'group',
+				'defaults' => array(
+					'columns' => 5,
+					'display' => 'grid'
+				),
+				'args' => array(
+					'token' => 'registered'
+				)
+			)
+		) );
+	}
+
 	// A post-type-tier-only field (columns) now cascades onto a taxonomy
 	// archive unconditionally -- no render-mode gating (the bug fix: this
 	// used to get silently stripped back to a hardcoded default of 1).
@@ -112,6 +133,80 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$loop = md_get_loop();
 
 		$this->assertSame( '3', $loop['category_include'] );
+	}
+
+	// A loop template may provide presentation defaults, but they sit below
+	// every existing inheritance tier and below call-site arguments.
+
+	public function test_registered_defaults_preserve_the_inheritance_hierarchy() {
+		$this->register_collection_loop();
+		$this->set_option_loop(
+			array( 'loop' => 'collection', 'display' => 'post-type' ),
+			array( 'display' => 'taxonomy' )
+		);
+		$this->set_taxonomy_query();
+		md_test_set_term_meta( 42, array( 'loop' => array( 'display' => 'term' ) ) );
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 'term', $loop['display'] );
+		$this->assertSame( 5, $loop['columns'] );
+
+		$loop = md_get_loop( array( 'display' => 'manual' ) );
+
+		$this->assertSame( 'manual', $loop['display'] );
+	}
+
+	// Manual loops resolve their post type from the query, retain it for
+	// templates/classes, and still inherit that post type's Loop settings.
+
+	public function test_manual_query_retains_its_resolved_post_type() {
+		$this->register_collection_loop();
+		md_test_set_option( 'marketers_delight', array(
+			'download' => array(
+				'loop' => array(
+					'loop' => 'collection',
+					'columns' => 3
+				)
+			)
+		) );
+
+		$loop = md_get_loop( array(
+			'query' => array( 'post_type' => 'download' )
+		) );
+
+		$this->assertSame( 'download', $loop['post_type'] );
+		$this->assertSame( 'collection', $loop['loop'] );
+		$this->assertSame( 3, $loop['columns'] );
+		$this->assertSame( 'grid', $loop['display'] );
+		$this->assertSame( 'registered', $loop['template']['token'] );
+		$this->assertStringContainsString( 'loop-download', $loop['loop_classes'] );
+	}
+
+	// A registered archive style decorates the collection itself without
+	// replacing the global/post-type/single content-style inheritance chain.
+
+	public function test_registered_archive_style_does_not_replace_singular_inheritance() {
+		$this->register_collection_loop();
+		md_test_set_option( 'marketers_delight', array(
+			'colors' => array( 'design' => 'box' ),
+			'post' => array( 'loop' => array( 'loop' => 'collection' ) )
+		) );
+		md_test_set_query( array(
+			'is_archive' => true,
+			'post_type' => 'post'
+		) );
+
+		$this->assertSame( 'plain', md_get_loop()['style'] );
+
+		md_test_set_query( array(
+			'is_archive' => false,
+			'is_singular' => true,
+			'queried_object_id' => 1
+		) );
+
+		$this->assertSame( 'box', md_get_loop()['style'] );
+		$this->assertSame( 'border', md_get_loop( array( 'style' => 'border' ) )['style'] );
 	}
 
 }

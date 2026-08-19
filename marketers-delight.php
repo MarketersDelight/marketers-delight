@@ -101,10 +101,41 @@ final class marketers_delight {
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
 		add_filter( 'query_vars', array( $this, 'query_vars' ) );
 
+		add_action( 'init', array( $this, 'collections' ), 20 );
+
 		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
 			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
 			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
 		}
+	}
+
+	/**
+	 * Load and register Collections declared by active extensions.
+	 *
+	 * @since 6.0
+	 */
+
+	public function collections() {
+		$collections = md_collections();
+
+		if ( empty( $collections ) )
+			return;
+
+		require_once MD_DIR . 'api/collections.php';
+
+		if ( is_admin() )
+			require_once MD_DIR . 'admin/collections.php';
+
+		foreach ( $collections as $id => $args ) {
+			$collection = new md_collection( $id, $args );
+			$collection->register();
+		}
+
+		add_action( 'rest_api_init', function() {
+			require_once MD_DIR . 'api/collection-rest.php';
+			$controller = new md_collection_rest_controller;
+			$controller->register_routes();
+		} );
 	}
 
 	/**
@@ -562,9 +593,6 @@ final class marketers_delight {
 			'after_title' => '</h3>'
 		) );
 
-		// Widgets
-		include_once MD_DIR . 'widgets.php';
-		register_widget( 'md_accordion_widget' );
 	}
 
 	/**

@@ -20,10 +20,6 @@
 
 .panel .widget { padding: var(--md-half); }
 
-.panel .widget > .accordion { margin-inline: calc(-1 * var(--md-half)); }
-
-.panel .widget_md_accordion_widget:first-child { margin-block-start: calc(-1 * var(--md-single)); }
-
 /* TRIGGERS */
 
 .header .trigger-panel {
