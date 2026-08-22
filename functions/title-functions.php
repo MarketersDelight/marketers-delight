@@ -316,8 +316,11 @@ function md_byline( $location = 'before_title', $args = array() ) {
 		return;
 
 	$post_type = $args['loop']['post_type'] ?? get_post_type();
-	$data = md_byline_items( $post_type );
-	$items = array_intersect_key( $items, $data );
+	$data = md_byline_items();
+
+	foreach ( $items as $item => $groups )
+		if ( ! empty( $data[$item]['post_types'] ) && ( ! $post_type || ! in_array( $post_type, (array) $data[$item]['post_types'], true ) ) )
+			unset( $items[$item] );
 
 	if ( empty( $items ) )
 		return;

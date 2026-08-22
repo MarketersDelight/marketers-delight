@@ -21,6 +21,8 @@
 	<?php endif; ?>
 }
 
+.is-border-style .header:not(.cover) { border-block-end: 1px solid var(--md-header-border); }
+
 .header.sticky {
 	position: sticky;
 		inset-block-start: 0;

@@ -47,6 +47,7 @@ $GLOBALS['__test_query'] = array(
 	'post_type' => '',
 );
 $GLOBALS['__test_active_sidebars'] = array();
+$GLOBALS['__test_rendered_byline_items'] = array();
 
 /**
  * Test helpers, not WP stubs.
@@ -88,6 +89,7 @@ function md_test_reset() {
 		'post_type' => '',
 	);
 	$GLOBALS['__test_active_sidebars'] = array();
+	$GLOBALS['__test_rendered_byline_items'] = array();
 }
 
 // Sets the marketers_delight option array wholesale (mirrors get_option()).
@@ -160,6 +162,14 @@ function apply_filters( $tag, $value ) {
 
 function add_filter() {
 	return true;
+}
+
+function has_action() {
+	return false;
+}
+
+function md_template( $template ) {
+	return __DIR__ . "/fixtures/$template.php";
 }
 
 function get_option( $key, $default = false ) {

@@ -50,7 +50,7 @@ input[type="submit"],
 /* TAGS */
 
 .tag {
-	background-color: var(--md-border);
+	background-color: var(--md-color-surface);
 	border-radius: 50px;
 	color: var(--md-text);
 	flex-shrink: 0;

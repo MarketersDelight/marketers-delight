@@ -233,6 +233,13 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '.text-sec', $helpers );
 	}
 
+	public function test_byline_uses_muted_links_and_inherited_icon_color() {
+		$title = $this->source( 'css/title.php' );
+
+		$this->assertMatchesRegularExpression( '/\.byline a \{[^}]*color: var\(--md-links-muted\);/s', $title );
+		$this->assertMatchesRegularExpression( '/\.byline \.circle-icon \{[^}]*color: inherit;/s', $title );
+	}
+
 	public function test_content_box_surfaces_establish_their_own_color_context() {
 		$variables = $this->source( 'css/--vars.php' );
 		$loop = $this->source( 'css/loop.php' );

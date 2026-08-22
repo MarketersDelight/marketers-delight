@@ -61,6 +61,8 @@
 	z-index: 88;
 }
 
+.is-border-style .footer { border-block-start: 1px solid var(--md-footer-border); }
+
 .footer a { color: var(--md-footer-links); }
 
 .footer :is(.widget-title, .wp-block-heading) { color: var(--md-footer-title); }

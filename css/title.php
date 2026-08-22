@@ -8,6 +8,11 @@
 
 .page-title, .header-cover .main > .post-title { margin-block-end: var(--md-single); }
 
+.is-border-style .page-title:not(.cover) {
+	border-block-end: 1px solid var(--md-border);
+	padding-block-end: var(--md-mid);
+}
+
 .entry-title, .title-wrap,
 .wide .inner, .wide .wrap,
 .image-title .wrap,
@@ -54,9 +59,13 @@
 	gap: var(--md-small) var(--md-half);
 }
 
-.byline .circle-icon { background-color: color-mix(in srgb, currentColor 12%, transparent); }
+.byline .circle-icon {
+	background-color: color-mix(in srgb, currentColor 12%, transparent);
+	color: inherit;
+}
 
 .byline a {
+	color: var(--md-links-muted);
 	text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
 	text-decoration-thickness: 0.06em;
 	text-underline-offset: 0.14em;
@@ -83,6 +92,13 @@
 	position: relative;
 }
 
+.entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }
+
+.full-cover .page-title,
+.full-cover .main > .post-title { padding-block: calc(var(--md-quad) * 2) var(--md-double); }
+
+.header-cover .main { padding-block-start: 0; }
+
 .cover > :not(.inner, .overlay) { position: relative; }
 
 .cover.text-white { color: var(--md-site-text-contrast); }
@@ -92,6 +108,11 @@
 .cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: var(--md-site-text-contrast); }
 
 /* QUERIES */
+
+@media (min-width: <?php echo $post_width; ?>px) {
+	.cover { padding-block: var(--md-mid); }
+	.entry .cover, .content .page-title.cover { padding-inline: var(--md-mid); }
+}
 
 @media (min-width: 800px) {
 	.wide, .wide .inner {
