@@ -242,6 +242,24 @@ class ValidateTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'field_b', $save['page']['section'] );
 	}
 
+	public function test_number_field_applies_decimal_constraints() {
+		$this->register_schema( array(
+			'bookshelf' => array( 'fields' => array(
+				'book_rating' => array( 'type' => 'number', 'min' => 1, 'max' => 5, 'step' => 0.5 )
+			) )
+		) );
+
+		$valid = $this->validate->validate( 'admin_pages', array(
+			'bookshelf' => array( 'book_rating' => '4.5' )
+		) );
+		$invalid = $this->validate->validate( 'admin_pages', array(
+			'bookshelf' => array( 'book_rating' => '4.7' )
+		) );
+
+		$this->assertSame( 4.5, $valid['bookshelf']['book_rating'] );
+		$this->assertArrayNotHasKey( 'book_rating', $invalid['bookshelf'] );
+	}
+
 	// color/select/upload used to have their "should this even save"
 	// business logic living in validate_field() itself instead of their
 	// sanitizer — confirm end-to-end dispatch still behaves the same now

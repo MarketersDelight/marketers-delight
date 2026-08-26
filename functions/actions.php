@@ -22,7 +22,6 @@ function md_templates() {
 	$context = is_singular() || is_404() ? 'post' : 'page';
 	$title_hook = md_has_header_cover( $context ) ? 'md_hook_content_box_top' : 'md_hook_content';
 
-	add_action( 'md_hook_content', 'md_breadcrumbs' );
 	add_action( $title_hook, 'md_page_title' );
 
 	if ( md_has_post_content() )

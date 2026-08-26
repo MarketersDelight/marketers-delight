@@ -64,10 +64,35 @@ function md_post_type_field( $keys = null, $default = null, $post_type = null ) 
 	if ( ! isset( $post_type ) )
 		$post_type = md_get_post_type();
 
-	$keys = (array) $keys;
-	array_unshift( $keys, $post_type );
+	static $resolving = array();
+	$settings = array();
 
-	return md_setting( $keys, $default );
+	if ( empty( $resolving[$post_type] ) ) {
+		$resolving[$post_type] = true;
+		$parent = apply_filters( 'md_post_type_settings_parent', null, $post_type );
+
+		if ( $parent && $parent !== $post_type )
+			$settings = md_post_type_field( null, array(), $parent );
+
+		unset( $resolving[$post_type] );
+	}
+
+	$current = md_setting( $post_type, array() );
+
+	if ( is_array( $current ) )
+		$settings = array_replace_recursive( $settings, $current );
+
+	if ( ! isset( $keys ) )
+		return $settings;
+
+	foreach ( (array) $keys as $key ) {
+		if ( ! is_array( $settings ) || ! array_key_exists( $key, $settings ) )
+			return $default;
+
+		$settings = $settings[$key];
+	}
+
+	return $settings;
 }
 
 /**

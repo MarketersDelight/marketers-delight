@@ -121,6 +121,9 @@ class md_api {
 		if ( method_exists( $this, 'byline' ) )
 			add_filter( 'md_byline', array( $this, 'byline' ) );
 
+		if ( method_exists( $this, 'breadcrumbs' ) )
+			add_filter( 'md_filter_breadcrumbs', array( $this, 'breadcrumbs' ) );
+
 		if ( method_exists( $this, 'save_post_meta' ) )
 			add_filter( 'md_post_meta_save', array( $this, 'save_post_meta' ), 10, 2 );
 
@@ -219,14 +222,15 @@ class md_api {
 			if ( empty( $field['standalone'] ) )
 				continue;
 
-			$is_number = in_array( $field['type'], array( 'number', 'range', 'upload' ), true );
+			$is_number = in_array( $field['type'], array( 'number', 'range' ), true );
+			$is_upload = $field['type'] === 'upload';
 
 			foreach ( (array) $meta_box['post_type'] as $post_type )
 				register_post_meta( $post_type, $key, array(
-					'type' => $is_number ? 'integer' : 'string',
+					'type' => $is_number ? 'number' : ( $is_upload ? 'integer' : 'string' ),
 					'single' => true,
 					'show_in_rest' => $field['show_in_rest'] ?? true,
-					'sanitize_callback' => $is_number ? 'absint' : 'sanitize_text_field'
+					'sanitize_callback' => $is_upload ? 'absint' : 'sanitize_text_field'
 				) );
 		}
 	}

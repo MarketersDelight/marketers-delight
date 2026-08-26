@@ -295,6 +295,14 @@ return array(
 		'unicode' => 'e81b',
 		'label' => __( 'Star', 'md' )
 	),
+	'star-half' => array(
+		'unicode' => 'e923',
+		'label' => __( 'Star Half', 'md' )
+	),
+	'star-empty' => array(
+		'unicode' => 'e922',
+		'label' => __( 'Star Empty', 'md' )
+	),
 	'sun' => array(
 		'unicode' => 'e91f',
 		'label' => __( 'Sun', 'md' )

@@ -62,6 +62,8 @@
 
 			</div>
 
+			<?php do_action( 'md_hook_admin_after_tools' ); ?>
+
 			<div class="md-widget md-toggle md-sep-small">
 
 				<h3 class="md-widget-title"><?php echo __( 'Sidebars', 'md' ); ?></h3>

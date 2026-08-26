@@ -21,31 +21,6 @@ class PredicateTest extends MD_InheritanceTestCase {
 		$this->assertSame( true, md_has_builder() );
 	}
 
-	public function test_breadcrumbs_return_boolean() {
-		md_test_set_query( array( 'post_type' => 'post' ) );
-		$this->assertSame( false, md_has_breadcrumbs() );
-
-		md_test_set_option( 'marketers_delight', array(
-			'post' => array(
-				'layout' => array(
-					'breadcrumbs' => array(
-						'add' => true
-					)
-				)
-			)
-		) );
-		$this->assertSame( true, md_has_breadcrumbs() );
-
-		md_test_set_post_meta( array(
-			'layout' => array(
-				'breadcrumbs' => array(
-					'remove' => true
-				)
-			)
-		) );
-		$this->assertSame( false, md_has_breadcrumbs() );
-	}
-
 	public function test_author_box_returns_boolean() {
 		md_test_set_query( array( 'post_type' => 'post' ) );
 		$this->assertSame( false, md_has_author_box() );

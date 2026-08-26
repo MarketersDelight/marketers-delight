@@ -459,7 +459,8 @@ function md_get_loop( $args = array() ) {
 function md_loop( $args = array() ) {
 	$c = 1;
 	$args = is_array( $args ) ? $args : array();
-	$html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
+	$default_html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
+	$html = ! empty( $args['html'] ) && in_array( $args['html'], array( 'article', 'div' ), true ) ? $args['html'] : $default_html;
 	$loop = $loop_base = md_get_loop( $args );
 	$post_type = $loop['post_type'];
 	$loops = md_loops();

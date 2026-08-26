@@ -58,8 +58,8 @@ class SanitizeTest extends MD_TestCase {
 
 	// number()
 
-	public function test_number_strips_non_digits() {
-		$this->assertSame( 42, $this->sanitize->number( 'a4b2c' ) );
+	public function test_number_rejects_non_numeric_input() {
+		$this->assertNull( $this->sanitize->number( 'a4b2c' ) );
 	}
 
 	public function test_number_blank_returns_empty_string() {
@@ -68,6 +68,20 @@ class SanitizeTest extends MD_TestCase {
 
 	public function test_number_zero_returns_integer() {
 		$this->assertSame( 0, $this->sanitize->number( '0' ) );
+	}
+
+	public function test_number_preserves_decimal_values() {
+		$this->assertSame( 4.5, $this->sanitize->number( '4.5' ) );
+	}
+
+	public function test_number_enforces_min_max_and_step() {
+		$fields = array( 'min' => 1, 'max' => 5, 'step' => 0.5 );
+
+		$this->assertSame( 1, $this->sanitize->number( '1', $fields ) );
+		$this->assertSame( 4.5, $this->sanitize->number( '4.5', $fields ) );
+		$this->assertNull( $this->sanitize->number( '0.5', $fields ) );
+		$this->assertNull( $this->sanitize->number( '5.5', $fields ) );
+		$this->assertNull( $this->sanitize->number( '4.7', $fields ) );
 	}
 
 	// url()

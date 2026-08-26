@@ -311,13 +311,13 @@ class SaveTest extends MD_TestCase {
 		$save = $this->call( $this->save, 'save_standalone_meta', array( 25, array(
 			'bookshelf' => array(
 				'review_title' => 'Great read',
-				'book_rating' => '5',
+				'book_rating' => '4.5',
 				'book_author' => ''
 			)
 		) ) );
 
 		$this->assertSame( array( 'bookshelf' => array( 'review_title' => 'Great read' ) ), $save );
-		$this->assertSame( '5', $GLOBALS['__test_object_meta'][25]['book_rating'] );
+		$this->assertSame( '4.5', $GLOBALS['__test_object_meta'][25]['book_rating'] );
 		$this->assertArrayNotHasKey( 'book_author', $GLOBALS['__test_object_meta'][25] );
 	}
 

@@ -39,6 +39,7 @@
 	--md-headlines: var(--md-content-box-text);
 	--md-headline-links: var(--md-content-box-text);
 	--md-border: var(--md-content-box-border);
+	--md-tag-background: var(--md-color-surface);
 }
 
 .box-entry { --md-loop-item-padding: var(--md-single) var(--md-half); }
@@ -172,6 +173,7 @@
 	--timeline-cap-size: calc(var(--md-small) * 3);
 	--timeline-center: calc(var(--md-half) + var(--md-mid) / 2);
 	--timeline-dot-size: var(--md-mid);
+	--timeline-empty-dot-size: var(--md-single);
 	--timeline-gap: var(--md-mid);
 	--timeline-rail-width: var(--md-small);
 }
@@ -208,7 +210,7 @@
 
 .loop-timeline .timeline-wrap:before,
 .loop-timeline:not(.content) > .entry:last-child > .timeline-wrap:after,
-.single .loop-timeline.content > .entry .timeline-wrap:after {
+.single .loop-timeline.content > .entry > .timeline-wrap:after {
 	background-color: var(--md-border);
 	content: '';
 	display: block;
@@ -218,7 +220,7 @@
 
 .loop-timeline .timeline-wrap:hover:before,
 .loop-timeline:not(.content) > .entry:last-child > .timeline-wrap:hover:after,
-.single .loop-timeline.content > .entry .timeline-wrap:hover:after { background-color: var(--md-links); }
+.single .loop-timeline.content > .entry > .timeline-wrap:hover:after { background-color: var(--md-links); }
 
 .loop-timeline .timeline-wrap:before {
 	height: 100%;
@@ -236,7 +238,10 @@
 	width: var(--timeline-cap-size);
 }
 
-.loop-timeline:not(.content) > .entry:not(:last-child) > .timeline-wrap:before { inset-block-end: calc(-1 * var(--timeline-gap)); }
+.loop-timeline:not(.content) > .entry:not(:last-child) > .timeline-wrap:before {
+	height: calc(100% + var(--timeline-gap));
+	inset-block-end: calc(-1 * var(--timeline-gap));
+}
 
 .loop-timeline .timeline-dot {
 	align-items: center;
@@ -263,6 +268,12 @@
 	width: var(--timeline-dot-size);
 }
 
+.loop-timeline .timeline-dot:empty {
+	height: var(--timeline-empty-dot-size);
+	inset-inline-start: calc(-1 * (var(--timeline-center) + var(--timeline-empty-dot-size) / 2));
+	width: var(--timeline-empty-dot-size);
+}
+
 .loop-timeline .byline .avatar {
 	margin: 0;
 	z-index: 10;
@@ -275,6 +286,7 @@
 	.loop-timeline {
 		--timeline-center: calc((var(--md-half) * 2 + var(--md-small)) / 2);
 		--timeline-dot-size: calc(var(--md-half) + var(--md-third));
+		--timeline-empty-dot-size: calc(var(--timeline-dot-size) - var(--md-small));
 		--timeline-gap: calc(var(--md-single) - var(--md-small));
 		--timeline-rail-width: 3px;
 	}

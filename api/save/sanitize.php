@@ -34,18 +34,43 @@ class md_sanitize {
 	}
 
 	/**
-	 * Ensure only a number is saved.
+	 * Ensure only a valid integer or decimal is saved.
 	 *
 	 * @since 4.7
 	 */
 
-	public function number( $input ) {
+	public function number( $input, $fields = array() ) {
 		if ( is_null( $input ) )
 			return null;
 
-		$number = preg_replace( '/\D/', '', is_scalar( $input ) ? (string) $input : '' );
+		if ( ! is_scalar( $input ) )
+			return null;
 
-		return $number === '' ? '' : (int) $number;
+		$input = trim( (string) $input );
+
+		if ( $input === '' )
+			return '';
+
+		if ( ! is_numeric( $input ) )
+			return null;
+
+		$number = $input + 0;
+
+		if ( isset( $fields['min'] ) && is_numeric( $fields['min'] ) && $number < $fields['min'] )
+			return null;
+
+		if ( isset( $fields['max'] ) && is_numeric( $fields['max'] ) && $number > $fields['max'] )
+			return null;
+
+		if ( isset( $fields['step'] ) && is_numeric( $fields['step'] ) && $fields['step'] > 0 ) {
+			$base = isset( $fields['min'] ) && is_numeric( $fields['min'] ) ? (float) $fields['min'] : 0;
+			$steps = ( $number - $base ) / (float) $fields['step'];
+
+			if ( abs( $steps - round( $steps ) ) > 0.0000001 )
+				return null;
+		}
+
+		return $number;
 	}
 
 	/**
@@ -139,7 +164,7 @@ class md_sanitize {
 		else {
 			$id = $this->number( $input['id'] );
 
-			if ( $id === '' )
+			if ( $id === '' || is_null( $id ) )
 				return '';
 
 			$save['id'] = $id;

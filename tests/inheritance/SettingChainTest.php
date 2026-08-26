@@ -69,6 +69,76 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( $post_type, md_post_type_field( null, array(), 'post' ) );
 	}
 
+	public function test_post_type_field_inherits_parent_settings() {
+		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
+			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
+		} );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'layout' => array( 'content_box' => 'plain' ) )
+		) );
+
+		$this->assertSame( 'plain', md_post_type_field( array( 'layout', 'content_box' ), null, 'book_quote' ) );
+	}
+
+	public function test_post_type_field_recursively_merges_child_over_parent() {
+		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
+			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
+		} );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array(
+				'layout' => array( 'content_box' => 'plain', 'sidebar' => 'right' ),
+				'loop' => array( 'columns' => 5 )
+			),
+			'book_quote' => array(
+				'layout' => array( 'sidebar' => 'none' )
+			)
+		) );
+
+		$this->assertSame( array(
+			'layout' => array( 'content_box' => 'plain', 'sidebar' => 'none' ),
+			'loop' => array( 'columns' => 5 )
+		), md_post_type_field( null, array(), 'book_quote' ) );
+	}
+
+	public function test_post_type_field_child_defaults_override_parent_values() {
+		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
+			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
+		} );
+		md_test_set_filter( 'md_setting_defaults', array(
+			'book_quote' => array( 'loop' => array( 'columns' => 1 ) )
+		) );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'loop' => array( 'columns' => 5 ) )
+		) );
+
+		$this->assertSame( 1, md_post_type_field( array( 'loop', 'columns' ), null, 'book_quote' ) );
+	}
+
+	public function test_post_type_field_preserves_falsey_child_overrides() {
+		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
+			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
+		} );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'enabled' => true, 'count' => 10 ),
+			'book_quote' => array( 'enabled' => false, 'count' => 0 )
+		) );
+
+		$this->assertFalse( md_post_type_field( 'enabled', true, 'book_quote' ) );
+		$this->assertSame( 0, md_post_type_field( 'count', 10, 'book_quote' ) );
+	}
+
+	public function test_post_type_field_stops_circular_parent_chains() {
+		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
+			return $post_type === 'book_quote' ? 'bookshelf' : 'book_quote';
+		} );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'layout' => array( 'sidebar' => 'right' ) ),
+			'book_quote' => array( 'layout' => array( 'sidebar' => 'none' ) )
+		) );
+
+		$this->assertSame( 'none', md_post_type_field( array( 'layout', 'sidebar' ), null, 'book_quote' ) );
+	}
+
 	// md_taxonomy_field() reads marketers_delight[$post_type][$taxonomy][...] —
 	// a distinct storage path one level deeper than the post-type tier, matching
 	// where md_save::save_taxonomy() writes taxonomy-tab submissions.

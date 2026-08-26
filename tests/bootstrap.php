@@ -146,6 +146,14 @@ function md_setting( $keys = null, $default = null ) {
 	return $value;
 }
 
+function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
+	return md_setting( array_merge( (array) $post_type, (array) $keys ), $default );
+}
+
+function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $taxonomy = null ) {
+	return md_setting( array_merge( (array) $post_type, (array) $taxonomy, (array) $keys ), $default );
+}
+
 function get_option( $key, $default = false ) {
 	return array_key_exists( $key, $GLOBALS['__test_options'] ) ? $GLOBALS['__test_options'][$key] : $default;
 }

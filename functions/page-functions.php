@@ -21,66 +21,6 @@ function md_search( $args = array() ) {
 }
 
 /**
- * Checks if breadcrumbs are enabled.
- *
- * @since 5.2.2
- */
-
-function md_has_breadcrumbs() {
-	$global_add = md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ) );
-	$single_add = md_meta( array( 'layout', 'breadcrumbs', 'add' ) );
-	$single_remove = md_meta( array( 'layout', 'breadcrumbs', 'remove' ) );
-
-	if ( $single_remove )
-		return false;
-
-	if ( ! $global_add && ! $single_add )
-		return false;
-
-	if ( ( is_page() && ! wp_get_post_parent_id( get_the_ID() ) ) )
-		return false;
-
-	return true;
-}
-
-/**
- * Render breadcrumbs template.
- *
- * @since 5.2.2
- */
-
-function md_breadcrumbs() {
-	if ( ! md_has_breadcrumbs() )
-		return;
-
-	$term = null;
-	$post_id = get_the_ID();
-	$post_type = md_get_post_type();
-	$post_type_obj = get_post_type_object( $post_type );
-	$post_type_title = $post_type_obj ? wp_kses_data( $post_type_obj->labels->name ) : '';
-
-	if ( $post_type === 'post' ) {
-		$blog_id = get_option( 'page_for_posts' );
-		$post_type_title = $blog_id ? get_the_title( $blog_id ) : __( 'Blog', 'md' );
-	}
-
-	if ( is_category() || is_tag() || is_tax() )
-		$term = get_queried_object();
-	elseif ( is_singular() ) {
-		$taxonomies = get_object_taxonomies( $post_type );
-
-		if ( ! empty( $taxonomies ) ) {
-			$post_terms = wp_get_post_terms( $post_id, $taxonomies[0], array( 'number' => 1 ) );
-
-			if ( ! empty( $post_terms ) && ! is_wp_error( $post_terms ) )
-				$term = $post_terms[0];
-		}
-	}
-
-	include md_template( 'breadcrumbs', true );
-}
-
-/**
  * Checks if the post content is enabled onpage.
  *
  * @since 6.0

@@ -84,10 +84,6 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => array_keys( $this->fields->data->values['featured_image'] )
 			),
-			'breadcrumbs' => array(
-				'type' => 'checkbox',
-				'options' => array( 'add', 'remove' )
-			),
 			'footer' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'columns' )
@@ -317,6 +313,8 @@ class md_layout extends md_api {
 			'is_admin' => $is_admin,
 			'is_post' => $is_post,
 			'is_term' => $is_term,
+			'is_taxonomy' => $is_taxonomy,
+			'taxonomy' => $is_taxonomy ? $screen['md_tab'] : $screen['taxonomy'],
 			'screen_id' => $screen['screen_id'],
 			'toggles' => $this->layout_toggles()
 		);
@@ -337,11 +335,6 @@ class md_layout extends md_api {
 
 		if ( md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type ) )
 			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
-
-		$breadcrumbs_options = array( 'add' => __( 'Add <b>Breadcrumbs</b>', 'md' ) );
-
-		if ( ! $is_admin && md_post_type_field( array( 'layout', 'breadcrumbs', 'add' ), null, $post_type ) )
-			$breadcrumbs_options = array( 'remove' => __( 'Remove <b>Breadcrumbs</b>', 'md' ) );
 
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 

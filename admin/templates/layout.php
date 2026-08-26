@@ -149,12 +149,9 @@
 
 		<div id="content_options" class="md-sep-small" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
-			<?php if ( ! $is_taxonomy ) {
-				$this->fields->field( 'breadcrumbs', array(
-					'type' => 'checkbox',
-					'options' => $breadcrumbs_options
-				) );
+			<?php do_action( 'md_hook_layout_content_fields', $this->fields, $context );
 
+			if ( ! $is_taxonomy ) {
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(

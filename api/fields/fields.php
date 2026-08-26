@@ -257,27 +257,22 @@ class md_fields extends md_fields_render {
 		// Determine if admin group setting, taxonomy group, or just normal setting
 
 		if ( $context['is_group'] ) {
-			$prefix = array( $context['page_id'] );
+			$field_keys = $keys;
+
+			if ( $context['is_child'] )
+				array_unshift( $field_keys, $this->_clean_id );
 
 			if ( $context['taxonomy'] ) {
-				$tax_prefix = $prefix;
-				$tax_prefix[] = $context['taxonomy'];
-
-				if ( $context['is_child'] )
-					$tax_prefix[] = $this->_clean_id;
-
-				$value = md_setting( array_merge( $tax_prefix, $keys ), null );
+				$value = md_taxonomy_field( $field_keys, null, $context['page_id'], $context['taxonomy'] );
 
 				if ( ! is_null( $value ) )
 					return $value;
 			}
 
-			if ( $context['is_child'] )
-				$prefix[] = $this->_clean_id;
-
-			$keys = array_merge( $prefix, $keys );
+			return md_post_type_field( $field_keys, $default, $context['page_id'] );
 		}
-		else array_unshift( $keys, $this->_clean_id );
+
+		array_unshift( $keys, $this->_clean_id );
 
 		return md_setting( $keys, $default );
 	}
@@ -304,7 +299,9 @@ class md_fields extends md_fields_render {
 	public function inherit_label( $keys, $default_label, $options ) {
 		$context = $this->get_context();
 
-		if ( ! $context['taxonomy'] && ! $context['is_term'] )
+		$parent = $context['is_group'] ? apply_filters( 'md_post_type_settings_parent', null, $context['page_id'] ) : null;
+
+		if ( ! $context['taxonomy'] && ! $context['is_term'] && ! $parent )
 			return $default_label;
 
 		$value = $this->module( $keys );

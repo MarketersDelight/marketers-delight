@@ -120,7 +120,7 @@ class md_validate {
 
 			case 'number':
 			case 'range':
-				return $this->sanitize->number( $val );
+				return $this->sanitize->number( $val, $fields );
 
 			case 'hidden':
 			case 'data':

@@ -22,6 +22,11 @@ $GLOBALS['__test_object_taxonomies'] = array();
 $GLOBALS['__test_taxonomies'] = array();
 $GLOBALS['__test_post_terms'] = array();
 $GLOBALS['__test_ancestors'] = array();
+$GLOBALS['__test_post_ancestors'] = array();
+$GLOBALS['__test_post_types'] = array();
+$GLOBALS['__test_terms'] = array();
+$GLOBALS['__test_categories'] = array();
+$GLOBALS['__test_titles'] = array();
 $GLOBALS['__test_query'] = array(
 	'is_admin' => false,
 	'is_singular' => false,
@@ -35,6 +40,11 @@ $GLOBALS['__test_query'] = array(
 	'is_search' => false,
 	'is_archive' => false,
 	'is_page' => false,
+	'is_date' => false,
+	'is_year' => false,
+	'is_month' => false,
+	'is_day' => false,
+	'is_paged' => false,
 	'post_parent_id' => 0,
 	'previous_post' => false,
 	'next_post' => false,
@@ -64,6 +74,11 @@ function md_test_reset() {
 	$GLOBALS['__test_taxonomies'] = array();
 	$GLOBALS['__test_post_terms'] = array();
 	$GLOBALS['__test_ancestors'] = array();
+	$GLOBALS['__test_post_ancestors'] = array();
+	$GLOBALS['__test_post_types'] = array();
+	$GLOBALS['__test_terms'] = array();
+	$GLOBALS['__test_categories'] = array();
+	$GLOBALS['__test_titles'] = array();
 	$GLOBALS['__test_query'] = array(
 		'is_admin' => false,
 		'is_singular' => false,
@@ -77,6 +92,11 @@ function md_test_reset() {
 		'is_search' => false,
 		'is_archive' => false,
 		'is_page' => false,
+		'is_date' => false,
+		'is_year' => false,
+		'is_month' => false,
+		'is_day' => false,
+		'is_paged' => false,
 		'post_parent_id' => 0,
 		'previous_post' => false,
 		'next_post' => false,
@@ -123,8 +143,11 @@ function md_test_set_term_children( $term_id, $taxonomy, $children ) {
 	$GLOBALS['__test_term_children']["{$taxonomy}:{$term_id}"] = $children;
 }
 
-function md_test_set_taxonomy( $taxonomy, $public = true ) {
-	$GLOBALS['__test_taxonomies'][$taxonomy] = (object) array( 'public' => $public );
+function md_test_set_taxonomy( $taxonomy, $public = true, $object_types = array() ) {
+	$GLOBALS['__test_taxonomies'][$taxonomy] = (object) array(
+		'public' => $public,
+		'object_type' => $object_types
+	);
 }
 
 function md_test_set_object_taxonomies( $post_type, array $taxonomies ) {
@@ -144,6 +167,35 @@ function md_test_set_ancestors( $term_id, $taxonomy, array $ancestors ) {
 	$GLOBALS['__test_ancestors']["{$taxonomy}:{$term_id}"] = $ancestors;
 }
 
+function md_test_set_post_ancestors( $post_id, array $ancestors ) {
+	$GLOBALS['__test_post_ancestors'][$post_id] = $ancestors;
+}
+
+function md_test_set_post_type_object( $post_type, $label, $has_archive = true, $hierarchical = false ) {
+	$GLOBALS['__test_post_types'][$post_type] = (object) array(
+		'name' => $post_type,
+		'labels' => (object) array( 'name' => $label ),
+		'has_archive' => $has_archive,
+		'hierarchical' => $hierarchical
+	);
+}
+
+function md_test_set_term( $term_id, $taxonomy, $name ) {
+	$GLOBALS['__test_terms']["{$taxonomy}:{$term_id}"] = (object) array(
+		'term_id' => $term_id,
+		'taxonomy' => $taxonomy,
+		'name' => $name
+	);
+}
+
+function md_test_set_categories( $post_id, array $categories ) {
+	$GLOBALS['__test_categories'][$post_id] = $categories;
+}
+
+function md_test_set_title( $post_id, $title ) {
+	$GLOBALS['__test_titles'][$post_id] = $title;
+}
+
 // Controls is_category()/is_tax()/is_singular()/etc and get_queried_object().
 
 function md_test_set_query( array $state ) {
@@ -157,10 +209,22 @@ function md_test_set_active_sidebars( array $sidebars ) {
 // WP function stubs
 
 function apply_filters( $tag, $value ) {
-	return array_key_exists( $tag, $GLOBALS['__test_filters'] ) ? $GLOBALS['__test_filters'][$tag] : $value;
+	if ( ! array_key_exists( $tag, $GLOBALS['__test_filters'] ) )
+		return $value;
+
+	$filter = $GLOBALS['__test_filters'][$tag];
+
+	if ( is_callable( $filter ) )
+		return call_user_func_array( $filter, array_slice( func_get_args(), 1 ) );
+
+	return $filter;
 }
 
 function add_filter() {
+	return true;
+}
+
+function add_action() {
 	return true;
 }
 
@@ -241,6 +305,26 @@ function is_page() {
 	return $GLOBALS['__test_query']['is_page'];
 }
 
+function is_date() {
+	return $GLOBALS['__test_query']['is_date'];
+}
+
+function is_year() {
+	return $GLOBALS['__test_query']['is_year'];
+}
+
+function is_month() {
+	return $GLOBALS['__test_query']['is_month'];
+}
+
+function is_day() {
+	return $GLOBALS['__test_query']['is_day'];
+}
+
+function is_paged() {
+	return $GLOBALS['__test_query']['is_paged'];
+}
+
 function is_active_sidebar( $sidebar ) {
 	return in_array( $sidebar, $GLOBALS['__test_active_sidebars'], true );
 }
@@ -255,6 +339,22 @@ function get_queried_object_id() {
 
 function get_the_ID() {
 	return 1;
+}
+
+function home_url( $path = '' ) {
+	return 'https://example.test' . $path;
+}
+
+function get_the_title( $post_id = 0 ) {
+	return isset( $GLOBALS['__test_titles'][$post_id] ) ? $GLOBALS['__test_titles'][$post_id] : "Post {$post_id}";
+}
+
+function get_permalink( $post_id = 0 ) {
+	return "https://example.test/?p={$post_id}";
+}
+
+function get_search_query() {
+	return isset( $GLOBALS['__test_query']['search_query'] ) ? $GLOBALS['__test_query']['search_query'] : '';
 }
 
 function wp_get_post_parent_id( $post_id ) {
@@ -289,6 +389,22 @@ function get_post_type( $post_id = null ) {
 	return $GLOBALS['__test_query']['post_type'];
 }
 
+function get_post_type_object( $post_type ) {
+	return isset( $GLOBALS['__test_post_types'][$post_type] ) ? $GLOBALS['__test_post_types'][$post_type] : null;
+}
+
+function get_post_type_archive_link( $post_type ) {
+	return "https://example.test/{$post_type}/";
+}
+
+function get_post_ancestors( $post_id ) {
+	return isset( $GLOBALS['__test_post_ancestors'][$post_id] ) ? $GLOBALS['__test_post_ancestors'][$post_id] : array();
+}
+
+function get_the_category( $post_id ) {
+	return isset( $GLOBALS['__test_categories'][$post_id] ) ? $GLOBALS['__test_categories'][$post_id] : array();
+}
+
 function get_term_children( $term_id, $taxonomy ) {
 	$key = "{$taxonomy}:{$term_id}";
 
@@ -301,6 +417,40 @@ function get_object_taxonomies( $post_type ) {
 
 function get_taxonomy( $taxonomy ) {
 	return isset( $GLOBALS['__test_taxonomies'][$taxonomy] ) ? $GLOBALS['__test_taxonomies'][$taxonomy] : null;
+}
+
+function get_term( $term_id, $taxonomy ) {
+	$key = "{$taxonomy}:{$term_id}";
+
+	return isset( $GLOBALS['__test_terms'][$key] ) ? $GLOBALS['__test_terms'][$key] : null;
+}
+
+function get_term_link( $term ) {
+	return "https://example.test/{$term->taxonomy}/{$term->term_id}/";
+}
+
+function get_year_link( $year ) {
+	return "https://example.test/{$year}/";
+}
+
+function get_month_link( $year, $month ) {
+	return sprintf( 'https://example.test/%s/%02d/', $year, $month );
+}
+
+function get_pagenum_link( $page ) {
+	return "https://example.test/page/{$page}/";
+}
+
+function remove_query_arg( $key, $url ) {
+	return $url;
+}
+
+function wp_date( $format, $timestamp ) {
+	return gmdate( $format, $timestamp );
+}
+
+function number_format_i18n( $number ) {
+	return number_format( $number );
 }
 
 function wp_get_post_terms( $post_id, $taxonomy ) {
@@ -361,6 +511,7 @@ require_once dirname( __DIR__, 2 ) . '/functions/loop-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/media-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/title-functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
+require_once dirname( __DIR__, 4 ) . '/md-dropins/breadcrumbs/breadcrumbs.php';
 
 /**
  * Base test case for the inheritance suite: reflection helper for invoking

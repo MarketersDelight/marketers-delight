@@ -145,8 +145,8 @@
 	align-items: center;
 	background-color: #f7f7f7;
 	border: 1px solid var(--md-border);
-	border-width: 1px 1px 0;
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
+	border-width: 1px 1px 0;
 	color: var(--md-text-muted);
 	cursor: pointer;
 	display: inline-flex;
@@ -169,7 +169,41 @@
 
 .tab.active a { color: var(--md-content-box-text-muted); }
 
-.md-tab { cursor: pointer; }
+.md-tabs-nav {
+	display: flex;
+	margin-block-end: var(--md-single);
+}
+
+.md-tabs-nav > .md-tab {
+	align-items: center;
+	background-color: transparent;
+	border: 0;
+	border-radius: 0;
+	color: var(--md-text-muted);
+	cursor: pointer;
+	display: inline-flex;
+	gap: var(--md-third);
+	padding: var(--md-half);
+	text-decoration: none;
+}
+
+.md-tabs-nav > .md-tab:is(:hover, .active) { color: var(--md-text); }
+
+.md-tabs-nav > .md-tab.active { font-weight: var(--md-bold); }
+
+.md-tabs-nav > .md-tab:focus-visible {
+	outline: 2px solid var(--md-links);
+	outline-offset: -2px;
+}
+
+.md-tabs-underline { border-block-end: 1px solid var(--md-border); }
+
+.md-tabs-underline > .md-tab {
+	border-block-end: 3px solid transparent;
+	margin-block-end: -1px;
+}
+
+.md-tabs-underline > .md-tab.active { border-block-end-color: var(--md-links); }
 
 .md-tab-content { display: none; }
 

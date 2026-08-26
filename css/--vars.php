@@ -108,6 +108,7 @@
 	--md-content-border: <?php echo $colors['content']['border_color']; ?>;
 	--md-page-cover-overlay: <?php echo $colors['content']['page_cover_overlay_color']; ?>;
 	--md-form-background: #fff;
+	--md-tag-background: var(--md-color-tertiary);
 
 	--md-sidebar-background: <?php echo ! empty( $colors['sidebar']['bg_color'] ) ? $colors['sidebar']['bg_color'] : 'transparent'; ?>;
 	--md-sidebar-text: <?php echo $colors['sidebar']['text_color']; ?>;

@@ -18,8 +18,11 @@ if ( ! empty( $taxonomy_tabs ) ) {
     $tabs .= '<div class="md-submenu md-sep">';
     $tabs .= '<a href="' . esc_url( remove_query_arg( 'md_tab' ) ) . '" class="md-submenu-item' . ( ! $screen['is_taxonomy'] ? ' md-submenu-active' : '' ) . '">' . esc_html__( 'Settings', 'md' ) . '</a>';
 
-    foreach ( $taxonomy_tabs as $tax_slug )
-        $tabs .= '<a href="' . esc_url( add_query_arg( 'md_tab', $tax_slug ) ) . '" class="md-submenu-item' . ( $screen['md_tab'] === $tax_slug ? ' md-submenu-active' : '' ) . '">' . esc_html( ucwords( str_replace( array( '_', '-' ), ' ', $tax_slug ) ) ) . '</a>';
+	foreach ( $taxonomy_tabs as $tax_slug ) {
+		$taxonomy = get_taxonomy( $tax_slug );
+		$tax_label = $taxonomy ? $taxonomy->labels->name : ucwords( str_replace( array( '_', '-' ), ' ', $tax_slug ) );
+		$tabs .= '<a href="' . esc_url( add_query_arg( 'md_tab', $tax_slug ) ) . '" class="md-submenu-item' . ( $screen['md_tab'] === $tax_slug ? ' md-submenu-active' : '' ) . '">' . esc_html( $tax_label ) . '</a>';
+	}
 
     $tabs .= '</div>';
 }
