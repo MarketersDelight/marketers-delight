@@ -297,9 +297,11 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function inherit_label( $keys, $default_label, $options ) {
+		$parent = null;
 		$context = $this->get_context();
 
-		$parent = $context['is_group'] ? apply_filters( 'md_post_type_settings_parent', null, $context['page_id'] ) : null;
+		if ( $context['is_group'] )
+			$parent = apply_filters( 'md_post_type_settings_parent', null, $context['page_id'] );
 
 		if ( ! $context['taxonomy'] && ! $context['is_term'] && ! $parent )
 			return $default_label;

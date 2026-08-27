@@ -37,7 +37,7 @@
 		}
 	?>
 
-	<div class="<?php echo esc_attr( $loop_classes ); ?>">
+	<div class="<?php echo esc_attr( $loop_classes ); ?>"<?php echo $loop_columns_style; ?>>
 
 		<?php while ( $posts->have_posts() ) {
 			$posts->the_post();

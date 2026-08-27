@@ -460,8 +460,9 @@ final class marketers_delight {
 	public function body_class( $classes ) {
 		$context = is_singular() || is_404() ? 'post' : 'page';
 		$cover = md_cover( $context );
+		$loop = md_get_loop();
 
-		$classes[] = 'is-' . md_loop_style() . '-style';
+		$classes[] = 'is-' . $loop['style'] . '-style';
 
 		if ( md_has_panel() ) {
 			$show_on_right = md_get_layout_toggle( array( 'panel', 'alt' ) );

@@ -38,6 +38,8 @@
 
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
+.page-title .cta { justify-content: flex-start; }
+
 .lede {
 	color: var(--md-text-muted);
 	font-size: var(--md-font-size-sm);
@@ -103,7 +105,9 @@
 
 .cover.text-white :is(a, .byline, .title, .lede) { color: inherit; }
 
-.cover-text .header :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: var(--md-site-text-contrast); }
+.cover-text .header :is(.site-name a, .tagline),
+.cover-text .header :is(.header-controls, .header-triggers) > .trigger,
+.cover-text .header .menu > .menu-item > :is(a, .trigger) { color: var(--md-site-text-contrast); }
 
 /* QUERIES */
 
@@ -124,6 +128,7 @@
 }
 
 @media (min-width: 800px) {
+	.expanded .page-title .cta { justify-content: center; }
 	.wide, .wide .inner {
 		align-items: center;
 		text-align: center;

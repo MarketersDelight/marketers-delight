@@ -132,9 +132,14 @@ class CssTest extends MD_TestCase {
 
 		$this->assertStringNotContainsString( '.fl-center', $helpers );
 		$this->assertStringNotContainsString( '.center-mobile', $helpers );
+		$this->assertStringContainsString( '.columns,', $helpers );
 		$this->assertStringContainsString( '[class*="columns-"]', $helpers );
+		$this->assertStringContainsString( '--md-columns: <?php echo $g; ?>;', $helpers );
+		$this->assertStringContainsString( '--md-columns-mobile: 2;', $helpers );
+		$this->assertStringContainsString( '--md-columns-template', $helpers );
+		$this->assertStringContainsString( 'minmax(0, 1fr)', $helpers );
 		$this->assertStringContainsString( '.columns-fluid-$g', $helpers );
-		$this->assertStringContainsString( '$g = 3; $g <= 6', $helpers );
+		$this->assertStringContainsString( '$g = 2; $g <= 6', $helpers );
 		$this->assertStringContainsString( 'var(--md-$size)', $helpers );
 	}
 
@@ -397,7 +402,7 @@ class CssTest extends MD_TestCase {
 		$block = $this->source( 'css/block-editor.php' );
 		$classic = $this->source( 'css/classic-editor.php' );
 
-		$this->assertStringContainsString( "'is-' . md_loop_style() . '-style'", $theme );
+		$this->assertStringContainsString( "'is-' . \$loop['style'] . '-style'", $theme );
 		$this->assertStringContainsString( 'background-color: var(--md-content-main-background);', $layout );
 		$this->assertStringNotContainsString( '.is-box-style .main', $layout );
 		$this->assertStringNotContainsString( '.main:has(.box-style.loop)', $loop );

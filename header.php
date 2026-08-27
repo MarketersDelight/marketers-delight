@@ -47,7 +47,7 @@ if ( md_has_header() ) :
 			if ( md_has_logo() )
 				md_logo();
 
-			if ( $has_elements ) {
+			if ( $has_elements || ( md_has_menu() && $mobile !== 'expanded' ) ) {
 
 				echo '<div class="header-triggers">';
 

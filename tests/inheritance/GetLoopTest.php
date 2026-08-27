@@ -183,6 +183,27 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertStringContainsString( 'loop-download', $loop['loop_classes'] );
 	}
 
+	public function test_loop_classes_use_dynamic_columns_without_numbered_utility_classes() {
+		$this->register_collection_loop();
+
+		$loop = md_get_loop( array(
+			'loop' => 'collection',
+			'columns' => 7
+		) );
+
+		$this->assertStringContainsString( 'columns', $loop['loop_classes'] );
+		$this->assertStringContainsString( 'has-mobile-columns', $loop['loop_classes'] );
+		$this->assertStringNotContainsString( 'columns-7', $loop['loop_classes'] );
+
+		$loop = md_get_loop( array(
+			'loop' => 'collection',
+			'columns' => 2
+		) );
+
+		$this->assertStringNotContainsString( 'has-mobile-columns', $loop['loop_classes'] );
+		$this->assertStringNotContainsString( 'columns-2', $loop['loop_classes'] );
+	}
+
 	// A registered archive style decorates the collection itself without
 	// replacing the global/post-type/single content-style inheritance chain.
 

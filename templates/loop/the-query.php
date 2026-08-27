@@ -3,7 +3,7 @@
 $query = $loop['query'] instanceof WP_Query ? $loop['query'] : new WP_Query( $loop['query'] );
 
 if ( $query->have_posts() ) {
-    echo '<div class="' . esc_attr( $loop_classes ) . '">';
+    echo '<div class="' . esc_attr( $loop_classes ) . '"' . $loop_columns_style . '>';
 
     while ( $query->have_posts() ) {
         $query->the_post();

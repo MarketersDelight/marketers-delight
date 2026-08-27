@@ -239,14 +239,16 @@ cite, .tiny {
 
 .wp-block-columns { display: flex; }
 
-.wp-block-column {
-	flex-basis: 0;
-	flex-grow: 1;
-}
+.wp-block-column { flex-basis: 0; flex-grow: 1; }
 
-[class*="columns-"] {
+.columns, [class*="columns-"] {
+	--md-columns-base: 1;
+	--md-columns: var(--md-columns-base);
+	--md-columns-mobile: var(--md-columns-base);
+	--md-columns-template: repeat(var(--md-columns), minmax(0, 1fr));
 	display: grid;
 	gap: var(--md-single);
+	grid-template-columns: repeat(var(--md-columns-base), minmax(0, 1fr));
 	width: 100%;
 }
 
@@ -258,16 +260,21 @@ cite, .tiny {
 
 .col-full { grid-column: 1 / -1; }
 
+<?php for ( $g = 2; $g <= 6; $g++ ) : ?>
+.columns-<?php echo $g; ?> {
+	--md-columns: <?php echo $g; ?>;
+	<?php if ( $g > 2 ) : ?>
+	--md-columns-mobile: 2;
+	<?php endif; ?>
+}
+<?php endfor; ?>
+
 @media all and (min-width: 600px) {
-	<?php for ( $g = 3; $g <= 6; $g++ ) : ?>
-	.columns-<?php echo $g; ?> { grid-template-columns: repeat(2, 1fr); }
-	<?php endfor; ?>
+	.columns, [class*="columns-"] { grid-template-columns: repeat(var(--md-columns-mobile), minmax(0, 1fr)); }
 }
 
 @media all and (min-width: 800px) {
-	<?php for ( $g = 2; $g <= 6; $g++ ) : ?>
-	.columns-<?php echo $g; ?> { grid-template-columns: repeat(<?php echo $g; ?>, 1fr); }
-	<?php endfor; ?>
+	.columns, [class*="columns-"] { grid-template-columns: var(--md-columns-template); }
 }
 
 <?php for ( $g = 2; $g <= 6; $g++ ) {

@@ -22,6 +22,10 @@
 	width: 100%;
 }
 
+.loop.columns { --md-columns: var(--md-loop-columns); }
+
+.loop.has-mobile-columns { --md-columns-mobile: 2; }
+
 /* SLIM */
 
 .loop.columns.slim { gap: var(--md-half); }

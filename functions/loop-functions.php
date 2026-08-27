@@ -138,7 +138,10 @@ function md_loop_classes( $loop = array() ) {
 
 	if ( $loop['columns'] > 1 ) {
 		$classes[] = 'columns';
-		$classes[] = 'columns-' . $loop['columns'];
+
+		if ( $loop['columns'] > 2 )
+			$classes[] = 'has-mobile-columns';
+
 		$classes[] = ! empty( $loop['is_slim'] ) ? 'slim' : 'full';
 	}
 	else {
@@ -467,6 +470,7 @@ function md_loop( $args = array() ) {
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_template = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
+	$loop_columns_style = $loop['columns'] > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) . '"' : '';
 
 	md_hook_loop_before();
 
@@ -497,7 +501,7 @@ function md_loop( $args = array() ) {
 	// Every default loop on a page
 
 	elseif ( have_posts() ) {
-		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '">' : '';
+		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '"' . $loop_columns_style . '>' : '';
 
 		md_hook_loop_top();
 
