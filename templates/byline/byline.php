@@ -5,6 +5,7 @@ ob_start();
 foreach ( $items as $item => $groups )
 	foreach ( $groups as $group => $fields ) {
         $fields['c'] = $c;
+		$fields['post_type'] = $fields['post_type'] ?? $post_type;
 
         if ( isset( $data[$item]['template'] ) )
 			call_user_func( $data[$item]['template'], $fields );

@@ -7,6 +7,58 @@
 
 class BylineTest extends MD_InheritanceTestCase {
 
+	public function test_child_builder_replaces_only_its_configured_area() {
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'byline' => array( 'builder' => array(
+				'parent-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+				'parent-single' => array( 'builder_area' => 'single', 'builder_type' => 'author' )
+			) ) ),
+			'book_quote' => array( 'byline' => array( 'builder' => array(
+				'child-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
+			) ) )
+		) );
+
+		$this->assertSame( array(
+			'parent-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+			'child-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
+		), md_get_byline_builder( 'book_quote' ) );
+	}
+
+	public function test_child_builder_inherits_when_it_has_no_items() {
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
+		$builder = array(
+			'parent-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+			'parent-single' => array( 'builder_area' => 'single', 'builder_type' => 'author' )
+		);
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'byline' => array( 'builder' => $builder ) ),
+			'book_quote' => array( 'layout' => array( 'sidebar' => 'none' ) )
+		) );
+
+		$this->assertSame( $builder, md_get_byline_builder( 'book_quote' ) );
+	}
+
+	public function test_saved_builder_replaces_default_rows_in_the_same_area() {
+		md_test_set_filter( 'md_setting_defaults', array(
+			'book_quote' => array( 'byline' => array( 'builder' => array(
+				'default-single' => array( 'builder_area' => 'single', 'builder_type' => 'author' ),
+				'default-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' )
+			) ) )
+		) );
+		md_setting_defaults( true );
+		md_test_set_option( 'marketers_delight', array(
+			'book_quote' => array( 'byline' => array( 'builder' => array(
+				'saved-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
+			) ) )
+		) );
+
+		$this->assertSame( array(
+			'default-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+			'saved-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
+		), md_get_byline_builder( 'book_quote' ) );
+	}
+
 	public function test_items_can_be_scoped_to_post_types() {
 		md_test_set_filter( 'md_byline', array(
 			'date' => array(

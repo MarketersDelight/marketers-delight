@@ -427,8 +427,8 @@ input[type="submit"],
 	align-items: center;
 	display: flex;
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
-	justify-content: center;
 }
+.wp-block-buttons { justify-content: center; }
 /* LINKS */
 .link:hover { text-decoration: none; }
 .link-wrap {
@@ -1097,7 +1097,6 @@ select {
 }
 /* TITLE, LEDE, SUBTITLE, DESC */
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
-.page-title .cta { justify-content: flex-start; }
 .lede {
 	color: var(--md-text-muted);
 	font-size: var(--md-font-size-sm);
@@ -1186,7 +1185,7 @@ select {
 		justify-content: center;
 		width: 100%;
 	}
-	.image-title:is(.title-left, .title-right).wide :is(.byline, .cta) { justify-content: flex-start; }
+	.image-title:is(.title-left, .title-right).wide .byline { justify-content: flex-start; }
 	.image-title:is(.title-left, .title-right).wide .description { margin-inline: 0; }
 	.image-title.wide .subtitle { margin: 0; }
 	.image-inline.image-left .featured-media { order: -1; }
@@ -1339,9 +1338,9 @@ select {
 	background-color: transparent;
 	box-shadow: none;
 }
-.box-entry > .entry > .post-footer,
-.box-entry > .entry > :not(.loop) > .post-footer,
-.box-style.category-view > .entry > .post-footer { border-block-start: 1px solid var(--md-border); }
+.box-entry > .entry > :is(.post-footer, .item-sep),
+.box-entry > .entry > :not(.loop) > :is(.post-footer, .item-sep),
+.box-style.category-view > .entry > :is(.post-footer, .item-sep) { border-block-start: 1px solid var(--md-border); }
 .box-entry.loop-timeline > .entry > .comments { border-block-start: 0; }
 .box, .box-entry > .entry { width: auto; }
 .single .content.loop > .entry:not(:last-child),
@@ -2869,9 +2868,8 @@ cite, .tiny {
 	}
 }
 /*------------------------------*\
-	$BOOKSHELF
+	$BOOK ARCHIVE
 \*------------------------------*/
-.md-popup-bookshelf { background-color: var(--md-color-highlight); }
 .loop.loop-bookshelf.columns {
 	--md-columns-base: var(--md-loop-columns);
 	--md-columns-mobile: var(--md-loop-columns);
@@ -2879,129 +2877,149 @@ cite, .tiny {
 	column-gap: var(--md-single);
 	row-gap: 0;
 }
-.loop-bookshelf.box-group, .loop-book-quote.box-group { padding: var(--md-half); }
-.loop-bookshelf .book-grid { text-align: center; }
-@media all and (max-width: 599px) {
-	.loop.loop-bookshelf.columns { column-gap: var(--md-half); }
-}
-.loop-bookshelf.columns::after,
-.bookshelf-shelf,
-:is(.single-bookshelf, .single-book_quote) .featured-media.media-image::after {
-	background-color: color-mix(in srgb, var(--md-content-box-background) 15%, transparent);
-	box-shadow: var(--md-box-shadow-medium);
-	height: var(--md-third);
-	pointer-events: none;
-	z-index: 2;
-}
-.loop-bookshelf.columns::after,
-.bookshelf-shelf {
-	grid-column: 1 / -1;
-	margin-inline: calc(-1 * var(--md-half));
-}
-.loop-bookshelf.columns::after { content: ''; }
-.bookshelf-shelf { margin-block-end: var(--md-single); }
+:is(.loop-bookshelf, .loop-book-quote).box-group { padding: var(--md-half); }
+.book-grid { text-align: center; }
+/* BOOK COVER */
 .book-thumb {
 	border-block-end: 0;
 	display: block;
 	margin-inline: auto;
 }
 .book-thumb-narrow { width: 75%; }
-.book-thumb img,
-:is(.single-bookshelf, .single-book_quote) .featured-media.media-image img {
+.book-thumb img, :is(.single-bookshelf, .single-book_quote) .media-image img {
 	box-shadow: var(--md-box-shadow-medium);
 	display: block;
 	margin-inline: auto;
 	width: auto;
 }
-:is(.single-bookshelf, .single-book_quote) .featured-media.media-image {
-	margin-inline: auto;
-	max-width: 320px;
-	padding: 0 calc(var(--md-half) / 2) var(--md-third);
-	position: relative;
-	width: fit-content;
+/* SHELF */
+.bookshelf-shelf,
+.loop-bookshelf.columns:not(.bookshelf-details):after,
+:is(.single-bookshelf, .single-book_quote) .media-image:after {
+	background-color: color-mix(in srgb, var(--md-content-box-background) 15%, transparent);
+	box-shadow: var(--md-box-shadow-medium);
+	height: var(--md-third);
+	pointer-events: none;
+	z-index: 2;
 }
-:is(.single-bookshelf, .single-book_quote) .featured-media.media-image::after {
-	content: '';
-	inset-block-end: 0;
-	inset-inline: calc(-1 * var(--md-half));
-	position: absolute;
+.bookshelf-shelf,
+.loop-bookshelf.columns:not(.bookshelf-details):after {
+	grid-column: 1 / -1;
+	margin-inline: calc(-1 * var(--md-half));
 }
+.loop-bookshelf.columns:not(.bookshelf-details):after { content: ''; }
+.bookshelf-shelf { margin-block-end: var(--md-single); }
+/* DETAILS */
+.loop.loop-bookshelf.bookshelf-details {
+	--md-columns-base: 2;
+	--md-columns-mobile: 2;
+	align-items: stretch;
+	row-gap: var(--md-single);
+}
+.book-details > .book-thumb {
+	align-items: flex-end;
+	aspect-ratio: 2 / 3;
+	display: flex;
+	justify-content: center;
+	width: 100%;
+}
+.book-details > .book-thumb img {
+	max-height: 100%;
+	object-fit: contain;
+}
+.book-card-details { text-align: start; }
+.book-card-details .book-title {
+	font-size: var(--md-h6);
+	line-height: var(--md-h6-line-height);
+	margin-block-end: 0;
+}
+.book-details:hover .book-title { text-decoration: underline; }
+.book-card-details .byline {
+	font-size: calc(var(--md-font-size-sm) - 2px);
+	line-height: calc(var(--md-line-height-sm) - 2px);
+}
+.book-card-details > :not(:first-child) { margin-block-start: var(--md-small); }
+/* EXCERPT */
 .book-excerpt {
 	display: grid;
 	gap: var(--md-half);
 }
 .book-excerpt .book-text { text-align: left; }
 .book-title { margin-block-end: var(--md-small); }
-.book-actions,
-.book-quote-themes,
-.book-quote-details {
+.book-actions {
 	display: flex;
 	flex-wrap: wrap;
-}
-.book-actions {
 	gap: var(--md-small) var(--md-half);
 	margin-block-start: var(--md-half);
 }
+.book-excerpt .cta {
+	justify-content: flex-start;
+	margin-block-start: var(--md-half);
+}
+/* BOOK META */
 .book-rating {
 	color: var(--md-text-muted);
 	font-size: var(--md-font-size);
 	text-shadow: var(--md-box-shadow-small);
 }
 .byline-book-rating { color: var(--md-action-secondary); }
-:is(.byline-book-author, .byline-book-read-date, .byline-book-quote-count):not(:first-child):before {
+:is(.byline-book-author, .byline-book-read-date, .byline-book-quote-count):not(:first-child)::before {
 	color: var(--md-border);
 	content: '\00b7';
 	margin-inline-end: var(--md-half);
 }
-.book-excerpt .cta {
-	justify-content: flex-start;
-	margin-block-start: var(--md-half);
+@media (max-width: 600px) {
+	.loop.loop-bookshelf.columns { column-gap: var(--md-half); }
 }
-/* TABS */
-.bookshelf .md-tabs-nav {
-	background-color: var(--md-content-box-background);
-	border-block-start: 1px solid var(--md-border);
-	justify-content: center;
-	margin-block-end: 0;
-	position: sticky;
-		inset-block-start: 0;
-	z-index: 5;
+@media (min-width: 900px) {
+	.book-excerpt { grid-template-columns: minmax(0, 30%) 1fr; }
 }
-@media (min-width: 600px) {
-	.admin-bar .bookshelf .md-tabs-nav { inset-block-start: var(--wp-admin--admin-bar--height); }
+/*------------------------------*\
+	$BOOK SINGLE
+\*------------------------------*/
+.single-bookshelf .post-title {
+	border-block-end: 1px solid var(--md-content-box-border);
+	margin-block-end: var(--md-mid);
 }
-.bookshelf .md-tab {
-	flex: 0 1 var(--md-width-sidebar);
-	justify-content: center;
+:is(.single-bookshelf, .single-book_quote) .media-image {
+	margin-inline: auto;
+	max-width: 320px;
+	padding: 0 calc(var(--md-half) / 2) var(--md-third);
+	position: relative;
+	width: fit-content;
 }
-.bookshelf:not(.is-tabs-ready) .md-tabs-nav { display: none; }
-.bookshelf:not(.is-tabs-ready) .md-tab-content { display: block; }
-/* BOOK QUOTES */
+:is(.single-bookshelf, .single-book_quote) .media-image:after {
+	content: '';
+	position: absolute;
+		inset-block-end: 0;
+		inset-inline: calc(-1 * var(--md-half));
+}
+/* BOOK POPUP */
+.md-popup-bookshelf { background-color: var(--md-color-highlight); }
+@media (min-width: 900px) {
+	.md-popup-bookshelf .columns { grid-template-columns: minmax(0, 30%) 1fr; }
+}
+/*------------------------------*\
+	$BOOK QUOTES
+\*------------------------------*/
+/* SINGLE QUOTE */
 .single-book_quote .loop-article { --md-loop-content-width: var(--md-width-content); }
-.book-quote-neighbor-label {
-	color: var(--md-text-muted);
-	font-size: var(--md-font-size-sm);
-	font-weight: var(--md-bold);
-	letter-spacing: 0.08em;
-	line-height: var(--md-line-height-sm);
-	text-transform: uppercase;
+.single-book_quote .post-title {
+	border-block-end: 1px solid var(--md-border);
+	margin-block-end: var(--md-single);
+	padding: var(--md-half) var(--md-single);
 }
-.book-quote-neighbor-link {
-	border-block-end: 0;
-	display: block;
-	text-decoration: none;
+.single-book_quote .post-title > .wrap {
+	column-gap: var(--md-half);
+	width: 100%;
 }
-.book-quote-neighbor .timeline-dot {
-	border-color: var(--md-border);
-	color: var(--md-text-muted);
+.single-book_quote .post-title .title-wrap { gap: var(--md-small); }
+.single-book_quote .post-title .title {
+	font-size: var(--md-h4);
+	line-height: var(--md-h4-line-height);
 }
-.book-quote-neighbor-label, .book-quote-neighbor-text { display: block; }
-.book-quote-neighbor-label { margin-block-end: var(--md-small); }
-.book-quote-neighbor-text {
-	color: var(--md-text-muted);
-	display: -webkit-box;
-	overflow: hidden;
-}
+.single-book_quote .post-title .media-image { max-width: 120px; }
+/* QUOTE ENTRY */
 .book-quote-note {
 	align-items: flex-start;
 	border-inline-start: 3px solid var(--md-border);
@@ -3010,27 +3028,14 @@ cite, .tiny {
 	font-size: var(--md-font-size-sm);
 	gap: var(--md-third);
 	line-height: var(--md-line-height-sm);
-	margin-block-end: var(--md-half);
+	margin-block-end: var(--md-single);
 	padding-inline-start: var(--md-half);
 }
 .book-quote-avatar { flex: 0 0 auto; }
 .book-quote-note-content { min-width: 0; }
-.book-quote-meta {
-	align-items: flex-start;
-	justify-content: space-between;
-}
-.book-quote-themes, .book-quote-details { gap: var(--md-third); }
-.book-quote-details {
-	justify-content: flex-end;
-}
-@media all and (min-width: 900px) {
-	.book-excerpt { grid-template-columns: minmax(0, 30%) 1fr; }
-	.md-popup-bookshelf .columns { grid-template-columns: minmax(0, 30%) 1fr; }
-}
-@media all and (max-width: 700px) {
-	.book-quote-meta { display: block; }
-	.book-quote-details { justify-content: flex-start; }
-	.book-quote-themes + .book-quote-details { margin-block-start: var(--md-small); }
+.book-quote-note-author {
+	color: var(--md-text-muted);
+	margin-block-end: var(--md-small);
 }
 .breadcrumbs {
 	font-size: var(--md-font-size-sm);

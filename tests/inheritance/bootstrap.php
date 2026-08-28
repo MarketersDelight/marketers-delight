@@ -180,6 +180,11 @@ function md_test_set_post_type_object( $post_type, $label, $has_archive = true, 
 	);
 }
 
+function md_test_set_settings_parent( $post_type, $parent ) {
+	md_test_set_post_type_object( $post_type, ucfirst( str_replace( '_', ' ', $post_type ) ) );
+	$GLOBALS['__test_post_types'][$post_type]->md_settings_parent = $parent;
+}
+
 function md_test_set_term( $term_id, $taxonomy, $name ) {
 	$GLOBALS['__test_terms']["{$taxonomy}:{$term_id}"] = (object) array(
 		'term_id' => $term_id,
@@ -510,6 +515,7 @@ require_once dirname( __DIR__, 2 ) . '/functions/layout-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/loop-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/media-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/title-functions.php';
+require_once dirname( __DIR__, 2 ) . '/functions/byline-functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
 require_once dirname( __DIR__, 4 ) . '/md-dropins/breadcrumbs/breadcrumbs.php';
 

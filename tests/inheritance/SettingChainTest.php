@@ -70,9 +70,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_post_type_field_inherits_parent_settings() {
-		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
-			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
-		} );
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
 		md_test_set_option( 'marketers_delight', array(
 			'bookshelf' => array( 'layout' => array( 'content_box' => 'plain' ) )
 		) );
@@ -80,10 +78,8 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'plain', md_post_type_field( array( 'layout', 'content_box' ), null, 'book_quote' ) );
 	}
 
-	public function test_post_type_field_recursively_merges_child_over_parent() {
-		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
-			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
-		} );
+	public function test_post_type_field_merges_child_over_parent() {
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
 		md_test_set_option( 'marketers_delight', array(
 			'bookshelf' => array(
 				'layout' => array( 'content_box' => 'plain', 'sidebar' => 'right' ),
@@ -101,9 +97,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_post_type_field_child_defaults_override_parent_values() {
-		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
-			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
-		} );
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
 		md_test_set_filter( 'md_setting_defaults', array(
 			'book_quote' => array( 'loop' => array( 'columns' => 1 ) )
 		) );
@@ -115,9 +109,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_post_type_field_preserves_falsey_child_overrides() {
-		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
-			return $post_type === 'book_quote' ? 'bookshelf' : $parent;
-		} );
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
 		md_test_set_option( 'marketers_delight', array(
 			'bookshelf' => array( 'enabled' => true, 'count' => 10 ),
 			'book_quote' => array( 'enabled' => false, 'count' => 0 )
@@ -128,9 +120,8 @@ class SettingChainTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_post_type_field_stops_circular_parent_chains() {
-		md_test_set_filter( 'md_post_type_settings_parent', function( $parent, $post_type ) {
-			return $post_type === 'book_quote' ? 'bookshelf' : 'book_quote';
-		} );
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
+		md_test_set_settings_parent( 'bookshelf', 'book_quote' );
 		md_test_set_option( 'marketers_delight', array(
 			'bookshelf' => array( 'layout' => array( 'sidebar' => 'right' ) ),
 			'book_quote' => array( 'layout' => array( 'sidebar' => 'none' ) )

@@ -57,6 +57,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/layout-functions.php';
 		require_once MD_DIR . 'functions/media-functions.php';
 		require_once MD_DIR . 'functions/title-functions.php';
+		require_once MD_DIR . 'functions/byline-functions.php';
 		require_once MD_DIR . 'functions/header-functions.php';
 		require_once MD_DIR . 'functions/page-functions.php';
 		require_once MD_DIR . 'functions/loop-functions.php';

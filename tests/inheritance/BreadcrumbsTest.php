@@ -304,7 +304,7 @@ class BreadcrumbsTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_admin_field_uses_parent_post_type_inheritance() {
-		md_test_set_filter( 'md_post_type_settings_parent', 'bookshelf' );
+		md_test_set_settings_parent( 'book_quote', 'bookshelf' );
 		md_test_set_option( 'marketers_delight', array(
 			'bookshelf' => array(
 				'layout' => array(

@@ -16,7 +16,7 @@ else
 foreach ( $categories as $category ) {
 	$category_terms = get_the_terms( $post_id, $category );
 
-	if ( ! is_wp_error( $category_terms ) )
+	if ( $category_terms && ! is_wp_error( $category_terms ) )
 		$terms = array_merge( $terms, $category_terms );
 }
 
@@ -33,8 +33,9 @@ foreach ( $terms as $order => $term ) {
 		return;
 
 	$tax = 'tax-' . str_replace( '_', '-', $term->taxonomy );
+	$link_class = ! empty( $fields['style']['tag'] ) ? ' class="tag"' : '';
 
-	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '">' . esc_html( $term->name ) . '</a></span>';
+	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '"' . $link_class . '>' . esc_html( $term->name ) . '</a></span>';
 
 	$c++;
 }

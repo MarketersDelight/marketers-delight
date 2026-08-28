@@ -99,9 +99,9 @@
 	box-shadow: none;
 }
 
-.box-entry > .entry > .post-footer,
-.box-entry > .entry > :not(.loop) > .post-footer,
-.box-style.category-view > .entry > .post-footer { border-block-start: 1px solid var(--md-border); }
+.box-entry > .entry > :is(.post-footer, .item-sep),
+.box-entry > .entry > :not(.loop) > :is(.post-footer, .item-sep),
+.box-style.category-view > .entry > :is(.post-footer, .item-sep) { border-block-start: 1px solid var(--md-border); }
 
 .box-entry.loop-timeline > .entry > .comments { border-block-start: 0; }
 

@@ -97,6 +97,11 @@ class md_byline extends md_api {
 		$active_tab = '';
 		$tabs = $areas = array();
 		$screen = $this->_get_screen;
+		$post_type = $screen['post_type'];
+		$page_post_type = md_clean_id( $screen['page'] );
+
+		if ( $screen['is_admin'] && get_post_type_object( $page_post_type ) )
+			$post_type = $page_post_type;
 
 		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
 			$active_tab = 'archives';
@@ -169,7 +174,7 @@ class md_byline extends md_api {
 			'active_tab' => $active_tab,
 			'tabs' => $tabs,
 			'areas' => $areas,
-			'elements' => md_byline_items( $screen['post_type'] )
+			'elements' => md_byline_items( $post_type )
 		) );
 
 		echo '</div>';
@@ -213,6 +218,12 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#7d695c',
 				'icon' => 'category',
+				'fields' => array(
+					'style' => array(
+						'type' => 'checkbox',
+						'options' => array( 'tag' )
+					)
+				),
 				'callback' => array( $this, 'category' )
 			),
 			'badge' => array(
@@ -445,6 +456,14 @@ class md_byline extends md_api {
 			'label' => __( 'Only show', 'md' ),
 			'options' => array(
 				'first' => __( 'Only show first category', 'md' )
+			)
+		) );
+
+		$this->fields->field( array( 'builder', $group, 'style' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Style', 'md' ),
+			'options' => array(
+				'tag' => __( 'Show links as tags', 'md' )
 			)
 		) );
 

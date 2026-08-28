@@ -301,7 +301,7 @@ class md_fields extends md_fields_render {
 		$context = $this->get_context();
 
 		if ( $context['is_group'] )
-			$parent = apply_filters( 'md_post_type_settings_parent', null, $context['page_id'] );
+			$parent = md_post_type_settings_parent( $context['page_id'] );
 
 		if ( ! $context['taxonomy'] && ! $context['is_term'] && ! $parent )
 			return $default_label;

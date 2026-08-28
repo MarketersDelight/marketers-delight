@@ -128,9 +128,8 @@ function md_setting_defaults( $refresh = false ) {
 }
 
 /**
- * Instead of overwriting get_option to update a slice of the MD setting,
- * call this function with a list of keys to access and modify data and
- * pass back to an update_option call.
+ * Get raw top-level branches of the MD setting without merging defaults.
+ * The returned slice can be inspected or modified before an option update.
  *
  * @since 6.0
  */

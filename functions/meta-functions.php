@@ -55,6 +55,18 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
+ * Get the post type whose settings are inherited by another post type.
+ *
+ * @since 6.0
+ */
+
+function md_post_type_settings_parent( $post_type ) {
+	$object = get_post_type_object( $post_type );
+
+	return ! empty( $object->md_settings_parent ) ? $object->md_settings_parent : null;
+}
+
+/**
  * Get Post Type specific admin fields.
  *
  * @since 6.0
@@ -64,26 +76,27 @@ function md_post_type_field( $keys = null, $default = null, $post_type = null ) 
 	if ( ! isset( $post_type ) )
 		$post_type = md_get_post_type();
 
-	static $resolving = array();
-	$settings = array();
+	$chain = array();
 
-	if ( empty( $resolving[$post_type] ) ) {
-		$resolving[$post_type] = true;
-		$parent = apply_filters( 'md_post_type_settings_parent', null, $post_type );
+	// Collect each level once, stopping safely at circular parents
 
-		if ( $parent && $parent !== $post_type )
-			$settings = md_post_type_field( null, array(), $parent );
-
-		unset( $resolving[$post_type] );
+	while ( $post_type && ! array_key_exists( $post_type, $chain ) ) {
+		$chain[$post_type] = md_setting( $post_type, array() );
+		$post_type = md_post_type_settings_parent( $post_type );
 	}
 
-	$current = md_setting( $post_type, array() );
+	// Merge from the oldest parent down so each child overrides its defaults
 
-	if ( is_array( $current ) )
-		$settings = array_replace_recursive( $settings, $current );
+	$settings = array();
+
+	foreach ( array_reverse( $chain ) as $current )
+		if ( is_array( $current ) )
+			$settings = array_replace_recursive( $settings, $current );
 
 	if ( ! isset( $keys ) )
 		return $settings;
+
+	// Follow the requested field path through the resolved settings
 
 	foreach ( (array) $keys as $key ) {
 		if ( ! is_array( $settings ) || ! array_key_exists( $key, $settings ) )

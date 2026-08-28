@@ -38,8 +38,6 @@
 
 .entry-title :is(.title, .lede, .subtitle) { margin-block-end: 0; }
 
-.page-title .cta { justify-content: flex-start; }
-
 .lede {
 	color: var(--md-text-muted);
 	font-size: var(--md-font-size-sm);
@@ -153,7 +151,7 @@
 		justify-content: center;
 		width: 100%;
 	}
-	.image-title:is(.title-left, .title-right).wide :is(.byline, .cta) { justify-content: flex-start; }
+	.image-title:is(.title-left, .title-right).wide .byline { justify-content: flex-start; }
 	.image-title:is(.title-left, .title-right).wide .description { margin-inline: 0; }
 	.image-title.wide .subtitle { margin: 0; }
 	.image-inline.image-left .featured-media { order: -1; }

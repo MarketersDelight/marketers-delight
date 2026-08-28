@@ -23,8 +23,9 @@ input[type="submit"],
 	align-items: center;
 	display: flex;
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
-	justify-content: center;
 }
+
+.wp-block-buttons { justify-content: center; }
 
 /* LINKS */
 
