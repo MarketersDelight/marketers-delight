@@ -133,12 +133,15 @@ toggle: function() {
 					}
 				}
 		}
-		let menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
+
+		const menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
+
 		if ( menuItem )
 			menuItem.onmouseenter = menuItem.onmouseleave = function( e ) {
-				if ( e.type === 'mouseleave' )
-					menuItem.classList.remove( 'toggle-menu-item' );
-				menuItem.querySelector( '.toggle' ).setAttribute( 'aria-expanded', e.type === 'mouseenter' );
+				toggles[i].setAttribute(
+					'aria-expanded',
+					e.type === 'mouseenter' || menuItem.classList.contains( 'toggle-menu-item' )
+				);
 			}
 	}
 },

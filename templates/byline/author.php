@@ -1,4 +1,5 @@
 <?php
+print_r( $fields );
 	$post_id = isset( $fields['post_id'] ) ? $fields['post_id'] : get_the_ID();
 	$author_id = isset( $fields['user_id'] ) ? $fields['user_id'] : get_post_field( 'post_author', $post_id );
 	$author_name = get_the_author_meta( 'display_name', $author_id );
@@ -9,7 +10,7 @@
 	}
 ?>
 
-<span class="byline-author byline-item">
+<span class="<?php echo md_byline_classes( $fields, 'byline-author' ); ?>">
 
 	<?php if ( ! empty( $fields['settings']['avatar'] ) ) {
 		$avatar_size = isset( $fields['image_size'] ) ? $fields['image_size'] : 30;
@@ -20,6 +21,6 @@
 	<?php if ( empty( $fields['settings']['label'] ) )
 		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : __( 'by', 'md' ) ) . '</span>'; ?>
 
-	<a href="<?php echo get_author_posts_url( $author_id ); ?>" class="author-link"><?php echo esc_html( $author_name ); ?></a>
+	<a href="<?php echo get_author_posts_url( $author_id ); ?>" class="author-link clickout"><?php echo esc_html( $author_name ); ?></a>
 
 </span>

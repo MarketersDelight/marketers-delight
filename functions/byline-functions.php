@@ -57,6 +57,23 @@ function md_get_byline_builder( $post_type = null ) {
 }
 
 /**
+ * A valet way to render byline item classes in template files.
+ *
+ * @since 6.0
+ */
+
+function md_byline_classes( $fields, $classes = '' ) {
+	$classes = array_merge( array( 'byline-item' ), (array) $classes );
+
+	if ( ! empty( $fields['classes'] ) )
+		$classes = array_merge( $classes, (array) $fields['classes'] );
+
+	$classes = explode( ' ', join( ' ', $classes ) );
+
+	return esc_attr( join( ' ', array_unique( array_filter( $classes ) ) ) );
+}
+
+/**
  * Call the template of a single byline item with
  * passable settings.
  *
@@ -64,7 +81,12 @@ function md_get_byline_builder( $post_type = null ) {
  */
 
 function md_byline_item( $type, $fields = array() ) {
-	include md_template( "byline/$type", true );
+	$items = md_byline_items();
+
+	if ( isset( $items[$type]['template'] ) )
+		call_user_func( $items[$type]['template'], $fields );
+	else
+		include md_template( "byline/$type", true );
 }
 
 /**

@@ -187,6 +187,8 @@ cite, .tiny {
 
 .grow { flex: 1; }
 
+.full-basis { flex-basis: 100%; }
+
 .shrink { flex-shrink: 0; }
 
 .reverse { flex-direction: row-reverse; }
@@ -211,8 +213,7 @@ cite, .tiny {
 
 .items-stretch { align-items: stretch; }
 
-.self-center,
-.is-vertically-aligned-center { align-self: center; }
+.self-center, .is-vertically-aligned-center { align-self: center; }
 
 @media (max-width: 900px) {
 	.column-mobile { flex-direction: column; }

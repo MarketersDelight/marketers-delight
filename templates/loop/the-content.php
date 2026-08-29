@@ -18,7 +18,7 @@ if ( $show_full_content ) {
     elseif ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
         echo do_shortcode( get_the_content() );
     else
-        the_content( esc_html( $loop['read_more'] ) );
+        the_content( wp_kses_post( $loop['read_more'] ) );
 
     wp_link_pages();
 

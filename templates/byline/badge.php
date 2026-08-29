@@ -9,4 +9,4 @@ if ( isset( $fields['set_time'] ) )
 if ( $time < strtotime( "-$t days" ) )
 	return;
 
-echo '<span class="byline-item byline-badge badge">' . esc_html( $label ) . '</span>';
+echo '<span class="' . md_byline_classes( $fields, 'byline-badge badge' ) . '">' . esc_html( $label ) . '</span>';

@@ -76,6 +76,21 @@ class BylineTest extends MD_InheritanceTestCase {
 		$this->assertSame( array( 'date' ), array_keys( md_byline_items( '' ) ) );
 	}
 
+	public function test_byline_item_uses_a_registered_template_callback() {
+		md_test_set_filter( 'md_byline', array(
+			'custom' => array(
+				'template' => function( $fields ) {
+					echo $fields['label'];
+				}
+			)
+		) );
+
+		ob_start();
+		md_byline_item( 'custom', array( 'label' => 'Custom item' ) );
+
+		$this->assertSame( 'Custom item', ob_get_clean() );
+	}
+
 	public function test_render_keeps_native_items_missing_from_the_frontend_registry() {
 		md_test_set_filter( 'md_byline', array(
 			'share' => array(

@@ -35,7 +35,7 @@
 	}
 ?>
 
-<span class="byline-date byline-item">
+<span class="<?php echo md_byline_classes( $fields, 'byline-date' ); ?>">
 
 	<?php echo md_icon( $icon ); ?>
 
@@ -43,7 +43,7 @@
 		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : $default_name ) . '</span>'; ?>
 
 	<time datetime="<?php echo $datetime; ?>" title="<?php echo esc_attr( $post_date ); ?>">
-		<a href="<?php echo esc_url( $permalink ); ?>"><?php echo esc_attr( $date ); ?></a>
+		<a href="<?php echo esc_url( $permalink ); ?>" class="clickout"><?php echo esc_attr( $date ); ?></a>
 	</time>
 
 </span>

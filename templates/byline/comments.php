@@ -10,8 +10,8 @@ if ( $comments == '0' && ! empty( $fields['settings']['hide'] ) )
 	return;
 ?>
 
-<span class="byline-comments byline-item">
-	<a href="<?php echo get_comments_link(); ?>">
+<span class="<?php echo md_byline_classes( $fields, 'byline-comments' ); ?>">
+	<a href="<?php echo get_comments_link(); ?>" class="clickout">
 		<?php
 			echo md_icon( 'chat' ) . '<span class="md-byline-label">';
 

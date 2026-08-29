@@ -17,7 +17,7 @@
 
 .clickout {
 	position: relative;
-	z-index: 50;
+	z-index: 60;
 }
 
 .close,

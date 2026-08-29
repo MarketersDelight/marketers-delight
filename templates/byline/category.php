@@ -23,7 +23,7 @@ foreach ( $categories as $category ) {
 if ( empty( $terms ) )
 	return;
 
-echo '<span class="byline-item byline-category">' . md_icon( 'tags' );
+echo '<span class="' . md_byline_classes( $fields, 'byline-category' ) . '">' . md_icon( 'tags' );
 
 if ( ! empty( $fields['name'] ) )
 	echo '<span class="byline-label">' . esc_html( $fields['name'] ) . '</span> ';
@@ -33,9 +33,12 @@ foreach ( $terms as $order => $term ) {
 		return;
 
 	$tax = 'tax-' . str_replace( '_', '-', $term->taxonomy );
-	$link_class = ! empty( $fields['style']['tag'] ) ? ' class="tag"' : '';
+	$link_classes = array( 'clickout' );
 
-	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '"' . $link_class . '>' . esc_html( $term->name ) . '</a></span>';
+	if ( ! empty( $fields['style']['tag'] ) )
+		$link_classes[] = 'tag';
+
+	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '" class="' . esc_attr( join( ' ', $link_classes ) ) . '">' . esc_html( $term->name ) . '</a></span>';
 
 	$c++;
 }

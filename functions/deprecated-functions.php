@@ -170,18 +170,6 @@ function md_share_post_types() {
 }
 
 /**
- * A list of classes to add to the sidebar.
- *
- * @since 4.5
- * @deprecated 6.0
- */
-function md_byline_classes() {
-	$classes[] = 'byline';
-	$classes = apply_filters( 'md_filter_byline_classes', $classes );
-	return join( ' ', $classes );
-}
-
-/**
  * Outputs main sidebar or custom sidebar.
  *
  * @since 4.1

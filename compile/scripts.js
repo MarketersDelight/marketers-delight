@@ -110,12 +110,13 @@ toggle: function() {
 					}
 				}
 		}
-		let menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
+		const menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
 		if ( menuItem )
 			menuItem.onmouseenter = menuItem.onmouseleave = function( e ) {
-				if ( e.type === 'mouseleave' )
-					menuItem.classList.remove( 'toggle-menu-item' );
-				menuItem.querySelector( '.toggle' ).setAttribute( 'aria-expanded', e.type === 'mouseenter' );
+				toggles[i].setAttribute(
+					'aria-expanded',
+					e.type === 'mouseenter' || menuItem.classList.contains( 'toggle-menu-item' )
+				);
 			}
 	}
 },
@@ -324,22 +325,69 @@ popups: {
 		this.opened = this.showing = false;
 		this.data = popups;
 		document.addEventListener( 'click', function( e ) {
-			var trigger = e.target.closest( '.popup-trigger' );
+			var trigger = e.target.closest( '.popup-trigger' ),
+				nav = e.target.closest( '[data-popup-nav]' ),
+				close = e.target.closest( 'dialog.popup .close' );
 			if ( trigger ) {
 				e.preventDefault();
+				MD.popups.opener = trigger;
 				MD.popups.trigger = trigger.getAttribute( 'data-popup' );
 				MD.popups.open.show();
 			}
-		} );
-		document.addEventListener( 'click', function( e ) {
-			if ( e.target.closest( '.close' ) || e.target.closest( '.popup-bg' ) )
+			else if ( nav ) {
+				e.preventDefault();
+				MD.popups.navigation.move( parseInt( nav.getAttribute( 'data-popup-nav' ), 10 ) );
+			}
+			else if ( close || MD.popups.isBackdrop( e ) )
 				MD.popups.close.close();
 		} );
 		document.addEventListener( 'keydown', function( e ) {
-			if ( e.key === 'Escape' )
-				MD.popups.close.close();
+			if ( e.key !== 'ArrowLeft' && e.key !== 'ArrowRight' )
+				return;
+			var dialog = document.getElementById( MD.popups.showing );
+			if ( ! dialog || ! dialog.querySelector( '[data-popup-nav]' ) || e.target.closest( 'input, textarea, select, [contenteditable="true"]' ) )
+				return;
+			e.preventDefault();
+			MD.popups.navigation.move( e.key === 'ArrowLeft' ? -1 : 1 );
 		} );
+		document.addEventListener( 'cancel', function( e ) {
+			if ( e.target.matches( 'dialog.popup' ) ) {
+				e.preventDefault();
+				MD.popups.close.close();
+			}
+		}, true );
 		MD.popups.open.events();
+	},
+	isBackdrop: function( event ) {
+		if ( ! event.target.matches( 'dialog.popup' ) )
+			return false;
+		var rect = event.target.getBoundingClientRect();
+		return event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom;
+	},
+	navigation: {
+		items: [],
+		index: 0,
+		set: function( dialog ) {
+			var trigger = MD.popups.opener,
+				selector = trigger && trigger.getAttribute( 'data-popup-group' );
+			if ( ! selector )
+				return;
+			var group = trigger.closest( selector ),
+				previous = dialog.querySelector( '[data-popup-nav="-1"]' ),
+				next = dialog.querySelector( '[data-popup-nav="1"]' ),
+				hasNavigation;
+			this.items = Array.from( group.querySelectorAll( '.popup-trigger[data-popup-group]' ) );
+			this.index = this.items.indexOf( trigger );
+			hasNavigation = this.items.length > 1;
+			previous.hidden = next.hidden = ! hasNavigation;
+			previous.disabled = this.index === 0;
+			next.disabled = this.index === this.items.length - 1;
+		},
+		move: function( direction ) {
+			var next = this.index + direction;
+			if ( next >= 0 && next < this.items.length )
+				this.items[next].click();
+		}
 	},
 	open: {
 		events: function() {
@@ -392,11 +440,19 @@ popups: {
 			} );
 		},
 		show: function() {
-			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id;
+			var id = MD.popups.trigger ? MD.popups.trigger : MD.popup.id,
+				dialog = document.getElementById( id );
+			if ( ! dialog )
+				return;
 			document.documentElement.classList.add( 'has-popup' );
-			if ( MD.popups.showing && MD.popups.trigger )
-				document.getElementById( MD.popups.showing ).classList.remove( 'active' );
-			document.getElementById( id ).classList.add( 'active' );
+			if ( MD.popups.showing && MD.popups.showing !== id ) {
+				var showing = document.getElementById( MD.popups.showing );
+				if ( showing && showing.open )
+					showing.close();
+			}
+			if ( ! dialog.open )
+				dialog.showModal();
+			MD.popups.navigation.set( dialog );
 			MD.focusInputs( id );
 			MD.popups.showing = id;
 			if ( ! MD.popups.trigger )
@@ -405,23 +461,30 @@ popups: {
 	},
 	close: {
 		close: function() {
-			document.documentElement.classList.remove( 'has-popup' );
+			var id = MD.popups.showing,
+				opener = MD.popups.opener;
+			if ( ! id )
+				return;
 			if ( MD.popups.trigger ) {
-				var id = MD.popups.trigger;
 				delete MD.popups.trigger;
 			}
 			else {
 				if ( ! MD.popup )
 					return;
-				var id = MD.popup.id;
 				if ( MD.popup.cookieExp && ! MD.cookie.get( id ) )
 					MD.cookie.create( id, true, MD.popup.cookieExp );
 			}
+			var dialog = document.getElementById( id );
+			if ( dialog && dialog.open )
+				dialog.close();
+			document.documentElement.classList.remove( 'has-popup' );
 			delete MD.popups.opened;
 			delete MD.popups.showing;
-			document.getElementById( id ).classList.remove( 'active' );
+			delete MD.popups.opener;
 			MD.popups.toggleVideo( id );
 			MD.popups.open.events();
+			if ( opener )
+				window.setTimeout( function() { opener.focus(); }, 0 );
 		}
 	},
 	toggleVideo: function( id ) {

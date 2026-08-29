@@ -62,7 +62,7 @@ function md_the_content( $loop ) {
 function md_excerpt( $loop ) {
 	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ).
 		( empty( $loop['excerpt_settings']['remove_text'] ) ?
-			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . esc_html( $loop['read_more'] ) . '</a></p>'
+			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . wp_kses_post( $loop['read_more'] ) . '</a></p>'
 		: '' );
 }
 
