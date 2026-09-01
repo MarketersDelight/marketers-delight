@@ -8,7 +8,7 @@ if ( $query->have_posts() ) {
     while ( $query->have_posts() ) {
         $query->the_post();
 
-        include md_template( 'loop/the-post', true );
+        include md_template( 'features', 'loop/the-post', true );
     }
 
     echo '</div>';

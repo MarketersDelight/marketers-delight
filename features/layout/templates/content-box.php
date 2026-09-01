@@ -19,7 +19,7 @@ echo ( ! $has_builder ? '</div>' : '' );
 get_sidebar();
 
 if ( md_has_panel() )
-    md_template( 'panel' );
+    md_template( 'features', 'layout/panel' );
 
 echo '</div>';
 

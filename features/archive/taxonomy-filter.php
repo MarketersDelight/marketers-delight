@@ -160,7 +160,7 @@ class md_taxonomy_filter extends md_api {
 		else
 			$archive_url = get_post_type_archive_link( $post_type );
 
-		include md_template( 'taxonomy-filter', true );
+		include md_template( 'features', 'archive/taxonomy-filter', true );
 	}
 }
 

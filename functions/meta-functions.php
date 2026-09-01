@@ -270,10 +270,12 @@ function md_get_builder( $id, $type = null, $key = null ) {
 
 			$row_type = $fields['builder_type'];
 			$row_area = $fields['builder_area'];
-			$item = array( 'type' => $row_type, 'id' => $row_id );
+			$render = $elements[$row_type]['render'] ?? 'md_' . sanitize_key( $row_type );
 
-			if ( ! empty( $elements[$row_type]['render'] ) )
-				$item['render'] = $elements[$row_type]['render'];
+			if ( ! is_callable( $render ) )
+				continue;
+
+			$item = array( 'type' => $row_type, 'id' => $row_id, 'render' => $render );
 
 			$builder['data'][$row_area][] = $item;
 			$builder['elements'][$row_type][] = $row_id;

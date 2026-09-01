@@ -41,7 +41,7 @@ function md_the_content( $loop ) {
 	$has_excerpt = ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) && get_the_excerpt();
 	$show_full_content = $loop['content'] == 'full' || ( empty( $loop['query'] ) && ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) );
 
-	include md_template( 'loop/the-content', true );
+	include md_template( 'features', 'loop/the-content', true );
 }
 
 /**
@@ -88,7 +88,7 @@ function md_pagination( $loop = array() ) {
 	if ( $total <= 1 )
 		return;
 
-	include md_template( 'pagination', true );
+	include md_template( 'features', 'loop/pagination', true );
 }
 
 /**
@@ -572,22 +572,22 @@ function md_loop( $args = array() ) {
 		: ! empty( $loop['category']['show_subcategory'] );
 
 	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory )
-		include md_template( 'loop/subcategory', true );
+		include md_template( 'features', 'loop/subcategory', true );
 
 	// A loop called within a loop (see 404)
 
 	if ( ! empty( $loop['in_loop'] ) )
-		include md_template( 'loop/the-post', true );
+		include md_template( 'features', 'loop/the-post', true );
 
 	// If listing by category
 
 	elseif ( isset( $loop['by_category'] ) )
-		include md_template( 'loop/category-posts', true );
+		include md_template( 'features', 'loop/category-posts', true );
 
 	// Calling a manual query loop
 
 	elseif ( isset( $args['query'] ) )
-		include md_template( 'loop/the-query', true );
+		include md_template( 'features', 'loop/the-query', true );
 
 	// Every default loop on a page
 
@@ -599,7 +599,7 @@ function md_loop( $args = array() ) {
 		while ( have_posts() ) {
 			the_post();
 
-			include md_template( 'loop/the-post', true );
+			include md_template( 'features', 'loop/the-post', true );
 		}
 
 		if ( ! is_singular() ) {

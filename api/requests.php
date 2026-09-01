@@ -398,7 +398,7 @@ class md_requests {
 		if ( empty( $_GET['dropin'] ) )
 			wp_die( __( 'Please select a dropin to update.', 'md' ) );
 
-		$dropin = esc_attr( $_GET['dropin'] );
+		$dropin = sanitize_key( $_GET['dropin'] );
 
 		check_admin_referer( 'upgrade-dropin_' . $dropin );
 

@@ -39,5 +39,5 @@ function md_cta( $context = 'post', $cta = array() ) {
 	if ( empty( $html ) )
 		return;
 
-	include md_template( 'cta', true );
+	include md_template( 'features', 'page-cta/cta', true );
 }

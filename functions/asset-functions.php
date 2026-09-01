@@ -9,6 +9,10 @@
  * For example, to change the path to /wp-content/md-dropins/ for calling Drop-in
  * templates, use the following: md_template( 'dropins', 'admin/meta-box' );
  *
+ * Built-in feature templates live with their owner and use the feature slug as
+ * the first file segment, ex: md_template( 'features', 'loop/the-post' ).
+ * Frontend templates sit at templates/ and admin views at templates/admin/.
+ *
  * As of MD6.0, this function no longer looks for the deprecated /content/ folder.
  *
  * Set $path to true to return the file path instead.
@@ -210,8 +214,17 @@ function md_js_object( $args ) {
  */
 
 function md_compile( $delete = null ) {
-	md_compile_css();
-	md_compile_js();
+	$css = md_compile_css( $delete );
+
+	if ( is_wp_error( $css ) )
+		return $css;
+
+	$js = md_compile_js();
+
+	if ( is_wp_error( $js ) )
+		return $js;
+
+	return true;
 }
 
 /**
@@ -225,7 +238,8 @@ function md_compile( $delete = null ) {
 
 function md_compile_css( $delete = null ) {
 	$css = new md_css;
-	$css->compile( $delete );
+
+	return $css->compile( $delete );
 }
 
 /**
@@ -237,7 +251,8 @@ function md_compile_css( $delete = null ) {
 
 function md_compile_js( $delete = null ) {
 	$js = new md_js;
-	$js->compile( $delete );
+
+	return $js->compile( $delete );
 }
 
 /**
@@ -248,8 +263,9 @@ function md_compile_js( $delete = null ) {
 
 function md_ver( $file, $path = null ) {
 	$path = isset( $path ) ? $path : MD_DIR;
+	$file = $path . $file;
 
-	return date( 'ymds', filemtime( $path . $file ) );
+	return is_file( $file ) ? filemtime( $file ) : MD_VERSION;
 }
 
 /**
@@ -444,4 +460,3 @@ function md_web_fonts( $show_type = null ) {
 
 	return isset( $show_type ) ? ( $fonts[$show_type] ?? '' ) : $fonts;
 }
-

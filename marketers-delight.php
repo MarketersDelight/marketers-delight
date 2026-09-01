@@ -15,7 +15,9 @@ final class marketers_delight {
 	 */
 
 	public function constants() {
-		define( 'MD_VERSION', '6.0' );
+		$theme = wp_get_theme( get_template() );
+
+		define( 'MD_VERSION', $theme->get( 'Version' ) );
 		define( 'MD_THEME_NAME', 'Marketers Delight' );
 		define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 		define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -38,6 +40,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/meta-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
+		require_once MD_DIR . 'api/compile.php';
 		require_once MD_DIR . 'api/enqueue.php';
 		require_once MD_DIR . 'api/collections/api.php';
 		require_once MD_DIR . 'api/save/sanitize.php';
@@ -54,9 +57,9 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/walker.php';
 		require_once MD_DIR . 'api/api.php';
 
+		require_once MD_DIR . 'functions/link-functions.php';
 		require_once MD_DIR . 'functions/template-functions.php';
 		require_once MD_DIR . 'functions/page-functions.php';
-		require_once MD_DIR . 'functions/comment-functions.php';
 
 		if ( is_admin() ) {
 			require_once MD_DIR . 'api/files.php';
@@ -67,7 +70,6 @@ final class marketers_delight {
 		$this->features();
 		$this->dropins();
 
-		require_once MD_DIR . 'blog.php';
 		require_once MD_DIR . 'functions/actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
@@ -80,6 +82,7 @@ final class marketers_delight {
 
 	public function features() {
 		require_once MD_DIR . 'features/layout/functions.php';
+		require_once MD_DIR . 'features/integrations/functions.php';
 		require_once MD_DIR . 'features/featured-media/functions.php';
 		require_once MD_DIR . 'features/page-cover/functions.php';
 		require_once MD_DIR . 'features/page-title/functions.php';
@@ -87,8 +90,11 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/byline/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
+		require_once MD_DIR . 'features/loop/content.php';
+		require_once MD_DIR . 'features/loop/comments.php';
 
 		if ( is_admin() ) {
+			require_once MD_DIR . 'features/integrations/admin.php';
 			require_once MD_DIR . 'features/page-title/admin.php';
 			require_once MD_DIR . 'features/byline/admin.php';
 			require_once MD_DIR . 'features/header/admin.php';
@@ -103,6 +109,7 @@ final class marketers_delight {
 
 		require_once MD_DIR . 'features/archive/archive-meta.php';
 		require_once MD_DIR . 'features/archive/taxonomy-filter.php';
+		require_once MD_DIR . 'features/blog.php';
 	}
 
 	/**
@@ -117,6 +124,9 @@ final class marketers_delight {
 
 		$enqueue = new md_enqueue;
 		$enqueue->init();
+
+		$theme_json = new md_theme_json;
+		$theme_json->init();
 
 		$collections = new md_collections_api;
 		$collections->init();

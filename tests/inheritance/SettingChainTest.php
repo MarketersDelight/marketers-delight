@@ -44,6 +44,18 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'fallback', md_setting( array( 'missing', 'value' ), 'fallback' ) );
 	}
 
+	public function test_custom_option_merges_its_own_defaults_and_stored_values() {
+		md_test_set_filter( 'md_setting_defaults_client_portal', array(
+			'panel' => array( 'enabled' => true, 'columns' => 2 )
+		) );
+		md_test_set_option( 'client_portal', array(
+			'panel' => array( 'enabled' => false )
+		) );
+
+		$this->assertFalse( md_option( 'client_portal', array( 'panel', 'enabled' ), true ) );
+		$this->assertSame( 2, md_option( 'client_portal', array( 'panel', 'columns' ) ) );
+	}
+
 	// md_post_type_field() reads marketers_delight[$post_type][...] and falls
 	// through to the given $default when nothing is stored there.
 

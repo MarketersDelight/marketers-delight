@@ -242,7 +242,7 @@ class md_layout extends md_api {
 			'single' => __( 'Single', 'md' )
 		);
 
-		include md_template( 'admin/fields/layout-toggle', true );
+		include md_template( 'features', 'layout/admin/layout-toggle', true );
 	}
 
 	/**
@@ -265,7 +265,7 @@ class md_layout extends md_api {
 			)
 		);
 
-		include md_template( 'admin/layout-scripts', true );
+		include md_template( 'features', 'layout/admin/layout-scripts', true );
 	}
 
 	/**
@@ -357,7 +357,7 @@ class md_layout extends md_api {
 		if ( $is_post )
 			echo "<div class=\"md-$this->_clean_id md-tab-content active\">";
 
-		include md_template( 'admin/layout', true );
+		include md_template( 'features', 'layout/admin/layout', true );
 
 		if ( $is_post )
 			echo '</div>';

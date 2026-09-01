@@ -103,7 +103,7 @@ class md_header extends md_api {
 		$header = $values['header'];
 		$defaults = $this->design()->defaults();
 
-		include md_template( 'admin/header', true );
+		include md_template( 'features', 'header/admin/header', true );
 	}
 
 }

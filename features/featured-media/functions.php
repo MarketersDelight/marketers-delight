@@ -74,7 +74,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 
 	// Render template
 
-	include md_template( 'featured-media', true );
+	include md_template( 'features', 'featured-media/featured-media', true );
 }
 
 /**

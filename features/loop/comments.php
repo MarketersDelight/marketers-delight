@@ -46,7 +46,7 @@ function md_comment( $comment, $args, $depth ) {
 
 	$classes = array_values( $classes );
 
-	include md_template( 'comment', true );
+	include md_template( 'features', 'loop/comment', true );
 }
 
 /**

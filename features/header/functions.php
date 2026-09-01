@@ -238,7 +238,7 @@ function md_trigger( $type = 'menu', $args = array() ) {
  */
 
 function md_logo() {
-	include md_template( 'logo', true );
+	include md_template( 'features', 'header/logo', true );
 }
 
 /**

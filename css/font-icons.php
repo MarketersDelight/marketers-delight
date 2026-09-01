@@ -7,7 +7,7 @@
 @font-face {
 	font-family: md-icon;
 	font-display: swap;
-	src: url('<?php echo md_font_icons_url(); ?>') format('woff2');
+	src: url('<?php echo wp_make_link_relative( md_font_icons_url() ); ?>') format('woff2');
 	font-style: normal;
 	font-weight: 400;
 }

@@ -80,19 +80,15 @@ if ( md_has_header() ) :
 				echo "<div class=\"header-$section\">";
 
 				foreach ( $header['data'][$section] as $order => $items ) {
-					$type = sanitize_key( $items['type'] );
 					$id = sanitize_key( $items['id'] );
 					$field = $header['fields'][$id] ?? null;
 
-					if ( $field ) {
+					if ( $field && ! empty( $items['render'] ) ) {
 						$field['location'] = $section;
 						$field['layout'] = $layout;
 						$field['id'] = $id;
 
-						if ( ! empty( $items['render'] ) )
-							call_user_func( $items['render'], $field );
-						else
-							call_user_func( "md_$type", $field );
+						call_user_func( $items['render'], $field );
 					}
 				}
 

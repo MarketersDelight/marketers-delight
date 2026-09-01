@@ -53,7 +53,7 @@ function md_content_box() {
 	$loop_classes = md_loop_classes();
 	$loop_classes = $loop_classes['loop'];
 
-	include md_template( 'content-box', true );
+	include md_template( 'features', 'layout/content-box', true );
 }
 
 /**
@@ -180,7 +180,7 @@ function md_footer_columns_template() {
     $count = count( $columns );
 
 	if ( md_has_footer_columns() )
-		include md_template( 'footer-columns', true );
+		include md_template( 'features', 'layout/footer-columns', true );
 }
 
 /**
@@ -191,7 +191,7 @@ function md_footer_columns_template() {
 
 function md_footer_copy() {
 	if ( is_active_sidebar( 'footer-copy' ) )
-		include md_template( 'footer-copy', true );
+		include md_template( 'features', 'layout/footer-copy', true );
 }
 
 

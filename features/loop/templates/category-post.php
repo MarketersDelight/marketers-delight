@@ -33,7 +33,7 @@
 		if ( $show_subcategory ) {
 			$term = $category;
 
-			include md_template( 'loop/subcategory', true );
+			include md_template( 'features', 'loop/subcategory', true );
 		}
 	?>
 
@@ -42,7 +42,7 @@
 		<?php while ( $posts->have_posts() ) {
 			$posts->the_post();
 
-			include md_template( 'loop/the-post', true );
+			include md_template( 'features', 'loop/the-post', true );
 		} ?>
 
 		<?php if ( $posts->post_count >= $posts->query_vars['posts_per_page'] ) : ?>
@@ -58,7 +58,7 @@
 	<?php else : // Show listing of subcategories
 		$term = $category;
 
-		include md_template( 'loop/subcategory', true );
+		include md_template( 'features', 'loop/subcategory', true );
 
 	endif; ?>
 

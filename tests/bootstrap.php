@@ -24,6 +24,20 @@ $GLOBALS['__test_capabilities'] = array();
 $GLOBALS['__test_dropins'] = array();
 $GLOBALS['__test_child_theme'] = false;
 $GLOBALS['__test_stylesheet_directory'] = '';
+$GLOBALS['__test_upload_dir'] = array(
+	'basedir' => sys_get_temp_dir(),
+	'baseurl' => 'https://example.com/uploads',
+	'error' => false
+);
+
+if ( ! defined( 'MD_VERSION' ) )
+	define( 'MD_VERSION', '6.0' );
+
+if ( ! defined( 'FS_CHMOD_DIR' ) )
+	define( 'FS_CHMOD_DIR', 0755 );
+
+if ( ! defined( 'FS_CHMOD_FILE' ) )
+	define( 'FS_CHMOD_FILE', 0644 );
 
 if ( ! defined( 'MD_INSTALLED_DROPINS' ) )
 	define( 'MD_INSTALLED_DROPINS', __DIR__ . '/fixtures/dropins' );
@@ -50,6 +64,11 @@ function md_test_reset() {
 	$GLOBALS['__test_dropins'] = array();
 	$GLOBALS['__test_child_theme'] = false;
 	$GLOBALS['__test_stylesheet_directory'] = __DIR__ . '/fixtures/child';
+	$GLOBALS['__test_upload_dir'] = array(
+		'basedir' => sys_get_temp_dir(),
+		'baseurl' => 'https://example.com/uploads',
+		'error' => false
+	);
 	$_POST = array();
 	$_GET = array();
 }
@@ -113,6 +132,8 @@ function md_collections( $id = null ) {
 
 function add_action( $tag, $callback, $priority = 10, $accepted_args = 1 ) {}
 
+function add_filter( $tag, $callback, $priority = 10, $accepted_args = 1 ) {}
+
 function is_admin() {
 	return false;
 }
@@ -131,7 +152,16 @@ function md_register( $group = null ) {
 }
 
 function md_setting( $keys = null, $default = null ) {
-	$value = $GLOBALS['__test_settings'];
+	return md_option( 'marketers_delight', $keys, $default );
+}
+
+function md_option( $option, $keys = null, $default = null ) {
+	$filter = $option === 'marketers_delight' ? 'md_setting_defaults' : "md_setting_defaults_{$option}";
+	$defaults = apply_filters( $filter, array() );
+	$stored = $option === 'marketers_delight'
+		? $GLOBALS['__test_settings']
+		: get_option( $option, array() );
+	$value = array_replace_recursive( (array) $defaults, (array) $stored );
 
 	if ( ! isset( $keys ) )
 		return $value;
@@ -156,6 +186,28 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 
 function get_option( $key, $default = false ) {
 	return array_key_exists( $key, $GLOBALS['__test_options'] ) ? $GLOBALS['__test_options'][$key] : $default;
+}
+
+function wp_get_upload_dir() {
+	return $GLOBALS['__test_upload_dir'];
+}
+
+function trailingslashit( $value ) {
+	return rtrim( $value, '/\\' ) . '/';
+}
+
+function untrailingslashit( $value ) {
+	return rtrim( $value, '/\\' );
+}
+
+function validate_file( $file, $allowed_files = array() ) {
+	if ( strpos( $file, '../' ) !== false || strpos( $file, '..\\' ) !== false )
+		return 1;
+
+	if ( preg_match( '#^[A-Za-z]:[\\\\/]#', $file ) || strpos( $file, '/' ) === 0 )
+		return 2;
+
+	return 0;
 }
 
 function register_post_meta( $post_type, $meta_key, $args ) {
@@ -542,6 +594,7 @@ require_once dirname( __DIR__ ) . '/api/collections/rest.php';
 require_once dirname( __DIR__ ) . '/api/collections/admin.php';
 require_once dirname( __DIR__ ) . '/api/colors.php';
 require_once dirname( __DIR__ ) . '/api/design.php';
+require_once dirname( __DIR__ ) . '/api/compile.php';
 require_once dirname( __DIR__ ) . '/api/theme-json.php';
 require_once dirname( __DIR__ ) . '/api/css.php';
 

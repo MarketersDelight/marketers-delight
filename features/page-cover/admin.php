@@ -106,7 +106,7 @@ class md_page_cover extends md_api {
 			);
 
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
-		include md_template( 'admin/page-cover', true );
+		include md_template( 'features', 'page-cover/admin/page-cover', true );
 		echo '</div>';
 	}
 

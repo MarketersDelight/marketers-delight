@@ -214,7 +214,7 @@ class md_loop extends md_api {
 	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts is-category-inherited' : ''; ?>">
 		<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 		<div class="md-widget-item">
-			<?php include md_template( 'admin/loop', true ); ?>
+			<?php include md_template( 'features', 'loop/admin/loop', true ); ?>
 		</div>
 	</div>
 

@@ -14,7 +14,7 @@ md_hook_the_content_top();
 if ( $show_full_content ) {
 
     if ( is_404() && ! md_has_custom_404() )
-        include md_template( '404', true );
+		include md_template( 'features', 'loop/404', true );
     elseif ( md_post_meta( array( 'layout', 'content', 'wpautop' ) ) )
         echo do_shortcode( get_the_content() );
     else

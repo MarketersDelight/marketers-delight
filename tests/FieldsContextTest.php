@@ -12,11 +12,12 @@
 
 class FieldsContextTest extends MD_TestCase {
 
-	private function make_fields( $screen, $clean_id = 'my_page' ) {
+	private function make_fields( $screen, $clean_id = 'my_page', $option = 'marketers_delight' ) {
 		$fields = new md_fields( array(
 			'id' => $clean_id,
 			'clean_id' => $clean_id,
 			'prefix' => 'md',
+			'option' => $option,
 		) );
 
 		$fields->_get_screen = array_merge( array(
@@ -158,6 +159,31 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( 'Plain Setting', $fields->get_field( 'title' ) );
 	}
 
+	public function test_get_field_non_group_reads_custom_option_defaults_and_values() {
+		md_test_set_filter( 'md_admin_groups', array() );
+		md_test_set_filter( 'md_setting_defaults_client_portal', array(
+			'title' => 'Default Title',
+			'enabled' => true,
+		) );
+		md_test_set_option( 'client_portal', array( 'enabled' => false ) );
+
+		$fields = $this->make_fields( array( 'page' => 'my_page' ), 'my_page', 'client_portal' );
+
+		$this->assertSame( 'Default Title', $fields->get_field( 'title' ) );
+		$this->assertFalse( $fields->get_field( 'enabled', true ) );
+	}
+
+	public function test_get_field_preserves_falsey_setting_values() {
+		md_test_set_filter( 'md_admin_groups', array() );
+		md_test_set_settings( array( 'disabled' => false, 'count' => 0, 'value' => '0' ) );
+
+		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
+
+		$this->assertFalse( $fields->get_field( 'disabled', true ) );
+		$this->assertSame( 0, $fields->get_field( 'count', 10 ) );
+		$this->assertSame( '0', $fields->get_field( 'value', 'fallback' ) );
+	}
+
 	public function test_get_field_group_child_reads_nested_page_setting() {
 		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
 		md_test_set_settings( array( 'my_page' => array( 'title' => 'Child Setting' ) ) );
@@ -224,6 +250,15 @@ class FieldsContextTest extends MD_TestCase {
 		md_test_set_settings( array( 'my_page' => array( 'enabled' => true ) ) );
 
 		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
+
+		$this->assertTrue( $fields->module( array( 'enabled' ) ) );
+	}
+
+	public function test_module_non_group_reads_custom_option() {
+		md_test_set_filter( 'md_admin_groups', array() );
+		md_test_set_option( 'client_portal', array( 'my_page' => array( 'enabled' => true ) ) );
+
+		$fields = $this->make_fields( array( 'page' => 'my_page' ), 'my_page', 'client_portal' );
 
 		$this->assertTrue( $fields->module( array( 'enabled' ) ) );
 	}

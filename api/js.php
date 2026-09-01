@@ -8,6 +8,7 @@
 class md_js {
 
 	public $files;
+	private $compiled;
 
 	/**
 	 * Set properties.
@@ -16,6 +17,7 @@ class md_js {
 	 */
 
 	public function __construct() {
+		$this->compiled = new md_compiled_assets;
 		$this->files = $this->files();
 	}
 
@@ -26,12 +28,22 @@ class md_js {
 	 */
 
 	public function files() {
-		return array_merge( array(
+		$files = array_merge( array(
 			'script' => array(
 				'templates' => $this->script_js(),
-				'path' => MD_DIR . 'compile/scripts.js'
+				'output' => 'scripts.js'
 			)
 		), apply_filters( 'md_js_files', array() ) );
+
+		// Preserve the existing filtered file contract while constraining every
+		// generated asset to a flat filename in the MD uploads directory.
+
+		foreach ( $files as $file => $fields ) {
+			if ( empty( $fields['output'] ) && ! empty( $fields['path'] ) )
+				$files[$file]['output'] = basename( $fields['path'] );
+		}
+
+		return $files;
 	}
 
 	/**
@@ -57,10 +69,15 @@ class md_js {
 	 */
 
 	public function compile( $delete = null ) {
-		foreach ( $this->files as $file => $fields )
-			$this->generate( $file );
+		foreach ( $this->files as $file => $fields ) {
+			$js = $this->generate( $file );
+			$result = $this->compiled->write( $fields['output'], $js );
 
-		wp_cache_flush();
+			if ( is_wp_error( $result ) )
+				return $result;
+		}
+
+		return true;
 	}
 
 	/**
@@ -70,18 +87,14 @@ class md_js {
 	 */
 
 	public function generate( $file ) {
-		$path = $this->files[$file]['path'];
+		ob_start();
+		$this->templates( $file );
 
-		if ( file_exists( $path ) ) {
-			ob_start();
-			$js = '';
-			$this->templates( $file );
-			$js .= "window.MD = {\n";
-			$js .= ob_get_clean();
-			$js .= "\n}";
-			$js = $this->clean( $js );
-			file_put_contents( $path, $js );
-		}
+		$js = "window.MD = {\n";
+		$js .= ob_get_clean();
+		$js .= "\n}";
+
+		return $this->clean( $js );
 	}
 
 	/**

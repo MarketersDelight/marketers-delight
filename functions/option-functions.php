@@ -64,8 +64,11 @@ function md_register( $group = null ) {
 function md_collections( $id = null ) {
 	$collections = apply_filters( 'md_filter_collections', array() );
 
-	if ( isset( $id ) )
-		return $collections[sanitize_key( $id )] ?? array();
+	if ( isset( $id ) ) {
+		$id = sanitize_key( $id );
+
+		return $collections[$id] ?? array();
+	}
 
 	return $collections;
 }
@@ -94,21 +97,7 @@ function md_collection_field( $collection, $field = null, $id = null, $default =
  */
 
 function md_setting( $keys = null, $default = null ) {
-	$defaults = md_setting_defaults();
-	$option = get_option( 'marketers_delight', array() );
-	$option = array_replace_recursive( $defaults, (array) $option );
-
-	if ( is_null( $keys ) )
-		return $option;
-
-	foreach ( (array) $keys as $key ) {
-		if ( ! is_array( $option ) || ! array_key_exists( $key, $option ) )
-			return $default;
-
-		$option = $option[$key];
-	}
-
-	return $option;
+	return md_option( 'marketers_delight', $keys, $default );
 }
 
 /**
@@ -119,13 +108,88 @@ function md_setting( $keys = null, $default = null ) {
  */
 
 function md_setting_defaults( $refresh = false ) {
-	static $defaults = null;
-
-	if ( $refresh || is_null( $defaults ) )
-		$defaults = apply_filters( 'md_setting_defaults', array() );
-
-	return is_array( $defaults ) ? $defaults : array();
+	return md_option_defaults( 'marketers_delight', $refresh );
 }
+
+/**
+ * Merge an option over the defaults registered for it. The merge walks the
+ * whole tree, so each option is held for the request and rebuilt only when
+ * either side changes. Flushing with no option clears every cached option.
+ *
+ * @since 6.0
+ */
+
+function md_option_cache( $option = null, $flush = false ) {
+	static $merged = array();
+
+	if ( $flush ) {
+		if ( is_null( $option ) )
+			$merged = array();
+		else
+			unset( $merged[$option] );
+
+		return null;
+	}
+
+	if ( ! array_key_exists( $option, $merged ) )
+		$merged[$option] = array_replace_recursive(
+			md_option_defaults( $option ),
+			(array) get_option( $option, array() )
+		);
+
+	return $merged[$option];
+}
+
+/**
+ * Resolve the defaults registered for an option. The main settings keep the
+ * established md_setting_defaults filter; custom options use a filter named
+ * md_setting_defaults_{$option}.
+ *
+ * @since 6.0
+ */
+
+function md_option_defaults( $option, $refresh = false ) {
+	static $defaults = array();
+
+	if ( $refresh || ! array_key_exists( $option, $defaults ) ) {
+		$filter = $option === 'marketers_delight' ? 'md_setting_defaults' : "md_setting_defaults_{$option}";
+		$values = apply_filters( $filter, array() );
+
+		$defaults[$option] = is_array( $values ) ? $values : array();
+
+		if ( $refresh )
+			md_option_cache( $option, true );
+	}
+
+	return $defaults[$option];
+}
+
+/**
+ * Rebuild one option on the next read. Hooked to the generic option actions,
+ * which pass the option name, so keys a Drop-in invents at runtime are
+ * covered without knowing them up front.
+ *
+ * @since 6.0
+ */
+
+function md_flush_option_cache( $option ) {
+	md_option_cache( $option, true );
+}
+
+/**
+ * Drop every cached option, ex: the current site changed underneath them.
+ *
+ * @since 6.0
+ */
+
+function md_flush_option_caches() {
+	md_option_cache( null, true );
+}
+
+add_action( 'added_option', 'md_flush_option_cache' );
+add_action( 'updated_option', 'md_flush_option_cache' );
+add_action( 'deleted_option', 'md_flush_option_cache' );
+add_action( 'switch_blog', 'md_flush_option_caches' );
 
 /**
  * Get raw top-level branches of the MD setting without merging defaults.
@@ -203,133 +267,6 @@ function md_update_license( $license ) {
 		return add_option( 'marketers_delight_license', $license, '', false );
 
 	return update_option( 'marketers_delight_license', $license );
-}
-
-/**
- * Read private integration data from its current storage branch.
- *
- * @since 6.0
- */
-
-function md_integration_setting( $keys = null, $default = null ) {
-	$integrations = get_option( 'marketers_delight_integrations', array() );
-	$integrations = is_array( $integrations ) ? $integrations : array();
-
-	if ( ! isset( $keys ) )
-		return $integrations;
-
-	foreach ( (array) $keys as $key ) {
-		if ( ! is_array( $integrations ) || ! array_key_exists( $key, $integrations ) )
-			return $default;
-
-		$integrations = $integrations[$key];
-	}
-
-	return $integrations;
-}
-
-/**
- * Combine private credentials with public runtime data for admin interfaces.
- *
- * @since 6.0
- */
-
-function md_integration_data() {
-	$integrations = md_setting( 'integrations', array() );
-	$integrations = is_array( $integrations ) ? $integrations : array();
-	$api_keys = md_integration_setting( 'api_keys', array() );
-
-	if ( $api_keys )
-		$integrations['api_keys'] = array_replace(
-			isset( $integrations['api_keys'] ) && is_array( $integrations['api_keys'] ) ? $integrations['api_keys'] : array(),
-			$api_keys
-		);
-
-	return $integrations;
-}
-
-/**
- * Update the current integration storage branch.
- *
- * @since 6.0
- */
-
-function md_update_integrations( $integrations ) {
-	if ( ! is_array( $integrations ) )
-		return false;
-
-	if ( null === get_option( 'marketers_delight_integrations', null ) )
-		return add_option( 'marketers_delight_integrations', $integrations, '', false );
-
-	return update_option( 'marketers_delight_integrations', $integrations );
-}
-
-/**
- * Update one integration's private and public data together.
- *
- * Private data is stored in marketers_delight_integrations. Public data is
- * stored by branch and service in marketers_delight[integrations].
- *
- * @since 6.0
- */
-
-function md_update_integration( $service, $private = null, $public = array() ) {
-	$service = sanitize_key( $service );
-
-	if ( ! $service || ( ! is_null( $private ) && ! is_array( $private ) ) || ! is_array( $public ) )
-		return false;
-
-	$private_settings = md_integration_setting();
-	$runtime = md_setting( 'integrations', array() );
-	$runtime = is_array( $runtime ) ? $runtime : array();
-
-	if ( is_array( $private ) )
-		$private_settings['api_keys'][$service] = $private;
-
-	foreach ( $public as $branch => $value ) {
-		$branch = sanitize_key( $branch );
-
-		if ( ! $branch )
-			continue;
-
-		if ( is_null( $value ) )
-			unset( $runtime[$branch][$service] );
-		else
-			$runtime[$branch][$service] = $value;
-	}
-
-	$private_updated = md_update_integrations( $private_settings );
-	$public_updated = md_update_setting_part( array( 'integrations' => $runtime ) );
-
-	return $private_updated || $public_updated;
-}
-
-/**
- * Remove one integration from private and public storage.
- *
- * @since 6.0
- */
-
-function md_delete_integration( $service ) {
-	$service = sanitize_key( $service );
-
-	if ( ! $service )
-		return false;
-
-	$private = md_integration_setting();
-	$runtime = md_setting( 'integrations', array() );
-	$runtime = is_array( $runtime ) ? $runtime : array();
-
-	unset( $private['api_keys'][$service] );
-
-	foreach ( $runtime as $branch => $services )
-		if ( is_array( $services ) )
-			unset( $runtime[$branch][$service] );
-
-	$private_updated = md_update_integrations( $private );
-	$public_updated = md_update_setting_part( array( 'integrations' => $runtime ) );
-
-	return $private_updated || $public_updated;
 }
 
 /**
@@ -415,16 +352,16 @@ add_filter( 'md_save_marketers_delight_dropins', 'md_save_dropins_option' );
  */
 
 function md_option( $option, $keys = null, $default = null ) {
-	$c = 0;
-	$data = get_option( $option, array() );
+	$data = md_option_cache( $option );
 
-	if ( isset( $keys ) ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-		foreach ( $keys as $key ) {
-			$data = ! empty( $data[$key] ) ? $data[$key] : ( $c == 0 ? array() : $default );
-			$c++;
-		}
+	if ( is_null( $keys ) )
+		return $data;
+
+	foreach ( (array) $keys as $key ) {
+		if ( ! is_array( $data ) || ! array_key_exists( $key, $data ) )
+			return $default;
+
+		$data = $data[$key];
 	}
 
 	return $data;

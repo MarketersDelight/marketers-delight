@@ -75,7 +75,7 @@ class md_featured_media extends md_api {
 		$classes = join( ' ', $classes );
 
 		echo '<div class="' . esc_attr( $classes ) . '">';
-		include md_template( 'admin/featured-media', true );
+		include md_template( 'features', 'featured-media/admin/featured-media', true );
 		echo '</div>';
 	}
 

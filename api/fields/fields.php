@@ -115,7 +115,7 @@ class md_fields extends md_fields_render {
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {
-			$setting = get_option( $this->_option );
+			$setting = md_option( $this->_option );
 
 			if ( $context['is_group'] ) {
 				$taxonomy = $context['taxonomy'];
@@ -172,12 +172,10 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function get_field( $keys, $default = null ) {
-		$c = 0;
-
 		// Determine page context and set option level
 
 		$context = $this->get_context();
-		$option = md_setting();
+		$option = md_option( $this->_option );
 
 		if ( $context['is_post'] )
 			$option = md_post_meta();
@@ -201,19 +199,12 @@ class md_fields extends md_fields_render {
 
 		// Walk options array
 
-		if ( isset( $keys ) ) {
-			if ( is_string( $keys ) )
-				$keys = (array) $keys;
-			foreach ( $keys as $key ) {
-				$option = ! empty( $option[$key] ) ? $option[$key] : ( $c == 0 ? array() : '' );
-				$c++;
-			}
+		foreach ( (array) $keys as $key ) {
+			if ( ! is_array( $option ) || ! array_key_exists( $key, $option ) )
+				return $default;
+
+			$option = $option[$key];
 		}
-
-		// Set option or default
-
-		if ( empty( $option ) && isset( $default ) )
-			$option = $default;
 
 		return $option;
 	}
@@ -274,7 +265,7 @@ class md_fields extends md_fields_render {
 
 		array_unshift( $keys, $this->_clean_id );
 
-		return md_setting( $keys, $default );
+		return md_option( $this->_option, $keys, $default );
 	}
 
 	/**

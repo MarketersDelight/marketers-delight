@@ -99,10 +99,72 @@ class CssTest extends MD_TestCase {
 
 		foreach ( array( 'classic-editor', 'block-editor' ) as $file ) {
 			$this->assertMatchesRegularExpression(
-				"/'{$file}' => array\\(\\s*'path' => MD_DIR \\. 'compile\\/{$file}\\.css',\\s*'minify' => true,/",
+				"/'{$file}' => array\\(\\s*'output' => '{$file}\\.css',\\s*'minify' => true,/",
 				$css
 			);
 		}
+	}
+
+	public function test_compiled_icon_font_uses_a_scheme_independent_theme_path() {
+		$icons = $this->source( 'css/font-icons.php' );
+
+		$this->assertStringContainsString( 'wp_make_link_relative( md_font_icons_url() )', $icons );
+		$this->assertStringNotContainsString( "url('<?php echo md_font_icons_url(); ?>')", $icons );
+	}
+
+	public function test_theme_stylesheet_contains_metadata_only() {
+		$style = $this->source( 'style.css' );
+
+		$this->assertStringContainsString( 'Theme Name: Marketers Delight', $style );
+		$this->assertStringContainsString( 'Version: 6.0', $style );
+		$this->assertStringNotContainsString( '{', $style );
+		$this->assertStringNotContainsString( '@font-face', $style );
+	}
+
+	public function test_compiled_stylesheet_retains_its_table_of_contents() {
+		$guide = $this->call( $this->css, 'style_guide', array( array(
+			'style' => '/tmp/style.php',
+			'format' => '/tmp/format.php',
+			'page-cover' => '/tmp/page-cover.php'
+		) ) );
+		$template = $this->source( 'css/style.php' );
+
+		$this->assertStringContainsString( '1. Style', $guide );
+		$this->assertStringContainsString( '2. Format', $guide );
+		$this->assertStringContainsString( '3. Page Cover', $guide );
+		$this->assertStringContainsString( 'echo $style_header', $template );
+		$this->assertStringContainsString( 'Table of contents:', $template );
+		$this->assertStringContainsString( "MD_DIR . 'style.css'", $this->source( 'api/css.php' ) );
+		$this->assertStringNotContainsString( 'preg_replace_callback', $this->source( 'api/css.php' ) );
+	}
+
+	public function test_compiler_does_not_maintain_retry_or_error_state() {
+		$enqueue = $this->source( 'api/enqueue.php' );
+		$compile = $this->source( 'api/compile.php' );
+		$css = $this->source( 'api/css.php' );
+		$source = $enqueue . $compile . $css . $this->source( 'functions/asset-functions.php' );
+
+		$this->assertStringNotContainsString( 'maybe_compile', $source );
+		$this->assertStringNotContainsString( 'ensure_compiled', $source );
+		$this->assertStringNotContainsString( 'missing_assets', $source );
+		$this->assertStringNotContainsString( 'function writable', $source );
+		$this->assertStringNotContainsString( 'function inline_css', $source );
+		$this->assertStringNotContainsString( 'Keep a copy the frontend can inline', $source );
+		$this->assertStringNotContainsString( 'compile_notice', $source );
+		$this->assertStringNotContainsString( 'marketers_delight_compiled_version', $source );
+		$this->assertStringNotContainsString( 'marketers_delight_compile_error', $source );
+		$this->assertStringNotContainsString( 'marketers_delight_compile_retry', $source );
+		$this->assertStringContainsString( "if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )", $enqueue );
+		$this->assertStringContainsString( "if ( md_setting( array( 'settings', 'css', 'inline' ) ) )", $enqueue );
+	}
+
+	public function test_runtime_assets_have_no_theme_compile_directory() {
+		$theme = dirname( __DIR__ );
+
+		$this->assertDirectoryDoesNotExist( $theme . '/compile' );
+		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/css.php' ) );
+		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/js.php' ) );
+		$this->assertStringNotContainsString( "MD_URL . 'compile/", $this->source( 'api/enqueue.php' ) );
 	}
 
 	public function test_helpers_expose_the_canonical_layout_contract() {
@@ -328,17 +390,17 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_block_styles_use_a_cacheable_settings_import() {
-		$theme = $this->source( 'marketers-delight.php' );
+		$enqueue = $this->source( 'api/enqueue.php' );
 
 		$this->assertStringContainsString(
 			"add_filter( 'block_editor_settings_all', array( \$this, 'block_editor_styles' ) );",
-			$theme
+			$enqueue
 		);
-		$this->assertStringContainsString( '@import url("', $theme );
-		$this->assertStringContainsString( 'set_url_scheme( MD_URL . $file )', $theme );
-		$this->assertStringContainsString( 'esc_url_raw( $url )', $theme );
-		$this->assertStringNotContainsString( 'file_get_contents( $path )', $theme );
-		$this->assertStringNotContainsString( '__unstableResolvedAssets', $theme );
+		$this->assertStringContainsString( '@import url("', $enqueue );
+		$this->assertStringContainsString( 'set_url_scheme( $this->compiled->url( $file ) )', $enqueue );
+		$this->assertStringContainsString( 'esc_url_raw( $url )', $enqueue );
+		$this->assertStringNotContainsString( 'file_get_contents( $path )', $enqueue );
+		$this->assertStringNotContainsString( '__unstableResolvedAssets', $enqueue );
 	}
 
 	public function test_block_layout_classes_are_available_before_iframe_renders() {

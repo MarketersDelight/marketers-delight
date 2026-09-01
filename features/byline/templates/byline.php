@@ -10,7 +10,7 @@ foreach ( $items as $item => $groups )
         if ( isset( $data[$item]['template'] ) )
 			call_user_func( $data[$item]['template'], $fields );
 		else
-			include md_template( "byline/$item", true );
+			include md_template( 'features', "byline/$item", true );
 
 		$c++;
 	}

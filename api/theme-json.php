@@ -19,6 +19,30 @@ class md_theme_json {
 	private $alignwide_width;
 
 	/**
+	 * Merge live MD design settings into WordPress theme.json data.
+	 * ClassicPress safely ignores this WordPress-specific filter.
+	 *
+	 * @since 6.0
+	 */
+
+	public function init() {
+		add_filter( 'wp_theme_json_data_theme', array( $this, 'filter' ) );
+	}
+
+	/**
+	 * Update the theme data without rewriting the packaged theme.json file.
+	 *
+	 * @since 6.0
+	 */
+
+	public function filter( $theme_json ) {
+		if ( ! is_object( $theme_json ) || ! method_exists( $theme_json, 'update_with' ) )
+			return $theme_json;
+
+		return $theme_json->update_with( $this->build() );
+	}
+
+	/**
 	 * Set dynamic values to properties.
 	 *
 	 * @since 6.0
@@ -292,19 +316,6 @@ class md_theme_json {
 		);
 
 		return $elements;
-	}
-
-	/**
-	 * Write the compiled theme.json file.
-	 *
-	 * @since 6.0
-	 */
-
-	public function generate() {
-		$json = wp_json_encode( $this->build(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
-
-		if ( ! empty( $json ) )
-			file_put_contents( get_template_directory() . '/theme.json', $json );
 	}
 
 	/**

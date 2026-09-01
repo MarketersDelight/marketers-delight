@@ -33,7 +33,6 @@ class md_admin {
 	public function includes() {
 		include_once 'dashboard.php';
 		include_once 'icons.php';
-		include_once 'integrations.php';
 		include_once 'dropins.php';
 		include_once 'page-settings.php';
 		include_once 'typography.php';

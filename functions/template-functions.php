@@ -355,58 +355,6 @@ function md_get_visibility_classes( $values ) {
 }
 
 /**
- * Easily output a link/button with different kind of action.
- *
- * @since 4.3.5
- */
-
-function md_get_link( $fields, $p = '' ) {
-	$html = $attrs = '';
-	$styles = array();
-	$fields = wp_parse_args( $fields, array(
-		'type' => 'url',
-		'style' => 'link',
-		'area' => '',
-		'name' => '',
-		'subtitle' => '',
-		'icon' => '',
-		'url' => '',
-		'phone' => '',
-		'size' => '',
-		'color' => '',
-		'popup' => '',
-		'popup_args' => array(),
-		'html' => '',
-		'content' => '',
-		'attributes' => array(),
-		'classes' => '',
-		'visibility' => array(),
-		'button_style' => array(),
-		'toggle' => array(
-			'hide_label' => '',
-			'hide_label_mobile' => ''
-		)
-	) );
-
-	if ( empty( $fields['type'] ) )
-		$fields['type'] = 'url';
-
-	if ( ! md_check_condition( $fields['visibility'] ) )
-		return;
-
-	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) && empty( $fields['content'] ) )
-		return;
-
-	include md_template( 'link', true );
-
-	return $html;
-}
-
-function md_link( $fields, $p = '' ) {
-	echo md_get_link( $fields, $p );
-}
-
-/**
  * Return a theme or Drop-in template through the [md_template] shortcode.
  *
  * @since 6.0

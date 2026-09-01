@@ -54,8 +54,11 @@ class md_api {
 
 		// Register setting defaults before subclass setup reads any settings.
 
-		if ( method_exists( $this, 'setting_defaults' ) )
-			add_filter( 'md_setting_defaults', array( $this, 'setting_defaults' ) );
+		if ( method_exists( $this, 'setting_defaults' ) ) {
+			$filter = $this->_option === 'marketers_delight' ? 'md_setting_defaults' : "md_setting_defaults_{$this->_option}";
+
+			add_filter( $filter, array( $this, 'setting_defaults' ) );
+		}
 
 		// Run instance actions and filters
 

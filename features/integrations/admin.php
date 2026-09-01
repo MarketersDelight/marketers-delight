@@ -100,7 +100,7 @@ class md_integrations extends md_api {
 	 */
 
 	public function admin_page() {
-		include md_template( 'admin/integrations', true );
+		include md_template( 'features', 'integrations/admin/integrations', true );
 	}
 
 	/**
@@ -131,7 +131,7 @@ class md_integrations extends md_api {
 			$api_key_label = ! empty( $fields['labels']['api_key'] ) ? $fields['labels']['api_key'] : __( 'API Key', 'md' );
 			$account_url_label = ! empty( $fields['labels']['account_url'] ) ? $fields['labels']['account_url'] : __( 'Account URL', 'md' );
 
-			include md_template( 'admin/integration', true );
+			include md_template( 'features', 'integrations/admin/integration', true );
 		}
 	}
 

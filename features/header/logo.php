@@ -63,7 +63,7 @@ class md_logo extends md_api {
 		$values = $this->design()->values();
 		$defaults = $this->design()->defaults();;
 
-		include md_template( 'admin/logo', true );
+		include md_template( 'features', 'header/admin/logo', true );
 	}
 
 	/**

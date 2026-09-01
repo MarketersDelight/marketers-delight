@@ -17,7 +17,7 @@ function md_the_title( $context = 'post', $args = array() ) {
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
 	}
 
-	include md_template( 'the-title', true );
+	include md_template( 'features', 'page-title/the-title', true );
 }
 
 /**
@@ -128,7 +128,7 @@ function md_title( $context = 'post', $args = array() ) {
 
 	do_action( "md_hook_{$context}_title_before" );
 
-	include md_template( 'title', true );
+	include md_template( 'features', 'page-title/title', true );
 
 	do_action( "md_hook_{$context}_title_after" );
 }
@@ -172,5 +172,5 @@ function md_description( $context = 'post', $args = array() ) {
 	if ( empty( $description ) )
 		return;
 
-	include md_template( 'description', true );
+	include md_template( 'features', 'page-title/description', true );
 }

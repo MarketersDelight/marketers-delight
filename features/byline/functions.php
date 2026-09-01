@@ -50,7 +50,7 @@ function md_byline_item( $type, $fields = array() ) {
 	if ( isset( $items[$type]['template'] ) )
 		call_user_func( $items[$type]['template'], $fields );
 	else
-		include md_template( "byline/$type", true );
+		include md_template( 'features', "byline/$type", true );
 }
 
 /**
@@ -95,7 +95,7 @@ function md_byline( $location = 'before_title', $args = array() ) {
 
 	$classes = join( ' ', $classes );
 
-	include md_template( 'byline/byline', true );
+	include md_template( 'features', 'byline/byline', true );
 }
 
 /**

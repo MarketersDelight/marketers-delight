@@ -93,4 +93,23 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertSame( '896px', $this->json['settings']['layout']['wideSize'] );
 	}
 
+	public function test_dynamic_data_merges_without_writing_theme_json() {
+		$data = new class {
+			public $merged;
+
+			public function update_with( $data ) {
+				$this->merged = $data;
+
+				return $this;
+			}
+		};
+		$result = ( new md_theme_json )->filter( $data );
+		$source = file_get_contents( dirname( __DIR__ ) . '/api/theme-json.php' );
+
+		$this->assertSame( $data, $result );
+		$this->assertSame( $this->json, $data->merged );
+		$this->assertStringContainsString( 'wp_theme_json_data_theme', $source );
+		$this->assertStringNotContainsString( 'file_put_contents', $source );
+	}
+
 }

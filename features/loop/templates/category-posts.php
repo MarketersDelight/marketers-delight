@@ -99,7 +99,7 @@ foreach ( $categories->terms as $category ) {
 		}
 
 		if ( $posts->have_posts() || ! empty( $loop['category']['show_empty'] ) )
-			include md_template( 'loop/category-post', true );
+			include md_template( 'features', 'loop/category-post', true );
 
 		wp_reset_postdata();
 
@@ -107,7 +107,7 @@ foreach ( $categories->terms as $category ) {
 
 	// or show listing of categories
 
-	else include md_template( 'loop/category-post', true );
+	else include md_template( 'features', 'loop/category-post', true );
 
 	// You can insert things in-between categories
 

@@ -105,7 +105,7 @@ class md_page_cta extends md_api {
 
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
 
-		include md_template( 'admin/page-cta', true );
+		include md_template( 'features', 'page-cta/admin/page-cta', true );
 
 		echo '</div>';
 	}

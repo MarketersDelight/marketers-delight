@@ -110,12 +110,17 @@ function md_test_reset() {
 	);
 	$GLOBALS['__test_active_sidebars'] = array();
 	$GLOBALS['__test_rendered_byline_items'] = array();
+
+	md_flush_option_caches();
 }
 
 // Sets the marketers_delight option array wholesale (mirrors get_option()).
+// Writes here bypass update_option(), so the merged cache is dropped by hand.
 
 function md_test_set_option( $key, $value ) {
 	$GLOBALS['__test_options'][$key] = $value;
+
+	md_option_cache( $key, true );
 }
 
 function md_test_set_term_meta( $term_id, $meta ) {
@@ -237,7 +242,9 @@ function has_action() {
 	return false;
 }
 
-function md_template( $template ) {
+function md_template( $file, $path = null, $include = null ) {
+	$template = is_string( $path ) ? $path : $file;
+
 	return __DIR__ . "/fixtures/$template.php";
 }
 
@@ -510,9 +517,11 @@ if ( ! function_exists( '__' ) ) {
 require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/comment-functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/layout/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/integrations/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/loop/content.php';
+require_once dirname( __DIR__, 2 ) . '/features/loop/comments.php';
 require_once dirname( __DIR__, 2 ) . '/features/featured-media/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cover/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';

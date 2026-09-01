@@ -8,6 +8,18 @@
 
 class md_enqueue {
 
+	private $compiled;
+
+	/**
+	 * Set the compiled assets API.
+	 *
+	 * @since 6.0
+	 */
+
+	public function __construct() {
+		$this->compiled = new md_compiled_assets;
+	}
+
 	/**
 	 * Register asset actions and filters to expected WP hooks.
 	 *
@@ -15,17 +27,19 @@ class md_enqueue {
 	 */
 
 	public function init() {
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
+		add_action( 'wp_head', array( $this, 'head' ) );
+		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
+		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
+
+		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
+		add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
+		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
+
 		add_action( 'init', array( $this, 'compile' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
-		add_action( 'wp_head', array( $this, 'head' ) );
-		add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
-		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
-		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
-		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 
 		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
 			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
@@ -44,7 +58,7 @@ class md_enqueue {
 		// Enqueue main stylesheet (style.css)
 
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
-			wp_enqueue_style( 'marketers-delight', MD_URL . 'style.css', array(), md_ver( 'style.css' ) );
+			wp_enqueue_style( 'marketers-delight', $this->compiled->url( 'style.css' ), array(), $this->compiled->version( 'style.css' ) );
 
 		// Load child theme style, if not merged into main style.css
 
@@ -53,14 +67,14 @@ class md_enqueue {
 
 		// Register and load JS files
 
-		wp_register_script( 'marketers-delight', MD_URL . 'compile/scripts.js', array(), md_ver( 'compile/scripts.js' ), array(
+		wp_register_script( 'marketers-delight', $this->compiled->url( 'scripts.js' ), array(), $this->compiled->version( 'scripts.js' ), array(
 			'in_footer' => true
 		) );
 		wp_enqueue_script( 'marketers-delight' );
 		wp_localize_script( 'marketers-delight', 'MDJS', array(
 			'ajaxurl' => admin_url( 'admin-ajax.php' ),
 			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) ? md_has( 'admin-bar' ) : false,
+			'hasAdminBar' => current_user_can( 'manage_options' ) ? md_has( 'admin-bar' ) : false,
 			'userID' => get_current_user_id()
 		) );
 
@@ -97,12 +111,10 @@ class md_enqueue {
 
 		// Print critical css to <head>
 
-		$critical = MD_DIR . 'compile/critical.css';
+		if ( md_setting( array( 'settings', 'css', 'critical' ) ) ) {
+			$css = $this->compiled->read( 'critical.css' );
 
-		if ( md_setting( array( 'settings', 'css', 'critical' ) ) && file_exists( $critical ) ) {
-			$css = file_get_contents( $critical );
-
-			if ( $css !== '' )
+			if ( ! empty( $css ) )
 				echo '<style id="md-critical-css">' . $css . "</style>\n";
 		}
 
@@ -152,15 +164,15 @@ class md_enqueue {
 	 */
 
 	public function block_editor_styles( $settings ) {
-		$file = 'compile/block-editor.css';
+		$file = 'block-editor.css';
 
-		if ( ! is_file( MD_DIR . $file ) )
+		if ( ! $this->compiled->exists( $file ) )
 			return $settings;
 
 		if ( empty( $settings['styles'] ) )
 			$settings['styles'] = array();
 
-		$url = add_query_arg( 'ver', md_ver( $file ), set_url_scheme( MD_URL . $file ) );
+		$url = add_query_arg( 'ver', $this->compiled->version( $file ), set_url_scheme( $this->compiled->url( $file ) ) );
 		$settings['styles'][] = array(
 			'css' => '@import url("' . esc_url_raw( $url ) . '");',
 			'__unstableType' => 'theme',
@@ -179,9 +191,9 @@ class md_enqueue {
 	public function classic_editor_styles( $stylesheets ) {
 		$editor_styles = array();
 
-		foreach ( array( 'compile/font-icons.css', 'compile/classic-editor.css' ) as $file )
-			if ( is_file( MD_DIR . $file ) )
-				$editor_styles[] = add_query_arg( 'ver', md_ver( $file ), MD_URL . $file );
+		foreach ( array( 'font-icons.css', 'classic-editor.css' ) as $file )
+			if ( $this->compiled->exists( $file ) )
+				$editor_styles[] = add_query_arg( 'ver', $this->compiled->version( $file ), $this->compiled->url( $file ) );
 
 		return trim( $stylesheets . ',' . implode( ',', $editor_styles ), ' ,' );
 	}
@@ -195,7 +207,12 @@ class md_enqueue {
 	public function defer_style( $tag, $handle ) {
 		$deferred = apply_filters( 'md_deferred_styles', array( 'marketers-delight' ) );
 
-		if ( is_admin() || ! md_setting( array( 'settings', 'css', 'critical' ) ) || ! in_array( $handle, $deferred ) )
+		if (
+			is_admin() ||
+			! md_setting( array( 'settings', 'css', 'critical' ) ) ||
+			! $this->compiled->exists( 'critical.css' ) ||
+			! in_array( $handle, $deferred )
+		)
 			return $tag;
 
 		if ( ! preg_match( '/href=([\'\"])(.*?)\1/', $tag, $href ) )
@@ -229,7 +246,7 @@ class md_enqueue {
 	 */
 
 	public function compile() {
-		if ( ! isset( $_GET['md'] ) || ! current_user_can( 'administrator' ) || ! wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) )
+		if ( ! isset( $_GET['md'] ) || ! current_user_can( 'manage_options' ) || ! wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) )
 			return;
 
 		$compile = sanitize_key( wp_unslash( $_GET['md'] ) );
