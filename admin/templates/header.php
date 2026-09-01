@@ -99,27 +99,7 @@
 				'tab' => 'header'
 			)
 		),
-		'elements' => apply_filters( 'md_header_builder_elements', array(
-			'link' => array(
-				'title' => __( 'Link', 'md' ),
-				'subtitle' => true,
-				'color' => '#2772af',
-				'icon' => 'admin-links',
-				'callback' => array( $this->fields, 'builder_link' )
-			),
-			'search' => array(
-				'title' => __( 'Search', 'md' ),
-				'placeholder' => __( 'Search', 'md' ),
-				'color' => '#41b141',
-				'icon' => 'search',
-				'callback' => array( $this->fields, 'builder_search' )
-			),
-			'menu' => array(
-				'title' => __( 'Menu', 'md' ),
-				'icon' => 'menu',
-				'callback' => array( $this->fields, 'builder_menu' )
-			)
-		) )
+		'elements' => $this->builder_items()
 	) );
 
 	$this->fields->save(); ?>

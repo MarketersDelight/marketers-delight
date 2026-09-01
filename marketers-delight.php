@@ -1,8 +1,7 @@
 <?php
 /**
- * The main MD class the performs high-level theme responsibilites
- * like loading theme files, setting constants, wp_enqueue, <head>
- * manipulation, register widgets/shortcodes and other main WP APIs.
+ * The main MD class performs high-level theme responsibilities like
+ * loading theme files, setting constants, and registering WordPress APIs.
  *
  * @since 4.0
  */
@@ -39,6 +38,8 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/meta-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
+		require_once MD_DIR . 'api/enqueue.php';
+		require_once MD_DIR . 'api/collections/api.php';
 		require_once MD_DIR . 'api/save/sanitize.php';
 		require_once MD_DIR . 'api/save/validate.php';
 		require_once MD_DIR . 'api/save/save.php';
@@ -54,13 +55,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/api.php';
 
 		require_once MD_DIR . 'functions/template-functions.php';
-		require_once MD_DIR . 'functions/layout-functions.php';
-		require_once MD_DIR . 'functions/media-functions.php';
-		require_once MD_DIR . 'functions/title-functions.php';
-		require_once MD_DIR . 'functions/byline-functions.php';
-		require_once MD_DIR . 'functions/header-functions.php';
 		require_once MD_DIR . 'functions/page-functions.php';
-		require_once MD_DIR . 'functions/loop-functions.php';
 		require_once MD_DIR . 'functions/comment-functions.php';
 
 		if ( is_admin() ) {
@@ -69,11 +64,45 @@ final class marketers_delight {
 			require_once MD_DIR . 'admin/admin.php';
 		}
 
+		$this->features();
 		$this->dropins();
 
 		require_once MD_DIR . 'blog.php';
 		require_once MD_DIR . 'functions/actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
+	}
+
+	/**
+	 * Load built-in MD features in dependency order.
+	 *
+	 * @since 6.0
+	 */
+
+	public function features() {
+		require_once MD_DIR . 'features/layout/functions.php';
+		require_once MD_DIR . 'features/featured-media/functions.php';
+		require_once MD_DIR . 'features/page-cover/functions.php';
+		require_once MD_DIR . 'features/page-title/functions.php';
+		require_once MD_DIR . 'features/page-cta/functions.php';
+		require_once MD_DIR . 'features/byline/functions.php';
+		require_once MD_DIR . 'features/header/functions.php';
+		require_once MD_DIR . 'features/loop/functions.php';
+
+		if ( is_admin() ) {
+			require_once MD_DIR . 'features/page-title/admin.php';
+			require_once MD_DIR . 'features/byline/admin.php';
+			require_once MD_DIR . 'features/header/admin.php';
+			require_once MD_DIR . 'features/header/logo.php';
+			require_once MD_DIR . 'features/featured-media/admin.php';
+			require_once MD_DIR . 'features/page-cover/admin.php';
+			require_once MD_DIR . 'features/page-cta/admin.php';
+			require_once MD_DIR . 'features/layout/admin.php';
+			require_once MD_DIR . 'features/loop/admin.php';
+			require_once MD_DIR . 'features/archive/archive-header.php';
+		}
+
+		require_once MD_DIR . 'features/archive/archive-meta.php';
+		require_once MD_DIR . 'features/archive/taxonomy-filter.php';
 	}
 
 	/**
@@ -86,64 +115,16 @@ final class marketers_delight {
 		$this->constants();
 		$this->includes();
 
-		add_action( 'init', array( $this, 'wp_init' ) );
+		$enqueue = new md_enqueue;
+		$enqueue->init();
+
+		$collections = new md_collections_api;
+		$collections->init();
+
 		add_action( 'after_setup_theme', array( $this, 'setup' ) );
-		add_action( 'after_switch_theme', 'md_compile' );
-		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
-		add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
-		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
-		add_action( 'wp_head', array( $this, 'head' ) );
-		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
-		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 		add_action( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
-		add_filter( 'query_vars', array( $this, 'query_vars' ) );
-
-		add_action( 'init', array( $this, 'collections' ), 20 );
-
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
-			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
-			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
-		}
-	}
-
-	/**
-	 * Load and register Collections declared by active extensions.
-	 *
-	 * @since 6.0
-	 */
-
-	public function collections() {
-		$collections = md_collections();
-
-		if ( empty( $collections ) )
-			return;
-
-		require_once MD_DIR . 'api/collections/fields.php';
-		require_once MD_DIR . 'api/collections/collections.php';
-
-		if ( is_admin() )
-			require_once MD_DIR . 'api/collections/admin.php';
-
-		foreach ( $collections as $id => $args ) {
-			$collection = new md_collection( $id, $args );
-			$collection->register();
-
-			if ( is_admin() ) {
-				$admin = new md_collection_admin( $collection );
-				$admin->register();
-			}
-		}
-
-		add_action( 'rest_api_init', function() {
-			require_once MD_DIR . 'api/collections/rest.php';
-			$controller = new md_collections_rest;
-			$controller->register_routes();
-		} );
 	}
 
 	/**
@@ -172,7 +153,7 @@ final class marketers_delight {
 		) );
 
 		// Enable shortcodes in widgets
-		add_shortcode( 'md_template', array( $this, 'template_shortcode' ) );
+		add_shortcode( 'md_template', 'md_template_shortcode' );
 		add_filter( 'widget_text', 'do_shortcode' );
 
 		// Disable Widgets Block Editor
@@ -213,243 +194,6 @@ final class marketers_delight {
 
 		// Re-add RSS link
 		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
-	}
-
-	/**
-	 * Import MD's compiled stylesheet into Block Editor canvases.
-	 *
-	 * @since 6.0
-	 */
-
-	public function block_editor_styles( $settings ) {
-		$file = 'compile/block-editor.css';
-
-		if ( ! is_file( MD_DIR . $file ) )
-			return $settings;
-
-		if ( empty( $settings['styles'] ) )
-			$settings['styles'] = array();
-
-		$url = add_query_arg( 'ver', md_ver( $file ), set_url_scheme( MD_URL . $file ) );
-		$settings['styles'][] = array(
-			'css' => '@import url("' . esc_url_raw( $url ) . '");',
-			'__unstableType' => 'theme',
-			'isGlobalStyles' => false
-		);
-
-		return $settings;
-	}
-
-	/**
-	 * Add MD's compiled content styles only to TinyMCE editors.
-	 *
-	 * @since 6.0
-	 */
-
-	public function classic_editor_styles( $stylesheets ) {
-		$editor_styles = array();
-
-		foreach ( array( 'compile/font-icons.css', 'compile/classic-editor.css' ) as $file )
-			if ( is_file( MD_DIR . $file ) )
-				$editor_styles[] = add_query_arg( 'ver', md_ver( $file ), MD_URL . $file );
-
-		return trim( $stylesheets . ',' . implode( ',', $editor_styles ), ' ,' );
-	}
-
-	/**
-	 * Recompile all assets after the theme is uploaded via
-	 * manual installation or upgrade.
-	 *
-	 * @since 6.0
-	 */
-
-	public function compile_on_upgrade( $upgrader, $options ) {
-		if ( ( $options['type'] ?? '' ) !== 'theme' )
-			return;
-
-		$themes = (array) ( $options['themes'] ?? array() );
-		$themes[] = $upgrader->result['destination_name'] ?? '';
-
-		if ( in_array( get_template(), $themes, true ) )
-			md_compile();
-	}
-
-	/**
-	 * Add custom query vars to known WP.
-	 *
-	 * @since 6.0
-	 */
-
-	public function query_vars( $vars ) {
-		$vars[] = 'filter';
-
-		return $vars;
-	}
-
-	/**
-	 * Run limited actions on WP init.
-	 *
-	 * @since 5.2.1
-	 */
-
-	public function wp_init() {
-		if ( is_admin() )
-			$this->activate_dropin();
-
-		if ( isset( $_GET['md'] ) && current_user_can( 'administrator' ) && wp_verify_nonce( $_GET['_wpnonce'] ?? '', 'md_compile' ) ) {
-			$compile = sanitize_key( wp_unslash( $_GET['md'] ) );
-
-			if ( $compile === 'compile' )
-				md_compile();
-			elseif ( $compile === 'compile_css' )
-				md_compile_css();
-			elseif ( $compile === 'compile_js' )
-				md_compile_js();
-		}
-	}
-
-	/**
-	 * Enqueue scripts and styles.
-	 *
-	 * @since 4.0
-	 */
-
-	public function enqueue() {
-		// Load styles
-		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )
-			wp_enqueue_style( 'marketers-delight', MD_URL . 'style.css', array(), md_ver( 'style.css' ) );
-
-		if ( is_child_theme() && ! md_setting( array( 'settings', 'css', 'child' ) ) )
-			wp_enqueue_style( get_option( 'stylesheet' ), get_stylesheet_uri(), array(), md_ver( 'style.css', trailingslashit( get_stylesheet_directory() ) ) );
-
-		// Load scripts
-		wp_register_script( 'marketers-delight', MD_URL . 'compile/scripts.js', array(), md_ver( 'compile/scripts.js' ), array(
-			'in_footer' => true
-		) );
-		wp_enqueue_script( 'marketers-delight' );
-		wp_localize_script( 'marketers-delight', 'MDJS', array(
-			'ajaxurl' => admin_url( 'admin-ajax.php' ),
-			'nonce' => wp_create_nonce( 'marketers_delight_nonce', 'marketers_delight_nonce' ),
-			'hasAdminBar' => current_user_can( 'administrator' ) ? md_has( 'admin-bar' ) : false,
-			'userID' => get_current_user_id()
-		) );
-
-		// Comment reply JS
-		if ( is_singular() && comments_open() && get_option( 'thread_comments' ) )
-			wp_enqueue_script( 'comment-reply' );
-
-		// Print inline JS
-		$this->inline_js();
-
-		// Dequeue Blocks Library if necessary
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'global-styles' );
-			wp_dequeue_style( 'block-style-variation-styles' );
-		}
-
-		// Load stupid legacy MailerLite script
-		$data = md_setting( 'integrations' );
-
-		if ( ! empty( $data['enabled']['mailerlite'] ) )
-			wp_enqueue_script( 'md-mailerlite', 'https://static.mailerlite.com/js/w/webforms.min.js', array(), '', true );
-	}
-
-	/**
- 	 * Enqueue MD's integrated web font services to <head> when needed.
- 	 *
- 	 * @since 4.8
- 	 */
-
-	public function enqueue_fonts() {
-		$typekit = md_setting( array( 'integrations', 'api_keys', 'typekit' ) );
-
-		if ( md_web_fonts( 'google' ) )
-			wp_enqueue_style( 'marketers-delight-google-fonts', md_google_fonts() );
-
-		if ( ! empty( $typekit['key'] ) && md_web_fonts( 'typekit' ) )
-			wp_enqueue_style( 'marketers-delight-typekit', 'https://use.typekit.net/' . esc_attr( $typekit['key'] ) . '.css' );
-	}
-
-	/**
- 	 * Output inline JavaScript to footer (formerly md_inline_js())
- 	 *
- 	 * @since 4.0
- 	 */
-
-	public function inline_js() {
-		wp_add_inline_script( 'marketers-delight', "MD.triggers();" );
-		wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
-
-		if ( has_action( 'md_hook_js_onscroll' ) )
-			wp_add_inline_script( 'marketers-delight', "MD.onScroll();" );
-
-		if ( md_has_panel() )
-			wp_add_inline_script( 'marketers-delight', "MD.closeOverlay( 'panel', '.has-panel' );" );
-	}
-
-	/**
-	 * Load inline CSS if enabled from user settings.
-	 *
-	 * @since 4.8
-	 */
-
-	public function head() {
-		$critical = MD_DIR . 'compile/critical.css';
-
-		if ( md_setting( array( 'settings', 'css', 'critical' ) ) && file_exists( $critical ) ) {
-			$css = file_get_contents( $critical );
-
-			if ( $css !== '' )
-				echo '<style id="md-critical-css">' . $css . "</style>\n";
-		}
-
-		if ( md_setting( array( 'settings', 'css', 'inline' ) ) )
-			echo '<style type="text/css">' . get_option( 'marketers_delight_style_css' ) . "</style>\n";
-	}
-
-	/**
-	 * Load stylesheets async (preload + onload swap) when Critical CSS is enabled,
-	 * so the inlined critical styles render without a blocking stylesheet.
-	 *
-	 * Dropins and child themes can defer their own stylesheets — including ones
-	 * that depend on the 'marketers-delight' handle — by adding their handle to
-	 * the 'md_deferred_styles' filter.
-	 *
-	 * @since 6.0
-	 */
-
-	public function defer_style( $tag, $handle ) {
-		$deferred = apply_filters( 'md_deferred_styles', array( 'marketers-delight' ) );
-
-		// The 'marketers-delight' handle is reused for admin.css in wp-admin, so
-		// never defer in the admin context.
-		if ( is_admin() || ! md_setting( array( 'settings', 'css', 'critical' ) ) || ! in_array( $handle, $deferred ) )
-			return $tag;
-
-		// Pull the href from the tag so each handle defers its own stylesheet.
-		if ( ! preg_match( '/href=([\'"])(.*?)\1/', $tag, $href ) )
-			return $tag;
-
-		return '<link rel="preload" as="style" href="' . esc_url( $href[2] ) . '" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n"
-			. '<noscript>' . $tag . '</noscript>';
-	}
-
-	/**
-	 * Load high priority assets and meta to top of WP <head>.
-	 *
-	 * @since 6.0
-	 */
-
-	public function preload( $urls ) {
-		$urls[] = array(
-			'href' => md_font_icons_url(),
-			'as' => 'font',
-			'type' => 'font/woff2',
-			'crossorigin' => ''
-		);
-
-		return $urls;
 	}
 
 	/**
@@ -605,27 +349,28 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Create the [md_template] shortcode, which is a quick way
-	 * to render any template from the Parent/Child Theme folder
-	 * and Drop-ins Library.
+	 * Remove oEmbed rewrite rules if enabled.
 	 *
-	 * @since 6.0
+	 * @since 4.8
 	 */
 
-	public function template_shortcode( $atts, $content = null ) {
-		ob_start();
+	public function disable_embed_rewrites( $rules ) {
+		foreach ( $rules as $rule => $rewrite )
+			if ( false !== strpos( $rewrite, 'embed=true' ) )
+				unset( $rules[$rule] );
 
-		$atts = shortcode_atts( array(
-			'name' => '',
-			'dropin_name' => ''
-		), $atts, 'md_template' );
+		return $rules;
+	}
 
-		if ( ! empty( $atts['dropin_name'] ) )
-			include md_template( 'dropins', $atts['dropin_name'], true );
-		elseif ( ! empty( $atts['name'] ) )
-			include md_template( $atts['name'], true );
+	/**
+	 * Manually add a formatted version of the site's main RSS
+	 * feed to the <head>.
+	 *
+	 * @since 4.8
+	 */
 
-		return ob_get_clean();
+	public function add_rss_link() {
+		echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo( 'sitename' ) . ' Feed" href="' . get_bloginfo( 'rss2_url' ) . '">';
 	}
 
 	/**
@@ -651,59 +396,8 @@ final class marketers_delight {
 				}
 
 		// Refresh cached defaults after all active Drop-ins loaded
+
 		md_setting_defaults( true );
-	}
-
-	/**
-	 * Run Drop-in updater actions on admin page.
-	 *
-	 * @since 5.4
-	 */
-
-	public function activate_dropin() {
-		$page = ! empty( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : false;
-		$action = ! empty( $_GET['action'] ) ? sanitize_key( $_GET['action'] ) : false;
-		$dropin = ! empty( $_GET['dropin'] ) ? sanitize_key( $_GET['dropin'] ) : false;
-		$fields = md_dropins_setting( array( 'installed', $dropin ), false );
-
-		if ( ! $page || $page !== 'md_dropins' || $action !== 'activate' || ! $dropin || ! $fields || ! empty( $fields['status']['enable'] ) )
-			return;
-
-		if ( ! current_user_can( 'activate_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to activate this drop-in.' ) );
-
-		check_admin_referer( "activate-dropin_$dropin/$dropin.php" );
-
-		md_activate_dropin( $dropin );
-
-		wp_redirect( self_admin_url( "admin.php?page=md_dropins&dropin=$dropin&dropin_status=activated" ) );
-
-		exit;
-	}
-
-	/**
-	 * Remove oEmbed rewrite rules if enabled.
-	 *
-	 * @since 4.8
-	 */
-
-	public function disable_embed_rewrites( $rules ) {
-		foreach ( $rules as $rule => $rewrite )
-			if ( false !== strpos( $rewrite, 'embed=true' ) )
-				unset( $rules[$rule] );
-
-		return $rules;
-	}
-
-	/**
-	 * Manually add a formatted version of the site's main RSS
-	 * feed to the <head>.
-	 *
-	 * @since 4.8
-	 */
-
-	public function add_rss_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo( 'sitename' ) . ' Feed" href="' . get_bloginfo( 'rss2_url' ) . '">';
 	}
 
 }

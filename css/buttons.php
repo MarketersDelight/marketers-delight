@@ -66,6 +66,12 @@ input[type="submit"],
 	color: var(--md-links);
 }
 
+.tag.active {
+	background-color: transparent;
+	box-shadow: inset 0 0 0 1px var(--md-links);
+	color: var(--md-links);
+}
+
 /* BUTTONS */
 
 input[type="submit"],

@@ -9,13 +9,92 @@
 class md_byline extends md_api {
 
 	/**
-	 * Load byline action hooks and filters.
+	 * Register the core Byline builder items.
 	 *
 	 * @since 6.0
 	 */
 
 	public function actions() {
 		add_filter( 'md_byline', array( $this, 'byline_items' ) );
+	}
+
+	/**
+	 * A list of elements that can be added to Byline areas.
+	 *
+	 * @since 6.0
+	 */
+
+	public function byline_items() {
+		return array(
+			'author' => array(
+				'title' => __( 'Author', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#a424ec',
+				'icon' => 'admin-users',
+				'callback' => array( $this, 'author' )
+			),
+			'date' => array(
+				'title' => __( 'Date', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#d44c3c',
+				'icon' => 'calendar',
+				'callback' => array( $this, 'date' )
+			),
+			'comments' => array(
+				'title' => __( 'Comments', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#ff6000',
+				'icon' => 'admin-comments',
+				'callback' => array( $this, 'comments' )
+			),
+			'category' => array(
+				'title' => __( 'Category', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#7d695c',
+				'icon' => 'category',
+				'fields' => array(
+					'style' => array(
+						'type' => 'checkbox',
+						'options' => array( 'tag' )
+					)
+				),
+				'callback' => array( $this, 'category' )
+			),
+			'badge' => array(
+				'title' => __( 'Badge', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#1eb54b',
+				'icon' => 'warning',
+				'callback' => array( $this, 'badge' )
+			),
+			'edit' => array(
+				'title' => __( 'Edit', 'md' ),
+				'context' => 'post',
+				'hide_title' => false,
+				'color' => '#2772af',
+				'icon' => 'edit',
+				'callback' => array( $this, 'edit' )
+			),
+			'category/post-count' => array(
+				'title' => __( 'Post Count', 'md' ),
+				'context' => 'category_entry',
+				'color' => '#e07b2a',
+				'icon' => 'editor-ul',
+				'callback' => array( $this, 'post_count' )
+			),
+			'category/date' => array(
+				'title' => __( 'Date', 'md' ),
+				'context' => 'category_entry',
+				'color' => '#d44c3c',
+				'icon' => 'calendar-alt',
+				'callback' => array( $this, 'category_date' )
+			)
+		);
 	}
 
 	/**
@@ -26,6 +105,7 @@ class md_byline extends md_api {
 
 	public function register() {
 		$this->name = __( 'Byline', 'md' );
+
 		$fields = $this->fields();
 
 		return array(
@@ -54,7 +134,6 @@ class md_byline extends md_api {
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
-			'title' => array( 'type' => 'text' ),
 			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
@@ -68,10 +147,7 @@ class md_byline extends md_api {
 			'image_size' => array( 'type' => 'number' ),
 			'term' => array(
 				'type' => 'select',
-				'options' => array_merge(
-					array( 'all' ),
-					array_values( get_taxonomies() )
-				)
+				'options' => array_merge( array( 'all' ), array_values( get_taxonomies() ) )
 			)
 		);
 
@@ -178,85 +254,6 @@ class md_byline extends md_api {
 		) );
 
 		echo '</div>';
-	}
-
-	/**
-	 * A list of elements that can be added to Byline areas.
-	 *
-	 * @since 6.0
-	 */
-
-	public function byline_items() {
-		return array(
-			'author' => array(
-				'title' => __( 'Author', 'md' ),
-				'context' => 'post',
-				'hide_title' => false,
-				'color' => '#a424ec',
-				'icon' => 'admin-users',
-				'callback' => array( $this, 'author' )
-			),
-			'date' => array(
-				'title' => __( 'Date', 'md' ),
-				'context'  => 'post',
-				'hide_title' => false,
-				'color' => '#d44c3c',
-				'icon' => 'calendar',
-				'callback' => array( $this, 'date' )
-			),
-			'comments' => array(
-				'title' => __( 'Comments', 'md' ),
-				'context' => 'post',
-				'hide_title' => false,
-				'color' => '#ff6000',
-				'icon' => 'admin-comments',
-				'callback' => array( $this, 'comments' )
-			),
-			'category' => array(
-				'title' => __( 'Category', 'md' ),
-				'context' => 'post',
-				'hide_title' => false,
-				'color' => '#7d695c',
-				'icon' => 'category',
-				'fields' => array(
-					'style' => array(
-						'type' => 'checkbox',
-						'options' => array( 'tag' )
-					)
-				),
-				'callback' => array( $this, 'category' )
-			),
-			'badge' => array(
-				'title' => __( 'Badge', 'md' ),
-				'context' => 'post',
-				'hide_title' => false,
-				'color' => '#1eb54b',
-				'icon' => 'warning',
-				'callback' => array( $this, 'badge' )
-			),
-			'edit' => array(
-				'title' => __( 'Edit', 'md' ),
-				'context' => 'post',
-				'hide_title' => false,
-				'color' => '#2772af',
-				'icon' => 'edit',
-				'callback' => array( $this, 'edit' )
-			),
-			'category/post-count' => array(
-				'title' => __( 'Post Count', 'md' ),
-				'context' => 'category_entry',
-				'color' => '#e07b2a',
-				'icon' => 'editor-ul',
-				'callback' => array( $this, 'post_count' )
-			),
-			'category/date' => array(
-				'title' => __( 'Date', 'md' ),
-				'context' => 'category_entry',
-				'color' => '#d44c3c',
-				'icon' => 'calendar-alt',
-				'callback' => array( $this, 'category_date' )
-			)
-		);
 	}
 
 	/**

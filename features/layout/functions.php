@@ -10,6 +10,16 @@ function md_filter_template() {
 	return apply_filters( 'md_filter_has_template', true ) !== false;
 }
 
+/**
+ * Check if page has Builder enabled.
+ *
+ * @since 6.0
+ */
+
+function md_has_builder() {
+	return (bool) md_meta( array( 'layout', 'content', 'builder' ) );
+}
+
 
 
 /*------------------------------*\

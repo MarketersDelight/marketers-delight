@@ -11,6 +11,43 @@ class md_dropins extends md_api {
 	public $_option = 'marketers_delight_dropins';
 
 	/**
+	 * Register Drop-ins Manager actions.
+	 *
+	 * @since 6.0
+	 */
+
+	public function actions() {
+		add_action( 'init', array( $this, 'activate' ) );
+	}
+
+	/**
+	 * Activate a Drop-in from an authorized manager request.
+	 *
+	 * @since 5.4
+	 */
+
+	public function activate() {
+		$page = ! empty( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : false;
+		$action = ! empty( $_GET['action'] ) ? sanitize_key( $_GET['action'] ) : false;
+		$dropin = ! empty( $_GET['dropin'] ) ? sanitize_key( $_GET['dropin'] ) : false;
+		$fields = md_dropins_setting( array( 'installed', $dropin ), false );
+
+		if ( ! $page || $page !== 'md_dropins' || $action !== 'activate' || ! $dropin || ! $fields || ! empty( $fields['status']['enable'] ) )
+			return;
+
+		if ( ! current_user_can( 'activate_plugins' ) )
+			wp_die( __( 'Sorry, you are not allowed to activate this drop-in.' ) );
+
+		check_admin_referer( "activate-dropin_$dropin/$dropin.php" );
+
+		md_activate_dropin( $dropin );
+
+		wp_redirect( self_admin_url( "admin.php?page=md_dropins&dropin=$dropin&dropin_status=activated" ) );
+
+		exit;
+	}
+
+	/**
 	 * Register admin page.
 	 *
 	 * @since 5.2.1

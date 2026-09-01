@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_get_loop() (functions/loop-functions.php:273-395) — the
+ * Tests md_get_loop() (features/loop/functions.php) — the
  * shortcode/manual-loop path of the Loop inheritance cascade. Unlike
  * loop_query_vars(), this merges whole per-tier field arrays together
  * (array_merge($post_type, $tax, $single)) rather than resolving one field

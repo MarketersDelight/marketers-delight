@@ -1,4 +1,7 @@
 <?php
+if ( array_key_exists( 'value', $args ) )
+	$option = $args['value'];
+
 $areas = $args['areas'];
 $elements = $args['elements'];
 $key = esc_attr( $args['field'] );

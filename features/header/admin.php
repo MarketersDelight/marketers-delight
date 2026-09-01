@@ -27,13 +27,7 @@ class md_header extends md_api {
 				'type' => 'select',
 				'options' => $menus['ids']
 			),
-
-
 			'button_text' => array( 'type' => 'text' ),
-			'button_url' => array( 'type' => 'url' ),
-
-
-
 			'toggle' => array(
 				'type' => 'checkbox',
 				'options' => array( 'search' )
@@ -66,6 +60,36 @@ class md_header extends md_api {
 				)
 			)
 		);
+	}
+
+	/**
+	 * Get elements available to the Header builder.
+	 *
+	 * @since 6.0
+	 */
+
+	public function builder_items() {
+		return apply_filters( 'md_header_builder_elements', array(
+			'link' => array(
+				'title' => __( 'Link', 'md' ),
+				'subtitle' => true,
+				'color' => '#2772af',
+				'icon' => 'admin-links',
+				'callback' => array( $this->fields, 'builder_link' )
+			),
+			'search' => array(
+				'title' => __( 'Search', 'md' ),
+				'placeholder' => __( 'Search', 'md' ),
+				'color' => '#41b141',
+				'icon' => 'search',
+				'callback' => array( $this->fields, 'builder_search' )
+			),
+			'menu' => array(
+				'title' => __( 'Menu', 'md' ),
+				'icon' => 'menu',
+				'callback' => array( $this->fields, 'builder_menu' )
+			)
+		) );
 	}
 
 	/**

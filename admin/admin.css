@@ -1302,7 +1302,19 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	display: flex;
 	gap: 10px;
 	position: relative;
-	width: 100%;
+}
+
+.md-range { width: 100%; }
+
+.md-range-field {
+	flex: 1;
+	min-width: 0;
+}
+
+.md-range-wrap {
+	flex: 0 0 auto;
+	white-space: nowrap;
+	width: auto;
 }
 
 .md-range-number { width: 75px; }
@@ -1310,8 +1322,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .md-range-reset {
 	color: #999;
 	cursor: pointer;
+	flex: 0 0 auto;
 	font-size: 17px;
-	flex: 1;
 }
 
 .md-range-reset:hover { color: #aaa; }
@@ -1321,7 +1333,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	flex-direction: column;
 }
 
-.columns-4 .md-range-field, .md-layout-admin select { width: 100%; }
+.columns-4 .md-range-field, .columns-4 .md-range-wrap, .md-layout-admin select { width: 100%; }
 .columns-4 .md-range-number { width: 50%; }
 
 .md-layout-admin.columns-3 > .col { width: 27%; }

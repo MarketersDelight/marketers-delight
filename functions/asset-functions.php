@@ -251,6 +251,7 @@ function md_ver( $file, $path = null ) {
 
 	return date( 'ymds', filemtime( $path . $file ) );
 }
+
 /**
  * Get MD font icons URL.
  *

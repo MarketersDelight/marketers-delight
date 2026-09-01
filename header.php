@@ -80,8 +80,8 @@ if ( md_has_header() ) :
 				echo "<div class=\"header-$section\">";
 
 				foreach ( $header['data'][$section] as $order => $items ) {
-					$type = esc_attr( $items['type'] );
-					$id = esc_attr( $items['id'] );
+					$type = sanitize_key( $items['type'] );
+					$id = sanitize_key( $items['id'] );
 					$field = $header['fields'][$id] ?? null;
 
 					if ( $field ) {

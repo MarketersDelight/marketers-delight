@@ -1,6 +1,97 @@
 <?php
 
 /**
+ * Add important rel= tags to pagination prev/next links.
+ *
+ * @since 6.0
+ */
+
+add_filter( 'previous_posts_link_attributes', function() { return 'rel="prev"'; } );
+add_filter( 'next_posts_link_attributes', function() { return 'rel="next"'; } );
+add_filter( 'paginate_links_output', function( $html ) {
+	return str_replace( 'class="next', 'rel="next" class="next', str_replace( 'class="prev', 'rel="prev" class="prev', $html ) );
+} );
+
+/**
+ * Checks if the post content is enabled on page.
+ *
+ * @since 6.0
+ */
+
+function md_has_post_content() {
+	if ( md_module( array( 'layout', 'content', 'the_content' ) ) )
+		return false;
+
+	return (bool) apply_filters( 'md_filter_has_the_content', true );
+}
+
+/**
+ * Outputs the_content with option enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_the_content( $loop ) {
+	if ( $loop['content'] === 'hide' || ( ! get_the_content() && ! get_the_excerpt() && ! is_404() ) )
+		return;
+
+	$has_wrap = ! isset( $loop['is_slim'] );
+	$has_builder = isset( $loop['has_builder'] );
+	$id = ( is_singular() ? ' id="the_content"' : '' );
+	$has_excerpt = ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) && get_the_excerpt();
+	$show_full_content = $loop['content'] == 'full' || ( empty( $loop['query'] ) && ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) );
+
+	include md_template( 'loop/the-content', true );
+}
+
+/**
+ * Outputs the WordPress excerpt with read more and
+ * length enhancements.
+ *
+ * @since 6.0
+ */
+
+function md_excerpt( $loop ) {
+	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ).
+		( empty( $loop['excerpt_settings']['remove_text'] ) ?
+			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . wp_kses_post( $loop['read_more'] ) . '</a></p>'
+		: '' );
+}
+
+/**
+ * Create pagination for use on home and archives pages.
+ *
+ * @since 4.0
+ */
+
+function md_pagination( $loop = array() ) {
+	if ( is_singular() )
+		return;
+
+	$big = 999999999;
+	$type = md_module( array( 'loop', 'pagination' ) );
+	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
+
+	if ( isset( $loop['by_category'] ) ) {
+		$taxonomies = get_object_taxonomies( md_get_post_type() );
+		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
+		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
+		$total = ceil( $total_terms / $category_per_page );
+	}
+	else {
+		global $wp_query;
+		$total = $wp_query->max_num_pages;
+	}
+
+	if ( $total <= 1 )
+		return;
+
+	include md_template( 'pagination', true );
+}
+
+/**
  * A list of available loop templates, selectable from admin.
  *
  * @since 6.0

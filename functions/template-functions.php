@@ -1,18 +1,6 @@
 <?php
 
 /**
- * Add important rel= tags to pagination prev/next links.
- *
- * @since 6.0
- */
-
-add_filter( 'previous_posts_link_attributes', function() { return 'rel="prev"'; } );
-add_filter( 'next_posts_link_attributes', function() { return 'rel="next"'; } );
-add_filter( 'paginate_links_output', function( $html ) {
-	return str_replace( 'class="next', 'rel="next" class="next', str_replace( 'class="prev', 'rel="prev" class="prev', $html ) );
-} );
-
-/**
  * Pass a list of links to create a scrolling navigation element.
  *
  * @since 6.0
@@ -22,6 +10,8 @@ function md_scroller_nav( $args = array() ) {
 	static $js_enqueued = false;
 
 	$classes = array( 'scroller-nav' );
+	$html = ! empty( $args['html'] ) && $args['html'] === 'nav' ? 'nav' : 'div';
+	$label = ! empty( $args['label'] ) ? ' aria-label="' . esc_attr( $args['label'] ) . '"' : '';
 
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
@@ -29,7 +19,7 @@ function md_scroller_nav( $args = array() ) {
 	$classes = join( ' ', $classes );
 
 	echo
-		'<div class="' . esc_attr( $classes ) . '">' .
+		"<$html class=\"" . esc_attr( $classes ) . "\"$label>" .
 		'<button class="scroller-arrow scroller-arrow-prev" aria-label="' . __( 'Scroll left', 'md' ) . '">' . md_icon( 'angle-left' ) . '</button>' .
 		'<div class="scroller-list">';
 
@@ -39,7 +29,7 @@ function md_scroller_nav( $args = array() ) {
 	echo
 		'</div>' .
 		'<button class="scroller-arrow scroller-arrow-next" aria-label="' . __( 'Scroll right', 'md' ) . '">' . md_icon( 'angle-right' ) . '</button>' .
-		'</div>';
+		"</$html>";
 
 	if ( ! $js_enqueued ) {
 		wp_add_inline_script( 'marketers-delight', 'MD.scrollerNav();' );
@@ -362,4 +352,78 @@ function md_get_visibility_classes( $values ) {
 			$classes[] = $item['class'];
 
 	return $classes;
+}
+
+/**
+ * Easily output a link/button with different kind of action.
+ *
+ * @since 4.3.5
+ */
+
+function md_get_link( $fields, $p = '' ) {
+	$html = $attrs = '';
+	$styles = array();
+	$fields = wp_parse_args( $fields, array(
+		'type' => 'url',
+		'style' => 'link',
+		'area' => '',
+		'name' => '',
+		'subtitle' => '',
+		'icon' => '',
+		'url' => '',
+		'phone' => '',
+		'size' => '',
+		'color' => '',
+		'popup' => '',
+		'popup_args' => array(),
+		'html' => '',
+		'content' => '',
+		'attributes' => array(),
+		'classes' => '',
+		'visibility' => array(),
+		'button_style' => array(),
+		'toggle' => array(
+			'hide_label' => '',
+			'hide_label_mobile' => ''
+		)
+	) );
+
+	if ( empty( $fields['type'] ) )
+		$fields['type'] = 'url';
+
+	if ( ! md_check_condition( $fields['visibility'] ) )
+		return;
+
+	if ( empty( $fields['name'] ) && empty( $fields['icon'] ) && empty( $fields['content'] ) )
+		return;
+
+	include md_template( 'link', true );
+
+	return $html;
+}
+
+function md_link( $fields, $p = '' ) {
+	echo md_get_link( $fields, $p );
+}
+
+/**
+ * Return a theme or Drop-in template through the [md_template] shortcode.
+ *
+ * @since 6.0
+ */
+
+function md_template_shortcode( $atts, $content = null ) {
+	ob_start();
+
+	$atts = shortcode_atts( array(
+		'name' => '',
+		'dropin_name' => ''
+	), $atts, 'md_template' );
+
+	if ( ! empty( $atts['dropin_name'] ) )
+		include md_template( 'dropins', $atts['dropin_name'], true );
+	elseif ( ! empty( $atts['name'] ) )
+		include md_template( $atts['name'], true );
+
+	return ob_get_clean();
 }

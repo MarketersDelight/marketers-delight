@@ -22,7 +22,7 @@ class BylineTest extends MD_InheritanceTestCase {
 		$this->assertSame( array(
 			'parent-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
 			'child-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
-		), md_get_byline_builder( 'book_quote' ) );
+		), md_get_post_type_builder( 'byline', 'book_quote' ) );
 	}
 
 	public function test_child_builder_inherits_when_it_has_no_items() {
@@ -36,7 +36,7 @@ class BylineTest extends MD_InheritanceTestCase {
 			'book_quote' => array( 'layout' => array( 'sidebar' => 'none' ) )
 		) );
 
-		$this->assertSame( $builder, md_get_byline_builder( 'book_quote' ) );
+		$this->assertSame( $builder, md_get_post_type_builder( 'byline', 'book_quote' ) );
 	}
 
 	public function test_saved_builder_replaces_default_rows_in_the_same_area() {
@@ -56,7 +56,7 @@ class BylineTest extends MD_InheritanceTestCase {
 		$this->assertSame( array(
 			'default-archive' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
 			'saved-single' => array( 'builder_area' => 'single', 'builder_type' => 'bookshelf_author' )
-		), md_get_byline_builder( 'book_quote' ) );
+		), md_get_post_type_builder( 'byline', 'book_quote' ) );
 	}
 
 	public function test_items_can_be_scoped_to_post_types() {

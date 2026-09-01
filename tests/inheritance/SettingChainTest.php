@@ -130,6 +130,24 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'none', md_post_type_field( array( 'layout', 'sidebar' ), null, 'book_quote' ) );
 	}
 
+	public function test_collection_builder_replaces_defaults_in_its_configured_area() {
+		md_test_set_filter( 'md_setting_defaults', array(
+			'bookshelf' => array( 'archive_meta' => array( 'builder' => array(
+				'default-meta' => array( 'builder_area' => 'archives', 'builder_type' => 'post_count' )
+			) ) )
+		) );
+		md_setting_defaults( true );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'archive_meta' => array( 'builder' => array(
+				'custom-meta' => array( 'builder_area' => 'archives', 'builder_type' => 'last_added' )
+			) ) )
+		) );
+
+		$this->assertSame( array(
+			'custom-meta' => array( 'builder_area' => 'archives', 'builder_type' => 'last_added' )
+		), md_get_post_type_builder( 'archive_meta', 'bookshelf' ) );
+	}
+
 	// md_taxonomy_field() reads marketers_delight[$post_type][$taxonomy][...] —
 	// a distinct storage path one level deeper than the post-type tier, matching
 	// where md_save::save_taxonomy() writes taxonomy-tab submissions.

@@ -21,42 +21,6 @@ function md_byline_items( $post_type = null ) {
 }
 
 /**
- * Get the resolved Byline builder, replacing inherited areas that the
- * current post type explicitly configures.
- *
- * @since 6.0
- */
-
-function md_get_byline_builder( $post_type = null ) {
-	$post_type = $post_type ?: md_get_post_type();
-	$builder = md_post_type_field( array( 'byline', 'builder' ), array(), $post_type );
-	$defaults = md_setting_defaults();
-	$current = $defaults[$post_type]['byline']['builder'] ?? array();
-	$saved = md_setting_part( $post_type );
-	$saved = $saved[$post_type]['byline']['builder'] ?? null;
-
-	// A saved builder replaces its defaults instead of merging repeatable row IDs.
-
-	if ( is_array( $saved ) )
-		$current = $saved;
-
-	if ( ! $builder || ! $current )
-		return $builder;
-
-	$areas = array();
-
-	foreach ( $current as $fields )
-		if ( ! empty( $fields['builder_area'] ) )
-			$areas[$fields['builder_area']] = true;
-
-	foreach ( $builder as $id => $fields )
-		if ( ! array_key_exists( $id, $current ) && ! empty( $fields['builder_area'] ) && isset( $areas[$fields['builder_area']] ) )
-			unset( $builder[$id] );
-
-	return $builder;
-}
-
-/**
  * A valet way to render byline item classes in template files.
  *
  * @since 6.0
@@ -119,6 +83,7 @@ function md_byline( $location = 'before_title', $args = array() ) {
 	$classes[] = str_replace( '_', '-', $location );
 	$html = isset( $args['html'] ) ? $args['html'] : 'div';
 	$total = count( $items );
+
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
 
@@ -153,7 +118,7 @@ function md_get_byline( $position, $args = array() ) {
 
 	// Build data from user options based on page type in WP
 
-	$builder = md_get_byline_builder( $post_type );
+	$builder = md_get_post_type_builder( 'byline', $post_type );
 
 	if ( is_category() || is_tax() )
 		$builder = md_module( array( 'byline', 'builder' ), $builder );

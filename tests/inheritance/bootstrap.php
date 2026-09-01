@@ -1,7 +1,7 @@
 <?php
 /**
  * Isolated bootstrap for testing the post-type -> taxonomy -> term option
- * inheritance chain (functions/meta-functions.php, functions/loop-functions.php,
+ * inheritance chain (functions/meta-functions.php, features/loop/functions.php,
  * md_api::loop_query_vars()) in real code, not a re-implementation of it.
  *
  * Kept separate from tests/bootstrap.php because that bootstrap already
@@ -511,11 +511,13 @@ require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/comment-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/layout-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/loop-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/media-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/title-functions.php';
-require_once dirname( __DIR__, 2 ) . '/functions/byline-functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/layout/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/loop/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/featured-media/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/page-cover/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
 require_once dirname( __DIR__, 4 ) . '/md-dropins/breadcrumbs/breadcrumbs.php';
 
