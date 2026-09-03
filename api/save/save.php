@@ -186,7 +186,9 @@ class md_save {
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
 				$merged = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
 
-				if ( empty( $merged ) )
+				if ( $type === 'builder' )
+					$old[$key] = $merged;
+				elseif ( empty( $merged ) )
 					unset( $old[$key] );
 				else
 					$old[$key] = $merged;
@@ -260,6 +262,9 @@ class md_save {
 			return $value;
 
 		foreach ( $value as $key => $item ) {
+			if ( $key === 'builder' && $item === array() )
+				continue;
+
 			$item = $this->prune_empty( $item );
 
 			if ( $this->is_empty_value( $item ) )

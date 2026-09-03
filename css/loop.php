@@ -26,6 +26,10 @@
 
 .loop.has-mobile-columns { --md-columns-mobile: 2; }
 
+.archive-sections-before-loop { margin-block-end: var(--md-single); }
+
+.archive-sections-after-loop { margin-block-start: var(--md-single); }
+
 /* SLIM */
 
 .loop.columns.slim { gap: var(--md-half); }

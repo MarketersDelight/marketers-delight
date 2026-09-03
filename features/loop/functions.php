@@ -563,7 +563,7 @@ function md_loop( $args = array() ) {
 	$loop_classes = $loop['loop_classes'];
 	$loop_columns_style = $loop['columns'] > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) . '"' : '';
 
-	md_hook_loop_before();
+	md_hook_loop_before( $args );
 
 	// Show subcategory listing on post types / categoriess
 
@@ -612,5 +612,5 @@ function md_loop( $args = array() ) {
 
 	else md_404();
 
-	md_hook_loop_after();
+	md_hook_loop_after( $args );
 }

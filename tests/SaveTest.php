@@ -269,6 +269,26 @@ class SaveTest extends MD_TestCase {
 		$this->assertSame( 0, $result['page']['number_int'] );
 	}
 
+	public function test_empty_builder_replaces_saved_rows() {
+		$this->schema = array( 'page' => array( 'fields' => array(
+			'builder' => array(
+				'type' => 'builder',
+				'fields' => array(
+					'name' => array( 'type' => 'text' )
+				)
+			)
+		) ) );
+
+		$result = $this->merge(
+			array( 'page' => array( 'builder' => array(
+				'old-row' => array( 'name' => 'Old row' )
+			) ) ),
+			array( 'page' => array( 'builder' => array() ) )
+		);
+
+		$this->assertSame( array( 'builder' => array() ), $result['page'] );
+	}
+
 	public function test_empty_nested_parents_are_removed() {
 		$this->schema = array( 'page' => array( 'fields' => array(
 			'section' => array(

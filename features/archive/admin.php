@@ -1,15 +1,21 @@
 <?php
 
 /**
- * Group archive title details and navigation controls.
+ * Group archive display and navigation controls.
  *
  * @since 6.0
  */
 
-class md_archive_header extends md_api {
+class md_archive extends md_api {
+
+	/**
+	 * Register the shared Archive settings group.
+	 *
+	 * @since 6.0
+	 */
 
 	public function register() {
-		$this->name = __( 'Archive Header', 'md' );
+		$this->name = __( 'Archive', 'md' );
 
 		return array(
 			'admin_page' => array(
@@ -24,13 +30,31 @@ class md_archive_header extends md_api {
 		);
 	}
 
+	/**
+	 * Render the Archive group on post type settings pages.
+	 *
+	 * @since 6.0
+	 */
+
 	public function admin_page() {
 		$this->group( 'admin_page' );
 	}
 
+	/**
+	 * Render the Archive group on taxonomy term screens.
+	 *
+	 * @since 6.0
+	 */
+
 	public function term() {
 		$this->group( 'term_meta' );
 	}
+
+	/**
+	 * Render the shared group wrapper for an admin context.
+	 *
+	 * @since 6.0
+	 */
 
 	private function group( $context ) {
 		echo '<div class="md-widget md-toggle md-sep-small">'.
@@ -43,4 +67,4 @@ class md_archive_header extends md_api {
 	}
 }
 
-new md_archive_header;
+new md_archive;

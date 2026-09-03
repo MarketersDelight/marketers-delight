@@ -182,7 +182,7 @@
 				) );
 			}
 
-			if ( ! $is_taxonomy )
+			if ( $is_admin && ! $is_taxonomy )
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(

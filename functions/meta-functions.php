@@ -21,7 +21,7 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
 	if ( isset( $keys ) ) {
 		$keys = (array) $keys;
 		foreach ( $keys as $key )
-			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
+			$meta = is_array( $meta ) && array_key_exists( $key, $meta ) ? $meta[$key] : $default;
 	}
 
 	return $meta;
@@ -48,7 +48,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 	if ( isset( $keys ) ) {
 		$keys = (array) $keys;
 		foreach ( $keys as $key )
-			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
+			$meta = is_array( $meta ) && array_key_exists( $key, $meta ) ? $meta[$key] : $default;
 	}
 
 	return $meta;
@@ -306,8 +306,12 @@ function md_get_post_type_builder( $key, $post_type = null ) {
 	$saved = md_setting_part( $post_type );
 	$saved = $saved[$post_type][$key]['builder'] ?? null;
 
-	if ( is_array( $saved ) )
+	if ( is_array( $saved ) ) {
+		if ( ! $saved )
+			return array();
+
 		$current = $saved;
+	}
 
 	if ( ! $builder || ! $current )
 		return $builder;

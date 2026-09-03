@@ -64,8 +64,12 @@ class md_validate {
 			$field_input = isset( $input[$key] ) ? $input[$key] : null;
 
 			if ( in_array( $type, array( 'group', 'builder' ), true ) ) {
-				if ( ! isset( $input[$key] ) )
+				if ( ! isset( $input[$key] ) ) {
+					if ( $type === 'builder' && array_key_exists( "{$key}_data", $input ) )
+						$save[$key] = array();
+
 					continue;
+				}
 
 				$items = $input[$key];
 

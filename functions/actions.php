@@ -137,12 +137,24 @@ function md_hook_loop_top() {
 	do_action( 'md_hook_loop_top' );
 }
 
-function md_hook_loop_before() {
-	do_action( 'md_hook_loop_before' );
+/**
+ * Fire immediately before a Loop with its resolved context.
+ *
+ * @since 6.0
+ */
+
+function md_hook_loop_before( $args = array() ) {
+	do_action( 'md_hook_loop_before', $args );
 }
 
-function md_hook_loop_after() {
-	do_action( 'md_hook_loop_after' );
+/**
+ * Fire immediately after a Loop with its resolved context.
+ *
+ * @since 6.0
+ */
+
+function md_hook_loop_after( $args = array() ) {
+	do_action( 'md_hook_loop_after', $args );
 }
 
 function md_hook_content_item() {

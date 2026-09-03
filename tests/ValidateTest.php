@@ -221,6 +221,25 @@ class ValidateTest extends MD_TestCase {
 		$this->assertSame( array(), $save['header']['builder'] );
 	}
 
+	public function test_builder_marker_saves_empty_result_after_last_row_is_deleted() {
+		$this->register_schema( array(
+			'header' => array( 'fields' => array(
+				'builder' => array(
+					'type' => 'builder',
+					'fields' => array(
+						'name' => array( 'type' => 'text' )
+					)
+				)
+			) )
+		) );
+
+		$save = $this->validate->validate( 'admin_pages', array( 'header' => array(
+			'builder_data' => ''
+		) ) );
+
+		$this->assertSame( array(), $save['header']['builder'] );
+	}
+
 	// Sibling-leaf protection: a type-less structural grouping recurses
 	// field-by-field, so one field's schema absence doesn't drop siblings.
 
