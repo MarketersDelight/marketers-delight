@@ -1,28 +1,48 @@
-<nav class="post-nav" aria-label="<?php echo __( 'Previous and next posts', 'md' ); ?>">
+<nav class="post-nav" aria-label="<?php esc_attr_e( 'Previous and next posts', 'md' ); ?>">
 
-	<?php if ( get_previous_post_link() ) : ?>
+	<?php if ( $previous ) : ?>
 
 	<div class="post-nav-previous">
 
-		<?php echo md_icon( 'angle-left' ); ?>
+		<?php if ( $previous_media ) : ?>
+		<div class="post-nav-media">
+			<?php echo $previous_media; ?>
+		</div>
+		<?php endif; ?>
 
-		<span class="post-nav-direction"><?php echo __( 'Previous', 'md' ); ?></span>
+		<div class="post-nav-text">
 
-		<?php echo get_previous_post_link( '%link' ); ?>
+			<span class="post-nav-direction">
+				<?php echo md_icon( 'angle-left' ); ?> <?php echo esc_html__( 'Previous', 'md' ); ?>
+			</span>
+
+			<?php echo get_previous_post_link( '%link', '<span class="post-nav-title">%title</span>' ); ?>
+
+		</div>
 
 	</div>
 
 	<?php endif; ?>
 
-	<?php if ( get_next_post_link() ) : ?>
+	<?php if ( $next ) : ?>
 
 	<div class="post-nav-next">
 
-		<span class="post-nav-direction"><?php echo __( 'Next', 'md' ); ?></span>
+		<div class="post-nav-text">
 
-		<?php echo md_icon( 'angle-right' ); ?>
+			<span class="post-nav-direction">
+				<?php echo esc_html__( 'Next', 'md' ); ?> <?php echo md_icon( 'angle-right' ); ?>
+			</span>
 
-		<?php echo get_next_post_link( '%link' ); ?>
+			<?php echo get_next_post_link( '%link', '<span class="post-nav-title">%title</span>' ); ?>
+
+		</div>
+
+		<?php if ( $next_media ) : ?>
+		<div class="post-nav-media">
+			<?php echo $next_media; ?>
+		</div>
+		<?php endif; ?>
 
 	</div>
 

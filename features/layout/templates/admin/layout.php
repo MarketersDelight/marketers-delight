@@ -227,6 +227,8 @@
 				<?php $this->toggle_fields( 'panel', $panel, $context ); ?>
 			</div>
 
+			<?php do_action( 'md_hook_layout_after_toggles', $this->fields, $context ); ?>
+
 		</div>
 
 	</div>

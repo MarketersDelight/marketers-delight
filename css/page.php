@@ -158,7 +158,7 @@ span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
 
 .page-numbers.current, .post-page-numbers.current {
 	cursor: default;
-	font-weight: bold;
+	font-weight: var(--md-bold);
 }
 
 span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers:hover { opacity: 0.8; }
@@ -181,9 +181,53 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 
 /* POST NAV */
 
-.post-nav a { display: block; }
+.post-nav a {
+	color: var(--md-headline-links);
+	display: block;
+	text-decoration: none;
+}
 
-.post-nav-next, .post-nav-previous { position: relative; }
+.post-nav-previous, .post-nav-next {
+	align-items: center;
+	display: flex;
+	gap: var(--md-half);
+	padding: var(--md-single);
+	position: relative;
+	transition: background-color var(--md-transition);
+}
+
+.post-nav-text {
+	flex: 1;
+	min-width: 0;
+}
+
+.post-nav-direction {
+	color: var(--md-text-muted);
+	display: block;
+	font-size: var(--md-font-size-sm);
+	line-height: var(--md-line-height-sm);
+	margin-block-end: var(--md-small);
+}
+
+.post-nav-media {
+	flex-shrink: 0;
+	width: var(--md-double);
+}
+
+.post-nav-media img {
+	border-radius: var(--md-border-radius);
+	box-shadow: var(--md-box-shadow-small);
+}
+
+.box-style .post-nav {
+	border-block-start: 1px solid var(--md-border);
+	border-end-start-radius: inherit;
+	border-end-end-radius: inherit;
+	overflow: clip;
+}
+
+.box-style :where(.post-nav-previous:hover, .post-nav-next:hover) { background-color: var(--md-color-surface); }
+
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.post-nav {
@@ -191,10 +235,12 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 		display: flex;
 		flex-flow: wrap;
 	}
-	.post-nav-next, .post-nav-previous { flex: 1; }
-	.post-nav-previous + .post-nav-next { text-align: right; }
+	.post-nav-previous, .post-nav-next { flex: 1; }
+	.post-nav-next { text-align: right; }
+	.box-style .post-nav-previous + .post-nav-next { border-inline-start: 1px solid var(--md-border); }
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {
-	.post-nav-previous:not(:last-child) { margin-block-end: var(--md-single); }
+	.post-nav-next { text-align: left; }
+	.box-style .post-nav-previous + .post-nav-next { border-block-start: 1px solid var(--md-border); }
 }

@@ -7,11 +7,10 @@
  */
 
 function md_has_author_box() {
-	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );
-
-	if ( ! is_singular() )
+	if ( ! is_singular() || get_the_ID() !== get_queried_object_id() )
 		return false;
 
+	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );
 	$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
 	$remove = md_post_meta( array( 'layout', 'content', 'author_box' ) );
 
@@ -19,7 +18,7 @@ function md_has_author_box() {
 }
 
 /**
- * Theme author box. This box is used on top of author archive pages.
+ * Theme author box, shown after the content on a single entry.
  *
  * It pulls information from the author's profile in the WordPress dashboard.
  * This way, all user's can show their bio after each post.
@@ -31,15 +30,7 @@ function md_author_box() {
 	if ( ! md_has_author_box() )
 		return;
 
-	$author_id = get_queried_object_id();
-
-	if ( is_author() )
-		$h = 'h1';
-	else {
-		$h = 'h3';
-		$author_id = get_post_field( 'post_author', $author_id );
-	}
-
+	$author_id = get_post_field( 'post_author', get_queried_object_id() );
 	$author = get_userdata( $author_id );
 	$twitter = get_user_meta( $author_id, 'twitter', true );
 	$website_url = $author->user_url;
@@ -59,8 +50,15 @@ function md_author_box() {
  */
 
 function md_post_nav() {
-	if ( md_has_post_nav() )
-		md_template( 'features', 'loop/post-nav' );
+	if ( ! md_has_post_nav() )
+		return;
+
+	$previous = get_previous_post();
+	$previous_media = apply_filters( 'md_post_nav_media', '', $previous );
+	$next = get_next_post();
+	$next_media = apply_filters( 'md_post_nav_media', '', $next );
+
+	include md_template( 'features', 'loop/post-nav', true );
 }
 
 /**
@@ -70,14 +68,14 @@ function md_post_nav() {
  */
 
 function md_has_post_nav() {
-	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );
-	$single_remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
-	$single_add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
+	if ( ! is_singular() || is_page() || get_the_ID() !== get_queried_object_id() )
+		return false;
 
-	return
-		! is_page() && is_singular() && ( get_previous_post() || get_next_post() ) &&
-		! $single_remove &&
-		( ! $disable || $single_add );
+	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );
+	$add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
+	$remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
+
+	return ! $remove && ( ! $disable || $add ) && ( get_previous_post() || get_next_post() );
 }
 
 /**

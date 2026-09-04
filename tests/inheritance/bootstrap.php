@@ -52,7 +52,7 @@ $GLOBALS['__test_query'] = array(
 	'comments_number' => 0,
 	'post_password_required' => false,
 	'queried_object' => null,
-	'queried_object_id' => 0,
+	'queried_object_id' => 1,
 	'query_var' => array(),
 	'post_type' => '',
 );
@@ -104,7 +104,7 @@ function md_test_reset() {
 		'comments_number' => 0,
 		'post_password_required' => false,
 		'queried_object' => null,
-		'queried_object_id' => 0,
+		'queried_object_id' => 1,
 		'query_var' => array(),
 		'post_type' => '',
 	);

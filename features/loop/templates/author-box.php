@@ -9,7 +9,7 @@
 			</div>
 			<?php endif; ?>
 
-			<<?php echo $h; ?> class="author-title"><?php echo esc_html( $author_name ); ?></<?php echo $h; ?>>
+			<h3 class="author-title"><?php echo esc_html( $author_name ); ?></h3>
 
 		</div>
 
@@ -33,11 +33,9 @@
 			</a>
 			<?php endif; ?>
 
-			<?php if ( empty( $show_posts ) && ! is_author() ) : ?>
 			<a href="<?php echo esc_url( $author_url ); ?>" class="author-link all-posts">
 				<span class="circle-icon micro"><?php echo md_icon( 'pin' ); ?></span><span class="author-link-label"><?php echo __( 'See all posts', 'md' ); ?></span>
 			</a>
-			<?php endif; ?>
 
 		</div>
 

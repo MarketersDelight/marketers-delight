@@ -59,6 +59,27 @@ class PredicateTest extends MD_InheritanceTestCase {
 		$this->assertSame( false, md_has_post_nav() );
 	}
 
+	public function test_predicates_skip_posts_in_a_nested_loop() {
+		md_test_set_query( array(
+			'is_singular' => true,
+			'post_type' => 'post',
+			'previous_post' => true,
+			'queried_object_id' => 99
+		) );
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array(
+				'layout' => array(
+					'content' => array(
+						'add_author_box' => true
+					)
+				)
+			)
+		) );
+
+		$this->assertSame( false, md_has_author_box() );
+		$this->assertSame( false, md_has_post_nav() );
+	}
+
 	public function test_comments_return_boolean() {
 		$this->assertSame( false, md_has_comments() );
 

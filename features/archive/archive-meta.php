@@ -1,6 +1,5 @@
 <?php
-
-/**
+/*
  * Configure and display aggregate details beneath archive titles.
  *
  * @since 6.0
