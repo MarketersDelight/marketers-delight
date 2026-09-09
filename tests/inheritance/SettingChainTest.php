@@ -160,7 +160,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		), md_get_post_type_builder( 'archive_meta', 'bookshelf' ) );
 	}
 
-	public function test_explicit_empty_builder_removes_post_type_defaults() {
+	public function test_stored_empty_builder_falls_back_to_post_type_defaults() {
 		md_test_set_filter( 'md_setting_defaults', array(
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
 				'default-highlight' => array(
@@ -174,7 +174,12 @@ class SettingChainTest extends MD_InheritanceTestCase {
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array() ) )
 		) );
 
-		$this->assertSame( array(), md_get_post_type_builder( 'archive_sections', 'bookshelf' ) );
+		$this->assertSame( array(
+			'default-highlight' => array(
+				'builder_area' => 'before_loop',
+				'builder_type' => 'bookshelf_highlight'
+			)
+		), md_get_post_type_builder( 'archive_sections', 'bookshelf' ) );
 	}
 
 	public function test_term_meta_preserves_explicit_empty_builder() {

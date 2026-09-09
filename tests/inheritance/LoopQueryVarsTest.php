@@ -3,8 +3,8 @@
  * Tests md_api::loop_query_vars() (api/api.php:430-~460) — the main-archive-query
  * path of the Loop inheritance cascade (global default -> post type -> taxonomy
  * -> term), invoked directly via reflection since it's protected. Only
- * posts_per_page/order/orderby flow through this function; the wider Loop field
- * set is covered by GetLoopTest instead.
+ * posts_per_page/order/orderby and date grouping flow through this function;
+ * the wider Loop field set is covered by GetLoopTest instead.
  *
  * Plain, unconditional cascade -- no render-mode gating. A taxonomy tab left
  * blank always inherits the post-type tier's resolved value, regardless of
@@ -112,6 +112,31 @@ class LoopQueryVarsTest extends MD_InheritanceTestCase {
 		$vars = $this->query_vars( 'category', 42 );
 
 		$this->assertSame( 6, $vars['posts_per_page'] );
+	}
+
+	public function test_date_grouping_forces_date_order_and_ignores_stickies() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'loop' => array(
+				'orderby' => 'rand',
+				'date' => array( 'group' => true )
+			)
+		) ) );
+
+		$vars = $this->query_vars();
+
+		$this->assertSame( 'date', $vars['orderby'] );
+		$this->assertSame( 1, $vars['ignore_sticky_posts'] );
+	}
+
+	public function test_taxonomy_date_grouping_inherits_from_the_post_type() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'loop' => array( 'date' => array( 'group' => true ) )
+		) ) );
+
+		$vars = $this->query_vars( 'category' );
+
+		$this->assertSame( 'date', $vars['orderby'] );
+		$this->assertSame( 1, $vars['ignore_sticky_posts'] );
 	}
 
 }

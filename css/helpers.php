@@ -51,6 +51,12 @@ a.no-underline, .no-underline a { text-decoration: none; }
 
 .has-muted-color a, .foot a, a.has-muted-color, a.foot { color: var(--md-links-muted); }
 
+.middot:not(:first-child)::before {
+	color: var(--md-border);
+	content: '\00b7';
+	margin-inline-end: var(--md-half);
+}
+
 cite, .tiny {
 	font-size: calc(var(--md-font-size-sm) - 2px);
 	line-height: calc(var(--md-line-height-sm) - 1px);
@@ -314,6 +320,8 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 
 foreach ( array_keys( $spacers ) as $size )
 	echo ".gap-$size, .columns-$size { gap: var(--md-$size); }\n";
+
+echo ".gap-none { gap: 0; }";
 
 /* BLOCKS / PADDING */
 

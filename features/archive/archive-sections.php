@@ -96,7 +96,6 @@ class md_archive_sections extends md_api {
 			'type' => 'builder',
 			'title' => __( 'Add Archive Widgets', 'md' ),
 			'description' => __( 'Add reusable content before or after the archive entries.', 'md' ),
-			'value' => $this->fields->module( 'builder', md_get_post_type_builder( 'archive_sections', $post_type ) ),
 			'areas' => array(
 				'before_loop' => array(
 					'title' => __( 'Before Loop', 'md' ),
@@ -128,8 +127,8 @@ class md_archive_sections extends md_api {
 				'color' => '#2271b1',
 				'classes' => 'col-full',
 				'fields' => $this->taxonomy_fields(),
-				'callback' => array( $this, 'taxonomy_admin' ),
-				'render' => array( $this, 'taxonomy_filter' )
+				'callback' => array( $this, 'taxonomy_filter' ),
+				'admin_callback' => array( $this, 'taxonomy_admin' )
 			)
 		) );
 
@@ -142,8 +141,8 @@ class md_archive_sections extends md_api {
 			if ( ! empty( $element['admin_icon'] ) )
 				$elements[$id]['icon'] = $element['admin_icon'];
 
-			if ( empty( $element['callback'] ) )
-				$elements[$id]['callback'] = array( $this, 'element_fields' );
+			if ( empty( $element['admin_callback'] ) )
+				$elements[$id]['admin_callback'] = array( $this, 'element_fields' );
 		}
 
 		return $elements;
@@ -283,22 +282,19 @@ class md_archive_sections extends md_api {
 		$builder = md_get_post_type_builder( 'archive_sections', $post_type );
 		$elements = $this->elements( $post_type );
 
-		if ( is_category() || is_tax() )
-			$builder = md_module( array( 'archive_sections', 'builder' ), $builder );
-
 		foreach ( $builder as $fields ) {
 			if ( ( $fields['builder_area'] ?? '' ) !== $area )
 				continue;
 
 			$type = $fields['builder_type'] ?? '';
-			$render = $elements[$type]['render'] ?? null;
+			$callback = $elements[$type]['callback'] ?? null;
 
-			if ( ! is_callable( $render ) )
+			if ( ! is_callable( $callback ) )
 				continue;
 
 			ob_start();
 
-			$value = call_user_func( $render, $fields, $post_type );
+			$value = call_user_func( $callback, $fields, $post_type );
 			$html = ob_get_clean();
 
 			if ( is_string( $value ) )

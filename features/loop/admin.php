@@ -52,7 +52,7 @@ class md_loop extends md_api {
 			),
 			'remove_byline' => array(
 				'type' => 'checkbox',
-				'options' => array( 'before_post', 'after_post', 'before_title', 'after_title', 'remove' )
+				'options' => array( 'entry_top', 'before_title', 'after_title', 'before_content', 'entry_footer', 'remove' )
 			),
 			'inherit' => array(
 				'type' => 'checkbox',
@@ -85,6 +85,10 @@ class md_loop extends md_api {
 			'category' => array(
 				'type' => 'checkbox',
 				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty', 'hide_description' )
+			),
+			'date' => array(
+				'type' => 'checkbox',
+				'options' => array( 'group' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),

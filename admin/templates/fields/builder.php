@@ -82,4 +82,5 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
 <?php endforeach; ?>
 
-<?php $this->field( "{$key}_data", array( 'type' => 'text', 'hidden' => true ) ); ?>
+<?php if ( ! empty( $args['save_empty'] ) )
+	$this->field( "{$key}_data", array( 'type' => 'text', 'hidden' => true ) ); ?>

@@ -394,6 +394,24 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 }
 
 /**
+ * Build the month key and label used to section a date-based Loop.
+ *
+ * @since 6.0
+ */
+
+function md_get_loop_date( $post = null ) {
+	$timestamp = get_post_time( 'U', true, $post );
+
+	if ( ! $timestamp )
+		return array();
+
+	return apply_filters( 'md_filter_loop_date', array(
+		'month' => wp_date( 'Y-m', $timestamp ),
+		'label' => wp_date( 'F Y', $timestamp )
+	), $post );
+}
+
+/**
  * Hook custom content after Loop Item X.
  *
  * @since 5.1
@@ -496,6 +514,12 @@ function md_get_loop( $args = array() ) {
 	if ( ! isset( $loop['loop_type'] ) )
 		$loop['loop_type'] = '';
 
+	if (
+		! empty( $loop['date']['group'] ) && empty( $loop['by_category'] ) &&
+		( ! is_singular() || ! empty( $args['query'] ) )
+	)
+		$loop['by_date'] = true;
+
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
 
@@ -532,10 +556,16 @@ function md_get_loop( $args = array() ) {
 
 	// A manual query might want to inherit some settings
 
-	if ( ! empty( $loop['query'] ) && is_array( $loop['query'] ) )
+	if ( ! empty( $loop['query'] ) && is_array( $loop['query'] ) ) {
 		foreach ( array( 'posts_per_page', 'orderby', 'order' ) as $key )
 			if ( empty( $loop['query'][$key] ) && ! empty( $loop[$key] ) )
 				$loop['query'][$key] = $loop[$key];
+
+		if ( ! empty( $loop['by_date'] ) ) {
+			$loop['query']['orderby'] = 'date';
+			$loop['query']['ignore_sticky_posts'] = 1;
+		}
+	}
 
 	// Return loop data for any given page
 
@@ -583,6 +613,11 @@ function md_loop( $args = array() ) {
 
 	elseif ( isset( $loop['by_category'] ) )
 		include md_template( 'features', 'loop/category-posts', true );
+
+	// If grouping a post listing into month sections
+
+	elseif ( ! empty( $loop['by_date'] ) )
+		include md_template( 'features', 'loop/date-posts', true );
 
 	// Calling a manual query loop
 

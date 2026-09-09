@@ -32,7 +32,7 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#a424ec',
 				'icon' => 'admin-users',
-				'callback' => array( $this, 'author' )
+				'admin_callback' => array( $this, 'author' )
 			),
 			'date' => array(
 				'title' => __( 'Date', 'md' ),
@@ -40,7 +40,7 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#d44c3c',
 				'icon' => 'calendar',
-				'callback' => array( $this, 'date' )
+				'admin_callback' => array( $this, 'date' )
 			),
 			'comments' => array(
 				'title' => __( 'Comments', 'md' ),
@@ -48,7 +48,7 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#ff6000',
 				'icon' => 'admin-comments',
-				'callback' => array( $this, 'comments' )
+				'admin_callback' => array( $this, 'comments' )
 			),
 			'category' => array(
 				'title' => __( 'Category', 'md' ),
@@ -60,9 +60,10 @@ class md_byline extends md_api {
 					'style' => array(
 						'type' => 'checkbox',
 						'options' => array( 'tag' )
-					)
+					),
+					'limit' => array( 'type' => 'number' )
 				),
-				'callback' => array( $this, 'category' )
+				'admin_callback' => array( $this, 'category' )
 			),
 			'badge' => array(
 				'title' => __( 'Badge', 'md' ),
@@ -70,7 +71,7 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#1eb54b',
 				'icon' => 'warning',
-				'callback' => array( $this, 'badge' )
+				'admin_callback' => array( $this, 'badge' )
 			),
 			'edit' => array(
 				'title' => __( 'Edit', 'md' ),
@@ -78,21 +79,21 @@ class md_byline extends md_api {
 				'hide_title' => false,
 				'color' => '#2772af',
 				'icon' => 'edit',
-				'callback' => array( $this, 'edit' )
+				'admin_callback' => array( $this, 'edit' )
 			),
 			'category/post-count' => array(
 				'title' => __( 'Post Count', 'md' ),
 				'context' => 'category_entry',
 				'color' => '#e07b2a',
 				'icon' => 'editor-ul',
-				'callback' => array( $this, 'post_count' )
+				'admin_callback' => array( $this, 'post_count' )
 			),
 			'category/date' => array(
 				'title' => __( 'Date', 'md' ),
 				'context' => 'category_entry',
 				'color' => '#d44c3c',
 				'icon' => 'calendar-alt',
-				'callback' => array( $this, 'category_date' )
+				'admin_callback' => array( $this, 'category_date' )
 			)
 		);
 	}
@@ -137,7 +138,7 @@ class md_byline extends md_api {
 			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
-				'options' => array( 'before_title', 'after_title', 'before_post', 'after_post' )
+				'options' => array( 'entry_top', 'before_title', 'after_title', 'before_content', 'entry_footer' )
 			),
 			'settings' => array(
 				'type' => 'checkbox',
@@ -454,6 +455,16 @@ class md_byline extends md_api {
 			'options' => array(
 				'first' => __( 'Only show first category', 'md' )
 			)
+		) );
+
+		$this->fields->field( array( 'builder', $group, 'limit' ), array(
+			'type' => 'number',
+			'label' => __( 'Archive tag limit', 'md' ),
+			'description' => __( 'Defaults to 3. Enter 0 to show all tags on archives.', 'md' ),
+			'placeholder' => 3,
+			'min' => 0,
+			'step' => 1,
+			'wrap_classes' => 'md-sep-micro'
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'style' ), array(

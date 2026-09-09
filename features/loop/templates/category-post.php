@@ -1,6 +1,6 @@
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
 
-	<?php md_byline( 'before_post', array(
+	<?php md_byline( 'entry_top', array(
 		'context' => 'category_entry',
 		'category' => $category
 	) ); ?>
@@ -62,7 +62,7 @@
 
 	endif; ?>
 
-	<?php md_byline( 'after_post', array(
+	<?php md_byline( 'entry_footer', array(
 		'context' => 'category_entry',
 		'category' => $category,
 		'classes' => 'post-footer'

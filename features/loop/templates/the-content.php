@@ -11,6 +11,11 @@ md_featured_media( 'post', array(
 
 md_hook_the_content_top();
 
+md_byline( 'before_content', array(
+    'loop' => $loop,
+    'classes' => 'post-meta'
+) );
+
 if ( $show_full_content ) {
 
     if ( is_404() && ! md_has_custom_404() )

@@ -83,12 +83,12 @@ if ( md_has_header() ) :
 					$id = sanitize_key( $items['id'] );
 					$field = $header['fields'][$id] ?? null;
 
-					if ( $field && ! empty( $items['render'] ) ) {
+					if ( $field && ! empty( $items['callback'] ) ) {
 						$field['location'] = $section;
 						$field['layout'] = $layout;
 						$field['id'] = $id;
 
-						call_user_func( $items['render'], $field );
+						call_user_func( $items['callback'], $field );
 					}
 				}
 

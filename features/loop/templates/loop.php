@@ -5,7 +5,7 @@ if ( ! isset( $loop['has_builder'] ) )
 
 md_hook_content_top();
 
-md_byline( 'before_post', array(
+md_byline( 'entry_top', array(
 	'loop' => $loop,
 	'classes' => 'post-meta'
 ) );
@@ -29,7 +29,7 @@ md_the_content( $loop );
 md_hook_after_the_content();
 
 if ( ! isset( $loop['post_footer']['remove'] ) )
-	md_byline( 'after_post', array(
+	md_byline( 'entry_footer', array(
 		'loop' => $loop,
 		'classes' => 'post-footer item', 'html' => 'footer'
 	) );

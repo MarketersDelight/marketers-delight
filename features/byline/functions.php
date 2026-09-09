@@ -101,7 +101,7 @@ function md_byline( $location = 'before_title', $args = array() ) {
 /**
  * Get byline items based on location and source.
  *
- * Accepts: before_title | after_title | before_post | after_post
+ * Accepts: entry_top | before_title | after_title | before_content | entry_footer
  *
  * @since 6.0
  */
@@ -119,9 +119,6 @@ function md_get_byline( $position, $args = array() ) {
 	// Build data from user options based on page type in WP
 
 	$builder = md_get_post_type_builder( 'byline', $post_type );
-
-	if ( is_category() || is_tax() )
-		$builder = md_module( array( 'byline', 'builder' ), $builder );
 
 	// Check if items set manually in $args, or show default items while options empty
 

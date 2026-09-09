@@ -106,6 +106,8 @@ function md_title( $context = 'post', $args = array() ) {
 
 	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images, true ) ) ) )
 		$classes = array_merge( $classes, md_get_image_position_classes( $media['position'] ) );
+	elseif ( ! $media && $context == 'post' && empty( $cover['position'] ) )
+		$classes[] = 'no-media';
 
 	// Page cover classes
 

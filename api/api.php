@@ -427,9 +427,16 @@ class md_api {
 		if ( ! $wp->is_tax )
 			$taxonomy = '';
 
+		// Set final query vars
+
+		$wp->query_vars['post_type'] = $this->post_type;
+		$wp->query_vars['paged'] = get_query_var( 'paged' );
+
+		$this->loop_query_vars( $wp, $taxonomy, $term_id );
+
 		// Consider sticky posts since CPTs dont natively support
 
-		$sticky = md_get_sticky( $post_type );
+		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? md_get_sticky( $post_type ) : array();
 
 		if ( $sticky ) {
 			if ( $term_id && $taxonomy ) {
@@ -449,13 +456,6 @@ class md_api {
 					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
 			}
 		}
-
-		// Set final query vars
-
-		$wp->query_vars['post_type'] = $this->post_type;
-		$wp->query_vars['paged'] = get_query_var( 'paged' );
-
-		$this->loop_query_vars( $wp, $taxonomy, $term_id );
 
 		return $wp;
 	}
@@ -488,6 +488,19 @@ class md_api {
 
 			if ( $value )
 				$wp->query_vars[$key] = $key === 'posts_per_page' ? absint( $value ) : sanitize_key( $value );
+		}
+
+		$date = md_post_type_field( array( 'loop', 'date' ), array(), $post_type );
+
+		if ( $taxonomy )
+			$date = md_taxonomy_field( array( 'loop', 'date' ), $date, $post_type, $taxonomy );
+
+		if ( $term_id )
+			$date = md_term_meta( array( 'loop', 'date' ), $term_id, $date );
+
+		if ( ! empty( $date['group'] ) ) {
+			$wp->query_vars['orderby'] = 'date';
+			$wp->query_vars['ignore_sticky_posts'] = 1;
 		}
 	}
 

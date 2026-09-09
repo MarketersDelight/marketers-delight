@@ -1,10 +1,12 @@
 <?php
+
 $category = $args['category'] ?? null;
 
-if ( ! $category ) return;
+if ( ! $category )
+	return;
 
-$use_modified  = ! empty( $fields['settings']['alt'] );
-$date_format   = get_option( 'date_format' );
+$use_modified = ! empty( $fields['settings']['alt'] );
+$date_format = get_option( 'date_format' );
 
 $recent = new WP_Query( array(
 	'posts_per_page' => 1,

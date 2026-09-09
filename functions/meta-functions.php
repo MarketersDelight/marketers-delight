@@ -270,12 +270,12 @@ function md_get_builder( $id, $type = null, $key = null ) {
 
 			$row_type = $fields['builder_type'];
 			$row_area = $fields['builder_area'];
-			$render = $elements[$row_type]['render'] ?? 'md_' . sanitize_key( $row_type );
+			$callback = $elements[$row_type]['callback'] ?? 'md_' . sanitize_key( $row_type );
 
-			if ( ! is_callable( $render ) )
+			if ( ! is_callable( $callback ) )
 				continue;
 
-			$item = array( 'type' => $row_type, 'id' => $row_id, 'render' => $render );
+			$item = array( 'type' => $row_type, 'id' => $row_id, 'callback' => $callback );
 
 			$builder['data'][$row_area][] = $item;
 			$builder['elements'][$row_type][] = $row_id;
@@ -293,38 +293,76 @@ function md_get_builder( $id, $type = null, $key = null ) {
 }
 
 /**
- * Resolve a post type builder whose saved rows replace inherited defaults.
+ * Resolve builder areas from inherited post types, taxonomies, and terms.
+ * Each configured area replaces the same area from the preceding layer.
  *
  * @since 6.0
  */
 
 function md_get_post_type_builder( $key, $post_type = null ) {
 	$post_type = $post_type ?: md_get_post_type();
-	$builder = md_post_type_field( array( $key, 'builder' ), array(), $post_type );
 	$defaults = md_setting_defaults();
-	$current = $defaults[$post_type][$key]['builder'] ?? array();
-	$saved = md_setting_part( $post_type );
-	$saved = $saved[$post_type][$key]['builder'] ?? null;
+	$chain = array();
+	$builder = array();
+	$parent = $post_type;
 
-	if ( is_array( $saved ) ) {
-		if ( ! $saved )
-			return array();
-
-		$current = $saved;
+	while ( $parent && ! isset( $chain[$parent] ) ) {
+		$chain[$parent] = true;
+		$parent = md_post_type_settings_parent( $parent );
 	}
 
-	if ( ! $builder || ! $current )
+	$stored = md_setting_part( array_keys( $chain ) );
+
+	foreach ( array_reverse( array_keys( $chain ) ) as $current ) {
+		$programmed = $defaults[$current][$key]['builder'] ?? null;
+		$saved = $stored[$current][$key]['builder'] ?? null;
+
+		foreach ( array( $programmed, $saved ) as $rows )
+			$builder = md_replace_builder_areas( $builder, $rows );
+	}
+
+	if ( ! is_category() && ! is_tax() )
+		return $builder;
+
+	$queried = get_queried_object();
+	$taxonomy = ! empty( $queried->taxonomy ) ? $queried->taxonomy : null;
+
+	if ( ! $taxonomy || ! is_object_in_taxonomy( $post_type, $taxonomy ) )
+		return $builder;
+
+	$programmed = $defaults[$post_type][$taxonomy][$key]['builder'] ?? null;
+	$saved = $stored[$post_type][$taxonomy][$key]['builder'] ?? null;
+
+	foreach ( array( $programmed, $saved ) as $rows )
+		$builder = md_replace_builder_areas( $builder, $rows );
+
+	$term = get_term_meta( get_queried_object_id(), 'marketers_delight', true );
+	$term = is_array( $term ) ? $term : array();
+
+	return md_replace_builder_areas( $builder, $term[$key]['builder'] ?? null );
+
+}
+
+/**
+ * Replace the configured areas in a resolved builder with a new row layer.
+ * Empty layers inherit the builder unchanged.
+ *
+ * @since 6.0
+ */
+
+function md_replace_builder_areas( $builder, $rows ) {
+	if ( ! is_array( $rows ) || ! $rows )
 		return $builder;
 
 	$areas = array();
 
-	foreach ( $current as $fields )
+	foreach ( $rows as $fields )
 		if ( ! empty( $fields['builder_area'] ) )
 			$areas[$fields['builder_area']] = true;
 
 	foreach ( $builder as $id => $fields )
-		if ( ! array_key_exists( $id, $current ) && ! empty( $fields['builder_area'] ) && isset( $areas[$fields['builder_area']] ) )
+		if ( ! empty( $fields['builder_area'] ) && isset( $areas[$fields['builder_area']] ) )
 			unset( $builder[$id] );
 
-	return $builder;
+	return array_replace( $builder, $rows );
 }

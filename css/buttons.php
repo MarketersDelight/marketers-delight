@@ -55,7 +55,6 @@ input[type="submit"],
 	border-radius: 50px;
 	color: var(--md-text);
 	flex-shrink: 0;
-	font-size: var(--md-font-size-sm);
 	padding: var(--md-third) var(--md-half);
 	text-decoration: none;
 	transition: var(--md-transition);
@@ -71,6 +70,13 @@ input[type="submit"],
 	box-shadow: inset 0 0 0 1px var(--md-links);
 	color: var(--md-links);
 }
+
+.tag-outline {
+	background-color: var(--md-content-box-background);
+	box-shadow: inset 0 0 0 1px var(--md-border);
+}
+
+.tag-outline:hover { background-color: var(--md-content-box-background); }
 
 /* BUTTONS */
 

@@ -83,6 +83,7 @@ class md_fields extends md_fields_render {
 	public function field( $field, $args ) {
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
+		$has_option = false;
 
 		if ( isset( $args['id'] ) )
 			$clean_id = $args['id'];
@@ -115,7 +116,7 @@ class md_fields extends md_fields_render {
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {
-			$setting = md_option( $this->_option );
+			$setting = $this->stored_option();
 
 			if ( $context['is_group'] ) {
 				$taxonomy = $context['taxonomy'];
@@ -145,13 +146,17 @@ class md_fields extends md_fields_render {
 
 		// Walk array and build attributes
 
-		$group = ! empty( $setting[$clean_id] ) ? $setting[$clean_id] : array();
+		$has_group = is_array( $setting ) && array_key_exists( $clean_id, $setting );
+		$group = $has_group && is_array( $setting[$clean_id] ) ? $setting[$clean_id] : array();
 
 		if ( is_array( $field ) ) {
+			$has_option = $has_group;
+
 			foreach ( $field as $key ) {
 				$name .= "[$key]";
 				$id .= "_{$key}";
-				$group = isset( $group[$key] ) ? $group[$key] : '';
+				$has_option = $has_option && is_array( $group ) && array_key_exists( $key, $group );
+				$group = $has_option ? $group[$key] : '';
 			}
 
 			$option = $group;
@@ -159,14 +164,18 @@ class md_fields extends md_fields_render {
 		else {
 			$name .= "[$field]";
 			$id .= "_{$field}";
-			$option = isset( $setting[$clean_id][$field] ) ? $setting[$clean_id][$field] : '';
+			$has_option = $has_group && is_array( $setting[$clean_id] ) && array_key_exists( $field, $setting[$clean_id] );
+			$option = $has_option ? $setting[$clean_id][$field] : '';
 		}
+
+		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
+			$args['save_empty'] = $has_option;
 
 		$this->render_field( $name, $id, $option, $args, $wrap_classes );
 	}
 
 	/**
-	 * Get field values based on current screen.
+	 * Get stored field values based on current screen.
 	 *
 	 * @since 5.0.9
 	 */
@@ -175,7 +184,7 @@ class md_fields extends md_fields_render {
 		// Determine page context and set option level
 
 		$context = $this->get_context();
-		$option = md_option( $this->_option );
+		$option = $this->stored_option();
 
 		if ( $context['is_post'] )
 			$option = md_post_meta();
@@ -278,6 +287,18 @@ class md_fields extends md_fields_render {
 		$meta_box = md_register( 'meta_boxes' )[$clean_id] ?? array();
 
 		return ! empty( $meta_box['fields'][$field]['standalone'] );
+	}
+
+	/**
+	 * Read raw option data for admin controls without merging defaults.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function stored_option() {
+		$option = get_option( $this->_option, array() );
+
+		return is_array( $option ) ? $option : array();
 	}
 
 	/**
@@ -432,10 +453,11 @@ class md_fields extends md_fields_render {
 			'label' => __( 'Position', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
+				'entry_top' => __( 'Entry Top', 'md' ),
 				'before_title' => __( 'Before Title', 'md' ),
 				'after_title' =>  __( 'After Title', 'md' ),
-				'before_post' => __( 'Before Post', 'md' ),
-				'after_post' => __( 'After Post', 'md' )
+				'before_content' => __( 'Before Content', 'md' ),
+				'entry_footer' => __( 'Entry Footer', 'md' )
 			)
 		) );
 	}

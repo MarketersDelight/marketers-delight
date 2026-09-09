@@ -79,6 +79,7 @@ function md_test_set_filter( $tag, $value ) {
 
 function md_test_set_settings( $settings ) {
 	$GLOBALS['__test_settings'] = $settings;
+	$GLOBALS['__test_options']['marketers_delight'] = $settings;
 }
 
 function md_test_set_option( $key, $value ) {

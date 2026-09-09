@@ -82,7 +82,6 @@ class md_archive_meta extends md_api {
 			'type' => 'builder',
 			'title' => __( 'Add Archive Meta', 'md' ),
 			'description' => __( 'Choose the aggregate details shown beneath the archive title.', 'md' ),
-			'value' => $this->fields->module( 'builder', md_get_post_type_builder( 'archive_meta', $post_type ) ),
 			'areas' => array(
 				'archives' => array(
 					'title' => __( 'Archive Meta', 'md' ),
@@ -108,8 +107,8 @@ class md_archive_meta extends md_api {
 			if ( ! empty( $element['admin_icon'] ) )
 				$elements[$id]['icon'] = $element['admin_icon'];
 
-			if ( empty( $element['callback'] ) )
-				$elements[$id]['callback'] = array( $this, 'item_fields' );
+			if ( empty( $element['admin_callback'] ) )
+				$elements[$id]['admin_callback'] = array( $this, 'item_fields' );
 		}
 
 		return $elements;
@@ -138,13 +137,13 @@ class md_archive_meta extends md_api {
 				'icon' => 'file',
 				'admin_icon' => 'admin-post',
 				'color' => '#2271b1',
-				'render' => array( $this, 'post_count' )
+				'callback' => array( $this, 'post_count' )
 			),
 			'last_added' => array(
 				'title' => __( 'Last Added', 'md' ),
 				'icon' => 'calendar',
 				'color' => '#d44c3c',
-				'render' => array( $this, 'last_added' )
+				'callback' => array( $this, 'last_added' )
 			)
 		), $post_type );
 
@@ -171,23 +170,20 @@ class md_archive_meta extends md_api {
 		$items = $this->items( $post_type );
 		$output = '';
 
-		if ( is_category() || is_tax() )
-			$builder = md_module( array( 'archive_meta', 'builder' ), $builder );
-
 		foreach ( $builder as $fields ) {
 			if ( ( $fields['builder_area'] ?? '' ) !== 'archives' )
 				continue;
 
 			$type = $fields['builder_type'] ?? '';
-			$render = $items[$type]['render'] ?? null;
+			$callback = $items[$type]['callback'] ?? null;
 
-			if ( ! is_callable( $render ) )
+			if ( ! is_callable( $callback ) )
 				continue;
 
-			$value = call_user_func( $render, $fields, $post_type );
+			$value = call_user_func( $callback, $fields, $post_type );
 
 			if ( $value )
-				$output .= '<span class="byline-item">' . md_icon( $items[$type]['icon'] ) . '<span class="byline-label">' . wp_kses_post( $value ) . '</span></span>';
+				$output .= '<span class="byline-item middot">' . md_icon( $items[$type]['icon'] ) . '<span class="byline-label">' . wp_kses_post( $value ) . '</span></span>';
 		}
 
 		if ( $output )

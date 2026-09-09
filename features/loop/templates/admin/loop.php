@@ -37,6 +37,14 @@
 		'options' => array( $subcat_key => $subcat_label )
 	) );
 
+	$this->fields->field( 'date', array(
+		'type' => 'checkbox',
+		'wrap_classes' => 'md-sep-micro',
+		'options' => array(
+			'group' => __( 'Group posts by month', 'md' )
+		)
+	) );
+
 	echo '</div>';
 
 ?>
@@ -281,10 +289,11 @@
 					'label' => __( 'Remove Byline(s)', 'md' ),
 					'inline' => true,
 					'options' => array(
-						'before_post' => __( 'Before Post', 'md' ),
+						'entry_top' => __( 'Entry Top', 'md' ),
 						'before_title' => __( 'Before Title', 'md' ),
 						'after_title' => __( 'After Title', 'md' ),
-						'after_post' => __( 'After Post', 'md' ),
+						'before_content' => __( 'Before Content', 'md' ),
+						'entry_footer' => __( 'Entry Footer', 'md' ),
 						'remove' => __( 'All', 'md' )
 					)
 				) ); ?>

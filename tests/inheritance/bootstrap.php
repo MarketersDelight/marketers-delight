@@ -27,6 +27,7 @@ $GLOBALS['__test_post_types'] = array();
 $GLOBALS['__test_terms'] = array();
 $GLOBALS['__test_categories'] = array();
 $GLOBALS['__test_titles'] = array();
+$GLOBALS['__test_post_time'] = 0;
 $GLOBALS['__test_query'] = array(
 	'is_admin' => false,
 	'is_singular' => false,
@@ -79,6 +80,7 @@ function md_test_reset() {
 	$GLOBALS['__test_terms'] = array();
 	$GLOBALS['__test_categories'] = array();
 	$GLOBALS['__test_titles'] = array();
+	$GLOBALS['__test_post_time'] = 0;
 	$GLOBALS['__test_query'] = array(
 		'is_admin' => false,
 		'is_singular' => false,
@@ -204,6 +206,10 @@ function md_test_set_categories( $post_id, array $categories ) {
 
 function md_test_set_title( $post_id, $title ) {
 	$GLOBALS['__test_titles'][$post_id] = $title;
+}
+
+function md_test_set_post_time( $timestamp ) {
+	$GLOBALS['__test_post_time'] = (int) $timestamp;
 }
 
 // Controls is_category()/is_tax()/is_singular()/etc and get_queried_object().
@@ -353,6 +359,10 @@ function get_the_ID() {
 	return 1;
 }
 
+function get_post_time( $format = 'U', $gmt = false, $post = null ) {
+	return $GLOBALS['__test_post_time'];
+}
+
 function home_url( $path = '' ) {
 	return 'https://example.test' . $path;
 }
@@ -425,6 +435,10 @@ function get_term_children( $term_id, $taxonomy ) {
 
 function get_object_taxonomies( $post_type ) {
 	return isset( $GLOBALS['__test_object_taxonomies'][$post_type] ) ? $GLOBALS['__test_object_taxonomies'][$post_type] : array();
+}
+
+function is_object_in_taxonomy( $post_type, $taxonomy ) {
+	return in_array( $taxonomy, get_object_taxonomies( $post_type ), true );
 }
 
 function get_taxonomy( $taxonomy ) {

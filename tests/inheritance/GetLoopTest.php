@@ -183,6 +183,60 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertStringContainsString( 'loop-download', $loop['loop_classes'] );
 	}
 
+	public function test_date_grouping_cascades_onto_a_taxonomy_post_listing() {
+		$this->set_option_loop( array( 'date' => array( 'group' => true ) ) );
+		$this->set_taxonomy_query();
+
+		$loop = md_get_loop();
+
+		$this->assertTrue( $loop['by_date'] );
+	}
+
+	public function test_category_grouping_takes_precedence_over_date_grouping() {
+		$this->set_option_loop( array(
+			'loop_type' => 'category_posts',
+			'date' => array( 'group' => true )
+		) );
+		$this->set_taxonomy_query();
+		md_test_set_term_children( 42, 'category', array( 43 ) );
+
+		$loop = md_get_loop();
+
+		$this->assertTrue( $loop['by_category'] );
+		$this->assertArrayNotHasKey( 'by_date', $loop );
+	}
+
+	public function test_manual_date_query_forces_chronological_results() {
+		$loop = md_get_loop( array(
+			'query' => array(
+				'post_type' => 'post',
+				'orderby' => 'rand'
+			),
+			'date' => array( 'group' => true )
+		) );
+
+		$this->assertTrue( $loop['by_date'] );
+		$this->assertSame( 'date', $loop['query']['orderby'] );
+		$this->assertSame( 1, $loop['query']['ignore_sticky_posts'] );
+	}
+
+	public function test_singular_loop_does_not_create_date_groups() {
+		md_test_set_query( array( 'is_singular' => true ) );
+
+		$loop = md_get_loop( array( 'date' => array( 'group' => true ) ) );
+
+		$this->assertArrayNotHasKey( 'by_date', $loop );
+	}
+
+	public function test_loop_date_returns_a_stable_month_key_and_label() {
+		md_test_set_post_time( strtotime( '2026-08-26 12:00:00 UTC' ) );
+
+		$date = md_get_loop_date();
+
+		$this->assertSame( '2026-08', $date['month'] );
+		$this->assertSame( 'August 2026', $date['label'] );
+	}
+
 	public function test_loop_classes_use_dynamic_columns_without_numbered_utility_classes() {
 		$this->register_collection_loop();
 

@@ -75,19 +75,19 @@ class md_header extends md_api {
 				'subtitle' => true,
 				'color' => '#2772af',
 				'icon' => 'admin-links',
-				'callback' => array( $this->fields, 'builder_link' )
+				'admin_callback' => array( $this->fields, 'builder_link' )
 			),
 			'search' => array(
 				'title' => __( 'Search', 'md' ),
 				'placeholder' => __( 'Search', 'md' ),
 				'color' => '#41b141',
 				'icon' => 'search',
-				'callback' => array( $this->fields, 'builder_search' )
+				'admin_callback' => array( $this->fields, 'builder_search' )
 			),
 			'menu' => array(
 				'title' => __( 'Menu', 'md' ),
 				'icon' => 'menu',
-				'callback' => array( $this->fields, 'builder_menu' )
+				'admin_callback' => array( $this->fields, 'builder_menu' )
 			)
 		) );
 	}

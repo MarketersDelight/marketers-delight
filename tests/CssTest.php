@@ -307,6 +307,55 @@ class CssTest extends MD_TestCase {
 		$this->assertMatchesRegularExpression( '/\.byline \.circle-icon \{[^}]*color: inherit;/s', $title );
 	}
 
+	public function test_box_content_only_collapses_after_no_media_titles() {
+		$loop = $this->source( 'css/loop.php' );
+
+		$this->assertStringContainsString( '.box-entry .entry-title.no-media:not(:empty) + .the-content { padding-block-start: 0; }', $loop );
+		$this->assertStringNotContainsString( '.entry-title:not(.cover):not(:empty) + .the-content', $loop );
+	}
+
+	public function test_date_sections_wrap_each_existing_loop() {
+		$loop = $this->source( 'css/loop.php' );
+		$template = $this->source( 'features/loop/templates/date-posts.php' );
+
+		$this->assertStringContainsString( '.loop-dates + .loop-dates', $loop );
+		$this->assertStringContainsString( '<div class="loop-dates">', $template );
+		$this->assertStringContainsString( 'esc_attr( $loop_classes )', $template );
+		$this->assertStringContainsString( "include md_template( 'features', 'loop/the-post', true );", $template );
+		$this->assertStringNotContainsString( 'global $wp_query', $template );
+		$this->assertStringNotContainsString( 'loop-timeline', $template );
+		$this->assertStringNotContainsString( '<section', $template );
+	}
+
+	public function test_timeline_only_breaks_entry_top_dates_into_the_rail() {
+		$loop = $this->source( 'css/loop.php' );
+
+		$this->assertStringContainsString( '.loop-timeline .byline.entry-top > .byline-date', $loop );
+		$this->assertStringNotContainsString( '.loop-timeline .byline.before-title > .byline-date', $loop );
+	}
+
+	public function test_entry_top_bylines_only_space_rendered_following_content() {
+		$title = $this->source( 'css/title.php' );
+
+		$this->assertStringContainsString( '.byline.entry-top:not(:last-child)', $title );
+	}
+
+	public function test_mobile_timeline_uses_a_larger_connected_rail() {
+		$loop = $this->source( 'css/loop.php' );
+
+		$this->assertStringContainsString( 'var(--timeline-gap) + var(--timeline-dot-size) / 2', $loop );
+		$this->assertStringContainsString( '--timeline-dot-size: var(--md-single);', $loop );
+		$this->assertStringContainsString( '--timeline-rail-width: 4px;', $loop );
+		$this->assertStringContainsString( 'margin-inline-start: calc(var(--md-half) + var(--md-third));', $loop );
+	}
+
+	public function test_post_nav_items_stretch_to_an_equal_clickable_height() {
+		$page = $this->source( 'css/page.php' );
+
+		$this->assertMatchesRegularExpression( '/@media \(min-width:[^{]+\) \{.*?\.post-nav \{[^}]*align-items: stretch;/s', $page );
+		$this->assertStringContainsString( '.post-nav-previous, .post-nav-next {', $page );
+	}
+
 	public function test_content_box_surfaces_establish_their_own_color_context() {
 		$variables = $this->source( 'css/--vars.php' );
 		$loop = $this->source( 'css/loop.php' );

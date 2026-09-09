@@ -13,7 +13,8 @@
 		<div class="post-nav-text">
 
 			<span class="post-nav-direction">
-				<?php echo md_icon( 'angle-left' ); ?> <?php echo esc_html__( 'Previous', 'md' ); ?>
+				<?php echo md_icon( 'angle-left' ); ?>
+				<?php echo esc_html( sprintf( __( 'Previous %s', 'md' ), $post_type_label ) ); ?>
 			</span>
 
 			<?php echo get_previous_post_link( '%link', '<span class="post-nav-title">%title</span>' ); ?>
@@ -31,7 +32,8 @@
 		<div class="post-nav-text">
 
 			<span class="post-nav-direction">
-				<?php echo esc_html__( 'Next', 'md' ); ?> <?php echo md_icon( 'angle-right' ); ?>
+				<?php echo esc_html( sprintf( __( 'Next %s', 'md' ), $post_type_label ) ); ?>
+				<?php echo md_icon( 'angle-right' ); ?>
 			</span>
 
 			<?php echo get_next_post_link( '%link', '<span class="post-nav-title">%title</span>' ); ?>

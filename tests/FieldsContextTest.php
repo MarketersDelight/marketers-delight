@@ -159,7 +159,7 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( 'Plain Setting', $fields->get_field( 'title' ) );
 	}
 
-	public function test_get_field_non_group_reads_custom_option_defaults_and_values() {
+	public function test_get_field_non_group_reads_only_stored_custom_option_values() {
 		md_test_set_filter( 'md_admin_groups', array() );
 		md_test_set_filter( 'md_setting_defaults_client_portal', array(
 			'title' => 'Default Title',
@@ -169,7 +169,7 @@ class FieldsContextTest extends MD_TestCase {
 
 		$fields = $this->make_fields( array( 'page' => 'my_page' ), 'my_page', 'client_portal' );
 
-		$this->assertSame( 'Default Title', $fields->get_field( 'title' ) );
+		$this->assertNull( $fields->get_field( 'title' ) );
 		$this->assertFalse( $fields->get_field( 'enabled', true ) );
 	}
 

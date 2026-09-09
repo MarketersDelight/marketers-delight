@@ -57,6 +57,10 @@ function md_post_nav() {
 	$previous_media = apply_filters( 'md_post_nav_media', '', $previous );
 	$next = get_next_post();
 	$next_media = apply_filters( 'md_post_nav_media', '', $next );
+	$post_type = get_post_type_object( get_post_type() );
+	$post_type_label = $post_type && ! empty( $post_type->labels->singular_name )
+		? $post_type->labels->singular_name
+		: __( 'Post', 'md' );
 
 	include md_template( 'features', 'loop/post-nav', true );
 }

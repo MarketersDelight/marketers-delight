@@ -231,7 +231,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.post-nav {
-		align-items: center;
+		align-items: stretch;
 		display: flex;
 		flex-flow: wrap;
 	}
