@@ -16,7 +16,7 @@ if ( $is_query ? $date_query->have_posts() : have_posts() ) {
 		else
 			the_post();
 
-		$post_date = md_get_loop_date();
+		$post_date = md_get_loop_date( null, array( 'post_type' => $loop['post_type'] ) );
 
 		if ( empty( $post_date ) )
 			$post_date = array(
@@ -36,8 +36,13 @@ if ( $is_query ? $date_query->have_posts() : have_posts() ) {
 
 			if ( $date_month === 'undated' )
 				echo esc_html( $post_date['label'] );
-			else
-				echo '<time datetime="' . esc_attr( $date_month ) . '">' . esc_html( $post_date['label'] ) . '</time>';
+			else {
+				$date_label = '<time datetime="' . esc_attr( $date_month ) . '">' . esc_html( $post_date['label'] ) . '</time>';
+
+				echo ! empty( $post_date['url'] )
+					? '<a href="' . esc_url( $post_date['url'] ) . '">' . $date_label . '</a>'
+					: $date_label;
+			}
 
 			echo '</h2>'.
 				 '<div class="' . esc_attr( $loop_classes ) . '"' . $loop_columns_style . '>';

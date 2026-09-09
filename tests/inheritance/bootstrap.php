@@ -463,6 +463,10 @@ function get_month_link( $year, $month ) {
 	return sprintf( 'https://example.test/%s/%02d/', $year, $month );
 }
 
+function add_query_arg( $args, $url ) {
+	return $url . '?' . http_build_query( $args );
+}
+
 function get_pagenum_link( $page ) {
 	return "https://example.test/page/{$page}/";
 }

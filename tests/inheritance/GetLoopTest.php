@@ -235,6 +235,41 @@ class GetLoopTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( '2026-08', $date['month'] );
 		$this->assertSame( 'August 2026', $date['label'] );
+		$this->assertSame( 'https://example.test/2026/08/', $date['url'] );
+	}
+
+	public function test_loop_date_link_preserves_custom_post_type_and_taxonomy() {
+		md_test_set_post_time( strtotime( '2026-08-26 12:00:00 UTC' ) );
+		md_test_set_taxonomy( 'stream_categories', true, array( 'stream' ) );
+		$GLOBALS['__test_taxonomies']['stream_categories']->query_var = 'stream_categories';
+		md_test_set_query( array(
+			'is_tax' => true,
+			'post_type' => 'stream',
+			'query_var' => array( 'post_type' => 'stream' ),
+			'queried_object' => (object) array(
+				'taxonomy' => 'stream_categories',
+				'slug' => 'notes'
+			)
+		) );
+
+		$date = md_get_loop_date();
+
+		$this->assertSame( 'https://example.test/2026/08/?post_type=stream&stream_categories=notes', $date['url'] );
+	}
+
+	public function test_loop_date_does_not_link_the_current_month_archive() {
+		md_test_set_post_time( strtotime( '2026-08-26 12:00:00 UTC' ) );
+		md_test_set_query( array(
+			'is_month' => true,
+			'query_var' => array(
+				'year' => 2026,
+				'monthnum' => 8
+			)
+		) );
+
+		$date = md_get_loop_date();
+
+		$this->assertSame( '', $date['url'] );
 	}
 
 	public function test_loop_classes_use_dynamic_columns_without_numbered_utility_classes() {

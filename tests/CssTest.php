@@ -307,10 +307,10 @@ class CssTest extends MD_TestCase {
 		$this->assertMatchesRegularExpression( '/\.byline \.circle-icon \{[^}]*color: inherit;/s', $title );
 	}
 
-	public function test_box_content_only_collapses_after_no_media_titles() {
+	public function test_box_content_collapses_after_non_cover_titles() {
 		$loop = $this->source( 'css/loop.php' );
 
-		$this->assertStringContainsString( '.box-entry .entry-title.no-media:not(:empty) + .the-content { padding-block-start: 0; }', $loop );
+		$this->assertStringContainsString( '.box-entry .entry-title:not(.cover, :empty) + .the-content { padding-block-start: 0; }', $loop );
 		$this->assertStringNotContainsString( '.entry-title:not(.cover):not(:empty) + .the-content', $loop );
 	}
 
@@ -320,6 +320,7 @@ class CssTest extends MD_TestCase {
 
 		$this->assertStringContainsString( '.loop-dates + .loop-dates', $loop );
 		$this->assertStringContainsString( '<div class="loop-dates">', $template );
+		$this->assertStringContainsString( "esc_url( \$post_date['url'] )", $template );
 		$this->assertStringContainsString( 'esc_attr( $loop_classes )', $template );
 		$this->assertStringContainsString( "include md_template( 'features', 'loop/the-post', true );", $template );
 		$this->assertStringNotContainsString( 'global $wp_query', $template );

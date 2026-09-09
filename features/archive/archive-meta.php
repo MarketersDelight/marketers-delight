@@ -125,6 +125,22 @@ class md_archive_meta extends md_api {
 	}
 
 	/**
+	 * Render Post Count text controls.
+	 *
+	 * @since 6.0
+	 */
+
+	public function post_count_fields( $group, $type, $fields ) {
+		$fields->field( array( 'builder', $group, 'singular_name' ), array(
+			'type' => 'text',
+			'label' => __( 'Singular Text', 'md' ),
+			'placeholder' => __( '{count} Post', 'md' )
+		) );
+
+		echo '<p class="description">' . wp_kses_post( __( 'Use <code>{count}</code> in the text above to insert the number. The singular text is used only when the count is one.', 'md' ) ) . '</p>';
+	}
+
+	/**
 	 * Get the registered Archive Meta items.
 	 *
 	 * @since 6.0
@@ -134,10 +150,15 @@ class md_archive_meta extends md_api {
 		$items = apply_filters( 'md_archive_meta_items', array(
 			'post_count' => array(
 				'title' => __( 'Post Count', 'md' ),
+				'placeholder' => __( '{count} Posts', 'md' ),
 				'icon' => 'file',
 				'admin_icon' => 'admin-post',
 				'color' => '#2271b1',
-				'callback' => array( $this, 'post_count' )
+				'fields' => array(
+					'singular_name' => array( 'type' => 'text' )
+				),
+				'callback' => array( $this, 'post_count' ),
+				'admin_callback' => array( $this, 'post_count_fields' )
 			),
 			'last_added' => array(
 				'title' => __( 'Last Added', 'md' ),
@@ -200,9 +221,17 @@ class md_archive_meta extends md_api {
 		$queried = get_queried_object();
 		$object = get_post_type_object( $post_type );
 		$count = (int) ( $queried instanceof WP_Term ? $queried->count : wp_count_posts( $post_type )->publish );
-		$label = ! empty( $fields['name'] ) ? $fields['name'] : ( $count === 1 ? $object->labels->singular_name : $object->labels->name );
+		$number = number_format_i18n( $count );
 
-		return number_format_i18n( $count ) . ' ' . esc_html( $label );
+		if ( ! empty( $fields['name'] ) ) {
+			$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
+
+			return esc_html( strtr( $template, array( '{count}' => $number ) ) );
+		}
+
+		$label = $count === 1 ? $object->labels->singular_name : $object->labels->name;
+
+		return $number . ' ' . esc_html( $label );
 	}
 
 	/**

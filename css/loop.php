@@ -125,7 +125,7 @@
 .box-entry > .entry > .byline.post-footer,
 .box-entry > .entry > :not(.loop) > .byline.post-footer { padding: var(--md-half); }
 
-.box-entry .entry-title.no-media:not(:empty) + .the-content { padding-block-start: 0; }
+.box-entry .entry-title:not(.cover, :empty) + .the-content { padding-block-start: 0; }
 
 /* PLAIN + BORDER STYLES */
 
@@ -183,7 +183,7 @@
 	margin-block-end: var(--md-single);
 }
 
-.loop-dates + .loop-dates { margin-block-start: var(--md-double); }
+.loop-dates { margin-block-end: var(--md-double); }
 
 /* LOOP TIMELINE */
 

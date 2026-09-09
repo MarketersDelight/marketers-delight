@@ -71,7 +71,7 @@
 
 .byline:empty { display: none; }
 
-.byline.entry-top:not(:last-child),
+.loop:not(.box-style) .byline.entry-top:not(:last-child),
 .byline.before-content { margin-block-end: var(--md-half); }
 
 .byline :is(.byline-comments, .byline-edit) a { text-decoration: none; }

@@ -247,7 +247,30 @@ class BreadcrumbsTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( array( 'home', 'blog', 'year', 'current' ), array_keys( $breadcrumbs ) );
 		$this->assertSame( 2026, $breadcrumbs['year']['label'] );
+		$this->assertSame( 'https://example.test/2026/', $breadcrumbs['year']['url'] );
 		$this->assertSame( 'August 2026', $breadcrumbs['current']['label'] );
+	}
+
+	public function test_combined_stream_date_archive_keeps_stream_breadcrumb_links() {
+		md_test_set_query( array(
+			'is_date' => true,
+			'is_month' => true,
+			'post_type' => 'stream',
+			'query_var' => array(
+				'post_type' => array( 'stream', 'stream_activity' ),
+				'year' => 2026,
+				'monthnum' => 2
+			)
+		) );
+		md_test_set_post_type_object( 'stream', 'Stream' );
+		md_test_set_post_type_object( 'stream_activity', 'Stream Activity', false );
+
+		$breadcrumbs = $this->breadcrumbs()->get();
+
+		$this->assertSame( array( 'home', 'archive', 'year', 'current' ), array_keys( $breadcrumbs ) );
+		$this->assertSame( 'Stream', $breadcrumbs['archive']['label'] );
+		$this->assertSame( 'https://example.test/2026/?post_type=stream', $breadcrumbs['year']['url'] );
+		$this->assertSame( 'February 2026', $breadcrumbs['current']['label'] );
 	}
 
 	public function test_custom_post_date_archive_uses_its_post_type_archive() {

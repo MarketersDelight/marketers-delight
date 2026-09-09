@@ -19,7 +19,7 @@
 		$icon = 'calendar';
 	}
 
-	$permalink = get_permalink();
+	$permalink = ! empty( $fields['url'] ) ? $fields['url'] : get_permalink();
 	$relative = human_time_diff( $post_time, current_time( 'U' ) );
 
 	if ( isset( $fields['url_params'] ) )

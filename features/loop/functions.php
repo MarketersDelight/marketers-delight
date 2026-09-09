@@ -394,21 +394,67 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 }
 
 /**
+ * Build a date archive URL that retains the active content context.
+ *
+ * @since 6.0
+ */
+
+function md_get_date_archive_link( $year, $month = 0, $day = 0, $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'post_type' => '',
+		'taxonomy' => '',
+		'term' => ''
+	) );
+	$url = $day ? get_day_link( $year, $month, $day ) : ( $month ? get_month_link( $year, $month ) : get_year_link( $year ) );
+	$query_args = array();
+	$post_type = $args['post_type'] ?: get_query_var( 'post_type' );
+
+	if ( empty( $post_type ) )
+		$post_type = md_get_post_type();
+
+	if ( $post_type && $post_type !== 'post' )
+		$query_args['post_type'] = $post_type;
+
+	if ( ! $args['taxonomy'] && ( is_category() || is_tag() || is_tax() ) ) {
+		$term = get_queried_object();
+		$args['taxonomy'] = ! empty( $term->taxonomy ) ? $term->taxonomy : '';
+		$args['term'] = ! empty( $term->slug ) ? $term->slug : '';
+	}
+
+	if ( $args['taxonomy'] && $args['term'] ) {
+		$taxonomy = get_taxonomy( $args['taxonomy'] );
+
+		if ( $taxonomy && ! empty( $taxonomy->query_var ) )
+			$query_args[$taxonomy->query_var] = $args['term'];
+	}
+
+	return $query_args ? add_query_arg( $query_args, $url ) : $url;
+}
+
+/**
  * Build the month key and label used to section a date-based Loop.
  *
  * @since 6.0
  */
 
-function md_get_loop_date( $post = null ) {
+function md_get_loop_date( $post = null, $args = array() ) {
 	$timestamp = get_post_time( 'U', true, $post );
 
 	if ( ! $timestamp )
 		return array();
 
+	$year = absint( wp_date( 'Y', $timestamp ) );
+	$month = absint( wp_date( 'n', $timestamp ) );
+	$url = md_get_date_archive_link( $year, $month, 0, $args );
+
+	if ( is_month() && absint( get_query_var( 'year' ) ) === $year && absint( get_query_var( 'monthnum' ) ) === $month )
+		$url = '';
+
 	return apply_filters( 'md_filter_loop_date', array(
 		'month' => wp_date( 'Y-m', $timestamp ),
-		'label' => wp_date( 'F Y', $timestamp )
-	), $post );
+		'label' => wp_date( 'F Y', $timestamp ),
+		'url' => $url
+	), $post, $args );
 }
 
 /**
