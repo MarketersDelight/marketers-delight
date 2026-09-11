@@ -178,12 +178,16 @@ function md_test_set_post_ancestors( $post_id, array $ancestors ) {
 	$GLOBALS['__test_post_ancestors'][$post_id] = $ancestors;
 }
 
-function md_test_set_post_type_object( $post_type, $label, $has_archive = true, $hierarchical = false ) {
+function md_test_set_post_type_object( $post_type, $label, $has_archive = true, $hierarchical = false, $singular = null, $singular_indexable = true ) {
 	$GLOBALS['__test_post_types'][$post_type] = (object) array(
 		'name' => $post_type,
-		'labels' => (object) array( 'name' => $label ),
+		'labels' => (object) array(
+			'name' => $label,
+			'singular_name' => $singular ?: $label
+		),
 		'has_archive' => $has_archive,
-		'hierarchical' => $hierarchical
+		'hierarchical' => $hierarchical,
+		'md_singular_indexable' => $singular_indexable
 	);
 }
 
@@ -274,8 +278,14 @@ function is_admin() {
 	return $GLOBALS['__test_query']['is_admin'];
 }
 
-function is_singular() {
-	return $GLOBALS['__test_query']['is_singular'];
+function is_singular( $post_types = '' ) {
+	if ( ! $GLOBALS['__test_query']['is_singular'] )
+		return false;
+
+	if ( empty( $post_types ) )
+		return true;
+
+	return in_array( $GLOBALS['__test_query']['post_type'], (array) $post_types, true );
 }
 
 function is_404() {
@@ -368,7 +378,67 @@ function home_url( $path = '' ) {
 }
 
 function get_the_title( $post_id = 0 ) {
+	if ( is_object( $post_id ) ) {
+		if ( isset( $post_id->ID ) && isset( $GLOBALS['__test_titles'][$post_id->ID] ) )
+			return $GLOBALS['__test_titles'][$post_id->ID];
+
+		return isset( $post_id->post_title ) ? $post_id->post_title : '';
+	}
+
 	return isset( $GLOBALS['__test_titles'][$post_id] ) ? $GLOBALS['__test_titles'][$post_id] : "Post {$post_id}";
+}
+
+function post_type_archive_title( $prefix = '', $display = true ) {
+	$post_type = get_post_type_object( $GLOBALS['__test_query']['post_type'] );
+	$title = $post_type ? $prefix . $post_type->labels->name : '';
+
+	if ( $display )
+		echo $title;
+
+	return $title;
+}
+
+function single_term_title( $prefix = '', $display = true ) {
+	$term = get_queried_object();
+	$title = $term && isset( $term->name ) ? $prefix . $term->name : '';
+
+	if ( $display )
+		echo $title;
+
+	return $title;
+}
+
+function md_parse_text( $text, $context = '' ) {
+	return $text;
+}
+
+function wp_strip_all_tags( $text, $remove_breaks = false ) {
+	$text = strip_tags( $text );
+
+	if ( $remove_breaks )
+		$text = str_replace( array( "\r", "\n", "\t" ), ' ', $text );
+
+	return $text;
+}
+
+function wp_specialchars_decode( $text, $quote_style = ENT_NOQUOTES ) {
+	return html_entity_decode( $text, $quote_style, 'UTF-8' );
+}
+
+function wp_kses_post( $text ) {
+	return $text;
+}
+
+function esc_html__( $text, $domain = 'default' ) {
+	return $text;
+}
+
+function get_the_author() {
+	return 'Author';
+}
+
+function get_the_date( $format = '' ) {
+	return 'September 10, 2026';
 }
 
 function get_permalink( $post_id = 0 ) {

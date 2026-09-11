@@ -139,6 +139,10 @@ function is_admin() {
 	return false;
 }
 
+function wp_doing_ajax() {
+	return false;
+}
+
 function wp_parse_args( $args, $defaults = array() ) {
 	return array_merge( $defaults, (array) $args );
 }

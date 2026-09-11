@@ -65,6 +65,10 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		$this->assertSame( 6, md_post_type_field( array( 'loop', 'posts_per_page' ), 12, 'post' ) );
 	}
 
+	public function test_unknown_post_type_has_no_settings_parent() {
+		$this->assertNull( md_post_type_settings_parent( 'missing_post_type' ) );
+	}
+
 	public function test_post_type_field_falls_through_to_default_when_unset() {
 		md_test_set_option( 'marketers_delight', array() );
 

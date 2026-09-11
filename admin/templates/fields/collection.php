@@ -28,7 +28,7 @@
 	</div>
 
 	<div data-md-collection-editor hidden>
-		<?php $collection->render_fields( $item->ID ); ?>
+			<?php $collection->fields( $item->ID ); ?>
 
 		<p class="md-collection-actions">
 			<button type="button" class="button button-primary" data-md-collection-action="save"><?php echo esc_html( sprintf( __( 'Save %s', 'md' ), $singular ) ); ?></button>

@@ -63,7 +63,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 function md_post_type_settings_parent( $post_type ) {
 	$object = get_post_type_object( $post_type );
 
-	return ! empty( $object->md_settings_parent ) ? $object->md_settings_parent : null;
+	return $object && ! empty( $object->md_settings_parent ) ? $object->md_settings_parent : null;
 }
 
 /**

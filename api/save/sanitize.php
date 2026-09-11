@@ -87,8 +87,8 @@ class md_sanitize {
 	}
 
 	/**
-	 * A checkbox can only have 2 possible return values.
-	 * Lock results to '' or true.
+	 * Sanitize registered checkbox keys. Checked values become true; explicit
+	 * zero values are preserved for inherited off overrides.
 	 *
 	 * @since 4.5
 	 */
@@ -102,9 +102,15 @@ class md_sanitize {
 			$allowed = array_map( 'strval', $is_list ? $options : $option_keys );
 
 			if ( is_array( $input ) )
-				foreach ( $input as $check => $val )
-					if ( ! empty( $val ) && in_array( (string) $check, $allowed, true ) )
+				foreach ( $input as $check => $val ) {
+					if ( ! in_array( (string) $check, $allowed, true ) )
+						continue;
+
+					if ( $val === 0 || $val === '0' )
+						$save[$check] = 0;
+					elseif ( ! empty( $val ) )
 						$save[$check] = true;
+				}
 		}
 		else $save = (bool) $input;
 

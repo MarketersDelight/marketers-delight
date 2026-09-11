@@ -2,13 +2,21 @@
 /**
  * Tests md_fields::get_context() — the single shared branching for
  * post/term/user meta vs. admin-group settings pages (with nested child
- * fields and taxonomy tabs) — plus get_field() and module(), the two
- * public read paths built on top of it. field() itself renders HTML via
- * templates and isn't covered here; its behavior depends on the same
- * get_context() output already exercised through get_field()/module().
+ * fields and taxonomy tabs) — plus get_field(), module(), and the inherited
+ * arguments field() passes to its renderer.
  *
  * @since 6.0
  */
+
+class MD_Fields_Capture extends md_fields {
+
+	public $rendered = array();
+
+	protected function render_field( $name, $id, $option, $args, $wrap_classes ) {
+		$this->rendered = compact( 'name', 'id', 'option', 'args', 'wrap_classes' );
+	}
+
+}
 
 class FieldsContextTest extends MD_TestCase {
 
@@ -35,6 +43,25 @@ class FieldsContextTest extends MD_TestCase {
 
 	private function get_context( $fields ) {
 		return $this->call( $fields, 'get_context' );
+	}
+
+	private function make_capturing_fields( $screen, $clean_id = 'my_page' ) {
+		$fields = new MD_Fields_Capture( array(
+			'id' => $clean_id,
+			'clean_id' => $clean_id,
+			'prefix' => 'md',
+		) );
+		$fields->_get_screen = array_merge( array(
+			'is_post' => false,
+			'is_term' => false,
+			'is_user' => false,
+			'is_taxonomy' => false,
+			'page' => $clean_id,
+			'screen_id' => null,
+			'md_tab' => '',
+		), $screen );
+
+		return $fields;
 	}
 
 	// Post/term/user screens short-circuit before any admin-group lookup.
@@ -305,6 +332,239 @@ class FieldsContextTest extends MD_TestCase {
 		), 'child_field' );
 
 		$this->assertTrue( $fields->module( array( 'enabled' ) ) );
+	}
+
+	// Inherited field presentation resolves the tier above the current screen.
+
+	public function test_parent_value_taxonomy_settings_reads_post_type_tier() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'date' => array( 'group' => true ) ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$parent = $this->call( $fields, 'parent_value', array( array( 'date', 'group' ), false ) );
+
+		$this->assertTrue( $parent['available'] );
+		$this->assertTrue( $parent['value'] );
+	}
+
+	public function test_parent_value_post_screen_reads_post_type_tier() {
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'date' => array( 'group' => true ) ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'is_post' => true,
+			'post_type' => 'post',
+		), 'loop' );
+		$parent = $this->call( $fields, 'parent_value', array( array( 'date', 'group' ), false ) );
+
+		$this->assertTrue( $parent['available'] );
+		$this->assertTrue( $parent['value'] );
+	}
+
+	public function test_parent_value_term_screen_prefers_falsey_taxonomy_tier() {
+		md_test_set_settings( array(
+			'post' => array(
+				'loop' => array( 'date' => array( 'group' => true ) ),
+				'category' => array( 'loop' => array( 'date' => array( 'group' => 0 ) ) )
+			)
+		) );
+
+		$fields = $this->make_fields( array(
+			'is_term' => true,
+			'post_type' => 'post',
+			'taxonomy' => 'category',
+		), 'loop' );
+		$parent = $this->call( $fields, 'parent_value', array( array( 'date', 'group' ), false ) );
+
+		$this->assertTrue( $parent['available'] );
+		$this->assertSame( 0, $parent['value'] );
+	}
+
+	public function test_inherited_checkbox_prepares_inverse_parent_action() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'date' => array( 'group' => true ) ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'date',
+			array( 'group' => 0 ),
+			array(
+				'type' => 'checkbox',
+				'options' => array( 'group' => 'Group posts by month' ),
+				'inherit' => array( 'group' => array(
+					'on' => 'Group posts by month',
+					'off' => 'Do not group posts by month',
+				) )
+			)
+		) );
+
+		$this->assertSame( 0, $args['_inherit']['group']['value'] );
+		$this->assertSame( 'Do not group posts by month', $args['_inherit']['group']['label'] );
+		$this->assertTrue( $args['_inherit']['group']['checked'] );
+	}
+
+	public function test_inherited_checkbox_can_enable_falsey_parent() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'date' => array( 'group' => 0 ) ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'date',
+			array(),
+			array(
+				'type' => 'checkbox',
+				'options' => array( 'group' => 'Group posts by month' ),
+				'inherit' => array( 'group' => array(
+					'on' => 'Group posts by month',
+					'off' => 'Do not group posts by month',
+				) )
+			)
+		) );
+
+		$this->assertSame( 1, $args['_inherit']['group']['value'] );
+		$this->assertSame( 0, $args['_inherit']['group']['parent'] );
+		$this->assertSame( 'Group posts by month', $args['_inherit']['group']['label'] );
+		$this->assertFalse( $args['_inherit']['group']['checked'] );
+	}
+
+	public function test_inherited_number_uses_parent_as_placeholder() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'columns' => 3 ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'columns',
+			'',
+			array( 'type' => 'number', 'inherit' => array( 'default' => 1 ) )
+		) );
+
+		$this->assertSame( 3, $args['placeholder'] );
+	}
+
+	public function test_inherited_select_labels_parent_option() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'order' => 'ASC' ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'order',
+			'',
+			array(
+				'type' => 'select',
+				'empty_label' => 'Descending',
+				'options' => array( 'ASC' => 'Ascending' ),
+				'inherit' => array( 'default' => 'DESC' )
+			)
+		) );
+
+		$this->assertSame( 'Use default (Ascending)', $args['empty_label'] );
+	}
+
+	public function test_inherited_select_supports_custom_label_format() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'layout' => array( 'position' => 'inline' ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'layout' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'position',
+			'',
+			array(
+				'type' => 'select',
+				'empty_label' => 'Top of post',
+				'options' => array( 'inline' => 'Top of post' ),
+				'inherit' => array( 'default' => 'inline', 'format' => 'Show default (%s)' )
+			)
+		) );
+
+		$this->assertSame( 'Show default (Top of post)', $args['empty_label'] );
+	}
+
+	public function test_inherited_select_keeps_fallback_for_unknown_parent_option() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'loop' => array( 'order' => 'STALE' ) ) ) );
+
+		$fields = $this->make_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'order',
+			'',
+			array(
+				'type' => 'select',
+				'empty_label' => 'Descending',
+				'options' => array( 'ASC' => 'Ascending' ),
+				'inherit' => true
+			)
+		) );
+
+		$this->assertSame( 'Descending', $args['empty_label'] );
+	}
+
+	public function test_root_number_uses_declared_inherit_default_as_placeholder() {
+		md_test_set_filter( 'md_admin_groups', array() );
+
+		$fields = $this->make_fields( array(), 'loop' );
+		$args = $this->call( $fields, 'prepare_inheritance', array(
+			'offset',
+			'',
+			array( 'type' => 'number', 'inherit' => array( 'default' => 0 ) )
+		) );
+
+		$this->assertSame( 0, $args['placeholder'] );
+	}
+
+	public function test_field_passes_raw_zero_override_and_prepared_inheritance_to_renderer() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array(
+			'post' => array(
+				'loop' => array( 'date' => array( 'group' => true ) ),
+				'category' => array( 'loop' => array( 'date' => array( 'group' => 0 ) ) )
+			)
+		) );
+
+		$fields = $this->make_capturing_fields( array(
+			'page' => 'post',
+			'is_taxonomy' => true,
+			'md_tab' => 'category',
+		), 'loop' );
+		$fields->field( 'date', array(
+			'type' => 'checkbox',
+			'options' => array( 'group' => 'Group posts by month' ),
+			'inherit' => array( 'group' => array(
+				'on' => 'Group posts by month',
+				'off' => 'Do not group posts by month',
+			) )
+		) );
+
+		$this->assertSame( 'marketers_delight[post][category][loop][date]', $fields->rendered['name'] );
+		$this->assertSame( array( 'group' => 0 ), $fields->rendered['option'] );
+		$this->assertSame( 0, $fields->rendered['args']['_inherit']['group']['value'] );
+		$this->assertTrue( $fields->rendered['args']['_inherit']['group']['checked'] );
 	}
 
 }

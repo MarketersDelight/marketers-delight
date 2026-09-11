@@ -177,6 +177,35 @@ class SaveTest extends MD_TestCase {
 		$this->assertSame( 'keep-topic', $result['book']['topic']['layout'] );
 	}
 
+	public function test_taxonomy_save_preserves_explicit_checkbox_zero() {
+		$this->schema = array(
+			'book' => array( 'fields' => array(
+				'date' => array(
+					'type' => 'checkbox',
+					'options' => array( 'group' )
+				)
+			) )
+		);
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_option( 'marketers_delight', array(
+			'book' => array(
+				'genre' => array( 'date' => array( 'group' => true ) ),
+				'topic' => array( 'date' => array( 'group' => true ) )
+			)
+		) );
+		$_POST['md_save_taxonomy_post_type'] = 'book';
+		$_POST['md_save_taxonomy'] = 'genre';
+
+		$result = $this->save->admin_save( array(
+			'book' => array(
+				'genre' => array( 'date' => array( 'group' => '0' ) )
+			)
+		) );
+
+		$this->assertSame( 0, $result['book']['genre']['date']['group'] );
+		$this->assertTrue( $result['book']['topic']['date']['group'] );
+	}
+
 	public function test_dropins_page_save_preserves_complete_inventory_and_toggles_status() {
 		$dropin_fields = array(
 			'name' => array( 'type' => 'text' ),

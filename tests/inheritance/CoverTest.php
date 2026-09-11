@@ -103,4 +103,25 @@ class CoverTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'header_cover', md_cover( 'page' )['position'] );
 		$this->assertSame( 'headline_cover', md_cover( 'post' )['position'] );
 	}
+
+	public function test_taxonomy_false_checkbox_override_preserves_cover_siblings() {
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array(
+				'page_cover' => array(
+					'position' => 'headline_cover',
+					'display' => array( 'alternate' => true, 'disable_overlay' => true )
+				),
+				'category' => array(
+					'page_cover' => array( 'display' => array( 'disable_overlay' => 0 ) )
+				)
+			)
+		) );
+		$this->set_category_archive();
+
+		$cover = md_cover( 'page' );
+
+		$this->assertSame( 'headline_cover', $cover['position'] );
+		$this->assertTrue( $cover['display']['alternate'] );
+		$this->assertSame( 0, $cover['display']['disable_overlay'] );
+	}
 }

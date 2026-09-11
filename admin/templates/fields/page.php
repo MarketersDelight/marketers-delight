@@ -4,8 +4,8 @@
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
-		'description' => __( 'The main <code>h1</code> title that displays prominently on this page.', 'md' ),
-		'placeholder' => $this->module( 'archives_title' )
+		'description' => __( 'The main <code>h1</code> title displayed prominently on this page. Also used as the default browser title.', 'md' ),
+		'inherit' => true
 	) ); ?>
 </div>
 

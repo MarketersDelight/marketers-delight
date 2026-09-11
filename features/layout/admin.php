@@ -310,6 +310,7 @@ class md_layout extends md_api {
 
 		$context = array(
 			'post_type' => $post_type,
+			'settings_post_type' => $is_admin ? md_clean_id( $screen['page'] ) : $post_type,
 			'is_admin' => $is_admin,
 			'is_post' => $is_post,
 			'is_term' => $is_term,
@@ -321,9 +322,16 @@ class md_layout extends md_api {
 
 		// Get options for layout areas
 
-		$header = $this->fields->module( 'header' );
-		$content = $this->fields->module( 'content' );
-		$footer = $this->fields->module( 'footer' );
+		$header = array(
+			'remove' => $this->fields->module( array( 'header', 'remove' ) ),
+			'menu' => $this->fields->module( array( 'header', 'menu' ) )
+		);
+		$content = array(
+			'remove' => $this->fields->module( array( 'content', 'remove' ) )
+		);
+		$footer = array(
+			'remove' => $this->fields->module( array( 'footer', 'remove' ) )
+		);
 		$sidebar = $this->get_layout_state( 'sidebar', $context );
 		$panel = $this->get_layout_state( 'panel', $context );
 

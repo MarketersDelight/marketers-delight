@@ -127,6 +127,9 @@ class md_api {
 		if ( method_exists( $this, 'breadcrumbs' ) )
 			add_filter( 'md_filter_breadcrumbs', array( $this, 'breadcrumbs' ) );
 
+		if ( $this->post_type && method_exists( $this, 'document_title' ) )
+			add_filter( 'document_title_parts', array( $this, '_document_title' ), 20 );
+
 		if ( method_exists( $this, 'save_post_meta' ) )
 			add_filter( 'md_post_meta_save', array( $this, 'save_post_meta' ), 10, 2 );
 
@@ -341,6 +344,33 @@ class md_api {
 		$post_type[] = $this->post_type;
 
 		return $post_type;
+	}
+
+	/**
+	 * Let the owning API personalize a generic title for an untitled singular.
+	 *
+	 * @since 6.0
+	 */
+
+	public function _document_title( $parts ) {
+		if ( ! is_singular( $this->post_type ) )
+			return $parts;
+
+		$post = get_queried_object();
+
+		if ( ! is_object( $post ) || empty( $post->post_type ) || $post->post_type !== $this->post_type )
+			return $parts;
+
+		if ( ! empty( trim( (string) $post->post_title ) ) )
+			return $parts;
+
+		$title = ! empty( $parts['title'] ) ? $parts['title'] : '';
+		$document_title = md_sanitize_document_title( $this->document_title( $title, $post ) );
+
+		if ( $document_title )
+			$parts['title'] = $document_title;
+
+		return $parts;
 	}
 
 	/**

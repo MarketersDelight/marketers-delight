@@ -2,13 +2,14 @@
 /**
  * Tests md_get_loop() (features/loop/functions.php) — the
  * shortcode/manual-loop path of the Loop inheritance cascade. Unlike
- * loop_query_vars(), this merges whole per-tier field arrays together
- * (array_merge($post_type, $tax, $single)) rather than resolving one field
- * at a time, and covers the wider field set (columns, featured, etc).
+ * loop_query_vars(), this recursively replaces whole per-tier field arrays
+ * rather than resolving one field at a time, and covers the wider field set
+ * (columns, featured, etc).
  *
- * Plain, unconditional cascade for every field except the four term-ID
- * fields (category_include/exclude, include_cats/exclude_cats), which are
- * resolved separately via md_module( ..., array( 'inherit_post_type' =>
+ * Plain, unconditional cascade with recursive replacement so sibling options
+ * continue to inherit. The four term-ID fields (category_include/exclude and
+ * include_cats/exclude_cats) are resolved separately via md_module( ...,
+ * array( 'inherit_post_type' =>
  * false ) ) since a term ID inherited from a broader tier may not exist in
  * the narrower tier's own context at all.
  *
@@ -190,6 +191,30 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$loop = md_get_loop();
 
 		$this->assertTrue( $loop['by_date'] );
+	}
+
+	public function test_taxonomy_false_checkbox_override_preserves_sibling_settings() {
+		$this->set_option_loop(
+			array( 'date' => array( 'group' => true, 'label' => 'month' ) ),
+			array( 'date' => array( 'group' => 0 ) )
+		);
+		$this->set_taxonomy_query();
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 0, $loop['date']['group'] );
+		$this->assertSame( 'month', $loop['date']['label'] );
+		$this->assertArrayNotHasKey( 'by_date', $loop );
+	}
+
+	public function test_term_level_top_level_zero_override_is_not_filtered_out() {
+		$this->set_option_loop( array( 'future_toggle' => true ) );
+		$this->set_taxonomy_query();
+		md_test_set_term_meta( 42, array( 'loop' => array( 'future_toggle' => 0 ) ) );
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 0, $loop['future_toggle'] );
 	}
 
 	public function test_category_grouping_takes_precedence_over_date_grouping() {

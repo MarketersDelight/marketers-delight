@@ -17,7 +17,9 @@ function md_cover( $context = null ) {
 
 	if ( $context === 'post' ) {
 		$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
-		$single_cover = array_filter( md_post_meta( 'page_cover', null, array() ) );
+		$single_cover = array_filter( md_post_meta( 'page_cover', null, array() ), function( $value ) {
+			return $value !== '' && $value !== false && $value !== null && $value !== array();
+		} );
 
 		if ( is_category() || is_tax() ) {
 			$inherit = md_taxonomy_field( array( 'loop', 'inherit', 'page_cover' ), $inherit );
@@ -25,7 +27,7 @@ function md_cover( $context = null ) {
 		}
 
 		if ( ! empty( $post_type_cover['display']['single'] ) )
-			$cover = array_merge( $post_type_cover, $single_cover );
+			$cover = array_replace_recursive( $post_type_cover, $single_cover );
 		else
 			$cover = $single_cover;
 	}
@@ -33,8 +35,10 @@ function md_cover( $context = null ) {
 		$cover = $post_type_cover;
 	elseif ( is_category() || is_tax() ) {
 		$tax_cover = md_taxonomy_field( 'page_cover', array() );
-		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ) );
-		$cover = array_merge( $post_type_cover, $tax_cover, $term_cover );
+		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ), function( $value ) {
+			return $value !== '' && $value !== false && $value !== null && $value !== array();
+		} );
+		$cover = array_replace_recursive( $post_type_cover, $tax_cover, $term_cover );
 	}
 	else $cover = md_post_meta( 'page_cover', true, array() );
 

@@ -513,7 +513,10 @@ function md_get_loop( $args = array() ) {
 		}
 		else {
 			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
-			$loop = array_merge( $post_type_loop, $tax, array_filter( $single ) );
+			$single = array_filter( $single, function( $value ) {
+				return $value !== '' && $value !== false && $value !== null && $value !== array();
+			} );
+			$loop = array_replace_recursive( $post_type_loop, $tax, $single );
 		}
 
 		// Set additional parameters

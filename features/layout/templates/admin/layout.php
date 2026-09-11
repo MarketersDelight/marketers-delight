@@ -14,6 +14,12 @@
 				'classes' => 'md-conditional-option',
 				'options' => array(
 					'remove' => __( 'Remove <b>Header</b>', 'md' )
+				),
+				'inherit' => array(
+					'remove' => array(
+						'on' => __( 'Remove <b>Header</b>', 'md' ),
+						'off' => __( 'Show <b>Header</b>', 'md' )
+					)
 				)
 			) ); ?>
 
@@ -24,6 +30,12 @@
 					'type' => 'checkbox',
 					'options' => array(
 						'logo' => __( 'Remove <b>Logo</b>', 'md' ),
+					),
+					'inherit' => array(
+						'logo' => array(
+							'on' => __( 'Remove <b>Logo</b>', 'md' ),
+							'off' => __( 'Show <b>Logo</b>', 'md' )
+						)
 					)
 				) );
 
@@ -32,6 +44,12 @@
 						'type' => 'checkbox',
 						'options' => array(
 							'tagline' => __( 'Remove <b>Tagline</b>', 'md' )
+						),
+						'inherit' => array(
+							'tagline' => array(
+								'on' => __( 'Remove <b>Tagline</b>', 'md' ),
+								'off' => __( 'Show <b>Tagline</b>', 'md' )
+							)
 						)
 					) );
 
@@ -40,6 +58,12 @@
 						'type' => 'checkbox',
 						'options' => array(
 							'elements' => __( 'Remove <b>Elements</b>', 'md' )
+						),
+						'inherit' => array(
+							'elements' => array(
+								'on' => __( 'Remove <b>Elements</b>', 'md' ),
+								'off' => __( 'Show <b>Elements</b>', 'md' )
+							)
 						)
 					) );
 
@@ -52,6 +76,12 @@
 						'classes' => 'md-conditional-option',
 						'options' => array(
 							'menu' => __( 'Remove <b>Menu</b>', 'md' )
+						),
+						'inherit' => array(
+							'menu' => array(
+								'on' => __( 'Remove <b>Menu</b>', 'md' ),
+								'off' => __( 'Show <b>Menu</b>', 'md' )
+							)
 						)
 					) );
 
@@ -60,6 +90,7 @@
 					$this->fields->field( 'header_menu', array(
 						'type' => 'select',
 						'empty_label' => __( 'Use default menu', 'md' ),
+						'inherit' => true,
 						'options' => $menus
 					) );
 
@@ -79,6 +110,12 @@
 				'classes' => 'md-conditional-option',
 				'options' => array(
 					'remove' => __( 'Remove <b>Footer</b>', 'md' )
+				),
+				'inherit' => array(
+					'remove' => array(
+						'on' => __( 'Remove <b>Footer</b>', 'md' ),
+						'off' => __( 'Show <b>Footer</b>', 'md' )
+					)
 				)
 			) ); ?>
 
@@ -87,6 +124,12 @@
 					'type' => 'checkbox',
 					'options' => array(
 						'columns' => __( 'Remove <b>Columns</b>', 'md' )
+					),
+					'inherit' => array(
+						'columns' => array(
+							'on' => __( 'Remove <b>Columns</b>', 'md' ),
+							'off' => __( 'Show <b>Columns</b>', 'md' )
+						)
 					)
 				) ); ?>
 			</div>
@@ -110,7 +153,8 @@
 		$this->fields->field( 'featured_image', array(
 			'type' => 'select',
 			'label' => __( 'Featured image', 'md' ),
-			'empty_label' => $this->fields->inherit_label( 'featured_image', __( 'Use default position', 'md' ), $featured_image_options ),
+			'empty_label' => __( 'Use default position', 'md' ),
+			'inherit' => true,
 			'options' => $featured_image_options
 		) );
 
@@ -134,15 +178,34 @@
 			'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
 			'the_content' => __( 'Remove <b>Post Content</b>', 'md' )
 		);
+		$content_inherit = array(
+			'remove' => array(
+				'on' => __( 'Remove <b>Content Box</b>', 'md' ),
+				'off' => __( 'Show <b>Content Box</b>', 'md' )
+			),
+			'the_content' => array(
+				'on' => __( 'Remove <b>Post Content</b>', 'md' ),
+				'off' => __( 'Show <b>Post Content</b>', 'md' )
+			)
+		);
 
 		if ( $is_post ) {
 			$content_options['builder'] = __( 'Enable <b>Builder</b>', 'md' );
 			$content_options['wpautop'] = __( 'Disable <strong>WP format</strong>', 'md' );
+			$content_inherit['builder'] = array(
+				'on' => __( 'Enable <b>Builder</b>', 'md' ),
+				'off' => __( 'Disable <b>Builder</b>', 'md' )
+			);
+			$content_inherit['wpautop'] = array(
+				'on' => __( 'Disable <strong>WP format</strong>', 'md' ),
+				'off' => __( 'Enable <strong>WP format</strong>', 'md' )
+			);
 		}
 
 		$this->fields->field( 'content', array(
 			'type' => 'checkbox',
-			'options' => $content_options
+			'options' => $content_options,
+			'inherit' => $content_inherit
 		) );
 
 		endif; ?>
@@ -156,6 +219,12 @@
 					'type' => 'checkbox',
 					'options' => array(
 						'headline' => __( 'Remove <b>Title</b>', 'md' )
+					),
+					'inherit' => array(
+						'headline' => array(
+							'on' => __( 'Remove <b>Title</b>', 'md' ),
+							'off' => __( 'Show <b>Title</b>', 'md' )
+						)
 					)
 				) );
 			}
@@ -195,7 +264,8 @@
 
 			$this->fields->field( 'content_style', array(
 				'type' => 'select',
-				'empty_label' => $this->fields->inherit_label( 'content_style', __( 'Use default style', 'md' ), $content_style_options ),
+				'empty_label' => __( 'Use default style', 'md' ),
+				'inherit' => true,
 				'wrap_classes' => 'md-sep-micro',
 				'options' => $content_style_options
 			) ); ?>

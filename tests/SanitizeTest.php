@@ -38,6 +38,13 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( array( 'a' => true ), $this->sanitize->checkbox( $input, $fields ) );
 	}
 
+	public function test_checkbox_group_preserves_explicit_zero_override() {
+		$input = array( 'a' => '0', 'b' => '1' );
+		$fields = array( 'options' => array( 'a', 'b' ) );
+
+		$this->assertSame( array( 'a' => 0, 'b' => true ), $this->sanitize->checkbox( $input, $fields ) );
+	}
+
 	public function test_single_checkbox_unchecked_returns_false_not_null() {
 		$this->assertFalse( $this->sanitize->checkbox( null ) );
 	}

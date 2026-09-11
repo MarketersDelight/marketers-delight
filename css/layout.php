@@ -81,6 +81,8 @@
 	text-align: center;
 }
 
+.compact .content:not(:last-child) { margin-block-end: var(--md-single); }
+
 /* QUERIES */
 
 @media (min-width: 900px) {
@@ -90,6 +92,7 @@
 		gap: var(--md-mid);
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
+	.compact .content:not(:last-child) { margin-block-end: 0; }
 	.compact .content {
 		flex: 0 1 <?php echo round( $content_width / $site_width * 100 ); ?>%;
 		min-width: 0;

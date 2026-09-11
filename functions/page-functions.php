@@ -1,6 +1,59 @@
 <?php
 
 /**
+ * Determine whether singular posts of a registered post type are indexable.
+ *
+ * Post types are indexable unless they explicitly register the
+ * md_singular_indexable argument as false.
+ *
+ * @since 6.0
+ */
+
+function md_is_singular_indexable( $post_type ) {
+	$post_type = get_post_type_object( $post_type );
+
+	return ! $post_type || ! isset( $post_type->md_singular_indexable ) || false !== $post_type->md_singular_indexable;
+}
+
+/**
+ * Keep declared content fragments out of search engine indexes.
+ *
+ * @since 6.0
+ */
+
+function md_robots_noindex_singular( $robots ) {
+	if ( ! is_singular() )
+		return $robots;
+
+	$post = get_queried_object();
+
+	if ( is_object( $post ) && ! empty( $post->post_type ) && ! md_is_singular_indexable( $post->post_type ) ) {
+		unset( $robots['index'] );
+		$robots['noindex'] = true;
+	}
+
+	return $robots;
+}
+
+add_filter( 'wp_robots', 'md_robots_noindex_singular' );
+
+/**
+ * Remove non-indexable singular post types from WordPress core sitemaps.
+ *
+ * @since 6.0
+ */
+
+function md_sitemaps_post_types( $post_types ) {
+	foreach ( $post_types as $post_type => $object )
+		if ( ! md_is_singular_indexable( $post_type ) )
+			unset( $post_types[$post_type] );
+
+	return $post_types;
+}
+
+add_filter( 'wp_sitemaps_post_types', 'md_sitemaps_post_types' );
+
+/**
  * Callback function for get_searchform().
  *
  * @since 6.0

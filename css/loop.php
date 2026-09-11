@@ -183,7 +183,7 @@
 	margin-block-end: var(--md-single);
 }
 
-.loop-dates { margin-block-end: var(--md-double); }
+.loop-dates:not(:last-child) { margin-block-end: var(--md-mid); }
 
 /* LOOP TIMELINE */
 

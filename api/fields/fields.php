@@ -171,7 +171,143 @@ class md_fields extends md_fields_render {
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
 			$args['save_empty'] = $has_option;
 
+		if ( isset( $args['inherit'] ) )
+			$args = $this->prepare_inheritance( $field, $option, $args );
+
 		$this->render_field( $name, $id, $option, $args, $wrap_classes );
+	}
+
+	/**
+	 * Prepare inherited field presentation without replacing the raw local value.
+	 * Empty text/number/select controls continue to mean "inherit", while an
+	 * inherited checkbox submits the inverse of its effective parent value.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function prepare_inheritance( $field, $option, $args ) {
+		$type = $args['type'];
+		$inherit = is_array( $args['inherit'] ) ? $args['inherit'] : array();
+		$default = array_key_exists( 'default', $inherit ) ? $inherit['default'] : null;
+
+		if ( $type === 'checkbox' ) {
+			$option = is_array( $option ) ? $option : array();
+
+			foreach ( $args['options'] as $key => $label ) {
+				if ( ! isset( $inherit[$key] ) || ! is_array( $inherit[$key] ) )
+					continue;
+
+				$option_parent = $this->parent_value( array_merge( (array) $field, array( $key ) ), false );
+
+				if ( ! $option_parent['available'] )
+					continue;
+
+				$enabled = (bool) $option_parent['value'];
+				$target = $enabled ? 0 : 1;
+				$target_label = $enabled ? ( $inherit[$key]['off'] ?? $label ) : ( $inherit[$key]['on'] ?? $label );
+				$has_override = array_key_exists( $key, $option );
+
+				$args['_inherit'][$key] = array(
+					'value' => $target,
+					'label' => $target_label,
+					'checked' => $has_override && intval( $option[$key] ) === $target,
+					'parent' => intval( $enabled )
+				);
+			}
+
+			return $args;
+		}
+
+		$parent = $this->parent_value( (array) $field, $default );
+
+		if ( in_array( $type, array( 'text', 'number' ), true ) ) {
+			$value = $parent['available'] ? $parent['value'] : $default;
+
+			if ( is_scalar( $value ) )
+				$args['placeholder'] = $value;
+		}
+		elseif ( $type === 'select' && $parent['available'] ) {
+			$value = $parent['value'];
+
+			if ( is_scalar( $value ) && isset( $args['options'] ) && is_array( $args['options'] ) && array_key_exists( $value, $args['options'] ) ) {
+				$format = isset( $inherit['format'] ) ? $inherit['format'] : __( 'Use default (%s)', 'md' );
+				$args['empty_label'] = sprintf( $format, $args['options'][$value] );
+			}
+		}
+
+		return $args;
+	}
+
+	/**
+	 * Resolve the effective value immediately above the current admin screen.
+	 * The availability flag distinguishes a root field from a falsey parent.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function parent_value( $keys, $default = null ) {
+		$screen = $this->_get_screen;
+		$context = $this->get_context();
+		$result = array(
+			'available' => false,
+			'value' => $default
+		);
+
+		if ( $context['is_user'] )
+			return $result;
+
+		if ( $context['is_post'] ) {
+			if ( empty( $screen['post_type'] ) )
+				return $result;
+
+			array_unshift( $keys, $this->_clean_id );
+			$result['available'] = true;
+			$result['value'] = md_post_type_field( $keys, $default, $screen['post_type'] );
+
+			return $result;
+		}
+
+		if ( $context['is_term'] ) {
+			if ( empty( $screen['post_type'] ) || empty( $screen['taxonomy'] ) )
+				return $result;
+
+			array_unshift( $keys, $this->_clean_id );
+			$value = md_taxonomy_field( $keys, null, $screen['post_type'], $screen['taxonomy'] );
+
+			$result['available'] = true;
+
+			if ( is_null( $value ) )
+				$value = md_post_type_field( $keys, $default, $screen['post_type'] );
+
+			$result['value'] = $value;
+
+			return $result;
+		}
+
+		if ( ! $context['is_group'] )
+			return $result;
+
+		$field_keys = $keys;
+
+		if ( $context['is_child'] )
+			array_unshift( $field_keys, $this->_clean_id );
+
+		if ( $context['taxonomy'] ) {
+			$result['available'] = true;
+			$result['value'] = md_post_type_field( $field_keys, $default, $context['page_id'] );
+
+			return $result;
+		}
+
+		$parent = md_post_type_settings_parent( $context['page_id'] );
+
+		if ( ! $parent )
+			return $result;
+
+		$result['available'] = true;
+		$result['value'] = md_post_type_field( $field_keys, $default, $parent );
+
+		return $result;
 	}
 
 	/**
@@ -299,31 +435,6 @@ class md_fields extends md_fields_render {
 		$option = get_option( $this->_option, array() );
 
 		return is_array( $option ) ? $option : array();
-	}
-
-	/**
-	 * Display a specialized label that labels if an option has an inheritance
-	 * (designed with select in mind) and show that in the select for user reference.
-	 *
-	 * @since 6.0
-	 */
-
-	public function inherit_label( $keys, $default_label, $options ) {
-		$parent = null;
-		$context = $this->get_context();
-
-		if ( $context['is_group'] )
-			$parent = md_post_type_settings_parent( $context['page_id'] );
-
-		if ( ! $context['taxonomy'] && ! $context['is_term'] && ! $parent )
-			return $default_label;
-
-		$value = $this->module( $keys );
-
-		if ( is_null( $value ) || ! isset( $options[ $value ] ) )
-			return $default_label;
-
-		return sprintf( __( 'Use default (%s)', 'md' ), $options[ $value ] );
 	}
 
 	/**

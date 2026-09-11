@@ -349,6 +349,31 @@ class BreadcrumbsTest extends MD_InheritanceTestCase {
 		$this->assertArrayHasKey( 'remove', $fields->args['breadcrumbs']['options'] );
 	}
 
+	public function test_child_settings_page_uses_its_owner_instead_of_host_menu_post_type() {
+		md_test_set_settings_parent( 'stream_thread', 'stream' );
+		md_test_set_option( 'marketers_delight', array(
+			'stream' => array(
+				'layout' => array(
+					'breadcrumbs' => array( 'add' => true )
+				)
+			)
+		) );
+		$fields = new MD_Breadcrumbs_Test_Fields;
+		$admin = $this->breadcrumbs();
+
+		$admin->layout_field( $fields, array(
+			'post_type' => 'stream',
+			'settings_post_type' => 'stream_thread',
+			'is_admin' => true,
+			'is_taxonomy' => false,
+			'is_term' => false,
+			'taxonomy' => ''
+		) );
+
+		$this->assertArrayHasKey( 'remove', $fields->args['breadcrumbs']['options'] );
+		$this->assertArrayNotHasKey( 'add', $fields->args['breadcrumbs']['options'] );
+	}
+
 	public function test_admin_field_uses_taxonomy_inheritance_on_terms() {
 		md_test_set_option( 'marketers_delight', array(
 			'book_quote' => array(

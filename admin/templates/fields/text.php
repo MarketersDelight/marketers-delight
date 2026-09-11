@@ -22,7 +22,7 @@ $attrs = array(
 	'class' => implode( ' ', $classes )
 );
 
-if ( ! empty( $args['placeholder'] ) )
+if ( isset( $args['placeholder'] ) )
     $attrs['placeholder'] = $args['placeholder'];
 
 if ( ! empty( $args['style'] ) )

@@ -9,7 +9,8 @@
 					'type' => 'select',
 					'label' => __( 'Position', 'md' ),
 					'style' => 'width: 100%',
-					'empty_label' => $this->fields->inherit_label( 'position', $position_label, $position_options ),
+					'empty_label' => $position_label,
+					'inherit' => true,
 					'options' => $position_options
 				) ); ?>
 			</div>
@@ -31,7 +32,21 @@
 			'label' => __( 'Settings', 'md' ),
 			'inline' => true,
 			'wrap_classes' => 'md-sep-micro',
-			'options' => $display_options
+			'options' => $display_options,
+			'inherit' => array(
+				'alternate' => array(
+					'on' => __( 'Use alternate text color', 'md' ),
+					'off' => __( 'Use default text color', 'md' )
+				),
+				'bg_repeat' => array(
+					'on' => __( 'Repeat background', 'md' ),
+					'off' => __( 'Do not repeat background', 'md' )
+				),
+				'disable_overlay' => array(
+					'on' => __( 'Remove overlay', 'md' ),
+					'off' => __( 'Show overlay', 'md' )
+				)
+			)
 		) );
 
 		if ( $inherit_options )

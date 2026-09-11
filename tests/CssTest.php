@@ -318,7 +318,9 @@ class CssTest extends MD_TestCase {
 		$loop = $this->source( 'css/loop.php' );
 		$template = $this->source( 'features/loop/templates/date-posts.php' );
 
-		$this->assertStringContainsString( '.loop-dates + .loop-dates', $loop );
+		$this->assertStringContainsString( '.loop-dates:not(:last-child) { margin-block-end: var(--md-mid); }', $loop );
+		$this->assertStringNotContainsString( '.loop-dates:has(+ .loop-dates)', $loop );
+		$this->assertStringNotContainsString( '.loop-dates + .pagination', $loop );
 		$this->assertStringContainsString( '<div class="loop-dates">', $template );
 		$this->assertStringContainsString( "esc_url( \$post_date['url'] )", $template );
 		$this->assertStringContainsString( 'esc_attr( $loop_classes )', $template );
@@ -531,6 +533,17 @@ class CssTest extends MD_TestCase {
 		}
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $block );
 		$this->assertStringNotContainsString( "\$colors['content']['body_color']", $classic );
+	}
+
+	public function test_compact_content_keeps_bottom_rhythm_until_sidebar_columns_activate() {
+		$layout = $this->source( 'css/layout.php' );
+
+		$this->assertStringContainsString( '.compact .content:not(:last-child) { margin-block-end: var(--md-single); }', $layout );
+		$this->assertMatchesRegularExpression(
+			'/@media \(min-width: 900px\).*\.compact \.content:not\(:last-child\) \{ margin-block-end: 0; \}/s',
+			$layout
+		);
+		$this->assertStringNotContainsString( '.expanded .content:not(:last-child)', $layout );
 	}
 
 	public function test_alignment_breakouts_keep_theme_selectors_and_leave_editor_widths_to_theme_json() {

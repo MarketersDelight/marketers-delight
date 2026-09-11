@@ -335,6 +335,9 @@
 						return $( this ).closest( '.md-conditional' ).is( parent );
 					};
 
+				if ( el.is( '[type="checkbox"][data-md-inherit-parent]' ) )
+					val = Number( this.checked ? el.val() : el.attr( 'data-md-inherit-parent' ) );
+
 				if ( parent.hasClass( 'md-conditional-invert' ) )
 					val = val ? '' : '1';
 

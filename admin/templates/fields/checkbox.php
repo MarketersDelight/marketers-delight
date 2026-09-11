@@ -18,10 +18,14 @@ $input_class = isset( $args['classes'] ) ? ' class="' . esc_attr( $args['classes
 	<?php foreach ( $args['options'] as $val => $label ) :
 		$nameval = esc_attr( "{$name}[$val]" );
 		$idval = esc_attr( "{$id}_$val" );
-		$check = isset( $option[$val] ) ? esc_attr( $option[$val] ) : '';
+		$inherited = $args['_inherit'][$val] ?? array();
+		$value = array_key_exists( 'value', $inherited ) ? $inherited['value'] : 1;
+		$label = isset( $inherited['label'] ) ? $inherited['label'] : $label;
+		$check = array_key_exists( 'checked', $inherited ) ? $inherited['checked'] : ( isset( $option[$val] ) ? $option[$val] : false );
+		$inherit_attr = array_key_exists( 'parent', $inherited ) ? ' data-md-inherit-parent="' . esc_attr( $inherited['parent'] ) . '"' : '';
 	?>
 		<p class="md-checkbox md-checkbox-<?php echo esc_attr( $val ); ?>">
-			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="1"<?php echo $input_class . checked( $check ); ?> />
+			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo $inherit_attr . $input_class . checked( $check ); ?> />
 			<label for="<?php echo $idval; ?>"><?php echo $label; ?></label>
 		</p>
 	<?php endforeach; ?>

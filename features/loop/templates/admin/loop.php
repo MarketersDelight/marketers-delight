@@ -6,7 +6,8 @@
 		<?php $this->fields->field( 'loop', array(
 			'type' => 'select',
 			'label' => __( 'Template', 'md' ),
-			'empty_label' => $this->fields->inherit_label( 'loop', __( 'Use default', 'md' ), $loop_options ),
+			'empty_label' => __( 'Use default', 'md' ),
+			'inherit' => true,
 			'options' => $loop_options
 		) ); ?>
 	</div>
@@ -24,7 +25,8 @@
 		'label' => __( 'Loop type', 'md' ),
 		'wrap_classes' => 'md-sep-micro',
 		'classes' => 'md-check-val',
-		'empty_label' => $this->fields->inherit_label( 'loop_type', __( 'Use default', 'md' ), $loop_type_options ),
+		'empty_label' => __( 'Use default', 'md' ),
+		'inherit' => true,
 		'options' => $loop_type_options
 	) );
 
@@ -42,6 +44,12 @@
 		'wrap_classes' => 'md-sep-micro',
 		'options' => array(
 			'group' => __( 'Group posts by month', 'md' )
+		),
+		'inherit' => array(
+			'group' => array(
+				'on' => __( 'Group posts by month', 'md' ),
+				'off' => __( 'Do not group posts by month', 'md' )
+			)
 		)
 	) );
 
@@ -77,7 +85,8 @@
 					'type' => 'select',
 					'label' => __( 'Orderby', 'md' ),
 					'description' => __( 'Sort order of posts', 'md' ),
-					'empty_label' => $this->fields->inherit_label( 'orderby', __( 'Date', 'md' ), $orderby_options ),
+					'empty_label' => __( 'Date', 'md' ),
+					'inherit' => array( 'default' => 'date' ),
 					'options' => $orderby_options
 				) ); ?>
 			</div>
@@ -91,7 +100,8 @@
 					'type' => 'select',
 					'label' => __( 'Order', 'md' ),
 					'description' => __( 'Lowest/highest value', 'md' ),
-					'empty_label' => $this->fields->inherit_label( 'order', __( 'Descending', 'md' ), $order_options ),
+					'empty_label' => __( 'Descending', 'md' ),
+					'inherit' => array( 'default' => 'DESC' ),
 					'options' => $order_options
 				) ); ?>
 			</div>
@@ -100,7 +110,7 @@
 				<?php $this->fields->field( 'posts_per_page', array(
 					'type' => 'number',
 					'label' => __( 'Posts Per Page', 'md' ),
-					'placeholder' => $this->fields->module( 'posts_per_page' ) ?: get_option( 'posts_per_page' ),
+					'inherit' => array( 'default' => get_option( 'posts_per_page' ) ),
 					'description' => __( 'Show number of posts', 'md' )
 				) ); ?>
 			</div>
@@ -110,6 +120,7 @@
 					'type' => 'number',
 					'label' => __( 'Featured Posts', 'md' ),
 					'description' => __( 'Feature the first X posts', 'md' ),
+					'inherit' => true,
 					'classes' => 'md-num-val'
 				) ); ?>
 			</div>
@@ -118,7 +129,7 @@
 				<?php $this->fields->field( 'columns', array(
 					'type' => 'number',
 					'label' => __( 'Post Columns', 'md' ),
-					'placeholder' => $this->fields->module( 'columns' ) ?: 1,
+					'inherit' => array( 'default' => 1 ),
 					'description' => __( 'Sort posts in columns', 'md' )
 				) ); ?>
 			</div>
@@ -134,6 +145,7 @@
 				<?php $this->fields->field( 'category_per_page', array(
 					'type' => 'number',
 					'label' => __( 'Categories Per Page', 'md' ),
+					'inherit' => true,
 					'description' => __( 'Show category sections', 'md' )
 				) ); ?>
 			</div>
@@ -142,7 +154,7 @@
 				<?php $this->fields->field( 'posts_per_category', array(
 					'type' => 'number',
 					'label' => __( 'Posts Per Category', 'md' ),
-					'placeholder' => $this->fields->module( 'posts_per_category' ) ?: get_option( 'posts_per_page' ),
+					'inherit' => array( 'default' => get_option( 'posts_per_page' ) ),
 					'description' => __( 'Posts per category section', 'md' )
 				) ); ?>
 			</div>
@@ -151,7 +163,7 @@
 				<?php $this->fields->field( 'category_columns', array(
 					'type' => 'number',
 					'label' => __( 'Category Columns', 'md' ),
-					'placeholder' => $this->fields->module( 'category_columns' ) ?: 1,
+					'inherit' => array( 'default' => 1 ),
 					'description' => __( 'Show category columns', 'md' )
 				) ); ?>
 			</div>
@@ -168,7 +180,8 @@
 					'type' => 'select',
 					'label' => __( 'Orderby', 'md' ),
 					'description' => __( 'Sort order of categories', 'md' ),
-					'empty_label' => $this->fields->inherit_label( 'category_orderby', __( 'Name', 'md' ), $category_orderby_options ),
+					'empty_label' => __( 'Name', 'md' ),
+					'inherit' => array( 'default' => 'name' ),
 					'options' => $category_orderby_options
 				) ); ?>
 			</div>
@@ -182,7 +195,8 @@
 					'type' => 'select',
 					'label' => __( 'Order', 'md' ),
 					'description' => __( 'Lowest/highest value', 'md' ),
-					'empty_label' => $this->fields->inherit_label( 'category_order', __( 'Ascending', 'md' ), $category_order_options ),
+					'empty_label' => __( 'Ascending', 'md' ),
+					'inherit' => array( 'default' => 'ASC' ),
 					'options' => $category_order_options
 				) ); ?>
 			</div>
@@ -212,6 +226,16 @@
 					'options' => array(
 						'hide_description' => __( 'Hide description', 'md' ),
 						'show_empty' => __( 'Show empty categories', 'md' )
+					),
+					'inherit' => array(
+						'hide_description' => array(
+							'on' => __( 'Hide description', 'md' ),
+							'off' => __( 'Show description', 'md' )
+						),
+						'show_empty' => array(
+							'on' => __( 'Show empty categories', 'md' ),
+							'off' => __( 'Hide empty categories', 'md' )
+						)
 					)
 				) ); ?>
 			</div>
@@ -253,7 +277,8 @@
 					'classes' => 'md-content-val',
 					'style' => 'width: 75%;',
 					'wrap_classes' => 'md-sep-micro',
-					'empty_label' => $this->fields->inherit_label( "{$p}content", __( 'Show excerpt', 'md' ), $content_options ),
+					'empty_label' => __( 'Show excerpt', 'md' ),
+					'inherit' => array( 'default' => 'excerpt' ),
 					'options' => $content_options
 				) );
 
@@ -272,13 +297,15 @@
 				$this->fields->field( "{$p}featured_image", array(
 					'type' => 'select',
 					'label' => __( 'Featured Media', 'md' ),
-					'empty_label' => $this->fields->inherit_label( "{$p}featured_image", __( 'Use default position', 'md' ), $featured_image_options ),
+					'empty_label' => __( 'Use default position', 'md' ),
+					'inherit' => true,
 					'options' => $featured_image_options,
 					'wrap_classes' => 'md-sep-micro',
 				) );
 				$this->fields->field( "{$p}featured_image_size", array(
 					'type' => 'select',
 					'empty_label' => __( 'Show full size image', 'md' ),
+					'inherit' => true,
 					'options' => array_combine( $image_sizes, $image_sizes )
 				) ); ?>
 			</div>
@@ -295,6 +322,32 @@
 						'before_content' => __( 'Before Content', 'md' ),
 						'entry_footer' => __( 'Entry Footer', 'md' ),
 						'remove' => __( 'All', 'md' )
+					),
+					'inherit' => array(
+						'entry_top' => array(
+							'on' => __( 'Remove Entry Top byline', 'md' ),
+							'off' => __( 'Show Entry Top byline', 'md' )
+						),
+						'before_title' => array(
+							'on' => __( 'Remove Before Title byline', 'md' ),
+							'off' => __( 'Show Before Title byline', 'md' )
+						),
+						'after_title' => array(
+							'on' => __( 'Remove After Title byline', 'md' ),
+							'off' => __( 'Show After Title byline', 'md' )
+						),
+						'before_content' => array(
+							'on' => __( 'Remove Before Content byline', 'md' ),
+							'off' => __( 'Show Before Content byline', 'md' )
+						),
+						'entry_footer' => array(
+							'on' => __( 'Remove Entry Footer byline', 'md' ),
+							'off' => __( 'Show Entry Footer byline', 'md' )
+						),
+						'remove' => array(
+							'on' => __( 'Remove all bylines', 'md' ),
+							'off' => __( 'Show bylines', 'md' )
+						)
 					)
 				) ); ?>
 			</div>
@@ -307,12 +360,18 @@
 				<?php $this->fields->field( "{$p}read_more", array(
 					'type' => 'text',
 					'label' => __( 'Read More Text', 'md' ),
-					'placeholder' => $this->fields->module( "{$p}read_more" ) ?: __( 'Continue reading &rarr;', 'md' )
+					'inherit' => array( 'default' => __( 'Continue reading &rarr;', 'md' ) )
 				) );
 				$this->fields->field( "{$p}excerpt_settings", array(
 					'type' => 'checkbox',
 					'options' => array(
 						'remove_text' => __( 'Do not show', 'md' )
+					),
+					'inherit' => array(
+						'remove_text' => array(
+							'on' => __( 'Hide excerpt text', 'md' ),
+							'off' => __( 'Show excerpt text', 'md' )
+						)
 					)
 				) ); ?>
 			</div>
@@ -321,12 +380,18 @@
 				<?php $this->fields->field( "{$p}excerpt_more", array(
 					'type' => 'text',
 					'label' => __( 'Excerpt More', 'md' ),
-					'placeholder' => $this->fields->module( "{$p}excerpt_more" ) ?: '[...]'
+					'inherit' => array( 'default' => '[...]' )
 				) );
 				$this->fields->field( "{$p}excerpt_settings", array(
 					'type' => 'checkbox',
 					'options' => array(
 						'remove_more' => __( 'Do not show', 'md' )
+					),
+					'inherit' => array(
+						'remove_more' => array(
+							'on' => __( 'Hide excerpt more', 'md' ),
+							'off' => __( 'Show excerpt more', 'md' )
+						)
 					)
 				) ); ?>
 			</div>
@@ -337,7 +402,7 @@
 					'label' => __( 'Excerpt Length', 'md' ),
 					'unit' => __( 'words', 'md' ),
 					'style' => 'width: 70px',
-					'placeholder' => $this->fields->module( "{$p}excerpt_length" ) ?: 55
+					'inherit' => array( 'default' => 55 )
 				) ); ?>
 			</div>
 
@@ -362,7 +427,8 @@
 
 		$this->fields->field( 'pagination', array(
 			'type' => 'select',
-			'empty_label' => $this->fields->inherit_label( 'pagination', __( 'Page Numbers', 'md' ), $pagination_options ),
+			'empty_label' => __( 'Page Numbers', 'md' ),
+			'inherit' => array( 'default' => 'page_numbers' ),
 			'style' => 'width: 100%',
 			'options' => $pagination_options
 		) ); ?>
@@ -371,14 +437,14 @@
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'previous_label', array(
 			'type' => 'text',
-			'placeholder' => $this->fields->module( 'previous_label' ) ?: __( 'Previous', 'md' )
+			'inherit' => array( 'default' => __( 'Previous', 'md' ) )
 		) ); ?>
 	</div>
 
 	<div class="col md-sep-micro">
 		<?php $this->fields->field( 'next_label', array(
 			'type' => 'text',
-			'placeholder' => $this->fields->module( 'next_label' ) ?: __( 'Next', 'md' )
+			'inherit' => array( 'default' => __( 'Next', 'md' ) )
 		) ); ?>
 	</div>
 
@@ -396,6 +462,7 @@
 			'label' => __( 'Call to Action', 'md' ),
 			'description' => sprintf( __( 'Choose a pre-made <a href="%s">call to action</a> to show within this loop.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
 			'empty_label' => __( 'Select call to action...', 'md' ),
+			'inherit' => true,
 			'options' => wp_list_pluck( $cta, 'name' )
 		) ); ?>
 	</div>
@@ -404,6 +471,7 @@
 		<?php $this->fields->field( 'cta_x_loop', array(
 			'type' => 'number',
 			'label' => __( 'Show CTA', 'md' ),
+			'inherit' => true,
 			'description' => __( 'Show after the Xth post.', 'md' )
 		) ); ?>
 	</div>

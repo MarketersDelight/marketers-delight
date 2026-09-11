@@ -117,7 +117,7 @@ class md_collection {
 	 * @since 6.0
 	 */
 
-	public function render_fields( $post_id = null, $meta_only = false ) {
+	public function fields( $post_id = null, $meta_only = false ) {
 		$values = array();
 
 		foreach ( $this->fields as $id => $field )

@@ -97,7 +97,7 @@ class md_collection_admin {
 			echo '<a href="' . esc_url( get_edit_post_link( $parent_id ) ) . '">' . esc_html( get_the_title( $parent_id ) ) . '</a></p>';
 		}
 
-		$collection->render_fields( $post->ID, true );
+		$collection->fields( $post->ID, true );
 	}
 
 	/**
