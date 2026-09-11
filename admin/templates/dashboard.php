@@ -51,7 +51,7 @@
 							'options' => array(
 								'widgets' => __( '<b>Disable</b> Widgets blocks editor', 'md' ),
 								'blocks' => __( '<code>&lt;head&gt;</code> <b>Remove</b> all Block styles and inline styles', 'md' ),
-								'wpjson' => __( '<code>&lt;head&gt;</code> <b>Remove</b> <code>/wp-json/</code> REST API', 'md' ),
+								'wpjson' => __( '<code>&lt;head&gt;</code> <b>Remove</b> REST API and oEmbed discovery links', 'md' ),
 								'optimize' => __( '<code>&lt;head&gt;</code> <b>Restore</b> all default <code>wp_head</code> tags', 'md' ),
 								'oembed' => __( '<code>&lt;/body&gt;</code> <b>Remove</b> <code>wp-embed.js</code> script', 'md' )
 							)

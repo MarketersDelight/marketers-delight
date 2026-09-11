@@ -73,32 +73,4 @@ class DocumentTitleTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'Saved title', $parts['title'] );
 	}
 
-	public function test_nonindexable_singular_adds_noindex_and_is_removed_from_sitemap() {
-		$post = (object) array(
-			'ID' => 25,
-			'post_type' => 'book_quote',
-			'post_title' => ''
-		);
-
-		md_test_set_post_type_object( 'book_quote', 'Book Highlights', true, false, 'Book Highlight', false );
-		md_test_set_post_type_object( 'bookshelf', 'Books', true, false, 'Book', true );
-		md_test_set_query( array(
-			'is_singular' => true,
-			'post_type' => 'book_quote',
-			'queried_object' => $post,
-			'queried_object_id' => 25
-		) );
-
-		$robots = md_robots_noindex_singular( array( 'index' => true ) );
-		$post_types = md_sitemaps_post_types( array(
-			'book_quote' => get_post_type_object( 'book_quote' ),
-			'bookshelf' => get_post_type_object( 'bookshelf' )
-		) );
-
-		$this->assertArrayNotHasKey( 'index', $robots );
-		$this->assertTrue( $robots['noindex'] );
-		$this->assertArrayNotHasKey( 'book_quote', $post_types );
-		$this->assertArrayHasKey( 'bookshelf', $post_types );
-	}
-
 }

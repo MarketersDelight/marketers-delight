@@ -86,6 +86,8 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/featured-media/functions.php';
 		require_once MD_DIR . 'features/page-cover/functions.php';
 		require_once MD_DIR . 'features/page-title/functions.php';
+		require_once MD_DIR . 'features/page-title/document-title.php';
+		require_once MD_DIR . 'features/wordpress.php';
 		require_once MD_DIR . 'features/page-cta/functions.php';
 		require_once MD_DIR . 'features/byline/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
@@ -110,6 +112,33 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/archive/archive-meta.php';
 		require_once MD_DIR . 'features/archive/archive-sections.php';
 		require_once MD_DIR . 'features/blog.php';
+	}
+
+	/**
+	 * Load active MD Drop-ins after theme is setup.
+	 *
+	 * @since 4.6
+	 */
+
+	public function dropins() {
+		$dropins = md_get_dropins( 'active' );
+
+		if ( empty( $dropins ) )
+			return;
+
+		foreach ( $dropins as $dropin )
+			if ( md_has( $dropin ) )
+				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+					require_once( $file );
+				else {
+					$dropins = md_dropins_setting();
+					unset( $dropins['installed'][$dropin]['status']['enable'] );
+					md_update_dropins( $dropins );
+				}
+
+		// Refresh cached defaults after all active Drop-ins loaded
+
+		md_setting_defaults( true );
 	}
 
 	/**
@@ -166,44 +195,8 @@ final class marketers_delight {
 		add_shortcode( 'md_template', 'md_template_shortcode' );
 		add_filter( 'widget_text', 'do_shortcode' );
 
-		// Disable Widgets Block Editor
-		if ( md_setting( array( 'settings', 'head', 'widgets' ) ) ) {
-			add_filter( 'gutenberg_use_widgets_block_editor', '__return_false' );
-			add_filter( 'use_widgets_block_editor', '__return_false' );
-		}
-
-		// Remove WP junk, mostly from <head>
-		if ( ! md_setting( array( 'settings', 'head', 'optimize' ) ) ) {
-			add_filter( 'post_class', array( $this, 'post_class' ) );
-			remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
-			remove_action( 'wp_print_styles', 'print_emoji_styles' );
-			remove_action( 'wp_head', 'wp_generator' );
-			remove_action( 'wp_head', 'wlwmanifest_link' );
-			remove_action( 'wp_head', 'rsd_link' );
-			remove_action( 'wp_head', 'wp_shortlink_wp_head' );
-			remove_action( 'wp_head', 'adjacent_posts_rel_link_wp_head', 10 );
-			add_filter( 'emoji_svg_url', '__return_false' );
-			add_filter( 'the_generator', '__return_false' );
-		}
-
-		// Disable REST API
-		if ( md_setting( array( 'settings', 'head', 'wpjson' ) ) ) {
-			remove_action( 'wp_head', 'rest_output_link_wp_head', 10 );
-			remove_action( 'wp_head', 'wp_oembed_add_discovery_links', 10 );
-			remove_action( 'rest_api_init', 'wp_oembed_register_route' );
-		}
-
-		// Disable oEmbed
-		if ( md_setting( array( 'settings', 'head', 'oembed' ) ) ) {
-			add_filter( 'embed_oembed_discover', '__return_false' );
-			remove_filter( 'oembed_dataparse', 'wp_filter_oembed_result', 10 );
-			remove_action( 'wp_head', 'wp_oembed_add_discovery_links' );
-			remove_action( 'wp_head', 'wp_oembed_add_host_js' );
-			add_filter( 'rewrite_rules_array', array( $this, 'disable_embed_rewrites' ) );
-		}
-
-		// Re-add RSS link
-		add_action( 'wp_head', array( $this, 'add_rss_link' ) );
+		// Theme modifications to WordPress
+		md_wordpress_setup();
 	}
 
 	/**
@@ -242,25 +235,6 @@ final class marketers_delight {
 					$classes[] = 'cover-text';
 			}
 		}
-
-		return $classes;
-	}
-
-	/**
- 	 * Clean out unneeded CSS post classes.
- 	 *
- 	 * @since 4.1
- 	 */
-
-	public function post_class( $classes ) {
-		$classes = array_diff( $classes, array(
-			'format-standard',
-			'hentry',
-			'post-' . get_the_ID(),
-			'type-' . get_post_type(),
-			'status-' . get_post_status(),
-			'format-' . get_post_format()
-		) );
 
 		return $classes;
 	}
@@ -356,58 +330,6 @@ final class marketers_delight {
 			'after_title' => '</h3>'
 		) );
 
-	}
-
-	/**
-	 * Remove oEmbed rewrite rules if enabled.
-	 *
-	 * @since 4.8
-	 */
-
-	public function disable_embed_rewrites( $rules ) {
-		foreach ( $rules as $rule => $rewrite )
-			if ( false !== strpos( $rewrite, 'embed=true' ) )
-				unset( $rules[$rule] );
-
-		return $rules;
-	}
-
-	/**
-	 * Manually add a formatted version of the site's main RSS
-	 * feed to the <head>.
-	 *
-	 * @since 4.8
-	 */
-
-	public function add_rss_link() {
-		echo '<link rel="alternate" type="application/rss+xml" title="' . get_bloginfo( 'sitename' ) . ' Feed" href="' . get_bloginfo( 'rss2_url' ) . '">';
-	}
-
-	/**
-	 * Load active MD Drop-ins after theme is setup.
-	 *
-	 * @since 4.6
-	 */
-
-	public function dropins() {
-		$dropins = md_get_dropins( 'active' );
-
-		if ( empty( $dropins ) )
-			return;
-
-		foreach ( $dropins as $dropin )
-			if ( md_has( $dropin ) )
-				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
-					require_once( $file );
-				else {
-					$dropins = md_dropins_setting();
-					unset( $dropins['installed'][$dropin]['status']['enable'] );
-					md_update_dropins( $dropins );
-				}
-
-		// Refresh cached defaults after all active Drop-ins loaded
-
-		md_setting_defaults( true );
 	}
 
 }

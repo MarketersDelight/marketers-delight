@@ -613,6 +613,8 @@ require_once dirname( __DIR__, 2 ) . '/features/loop/comments.php';
 require_once dirname( __DIR__, 2 ) . '/features/featured-media/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cover/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/page-title/document-title.php';
+require_once dirname( __DIR__, 2 ) . '/features/wordpress.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
