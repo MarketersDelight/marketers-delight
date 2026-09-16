@@ -2,5 +2,7 @@
 
 require_once trailingslashit( get_template_directory() ) . 'marketers-delight.php';
 
-function md_test_compile() { md_compile(); }
-add_action( 'init', 'md_test_compile' );
+function vin() {
+	md_compile();
+}
+add_action( 'init', 'vin' );

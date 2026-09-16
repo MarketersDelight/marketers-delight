@@ -28,11 +28,8 @@ class md_header extends md_api {
 				'options' => $menus['ids']
 			),
 			'button_text' => array( 'type' => 'text' ),
-			'toggle' => array(
-				'type' => 'checkbox',
-				'options' => array( 'search' )
-			)
 		), $links );
+		$builder['toggle']['options'] = array_merge( array( 'search' ), $builder['toggle']['options'] );
 
 		return array(
 			'admin_page' => array(

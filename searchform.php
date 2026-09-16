@@ -43,7 +43,7 @@
 		</div>
 	</div>
 
-	<button type="submit" class="submit">
+	<button type="submit" class="button submit">
 		<span class="button-text"><?php echo wp_kses_data( $submit_text ); ?></span>
 	</button>
 

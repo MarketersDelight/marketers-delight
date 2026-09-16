@@ -15,9 +15,7 @@ final class marketers_delight {
 	 */
 
 	public function constants() {
-		$theme = wp_get_theme( get_template() );
-
-		define( 'MD_VERSION', $theme->get( 'Version' ) );
+		define( 'MD_VERSION', $this->theme_version() );
 		define( 'MD_THEME_NAME', 'Marketers Delight' );
 		define( 'MD_THEME_AUTHOR', 'Alex Mangini' );
 		define( 'MD_THEME_UPDATER_URL', 'https://marketersdelight.com' );
@@ -27,6 +25,23 @@ final class marketers_delight {
 		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
 		define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 		define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
+	}
+
+	/**
+	 * Get the installed parent theme version directly from its stylesheet.
+	 *
+	 * @since 6.0
+	 */
+
+	private function theme_version() {
+		$theme = get_file_data( get_template_directory() . '/style.css', array(
+			'version' => 'Version'
+		) );
+
+		if ( ! empty( $theme['version'] ) )
+			return $theme['version'];
+
+		return wp_get_theme( get_template() )->get( 'Version' );
 	}
 
 	/**

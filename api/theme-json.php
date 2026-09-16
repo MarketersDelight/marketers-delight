@@ -30,7 +30,7 @@ class md_theme_json {
 	}
 
 	/**
-	 * Update the theme data without rewriting the packaged theme.json file.
+	 * Merge the current MD design settings into theme data at runtime.
 	 *
 	 * @since 6.0
 	 */
@@ -40,6 +40,19 @@ class md_theme_json {
 			return $theme_json;
 
 		return $theme_json->update_with( $this->build() );
+	}
+
+	/**
+	 * Write the compiled theme.json file.
+	 *
+	 * @since 6.0
+	 */
+
+	public function generate() {
+		$json = wp_json_encode( $this->build(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+
+		if ( ! empty( $json ) )
+			file_put_contents( get_template_directory() . '/theme.json', $json );
 	}
 
 	/**

@@ -238,6 +238,9 @@ class md_css {
 				return $result;
 		}
 
+		$theme_json = new md_theme_json;
+		$theme_json->generate();
+
 		if ( class_exists( 'WP_Theme_JSON_Resolver' ) )
 			WP_Theme_JSON_Resolver::clean_cached_data();
 
@@ -252,9 +255,26 @@ class md_css {
 
 	public function generate( $file ) {
 		if ( ! empty( $this->files[$file]['minify'] ) )
-			return $this->minify( $file );
+			$css = $this->minify( $file );
+		else
+			$css = $this->clean( $this->render( $file ) );
 
-		return $this->clean( $this->render( $file ) );
+		return $this->prepend_theme_header( $css, $file );
+	}
+
+	/**
+	 * Prepend parent theme metadata to the generated frontend stylesheet.
+	 *
+	 * @since 6.0
+	 */
+
+	private function prepend_theme_header( $css, $file ) {
+		if ( $file !== 'style' )
+			return $css;
+
+		$header = is_readable( MD_DIR . 'style.css' ) ? trim( file_get_contents( MD_DIR . 'style.css' ) ) : '';
+
+		return $header ? $header . "\n" . $css : $css;
 	}
 
 	/**
@@ -441,14 +461,10 @@ class md_css {
 		$breakout_full = ( $gutter_width / $site_width ) * 100;
 
 		$values = array_merge( $values, apply_filters( 'md_filter_css_values', $values ) );
-		$style_header = '';
 		$style_guide = '';
 
-		if ( $file === 'style' ) {
-			$style_path = MD_DIR . 'style.css';
-			$style_header = is_readable( $style_path ) ? trim( file_get_contents( $style_path ) ) : '';
+		if ( $file === 'style' )
 			$style_guide = $this->files['style']['style_guide'] ?? '';
-		}
 
 		$cover_colors = array(
 			'default' => array(

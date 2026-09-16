@@ -191,7 +191,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	align-items: center;
 	display: flex;
 	gap: var(--md-half);
-	padding: var(--md-single);
+	padding-block: var(--md-single);
 	position: relative;
 	transition: background-color var(--md-transition);
 }
@@ -226,8 +226,11 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	overflow: clip;
 }
 
+.box-style :where(.post-nav-previous, .post-nav-next) { padding-inline: var(--md-single); }
+
 .box-style :where(.post-nav-previous:hover, .post-nav-next:hover) { background-color: var(--md-color-surface); }
 
+.post-nav :where(.post-nav-previous:hover, .post-nav-next:hover) .post-nav-title { text-decoration: underline; }
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.post-nav {

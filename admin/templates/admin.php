@@ -1,4 +1,6 @@
 <?php
+	$theme_version = trim( (string) MD_VERSION );
+
 	do_action( 'md_admin_page_before_form' );
 	do_action( "{$hook}_admin_page_before_form" );
 ?>
@@ -10,7 +12,7 @@
 	<div class="md-header md-content-wrap-med md-clear">
 
 		<div class="md-header-title">
-			<h1><?php echo __( 'Marketers Delight', 'md' ); ?> <a href="https://marketersdelight.com/changelog/" target="_blank" class="title-count theme-count"><?php echo MD_VERSION; ?></a></h1>
+			<h1><?php echo __( 'Marketers Delight', 'md' ); ?><?php if ( ! empty( $theme_version ) ) : ?> <a href="https://marketersdelight.com/changelog/" target="_blank" class="title-count theme-count"><?php echo esc_html( $theme_version ); ?></a><?php endif; ?></h1>
 			<?php settings_errors(); ?>
 		</div>
 

@@ -80,7 +80,7 @@ if ( md_has_header() ) :
 				echo "<div class=\"header-$section\">";
 
 				foreach ( $header['data'][$section] as $order => $items ) {
-					$id = sanitize_key( $items['id'] );
+					$id = $items['id'];
 					$field = $header['fields'][$id] ?? null;
 
 					if ( $field && ! empty( $items['callback'] ) ) {

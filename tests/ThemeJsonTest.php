@@ -29,6 +29,12 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'defaultFontSizes', $this->json['settings']['typography'] );
 	}
 
+	public function test_packaged_theme_json_is_a_valid_bootstrap_manifest() {
+		$packaged = json_decode( file_get_contents( dirname( __DIR__ ) . '/theme.json' ), true, 512, JSON_THROW_ON_ERROR );
+
+		$this->assertSame( array(), $packaged );
+	}
+
 	public function test_typography_presets_are_fluid_and_used_by_elements() {
 		$font_sizes = $this->presets_by_slug( $this->json['settings']['typography']['fontSizes'] );
 
@@ -93,7 +99,7 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertSame( '896px', $this->json['settings']['layout']['wideSize'] );
 	}
 
-	public function test_dynamic_data_merges_without_writing_theme_json() {
+	public function test_dynamic_data_merges_through_runtime_filter() {
 		$data = new class {
 			public $merged;
 
@@ -105,11 +111,12 @@ class ThemeJsonTest extends MD_TestCase {
 		};
 		$result = ( new md_theme_json )->filter( $data );
 		$source = file_get_contents( dirname( __DIR__ ) . '/api/theme-json.php' );
+		$bootstrap = file_get_contents( dirname( __DIR__ ) . '/functions.php' );
 
 		$this->assertSame( $data, $result );
 		$this->assertSame( $this->json, $data->merged );
 		$this->assertStringContainsString( 'wp_theme_json_data_theme', $source );
-		$this->assertStringNotContainsString( 'file_put_contents', $source );
+		$this->assertStringNotContainsString( 'md_test_compile', $bootstrap );
 	}
 
 }

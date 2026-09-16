@@ -134,7 +134,23 @@ class md_archive_meta extends md_api {
 		$fields->field( array( 'builder', $group, 'singular_name' ), array(
 			'type' => 'text',
 			'label' => __( 'Singular Text', 'md' ),
-			'placeholder' => __( '{count} Post', 'md' )
+			'placeholder' => __( '{count} post', 'md' )
+		) );
+
+		echo '<p class="description">' . wp_kses_post( __( 'Use <code>{count}</code> in the text above to insert the number. The singular text is used only when the count is one.', 'md' ) ) . '</p>';
+	}
+
+	/**
+	 * Render Comment Count text controls.
+	 *
+	 * @since 6.0
+	 */
+
+	public function comment_count_fields( $group, $type, $fields ) {
+		$fields->field( array( 'builder', $group, 'singular_name' ), array(
+			'type' => 'text',
+			'label' => __( 'Singular Text', 'md' ),
+			'placeholder' => __( '{count} comment', 'md' )
 		) );
 
 		echo '<p class="description">' . wp_kses_post( __( 'Use <code>{count}</code> in the text above to insert the number. The singular text is used only when the count is one.', 'md' ) ) . '</p>';
@@ -150,7 +166,7 @@ class md_archive_meta extends md_api {
 		$items = apply_filters( 'md_archive_meta_items', array(
 			'post_count' => array(
 				'title' => __( 'Post Count', 'md' ),
-				'placeholder' => __( '{count} Posts', 'md' ),
+				'placeholder' => __( '{count} posts', 'md' ),
 				'icon' => 'file',
 				'admin_icon' => 'admin-post',
 				'color' => '#2271b1',
@@ -160,8 +176,21 @@ class md_archive_meta extends md_api {
 				'callback' => array( $this, 'post_count' ),
 				'admin_callback' => array( $this, 'post_count_fields' )
 			),
+			'comment_count' => array(
+				'title' => __( 'Comment Count', 'md' ),
+				'placeholder' => __( '{count} comments', 'md' ),
+				'icon' => 'chat',
+				'admin_icon' => 'admin-comments',
+				'color' => '#ff6000',
+				'fields' => array(
+					'singular_name' => array( 'type' => 'text' )
+				),
+				'callback' => array( $this, 'comment_count' ),
+				'admin_callback' => array( $this, 'comment_count_fields' )
+			),
 			'last_added' => array(
 				'title' => __( 'Last Added', 'md' ),
+				'placeholder' => __( 'last added', 'md' ),
 				'icon' => 'calendar',
 				'color' => '#d44c3c',
 				'callback' => array( $this, 'last_added' )
@@ -219,19 +248,67 @@ class md_archive_meta extends md_api {
 
 	public function post_count( $fields, $post_type ) {
 		$queried = get_queried_object();
-		$object = get_post_type_object( $post_type );
 		$count = (int) ( $queried instanceof WP_Term ? $queried->count : wp_count_posts( $post_type )->publish );
 		$number = number_format_i18n( $count );
+		$template = $count === 1 ? __( '{count} post', 'md' ) : __( '{count} posts', 'md' );
 
-		if ( ! empty( $fields['name'] ) ) {
+		if ( ! empty( $fields['name'] ) )
 			$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
 
-			return esc_html( strtr( $template, array( '{count}' => $number ) ) );
+		return esc_html( strtr( $template, array( '{count}' => $number ) ) );
+	}
+
+	/**
+	 * Format the approved comment count for an archive.
+	 *
+	 * @since 6.0
+	 */
+
+	public function comment_count( $fields, $post_type ) {
+		$args = array(
+			'post_type' => $post_type,
+			'post_status' => 'publish',
+			'status' => 'approve',
+			'type' => 'comment',
+			'count' => true
+		);
+		$queried = get_queried_object();
+
+		if ( $queried instanceof WP_Term ) {
+			$post_ids = get_posts( array(
+				'post_type' => $post_type,
+				'post_status' => 'publish',
+				'posts_per_page' => -1,
+				'fields' => 'ids',
+				'tax_query' => array( array(
+					'taxonomy' => $queried->taxonomy,
+					'terms' => $queried->term_id
+				) )
+			) );
+
+			if ( ! $post_ids )
+				return $this->comment_count_text( $fields, 0 );
+
+			$args['post__in'] = $post_ids;
 		}
 
-		$label = $count === 1 ? $object->labels->singular_name : $object->labels->name;
+		return $this->comment_count_text( $fields, (int) get_comments( $args ) );
+	}
 
-		return $number . ' ' . esc_html( $label );
+	/**
+	 * Apply configured singular and plural Comment Count text.
+	 *
+	 * @since 6.0
+	 */
+
+	private function comment_count_text( $fields, $count ) {
+		$number = number_format_i18n( $count );
+		$template = $count === 1 ? __( '{count} comment', 'md' ) : __( '{count} comments', 'md' );
+
+		if ( ! empty( $fields['name'] ) )
+			$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
+
+		return esc_html( strtr( $template, array( '{count}' => $number ) ) );
 	}
 
 	/**
@@ -264,7 +341,7 @@ class md_archive_meta extends md_api {
 			return '';
 
 		$relative = human_time_diff( get_post_time( 'U', false, $posts[0] ), current_time( 'U' ) );
-		$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'Last added', 'md' );
+		$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'last added', 'md' );
 
 		return esc_html( sprintf( __( '%1$s %2$s ago', 'md' ), $label, $relative ) );
 	}

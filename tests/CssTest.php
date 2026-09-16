@@ -132,10 +132,20 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( '1. Style', $guide );
 		$this->assertStringContainsString( '2. Format', $guide );
 		$this->assertStringContainsString( '3. Page Cover', $guide );
-		$this->assertStringContainsString( 'echo $style_header', $template );
+		$this->assertStringNotContainsString( '$style_header', $template );
+		$this->assertStringContainsString( 'prepend_theme_header( $css, $file )', $this->source( 'api/css.php' ) );
 		$this->assertStringContainsString( 'Table of contents:', $template );
 		$this->assertStringContainsString( "MD_DIR . 'style.css'", $this->source( 'api/css.php' ) );
 		$this->assertStringNotContainsString( 'preg_replace_callback', $this->source( 'api/css.php' ) );
+	}
+
+	public function test_generated_stylesheet_prepends_parent_metadata_outside_overridable_templates() {
+		$css = $this->call( $this->css, 'prepend_theme_header', array( 'body { color: red; }', 'style' ) );
+		$header = trim( $this->source( 'style.css' ) );
+
+		$this->assertStringStartsWith( $header, $css );
+		$this->assertStringEndsWith( 'body { color: red; }', $css );
+		$this->assertSame( 'body { color: red; }', $this->call( $this->css, 'prepend_theme_header', array( 'body { color: red; }', 'block-editor' ) ) );
 	}
 
 	public function test_compiler_does_not_maintain_retry_or_error_state() {
@@ -330,11 +340,22 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '<section', $template );
 	}
 
-	public function test_timeline_only_breaks_entry_top_dates_into_the_rail() {
+	public function test_timeline_is_an_opt_in_css_template() {
+		$templates = $this->call( $this->css, 'css_templates' );
 		$loop = $this->source( 'css/loop.php' );
+		$timeline = $this->source( 'css/timeline.php' );
 
-		$this->assertStringContainsString( '.loop-timeline .byline.entry-top > .byline-date', $loop );
-		$this->assertStringNotContainsString( '.loop-timeline .byline.before-title > .byline-date', $loop );
+		$this->assertArrayNotHasKey( 'timeline', $templates );
+		$this->assertStringNotContainsString( 'loop-timeline', $loop );
+		$this->assertStringContainsString( '.loop-timeline', $timeline );
+		$this->assertStringContainsString( '.box-entry.loop-timeline', $timeline );
+	}
+
+	public function test_timeline_only_breaks_entry_top_dates_into_the_rail() {
+		$timeline = $this->source( 'css/timeline.php' );
+
+		$this->assertStringContainsString( '.loop-timeline .byline.entry-top > .byline-date', $timeline );
+		$this->assertStringNotContainsString( '.loop-timeline .byline.before-title > .byline-date', $timeline );
 	}
 
 	public function test_entry_top_bylines_only_space_rendered_following_content() {
@@ -344,12 +365,12 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_mobile_timeline_uses_a_larger_connected_rail() {
-		$loop = $this->source( 'css/loop.php' );
+		$timeline = $this->source( 'css/timeline.php' );
 
-		$this->assertStringContainsString( 'var(--timeline-gap) + var(--timeline-dot-size) / 2', $loop );
-		$this->assertStringContainsString( '--timeline-dot-size: var(--md-single);', $loop );
-		$this->assertStringContainsString( '--timeline-rail-width: 4px;', $loop );
-		$this->assertStringContainsString( 'margin-inline-start: calc(var(--md-half) + var(--md-third));', $loop );
+		$this->assertStringContainsString( 'var(--timeline-gap) + var(--timeline-dot-size) / 2', $timeline );
+		$this->assertStringContainsString( '--timeline-dot-size: var(--md-single);', $timeline );
+		$this->assertStringContainsString( '--timeline-rail-width: 4px;', $timeline );
+		$this->assertStringContainsString( 'margin-inline-start: calc(var(--md-half) + var(--md-third));', $timeline );
 	}
 
 	public function test_post_nav_items_stretch_to_an_equal_clickable_height() {
@@ -357,6 +378,9 @@ class CssTest extends MD_TestCase {
 
 		$this->assertMatchesRegularExpression( '/@media \(min-width:[^{]+\) \{.*?\.post-nav \{[^}]*align-items: stretch;/s', $page );
 		$this->assertStringContainsString( '.post-nav-previous, .post-nav-next {', $page );
+		$this->assertStringContainsString( 'padding-block: var(--md-single);', $page );
+		$this->assertStringContainsString( '.box-style :where(.post-nav-previous, .post-nav-next) { padding-inline: var(--md-single); }', $page );
+		$this->assertStringContainsString( '.post-nav :where(.post-nav-previous:hover, .post-nav-next:hover) .post-nav-title { text-decoration: underline; }', $page );
 	}
 
 	public function test_content_box_surfaces_establish_their_own_color_context() {

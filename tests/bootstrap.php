@@ -33,6 +33,9 @@ $GLOBALS['__test_upload_dir'] = array(
 if ( ! defined( 'MD_VERSION' ) )
 	define( 'MD_VERSION', '6.0' );
 
+if ( ! defined( 'MD_DIR' ) )
+	define( 'MD_DIR', dirname( __DIR__ ) . '/' );
+
 if ( ! defined( 'FS_CHMOD_DIR' ) )
 	define( 'FS_CHMOD_DIR', 0755 );
 

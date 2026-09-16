@@ -1,8 +1,4 @@
-<style type="text/css"><?php
-if ( ! empty( $style_header ) )
-	echo $style_header . "\n";
-
-echo '
+<style type="text/css"><?php echo '
 /*
 	Table of contents:' . $style_guide .
 '*/';
