@@ -53,7 +53,7 @@ function md_excerpt( $loop ) {
  */
 
 function md_pagination( $loop = array() ) {
-	if ( is_singular() )
+	if ( is_singular() || ! empty( $loop['no_pagination'] ) )
 		return;
 
 	$big = 999999999;
