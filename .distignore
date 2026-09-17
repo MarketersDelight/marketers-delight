@@ -8,14 +8,15 @@
 
 # Config and dependency files
 .gitignore
+.gitattributes
 .distignore
 .editorconfig
 composer.json
 composer.lock
 package.json
 package-lock.json
-phpunit.xml
-phpunit.xml.dist
+phpunit*.xml
+phpunit*.xml.dist
 phpcs.xml
 phpcs.xml.dist
 
