@@ -17,7 +17,7 @@ Marketers Delight is the missing operating system for WordPress — a free theme
 
 ## Install
 
-1. [Download the latest release](https://github.com/kolakube/marketers-delight/releases/latest)
+1. [Download the latest release](https://github.com/MarketersDelight/marketers-delight/releases/latest)
 2. In WordPress, go to **Appearance → Themes → Add New → Upload Theme**
 3. Upload the zip, click **Activate**
 
