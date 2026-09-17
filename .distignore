@@ -1,0 +1,35 @@
+# Development directories
+/tests/
+/node_modules/
+/vendor/
+/build/
+/.git/
+/.github/
+
+# Config and dependency files
+.gitignore
+.distignore
+.editorconfig
+composer.json
+composer.lock
+package.json
+package-lock.json
+phpunit.xml
+phpunit.xml.dist
+phpcs.xml
+phpcs.xml.dist
+
+# Docs and meta
+README.md
+CONTRIBUTING.md
+
+# Environment and local
+.env
+.env.example
+*.log
+*.sql
+.DS_Store
+**/.DS_Store
+Thumbs.db
+.idea/
+.vscode/
