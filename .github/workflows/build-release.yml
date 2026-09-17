@@ -1,0 +1,44 @@
+name: Build Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build and attach theme zip
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: version
+        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Build clean theme directory
+        run: |
+          mkdir -p build/marketers-delight
+          rsync -av \
+            --exclude-from=.distignore \
+            --exclude='build' \
+            ./ build/marketers-delight/
+
+      - name: Reset theme.json to empty object
+        run: echo '{}' > build/marketers-delight/theme.json
+
+      - name: Create zip
+        run: |
+          cd build
+          zip -r "marketers-delight-${{ steps.version.outputs.version }}.zip" marketers-delight
+
+      - name: Attach zip to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: build/marketers-delight-${{ steps.version.outputs.version }}.zip
+          generate_release_notes: true
