@@ -17,10 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version from tag
-        id: version
-        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
       - name: Build clean theme directory
         run: |
           mkdir -p build/marketers-delight
@@ -32,13 +28,16 @@ jobs:
       - name: Reset theme.json to empty object
         run: echo '{}' > build/marketers-delight/theme.json
 
+      - name: Remove stray system files
+        run: find build -name '.DS_Store' -delete
+
       - name: Create zip
         run: |
           cd build
-          zip -r "marketers-delight-${{ steps.version.outputs.version }}.zip" marketers-delight
+          zip -r marketers-delight.zip marketers-delight
 
       - name: Attach zip to release
         uses: softprops/action-gh-release@v2
         with:
-          files: build/marketers-delight-${{ steps.version.outputs.version }}.zip
+          files: build/marketers-delight.zip
           generate_release_notes: true
