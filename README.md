@@ -66,6 +66,12 @@ They let you add real content types to your site without the rigidity that has l
 
 ## For developers
 
+### Tests
+
+Clone this repository and run `./tests/run.sh --do-not-cache-result` from the theme root. The bundled PHPUnit runner requires PHP 8.1 or newer; the theme itself supports PHP 8.0 or newer. The two isolated suites use WordPress stubs, so they need neither a WordPress installation nor a database. They check theme behavior in isolation and do not replace tests on a running WordPress site.
+
+Breadcrumbs tests live in the Breadcrumbs Drop-in repository and run separately against a sibling theme checkout.
+
 MD is built on a modular architecture where every Drop-in extends a shared `md_api` base class. Implement the right methods and your hooks, admin pages, meta boxes, and templates wire themselves up automatically.
 
 ```php

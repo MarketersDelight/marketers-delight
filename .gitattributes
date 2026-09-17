@@ -2,4 +2,6 @@
 # builds), but still fully tracked in the repo for local development.
 tests/ export-ignore
 phpunit.xml export-ignore
+phpunit-inheritance.xml export-ignore
+.phpunit.result.cache export-ignore
 .gitattributes export-ignore

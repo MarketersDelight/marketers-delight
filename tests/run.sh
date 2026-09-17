@@ -1,5 +1,5 @@
 #!/bin/sh
-# Runs both test suites with one command.
+# Runs both theme test suites with one command.
 #
 # They're split into two PHPUnit configs (phpunit.xml, phpunit-inheritance.xml)
 # because their bootstraps declare conflicting stubs for the same WP function
