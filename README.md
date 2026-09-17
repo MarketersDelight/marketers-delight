@@ -6,6 +6,7 @@
 [![License](https://img.shields.io/badge/license-GPL--2.0-blue.svg)](LICENSE)
 [![WordPress](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org/)
 [![PHP](https://img.shields.io/badge/PHP-8.0%2B-8892BF.svg)](https://php.net/)
+[![Editors](https://img.shields.io/badge/editors-Block%20%2B%20Classic-brightgreen.svg)](https://marketersdelight.com/)
 [![Since](https://img.shields.io/badge/since-2011-lightgrey.svg)](https://marketersdelight.com/)
 
 Marketers Delight is the missing operating system for WordPress — a free theme plus a modular Drop-ins ecosystem that lets you stream your thoughts, track your reading, build a glossary, and publish longform, all without a page builder or plugin roulette.
