@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-09-18T18:37:58+00:00\n"
+"POT-Creation-Date: 2026-09-18T20:59:32+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -3383,12 +3383,12 @@ msgid "Search Results For: %s"
 msgstr ""
 
 #: functions/deprecated-functions.php:83
-#: marketers-delight.php:204
+#: marketers-delight.php:206
 msgid "Header Menu"
 msgstr ""
 
 #: functions/deprecated-functions.php:84
-#: marketers-delight.php:205
+#: marketers-delight.php:207
 msgid "Header Menu (logged-in users only)"
 msgstr ""
 
@@ -3489,49 +3489,49 @@ msgstr ""
 msgid "Toggle Panel"
 msgstr ""
 
-#: marketers-delight.php:206
+#: marketers-delight.php:208
 msgid "Main Menu"
 msgstr ""
 
-#: marketers-delight.php:268
+#: marketers-delight.php:276
 msgid "Twitter username (without @)"
 msgstr ""
 
-#: marketers-delight.php:282
+#: marketers-delight.php:290
 msgid "Sidebar: Default"
 msgstr ""
 
-#: marketers-delight.php:283
+#: marketers-delight.php:291
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: marketers-delight.php:294
+#: marketers-delight.php:302
 #, php-format
 msgid "Sidebar: %s"
 msgstr ""
 
-#: marketers-delight.php:304
+#: marketers-delight.php:312
 msgid "Panel: Default"
 msgstr ""
 
-#: marketers-delight.php:305
+#: marketers-delight.php:313
 msgid "The default panel used around your site."
 msgstr ""
 
-#: marketers-delight.php:316
+#: marketers-delight.php:324
 #, php-format
 msgid "Panel: %s"
 msgstr ""
 
-#: marketers-delight.php:328
+#: marketers-delight.php:336
 #, php-format
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: marketers-delight.php:339
+#: marketers-delight.php:347
 msgid "Footer Copy"
 msgstr ""
 
-#: marketers-delight.php:340
+#: marketers-delight.php:348
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
