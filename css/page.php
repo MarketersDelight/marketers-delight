@@ -30,7 +30,8 @@
 
 :is(.image-center, .image-full) .featured-media { text-align: center; }
 
-.full .the-content .featured-media { margin-block-end: var(--md-single); }
+.full .the-content .featured-media,
+.full:not(.box-style) > :where(.entry.image-full) > .featured-media:not(:last-child) { margin-block-end: var(--md-single); }
 
 /* CAPTIONS */
 
