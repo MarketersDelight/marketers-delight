@@ -143,8 +143,10 @@ final class marketers_delight {
 
 		foreach ( $dropins as $dropin )
 			if ( md_has( $dropin ) )
-				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) )
+				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) ) {
+					md_load_dropin_textdomain( $dropin );
 					require_once( $file );
+				}
 				else {
 					$dropins = md_dropins_setting();
 					unset( $dropins['installed'][$dropin]['status']['enable'] );

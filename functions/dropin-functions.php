@@ -117,6 +117,35 @@ function md_is_dropin_active( $path ) {
 }
 
 /**
+ * Load a Drop-in's translations from its languages/ folder. The header is
+ * only read when the Drop-in ships that folder, to find its Text Domain.
+ *
+ * @since 6.0
+ */
+
+function md_load_dropin_textdomain( $dropin ) {
+	$languages = md_dropin_languages_path( $dropin );
+
+	if ( ! is_dir( $languages ) )
+		return false;
+
+	$headers = get_file_data( MD_INSTALLED_DROPINS . "/$dropin/$dropin.php", array( 'TextDomain' => 'Text Domain' ), 'dropin' );
+	$domain = $headers['TextDomain'] ?: "md-$dropin";
+
+	return load_textdomain( $domain, "$languages/$domain-" . determine_locale() . '.mo' );
+}
+
+/**
+ * Get the path to a Drop-in's translations folder.
+ *
+ * @since 6.0
+ */
+
+function md_dropin_languages_path( $dropin ) {
+	return MD_INSTALLED_DROPINS . "/$dropin/languages";
+}
+
+/**
  * Return a list of details as entered from Drop-in DocBlock.
  *
  * @note Based off core function get_plugin_data()
