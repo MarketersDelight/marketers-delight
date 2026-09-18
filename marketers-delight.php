@@ -181,6 +181,23 @@ final class marketers_delight {
 		add_action( 'body_class', array( $this, 'body_class' ) );
 		add_filter( 'user_contactmethods', array( $this, 'profile_fields' ) );
 		add_action( 'widgets_init', array( $this, 'widgets' ) );
+		add_filter( 'block_categories_all', array( $this, 'block_categories' ) );
+	}
+
+	/**
+	 * Register the Marketers Delight block category used by Drop-in blocks.
+	 * The block inserter hides it when no MD blocks are active.
+	 *
+	 * @since 6.0
+	 */
+
+	public function block_categories( $categories ) {
+		$categories[] = array(
+			'slug' => 'marketers-delight',
+			'title' => __( 'Marketers Delight', 'md' )
+		);
+
+		return $categories;
 	}
 
 	/**
