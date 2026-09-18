@@ -251,6 +251,12 @@ final class marketers_delight {
 			}
 		}
 
+		// Remove excess WP classes
+		$classes = array_diff( $classes, array(
+			'single-format-standard',
+			'single-format-' . get_post_format()
+		) );
+
 		return $classes;
 	}
 
