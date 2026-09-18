@@ -181,7 +181,7 @@ class md_integrations extends md_api {
 		$api_url = isset( $credentials['account_url'] ) ? $credentials['account_url'] : null;
 
 		if ( $action === 'connect' || $action === 'refresh' ) {
-			do_action( 'md_integrations_actions', $integration, $api_keys );
+			do_action( 'md_integrations_actions', $integration, $api_keys, $this );
 			if ( in_array( $integration, array( 'typekit', 'google_analytics' ), true ) && isset( $credentials['key'] ) )
 				$this->save_api_key( $integration, $credentials['key'], $api_url );
 		}
