@@ -344,6 +344,7 @@ class md_layout extends md_api {
 		if ( md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type ) )
 			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
 
+		$menus = array();
 		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
 
 		foreach ( $nav_menus as $menu )
