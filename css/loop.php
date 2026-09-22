@@ -156,6 +156,9 @@
 
 .loop-list > .entry {
 	border-block-end: 1px solid var(--md-border);
+	display: flex;
+	flex-direction: column;
+	gap: var(--md-half);
 	padding: var(--md-half);
 }
 

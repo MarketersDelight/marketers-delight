@@ -48,7 +48,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 		$size = 250;
 
 	if ( ! empty( $media['image_width'] ) ) {
-		$image_width = $media['image_width'] . 'px';
+		$image_width = 'min(' . $media['image_width'] . 'px, 100%)';
 
 		if ( $type !== 'image' )
 			$style['max_width'] = $image_width;

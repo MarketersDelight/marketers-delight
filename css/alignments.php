@@ -81,12 +81,13 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		inset-inline: inherit;
 		width: auto;
 	}
+	.expanded { --md-breakout: -<?php echo $breakout; ?>%; }
 	.expanded .box-style .alignfull,
-	.expanded .box-style .alignleft.wrap, .expanded .row .image-left .featured-media,
-	.expanded :is(.alignleft, .wp-block-image .alignleft) { margin-inline-start: -<?php echo $breakout; ?>%; }
+	.expanded .box-style .alignleft.wrap, .expanded .row.full .image-left .featured-media,
+	.expanded :is(.alignleft, .wp-block-image .alignleft) { margin-inline-start: var(--md-breakout); }
 	.expanded .box-style .alignfull,
-	.expanded .box-style .alignright.wrap, .expanded .row .image-right .featured-media,
-	.expanded :is(.alignright, .wp-block-image .alignright) { margin-inline-end: -<?php echo $breakout; ?>%; }
+	.expanded .box-style .alignright.wrap, .expanded .row.full .image-right .featured-media,
+	.expanded :is(.alignright, .wp-block-image .alignright) { margin-inline-end: var(--md-breakout); }
 }
 
 @media (max-width: <?php echo $site_width; ?>px) {
@@ -109,8 +110,8 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 		margin-inline-start: var(--md-single);
 		max-width: 45%;
 	}
-	.columns .image-left .featured-media { margin-inline-end: var(--md-half); }
-	.columns .image-right .featured-media { margin-inline-start: var(--md-half); }
+	:is(.columns, .slim) .image-left .featured-media { margin-inline-end: var(--md-half); }
+	:is(.columns, .slim) .image-right .featured-media { margin-inline-start: var(--md-half); }
 	.slim :is(.image-left, .image-right, .image-title) .featured-media { max-width: var(--md-quad); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
 	.compact .box-style .entry.full .image-left .featured-media,

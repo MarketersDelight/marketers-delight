@@ -288,7 +288,7 @@ cite, .tiny {
 	$col_min = max( 150, round( ( 800 - $single * ( $g - 1 ) ) / $g ) );
 	$col_gap = $g - 1;
 
-	echo ".columns-fluid-$g { grid-template-columns: repeat(auto-fit, minmax(max({$col_min}px, calc((100% - ($col_gap * var(--md-single))) / $g)), 1fr)); }\n";
+	echo ".columns-fluid-$g { grid-template-columns: repeat(auto-fit, minmax(min(100%, max({$col_min}px, calc((100% - ($col_gap * var(--md-single))) / $g))), 1fr)); }\n";
 }
 
 /* MARGIN TOP */

@@ -178,12 +178,12 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 	line-height: calc(var(--md-line-height-sm) - 1px);
 }
 
-:where(.slim) :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
+.slim :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
 
-:where(.slim) :is(.wp-caption, .wp-block-image),
-:where(.slim .the-content) .featured-media { margin-block-end: var(--md-half); }
+.slim :is(.wp-caption, .wp-block-image),
+.slim .the-content .featured-media { margin-block-end: var(--md-half); }
 
-:where(.slim) :last-child { margin-block-end: 0; }
+.slim :last-child { margin-block-end: 0; }
 
 .slim .entry-title, .slim .title-wrap { row-gap: var(--md-small); }
 

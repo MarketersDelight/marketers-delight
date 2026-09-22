@@ -95,7 +95,7 @@ function md_filter_loops() {
 			'name' => __( 'List view', 'md' ),
 			'description'  => __( 'A simple list with a condensed post listing.', 'md' ),
 			'style_target' => 'group',
-			'classes' => 'slim'
+			'is_slim' => true
 		)
 	) );
 }
@@ -225,7 +225,7 @@ function md_loop_classes( $loop = array() ) {
 	}
 	else {
 		$classes[] = 'row';
-		$classes[] = 'full';
+		$classes[] = ! empty( $loops[$loop['loop']]['is_slim'] ) ? 'slim' : 'full';
 	}
 
 	$classes = array_merge( $classes,
@@ -572,6 +572,7 @@ function md_get_loop( $args = array() ) {
 	}
 
 	if (
+		! empty( $loops[$loop['loop']]['is_slim'] ) ||
 		! empty( $loop['has_sidebar'] ) || $loop['columns'] >= 3 ||
 		( ! empty( $loop['by_category'] ) && ! empty( $loop['category_columns'] ) && $loop['category_columns'] > 1 ) )
 		$loop['is_slim'] = true;

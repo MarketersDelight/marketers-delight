@@ -72,6 +72,10 @@
 
 .header.simple :is(.inner, .header-primary, .header-aside, .header-controls, .header-triggers) { justify-content: center; }
 
+.header.simple .site-title { text-align: center; }
+
+.header.simple .logo + .site-details { text-align: start; }
+
 .left .header-triggers { justify-content: space-between; }
 
 .right .header-triggers {

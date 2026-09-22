@@ -32,6 +32,7 @@
 }
 
 .expanded .loop-timeline {
+	--md-breakout: 0px;
 	--md-loop-content-width: 100%;
 	margin-inline: auto;
 	max-width: var(--md-width-content);
