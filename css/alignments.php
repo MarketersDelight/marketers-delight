@@ -102,10 +102,12 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	.entry.image-left .featured-media {
 		float: left;
 		margin-inline-end: var(--md-single);
+		max-width: 45%;
 	}
 	.entry.image-right .featured-media {
 		float: right;
 		margin-inline-start: var(--md-single);
+		max-width: 45%;
 	}
 	.columns .image-left .featured-media { margin-inline-end: var(--md-half); }
 	.columns .image-right .featured-media { margin-inline-start: var(--md-half); }

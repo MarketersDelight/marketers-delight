@@ -30,8 +30,9 @@
 .image-title.title-left .featured-media { order: -1; }
 
 .image-title.title-center .wrap {
-	align-items: center;
+	align-items: stretch;
 	flex-direction: column;
+	row-gap: var(--md-single);
 }
 
 /* TITLE, LEDE, SUBTITLE, DESC */
@@ -106,8 +107,14 @@
 
 .cover.text-white :is(a, .byline, .title, .lede) { color: inherit; }
 
+.cover.text-white .tag {
+	background-color: color-mix(in srgb, currentColor 16%, transparent);
+	box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 35%, transparent);
+	color: inherit;
+}
+
 .cover-text .header :is(.site-name a, .tagline),
-.cover-text .header :is(.header-controls, .header-triggers) > .trigger,
+.cover-text .header :is(.header-controls, .header-triggers, .search-form .triggers) > .trigger,
 .cover-text .header .menu > .menu-item > :is(a, .trigger) { color: var(--md-site-text-contrast); }
 
 /* QUERIES */

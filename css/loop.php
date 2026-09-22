@@ -14,9 +14,10 @@
 
 .loop:not(.content):not(:last-child) { margin-block-end: var(--md-single); }
 
-.expanded .loop { --md-loop-content-width: var(--md-width-post); }
+.expanded { --md-loop-content-width: var(--md-width-post); }
 
-.expanded .entry .item:not(.post-title) > .wrap {
+.expanded .entry .item:not(.post-title) > .wrap,
+.expanded .content-wrap.builder > .item:not(.post-title) > .wrap {
 	margin-inline: auto;
 	max-width: var(--md-loop-content-width);
 	width: 100%;
@@ -62,7 +63,7 @@
 .entry .cover,
 .featured-media { border-radius: var(--md-border-radius); }
 
-.cover .overlay, .featured-media img { border-radius: inherit; }
+.cover .overlay, .featured-media :is(a, img) { border-radius: inherit; }
 
 .box-entry > .entry > .cover,
 .box-entry > .entry > :not(.loop) > .cover,

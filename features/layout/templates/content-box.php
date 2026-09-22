@@ -4,7 +4,7 @@ echo '<main id="main" class="' . md_content_box_classes() . '">';
 
 md_hook_content_box_top();
 
-echo '<div class="content-wrap' . ( ! $has_builder ? ' inner' : '' ) . '">';
+echo '<div class="content-wrap' . ( $has_builder ? ' builder' : ' inner' ) . '">';
 
 echo ( ! $has_builder ? '<div class="content' . ( is_singular() ? " $loop_classes" : '' ) . '">' : '' );
 

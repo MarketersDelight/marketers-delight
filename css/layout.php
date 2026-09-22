@@ -17,6 +17,13 @@
 	padding-block: var(--md-single);
 }
 
+.content-wrap.builder > :where(:not([class*="wp-block"], .sidebar, .panel, .panel-overlay)) {
+	margin-inline: auto;
+	max-width: var(--md-width-site);
+	padding-inline: clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half));
+	width: 100%;
+}
+
 <?php foreach ( array( '.sidebar, .panel' => 'sidebar', '.footer' => 'footer' ) as $selector => $key ) {
 	$aside_font_size = $this->fluid( $typography[$key]['font_size']['desktop'], $typography[$key]['font_size']['mobile'] ?? null );
 	$aside_line_height = $this->fluid( $typography[$key]['line_height']['desktop'], $typography[$key]['line_height']['mobile'] ?? null );
