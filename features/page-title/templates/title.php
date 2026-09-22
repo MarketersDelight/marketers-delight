@@ -31,6 +31,7 @@ if ( $media && in_array( $media['position'], $title_images, true ) ) {
 	if ( $context == 'page' ) {
 		md_description( $context );
 		md_cta( $context );
+		md_archive_meta();
 	}
 
 }
@@ -53,6 +54,9 @@ else {
 	md_description( $context );
 
 	md_cta( $context );
+
+	if ( $context == 'page' )
+		md_archive_meta();
 
 	if ( $has_wrap )
 		echo '</div>';

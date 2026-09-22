@@ -116,6 +116,12 @@
 .box-entry > .entry > .byline.post-footer,
 .box-entry > .entry > :not(.loop) > .byline.post-footer { padding: var(--md-half); }
 
+.box-entry > .entry > .byline.entry-top,
+.box-entry > .entry > :not(.loop) > .byline.entry-top {
+	border-block-end: 1px solid var(--md-border);
+	padding: var(--md-third) var(--md-half);
+}
+
 .box-entry .entry-title:not(.cover, :empty) + .the-content { padding-block-start: 0; }
 
 /* PLAIN + BORDER STYLES */

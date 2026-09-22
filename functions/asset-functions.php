@@ -187,11 +187,11 @@ function md_js_object( $args ) {
 
 	foreach ( $args as $group => $fields ) {
 		$f = 1;
-		$string .= "$group:{";
+		$string .= "'" . esc_js( $group ) . "':{";
 		$f_total = count( $fields );
 
 		foreach ( $fields as $key => $value ) {
-			$string .= "$key:'$value'";
+			$string .= "'" . esc_js( $key ) . "':'" . esc_js( $value ) . "'";
 
 			if ( $f < $f_total )
 				$string .= ',';

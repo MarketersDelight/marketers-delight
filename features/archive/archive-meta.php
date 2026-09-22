@@ -8,13 +8,13 @@
 class md_archive_meta extends md_api {
 
 	/**
-	 * Attach Archive Meta beneath archive page titles.
+	 * Register the default Archive Meta items.
 	 *
 	 * @since 6.0
 	 */
 
-	public function template() {
-		add_action( 'md_hook_page_title_bottom', array( $this, 'html' ) );
+	public function actions() {
+		add_filter( 'md_archive_meta_items', array( $this, 'items' ), 10, 2 );
 	}
 
 	/**
@@ -51,7 +51,7 @@ class md_archive_meta extends md_api {
 			'name' => array( 'type' => 'text' )
 		);
 
-		foreach ( $this->items() as $item )
+		foreach ( md_archive_meta_items() as $item )
 			if ( ! empty( $item['fields'] ) )
 				$fields = array_merge( $fields, $item['fields'] );
 
@@ -101,7 +101,7 @@ class md_archive_meta extends md_api {
 	 */
 
 	private function elements( $post_type ) {
-		$elements = $this->items( $post_type );
+		$elements = md_archive_meta_items( $post_type );
 
 		foreach ( $elements as $id => $element ) {
 			if ( ! empty( $element['admin_icon'] ) )
@@ -162,8 +162,8 @@ class md_archive_meta extends md_api {
 	 * @since 6.0
 	 */
 
-	public function items( $post_type = null ) {
-		$items = apply_filters( 'md_archive_meta_items', array(
+	public function items( $items, $post_type = null ) {
+		$items = array_merge( $items, array(
 			'post_count' => array(
 				'title' => __( 'Post Count', 'md' ),
 				'placeholder' => __( '{count} posts', 'md' ),
@@ -195,49 +195,9 @@ class md_archive_meta extends md_api {
 				'color' => '#d44c3c',
 				'callback' => array( $this, 'last_added' )
 			)
-		), $post_type );
-
-		if ( $post_type )
-			foreach ( $items as $id => $item )
-				if ( ! empty( $item['post_types'] ) && ! in_array( $post_type, (array) $item['post_types'], true ) )
-					unset( $items[$id] );
+		) );
 
 		return $items;
-	}
-
-	/**
-	 * Render configured meta items on archive titles.
-	 *
-	 * @since 6.0
-	 */
-
-	public function html() {
-		if ( ! is_home() && ! is_archive() )
-			return;
-
-		$post_type = md_get_post_type();
-		$builder = md_get_post_type_builder( 'archive_meta', $post_type );
-		$items = $this->items( $post_type );
-		$output = '';
-
-		foreach ( $builder as $fields ) {
-			if ( ( $fields['builder_area'] ?? '' ) !== 'archives' )
-				continue;
-
-			$type = $fields['builder_type'] ?? '';
-			$callback = $items[$type]['callback'] ?? null;
-
-			if ( ! is_callable( $callback ) )
-				continue;
-
-			$value = call_user_func( $callback, $fields, $post_type );
-
-			if ( $value )
-				$output .= '<span class="byline-item middot">' . md_icon( $items[$type]['icon'] ) . '<span class="byline-label">' . wp_kses_post( $value ) . '</span></span>';
-		}
-
-		if ( $output )
-			echo '<div class="archive-meta byline">' . $output . '</div>';
 	}
 
 	/**

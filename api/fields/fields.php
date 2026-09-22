@@ -563,9 +563,9 @@ class md_fields extends md_fields_render {
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
+			'empty_label' => __( 'Before Title (default)', 'md' ),
 			'options' => array(
 				'entry_top' => __( 'Entry Top', 'md' ),
-				'before_title' => __( 'Before Title', 'md' ),
 				'after_title' =>  __( 'After Title', 'md' ),
 				'before_content' => __( 'Before Content', 'md' ),
 				'entry_footer' => __( 'Entry Footer', 'md' )

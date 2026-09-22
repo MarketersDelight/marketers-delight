@@ -105,6 +105,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/wordpress.php';
 		require_once MD_DIR . 'features/page-cta/functions.php';
 		require_once MD_DIR . 'features/byline/functions.php';
+		require_once MD_DIR . 'features/archive/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
 		require_once MD_DIR . 'features/loop/content.php';

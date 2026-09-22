@@ -69,7 +69,8 @@
 
 .footer :is(.widget-title a, .wp-block-heading a) { color: var(--md-footer-title-links); }
 
-.footer .columns { padding-block: var(--md-mid); }
+.footer > .inner > .columns,
+.footer > .columns { padding-block: var(--md-mid); }
 
 .footer .list li:not(:last-child) { border-block-end-color: var(--md-footer-border); }
 
