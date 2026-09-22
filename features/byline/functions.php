@@ -154,7 +154,7 @@ function md_get_byline( $position, $args = array() ) {
 		// Build bylines by area
 
 		foreach ( $builder as $id => $fields )
-			if ( $context == $fields['builder_area'] && $position == ( $fields['position'] ?: 'before_title' ) ) {
+			if ( $context == $fields['builder_area'] && $position == ( ( $fields['position'] ?? '' ) ?: 'before_title' ) ) {
 				$type = $fields['builder_type'];
 				$byline[$type][$id] = $fields;
 				$byline[$type][$id]['id'] = $id;

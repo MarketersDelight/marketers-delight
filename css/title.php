@@ -29,6 +29,10 @@
 
 .image-title.title-left .featured-media { order: -1; }
 
+.image-title .featured-media { margin-inline: auto; }
+
+.page-title.image-inline .featured-media { order: 1; }
+
 .image-title.title-center .wrap {
 	align-items: stretch;
 	flex-direction: column;
@@ -141,19 +145,40 @@
 		align-items: center;
 		text-align: center;
 	}
-	.title-left .wrap, .title-right .wrap,
-	.image-inline.inline, .image-inline.inline .inner {
+	.title-left .wrap, .title-right .wrap {
 		align-items: center;
 		flex-flow: row;
 	}
-	.image-inline.wide, .image-inline.wide .inner {
-		align-items: center;
-		flex-flow: row;
-		justify-content: center;
+	.image-inline {
+		display: block;
 		text-align: inherit;
 	}
-	.image-inline.wide .inner, .image-title.wide .wrap { column-gap: var(--md-mid); }
-	.image-inline.wide .wrap { max-width: var(--md-width-post); }
+	.image-inline:after {
+		clear: both;
+		content: '';
+		display: table;
+	}
+	.image-inline .featured-media {
+		float: right;
+		margin-inline-start: var(--md-single);
+		order: 0;
+	}
+	.image-inline .featured-media img { width: 100%; }
+	.image-inline.image-left .featured-media {
+		float: left;
+		margin-inline: 0 var(--md-single);
+	}
+	.page-title.image-inline .wrap { display: block; }
+	.page-title.image-inline .wrap > * + * { margin-block-start: var(--md-half); }
+	.image-inline .byline { justify-content: flex-start; }
+	.wide.image-inline :is(.subtitle, .description, .byline) { max-width: none; }
+	.image-title:is(.title-left, .title-right) .featured-media {
+		flex: 0 1 auto;
+		margin-inline: 0;
+	}
+	.image-title:is(.title-left, .title-right) .featured-media,
+	.image-inline .featured-media { max-width: min(40%, var(--md-width-sidebar)); }
+	.image-title.wide .wrap { column-gap: var(--md-mid); }
 	.title-left.wide, .title-left.wide .inner,
 	.title-right.wide, .title-right.wide .inner { text-align: inherit; }
 	.wide:not(.image-inline) :is(.subtitle, .description) { margin-inline: auto; }
@@ -161,8 +186,5 @@
 		justify-content: center;
 		width: 100%;
 	}
-	.image-title:is(.title-left, .title-right).wide .byline { justify-content: flex-start; }
-	.image-title:is(.title-left, .title-right).wide .description { margin-inline: 0; }
 	.image-title.wide .subtitle { margin: 0; }
-	.image-inline.image-left .featured-media { order: -1; }
 }

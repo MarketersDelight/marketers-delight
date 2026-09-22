@@ -43,6 +43,9 @@ else {
 	if ( $context == 'post' )
 		$args['byline'] = true;
 
+	if ( $context == 'page' )
+		md_featured_media( $context, array( 'show_image' => array( 'left', 'right' ) ) );
+
 	if ( $has_wrap )
 		echo '<div class="wrap">';
 
@@ -62,7 +65,7 @@ else {
 		echo '</div>';
 
 	if ( $context == 'page' )
-		md_featured_media( $context, array( 'show_image' => array( 'left', 'right', 'center' ) ) );
+		md_featured_media( $context, array( 'show_image' => array( 'center' ) ) );
 
 }
 
