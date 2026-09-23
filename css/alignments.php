@@ -69,6 +69,12 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 			inset-inline: 50%;
 		width: 100vw;
 	}
+
+	.expanded .content-wrap.builder .alignwide {
+		inset-inline: auto;
+		margin-inline: auto;
+		width: 100%;
+	}
 }
 
 @media (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {

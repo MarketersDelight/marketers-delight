@@ -160,7 +160,7 @@ function md_has_media( $context = 'post', $args = array() ) {
 		$inherit = md_term_meta( array( 'loop', 'inherit', 'position' ), null, $inherit );
 	}
 
-	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) && ! $inherit )
+	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) )
 		$position = $args['loop']['featured_image'];
 
 	if ( $position == 'remove' )

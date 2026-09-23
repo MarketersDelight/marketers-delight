@@ -61,6 +61,7 @@
 .box,
 .content .page-title.cover,
 .entry .cover,
+.content-wrap.builder > .cover,
 .featured-media { border-radius: var(--md-border-radius); }
 
 .cover .overlay, .featured-media :is(a, img) { border-radius: inherit; }
@@ -174,6 +175,12 @@
 	text-decoration: underline;
 }
 
+.loop-list > .entry > :is(.post-title, .the-content) {
+	margin-inline: auto;
+	max-width: var(--md-width-post);
+	width: 100%;
+}
+
 .loop-list > .entry > .post-title .title a:hover { text-decoration: none; }
 
 /* LOOP DATES */
@@ -189,6 +196,8 @@
 /* CATEGORY VIEWS */
 
 .category-title { row-gap: var(--md-small); }
+
+.categories.row > .entry:not(:last-child) { margin-block-end: var(--md-single); }
 
 .category-posts > .entry > .category-title { margin-block-end: var(--md-half); }
 

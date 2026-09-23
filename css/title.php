@@ -93,10 +93,13 @@
 
 .cover {
 	background-position: center;
+	background-repeat: no-repeat;
 	background-size: cover;
 	padding-block: var(--md-single);
 	position: relative;
 }
+
+.cover.repeat { background-size: auto; }
 
 .entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }
 
@@ -109,7 +112,15 @@
 
 .cover.text-white { color: var(--md-site-text-contrast); }
 
-.cover.text-white :is(a, .byline, .title, .lede) { color: inherit; }
+.cover :where(a, .byline, .title, .lede) { color: inherit; }
+.cover .byline a { color: inherit; }
+
+.cover.text-dark { color: var(--md-text); }
+
+
+.cover.has-image > .overlay { background-image: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--md-page-cover-overlay) 100%, transparent)); }
+
+.header-cover.has-image > .overlay { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--md-page-cover-overlay) 100%, transparent), transparent 60%); }
 
 .cover.text-white .tag {
 	background-color: color-mix(in srgb, currentColor 16%, transparent);
@@ -119,7 +130,7 @@
 
 .cover-text .header :is(.site-name a, .tagline),
 .cover-text .header :is(.header-controls, .header-triggers, .search-form .triggers) > .trigger,
-.cover-text .header .menu > .menu-item > :is(a, .trigger) { color: var(--md-site-text-contrast); }
+.cover-text .header .menu > .menu-item > :where(a, .trigger) { color: var(--md-site-text-contrast); }
 
 /* QUERIES */
 

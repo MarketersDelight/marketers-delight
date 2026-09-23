@@ -60,15 +60,54 @@ function md_has_header() {
  */
 
 function md_has_header_elements() {
-	$elements = md_get_builder( 'header', 'elements' );
-
-	if ( ! md_has_menu() )
-		unset( $elements['menu'] );
+	$elements = md_get_header_builder( 'elements' );
 
 	return (bool) ( $elements &&
-		! md_module( array( 'layout', 'header', 'remove' ) ) &&
-		! md_module( array( 'layout', 'header', 'elements' ) )
+		! md_module( array( 'layout', 'header', 'remove' ) )
 	);
+}
+
+/**
+ * Get the header builder after applying layout visibility settings.
+ *
+ * @since 6.0
+ */
+
+function md_get_header_builder( $type = null ) {
+	$builder = md_get_builder( 'header' );
+	$remove_elements = md_module( array( 'layout', 'header', 'elements' ) );
+	$remove_menu = md_module( array( 'layout', 'header', 'menu' ) );
+
+	foreach ( $builder['data'] as $area => $items ) {
+		$visible = array();
+
+		foreach ( $items as $item ) {
+			if ( $remove_elements && $item['type'] !== 'menu' )
+				continue;
+
+			if ( $remove_menu && $item['type'] === 'menu' )
+				continue;
+
+			$visible[] = $item;
+		}
+
+		if ( $visible )
+			$builder['data'][$area] = $visible;
+		else
+			unset( $builder['data'][$area] );
+	}
+
+	$builder['elements'] = array();
+	$builder['locations'] = array();
+
+	foreach ( $builder['data'] as $area => $items ) {
+		foreach ( $items as $item ) {
+			$builder['elements'][$item['type']][] = $item['id'];
+			$builder['locations'][$item['id']] = $area;
+		}
+	}
+
+	return $type ? ( $builder[$type] ?? array() ) : $builder;
 }
 
 /**
@@ -99,7 +138,7 @@ function md_get_menu_name( $menu ) {
  */
 
 function md_has_menu() {
-	$elements = md_get_builder( 'header', 'elements' );
+	$elements = md_get_header_builder( 'elements' );
 
 	return (bool) (
 		! md_module( array( 'layout', 'header', 'remove' ) ) &&

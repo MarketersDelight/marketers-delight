@@ -24,6 +24,8 @@
 	width: 100%;
 }
 
+.content-wrap.builder .alignwide { max-width: var(--md-width-alignwide); }
+
 <?php foreach ( array( '.sidebar, .panel' => 'sidebar', '.footer' => 'footer' ) as $selector => $key ) {
 	$aside_font_size = $this->fluid( $typography[$key]['font_size']['desktop'], $typography[$key]['font_size']['mobile'] ?? null );
 	$aside_line_height = $this->fluid( $typography[$key]['line_height']['desktop'], $typography[$key]['line_height']['mobile'] ?? null );
@@ -54,6 +56,8 @@
 	list-style: none;
 	margin-inline-start: 0;
 }
+
+.panel .widget > :is(ul, ol) { padding-inline-start: var(--md-single); }
 
 .sidebar :is(.widget-title, .wp-block-heading) { color: var(--md-sidebar-title); }
 

@@ -66,13 +66,36 @@ function md_cover_classes( $context = 'post' ) {
 
 	$classes[] = 'cover';
 
-	if ( empty( $cover['display']['alternate'] ) )
-		$classes[] = 'text-white';
+	$classes[] = ! empty( $cover['display']['alternate'] ) || md_cover_is_light( $cover ) ? 'text-dark' : 'text-white';
+
+	if ( ! empty( $cover['photo']['id'] ) )
+		$classes[] = 'has-image';
 
 	if ( ! empty( $cover['display']['bg_repeat'] ) )
 		$classes[] = 'repeat';
 
 	return join( ' ', $classes );
+}
+
+/**
+ * Check whether the cover color is light enough for dark text.
+ *
+ * @since 6.0
+ */
+
+function md_cover_is_light( $cover ) {
+	$color = md_color_hex( ! empty( $cover['bg_color'] ) ? $cover['bg_color'] : '#00000080' );
+
+	if ( ! preg_match( '/^#?([a-f0-9]{6})/i', $color, $match ) )
+		return false;
+
+	$rgb = str_split( $match[1], 2 );
+	$rgb = array_map( function( $value ) {
+		$value = hexdec( $value ) / 255;
+		return $value <= 0.03928 ? $value / 12.92 : pow( ( $value + 0.055 ) / 1.055, 2.4 );
+	}, $rgb );
+
+	return ( 0.2126 * $rgb[0] + 0.7152 * $rgb[1] + 0.0722 * $rgb[2] ) > 0.5;
 }
 
 /**
@@ -112,5 +135,5 @@ function md_overlay( $context = 'post' ) {
 	if ( ! empty( $cover['bg_color'] ) )
 		$style['bg_color'] = $cover['bg_color'];
 
-	echo '<div class="overlay"' . md_style( $style ) . '></div>';
+	echo '<div class="overlay" aria-hidden="true"' . md_style( $style ) . '></div>';
 }

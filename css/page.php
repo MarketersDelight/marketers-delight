@@ -44,6 +44,7 @@
 	font-size: var(--md-font-size-sm);
 	font-style: italic;
 	line-height: var(--md-line-height-sm);
+	margin-block-start: 0;
 	padding: var(--md-third);
 	text-align: center;
 }

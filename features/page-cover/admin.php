@@ -85,7 +85,7 @@ class md_page_cover extends md_api {
 		}
 
 		$display_options = array(
-			'alternate' => __( 'Use alternate text color', 'md' ),
+			'alternate' => __( 'Use dark text', 'md' ),
 			'bg_repeat' => __( 'Background repeat', 'md' ),
 			'disable_overlay' => __( 'Remove overlay', 'md' )
 		);

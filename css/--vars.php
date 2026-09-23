@@ -39,6 +39,7 @@
 
 	--md-width-site: <?php echo $site_width; ?>px;
 	--md-width-content: <?php echo $content_width; ?>px;
+	--md-width-alignwide: <?php echo $alignwide_width; ?>px;
 	--md-width-post: <?php echo $post_width; ?>px;
 	--md-width-sidebar: <?php echo $sidebar_width; ?>px;
 	--md-width-panel: <?php echo $panel_width; ?>px;

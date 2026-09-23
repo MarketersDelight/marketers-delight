@@ -13,7 +13,7 @@ if ( $context == 'page' )
 
 // If media position is set to align directly with the title
 
-if ( $media && in_array( $media['position'], $title_images, true ) ) {
+if ( $media && in_array( $media_position, $title_images, true ) ) {
 
 	echo '<div class="wrap">';
 

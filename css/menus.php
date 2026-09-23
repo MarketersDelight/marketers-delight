@@ -31,7 +31,7 @@
 
 .menu-item-desc { font-size: 0.85em; }
 
-.menu-item.current-menu-item > a, .current-menu-item > .toggle { color: var(--md-header-menu-active); }
+.menu-item:is(.current-menu-item, .current-menu-ancestor) > :is(a, .trigger), .current-menu-item > .toggle { color: var(--md-header-menu-active); }
 
 /* SUB MENU */
 
@@ -46,6 +46,8 @@
 .sub-menu .menu-item a, .menu .sub-menu .trigger {
 	color: var(--md-header-submenu-links);
 }
+
+.menu-item:is(.current-menu-item, .current-menu-ancestor) > :is(a, .trigger) { color: var(--md-header-menu-active); }
 
 .sub-menu .menu-item a {
 	display: block;

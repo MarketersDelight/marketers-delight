@@ -94,6 +94,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
+	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? $loop['featured_image'] : ( $media['position'] ?? '' );
 
 	// Layout type classes
 
@@ -104,8 +105,8 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Featured image related classes
 
-	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media['position'], $title_images, true ) ) ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $media['position'] ) );
+	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media_position, $title_images, true ) ) ) )
+		$classes = array_merge( $classes, md_get_image_position_classes( $media_position ) );
 	elseif ( ! $media && $context == 'post' && empty( $cover['position'] ) )
 		$classes[] = 'no-media';
 

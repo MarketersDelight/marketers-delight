@@ -15,7 +15,7 @@ md_hook_before_html();
 echo '<a href="#main" class="skip-to-content">' . __( 'Skip to content', 'md' ) . '</a>';
 
 if ( md_has_header() ) :
-	$header = md_get_builder( 'header' );
+	$header = md_get_header_builder();
 	$mobile = md_setting( array( 'header', 'layout_mobile' ) );
 	$layout = md_setting( array( 'header', 'layout' ), 'standard' );
 	$has_elements = md_has_header_elements();

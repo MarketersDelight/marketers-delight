@@ -35,8 +35,8 @@
 			'options' => $display_options,
 			'inherit' => array(
 				'alternate' => array(
-					'on' => __( 'Use alternate text color', 'md' ),
-					'off' => __( 'Use default text color', 'md' )
+					'on' => __( 'Use dark text', 'md' ),
+					'off' => __( 'Use automatic text color', 'md' )
 				),
 				'bg_repeat' => array(
 					'on' => __( 'Repeat background', 'md' ),

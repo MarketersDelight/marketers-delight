@@ -264,7 +264,7 @@ final class marketers_delight {
 			if ( $cover['position'] == 'header_cover_full' ) {
 				$classes[] = 'full-cover';
 
-				if ( isset( $cover['display']['alternate'] ) )
+				if ( ! empty( $cover['display']['alternate'] ) || md_cover_is_light( $cover ) )
 					$classes[] = 'cover-alt';
 				else
 					$classes[] = 'cover-text';
