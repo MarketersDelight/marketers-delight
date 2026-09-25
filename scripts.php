@@ -210,6 +210,8 @@ scrollerNav: function() {
 				start = list.scrollLeft <= 0,
 				end = list.scrollLeft >= list.scrollWidth - list.clientWidth - 1;
 
+			list.classList.toggle( 'scroller-overflow', overflow );
+
 			if ( prev )
 				if ( ! overflow || start )
 					prev.classList.add( 'arrow-hidden' );
