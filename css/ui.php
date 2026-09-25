@@ -212,7 +212,7 @@
 /* QUERIES */
 
 @media all and (min-width: 700px) {
-	.expanded .scroller-list { justify-content: center; }
+	.expanded .scroller-list:not(.scroller-overflow) { justify-content: center; }
 	.show-mobile { display: none !important; }
 }
 
