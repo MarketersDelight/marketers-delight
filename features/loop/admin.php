@@ -44,7 +44,7 @@ class md_loop extends md_api {
 			),
 			'featured_image_size' => array(
 				'type' => 'select',
-				'options' => get_intermediate_image_sizes()
+				'options' => array_merge( array( 'full' ), get_intermediate_image_sizes() )
 			),
 			'content' => array(
 				'type' => 'select',
@@ -210,7 +210,7 @@ class md_loop extends md_api {
 		$loop_type = $this->fields->module( 'loop_type' );
 		$featured = $this->fields->module( 'featured' );
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
-		$image_sizes = get_intermediate_image_sizes();
+		$image_sizes = array_merge( array( 'full' ), get_intermediate_image_sizes() );
 		$subcat_key = ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) ? 'show_subcategory' : 'hide_subcategory';
 		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show subcategories', 'md' ) : __( 'Hide subcategories', 'md' );
 	?>
