@@ -1317,7 +1317,11 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	width: auto;
 }
 
-.md-range-number { width: 75px; }
+.md-range-number {
+	box-sizing: border-box;
+	max-width: 75px;
+	width: 75px;
+}
 
 .md-range-reset {
 	color: #999;
