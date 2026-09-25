@@ -256,7 +256,7 @@ function md_loop_classes( $loop = array() ) {
 
 	$category_classes = array( 'entry' );
 
-	if ( $loop['loop_type'] == 'category' )
+	if ( in_array( $loop['loop_type'], array( 'category', 'category_posts' ), true ) )
 		$category_classes[] = "{$style}-{$target}";
 
 	// Return class sets
@@ -293,14 +293,7 @@ function md_post_class( $loop = array(), $c = 1 ) {
 
 	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) ) {
 		$position = $loop['featured_image'];
-		$classes[] = 'image-' . str_replace( '_headline', '', $position );
-
-		if ( in_array( $position, array( 'left', 'right', 'center' ), true ) )
-			$classes[] = 'image-inline';
-		elseif ( in_array( $position, array( 'above_headline', 'below_headline' ), true ) )
-			$classes[] = 'image-full';
-		elseif ( in_array( $position, array( 'title_left', 'title_right', 'title_center' ), true ) )
-			$classes[] = 'image-title';
+		$classes = array_merge( $classes, md_get_image_position_classes( $position ) );
 	}
 
 	if ( isset( $cover['position'] ) )
@@ -321,11 +314,16 @@ function md_loop_featured( $loop ) {
 		'featured_remove_byline' => 'remove_byline',
 		'featured_content' => 'content',
 		'featured_featured_image' => 'featured_image',
+		'featured_featured_image_size' => 'featured_image_size',
+		'featured_inherit' => 'inherit',
 		'featured_excerpt_more' => 'excerpt_more',
 		'featured_excerpt_length' => 'excerpt_length',
 		'featured_read_more' => 'read_more',
 		'featured_excerpt_settings' => 'excerpt_settings'
 	);
+
+	if ( empty( $loop['featured_featured_image_size'] ) )
+		$loop['featured_image_size'] = 'full';
 
 	foreach ( $featured as $key => $loop_key ) {
 		if ( empty( $loop[$key] ) )
