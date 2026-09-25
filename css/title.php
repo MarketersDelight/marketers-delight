@@ -67,6 +67,8 @@
 	color: inherit;
 }
 
+.image-title .byline { justify-content: flex-start; }
+
 .byline a {
 	color: var(--md-links-muted);
 	text-decoration-color: color-mix(in srgb, currentColor 45%, transparent);
@@ -104,7 +106,7 @@
 .entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }
 
 .full-cover .page-title,
-.full-cover .main > .post-title { padding-block: calc(var(--md-quad) * 2) var(--md-double); }
+.full-cover .main > .post-title { padding-block: calc(var(--md-quad) * 2) var(--md-double-x); }
 
 .header-cover .main { padding-block-start: 0; }
 
@@ -197,5 +199,6 @@
 		justify-content: center;
 		width: 100%;
 	}
+	.image-title.wide .byline { justify-content: flex-start; }
 	.image-title.wide .subtitle { margin: 0; }
 }
