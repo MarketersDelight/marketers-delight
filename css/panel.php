@@ -66,9 +66,6 @@
 		opacity: 1;
 		visibility: visible;
 	}
-}
-
-@media (min-width: 600px) and (max-width: <?php echo $site_width; ?>px) {
 	.admin-bar .panel { inset-block-start: var(--wp-admin--admin-bar--height); }
 }
 
