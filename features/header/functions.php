@@ -148,6 +148,76 @@ function md_has_menu() {
 }
 
 /**
+ * Mark post type archive links as current on singular posts.
+ *
+ * @since 6.0
+ */
+
+function md_nav_menu_archive_context( $items ) {
+	if ( ! is_singular() )
+		return $items;
+
+	$post_type = apply_filters( 'md_nav_menu_current', get_post_type() );
+	$archive_urls = array_filter( array( get_post_type_archive_link( $post_type ) ) );
+
+	foreach ( get_object_taxonomies( get_post_type(), 'objects' ) as $taxonomy ) {
+		if ( ! $taxonomy->public )
+			continue;
+
+		$terms = get_the_terms( get_queried_object_id(), $taxonomy->name );
+
+		if ( empty( $terms ) || is_wp_error( $terms ) )
+			continue;
+
+		foreach ( $terms as $term ) {
+			$term_url = get_term_link( $term );
+
+			if ( ! is_wp_error( $term_url ) )
+				$archive_urls[] = $term_url;
+		}
+	}
+
+	if ( ! $archive_urls )
+		return $items;
+
+	$archive_urls = array_map( 'untrailingslashit', $archive_urls );
+	$current_ids = array();
+
+	foreach ( $items as $item ) {
+		if ( ! in_array( untrailingslashit( $item->url ), $archive_urls, true ) )
+			continue;
+
+		$item->classes[] = 'current-menu-item';
+		$current_ids[] = $item->ID;
+	}
+
+	if ( ! $current_ids )
+		return $items;
+
+	$parents = array();
+
+	foreach ( $items as $item )
+		$parents[$item->ID] = $item->menu_item_parent;
+
+	foreach ( $items as $item ) {
+		$parent_id = $item->menu_item_parent;
+
+		while ( $parent_id ) {
+			if ( in_array( $parent_id, $current_ids, true ) ) {
+				$item->classes[] = 'current-menu-ancestor';
+				break;
+			}
+
+			$parent_id = $parents[$parent_id] ?? 0;
+		}
+	}
+
+	return $items;
+}
+
+add_filter( 'wp_nav_menu_objects', 'md_nav_menu_archive_context' );
+
+/**
  * Markup for a WP nav menu that accepts customized parameters.
  *
  * @since 4.0
