@@ -44,6 +44,8 @@ function md_featured_media( $context = 'post', $args = array() ) {
 		$size = $args['size'];
     elseif ( isset( $args['featured_image_size'] ) )
         $size = $args['featured_image_size'];
+	elseif ( ! empty( $loop['featured_image_size'] ) )
+		$size = $loop['featured_image_size'];
     elseif ( is_author() )
 		$size = 250;
 
@@ -119,7 +121,7 @@ function md_get_media( $context = 'post' ) {
 	);
 
 	if ( $context == 'page' ) {
-		$option = md_module( 'featured_media', array() );
+		$option = md_module( 'featured_media', array(), array( 'inherit_post_type' => false ) );
 
 		if ( is_author() )
 			$option['author'] = true;
