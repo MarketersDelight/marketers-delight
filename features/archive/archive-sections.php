@@ -29,6 +29,8 @@ class md_archive_sections extends md_api {
 	public function template() {
 		add_action( 'md_hook_loop_before', array( $this, 'before_loop' ), 20 );
 		add_action( 'md_hook_loop_after', array( $this, 'after_loop' ) );
+		add_action( 'md_hook_before_sidebar', array( $this, 'before_sidebar' ) );
+		add_action( 'md_hook_after_sidebar', array( $this, 'after_sidebar' ) );
 	}
 
 	/**
@@ -104,6 +106,14 @@ class md_archive_sections extends md_api {
 				'after_loop' => array(
 					'title' => __( 'After Loop', 'md' ),
 					'description' => __( 'Shown after the archive entries and pagination.', 'md' )
+				),
+				'before_sidebar' => array(
+					'title' => __( 'Before Sidebar', 'md' ),
+					'description' => __( 'Shown before the sidebar widgets.', 'md' )
+				),
+				'after_sidebar' => array(
+					'title' => __( 'After Sidebar', 'md' ),
+					'description' => __( 'Shown after the sidebar widgets.', 'md' )
 				)
 			),
 			'elements' => $this->elements( $post_type )
@@ -265,6 +275,26 @@ class md_archive_sections extends md_api {
 
 	public function after_loop( $args = array() ) {
 		$this->html( 'after_loop', $args );
+	}
+
+	/**
+	 * Render sections before the sidebar widgets.
+	 *
+	 * @since 6.0
+	 */
+
+	public function before_sidebar() {
+		$this->html( 'before_sidebar', array( 'loop' => array( 'post_type' => md_get_post_type() ) ) );
+	}
+
+	/**
+	 * Render sections after the sidebar widgets.
+	 *
+	 * @since 6.0
+	 */
+
+	public function after_sidebar() {
+		$this->html( 'after_sidebar', array( 'loop' => array( 'post_type' => md_get_post_type() ) ) );
 	}
 
 	/**
