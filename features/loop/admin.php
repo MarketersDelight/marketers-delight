@@ -92,6 +92,11 @@ class md_loop extends md_api {
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
+			'columns_mobile' => array(
+				'type' => 'number',
+				'min' => 1,
+				'step' => 1
+			),
 			'posts_per_page' => array( 'type' => 'number' ),
 			'posts_per_category' => array( 'type' => 'number' ),
 			'category_per_page' => array( 'type' => 'number' ),

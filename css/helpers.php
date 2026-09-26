@@ -291,6 +291,7 @@ cite, .tiny {
 	echo ".columns-fluid-$g { grid-template-columns: repeat(auto-fit, minmax(min(100%, max({$col_min}px, calc((100% - ($col_gap * var(--md-single))) / $g))), 1fr)); }\n";
 }
 
+
 /* MARGIN TOP */
 
 foreach ( array_keys( $spacers ) as $size )
@@ -306,9 +307,6 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 foreach ( array_keys( $spacers ) as $size )
 	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: var(--md-$size); }\n";
 
-foreach ( array( 'double', 'mid', 'single', 'half' ) as $size )
-	echo ".break-$size, .format .break-$size { margin-block-end: calc(-1 * var(--md-$size)); }\n";
-
 echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 
 /* MARGIN LEFT */
@@ -323,10 +321,42 @@ foreach ( array_keys( $spacers ) as $size )
 
 echo ".gap-none { gap: 0; }";
 
+?>
+
+/* MOBILE: SCROLL, MIDDOT */
+
+@media (max-width: 800px) {
+	.scroll-mobile {
+		align-items: center;
+		gap: var(--md-scroll-gap, var(--md-half));
+		grid-auto-columns: var(--md-scroll-column, min(85%, 360px));
+		grid-auto-flow: column;
+		grid-template-columns: none;
+		margin: calc(-1 * var(--md-half));
+		overflow-x: auto;
+		overscroll-behavior-x: contain;
+		padding: var(--md-half);
+		scroll-padding-inline: var(--md-half);
+		scroll-snap-type: x mandatory;
+		scrollbar-width: none;
+		width: auto;
+	}
+	.scroll-mobile::-webkit-scrollbar { display: none; }
+	.scroll-mobile > * { scroll-snap-align: start; }
+	.middot:has([class*="md-icon-"]) { white-space: nowrap; }
+	.middot:has([class*="md-icon-"])::before { content: none; }
+}
+
+<?php
+
 /* BLOCKS / PADDING */
 
 foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 'quad' ) as $size ) {
-	$inline_var = in_array( $size, array( 'single', 'mid', 'double', 'triple', 'quad' ) ) ? "--md-$size-x" : "--md-$size";
+	$has_fluid = in_array( $size, array( 'single', 'mid', 'double', 'triple', 'quad' ) );
+	$inline_var = $has_fluid ? "--md-$size-x" : "--md-$size";
+
+	if ( $has_fluid )
+		echo ".block-$size-x { padding: var($inline_var); }\n";
 
 	echo
 		".block-$size { padding: var(--md-$size); }\n".

@@ -148,7 +148,7 @@
 	}
 }
 
-@media (max-width: 799px) {
+@media (max-width: 800px) {
 	.image-title .featured-media { text-align: center; }
 }
 
