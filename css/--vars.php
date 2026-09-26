@@ -153,7 +153,7 @@
 	--wp--preset--color--primary: <?php echo $colors['palette']['primary']; ?>;
 	--wp--preset--color--secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--wp--preset--color--tertiary: <?php echo $colors['palette']['tertiary']; ?>;
-	--wp--preset--color--border-color: <?php echo $colors['palette']['border']; ?>;
+	--wp--preset--color--border: <?php echo $colors['palette']['border']; ?>;
 	--wp--preset--color--highlight: <?php echo $colors['palette']['highlight']; ?>;
 	--wp--preset--color--text-main: <?php echo $colors['palette']['text-main']; ?>;
 	--wp--preset--color--text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;
