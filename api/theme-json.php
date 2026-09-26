@@ -220,6 +220,13 @@ class md_theme_json {
 				'shadow' => $this->effects['box_shadow'][$slug]
 			);
 
+		// A solid offset shadow in the element's own text color, for bordered "card" designs
+		$presets[] = array(
+			'name' => __( 'Hard', 'md' ),
+			'slug' => 'hard',
+			'shadow' => '6px 6px 0 currentColor'
+		);
+
 		return $presets;
 	}
 
@@ -344,9 +351,16 @@ class md_theme_json {
 			'$schema' => 'https://schemas.wp.org/wp/7.0/theme.json',
 			'version' => 3,
 			'settings' => array(
+				'background' => array(
+					'backgroundImage' => true,
+					'backgroundSize' => true
+				),
 				'border' => array(
+					'color' => true,
 					'radius' => true,
-					'radiusSizes' => $this->radius_sizes()
+					'radiusSizes' => $this->radius_sizes(),
+					'style' => true,
+					'width' => true
 				),
 				'color' => array(
 					'defaultPalette' => false,
@@ -354,7 +368,11 @@ class md_theme_json {
 					'palette' => md_editor_colors()
 				),
 				'dimensions' => array(
-					'aspectRatio' => true
+					'aspectRatio' => true,
+					'minHeight' => true
+				),
+				'position' => array(
+					'sticky' => true
 				),
 				'typography' => array(
 					'fluid' => true,

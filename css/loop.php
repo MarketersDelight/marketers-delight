@@ -83,6 +83,11 @@
 .box-entry > .entry.image-above > :is(.cover, .featured-media + .item),
 .box-entry > .entry.image-above > :not(.loop) > :is(.cover, .featured-media + .item) { border-radius: 0 0 var(--md-border-radius) var(--md-border-radius); }
 
+.box-entry .byline.entry-top ~ :is(.cover, .featured-media) {
+	border-start-start-radius: 0;
+	border-start-end-radius: 0;
+}
+
 .box-entry > .entry.image-below > .featured-media,
 .box-entry > .entry.image-below > .featured-media + .the-content,
 .box-entry > .entry.image-below > :not(.loop) > .featured-media,

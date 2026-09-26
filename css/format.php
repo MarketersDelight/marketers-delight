@@ -61,6 +61,8 @@ code, pre {
 .format :is(ul, ol, p, hr, table, blockquote, pre),
 .format :is(.wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
 
+.format :is(.is-layout-flex, .is-layout-grid) > * { margin-block: 0; }
+
 <?php include md_css( 'headings', true ); ?>
 
 /* LISTS */

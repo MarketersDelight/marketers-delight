@@ -77,9 +77,17 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'border', $this->json['styles']['blocks']['core/button'] );
 	}
 
-	public function test_dimension_controls_expose_aspect_ratio_only() {
-		$this->assertTrue( $this->json['settings']['dimensions']['aspectRatio'] );
-		$this->assertArrayNotHasKey( 'minHeight', $this->json['settings']['dimensions'] );
+	public function test_design_controls_for_block_built_pages() {
+		$settings = $this->json['settings'];
+
+		$this->assertTrue( $settings['dimensions']['aspectRatio'] );
+		$this->assertTrue( $settings['dimensions']['minHeight'] );
+		$this->assertTrue( $settings['position']['sticky'] );
+		$this->assertTrue( $settings['background']['backgroundImage'] );
+		$this->assertTrue( $settings['border']['color'] );
+		$this->assertTrue( $settings['border']['width'] );
+		$this->assertTrue( $settings['border']['style'] );
+		$this->assertArrayNotHasKey( 'appearanceTools', $settings );
 	}
 
 	public function test_effect_presets_use_the_md_radius_and_shadow_scale() {
@@ -89,9 +97,18 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertTrue( $this->json['settings']['border']['radius'] );
 		$this->assertSame( '8px', $radii['rounded']['size'] );
 		$this->assertFalse( $this->json['settings']['shadow']['defaultPresets'] );
-		$this->assertCount( 4, $shadows );
+		$this->assertCount( 5, $shadows );
+		$this->assertSame( '6px 6px 0 currentColor', $shadows['hard']['shadow'] );
 		$this->assertSame( '0 1px 3px rgba(0, 0, 0, 0.15)', $shadows['small']['shadow'] );
 		$this->assertSame( '0 16px 48px rgba(0, 0, 0, 0.20)', $shadows['huge']['shadow'] );
+	}
+
+	public function test_palette_slugs_match_block_editor_class_names() {
+		$slugs = array_column( $this->json['settings']['color']['palette'], 'slug' );
+
+		$this->assertContains( 'border', $slugs );
+		$this->assertNotContains( 'border-color', $slugs );
+		$this->assertContains( 'primary', $slugs );
 	}
 
 	public function test_layout_uses_md_post_and_alignwide_widths() {
