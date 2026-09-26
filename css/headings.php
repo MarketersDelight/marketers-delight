@@ -56,7 +56,7 @@ foreach ( $headings as $attribute => $selector ) {
 }
 ?>
 
-:is(<?php echo $heading_selectors ?>) a {
+:where(<?php echo $heading_selectors ?>) a {
 	color: var(--md-headline-links);
 	text-decoration: none;
 }

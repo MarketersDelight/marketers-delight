@@ -97,7 +97,24 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertTrue( $settings['border']['color'] );
 		$this->assertTrue( $settings['border']['width'] );
 		$this->assertTrue( $settings['border']['style'] );
-		$this->assertArrayNotHasKey( 'appearanceTools', $settings );
+		$this->assertTrue( $settings['appearanceTools'] );
+		$this->assertTrue( $settings['color']['link'] );
+		$this->assertTrue( $settings['typography']['lineHeight'] );
+		$this->assertTrue( $settings['typography']['textColumns'] );
+		$this->assertTrue( $settings['typography']['writingMode'] );
+		$this->assertFalse( $settings['spacing']['customSpacingSize'] );
+	}
+
+	public function test_gradient_and_duotone_presets_use_the_palette() {
+		$palette = array_column( $this->json['settings']['color']['palette'], 'color', 'slug' );
+		$gradients = $this->presets_by_slug( $this->json['settings']['color']['gradients'] );
+		$duotones = $this->presets_by_slug( $this->json['settings']['color']['duotone'] );
+
+		$this->assertFalse( $this->json['settings']['color']['defaultDuotone'] );
+		$this->assertCount( 5, $gradients );
+		$this->assertStringContainsString( $palette['primary'], $gradients['primary-secondary']['gradient'] );
+		$this->assertStringContainsString( $palette['secondary'], $gradients['primary-secondary']['gradient'] );
+		$this->assertSame( array( $palette['text-main'], $palette['background'] ), $duotones['ink']['colors'] );
 	}
 
 	public function test_effect_presets_use_the_md_radius_and_shadow_scale() {

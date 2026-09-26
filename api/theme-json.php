@@ -231,6 +231,71 @@ class md_theme_json {
 	}
 
 	/**
+	 * Index palette hex values by slug for building other presets.
+	 *
+	 * @since 6.0
+	 */
+
+	private function palette() {
+		return array_column( md_editor_colors(), 'color', 'slug' );
+	}
+
+	/**
+	 * Build gradient presets from the MD color palette.
+	 *
+	 * @since 6.0
+	 */
+
+	private function gradient_presets() {
+		$c = $this->palette();
+		$gradients = array(
+			'primary-secondary' => array( __( 'Primary to Secondary', 'md' ), "linear-gradient(135deg, {$c['primary']} 0%, {$c['secondary']} 100%)" ),
+			'primary-fade' => array( __( 'Primary Fade', 'md' ), "linear-gradient(180deg, {$c['primary']} 0%, {$c['background']} 100%)" ),
+			'surface' => array( __( 'Surface', 'md' ), "linear-gradient(180deg, {$c['background']} 0%, {$c['surface']} 100%)" ),
+			'highlight' => array( __( 'Highlight', 'md' ), "linear-gradient(180deg, {$c['highlight']} 0%, {$c['background']} 100%)" ),
+			'dark' => array( __( 'Dark', 'md' ), "linear-gradient(180deg, {$c['secondary']} 0%, {$c['text-main']} 100%)" )
+		);
+		$presets = array();
+
+		foreach ( $gradients as $slug => $gradient )
+			$presets[] = array(
+				'name' => $gradient[0],
+				'slug' => $slug,
+				'gradient' => $gradient[1]
+			);
+
+		return $presets;
+	}
+
+	/**
+	 * Build duotone image filter presets from the MD color palette.
+	 *
+	 * @since 6.0
+	 */
+
+	private function duotone_presets() {
+		$c = $this->palette();
+
+		return array(
+			array(
+				'name' => __( 'Ink', 'md' ),
+				'slug' => 'ink',
+				'colors' => array( $c['text-main'], $c['background'] )
+			),
+			array(
+				'name' => __( 'Primary', 'md' ),
+				'slug' => 'primary',
+				'colors' => array( $c['primary'], $c['background'] )
+			),
+			array(
+				'name' => __( 'Highlight', 'md' ),
+				'slug' => 'highlight',
+				'colors' => array( $c['secondary'], $c['highlight'] )
+			)
+		);
+	}
+
+	/**
 	 * Build font-family presets from MD settings.
 	 *
 	 * @since 6.0
@@ -351,6 +416,7 @@ class md_theme_json {
 			'$schema' => 'https://schemas.wp.org/wp/7.0/theme.json',
 			'version' => 3,
 			'settings' => array(
+				'appearanceTools' => true,
 				'background' => array(
 					'backgroundImage' => true,
 					'backgroundSize' => true
@@ -365,6 +431,10 @@ class md_theme_json {
 				'color' => array(
 					'defaultPalette' => false,
 					'defaultGradients' => false,
+					'defaultDuotone' => false,
+					'duotone' => $this->duotone_presets(),
+					'gradients' => $this->gradient_presets(),
+					'link' => true,
 					'palette' => md_editor_colors()
 				),
 				'dimensions' => array(
@@ -377,7 +447,10 @@ class md_theme_json {
 				'typography' => array(
 					'fluid' => true,
 					'fontSizes' => $this->font_sizes(),
-					'fontFamilies' => $this->font_families()
+					'fontFamilies' => $this->font_families(),
+					'lineHeight' => true,
+					'textColumns' => true,
+					'writingMode' => true
 				),
 				'layout' => array(
 					'contentSize' => $this->post_width . 'px',
@@ -409,6 +482,9 @@ class md_theme_json {
 					'fontSize' => 'var:preset|font-size|normal',
 					'fontWeight' => $this->fonts['body']['font_weight'],
 					'lineHeight' => $this->line_height( $this->typography['body']['font_size']['desktop'], $this->typography['body']['line_height']['desktop'] )
+				),
+				'spacing' => array(
+					'blockGap' => 'var:preset|spacing|single'
 				),
 				'elements' => $this->element_styles(),
 				'blocks' => array(

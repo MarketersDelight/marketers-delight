@@ -58,10 +58,7 @@ code, pre {
 
 .format { word-wrap: break-word; }
 
-.format :is(ul, ol, p, hr, table, blockquote, pre),
-.format :is(.wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
-
-.format :is(.is-layout-flex, .is-layout-grid) > * { margin-block: 0; }
+:where(.format) :where(ul, ol, p, hr, table, blockquote, pre, .wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
 
 <?php include md_css( 'headings', true ); ?>
 

@@ -217,6 +217,7 @@ final class marketers_delight {
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		add_theme_support( 'editor-styles' );
+		add_theme_support( 'responsive-embeds' );
 		add_post_type_support( 'page', 'excerpt' );
 
 		// Register Nav Menus
