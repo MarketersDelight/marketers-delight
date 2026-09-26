@@ -32,6 +32,7 @@ class CssTest extends MD_TestCase {
 			$this->site_width = $site_width;
 			$site_width_wide = $widths['site_width_wide'];
 			$content_width = $widths['content_width'];
+			$alignwide_width = $widths['alignwide_width'];
 			$post_width = $widths['post_width'];
 			$sidebar_width = $widths['sidebar_width'];
 			$panel_width = $widths['panel_width'];

@@ -32,7 +32,17 @@ class ThemeJsonTest extends MD_TestCase {
 	public function test_packaged_theme_json_is_a_valid_bootstrap_manifest() {
 		$packaged = json_decode( file_get_contents( dirname( __DIR__ ) . '/theme.json' ), true, 512, JSON_THROW_ON_ERROR );
 
-		$this->assertSame( array(), $packaged );
+		// Ships as {}, but compiling CSS writes the site's generated manifest in its place
+		if ( $packaged === array() ) {
+			$this->assertSame( array(), $packaged );
+
+			return;
+		}
+
+		$this->assertSame( $this->json['$schema'], $packaged['$schema'] );
+		$this->assertSame( $this->json['version'], $packaged['version'] );
+		$this->assertSame( array_keys( $this->json ), array_keys( $packaged ) );
+		$this->assertSame( array_keys( $this->json['settings'] ), array_keys( $packaged['settings'] ) );
 	}
 
 	public function test_typography_presets_are_fluid_and_used_by_elements() {
