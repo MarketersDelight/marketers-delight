@@ -291,10 +291,10 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	if ( ! is_singular() && is_sticky() )
 		$classes[] = 'sticky';
 
-	if ( isset( $loop['featured_image'] ) && ! in_array( $loop['featured_image'], array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) ) {
-		$position = $loop['featured_image'];
+	$position = isset( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : '';
+
+	if ( $position && ! in_array( $position, array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) )
 		$classes = array_merge( $classes, md_get_image_position_classes( $position ) );
-	}
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';

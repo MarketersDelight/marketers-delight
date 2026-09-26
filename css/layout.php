@@ -26,6 +26,10 @@
 
 .content-wrap.builder .alignwide { max-width: var(--md-width-alignwide); }
 
+.main:has(> .content-wrap.builder > .alignfull:first-child) { padding-block-start: 0; }
+
+.main:has(> .content-wrap.builder > .alignfull:last-child) { padding-block-end: 0; }
+
 <?php foreach ( array( '.sidebar, .panel' => 'sidebar', '.footer' => 'footer' ) as $selector => $key ) {
 	$aside_font_size = $this->fluid( $typography[$key]['font_size']['desktop'], $typography[$key]['font_size']['mobile'] ?? null );
 	$aside_line_height = $this->fluid( $typography[$key]['line_height']['desktop'], $typography[$key]['line_height']['mobile'] ?? null );

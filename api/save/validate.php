@@ -116,11 +116,16 @@ class md_validate {
 				return $this->sanitize->text( $val, $fields );
 
 			case 'editor':
-			case 'code':
 				if ( is_null( $val ) )
 					return null;
 				$val = is_scalar( $val ) ? (string) $val : '';
 				return wp_kses_post( $val );
+
+			case 'code':
+				if ( is_null( $val ) )
+					return null;
+
+				return is_scalar( $val ) ? (string) $val : '';
 
 			case 'number':
 			case 'range':

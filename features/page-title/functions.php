@@ -79,6 +79,9 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( ! md_get_title( $context ) && $context !== 'post' )
 		return;
 
+	if ( $context === 'post' && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
+		return;
+
 	$has_header_cover = md_has_header_cover( $context );
 
 	if ( $has_header_cover && in_the_loop() )
@@ -94,7 +97,7 @@ function md_title( $context = 'post', $args = array() ) {
 	$has_sidebar = md_has_sidebar();
 	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
-	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? $loop['featured_image'] : ( $media['position'] ?? '' );
+	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
 
 	// Layout type classes
 

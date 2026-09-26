@@ -146,13 +146,14 @@
 	--wp--preset--shadow--medium: <?php echo $effects['box_shadow']['medium']; ?>;
 	--wp--preset--shadow--large: <?php echo $effects['box_shadow']['large']; ?>;
 	--wp--preset--shadow--huge: <?php echo $effects['box_shadow']['huge']; ?>;
+	--wp--preset--shadow--hard: 6px 6px 0 currentColor;
 
 	--wp--preset--color--background: <?php echo $colors['palette']['background']; ?>;
 	--wp--preset--color--surface: <?php echo $colors['palette']['surface']; ?>;
 	--wp--preset--color--primary: <?php echo $colors['palette']['primary']; ?>;
 	--wp--preset--color--secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--wp--preset--color--tertiary: <?php echo $colors['palette']['tertiary']; ?>;
-	--wp--preset--color--border: <?php echo $colors['palette']['border']; ?>;
+	--wp--preset--color--border-color: <?php echo $colors['palette']['border']; ?>;
 	--wp--preset--color--highlight: <?php echo $colors['palette']['highlight']; ?>;
 	--wp--preset--color--text-main: <?php echo $colors['palette']['text-main']; ?>;
 	--wp--preset--color--text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;

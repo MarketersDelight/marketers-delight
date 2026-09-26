@@ -115,7 +115,7 @@
 .cover.text-white { color: var(--md-site-text-contrast); }
 
 .cover :where(a, .byline, .title, .lede) { color: inherit; }
-.cover .byline a { color: inherit; }
+.cover :is(.byline, .title) a { color: inherit; }
 
 .cover.text-dark { color: var(--md-text); }
 

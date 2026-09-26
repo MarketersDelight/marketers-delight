@@ -155,15 +155,9 @@ function md_has_media( $context = 'post', $args = array() ) {
 	$media = array_merge( md_get_media( $context ), $args );
 	$type = $media['media_type'];
 	$position = $media['position'];
-	$inherit = md_post_type_field( array( 'loop', 'inherit', 'position' ) );
-
-	if ( is_category() || is_tax() ) {
-		$inherit = md_taxonomy_field( array( 'loop', 'inherit', 'position' ), $inherit );
-		$inherit = md_term_meta( array( 'loop', 'inherit', 'position' ), null, $inherit );
-	}
 
 	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) )
-		$position = $args['loop']['featured_image'];
+		$position = md_loop_media_position( $args['loop'] );
 
 	if ( $position == 'remove' )
 		return;
@@ -184,6 +178,22 @@ function md_has_media( $context = 'post', $args = array() ) {
 		return;
 
 	return $media;
+}
+
+/**
+ * Featured image position for the current post in a loop. When the loop is set to
+ * inherit the position, a post's own Featured Media position wins over the loop's.
+ *
+ * @since 6.0
+ */
+
+function md_loop_media_position( $loop ) {
+	$position = $loop['featured_image'] ?? '';
+
+	if ( ! empty( $loop['inherit']['position'] ) && ( $own = md_post_meta( array( 'featured_media', 'position' ), null, '' ) ) )
+		$position = $own;
+
+	return $position;
 }
 
 /**
