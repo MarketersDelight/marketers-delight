@@ -307,7 +307,8 @@ class md_archive_sections extends md_api {
 		if ( ! $this->is_archive_loop( $args ) )
 			return;
 
-		$output = '';
+		$output = $group = '';
+		$group_classes = 'archive-sections-group col-full columns-fluid-2 gap-single';
 		$post_type = $args['loop']['post_type'] ?? md_get_post_type();
 		$builder = md_get_post_type_builder( 'archive_sections', $post_type );
 		$elements = $this->elements( $post_type );
@@ -336,15 +337,41 @@ class md_archive_sections extends md_api {
 				if ( ! empty( $elements[$type]['classes'] ) )
 					$classes .= ' ' . $elements[$type]['classes'];
 
-				$output .= '<div class="' . esc_attr( $classes ) . '">' . $html . '</div>';
+				$section = '<div class="' . esc_attr( $classes ) . '">' . $html . '</div>';
+
+				if ( strpos( " $classes ", ' col-full ' ) !== false ) {
+					$output .= $this->group( $group, $group_classes, $area ) . $section;
+					$group = '';
+				}
+				else
+					$group .= $section;
 			}
 		}
+
+		$output .= $this->group( $group, $group_classes, $area );
 
 		if ( $output )
 			echo
 				'<div class="archive-sections archive-sections-' . esc_attr( str_replace( '_', '-', $area ) ) . ' columns-fluid-2 gap-single">'.
 				$output.
 				'</div>';
+	}
+
+	/**
+	 * Wrap a run of neighboring sections so they share one row, which
+	 * scrolls horizontally on mobile around the Loop.
+	 *
+	 * @since 6.0
+	 */
+
+	private function group( $sections, $classes, $area ) {
+		if ( $sections === '' )
+			return '';
+
+		if ( in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
+			$classes .= ' scroll-mobile';
+
+		return '<div class="' . esc_attr( $classes ) . '">' . $sections . '</div>';
 	}
 
 	/**

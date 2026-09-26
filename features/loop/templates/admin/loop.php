@@ -134,6 +134,17 @@
 				) ); ?>
 			</div>
 
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'columns_mobile', array(
+					'type' => 'number',
+					'label' => __( 'Mobile Columns', 'md' ),
+					'inherit' => array( 'default' => 1 ),
+					'description' => __( 'Post columns on mobile', 'md' ),
+					'min' => 1,
+					'step' => 1
+				) ); ?>
+			</div>
+
 		</div>
 	</div>
 

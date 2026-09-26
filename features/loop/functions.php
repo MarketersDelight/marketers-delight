@@ -627,7 +627,8 @@ function md_loop( $args = array() ) {
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_template = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
-	$loop_columns_style = $loop['columns'] > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) . '"' : '';
+	$loop_columns_style = $loop['columns'] > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) .
+		( ! empty( $loop['columns_mobile'] ) ? '; --md-loop-columns-mobile: ' . absint( $loop['columns_mobile'] ) : '' ) . '"' : '';
 
 	md_hook_loop_before( $args );
 
