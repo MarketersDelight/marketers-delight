@@ -17,13 +17,6 @@
 	padding-block: var(--md-single);
 }
 
-.content-wrap.builder > :where(:not([class*="wp-block"], .sidebar, .panel, .panel-overlay)) {
-	margin-inline: auto;
-	max-width: var(--md-width-site);
-	padding-inline: clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half));
-	width: 100%;
-}
-
 .content-wrap.builder .alignwide { max-width: var(--md-width-alignwide); }
 
 .main:has(> .content-wrap.builder > .alignfull:first-child) { padding-block-start: 0; }

@@ -307,6 +307,9 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 foreach ( array_keys( $spacers ) as $size )
 	echo ".mb-$size, .format .mb-$size:not(:last-child) { margin-block-end: var(--md-$size); }\n";
 
+foreach ( array( 'double', 'mid', 'single', 'half' ) as $size )
+	echo ".break-$size, .format .break-$size { margin-block-end: calc(-1 * var(--md-$size)); }\n";
+
 echo ".mb-none, .format .mb-none { margin-block-end: 0; }\n";
 
 /* MARGIN LEFT */
