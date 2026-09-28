@@ -159,6 +159,7 @@ class md_byline extends md_api {
 		return array(
 			'builder' => array(
 				'type' => 'builder',
+				'preserve_empty' => true,
 				'fields' => $fields
 			)
 		);
@@ -246,6 +247,8 @@ class md_byline extends md_api {
 
 		$this->fields->field( 'builder', array(
 			'type' => 'builder',
+			'populate' => true,
+			'defaults' => md_get_post_type_builder( 'byline', $post_type ),
 			'title' => __( 'Edit Byline', 'md' ),
 			'wrap_classes' => 'md-widget-item md-tabs',
 			'active_tab' => $active_tab,

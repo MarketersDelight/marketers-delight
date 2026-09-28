@@ -299,7 +299,7 @@ function md_get_builder( $id, $type = null, $key = null ) {
  * @since 6.0
  */
 
-function md_get_post_type_builder( $key, $post_type = null ) {
+function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = false ) {
 	$post_type = $post_type ?: md_get_post_type();
 	$defaults = md_setting_defaults();
 	$chain = array();
@@ -317,8 +317,12 @@ function md_get_post_type_builder( $key, $post_type = null ) {
 		$programmed = $defaults[$current][$key]['builder'] ?? null;
 		$saved = $stored[$current][$key]['builder'] ?? null;
 
-		foreach ( array( $programmed, $saved ) as $rows )
-			$builder = md_replace_builder_areas( $builder, $rows );
+		$builder = md_replace_builder_areas( $builder, $programmed );
+
+		if ( $preserve_empty && is_array( $saved ) && ! $saved )
+			$builder = array();
+		else
+			$builder = md_replace_builder_areas( $builder, $saved );
 	}
 
 	if ( ! is_category() && ! is_tax() )
@@ -333,8 +337,12 @@ function md_get_post_type_builder( $key, $post_type = null ) {
 	$programmed = $defaults[$post_type][$taxonomy][$key]['builder'] ?? null;
 	$saved = $stored[$post_type][$taxonomy][$key]['builder'] ?? null;
 
-	foreach ( array( $programmed, $saved ) as $rows )
-		$builder = md_replace_builder_areas( $builder, $rows );
+	$builder = md_replace_builder_areas( $builder, $programmed );
+
+	if ( $preserve_empty && is_array( $saved ) && ! $saved )
+		$builder = array();
+	else
+		$builder = md_replace_builder_areas( $builder, $saved );
 
 	$term = get_term_meta( get_queried_object_id(), 'marketers_delight', true );
 	$term = is_array( $term ) ? $term : array();

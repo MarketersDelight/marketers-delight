@@ -118,7 +118,7 @@ function md_get_byline( $position, $args = array() ) {
 
 	// Build data from user options based on page type in WP
 
-	$builder = md_get_post_type_builder( 'byline', $post_type );
+	$builder = md_get_post_type_builder( 'byline', $post_type, true );
 
 	// Check if items set manually in $args, or show default items while options empty
 

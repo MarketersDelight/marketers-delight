@@ -186,8 +186,12 @@ class md_save {
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
 				$merged = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
 
-				if ( empty( $merged ) )
-					unset( $old[$key] );
+				if ( empty( $merged ) ) {
+					if ( ! empty( $field['preserve_empty'] ) )
+						$old[$key] = $merged;
+					else
+						unset( $old[$key] );
+				}
 				else
 					$old[$key] = $merged;
 			}

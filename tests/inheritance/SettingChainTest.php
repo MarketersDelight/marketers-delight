@@ -186,6 +186,23 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		), md_get_post_type_builder( 'archive_sections', 'bookshelf' ) );
 	}
 
+	public function test_opted_in_stored_empty_builder_clears_post_type_defaults() {
+		md_test_set_filter( 'md_setting_defaults', array(
+			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
+				'default-highlight' => array(
+					'builder_area' => 'before_loop',
+					'builder_type' => 'bookshelf_highlight'
+				)
+			) ) )
+		) );
+		md_setting_defaults( true );
+		md_test_set_option( 'marketers_delight', array(
+			'bookshelf' => array( 'archive_sections' => array( 'builder' => array() ) )
+		) );
+
+		$this->assertSame( array(), md_get_post_type_builder( 'archive_sections', 'bookshelf', true ) );
+	}
+
 	public function test_term_meta_preserves_explicit_empty_builder() {
 		md_test_set_term_meta( 42, array(
 			'archive_sections' => array( 'builder' => array() )

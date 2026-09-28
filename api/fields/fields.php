@@ -168,6 +168,9 @@ class md_fields extends md_fields_render {
 			$option = $has_option ? $setting[$clean_id][$field] : '';
 		}
 
+		if ( $args['type'] === 'builder' && ! $has_option && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
+			$option = is_array( $args['defaults'] ) ? $args['defaults'] : array();
+
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
 			$args['save_empty'] = $has_option;
 

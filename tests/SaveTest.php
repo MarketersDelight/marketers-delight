@@ -318,6 +318,27 @@ class SaveTest extends MD_TestCase {
 		$this->assertSame( array(), $result );
 	}
 
+	public function test_opted_in_empty_builder_is_preserved() {
+		$this->schema = array( 'page' => array( 'fields' => array(
+			'builder' => array(
+				'type' => 'builder',
+				'preserve_empty' => true,
+				'fields' => array(
+					'name' => array( 'type' => 'text' )
+				)
+			)
+		) ) );
+
+		$result = $this->merge(
+			array( 'page' => array( 'builder' => array(
+				'old-row' => array( 'name' => 'Old row' )
+			) ) ),
+			array( 'page' => array( 'builder' => array() ) )
+		);
+
+		$this->assertSame( array( 'page' => array( 'builder' => array() ) ), $result );
+	}
+
 	public function test_pruning_removes_legacy_empty_builder_branches() {
 		$result = $this->call( $this->save, 'prune_empty', array(
 			array(
