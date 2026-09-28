@@ -19,7 +19,7 @@ class md_design_colors {
 		'primary' => '#AE2525',
 		'secondary' => '#2E2E2E',
 		'tertiary' => '#DDDDDD',
-		'border' => '#CCCCCC',
+		'divider' => '#CCCCCC',
 		'highlight' => '#FFFBCC',
 		'text-main' => '#1E1E1E',
 		'text-secondary' => '#777777',
@@ -161,7 +161,7 @@ class md_design_colors {
 			),
 			'border_color' => array(
 				'label' => 'Content Border',
-				'default' => 'border'
+				'default' => 'divider'
 			),
 			'box_bg_color' => array(
 				'label' => 'Content Box',
@@ -229,7 +229,7 @@ class md_design_colors {
 			),
 			'border_color' => array(
 				'label' => 'Border',
-				'default' => 'border'
+				'default' => 'divider'
 			)
 		),
 		'footer' => array(

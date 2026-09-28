@@ -11,21 +11,33 @@ button {
 	font: inherit;
 }
 
-input[type="submit"],
-.link, .tag, .button, .wp-element-button {
+input[type="submit"], .link, .tag, .button, .wp-element-button {
 	align-items: center;
 	display: inline-flex;
 	gap: var(--md-third);
 	line-height: 1;
 }
 
-.cta, .wp-block-buttons {
+.cta, :where(.wp-block-buttons) {
 	align-items: center;
 	display: flex;
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
 }
 
-.wp-block-buttons { justify-content: center; }
+:where(.wp-block-buttons) {
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+.wp-block-buttons .wp-block-button__link {
+	justify-content: center;
+	width: 100%;
+}
+
+.wp-block-button:is(.wp-block-button__width-100, .width-full) {
+	flex-basis: 100%;
+	width: 100%;
+}
 
 /* LINKS */
 
@@ -80,8 +92,7 @@ input[type="submit"],
 
 /* BUTTONS */
 
-input[type="submit"],
-.button, .wp-element-button {
+input[type="submit"], .button, .wp-element-button {
 	appearance: none;
 	background-color: var(--md-action-primary);
 	border: 0;
@@ -100,8 +111,7 @@ input[type="submit"],
 
 a.button { text-decoration: none; }
 
-input[type="submit"]:hover,
-.button:hover, .wp-element-button:hover { transform: translateY(1px); }
+input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform: translateY(1px); }
 
 /* COLORS */
 
@@ -116,11 +126,11 @@ input[type="submit"]:hover,
 }
 
 .button.button-outline,
-.is-style-outline .wp-element-button {
-	background-color: transparent;
-	border: 3px solid var(--md-action-primary);
-	color: var(--md-action-primary);
-}
+.is-style-outline .wp-element-button { border: 3px solid var(--md-action-primary); }
+
+.button.button-outline, .is-style-outline .wp-element-button:not(.has-background) { background-color: transparent; }
+
+.button.button-outline, .is-style-outline .wp-element-button:not(.has-text-color) { color: var(--md-action-primary); }
 
 .button.button-outline.white {
 	border-color: var(--md-color-white);

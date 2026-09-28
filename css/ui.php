@@ -38,7 +38,9 @@
 	min-width: 0;
 }
 
-.scroller-nav:not(:last-child) { margin-block-end: var(--md-single); }
+/* Zero specificity, so block layouts that space children with gap can clear it */
+
+:where(.scroller-nav:not(:last-child)) { margin-block-end: var(--md-single); }
 
 .scroller-arrow {
 	align-self: stretch;
@@ -76,6 +78,8 @@
 }
 
 .scroller-list::-webkit-scrollbar { display: none; }
+
+.scroller-list > * { flex-shrink: 0; }
 
 .scroller-arrow.arrow-hidden { display: none; }
 
@@ -134,80 +138,50 @@
 
 .tooltip-parent:hover .tooltip { display: inline-flex; }
 
-/* TABS */
+/* TABS: a .tabbed group pairs .tab items with .tab-panel panels in order. .tabs is the optional folder-tab bar */
 
 .tabs {
 	border-block-end: 1px solid var(--md-border);
 	margin-block-end: var(--md-single);
 }
 
-.tab {
+.tabs > .tab {
 	align-items: center;
 	background-color: #f7f7f7;
 	border: 1px solid var(--md-border);
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
 	border-width: 1px 1px 0;
 	color: var(--md-text-muted);
-	cursor: pointer;
 	display: inline-flex;
 	gap: var(--md-third);
 	padding: var(--md-half);
 	text-decoration: none;
 }
 
-.tab a {
+.tabs > .tab a {
 	color: var(--md-text-muted);
 	text-decoration: none;
 }
 
-.tab.active {
+.tabs > .tab.active {
 	background-color: var(--md-content-box-background);
 	border-bottom-color: var(--md-content-box-background);
 	border-bottom-width: 1px;
 	margin-block-end: -1px;
 }
 
-.tab.active a { color: var(--md-content-box-text-muted); }
+.tabs > .tab.active a { color: var(--md-content-box-text-muted); }
 
-.md-tabs-nav {
-	display: flex;
-	margin-block-end: var(--md-single);
-}
+.tab { cursor: pointer; }
 
-.md-tabs-nav > .md-tab {
-	align-items: center;
-	background-color: transparent;
-	border: 0;
-	border-radius: 0;
-	color: var(--md-text-muted);
-	cursor: pointer;
-	display: inline-flex;
-	gap: var(--md-third);
-	padding: var(--md-half);
-	text-decoration: none;
-}
-
-.md-tabs-nav > .md-tab:is(:hover, .active) { color: var(--md-text); }
-
-.md-tabs-nav > .md-tab.active { font-weight: var(--md-bold); }
-
-.md-tabs-nav > .md-tab:focus-visible {
+.tab:focus-visible {
 	outline: 2px solid var(--md-links);
-	outline-offset: -2px;
+	outline-offset: 2px;
 }
 
-.md-tabs-underline { border-block-end: 1px solid var(--md-border); }
+/* Every panel stays visible in the block editor */
 
-.md-tabs-underline > .md-tab {
-	border-block-end: 3px solid transparent;
-	margin-block-end: -1px;
-}
-
-.md-tabs-underline > .md-tab.active { border-block-end-color: var(--md-links); }
-
-.md-tab-content { display: none; }
-
-.md-tab-content.active { display: block; }
+.tab-panel:not(.active):not(.editor-styles-wrapper *) { display: none; }
 
 /* QUERIES */
 

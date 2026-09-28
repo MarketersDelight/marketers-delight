@@ -445,6 +445,7 @@ class md_theme_json {
 					'sticky' => true
 				),
 				'typography' => array(
+					'defaultFontSizes' => false,
 					'fluid' => true,
 					'fontSizes' => $this->font_sizes(),
 					'fontFamilies' => $this->font_families(),

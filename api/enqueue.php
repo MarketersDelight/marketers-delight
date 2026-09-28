@@ -149,6 +149,7 @@ class md_enqueue {
 	public function inline_js() {
 		wp_add_inline_script( 'marketers-delight', "MD.triggers();" );
 		wp_add_inline_script( 'marketers-delight', "MD.toggle();" );
+		wp_add_inline_script( 'marketers-delight', "MD.tabs();" );
 
 		if ( has_action( 'md_hook_js_onscroll' ) )
 			wp_add_inline_script( 'marketers-delight', "MD.onScroll();" );

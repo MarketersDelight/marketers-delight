@@ -106,8 +106,7 @@ cite, .tiny {
 
 /* BORDERS */
 
-.radius,
-.wp-block-image.radius img { border-radius: var(--md-border-radius); }
+.radius, .wp-block-image.radius img { border-radius: var(--md-border-radius); }
 
 .circle { border-radius: 50%; }
 
@@ -183,10 +182,18 @@ cite, .tiny {
 
 .relative { position: relative; }
 
+.absolute { position: absolute; }
+
 .fl {
 	align-items: center;
 	display: flex;
 	gap: var(--md-half);
+}
+
+.stack {
+	display: flex;
+	flex-direction: column;
+	gap: var(--md-single);
 }
 
 .auto { margin-inline: auto; }
@@ -238,15 +245,28 @@ cite, .tiny {
 
 .post-width { max-width: var(--md-width-post); }
 
+.wide-width { max-width: var(--md-width-alignwide); }
+
 .sidebar-width { max-width: var(--md-width-sidebar); }
 
 .width-full { width: 100%; }
 
 /* COLUMNS */
 
-.wp-block-columns { display: flex; }
+.wp-block-columns { display: flex; gap: var(--md-single); }
 
-.wp-block-column { flex-basis: 0; flex-grow: 1; }
+.wp-block-column { flex-basis: 0; flex-grow: 1; min-width: 0; }
+
+.are-vertically-aligned-top { align-items: flex-start; }
+
+.are-vertically-aligned-center { align-items: center; }
+
+.are-vertically-aligned-bottom { align-items: flex-end; }
+
+@media (max-width: 781px) {
+	.wp-block-columns:not(.is-not-stacked-on-mobile) { flex-wrap: wrap; }
+	.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column { flex-basis: 100%; }
+}
 
 .columns, [class*="columns-"] {
 	--md-columns-base: 1;
@@ -292,10 +312,22 @@ cite, .tiny {
 }
 
 
+echo ":where(.wp-block-group, .wp-block-column):is(.fl, .stack, .columns, [class*=\"columns-\"]) > * { margin-block: 0; }\n";
+
 /* MARGIN TOP */
 
 foreach ( array_keys( $spacers ) as $size )
 	echo ".mt-$size:not(:first-child) { margin-block-start: var(--md-$size); }\n";
+
+echo ".stack > * { --md-stack-gap: var(--md-single); }\n";
+
+foreach ( array_keys( $spacers ) as $size )
+	echo ".stack.gap-$size > * { --md-stack-gap: var(--md-$size); }\n";
+
+echo ".stack.gap-none > * { --md-stack-gap: 0; }\n";
+
+foreach ( array_keys( $spacers ) as $size )
+	echo ".stack > .mt-$size:not(:first-child) { margin-block-start: calc(var(--md-$size) - var(--md-stack-gap)); }\n";
 
 /* MARGIN RIGHT */
 
@@ -410,10 +442,5 @@ foreach ( md_editor_colors() as $color_group => $color_fields ) {
 .animate-zoom { animation: md-zoom var(--md-transition-slow) ease-out both; }
 
 @media (prefers-reduced-motion: reduce) {
-	.animate-fade,
-	.animate-slide-up,
-	.animate-slide-down,
-	.animate-zoom {
-		animation: none;
-	}
+	.animate-fade, .animate-slide-up, .animate-slide-down, .animate-zoom { animation: none; }
 }

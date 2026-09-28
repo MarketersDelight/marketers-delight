@@ -3,6 +3,8 @@
 :root {
 	--md-font-size: <?php echo $this->fluid( $font_size['desktop'], $font_size['mobile'] ); ?>;
 	--md-font-size-sm: <?php echo $font_size['mobile']; ?>px;
+	--md-font-size-small: <?php echo $this->fluid( max( round( $font_size['desktop'] * 0.9 ), 16 ), max( round( $font_size['mobile'] * 0.9 ), 16 ) ); ?>;
+	--md-font-size-intro: <?php echo $this->fluid( round( $font_size['desktop'] * 1.2 ), round( $font_size['mobile'] * 1.2 ) ); ?>;
 	--md-line-height: <?php echo $this->fluid( $line_height['desktop'], $line_height['mobile'] ); ?>;
 	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
 	--md-bold: <?php echo $bold; ?>;
@@ -59,7 +61,7 @@
 	--md-color-primary: <?php echo $colors['palette']['primary']; ?>;
 	--md-color-secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--md-color-tertiary: <?php echo $colors['palette']['tertiary']; ?>;
-	--md-color-border: <?php echo $colors['palette']['border']; ?>;
+	--md-color-divider: <?php echo $colors['palette']['divider']; ?>;
 	--md-color-highlight: <?php echo $colors['palette']['highlight']; ?>;
 	--md-color-text: <?php echo $colors['palette']['text-main']; ?>;
 	--md-color-text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;
@@ -153,7 +155,7 @@
 	--wp--preset--color--primary: <?php echo $colors['palette']['primary']; ?>;
 	--wp--preset--color--secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--wp--preset--color--tertiary: <?php echo $colors['palette']['tertiary']; ?>;
-	--wp--preset--color--border: <?php echo $colors['palette']['border']; ?>;
+	--wp--preset--color--divider: <?php echo $colors['palette']['divider']; ?>;
 	--wp--preset--color--highlight: <?php echo $colors['palette']['highlight']; ?>;
 	--wp--preset--color--text-main: <?php echo $colors['palette']['text-main']; ?>;
 	--wp--preset--color--text-secondary: <?php echo $colors['palette']['text-secondary']; ?>;

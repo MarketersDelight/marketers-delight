@@ -26,7 +26,9 @@ class ThemeJsonTest extends MD_TestCase {
 	public function test_uses_the_wordpress_seven_version_three_schema() {
 		$this->assertSame( 'https://schemas.wp.org/wp/7.0/theme.json', $this->json['$schema'] );
 		$this->assertSame( 3, $this->json['version'] );
-		$this->assertArrayNotHasKey( 'defaultFontSizes', $this->json['settings']['typography'] );
+
+		// Core's default "small" (13px) otherwise beats MD's "small" preset
+		$this->assertFalse( $this->json['settings']['typography']['defaultFontSizes'] );
 	}
 
 	public function test_packaged_theme_json_is_a_valid_bootstrap_manifest() {
@@ -133,7 +135,8 @@ class ThemeJsonTest extends MD_TestCase {
 	public function test_palette_slugs_match_block_editor_class_names() {
 		$slugs = array_column( $this->json['settings']['color']['palette'], 'slug' );
 
-		$this->assertContains( 'border', $slugs );
+		$this->assertContains( 'divider', $slugs );
+		$this->assertNotContains( 'border', $slugs );
 		$this->assertNotContains( 'border-color', $slugs );
 		$this->assertContains( 'primary', $slugs );
 	}

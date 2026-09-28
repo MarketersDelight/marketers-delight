@@ -61,36 +61,40 @@ cookie: {
 	}
 },
 tabs: function() {
-	const tabs = document.querySelectorAll( '.md-tabs' );
-	for ( let t = 0; t < tabs.length; t++ ) {
-		let tab = tabs[t],
-			items = tab.querySelectorAll( '.md-tab' );
-		const activate = function( item ) {
-			const allTabs = tab.querySelectorAll( '.md-tab' ),
-				  allContent = tab.querySelectorAll( '.md-tab-content' );
-			for ( let j = 0; j < allTabs.length; j++ ) {
-				allTabs[j].classList.remove( 'active' );
-				allTabs[j].setAttribute( 'aria-selected', 'false' );
-			}
-			for ( let k = 0; k < allContent.length; k++ )
-				allContent[k].classList.remove( 'active' );
-			MD.removeClassByPrefix( tab, 'has-' );
-			item.classList.add( 'active' );
-			item.setAttribute( 'aria-selected', 'true' );
-			tab.classList.add( 'has-' + item.getAttribute( 'data-md-tab' ) );
-			const content = tab.querySelector( '[data-md-tab-content="' + item.getAttribute( 'data-md-tab' ) + '"]' );
-			if ( content )
-				content.classList.add( 'active' );
+	document.querySelectorAll( '.tabbed' ).forEach( function( group ) {
+		const tabs = group.querySelectorAll( '.tab' ),
+			  panels = group.querySelectorAll( '.tab-panel' );
+		const activate = function( index ) {
+			tabs.forEach( function( tab, i ) {
+				tab.classList.toggle( 'active', i === index );
+				tab.setAttribute( 'aria-selected', i === index );
+				tab.tabIndex = i === index ? 0 : -1;
+			} );
+			panels.forEach( function( panel, i ) {
+				panel.classList.toggle( 'active', i === index );
+			} );
 		};
-		for ( let i = 0; i < items.length; i++ ) {
-			items[i].setAttribute( 'aria-selected', items[i].classList.contains( 'active' ) ? 'true' : 'false' );
-			items[i].onclick = function( e ) {
+		tabs.forEach( function( tab, i ) {
+			tab.setAttribute( 'role', 'tab' );
+			tab.onclick = function( e ) {
 				e.preventDefault();
-				activate( this );
+				activate( i );
 			};
-		}
-		tab.classList.add( 'is-tabs-ready' );
-	}
+			tab.onkeydown = function( e ) {
+				const step = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[ e.key ];
+				if ( ! step )
+					return;
+				e.preventDefault();
+				const next = ( i + step + tabs.length ) % tabs.length;
+				activate( next );
+				tabs[ next ].focus();
+			};
+		} );
+		panels.forEach( function( panel ) {
+			panel.setAttribute( 'role', 'tabpanel' );
+		} );
+		activate( Math.max( 0, Array.from( tabs ).findIndex( function( tab ) { return tab.classList.contains( 'active' ); } ) ) );
+	} );
 },
 clipboard: function() {
 	const copy = document.getElementsByClassName( 'copy' );

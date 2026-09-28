@@ -262,7 +262,7 @@ class CssTest extends MD_TestCase {
 			'small', 'third', 'half', 'single', 'mid', 'double', 'triple', 'quad',
 			'border-radius', 'box-shadow-small', 'box-shadow-medium', 'box-shadow-large', 'box-shadow-huge',
 			'color-background', 'color-surface', 'color-primary', 'color-secondary', 'color-tertiary',
-			'color-border', 'color-highlight', 'color-text', 'color-text-secondary', 'color-white'
+			'color-divider', 'color-highlight', 'color-text', 'color-text-secondary', 'color-white'
 		);
 
 		foreach ( $shared as $token )

@@ -29,7 +29,7 @@ $heading_selectors[] = '.wp-block-heading';
 $heading_selectors = join( ', ', $heading_selectors );
 
 echo implode( ', ', $headings ) . " {\n".
-	     "\tcolor: var(--md-headlines);\n".
+	 "\tcolor: var(--md-headlines);\n".
      "\tfont-family: $h1_font_family;\n".
      "\tfont-weight: $h1_font_weight;\n".
 "}\n";
@@ -54,6 +54,17 @@ foreach ( $headings as $attribute => $selector ) {
 	if ( $overrides )
 		echo "$selector {\n$overrides}\n";
 }
+
+foreach ( array_keys( $headings ) as $attribute ) {
+	$slug = $attribute === 'huge' ? 'huge' : str_replace( 'h', 'h-', $attribute );
+
+	echo ".has-$slug-font-size { font-size: var(--md-{$attribute}); line-height: var(--md-{$attribute}-line-height); }\n";
+}
+
+echo
+	".has-small-font-size { font-size: var(--md-font-size-small); line-height: var(--md-line-height-sm); }\n".
+	".has-normal-font-size { font-size: var(--md-font-size); line-height: var(--md-line-height); }\n".
+	".has-intro-font-size { font-size: var(--md-font-size-intro); line-height: var(--md-h6-line-height); }\n";
 ?>
 
 :where(<?php echo $heading_selectors ?>) a {
@@ -63,7 +74,7 @@ foreach ( $headings as $attribute => $selector ) {
 
 :is(<?php echo $heading_selectors ?>) a:hover { text-decoration: underline; }
 
-.format :is(h1, h2, h3, h4, h5, h6) { margin-block-end: var(--md-half); }
+:where(.format) :where(h1, h2, h3, h4, h5, h6) { margin-block-end: var(--md-half); }
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
