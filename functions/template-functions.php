@@ -145,18 +145,6 @@ function md_parse_tokens( $args = array() ) {
 }
 
 /**
- * A function to access Block Editor colors.
- *
- * since 4.9
- */
-
-function md_editor_colors() {
-	$colors = new md_design_colors;
-
-	return $colors->editor_colors();
-}
-
-/**
  * Resolve the active color palette, filterable for extensions.
  *
  * since 6.0

@@ -338,6 +338,33 @@ class md_design_colors {
 	}
 
 	/**
+	 * Build the Block Editor gradient presets from the active palette.
+	 *
+	 * @since 6.0
+	 */
+
+	public function editor_gradients() {
+		$c = array_column( $this->editor_colors(), 'color', 'slug' );
+		$gradients = array(
+			'primary-secondary' => array( __( 'Primary to Secondary', 'md' ), "linear-gradient(135deg, {$c['primary']} 0%, {$c['secondary']} 100%)" ),
+			'primary-fade' => array( __( 'Primary Fade', 'md' ), "linear-gradient(180deg, {$c['primary']} 0%, {$c['background']} 100%)" ),
+			'surface' => array( __( 'Surface', 'md' ), "linear-gradient(180deg, {$c['background']} 0%, {$c['surface']} 100%)" ),
+			'highlight' => array( __( 'Highlight', 'md' ), "linear-gradient(180deg, {$c['highlight']} 0%, {$c['background']} 100%)" ),
+			'dark' => array( __( 'Dark', 'md' ), "linear-gradient(180deg, {$c['secondary']} 0%, {$c['text-main']} 100%)" )
+		);
+		$presets = array();
+
+		foreach ( $gradients as $slug => $gradient )
+			$presets[] = array(
+				'name' => $gradient[0],
+				'slug' => $slug,
+				'gradient' => $gradient[1]
+			);
+
+		return $presets;
+	}
+
+	/**
 	 * Project the descriptive role tree into a matching unresolved value tree.
 	 * Palette keys, literal colors, and empty inherited defaults are preserved;
 	 * labels and other admin metadata are removed.

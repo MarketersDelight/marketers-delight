@@ -38,8 +38,6 @@
 	min-width: 0;
 }
 
-/* Zero specificity, so block layouts that space children with gap can clear it */
-
 :where(.scroller-nav:not(:last-child)) { margin-block-end: var(--md-single); }
 
 .scroller-arrow {
@@ -80,6 +78,11 @@
 .scroller-list::-webkit-scrollbar { display: none; }
 
 .scroller-list > * { flex-shrink: 0; }
+
+.scroller-nav > .scroller-list {
+	margin-block: calc(-1 * var(--md-third));
+	padding-block: var(--md-third);
+}
 
 .scroller-arrow.arrow-hidden { display: none; }
 
@@ -138,7 +141,7 @@
 
 .tooltip-parent:hover .tooltip { display: inline-flex; }
 
-/* TABS: a .tabbed group pairs .tab items with .tab-panel panels in order. .tabs is the optional folder-tab bar */
+/* TABS */
 
 .tabs {
 	border-block-end: 1px solid var(--md-border);
@@ -178,8 +181,6 @@
 	outline: 2px solid var(--md-links);
 	outline-offset: 2px;
 }
-
-/* Every panel stays visible in the block editor */
 
 .tab-panel:not(.active):not(.editor-styles-wrapper *) { display: none; }
 

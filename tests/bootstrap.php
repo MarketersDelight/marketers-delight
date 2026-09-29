@@ -528,10 +528,6 @@ function md_color_palette() {
 	return apply_filters( 'md_color_palette', array() );
 }
 
-function md_editor_colors() {
-	return ( new md_design_colors )->editor_colors();
-}
-
 function sanitize_text_field( $str ) {
 	return is_string( $str ) ? trim( strip_tags( $str ) ) : $str;
 }

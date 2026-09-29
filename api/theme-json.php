@@ -17,6 +17,7 @@ class md_theme_json {
 	private $spacing;
 	private $post_width;
 	private $alignwide_width;
+	private $design_colors;
 
 	/**
 	 * Merge live MD design settings into WordPress theme.json data.
@@ -63,6 +64,7 @@ class md_theme_json {
 
 	private function data() {
 		$design = new md_design;
+		$this->design_colors = new md_design_colors;
 		$this->values = $design->values();
 		$this->colors = $this->values['colors'];
 		$this->typography = $this->values['typography'];
@@ -237,34 +239,7 @@ class md_theme_json {
 	 */
 
 	private function palette() {
-		return array_column( md_editor_colors(), 'color', 'slug' );
-	}
-
-	/**
-	 * Build gradient presets from the MD color palette.
-	 *
-	 * @since 6.0
-	 */
-
-	private function gradient_presets() {
-		$c = $this->palette();
-		$gradients = array(
-			'primary-secondary' => array( __( 'Primary to Secondary', 'md' ), "linear-gradient(135deg, {$c['primary']} 0%, {$c['secondary']} 100%)" ),
-			'primary-fade' => array( __( 'Primary Fade', 'md' ), "linear-gradient(180deg, {$c['primary']} 0%, {$c['background']} 100%)" ),
-			'surface' => array( __( 'Surface', 'md' ), "linear-gradient(180deg, {$c['background']} 0%, {$c['surface']} 100%)" ),
-			'highlight' => array( __( 'Highlight', 'md' ), "linear-gradient(180deg, {$c['highlight']} 0%, {$c['background']} 100%)" ),
-			'dark' => array( __( 'Dark', 'md' ), "linear-gradient(180deg, {$c['secondary']} 0%, {$c['text-main']} 100%)" )
-		);
-		$presets = array();
-
-		foreach ( $gradients as $slug => $gradient )
-			$presets[] = array(
-				'name' => $gradient[0],
-				'slug' => $slug,
-				'gradient' => $gradient[1]
-			);
-
-		return $presets;
+		return array_column( $this->design_colors->editor_colors(), 'color', 'slug' );
 	}
 
 	/**
@@ -433,9 +408,9 @@ class md_theme_json {
 					'defaultGradients' => false,
 					'defaultDuotone' => false,
 					'duotone' => $this->duotone_presets(),
-					'gradients' => $this->gradient_presets(),
+					'gradients' => $this->design_colors->editor_gradients(),
 					'link' => true,
-					'palette' => md_editor_colors()
+					'palette' => $this->design_colors->editor_colors()
 				),
 				'dimensions' => array(
 					'aspectRatio' => true,
@@ -462,7 +437,7 @@ class md_theme_json {
 					'presets' => $this->shadow_presets()
 				),
 				'spacing' => array(
-					'blockGap' => true,
+					'blockGap' => ! md_setting( array( 'settings', 'head', 'blocks' ) ),
 					'customSpacingSize' => false,
 					'defaultSpacingSizes' => false,
 					'margin' => true,

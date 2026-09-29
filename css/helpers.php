@@ -20,9 +20,9 @@
 
 .h-font { font-family: <?php echo $h1_font_family; ?>; }
 
-.text-left { text-align: left; }
+.text-left, .has-text-align-left { text-align: left; }
 
-.text-right { text-align: right; }
+.text-right, .has-text-align-right { text-align: right; }
 
 .text-center, .has-text-align-center { text-align: center; }
 
@@ -405,14 +405,19 @@ echo ".pb-none { padding-block-end: 0; }\n";
 
 /* EDITOR COLORS */
 
-foreach ( md_editor_colors() as $color_group => $color_fields ) {
+$design_colors = new md_design_colors;
+
+foreach ( $design_colors->editor_colors() as $color_group => $color_fields ) {
 	$color_slug = $color_fields['slug'];
 	$color_val = $color_fields['color'];
 
 	echo ".has-$color_slug-background-color { background-color: $color_val; }\n".
 		 ".has-$color_slug-border-color { border-color: $color_val; }\n".
 		 ".has-$color_slug-color, a.has-$color_slug-color { color: $color_val; }\n";
-} ?>
+}
+
+foreach ( $design_colors->editor_gradients() as $gradient )
+	echo ".has-{$gradient['slug']}-gradient-background { background: {$gradient['gradient']}; }\n"; ?>
 
 /* ANIMATIONS */
 

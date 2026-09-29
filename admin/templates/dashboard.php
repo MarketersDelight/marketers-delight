@@ -50,7 +50,7 @@
 							'label' => __( 'Optimize WP', 'md' ),
 							'options' => array(
 								'widgets' => __( '<b>Disable</b> Widgets blocks editor', 'md' ),
-								'blocks' => __( '<code>&lt;head&gt;</code> <b>Remove</b> all Block styles and inline styles', 'md' ),
+								'blocks' => __( '<b>Enable</b> Advanced block styling<br><span class="description">MD replaces WordPress&rsquo;s block CSS, global styles, and layout engine for leaner pages. Unsupported blocks and controls are hidden in the editor.</span>', 'md' ),
 								'wpjson' => __( '<code>&lt;head&gt;</code> <b>Remove</b> REST API and oEmbed discovery links', 'md' ),
 								'optimize' => __( '<code>&lt;head&gt;</code> <b>Restore</b> all default <code>wp_head</code> tags', 'md' ),
 								'oembed' => __( '<code>&lt;/body&gt;</code> <b>Remove</b> <code>wp-embed.js</code> script', 'md' )

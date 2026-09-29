@@ -66,6 +66,14 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertIsString( $this->json['styles']['elements']['h1']['typography']['lineHeight'] );
 	}
 
+	public function test_advanced_block_styling_turns_off_block_spacing() {
+		md_test_set_settings( array( 'settings' => array( 'head' => array( 'blocks' => true ) ) ) );
+
+		$json = ( new md_theme_json )->build();
+
+		$this->assertFalse( $json['settings']['spacing']['blockGap'] );
+	}
+
 	public function test_spacing_and_button_styles_use_md_tokens() {
 		$settings = $this->json['settings']['spacing'];
 		$spacing = $this->presets_by_slug( $settings['spacingSizes'] );

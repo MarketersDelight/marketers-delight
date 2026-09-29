@@ -36,11 +36,7 @@
 
 .editor-styles-wrapper .wp-block-post-content > .wp-block-paragraph:not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
 
-/* The editor makes every block relative; blocks with the absolute helper stay absolute, as on the site */
-
 .editor-styles-wrapper .block-editor-block-list__block.absolute { position: absolute; }
-
-/* Headings keep prose margins, except in blocks laid out with flex or grid helpers, which use gap as on the site */
 
 .editor-styles-wrapper .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"]) > .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
@@ -50,8 +46,6 @@ html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content :not(.fl, .s
 	list-style-position: outside;
 	padding-inline-start: var(--md-single);
 }
-
-/* List item text is a block in the editor; keep it inline so a check icon sits beside it */
 
 .editor-styles-wrapper .list-check li > .rich-text { display: inline; }
 

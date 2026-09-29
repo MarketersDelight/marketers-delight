@@ -151,13 +151,14 @@ function md_js( $file, $path = null, $include = null ) {
 
 function md_localize_scripts( $data ) {
 	$scripts = array();
+	$design_colors = new md_design_colors;
 
 	if ( in_array( 'colors' , $data ) )
-		foreach ( md_editor_colors() as $group => $fields )
+		foreach ( $design_colors->editor_colors() as $group => $fields )
 			$scripts['colors'][] = esc_attr( $fields['color'] );
 
 	if ( in_array( 'block_colors' , $data ) )
-		foreach ( md_editor_colors() as $group => $fields ) {
+		foreach ( $design_colors->editor_colors() as $group => $fields ) {
 			$scripts['colors']['slug'][$fields['slug']] = esc_attr( $fields['color'] );
 			$scripts['colors']['hex'][$fields['color']] = esc_attr( $fields['slug'] );
 		}
