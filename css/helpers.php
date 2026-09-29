@@ -58,8 +58,8 @@ a.no-underline, .no-underline a { text-decoration: none; }
 }
 
 cite, .tiny {
-	font-size: calc(var(--md-font-size-sm) - 2px);
-	line-height: calc(var(--md-line-height-sm) - 1px);
+	font-size: var(--md-font-size-tiny);
+	line-height: var(--md-line-height-tiny);
 }
 
 .intro {
@@ -90,7 +90,7 @@ cite, .tiny {
     background-color: var(--md-color-warning);
     border-radius: var(--md-border-radius);
 	color: var(--md-site-text-contrast);
-	font-size: calc(var(--md-font-size-sm) - 2px);
+	font-size: var(--md-font-size-tiny);
 	font-weight: normal;
 	line-height: 1;
 	padding: 4px 7px;

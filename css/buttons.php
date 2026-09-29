@@ -56,7 +56,7 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 }
 
 .link-subtitle {
-	font-size: calc(var(--md-font-size-sm) - 2px);
+	font-size: var(--md-font-size-tiny);
 	font-weight: normal;
 }
 
@@ -65,6 +65,7 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 .tag {
 	background-color: var(--md-tag-background);
 	border-radius: 50px;
+	box-shadow: inset 0 0 0 1px var(--md-border);
 	color: var(--md-text);
 	flex-shrink: 0;
 	padding: var(--md-third) var(--md-half);
@@ -83,12 +84,7 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 	color: var(--md-links);
 }
 
-.tag-outline {
-	background-color: var(--md-content-box-background);
-	box-shadow: inset 0 0 0 1px var(--md-border);
-}
-
-.tag-outline:hover { background-color: var(--md-content-box-background); }
+.tag-outline, .tag-outline:hover { background-color: var(--md-content-box-background); }
 
 /* BUTTONS */
 
@@ -140,7 +136,7 @@ input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform:
 /* SIZES */
 
 .button.button-small {
-	font-size: var(--md-font-size-sm);
+	font-size: var(--md-font-size-small);
 	gap: var(--md-third);
 	padding: var(--md-third) var(--md-half);
 }

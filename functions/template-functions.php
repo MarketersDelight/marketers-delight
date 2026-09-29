@@ -106,6 +106,22 @@ function md_parse_tokens( $args = array() ) {
 				'{plural}' => $post_type ? $post_type->labels->name : ''
 			);
 
+			if ( strpos( $text, '{count}' ) !== false && $taxonomy && $taxonomy->hierarchical && get_term_children( $term->term_id, $term->taxonomy ) ) {
+				$query = new WP_Query( array(
+					'post_type' => $taxonomy->object_type,
+					'post_status' => 'publish',
+					'posts_per_page' => 1,
+					'fields' => 'ids',
+					'tax_query' => array( array(
+						'taxonomy' => $term->taxonomy,
+						'terms' => $term->term_id,
+						'include_children' => true
+					) )
+				) );
+
+				$tokens['{count}'] = $query->found_posts;
+			}
+
 			if ( strpos( $text, '{parent}' ) !== false )
 				$tokens['{parent}'] = $term->parent ? get_term( $term->parent, $term->taxonomy )->name : '';
 

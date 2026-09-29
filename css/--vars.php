@@ -2,11 +2,12 @@
 
 :root {
 	--md-font-size: <?php echo $this->fluid( $font_size['desktop'], $font_size['mobile'] ); ?>;
-	--md-font-size-sm: <?php echo $font_size['mobile']; ?>px;
-	--md-font-size-small: <?php echo $this->fluid( max( round( $font_size['desktop'] * 0.9 ), 16 ), max( round( $font_size['mobile'] * 0.9 ), 16 ) ); ?>;
+	--md-font-size-small: <?php echo $font_size['mobile']; ?>px;
+	--md-font-size-tiny: <?php echo $font_size['mobile'] - 2; ?>px;
 	--md-font-size-intro: <?php echo $this->fluid( round( $font_size['desktop'] * 1.2 ), round( $font_size['mobile'] * 1.2 ) ); ?>;
 	--md-line-height: <?php echo $this->fluid( $line_height['desktop'], $line_height['mobile'] ); ?>;
-	--md-line-height-sm: <?php echo $line_height['mobile']; ?>px;
+	--md-line-height-small: <?php echo $line_height['mobile']; ?>px;
+	--md-line-height-tiny: <?php echo $line_height['mobile'] - 1; ?>px;
 	--md-bold: <?php echo $bold; ?>;
 
 	--md-huge: <?php echo $this->fluid( $typography['huge']['font_size']['desktop'], $typography['huge']['font_size']['mobile'] ); ?>;

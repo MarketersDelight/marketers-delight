@@ -308,6 +308,7 @@ class md_archive_sections extends md_api {
 			return;
 
 		$output = $group = '';
+		$scroll = true;
 		$group_classes = 'archive-sections-group col-full columns-fluid-2 gap-single';
 		$post_type = $args['loop']['post_type'] ?? md_get_post_type();
 		$builder = md_get_post_type_builder( 'archive_sections', $post_type );
@@ -340,15 +341,18 @@ class md_archive_sections extends md_api {
 				$section = '<div class="' . esc_attr( $classes ) . '">' . $html . '</div>';
 
 				if ( strpos( " $classes ", ' col-full ' ) !== false ) {
-					$output .= $this->group( $group, $group_classes, $area ) . $section;
+					$output .= $this->group( $group, $group_classes, $area, $scroll ) . $section;
 					$group = '';
+					$scroll = true;
 				}
-				else
+				else {
 					$group .= $section;
+					$scroll = $scroll && ( $elements[$type]['scroll'] ?? true );
+				}
 			}
 		}
 
-		$output .= $this->group( $group, $group_classes, $area );
+		$output .= $this->group( $group, $group_classes, $area, $scroll );
 
 		if ( $output )
 			echo
@@ -359,16 +363,17 @@ class md_archive_sections extends md_api {
 
 	/**
 	 * Wrap a run of neighboring sections so they share one row, which
-	 * scrolls horizontally on mobile around the Loop.
+	 * scrolls horizontally on mobile around the Loop unless one of its
+	 * elements sets scroll to false.
 	 *
 	 * @since 6.0
 	 */
 
-	private function group( $sections, $classes, $area ) {
+	private function group( $sections, $classes, $area, $scroll = true ) {
 		if ( $sections === '' )
 			return '';
 
-		if ( in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
+		if ( $scroll && in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
 			$classes .= ' scroll-mobile';
 
 		return '<div class="' . esc_attr( $classes ) . '">' . $sections . '</div>';

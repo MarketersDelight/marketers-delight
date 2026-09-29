@@ -78,7 +78,7 @@
 
 #wp-calendar {
 	border-collapse: collapse;
-	font-size: var(--md-font-size-sm);
+	font-size: var(--md-font-size-small);
 	line-height: 1;
 	margin-block-end: var(--md-small);
 	margin-block-start: 0;

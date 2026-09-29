@@ -47,6 +47,14 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertSame( array_keys( $this->json['settings'] ), array_keys( $packaged['settings'] ) );
 	}
 
+	public function test_tiny_is_always_smaller_than_small() {
+		$font_sizes = $this->presets_by_slug( $this->json['settings']['typography']['fontSizes'] );
+
+		$this->assertSame( '18px', $font_sizes['small']['size'] );
+		$this->assertSame( '16px', $font_sizes['tiny']['size'] );
+		$this->assertLessThan( (float) $font_sizes['small']['size'], (float) $font_sizes['tiny']['size'] );
+	}
+
 	public function test_typography_presets_are_fluid_and_used_by_elements() {
 		$font_sizes = $this->presets_by_slug( $this->json['settings']['typography']['fontSizes'] );
 

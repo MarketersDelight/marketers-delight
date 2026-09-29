@@ -69,7 +69,7 @@ select {
 	padding-inline-start: 0;
 }
 
-.form-small .input { font-size: calc(var(--md-font-size-sm) - 2px); }
+.form-small .input { font-size: var(--md-font-size-tiny); }
 
 .form-icons .input:focus { box-shadow: none; }
 

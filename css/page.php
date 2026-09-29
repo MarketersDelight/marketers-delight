@@ -41,9 +41,9 @@
 }
 
 .wp-caption-text, .wp-element-caption {
-	font-size: var(--md-font-size-sm);
+	font-size: var(--md-font-size-small);
 	font-style: italic;
-	line-height: var(--md-line-height-sm);
+	line-height: var(--md-line-height-small);
 	margin-block-start: 0;
 	padding: var(--md-third);
 	text-align: center;
@@ -89,9 +89,9 @@
 .author-links {
 	align-items: center;
 	display: flex;
-	font-size: var(--md-font-size-sm);
+	font-size: var(--md-font-size-small);
 	gap: var(--md-half);
-	line-height: var(--md-line-height-sm);
+	line-height: var(--md-line-height-small);
 }
 
 .author-links .author-link {
@@ -206,8 +206,8 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 .post-nav-direction {
 	color: var(--md-text-muted);
 	display: block;
-	font-size: var(--md-font-size-sm);
-	line-height: var(--md-line-height-sm);
+	font-size: var(--md-font-size-small);
+	line-height: var(--md-line-height-small);
 	margin-block-end: var(--md-small);
 }
 

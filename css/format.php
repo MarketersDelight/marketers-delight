@@ -173,8 +173,8 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 /* SLIM */
 
 .slim {
-	font-size: var(--md-font-size-sm);
-	line-height: calc(var(--md-line-height-sm) - 1px);
+	font-size: var(--md-font-size-small);
+	line-height: var(--md-line-height-tiny);
 }
 
 .slim :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
@@ -189,8 +189,8 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim .entry-title .wrap { column-gap: var(--md-half); }
 
 .slim .byline {
-	font-size: calc(var(--md-font-size-sm) - 2px);
-	line-height: calc(var(--md-line-height-sm) - 1px);
+	font-size: var(--md-font-size-tiny);
+	line-height: var(--md-line-height-tiny);
 }
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>

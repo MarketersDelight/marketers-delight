@@ -126,11 +126,10 @@ class md_theme_json {
 
 	private function font_sizes() {
 		$body = $this->typography['body']['font_size'];
-		$small_desktop = max( round( $body['desktop'] * 0.9 ), 16 );
-		$small_mobile = max( round( $body['mobile'] * 0.9 ), 16 );
 
 		$font_sizes = array(
-			$this->font_size( __( 'Small', 'md' ), 'small', $small_desktop, $small_mobile ),
+			$this->font_size( __( 'Tiny', 'md' ), 'tiny', $body['mobile'] - 2, $body['mobile'] - 2 ),
+			$this->font_size( __( 'Small', 'md' ), 'small', $body['mobile'], $body['mobile'] ),
 			$this->font_size( __( 'Normal', 'md' ), 'normal', $body['desktop'], $body['mobile'] ),
 			$this->font_size( __( 'Intro', 'md' ), 'intro', round( $body['desktop'] * 1.2 ), round( $body['mobile'] * 1.2 ) )
 		);

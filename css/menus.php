@@ -65,8 +65,8 @@
 		background-color: var(--md-header-submenu-background);
 		border-radius: var(--md-border-radius);
 		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-		font-size: var(--md-font-size-sm);
-		line-height: var(--md-line-height-sm);
+		font-size: var(--md-font-size-small);
+		line-height: var(--md-line-height-small);
 		position: absolute;
 			inset-inline-end: 0;
 		width: <?php echo $submenu_width; ?>px;
@@ -126,8 +126,8 @@
 		visibility: visible;
 	}
 	.sub-menu .menu-item a {
-		font-size: calc(var(--md-font-size-sm) - 1px);
-		line-height: calc(var(--md-line-height-sm) - 2px);
+		font-size: var(--md-font-size-tiny);
+		line-height: var(--md-line-height-tiny);
 		padding-block: var(--md-third);
 	}
 }

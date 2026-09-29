@@ -62,7 +62,8 @@ foreach ( array_keys( $headings ) as $attribute ) {
 }
 
 echo
-	".has-small-font-size { font-size: var(--md-font-size-small); line-height: var(--md-line-height-sm); }\n".
+	".has-tiny-font-size { font-size: var(--md-font-size-tiny); line-height: var(--md-line-height-tiny); }\n".
+	".has-small-font-size { font-size: var(--md-font-size-small); line-height: var(--md-line-height-small); }\n".
 	".has-normal-font-size { font-size: var(--md-font-size); line-height: var(--md-line-height); }\n".
 	".has-intro-font-size { font-size: var(--md-font-size-intro); line-height: var(--md-h6-line-height); }\n";
 ?>
