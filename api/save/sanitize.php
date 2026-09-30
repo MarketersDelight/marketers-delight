@@ -94,6 +94,9 @@ class md_sanitize {
 	 */
 
 	public function checkbox( $input, $fields = array() ) {
+		if ( ! is_array( $fields ) )
+			$fields = array();
+
 		if ( isset( $fields['options'] ) ) {
 			$save = array();
 			$options = $fields['options'];
@@ -186,6 +189,9 @@ class md_sanitize {
 	 */
 
 	public function color( $input, $fields = array() ) {
+		if ( ! is_array( $fields ) )
+			$fields = array();
+
 		if ( is_array( $input ) )
 			return $this->color_selection( $input, $fields );
 

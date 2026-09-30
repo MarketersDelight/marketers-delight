@@ -109,7 +109,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/archive/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
-		require_once MD_DIR . 'features/loop/query-loops.php';
+		require_once MD_DIR . 'features/loop/query-loop.php';
 		require_once MD_DIR . 'features/loop/content.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 

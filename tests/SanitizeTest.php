@@ -18,6 +18,13 @@ class SanitizeTest extends MD_TestCase {
 
 	// checkbox()
 
+	public function test_checkbox_and_color_accept_customizer_setting_as_second_argument() {
+		$setting = new stdClass;
+
+		$this->assertTrue( $this->sanitize->checkbox( true, $setting ) );
+		$this->assertSame( '#ff0000', $this->sanitize->color( '#ff0000', $setting ) );
+	}
+
 	public function test_checkbox_group_all_unchecked_returns_empty_array() {
 		$this->assertSame( array(), $this->sanitize->checkbox( null, array( 'options' => array( 'a', 'b' ) ) ) );
 	}

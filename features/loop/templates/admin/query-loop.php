@@ -93,7 +93,17 @@
 						'ASC' => __( 'Ascending', 'md' )
 					) ) ); ?>
 			</div>
-								</div>
+			<div class="md-query-loop-field">
+				<?php $fields->field( array( 'builder', $group, 'group_by' ), array(
+					'type' => 'select',
+					'value' => $row['group_by'] ?? '',
+					'label' => __( 'Group results', 'md' ),
+					'description' => __( 'Optionally organize results by month.', 'md' ),
+					'empty_label' => __( 'No grouping', 'md' ),
+					'options' => array( 'month' => __( 'By month', 'md' ) )
+				) ); ?>
+			</div>
+		</div>
 	</div>
 
 	<div class="md-query-loop-section">

@@ -39,7 +39,7 @@ if ( $is_query ? $date_query->have_posts() : have_posts() ) {
 			else {
 				$date_label = '<time datetime="' . esc_attr( $date_month ) . '">' . esc_html( $post_date['label'] ) . '</time>';
 
-				echo ! empty( $post_date['url'] )
+				echo ! $is_query && ! empty( $post_date['url'] )
 					? '<a href="' . esc_url( $post_date['url'] ) . '">' . $date_label . '</a>'
 					: $date_label;
 			}

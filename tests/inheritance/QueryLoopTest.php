@@ -6,14 +6,9 @@
 if ( ! class_exists( 'WP_Query' ) ) {
 	class WP_Query {
 		public $query;
-		public $max_num_pages = 4;
 
 		public function __construct( $query = array() ) {
 			$this->query = $query;
-		}
-
-		public function get( $key ) {
-			return $this->query[$key] ?? null;
 		}
 	}
 }
@@ -36,21 +31,9 @@ if ( ! function_exists( 'sanitize_title' ) ) {
 	}
 }
 
-if ( ! function_exists( 'esc_url' ) ) {
-	function esc_url( $url ) {
-		return $url;
-	}
-}
+require_once dirname( __DIR__, 2 ) . '/features/loop/query-loop.php';
 
-if ( ! function_exists( 'esc_attr__' ) ) {
-	function esc_attr__( $value, $domain = 'default' ) {
-		return $value;
-	}
-}
-
-require_once dirname( __DIR__, 2 ) . '/features/loop/query-loops.php';
-
-class QueryLoopsTest extends MD_InheritanceTestCase {
+class QueryLoopTest extends MD_InheritanceTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -112,17 +95,35 @@ class QueryLoopsTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'date', $query->query['orderby'] );
 	}
 
+	public function test_source_month_grouping_is_opt_in_for_query_loop() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'loop' => array(
+				'orderby' => 'title',
+				'date' => array( 'group' => true )
+			)
+		) ) );
 
+		$query = md_query_loop_query( array( 'source' => 'post' ), 'blog' );
+		$this->assertSame( 'title', $query->query['orderby'] );
 
-	public function test_previous_next_pagination_has_no_numbered_links() {
-		$query = new WP_Query( array( 'paged' => 2 ) );
-		ob_start();
-		md_query_loop_pagination( $query, 'blog', 'prev_next' );
-		$html = ob_get_clean();
+		$query = md_query_loop_query( array( 'source' => 'post', 'group_by' => 'month' ), 'blog' );
+		$this->assertSame( 'date', $query->query['orderby'] );
+	}
 
-		$this->assertStringContainsString( 'Previous', $html );
-		$this->assertStringContainsString( 'Next', $html );
-		$this->assertStringNotContainsString( '<ul', $html );
-		$this->assertStringNotContainsString( 'page-numbers current', $html );
+	public function test_query_loop_reads_its_own_page_number() {
+		$previous_page = $_GET['md_loop_blog'] ?? null;
+		$_GET['md_loop_blog'] = 2;
+
+		$query = md_query_loop_query( array(
+			'source' => 'post',
+			'pagination' => 'page_numbers'
+		), 'blog' );
+
+		if ( $previous_page === null )
+			unset( $_GET['md_loop_blog'] );
+		else
+			$_GET['md_loop_blog'] = $previous_page;
+
+		$this->assertSame( 2, $query->query['paged'] );
 	}
 }

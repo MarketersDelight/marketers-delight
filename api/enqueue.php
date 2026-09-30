@@ -33,15 +33,18 @@ class md_enqueue {
 		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
 		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
-		add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
+		if ( function_exists( 'render_block' ) ) {
+			add_action( 'enqueue_block_assets', array( $this, 'enqueue_fonts' ) );
+			add_filter( 'block_editor_settings_all', array( $this, 'block_editor_styles' ) );
+		}
+
 		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
 
 		add_action( 'init', array( $this, 'compile' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
 
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
+		if ( ! function_exists( 'render_block' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
 			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
 			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
 		}
@@ -87,7 +90,7 @@ class md_enqueue {
 
 		// Block scripts and styles
 
-		if ( ! function_exists( 'register_block_type' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
+		if ( ! function_exists( 'render_block' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
 			wp_dequeue_style( 'wp-block-library' );
 			wp_dequeue_style( 'global-styles' );
 			wp_dequeue_style( 'block-style-variation-styles' );

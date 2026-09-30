@@ -80,7 +80,9 @@ class md_admin {
 		if ( ! is_customize_preview() )
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue' ) );
 
-		add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_layout' ) );
+		if ( function_exists( 'render_block' ) )
+			add_action( 'enqueue_block_assets', array( $this, 'enqueue_block_editor_layout' ) );
+
 		add_filter( 'admin_body_class', array( $this, 'admin_body_class' ) );
 		add_filter( 'tiny_mce_before_init', array( $this, 'classic_editor_layout' ) );
 
@@ -471,7 +473,6 @@ class md_admin {
 	 */
 
 	public function load_themes_screen() {
-		add_thickbox();
 		add_action( 'admin_notices', array( $this, 'update_nag' ) );
 	}
 
@@ -491,7 +492,7 @@ class md_admin {
 
 		$strings = array(
 			'update-notice' => esc_js( __( "Updating MD will lose any customizations you\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update.", 'md' ) ),
-			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" class="thickbox" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
+			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" onclick="document.querySelector(this.hash).showModal();return false;" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
 		);
 
 		$theme_slug = $this->requests->license( 'theme_slug' );
@@ -506,20 +507,21 @@ class md_admin {
 				$strings['update-available'],
 				$theme_name,
 				$new_version,
-				'#TB_inline?width=640&amp;inlineId=' . $theme_slug . '_changelog',
+				'#' . esc_attr( $theme_slug . '_changelog' ),
 				$theme_name,
 				$update_url,
 				$update_onclick
 			); ?>
 		</div>
-		<div id="<?php echo esc_attr( $theme_slug . '_changelog' ); ?>" style="display:none;">
-			<h1><?php echo sprintf( __( 'Ready to update %s %2s?', 'md' ), $theme_name, $new_version ); ?></h2>
+		<dialog id="<?php echo esc_attr( $theme_slug . '_changelog' ); ?>" style="width:90%;max-width:640px;">
+			<h1><?php echo sprintf( __( 'Ready to update %s %2s?', 'md' ), $theme_name, $new_version ); ?></h1>
 			<p><?php echo __( 'Here are some resources to help you:', 'md' ); ?></p>
 			<h3>- <a href="https://marketersdelight.com/changelog/" target="_blank"><?php echo __( 'Read the changelog', 'md' ); ?></a></h3>
 			<h3>- <a href="https://marketersdelight.com/stream/" target="_blank"><?php echo __( 'See what\'s new in MD', 'md' ); ?></a></h3>
 			<h3>- <a href="https://kolakube.com/community/" target="_blank"><?php echo __( 'Get help at support', 'md' ); ?></a></h3>
 			<p><?php echo __( 'When in doubt, make a backup your website before proceeding.', 'md' ); ?></p>
-		</div>
+			<form method="dialog"><button class="button"><?php echo __( 'Close', 'md' ); ?></button></form>
+		</dialog>
 	<?php }
 
 }

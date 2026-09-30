@@ -57,13 +57,20 @@ function md_excerpt( $loop ) {
  */
 
 function md_pagination( $loop = array() ) {
-	if ( is_singular() || ! empty( $loop['no_pagination'] ) )
+	if ( ! empty( $loop['no_pagination'] ) )
+		return;
+	elseif ( is_singular() && empty( $loop ) )
+		return;
+
+	$loop = ! empty( $loop ) ? $loop : md_get_loop();
+	$query = ! empty( $loop['query'] ) && $loop['query'] instanceof WP_Query ? $loop['query'] : null;
+
+	if ( is_singular() && ! $query )
 		return;
 
 	$big = 999999999;
-	$type = md_module( array( 'loop', 'pagination' ) );
+	$type = $loop['pagination_type'] ?? md_module( array( 'loop', 'pagination' ) );
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
-	$loop = ! empty( $loop ) ? $loop : md_get_loop();
 
 	if ( isset( $loop['by_category'] ) ) {
 		$taxonomies = get_object_taxonomies( md_get_post_type() );
@@ -72,6 +79,8 @@ function md_pagination( $loop = array() ) {
 		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
 		$total = ceil( $total_terms / $category_per_page );
 	}
+	elseif ( $query )
+		$total = $query->max_num_pages;
 	else {
 		global $wp_query;
 		$total = $wp_query->max_num_pages;
@@ -79,6 +88,9 @@ function md_pagination( $loop = array() ) {
 
 	if ( $total <= 1 )
 		return;
+
+	$page = $query ? max( 1, (int) $query->get( 'paged' ) ) : max( 1, get_query_var( 'paged' ) );
+	$page_arg = ! empty( $loop['pagination_arg'] ) ? sanitize_key( $loop['pagination_arg'] ) : '';
 
 	include md_template( 'features', 'loop/pagination', true );
 }
