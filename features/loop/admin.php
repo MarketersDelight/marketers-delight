@@ -217,7 +217,7 @@ class md_loop extends md_api {
 		$cta = $this->fields->module( array( 'cta', 'forms' ), array() );
 		$image_sizes = array_merge( array( 'full' ), get_intermediate_image_sizes() );
 		$subcat_key = ( $screen['is_admin'] && ! $screen['is_taxonomy'] ) ? 'show_subcategory' : 'hide_subcategory';
-		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show subcategories', 'md' ) : __( 'Hide subcategories', 'md' );
+		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show child categories', 'md' ) : __( 'Hide child categories', 'md' );
 	?>
 
 	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts is-category-inherited' : ''; ?>">

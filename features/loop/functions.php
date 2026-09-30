@@ -7,7 +7,11 @@
  */
 
 function md_has_post_content() {
-	if ( md_module( array( 'layout', 'content', 'the_content' ) ) )
+	$the_content = is_singular() || is_404()
+		? md_module( array( 'layout', 'content', 'the_content' ) )
+		: false;
+
+	if ( $the_content )
 		return false;
 
 	return (bool) apply_filters( 'md_filter_has_the_content', true );
@@ -215,7 +219,7 @@ function md_loop_classes( $loop = array() ) {
 
 	$classes = array( 'loop', "loop-$post_type", 'loop-' . $loop['loop'], "{$style}-style", "{$style}-{$target}" );
 
-	if ( $loop['columns'] > 1 ) {
+	if ( $loop['columns'] > 1 || ( $loop['columns_mobile'] ?? 1 ) > 1 ) {
 		$classes[] = 'columns';
 
 		if ( $loop['columns'] > 2 )
@@ -465,6 +469,7 @@ function md_get_loop( $args = array() ) {
 	$loop = array();
 	$loops = md_loops();
 	$post_type = ! empty( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
+	$settings_type = is_author() && empty( $args['query'] ) ? 'author' : $post_type;
 
 	// Build parameters if a manual loop query
 
@@ -487,9 +492,9 @@ function md_get_loop( $args = array() ) {
 	// Build parameters for auto page detection and admin settings
 
 	else {
-		$post_type_loop = md_post_type_field( 'loop', array() );
-		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article' );
-		$single = md_module( 'loop', array(), array( 'inherit_post_type' => false ) );
+		$post_type_loop = md_post_type_field( 'loop', array(), $settings_type );
+		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article', $settings_type );
+		$single = is_author() ? array() : md_module( 'loop', array(), array( 'inherit_post_type' => false ) );
 
 		// Determine main loop keys from contextual admin settings
 
@@ -627,7 +632,7 @@ function md_loop( $args = array() ) {
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_template = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
-	$loop_columns_style = $loop['columns'] > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) .
+	$loop_columns_style = $loop['columns'] > 1 || ( $loop['columns_mobile'] ?? 1 ) > 1 ? ' style="--md-loop-columns: ' . absint( $loop['columns'] ) .
 		( ! empty( $loop['columns_mobile'] ) ? '; --md-loop-columns-mobile: ' . absint( $loop['columns_mobile'] ) : '' ) . '"' : '';
 
 	md_hook_loop_before( $args );
@@ -638,7 +643,7 @@ function md_loop( $args = array() ) {
 		? empty( $loop['category']['hide_subcategory'] )
 		: ! empty( $loop['category']['show_subcategory'] );
 
-	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory )
+	if ( ! is_singular() && ! isset( $loop['by_category'] ) && $show_subcategory && empty( $args['skip_subcategory'] ) )
 		include md_template( 'features', 'loop/subcategory', true );
 
 	// A loop called within a loop (see 404)

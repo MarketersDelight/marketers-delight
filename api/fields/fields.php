@@ -170,6 +170,12 @@ class md_fields extends md_fields_render {
 
 		if ( $args['type'] === 'builder' && ! $has_option && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
 			$option = is_array( $args['defaults'] ) ? $args['defaults'] : array();
+		elseif ( ! $has_option && is_array( $field ) && array_key_exists( 'default', $args ) )
+			$option = $args['default'];
+
+		// Builder rows already know their displayed values, even before saving.
+		if ( array_key_exists( 'value', $args ) )
+			$option = $args['value'];
 
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
 			$args['save_empty'] = $has_option;
@@ -553,6 +559,14 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function byline_fields( $group, $args = array() ) {
+		$post_type = $this->_get_screen['post_type'] ?? '';
+		$page_post_type = md_clean_id( $this->_get_screen['page'] ?? '' );
+
+		if ( ! empty( $this->_get_screen['is_admin'] ) && get_post_type_object( $page_post_type ) )
+			$post_type = $page_post_type;
+
+		$row = md_get_post_type_builder( 'byline', $post_type )[$group] ?? array();
+
 		if ( isset( $args['dropin'] ) )
 			$this->field( array( 'builder', $group, 'dropin' ), array(
 				'id' => 'byline',
@@ -561,7 +575,7 @@ class md_fields extends md_fields_render {
 				'default' => $args['dropin']
 			) );
 
-		$this->field( array( 'builder', $group, 'position' ), array(
+		$position = array(
 			'id' => 'byline',
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
@@ -573,7 +587,14 @@ class md_fields extends md_fields_render {
 				'before_content' => __( 'Before Content', 'md' ),
 				'entry_footer' => __( 'Entry Footer', 'md' )
 			)
-		) );
+		);
+
+		if ( array_key_exists( 'position', $row ) )
+			$position['default'] = $row['position'];
+
+		$this->field( array( 'builder', $group, 'position' ), $position );
+
+		return $row;
 	}
 
 	/**
@@ -622,9 +643,10 @@ class md_fields extends md_fields_render {
 		include md_template( 'admin/fields/builder', true );
 	}
 
-	protected function builder_field( $key, $group, $type, $fields ) {
+	protected function builder_field( $key, $group, $type, $fields, $row = array(), $builder_args = array() ) {
 		$icon = ! empty( $fields['icon'] ) ? $fields['icon'] : 'move';
 		$color = ! empty( $fields['color'] ) ? $fields['color'] : '';
+		$scope = ! empty( $builder_args['scope'] );
 
 		include md_template( 'admin/fields/builder-field', true );
 	}

@@ -175,21 +175,21 @@
 		<?php if ( ! $is_taxonomy ) :
 
 		$content_options = array(
-			'remove' => __( 'Remove <b>Content Box</b>', 'md' ),
-			'the_content' => __( 'Remove <b>Post Content</b>', 'md' )
+			'remove' => __( 'Remove <b>Content Box</b>', 'md' )
 		);
 		$content_inherit = array(
 			'remove' => array(
 				'on' => __( 'Remove <b>Content Box</b>', 'md' ),
 				'off' => __( 'Show <b>Content Box</b>', 'md' )
-			),
-			'the_content' => array(
-				'on' => __( 'Remove <b>Post Content</b>', 'md' ),
-				'off' => __( 'Show <b>Post Content</b>', 'md' )
 			)
 		);
 
 		if ( $is_post ) {
+			$content_options['the_content'] = __( 'Remove <b>Post Content</b>', 'md' );
+			$content_inherit['the_content'] = array(
+				'on' => __( 'Remove <b>Post Content</b>', 'md' ),
+				'off' => __( 'Show <b>Post Content</b>', 'md' )
+			);
 			$content_options['builder'] = __( 'Enable <b>Builder</b>', 'md' );
 			$content_options['wpautop'] = __( 'Disable <strong>WP format</strong>', 'md' );
 			$content_inherit['builder'] = array(
@@ -218,12 +218,12 @@
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
-						'headline' => __( 'Remove <b>Title</b>', 'md' )
+						'headline' => __( 'Remove <b>Page Title</b>', 'md' )
 					),
 					'inherit' => array(
 						'headline' => array(
-							'on' => __( 'Remove <b>Title</b>', 'md' ),
-							'off' => __( 'Show <b>Title</b>', 'md' )
+							'on' => __( 'Remove <b>Page Title</b>', 'md' ),
+							'off' => __( 'Show <b>Page Title</b>', 'md' )
 						)
 					)
 				) );
@@ -251,7 +251,7 @@
 				) );
 			}
 
-			if ( $is_admin && ! $is_taxonomy )
+			if ( $is_admin && ! $is_taxonomy && $settings_post_type !== 'author' )
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(

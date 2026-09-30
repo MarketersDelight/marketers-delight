@@ -178,7 +178,7 @@ class md_byline extends md_api {
 		$post_type = $screen['post_type'];
 		$page_post_type = md_clean_id( $screen['page'] );
 
-		if ( $screen['is_admin'] && get_post_type_object( $page_post_type ) )
+		if ( $screen['is_admin'] && ( $page_post_type === 'author' || get_post_type_object( $page_post_type ) ) )
 			$post_type = $page_post_type;
 
 		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
@@ -203,6 +203,22 @@ class md_byline extends md_api {
 					'title' => __( 'Category Entry', 'md' ),
 					'description' => __( 'Override category entry bylines for this taxonomy.', 'md' ),
 					'tab' => 'category_entry'
+				)
+			);
+		}
+		elseif ( $screen['is_admin'] && $page_post_type === 'author' ) {
+			$active_tab = 'archives';
+			$tabs = array(
+				'archives' => array(
+					'label' => __( 'Author Loop', 'md' ),
+					'context' => 'post'
+				)
+			);
+			$areas = array(
+				'archives' => array(
+					'title' => __( 'Author Loop', 'md' ),
+					'description' => __( 'Byline items shown on the primary author loop.', 'md' ),
+					'tab' => 'archives'
 				)
 			);
 		}
@@ -353,10 +369,11 @@ class md_byline extends md_api {
 	 */
 
 	public function date( $group ) {
-		$this->fields->byline_fields( $group );
+		$row = $this->fields->byline_fields( $group );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
+			'default' => $row['settings'] ?? array(),
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
@@ -435,7 +452,7 @@ class md_byline extends md_api {
 	 */
 
 	public function category( $group ) {
-		$this->fields->byline_fields( $group );
+		$row = $this->fields->byline_fields( $group );
 
 		if ( isset( $_GET['post_type'] ) )
 			$post_type = sanitize_text_field( $_GET['post_type'] );
@@ -472,6 +489,7 @@ class md_byline extends md_api {
 
 		$this->fields->field( array( 'builder', $group, 'style' ), array(
 			'type' => 'checkbox',
+			'default' => $row['style'] ?? array(),
 			'label' => __( 'Style', 'md' ),
 			'options' => array(
 				'tag' => __( 'Show links as tags', 'md' )
@@ -480,6 +498,7 @@ class md_byline extends md_api {
 
 		$this->fields->field( array( 'builder', $group, 'term' ), array(
 			'type' => 'select',
+			'default' => $row['term'] ?? '',
 			'empty_label' => __( 'Use default category', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => $options

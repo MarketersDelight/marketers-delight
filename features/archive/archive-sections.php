@@ -44,13 +44,17 @@ class md_archive_sections extends md_api {
 
 		$args = array(
 			'name' => $this->name,
-			'child_of' => array( 'archive', 'page_settings' ),
+			'child_of' => array( 'archive', 'page_settings', 'author' ),
 			'fields' => $this->fields()
 		);
 
 		return array(
 			'admin_page' => $args,
-			'term' => $args
+			'term' => array(
+				'name' => $this->name,
+				'child_of' => array( 'archive', 'page_settings' ),
+				'fields' => $this->fields()
+			)
 		);
 	}
 
@@ -64,7 +68,8 @@ class md_archive_sections extends md_api {
 		$fields = array(
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
-			'name' => array( 'type' => 'text' )
+			'name' => array( 'type' => 'text' ),
+			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only' ) )
 		);
 
 		foreach ( $this->elements() as $element )
@@ -86,38 +91,61 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function admin_fields() {
-		$post_type = $this->_get_screen['post_type'];
-		$page_post_type = md_clean_id( $this->_get_screen['page'] );
+		$post_type = $this->_get_screen['post_type'] ?? '';
+		$page_post_type = md_clean_id( $this->_get_screen['page'] ?? '' );
 
-		if ( $this->_get_screen['is_admin'] && get_post_type_object( $page_post_type ) )
+		if ( $this->_get_screen['is_admin'] && ( $page_post_type === 'author' || get_post_type_object( $page_post_type ) ) )
 			$post_type = $page_post_type;
 
 		echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
 
-		$this->fields->field( 'builder', array(
+		$builder_args = array(
 			'type' => 'builder',
+			'wrap_classes' => 'md-tabs',
 			'title' => __( 'Add Archive Widgets', 'md' ),
 			'description' => __( 'Add reusable content before or after the archive entries.', 'md' ),
+			'active_tab' => 'before_loop',
+			'tabs' => array(
+				'before_loop' => __( 'Before Loop', 'md' ),
+				'after_loop' => __( 'After Loop', 'md' ),
+				'before_sidebar' => __( 'Before Sidebar', 'md' ),
+				'after_sidebar' => __( 'After Sidebar', 'md' )
+			),
 			'areas' => array(
 				'before_loop' => array(
 					'title' => __( 'Before Loop', 'md' ),
-					'description' => __( 'Shown before the archive entries.', 'md' )
+					'description' => __( 'Shown before the archive entries.', 'md' ),
+					'tab' => 'before_loop'
 				),
 				'after_loop' => array(
 					'title' => __( 'After Loop', 'md' ),
-					'description' => __( 'Shown after the archive entries and pagination.', 'md' )
+					'description' => __( 'Shown after the archive entries and pagination.', 'md' ),
+					'tab' => 'after_loop'
 				),
 				'before_sidebar' => array(
 					'title' => __( 'Before Sidebar', 'md' ),
-					'description' => __( 'Shown before the sidebar widgets.', 'md' )
+					'description' => __( 'Shown before the sidebar widgets.', 'md' ),
+					'tab' => 'before_sidebar'
 				),
 				'after_sidebar' => array(
 					'title' => __( 'After Sidebar', 'md' ),
-					'description' => __( 'Shown after the sidebar widgets.', 'md' )
+					'description' => __( 'Shown after the sidebar widgets.', 'md' ),
+					'tab' => 'after_sidebar'
 				)
 			),
 			'elements' => $this->elements( $post_type )
-		) );
+		);
+
+		if ( empty( $this->_get_screen['is_taxonomy'] ) && $post_type !== 'author' && get_post_type_object( $post_type ) )
+			$builder_args['scope'] = true;
+
+		if ( $post_type === 'author' ) {
+			$builder_args['populate'] = true;
+			$builder_args['save_empty'] = true;
+			$builder_args['defaults'] = md_get_post_type_builder( 'archive_sections', 'author', true );
+		}
+
+		$this->fields->field( 'builder', $builder_args );
 
 		echo '</div>';
 	}
@@ -130,6 +158,16 @@ class md_archive_sections extends md_api {
 
 	public function elements( $post_type = null ) {
 		$elements = apply_filters( 'md_archive_sections_builder_elements', array(
+			'query_loop' => array(
+				'title' => __( 'Query Loop', 'md' ),
+				'placeholder' => __( 'Loop heading...', 'md' ),
+				'icon' => 'list-view',
+				'color' => '#3858a4',
+				'classes' => 'col-full',
+				'fields' => md_query_loop_fields(),
+				'callback' => array( $this, 'query_loop' ),
+				'admin_callback' => 'md_query_loop_admin_fields'
+			),
 			'taxonomy_filter' => array(
 				'title' => __( 'Taxonomy Filter', 'md' ),
 				'placeholder' => __( 'Taxonomy Filter', 'md' ),
@@ -141,6 +179,9 @@ class md_archive_sections extends md_api {
 				'admin_callback' => array( $this, 'taxonomy_admin' )
 			)
 		) );
+
+		if ( $post_type === 'author' )
+			unset( $elements['taxonomy_filter'] );
 
 		if ( $post_type )
 			foreach ( $elements as $id => $element )
@@ -165,6 +206,13 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function element_fields() {}
+
+	/**
+	 * Render a Query Loop placed around an archive's main loop.
+	 */
+	public function query_loop( $fields, $post_type, $id = '' ) {
+		return md_query_loop_render( $fields, $id );
+	}
 
 	/**
 	 * Define the fields stored by a Taxonomy Filter section.
@@ -310,11 +358,15 @@ class md_archive_sections extends md_api {
 		$output = $group = '';
 		$scroll = true;
 		$group_classes = 'archive-sections-group col-full columns-fluid-2 gap-single';
-		$post_type = $args['loop']['post_type'] ?? md_get_post_type();
-		$builder = md_get_post_type_builder( 'archive_sections', $post_type );
+		$is_author = is_author() && empty( $args['query'] ) && empty( $args['in_loop'] );
+		$post_type = $is_author ? 'author' : ( $args['loop']['post_type'] ?? md_get_post_type() );
+		$builder = md_get_post_type_builder( 'archive_sections', $post_type, $is_author );
 		$elements = $this->elements( $post_type );
 
-		foreach ( $builder as $fields ) {
+		foreach ( $builder as $id => $fields ) {
+			if ( md_builder_hide_on_taxonomy( $fields ) )
+				continue;
+
 			if ( ( $fields['builder_area'] ?? '' ) !== $area )
 				continue;
 
@@ -326,7 +378,7 @@ class md_archive_sections extends md_api {
 
 			ob_start();
 
-			$value = call_user_func( $callback, $fields, $post_type );
+			$value = call_user_func( $callback, $fields, $post_type, $id );
 			$html = ob_get_clean();
 
 			if ( is_string( $value ) )

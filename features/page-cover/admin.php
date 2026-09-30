@@ -18,7 +18,7 @@ class md_page_cover extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
-				'child_of' => array( 'hero', 'page_settings' ),
+				'child_of' => array( 'hero', 'page_settings', 'author' ),
 				'fields' => $this->fields()
 			),
 			'meta_box' => array(

@@ -104,7 +104,7 @@ class md_layout extends md_api {
 				'options' => $data['areas']
 			);
 
-			foreach ( array( 'archive', 'term', 'single' ) as $type ) {
+			foreach ( array( 'archive', 'term', 'single', 'author' ) as $type ) {
 				$fields["{$id}_$type"] = array(
 					'type' => 'select',
 					'options' => $data['areas']
@@ -178,7 +178,7 @@ class md_layout extends md_api {
 			'classes' => array( 'md-layouts', 'md-sep-small' ),
 			'areas' => md_layout_areas( $id ),
 			'has' => md_has_layout( $id, array(
-				'page' => ( $context['is_post'] ? 'single' : 'term' ),
+			'page' => ( $context['is_author'] ? 'author' : ( $context['is_post'] ? 'single' : 'term' ) ),
 				'post_type' => $context['post_type'],
 				'post_id' => $context['screen_id'],
 				'exclude_single' => true
@@ -215,7 +215,9 @@ class md_layout extends md_api {
 		foreach ( $settings as $setting => $data ) {
 			$default = md_setting( array( 'layout', $id, $setting ), $data['default'] );
 
-			if ( $use_global )
+			if ( $context['is_author'] )
+				$current = ! empty( md_post_type_field( array( 'layout', $id, $setting ), $default, 'author' ) );
+			elseif ( $use_global )
 				$current = ! empty( $default );
 			else
 				$current = md_post_type_field( array( 'layout', $id, $setting ), $default, $context['post_type'] );
@@ -241,6 +243,9 @@ class md_layout extends md_api {
 			'term' => __( 'Categories', 'md' ),
 			'single' => __( 'Single', 'md' )
 		);
+
+		if ( $context['is_author'] )
+			$page_types = array( 'author' => __( 'Author Pages', 'md' ) );
 
 		include md_template( 'features', 'layout/admin/layout-toggle', true );
 	}
@@ -302,19 +307,21 @@ class md_layout extends md_api {
 	public function admin_template() {
 		$screen = $this->_get_screen;
 
-		$post_type = $screen['post_type'];
 		$is_admin = $screen['is_admin'];
 		$is_post = $screen['is_post'];
 		$is_term = $screen['is_term'];
 		$is_taxonomy = $screen['is_taxonomy'];
+		$settings_post_type = $is_admin ? md_clean_id( $screen['page'] ) : $screen['post_type'];
+		$post_type = $settings_post_type ?: $screen['post_type'];
 
 		$context = array(
 			'post_type' => $post_type,
-			'settings_post_type' => $is_admin ? md_clean_id( $screen['page'] ) : $post_type,
+			'settings_post_type' => $settings_post_type,
 			'is_admin' => $is_admin,
 			'is_post' => $is_post,
 			'is_term' => $is_term,
 			'is_taxonomy' => $is_taxonomy,
+			'is_author' => $settings_post_type === 'author',
 			'taxonomy' => $is_taxonomy ? $screen['md_tab'] : $screen['taxonomy'],
 			'screen_id' => $screen['screen_id'],
 			'toggles' => $this->layout_toggles()

@@ -119,6 +119,36 @@ class PredicateTest extends MD_InheritanceTestCase {
 		$this->assertSame( false, md_has_post_content() );
 	}
 
+	public function test_archive_layout_does_not_remove_the_main_loop() {
+		md_test_set_query( array( 'is_author' => true ) );
+		md_test_set_option( 'marketers_delight', array(
+			'author' => array(
+				'layout' => array(
+					'content' => array( 'the_content' => true )
+				)
+			)
+		) );
+
+		$this->assertSame( true, md_has_post_content() );
+	}
+
+	public function test_author_page_layout_can_remove_the_page_title() {
+		md_test_set_query( array( 'is_author' => true ) );
+		md_test_set_option( 'marketers_delight', array(
+			'author' => array(
+				'layout' => array(
+					'content' => array( 'headline' => true )
+				)
+			)
+		) );
+
+		ob_start();
+		md_title( 'page' );
+		$output = ob_get_clean();
+
+		$this->assertSame( '', $output );
+	}
+
 	public function test_template_filter_preserves_exact_false_contract() {
 		$this->assertSame( true, md_filter_template() );
 

@@ -18,6 +18,7 @@ class MD_Fields_Capture extends md_fields {
 
 }
 
+
 class FieldsContextTest extends MD_TestCase {
 
 	private function make_fields( $screen, $clean_id = 'my_page', $option = 'marketers_delight' ) {
@@ -566,5 +567,35 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( 0, $fields->rendered['args']['_inherit']['group']['value'] );
 		$this->assertTrue( $fields->rendered['args']['_inherit']['group']['checked'] );
 	}
+
+	public function test_builder_child_can_render_its_row_value_without_storage() {
+		$fields = $this->make_capturing_fields( array() );
+		$fields->field( array( 'builder', 'author_post', 'source' ), array( 'type' => 'select', 'value' => 'post' ) );
+		$this->assertSame( 'post', $fields->rendered['option'] );
+
+		md_test_set_settings( array( 'my_page' => array( 'builder' => array(
+			'author_post' => array( 'source' => '' )
+		) ) ) );
+		$fields->field( array( 'builder', 'author_post', 'source' ), array( 'type' => 'select' ) );
+		$this->assertSame( '', $fields->rendered['option'] );
+
+		$fields->field( array( 'builder', 'author_post', 'source' ), array( 'type' => 'select', 'value' => '' ) );
+		$this->assertSame( '', $fields->rendered['option'] );
+	}
+
+	public function test_nested_builder_default_does_not_replace_saved_blank() {
+		$fields = $this->make_capturing_fields( array() );
+		$field = array( 'byline', 'builder', 'date', 'position' );
+
+		$fields->field( $field, array( 'type' => 'select', 'default' => 'after_title' ) );
+		$this->assertSame( 'after_title', $fields->rendered['option'] );
+
+		md_test_set_settings( array( 'my_page' => array( 'byline' => array( 'builder' => array(
+			'date' => array( 'position' => '' )
+		) ) ) ) );
+		$fields->field( $field, array( 'type' => 'select', 'default' => 'after_title' ) );
+		$this->assertSame( '', $fields->rendered['option'] );
+	}
+
 
 }

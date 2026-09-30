@@ -13,7 +13,7 @@ elseif ( $type == 'image' ) {
 
 	echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '">' : '' );
 
-	if ( isset( $media['author'] ) )
+	if ( ! empty( $media['author'] ) )
 		echo get_avatar( get_the_author_meta( 'ID' ), $size );
 	else
 		echo wp_get_attachment_image( $media['image']['id'], $size, false, $attr );

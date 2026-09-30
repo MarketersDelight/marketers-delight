@@ -28,6 +28,8 @@ $GLOBALS['__test_terms'] = array();
 $GLOBALS['__test_categories'] = array();
 $GLOBALS['__test_titles'] = array();
 $GLOBALS['__test_post_time'] = 0;
+$GLOBALS['__test_avatar_found'] = false;
+$GLOBALS['__test_thumbnail_id'] = 0;
 $GLOBALS['__test_query'] = array(
 	'is_admin' => false,
 	'is_singular' => false,
@@ -81,6 +83,8 @@ function md_test_reset() {
 	$GLOBALS['__test_categories'] = array();
 	$GLOBALS['__test_titles'] = array();
 	$GLOBALS['__test_post_time'] = 0;
+	$GLOBALS['__test_avatar_found'] = false;
+	$GLOBALS['__test_thumbnail_id'] = 0;
 	$GLOBALS['__test_query'] = array(
 		'is_admin' => false,
 		'is_singular' => false,
@@ -363,6 +367,14 @@ function get_queried_object() {
 
 function get_queried_object_id() {
 	return $GLOBALS['__test_query']['queried_object_id'];
+}
+
+function get_avatar_data( $id_or_email, $args = array() ) {
+	return array( 'found_avatar' => $GLOBALS['__test_avatar_found'] );
+}
+
+function get_post_thumbnail_id() {
+	return $GLOBALS['__test_thumbnail_id'];
 }
 
 function get_the_ID() {

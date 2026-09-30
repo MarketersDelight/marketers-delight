@@ -40,6 +40,8 @@ function md_cover( $context = null ) {
 		} );
 		$cover = array_replace_recursive( $post_type_cover, $tax_cover, $term_cover );
 	}
+	elseif ( is_author() )
+		$cover = md_post_type_field( 'page_cover', array(), 'author' );
 	else $cover = md_post_meta( 'page_cover', true, array() );
 
 	if (

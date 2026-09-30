@@ -6,6 +6,12 @@ $areas = $args['areas'];
 $elements = $args['elements'];
 $key = esc_attr( $args['field'] );
 $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
+$area_counts = array_fill_keys( array_keys( $areas ), 0 );
+
+if ( is_array( $option ) )
+	foreach ( $option as $fields )
+		if ( is_array( $fields ) && isset( $area_counts[$fields['builder_area'] ?? ''] ) && isset( $elements[$fields['builder_type'] ?? ''] ) )
+			$area_counts[$fields['builder_area']]++;
 ?>
 
 <div class="md-builder-controls">
@@ -20,7 +26,7 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
 	<div class="md-builder-elements" data-canvas="elements">
 		<?php foreach ( $elements as $element_id => $element ) {
-			$this->builder_field( $key, '{clone}', $element_id, $element );
+			$this->builder_field( $key, '{clone}', $element_id, $element, array(), $args );
 		} ?>
 	</div>
 
@@ -31,8 +37,13 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 	<?php foreach ( $args['tabs'] as $tab_id => $tab ) :
 		$tab_label = is_array( $tab ) ? $tab['label'] : $tab;
 		$tab_context = is_array( $tab ) ? ( $tab['context'] ?? '' ) : '';
+		$tab_count = 0;
+
+		foreach ( $areas as $area_id => $area_fields )
+			if ( ( $area_fields['tab'] ?? '' ) === $tab_id )
+				$tab_count += $area_counts[$area_id];
 	?>
-	<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>" data-context="<?php echo esc_attr( $tab_context ); ?>"><?php echo esc_html( $tab_label ); ?></a>
+	<a href="#" class="md-tab nav-tab<?php echo $tab_id == $active_tab ? ' nav-tab-active' : ''; ?>" data-md-tab="md-builder-<?php echo esc_attr( $tab_id ); ?>" data-context="<?php echo esc_attr( $tab_context ); ?>" data-builder-count-tab="<?php echo esc_attr( $tab_id ); ?>"><?php echo esc_html( $tab_label ); ?> <span class="md-builder-tab-count"><?php echo $tab_count ? '(' . absint( $tab_count ) . ')' : ''; ?></span></a>
 	<?php endforeach; ?>
 </div>
 <?php endif; ?>
@@ -61,7 +72,7 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 
 	</div>
 
-	<div class="md-builder<?php echo empty( $option ) ? ' empty' : ''; ?>" data-canvas="<?php echo esc_attr( $area_id ); ?>">
+	<div class="md-builder<?php echo empty( $option ) ? ' empty' : ''; ?>" data-canvas="<?php echo esc_attr( $area_id ); ?>"<?php echo isset( $area_fields['tab'] ) ? ' data-builder-tab="' . esc_attr( $area_fields['tab'] ) . '"' : ''; ?>>
 
 		<?php if ( $option ) : ?>
 			<?php foreach ( $option as $group => $fields ) {
@@ -70,7 +81,7 @@ $active_tab = isset( $args['active_tab'] ) ? $args['active_tab'] : '';
 				$type = ! empty( $fields['builder_type'] ) ? esc_attr( $fields['builder_type'] ) : '';
 
 				if ( $area == $area_id && ! empty( $elements[$type] ) )
-					$this->builder_field( $key, $group, $type, $elements[$type] );
+					$this->builder_field( $key, $group, $type, $elements[$type], $fields, $args );
 			} ?>
 		<?php endif; ?>
 

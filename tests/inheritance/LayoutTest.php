@@ -13,7 +13,7 @@ class LayoutTest extends MD_InheritanceTestCase {
 
 		md_test_reset();
 		md_test_set_query( array( 'is_author' => true ) );
-		$this->assertSame( 'archive', md_layout_context() );
+		$this->assertSame( 'author', md_layout_context() );
 
 		md_test_reset();
 		md_test_set_query( array( 'is_search' => true ) );

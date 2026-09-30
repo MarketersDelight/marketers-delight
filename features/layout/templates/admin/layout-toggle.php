@@ -1,10 +1,11 @@
 <?php if ( $context['is_admin'] ) {
 
-	$this->fields->field( $id, array(
-		'type' => 'checkbox',
-		'wrap_classes' => 'md-sep-micro',
-		'options' => array( 'global' => __( 'Enable on all pages', 'md' ) )
-	) );
+	if ( empty( $context['is_author'] ) )
+		$this->fields->field( $id, array(
+			'type' => 'checkbox',
+			'wrap_classes' => 'md-sep-micro',
+			'options' => array( 'global' => __( 'Enable on all pages', 'md' ) )
+		) );
 
 	foreach ( $page_types as $type => $label ) {
 		echo '<div class="md-flex-columns md-sep-micro">'.

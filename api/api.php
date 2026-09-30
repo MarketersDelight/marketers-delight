@@ -84,6 +84,9 @@ class md_api {
 		if ( method_exists( $this, 'template' ) )
 			add_action( 'template_redirect', array( $this, 'template' ) );
 
+		if ( method_exists( $this, 'pre_get_posts' ) && ! is_admin() )
+			add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
+
 		if ( method_exists( $this, 'enqueue' ) )
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
 

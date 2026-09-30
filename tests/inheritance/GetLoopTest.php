@@ -18,6 +18,21 @@
 
 class GetLoopTest extends MD_InheritanceTestCase {
 
+	public function test_mobile_columns_can_be_used_with_one_desktop_column() {
+		$classes = md_loop_classes( array(
+			'post_type' => 'post',
+			'loop' => 'article',
+			'loop_type' => '',
+			'style' => 'plain',
+			'style_target' => 'entry',
+			'columns' => 1,
+			'columns_mobile' => 2
+		) );
+
+		$this->assertContains( 'columns', explode( ' ', $classes['loop'] ) );
+		$this->assertNotContains( 'row', explode( ' ', $classes['loop'] ) );
+	}
+
 	private function set_option_loop( $post_type_loop = array(), $taxonomy_loop = array() ) {
 		$post = array( 'loop' => $post_type_loop );
 

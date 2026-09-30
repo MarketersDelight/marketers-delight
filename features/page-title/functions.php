@@ -50,14 +50,16 @@ function md_get_title( $context = 'post' ) {
 	}
 	elseif ( is_search() )
 		$title = sprintf( esc_html__( 'Search Results For: %s', 'md' ), '<span class="search-query">' . get_search_query() . '</span>' );
-	elseif ( is_author() )
-		$title = get_the_author();
+	elseif ( is_author() ) {
+		$title = md_post_type_field( 'archives_title', get_the_author_meta( 'display_name', get_queried_object_id() ), 'author' );
+		$title = md_parse_text( $title, 'archive' );
+	}
 	elseif ( is_year() )
-		$title = get_the_date( 'Y' );
+		$title = get_the_date( 'Y' ) ?: get_query_var( 'year' );
 	elseif ( is_month() )
-		$title = get_the_date( 'F Y' );
+		$title = get_the_date( 'F Y' ) ?: date_i18n( 'F Y', mktime( 0, 0, 0, (int) get_query_var( 'monthnum' ), 1, (int) get_query_var( 'year' ) ) );
 	elseif ( is_day() )
-		$title = get_the_date( 'F j, Y' );
+		$title = get_the_date( 'F j, Y' ) ?: date_i18n( 'F j, Y', mktime( 0, 0, 0, (int) get_query_var( 'monthnum' ), (int) get_query_var( 'day' ), (int) get_query_var( 'year' ) ) );
 
 	return wp_kses_post( trim( (string) $title ) );
 }
@@ -74,6 +76,9 @@ function md_get_title( $context = 'post' ) {
 
 function md_title( $context = 'post', $args = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_title", true, $args ) )
+		return;
+
+	if ( $context === 'page' && md_module( array( 'layout', 'content', 'headline' ) ) )
 		return;
 
 	if ( ! md_get_title( $context ) && $context !== 'post' )
@@ -171,8 +176,14 @@ function md_description( $context = 'post', $args = array() ) {
 
 			$description = md_parse_text( $description, 'term' );
 		}
-		elseif ( is_author() )
-			$description = get_the_author_meta( 'description' );
+		elseif ( is_author() ) {
+			$description = get_the_author_meta( 'description', get_queried_object_id() );
+
+			if ( empty( $description ) )
+				$description = md_post_type_field( 'archives_text', '', 'author' );
+
+			$description = md_parse_text( $description, 'archive' );
+		}
 	}
 
 	if ( empty( $description ) )

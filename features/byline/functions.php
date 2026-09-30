@@ -109,7 +109,7 @@ function md_byline( $location = 'before_title', $args = array() ) {
 function md_get_byline( $position, $args = array() ) {
 	$byline = $items = array();
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
-	$post_type = $loop['post_type'] ?? md_get_post_type();
+	$post_type = ! empty( $loop['query'] ) ? ( $loop['post_type'] ?? md_get_post_type() ) : ( is_author() ? 'author' : ( $loop['post_type'] ?? md_get_post_type() ) );
 
 	// Skip build if no byline on page
 

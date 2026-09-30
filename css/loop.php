@@ -14,6 +14,11 @@
 
 .loop:not(.content):not(:last-child) { margin-block-end: var(--md-single); }
 
+.md-query-loop + .md-query-loop { margin-block-start: var(--md-single-x); }
+.md-query-loop-title { margin-block: 0 var(--md-half); }
+.md-query-loop > .pagination { margin-block-start: var(--md-single); }
+.md-query-loop > .prev-next .next { margin-inline-start: auto; }
+
 .expanded { --md-loop-content-width: var(--md-width-post); }
 
 .expanded .entry .item:not(.post-title) > .wrap,

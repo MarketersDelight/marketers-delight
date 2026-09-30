@@ -201,7 +201,9 @@ function md_module( $keys = null, $default = null, $args = array() ) {
 
 	$id = apply_filters( 'md_setting_id', $args['id'] );
 
-	if ( is_home() || is_post_type_archive() || is_author() )
+	if ( is_author() )
+		$option = md_post_type_field( $keys, $default, 'author' );
+	elseif ( is_home() || is_post_type_archive() )
 		$option = md_post_type_field( $keys, $default );
 	elseif ( is_category() || is_tax() ) {
 		$option = md_term_meta( $keys, $id, null );
@@ -349,6 +351,16 @@ function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = fa
 
 	return md_replace_builder_areas( $builder, $term[$key]['builder'] ?? null );
 
+}
+
+/**
+ * Check whether a builder row is excluded from taxonomy archives.
+ *
+ * @since 6.0
+ */
+
+function md_builder_hide_on_taxonomy( $row ) {
+	return ( is_category() || is_tag() || is_tax() ) && ! empty( $row['scope']['post_type_only'] );
 }
 
 /**

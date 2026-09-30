@@ -50,7 +50,7 @@ function md_parse_text( $text, $context = '' ) {
 	if ( empty( $context ) )
 		if ( is_tax() || is_category() || is_tag() )
 			$context = 'term';
-		elseif ( is_home() || is_post_type_archive() )
+		elseif ( is_home() || is_post_type_archive() || is_author() )
 			$context = 'archive';
 
 	$tokens = md_parse_tokens( array( 'context' => $context, 'text' => $text )  );
@@ -130,31 +130,54 @@ function md_parse_tokens( $args = array() ) {
 		}
 		else $tokens = array();
 	}
-	elseif ( $context === 'archive' ) {
-		$definitions = array(
-			'{name}' => __( 'Post type plural name', 'md' ),
-			'{label}' => __( 'Post type singular label', 'md' ),
-			'{url}' => __( 'Archive URL', 'md' ),
-			'{total}' => __( 'Total posts', 'md' )
-		);
+	elseif ( in_array( $context, array( 'archive', 'author' ), true ) ) {
+		$is_author = $context === 'author' || is_author();
+		$definitions = $is_author
+			? array(
+				'{name}' => __( 'Author display name', 'md' ),
+				'{label}' => __( 'Author label', 'md' ),
+				'{url}' => __( 'Author archive URL', 'md' ),
+				'{total}' => __( 'Total posts by this author', 'md' )
+			)
+			: array(
+				'{name}' => __( 'Post type plural name', 'md' ),
+				'{label}' => __( 'Post type singular label', 'md' ),
+				'{url}' => __( 'Archive URL', 'md' ),
+				'{total}' => __( 'Total posts', 'md' )
+			);
 
 		if ( $list )
 			return apply_filters( 'md_parse_tokens', $definitions, $args );
 
 		$tokens = array_fill_keys( array_keys( $definitions ), '' );
-		$post_type = get_post_type_object( get_queried_object()->name ?? '' );
+		$queried = get_queried_object();
 
-		if ( $post_type ) {
+		if ( $is_author && $queried && isset( $queried->ID, $queried->display_name ) ) {
 			$tokens = array(
-				'{name}' => $post_type->labels->name,
-				'{label}' => $post_type->labels->singular_name,
-				'{url}' => get_post_type_archive_link( $post_type->name ),
+				'{name}' => $queried->display_name,
+				'{label}' => __( 'Author', 'md' ),
+				'{url}' => get_author_posts_url( $queried->ID )
 			);
 
 			if ( strpos( $text, '{total}' ) !== false )
-				$tokens['{total}'] = wp_count_posts( $post_type->name )->publish;
+				$tokens['{total}'] = count_user_posts( $queried->ID, 'post', true );
 		}
-		else $tokens = array();
+		else {
+			$post_type = get_post_type_object( $queried->name ?? '' );
+
+			if ( ! $post_type )
+				$tokens = array();
+			else {
+				$tokens = array(
+					'{name}' => $post_type->labels->name,
+					'{label}' => $post_type->labels->singular_name,
+					'{url}' => get_post_type_archive_link( $post_type->name ),
+				);
+
+				if ( strpos( $text, '{total}' ) !== false )
+					$tokens['{total}'] = wp_count_posts( $post_type->name )->publish;
+			}
+		}
 	}
 
 	return apply_filters( 'md_parse_tokens', $tokens, $args );

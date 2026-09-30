@@ -84,6 +84,7 @@ final class marketers_delight {
 
 		$this->features();
 		$this->dropins();
+		require_once MD_DIR . 'features/author.php';
 
 		require_once MD_DIR . 'functions/actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
@@ -108,6 +109,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/archive/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
+		require_once MD_DIR . 'features/loop/query-loops.php';
 		require_once MD_DIR . 'features/loop/content.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 
@@ -154,9 +156,10 @@ final class marketers_delight {
 					md_update_dropins( $dropins );
 				}
 
-		// Refresh cached defaults after all active Drop-ins loaded
-
-		md_setting_defaults( true );
+		// Refresh defaults after WordPress and active Drop-ins register post types.
+		add_action( 'wp_loaded', function() {
+			md_setting_defaults( true );
+		}, 99 );
 	}
 
 	/**

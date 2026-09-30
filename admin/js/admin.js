@@ -194,7 +194,6 @@
 					clone.find( '.md-focus' ).focus();
 					MD.select2Init();
 					MD.initWpEditor();
-					MD.clone.delete( '.md-group' );
 					MD.linkFields.init();
 					jscolor.install();
 					clone.find( '.md-groups, .md-sort' ).each( function() {
@@ -222,8 +221,15 @@
 			},
 			delete: function( parent ) {
 				$( document ).on( 'click', '.md-delete', function( e ) {
-					$( this ).closest( parent ).slideUp( 'fast', function() {
+					var group = $( this ).closest( parent ),
+						field = group.closest( '.md-field-builder' ),
+						isBuilderGroup = group.hasClass( 'md-builder-group' );
+
+					group.slideUp( 'fast', function() {
 						$( this ).remove();
+
+						if ( isBuilderGroup && field.length )
+							MD.sortable.counts( field );
 					});
 				});
 			}
@@ -234,6 +240,27 @@
 				this.sort();
 				this.shared();
 				this.builder();
+				$( '.md-field-builder' ).each( function() {
+					MD.sortable.counts( this );
+				});
+			},
+			counts: function( field ) {
+				var builder = $( field ).closest( '.md-field-builder' ),
+					counts = {};
+
+				if ( ! builder.length )
+					builder = $( field );
+
+				builder.find( '.md-builder[data-builder-tab]' ).each( function() {
+					var tab = $( this ).data( 'builder-tab' );
+					counts[tab] = ( counts[tab] || 0 ) + $( this ).children( '.md-builder-group' ).not( '.sortable-ghost' ).length;
+				});
+
+				builder.find( '[data-builder-count-tab]' ).each( function() {
+					var tab = $( this ).data( 'builder-count-tab' );
+					var count = counts[tab] || 0;
+					$( this ).find( '.md-builder-tab-count' ).text( count ? '(' + count + ')' : '' );
+				});
 			},
 			groups: function() {
 				var groups = document.getElementsByClassName( 'md-groups' );
@@ -245,20 +272,23 @@
 			},
 			sort: function() {
 				var sort = document.getElementsByClassName( 'md-sort' );
-				for ( var i = 0; i < sort.length; i++ )
-					var sort = new Sortable( sort[i], {
-						handle: '.md-reorder',
-						animation: 150,
-						onEnd: function ( e ) {
-							var items = sort.toArray(),
-								ignore = items.indexOf( 'hide' );
+				for ( var i = 0; i < sort.length; i++ ) {
+					( function( element ) {
+						var sortable = new Sortable( element, {
+							handle: '.md-reorder',
+							animation: 150,
+							onEnd: function ( e ) {
+								var items = sortable.toArray(),
+									ignore = items.indexOf( 'hide' );
 
-							if ( ignore > -1 )
-								items.splice( ignore, 1 );
+								if ( ignore > -1 )
+									items.splice( ignore, 1 );
 
-							$( e.item.parentElement ).find( '.md-sort-order' ).val( items.join( ',' ) );
-						}
-					});
+								$( e.item.parentElement ).find( '.md-sort-order' ).val( items.join( ',' ) );
+							}
+						});
+					})( sort[i] );
+				}
 			},
 			shared: function() {
 				var shared = document.getElementsByClassName( 'md-shared' );
@@ -283,6 +313,10 @@
 						onAdd: function ( e ) {
 							var canvas = e.item.parentElement.getAttribute( 'data-canvas' );
 							$( e.item ).find( '.canvas-area' ).val( canvas );
+							MD.sortable.counts( e.item );
+						},
+						onRemove: function ( e ) {
+							MD.sortable.counts( e.from );
 						}
 					});
 				var elements = document.getElementsByClassName( 'md-builder-elements' );
@@ -310,7 +344,7 @@
 				e.preventDefault();
 				var tab = $( this ).data( 'md-tab' ),
 					parent = $( this ).closest( '.md-tabs' );
-				parent.find( '.md-tab' ).removeClass( 'nav-tab-active' );
+				parent.children( '.nav-tab-wrapper' ).find( '.md-tab' ).removeClass( 'nav-tab-active' );
 				$( this ).addClass( 'nav-tab-active' );
 				parent.children( '.md-tab-content' ).removeClass( 'active' );
 				parent.children( '.' + tab ).addClass( 'active' );
@@ -746,8 +780,8 @@
 
 			$( document ).on( 'click', '.md-upload-add', function() {
 				var parent = $( this ).parents( '.md-upload' ),
-					isMultiple = $( this ).data( 'md-multiple' ) === true;
-				media = wp.media.frames.file_frame = wp.media({
+					isMultiple = $( this ).data( 'md-multiple' ) === true,
+					media = wp.media.frames.file_frame = wp.media({
 					frame: 'select',
 					multiple: isMultiple,
 					library: { type: 'image' }

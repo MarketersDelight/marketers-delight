@@ -55,7 +55,7 @@ class md_page_cta extends md_api {
 
 		$args = array(
 			'name' => $this->name,
-			'child_of' => array( 'hero', 'page_settings' ),
+			'child_of' => array( 'hero', 'page_settings', 'author' ),
 			'fields' => $this->fields()
 		);
 

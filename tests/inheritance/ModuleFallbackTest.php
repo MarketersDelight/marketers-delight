@@ -130,4 +130,14 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 		$this->assertSame( 10, md_module( array( 'loop', 'excerpt_length' ) ) );
 	}
 
+	public function test_author_archive_uses_sitewide_author_settings() {
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array( 'subtitle' => array( 'lede' => 'Post lede' ) ),
+			'author' => array( 'subtitle' => array( 'lede' => 'Author lede' ) )
+		) );
+		md_test_set_query( array( 'is_author' => true, 'post_type' => 'post' ) );
+
+		$this->assertSame( 'Author lede', md_module( array( 'subtitle', 'lede' ), null, array( 'inherit_post_type' => false ) ) );
+	}
+
 }

@@ -15,12 +15,14 @@
 				<?php
 					$this->field( array( $key, $group, 'name' ), array(
 						'type' => 'text',
+						'value' => $row['name'] ?? '',
 						'placeholder' => isset( $fields['placeholder'] ) ? $fields['placeholder'] : __( 'Enter label...', 'md' )
 					) );
 
 					if ( isset( $fields['subtitle'] ) )
 						$this->field( array( $key, $group, 'subtitle' ), array(
 							'type' => 'text',
+							'value' => $row['subtitle'] ?? '',
 							'placeholder' => __( 'Add subtitle (optional)', 'md' ),
 							'classes' => 'small-text'
 						) );
@@ -43,17 +45,30 @@
 				$this->field( array( $key, $group, 'builder_type' ), array(
 					'type' => 'text',
 					'hidden' => true,
-					'default' => esc_attr( $type )
+					'value' => $row['builder_type'] ?? $type
 				) );
 
 				$this->field( array( $key, $group, 'builder_area' ), array(
 					'type' => 'text',
 					'hidden' => true,
 					'classes' => 'canvas-area',
-					'default' => $group
+					'value' => $row['builder_area'] ?? $group
 				) );
 
-				call_user_func( $fields['admin_callback'], $group, $type, $this );
+				if ( $scope ) : ?>
+				<div class="md-checkbox-description">
+					<?php
+					$this->field( array( $key, $group, 'scope' ), array(
+						'type' => 'checkbox',
+						'options' => array( 'post_type_only' => __( 'Don’t show on categories', 'md' ) )
+					) );
+					?>
+					<p class="description"><?php echo esc_html__( 'Also shown on category pages unless disabled here.', 'md' ); ?></p>
+				</div>
+				<hr class="md-sep-micro" />
+				<?php endif;
+
+				call_user_func( $fields['admin_callback'], $group, $type, $this, $row );
 			?>
 		</div>
 

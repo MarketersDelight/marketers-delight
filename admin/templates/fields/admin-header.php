@@ -3,11 +3,12 @@
 $tokens = $tabs = '';
 $screen = $this->_get_screen;
 $view = $screen['is_taxonomy'] ? 'term' : 'archive';
+$token_context = md_clean_id( $screen['page'] ) === 'author' ? 'author' : $view;
 
 if ( empty( $views[$view] ) )
     return;
 
-foreach ( md_parse_tokens( array( 'context' => $view, 'list' => true ) ) as $token => $label )
+foreach ( md_parse_tokens( array( 'context' => $token_context, 'list' => true ) ) as $token => $label )
     $tokens .= "<span class=\"md-token\"><code>$token</code> $label</span>";
 
 $tax_groups = $screen['taxonomy_groups'];

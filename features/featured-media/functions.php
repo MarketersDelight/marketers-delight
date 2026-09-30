@@ -121,10 +121,14 @@ function md_get_media( $context = 'post' ) {
 	);
 
 	if ( $context == 'page' ) {
-		$option = md_module( 'featured_media', array(), array( 'inherit_post_type' => false ) );
+		$option = is_author()
+			? md_post_type_field( 'featured_media', array(), 'author' )
+			: md_module( 'featured_media', array(), array( 'inherit_post_type' => false ) );
 
-		if ( is_author() )
-			$option['author'] = true;
+		if ( is_author() ) {
+			$avatar = get_avatar_data( get_queried_object_id() );
+			$option['author'] = ! empty( $avatar['found_avatar'] );
+		}
 	}
 	else {
 		$option = md_post_meta( 'featured_media', true, array() );
@@ -159,6 +163,8 @@ function md_has_media( $context = 'post', $args = array() ) {
 	if ( $context == 'post' && isset( $args['loop']['featured_image'] ) )
 		$position = md_loop_media_position( $args['loop'] );
 
+	$media['position'] = $position;
+
 	if ( $position == 'remove' )
 		return;
 
@@ -166,8 +172,8 @@ function md_has_media( $context = 'post', $args = array() ) {
 		return;
 
 	if (
-		( $type == 'image' && empty( $media['image']['id'] ) && empty( $media['author'] ) ) ||
-		( empty( $media[$type] ) )
+		( $type === 'image' && empty( $media['image']['id'] ) && empty( $media['author'] ) ) ||
+		( $type !== 'image' && empty( $media[$type] ) )
 	)
 		return;
 
@@ -206,8 +212,8 @@ function md_loop_media_position( $loop ) {
 function md_media_position( $context = 'post' ) {
 	$default = 'right';
 
-	if ( is_author() )
-		return $default;
+	if ( is_author() && $context === 'page' )
+		return md_post_type_field( array( 'featured_media', 'position' ), $default, 'author' );
 
 	$position = $default;
 	$key = array( 'featured_media', 'position' );
@@ -228,9 +234,10 @@ function md_media_position( $context = 'post' ) {
 	else {
 		$loop_key = array( 'loop', 'featured_image' );
 		$inherit_key = array( 'loop', 'inherit', 'position' );
+		$settings_post_type = is_author() ? 'author' : null;
 
-		$position = md_post_type_field( $single_key, $default );
-		$position = md_post_type_field( $loop_key, $position );
+		$position = md_post_type_field( $single_key, $default, $settings_post_type );
+		$position = md_post_type_field( $loop_key, $position, $settings_post_type );
 
 		$is_term = is_category() || is_tax();
 
@@ -239,7 +246,7 @@ function md_media_position( $context = 'post' ) {
 			$position = md_term_meta( $loop_key, null, $position );
 		}
 
-		$inherit = md_post_type_field( $inherit_key );
+		$inherit = md_post_type_field( $inherit_key, null, $settings_post_type );
 
 		if ( $is_term ) {
 			$inherit = md_taxonomy_field( $inherit_key, $inherit );

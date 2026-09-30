@@ -48,7 +48,8 @@ class md_archive_meta extends md_api {
 		$fields = array(
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
-			'name' => array( 'type' => 'text' )
+			'name' => array( 'type' => 'text' ),
+			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only' ) )
 		);
 
 		foreach ( md_archive_meta_items() as $item )
@@ -76,6 +77,8 @@ class md_archive_meta extends md_api {
 		if ( $this->_get_screen['is_admin'] && get_post_type_object( $page_post_type ) )
 			$post_type = $page_post_type;
 
+		$scope = $this->_get_screen['is_admin'] && empty( $this->_get_screen['is_taxonomy'] ) && (bool) get_post_type_object( $post_type );
+
 		echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content active">';
 
 		$this->fields->field( 'builder', array(
@@ -88,7 +91,8 @@ class md_archive_meta extends md_api {
 					'description' => __( 'Drag items into the order they should appear beneath the title.', 'md' )
 				)
 			),
-			'elements' => $this->elements( $post_type )
+			'elements' => $this->elements( $post_type ),
+			'scope' => (bool) $scope
 		) );
 
 		echo '</div>';

@@ -67,6 +67,9 @@ function md_archive_meta() {
 	$output = '';
 
 	foreach ( $builder as $fields ) {
+		if ( md_builder_hide_on_taxonomy( $fields ) )
+			continue;
+
 		if ( ( $fields['builder_area'] ?? '' ) !== 'archives' )
 			continue;
 
