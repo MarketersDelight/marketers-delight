@@ -7,17 +7,38 @@
 
 class md_archive_sections extends md_api {
 
+	private $main_query;
+
+	/**
+	 * Register Archive Sections query hooks.
+	 *
+	 * @since 6.0
+	 */
+
+	public function actions() {
+		add_filter( 'query_vars', array( $this, 'query_vars' ) );
+	}
+
 	/**
 	 * Register the archive query variable available to extensions.
 	 *
 	 * @since 6.0
 	 */
 
-	public function actions() {
-		add_filter( 'query_vars', function( $vars ) {
-			$vars[] = 'filter';
-			return $vars;
-		} );
+	public function query_vars( $vars ) {
+		$vars[] = 'filter';
+		return $vars;
+	}
+
+	/**
+	 * Keep the main query available to Archive Sections without reading globals.
+	 *
+	 * @since 6.0
+	 */
+
+	public function pre_get_posts( $query ) {
+		if ( $query->is_main_query() )
+			$this->main_query = $query;
 	}
 
 	/**
@@ -283,26 +304,121 @@ class md_archive_sections extends md_api {
 		if ( ! $taxonomy )
 			return;
 
-		$terms = get_terms( array(
+		$excluded = $this->get_excluded_term_ids( $taxonomy );
+		$all = get_terms( array(
 			'taxonomy' => $taxonomy,
 			'hide_empty' => ! empty( $options['hide_empty'] ),
-			'pad_counts' => true
+			'pad_counts' => true,
+			'exclude' => $excluded
 		) );
 
-		if ( is_wp_error( $terms ) || ! $terms )
+		if ( is_wp_error( $all ) || ! $all )
 			return;
 
-		$active = is_post_type_archive( $post_type ) || ( is_home() && $post_type === 'post' );
-		$total = (int) wp_count_posts( $post_type )->publish;
+		$navigation_term = $this->get_navigation_term( $all, $taxonomy );
+		$terms = $this->get_child_terms( $all, $navigation_term ? $navigation_term->term_id : 0 );
 
-		if ( $post_type === 'post' ) {
-			$page_for_posts = get_option( 'page_for_posts' );
-			$archive_url = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
+		while ( count( $terms ) === 1 && $this->get_child_terms( $all, $terms[0]->term_id ) )
+			$terms = $this->get_child_terms( $all, $terms[0]->term_id );
+
+		if ( ! $terms )
+			return;
+
+		if ( $navigation_term ) {
+			$active = $current_id === $navigation_term->term_id;
+			$archive_url = get_term_link( $navigation_term );
 		}
-		else
-			$archive_url = get_post_type_archive_link( $post_type );
+		else {
+			$active = is_post_type_archive( $post_type ) || ( is_home() && $post_type === 'post' );
+
+			if ( $post_type === 'post' ) {
+				$page_for_posts = get_option( 'page_for_posts' );
+				$archive_url = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
+			}
+			else $archive_url = get_post_type_archive_link( $post_type );
+		}
+
+		$total = $active ? (int) $this->main_query->found_posts : $this->count_filter_posts( $post_type, $taxonomy, $navigation_term, $excluded );
 
 		include md_template( 'features', 'archive/taxonomy-filter', true );
+	}
+
+	/**
+	 * The navigation term whose children a Taxonomy Filter lists: the viewed term when
+	 * it has children, otherwise its parent. Null at the top level.
+	 *
+	 * @since 6.0
+	 */
+
+	private function get_navigation_term( $terms, $taxonomy ) {
+		$queried = get_queried_object();
+
+		if ( ! $queried instanceof WP_Term || $queried->taxonomy !== $taxonomy )
+			return null;
+
+		if ( $this->get_child_terms( $terms, $queried->term_id ) )
+			return $queried;
+
+		return $queried->parent ? get_term( $queried->parent, $taxonomy ) : null;
+	}
+
+	/**
+	 * Terms from a list whose parent is the given term ID.
+	 *
+	 * @since 6.0
+	 */
+
+	private function get_child_terms( $terms, $parent_id ) {
+		$children = array();
+
+		foreach ( $terms as $term )
+			if ( $term->parent === $parent_id )
+				$children[] = $term;
+
+		return $children;
+	}
+
+	/**
+	 * Term IDs the main archive query leaves out of a taxonomy, so the filter
+	 * doesn't link to terms the Loop hides.
+	 *
+	 * @since 6.0
+	 */
+
+	private function get_excluded_term_ids( $taxonomy ) {
+		$excluded = array();
+
+		foreach ( (array) $this->main_query->get( 'tax_query' ) as $clause )
+			if ( is_array( $clause ) && ( $clause['operator'] ?? '' ) === 'NOT IN' && ( $clause['taxonomy'] ?? '' ) === $taxonomy )
+				$excluded = array_merge( $excluded, (array) $clause['terms'] );
+
+		return $excluded;
+	}
+
+	/**
+	 * Count published posts in a filter's category branch, without excluded terms.
+	 *
+	 * @since 6.0
+	 */
+
+	private function count_filter_posts( $post_type, $taxonomy, $navigation_term, $excluded ) {
+		$tax_query = array();
+
+		if ( $navigation_term )
+			$tax_query[] = array( 'taxonomy' => $taxonomy, 'terms' => $navigation_term->term_id, 'include_children' => true );
+
+		if ( $excluded )
+			$tax_query[] = array( 'taxonomy' => $taxonomy, 'terms' => $excluded, 'operator' => 'NOT IN' );
+
+		$query = new WP_Query( array(
+			'post_type' => $post_type,
+			'post_status' => 'publish',
+			'posts_per_page' => 1,
+			'fields' => 'ids',
+			'tax_query' => $tax_query
+		) );
+
+		return (int) $query->found_posts;
 	}
 
 	/**

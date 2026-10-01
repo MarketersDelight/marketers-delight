@@ -350,6 +350,11 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( 'loop-timeline', $loop );
 		$this->assertStringContainsString( '.loop-timeline', $timeline );
 		$this->assertStringContainsString( '.box-entry.loop-timeline', $timeline );
+	$this->assertStringContainsString( 'max-width: var(--md-width-content);', $timeline );
+		$this->assertStringNotContainsString( 'calc(var(--md-width-content) + var(--md-mid) * 2)', $timeline );
+		$this->assertStringContainsString( '.expanded .loop-timeline.columns', $timeline );
+		$this->assertStringContainsString( '.expanded .box-style.loop-timeline.columns { max-width: none; }', $timeline );
+		$this->assertStringContainsString( '.loop-timeline.columns:not(.content) > .entry:last-child > .timeline-wrap:after { display: none; }', $timeline );
 	}
 
 	public function test_timeline_only_breaks_entry_top_dates_into_the_rail() {

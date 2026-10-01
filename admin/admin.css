@@ -1848,7 +1848,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	gap: 8px 24px;
 	margin-top: 12px;
 }
-.md-loop-inline-option { flex: 0 1 280px; }
+.md-loop-inline-option { flex: 0 1 auto; }
 .md .md-loop .md-loop-section .col .md-field > .description,
 .md .md-loop .md-loop-section .col.md-sep-micro { margin-bottom: 0; }
 .md .md-loop .md-field-number input[type="number"]:not(.md-loop-excerpt-length) {

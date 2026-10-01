@@ -67,7 +67,7 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '#FFFFFF', $colors['site']['contrast_text_color'] );
 		$this->assertSame( 'button', $colors['actions']['primary']['bg_color'] );
 		$this->assertSame( '#AE2525', $colors['actions']['status']['danger_color'] );
-		$this->assertSame( '#F58F2A', $colors['actions']['status']['warning_color'] );
+		$this->assertSame( '#C95100', $colors['actions']['status']['warning_color'] );
 		$this->assertSame( '#FFFFFF', $colors['header']['bg_color'] );
 		$this->assertSame( '', $colors['header']['menu']['link_color'] );
 		$this->assertSame( 'surface', $colors['content']['main_bg_color'] );

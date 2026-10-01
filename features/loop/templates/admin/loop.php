@@ -21,10 +21,10 @@
 
 			$loop_type_options = array(
 				'post_listing' => __( 'Post listing (default)', 'md' ),
+				'month' => __( 'Posts grouped by month', 'md' ),
 				'category' => __( 'Category overview', 'md' ),
 				'category_posts' => __( 'List posts by category', 'md' )
 			);
-
 			$this->fields->field( 'loop_type', array(
 				'type' => 'select',
 				'label' => __( 'Loop type', 'md' ),
@@ -65,21 +65,6 @@
 			) ); ?>
 			<p class="description"><?php echo esc_html( $subcat_key === 'show_subcategory' ? __( 'Show links to child categories where available.', 'md' ) : __( 'Hide links to child categories.', 'md' ) ); ?></p>
 		</div>
-		<div class="md-checkbox-description">
-			<?php $this->fields->field( 'date', array(
-				'type' => 'checkbox',
-				'options' => array(
-					'group' => __( 'Group posts by month', 'md' )
-				),
-				'inherit' => array(
-					'group' => array(
-						'on' => __( 'Group posts by month', 'md' ),
-						'off' => __( 'Do not group posts by month', 'md' )
-					)
-				)
-			) ); ?>
-			<p class="description"><?php echo esc_html__( 'Display posts under month headings.', 'md' ); ?></p>
-		</div>
 	</div>
 </div>
 
@@ -96,7 +81,7 @@
 		<div class="md-loop-section">
 			<h4><?php echo esc_html__( 'Results', 'md' ); ?></h4>
 			<p class="description"><?php echo esc_html__( 'Control which posts appear and in what order.', 'md' ); ?></p>
-			<div class="columns-4 columns-single md-full-select">
+			<div class="columns-4 columns-single md-full-select md-sep-small">
 
 			<div class="col md-sep-micro">
 				<?php $orderby_options = array(
@@ -149,6 +134,30 @@
 					'description' => __( 'Feature first X.', 'md' ),
 					'inherit' => true,
 					'classes' => 'md-num-val'
+				) ); ?>
+			</div>
+
+			</div>
+
+			<div class="columns-2 columns-single md-full-select">
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'exclude_posts', array(
+					'type' => 'text',
+					'label' => __( 'Exclude Posts', 'md' ),
+					'description' => __( 'Post IDs to leave out, separated by commas.', 'md' ),
+					'placeholder' => '12, 48',
+					'inherit' => true
+				) ); ?>
+			</div>
+
+			<div class="col md-sep-micro">
+				<?php $this->fields->field( 'exclude_terms', array(
+					'type' => 'text',
+					'label' => __( 'Exclude Terms', 'md' ),
+					'description' => __( 'Category, tag or term IDs to leave out, separated by commas.', 'md' ),
+					'placeholder' => '3, 17',
+					'inherit' => true
 				) ); ?>
 			</div>
 

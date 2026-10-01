@@ -52,12 +52,18 @@ function md_query_loop_fields() {
 	return array(
 		'source' => array( 'type' => 'text' ),
 		'context' => array( 'type' => 'select', 'options' => array( 'current', 'latest' ) ),
+		'loop_type' => array( 'type' => 'select', 'options' => array( 'month', 'category', 'category_posts' ) ),
 		'items' => array( 'type' => 'number' ),
 		'orderby' => array( 'type' => 'select', 'options' => array( 'date', 'title', 'modified', 'comment_count', 'menu_order' ) ),
 		'order' => array( 'type' => 'select', 'options' => array( 'ASC', 'DESC' ) ),
-		'group_by' => array( 'type' => 'select', 'options' => array( 'month' ) ),
 		'taxonomy' => array( 'type' => 'text' ),
 		'terms' => array( 'type' => 'text' ),
+		'category_per_page' => array( 'type' => 'number' ),
+		'posts_per_category' => array( 'type' => 'number' ),
+		'category_columns' => array( 'type' => 'number' ),
+		'category_orderby' => array( 'type' => 'select', 'options' => array( 'slug', 'term_id', 'count', 'parent' ) ),
+		'category_order' => array( 'type' => 'select', 'options' => array( 'ASC', 'DESC' ) ),
+		'category' => array( 'type' => 'checkbox', 'options' => array( 'show_empty', 'hide_description' ) ),
 		'loop' => array( 'type' => 'text' ),
 		'columns' => array( 'type' => 'number' ),
 		'columns_mobile' => array( 'type' => 'number' ),
@@ -143,15 +149,18 @@ function md_query_loop_query( $fields, $id ) {
 	if ( $context === null )
 		return null;
 
-	$settings = md_post_type_field( 'loop', array(), $source );
-	$settings = is_array( $settings ) ? $settings : array();
-	$group_by_month = ( $fields['group_by'] ?? '' ) === 'month';
-	$items = ! empty( $fields['items'] ) ? (int) $fields['items'] : (int) ( $settings['posts_per_page'] ?? get_option( 'posts_per_page' ) );
+	$default_items = get_option( 'posts_per_page' ) ?: 10;
+	$loop_type = ! empty( $fields['loop_type'] ) ? $fields['loop_type'] : 'post_listing';
+	$category_loop = in_array( $loop_type, array( 'category', 'category_posts' ), true );
+	$group_by_month = $loop_type === 'month';
+	$items = $category_loop
+		? (int) ( $loop_type === 'category_posts' ? ( $fields['posts_per_category'] ?? $default_items ) : ( $fields['category_per_page'] ?? $default_items ) )
+		: ( ! empty( $fields['items'] ) ? (int) $fields['items'] : (int) $default_items );
 	$items = max( 1, min( 100, $items ) );
 	$orderby = $fields['orderby'] ?? '';
 	$order = $fields['order'] ?? '';
-	$orderby = $orderby ?: ( $settings['orderby'] ?? 'date' );
-	$order = $order ?: ( $settings['order'] ?? 'DESC' );
+	$orderby = $orderby ?: 'date';
+	$order = $order ?: 'DESC';
 	$orderby = in_array( $orderby, array( 'date', 'title', 'modified', 'comment_count', 'menu_order', 'rand' ), true ) ? $orderby : 'date';
 	$order = $order === 'ASC' ? 'ASC' : 'DESC';
 	$pagination = $fields['pagination'] ?? 'none';
@@ -211,27 +220,57 @@ function md_query_loop_query( $fields, $id ) {
 function md_query_loop_render( $fields, $id = '' ) {
 	$id = $id ?: 'query_loop';
 	$query = md_query_loop_query( $fields, $id );
+	$loop_type = ! empty( $fields['loop_type'] ) ? $fields['loop_type'] : 'post_listing';
+	$category_loop = in_array( $loop_type, array( 'category', 'category_posts' ), true );
 
-	if ( ! $query || ! $query->have_posts() )
+	if ( ! $query || ( ! $query->have_posts() && $loop_type !== 'category' ) )
 		return false;
 
 	$source = sanitize_key( $fields['source'] );
 	$pagination = $fields['pagination'] ?? 'none';
+	$default_items = get_option( 'posts_per_page' ) ?: 10;
 	$args = array(
 		'post_type' => $source,
 		'query' => $query,
+		'loop_defaults' => array(
+			'loop' => 'article',
+			'columns' => 1,
+			'columns_mobile' => 1,
+			'posts_per_page' => $default_items,
+			'orderby' => 'date',
+			'order' => 'DESC',
+			'featured' => 0,
+			'content' => 'excerpt',
+			'excerpt_length' => 55,
+			'excerpt_more' => '[...]',
+			'read_more' => __( 'Continue reading &rarr;', 'md' ),
+			'featured_image_size' => 'full',
+			'remove_byline' => array(),
+			'cta_x_loop' => 0
+		),
 		'no_pagination' => $pagination === 'none',
 		'pagination_type' => $pagination,
 		'pagination_arg' => 'md_loop_' . sanitize_key( $id ),
 		'skip_subcategory' => true,
-		'by_category' => null,
+		'by_category' => $category_loop ? true : null,
 		'by_date' => false,
-		'loop_type' => 'post_listing',
-		'date' => array( 'group' => false )
+		'loop_type' => $loop_type,
+		'paged' => max( 1, (int) $query->get( 'paged' ) )
 	);
-	if ( ( $fields['group_by'] ?? '' ) === 'month' )
-		$args['date']['group'] = true;
-
+	if ( $category_loop ) {
+		$args['category_per_page'] = max( 1, (int) ( $fields['category_per_page'] ?? $default_items ) );
+		$args['posts_per_category'] = max( 1, (int) ( $fields['posts_per_category'] ?? $default_items ) );
+		$args['category_columns'] = max( 1, (int) ( $fields['category_columns'] ?? 1 ) );
+		$args['category_orderby'] = $fields['category_orderby'] ?? 'name';
+		$args['category_order'] = $fields['category_order'] ?? 'ASC';
+		$args['category'] = $fields['category'] ?? array();
+		$args['category_include'] = '';
+		$args['category_exclude'] = '';
+	}
+	if ( ! empty( $fields['taxonomy'] ) )
+		$args['category_taxonomy'] = sanitize_key( $fields['taxonomy'] );
+	if ( $category_loop && ! empty( $fields['terms'] ) )
+		$args['category_terms'] = $fields['terms'];
 	foreach ( array( 'loop', 'columns', 'columns_mobile', 'content', 'featured_image' ) as $key )
 		if ( isset( $fields[$key] ) && $fields[$key] !== '' )
 			$args[$key] = $fields[$key];

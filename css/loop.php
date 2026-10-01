@@ -257,7 +257,7 @@
 	flex-direction: column;
 }
 
-:is(.category-view, .category-posts).box-style > .entry > .post-footer {
+.category-view.box-style > .entry > .post-footer {
 	margin-top: auto;
 	padding-block-start: var(--md-half);
 }

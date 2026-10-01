@@ -1,7 +1,8 @@
 <?php
 /**
  * Tests md_get_loop() (features/loop/functions.php) — the
- * shortcode/manual-loop path of the Loop inheritance cascade. Unlike
+ * shortcode/manual-loop path of the Loop inheritance cascade and its
+ * explicit defaults option. Unlike
  * loop_query_vars(), this recursively replaces whole per-tier field arrays
  * rather than resolving one field at a time, and covers the wider field set
  * (columns, featured, etc).
@@ -199,26 +200,42 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertStringContainsString( 'loop-download', $loop['loop_classes'] );
 	}
 
+	public function test_manual_query_can_use_explicit_loop_defaults_instead_of_source_settings() {
+		$this->register_collection_loop();
+		md_test_set_option( 'marketers_delight', array(
+			'download' => array( 'loop' => array( 'loop' => 'collection', 'columns' => 4, 'content' => 'full' ) )
+		) );
+
+		$loop = md_get_loop( array(
+			'query' => array( 'post_type' => 'download' ),
+			'loop_defaults' => array( 'loop' => 'article', 'columns' => 1, 'content' => 'excerpt' )
+		) );
+
+		$this->assertSame( 'article', $loop['loop'] );
+		$this->assertSame( 1, $loop['columns'] );
+		$this->assertSame( 'excerpt', $loop['content'] );
+		$this->assertSame( 'download', $loop['post_type'] );
+	}
+
 	public function test_date_grouping_cascades_onto_a_taxonomy_post_listing() {
-		$this->set_option_loop( array( 'date' => array( 'group' => true ) ) );
+		$this->set_option_loop( array( 'loop_type' => 'month' ) );
 		$this->set_taxonomy_query();
 
 		$loop = md_get_loop();
 
 		$this->assertTrue( $loop['by_date'] );
+		$this->assertSame( 'entry', $loop['style_target'] );
 	}
 
-	public function test_taxonomy_false_checkbox_override_preserves_sibling_settings() {
+	public function test_taxonomy_loop_type_overrides_month_grouping() {
 		$this->set_option_loop(
-			array( 'date' => array( 'group' => true, 'label' => 'month' ) ),
-			array( 'date' => array( 'group' => 0 ) )
+			array( 'loop_type' => 'month' ),
+			array( 'loop_type' => 'post_listing' )
 		);
 		$this->set_taxonomy_query();
 
 		$loop = md_get_loop();
 
-		$this->assertSame( 0, $loop['date']['group'] );
-		$this->assertSame( 'month', $loop['date']['label'] );
 		$this->assertArrayNotHasKey( 'by_date', $loop );
 	}
 
@@ -232,10 +249,9 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertSame( 0, $loop['future_toggle'] );
 	}
 
-	public function test_category_grouping_takes_precedence_over_date_grouping() {
+	public function test_category_loop_type_does_not_create_month_groups() {
 		$this->set_option_loop( array(
-			'loop_type' => 'category_posts',
-			'date' => array( 'group' => true )
+			'loop_type' => 'category_posts'
 		) );
 		$this->set_taxonomy_query();
 		md_test_set_term_children( 42, 'category', array( 43 ) );
@@ -246,13 +262,49 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertArrayNotHasKey( 'by_date', $loop );
 	}
 
+	public function test_category_posts_style_targets_posts_not_category_sections() {
+		$this->set_option_loop( array( 'loop_type' => 'category_posts' ) );
+		$this->set_taxonomy_query();
+		md_test_set_term_children( 42, 'category', array( 43 ) );
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 'entry', $loop['style_target'] );
+		$this->assertStringContainsString( 'box-entry', $loop['loop_classes'] );
+		$this->assertSame( 'entry', $loop['category_classes'] );
+	}
+
+	public function test_category_overview_keeps_style_on_category_result_items() {
+		$this->set_option_loop( array( 'loop_type' => 'category' ) );
+		$this->set_taxonomy_query();
+		md_test_set_term_children( 42, 'category', array( 43 ) );
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 'group', $loop['style_target'] );
+		$this->assertSame( 'entry box-group', $loop['category_classes'] );
+	}
+
+	public function test_category_posts_keeps_an_explicit_loop_group_style_target() {
+		$this->register_collection_loop();
+		$this->set_option_loop( array( 'loop' => 'collection', 'loop_type' => 'category_posts' ) );
+		$this->set_taxonomy_query();
+		md_test_set_term_children( 42, 'category', array( 43 ) );
+
+		$loop = md_get_loop();
+
+		$this->assertSame( 'group', $loop['style_target'] );
+		$this->assertStringContainsString( 'plain-group', $loop['loop_classes'] );
+		$this->assertSame( 'entry', $loop['category_classes'] );
+	}
+
 	public function test_manual_date_query_forces_chronological_results() {
 		$loop = md_get_loop( array(
 			'query' => array(
 				'post_type' => 'post',
 				'orderby' => 'rand'
 			),
-			'date' => array( 'group' => true )
+			'loop_type' => 'month'
 		) );
 
 		$this->assertTrue( $loop['by_date'] );
@@ -263,7 +315,7 @@ class GetLoopTest extends MD_InheritanceTestCase {
 	public function test_singular_loop_does_not_create_date_groups() {
 		md_test_set_query( array( 'is_singular' => true ) );
 
-		$loop = md_get_loop( array( 'date' => array( 'group' => true ) ) );
+		$loop = md_get_loop( array( 'loop_type' => 'month' ) );
 
 		$this->assertArrayNotHasKey( 'by_date', $loop );
 	}

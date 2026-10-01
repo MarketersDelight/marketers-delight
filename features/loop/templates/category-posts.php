@@ -5,11 +5,25 @@
 $t = 1;
 $stickies = array();
 $taxonomies = get_object_taxonomies( $post_type );
-$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+$taxonomy = ! empty( $args['category_taxonomy'] ) && is_object_in_taxonomy( $post_type, $args['category_taxonomy'] )
+	? $args['category_taxonomy']
+	: ( ! empty( $taxonomies[0] ) ? $taxonomies[0] : '' );
+$queried_term = get_queried_object();
 $term_args = array(
-	'parent' => ( is_tax() || is_category() ) ? get_queried_object_id() : 0,
+	'parent' => $queried_term instanceof WP_Term && $queried_term->taxonomy === $taxonomy ? $queried_term->term_id : 0,
 	'taxonomy' => $taxonomy
 );
+
+if ( ! empty( $args['category_terms'] ) ) {
+	$category_terms = array_filter( array_map( 'trim', explode( ',', (string) $args['category_terms'] ) ) );
+	$ids_only = count( array_filter( $category_terms, 'ctype_digit' ) ) === count( $category_terms );
+	$term_args[$ids_only ? 'include' : 'slug'] = $ids_only
+		? array_map( 'absint', $category_terms )
+		: array_map( 'sanitize_title', $category_terms );
+}
+
+$query_args = ! empty( $args['query'] ) && $args['query'] instanceof WP_Query ? $args['query']->query : array();
+unset( $query_args['paged'], $query_args['offset'] );
 
 // Set query ordering by category_{order} fields
 
@@ -38,7 +52,8 @@ if ( ! empty( $loop['category_per_page'] ) ) {
 $categories = new WP_Term_Query( $term_args );
 
 if ( empty( $categories->terms ) ) {
-	md_404();
+	if ( empty( $args['query'] ) )
+		md_404();
 
 	return false;
 }
@@ -65,32 +80,31 @@ foreach ( $categories->terms as $category ) {
 	if ( $loop['loop_type'] === 'category_posts' ) {
 		$category_stickies = ! empty( $stickies[$category->slug] ) ? $stickies[$category->slug] : array();
 
-		$query_args = array(
+		$post_query_args = array_merge( $query_args, array(
 			'post_type' => $post_type,
 			'posts_per_page' => absint( ! empty( $loop['posts_per_category'] ) ? $loop['posts_per_category'] : $loop['posts_per_page'] ),
 			'no_found_rows' => true,
-			'tax_query' => array(
-				array(
-					'field' => 'slug',
-					'taxonomy' => $taxonomy,
-					'terms' => $category->slug
-				)
-			)
+		) );
+		$post_query_args['tax_query'] = $post_query_args['tax_query'] ?? array();
+		$post_query_args['tax_query'][] = array(
+			'field' => 'slug',
+			'taxonomy' => $taxonomy,
+			'terms' => $category->slug
 		);
 
 		if ( $category_stickies )
-			$query_args['post__not_in'] = $category_stickies;
+			$post_query_args['post__not_in'] = $category_stickies;
 
-		$posts = new WP_Query( $query_args );
+		$posts = new WP_Query( $post_query_args );
 
 		if ( $category_stickies ) {
-			$pinned = get_posts( array(
+			$pinned = get_posts( array_merge( $post_query_args, array(
 				'post_type' => $post_type,
 				'post__in' => $category_stickies,
 				'posts_per_page' => count( $category_stickies ),
 				'ignore_sticky_posts' => 1,
 				'orderby' => 'post__in'
-			) );
+			) ) );
 
 			if ( $pinned ) {
 				$posts->posts = array_merge( $pinned, $posts->posts );
@@ -120,5 +134,7 @@ echo '</div>';
 
 // Category pagination
 
-if ( ! isset( $args['query'] ) && ! empty( $loop['category_per_page'] ) )
+if ( ! empty( $loop['by_category'] ) && ! empty( $loop['category_per_page'] ) && empty( $loop['no_pagination'] ) )
+	md_pagination( $loop );
+elseif ( ! isset( $args['query'] ) && ! empty( $loop['category_per_page'] ) )
 	md_pagination( $loop );

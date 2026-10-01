@@ -113,6 +113,7 @@ class md_byline extends md_api {
 			'admin_page' => array(
 				'name' => $this->name,
 				'group' => 'page_settings',
+				'position' => 15,
 				'fields' => $fields
 			),
 			'term' => array(

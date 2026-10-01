@@ -80,15 +80,11 @@ class md_loop extends md_api {
 			),
 			'loop_type' => array(
 				'type' => 'select',
-				'options' => array( 'post_listing', 'category_posts', 'category' )
+				'options' => array( 'post_listing', 'month', 'category_posts', 'category' )
 			),
 			'category' => array(
 				'type' => 'checkbox',
 				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty', 'hide_description' )
-			),
-			'date' => array(
-				'type' => 'checkbox',
-				'options' => array( 'group' )
 			),
 			'featured' => array( 'type' => 'number' ),
 			'columns' => array( 'type' => 'number' ),
@@ -135,6 +131,8 @@ class md_loop extends md_api {
 				'options' => array( 'before_content_box', 'before_content', 'content', 'before_footer' )
 			),
 			'offset' => array( 'type' => 'number' ),
+			'exclude_posts' => array( 'type' => 'text' ),
+			'exclude_terms' => array( 'type' => 'text' ),
 			'show_query' => array(
 				'type' => 'select',
 				'options' => array( 'before_loop', 'after_loop' )

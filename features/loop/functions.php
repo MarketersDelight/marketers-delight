@@ -73,10 +73,20 @@ function md_pagination( $loop = array() ) {
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
 
 	if ( isset( $loop['by_category'] ) ) {
-		$taxonomies = get_object_taxonomies( md_get_post_type() );
-		$taxonomy = ! empty( $taxonomies[0] ) ? $taxonomies[0] : '';
+		$taxonomies = get_object_taxonomies( $loop['post_type'] ?? md_get_post_type() );
+		$taxonomy = $loop['category_taxonomy'] ?? ( ! empty( $taxonomies[0] ) ? $taxonomies[0] : '' );
 		$category_per_page = ! empty( $loop['category_per_page'] ) ? $loop['category_per_page'] : 5;
-		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => true ) );
+		$hide_empty = empty( $loop['category']['show_empty'] );
+		$total_terms = wp_count_terms( $taxonomy, array( 'hide_empty' => $hide_empty ) );
+
+		if ( ! empty( $loop['category_terms'] ) ) {
+			$terms = array_filter( array_map( 'trim', explode( ',', (string) $loop['category_terms'] ) ) );
+			$ids_only = count( array_filter( $terms, 'ctype_digit' ) ) === count( $terms );
+			$term_args = array( 'taxonomy' => $taxonomy, 'hide_empty' => $hide_empty );
+			$term_args[$ids_only ? 'include' : 'slug'] = $ids_only ? array_map( 'absint', $terms ) : array_map( 'sanitize_title', $terms );
+			$total_terms = count( get_terms( $term_args ) );
+		}
+
 		$total = ceil( $total_terms / $category_per_page );
 	}
 	elseif ( $query )
@@ -272,7 +282,7 @@ function md_loop_classes( $loop = array() ) {
 
 	$category_classes = array( 'entry' );
 
-	if ( in_array( $loop['loop_type'], array( 'category', 'category_posts' ), true ) )
+	if ( $loop['loop_type'] === 'category' )
 		$category_classes[] = "{$style}-{$target}";
 
 	// Return class sets
@@ -471,8 +481,8 @@ function md_hook_x_loop( $loop, $c ) {
 }
 
 /**
- * Return loop data with context awareness and user-set
- * options blended with global post type level data.
+ * Return loop data with context awareness and user-set options blended with
+ * post type settings. Manual queries may provide their own loop_defaults.
  *
  * @since 6.0
  */
@@ -497,7 +507,9 @@ function md_get_loop( $args = array() ) {
 
 		if ( $key ) {
 			$post_type = $key;
-			$loop = md_post_type_field( 'loop', array(), $key );
+			$loop = isset( $args['loop_defaults'] ) && is_array( $args['loop_defaults'] )
+				? $args['loop_defaults']
+				: md_post_type_field( 'loop', array(), $key );
 		}
 	}
 
@@ -558,6 +570,7 @@ function md_get_loop( $args = array() ) {
 				$loop[$key] = md_module( array( 'loop', $key ), null, array( 'inherit_post_type' => false ) );
 	}
 
+	unset( $args['loop_defaults'] );
 	$loop = array_merge( $loop, $args );
 	$loop['loop'] = ! empty( $loop['loop'] ) ? $loop['loop'] : 'article';
 	$loop = array_merge( $loops[$loop['loop']]['defaults'] ?? array(), $loop );
@@ -567,7 +580,7 @@ function md_get_loop( $args = array() ) {
 		$loop['loop_type'] = '';
 
 	if (
-		! empty( $loop['date']['group'] ) && empty( $loop['by_category'] ) &&
+		$loop['loop_type'] === 'month' && empty( $loop['by_category'] ) &&
 		( ! is_singular() || ! empty( $args['query'] ) )
 	)
 		$loop['by_date'] = true;
@@ -594,7 +607,7 @@ function md_get_loop( $args = array() ) {
 
 	if ( ! empty( $loops[$loop['loop']]['style_target'] ) )
 		$loop['style_target'] = $loops[$loop['loop']]['style_target'];
-	elseif ( isset( $loop['by_category'] ) )
+	elseif ( isset( $loop['by_category'] ) && $loop['loop_type'] !== 'category_posts' )
 		$loop['style_target'] = 'group';
 	else
 		$loop['style_target'] = 'entry';
@@ -639,6 +652,7 @@ function md_loop( $args = array() ) {
 	$default_html = ! md_has_header_cover( 'post' ) ? 'article' : 'div';
 	$html = ! empty( $args['html'] ) && in_array( $args['html'], array( 'article', 'div' ), true ) ? $args['html'] : $default_html;
 	$loop = $loop_base = md_get_loop( $args );
+	unset( $args['loop_defaults'] );
 	$post_type = $loop['post_type'];
 	$loops = md_loops();
 	$args = array_merge( $args, array( 'loop' => $loop ) );

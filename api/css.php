@@ -410,7 +410,7 @@ class md_css {
 		$g = 1.618;
 		$design = new md_design;
 		$values = $design->values();
-		$theme_url = get_stylesheet_directory_uri();
+		$theme_url = wp_make_link_relative( get_stylesheet_directory_uri() );
 		$queries = array( 600 => 'mobile' );
 
 		$colors = $values['colors'];

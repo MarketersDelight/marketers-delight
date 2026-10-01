@@ -469,7 +469,8 @@ class md_api {
 
 		// Consider sticky posts since CPTs dont natively support
 
-		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? md_get_sticky( $post_type ) : array();
+		$exclude = $wp->get( 'post__not_in' ) ?: array();
+		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? array_diff( md_get_sticky( $post_type ), $exclude ) : array();
 
 		if ( $sticky ) {
 			if ( $term_id && $taxonomy ) {
@@ -483,7 +484,8 @@ class md_api {
 			}
 
 			if ( $sticky ) {
-				$wp->set( 'post__not_in', $sticky );
+				$wp->set( 'post__not_in', array_merge( $exclude, $sticky ) );
+				$wp->set( 'md_sticky', array_values( $sticky ) );
 
 				if ( ! get_query_var( 'paged' ) )
 					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
@@ -501,7 +503,6 @@ class md_api {
 	 */
 
 	protected function loop_query_vars( $wp, $taxonomy = '', $term_id = 0 ) {
-		$post_type = $this->post_type;
 		$keys = array(
 			'posts_per_page' => get_option( 'posts_per_page' ),
 			'order' => null,
@@ -511,30 +512,57 @@ class md_api {
 		// Set inherited query vars from proper context
 
 		foreach ( $keys as $key => $default ) {
-			$value = md_post_type_field( array( 'loop', $key ), $default, $post_type );
-
-			if ( $taxonomy )
-				$value = md_taxonomy_field( array( 'loop', $key ), $value, $post_type, $taxonomy );
-
-			if ( $term_id )
-				$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
+			$value = $this->loop_setting( $key, $default, $taxonomy, $term_id );
 
 			if ( $value )
 				$wp->query_vars[$key] = $key === 'posts_per_page' ? absint( $value ) : sanitize_key( $value );
 		}
 
-		$date = md_post_type_field( array( 'loop', 'date' ), array(), $post_type );
+		$exclude_posts = array_values( array_filter( wp_parse_id_list( $this->loop_setting( 'exclude_posts', '', $taxonomy, $term_id ) ) ) );
 
-		if ( $taxonomy )
-			$date = md_taxonomy_field( array( 'loop', 'date' ), $date, $post_type, $taxonomy );
+		if ( $exclude_posts )
+			$wp->query_vars['post__not_in'] = $exclude_posts;
 
-		if ( $term_id )
-			$date = md_term_meta( array( 'loop', 'date' ), $term_id, $date );
+		$exclude_terms = array();
 
-		if ( ! empty( $date['group'] ) ) {
+		foreach ( array_filter( wp_parse_id_list( $this->loop_setting( 'exclude_terms', '', $taxonomy, $term_id ) ) ) as $id ) {
+			$term = get_term( $id );
+
+			if ( $term && ! is_wp_error( $term ) )
+				$exclude_terms[$term->taxonomy][] = $id;
+		}
+
+		foreach ( $exclude_terms as $exclude_taxonomy => $ids )
+			$wp->query_vars['tax_query'][] = array(
+				'taxonomy' => $exclude_taxonomy,
+				'terms' => $ids,
+				'operator' => 'NOT IN'
+			);
+
+		$loop_type = $this->loop_setting( 'loop_type', '', $taxonomy, $term_id );
+
+		if ( $loop_type === 'month' ) {
 			$wp->query_vars['orderby'] = 'date';
 			$wp->query_vars['ignore_sticky_posts'] = 1;
 		}
+	}
+
+	/**
+	 * Resolve one Loop setting through the post type, taxonomy and term tiers.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function loop_setting( $key, $default, $taxonomy = '', $term_id = 0 ) {
+		$value = md_post_type_field( array( 'loop', $key ), $default, $this->post_type );
+
+		if ( $taxonomy )
+			$value = md_taxonomy_field( array( 'loop', $key ), $value, $this->post_type, $taxonomy );
+
+		if ( $term_id )
+			$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
+
+		return $value;
 	}
 
 	/**
@@ -550,26 +578,7 @@ class md_api {
 
 		remove_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10 );
 
-		$sticky = md_get_sticky( $this->post_type );
-
-		if ( empty( $sticky ) )
-			return $posts;
-
-		$taxonomy = $this->taxonomy;
-
-		if ( $query->is_tax && $taxonomy ) {
-			$queried = $query->get_queried_object();
-
-			if ( $queried instanceof WP_Term ) {
-				$term_sticky = array();
-
-				foreach ( $sticky as $id )
-					if ( has_term( $queried->term_id, $taxonomy, $id ) )
-						$term_sticky[] = $id;
-
-				$sticky = $term_sticky;
-			}
-		}
+		$sticky = $query->get( 'md_sticky' );
 
 		if ( empty( $sticky ) )
 			return $posts;

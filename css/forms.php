@@ -134,9 +134,9 @@ select {
 }
 
 @media (max-width: 600px) {
-	.form.multi { flex-direction: column; }
-	.form.multi .inputs { flex-basis: 100%; }
-	.form.multi .submit { width: 100%; }
+	.form:is(.multi, .inline) { flex-direction: column; }
+	.form:is(.multi, .inline) .inputs { flex-basis: 100%; flex-direction: column; width: 100%; }
+	.form:is(.multi, .inline) .submit { width: 100%; }
 }
 
 @media (max-width: 900px) {

@@ -112,7 +112,8 @@ class md_post extends md_api {
 
 		// Make accommodations to show sticky posts on category pages
 
-		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? md_get_sticky( 'post' ) : array();
+		$exclude = $wp->get( 'post__not_in' ) ?: array();
+		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? array_diff( md_get_sticky( 'post' ), $exclude ) : array();
 
 		if ( $sticky ) {
 			if ( $term_id && $taxonomy ) {
@@ -126,7 +127,8 @@ class md_post extends md_api {
 			}
 
 			if ( $sticky ) {
-				$wp->set( 'post__not_in', $sticky );
+				$wp->set( 'post__not_in', array_merge( $exclude, $sticky ) );
+				$wp->set( 'md_sticky', array_values( $sticky ) );
 
 				if ( ! get_query_var( 'paged' ) )
 					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );

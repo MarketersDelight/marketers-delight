@@ -102,7 +102,7 @@ class md_design_colors {
 				),
 				'warning_color' => array(
 					'label' => 'Warning',
-					'default' => '#F58F2A'
+					'default' => '#C95100'
 				)
 			)
 		),
@@ -142,7 +142,8 @@ class md_design_colors {
 				),
 				'link_color' => array(
 					'label' => 'Links',
-					'default' => '#777777'
+					'default' => '',
+					'inherit' => array( 'header', 'text_color' )
 				),
 				'link_hover_color' => array(
 					'label' => 'Links Hover',

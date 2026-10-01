@@ -527,10 +527,18 @@ function get_taxonomy( $taxonomy ) {
 	return isset( $GLOBALS['__test_taxonomies'][$taxonomy] ) ? $GLOBALS['__test_taxonomies'][$taxonomy] : null;
 }
 
-function get_term( $term_id, $taxonomy ) {
-	$key = "{$taxonomy}:{$term_id}";
+function get_term( $term_id, $taxonomy = '' ) {
+	foreach ( $GLOBALS['__test_terms'] as $term )
+		if ( $term->term_id == $term_id && ( ! $taxonomy || $term->taxonomy === $taxonomy ) )
+			return $term;
 
-	return isset( $GLOBALS['__test_terms'][$key] ) ? $GLOBALS['__test_terms'][$key] : null;
+	return null;
+}
+
+function wp_parse_id_list( $input_list ) {
+	$input_list = is_array( $input_list ) ? $input_list : preg_split( '/[\s,]+/', (string) $input_list );
+
+	return array_unique( array_map( 'absint', $input_list ) );
 }
 
 function get_term_link( $term ) {

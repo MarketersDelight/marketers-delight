@@ -39,7 +39,8 @@
 	width: 100%;
 }
 
-.expanded .box-style.loop-timeline { max-width: calc(var(--md-width-content) + var(--md-mid) * 2); }
+.expanded .loop-timeline.columns,
+.expanded .box-style.loop-timeline.columns { max-width: none; }
 
 .loop-timeline > .entry > .timeline-wrap > .post-title > .byline.before-title {
 	border-block-end: 1px solid var(--md-border);
@@ -159,6 +160,29 @@
 
 	.loop-timeline .timeline-wrap { margin-inline-start: calc(var(--md-half) + var(--md-third)); }
 	.loop-timeline .timeline-dot { border-width: 3px; font-size: 0.75em; }
+}
+
+/* Use the Timeline's card layout whenever the Loop uses columns. */
+
+.loop-timeline.columns > .entry > .timeline-wrap { margin-inline-start: 0; }
+
+.loop-timeline.columns .timeline-wrap:before,
+.loop-timeline.columns .timeline-wrap:after,
+.loop-timeline.columns .timeline-dot { display: none; }
+
+.loop-timeline.columns:not(.content) > .entry:last-child > .timeline-wrap:after { display: none; }
+
+.loop-timeline.columns .byline.entry-top > .byline-date {
+	line-height: inherit;
+	position: static;
+	white-space: normal;
+}
+
+.loop-timeline.columns .byline .avatar {
+	height: auto;
+	inset: auto;
+	position: static;
+	width: auto;
 }
 
 </style>
