@@ -30,6 +30,10 @@
 
 .caps { text-transform: uppercase; }
 
+@media (prefers-reduced-motion: no-preference) {
+	html:has(.smooth-scroll) { scroll-behavior: smooth; }
+}
+
 a.no-underline, .no-underline a { text-decoration: none; }
 
 .font-size {

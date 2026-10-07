@@ -79,4 +79,4 @@ echo
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
-.the-content :is(h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: var(--md-mid); }
+:where(.the-content) :where(h2, h3, h4, h5, h6):not(:first-child) { margin-block-start: var(--md-mid); }

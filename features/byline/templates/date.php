@@ -1,12 +1,10 @@
 <?php
 	if ( ! empty( $fields['settings']['alt'] ) ) {
-		if ( get_the_modified_time( 'U' ) <= get_the_time( 'U' ) )
-			return;
-
 		$key = 'last_updated';
-		$post_time = get_the_modified_time( 'U' );
-		$date = $post_date = get_the_modified_time( get_option( 'date_format' ) );
-		$datetime = get_the_modified_time( 'c' );
+		$has_update = get_the_modified_time( 'U' ) > get_the_time( 'U' );
+		$post_time = $has_update ? get_the_modified_time( 'U' ) : get_post_time();
+		$date = $post_date = $has_update ? get_the_modified_time( get_option( 'date_format' ) ) : get_the_time( get_option( 'date_format' ) );
+		$datetime = $has_update ? get_the_modified_time( 'c' ) : get_the_date( 'c' );
 		$default_name = __( 'Last updated:', 'md' );
 		$icon = 'clock';
 	}

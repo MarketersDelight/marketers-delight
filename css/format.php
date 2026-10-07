@@ -58,7 +58,7 @@ code, pre {
 
 .format { word-wrap: break-word; }
 
-:where(.format) :where(ul, ol, p, hr, table, blockquote, pre, .wp-caption, .wp-block-image) { margin-block-end: var(--md-single); }
+:where(.format) :where(ul, ol, p, hr, table, blockquote, pre, .wp-caption, .wp-block-image, .wp-block-table) { margin-block-end: var(--md-single); }
 
 <?php include md_css( 'headings', true ); ?>
 
@@ -179,7 +179,7 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 
 .slim :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
 
-.slim :is(.wp-caption, .wp-block-image),
+.slim :is(.wp-caption, .wp-block-image, .wp-block-table),
 .slim .the-content .featured-media { margin-block-end: var(--md-half); }
 
 .slim :last-child { margin-block-end: 0; }

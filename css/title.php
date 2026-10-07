@@ -78,6 +78,16 @@
 
 .byline:empty { display: none; }
 
+.title-inline {
+	align-items: baseline;
+	column-gap: var(--md-half);
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: unset;
+}
+
+.title-inline .inside-title { flex-shrink: 0; }
+
 .loop:not(.box-style) .byline.entry-top:not(:last-child),
 .byline.before-content { margin-block-end: var(--md-half); }
 

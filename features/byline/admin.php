@@ -139,7 +139,7 @@ class md_byline extends md_api {
 			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
-				'options' => array( 'entry_top', 'before_title', 'after_title', 'before_content', 'entry_footer' )
+				'options' => array( 'entry_top', 'before_title', 'inside_title', 'after_title', 'before_content', 'entry_footer' )
 			),
 			'settings' => array(
 				'type' => 'checkbox',
@@ -264,7 +264,7 @@ class md_byline extends md_api {
 
 		$this->fields->field( 'builder', array(
 			'type' => 'builder',
-			'populate' => true,
+			'populate' => ! $screen['is_term'],
 			'defaults' => md_get_post_type_builder( 'byline', $post_type ),
 			'title' => __( 'Edit Byline', 'md' ),
 			'wrap_classes' => 'md-widget-item md-tabs',

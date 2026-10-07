@@ -5,7 +5,7 @@
 		'category' => $category
 	) ); ?>
 
-	<div class="category-title entry-title">
+	<div class="category-title entry-title<?php echo $has_inside_entry ? ' title-inline' : ''; ?>">
 
 		<?php md_byline( 'before_title', array(
 			'context' => 'category_entry',
@@ -17,6 +17,11 @@
 		</h2>
 
 		<?php md_byline( 'after_title', array(
+			'context' => 'category_entry',
+			'category' => $category
+		) ); ?>
+
+		<?php md_byline( 'inside_title', array(
 			'context' => 'category_entry',
 			'category' => $category
 		) ); ?>

@@ -296,6 +296,7 @@
 
 			<div class="col">
 				<?php $content_options = array(
+					'excerpt' => __( 'Show excerpt', 'md' ),
 					'full' => __( 'Show full content', 'md' ),
 					'hide' => __( 'Hide content', 'md' )
 				);
@@ -305,7 +306,7 @@
 					'label' => __( 'Post Content', 'md' ),
 					'description' => __( 'Content shown per post.', 'md' ),
 					'classes' => 'md-content-val',
-					'empty_label' => __( 'Show excerpt', 'md' ),
+					'empty_label' => __( 'Use default', 'md' ),
 					'inherit' => array( 'default' => 'excerpt' ),
 					'options' => $content_options
 				) ); ?>

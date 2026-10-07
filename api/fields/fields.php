@@ -583,6 +583,7 @@ class md_fields extends md_fields_render {
 			'empty_label' => __( 'Before Title (default)', 'md' ),
 			'options' => array(
 				'entry_top' => __( 'Entry Top', 'md' ),
+				'inside_title' => __( 'Inside Title', 'md' ),
 				'after_title' =>  __( 'After Title', 'md' ),
 				'before_content' => __( 'Before Content', 'md' ),
 				'entry_footer' => __( 'Entry Footer', 'md' )

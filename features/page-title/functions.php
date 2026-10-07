@@ -17,6 +17,8 @@ function md_the_title( $context = 'post', $args = array() ) {
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
 	}
 
+	$has_inside = isset( $args['byline'] ) && ! empty( md_get_byline( 'inside_title', $args ) );
+
 	include md_template( 'features', 'page-title/the-title', true );
 }
 

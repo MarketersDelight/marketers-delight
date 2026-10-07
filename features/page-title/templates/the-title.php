@@ -1,7 +1,7 @@
 <?php
 
-if ( isset( $args['wrap'] ) )
-	echo '<div class="title-wrap">';
+if ( isset( $args['wrap'] ) || $has_inside )
+	echo '<div class="title-wrap' . ( $has_inside ? ' title-inline' : '' ) . '">';
 
 if ( isset( $args['byline'] ) )
 	md_byline( 'before_title', $args );
@@ -13,8 +13,10 @@ if ( ! empty( $title ) )
 
 do_action( "md_hook_after_{$context}_title" );
 
-if ( isset( $args['byline'] ) )
+if ( isset( $args['byline'] ) ) {
 	md_byline( 'after_title', $args );
+	md_byline( 'inside_title', $args );
+}
 
 if ( isset( $args['description'] ) )
 	md_description( $context );
@@ -22,5 +24,5 @@ if ( isset( $args['description'] ) )
 if ( isset( $args['cta'] ) )
 	md_cta( $context );
 
-if ( isset( $args['wrap'] ) )
+if ( isset( $args['wrap'] ) || $has_inside )
 	echo '</div>';

@@ -69,6 +69,9 @@ else {
 
 }
 
+if ( $has_header_cover )
+	do_action( "md_hook_{$context}_title_inner_bottom" );
+
 echo $has_header_cover ? '</div>' : '';
 
 do_action( "md_hook_{$context}_title_bottom" );

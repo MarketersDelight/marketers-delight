@@ -5,9 +5,7 @@
 $t = 1;
 $stickies = array();
 $taxonomies = get_object_taxonomies( $post_type );
-$taxonomy = ! empty( $args['category_taxonomy'] ) && is_object_in_taxonomy( $post_type, $args['category_taxonomy'] )
-	? $args['category_taxonomy']
-	: ( ! empty( $taxonomies[0] ) ? $taxonomies[0] : '' );
+$taxonomy = ! empty( $args['category_taxonomy'] ) && is_object_in_taxonomy( $post_type, $args['category_taxonomy'] ) ? $args['category_taxonomy'] : ( ! empty( $taxonomies[0] ) ? $taxonomies[0] : '' );
 $queried_term = get_queried_object();
 $term_args = array(
 	'parent' => $queried_term instanceof WP_Term && $queried_term->taxonomy === $taxonomy ? $queried_term->term_id : 0,
@@ -17,9 +15,7 @@ $term_args = array(
 if ( ! empty( $args['category_terms'] ) ) {
 	$category_terms = array_filter( array_map( 'trim', explode( ',', (string) $args['category_terms'] ) ) );
 	$ids_only = count( array_filter( $category_terms, 'ctype_digit' ) ) === count( $category_terms );
-	$term_args[$ids_only ? 'include' : 'slug'] = $ids_only
-		? array_map( 'absint', $category_terms )
-		: array_map( 'sanitize_title', $category_terms );
+	$term_args[$ids_only ? 'include' : 'slug'] = $ids_only ? array_map( 'absint', $category_terms ) : array_map( 'sanitize_title', $category_terms );
 }
 
 $query_args = ! empty( $args['query'] ) && $args['query'] instanceof WP_Query ? $args['query']->query : array();
@@ -112,6 +108,8 @@ foreach ( $categories->terms as $category ) {
 			}
 		}
 
+		$has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category ) ) );
+
 		if ( $posts->have_posts() || ! empty( $loop['category']['show_empty'] ) )
 			include md_template( 'features', 'loop/category-post', true );
 
@@ -121,7 +119,11 @@ foreach ( $categories->terms as $category ) {
 
 	// or show listing of categories
 
-	else include md_template( 'features', 'loop/category-post', true );
+	else {
+		$has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category ) ) );
+
+		include md_template( 'features', 'loop/category-post', true );
+	}
 
 	// You can insert things in-between categories
 
