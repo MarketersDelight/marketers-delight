@@ -51,10 +51,6 @@ function md_page_title() {
  * @since 4.0
  */
 
-function md_hook_css_data() { // 5.3.1.1
-	do_action( 'md_hook_css_data' );
-}
-
 function md_hook_before_html() {
 	do_action( 'md_hook_before_html' );
 }
@@ -77,14 +73,6 @@ function md_hook_before_header() {
 
 function md_hook_after_header() {
 	do_action( 'md_hook_after_header' );
-}
-
-function md_hook_before_header_menu() {
-	do_action( 'md_hook_before_header_menu' );
-}
-
-function md_hook_after_header_menu() {
-	do_action( 'md_hook_after_header_menu' );
 }
 
 function md_hook_header_details() {
@@ -161,10 +149,6 @@ function md_hook_content_item() {
 	do_action( 'md_hook_content_item' );
 }
 
-function md_hook_the_content() {
-	do_action( 'md_hook_the_content' );
-}
-
 function md_hook_before_the_content() {
 	do_action( 'md_hook_before_the_content' );
 }
@@ -179,38 +163,6 @@ function md_hook_the_content_top() {
 
 function md_hook_the_content_bottom() {
 	do_action( 'md_hook_the_content_bottom' );
-}
-
-function md_hook_before_title() {
-	do_action( 'md_hook_before_title' );
-}
-
-function md_hook_after_title() {
-	do_action( 'md_hook_after_title' );
-}
-
-function md_hook_byline_top() {
-	do_action( 'md_hook_byline_top' );
-}
-
-function md_hook_byline_bottom() {
-	do_action( 'md_hook_byline_bottom' );
-}
-
-function md_hook_after_featured_image() {
-	do_action( 'md_hook_after_featured_image' );
-}
-
-function md_hook_featured_image_bottom() {
-	do_action( 'md_hook_featured_image_bottom' );
-}
-
-function md_hook_featured_post_bottom() {
-	do_action( 'md_hook_featured_post_bottom' );
-}
-
-function md_hook_comments() {
-	do_action( 'md_hook_comments' );
 }
 
 function md_hook_before_comments_list() {
@@ -255,10 +207,6 @@ function md_hook_before_footer_copy() {
 
 function md_hook_after_footer_copy() {
 	do_action( 'md_hook_after_footer_copy' );
-}
-
-function md_hook_js() {
-	do_action( 'md_hook_js' );
 }
 
 function md_hook_js_custom_triggers() {

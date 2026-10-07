@@ -31,8 +31,15 @@ elseif ( ! empty( $fields['builder_area'] ) && $fields['builder_area'] === 'arch
 
 $visible_terms = $limit ? array_slice( $terms, 0, $limit ) : $terms;
 $remainder = count( $terms ) - count( $visible_terms );
+$style = $fields['style'] ?? '';
 
-echo '<span class="' . md_byline_classes( $fields, 'byline-category' ) . '">' . md_icon( 'tags' );
+if ( is_array( $style ) )
+	$style = ! empty( $style['tag'] ) ? 'tag' : '';
+
+echo '<span class="' . md_byline_classes( $fields, 'byline-category' ) . '">';
+
+if ( $style !== 'icon' )
+	echo md_icon( 'tags' );
 
 if ( ! empty( $fields['name'] ) )
 	echo '<span class="byline-label">' . esc_html( $fields['name'] ) . '</span> ';
@@ -40,11 +47,22 @@ if ( ! empty( $fields['name'] ) )
 foreach ( $visible_terms as $term ) {
 	$tax = 'tax-' . str_replace( '_', '-', $term->taxonomy );
 	$link_classes = array( 'clickout' );
+	$term_icon = '';
 
-	if ( ! empty( $fields['style']['tag'] ) )
+	if ( $style === 'tag' )
 		$link_classes[] = 'tag tag-outline';
+	elseif ( $style === 'icon' ) {
+		$identity = md_category_identity( $term );
 
-	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '" class="' . esc_attr( join( ' ', $link_classes ) ) . '">' . esc_html( $term->name ) . '</a></span>';
+		if ( $identity['icon'] ) {
+			$icon_style = $identity['color'] ? md_style( array(
+				'vars' => array( 'md-category-color' => $identity['color'] )
+			) ) : '';
+			$term_icon = '<span class="category-title-icon square-icon micro" aria-hidden="true"' . $icon_style . '>' . md_icon( $identity['icon'] ) . '</span>';
+		}
+	}
+
+	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '" class="' . esc_attr( join( ' ', $link_classes ) ) . '">' . $term_icon . esc_html( $term->name ) . '</a></span>';
 }
 
 if ( $remainder )

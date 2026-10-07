@@ -58,8 +58,8 @@ class md_byline extends md_api {
 				'icon' => 'category',
 				'fields' => array(
 					'style' => array(
-						'type' => 'checkbox',
-						'options' => array( 'tag' )
+						'type' => 'select',
+						'options' => array( 'icon', 'tag' )
 					),
 					'limit' => array( 'type' => 'number' )
 				),
@@ -453,7 +453,13 @@ class md_byline extends md_api {
 	 */
 
 	public function category( $group ) {
-		$row = $this->fields->byline_fields( $group );
+		$row = $this->fields->byline_fields( $group, array(
+			'wrap_classes' => 'md-sep-micro'
+		) );
+		$style = $row['style'] ?? '';
+
+		if ( is_array( $style ) )
+			$style = ! empty( $style['tag'] ) ? 'tag' : '';
 
 		if ( isset( $_GET['post_type'] ) )
 			$post_type = sanitize_text_field( $_GET['post_type'] );
@@ -470,12 +476,13 @@ class md_byline extends md_api {
 
 		$options['all'] = __( 'Show all', 'md' );
 
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'label' => __( 'Only show', 'md' ),
-			'options' => array(
-				'first' => __( 'Only show first category', 'md' )
-			)
+		$this->fields->field( array( 'builder', $group, 'term' ), array(
+			'type' => 'select',
+			'default' => $row['term'] ?? '',
+			'label' => __( 'Taxonomy', 'md' ),
+			'empty_label' => __( 'Use default category', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
+			'options' => $options
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'limit' ), array(
@@ -488,21 +495,25 @@ class md_byline extends md_api {
 			'wrap_classes' => 'md-sep-micro'
 		) );
 
-		$this->fields->field( array( 'builder', $group, 'style' ), array(
+		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
-			'default' => $row['style'] ?? array(),
-			'label' => __( 'Style', 'md' ),
+			'label' => __( 'Only show', 'md' ),
+			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
-				'tag' => __( 'Show links as tags', 'md' )
+				'first' => __( 'Only show first category', 'md' )
 			)
 		) );
 
-		$this->fields->field( array( 'builder', $group, 'term' ), array(
+		$this->fields->field( array( 'builder', $group, 'style' ), array(
 			'type' => 'select',
-			'default' => $row['term'] ?? '',
-			'empty_label' => __( 'Use default category', 'md' ),
+			'default' => $style,
+			'label' => __( 'Style', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
-			'options' => $options
+			'empty_label' => __( 'Show links', 'md' ),
+			'options' => array(
+				'icon' => __( 'Show with icon', 'md' ),
+				'tag' => __( 'Show as tags', 'md' )
+			)
 		) );
 	}
 

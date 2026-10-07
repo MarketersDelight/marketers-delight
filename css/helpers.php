@@ -161,6 +161,12 @@ cite, .tiny {
 	width: var(--md-mid);
 }
 
+.circle-icon.micro, .square-icon.micro {
+	height: calc(var(--md-half) + var(--md-third));
+	font-size: var(--md-font-size-tiny);
+	width: calc(var(--md-half) + var(--md-third));
+}
+
 .circle-icon.mid, .square-icon.mid {
 	flex: 1 0 calc(var(--md-mid) + var(--md-small));
 	height: calc(var(--md-mid) + var(--md-small));

@@ -232,7 +232,11 @@
 
 /* CATEGORY VIEWS */
 
-.category-title { row-gap: var(--md-small); }
+.category-title { row-gap: 0; }
+
+.category-title .category-title-wrap { margin-block-end: var(--md-third); }
+
+.category-title .category-title-wrap .entry-title { row-gap: 0; }
 
 .categories.row > .entry:not(:last-child) { margin-block-end: var(--md-single); }
 
@@ -257,7 +261,7 @@
 	flex-direction: column;
 }
 
-.category-view.box-style > .entry > .post-footer {
+:is(.category-view, .category-posts).box-style > .entry > .post-footer {
 	margin-top: auto;
 	padding-block-start: var(--md-half);
 }

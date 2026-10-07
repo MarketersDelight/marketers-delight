@@ -118,12 +118,6 @@ class md_api {
 		if ( method_exists( $this, 'collections' ) )
 			add_filter( 'md_filter_collections', array( $this, '_collections' ) );
 
-		if ( method_exists( $this, 'blocks' ) )
-			add_filter( 'md_filter_blocks', array( $this, 'blocks' ) );
-
-		if ( method_exists( $this, 'blocks_scripts' ) )
-			add_filter( 'md_filter_blocks_scripts', array( $this, 'blocks_scripts' ), 10, 2 );
-
 		if ( method_exists( $this, 'byline' ) )
 			add_filter( 'md_byline', array( $this, 'byline' ) );
 

@@ -772,3 +772,56 @@ function md_featured_image_tax_data() {return array();}
 
 // Deprecated 4.8
 function md_featured_image_cover_classes(){return'';}
+
+// Deprecated 6.0: hook names with no call site in 6.0 templates
+function md_hook_after_featured_image() {
+	do_action( 'md_hook_after_featured_image' );
+}
+
+function md_hook_after_header_menu() {
+	do_action( 'md_hook_after_header_menu' );
+}
+
+function md_hook_after_title() {
+	do_action( 'md_hook_after_title' );
+}
+
+function md_hook_before_header_menu() {
+	do_action( 'md_hook_before_header_menu' );
+}
+
+function md_hook_before_title() {
+	do_action( 'md_hook_before_title' );
+}
+
+function md_hook_byline_bottom() {
+	do_action( 'md_hook_byline_bottom' );
+}
+
+function md_hook_byline_top() {
+	do_action( 'md_hook_byline_top' );
+}
+
+function md_hook_comments() {
+	do_action( 'md_hook_comments' );
+}
+
+function md_hook_css_data() { // 5.3.1.1
+	do_action( 'md_hook_css_data' );
+}
+
+function md_hook_featured_image_bottom() {
+	do_action( 'md_hook_featured_image_bottom' );
+}
+
+function md_hook_featured_post_bottom() {
+	do_action( 'md_hook_featured_post_bottom' );
+}
+
+function md_hook_js() {
+	do_action( 'md_hook_js' );
+}
+
+function md_hook_the_content() {
+	do_action( 'md_hook_the_content' );
+}

@@ -1,3 +1,9 @@
+<?php
+$category_identity = md_category_identity( $category );
+$category_style = $category_identity['color'] ? md_style( array(
+	'vars' => array( 'md-category-color' => $category_identity['color'] )
+) ) : '';
+?>
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
 
 	<?php md_byline( 'entry_top', array(
@@ -5,7 +11,15 @@
 		'category' => $category
 	) ); ?>
 
-	<div class="category-title entry-title<?php echo $has_inside_entry ? ' title-inline' : ''; ?>">
+	<div class="category-title entry-title"<?php echo $category_style; ?>>
+
+		<div class="category-title-wrap fl items-start">
+
+		<?php if ( $category_identity['icon'] ) : ?>
+		<span class="category-title-icon square-icon mid" aria-hidden="true"><?php echo md_icon( $category_identity['icon'] ); ?></span>
+		<?php endif; ?>
+
+		<div class="entry-title grow<?php echo $has_inside_entry ? ' title-inline' : ''; ?>">
 
 		<?php md_byline( 'before_title', array(
 			'context' => 'category_entry',
@@ -25,6 +39,10 @@
 			'context' => 'category_entry',
 			'category' => $category
 		) ); ?>
+
+		</div>
+
+		</div>
 
 		<?php if ( $category_description && empty( $loop['category']['hide_description'] ) ) : ?>
 		<div class="description">

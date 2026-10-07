@@ -243,7 +243,6 @@ class md_fields extends md_fields_render {
 				$args['empty_label'] = sprintf( $format, $args['options'][$value] );
 			}
 		}
-
 		return $args;
 	}
 
@@ -579,7 +578,7 @@ class md_fields extends md_fields_render {
 			'id' => 'byline',
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => $args['wrap_classes'] ?? 'md-sep-micro',
 			'empty_label' => __( 'Before Title (default)', 'md' ),
 			'options' => array(
 				'entry_top' => __( 'Entry Top', 'md' ),

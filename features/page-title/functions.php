@@ -67,6 +67,27 @@ function md_get_title( $context = 'post' ) {
 }
 
 /**
+ * Get a category's validated icon and color.
+ *
+ * @since 6.0
+ */
+
+function md_category_identity( $term = null ) {
+	$term = $term ?: get_queried_object();
+
+	if ( ! $term instanceof WP_Term )
+		return array( 'icon' => '', 'color' => '' );
+
+	$icon = md_term_meta( array( 'hero', 'archives_icon' ), $term->term_id, '' );
+	$color = md_color_hex( md_term_meta( array( 'hero', 'archives_color' ), $term->term_id, '' ) );
+
+	return array(
+		'icon' => $icon && isset( md_icons()[$icon] ) ? $icon : '',
+		'color' => $color
+	);
+}
+
+/**
  * Render the layout markup of the Post or Page title with supporting
  * elements like image, byline, etc. A title used within a loop
  * has key differences than when rendered as the main Page Title.
@@ -105,6 +126,18 @@ function md_title( $context = 'post', $args = array() ) {
 	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
+
+	// Category identity.
+
+	if ( $context === 'page' ) {
+		$category_identity = md_category_identity();
+
+		if ( $category_identity['icon'] )
+			$args['category_icon'] = $category_identity['icon'];
+
+		if ( $category_identity['color'] )
+			$style['vars']['md-category-color'] = $category_identity['color'];
+	}
 
 	// Layout type classes
 
