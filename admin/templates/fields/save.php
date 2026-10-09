@@ -11,9 +11,12 @@ if ( isset( $_GET['page'] ) && ( $_GET['page'] == $this->_id || in_array( $this-
 		md_compile( true ); // heh
 		flush_rewrite_rules();
 	}
-	if ( ! $label && ! empty( $admin_pages[$this->_clean_id]['name'] ) )
-		$label = sprintf( __( 'Save %s', 'md' ), esc_html( $admin_pages[$this->_clean_id]['name'] ) );
+	if ( ! $label && ! empty( $admin_pages[$this->_clean_id]['name'] ) ) {
+		$page = $admin_pages[$this->_clean_id];
+		$name = ! empty( $page['tab_name'] ) ? $page['tab_name'] : $page['name'];
+		$label = sprintf( __( 'Save %s', 'md' ), wp_strip_all_tags( $name ) );
+	}
 }
 ?>
 
-<input type="submit" name="submit" id="submit" class="button button-primary md-button" value="<?php echo $label; ?>" />
+<input type="submit" name="submit" id="submit" class="button button-primary md-button" value="<?php echo esc_attr( $label ); ?>" />
