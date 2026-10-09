@@ -71,6 +71,35 @@ class CollectionRestTest extends MD_TestCase {
 		$this->assertSame( 'md_collection_permission', $error->get_error_code() );
 	}
 
+	public function test_create_requires_publish_capability_even_if_status_is_submitted_as_draft() {
+		md_test_set_capability( 'publish_book_quotes', false );
+		$error = $this->controller->permissions_check( $this->request( array(
+			'_method' => 'POST',
+			'item_id' => 0,
+			'fields' => array( 'status' => 'draft' )
+		) ) );
+
+		$this->assertSame( 'md_collection_permission', $error->get_error_code() );
+	}
+
+	public function test_update_requires_publish_capability_only_for_publishing_statuses() {
+		md_test_set_capability( 'publish_book_quotes', false );
+
+		$this->assertTrue( $this->controller->permissions_check( $this->request( array(
+			'_method' => 'PATCH',
+			'fields' => array( 'content' => 'Updated quote.' )
+		) ) ) );
+
+		foreach ( array( 'publish', 'private', ' publish ' ) as $status ) {
+			$error = $this->controller->permissions_check( $this->request( array(
+				'_method' => 'PATCH',
+				'fields' => array( 'status' => $status )
+			) ) );
+
+			$this->assertSame( 'md_collection_permission', $error->get_error_code() );
+		}
+	}
+
 	public function test_response_only_contains_collection_manager_data() {
 		$method = new ReflectionMethod( $this->controller, 'item_response' );
 		$collection = new class( 'book_quotes' ) extends md_collection {

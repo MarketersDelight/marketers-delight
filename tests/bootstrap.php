@@ -274,12 +274,18 @@ function current_user_can( $capability, $post_id = null ) {
 	return array_key_exists( $capability, $GLOBALS['__test_capabilities'] ) ? $GLOBALS['__test_capabilities'][$capability] : true;
 }
 
+function user_can( $user_id, $capability, $post_id = null ) {
+	return current_user_can( $capability, $post_id );
+}
+
 function get_post_type_object( $post_type ) {
 	return (object) array(
 		'name' => $post_type,
 		'cap' => (object) array(
 			'create_posts' => "edit_{$post_type}s",
-			'edit_others_posts' => "edit_others_{$post_type}s"
+			'edit_post' => 'edit_post',
+			'edit_others_posts' => "edit_others_{$post_type}s",
+			'publish_posts' => "publish_{$post_type}s"
 		)
 	);
 }
@@ -592,6 +598,7 @@ require_once dirname( __DIR__ ) . '/api/save/save.php';
 require_once dirname( __DIR__ ) . '/api/fields/data.php';
 require_once dirname( __DIR__ ) . '/api/fields/render.php';
 require_once dirname( __DIR__ ) . '/api/fields/fields.php';
+require_once dirname( __DIR__ ) . '/api/api.php';
 require_once dirname( __DIR__ ) . '/api/collections/fields.php';
 require_once dirname( __DIR__ ) . '/api/collections/collections.php';
 require_once dirname( __DIR__ ) . '/api/collections/rest.php';

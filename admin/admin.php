@@ -64,7 +64,7 @@ class md_admin {
 		add_action( 'block_editor_meta_box_hidden_fields', array( $this, 'nonce' ) );
 
 		// Meta Boxes
-		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
+		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		add_action( 'save_post', array( $this->save, 'meta_save' ), 10, 2 );
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
 
@@ -365,10 +365,11 @@ class md_admin {
 	 * @since 4.0
 	 */
 
-	public function add_meta_boxes() {
+	public function add_meta_boxes( $post_type = null, $post = null ) {
 		$screen = get_current_screen();
 		$blog_id = get_option( 'page_for_posts' );
 		$post_id = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : '';
+		$edit_id = is_object( $post ) ? $post->ID : get_the_ID();
 
 		foreach ( md_register( 'meta_boxes' ) as $meta_box => $fields ) {
 			$post_types = isset( $fields['post_type'] ) ? $fields['post_type'] : md_post_type_meta();
@@ -377,8 +378,11 @@ class md_admin {
 			$callback = isset( $fields['callback'] ) ? $fields['callback'] : '';
 
 			foreach ( $post_types as $post_type ) {
+				$capability = ! empty( $fields['edit_post'] ) ? 'edit_post' : 'manage_options';
 				if (
 					! isset( $fields['name'] ) || isset( $fields['hide'] ) || isset( $fields['child_of'] ) ||
+					! current_user_can( $capability, $edit_id ) ||
+					( ! empty( $fields['is_group'] ) && ! apply_filters( "md_post_meta_{$meta_box}_fields", array() ) ) ||
 					( isset( $fields['show_on_block_editor'] ) && ! ( method_exists( $screen, 'is_block_editor' ) && $screen->is_block_editor() ) ) ||
 					( isset( $fields['post_id'] ) && $fields['post_id'] != $post_id ) ||
 					( $blog_id == $post_id )
@@ -443,6 +447,9 @@ class md_admin {
 	 */
 
 	public function term( $term ) {
+		if ( ! current_user_can( 'manage_options' ) )
+			return;
+
 		$this->nonce();
 
 		echo '<tr class="form-field term-md-wrap md">'.
@@ -461,6 +468,9 @@ class md_admin {
 	 */
 
 	public function user_meta( $user_meta ) {
+		if ( ! current_user_can( 'manage_options' ) )
+			return;
+
 		$this->nonce();
 		echo '<div class="md md-user-meta">';
 		do_action( 'md_user_meta_fields', $user_meta );

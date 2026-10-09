@@ -23,6 +23,7 @@ class md_page_cover extends md_api {
 			),
 			'meta_box' => array(
 				'name' => $this->name,
+				'edit_post' => true,
 				'child_of' => array( 'hero', 'page_settings' ),
 				'fields' => $this->fields()
 			),

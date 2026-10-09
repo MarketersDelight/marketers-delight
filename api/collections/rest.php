@@ -79,6 +79,22 @@ class md_collections_rest {
 				return new WP_Error( 'md_collection_permission', __( 'You cannot create Collection items.', 'md' ), array( 'status' => 403 ) );
 		}
 
+		if ( in_array( $request->get_method(), array( WP_REST_Server::CREATABLE, 'PUT', 'PATCH' ), true ) ) {
+			$post_type = get_post_type_object( $collection->post_type );
+			$fields = $request->get_param( 'fields' );
+
+			if ( $post_type ) {
+				$status = null;
+
+				foreach ( (array) $fields as $id => $value )
+					if ( isset( $collection->fields[$id] ) && $collection->fields[$id]['source'] === 'post_status' )
+						$status = is_scalar( $value ) ? sanitize_key( $value ) : null;
+
+				if ( ( ! $item_id || in_array( $status, array( 'publish', 'private', 'future' ), true ) ) && ! current_user_can( $post_type->cap->publish_posts ) )
+					return new WP_Error( 'md_collection_permission', __( 'You cannot publish Collection items.', 'md' ), array( 'status' => 403 ) );
+			}
+		}
+
 		return true;
 	}
 

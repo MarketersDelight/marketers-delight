@@ -32,6 +32,168 @@ class SaveTest extends MD_TestCase {
 
 	private $schema = array();
 
+	public function test_post_editor_saves_editorial_meta_without_erasing_or_changing_restricted_groups() {
+		$this->schema = array(
+			'page_cover' => array( 'edit_post' => true, 'fields' => array( 'title' => array( 'type' => 'text' ) ) ),
+			'layout' => array( 'fields' => array( 'style' => array( 'type' => 'text' ) ) )
+		);
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'page' ) );
+		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array(
+			'page_cover' => array( 'title' => 'Old cover' ),
+			'layout' => array( 'style' => 'box' )
+		);
+		md_test_set_capability( 'manage_options', false );
+		$_POST['marketers_delight_nonce'] = 'valid';
+		$_POST['marketers_delight'] = array(
+			'page_cover' => array( 'title' => 'New cover' ),
+			'layout' => array( 'style' => '' )
+		);
+
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		$result = get_post_meta( 10, 'marketers_delight', true );
+
+		$this->assertSame( 'New cover', $result['page_cover']['title'] );
+		$this->assertSame( 'box', $result['layout']['style'] );
+	}
+
+	public function test_restricted_group_is_preserved_when_omitted_or_forged() {
+		$this->schema = array( 'scripts' => array( 'fields' => array(
+			'body_class' => array( 'type' => 'text' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'post' ) );
+		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array(
+			'scripts' => array( 'body_class' => 'existing' )
+		);
+		md_test_set_capability( 'manage_options', false );
+		$_POST['marketers_delight_nonce'] = 'valid';
+
+		foreach ( array( array(), array( 'scripts' => array( 'body_class' => '' ) ) ) as $input ) {
+			$_POST['marketers_delight'] = $input;
+			$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+			$this->assertSame( 'existing', get_post_meta( 10, 'marketers_delight', true )['scripts']['body_class'] );
+		}
+	}
+
+	public function test_non_admin_cannot_activate_or_change_existing_custom_html_media_type() {
+		$this->schema = array( 'featured_media' => array( 'edit_post' => true, 'fields' => array(
+			'media_type' => array( 'type' => 'select', 'options' => array( 'image', 'video', 'custom_html' ), 'code_options' => array( 'custom_html' ) )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'post' ) );
+		md_test_set_capability( 'manage_options', false );
+		$_POST['marketers_delight_nonce'] = 'valid';
+		$_POST['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'custom_html' ) );
+
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		$this->assertSame( '', get_post_meta( 10, 'marketers_delight', true ) );
+
+		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'custom_html' ) );
+		$_POST['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'video' ) );
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		$this->assertSame( 'custom_html', get_post_meta( 10, 'marketers_delight', true )['featured_media']['media_type'] );
+	}
+
+	public function test_post_meta_code_requires_admin_and_unfiltered_html_without_changing_other_fields() {
+		$this->schema = array( 'page' => array( 'fields' => array(
+			'title' => array( 'type' => 'text' ),
+			'script' => array( 'type' => 'code' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'page' ) );
+		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array(
+			'page' => array( 'title' => 'Old', 'script' => '<script>original()</script>' )
+		);
+		md_test_set_capability( 'unfiltered_html', false );
+		$_POST['marketers_delight_nonce'] = 'valid';
+		$_POST['marketers_delight'] = array( 'page' => array(
+			'title' => 'New', 'script' => '<script>changed()</script>'
+		) );
+
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		$result = get_post_meta( 10, 'marketers_delight', true );
+
+		$this->assertSame( 'New', $result['page']['title'] );
+		$this->assertSame( '<script>original()</script>', $result['page']['script'] );
+	}
+
+	public function test_editor_with_unfiltered_html_cannot_change_post_meta_code() {
+		$this->schema = array( 'page' => array( 'fields' => array(
+			'script' => array( 'type' => 'code' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'page' ) );
+		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array(
+			'page' => array( 'script' => '<script>original()</script>' )
+		);
+		md_test_set_capability( 'manage_options', false );
+		$_POST['marketers_delight_nonce'] = 'valid';
+		$_POST['marketers_delight'] = array( 'page' => array(
+			'script' => '<script>changed()</script>'
+		) );
+
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+
+		$this->assertSame( '<script>original()</script>', get_post_meta( 10, 'marketers_delight', true )['page']['script'] );
+	}
+
+	public function test_trusted_post_meta_code_is_saved_verbatim() {
+		$this->schema = array( 'page' => array( 'fields' => array(
+			'script' => array( 'type' => 'code' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
+		md_test_set_post( array( 'ID' => 10, 'post_type' => 'page' ) );
+		$_POST['marketers_delight_nonce'] = 'valid';
+		$_POST['marketers_delight'] = array( 'page' => array(
+			'script' => '<script src="https://example.com/tag.js"></script>'
+		) );
+
+		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+
+		$this->assertSame( '<script src="https://example.com/tag.js"></script>', get_post_meta( 10, 'marketers_delight', true )['page']['script'] );
+	}
+
+	public function test_taxonomy_settings_preserve_code_for_users_without_unfiltered_html() {
+		$this->schema = array( 'book' => array( 'fields' => array(
+			'title' => array( 'type' => 'text' ),
+			'script' => array( 'type' => 'code' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_option( 'marketers_delight', array( 'book' => array(
+			'genre' => array( 'title' => 'Old', 'script' => '<script>original()</script>' )
+		) ) );
+		md_test_set_capability( 'unfiltered_html', false );
+		$_POST['md_save_taxonomy_post_type'] = 'book';
+		$_POST['md_save_taxonomy'] = 'genre';
+
+		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+			'title' => 'New', 'script' => '<script>changed()</script>'
+		) ) ) );
+
+		$this->assertSame( 'New', $result['book']['genre']['title'] );
+		$this->assertSame( '<script>original()</script>', $result['book']['genre']['script'] );
+	}
+
+	public function test_taxonomy_settings_preserve_code_for_editor_with_unfiltered_html() {
+		$this->schema = array( 'book' => array( 'fields' => array(
+			'script' => array( 'type' => 'code' )
+		) ) );
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_option( 'marketers_delight', array( 'book' => array(
+			'genre' => array( 'script' => '<script>original()</script>' )
+		) ) );
+		md_test_set_capability( 'manage_options', false );
+		$_POST['md_save_taxonomy_post_type'] = 'book';
+		$_POST['md_save_taxonomy'] = 'genre';
+
+		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+			'script' => '<script>changed()</script>'
+		) ) ) );
+
+		$this->assertSame( '<script>original()</script>', $result['book']['genre']['script'] );
+	}
+
 	public function test_admin_save_preserves_unsubmitted_runtime_and_internal_branches() {
 		$this->schema = array(
 			'settings' => array( 'fields' => array(

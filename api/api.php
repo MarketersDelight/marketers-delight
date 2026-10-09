@@ -233,7 +233,11 @@ class md_api {
 					'type' => $is_number ? 'number' : ( $is_upload ? 'integer' : 'string' ),
 					'single' => true,
 					'show_in_rest' => $field['show_in_rest'] ?? true,
-					'sanitize_callback' => $is_upload ? 'absint' : 'sanitize_text_field'
+					'sanitize_callback' => $is_upload ? 'absint' : 'sanitize_text_field',
+					'auth_callback' => function( $allowed, $meta_key, $post_id, $user_id ) use ( $meta_box ) {
+						$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
+						return user_can( $user_id, $capability, $post_id );
+					}
 				) );
 		}
 	}
@@ -852,7 +856,11 @@ class md_api {
 			$group_callback = $callback;
 
 			foreach ( $groups as $group ) {
-				add_filter( "md_post_meta_{$group}_fields", function( $fields ) use( $group_callback ) {
+				add_filter( "md_post_meta_{$group}_fields", function( $fields ) use( $group_callback, $register ) {
+					$capability = ! empty( $register['edit_post'] ) ? 'edit_post' : 'manage_options';
+					if ( ! current_user_can( $capability, get_the_ID() ) )
+						return $fields;
+
 					$fields[$this->_clean_id] = array(
 						'name' => $this->name,
 						'callback' => array( $this, $group_callback )

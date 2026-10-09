@@ -182,6 +182,14 @@ class md_save {
 			$field = isset( $fields_schema[$key] ) ? $fields_schema[$key] : null;
 			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
 
+			// Raw code is executable. Keep an existing value when another editor saves.
+			if ( $type === 'code' && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) )
+				continue;
+
+			if ( ! empty( $field['code_options'] ) && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) &&
+				( in_array( $value, $field['code_options'], true ) || in_array( $old[$key] ?? null, $field['code_options'], true ) ) )
+				continue;
+
 			if ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
 				$item_schema = isset( $field['fields'] ) ? $field['fields'] : array();
 				$merged = $this->merge_clone_items( isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(), $value, $item_schema );
@@ -290,6 +298,10 @@ class md_save {
 		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
 		$options = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
 		$options = isset( $options[$post_type] ) ? $this->prune_empty( $options[$post_type] ) : array();
+		$schema = md_register( 'admin_pages' );
+
+		if ( ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) && ! empty( $schema[$post_type]['fields'] ) )
+			$options = $this->preserve_code_fields( $options, $settings[$post_type][$taxonomy] ?? array(), $schema[$post_type]['fields'] );
 
 		if ( ! empty( $options ) )
 			$settings[$post_type][$taxonomy] = $options;
@@ -301,6 +313,35 @@ class md_save {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Preserve raw code when a taxonomy settings form is saved by someone
+	 * without code permissions. This save path replaces its whole branch.
+	 */
+
+	private function preserve_code_fields( $save, $old, $schema ) {
+		$save = is_array( $save ) ? $save : array();
+		$old = is_array( $old ) ? $old : array();
+
+		foreach ( $schema as $key => $field ) {
+			$type = $field['type'] ?? null;
+
+			if ( $type === 'code' ) {
+				if ( array_key_exists( $key, $old ) )
+					$save[$key] = $old[$key];
+				else
+					unset( $save[$key] );
+			}
+			elseif ( $type === null && is_array( $field ) ) {
+				$save[$key] = $this->preserve_code_fields( $save[$key] ?? array(), $old[$key] ?? array(), $field );
+
+				if ( ! $save[$key] )
+					unset( $save[$key] );
+			}
+		}
+
+		return $save;
 	}
 
 	/**
@@ -328,6 +369,13 @@ class md_save {
 		$value = is_array( $value ) ? $value : array();
 		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );
 		$save = apply_filters( 'md_post_meta_save', $save, $post );
+
+		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
+			$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
+			if ( isset( $save[$id] ) && ! current_user_can( $capability, $post_id ) )
+				unset( $save[$id] );
+		}
+
 		$save = $this->merge_recursive( $value, $save, 'meta_boxes' );
 		$save = $this->save_standalone_meta( $post_id, $save );
 		$save = $this->prune_empty( $save );
@@ -348,7 +396,8 @@ class md_save {
 
 	private function save_standalone_meta( $post_id, $save ) {
 		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
-			if ( empty( $save[$id] ) || empty( $meta_box['fields'] ) )
+			$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
+			if ( empty( $save[$id] ) || empty( $meta_box['fields'] ) || ! current_user_can( $capability, $post_id ) )
 				continue;
 
 			foreach ( $meta_box['fields'] as $key => $field ) {
@@ -376,7 +425,7 @@ class md_save {
 	public function term_save( $term_id ) {
 		$option = 'marketers_delight';
 
-		if ( ! current_user_can( 'edit_term', $term_id ) )
+		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_term', $term_id ) )
 			return;
 
 		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
@@ -402,7 +451,7 @@ class md_save {
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
 
-		if ( ! current_user_can( 'edit_user', $user_id ) )
+		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_user', $user_id ) )
 			return;
 
 		if ( ! isset( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )

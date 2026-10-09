@@ -18,6 +18,7 @@ class md_featured_media extends md_api {
 			),
 			'meta_box' => array(
 				'name' => $this->name,
+				'edit_post' => true,
 				'child_of' => 'page_settings',
 				'fields' => $this->fields()
 			),
@@ -39,7 +40,8 @@ class md_featured_media extends md_api {
 		$fields = array(
 			'media_type' => array(
 				'type' => 'select',
-				'options' => array( 'image', 'video', 'custom_html' )
+				'options' => array( 'image', 'video', 'custom_html' ),
+				'code_options' => array( 'custom_html' )
 			),
 			'position' => array(
 				'type' => 'select',
