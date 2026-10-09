@@ -154,10 +154,11 @@ function md_test_set_term_children( $term_id, $taxonomy, $children ) {
 	$GLOBALS['__test_term_children']["{$taxonomy}:{$term_id}"] = $children;
 }
 
-function md_test_set_taxonomy( $taxonomy, $public = true, $object_types = array() ) {
+function md_test_set_taxonomy( $taxonomy, $public = true, $object_types = array(), $hierarchical = false ) {
 	$GLOBALS['__test_taxonomies'][$taxonomy] = (object) array(
 		'public' => $public,
-		'object_type' => $object_types
+		'object_type' => $object_types,
+		'hierarchical' => $hierarchical
 	);
 }
 

@@ -237,9 +237,15 @@ function md_loop_classes( $loop = array() ) {
 	$style = $loop['style'] ?? md_loop_style();
 	$target = $loop['style_target'];
 
+	// In the posts by category view, the category section is the box and holds
+	// its heading and its posts, so the Loop inside renders without a box.
+
+	$category_box = $loop['loop_type'] === 'category_posts' && ! empty( $loop['by_category'] ) && $style === 'box';
+	$loop_style = $category_box ? 'plain' : $style;
+
 	// Loop classes
 
-	$classes = array( 'loop', "loop-$post_type", 'loop-' . $loop['loop'], "{$style}-style", "{$style}-{$target}" );
+	$classes = array( 'loop', "loop-$post_type", 'loop-' . $loop['loop'], "{$loop_style}-style", "{$loop_style}-{$target}" );
 
 	if ( $loop['columns'] > 1 || ( $loop['columns_mobile'] ?? 1 ) > 1 ) {
 		$classes[] = 'columns';
@@ -284,6 +290,8 @@ function md_loop_classes( $loop = array() ) {
 
 	if ( $loop['loop_type'] === 'category' )
 		$category_classes[] = "{$style}-{$target}";
+	elseif ( $category_box )
+		$category_classes[] = 'box-group';
 
 	// Return class sets
 

@@ -34,6 +34,71 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertNotContains( 'row', explode( ' ', $classes['loop'] ) );
 	}
 
+	public function test_category_posts_box_style_puts_the_box_on_the_category_section_only() {
+		foreach ( array( 'list' => 'group', 'article' => 'entry' ) as $loop => $target ) {
+			$classes = md_loop_classes( array(
+				'post_type' => 'post',
+				'loop' => $loop,
+				'loop_type' => 'category_posts',
+				'by_category' => true,
+				'style' => 'box',
+				'style_target' => $target,
+				'columns' => 1
+			) );
+			$category = explode( ' ', $classes['category'] );
+			$inner = explode( ' ', $classes['loop'] );
+
+			$this->assertContains( 'box-group', $category, $loop );
+			$this->assertNotContains( 'box-group', $inner, $loop );
+			$this->assertNotContains( 'box-entry', $inner, $loop );
+			$this->assertNotContains( 'box-style', $inner, $loop );
+			$this->assertContains( 'plain-style', $inner, $loop );
+			$this->assertContains( 'box-style', explode( ' ', $classes['categories'] ), $loop );
+		}
+	}
+
+	public function test_category_posts_setting_without_category_sections_keeps_the_posts_boxed() {
+		$this->set_option_loop( array( 'loop_type' => 'category_posts' ) );
+		$this->set_taxonomy_query();
+
+		$loop = md_get_loop();
+
+		$this->assertArrayNotHasKey( 'by_category', $loop );
+		$this->assertStringContainsString( 'box-entry', $loop['loop_classes'] );
+		$this->assertStringNotContainsString( 'plain-style', $loop['loop_classes'] );
+		$this->assertSame( 'entry', $loop['category_classes'] );
+	}
+
+	public function test_category_posts_border_and_plain_styles_keep_their_own_loop_classes() {
+		foreach ( array( 'border', 'plain' ) as $style ) {
+			$classes = md_loop_classes( array(
+				'post_type' => 'post',
+				'loop' => 'list',
+				'loop_type' => 'category_posts',
+				'style' => $style,
+				'style_target' => 'group',
+				'columns' => 1
+			) );
+
+			$this->assertContains( "{$style}-style", explode( ' ', $classes['loop'] ), $style );
+			$this->assertContains( "{$style}-group", explode( ' ', $classes['loop'] ), $style );
+			$this->assertNotContains( 'box-group', explode( ' ', $classes['category'] ), $style );
+		}
+	}
+
+	public function test_category_view_still_boxes_the_category_section() {
+		$classes = md_loop_classes( array(
+			'post_type' => 'post',
+			'loop' => 'article',
+			'loop_type' => 'category',
+			'style' => 'box',
+			'style_target' => 'group',
+			'columns' => 1
+		) );
+
+		$this->assertContains( 'box-group', explode( ' ', $classes['category'] ) );
+	}
+
 	private function set_option_loop( $post_type_loop = array(), $taxonomy_loop = array() ) {
 		$post = array( 'loop' => $post_type_loop );
 
@@ -262,7 +327,7 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$this->assertArrayNotHasKey( 'by_date', $loop );
 	}
 
-	public function test_category_posts_style_targets_posts_not_category_sections() {
+	public function test_category_posts_box_style_belongs_to_the_category_section() {
 		$this->set_option_loop( array( 'loop_type' => 'category_posts' ) );
 		$this->set_taxonomy_query();
 		md_test_set_term_children( 42, 'category', array( 43 ) );
@@ -270,8 +335,9 @@ class GetLoopTest extends MD_InheritanceTestCase {
 		$loop = md_get_loop();
 
 		$this->assertSame( 'entry', $loop['style_target'] );
-		$this->assertStringContainsString( 'box-entry', $loop['loop_classes'] );
-		$this->assertSame( 'entry', $loop['category_classes'] );
+		$this->assertStringContainsString( 'plain-entry', $loop['loop_classes'] );
+		$this->assertStringNotContainsString( 'box-entry', $loop['loop_classes'] );
+		$this->assertSame( 'entry box-group', $loop['category_classes'] );
 	}
 
 	public function test_category_overview_keeps_style_on_category_result_items() {

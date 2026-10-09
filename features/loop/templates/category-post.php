@@ -16,7 +16,7 @@ $category_style = $category_identity['color'] ? md_style( array(
 		<div class="category-title-wrap fl items-start">
 
 		<?php if ( $category_identity['icon'] ) : ?>
-		<span class="category-title-icon square-icon mid" aria-hidden="true"><?php echo md_icon( $category_identity['icon'] ); ?></span>
+		<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>" class="category-title-icon square-icon mid" aria-hidden="true" tabindex="-1"><?php echo md_icon( $category_identity['icon'] ); ?></a>
 		<?php endif; ?>
 
 		<div class="entry-title grow<?php echo $has_inside_entry ? ' title-inline' : ''; ?>">
@@ -45,7 +45,7 @@ $category_style = $category_identity['color'] ? md_style( array(
 		</div>
 
 		<?php if ( $category_description && empty( $loop['category']['hide_description'] ) ) : ?>
-		<div class="description">
+		<div class="description lede">
 			<?php echo wpautop( $category_description ); ?>
 		</div>
 		<?php endif; ?>
@@ -69,7 +69,7 @@ $category_style = $category_identity['color'] ? md_style( array(
 		} ?>
 
 		<?php if ( $posts->post_count >= $posts->query_vars['posts_per_page'] ) : ?>
-		<div class="category-more item byline">
+		<div class="category-more item byline mt-half">
 			<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>">
 				<?php echo sprintf( esc_html__( 'View all posts &rarr;', 'md' ), esc_html( $category->name ) ); ?>
 			</a>
