@@ -24,16 +24,16 @@
 
 			<?php if ( isset( $fields['fields'] ) && in_array( 'account_url', $fields['fields'] ) ) : ?>
 			<p><label class="md-label" for="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_url"><?php echo $account_url_label; ?></label></p>
-			<p><input type="text" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][account_url]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_url" placeholder="<?php echo sprintf( __( 'Enter %s URL...', 'md' ), $fields['name'] ); ?>" value="<?php echo ( ! empty( $option['api_keys'][$id]['account_url'] ) ? esc_attr( $option['api_keys'][$id]['account_url'] ) : '' ); ?>" class="md-input regular-text" /></p>
+			<p><input type="text" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][account_url]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_url" placeholder="<?php echo sprintf( __( 'Enter %s URL...', 'md' ), $fields['name'] ); ?>" value="<?php echo ( $fields['type'] === 'site' && ! empty( $option['api_keys'][$id]['account_url'] ) ? esc_attr( $option['api_keys'][$id]['account_url'] ) : '' ); ?>" class="md-input regular-text" /></p>
 			<?php endif; ?>
 
 			<p><label class="md-label" for="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_key"><?php echo $api_key_label; ?></label></p>
 
-			<p><input type="text" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][key]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_key" class="md-input" placeholder="<?php echo sprintf( __( 'Enter %s %2s...', 'md' ), $fields['name'], $api_key_label ); ?>" value="<?php echo ( ! empty( $option['api_keys'][$id]['key'] ) && $id != 'aweber' ? esc_attr( $option['api_keys'][$id]['key'] ) : '' ); ?>" class="regular-text" /></p>
+			<p><input type="<?php echo $fields['type'] === 'email' ? 'password' : 'text'; ?>" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][key]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_key" class="md-input regular-text" placeholder="<?php echo $fields['type'] === 'email' && ! empty( $option['api_keys'][$id]['key'] ) ? esc_attr__( 'Saved key (enter a new key to replace it)', 'md' ) : esc_attr( sprintf( __( 'Enter %s %2s...', 'md' ), $fields['name'], $api_key_label ) ); ?>" value="<?php echo ( $fields['type'] === 'site' && ! empty( $option['api_keys'][$id]['key'] ) ? esc_attr( $option['api_keys'][$id]['key'] ) : '' ); ?>" /></p>
 
 			<?php if ( isset( $fields['fields'] ) && in_array( 'account_id', $fields['fields'] ) ) : ?>
 			<p><label class="md-label" for="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_id"><?php echo __( 'Account ID', 'md' ); ?></label></p>
-			<p><input type="text" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][account_id]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_id" placeholder="<?php echo sprintf( __( 'Enter %s Account ID...', 'md' ), $fields['name'] ); ?>" value="<?php echo ( ! empty( $option['api_keys'][$id]['account_id'] ) ? esc_attr( $option['api_keys'][$id]['account_id'] ) : '' ); ?>" class="md-input regular-text" /></p>
+			<p><input type="text" name="marketers_delight[integrations][api_keys][<?php echo esc_attr( $id ); ?>][account_id]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_id" placeholder="<?php echo sprintf( __( 'Enter %s Account ID...', 'md' ), $fields['name'] ); ?>" value="<?php echo ( $fields['type'] === 'site' && ! empty( $option['api_keys'][$id]['account_id'] ) ? esc_attr( $option['api_keys'][$id]['account_id'] ) : '' ); ?>" class="md-input regular-text" /></p>
 			<?php endif; ?>
 
 			<div class="md-sep-small">

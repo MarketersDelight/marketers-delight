@@ -31,20 +31,30 @@ class md_requests {
 			}
 			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ), true ) ) {
 				$license = md_license_setting();
+				$check_status = '';
 
 				if ( $action_type === 'activate-license' )
 					$license = $this->activate_license( $license_key, $license );
 				elseif ( $action_type === 'deactivate-license' )
-					$license = $this->deactivate_license( $license_key, $license );
+					$license = $this->deactivate_license( $license );
 				elseif ( $action_type === 'check-updates' )
-					$license = $this->check_for_updates( $license );
+					$license = $this->check_for_updates( $license, $check_status );
 
 				if ( ! is_array( $license ) )
 					wp_die();
 
 				md_update_license( $license );
 
-				do_action( 'md_license_updater', $license );
+				if ( $action_type === 'activate-license' && ( $license['status'] ?? '' ) === 'valid' ) {
+				$updates = $this->check_for_updates( $license );
+
+				if ( is_array( $updates ) ) {
+					$license = $updates;
+					md_update_license( $license );
+				}
+				}
+
+				do_action( 'md_license_updater', $license, $check_status );
 			}
 		}
 
@@ -69,8 +79,11 @@ class md_requests {
 
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) )
 			$update_data->failed = true;
-		else
+		else {
 			$update_data = json_decode( wp_remote_retrieve_body( $response ) );
+			if ( ! is_object( $update_data ) )
+				$update_data = (object) array( 'failed' => true );
+		}
 
 		return $update_data;
 	}
@@ -134,12 +147,12 @@ class md_requests {
 	 	$license_data = $this->get_api( array(
 			'edd_action' => 'check_license',
 			'license' => $license_key,
-			'item_name' => urlencode( $license_input['item_name'] ),
+			'item_id' => $license_input['download_id'],
 			'url' => home_url()
 		) );
 
-		if ( ! empty( $license_data->failed ) || ! empty( $license_data->error ) ) {
-			$license['status'] = 'error';
+		if ( ! empty( $license_data->failed ) ) {
+			$license['status'] = 'failed';
 			unset( $license['updates'] );
 			unset( $license['dropins'] );
 		}
@@ -148,6 +161,10 @@ class md_requests {
 			$license['expire'] = sanitize_text_field( $license_data->expires );
 			$license['sites'] = sanitize_text_field( $license_data->site_count );
 			$license['limit'] = sanitize_text_field( $license_data->license_limit );
+		}
+		else {
+			$license['status'] = sanitize_key( $license_data->license ?? 'invalid' );
+			unset( $license['updates'], $license['dropins'] );
 		}
 
 		$license['last_sync'] = time();
@@ -175,17 +192,20 @@ class md_requests {
 		$license_data = $this->get_api( array(
 			'edd_action' => 'activate_license',
 			'license' => $license_key,
-			'item_name' => urlencode( $license_input['item_name'] )
+			'item_id' => $license_input['download_id'],
+			'url' => home_url()
 		) );
 
-		if ( ! empty( $license_data->failed ) || ! empty( $license_data->error ) )
-			$license['status'] = 'error';
+		if ( ! empty( $license_data->failed ) )
+			$license['status'] = 'failed';
 		elseif ( ! empty( $license_data->success ) ) {
 			$license['status'] = sanitize_text_field( $license_data->license );
 			$license['expire'] = sanitize_text_field( $license_data->expires );
 			$license['sites'] = sanitize_text_field( $license_data->site_count );
 			$license['limit'] = sanitize_text_field( $license_data->license_limit );
 		}
+		else
+			$license['status'] = sanitize_key( $license_data->error ?? $license_data->license ?? 'invalid' );
 
 		return $license;
 	}
@@ -197,19 +217,22 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	private function deactivate_license( $license_key, $license ) {
-	 	$license_key = trim( $license_key ?: ( isset( $license['key'] ) ? $license['key'] : '' ) );
+	private function deactivate_license( $license ) {
+		$license_key = trim( $license['key'] ?? '' );
 		$status = 'deactivated';
 
 	 	if ( $license_key ) {
 		 	$license_data = $this->get_api( array(
 				'edd_action' => 'deactivate_license',
 				'license' => $license_key,
-				'item_name' => urlencode( $this->license( 'item_name' ) )
+				'item_id' => $this->license( 'download_id' ),
+				'url' => home_url()
 			) );
 
-			if ( ! empty( $license_data->failed ) )
-				return false;
+			if ( ! empty( $license_data->failed ) || empty( $license_data->success ) ) {
+				$license['status'] = 'failed';
+				return $license;
+			}
 
 			if ( ! empty( $license_data->license ) )
 				$status = sanitize_text_field( $license_data->license );
@@ -235,7 +258,7 @@ class md_requests {
 		$license_input = $this->license();
 		$theme_slug = $license_input['theme_slug'];
 
-		if ( ! empty( $updates['theme'] ) )
+		if ( is_object( $transient ) && ! empty( $updates['theme'] ) )
 			if ( version_compare( $license_input['version'], $updates['theme']['new_version'], '<' ) )
 				$transient->response[$theme_slug] = $updates['theme'];
 			else
@@ -250,7 +273,14 @@ class md_requests {
 	 * @since 4.7
 	 */
 
-	public function delete_theme_update() {
+	public function delete_theme_update( $upgrader, $hook_extra ) {
+		$theme_slug = $this->license()['theme_slug'];
+		if ( ( $hook_extra['type'] ?? '' ) !== 'theme' || ( $hook_extra['action'] ?? '' ) !== 'update' )
+			return;
+		$themes = $hook_extra['themes'] ?? array( $hook_extra['theme'] ?? '' );
+		if ( ! in_array( $theme_slug, $themes, true ) )
+			return;
+
 		$license = md_license_setting();
 
 		unset( $license['updates']['theme'] );
@@ -266,8 +296,9 @@ class md_requests {
 	 * @since 5.4
 	 */
 
-	private function check_for_updates( $license = null ) {
+	private function check_for_updates( $license = null, &$check_status = null ) {
 		$license = is_array( $license ) ? $license : md_license_setting();
+		$check_status = 'failed';
 		$license = $this->check_license( $license );
 		$license_status = ! empty( $license['status'] ) ? $license['status'] : 'invalid';
 
@@ -276,7 +307,8 @@ class md_requests {
 			$response = $this->get_api( array(
 				'edd_action'  => 'get_version',
 				'license' => trim( $license['key'] ),
-				'name' => $license_input['item_name'],
+				'item_id' => $license_input['download_id'],
+				'url' => home_url(),
 				'slug' => $license_input['theme_slug'],
 				'version' => $license_input['version'],
 				'author' => $license_input['author'],
@@ -284,8 +316,10 @@ class md_requests {
 				'wp_version' => get_bloginfo( 'version' )
 			) );
 
-			if ( ! empty( $response->failed ) )
-				return false;
+			if ( ! empty( $response->failed ) || empty( $response->new_version ) )
+				return $license;
+
+			$check_status = 'success';
 
 			$update_data = $response;
 
@@ -298,7 +332,7 @@ class md_requests {
 
 				// Theme
 
-				if ( version_compare( $license_input['version'], $update_data->new_version, '<' ) )
+				if ( ! empty( $update_data->package ) && version_compare( $license_input['version'], $update_data->new_version, '<' ) )
 					$license['updates']['theme'] = array(
 						'name' => sanitize_text_field( $update_data->name ),
 						'theme' => sanitize_key( $license_input['theme_slug'] ),
@@ -324,7 +358,7 @@ class md_requests {
 						$new_version = ! empty( $dropin_fields->version ) ? $dropin_fields->version : $dropin_version;
 						$license['dropins'][] = $dropin_slug;
 
-						if ( version_compare( $dropin_version, $new_version, '<' ) )
+						if ( ! empty( $dropin_fields->package ) && version_compare( $dropin_version, $new_version, '<' ) )
 							$license['updates']['dropins']["$dropin_slug/$dropin_slug.php"] = array(
 								'name' => sanitize_text_field( $dropin_fields->name ),
 								'slug' => $dropin_slug,
@@ -392,13 +426,18 @@ class md_requests {
 	 */
 
 	public function update_dropin() {
+		global $title, $parent_file, $submenu_file;
+
 		if ( ! current_user_can( 'update_plugins' ) )
 			wp_die( __( 'Sorry, you are not allowed to update drop-ins for this website.', 'md' ) );
 
 		if ( empty( $_GET['dropin'] ) )
 			wp_die( __( 'Please select a dropin to update.', 'md' ) );
 
-		$dropin = sanitize_key( $_GET['dropin'] );
+		$dropin = sanitize_text_field( wp_unslash( $_GET['dropin'] ) );
+
+		if ( ! preg_match( '~^([a-z0-9_-]+)/\\1\\.php$~', $dropin ) || ! md_license_setting( array( 'updates', 'dropins', $dropin ) ) )
+			wp_die( __( 'No update is available for this drop-in.', 'md' ) );
 
 		check_admin_referer( 'upgrade-dropin_' . $dropin );
 

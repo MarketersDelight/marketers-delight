@@ -390,6 +390,11 @@
 				}
 				jscolor.install();
 			});
+			$( document ).on( 'click', '.md-license-toggle', function() {
+				var fields = $( this ).closest( '.md-license-fields' );
+				fields.toggleClass( 'open' );
+				$( this ).attr( 'aria-expanded', fields.hasClass( 'open' ) ? 'true' : 'false' );
+			});
 		},
 		linkFields: {
 			init: function() {
@@ -629,6 +634,7 @@
 				$.ajax({
 					url: ajaxurl,
 					type: 'POST',
+					dataType: uploadAction === 'md_dropin' ? 'json' : undefined,
 					data: formData,
 					contentType: false,
 					processData: false,
@@ -637,8 +643,17 @@
 					},
 					success: function( response ) {
 						parent.find( '.md-loading' ).hide();
+						if ( uploadAction === 'md_dropin' && ! response.success ) {
+							window.alert( response.data || 'Could not install the Drop-in.' );
+							return;
+						}
 						parent.find( '.md-file-upload-success' ).fadeIn().delay( 3000 ).fadeOut();
 						window.location.reload( true );
+					},
+					error: function( xhr ) {
+						parent.find( '.md-loading' ).hide();
+						if ( uploadAction === 'md_dropin' )
+							window.alert( xhr.responseJSON && xhr.responseJSON.data ? xhr.responseJSON.data : 'Could not install the Drop-in.' );
 					}
 				});
 			});
@@ -656,9 +671,14 @@
 		update: function() {
 			$( document ).on( 'click', '.md-update-button', function( e ) {
 				e.preventDefault();
-				var alert = $( this ).data( 'md-alert' );
+				var button = $( this ),
+					alert = button.data( 'md-alert' );
+				if ( button.hasClass( 'is-updating' ) ) return;
 				if ( alert && ! confirm( alert ) ) return;
-				window.location = $( this ).attr( 'href' );
+				button.addClass( 'is-updating' ).attr( 'aria-busy', 'true' );
+				setTimeout( function() {
+					window.location = button.attr( 'href' );
+				}, 100 );
 			});
 		},
 		action: function() {
@@ -670,7 +690,9 @@
 					canvas = trigger.data( 'md-canvas' ),
 					itemID = trigger.data( 'md-dropin-id' ),
 					licenseKey = '';
-				if ( action == 'activate-license' || action == 'deactivate-license' )
+				if ( trigger.prop( 'disabled' ) )
+					return;
+				if ( action == 'activate-license' )
 					licenseKey = $( '#marketers_delight_settings_license_key' ).val();
 				if ( alert && ! confirm( alert ) )
 					return;
@@ -686,16 +708,24 @@
 						license_key: licenseKey
 					},
 					beforeSend: function() {
+						trigger.prop( 'disabled', true );
+						trigger.closest( '.md-license' ).find( '.md-license-request-error' ).prop( 'hidden', true );
 						trigger.find( '.dashicons' ).addClass( 'md-loading' );
 					},
 					success: function( response ) {
-						trigger.find( '.dashicons' ).removeClass( 'md-loading' ).removeClass( 'dashicons-update-alt' ).addClass( 'dashicons-yes' );
 						if ( canvas === undefined )
 							window.location.reload( true );
 						else {
 							var canvasEl = $( canvas );
 							$( canvasEl ).html( response );
 						}
+					},
+					error: function() {
+						trigger.closest( '.md-license' ).find( '.md-license-request-error' ).text( MDJS.license_request_error ).prop( 'hidden', false );
+					},
+					complete: function() {
+						trigger.prop( 'disabled', false );
+						trigger.find( '.dashicons' ).removeClass( 'md-loading' );
 					}
 				});
 			});
@@ -707,19 +737,22 @@
 					actionType = button.data( 'md-integration-action' ),
 					integration = button.data( 'md-integration' ),
 					block = '.md-integration.' + integration,
-					loading = $( block + ' .md-loading' );
+					loading = $( block + ' .md-loading' ),
+					formFields = $( '#md-form' ).find( '[name="option_page"], [name="_wpnonce"]' );
 				if ( actionType == 'manual_refresh' ) {
 					$( block ).addClass( 'manual-refresh' );
 					$( block + ' .step-1' ).show();
 					$( block + ' .step-2' ).hide();
 					return;
 				}
+				if ( actionType == 'connect' )
+					formFields = formFields.add( $( block ).find( ':input[name]' ) );
 				$.ajax({
 					url: ajaxurl,
 					type: 'POST',
 					data: {
 						action: 'md_integrations',
-						form: $( '#md-form' ).serialize(),
+						form: formFields.serialize(),
 						integration: integration,
 						action_type: actionType,
 					},

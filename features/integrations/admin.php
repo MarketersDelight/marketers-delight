@@ -160,7 +160,7 @@ class md_integrations extends md_api {
 		)
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );
 
-		$submitted = $form['marketers_delight']['integrations']['api_keys'][$integration] ?? array();
+		$submitted = $action === 'refresh' ? ( md_integration_data()['api_keys'][$integration] ?? array() ) : ( $form['marketers_delight']['integrations']['api_keys'][$integration] ?? array() );
 		$submitted = is_array( $submitted ) ? $submitted : array();
 		$allowed = array( 'key' );
 		$credentials = array();

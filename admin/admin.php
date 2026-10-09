@@ -88,7 +88,7 @@ class md_admin {
 
 		// Upgrader hooks
 		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
-		add_filter( 'delete_site_transient_update_themes', array( $this->requests, 'delete_theme_update' ) );
+		add_action( 'upgrader_process_complete', array( $this->requests, 'delete_theme_update' ), 10, 2 );
 		add_action( 'load-themes.php', array( $this, 'load_themes_screen' ) );
 		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
 		add_action( 'update-custom_upload-md-dropin', array( $this->requests, 'upload_dropin' ) );
@@ -194,6 +194,7 @@ class md_admin {
 		$vars = array(
 			'user_id' => get_current_user_id(),
 			'nonce' => wp_create_nonce( "{$this->_option}_nonce" ),
+			'license_request_error' => __( 'Could not connect. Please try again.', 'md' ),
 			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
 

@@ -191,3 +191,31 @@ function md_get_dropin_data( $dropin_file ) {
 
 	return $dropin_data;
 }
+
+/**
+ * Validate a staged Drop-in before it replaces installed files.
+ *
+ * @since 6.0
+ */
+function md_validate_dropin_package( $directory, $slug ) {
+	if ( ! preg_match( '/^[a-z0-9_-]+$/', $slug ) )
+		return new WP_Error( 'invalid_dropin_slug', __( 'Invalid Drop-in package name.', 'md' ) );
+
+	$file = trailingslashit( $directory ) . "$slug.php";
+
+	if ( ! is_file( $file ) || is_link( $file ) )
+		return new WP_Error( 'invalid_dropin_package', sprintf( __( 'The package must contain %s.', 'md' ), "$slug.php" ) );
+
+	$data = md_get_dropin_data( $file );
+
+	if ( empty( $data['Name'] ) || ( ! empty( $data['Slug'] ) && $data['Slug'] !== $slug ) )
+		return new WP_Error( 'invalid_dropin_identity', __( 'The package does not match the selected Drop-in.', 'md' ) );
+
+	if ( ! is_php_version_compatible( $data['RequiresPHP'] ?? null ) )
+		return new WP_Error( 'incompatible_php_required_version', sprintf( __( 'This Drop-in requires PHP %s.', 'md' ), $data['RequiresPHP'] ) );
+
+	if ( ! is_wp_version_compatible( $data['RequiresWP'] ?? null ) )
+		return new WP_Error( 'incompatible_wp_required_version', sprintf( __( 'This Drop-in requires WordPress %s.', 'md' ), $data['RequiresWP'] ) );
+
+	return $data;
+}

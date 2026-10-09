@@ -41,7 +41,7 @@
 					<?php if ( $has_updates ) : ?>
 						<div class="md-update md-update-theme update-message notice inline notice-warning">
 							<span><?php printf( __( 'There is a new version of <strong>%s</strong> available.', 'md' ), $dropin_name ); ?></span>
-							<a href="<?php echo esc_url( admin_url( wp_nonce_url( 'update.php?action=update-md-dropins&amp;dropin=' . urlencode( $path ), 'upgrade-dropin_' . $path ) ) ); ?>" class="md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $fields['name'] ) ); ?>"><?php printf( __( 'Upgrade to <b>%s</b>', 'md' ), esc_html( $updates[$path]['new_version'] ) ); ?> <i class="dashicons dashicons-update-alt"></i></a>
+							<a href="<?php echo esc_url( admin_url( wp_nonce_url( 'update.php?action=update-md-dropins&amp;dropin=' . urlencode( $path ), 'upgrade-dropin_' . $path ) ) ); ?>" class="md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $fields['name'] ) ); ?>"><span><?php printf( __( 'Upgrade to <b>%s</b>', 'md' ), esc_html( $updates[$path]['new_version'] ) ); ?></span><i class="dashicons dashicons-update-alt" aria-hidden="true"></i></a>
 						</div>
 					<?php endif; ?>
 					<div class="md-dropin-inner">

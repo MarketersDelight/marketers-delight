@@ -76,50 +76,22 @@ class Dropin_Installer_Skin extends WP_Upgrader_Skin {
 
 		$install_actions = array();
 
-		$from = isset( $_GET['from'] ) ? wp_unslash( $_GET['from'] ) : 'dropins';
+		$dropin_slug = $dropin_file ? dirname( $dropin_file ) : '';
 
-		if ( 'import' === $from ) {
+		if ( $dropin_slug && current_user_can( 'activate_plugins' ) && ! md_is_dropin_active( $dropin_file ) )
 			$install_actions['activate_dropin'] = sprintf(
 				'<a class="button button-primary" href="%s" target="_parent">%s</a>',
-				wp_nonce_url( 'plugins.php?action=activate&amp;from=import&amp;dropin=' . urlencode( $dropin_file ), 'activate-dropin_' . $dropin_file ),
-				__( 'Activate Drop-in &amp; Run Importer' )
+				esc_url( wp_nonce_url( self_admin_url( 'admin.php?page=md_dropins&action=activate&dropin=' . rawurlencode( $dropin_slug ) ), 'activate-dropin_' . $dropin_file ) ),
+				__( 'Activate Drop-in', 'md' )
 			);
-		} elseif ( 'press-this' === $from ) {
-			$install_actions['activate_dropin'] = sprintf(
-				'<a class="button button-primary" href="%s" target="_parent">%s</a>',
-				wp_nonce_url( 'plugins.php?action=activate&amp;from=press-this&amp;dropin=' . urlencode( $dropin_file ), 'activate-dropin_' . $dropin_file ),
-				__( 'Activate Drop-in &amp; Go to Press This' )
-			);
-		} else {
-			$install_actions['activate_dropin'] = sprintf(
-				'<a class="button button-primary" href="%s" target="_parent">%s</a>',
-				wp_nonce_url( 'plugins.php?action=activate&amp;dropin=' . urlencode( $dropin_file ), 'activate-dropin_' . $dropin_file ),
-				__( 'Activate Drop-in' )
-			);
-		}
 
-		if ( is_multisite() && current_user_can( 'manage_network_plugins' ) ) {
-			$install_actions['network_activate'] = sprintf(
-				'<a class="button button-primary" href="%s" target="_parent">%s</a>',
-				wp_nonce_url( 'plugins.php?action=activate&amp;networkwide=1&amp;dropin=' . urlencode( $dropin_file ), 'activate-dropin_' . $dropin_file ),
-				__( 'Network Activate' )
-			);
-			unset( $install_actions['activate_dropin'] );
-		}
-
-		if ( 'import' === $from ) {
-			$install_actions['importers_page'] = sprintf(
-				'<a href="%s" target="_parent">%s</a>',
-				admin_url( 'import.php' ),
-				__( 'Go to Importers' )
-			);
-		} elseif ( 'web' === $this->type ) {
+		if ( 'web' === $this->type ) {
 			$install_actions['dropins_page'] = sprintf(
 				'<a href="%s" target="_parent">%s</a>',
 				self_admin_url( 'admin.php?page=md_dropins' ),
 				__( '&larr; Go to Drop-ins Manager' )
 			);
-		} elseif ( 'upload' === $this->type && 'dropins' === $from ) {
+		} elseif ( 'upload' === $this->type ) {
 			$install_actions['dropins_page'] = sprintf(
 				'<a href="%s">%s</a>',
 				self_admin_url( 'admin.php?page=md_dropins' ),
@@ -134,8 +106,6 @@ class Dropin_Installer_Skin extends WP_Upgrader_Skin {
 		}
 
 		if ( ! $this->result || is_wp_error( $this->result ) )
-			unset( $install_actions['activate_dropin'], $install_actions['network_activate'] );
-		elseif ( ! current_user_can( 'activate_dropin', $dropin_file ) || md_is_dropin_active( $dropin_file ) )
 			unset( $install_actions['activate_dropin'] );
 
 		$install_actions = apply_filters( 'install_dropin_complete_actions', $install_actions, $this->api, $dropin_file );

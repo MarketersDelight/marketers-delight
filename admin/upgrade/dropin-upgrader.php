@@ -23,6 +23,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 	public $result;
 	public $bulk = false;
 	public $new_dropin_data = array();
+	private $expected_dropin = '';
 
 	/**
 	 * Set strings for various parts of the Upgrader interface (thanks, Core!)
@@ -83,6 +84,13 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 	 */
 
 	public function upgrade( $dropin, $args = array() ) {
+		$dropin_slug = str_replace( '.php', '', basename( $dropin ) );
+
+		if ( $dropin !== "$dropin_slug/$dropin_slug.php" || ! preg_match( '/^[a-z0-9_-]+$/', $dropin_slug ) )
+			return new WP_Error( 'invalid_dropin', __( 'Invalid Drop-in path.', 'md' ) );
+
+		$this->expected_dropin = $dropin_slug;
+
 		$defaults = array(
 			'clear_update_cache' => true,
 		);
@@ -98,19 +106,21 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 			$this->skin->set_result( false );
 			$this->skin->error( 'up_to_date' );
 			$this->skin->after();
+
 			return false;
 		}
 
 		$r = $current[$dropin];
 
+		if ( empty( $r['package'] ) || ! is_string( $r['package'] ) )
+			return new WP_Error( 'no_package', $this->strings['no_package'] );
+
 		add_filter( 'upgrader_pre_install', array( $this, 'deactivate_dropin_before_upgrade' ), 10, 2 );
 		add_filter( 'upgrader_pre_install', array( $this, 'active_before' ), 10, 2 );
-		add_filter( 'upgrader_clear_destination', array( $this, 'delete_old_dropin' ), 10, 4 );
+		add_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 		add_filter( 'upgrader_post_install', array( $this, 'active_after' ), 10, 2 );
 
-		$dropin_slug = str_replace( '.php', '', basename( $dropin ) );
-
-		$this->run( array(
+		$result = $this->run( array(
 			'package' => $r['package'],
 			'destination' => MD_INSTALLED_DROPINS . "/$dropin_slug",
 			'clear_destination' => true,
@@ -118,18 +128,20 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 			'hook_extra' => array(
 				'dropin' => $dropin,
 				'type' => 'dropin',
-				'action' => 'update'
+				'action' => 'update',
+				'temp_backup' => array( 'slug' => $dropin_slug, 'src' => MD_INSTALLED_DROPINS, 'dir' => 'dropins' )
 			)
 		) );
 
 		// Cleanup our hooks, in case something else does a upgrade on this connection.
+
 		remove_filter( 'upgrader_pre_install', array( $this, 'deactivate_dropin_before_upgrade' ) );
 		remove_filter( 'upgrader_pre_install', array( $this, 'active_before' ) );
-		remove_filter( 'upgrader_clear_destination', array( $this, 'delete_old_dropin' ) );
+		remove_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 		remove_filter( 'upgrader_post_install', array( $this, 'active_after' ) );
 
-		if ( ! $this->result || is_wp_error( $this->result ) )
-			return $this->result;
+		if ( ! $result || is_wp_error( $result ) )
+			return $result;
 
 		return true;
 	}
@@ -146,27 +158,35 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 			'overwrite_package' => false
 		);
 		$parsed_args = wp_parse_args( $args, $defaults );
+		$dropin_slug = $parsed_args['dropin'] ?? '';
+
+		if ( ! is_string( $dropin_slug ) || ! preg_match( '/^[a-z0-9_-]+$/', $dropin_slug ) )
+			return new WP_Error( 'invalid_dropin', __( 'Invalid Drop-in package name.', 'md' ) );
+
+		$this->expected_dropin = $dropin_slug;
 
 		$this->init();
 		$this->install_strings();
 
 		add_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 
-		$this->run( array(
+		$hook_extra = array( 'type' => 'dropin', 'action' => 'install' );
+
+		if ( $parsed_args['overwrite_package'] && is_dir( MD_INSTALLED_DROPINS . "/$dropin_slug" ) )
+			$hook_extra['temp_backup'] = array( 'slug' => $dropin_slug, 'src' => MD_INSTALLED_DROPINS, 'dir' => 'dropins' );
+
+		$result = $this->run( array(
 			'package' => $package,
-			'destination' => MD_INSTALLED_DROPINS . '/' . $parsed_args['dropin'],
+			'destination' => MD_INSTALLED_DROPINS . '/' . $dropin_slug,
 			'clear_destination' => $parsed_args['overwrite_package'],
 			'clear_working' => true,
-			'hook_extra' => array(
-				'type' => 'dropin',
-				'action' => 'install'
-			)
+			'hook_extra' => $hook_extra
 		) );
 
 		remove_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 
-		if ( ! $this->result || is_wp_error( $this->result ) )
-			return $this->result;
+		if ( ! $result || is_wp_error( $result ) )
+			return $result;
 
 		if ( $parsed_args['overwrite_package'] ) {
 			do_action( 'upgrader_overwrote_package', $package, $this->new_dropin_data, 'dropin' );
@@ -185,6 +205,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 		if ( ! is_array( $this->result ) ) {
 			return false;
 		}
+
 		if ( empty( $this->result['destination_name'] ) ) {
 			return false;
 		}
@@ -205,45 +226,25 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 	 */
 
 	public function check_package( $source ) {
-		global $wp_filesystem, $wp_version;
+		global $wp_filesystem;
 
 		$this->new_dropin_data = array();
 
 		if ( is_wp_error( $source ) )
 			return $source;
 
-		$dropins_dir = $wp_filesystem->wp_content_dir() . 'md-dropins/';
-		$working_directory = str_replace( $dropins_dir, trailingslashit( MD_INSTALLED_DROPINS ), $source );
+		$content_dir = trailingslashit( $wp_filesystem->wp_content_dir() );
+		$working_directory = str_replace( $content_dir, trailingslashit( WP_CONTENT_DIR ), $source );
 
-		if ( ! is_dir( $working_directory ) )
-			return $source;
+		if ( $working_directory === $source && strpos( $source, trailingslashit( WP_CONTENT_DIR ) ) !== 0 )
+			return new WP_Error( 'invalid_dropin_source', __( 'Could not inspect the Drop-in package.', 'md' ) );
 
-		$files = glob( $working_directory . '*.php' );
+		$data = md_validate_dropin_package( $working_directory, $this->expected_dropin );
 
-		if ( $files )
-			foreach ( $files as $file ) {
-				$info = md_get_dropin_data( $file, false, false );
-				if ( ! empty( $info['Name'] ) ) {
-					$this->new_dropin_data = $info;
-					break;
-				}
-			}
+		if ( is_wp_error( $data ) )
+			return $data;
 
-		if ( empty( $this->new_dropin_data ) )
-			return new WP_Error( 'incompatible_archive_no_dropins', $this->strings['incompatible_archive'], __( 'No valid drop-ins were found.' ) );
-
-		$requires_php = isset( $info['RequiresPHP'] ) ? $info['RequiresPHP'] : null;
-		$requires_wp  = isset( $info['RequiresWP'] ) ? $info['RequiresWP'] : null;
-
-		if ( ! is_php_version_compatible( $requires_php ) ) {
-			$error = sprintf( __( 'The PHP version on your server is %1$s, however the uploaded dropin requires %2$s.' ), phpversion(), $requires_php );
-			return new WP_Error( 'incompatible_php_required_version', $this->strings['incompatible_archive'], $error );
-		}
-
-		if ( ! is_wp_version_compatible( $requires_wp ) ) {
-			$error = sprintf( __( 'Your WordPress version is %1$s, however the uploaded drop-in requires %2$s.' ), $wp_version, $requires_wp );
-			return new WP_Error( 'incompatible_wp_required_version', $this->strings['incompatible_archive'], $error );
-		}
+		$this->new_dropin_data = $data;
 
 		return $source;
 	}
@@ -264,7 +265,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 
 		$dropin = isset( $dropin['dropin'] ) ? $dropin['dropin'] : '';
 
-		if ( md_is_dropin_active( $dropin ) )
+		if ( ! md_is_dropin_active( $dropin ) )
 			return $return;
 
 		if ( ! $this->bulk )
@@ -289,7 +290,7 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 
 		$dropin = isset( $dropin['dropin'] ) ? $dropin['dropin'] : '';
 
-		if ( md_is_dropin_active( $dropin ) )
+		if ( ! md_is_dropin_active( $dropin ) )
 			return $return;
 
 		if ( ! $this->bulk )
@@ -317,40 +318,6 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 			return new WP_Error( 'bad_request', $this->strings['bad_request'] );
 
 		return $return;
-	}
-
-	/**
-	 * Delete old dropin after success.
-	 *
-	 * @since 5.4
-	 */
-
-	public function delete_old_dropin( $removed, $local_destination, $remote_destination, $dropin ) {
-		global $wp_filesystem;
-
-		if ( is_wp_error( $removed ) )
-			return $removed;
-
-		$dropin = isset( $dropin['dropin'] ) ? $dropin['dropin'] : '';
-
-		if ( empty( $dropin ) )
-			return new WP_Error( 'bad_request', $this->strings['bad_request'] );
-
-		$dropins_dir = MD_INSTALLED_DROPINS;
-		$this_dropin_dir = trailingslashit( dirname( "$dropins_dir/$dropin" ) );
-
-		if ( ! $wp_filesystem->exists( $this_dropin_dir ) )
-			return $removed;
-
-		if ( strpos( $dropin, '/' ) && $this_dropin_dir !== $dropins_dir )
-			$deleted = $wp_filesystem->delete( $this_dropin_dir, true );
-		else
-			$deleted = $wp_filesystem->delete( "$dropins_dir/$dropin" );
-
-		if ( ! $deleted )
-			return new WP_Error( 'remove_old_failed', $this->strings['remove_old_failed'] );
-
-		return true;
 	}
 
 }

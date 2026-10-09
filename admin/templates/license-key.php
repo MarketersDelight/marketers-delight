@@ -1,4 +1,4 @@
-<div class="md-license md-widget md-toggle <?php echo ( ! empty( $license['status'] ) && $license['status'] == 'valid' ? 'valid' : 'invalid open' ); ?> <?php echo ( ! empty( $theme ) || ! empty( $dropins ) ) ? 'has-updates open' : 'no-updates'; ?>">
+<div class="md-license md-widget md-toggle open <?php echo ( ! empty( $license['status'] ) && $license['status'] == 'valid' ? 'valid' : 'invalid' ); ?> <?php echo ( ! empty( $theme ) || ! empty( $dropins ) ) ? 'has-updates' : 'no-updates'; ?>">
 
 	<h3 class="md-widget-title">
 
@@ -21,6 +21,20 @@
 	<div class="md-widget-item md-clear">
 
 		<div class="md-updates">
+			<?php if ( ( $license['status'] ?? '' ) === 'valid' && empty( $theme ) && empty( $dropins ) ) : ?>
+				<div class="md-update-empty">
+					<i class="dashicons dashicons-yes-alt" aria-hidden="true"></i>
+					<div>
+						<strong><?php printf( esc_html__( 'Marketers Delight %s is up to date.', 'md' ), esc_html( MD_VERSION ) ); ?></strong>
+						<p><?php esc_html_e( 'No theme or Drop-in updates are available for this site.', 'md' ); ?></p>
+						<?php if ( $check_status === 'success' ) : ?>
+							<p class="md-license-check-feedback" role="status"><?php esc_html_e( 'Just checked: no updates are available.', 'md' ); ?></p>
+						<?php elseif ( $check_status === 'failed' ) : ?>
+							<p class="md-license-check-feedback is-error" role="status"><?php esc_html_e( 'Could not check for updates right now. Please try again.', 'md' ); ?></p>
+						<?php endif; ?>
+					</div>
+				</div>
+			<?php endif; ?>
 
 			<?php if ( ! empty( $theme ) ) :
 				$theme_name = esc_html( str_replace( ' 4', '', $theme['name'] ) );
@@ -31,7 +45,7 @@
 
 				<div class="md-dropin-image">
 					<span class="md-dropin-placeholder"<?php echo md_style( array( 'bg_color' => '#fff', 'color' => '#c82d2b' ) ); ?>>
-						<i class="dashicons dashicons-before dashicons-marketers-delight"></i>
+						<img class="md-theme-mark" src="<?php echo esc_url( MD_URL . 'admin/images/md-mark.png' ); ?>" alt="">
 					</span>
 				</div>
 
@@ -78,27 +92,34 @@
 			<?php endif; ?>
 
 		</div>
+		<?php if ( $check_status === 'failed' && ( ! empty( $theme ) || ! empty( $dropins ) ) ) : ?>
+			<p class="md-license-check-feedback is-error" role="status"><?php esc_html_e( 'Could not check for updates right now. Please try again.', 'md' ); ?></p>
+		<?php endif; ?>
+
+		<?php if ( ( $license['status'] ?? '' ) === 'valid' && ! empty( $license_message['text'] ) ) : ?>
+			<div class="md-license-details">
+				<span><?php echo wp_kses_post( $license_message['text'] ); ?></span>
+				<a href="https://marketersdelight.com/changelog/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View changelog', 'md' ); ?> &rarr;</a>
+			</div>
+		<?php endif; ?>
 
 		<div class="md-license-fields md-toggle<?php echo ( ! empty( $license['status'] ) && $license['status'] != 'valid' ? ' invalid open' : '' ); ?>">
 
-			<?php if ( ! empty( $license['status'] ) && $license['status'] == 'valid' ) :
-				$last_sync = isset( $license['last_sync'] ) ? $license['last_sync'] : 0;
-				$can_check = $last_sync <= strtotime( "-5 minutes" );
-				$html_data = $can_check ? 'data-md-action="check-updates" data-md-canvas="#md_update"' : ' title="' . __( 'Please wait upto 5 minutes to check again.', 'md' ) . '"';
-				$html_class = $can_check ? 'md-action' : 'md-action-disabled';
-			?>
-				<span class="<?php echo $html_class; ?> md-action-check-updates" <?php echo $html_data; ?>><?php echo __( 'Check for updates', 'md' ); ?> <i class="dashicons dashicons-update-alt"></i></span>
+			<?php if ( ( $license['status'] ?? '' ) === 'valid' ) : ?>
+				<div class="md-license-actions">
+					<button type="button" class="md-license-toggle" aria-expanded="false" aria-controls="md_license_fields"><?php esc_html_e( 'Edit site license', 'md' ); ?> <i class="dashicons dashicons-arrow-down-alt2" aria-hidden="true"></i></button>
+					<button type="button" class="md-action md-action-check-updates" data-md-action="check-updates" data-md-canvas="#md_update"><?php esc_html_e( 'Check for updates', 'md' ); ?> <i class="dashicons dashicons-update-alt" aria-hidden="true"></i></button>
+				</div>
 			<?php endif; ?>
+			<p class="md-license-request-error" role="alert" hidden></p>
 
-			<div class="md-license-toggle md-widget-title"><?php echo __( 'Edit site license', 'md' ); ?> <i class="dashicons dashicons-arrow-down-alt2"></i></div>
-
-			<div class="md-widget-item">
+			<div id="md_license_fields" class="md-widget-item">
 
 				<?php $this->fields->field( 'license_key', array(
 					'type' => 'text',
 					'label' => __( 'Enter MD license key', 'md' ),
 					'placeholder' => __( 'Enter license key here...', 'md' ),
-					'option' => ! empty( $license['key'] ) ? $license['key'] : '',
+					'option' => ( $license['status'] ?? '' ) === 'valid' && ! empty( $license['key'] ) ? '••••' . substr( $license['key'], -4 ) : '',
 					'wrap_classes' => 'md-spacer-small',
 					'readonly_after_save' => ! empty( $license['status'] ) && $license['status'] == 'valid'
 				) ); ?>
@@ -108,8 +129,8 @@
 					<span class="md-delete md-delete-text md-action md-action-deactivate-license" data-md-action="deactivate-license" data-md-canvas="#md_update" data-md-alert="<?php echo __( 'NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?', 'md' ); ?>"><?php echo __( 'Deactivate site', 'md' ); ?> <i class="dashicons dashicons-no"></i></span>
 				</div>
 
-				<?php if ( ! empty( $license_message['text'] ) ) : ?>
-				<span class="md-license-message"><?php echo $license_message['text']; ?></span>
+				<?php if ( ( $license['status'] ?? '' ) !== 'valid' && ! empty( $license_message['text'] ) ) : ?>
+					<span class="md-license-message"><?php echo wp_kses_post( $license_message['text'] ); ?></span>
 				<?php endif; ?>
 
 			</div>

@@ -151,39 +151,41 @@ class md_files {
 		$upload = $this->uploaded_file( 'zip' );
 
 		if ( ! $upload )
-			return;
+			wp_send_json_error( __( 'Choose a valid Drop-in ZIP file.', 'md' ), 400 );
 
 		$uploads_dir = MD_INSTALLED_DROPINS;
 
 		if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
 			if ( ! $wp_filesystem->mkdir( $uploads_dir, FS_CHMOD_DIR ) )
-				return;
+				wp_send_json_error( __( 'Could not create the Drop-ins directory.', 'md' ), 500 );
 
 			$this->protect_directory( $uploads_dir, $wp_filesystem );
 		}
 
 		$dropin_id = pathinfo( $upload['name'], PATHINFO_FILENAME );
-		$dropin_dir = "$uploads_dir/$dropin_id";
+		if ( ! preg_match( '/^[a-z0-9_-]+$/', $dropin_id ) )
+			wp_send_json_error( __( 'The ZIP filename must match the Drop-in folder name.', 'md' ), 400 );
 
-		if ( ! $dropin_id || ! $this->path_is_contained( $dropin_dir, $uploads_dir ) )
-			return;
+		require_once get_template_directory() . '/admin/upgrade/dropin-upgrader.php';
+		$upgrader = new MD_Dropin_Upgrader( new WP_Upgrader_Skin() );
+		ob_start();
+		$result = $upgrader->install( $upload['tmp_name'], array(
+			'dropin' => $dropin_id,
+			'overwrite_package' => $wp_filesystem->exists( "$uploads_dir/$dropin_id" )
+		) );
+		ob_end_clean();
 
-		if ( $wp_filesystem->exists( $dropin_dir ) )
-			$wp_filesystem->delete( $dropin_dir, true );
-
-		if ( true !== unzip_file( $upload['tmp_name'], $uploads_dir ) )
-			return;
+		if ( is_wp_error( $result ) )
+			wp_send_json_error( $result->get_error_message(), 400 );
+		if ( ! $result )
+			wp_send_json_error( __( 'Could not install the Drop-in.', 'md' ), 500 );
 
 		$dropins = md_dropins_setting();
 
-		foreach ( (array) $wp_filesystem->dirlist( $uploads_dir ) as $file => $fields ) {
-			$file = sanitize_file_name( $file );
-
-			if ( $file && $this->path_is_contained( "$uploads_dir/$file", $uploads_dir ) )
-				$dropins = $this->register_dropin( $file, $dropins, $wp_filesystem );
-		}
+		$dropins = $this->register_dropin( $dropin_id, $dropins, $wp_filesystem );
 
 		md_update_dropins( $dropins );
+		wp_send_json_success();
 	}
 
 	/**

@@ -19,7 +19,7 @@ class md_settings extends md_api {
 		$requests = new md_requests;
 		$this->license = $requests->license();
 
-		add_action( 'md_license_updater', array( $this, 'updater' ) );
+		add_action( 'md_license_updater', array( $this, 'updater' ), 10, 2 );
 	}
 
 	/**
@@ -105,11 +105,15 @@ class md_settings extends md_api {
 			$message['text'] = sprintf( __( 'You\'ve reached your license activation limit. Please purchase more sites or disable other sites from your <a href="%s" target="_blank">MD account</a>.', 'md' ), 'https://marketersdelight.com/downloads/' );
 
 		if ( $status == 'expired' ) {
-			$license = trim( md_license_setting( 'key', '' ) );
-			$url = esc_url( $this->license['remote_api_url'] ) . '/checkout/?edd_license_key=' . $license . '&download_id=' . $this->license['download_id'];
 			$message['status'] = __( 'Expired', 'md' );
-			$message['text'] = 'Your <b>MD license key has expired!</b> Renew now to get MD updates sent to your site. <a href="' . esc_url( $url ) . '" class="md-renew-link" target="_blank">' . __( 'Renew now (save 40%).', 'md' ) . '</a>';
+			$message['text'] = sprintf(
+				__( 'Your <b>MD license key has expired!</b> Renew it from your <a href="%s" class="md-renew-link" target="_blank" rel="noopener noreferrer">MD account</a> to continue receiving updates.', 'md' ),
+				esc_url( $this->license['remote_api_url'] . '/downloads/' )
+			);
 		}
+
+		if ( ! empty( $status ) && $status !== 'valid' && empty( $message['text'] ) )
+			$message['text'] = __( 'This license key could not be activated for this site. Check the key or contact MD support.', 'md' );
 
 		return $message;
 	}
@@ -120,7 +124,7 @@ class md_settings extends md_api {
 	 * @since 4.7
 	 */
 
-	public function updater( $license = null ) {
+	public function updater( $license = null, $check_status = '' ) {
 		$license = is_array( $license ) ? $license : md_license_setting();
 		$license_message = $this->license_message();
 		$slug = $this->license['theme_slug'];
