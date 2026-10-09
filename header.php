@@ -57,12 +57,12 @@ if ( md_has_header() ) :
 						'builder' => $header
 					) );
 
-				if ( $mobile !== 'scroll' && ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() ) )
-					md_trigger( 'menu', array( 'builder' => $header ) );
-
 				if ( ! empty( $header['elements']['link'] ) )
 					foreach ( $header['elements']['link'] as $c => $link_id )
 						md_link( $header['fields'][$link_id] ?? array() );
+
+				if ( $mobile !== 'scroll' && ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() ) )
+					md_trigger( 'menu', array( 'builder' => $header ) );
 
 				md_hook_header_triggers();
 

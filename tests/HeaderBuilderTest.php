@@ -73,4 +73,16 @@ class HeaderBuilderTest extends MD_TestCase {
 		$this->assertStringContainsString( 'class="md-wire"', $radio );
 	}
 
+	public function test_menu_trigger_renders_after_links_and_before_trigger_hook() {
+		$source = $this->source( 'header.php' );
+		$links = strpos( $source, 'md_link( $header[' );
+		$menu = strpos( $source, "md_trigger( 'menu', array( 'builder' => \$header ) );", $links );
+		$hook = strpos( $source, 'md_hook_header_triggers();' );
+
+		$this->assertNotFalse( $links );
+		$this->assertNotFalse( $menu );
+		$this->assertLessThan( $menu, $links );
+		$this->assertLessThan( $hook, $menu );
+	}
+
 }
