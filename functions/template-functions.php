@@ -18,15 +18,11 @@ function md_scroller_nav( $args = array() ) {
 
 	$classes = join( ' ', $classes );
 
-	echo
+	$output =
 		"<$html class=\"" . esc_attr( $classes ) . "\"$label>" .
 		'<button class="scroller-arrow scroller-arrow-prev" aria-label="' . __( 'Scroll left', 'md' ) . '">' . md_icon( 'angle-left' ) . '</button>' .
-		'<div class="scroller-list">';
-
-	foreach ( $args['items'] as $item )
-		echo $item;
-
-	echo
+		'<div class="scroller-list">' .
+		join( '', $args['items'] ) .
 		'</div>' .
 		'<button class="scroller-arrow scroller-arrow-next" aria-label="' . __( 'Scroll right', 'md' ) . '">' . md_icon( 'angle-right' ) . '</button>' .
 		"</$html>";
@@ -35,6 +31,11 @@ function md_scroller_nav( $args = array() ) {
 		wp_add_inline_script( 'marketers-delight', 'MD.scrollerNav();' );
 		$js_enqueued = true;
 	}
+
+	if ( isset( $args['echo'] ) && ! $args['echo'] )
+		return $output;
+
+	echo $output;
 }
 
 /**

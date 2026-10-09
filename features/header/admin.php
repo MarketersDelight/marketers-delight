@@ -48,7 +48,7 @@ class md_header extends md_api {
 					),
 					'layout_mobile' => array(
 						'type' => 'radio',
-						'options' => array( 'standard', 'expanded' )
+						'options' => array( 'standard', 'expanded', 'scroll' )
 					),
 					'display' => array(
 						'type' => 'checkbox',

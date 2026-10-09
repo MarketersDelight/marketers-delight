@@ -1340,6 +1340,52 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	align-items: start;
 	flex-direction: column;
 }
+.md-wire {
+	align-items: center;
+	background-color: #f1f1f1;
+	border-radius: 3px 3px 0 0;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px 16px;
+	justify-content: space-between;
+	padding: 18px 20px;
+}
+
+.md-wire > i { display: block; }
+
+.md-wire-logo {
+	background-color: #7b7f85;
+	border-radius: 50%;
+	height: 38px;
+	width: 38px;
+}
+
+.md-wire-nav {
+	background: repeating-linear-gradient(90deg, #7b7f85 0 24px, transparent 24px 36px);
+	height: 4px;
+	width: 96px;
+}
+
+.md-wire-burger {
+	background: repeating-linear-gradient(#7b7f85 0 4px, transparent 4px 9px);
+	height: 22px;
+	width: 26px;
+}
+
+.md-wire-gap { flex: 1; }
+
+.md-wire:has(.md-wire-row) {
+	padding-block: 10px;
+	row-gap: 0;
+}
+
+.md-wire-row {
+	flex-basis: 100%;
+	height: 0;
+}
+
+.md-wire-row + .md-wire-nav { margin-top: 12px; }
+
 
 .columns-4 .md-range-field, .columns-4 .md-range-wrap, .md-layout-admin select { width: 100%; }
 .columns-4 .md-range-number { width: 50%; }

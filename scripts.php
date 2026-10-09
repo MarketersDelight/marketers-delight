@@ -242,6 +242,11 @@ scrollerNav: function() {
 		list.addEventListener( 'scroll', updateArrows, { passive: true } );
 		window.addEventListener( 'resize', updateArrows );
 		updateArrows();
+
+		const current = list.querySelector( '.current-menu-item, .current-menu-ancestor' );
+
+		if ( current )
+			list.scrollTo( { left: current.getBoundingClientRect().left - list.getBoundingClientRect().left + list.scrollLeft, behavior: 'instant' } );
 	}
 },
 <?php if ( has_action( 'md_hook_js_onscroll' ) ) : ?>

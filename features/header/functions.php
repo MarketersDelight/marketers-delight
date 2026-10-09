@@ -22,6 +22,9 @@ function md_header_classes() {
 	else
 		$classes[] = 'simple';
 
+	if ( md_has_menu() && md_setting( array( 'header', 'layout_mobile' ) ) === 'scroll' )
+		$classes[] = 'menu-scroll';
+
 	$classes = apply_filters( 'md_filter_header_classes', $classes );
 
 	return join( ' ', $classes );
@@ -257,7 +260,17 @@ function md_menu( $fields = array() ) {
 
 	$menu = wp_nav_menu( $args );
 
-	if ( $menu ) echo
+	if ( ! $menu )
+		return;
+
+	if ( md_setting( array( 'header', 'layout_mobile' ) ) === 'scroll' )
+		$menu = md_scroller_nav( array(
+			'items' => array( $menu ),
+			'classes' => 'menu-scroller',
+			'echo' => false
+		) );
+
+	echo
 		( $fields['wrap'] !== null ? '<div class="' . esc_attr( $fields['wrap'] ) . '">' : '' ).
 		$menu.
 		( $fields['wrap'] !== null ? '</div>' : '' );

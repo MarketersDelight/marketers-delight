@@ -47,7 +47,7 @@ if ( md_has_header() ) :
 			if ( md_has_logo() )
 				md_logo();
 
-			if ( $has_elements || ( md_has_menu() && $mobile !== 'expanded' ) ) {
+			if ( $has_elements || ( md_has_menu() && ! in_array( $mobile, array( 'expanded', 'scroll' ), true ) ) ) {
 
 				echo '<div class="header-triggers">';
 
@@ -57,7 +57,7 @@ if ( md_has_header() ) :
 						'builder' => $header
 					) );
 
-				if ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() )
+				if ( $mobile !== 'scroll' && ( ( md_has_menu() && $mobile !== 'expanded' ) || md_has_panel() ) )
 					md_trigger( 'menu', array( 'builder' => $header ) );
 
 				if ( ! empty( $header['elements']['link'] ) )
@@ -85,6 +85,7 @@ if ( md_has_header() ) :
 
 					if ( $field && ! empty( $items['callback'] ) ) {
 						$field['location'] = $section;
+						$field['area'] = $section;
 						$field['layout'] = $layout;
 						$field['id'] = $id;
 

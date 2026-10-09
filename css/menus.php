@@ -142,4 +142,37 @@
 		line-height: var(--md-line-height-tiny);
 		padding-block: var(--md-third);
 	}
+	/* SCROLL */
+	.menu-scroller .menu { display: flex; }
+	.menu-scroller .menu > .menu-item {
+		border-block-end: 0;
+		flex-shrink: 0;
+		white-space: nowrap;
+	}
+	@supports not (anchor-scope: --item) {
+		.menu-scroller .menu :is(.sub-menu, .trigger) { display: none; }
+	}
+	@supports (anchor-scope: --item) {
+		.menu-scroller .menu-item {
+			anchor-name: --item;
+			anchor-scope: --item;
+		}
+		.menu-scroller .sub-menu {
+			background-color: var(--md-header-submenu-background);
+			border-radius: var(--md-border-radius);
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			position: fixed;
+				inset-block-start: anchor(end);
+				inset-inline-start: anchor(start);
+			position-anchor: --item;
+			position-try-fallbacks: flip-inline;
+			white-space: normal;
+			width: <?php echo $submenu_width; ?>px;
+		}
+		.menu-scroller .sub-menu .sub-menu {
+			box-shadow: none;
+			position: static;
+			width: auto;
+		}
+	}
 }

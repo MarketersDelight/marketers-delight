@@ -39,17 +39,17 @@
 					'left' => array(
 						'name' => __( 'Header Left', 'md' ),
 						'description' => __( 'The default header layout with a left-aligned logo and nav menu to the right.', 'md' ),
-						'image' => MD_URL . 'admin/images/header-standard.gif'
+						'preview' => array( 'logo', 'nav' )
 					),
 					'right' => array(
 						'name' => __( 'Header Right', 'md' ),
 						'description' => __( 'A reversed header layout with a right-aligned logo and nav menu to the left.', 'md' ),
-						'image' => MD_URL . 'admin/images/header-rtl.gif'
+						'preview' => array( 'nav', 'logo' )
 					),
 					'center' => array(
 						'name' => __( 'Header Center', 'md' ),
 						'description' => __( 'A logo aligned to the center between two outer nav areas.', 'md' ),
-						'image' => MD_URL . 'admin/images/header-flyer.gif'
+						'preview' => array( 'nav', 'logo', 'nav' )
 					)
 				)
 			) ); ?>
@@ -65,12 +65,17 @@
 					'standard' => array(
 						'name' => __( 'Default', 'md' ),
 						'description' => __( 'The default layout with the logo on the left and controls to the right.', 'md' ),
-						'image' => MD_URL . 'admin/images/header-mobile-standard.gif'
+						'preview' => array( 'logo', 'burger' )
 					),
 					'expanded' => array(
 						'name' => __( 'Expanded', 'md' ),
 						'description' => __( 'Moves the main nav control before the Logo, and other controls to the right.', 'md' ),
-						'image' => MD_URL . 'admin/images/header-mobile-expanded.gif'
+						'preview' => array( 'burger', 'logo', 'gap', 'nav' )
+					),
+					'scroll' => array(
+						'name' => __( 'Inline', 'md' ),
+						'description' => __( 'Keeps the menu open below the logo and scrolls sideways.', 'md' ),
+						'preview' => array( 'logo', 'row', 'nav' )
 					)
 				)
 			) ); ?>

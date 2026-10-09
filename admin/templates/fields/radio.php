@@ -19,6 +19,9 @@ foreach ( $args['options'] as $val => $label ) {
 <label for="<?php echo $idval; ?>" class="md-radio <?php echo ( $layout == 'banner' ? 'md-radio-banner md-tooltip-parent' : 'md-radios' ) . ( ! empty( $image ) ? ' md-radio-has-image' : '' ); ?>"<?php echo md_style( $style ); ?>>
 	<?php if ( $layout == 'banner' && ! empty( $image ) ) : ?>
 		<img src="<?php echo esc_url( $image ); ?>" alt="<?php echo esc_html( $text ); ?>" class="md-radio-image" />
+	<?php elseif ( $layout == 'banner' && ! empty( $label['preview'] ) ) : ?>
+		<span class="md-wire" aria-hidden="true"><?php foreach ( (array) $label['preview'] as $part )
+			echo '<i class="md-wire-' . esc_attr( $part ) . '"></i>'; ?></span>
 	<?php endif; ?>
 	<span class="md-radio-input">
 		<input type="radio" name="<?php echo esc_attr( $name ); ?>" id="<?php echo $idval; ?>" class="md-radio-check" value="<?php echo esc_attr( $val ); ?>"<?php echo checked( $option, $val ); ?> />
