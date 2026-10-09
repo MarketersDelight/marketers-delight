@@ -18,6 +18,7 @@ function md_the_title( $context = 'post', $args = array() ) {
 	}
 
 	$has_inside = isset( $args['byline'] ) && ! empty( md_get_byline( 'inside_title', $args ) );
+	$has_category_icon = ! empty( $args['category_icon'] );
 
 	include md_template( 'features', 'page-title/the-title', true );
 }

@@ -6,7 +6,10 @@ md_overlay( $context );
 
 do_action( "md_hook_{$context}_title_top" );
 
-echo $has_header_cover ? '<div class="inner">' : '';
+if ( $has_header_cover ) {
+	echo '<div class="inner">';
+	do_action( "md_hook_{$context}_title_inner_top" );
+}
 
 if ( $context == 'page' )
 	md_featured_media( $context, array( 'show_image' => array( 'above_headline' ) ) );
