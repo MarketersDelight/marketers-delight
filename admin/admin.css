@@ -375,7 +375,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .col { float: left; }
 	.md .columns-3 > .col { width: 33.333333333%; }
 	.md .columns-50-25-25 .col1,
-	.md .columns-4 > .col, .md .columns-25-75 > .col1,
+	.md .columns-4 > .col,
 	.md .columns-25-50-25 .col1, .md .columns-25-50-25 .col3,
 	.md .columns-50-25-25 .col2, .md .columns-50-25-25 .col3 { width: 25%; }
 	.md .columns-2 .col,
@@ -388,6 +388,7 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-65-35 > .col1, .md .columns-35-65 > .col2 { width: 65%; }
 	.md .columns-30-70 > .col1, .md .columns-70-30 > .col2 { width: 30%; }
 	.md .columns-20-80 > .col2, .md .columns-80-20 > .col1  { width: 80%; }
+	.md .columns-25-75 > .col1 { width: 25%; }
 	.md .columns-25-75 > .col2 { width: 75%; }
 	.md .columns-70-30 > .col1, .md .columns-30-70 > .col2 { width: 70%; }
 	.md .columns-60-40 > .col1, .md .columns-40-60 > .col2 { width: 60%; }

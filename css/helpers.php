@@ -7,6 +7,7 @@
 /* TEXT */
 
 .underline { text-decoration: underline; }
+a.underline:hover, a:hover .underline { text-decoration: none; }
 
 .no-underline { text-decoration: none; }
 
@@ -42,8 +43,8 @@ a.no-underline, .no-underline a { text-decoration: none; }
 }
 
 .small, .foot {
-	font-size: 0.9em;
-	line-height: 1.5em;
+	font-size: var(--md-font-size-small);
+	line-height: var(--md-line-height-small);
 }
 
 .title .small {

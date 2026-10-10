@@ -57,7 +57,6 @@ class md_enqueue {
 	 */
 
 	public function enqueue() {
-
 		// Enqueue main stylesheet (style.css)
 
 		if ( ! md_setting( array( 'settings', 'css', 'inline' ) ) )

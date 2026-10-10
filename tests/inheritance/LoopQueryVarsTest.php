@@ -3,7 +3,7 @@
  * Tests md_api::loop_query_vars() (api/api.php:430-~460) — the main-archive-query
  * path of the Loop inheritance cascade (global default -> post type -> taxonomy
  * -> term), invoked directly via reflection since it's protected. Only
- * posts_per_page/order/orderby, excluded posts and date grouping flow through this function;
+ * posts_per_page/order/orderby, archive-scoped exclusions and date grouping flow through this function;
  * the wider Loop field set is covered by GetLoopTest instead.
  *
  * Plain, unconditional cascade -- no render-mode gating. A taxonomy tab left
@@ -155,9 +155,64 @@ class LoopQueryVarsTest extends MD_InheritanceTestCase {
 		$this->assertArrayNotHasKey( 'post__not_in', $vars );
 	}
 
-	public function test_term_excluded_posts_override_inherited_ones() {
+	public function test_taxonomy_archive_does_not_inherit_post_type_excluded_posts() {
 		md_test_set_option( 'marketers_delight', array( 'post' => array(
 			'loop' => array( 'exclude_posts' => '12' )
+		) ) );
+
+		$vars = $this->query_vars( 'category' );
+
+		$this->assertArrayNotHasKey( 'post__not_in', $vars );
+	}
+
+	public function test_taxonomy_excluded_posts_apply_and_inherit_to_terms() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'category' => array( 'loop' => array( 'exclude_posts' => '24' ) )
+		) ) );
+
+		$vars = $this->query_vars( 'category' );
+		$this->assertSame( array( 24 ), $vars['post__not_in'] );
+
+		$vars = $this->query_vars( 'category', 42 );
+		$this->assertSame( array( 24 ), $vars['post__not_in'] );
+	}
+
+	public function test_taxonomy_archive_does_not_inherit_post_type_excluded_terms() {
+		md_test_set_term( 3, 'category', 'News' );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'loop' => array( 'exclude_terms' => '3' )
+		) ) );
+
+		$vars = $this->query_vars( 'category' );
+
+		$this->assertArrayNotHasKey( 'tax_query', $vars );
+	}
+
+	public function test_taxonomy_excluded_terms_apply_and_inherit_to_terms() {
+		md_test_set_term( 5, 'post_tag', 'Old' );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'category' => array( 'loop' => array( 'exclude_terms' => '5' ) )
+		) ) );
+
+		$vars = $this->query_vars( 'category' );
+		$this->assertSame( array( array(
+			'taxonomy' => 'post_tag',
+			'terms' => array( 5 ),
+			'operator' => 'NOT IN'
+		) ), $vars['tax_query'] );
+
+		$vars = $this->query_vars( 'category', 42 );
+		$this->assertSame( array( array(
+			'taxonomy' => 'post_tag',
+			'terms' => array( 5 ),
+			'operator' => 'NOT IN'
+		) ), $vars['tax_query'] );
+	}
+
+	public function test_term_excluded_posts_override_taxonomy_excluded_posts() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'loop' => array( 'exclude_posts' => '12' ),
+			'category' => array( 'loop' => array( 'exclude_posts' => '24' ) )
 		) ) );
 		md_test_set_term_meta( 42, array( 'loop' => array( 'exclude_posts' => '99' ) ) );
 

@@ -376,7 +376,8 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( 'var(--timeline-gap) + var(--timeline-dot-size) / 2', $timeline );
 		$this->assertStringContainsString( '--timeline-dot-size: var(--md-single);', $timeline );
 		$this->assertStringContainsString( '--timeline-rail-width: 4px;', $timeline );
-		$this->assertStringContainsString( 'margin-inline-start: calc(var(--md-half) + var(--md-third));', $timeline );
+		$this->assertStringContainsString( '--timeline-offset: calc(var(--md-half) + var(--md-third));', $timeline );
+		$this->assertStringContainsString( 'margin-inline-start: var(--timeline-offset);', $timeline );
 	}
 
 	public function test_post_nav_items_stretch_to_an_equal_clickable_height() {

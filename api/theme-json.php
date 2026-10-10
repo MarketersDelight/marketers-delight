@@ -128,8 +128,8 @@ class md_theme_json {
 		$body = $this->typography['body']['font_size'];
 
 		$font_sizes = array(
-			$this->font_size( __( 'Tiny', 'md' ), 'tiny', $body['mobile'] - 2, $body['mobile'] - 2 ),
-			$this->font_size( __( 'Small', 'md' ), 'small', $body['mobile'], $body['mobile'] ),
+			$this->font_size( __( 'Tiny', 'md' ), 'tiny', md_text_scale( $body['desktop'], 2 ), md_text_scale( $body['mobile'], 2 ) ),
+			$this->font_size( __( 'Small', 'md' ), 'small', md_text_scale( $body['desktop'] ), md_text_scale( $body['mobile'] ) ),
 			$this->font_size( __( 'Normal', 'md' ), 'normal', $body['desktop'], $body['mobile'] ),
 			$this->font_size( __( 'Intro', 'md' ), 'intro', round( $body['desktop'] * 1.2 ), round( $body['mobile'] * 1.2 ) )
 		);

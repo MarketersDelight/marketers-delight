@@ -145,7 +145,7 @@
 				<?php $this->fields->field( 'exclude_posts', array(
 					'type' => 'text',
 					'label' => __( 'Exclude Posts', 'md' ),
-					'description' => __( 'Post IDs to leave out, separated by commas.', 'md' ),
+					'description' => __( 'Post IDs to leave out of this archive, separated by commas.', 'md' ),
 					'placeholder' => '12, 48',
 					'inherit' => true
 				) ); ?>

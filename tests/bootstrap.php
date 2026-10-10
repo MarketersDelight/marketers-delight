@@ -592,6 +592,7 @@ function wp_verify_nonce( $nonce, $action ) {
 	return true;
 }
 
+require_once dirname( __DIR__ ) . '/functions/asset-functions.php';
 require_once dirname( __DIR__ ) . '/api/save/sanitize.php';
 require_once dirname( __DIR__ ) . '/api/save/validate.php';
 require_once dirname( __DIR__ ) . '/api/save/save.php';

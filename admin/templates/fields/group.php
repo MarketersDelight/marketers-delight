@@ -1,7 +1,7 @@
 <?php
 
 if ( empty( $option ) )
-	$option = array();
+	$option = isset( $args['default'] ) && is_array( $args['default'] ) ? $args['default'] : array();
 
 $field_path = $args['field'];
 $group_id = is_array( $field_path ) ? implode( '_', $field_path ) : $field_path;

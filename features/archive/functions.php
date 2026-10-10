@@ -21,6 +21,53 @@ function md_archive_meta_items( $post_type = null ) {
 }
 
 /**
+ * Count the approved comments across everything the current archive lists.
+ * The result is remembered for the request, so the Comment Count meta and
+ * anything else showing it share one query.
+ *
+ * @since 6.0
+ */
+
+function md_archive_comment_total( $post_type ) {
+	static $totals = array();
+
+	$queried = get_queried_object();
+	$term_id = $queried instanceof WP_Term ? $queried->term_id : 0;
+	$key = implode( ',', (array) $post_type ) . ":$term_id";
+
+	if ( isset( $totals[$key] ) )
+		return $totals[$key];
+
+	$args = array(
+		'post_type' => $post_type,
+		'post_status' => 'publish',
+		'status' => 'approve',
+		'type' => 'comment',
+		'count' => true
+	);
+
+	if ( $term_id ) {
+		$post_ids = get_posts( array(
+			'post_type' => $post_type,
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'fields' => 'ids',
+			'tax_query' => array( array(
+				'taxonomy' => $queried->taxonomy,
+				'terms' => $term_id
+			) )
+		) );
+
+		if ( ! $post_ids )
+			return $totals[$key] = 0;
+
+		$args['post__in'] = $post_ids;
+	}
+
+	return $totals[$key] = (int) get_comments( $args );
+}
+
+/**
  * Emphasize the numbers in an Archive Meta value, leaving any
  * markup an item returns untouched.
  *

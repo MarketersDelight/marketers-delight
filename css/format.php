@@ -174,7 +174,7 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 
 .slim {
 	font-size: var(--md-font-size-small);
-	line-height: var(--md-line-height-tiny);
+	line-height: var(--md-line-height-small);
 }
 
 .slim :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
@@ -187,11 +187,6 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim .entry-title, .slim .title-wrap { row-gap: var(--md-small); }
 
 .slim .entry-title .wrap { column-gap: var(--md-half); }
-
-.slim .byline {
-	font-size: var(--md-font-size-tiny);
-	line-height: var(--md-line-height-tiny);
-}
 
 <?php if ( ! has_filter( 'md_filter_disable_format_fix' ) ) : ?>
 .format *:last-child { margin-block-end: 0; }

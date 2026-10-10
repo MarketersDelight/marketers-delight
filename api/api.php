@@ -552,13 +552,15 @@ class md_api {
 	 */
 
 	protected function loop_setting( $key, $default, $taxonomy = '', $term_id = 0 ) {
-		$value = md_post_type_field( array( 'loop', $key ), $default, $this->post_type );
+		$path = array( 'loop', $key );
+		$exclude_setting = $key === 'exclude_posts' || $key === 'exclude_terms';
+		$value = $taxonomy && $exclude_setting ? $default : md_post_type_field( $path, $default, $this->post_type );
 
 		if ( $taxonomy )
-			$value = md_taxonomy_field( array( 'loop', $key ), $value, $this->post_type, $taxonomy );
+			$value = md_taxonomy_field( $path, $value, $this->post_type, $taxonomy );
 
 		if ( $term_id )
-			$value = md_term_meta( array( 'loop', $key ), $term_id, $value );
+			$value = md_term_meta( $path, $term_id, $value );
 
 		return $value;
 	}

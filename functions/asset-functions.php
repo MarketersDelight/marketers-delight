@@ -461,3 +461,17 @@ function md_web_fonts( $show_type = null ) {
 
 	return isset( $show_type ) ? ( $fonts[$show_type] ?? '' ) : $fonts;
 }
+
+/**
+ * Scale a body text value down to Small (step 1) or Tiny (step 2). Small is 0.9
+ * of body, and Tiny is 0.85 of Small. Font sizes and line heights both use it,
+ * so Body, Small and Tiny always keep the same proportions.
+ *
+ * @since 6.0
+ */
+
+function md_text_scale( $value, $step = 1 ) {
+	$ratios = array( 1, 0.9, 0.9 * 0.85 );
+
+	return round( $value * $ratios[$step] );
+}

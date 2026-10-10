@@ -229,34 +229,7 @@ class md_archive_meta extends md_api {
 	 */
 
 	public function comment_count( $fields, $post_type ) {
-		$args = array(
-			'post_type' => $post_type,
-			'post_status' => 'publish',
-			'status' => 'approve',
-			'type' => 'comment',
-			'count' => true
-		);
-		$queried = get_queried_object();
-
-		if ( $queried instanceof WP_Term ) {
-			$post_ids = get_posts( array(
-				'post_type' => $post_type,
-				'post_status' => 'publish',
-				'posts_per_page' => -1,
-				'fields' => 'ids',
-				'tax_query' => array( array(
-					'taxonomy' => $queried->taxonomy,
-					'terms' => $queried->term_id
-				) )
-			) );
-
-			if ( ! $post_ids )
-				return $this->comment_count_text( $fields, 0 );
-
-			$args['post__in'] = $post_ids;
-		}
-
-		return $this->comment_count_text( $fields, (int) get_comments( $args ) );
+		return $this->comment_count_text( $fields, md_archive_comment_total( $post_type ) );
 	}
 
 	/**
