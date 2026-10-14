@@ -99,7 +99,7 @@
 	gap: var(--md-third);
 }
 
-.author-link:not(:last-child) { margin-inline-end: var(--md-small); }
+.author-links .author-link:not(:last-child) { margin-inline-end: var(--md-small); }
 
 .author-link.twitter .circle-icon {
 	background-color: #000;
@@ -112,7 +112,7 @@
 
 @media all and (max-width: 700px) {
 	.author-links { flex-flow: wrap; }
-	.author-link { flex-basis: calc(50% - var(--md-half)); }
+	.author-links .author-link { flex-basis: calc(50% - var(--md-half)); }
 }
 
 /* PAGINATION */

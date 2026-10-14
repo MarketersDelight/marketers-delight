@@ -95,13 +95,13 @@
 	color: var(--md-site-text-contrast);
 	cursor: default;
 	display: none;
-	font-size: 0.75em;
+	font-size: var(--md-font-size-tiny);
 	gap: var(--md-third);
 	justify-content: center;
-	line-height: 1;
+	line-height: var(--md-line-height-tiny);
 	padding: var(--md-third);
 	position: absolute;
-	width: 160px;
+	width: calc(var(--md-triple) * 2);
 }
 
 .tooltip:after {

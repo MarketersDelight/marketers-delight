@@ -162,16 +162,11 @@ class md_files {
 			$this->protect_directory( $uploads_dir, $wp_filesystem );
 		}
 
-		$dropin_id = pathinfo( $upload['name'], PATHINFO_FILENAME );
-		if ( ! preg_match( '/^[a-z0-9_-]+$/', $dropin_id ) )
-			wp_send_json_error( __( 'The ZIP filename must match the Drop-in folder name.', 'md' ), 400 );
-
 		require_once get_template_directory() . '/admin/upgrade/dropin-upgrader.php';
 		$upgrader = new MD_Dropin_Upgrader( new WP_Upgrader_Skin() );
 		ob_start();
 		$result = $upgrader->install( $upload['tmp_name'], array(
-			'dropin' => $dropin_id,
-			'overwrite_package' => $wp_filesystem->exists( "$uploads_dir/$dropin_id" )
+			'overwrite_package' => true
 		) );
 		ob_end_clean();
 
@@ -179,6 +174,8 @@ class md_files {
 			wp_send_json_error( $result->get_error_message(), 400 );
 		if ( ! $result )
 			wp_send_json_error( __( 'Could not install the Drop-in.', 'md' ), 500 );
+
+		$dropin_id = $upgrader->installed_dropin;
 
 		$dropins = md_dropins_setting();
 

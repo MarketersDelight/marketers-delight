@@ -164,13 +164,6 @@
 	.entry .cover, .content .page-title.cover { padding-inline: var(--md-mid); }
 }
 
-@media (max-width: 600px) {
-	.byline {
-		font-size: var(--md-font-size-tiny);
-		line-height: var(--md-line-height-tiny);
-	}
-}
-
 @media (max-width: 800px) {
 	.image-title .featured-media { text-align: center; }
 }

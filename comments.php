@@ -8,7 +8,7 @@
 
 		<h3 class="title"><?php echo md_icon( 'chat', array( 'classes' => 'byline-item-icon' ) ); ?> <?php echo sprintf( _nx( '1 comment', '%1$s comments', get_comments_number(), 'comments title', 'md' ), number_format_i18n( get_comments_number() ) ); ?></h3>
 
-		<a href="#respond" class="button button-small gray"><?php echo md_icon( 'plus' ) . __( 'add comment', 'md' ); ?></a>
+		<a href="#respond" class="button button-small gray"><?php echo md_icon( 'plus' ) . __( 'add', 'md' ) . '<span class="show-desktop"> ' . __( 'comment', 'md' ) . '</span>'; ?></a>
 
 	</div>
 

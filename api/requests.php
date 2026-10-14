@@ -409,8 +409,7 @@ class md_requests {
 
 		$upgrader = new MD_Dropin_Upgrader( new Dropin_Installer_Skin( compact( 'type', 'title', 'nonce', 'url', 'overwrite' ) ) );
 		$result = $upgrader->install( $file_upload->package, array(
-			'overwrite_package' => $overwrite,
-			'dropin' => str_replace( '.zip', '', $filename )
+			'overwrite_package' => $overwrite
 		) );
 
 		if ( $result || is_wp_error( $result ) )

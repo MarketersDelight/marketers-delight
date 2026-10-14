@@ -137,11 +137,7 @@
 		transform: translateY(0);
 		visibility: visible;
 	}
-	.sub-menu .menu-item a {
-		font-size: var(--md-font-size-tiny);
-		line-height: var(--md-line-height-tiny);
-		padding-block: var(--md-third);
-	}
+	.sub-menu .menu-item a { padding-block: var(--md-third); }
 	/* SCROLL */
 	.menu-scroller .menu { display: flex; }
 	.menu-scroller .menu > .menu-item {

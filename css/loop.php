@@ -35,6 +35,13 @@
 
 .loop.has-mobile-columns { --md-columns-mobile: var(--md-loop-columns-mobile, 2); }
 
+.loop.columns > .entry {
+	display: flex;
+	flex-direction: column;
+}
+
+.loop.columns > .entry > .post-footer { margin-block-start: auto; }
+
 .archive-sections-before-loop { margin-block-end: var(--md-single-x); }
 
 .archive-sections-after-loop { margin-block-start: var(--md-single-x); }

@@ -24,6 +24,8 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 	public $bulk = false;
 	public $new_dropin_data = array();
 	private $expected_dropin = '';
+	private $staged_package = '';
+	public $installed_dropin = '';
 
 	/**
 	 * Set strings for various parts of the Upgrader interface (thanks, Core!)
@@ -157,16 +159,39 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 			'clear_update_cache' => true,
 			'overwrite_package' => false
 		);
+
 		$parsed_args = wp_parse_args( $args, $defaults );
-		$dropin_slug = $parsed_args['dropin'] ?? '';
 
-		if ( ! is_string( $dropin_slug ) || ! preg_match( '/^[a-z0-9_-]+$/', $dropin_slug ) )
-			return new WP_Error( 'invalid_dropin', __( 'Invalid Drop-in package name.', 'md' ) );
-
-		$this->expected_dropin = $dropin_slug;
+		$this->installed_dropin = $this->expected_dropin = '';
 
 		$this->init();
 		$this->install_strings();
+
+		$connected = $this->fs_connect( array( WP_CONTENT_DIR, MD_INSTALLED_DROPINS ) );
+
+		if ( ! $connected || is_wp_error( $connected ) )
+			return $connected;
+
+		$working_directory = parent::unpack_package( $package, false );
+
+		if ( is_wp_error( $working_directory ) )
+			return $working_directory;
+
+		global $wp_filesystem;
+
+		$directory = str_replace( trailingslashit( $wp_filesystem->wp_content_dir() ), trailingslashit( WP_CONTENT_DIR ), $working_directory );
+
+		$dropin_slug = $this->discover_package( $directory );
+
+		if ( is_wp_error( $dropin_slug ) ) {
+			$wp_filesystem->delete( $working_directory, true );
+
+			return $dropin_slug;
+		}
+
+		$this->expected_dropin = $dropin_slug;
+		$this->installed_dropin = $dropin_slug;
+		$this->staged_package = $working_directory;
 
 		add_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 
@@ -185,14 +210,65 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 
 		remove_filter( 'upgrader_source_selection', array( $this, 'check_package' ) );
 
+		if ( $wp_filesystem->exists( $working_directory ) )
+			$wp_filesystem->delete( $working_directory, true );
+
+		$this->staged_package = '';
+
 		if ( ! $result || is_wp_error( $result ) )
 			return $result;
 
-		if ( $parsed_args['overwrite_package'] ) {
+		if ( $parsed_args['overwrite_package'] )
 			do_action( 'upgrader_overwrote_package', $package, $this->new_dropin_data, 'dropin' );
-		}
 
 		return true;
+	}
+
+	/**
+	 * Identify a manual upload by its single top-level Drop-in folder.
+	 *
+	 * @since 6.0.1
+	 *
+	 * @param string $directory Local path to the unpacked ZIP contents.
+	 * @return string|WP_Error Validated Drop-in slug or a package validation error.
+	 */
+
+	private function discover_package( $directory ) {
+		$entries = is_dir( $directory ) && ! is_link( $directory ) ? scandir( $directory ) : false;
+		$entries = $entries === false ? array() : array_values( array_diff( $entries, array( '.', '..' ) ) );
+
+		if ( count( $entries ) !== 1 )
+			return new WP_Error( 'invalid_dropin_structure', __( 'The ZIP must contain one Drop-in folder.', 'md' ) );
+
+		$slug = $entries[0];
+		$folder = trailingslashit( $directory ) . $slug;
+
+		if ( ! preg_match( '/^[a-z0-9_-]+$/', $slug ) || ! is_dir( $folder ) || is_link( $folder ) )
+			return new WP_Error( 'invalid_dropin_structure', __( 'The ZIP must contain one valid Drop-in folder.', 'md' ) );
+
+		$data = md_validate_dropin_package( $folder, $slug );
+
+		if ( is_wp_error( $data ) )
+			return $data;
+
+		return $slug;
+	}
+
+	/**
+	 * Reuse the manual upload already unpacked for slug discovery.
+	 *
+	 * @since 6.0.1
+	 */
+
+	public function unpack_package( $package, $delete_package = true ) {
+		if ( $this->staged_package ) {
+			$directory = $this->staged_package;
+			$this->staged_package = '';
+
+			return $directory;
+		}
+
+		return parent::unpack_package( $package, $delete_package );
 	}
 
 	/**

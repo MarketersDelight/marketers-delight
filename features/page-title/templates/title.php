@@ -59,6 +59,9 @@ else {
 
 	md_description( $context );
 
+	if ( isset( $args['byline'] ) )
+		md_byline( 'after_title', $args );
+
 	md_cta( $context );
 
 	if ( $context == 'page' )

@@ -16,7 +16,7 @@ if ( $type == 'media' ) :
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
 
-	if ( $upload_url )
+	if ( $multiple ? ! empty( $upload_ids ) : $upload_url )
 		$classes[] = 'has-upload';
 
 	$classes[] = $multiple ? 'is-multiple' : 'is-single';
