@@ -163,12 +163,10 @@ class md_files {
 		}
 
 		require_once get_template_directory() . '/admin/upgrade/dropin-upgrader.php';
-		$upgrader = new MD_Dropin_Upgrader( new WP_Upgrader_Skin() );
-		ob_start();
+		$upgrader = new MD_Dropin_Upgrader( new WP_Ajax_Upgrader_Skin() );
 		$result = $upgrader->install( $upload['tmp_name'], array(
 			'overwrite_package' => true
 		) );
-		ob_end_clean();
 
 		if ( is_wp_error( $result ) )
 			wp_send_json_error( $result->get_error_message(), 400 );
