@@ -9,6 +9,7 @@
 class md_enqueue {
 
 	private $compiled;
+	private $upgraded_this_request = false;
 
 	/**
 	 * Set the compiled assets API.
@@ -43,6 +44,7 @@ class md_enqueue {
 		add_action( 'init', array( $this, 'compile' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
+		add_action( 'wp_loaded', array( $this, 'compile_after_upgrade' ), 100 );
 
 		if ( ! function_exists( 'render_block' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
 			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
@@ -263,19 +265,45 @@ class md_enqueue {
 	}
 
 	/**
-	 * Recompile assets after the active theme is installed or upgraded.
+	 * Schedule compilation after the active theme is installed or upgraded.
 	 *
 	 * @since 6.0
+	 * @since 6.0.1 Defer compilation until a fresh request loads the updated code.
 	 */
 
 	public function compile_on_upgrade( $upgrader, $options ) {
 		if ( ( $options['type'] ?? '' ) !== 'theme' )
 			return;
 
+		if ( empty( $upgrader->result ) || is_wp_error( $upgrader->result ) )
+			return;
+
 		$themes = (array) ( $options['themes'] ?? array() );
 		$themes[] = $upgrader->result['destination_name'] ?? '';
 
-		if ( in_array( get_template(), $themes, true ) )
-			md_compile();
+		if ( in_array( get_template(), $themes, true ) ) {
+			$this->upgraded_this_request = true;
+			update_option( 'md_compile_after_upgrade', true, false );
+		}
+	}
+
+	/**
+	 * Compile upgraded assets after the updated theme and Drop-ins have loaded.
+	 *
+	 * @since 6.0.1
+	 *
+	 * @return bool|WP_Error|null Compilation result, or null when no rebuild is due.
+	 */
+
+	public function compile_after_upgrade() {
+		if ( $this->upgraded_this_request || ! get_option( 'md_compile_after_upgrade' ) )
+			return;
+
+		$result = md_compile();
+
+		if ( $result === true )
+			delete_option( 'md_compile_after_upgrade' );
+
+		return $result;
 	}
 }
