@@ -86,7 +86,7 @@ function md_get_link( $fields, $p = '' ) {
 		$popup_args = wp_parse_args( $fields['popup_args'], array( 'id' => $fields['popup'] ) );
 		$popup_args['id'] = $fields['popup'];
 		$attrs .= $h === 'button' ? ' type="button"' : '';
-		$attrs .= ' data-popup="popup_' . esc_attr( $fields['popup'] ) . '"';
+		$attrs .= ' data-popup="popup_' . esc_attr( sanitize_key( $fields['popup'] ) ) . '"';
 		$classes[] = 'popup-trigger';
 		md_popup( $popup_args );
 	}

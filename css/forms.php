@@ -15,13 +15,18 @@ input, textarea {
 
 input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea,
 .form-icons .input-field {
+	--md-text: var(--md-form-text);
+	--md-text-muted: var(--md-form-text-muted);
 	background-color: var(--md-form-background);
+	color: var(--md-text);
 	border-radius: var(--md-border-radius);
-	border: 1px solid rgba(0, 0, 0, 0.2);
+	border: 1px solid var(--md-form-border);
 	position: relative;
 	width: 100%;
 	-webkit-appearance: none;
 }
+
+:is(input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea)::placeholder { color: var(--md-text-muted); }
 
 input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);

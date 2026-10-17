@@ -328,7 +328,7 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	$position = isset( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : '';
 
 	if ( $position && ! in_array( $position, array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $position ) );
+		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => is_singular() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : '' ) ) );
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';

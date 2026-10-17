@@ -105,7 +105,7 @@
 .box-entry > .entry.image-below > :not(.loop) > .featured-media,
 .box-entry > .entry.image-below > :not(.loop) > .featured-media + .the-content { border-radius: 0; }
 
-.box, .cover, .featured-media img { box-shadow: var(--md-box-shadow); }
+.box, .cover { box-shadow: var(--md-box-shadow); }
 
 .box-entry > .entry,
 .box-group,

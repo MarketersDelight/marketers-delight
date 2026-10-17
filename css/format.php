@@ -85,7 +85,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 .list-links li a,
 .list li:not(:last-child),
 .list > :is(ul, ol):not(:last-child) {
-	border-block-end: 1px solid rgba(0, 0, 0, 0.15);
+	border-block-end: 1px solid var(--md-border);
 	padding-block-end: var(--md-half);
 }
 

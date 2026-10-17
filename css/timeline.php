@@ -74,7 +74,9 @@
 
 .single .loop-timeline > .entry > :is(.timeline-wrap, .author-box):not(:last-child) { margin-block-end: var(--md-single); }
 
-.loop-timeline:not(.content) > .entry:not(:last-child) { margin-block-end: var(--timeline-gap); }
+.loop-timeline:not(.content, .columns) > .entry:not(:last-child) { margin-block-end: var(--timeline-gap); }
+
+.loop-timeline.columns:not(.content) { row-gap: var(--timeline-gap); }
 
 .loop-timeline .timeline-wrap:before,
 .loop-timeline:not(.content) > .entry:last-child > .timeline-wrap:after,

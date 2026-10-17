@@ -151,8 +151,14 @@
 	--md-tab-active-bg: var(--md-content-box-background);
 	--md-tab-active-border: var(--md-border);
 	--md-tab-active-weight: var(--md-bold);
-	margin-block-end: var(--md-single);
+	margin-block-end: calc(var(--md-single) - 1px);
+	overflow-x: auto;
+	padding-block-end: 1px;
+	scrollbar-width: none;
+	white-space: nowrap;
 }
+
+.tabs::-webkit-scrollbar { display: none; }
 
 .tabs > .tab {
 	align-items: center;
@@ -180,12 +186,12 @@
 	border-block-end: 1px solid var(--md-tab-active-bg);
 	color: var(--md-tab-active-color);
 	font-weight: var(--md-tab-active-weight);
-	margin-block-end: -1px;
 	position: relative;
+	top: 1px;
 	z-index: 1;
 }
 
-.tabs ~ .tab-panel { border-start-start-radius: 0; }
+.tabs ~ .tab-panel { border-start-start-radius: 0; margin-block-start: -1px; }
 
 .tab { cursor: pointer; }
 

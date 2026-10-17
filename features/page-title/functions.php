@@ -150,7 +150,7 @@ function md_title( $context = 'post', $args = array() ) {
 	// Featured image related classes
 
 	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media_position, $title_images, true ) ) ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $media_position ) );
+		$classes = array_merge( $classes, md_get_image_position_classes( $media_position, array( 'mobile' => $media['mobile'] ?? '' ) ) );
 	elseif ( ! $media && $context == 'post' && empty( $cover['position'] ) )
 		$classes[] = 'no-media';
 

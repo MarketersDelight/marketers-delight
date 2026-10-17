@@ -52,6 +52,10 @@ class md_featured_media extends md_api {
 				'upload_type' => 'media'
 			),
 			'image_width' => array( 'type' => 'number' ),
+			'mobile' => array(
+				'type' => 'select',
+				'options' => array( 'beside', 'hide' )
+			),
 			'video' => array( 'type' => 'url' ),
 			'custom_html' => array( 'type' => 'code' )
 		);

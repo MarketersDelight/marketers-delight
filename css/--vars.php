@@ -111,7 +111,10 @@
 	--md-content-box-links: <?php echo $colors['content']['box_link_color']; ?>;
 	--md-content-border: <?php echo $colors['content']['border_color']; ?>;
 	--md-page-cover-overlay: <?php echo $colors['content']['page_cover_overlay_color']; ?>;
-	--md-form-background: #fff;
+	--md-form-background: var(--md-content-box-background);
+	--md-form-text: var(--md-content-box-text);
+	--md-form-text-muted: var(--md-content-box-text-muted);
+	--md-form-border: var(--md-content-box-border);
 	--md-tag-background: var(--md-color-tertiary);
 
 	--md-sidebar-background: <?php echo ! empty( $colors['sidebar']['bg_color'] ) ? $colors['sidebar']['bg_color'] : 'transparent'; ?>;

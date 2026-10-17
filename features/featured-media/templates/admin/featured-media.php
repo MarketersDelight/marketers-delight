@@ -29,6 +29,21 @@
 	</div>
 
 	<div class="col">
+		<?php $this->fields->field( 'mobile', array(
+			'type' => 'select',
+			'label' => __( 'Position on mobile', 'md' ),
+			'empty_label' => __( 'Stack (default)', 'md' ),
+			'options' => array(
+				'beside' => __( 'Keep beside', 'md' ),
+				'hide' => __( 'Hide', 'md' )
+			)
+		) ); ?>
+	</div>
+
+</div>
+
+<div class="columns-3 columns-single mt-half">
+	<div class="col">
 		<?php $this->fields->field( 'image_width', array(
 			'type' => 'range',
 			'label' => __( 'Width', 'md' ),
@@ -36,7 +51,6 @@
 			'max' => '550'
 		) ); ?>
 	</div>
-
 </div>
 
 <div id="<?php echo $prefix; ?>_featured_media_image" class="md-conditional-item md-conditional-image mt-half" style="display: <?php echo in_array( $media_type, array( '', 'image' ) ) ? 'block' : 'none'; ?>">

@@ -63,7 +63,7 @@ cookie: {
 tabs: function() {
 	document.querySelectorAll( '.tabbed' ).forEach( function( group ) {
 		const tabs = group.querySelectorAll( '.tab' ),
-			  panels = group.querySelectorAll( '.tab-panel' );
+			  panels = Array.from( group.querySelectorAll( '.tab-panel' ) );
 		const activate = function( index ) {
 			tabs.forEach( function( tab, i ) {
 				tab.classList.toggle( 'active', i === index );
@@ -73,12 +73,32 @@ tabs: function() {
 			panels.forEach( function( panel, i ) {
 				panel.classList.toggle( 'active', i === index );
 			} );
+			const bar = tabs[ index ] && tabs[ index ].parentElement,
+				  t = bar && tabs[ index ].getBoundingClientRect(),
+				  b = bar && bar.getBoundingClientRect();
+			if ( bar && ( t.left < b.left || t.right > b.right ) )
+				bar.scrollLeft += t.left - b.left;
 		};
+		const open = function( hash ) {
+			const target = hash ? document.getElementById( hash.slice( 1 ) ) : null;
+			const index = target ? panels.indexOf( target.closest( '.tab-panel' ) ) : -1;
+			if ( index < 0 )
+				return false;
+			activate( index );
+			( target === panels[ index ] ? group : target ).scrollIntoView();
+			return true;
+		};
+		window.addEventListener( 'hashchange', function() {
+			open( location.hash );
+		} );
 		tabs.forEach( function( tab, i ) {
 			tab.setAttribute( 'role', 'tab' );
 			tab.onclick = function( e ) {
 				e.preventDefault();
 				activate( i );
+				const href = tab.getAttribute( 'href' );
+				if ( href && href.startsWith( '#' ) )
+					history.replaceState( null, '', location.pathname + location.search + href );
 			};
 			tab.onkeydown = function( e ) {
 				const step = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[ e.key ];
@@ -93,7 +113,8 @@ tabs: function() {
 		panels.forEach( function( panel ) {
 			panel.setAttribute( 'role', 'tabpanel' );
 		} );
-		activate( Math.max( 0, Array.from( tabs ).findIndex( function( tab ) { return tab.classList.contains( 'active' ); } ) ) );
+		if ( ! open( location.hash ) )
+			activate( Math.max( 0, Array.from( tabs ).findIndex( function( tab ) { return tab.classList.contains( 'active' ); } ) ) );
 	} );
 },
 clipboard: function() {

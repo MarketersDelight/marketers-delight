@@ -44,13 +44,14 @@ function md_featured_media( $context = 'post', $args = array() ) {
 		$size = $args['size'];
     elseif ( isset( $args['featured_image_size'] ) )
         $size = $args['featured_image_size'];
-	elseif ( ! empty( $loop['featured_image_size'] ) )
+	elseif ( $context === 'post' && ! empty( $loop['featured_image_size'] ) )
 		$size = $loop['featured_image_size'];
     elseif ( is_author() )
 		$size = 250;
 
 	if ( ! empty( $media['image_width'] ) ) {
 		$image_width = 'min(' . $media['image_width'] . 'px, 100%)';
+		$style['vars']['md-media-width'] = absint( $media['image_width'] ) . 'px';
 
 		if ( $type !== 'image' )
 			$style['max_width'] = $image_width;
@@ -85,8 +86,9 @@ function md_featured_media( $context = 'post', $args = array() ) {
  * @since 6.0
  */
 
-function md_get_image_position_classes( $position ) {
+function md_get_image_position_classes( $position, $args = array() ) {
 	$classes = array();
+	$mobile = $args['mobile'] ?? '';
 	$inline_images = array( 'left', 'right' );
 	$full_images = array( 'center', 'above_headline', 'below_headline' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
@@ -103,6 +105,9 @@ function md_get_image_position_classes( $position ) {
 		$classes[] = 'image-full';
 		$classes[] = 'image-' . str_replace( '_headline', '', $position );
 	}
+
+	if ( $mobile === 'hide' || ( $mobile === 'beside' && in_array( $position, array( 'left', 'right', 'title_left', 'title_right' ), true ) ) )
+		$classes[] = "mobile-{$mobile}";
 
 	return $classes;
 }
