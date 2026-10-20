@@ -22,8 +22,8 @@ class md_design_colors {
 		'divider' => '#CCCCCC',
 		'highlight' => '#FFFBCC',
 		'text-main' => '#1E1E1E',
-		'text-secondary' => '#777777',
-		'button' => '#22A340',
+		'text-secondary' => '#757575',
+		'button' => '#1C8735',
 		'white' => '#FFFFFF'
 	);
 
@@ -31,7 +31,8 @@ class md_design_colors {
 	 * Semantic color roles. Each field has one unresolved default: a palette
 	 * key, an independent color, or an empty inherited value. An `inherit` array
 	 * points to another role in this tree and is the single source of truth for
-	 * both color resolution and the admin's inherited label.
+	 * both color resolution and the admin's inherited label. An `auto` array
+	 * points to the background a text role sits on (see auto_text()).
 	 *
 	 * @since 6.0
 	 */
@@ -82,7 +83,8 @@ class md_design_colors {
 				),
 				'text_color' => array(
 					'label' => 'Text',
-					'default' => '#FFFFFF'
+					'default' => '#FFFFFF',
+					'auto' => array( 'actions', 'primary', 'bg_color' )
 				)
 			),
 			'secondary' => array(
@@ -92,7 +94,8 @@ class md_design_colors {
 				),
 				'text_color' => array(
 					'label' => 'Text',
-					'default' => '#FFFFFF'
+					'default' => '#FFFFFF',
+					'auto' => array( 'actions', 'secondary', 'bg_color' )
 				)
 			),
 			'status' => array(
@@ -102,7 +105,7 @@ class md_design_colors {
 				),
 				'warning_color' => array(
 					'label' => 'Warning',
-					'default' => '#C95100'
+					'default' => '#C75000'
 				)
 			)
 		),
@@ -113,7 +116,8 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E'
+				'default' => '#1E1E1E',
+				'auto' => array( 'header', 'bg_color' )
 			),
 			'border_color' => array(
 				'label' => 'Border',
@@ -143,7 +147,8 @@ class md_design_colors {
 				'link_color' => array(
 					'label' => 'Links',
 					'default' => '',
-					'inherit' => array( 'header', 'text_color' )
+					'inherit' => array( 'header', 'text_color' ),
+					'auto' => array( 'header', 'submenu', 'bg_color' )
 				),
 				'link_hover_color' => array(
 					'label' => 'Links Hover',
@@ -175,11 +180,12 @@ class md_design_colors {
 			),
 			'box_text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E'
+				'default' => '#1E1E1E',
+				'auto' => array( 'content', 'box_bg_color' )
 			),
 			'box_muted_text_color' => array(
 				'label' => 'Muted Text',
-				'default' => '#777777'
+				'default' => '#757575'
 			),
 			'box_link_color' => array(
 				'label' => 'Links',
@@ -197,11 +203,13 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#777777'
+				'default' => '#757575',
+				'auto' => array( 'sidebar', 'bg_color' )
 			),
 			'title_color' => array(
 				'label' => 'Title',
-				'default' => '#1E1E1E'
+				'default' => '#1E1E1E',
+				'auto' => array( 'sidebar', 'bg_color' )
 			),
 			'title_link_color' => array(
 				'label' => 'Title Link',
@@ -221,12 +229,14 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E'
+				'default' => '#1E1E1E',
+				'auto' => array( 'panel', 'bg_color' )
 			),
 			'link_color' => array(
 				'label' => 'Links',
 				'default' => '',
-				'inherit' => array( 'panel', 'text_color' )
+				'inherit' => array( 'site', 'muted_text_color' ),
+				'auto' => array( 'panel', 'bg_color' )
 			),
 			'border_color' => array(
 				'label' => 'Border',
@@ -240,7 +250,8 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E'
+				'default' => '#1E1E1E',
+				'auto' => array( 'footer', 'bg_color' )
 			),
 			'border_color' => array(
 				'label' => 'Border',
@@ -258,7 +269,8 @@ class md_design_colors {
 			),
 			'link_color' => array(
 				'label' => 'Links',
-				'default' => '#777777'
+				'default' => '#757575',
+				'auto' => array( 'footer', 'bg_color' )
 			)
 		)
 	);
@@ -529,6 +541,45 @@ class md_design_colors {
 			return $this->inherit_value( $colors, $role['inherit'], $visited );
 
 		return '';
+	}
+
+	/**
+	 * Keep unsaved text colors readable. When a role with an `auto` background
+	 * is as light or as dark as that background, it switches to the site's
+	 * text or contrast text color. Checks read $resolved; changes go to $colors.
+	 *
+	 * @since 6.0.3
+	 */
+
+	public function auto_text( $colors, $resolved, $roles = null, $path = array() ) {
+		foreach ( $roles ?? $this->roles as $key => $role ) {
+			$role_path = array_merge( $path, array( $key ) );
+
+			if ( ! array_key_exists( 'default', $role ) )
+				$colors = $this->auto_text( $colors, $resolved, $role, $role_path );
+			elseif ( ! empty( $role['auto'] ) && ! md_setting( array_merge( array( 'colors' ), $role_path ) ) ) {
+				$bg = $this->path_value( $resolved, $role['auto'] );
+				$light = md_color_is_light( $bg );
+
+				if ( $bg && $light === md_color_is_light( $this->path_value( $resolved, $role_path ) ) )
+					$colors = $this->path_set( $colors, $role_path, $light ? $resolved['site']['text_color'] : $resolved['site']['contrast_text_color'] );
+			}
+		}
+
+		return $colors;
+	}
+
+	/**
+	 * Return a copy of a nested array with one array-key path set to a value.
+	 *
+	 * @since 6.0.3
+	 */
+
+	private function path_set( $values, $path, $value ) {
+		$key = array_shift( $path );
+		$values[$key] = $path ? $this->path_set( $values[$key] ?? array(), $path, $value ) : $value;
+
+		return $values;
 	}
 
 	/**

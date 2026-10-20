@@ -170,7 +170,7 @@ class md_fields extends md_fields_render {
 
 		if ( $args['type'] === 'builder' && ! $has_option && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
 			$option = is_array( $args['defaults'] ) ? $args['defaults'] : array();
-		elseif ( ! $has_option && is_array( $field ) && array_key_exists( 'default', $args ) )
+		elseif ( ! $has_option && is_array( $field ) && array_key_exists( 'default', $args ) && $args['type'] !== 'color' )
 			$option = $args['default'];
 
 		// Builder rows already know their displayed values, even before saving.

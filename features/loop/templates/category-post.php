@@ -2,7 +2,7 @@
 $h = md_loop_heading( 2, $loop );
 $h_class = $h !== 'h2' ? ' h2' : '';
 $category_identity = md_category_identity( $category );
-$category_style = $category_identity['color'] ? md_style( array( 'vars' => array( 'md-category-color' => $category_identity['color'] ) ) ) : '';
+$category_style = $category_identity['color'] ? md_style( array( 'vars' => array( 'md-category-color' => $category_identity['color'], 'md-category-text' => $category_identity['text'] ) ) ) : '';
 $category_description = term_description( $category->term_id );
 $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category ) ) );
 ?>

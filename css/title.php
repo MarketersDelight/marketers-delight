@@ -49,7 +49,7 @@
 
 .square-icon.category-title-icon {
 	background-color: var(--md-category-color, var(--md-color-primary));
-	color: var(--md-site-text-contrast);
+	color: var(--md-category-text, var(--md-site-text-contrast));
 	font-size: var(--md-h4);
 }
 

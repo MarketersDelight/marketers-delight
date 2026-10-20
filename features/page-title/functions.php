@@ -75,7 +75,8 @@ function md_get_title( $context = 'post' ) {
 }
 
 /**
- * Get a category's validated icon and color.
+ * Get a category's validated icon and color, plus the text color that
+ * reads best on that color.
  *
  * @since 6.0
  */
@@ -84,14 +85,15 @@ function md_category_identity( $term = null ) {
 	$term = $term ?: get_queried_object();
 
 	if ( ! $term instanceof WP_Term )
-		return array( 'icon' => '', 'color' => '' );
+		return array( 'icon' => '', 'color' => '', 'text' => '' );
 
 	$icon = md_term_meta( array( 'hero', 'archives_icon' ), $term->term_id, '' );
 	$color = md_color_hex( md_term_meta( array( 'hero', 'archives_color' ), $term->term_id, '' ) );
 
 	return array(
 		'icon' => $icon && isset( md_icons()[$icon] ) ? $icon : '',
-		'color' => $color
+		'color' => $color,
+		'text' => md_contrast_text( $color )
 	);
 }
 
@@ -143,8 +145,10 @@ function md_title( $context = 'post', $args = array() ) {
 		if ( $category_identity['icon'] )
 			$args['category_icon'] = $category_identity['icon'];
 
-		if ( $category_identity['color'] )
+		if ( $category_identity['color'] ) {
 			$style['vars']['md-category-color'] = $category_identity['color'];
+			$style['vars']['md-category-text'] = $category_identity['text'];
+		}
 	}
 
 	// Layout type classes

@@ -94,6 +94,20 @@ function md_color_is_light( $color ) {
 }
 
 /**
+ * Get the site text color that reads best on a background: Text on light
+ * backgrounds, Contrast Text on dark ones. No background returns nothing.
+ *
+ * @since 6.0.3
+ */
+
+function md_contrast_text( $bg ) {
+	if ( ! $bg )
+		return '';
+
+	return md_color_is_light( $bg ) ? 'var(--md-site-text)' : 'var(--md-site-text-contrast)';
+}
+
+/**
  * Read a block's colors into one setting per color: a palette slug or a hex
  * value. Older blocks saved a palette pick beside the color as a slug
  * ({color}Slug) or a class ({color}Class); those win and are removed. An

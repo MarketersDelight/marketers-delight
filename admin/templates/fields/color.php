@@ -34,7 +34,11 @@ if ( ! $resolved_default && $palette_default )
 if ( ! $palette_value && ! empty( $palette ) )
 	$palette_value = key( $palette );
 
-if ( ! empty( $args['fallback_label'] ) ) {
+if ( ! empty( $args['auto_label'] ) ) {
+	$default_name = __( 'Auto', 'md' );
+	$default_summary = $args['auto_label'];
+}
+elseif ( ! empty( $args['fallback_label'] ) ) {
 	$default_name = $args['fallback_label'];
 	$default_summary = sprintf( __( 'Inherits: %s', 'md' ), $args['fallback_label'] );
 }
@@ -52,7 +56,8 @@ else {
 }
 
 $swatch = $resolved_default;
-$source_title = __( 'Theme default', 'md' );
+$default_title = ! empty( $args['auto_label'] ) ? __( 'Auto', 'md' ) : __( 'Theme default', 'md' );
+$source_title = $default_title;
 $source_meta = $default_summary;
 
 if ( $mode === 'palette' && isset( $palette[$palette_value] ) ) {
@@ -88,7 +93,7 @@ $menu_id = "{$id}_source_menu";
 		<div class="md-color-source-section">
 			<span class="md-color-source-heading"><?php echo __( 'Theme default', 'md' ); ?></span>
 
-			<button type="button" class="md-color-source-option md-color-source-default<?php echo $mode === 'default' ? ' is-selected' : ''; ?>" data-mode="default" data-hex="<?php echo esc_attr( $resolved_default ); ?>" data-summary-title="<?php echo esc_attr( __( 'Theme default', 'md' ) ); ?>" data-summary-meta="<?php echo esc_attr( $default_summary ); ?>" aria-pressed="<?php echo $mode === 'default' ? 'true' : 'false'; ?>">
+			<button type="button" class="md-color-source-option md-color-source-default<?php echo $mode === 'default' ? ' is-selected' : ''; ?>" data-mode="default" data-hex="<?php echo esc_attr( $resolved_default ); ?>" data-summary-title="<?php echo esc_attr( $default_title ); ?>" data-summary-meta="<?php echo esc_attr( $default_summary ); ?>" aria-pressed="<?php echo $mode === 'default' ? 'true' : 'false'; ?>">
 				<span class="md-color-source-option-swatch<?php echo ! $resolved_default ? ' is-empty' : ''; ?>"<?php echo $resolved_default ? md_style( array( 'bg_color' => $resolved_default ) ) : ''; ?>></span>
 				<span class="md-color-source-copy">
 					<span class="md-color-source-title"><?php echo esc_html( $default_name ); ?></span>

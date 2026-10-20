@@ -112,7 +112,7 @@ select {
 
 .trigger-text { margin-inline-start: var(--md-small); }
 
-.hide-label .link-text, .hide-label .trigger-text { display: none; }
+.hide-label :is(.link-wrap, .link-name, .trigger-text) { display: none; }
 
 .toggle-search .trigger-search .trigger-icon:before,
 .toggle-menu .trigger-menu .trigger-icon:before { content: '\e810'; }
@@ -145,5 +145,5 @@ select {
 }
 
 @media (max-width: 900px) {
-	.hide-label-mobile .trigger-text { display: none; }
+	.hide-label-mobile :is(.link-wrap, .link-name, .trigger-text) { display: none; }
 }

@@ -56,7 +56,10 @@ foreach ( $visible_terms as $term ) {
 
 		if ( $identity['icon'] ) {
 			$icon_style = $identity['color'] ? md_style( array(
-				'vars' => array( 'md-category-color' => $identity['color'] )
+				'vars' => array(
+					'md-category-color' => $identity['color'],
+					'md-category-text' => $identity['text']
+				)
 			) ) : '';
 			$term_icon = '<span class="category-title-icon square-icon micro" aria-hidden="true"' . $icon_style . '>' . md_icon( $identity['icon'] ) . '</span>';
 		}

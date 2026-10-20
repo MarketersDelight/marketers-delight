@@ -120,6 +120,8 @@ function md_get_link( $fields, $p = '' ) {
 					$classes[] = $class;
 				elseif ( $hex = md_color_hex( $fields['color'] ) )
 					$styles['bg_color'] = $hex;
+
+				$styles['color'] = md_contrast_text( $fields['color'] );
 			}
 		}
 	}

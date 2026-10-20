@@ -67,14 +67,14 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '#FFFFFF', $colors['site']['contrast_text_color'] );
 		$this->assertSame( 'button', $colors['actions']['primary']['bg_color'] );
 		$this->assertSame( '#AE2525', $colors['actions']['status']['danger_color'] );
-		$this->assertSame( '#C95100', $colors['actions']['status']['warning_color'] );
+		$this->assertSame( '#C75000', $colors['actions']['status']['warning_color'] );
 		$this->assertSame( '#FFFFFF', $colors['header']['bg_color'] );
 		$this->assertSame( '', $colors['header']['menu']['link_color'] );
 		$this->assertSame( 'surface', $colors['content']['main_bg_color'] );
 		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
 		$this->assertSame( '', $colors['content']['box_border_color'] );
 		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
-		$this->assertSame( '#777777', $colors['content']['box_muted_text_color'] );
+		$this->assertSame( '#757575', $colors['content']['box_muted_text_color'] );
 		$this->assertSame( 'primary', $colors['content']['box_link_color'] );
 		$this->assertArrayNotHasKey( 'box_headline_color', $roles['content'] );
 		$this->assertArrayNotHasKey( 'box_headline_link_color', $roles['content'] );
@@ -97,7 +97,7 @@ class DesignTest extends MD_TestCase {
 		$colors = $this->colors->defaults();
 		$colors = $this->colors->resolve( $colors, $this->colors->active_palette() );
 
-		$this->assertSame( '#777777', $colors['content']['meta_color'] );
+		$this->assertSame( '#757575', $colors['content']['meta_color'] );
 		$this->assertSame( 'Muted Text', $this->colors->role_label( array( 'site', 'muted_text_color' ) ) );
 	}
 
@@ -214,7 +214,7 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '', $colors['sidebar']['bg_color'] );
 		$this->assertSame( '#404040', $colors['sidebar']['title_link_color'] );
 		$this->assertSame( '#303030', $colors['sidebar']['link_color'] );
-		$this->assertSame( '#505050', $colors['panel']['link_color'] );
+		$this->assertSame( '#202020', $colors['panel']['link_color'] );
 		$this->assertSame( '#909090', $colors['content']['box_border_color'] );
 		$this->assertSame( '#606060', $colors['content']['box_text_color'] );
 		$this->assertSame( '#707070', $colors['content']['box_muted_text_color'] );

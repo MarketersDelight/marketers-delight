@@ -43,7 +43,10 @@ class md_design {
 		// Resolve semantic color fallbacks and palette references.
 
 		$palette = $this->colors->active_palette();
-		$values['colors'] = $this->colors->resolve( $values['colors'], $palette );
+		$resolved = $this->colors->resolve( $values['colors'], $palette );
+		$colors = $this->colors->auto_text( $values['colors'], $resolved );
+		$resolved = $this->colors->resolve( $colors, $palette );
+		$values['colors'] = $this->colors->auto_text( $resolved, $resolved );
 
 		if ( empty( $values['logo']['site_title']['color'] ) )
 			$values['logo']['site_title']['color'] = $values['colors']['header']['text_color'];

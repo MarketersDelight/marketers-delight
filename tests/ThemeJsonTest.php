@@ -98,7 +98,7 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertCount( 8, $spacing );
 		$this->assertSame( '32px', $spacing['single']['size'] );
 		$this->assertSame( 'var:preset|border-radius|rounded', $button['border']['radius'] );
-		$this->assertSame( '#22A340', $button['color']['background'] );
+		$this->assertSame( '#1C8735', $button['color']['background'] );
 		$this->assertSame( 'var:preset|spacing|half', $button['spacing']['padding']['top'] );
 		$this->assertSame(
 			'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))',

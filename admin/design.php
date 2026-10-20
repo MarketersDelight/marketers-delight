@@ -12,6 +12,7 @@ class md_colors extends md_api {
 	private $colors;
 	private $fallbacks;
 	private $palette;
+	private $resolved;
 
 	/**
 	 * Register admin page.
@@ -22,6 +23,7 @@ class md_colors extends md_api {
 	public function register() {
 		$this->colors = new md_design_colors;
 		$this->palette = $this->colors->base_palette();
+
 		$fields = $this->build_color_fields( $this->colors->roles );
 		$fields['width']['site'] = array( 'type' => 'range' );
 		$fields['width']['content'] = array( 'type' => 'range' );
@@ -69,6 +71,7 @@ class md_colors extends md_api {
 		$options = $this->colors->roles;
 		$defaults = $this->design()->defaults();
 		$values = $this->design()->values();
+		$this->resolved = $values['colors'];
 		$this->fallbacks = $this->colors->inheritance( $values['colors'] );
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$this->palette = $this->colors->base_palette();
@@ -83,6 +86,7 @@ class md_colors extends md_api {
 		$site_width = $post_width + $layout_spacing + $sidebar_width + $gap;
 
 		$content_style = md_filter_loop_styles();
+
 		unset( $content_style['box'] );
 
 		include md_template( 'admin/design', true );
@@ -160,6 +164,16 @@ class md_colors extends md_api {
 
 		if ( ! empty( $options['inherit'] ) )
 			$args['fallback_label'] = __( $this->colors->role_label( $options['inherit'] ), 'md' );
+
+		if ( ! empty( $options['auto'] ) && in_array( md_setting( array_merge( array( 'colors' ), $path ) ), array( '', null ), true ) ) {
+			$auto = $this->resolved;
+
+			foreach ( $path as $key )
+				$auto = $auto[$key] ?? '';
+
+			$args['default'] = $auto;
+			$args['auto_label'] = __( 'Best contrast on background', 'md' );
+		}
 
 		$this->fields->field( $path, $args );
 	}
