@@ -29,7 +29,7 @@ cite { color: var(--md-text-muted); }
 
 sup { line-height: 1; }
 
-hr {
+hr, .wp-block-separator {
 	border: 0;
 	border-block-end: 1px solid rgba(255, 255, 255, 0.3);
 	border-block-start: 1px solid rgba(0, 0, 0, 0.1);
@@ -103,7 +103,21 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 	padding: var(--md-small);
 }
 
-.text-center ul, .text-center ol, .text-center [class^="list"] { text-align: left; }
+.text-center [class^="list"] { text-align: left; }
+
+:is(.text-center, .has-text-align-center) :is(ul, ol):not([class^="list"], li > *),
+:is(ul, ol):is(.text-center, .has-text-align-center) {
+	margin-inline: auto;
+	text-align: start;
+	width: fit-content;
+}
+
+:is(.text-right, .has-text-align-right) :is(ul, ol):not([class^="list"], li > *),
+:is(ul, ol):is(.text-right, .has-text-align-right) {
+	margin-inline: auto 0;
+	text-align: start;
+	width: fit-content;
+}
 
 /* BLOCK/PULL QUOTES */
 
@@ -180,7 +194,8 @@ blockquote.is-style-plain:before, blockquote.is-style-plain:after,
 .slim :is(ul, ol, p, hr, table, blockquote, pre) { margin-block-end: var(--md-half); }
 
 .slim :is(.wp-caption, .wp-block-image, .wp-block-table),
-.slim .the-content .featured-media { margin-block-end: var(--md-half); }
+.slim .the-content > .featured-media,
+.slim .the-content > :where(.wrap) > .featured-media { margin-block-end: var(--md-half); }
 
 .slim :last-child { margin-block-end: 0; }
 

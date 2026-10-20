@@ -55,6 +55,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/meta-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
+		require_once MD_DIR . 'functions/design-functions.php';
 		require_once MD_DIR . 'api/compile.php';
 		require_once MD_DIR . 'api/enqueue.php';
 		require_once MD_DIR . 'api/collections/api.php';
@@ -110,6 +111,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
 		require_once MD_DIR . 'features/loop/query-loop.php';
+		require_once MD_DIR . 'features/loop/category-loop.php';
 		require_once MD_DIR . 'features/loop/content.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 
@@ -128,6 +130,7 @@ final class marketers_delight {
 		}
 
 		require_once MD_DIR . 'features/archive/archive-meta.php';
+		require_once MD_DIR . 'features/archive/taxonomy-filter.php';
 		require_once MD_DIR . 'features/archive/archive-sections.php';
 		require_once MD_DIR . 'features/blog.php';
 	}
@@ -268,7 +271,7 @@ final class marketers_delight {
 			if ( $cover['position'] == 'header_cover_full' ) {
 				$classes[] = 'full-cover';
 
-				if ( ! empty( $cover['display']['alternate'] ) || md_cover_is_light( $cover ) )
+				if ( ! empty( $cover['display']['alternate'] ) || md_color_is_light( $cover['bg_color'] ?? '' ) )
 					$classes[] = 'cover-alt';
 				else
 					$classes[] = 'cover-text';

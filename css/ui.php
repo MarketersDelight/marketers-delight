@@ -1,12 +1,18 @@
 <style type="text/css">
 
 .overlay {
-	background-color: var(--md-page-cover-overlay);
+	background-color: var(--md-overlay, var(--md-page-cover-overlay));
+	border-radius: inherit;
 	content: '';
 	display: block;
 	inset: 0;
+	opacity: var(--md-overlay-opacity, 1);
 	position: absolute;
 }
+
+:where(:has(> .overlay)) > :where(:not(.overlay)) { position: relative; }
+
+.has-image > .overlay { background-image: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--md-overlay, var(--md-page-cover-overlay)) 100%, transparent)); }
 
 .clickable:after, .post-nav a:after {
 	content: '';
@@ -38,7 +44,7 @@
 	min-width: 0;
 }
 
-:where(.scroller-nav:not(:last-child)) { margin-block-end: var(--md-single); }
+:where(.scroller-nav:not(:last-child, .stack > *)) { margin-block-end: var(--md-single); }
 
 .scroller-arrow {
 	align-self: stretch;
@@ -77,7 +83,10 @@
 
 .scroller-list::-webkit-scrollbar { display: none; }
 
-.scroller-list > * { flex-shrink: 0; }
+.scroller-list > * {
+	flex-shrink: 0;
+	margin-block: 0;
+}
 
 .scroller-nav > .scroller-list {
 	margin-block: calc(-1 * var(--md-third));
@@ -323,9 +332,4 @@ figure.wp-block-table table { margin-block-end: 0; }
 
 @media all and (min-width: 700px) {
 	.expanded .scroller-list:not(.scroller-overflow) { justify-content: center; }
-	.show-mobile { display: none !important; }
-}
-
-@media all and (max-width: 700px) {
-	.show-desktop { display: none !important; }
 }

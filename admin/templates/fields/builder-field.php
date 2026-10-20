@@ -56,14 +56,19 @@
 				) );
 
 				if ( $scope ) : ?>
-				<div class="md-checkbox-description">
+				<div class="md-checkbox-description md-builder-scope">
 					<?php
 					$this->field( array( $key, $group, 'scope' ), array(
 						'type' => 'checkbox',
-						'options' => array( 'post_type_only' => __( 'Don’t show on categories', 'md' ) )
+						'label' => __( 'Don’t show', 'md' ),
+						'inline' => true,
+						'options' => array(
+							'post_type_only' => __( 'On categories', 'md' ),
+							'paged' => __( 'On page 2+', 'md' )
+						)
 					) );
 					?>
-					<p class="description"><?php echo esc_html__( 'Also shown on category pages unless disabled here.', 'md' ); ?></p>
+					<p class="description"><?php echo esc_html__( 'Hide this on category pages, or on page 2 and beyond.', 'md' ); ?></p>
 				</div>
 				<hr class="md-sep-micro" />
 				<?php endif;

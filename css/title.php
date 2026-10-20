@@ -77,6 +77,7 @@
 	flex-wrap: wrap;
 	font-size: var(--md-font-size-small);
 	gap: var(--md-small) var(--md-half);
+	line-height: var(--md-line-height-small);
 }
 
 .byline .circle-icon {
@@ -98,7 +99,8 @@
 .byline-item, .byline-item > a {
 	align-items: center;
 	display: inline-flex;
-	gap: var(--md-small);
+	flex-wrap: wrap;
+	gap: 0 var(--md-small);
 }
 
 .title-inline {
@@ -144,6 +146,11 @@
 
 .cover > :not(.inner, .overlay) { position: relative; }
 
+.cover {
+	--md-text-muted: color-mix(in srgb, currentColor 80%, transparent);
+	--md-links-muted: currentColor;
+}
+
 .cover.text-white { color: var(--md-site-text-contrast); }
 
 .cover :where(a, .byline, .title, .lede) { color: inherit; }
@@ -156,9 +163,7 @@
 .cover.text-dark .byline { color: var(--md-text-muted); }
 
 
-.cover.has-image > .overlay { background-image: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--md-page-cover-overlay) 100%, transparent)); }
-
-.header-cover.has-image > .overlay { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--md-page-cover-overlay) 100%, transparent), transparent 60%); }
+.header-cover.has-image > .overlay { background-image: linear-gradient(to bottom, color-mix(in srgb, var(--md-overlay, var(--md-page-cover-overlay)) 100%, transparent), transparent 60%); }
 
 .cover.text-white .tag {
 	background-color: color-mix(in srgb, currentColor 16%, transparent);

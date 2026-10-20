@@ -18,11 +18,13 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 	line-height: 1;
 }
 
-.cta, :where(.wp-block-buttons) {
+.cta-links, :where(.wp-block-buttons) {
 	align-items: center;
 	display: flex;
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
 }
+
+.cta-email { width: 100%; }
 
 :where(.wp-block-buttons) {
 	flex-wrap: wrap;
@@ -116,17 +118,16 @@ input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform:
 	color: var(--md-text);
 }
 
-.button.button-sec {
-	background-color: var(--md-action-secondary);
-	color: var(--md-action-secondary-text);
-}
+.button.button-sec:not(.has-background) { background-color: var(--md-action-secondary); }
+
+.button.button-sec:not(.has-text-color) { color: var(--md-action-secondary-text); }
 
 .button.button-outline,
-.is-style-outline .wp-element-button { border: 3px solid var(--md-action-primary); }
+.is-style-outline .wp-element-button { border: 3px solid currentColor; }
 
-.button.button-outline, .is-style-outline .wp-element-button:not(.has-background) { background-color: transparent; }
+.button.button-outline:not(.has-background), .is-style-outline .wp-element-button:not(.has-background) { background-color: transparent; }
 
-.button.button-outline, .is-style-outline .wp-element-button:not(.has-text-color) { color: var(--md-action-primary); }
+.button.button-outline:not(.has-text-color), .is-style-outline .wp-element-button:not(.has-text-color) { color: var(--md-action-primary); }
 
 .button.button-outline.white {
 	border-color: var(--md-color-white);
@@ -176,7 +177,7 @@ input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform:
 /* QUERIES */
 
 @media (max-width: 900px) {
-	.cta .link {
+	.cta-links .link {
 		flex: 1;
 		justify-content: center;
 	}

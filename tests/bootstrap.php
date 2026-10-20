@@ -530,10 +530,6 @@ function md_clean_id( $id ) {
 	return ! empty( $id ) ? preg_replace( '/^md_/', '', $id ) : '';
 }
 
-function md_color_palette() {
-	return apply_filters( 'md_color_palette', array() );
-}
-
 function sanitize_text_field( $str ) {
 	return is_string( $str ) ? trim( strip_tags( $str ) ) : $str;
 }
@@ -593,6 +589,7 @@ function wp_verify_nonce( $nonce, $action ) {
 }
 
 require_once dirname( __DIR__ ) . '/functions/asset-functions.php';
+require_once dirname( __DIR__ ) . '/functions/design-functions.php';
 require_once dirname( __DIR__ ) . '/api/save/sanitize.php';
 require_once dirname( __DIR__ ) . '/api/save/validate.php';
 require_once dirname( __DIR__ ) . '/api/save/save.php';

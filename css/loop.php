@@ -42,9 +42,9 @@
 
 .loop.columns > .entry > .post-footer { margin-block-start: auto; }
 
-.archive-sections-before-loop { margin-block-end: var(--md-single-x); }
+.archive-sections:not(:last-child) { margin-block-end: var(--md-single-x); }
 
-.archive-sections-after-loop { margin-block-start: var(--md-single-x); }
+:not(.archive-sections) + .archive-sections:last-child { margin-block-start: var(--md-single-x); }
 
 .sidebar .archive-sections { --md-columns-base: 1; }
 
@@ -83,7 +83,7 @@
 .content-wrap.builder > .cover,
 .featured-media { border-radius: var(--md-border-radius); }
 
-.cover .overlay, .featured-media :is(a, img) { border-radius: inherit; }
+.featured-media :is(a, img) { border-radius: inherit; }
 
 .box-entry > .entry > .cover,
 .box-entry > .entry > :not(.loop) > .cover,
@@ -231,11 +231,7 @@
 
 /* CATEGORY VIEWS */
 
-.category-title { row-gap: 0; }
-
-.category-title .category-title-wrap { margin-block-end: var(--md-third); }
-
-.category-title .category-title-wrap .entry-title { row-gap: 0; }
+.category-title .entry-title { row-gap: var(--md-small); }
 
 .categories.row > .entry:not(:last-child) { margin-block-end: var(--md-single); }
 
@@ -244,12 +240,18 @@
 	line-height: var(--md-h3-line-height);
 }
 
-:is(.category-view, .category-posts) > .entry > .category-title:not(:last-child) { margin-block-end: var(--md-single); }
+:is(.category-view, .category-posts) > .entry > :is(.category-title, .description):not(:last-child, :has(+ .post-footer, + .description)) { margin-block-end: var(--md-single); }
+
+:is(.category-view, .category-posts) > .entry > .category-title:has(+ .description) { margin-block-end: var(--md-third); }
+
+:is(.category-view, .category-posts) > .entry > :is(.category-title, .description):has(+ .post-footer) { margin-block-end: var(--md-half); }
 
 :is(.category-view, .category-posts) > .box-group {
 	display: flex;
 	flex-direction: column;
 }
+
+.category-view > .box-group:not(:has(.description)) { justify-content: center; }
 
 :is(.category-view, .category-posts).box-style > .entry > .post-footer {
 	margin-top: auto;

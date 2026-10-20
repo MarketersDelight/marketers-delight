@@ -55,6 +55,7 @@ class BuilderCallbackTest extends MD_TestCase {
 			'fields' => $fields,
 			'icon' => 'list-view',
 			'color' => '',
+			'scope' => false,
 			'row' => $row
 			) );
 		}

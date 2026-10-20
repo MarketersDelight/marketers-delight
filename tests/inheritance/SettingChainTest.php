@@ -214,17 +214,28 @@ class SettingChainTest extends MD_InheritanceTestCase {
 	public function test_builder_scope_hides_only_when_opted_out_on_taxonomy_archives() {
 		$row = array( 'scope' => array( 'post_type_only' => true ) );
 
-		$this->assertFalse( md_builder_hide_on_taxonomy( $row ) );
+		$this->assertFalse( md_builder_row_hidden( $row ) );
 
 		md_test_set_query( array( 'is_category' => true ) );
-		$this->assertTrue( md_builder_hide_on_taxonomy( $row ) );
-		$this->assertFalse( md_builder_hide_on_taxonomy( array() ) );
+		$this->assertTrue( md_builder_row_hidden( $row ) );
+		$this->assertFalse( md_builder_row_hidden( array() ) );
 
 		md_test_set_query( array( 'is_category' => false, 'is_tax' => true ) );
-		$this->assertTrue( md_builder_hide_on_taxonomy( $row ) );
+		$this->assertTrue( md_builder_row_hidden( $row ) );
 
 		md_test_set_query( array( 'is_tax' => false, 'is_tag' => true ) );
-		$this->assertTrue( md_builder_hide_on_taxonomy( $row ) );
+		$this->assertTrue( md_builder_row_hidden( $row ) );
+	}
+
+	public function test_builder_scope_hides_after_first_page_only_when_opted_out() {
+		$row = array( 'scope' => array( 'paged' => true ) );
+
+		$this->assertFalse( md_builder_row_hidden( $row ) );
+
+		md_test_set_query( array( 'is_paged' => true ) );
+		$this->assertTrue( md_builder_row_hidden( $row ) );
+		$this->assertFalse( md_builder_row_hidden( array() ) );
+		$this->assertFalse( md_builder_row_hidden( array( 'scope' => array( 'post_type_only' => true ) ) ) );
 	}
 
 	// md_taxonomy_field() reads marketers_delight[$post_type][$taxonomy][...] —

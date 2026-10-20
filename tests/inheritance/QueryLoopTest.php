@@ -32,6 +32,7 @@ if ( ! function_exists( 'sanitize_title' ) ) {
 }
 
 require_once dirname( __DIR__, 2 ) . '/features/loop/query-loop.php';
+require_once dirname( __DIR__, 2 ) . '/features/loop/category-loop.php';
 
 class QueryLoopTest extends MD_InheritanceTestCase {
 

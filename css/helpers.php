@@ -279,6 +279,25 @@ cite, .tiny {
 	.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column { flex-basis: 100%; }
 }
 
+/* ICON BLOCK */
+
+.wp-block-icon { line-height: 0; }
+
+.wp-block-icon.aligncenter {
+	display: flex;
+	justify-content: center;
+}
+
+.wp-block-icon svg {
+	box-sizing: border-box;
+	fill: currentColor;
+}
+
+:where(.wp-block-icon) svg {
+	height: 1.5em;
+	width: 1.5em;
+}
+
 .columns, [class*="columns-"] {
 	--md-columns-base: 1;
 	--md-columns: var(--md-columns-base);
@@ -427,6 +446,8 @@ foreach ( $design_colors->editor_colors() as $color_group => $color_fields ) {
 		 ".has-$color_slug-color, a.has-$color_slug-color { color: $color_val; }\n";
 }
 
+echo ".has-text-color { --md-headlines: currentColor; --md-headline-links: currentColor; --md-text-muted: color-mix(in srgb, currentColor 80%, transparent); --md-links-muted: currentColor; }\n";
+
 foreach ( $design_colors->editor_gradients() as $gradient )
 	echo ".has-{$gradient['slug']}-gradient-background { background: {$gradient['gradient']}; }\n"; ?>
 
@@ -459,4 +480,14 @@ foreach ( $design_colors->editor_gradients() as $gradient )
 
 @media (prefers-reduced-motion: reduce) {
 	.animate-fade, .animate-slide-up, .animate-slide-down, .animate-zoom { animation: none; }
+}
+
+/* VISIBILITY */
+
+@media all and (width > 700px) {
+	.show-mobile { display: none; }
+}
+
+@media all and (width <= 700px) {
+	.show-desktop { display: none; }
 }

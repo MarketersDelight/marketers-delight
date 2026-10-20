@@ -551,6 +551,24 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
+	 * The post type a settings screen is for: the screen's post type, or the
+	 * post type a top-level MD settings page belongs to (md_docs is docs).
+	 * Set $author to also allow the Author archive settings page.
+	 *
+	 * @since 6.0.3
+	 */
+
+	public function screen_post_type( $author = false ) {
+		$post_type = $this->_get_screen['post_type'] ?? '';
+		$page_post_type = md_clean_id( $this->_get_screen['page'] ?? '' );
+
+		if ( ! empty( $this->_get_screen['is_admin'] ) && ( ( $author && $page_post_type === 'author' ) || get_post_type_object( $page_post_type ) ) )
+			$post_type = $page_post_type;
+
+		return $post_type;
+	}
+
+	/**
 	 * A valet method to render the Byline Position field
 	 * when adding custom byline items.
 	 *
@@ -558,11 +576,7 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function byline_fields( $group, $args = array() ) {
-		$post_type = $this->_get_screen['post_type'] ?? '';
-		$page_post_type = md_clean_id( $this->_get_screen['page'] ?? '' );
-
-		if ( ! empty( $this->_get_screen['is_admin'] ) && get_post_type_object( $page_post_type ) )
-			$post_type = $page_post_type;
+		$post_type = $this->screen_post_type();
 
 		$row = md_get_post_type_builder( 'byline', $post_type )[$group] ?? array();
 

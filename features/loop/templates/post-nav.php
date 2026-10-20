@@ -5,9 +5,11 @@
 	<div class="post-nav-previous">
 
 		<?php if ( $previous_media ) : ?>
+
 		<div class="post-nav-media">
 			<?php echo $previous_media; ?>
 		</div>
+
 		<?php endif; ?>
 
 		<div class="post-nav-text">
@@ -41,9 +43,11 @@
 		</div>
 
 		<?php if ( $next_media ) : ?>
+
 		<div class="post-nav-media">
 			<?php echo $next_media; ?>
 		</div>
+
 		<?php endif; ?>
 
 	</div>

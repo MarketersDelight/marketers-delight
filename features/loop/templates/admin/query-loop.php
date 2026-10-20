@@ -1,3 +1,13 @@
+<?php
+$display_mode = $row['loop_type'] ?? '';
+$default_items = get_option( 'posts_per_page' ) ?: 10;
+
+// Which display modes show which fields, matching their md-conditional-* classes
+
+$shows_items = in_array( $display_mode, array( '', 'month' ), true );
+$shows_order = $display_mode !== 'category';
+$shows_category = in_array( $display_mode, array( 'category', 'category_posts' ), true );
+?>
 <div class="md-query-loop-fields">
 	<div class="md-query-loop-section">
 		<h4><?php echo esc_html__( 'Query', 'md' ); ?></h4>
@@ -18,23 +28,8 @@
 					'type' => 'select',
 					'value' => $row['context'] ?? '',
 					'label' => __( 'Query context', 'md' ),
-					'description' => __( 'Match the current author, search, date, or term page when applicable; otherwise show latest.', 'md' ),
+					'description' => __( 'Match the current page, or show the latest.', 'md' ),
 					'options' => array( 'current' => __( 'Current page', 'md' ), 'latest' => __( 'Latest posts', 'md' ) )
-				) ); ?>
-			</div>
-			<div class="md-query-loop-field">
-				<?php
-				$display_mode = $row['loop_type'] ?? '';
-				$default_items = get_option( 'posts_per_page' ) ?: 10;
-				?>
-				<?php $fields->field( array( 'builder', $group, 'items' ), array(
-					'type' => 'number',
-					'value' => $row['items'] ?? '',
-					'placeholder' => $default_items,
-					'label' => __( 'Number of items', 'md' ),
-					'description' => __( 'Blank uses the WordPress posts-per-page setting.', 'md' ),
-					'min' => 1,
-					'max' => 100
 				) ); ?>
 			</div>
 		</div>
@@ -59,6 +54,17 @@
 					)
 				) ); ?>
 			</div>
+			<div class="md-query-loop-field md-conditional-item md-conditional-default md-conditional-month<?php echo $shows_items ? ' is-condition' : ''; ?>">
+				<?php $fields->field( array( 'builder', $group, 'items' ), array(
+					'type' => 'number',
+					'value' => $row['items'] ?? '',
+					'placeholder' => $default_items,
+					'label' => __( 'Number of items', 'md' ),
+					'description' => __( 'Blank uses the site default. -1 shows all.', 'md' ),
+					'min' => -1,
+					'max' => 100
+				) ); ?>
+			</div>
 			<div class="md-query-loop-field">
 				<?php $fields->field( array( 'builder', $group, 'taxonomy' ), array(
 					'type' => 'select',
@@ -73,11 +79,19 @@
 				<?php $fields->field( array( 'builder', $group, 'terms' ), array(
 					'type' => 'text',
 					'value' => $row['terms'] ?? '',
-					'label' => __( 'Term slugs', 'md' ),
-					'description' => __( 'Comma-separated slugs.', 'md' )
+					'label' => __( 'Include terms', 'md' ),
+					'description' => __( 'Only these terms. Slugs or IDs, comma-separated.', 'md' )
 				) ); ?>
 			</div>
 			<div class="md-query-loop-field">
+				<?php $fields->field( array( 'builder', $group, 'exclude_terms' ), array(
+					'type' => 'text',
+					'value' => $row['exclude_terms'] ?? '',
+					'label' => __( 'Exclude terms', 'md' ),
+					'description' => __( 'Leave out these terms. Slugs or IDs, comma-separated.', 'md' )
+				) ); ?>
+			</div>
+			<div class="md-query-loop-field md-conditional-item md-conditional-default md-conditional-month md-conditional-category_posts<?php echo $shows_order ? ' is-condition' : ''; ?>">
 				<?php $fields->field( array( 'builder', $group, 'orderby' ), array(
 					'type' => 'select',
 					'value' => $row['orderby'] ?? '',
@@ -85,7 +99,6 @@
 					'description' => __( 'Field used for sorting.', 'md' ),
 					'empty_label' => __( 'Date', 'md' ),
 					'options' => array(
-						'date' => __( 'Date', 'md' ),
 						'title' => __( 'Title', 'md' ),
 						'modified' => __( 'Last Modified', 'md' ),
 						'comment_count' => __( 'Comment Count', 'md' ),
@@ -93,20 +106,18 @@
 					)
 				) ); ?>
 			</div>
-			<div class="md-query-loop-field">
+			<div class="md-query-loop-field md-conditional-item md-conditional-default md-conditional-month md-conditional-category_posts<?php echo $shows_order ? ' is-condition' : ''; ?>">
 				<?php $fields->field( array( 'builder', $group, 'order' ), array(
 					'type' => 'select',
 					'value' => $row['order'] ?? '',
 					'label' => __( 'Order', 'md' ),
 					'description' => __( 'Sort direction.', 'md' ),
 					'empty_label' => __( 'Descending', 'md' ),
-					'options' => array(
-						'DESC' => __( 'Descending', 'md' ),
-						'ASC' => __( 'Ascending', 'md' )
-					) ) ); ?>
+					'options' => array( 'ASC' => __( 'Ascending', 'md' ) )
+				) ); ?>
 			</div>
 		</div>
-		<div class="md-query-loop-category-settings md-conditional-item md-conditional-category md-conditional-category_posts<?php echo in_array( $display_mode, array( 'category', 'category_posts' ), true ) ? ' is-condition' : ''; ?>">
+		<div class="md-query-loop-category-settings md-conditional-item md-conditional-category md-conditional-category_posts<?php echo $shows_category ? ' is-condition' : ''; ?>">
 			<hr class="md-sep-small" />
 			<h4><?php echo esc_html__( 'Category', 'md' ); ?></h4>
 			<p class="description"><?php echo esc_html__( 'These settings apply to this query and do not inherit the source archive’s category layout.', 'md' ); ?></p>
@@ -116,9 +127,9 @@
 						'type' => 'number',
 						'value' => $row['category_per_page'] ?? '',
 						'placeholder' => $default_items,
-						'label' => __( 'Categories per page', 'md' ),
-						'description' => __( 'Number of category sections to show.', 'md' ),
-						'min' => 1,
+						'label' => __( 'Categories to show', 'md' ),
+						'description' => __( 'Number of category sections to show. -1 shows all.', 'md' ),
+						'min' => -1,
 						'max' => 100
 					) ); ?>
 				</div>
@@ -128,8 +139,8 @@
 						'value' => $row['posts_per_category'] ?? '',
 						'placeholder' => $default_items,
 						'label' => __( 'Posts per category', 'md' ),
-						'description' => __( 'Number of posts in each category.', 'md' ),
-						'min' => 1,
+						'description' => __( 'Number of posts in each category. -1 shows all.', 'md' ),
+						'min' => -1,
 						'max' => 100
 					) ); ?>
 				</div>
@@ -149,9 +160,10 @@
 						'type' => 'select',
 						'value' => $row['category_orderby'] ?? '',
 						'label' => __( 'Order categories by', 'md' ),
-						'description' => __( 'Sort category sections.', 'md' ),
+						'description' => __( 'Latest post puts recent updates first.', 'md' ),
 						'empty_label' => __( 'Name', 'md' ),
 						'options' => array(
+							'latest' => __( 'Latest post', 'md' ),
 							'slug' => __( 'Slug', 'md' ),
 							'term_id' => __( 'Term ID', 'md' ),
 							'count' => __( 'Post count', 'md' ),
@@ -169,11 +181,12 @@
 						'options' => array( 'DESC' => __( 'Descending', 'md' ) )
 					) ); ?>
 				</div>
-				<div class="md-query-loop-field">
+				<div class="md-query-loop-field md-query-loop-field-wide">
 					<?php $fields->field( array( 'builder', $group, 'category' ), array(
 						'type' => 'checkbox',
 						'value' => $row['category'] ?? array(),
 						'label' => __( 'Category options', 'md' ),
+						'inline' => true,
 						'options' => array(
 							'show_empty' => __( 'Show empty categories', 'md' ),
 							'hide_description' => __( 'Hide descriptions', 'md' )
@@ -189,17 +202,13 @@
 		<p class="description"><?php echo esc_html__( 'Blank options use Query Loop defaults, not the source archive’s Loop settings. The default view is Article view.', 'md' ); ?></p>
 		<div class="md-query-loop-grid md-full-select">
 			<div class="md-query-loop-field">
-				<?php
-				$loop_options = md_loops( 'options' );
-				$loop_options['article'] = __( 'Article view', 'md' );
-				?>
 				<?php $fields->field( array( 'builder', $group, 'loop' ), array(
 					'type' => 'select',
 					'value' => $row['loop'] ?? '',
 					'label' => __( 'Template', 'md' ),
 					'description' => __( 'Visual design.', 'md' ),
 					'empty_label' => __( 'Use Default View', 'md' ),
-					'options' => $loop_options
+					'options' => array_merge( md_loops( 'options' ), array( 'article' => __( 'Article view', 'md' ) ) )
 				) ); ?>
 			</div>
 			<div class="md-query-loop-field">
@@ -233,7 +242,8 @@
 						'excerpt' => __( 'Show excerpt', 'md' ),
 						'full' => __( 'Show full content', 'md' ),
 						'hide' => __( 'Hide content', 'md' )
-					) ) ); ?>
+					)
+				) ); ?>
 			</div>
 			<div class="md-query-loop-field">
 				<?php $fields->field( array( 'builder', $group, 'featured_image' ), array(
@@ -260,12 +270,13 @@
 					'type' => 'select',
 					'value' => $row['pagination'] ?? '',
 					'label' => __( 'Pagination', 'md' ),
-					'description' => __( 'Pagination is off unless selected.', 'md' ),
+					'description' => __( 'Off unless selected. Not used when showing all.', 'md' ),
 					'empty_label' => __( 'No pagination', 'md' ),
 					'options' => array(
 						'page_numbers' => __( 'Page numbers', 'md' ),
 						'prev_next' => __( 'Previous/next links', 'md' )
-					) ) ); ?>
+					)
+				) ); ?>
 			</div>
 		</div>
 	</div>

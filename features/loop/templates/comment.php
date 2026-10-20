@@ -7,9 +7,11 @@
 	<div class="comment-details">
 
 		<?php if ( $avatar_size > 0 ): ?>
+
 		<div class="comment-avatar">
 			<?php echo get_avatar( $comment, $avatar_size ); ?>
 		</div>
+
 		<?php endif; ?>
 
 		<div class="comment-byline">
@@ -31,11 +33,14 @@
 	</div>
 
 	<div class="comment-controls">
-		<?php edit_comment_link( md_icon( 'pencil' ) . __( 'Edit', 'md' ) ); ?>
-		<?php comment_reply_link( array_merge( $args, array(
+
+		<?php
+		edit_comment_link( md_icon( 'pencil' ) . __( 'Edit', 'md' ) );
+		comment_reply_link( array_merge( $args, array(
 			'add_below'  => 'comment-content',
 			'depth' => $depth,
 			'max_depth' => $args['max_depth'],
 			'reply_text' => md_icon( 'plus' ) . __( 'Reply', 'md' )
-		) ) ); ?>
+		) ) );
+		?>
 	</div>

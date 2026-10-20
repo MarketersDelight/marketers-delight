@@ -27,6 +27,7 @@ class md_archive_sections extends md_api {
 
 	public function query_vars( $vars ) {
 		$vars[] = 'filter';
+
 		return $vars;
 	}
 
@@ -90,7 +91,7 @@ class md_archive_sections extends md_api {
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
-			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only' ) )
+			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only', 'paged' ) )
 		);
 
 		foreach ( $this->elements() as $element )
@@ -112,11 +113,7 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function admin_fields() {
-		$post_type = $this->_get_screen['post_type'] ?? '';
-		$page_post_type = md_clean_id( $this->_get_screen['page'] ?? '' );
-
-		if ( $this->_get_screen['is_admin'] && ( $page_post_type === 'author' || get_post_type_object( $page_post_type ) ) )
-			$post_type = $page_post_type;
+		$post_type = $this->fields->screen_post_type( true );
 
 		echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
 
@@ -172,7 +169,9 @@ class md_archive_sections extends md_api {
 	}
 
 	/**
-	 * Get section elements available to the current post type.
+	 * Get section elements available to the current post type. An element's
+	 * callback outputs one root element. Set 'classes' => 'col-full' for a
+	 * full-width element; others share a row with their neighbors.
 	 *
 	 * @since 6.0
 	 */
@@ -186,7 +185,7 @@ class md_archive_sections extends md_api {
 				'color' => '#3858a4',
 				'classes' => 'col-full',
 				'fields' => md_query_loop_fields(),
-				'callback' => array( $this, 'query_loop' ),
+				'callback' => 'md_query_loop',
 				'admin_callback' => 'md_query_loop_admin_fields'
 			),
 			'taxonomy_filter' => array(
@@ -195,9 +194,9 @@ class md_archive_sections extends md_api {
 				'icon' => 'filter',
 				'color' => '#2271b1',
 				'classes' => 'col-full',
-				'fields' => $this->taxonomy_fields(),
-				'callback' => array( $this, 'taxonomy_filter' ),
-				'admin_callback' => array( $this, 'taxonomy_admin' )
+				'fields' => md_taxonomy_filter_fields(),
+				'callback' => 'md_taxonomy_filter',
+				'admin_callback' => 'md_taxonomy_filter_admin_fields'
 			)
 		) );
 
@@ -227,199 +226,6 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function element_fields() {}
-
-	/**
-	 * Render a Query Loop placed around an archive's main loop.
-	 */
-	public function query_loop( $fields, $post_type, $id = '' ) {
-		return md_query_loop_render( $fields, $id );
-	}
-
-	/**
-	 * Define the fields stored by a Taxonomy Filter section.
-	 *
-	 * @since 6.0
-	 */
-
-	private function taxonomy_fields() {
-		return array(
-			'taxonomy' => array(
-				'type' => 'select',
-				'options' => array_values( get_taxonomies() )
-			),
-			'taxonomy_settings' => array(
-				'type' => 'checkbox',
-				'options' => array( 'hide_empty' )
-			),
-			'all_label' => array( 'type' => 'text' )
-		);
-	}
-
-	/**
-	 * Render Taxonomy Filter controls inside a builder row.
-	 *
-	 * @since 6.0
-	 */
-
-	public function taxonomy_admin( $group, $type, $fields ) {
-		$options = array();
-		$post_type = $this->_get_screen['post_type'];
-		$page_post_type = md_clean_id( $this->_get_screen['page'] );
-
-		if ( $this->_get_screen['is_admin'] && get_post_type_object( $page_post_type ) )
-			$post_type = $page_post_type;
-
-		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-
-		foreach ( $taxonomies as $taxonomy => $object )
-			if ( $object->public )
-				$options[$taxonomy] = $object->labels->name;
-
-		include md_template( 'features', 'archive/admin/taxonomy-filter', true );
-	}
-
-	/**
-	 * Render taxonomy navigation from a section builder row.
-	 *
-	 * @since 6.0
-	 */
-
-	public function taxonomy_filter( $fields, $post_type ) {
-		$current_id = get_queried_object_id();
-		$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-		$taxonomy = $fields['taxonomy'] ?? '';
-		$options = $fields['taxonomy_settings'] ?? array();
-
-		if ( empty( $taxonomies[$taxonomy] ) ) {
-			$taxonomy = is_tax() || is_category() ? get_queried_object()->taxonomy : '';
-
-			if ( empty( $taxonomies[$taxonomy] ) )
-				foreach ( $taxonomies as $id => $object )
-					if ( $object->public ) {
-						$taxonomy = $id;
-						break;
-					}
-		}
-
-		if ( ! $taxonomy )
-			return;
-
-		$excluded = $this->get_excluded_term_ids( $taxonomy );
-		$all = get_terms( array(
-			'taxonomy' => $taxonomy,
-			'hide_empty' => ! empty( $options['hide_empty'] ),
-			'pad_counts' => true,
-			'exclude' => $excluded
-		) );
-
-		if ( is_wp_error( $all ) || ! $all )
-			return;
-
-		$navigation_term = $this->get_navigation_term( $all, $taxonomy );
-		$terms = $this->get_child_terms( $all, $navigation_term ? $navigation_term->term_id : 0 );
-
-		while ( count( $terms ) === 1 && $this->get_child_terms( $all, $terms[0]->term_id ) )
-			$terms = $this->get_child_terms( $all, $terms[0]->term_id );
-
-		if ( ! $terms )
-			return;
-
-		if ( $navigation_term ) {
-			$active = $current_id === $navigation_term->term_id;
-			$archive_url = get_term_link( $navigation_term );
-		}
-		else {
-			$active = is_post_type_archive( $post_type ) || ( is_home() && $post_type === 'post' );
-
-			if ( $post_type === 'post' ) {
-				$page_for_posts = get_option( 'page_for_posts' );
-				$archive_url = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
-			}
-			else $archive_url = get_post_type_archive_link( $post_type );
-		}
-
-		$total = $active ? (int) $this->main_query->found_posts : $this->count_filter_posts( $post_type, $taxonomy, $navigation_term, $excluded );
-
-		include md_template( 'features', 'archive/taxonomy-filter', true );
-	}
-
-	/**
-	 * The navigation term whose children a Taxonomy Filter lists: the viewed term when
-	 * it has children, otherwise its parent. Null at the top level.
-	 *
-	 * @since 6.0
-	 */
-
-	private function get_navigation_term( $terms, $taxonomy ) {
-		$queried = get_queried_object();
-
-		if ( ! $queried instanceof WP_Term || $queried->taxonomy !== $taxonomy )
-			return null;
-
-		if ( $this->get_child_terms( $terms, $queried->term_id ) )
-			return $queried;
-
-		return $queried->parent ? get_term( $queried->parent, $taxonomy ) : null;
-	}
-
-	/**
-	 * Terms from a list whose parent is the given term ID.
-	 *
-	 * @since 6.0
-	 */
-
-	private function get_child_terms( $terms, $parent_id ) {
-		$children = array();
-
-		foreach ( $terms as $term )
-			if ( $term->parent === $parent_id )
-				$children[] = $term;
-
-		return $children;
-	}
-
-	/**
-	 * Term IDs the main archive query leaves out of a taxonomy, so the filter
-	 * doesn't link to terms the Loop hides.
-	 *
-	 * @since 6.0
-	 */
-
-	private function get_excluded_term_ids( $taxonomy ) {
-		$excluded = array();
-
-		foreach ( (array) $this->main_query->get( 'tax_query' ) as $clause )
-			if ( is_array( $clause ) && ( $clause['operator'] ?? '' ) === 'NOT IN' && ( $clause['taxonomy'] ?? '' ) === $taxonomy )
-				$excluded = array_merge( $excluded, (array) $clause['terms'] );
-
-		return $excluded;
-	}
-
-	/**
-	 * Count published posts in a filter's category branch, without excluded terms.
-	 *
-	 * @since 6.0
-	 */
-
-	private function count_filter_posts( $post_type, $taxonomy, $navigation_term, $excluded ) {
-		$tax_query = array();
-
-		if ( $navigation_term )
-			$tax_query[] = array( 'taxonomy' => $taxonomy, 'terms' => $navigation_term->term_id, 'include_children' => true );
-
-		if ( $excluded )
-			$tax_query[] = array( 'taxonomy' => $taxonomy, 'terms' => $excluded, 'operator' => 'NOT IN' );
-
-		$query = new WP_Query( array(
-			'post_type' => $post_type,
-			'post_status' => 'publish',
-			'posts_per_page' => 1,
-			'fields' => 'ids',
-			'tax_query' => $tax_query
-		) );
-
-		return (int) $query->found_posts;
-	}
 
 	/**
 	 * Render configured sections before the primary archive Loop.
@@ -462,92 +268,6 @@ class md_archive_sections extends md_api {
 	}
 
 	/**
-	 * Render callable elements assigned to one section area.
-	 *
-	 * @since 6.0
-	 */
-
-	private function html( $area, $args ) {
-		if ( ! $this->is_archive_loop( $args ) )
-			return;
-
-		$output = $group = '';
-		$scroll = true;
-		$group_classes = 'archive-sections-group col-full columns-fluid-2 gap-single';
-		$is_author = is_author() && empty( $args['query'] ) && empty( $args['in_loop'] );
-		$post_type = $is_author ? 'author' : ( $args['loop']['post_type'] ?? md_get_post_type() );
-		$builder = md_get_post_type_builder( 'archive_sections', $post_type, $is_author );
-		$elements = $this->elements( $post_type );
-
-		foreach ( $builder as $id => $fields ) {
-			if ( md_builder_hide_on_taxonomy( $fields ) )
-				continue;
-
-			if ( ( $fields['builder_area'] ?? '' ) !== $area )
-				continue;
-
-			$type = $fields['builder_type'] ?? '';
-			$callback = $elements[$type]['callback'] ?? null;
-
-			if ( ! is_callable( $callback ) )
-				continue;
-
-			ob_start();
-
-			$value = call_user_func( $callback, $fields, $post_type, $id );
-			$html = ob_get_clean();
-
-			if ( is_string( $value ) )
-				$html .= $value;
-
-			if ( trim( $html ) !== '' ) {
-				$classes = 'archive-section';
-
-				if ( ! empty( $elements[$type]['classes'] ) )
-					$classes .= ' ' . $elements[$type]['classes'];
-
-				$section = '<div class="' . esc_attr( $classes ) . '">' . $html . '</div>';
-
-				if ( strpos( " $classes ", ' col-full ' ) !== false ) {
-					$output .= $this->group( $group, $group_classes, $area, $scroll ) . $section;
-					$group = '';
-					$scroll = true;
-				}
-				else {
-					$group .= $section;
-					$scroll = $scroll && ( $elements[$type]['scroll'] ?? true );
-				}
-			}
-		}
-
-		$output .= $this->group( $group, $group_classes, $area, $scroll );
-
-		if ( $output )
-			echo
-				'<div class="archive-sections archive-sections-' . esc_attr( str_replace( '_', '-', $area ) ) . ' columns-fluid-2 gap-single">'.
-				$output.
-				'</div>';
-	}
-
-	/**
-	 * Wrap a run of neighboring sections so they share one row, which
-	 * scrolls horizontally on mobile around the Loop unless one of its
-	 * elements sets scroll to false.
-	 *
-	 * @since 6.0
-	 */
-
-	private function group( $sections, $classes, $area, $scroll = true ) {
-		if ( $sections === '' )
-			return '';
-
-		if ( $scroll && in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
-			$classes .= ' scroll-mobile';
-
-		return '<div class="' . esc_attr( $classes ) . '">' . $sections . '</div>';
-	}
-
-	/**
 	 * Confirm the current Loop is the page's primary archive Loop.
 	 *
 	 * @since 6.0
@@ -561,6 +281,89 @@ class md_archive_sections extends md_api {
 			return false;
 
 		return empty( $args['loop']['in_loop'] );
+	}
+
+	/**
+	 * Wrap a run of neighboring sections so they share one row, which
+	 * scrolls horizontally on mobile around the Loop unless one of its
+	 * elements sets scroll to false.
+	 *
+	 * @since 6.0
+	 */
+
+	private function group( $sections, $area, $scroll = true ) {
+		if ( $sections === '' )
+			return '';
+
+		$classes = 'archive-sections-group columns-fluid-2 gap-single';
+
+		if ( $scroll && in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
+			$classes .= ' scroll-mobile';
+
+		return '<div class="' . esc_attr( $classes ) . '">' . $sections . '</div>';
+	}
+
+	/**
+	 * Render callable elements assigned to one section area. Each element's
+	 * callback must output a single root element: full-width elements (classes
+	 * col-full) print straight into the area's stack, and neighboring
+	 * elements share a row as grid items.
+	 *
+	 * @since 6.0
+	 */
+
+	private function html( $area, $args ) {
+		if ( ! $this->is_archive_loop( $args ) )
+			return;
+
+		$output = $group = '';
+		$scroll = true;
+		$is_author = is_author() && empty( $args['query'] ) && empty( $args['in_loop'] );
+		$post_type = $is_author ? 'author' : ( $args['loop']['post_type'] ?? md_get_post_type() );
+		$builder = md_get_post_type_builder( 'archive_sections', $post_type, $is_author );
+		$elements = $this->elements( $post_type );
+
+		foreach ( $builder as $id => $fields ) {
+			if ( md_builder_row_hidden( $fields ) )
+				continue;
+
+			if ( ( $fields['builder_area'] ?? '' ) !== $area )
+				continue;
+
+			$type = $fields['builder_type'] ?? '';
+			$callback = $elements[$type]['callback'] ?? null;
+
+			if ( ! is_callable( $callback ) )
+				continue;
+
+			ob_start();
+
+			$value = call_user_func( $callback, $fields, $post_type, $id, $this->main_query );
+			$html = ob_get_clean();
+
+			if ( is_string( $value ) )
+				$html .= $value;
+
+			$html = trim( $html );
+
+			if ( $html === '' )
+				continue;
+
+			if ( strpos( ' ' . ( $elements[$type]['classes'] ?? '' ) . ' ', ' col-full ' ) !== false ) {
+				$output .= $this->group( $group, $area, $scroll ) . $html;
+				$group = '';
+				$scroll = true;
+			}
+			else {
+				$group .= $html;
+				$scroll = $scroll && ( $elements[$type]['scroll'] ?? true );
+			}
+		}
+
+		$output .= $this->group( $group, $area, $scroll );
+
+		if ( $output )
+			echo '<div class="archive-sections stack">' . $output . '</div>';
 	}
 }
 

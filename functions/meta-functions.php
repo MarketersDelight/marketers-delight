@@ -177,16 +177,6 @@ function md_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
- * Safely get Block fields.
- *
- * @since 4.9
- */
-
-function md_block_field( $attributes, $field ) {
-	return ! empty( $attributes[$field] ) ? $attributes[$field] : '';
-}
-
-/**
  * Get module field that is either on single term or post
  * pages, or return global setting as fallback.
  *
@@ -354,13 +344,19 @@ function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = fa
 }
 
 /**
- * Check whether a builder row is excluded from taxonomy archives.
+ * Check whether a builder row's Don't show options hide it on the current
+ * page: on category archives, or after page 1.
  *
- * @since 6.0
+ * @since 6.0.3
  */
 
-function md_builder_hide_on_taxonomy( $row ) {
-	return ( is_category() || is_tag() || is_tax() ) && ! empty( $row['scope']['post_type_only'] );
+function md_builder_row_hidden( $row ) {
+	$scope = $row['scope'] ?? array();
+
+	if ( ! empty( $scope['post_type_only'] ) && ( is_category() || is_tag() || is_tax() ) )
+		return true;
+
+	return ! empty( $scope['paged'] ) && is_paged();
 }
 
 /**

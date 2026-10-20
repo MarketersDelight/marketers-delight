@@ -31,16 +31,15 @@
 /* SPACING */
 
 :root :where(.is-layout-flow) > *,
-.editor-styles-wrapper .wp-block-post-content > .wp-block,
 .md-builder .editor-styles-wrapper .wp-block-post-content .wp-block-heading:not(:first-child) { margin-block-start: 0; }
 
-.editor-styles-wrapper .wp-block-post-content > .wp-block-paragraph:not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
+.editor-styles-wrapper .wp-block-post-content > :is(ul, ol, p, hr, table, blockquote, pre, .wp-block-image, .wp-block-table):not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
 
 .editor-styles-wrapper .block-editor-block-list__block.absolute { position: absolute; }
 
-.editor-styles-wrapper .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"]) > .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
+.editor-styles-wrapper :is(.wp-block-post-content, .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"])) > .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
-html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"]) > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"])) > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
 
 .editor-styles-wrapper .wp-block-post-content :is(ul, ol).wp-block-list:not(.list, .list-check) {
 	list-style-position: outside;

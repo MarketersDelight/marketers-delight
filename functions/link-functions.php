@@ -20,7 +20,6 @@ function md_link( $fields, $p = '' ) {
 
 function md_get_link( $fields, $p = '' ) {
 	$html = $attrs = '';
-	$styles = array();
 	$fields = wp_parse_args( $fields, array(
 		'type' => 'url',
 		'style' => 'link',
@@ -38,6 +37,7 @@ function md_get_link( $fields, $p = '' ) {
 		'content' => '',
 		'attributes' => array(),
 		'classes' => '',
+		'styles' => array(),
 		'visibility' => array(),
 		'button_style' => array(),
 		'toggle' => array(
@@ -48,6 +48,8 @@ function md_get_link( $fields, $p = '' ) {
 
 	if ( empty( $fields['type'] ) )
 		$fields['type'] = 'url';
+
+	$styles = (array) $fields['styles'];
 
 	if ( ! md_check_condition( $fields['visibility'] ) )
 		return;
@@ -76,7 +78,7 @@ function md_get_link( $fields, $p = '' ) {
 		$classes[] = $fields['icon'] = 'phone';
 
 		if ( empty( $fields['name'] ) )
-			$fields['name'] = esc_html( $phone );
+			$fields['name'] = esc_html( $fields['phone'] );
 	}
 
 	// Popup

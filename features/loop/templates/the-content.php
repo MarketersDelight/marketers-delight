@@ -1,8 +1,7 @@
 <?php
 
 if ( ! $has_builder )
-    echo "<div{$id} class=\"the-content item\">".
-    ( $has_wrap ? '<div class="wrap">' : '' );
+    echo "<div{$id} class=\"the-content item\">" . ( $has_wrap ? '<div class="wrap">' : '' );
 
 md_featured_media( 'post', array(
     'loop' => $loop,
@@ -35,5 +34,4 @@ elseif ( $has_excerpt )
 md_hook_the_content_bottom();
 
 if ( ! $has_builder )
-    echo ( $has_wrap ? '</div>' : '' ).
-    '</div>';
+    echo ( $has_wrap ? '</div>' : '' ) . '</div>';

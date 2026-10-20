@@ -176,11 +176,7 @@ class md_byline extends md_api {
 		$active_tab = '';
 		$tabs = $areas = array();
 		$screen = $this->_get_screen;
-		$post_type = $screen['post_type'];
-		$page_post_type = md_clean_id( $screen['page'] );
-
-		if ( $screen['is_admin'] && ( $page_post_type === 'author' || get_post_type_object( $page_post_type ) ) )
-			$post_type = $page_post_type;
+		$post_type = $this->fields->screen_post_type( true );
 
 		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
 			$active_tab = 'archives';
@@ -207,7 +203,7 @@ class md_byline extends md_api {
 				)
 			);
 		}
-		elseif ( $screen['is_admin'] && $page_post_type === 'author' ) {
+		elseif ( $screen['is_admin'] && $post_type === 'author' ) {
 			$active_tab = 'archives';
 			$tabs = array(
 				'archives' => array(

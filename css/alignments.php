@@ -62,7 +62,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media (max-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
+@media (width <= <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded .alignwide {
 		margin-inline: -50vw;
 		position: relative;
@@ -77,26 +77,31 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	}
 }
 
-@media (min-width: <?php echo $content_width + ( $quad * 2 ); ?>px) {
+@media (width > <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded :is(.alignwide, .alignright.wrap-small) { margin-inline-end: -<?php echo $alignwide_breakout; ?>%; }
 	.expanded :is(.alignwide, .alignleft.wrap-small) { margin-inline-start: -<?php echo $alignwide_breakout; ?>%; }
+	.expanded .alignwide { width: calc(100% + <?php echo $alignwide_breakout * 2; ?>%); }
 }
 
-@media (min-width: <?php echo $site_width; ?>px) {
+@media (width > <?php echo $site_width; ?>px) {
 	.expanded .box-style .alignfull {
 		inset-inline: inherit;
 		width: auto;
 	}
 	.expanded { --md-breakout: -<?php echo $breakout; ?>%; }
 	.expanded .box-style .alignfull,
-	.expanded .box-style .alignleft.wrap, .expanded .row.full .image-left .featured-media,
+	.expanded .box-style .alignleft.wrap,
+	.expanded .row.full .image-left > :where(.the-content) > .featured-media,
+	.expanded .row.full .image-left > :where(.the-content) > :where(.wrap) > .featured-media,
 	.expanded :is(.alignleft, .wp-block-image .alignleft) { margin-inline-start: var(--md-breakout); }
 	.expanded .box-style .alignfull,
-	.expanded .box-style .alignright.wrap, .expanded .row.full .image-right .featured-media,
+	.expanded .box-style .alignright.wrap,
+	.expanded .row.full .image-right > :where(.the-content) > .featured-media,
+	.expanded .row.full .image-right > :where(.the-content) > :where(.wrap) > .featured-media,
 	.expanded :is(.alignright, .wp-block-image .alignright) { margin-inline-end: var(--md-breakout); }
 }
 
-@media (max-width: <?php echo $site_width; ?>px) {
+@media (width <= <?php echo $site_width; ?>px) {
 	.expanded .box-style .alignfull {
 		margin-inline: -50vw;
 		position: relative;
@@ -106,23 +111,33 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 }
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.entry.image-left .featured-media {
+	.entry.image-left > :where(.the-content) > .featured-media,
+	.entry.image-left > :where(.the-content) > :where(.wrap) > .featured-media {
 		float: left;
 		margin-inline-end: var(--md-single);
 		max-width: 45%;
 	}
-	.entry.image-right .featured-media {
+	.entry.image-right > :where(.the-content) > .featured-media,
+	.entry.image-right > :where(.the-content) > :where(.wrap) > .featured-media {
 		float: right;
 		margin-inline-start: var(--md-single);
 		max-width: 45%;
 	}
-	:is(.columns, .slim) .image-left .featured-media { margin-inline-end: var(--md-half); }
-	:is(.columns, .slim) .image-right .featured-media { margin-inline-start: var(--md-half); }
-	.slim :is(.image-left, .image-right, .image-title) .featured-media { max-width: var(--md-quad); }
+	:is(.columns, .slim) .image-left > :where(.the-content) > .featured-media,
+	:is(.columns, .slim) .image-left > :where(.the-content) > :where(.wrap) > .featured-media { margin-inline-end: var(--md-half); }
+	:is(.columns, .slim) .image-right > :where(.the-content) > .featured-media,
+	:is(.columns, .slim) .image-right > :where(.the-content) > :where(.wrap) > .featured-media { margin-inline-start: var(--md-half); }
+	.slim :is(.image-left, .image-right) > :where(.the-content) > .featured-media,
+	.slim :is(.image-left, .image-right) > :where(.the-content) > :where(.wrap) > .featured-media,
+	.slim .image-title .featured-media { max-width: var(--md-quad); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
-	.compact .box-style .entry.full .image-left .featured-media,
-	.box-style.columns.full .image-left .featured-media { margin-inline-start: calc(-1 * var(--md-mid)); }
+	.compact .box-style .entry.full .image-left > :where(.the-content) > .featured-media,
+	.compact .box-style .entry.full .image-left > :where(.the-content) > :where(.wrap) > .featured-media,
+	.box-style.columns.full .image-left > :where(.the-content) > .featured-media,
+	.box-style.columns.full .image-left > :where(.the-content) > :where(.wrap) > .featured-media { margin-inline-start: calc(-1 * var(--md-mid)); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignright.wrap,
-	.compact .box-style .entry.full .image-right .featured-media,
-	.box-style.columns.full .image-right .featured-media { margin-inline-end: calc(-1 * var(--md-mid)); }
+	.compact .box-style .entry.full .image-right > :where(.the-content) > .featured-media,
+	.compact .box-style .entry.full .image-right > :where(.the-content) > :where(.wrap) > .featured-media,
+	.box-style.columns.full .image-right > :where(.the-content) > .featured-media,
+	.box-style.columns.full .image-right > :where(.the-content) > :where(.wrap) > .featured-media { margin-inline-end: calc(-1 * var(--md-mid)); }
 }

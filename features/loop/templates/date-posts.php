@@ -1,9 +1,12 @@
-<?php $is_query = isset( $args['query'] );
+<?php
+
+$is_query = isset( $args['query'] );
 
 if ( $is_query )
 	$date_query = $loop['query'] instanceof WP_Query ? $loop['query'] : new WP_Query( $loop['query'] );
 
 if ( $is_query ? $date_query->have_posts() : have_posts() ) {
+
 	$date_month = '';
 
 	if ( ! $is_query )
@@ -30,21 +33,21 @@ if ( $is_query ? $date_query->have_posts() : have_posts() ) {
 				echo '</div></div>';
 
 			$date_month = $post_date['month'];
+			$h = md_loop_heading( 2, $loop_base );
+			$h_class = $h !== 'h2' ? ' h2' : '';
 
 			echo '<div class="loop-dates">'.
-				 '<h2 class="loop-date-title">';
+				 "<$h class=\"loop-date-title$h_class\">";
 
 			if ( $date_month === 'undated' )
 				echo esc_html( $post_date['label'] );
 			else {
 				$date_label = '<time datetime="' . esc_attr( $date_month ) . '">' . esc_html( $post_date['label'] ) . '</time>';
 
-				echo ! $is_query && ! empty( $post_date['url'] )
-					? '<a href="' . esc_url( $post_date['url'] ) . '">' . $date_label . '</a>'
-					: $date_label;
+				echo ! $is_query && ! empty( $post_date['url'] ) ? '<a href="' . esc_url( $post_date['url'] ) . '">' . $date_label . '</a>' : $date_label;
 			}
 
-			echo '</h2>'.
+			echo "</$h>".
 				 '<div class="' . esc_attr( $loop_classes ) . '"' . $loop_columns_style . '>';
 
 		}

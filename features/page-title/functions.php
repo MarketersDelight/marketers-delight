@@ -8,10 +8,17 @@
 
 function md_the_title( $context = 'post', $args = array() ) {
 	$h = 'h1';
+	$h_class = '';
 	$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
-		$h = ! empty( $args['loop']['by_category'] ) ? 'h3' : 'h2';
+		$level = ! empty( $args['loop']['by_category'] ) ? 3 : 2;
+		$h = md_loop_heading( $level, $args['loop'] ?? array() );
+
+		// A lowered heading keeps its original level's look, such as <h3 class="h2">.
+
+		if ( $h !== "h$level" )
+			$h_class = " h$level";
 
 		if ( ! empty( $title ) )
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';

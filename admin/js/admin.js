@@ -376,7 +376,7 @@
 					val = val ? '' : '1';
 
 				parent.find( '.md-conditional-item' ).filter( children ).hide();
-				parent.find( '.md-conditional-' + val ).filter( children ).show();
+				parent.find( '.md-conditional-' + ( val || 'default' ) ).filter( children ).show();
 			} );
 		},
 		toggle: function() {

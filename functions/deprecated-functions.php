@@ -1,5 +1,9 @@
 <?php
 
+// Deprecated 6.0.3
+function md_block_field( $attributes, $field ) { return ! empty( $attributes[$field] ) ? $attributes[$field] : ''; }
+function md_cover_is_light( $cover ) { return md_color_is_light( $cover['bg_color'] ?? '' ); }
+
 // Deprecated 6.0
 function md_webfonts_loader() {}
 function md_get_sidebar_id( $args = array() ) { return md_get_layout_id( 'sidebar', $args ); }

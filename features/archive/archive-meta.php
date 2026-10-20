@@ -49,7 +49,7 @@ class md_archive_meta extends md_api {
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
-			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only' ) )
+			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only', 'paged' ) )
 		);
 
 		foreach ( md_archive_meta_items() as $item )
@@ -71,11 +71,7 @@ class md_archive_meta extends md_api {
 	 */
 
 	public function admin_fields() {
-		$post_type = $this->_get_screen['post_type'];
-		$page_post_type = md_clean_id( $this->_get_screen['page'] );
-
-		if ( $this->_get_screen['is_admin'] && get_post_type_object( $page_post_type ) )
-			$post_type = $page_post_type;
+		$post_type = $this->fields->screen_post_type();
 
 		$scope = $this->_get_screen['is_admin'] && empty( $this->_get_screen['is_taxonomy'] ) && (bool) get_post_type_object( $post_type );
 

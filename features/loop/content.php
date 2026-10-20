@@ -32,6 +32,10 @@ function md_author_box() {
 
 	$author_id = get_post_field( 'post_author', get_queried_object_id() );
 	$author = get_userdata( $author_id );
+
+	if ( ! $author )
+		return;
+
 	$twitter = get_user_meta( $author_id, 'twitter', true );
 	$website_url = $author->user_url;
 	$author_name = $author->display_name;
@@ -58,9 +62,7 @@ function md_post_nav() {
 	$next = get_next_post();
 	$next_media = apply_filters( 'md_post_nav_media', '', $next );
 	$post_type = get_post_type_object( get_post_type() );
-	$post_type_label = $post_type && ! empty( $post_type->labels->singular_name )
-		? $post_type->labels->singular_name
-		: __( 'Post', 'md' );
+	$post_type_label = $post_type && ! empty( $post_type->labels->singular_name ) ? $post_type->labels->singular_name : __( 'Post', 'md' );
 
 	include md_template( 'features', 'loop/post-nav', true );
 }

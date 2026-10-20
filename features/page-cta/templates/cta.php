@@ -2,7 +2,7 @@
 
 do_action( "md_hook_before_{$context}_cta" );
 
-echo '<div class="cta">';
+echo '<div class="' . esc_attr( "cta cta-$type" ) . '">';
 
 do_action( "md_hook_{$context}_cta_top" );
 

@@ -33,7 +33,7 @@
 	margin-block-start: 0;
 }
 
-.widget_nav_menu .sub-menu { display: none !important /*temporary*/; }
+.widget_nav_menu .sub-menu { display: none; }
 
 .widget_nav_menu .menu-item {
 	display: block;
