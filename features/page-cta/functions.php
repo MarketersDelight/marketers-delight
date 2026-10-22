@@ -13,14 +13,8 @@ function md_cta( $context = 'post', $cta = array() ) {
 
 	$html = '';
 
-	if ( empty( $cta ) ) {
-		if ( $context == 'page' )
-			$cta = md_module( 'page_cta' );
-		elseif ( $context == 'post' && is_singular() )
-			$cta = md_post_meta( 'page_cta' );
-		else
-			return;
-	}
+	if ( empty( $cta ) )
+		$cta = md_get_cta( $context );
 
 	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
 
@@ -40,4 +34,22 @@ function md_cta( $context = 'post', $cta = array() ) {
 		return;
 
 	include md_template( 'features', 'page-cta/cta', true );
+}
+
+/**
+ * Get the saved CTA for the current page title: the archive's Page CTA
+ * settings, or a single post's own CTA. Other contexts pass their CTA
+ * to md_cta() directly.
+ *
+ * @since 6.0.4
+ */
+
+function md_get_cta( $context = 'post' ) {
+	if ( $context == 'page' )
+		return md_module( 'page_cta' );
+
+	if ( $context == 'post' && is_singular() )
+		return md_post_meta( 'page_cta' );
+
+	return array();
 }

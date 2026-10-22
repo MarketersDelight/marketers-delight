@@ -98,6 +98,51 @@ function md_category_identity( $term = null ) {
 }
 
 /**
+ * Resolve everything the Post or Page title shows for the current page:
+ * title, description, featured media, cover, CTA, and category identity,
+ * with all of their setting inheritance. Returns an empty array when the
+ * title shouldn't render. The title is the raw value; md_the_title()
+ * applies the md_{$context}_title filter.
+ *
+ * @since 6.0.4
+ */
+
+function md_title_data( $context = 'post', $args = array() ) {
+	if ( ! apply_filters( "md_has_{$context}_title", true, $args ) )
+		return array();
+
+	if ( $context === 'page' && md_module( array( 'layout', 'content', 'headline' ) ) )
+		return array();
+
+	$title = md_get_title( $context );
+
+	if ( ! $title && $context !== 'post' )
+		return array();
+
+	if ( $context === 'post' && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
+		return array();
+
+	$has_header_cover = md_has_header_cover( $context );
+
+	if ( $has_header_cover && in_the_loop() )
+		return array();
+
+	$loop = md_get_loop();
+
+	return array(
+		'title' => $title,
+		'description' => md_get_description( $context ),
+		'media' => md_has_media( $context, array( 'loop' => $loop ) ),
+		'cover' => md_cover( $context ),
+		'cta' => md_get_cta( $context ),
+		'identity' => $context === 'page' ? md_category_identity() : array(),
+		'header_cover' => $has_header_cover,
+		'has_sidebar' => md_has_sidebar(),
+		'loop' => $loop
+	);
+}
+
+/**
  * Render the layout markup of the Post or Page title with supporting
  * elements like image, byline, etc. A title used within a loop
  * has key differences than when rendered as the main Page Title.
@@ -108,39 +153,28 @@ function md_category_identity( $term = null ) {
  */
 
 function md_title( $context = 'post', $args = array() ) {
-	if ( ! apply_filters( "md_has_{$context}_title", true, $args ) )
-		return;
+	$data = md_title_data( $context, $args );
 
-	if ( $context === 'page' && md_module( array( 'layout', 'content', 'headline' ) ) )
-		return;
-
-	if ( ! md_get_title( $context ) && $context !== 'post' )
-		return;
-
-	if ( $context === 'post' && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
-		return;
-
-	$has_header_cover = md_has_header_cover( $context );
-
-	if ( $has_header_cover && in_the_loop() )
+	if ( ! $data )
 		return;
 
 	$classes = $style = array();
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
 	$full_width = array( 'center', 'above_headline', 'below_headline' );
-	$loop = md_get_loop();
-	$media = md_has_media( $context, array( 'loop' => $loop ) );
-	$cover = md_cover( $context );
-	$has_sidebar = md_has_sidebar();
+	$loop = $data['loop'];
+	$media = $data['media'];
+	$cover = $data['cover'];
+	$has_header_cover = $data['header_cover'];
+	$has_sidebar = $data['has_sidebar'];
 	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
 
 	// Category identity.
 
-	if ( $context === 'page' ) {
-		$category_identity = md_category_identity();
+	if ( $data['identity'] ) {
+		$category_identity = $data['identity'];
 
 		if ( $category_identity['icon'] )
 			$args['category_icon'] = $category_identity['icon'];
@@ -201,11 +235,25 @@ function md_description( $context = 'post', $args = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_title_description", true ) )
 		return;
 
+	$description = ! empty( $args['description'] ) ? $args['description'] : md_get_description( $context );
+
+	if ( empty( $description ) )
+		return;
+
+	include md_template( 'features', 'page-title/description', true );
+}
+
+/**
+ * Get the description of the current page title: a single post's cover
+ * text or excerpt, or the archive, term, or author description.
+ *
+ * @since 6.0.4
+ */
+
+function md_get_description( $context = 'post' ) {
 	$description = '';
 
-	if ( ! empty( $args['description'] ) )
-		$description = $args['description'];
-	elseif ( $context == 'post' && is_singular() ) {
+	if ( $context == 'post' && is_singular() ) {
 		$excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) ) && has_excerpt() ? get_the_excerpt() : '';
 		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $excerpt );
 	}
@@ -233,8 +281,5 @@ function md_description( $context = 'post', $args = array() ) {
 		}
 	}
 
-	if ( empty( $description ) )
-		return;
-
-	include md_template( 'features', 'page-title/description', true );
+	return $description;
 }
