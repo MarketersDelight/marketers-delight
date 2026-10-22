@@ -376,7 +376,8 @@ class md_byline extends md_api {
 			'options' => array(
 				'label' => __( 'Show label', 'md' ),
 				'relative' => __( 'Show relative date', 'md' ),
-				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
+				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' ),
+				'hide' => __( 'Hide <strong>Last Updated</strong> if date is unchanged', 'md' )
 			)
 		) );
 	}

@@ -127,7 +127,7 @@ class md_design {
 		$alignwide_width = round( $post_width + ( $post_width * $alignwide_breakout * 2 ) );
 		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
 		$panel_width = round( 10 * $line_height );
-		$site_width = round( $content_width + $sidebar_width + ( $line_height * 1.5 ) );
+		$site_width = round( $content_width + $sidebar_width + $spacers['single'] );
 		$site_width_wide = $content_width + $sidebar_width + $panel_width + ( $line_height * 2 );
 
 		$colors = $this->colors->defaults();

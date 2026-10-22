@@ -11,6 +11,7 @@ class md_collection_fields extends md_fields_render {
 	protected $collection;
 	protected $post_id;
 	protected $values;
+	public $rendered = array();
 
 	public function __construct( $collection, $post_id, $values ) {
 		parent::__construct();
@@ -42,6 +43,7 @@ class md_collection_fields extends md_fields_render {
 
 		$args['field'] = $field;
 		$args['attributes'] = $attributes;
+		$this->rendered[$field] = true;
 
 		echo '<div class="md md-collection-control mt-small">';
 

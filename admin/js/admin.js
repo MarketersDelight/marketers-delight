@@ -22,15 +22,12 @@
 			this.select2Init();
 		},
 		initWpEditor: function() {
-			var inits = document.getElementsByClassName( 'md-toggle-wp-editor' );
+			$( document ).on( 'click', '.md-toggle-wp-editor', function() {
+				if ( ! $( this ).hasClass( 'remove-editor-wrap' ) )
+					MD.wpEditor( this.getAttribute( 'id' ) );
 
-			for ( var i = 0; i < inits.length; i++ )
-				inits[i].onclick = function( e ) {
-					if ( ! $( this ).hasClass( 'remove-editor-wrap' ) )
-						MD.wpEditor( this.getAttribute( 'id' ) );
-
-					$( this ).addClass( 'remove-editor-wrap' );
-				}
+				$( this ).addClass( 'remove-editor-wrap' );
+			} );
 		},
 		select2Init: function() {
 			var inits = document.getElementsByClassName( 'md-select2-init' );
@@ -91,6 +88,9 @@
 					fields = {};
 					fieldRoot = action === 'add' ? button.closest( '.md-collection-add' ) : item;
 
+					if ( window.tinymce )
+						tinymce.triggerSave();
+
 					fieldRoot.find( '[data-md-collection-field]' ).each( function() {
 						var field = $( this ),
 							value = field.val();
@@ -138,13 +138,27 @@
 
 							if ( type === 'upload' )
 								field.closest( '.md-upload' ).find( '.md-upload-remove' ).trigger( 'click' );
-							else
-								field.val( '' ).trigger( 'change' );
+							else if ( this.tagName === 'SELECT' ) {
+								$( this.options ).each( function() {
+									this.selected = this.defaultSelected;
+								} );
+								field.trigger( 'change' );
+							}
+							else {
+								field.val( this.defaultValue ).trigger( 'change' );
+
+								if ( window.tinymce && tinymce.get( this.id ) )
+									tinymce.get( this.id ).setContent( this.defaultValue );
+							}
 						} );
 						collection.find( '[data-md-collection-empty]' ).prop( 'hidden', true );
 						status.text( collection.data( 'md-collection-added' ) );
 					}
 					else if ( action === 'save' ) {
+						item.find( '.md-toggle-wp-editor' ).each( function() {
+							if ( window.tinymce && tinymce.get( this.id ) )
+								wp.editor.remove( this.id );
+						} );
 						item.replaceWith( result.html );
 						status.text( collection.data( 'md-collection-saved' ) );
 					}

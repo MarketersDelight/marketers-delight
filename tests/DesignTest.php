@@ -39,6 +39,15 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( 896.0, $widths['alignwide_width'] );
 	}
 
+	public function test_site_width_adds_one_single_spacer_between_content_and_sidebar() {
+		$values = $this->design->values();
+		$widths = $this->design->widths( $values );
+		$single = $values['typography']['body']['line_height']['desktop'];
+
+		$this->assertEquals( $widths['content_width'] + $widths['sidebar_width'] + $single, $widths['site_width'] );
+		$this->assertEquals( $widths['content_width'] + $widths['sidebar_width'] + $widths['panel_width'] + $single * 2, $widths['site_width_wide'] );
+	}
+
 	public function test_color_defaults_use_the_normalized_semantic_groups() {
 		$colors = $this->colors->defaults();
 		$roles = $this->colors->roles;

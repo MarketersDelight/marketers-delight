@@ -117,10 +117,10 @@
 
 @media all and (max-width: 900px) {
 	/* MENU ITEM */
-	.menu-item { flex-flow: wrap; }
-	.menu-item:not(.toggle-menu-item):hover > :is(a, .toggle) { background-color: rgba(0, 0, 0, 0.08); }
+	:where(.menu) .menu-item { flex-flow: wrap; }
+	:where(.menu) .menu-item:not(.toggle-menu-item):hover > :is(a, .toggle) { background-color: rgba(0, 0, 0, 0.08); }
     .header.center.toggle-menu .header-primary:not(:last-child),
-    .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-border); }
+    :where(.menu) .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-border); }
 	/* TOGGLE */
 	.menu .toggle {
 		border: 1px solid var(--md-header-border);

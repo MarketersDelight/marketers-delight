@@ -630,6 +630,11 @@ function md_pagination( $loop = array() ) {
 	if ( is_singular() && ! $query )
 		return;
 
+	// Manual queries passed as arrays never borrow the main query's pages
+
+	if ( isset( $loop['query'] ) && ! $query && ! isset( $loop['by_category'] ) )
+		return;
+
 	$big = 999999999;
 	$type = $loop['pagination_type'] ?? md_module( array( 'loop', 'pagination' ) );
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';

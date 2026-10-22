@@ -1120,11 +1120,13 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	padding: 16px;
 }
 
-.md-collection-control + .md-collection-control { margin-top: 12px; }
+.md-collection-control + .md-collection-control,
+.md-collection-control + .md-collection-field-columns,
+.md-collection-field-columns + .md-collection-control { margin-top: 8px; }
 
 .md-collection-control .md-label { cursor: pointer; }
 
-.md-collection-details { margin-top: 12px; }
+.md-collection-details { margin-top: 8px; }
 
 .md-collection-details > summary {
 	cursor: pointer;
@@ -1132,13 +1134,13 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	width: fit-content;
 }
 
-.md-collection-details[open] > summary { margin-bottom: 12px; }
+.md-collection-details[open] > summary { margin-bottom: 8px; }
 
-.md-collection-details > :not(summary) + :not(summary) { margin-top: 12px; }
+.md-collection-details > :not(summary) + :not(summary) { margin-top: 8px; }
 
 .md-collection-field-columns {
 	display: grid;
-	gap: 12px;
+	gap: 8px 12px;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 

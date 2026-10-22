@@ -6,8 +6,8 @@
  * @since 4.1
  */
 
-function md_has_comments() {
-	return ( comments_open() || get_comments_number() != 0 ) && ! post_password_required();
+function md_has_comments( $post_id = null ) {
+	return ( comments_open( $post_id ) || get_comments_number( $post_id ) != 0 ) && ! post_password_required( $post_id );
 }
 
 /**

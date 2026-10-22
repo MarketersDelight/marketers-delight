@@ -57,9 +57,9 @@ a.no-underline, .no-underline a { text-decoration: none; }
 .has-muted-color a, .foot a, a.has-muted-color, a.foot { color: var(--md-links-muted); }
 
 .middot:not(:first-child)::before {
-	color: var(--md-border);
+	color: var(--md-text-muted);
 	content: '\00b7';
-	margin-inline-end: var(--md-half);
+	margin-inline-end: var(--md-third);
 }
 
 cite, .tiny {
@@ -424,7 +424,7 @@ foreach ( array( 'small', 'third', 'half', 'single', 'mid', 'triple', 'double', 
 		echo ".block-$size-x { padding: var($inline_var); }\n";
 
 	echo
-		".block-$size { padding: var(--md-$size); }\n".
+		".block-$size { padding: var(--md-$size) var($inline_var); }\n".
 		".block-$size-tb { padding-block: var(--md-$size); }\n".
 		".block-$size-lr { padding-inline: var($inline_var); }\n".
 		".block-$size-top { padding-block-start: var(--md-$size); }\n".

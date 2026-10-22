@@ -1,23 +1,28 @@
 <?php
+	$post_id = isset( $fields['post_id'] ) ? $fields['post_id'] : get_the_ID();
+
 	if ( ! empty( $fields['settings']['alt'] ) ) {
 		$key = 'last_updated';
-		$has_update = get_the_modified_time( 'U' ) > get_the_time( 'U' );
-		$post_time = $has_update ? get_the_modified_time( 'U' ) : get_post_time();
-		$date = $post_date = $has_update ? get_the_modified_time( get_option( 'date_format' ) ) : get_the_time( get_option( 'date_format' ) );
-		$datetime = $has_update ? get_the_modified_time( 'c' ) : get_the_date( 'c' );
+		$has_update = get_the_modified_time( 'U', $post_id ) > get_the_time( 'U', $post_id );
+
+		if ( ! empty( $fields['settings']['hide'] ) && get_the_modified_time( 'Y-m-d', $post_id ) === get_the_time( 'Y-m-d', $post_id ) )
+			return;
+		$post_time = $has_update ? get_the_modified_time( 'U', $post_id ) : get_post_time( 'U', false, $post_id );
+		$date = $post_date = $has_update ? get_the_modified_time( get_option( 'date_format' ), $post_id ) : get_the_time( get_option( 'date_format' ), $post_id );
+		$datetime = $has_update ? get_the_modified_time( 'c', $post_id ) : get_the_date( 'c', $post_id );
 		$default_name = __( 'Last updated:', 'md' );
 		$icon = 'clock';
 	}
 	else {
 		$key = 'date';
-		$post_time = get_post_time();
-		$date = $post_date = get_the_time( get_option( 'date_format' ) );
-		$datetime = get_the_date( 'c' );
+		$post_time = get_post_time( 'U', false, $post_id );
+		$date = $post_date = get_the_time( get_option( 'date_format' ), $post_id );
+		$datetime = get_the_date( 'c', $post_id );
 		$default_name = __( 'Published on:', 'md' );
 		$icon = 'calendar';
 	}
 
-	$permalink = ! empty( $fields['url'] ) ? $fields['url'] : get_permalink();
+	$permalink = ! empty( $fields['url'] ) ? $fields['url'] : get_permalink( $post_id );
 	$relative = human_time_diff( $post_time, current_time( 'U' ) );
 
 	if ( isset( $fields['url_params'] ) )

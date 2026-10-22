@@ -87,6 +87,8 @@
 
 .comment-controls { padding-inline-start: var(--md-single); }
 
+.comment-controls a + a { margin-inline-start: var(--md-small); }
+
 .comment-respond + .comment-controls { display: none; }
 
 .comment-controls a {

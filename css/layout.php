@@ -107,7 +107,7 @@
 	.compact .content-wrap {
 		display: flex;
 		align-items: stretch;
-		gap: var(--md-mid);
+		gap: var(--md-single);
 	}
 	.compact .content-wrap:not(:last-child) { margin-block-end: 0; }
 	.compact .content:not(:last-child) { margin-block-end: 0; }

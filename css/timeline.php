@@ -43,11 +43,6 @@
 .expanded .loop-timeline.columns,
 .expanded .box-style.loop-timeline.columns { max-width: none; }
 
-.loop-timeline > .entry > .timeline-wrap > .post-title > .byline.before-title {
-	border-block-end: 1px solid var(--md-border);
-	padding-block-end: var(--md-half);
-}
-
 .loop-timeline > .entry > .timeline-wrap > .post-title .byline .share:last-child { margin-inline-start: auto; }
 
 .loop-timeline .post-title.wide {

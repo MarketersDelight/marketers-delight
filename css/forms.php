@@ -41,7 +41,10 @@ input.no-style, input.no-style:focus {
 	padding: 0;
 }
 
-textarea { padding: var(--md-single); }
+textarea {
+	line-height: var(--md-line-height);
+	padding: var(--md-single);
+}
 
 select {
 	font-size: inherit;

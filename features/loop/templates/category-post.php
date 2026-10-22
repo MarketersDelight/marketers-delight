@@ -22,28 +22,38 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 		<?php endif; ?>
 
-		<div class="entry-title grow<?php echo $has_inside_entry ? ' title-inline' : ''; ?>">
+		<div class="entry-title grow">
 
 			<?php md_byline( 'before_title', array(
 				'context' => 'category_entry',
 				'category' => $category
 			) ); ?>
 
+			<?php if ( $has_inside_entry ) : ?>
+
+			<div class="title-inline">
+
+			<?php endif; ?>
+
 			<<?php echo $h; ?> class="title<?php echo $h_class; ?>">
 			<a href="<?php echo get_term_link( $category->term_id ); ?>"><?php echo esc_html( $category->name ); ?></a>
 			</<?php echo $h; ?>>
 
-			<?php
-			md_byline( 'after_title', array(
-				'context' => 'category_entry',
-				'category' => $category
-			) );
+			<?php if ( $has_inside_entry ) : ?>
 
-			md_byline( 'inside_title', array(
+			<?php md_byline( 'inside_title', array(
 				'context' => 'category_entry',
 				'category' => $category
-			) );
-			?>
+			) ); ?>
+
+			</div>
+
+			<?php endif; ?>
+
+			<?php md_byline( 'after_title', array(
+				'context' => 'category_entry',
+				'category' => $category
+			) ); ?>
 
 		</div>
 

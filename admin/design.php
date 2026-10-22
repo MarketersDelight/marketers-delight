@@ -79,10 +79,11 @@ class md_colors extends md_api {
 		$palette_defaults = $this->colors->palette;
 		$design = md_setting( array( 'colors', 'design' ) );
 
-		$post_width = round( 21 * $line_height );
-		$layout_spacing = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
-		$sidebar_width = round( 12 * $line_height );
-		$gap = round( $line_height * 1.5 );
+		$widths = $this->design()->widths( $values );
+		$post_width = $widths['post_width'];
+		$layout_spacing = $widths['content_width'] - $post_width;
+		$sidebar_width = $widths['sidebar_width'];
+		$gap = $line_height;
 		$site_width = $post_width + $layout_spacing + $sidebar_width + $gap;
 
 		$content_style = md_filter_loop_styles();

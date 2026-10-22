@@ -145,13 +145,17 @@ class md_collections_rest {
 			return $terms_permission;
 
 		if ( $is_new ) {
-			$item_id = wp_insert_post( array(
+			$resolved = $collection->validate( $fields );
+
+			if ( is_wp_error( $resolved ) )
+				return $resolved;
+
+			$item_id = wp_insert_post( array_merge( array(
 				'post_type' => $collection->post_type,
 				'post_parent' => $parent_id,
 				'post_status' => 'publish',
-				'post_author' => get_current_user_id(),
-				'post_title' => $collection->item_title( $fields )
-			), true );
+				'post_author' => get_current_user_id()
+			), $collection->insert_fields( $resolved ) ), true );
 
 			if ( is_wp_error( $item_id ) )
 				return $item_id;

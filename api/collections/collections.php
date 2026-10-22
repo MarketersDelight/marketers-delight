@@ -134,9 +134,18 @@ class md_collection {
 
 		call_user_func( $this->fields_callback, $fields, $post_id ? get_post( $post_id ) : null, $values );
 
+		// Status and date go last unless the Collection placed them itself
+
+		$remaining = array_diff( array( 'status', 'date' ), array_keys( $fields->rendered ) );
+
+		if ( ! $remaining )
+			return;
+
 		echo '<div class="md-collection-field-columns mt-half">';
-		$fields->field( 'status', array() );
-		$fields->field( 'date', array() );
+
+		foreach ( $remaining as $field )
+			$fields->field( $field, array() );
+
 		echo '</div>';
 	}
 
@@ -373,15 +382,13 @@ class md_collection {
 	}
 
 	/**
-	 * Validate, sanitize, and save a Collection item.
+	 * Sanitize and validate Collection item values before anything is saved.
+	 * New items have no post yet, so required fields fall back to defaults.
 	 *
-	 * @since 6.0
+	 * @since 6.0.4
 	 */
 
-	public function save( $post_id, $values ) {
-		if ( get_post_type( $post_id ) !== $this->post_type )
-			return new WP_Error( 'md_collection_item', __( 'Collection item not found.', 'md' ) );
-
+	public function validate( $values, $post_id = 0 ) {
 		$values = is_array( $values ) ? $values : array();
 		$resolved = array();
 
@@ -408,13 +415,52 @@ class md_collection {
 			if ( ! $field['required'] )
 				continue;
 
-			$value = array_key_exists( $id, $resolved ) ? $resolved[$id] : $this->read_field( $post_id, $field, $field['default'] );
+			if ( array_key_exists( $id, $resolved ) )
+				$value = $resolved[$id];
+			else
+				$value = $post_id ? $this->read_field( $post_id, $field, $field['default'] ) : $field['default'];
 
 			$is_empty = is_string( $value ) ? trim( wp_strip_all_tags( $value ) ) === '' : in_array( $value, array( '', null, array() ), true );
 
 			if ( $is_empty )
 				return new WP_Error( 'md_collection_required', sprintf( __( '%s is required.', 'md' ), $field['label'] ?? $id ), array( 'status' => 400 ) );
 		}
+
+		return $resolved;
+	}
+
+	/**
+	 * Get the WP core post fields a new item is created with, so WP
+	 * sees its title, content, and excerpt in the first insert.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function insert_fields( $resolved ) {
+		$post = array( 'post_title' => $this->item_title( $resolved ) );
+
+		foreach ( $this->fields as $id => $field )
+			if ( in_array( $field['source'], array( 'post_content', 'post_excerpt' ), true ) && isset( $resolved[$id] ) )
+				$post[$field['source']] = $resolved[$id];
+
+		return $post;
+	}
+
+	/**
+	 * Validate, sanitize, and save a Collection item.
+	 *
+	 * @since 6.0
+	 */
+
+	public function save( $post_id, $values ) {
+		if ( get_post_type( $post_id ) !== $this->post_type )
+			return new WP_Error( 'md_collection_item', __( 'Collection item not found.', 'md' ) );
+
+		$values = is_array( $values ) ? $values : array();
+		$resolved = $this->validate( $values, $post_id );
+
+		if ( is_wp_error( $resolved ) )
+			return $resolved;
 
 		$post = array( 'ID' => $post_id );
 

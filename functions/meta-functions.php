@@ -34,10 +34,8 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
  */
 
 function md_term_meta( $keys = null, $id = null, $default = null ) {
-	if ( is_admin() )
-		$id = isset( $_GET['tag_ID'] ) ? intval( $_GET['tag_ID'] ) : '';
-	else
-		$id = isset( $id ) ? $id : get_queried_object_id();
+	if ( ! isset( $id ) )
+		$id = is_admin() ? ( isset( $_GET['tag_ID'] ) ? intval( $_GET['tag_ID'] ) : '' ) : get_queried_object_id();
 
 	$id = apply_filters( 'md_setting_id', $id );
 	$meta = get_term_meta( $id, 'marketers_delight', true );

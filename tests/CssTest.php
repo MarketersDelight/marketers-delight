@@ -577,6 +577,14 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '.expanded .content:not(:last-child)', $layout );
 	}
 
+	public function test_content_and_sidebar_columns_are_one_single_spacer_apart() {
+		$layout = $this->source( 'css/layout.php' );
+		$panel = $this->source( 'css/panel.php' );
+
+		$this->assertMatchesRegularExpression( '/\.compact \.content-wrap \{[^}]*gap: var\(--md-single\);/s', $layout );
+		$this->assertMatchesRegularExpression( '/\.toggle-panel \.content-wrap \{[^}]*gap: var\(--md-single\);/s', $panel );
+	}
+
 	public function test_alignment_breakouts_keep_theme_selectors_and_leave_editor_widths_to_theme_json() {
 		$alignments = $this->source( 'css/alignments.php' );
 		$block = $this->source( 'css/block-editor.php' );
