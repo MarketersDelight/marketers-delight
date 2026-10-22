@@ -61,6 +61,7 @@ $GLOBALS['__test_query'] = array(
 );
 $GLOBALS['__test_active_sidebars'] = array();
 $GLOBALS['__test_rendered_byline_items'] = array();
+$GLOBALS['__test_real_templates'] = false;
 
 /**
  * Test helpers, not WP stubs.
@@ -116,8 +117,10 @@ function md_test_reset() {
 	);
 	$GLOBALS['__test_active_sidebars'] = array();
 	$GLOBALS['__test_rendered_byline_items'] = array();
+	$GLOBALS['__test_real_templates'] = false;
 
 	md_flush_option_caches();
+	md_setting_defaults( true );
 }
 
 // Sets the marketers_delight option array wholesale (mirrors get_option()).
@@ -146,6 +149,11 @@ function md_test_set_user_meta( $user_id, $meta ) {
 
 function md_test_set_filter( $tag, $value ) {
 	$GLOBALS['__test_filters'][$tag] = $value;
+
+	// Registered defaults are held for the request, so rebuild them
+
+	if ( strpos( $tag, 'md_setting_defaults' ) === 0 )
+		md_option_defaults( $tag === 'md_setting_defaults' ? 'marketers_delight' : substr( $tag, strlen( 'md_setting_defaults_' ) ), true );
 }
 
 // $children = array of child term IDs (non-empty means "has children").
@@ -227,6 +235,13 @@ function md_test_set_query( array $state ) {
 	$GLOBALS['__test_query'] = array_merge( $GLOBALS['__test_query'], $state );
 }
 
+// Render the theme's real templates instead of tests/inheritance/fixtures,
+// for snapshot tests of full markup. Reset after every test.
+
+function md_test_use_real_templates() {
+	$GLOBALS['__test_real_templates'] = true;
+}
+
 function md_test_set_active_sidebars( array $sidebars ) {
 	$GLOBALS['__test_active_sidebars'] = $sidebars;
 }
@@ -260,7 +275,18 @@ function has_action() {
 function md_template( $file, $path = null, $include = null ) {
 	$template = is_string( $path ) ? $path : $file;
 
-	return __DIR__ . "/fixtures/$template.php";
+	if ( ! $GLOBALS['__test_real_templates'] || ! is_string( $path ) )
+		return __DIR__ . "/fixtures/$template.php";
+
+	// Same mapping as the real md_template(): features/page-title/title
+	// becomes features/page-title/templates/title.php
+
+	$parts = explode( '/', $template );
+	$name = array_pop( $parts );
+	$first = array_shift( $parts );
+	$dir = trim( $first . '/templates/' . implode( '/', $parts ), '/' );
+
+	return dirname( __DIR__, 2 ) . "/$file/$dir/$name.php";
 }
 
 function get_option( $key, $default = false ) {
@@ -623,6 +649,81 @@ if ( ! function_exists( '__' ) ) {
 	}
 }
 
+// Title markup stubs: plain, deterministic stand-ins for WP output
+
+function do_action() {}
+
+function wpautop( $text ) {
+	return '<p>' . trim( (string) $text ) . "</p>\n";
+}
+
+function esc_url( $url ) {
+	return (string) $url;
+}
+
+function esc_html( $text ) {
+	return (string) $text;
+}
+
+function do_shortcode( $content ) {
+	return (string) $content;
+}
+
+function in_the_loop() {
+	return false;
+}
+
+function has_excerpt() {
+	return false;
+}
+
+function get_the_excerpt() {
+	return '';
+}
+
+function category_description() {
+	return '';
+}
+
+function get_the_author_meta( $field = '', $user_id = 0 ) {
+	return $field === 'display_name' ? 'Test Author' : '';
+}
+
+if ( ! class_exists( 'WP_Term' ) ) {
+	class WP_Term {
+
+		public $term_id = 0;
+		public $taxonomy = '';
+		public $name = '';
+		public $slug = '';
+
+		public function __construct( $props = array() ) {
+			foreach ( $props as $key => $value )
+				$this->$key = $value;
+		}
+
+	}
+}
+
+function wp_get_attachment_image_url( $id, $size = 'thumbnail' ) {
+	$size = is_array( $size ) ? implode( 'x', $size ) : $size;
+
+	return "https://example.test/image-$id-$size.jpg";
+}
+
+function wp_get_attachment_image( $id, $size = 'thumbnail', $icon = false, $attr = array() ) {
+	$attrs = '';
+
+	foreach ( (array) $attr as $name => $value )
+		$attrs .= " $name=\"$value\"";
+
+	return '<img src="' . wp_get_attachment_image_url( $id, $size ) . '"' . $attrs . ' />';
+}
+
+function wp_get_attachment_caption( $id = 0 ) {
+	return '';
+}
+
 require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
@@ -637,8 +738,11 @@ require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-title/document-title.php';
 require_once dirname( __DIR__, 2 ) . '/features/wordpress.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/archive/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
+require_once dirname( __DIR__, 2 ) . '/api/colors.php';
+require_once dirname( __DIR__, 2 ) . '/functions/design-functions.php';
 
 /**
  * Base test case for the inheritance suite: reflection helper for invoking
