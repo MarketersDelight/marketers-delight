@@ -4,6 +4,7 @@ if ( empty( $option ) )
 	$option = isset( $args['default'] ) && is_array( $args['default'] ) ? $args['default'] : array();
 
 $field_path = $args['field'];
+$path = $args['path'];
 $group_id = is_array( $field_path ) ? implode( '_', $field_path ) : $field_path;
 $group_key = "{$this->_id}_$group_id";
 $clone = "{clone:$group_key}";
@@ -60,13 +61,13 @@ $classes = join( ' ', $classes );
 			<?php if ( $style == 'boxes' ) {
 				echo '<div class="md-widget-edit">';
 
-				$this->field( array_merge( (array) $field_path, array( $group, 'name' ) ), array(
+				$this->field( array_merge( (array) $path, array( $group, 'name' ) ), array(
 					'type' => 'text',
 					'placeholder' => isset( $args['new_label'] ) ? $args['new_label'] : __( 'New entry...', 'md' )
 				) );
 
 				if ( isset( $args['subtitle'] ) )
-					$this->field( array_merge( (array) $field_path, array( $group, 'subtitle' ) ), array(
+					$this->field( array_merge( (array) $path, array( $group, 'subtitle' ) ), array(
 						'type' => 'text',
 						'placeholder' => __( 'Add subtitle (optional)', 'md' ),
 						'classes' => 'small-text'
@@ -90,7 +91,7 @@ $classes = join( ' ', $classes );
 		</div>
 
 		<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-			<?php call_user_func( $args['callback'], $field_path, $group, $callback_args ); ?>
+			<?php call_user_func( $args['callback'], $path, $group, $callback_args ); ?>
 		</div>
 
 	</div>

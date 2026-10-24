@@ -37,30 +37,7 @@ class md_featured_media extends md_api {
 	 */
 
 	public function fields() {
-		$fields = array(
-			'media_type' => array(
-				'type' => 'select',
-				'options' => array( 'image', 'video', 'custom_html' ),
-				'code_options' => array( 'custom_html' )
-			),
-			'position' => array(
-				'type' => 'select',
-				'options' => array_keys( $this->fields->data->values['featured_image'] )
-			),
-			'image' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
-			),
-			'image_width' => array( 'type' => 'number' ),
-			'mobile' => array(
-				'type' => 'select',
-				'options' => array( 'beside', 'hide' )
-			),
-			'video' => array( 'type' => 'url' ),
-			'custom_html' => array( 'type' => 'code' )
-		);
-
-		return $fields;
+		return md_featured_media_fields();
 	}
 
 	/**
@@ -70,9 +47,7 @@ class md_featured_media extends md_api {
 	 */
 
 	public function admin_fields() {
-		$prefix = $this->_prefix;
 		$is_post = $this->_get_screen['is_post'];
-		$media_type = $this->fields->module( 'media_type' );
 		$classes = array( "md-$this->_clean_id", 'md-tab-content', 'md-conditional' );
 
 		if ( ! $is_post )
@@ -81,7 +56,7 @@ class md_featured_media extends md_api {
 		$classes = join( ' ', $classes );
 
 		echo '<div class="' . esc_attr( $classes ) . '">';
-		include md_template( 'features', 'featured-media/admin/featured-media', true );
+		md_featured_media_admin( $this->fields, $this->_prefix, array( 'is_post' => $is_post ) );
 		echo '</div>';
 	}
 

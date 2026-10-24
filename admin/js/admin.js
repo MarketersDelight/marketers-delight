@@ -191,7 +191,7 @@
 		clone: {
 			init: function() {
 				this.new();
-				this.delete( '.md-group' );
+				this.delete();
 			},
 			new: function() {
 				$( document ).on( 'click', '.md-clone-add', function( e ) {
@@ -233,16 +233,19 @@
 				e.find( '.md-populate-date' ).val( Math.round( new Date().getTime() / 1000 ) );
 				e.find( '.md-populate-user-id' ).val( MDJS.user_id );
 			},
-			delete: function( parent ) {
+			delete: function() {
 				$( document ).on( 'click', '.md-delete', function( e ) {
-					var group = $( this ).closest( parent ),
-						field = group.closest( '.md-field-builder' ),
-						isBuilderGroup = group.hasClass( 'md-builder-group' );
+					var group = $( this ).closest( '.md-group' ),
+						row = group.parent( '.md-builder-group' ),
+						field = row.closest( '.md-field-builder' );
+
+					if ( row.length )
+						group = row;
 
 					group.slideUp( 'fast', function() {
 						$( this ).remove();
 
-						if ( isBuilderGroup && field.length )
+						if ( field.length )
 							MD.sortable.counts( field );
 					});
 				});
@@ -347,7 +350,6 @@
 							MD.clone.filter( $( e.item ) );
 						}
 					});
-				MD.clone.delete( '.md-builder-group' );
 				$( '.md-builder-tabs .nav-tab-active' ).each( function() {
 					MD.filterPalette( $( this ) );
 				});

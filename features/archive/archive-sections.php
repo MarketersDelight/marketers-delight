@@ -94,9 +94,17 @@ class md_archive_sections extends md_api {
 			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only', 'paged' ) )
 		);
 
-		foreach ( $this->elements() as $element )
-			if ( ! empty( $element['fields'] ) )
-				$fields = array_merge( $fields, $element['fields'] );
+		foreach ( $this->elements() as $element ) {
+			$element_fields = $element['fields'] ?? array();
+
+			// A function name is only called in the admin, where settings are saved
+
+			if ( is_string( $element_fields ) )
+				$element_fields = is_admin() ? call_user_func( $element_fields ) : array();
+
+			if ( $element_fields )
+				$fields = array_merge( $fields, $element_fields );
+		}
 
 		return array(
 			'builder' => array(
@@ -171,7 +179,9 @@ class md_archive_sections extends md_api {
 	/**
 	 * Get section elements available to the current post type. An element's
 	 * callback outputs one root element. Set 'classes' => 'col-full' for a
-	 * full-width element; others share a row with their neighbors.
+	 * full-width element; others share a row with their neighbors. 'fields'
+	 * takes the save rules, or a function name that returns them, so a
+	 * costly schema is only built in the admin.
 	 *
 	 * @since 6.0
 	 */
@@ -197,6 +207,16 @@ class md_archive_sections extends md_api {
 				'fields' => md_taxonomy_filter_fields(),
 				'callback' => 'md_taxonomy_filter',
 				'admin_callback' => 'md_taxonomy_filter_admin_fields'
+			),
+			'title_section' => array(
+				'title' => __( 'Title Section', 'md' ),
+				'placeholder' => __( 'Section title...', 'md' ),
+				'icon' => 'heading',
+				'color' => '#8a5e0e',
+				'classes' => 'col-full',
+				'fields' => 'md_title_section_fields',
+				'callback' => 'md_title_section',
+				'admin_callback' => 'md_title_section_admin_fields'
 			)
 		) );
 

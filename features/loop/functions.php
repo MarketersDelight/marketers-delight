@@ -82,9 +82,17 @@ function md_loop( $args = array() ) {
 		}
 	}
 
-	// Things that don't exist have to go somewhere too
+	// Things that don't exist have to go somewhere too. An empty archive
+	// says so with its post type's own "not found" label.
 
-	else md_404();
+	elseif ( is_404() || is_search() )
+		md_404();
+	else {
+		$post_type_object = get_post_type_object( md_get_post_type() );
+
+		if ( $post_type_object )
+			echo '<p class="loop-empty has-muted-color">' . esc_html( $post_type_object->labels->not_found ) . '</p>';
+	}
 
 	md_hook_loop_after( $args );
 }

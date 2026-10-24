@@ -150,7 +150,8 @@ class Dropin_Installer_Skin extends WP_Upgrader_Skin {
 			'Version' => __( 'Version' ),
 			'Author' => __( 'Author' ),
 			'RequiresWP' => __( 'Required WordPress version' ),
-			'RequiresPHP' => __( 'Required PHP version' )
+			'RequiresPHP' => __( 'Required PHP version' ),
+			'RequiresMD' => __( 'Required Marketers Delight version', 'md' )
 		);
 
 		$table  = '<table class="update-from-upload-comparison"><tbody>';
@@ -191,6 +192,14 @@ class Dropin_Installer_Skin extends WP_Upgrader_Skin {
 
 		if ( ! is_wp_version_compatible( $requires_wp ) ) {
 			$error = sprintf( __( 'Your WordPress version is %1$s, however the uploaded dropin requires %2$s.' ), get_bloginfo( 'version' ), $requires_wp );
+			$blocked_message .= '<li>' . esc_html( $error ) . '</li>';
+			$can_update       = false;
+		}
+
+		$requires_md = ! empty( $new_dropin_data['RequiresMD'] ) ? $new_dropin_data['RequiresMD'] : null;
+
+		if ( $requires_md && version_compare( MD_VERSION, $requires_md, '<' ) ) {
+			$error = sprintf( __( 'Your Marketers Delight version is %1$s, however the uploaded dropin requires %2$s.', 'md' ), MD_VERSION, $requires_md );
 			$blocked_message .= '<li>' . esc_html( $error ) . '</li>';
 			$can_update       = false;
 		}

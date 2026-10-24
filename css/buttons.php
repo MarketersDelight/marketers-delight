@@ -18,18 +18,18 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 	line-height: 1;
 }
 
+.button { white-space: nowrap; }
+
 .cta-links, :where(.wp-block-buttons) {
 	align-items: center;
 	display: flex;
+	flex-wrap: wrap;
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
 }
 
 .cta-email { width: 100%; }
 
-:where(.wp-block-buttons) {
-	flex-wrap: wrap;
-	justify-content: center;
-}
+:where(.wp-block-buttons) { justify-content: center; }
 
 .wp-block-buttons .wp-block-button__link {
 	justify-content: center;

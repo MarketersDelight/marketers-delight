@@ -166,6 +166,7 @@ function md_get_dropin_data( $dropin_file ) {
 		'Network' => 'Network',
 		'RequiresWP' => 'Requires at least',
 		'RequiresPHP' => 'Requires PHP',
+		'RequiresMD' => 'Requires MD',
 		'UpdateURI' => 'Update URI',
 		'_sitewide'   => 'Site Wide Only'
 	);
@@ -216,6 +217,9 @@ function md_validate_dropin_package( $directory, $slug ) {
 
 	if ( ! is_wp_version_compatible( $data['RequiresWP'] ?? null ) )
 		return new WP_Error( 'incompatible_wp_required_version', sprintf( __( 'This Drop-in requires WordPress %s.', 'md' ), $data['RequiresWP'] ) );
+
+	if ( ! empty( $data['RequiresMD'] ) && version_compare( MD_VERSION, $data['RequiresMD'], '<' ) )
+		return new WP_Error( 'incompatible_md_required_version', sprintf( __( 'This Drop-in requires Marketers Delight %s.', 'md' ), $data['RequiresMD'] ) );
 
 	return $data;
 }

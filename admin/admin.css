@@ -407,6 +407,18 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	}
 }
 
+.md-title-section-title {
+	align-items: end;
+	display: grid;
+	gap: 0 10px;
+	grid-template-columns: auto 1fr;
+}
+.md-title-section-title > .md-label-wrap {
+	grid-column: 1 / -1;
+	grid-row: 1;
+}
+.md-title-section-heading { grid-row: 2; }
+
 .md-alignright { float: right; }
 
 @media all and (max-width: 900px) {
@@ -1319,6 +1331,8 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	margin-bottom: 4px;
 	margin-top: 0;
 }
+
+.md .md-checkboxes:not(:last-child) > .md-checkbox:last-child { margin-bottom: 0; }
 
 .md .md-checkbox-description .md-field-checkbox,
 .md .md-checkbox-description .md-checkbox,

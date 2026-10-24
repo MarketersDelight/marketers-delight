@@ -394,6 +394,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
+			'description' => __( 'In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot.', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
 				'label' => __( 'Hide label', 'md' ),

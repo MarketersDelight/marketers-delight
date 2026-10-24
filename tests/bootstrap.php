@@ -526,6 +526,10 @@ if ( ! function_exists( '__' ) ) {
 	}
 }
 
+function md_visibility_conditions() {
+	return array();
+}
+
 function md_clean_id( $id ) {
 	return ! empty( $id ) ? preg_replace( '/^md_/', '', $id ) : '';
 }

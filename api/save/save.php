@@ -365,6 +365,11 @@ class md_save {
 		if ( ! isset( $_POST[$option] ) )
 			return $post_id;
 
+		// The form belongs to the post being edited, not to other posts saved during its request (like Stream activity)
+
+		if ( isset( $_POST['post_ID'] ) && absint( $_POST['post_ID'] ) !== absint( $post_id ) )
+			return $post_id;
+
 		$value = get_post_meta( $post_id, $option, true );
 		$value = is_array( $value ) ? $value : array();
 		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );

@@ -35,12 +35,12 @@
 
 .loop.has-mobile-columns { --md-columns-mobile: var(--md-loop-columns-mobile, 2); }
 
-.loop.columns > .entry {
+.loop.columns > .entry, .archive-sections-group > .box {
 	display: flex;
 	flex-direction: column;
 }
 
-.loop.columns > .entry > .post-footer { margin-block-start: auto; }
+:is(.loop.columns > .entry, .archive-sections-group > .box) > .post-footer { margin-block-start: auto; }
 
 .archive-sections:not(:last-child) { margin-block-end: var(--md-single-x); }
 
@@ -79,6 +79,7 @@
 
 .box,
 .content .page-title.cover,
+.section-title.cover,
 .entry .cover,
 .content-wrap.builder > .cover,
 .featured-media { border-radius: var(--md-border-radius); }
@@ -126,7 +127,10 @@
 .box-entry > .entry > :is(.post-footer, .item-sep),
 .box-entry > .entry > :not(.loop) > :is(.post-footer, .item-sep),
 .box-entry > .entry > :not(.loop) > .wrap > :is(.post-footer, .item-sep),
-.box-style.category-view > .entry > :is(.post-footer, .item-sep) { border-block-start: 1px solid var(--md-border); }
+.box-style.category-view > .entry > :is(.post-footer, .item-sep),
+.archive-sections-group > .box > .post-footer { border-block-start: 1px solid var(--md-border); }
+
+.archive-sections-group > .box > .post-footer { padding-block-start: var(--md-half); }
 
 .box, .box-entry > .entry { width: auto; }
 

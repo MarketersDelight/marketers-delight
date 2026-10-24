@@ -724,6 +724,18 @@ function wp_get_attachment_caption( $id = 0 ) {
 	return '';
 }
 
+function md_visibility_conditions() {
+	return array();
+}
+
+function locate_template( $template_names, $load = false ) {
+	foreach ( (array) $template_names as $name )
+		if ( file_exists( dirname( __DIR__, 2 ) . "/$name" ) )
+			return dirname( __DIR__, 2 ) . "/$name";
+
+	return '';
+}
+
 require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
@@ -739,6 +751,8 @@ require_once dirname( __DIR__, 2 ) . '/features/page-title/document-title.php';
 require_once dirname( __DIR__, 2 ) . '/features/wordpress.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/archive/functions.php';
+require_once dirname( __DIR__, 2 ) . '/api/fields/data.php';
+require_once dirname( __DIR__, 2 ) . '/features/archive/title-section.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
 require_once dirname( __DIR__, 2 ) . '/api/colors.php';

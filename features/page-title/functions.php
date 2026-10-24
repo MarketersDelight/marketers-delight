@@ -7,9 +7,16 @@
  */
 
 function md_the_title( $context = 'post', $args = array() ) {
-	$h = 'h1';
-	$h_class = '';
-	$title = apply_filters( "md_{$context}_title", md_get_title( $context ) );
+	$h = ! empty( $args['heading'] ) ? $args['heading'] : 'h1';
+	$h_class = ! empty( $args['title_class'] ) ? ' ' . $args['title_class'] : '';
+	$h_style = ! empty( $args['title_style'] ) ? md_style( $args['title_style'] ) : '';
+	$lede = ! empty( $args['data']['lede'] ) ? $args['data']['lede'] : '';
+	$title = apply_filters( "md_{$context}_title", isset( $args['data']['title'] ) ? $args['data']['title'] : md_get_title( $context ) );
+
+	// Outside of posts, an empty title leaves no empty wrappers behind
+
+	if ( $context !== 'post' && empty( $title ) && ! $lede )
+		return;
 
 	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
 		$level = ! empty( $args['loop']['by_category'] ) ? 3 : 2;
@@ -18,7 +25,7 @@ function md_the_title( $context = 'post', $args = array() ) {
 		// A lowered heading keeps its original level's look, such as <h3 class="h2">.
 
 		if ( $h !== "h$level" )
-			$h_class = " h$level";
+			$h_class = " h$level" . $h_class;
 
 		if ( ! empty( $title ) )
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
@@ -99,8 +106,8 @@ function md_category_identity( $term = null ) {
 
 /**
  * Resolve everything the Post or Page title shows for the current page:
- * title, description, featured media, cover, CTA, and category identity,
- * with all of their setting inheritance. Returns an empty array when the
+ * title, description, featured media, cover, CTA, category identity, and
+ * whether to show Archive Meta, with all of their setting inheritance. Returns an empty array when the
  * title shouldn't render. The title is the raw value; md_the_title()
  * applies the md_{$context}_title filter.
  *
@@ -136,6 +143,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 		'cover' => md_cover( $context ),
 		'cta' => md_get_cta( $context ),
 		'identity' => $context === 'page' ? md_category_identity() : array(),
+		'archive_meta' => $context === 'page' && ! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ),
 		'header_cover' => $has_header_cover,
 		'has_sidebar' => md_has_sidebar(),
 		'loop' => $loop
@@ -158,6 +166,26 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( ! $data )
 		return;
 
+	md_render_title( $context, $data, $args );
+}
+
+/**
+ * Render title markup from resolved data. Reads nothing from the page
+ * itself, so any caller can pass its own data in the shape
+ * md_title_data() returns, plus an optional 'lede' printed above the
+ * title and 'foot' printed after the CTA.
+ *
+ * $args also takes 'tag' and 'heading' for the wrapper and title tags,
+ * 'id', 'classes' and 'style' for the wrapper, 'title_class' and
+ * 'title_style' for the title, 'top' for HTML printed first inside the
+ * wrapper (like a close button), and 'inner' to wrap the content in
+ * .inner without a Header Cover.
+ *
+ * @since 6.0.4
+ */
+
+function md_render_title( $context, $data, $args = array() ) {
+	$args['data'] = $data;
 	$classes = $style = array();
 	$inline_images = array( 'left', 'right' );
 	$title_images = array( 'title_left', 'title_right', 'title_center' );
@@ -166,10 +194,16 @@ function md_title( $context = 'post', $args = array() ) {
 	$media = $data['media'];
 	$cover = $data['cover'];
 	$has_header_cover = $data['header_cover'];
+	$has_inner = $has_header_cover || ! empty( $args['inner'] );
 	$has_sidebar = $data['has_sidebar'];
-	$has_wrap = $context == 'page' && $media && ! in_array( $media['position'], $full_width, true );
+	$has_wrap = $context != 'post' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
 	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
+
+	// An untitled post keeps its title area only to hold an image beside the title
+
+	if ( $context === 'post' && ! $data['title'] && ! ( $media && in_array( $media_position, $title_images, true ) ) )
+		return;
 
 	// Category identity.
 
@@ -187,14 +221,14 @@ function md_title( $context = 'post', $args = array() ) {
 
 	// Layout type classes
 
-	if ( ! $has_header_cover && ( ( $context === 'page' && $has_sidebar ) || ( $context !== 'page' && ! empty( $loop['is_slim'] ) ) ) )
+	if ( ! $has_header_cover && ( ( $context !== 'post' && $has_sidebar ) || ( $context === 'post' && ! empty( $loop['is_slim'] ) ) ) )
 		$classes[] = 'inline';
 	else
 		$classes[] = 'wide';
 
 	// Featured image related classes
 
-	if ( $media && ( $context == 'page' || ( $context == 'post' && in_array( $media_position, $title_images, true ) ) ) )
+	if ( $media && ( $context != 'post' || in_array( $media_position, $title_images, true ) ) )
 		$classes = array_merge( $classes, md_get_image_position_classes( $media_position, array( 'mobile' => $media['mobile'] ?? '' ) ) );
 	elseif ( ! $media && $context == 'post' && empty( $cover['position'] ) )
 		$classes[] = 'no-media';
@@ -205,7 +239,7 @@ function md_title( $context = 'post', $args = array() ) {
 		$classes[] = 'item';
 
 	if ( ! empty( $cover['position'] ) ) {
-		$classes[] = md_cover_classes( $context );
+		$classes[] = md_cover_classes( $context, $cover );
 
 		if ( ! empty( $cover['photo']['id'] ) )
 			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
@@ -213,6 +247,15 @@ function md_title( $context = 'post', $args = array() ) {
 			$style['bg_color'] = $cover['bg_color'];
 	}
 
+	// Caller's own wrapper attributes
+
+	if ( ! empty( $args['classes'] ) )
+		$classes[] = $args['classes'];
+
+	if ( ! empty( $args['style'] ) )
+		$style = array_merge( $style, $args['style'] );
+
+	$id = ! empty( $args['id'] ) ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
 	$classes = join( ' ', $classes );
 	$style = md_style( $style );
 
@@ -235,7 +278,7 @@ function md_description( $context = 'post', $args = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_title_description", true ) )
 		return;
 
-	$description = ! empty( $args['description'] ) ? $args['description'] : md_get_description( $context );
+	$description = array_key_exists( 'description', $args ) ? $args['description'] : md_get_description( $context );
 
 	if ( empty( $description ) )
 		return;

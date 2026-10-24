@@ -285,3 +285,83 @@ function md_get_caption( $id = null ) {
 
 	return $caption;
 }
+
+/**
+ * Featured Media fields and their save rules, shared by the Featured Media
+ * settings and Title Sections.
+ *
+ * @since 6.0.4
+ */
+
+function md_featured_media_fields() {
+	$data = new md_fields_data;
+
+	return array(
+		'media_type' => array(
+			'type' => 'select',
+			'options' => array( 'image', 'video', 'custom_html' ),
+			'code_options' => array( 'custom_html' )
+		),
+		'position' => array(
+			'type' => 'select',
+			'options' => array_keys( $data->values['featured_image'] )
+		),
+		'image' => array(
+			'type' => 'upload',
+			'upload_type' => 'media'
+		),
+		'image_width' => array( 'type' => 'number' ),
+		'mobile' => array(
+			'type' => 'select',
+			'options' => array( 'beside', 'hide' )
+		),
+		'video' => array( 'type' => 'url' ),
+		'custom_html' => array( 'type' => 'code' )
+	);
+}
+
+/**
+ * Render the Featured Media settings: the media on the left, its layout
+ * on the right. Shared by Featured Media and Title Sections. $args:
+ * is_post (posts use their own featured image, so there's no upload),
+ * image_only (no Media Type select), position_label (the empty Position
+ * choice) and remove (offer "Don't show").
+ *
+ * @since 6.0.4
+ */
+
+function md_featured_media_admin( $fields, $prefix, $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'is_post' => false,
+		'image_only' => false,
+		'position_label' => __( 'Use default position', 'md' ),
+		'remove' => true
+	) );
+
+	$media_type = $fields->module( 'media_type' );
+	$position = $fields->module( 'position' ) ?: '';
+	$can_edit_code = current_user_can( 'manage_options' ) && current_user_can( 'unfiltered_html' );
+	$side_positions = array( '', 'title_left', 'title_right', 'left', 'right' );
+
+	$positions = array(
+		'title_left' => __( 'Left', 'md' ),
+		'title_right' => __( 'Right', 'md' ),
+		'title_center' => __( 'Center', 'md' ),
+		'left' => __( 'Left', 'md' ),
+		'right' => __( 'Right', 'md' ),
+		'above_headline' => __( 'Above the title', 'md' ),
+		'below_headline' => __( 'Below the title', 'md' ),
+		'center' => __( 'At the bottom', 'md' )
+	);
+
+	$position_groups = array(
+		__( 'Beside title', 'md' ) => array( 'title_left', 'title_right', 'title_center' ),
+		__( 'Beside title and text', 'md' ) => array( 'left', 'right' ),
+		__( 'Full width', 'md' ) => array( 'above_headline', 'below_headline', 'center' )
+	);
+
+	if ( $args['remove'] )
+		$positions['remove'] = __( 'Don\'t show', 'md' );
+
+	include md_template( 'features', 'featured-media/admin/featured-media', true );
+}

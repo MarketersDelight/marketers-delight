@@ -58,16 +58,44 @@ if ( isset( $args['select2'] ) ) { // Select2 Init field
 		<?php endforeach; ?>
 
 	<?php elseif ( ! empty( $args['options'] ) ) :
-		foreach ( $args['options'] as $val => $label ) :
-			if ( is_array( $option ) )
-				$selected = in_array( $val, $option ) ? ' selected="selected"' : '';
-			else
-				$selected = selected( $option, $val, false );
-		?>
+		$sections = array();
 
-		<option value="<?php echo esc_attr( $val ); ?>"<?php echo $selected; ?>><?php echo esc_html( $label ); ?></option>
+		// Groups list option keys under a label; options left out follow them
 
-		<?php endforeach;
+		if ( ! empty( $args['groups'] ) ) {
+			$grouped = array();
+
+			foreach ( $args['groups'] as $group_label => $keys ) {
+				$sections[$group_label] = $keys;
+				$grouped = array_merge( $grouped, $keys );
+			}
+
+			$sections[''] = array_diff( array_keys( $args['options'] ), $grouped );
+		}
+		else
+			$sections[''] = array_keys( $args['options'] );
+
+		foreach ( $sections as $group_label => $keys ) :
+			if ( $group_label !== '' )
+				echo '<optgroup label="' . esc_attr( $group_label ) . '">';
+
+			foreach ( $keys as $val ) :
+				if ( ! array_key_exists( $val, $args['options'] ) )
+					continue;
+
+				if ( is_array( $option ) )
+					$selected = in_array( $val, $option ) ? ' selected="selected"' : '';
+				else
+					$selected = selected( $option, $val, false );
+			?>
+
+			<option value="<?php echo esc_attr( $val ); ?>"<?php echo $selected; ?>><?php echo esc_html( $args['options'][$val] ); ?></option>
+
+			<?php endforeach;
+
+			if ( $group_label !== '' )
+				echo '</optgroup>';
+		endforeach;
 	endif; ?>
 
 </select>

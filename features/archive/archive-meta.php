@@ -60,6 +60,10 @@ class md_archive_meta extends md_api {
 			'builder' => array(
 				'type' => 'builder',
 				'fields' => $fields
+			),
+			'display' => array(
+				'type' => 'checkbox',
+				'options' => array( 'hide_page_title' )
 			)
 		);
 	}
@@ -89,6 +93,22 @@ class md_archive_meta extends md_api {
 			),
 			'elements' => $this->elements( $post_type ),
 			'scope' => (bool) $scope
+		) );
+
+		echo '<hr class="md-sep-small" />';
+
+		$this->fields->field( 'display', array(
+			'type' => 'checkbox',
+			'options' => array(
+				'hide_page_title' => __( 'Hide in Page Title', 'md' )
+			),
+			'inherit' => array(
+				'hide_page_title' => array(
+					'on' => __( 'Hide in Page Title', 'md' ),
+					'off' => __( 'Show in Page Title', 'md' )
+				)
+			),
+			'description' => __( 'Hide from the main Page Title, and optionally add back in a <b>Title Section</b>.', 'md' )
 		) );
 
 		echo '</div>';

@@ -54,14 +54,15 @@ function md_cover( $context = null ) {
 }
 
 /**
- * Return an array of class names related to a Cover.
+ * Return an array of class names related to a Cover. Pass $cover to use
+ * resolved cover data instead of the current page's.
  *
  * @since 6.0
  */
 
-function md_cover_classes( $context = 'post' ) {
+function md_cover_classes( $context = 'post', $cover = null ) {
 	$classes = array();
-	$cover = md_cover( $context );
+	$cover = $cover ?? md_cover( $context );
 
 	if ( empty( $cover['position'] ) )
 		return $classes;
@@ -101,14 +102,15 @@ function md_has_header_cover( $context = null ) {
 }
 
 /**
- * Add Overlay HTML to covers.
+ * Add Overlay HTML to covers. Pass $cover to use resolved cover data
+ * instead of the current page's, with an optional 'overlay_opacity'.
  *
  * @since 4.8.6
  */
 
-function md_overlay( $context = 'post' ) {
+function md_overlay( $context = 'post', $cover = null ) {
 	$style = array();
-	$cover = md_cover( $context );
+	$cover = $cover ?? md_cover( $context );
 
 	if ( empty( $cover['position'] ) || ! empty( $cover['display']['disable_overlay'] ) )
 		return;
@@ -116,5 +118,34 @@ function md_overlay( $context = 'post' ) {
 	if ( ! empty( $cover['bg_color'] ) )
 		$style['vars']['md-overlay'] = md_color_hex( $cover['bg_color'] );
 
+	if ( isset( $cover['overlay_opacity'] ) && $cover['overlay_opacity'] !== '' )
+		$style['vars']['md-overlay-opacity'] = $cover['overlay_opacity'];
+
 	echo '<div class="overlay" aria-hidden="true"' . md_style( $style ) . '></div>';
+}
+
+/**
+ * Page Cover fields and their save rules, shared by the Page Cover
+ * settings and Title Sections.
+ *
+ * @since 6.0.4
+ */
+
+function md_page_cover_fields() {
+	return array(
+		'photo' => array(
+			'type' => 'upload',
+			'upload_type' => 'media'
+		),
+		'position' => array(
+			'type' => 'select',
+			'options' => array( 'headline_cover', 'header_cover', 'header_cover_full', 'remove' )
+		),
+		'bg_color' => array( 'type' => 'color' ),
+		'display' => array(
+			'type' => 'checkbox',
+			'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'single', 'show_excerpt' )
+		),
+		'title_content' => array( 'type' => 'text' )
+	);
 }

@@ -57,6 +57,7 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		$this->assertSame( '#2a1938', $data['cover']['bg_color'] );
 		$this->assertSame( 'header_cover', $data['header_cover'] );
 		$this->assertSame( 'custom', $data['cta']['page_cta'] );
+		$this->assertTrue( $data['archive_meta'], 'Page titles show Archive Meta' );
 	}
 
 	public function test_category_resolves_term_overrides() {
@@ -84,6 +85,77 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'custom', $data['cta']['page_cta'], 'Categories inherit the post type CTA' );
 	}
 
+	public function test_hide_in_page_title_turns_off_archive_meta() {
+		md_test_set_query( array( 'is_home' => true, 'post_type' => 'post' ) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'archives_title' => 'Blog',
+			'archive_meta' => array( 'display' => array( 'hide_page_title' => true ) )
+		) ) );
+
+		$data = md_title_data( 'page' );
+
+		$this->assertFalse( $data['archive_meta'] );
+	}
+
+	public function test_category_cta_saved_without_a_type_inherits() {
+		md_test_set_query( array(
+			'is_category' => true,
+			'is_archive' => true,
+			'post_type' => 'post',
+			'queried_object' => new WP_Term( array( 'term_id' => 42, 'taxonomy' => 'category', 'name' => 'Raporty' ) ),
+			'queried_object_id' => 42
+		) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'archives_title' => 'Blog',
+			'page_cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' ),
+			'category' => array( 'page_cta' => array( 'email_title' => 'Leftover' ) )
+		) ) );
+		md_test_set_term_meta( 42, array( 'hero' => array( 'archives_title' => 'Raporty' ) ) );
+
+		$data = md_title_data( 'page' );
+
+		$this->assertSame( 'custom', $data['cta']['page_cta'] );
+	}
+
+	public function test_category_dont_show_stops_the_cta() {
+		md_test_set_query( array(
+			'is_category' => true,
+			'is_archive' => true,
+			'post_type' => 'post',
+			'queried_object' => new WP_Term( array( 'term_id' => 42, 'taxonomy' => 'category', 'name' => 'Raporty' ) ),
+			'queried_object_id' => 42
+		) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'page_cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' ),
+			'category' => array( 'page_cta' => array( 'page_cta' => 'remove' ) )
+		) ) );
+		md_test_set_term_meta( 42, array( 'hero' => array( 'archives_title' => 'Raporty' ) ) );
+
+		$data = md_title_data( 'page' );
+
+		$this->assertSame( 'remove', $data['cta']['page_cta'] );
+	}
+
+	public function test_empty_category_still_inherits_post_type_settings() {
+		md_test_set_taxonomy( 'category', true, array( 'post' ), true );
+		md_test_set_query( array(
+			'is_category' => true,
+			'is_archive' => true,
+			'post_type' => false,
+			'queried_object' => new WP_Term( array( 'term_id' => 42, 'taxonomy' => 'category', 'name' => 'Newsletter' ) ),
+			'queried_object_id' => 42
+		) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'page_cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' )
+		) ) );
+		md_test_set_term_meta( 42, array( 'hero' => array( 'archives_title' => 'Newsletter' ) ) );
+
+		$data = md_title_data( 'page' );
+
+		$this->assertSame( 'post', md_get_post_type() );
+		$this->assertSame( 'custom', $data['cta']['page_cta'] );
+	}
+
 	public function test_single_post_resolves_its_own_cta_and_no_identity() {
 		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'post', 'queried_object_id' => 1 ) );
 		md_test_set_option( 'marketers_delight', array( 'post' => array() ) );
@@ -95,6 +167,7 @@ class TitleDataTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( 'custom', $data['cta']['page_cta'] );
 		$this->assertSame( array(), $data['identity'] );
+		$this->assertFalse( $data['archive_meta'] );
 	}
 
 }

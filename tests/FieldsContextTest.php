@@ -270,6 +270,27 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertTrue( $fields->module( array( 'enabled' ) ) );
 	}
 
+	// saved() reads only this screen; module() inherits from above it
+
+	public function test_saved_does_not_inherit_on_term_screen() {
+		md_test_set_settings( array( 'post' => array( 'my_page' => array( 'enabled' => true ) ) ) );
+
+		$fields = $this->make_fields( array( 'is_term' => true, 'screen_id' => 5, 'post_type' => 'post', 'taxonomy' => 'category' ) );
+
+		$this->assertTrue( $fields->module( array( 'enabled' ) ) );
+		$this->assertNull( $fields->saved( array( 'enabled' ) ) );
+	}
+
+	public function test_saved_does_not_inherit_on_taxonomy_tab() {
+		md_test_set_filter( 'md_admin_groups', array( 'post' => array( 'label' => 'Posts' ) ) );
+		md_test_set_settings( array( 'post' => array( 'page_cta' => array( 'page_cta' => 'email' ) ) ) );
+
+		$fields = $this->make_fields( array( 'page' => 'post', 'is_taxonomy' => true, 'md_tab' => 'category' ), 'page_cta' );
+
+		$this->assertSame( 'email', $fields->module( array( 'page_cta' ) ) );
+		$this->assertNull( $fields->saved( array( 'page_cta' ) ) );
+	}
+
 	// module() — admin group prefix building: page_id, then taxonomy (if
 	// active), then clean_id (only when this is a nested child field).
 

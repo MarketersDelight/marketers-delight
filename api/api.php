@@ -331,7 +331,12 @@ class md_api {
 			'search_items' => sprintf( __( 'Search %s', 'md' ), $plural ),
 			'not_found' => sprintf( __( 'No %s found', 'md' ), strtolower( $plural ) ),
 			'not_found_in_trash' => sprintf( __( 'No %s found in trash', 'md' ), strtolower( $plural ) ),
-			'all_items' => sprintf( __( 'All %s', 'md' ), $plural )
+			'all_items' => sprintf( __( 'All %s', 'md' ), $plural ),
+			'item_published' => sprintf( __( '%s published.', 'md' ), $singular ),
+			'item_published_privately' => sprintf( __( '%s published privately.', 'md' ), $singular ),
+			'item_reverted_to_draft' => sprintf( __( '%s reverted to draft.', 'md' ), $singular ),
+			'item_scheduled' => sprintf( __( '%s scheduled.', 'md' ), $singular ),
+			'item_updated' => sprintf( __( '%s updated.', 'md' ), $singular )
 		);
 	}
 

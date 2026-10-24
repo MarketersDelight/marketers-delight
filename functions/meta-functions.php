@@ -225,6 +225,22 @@ function md_module( $keys = null, $default = null, $args = array() ) {
 function md_get_post_type( $post_id = null ) {
 	$post_type = get_post_type( $post_id );
 
+	// An empty archive has no post to read the type from
+
+	if ( ! $post_type && $post_id === null ) {
+		if ( is_category() || is_tag() || is_tax() ) {
+			$queried = get_queried_object();
+			$taxonomy = isset( $queried->taxonomy ) ? get_taxonomy( $queried->taxonomy ) : null;
+			$post_type = ! empty( $taxonomy->object_type ) ? reset( $taxonomy->object_type ) : false;
+		}
+		elseif ( is_post_type_archive() ) {
+			$post_type = get_query_var( 'post_type' );
+			$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
+		}
+		elseif ( is_home() )
+			$post_type = 'post';
+	}
+
 	if ( $post_type == 'stream_activity' )
 		$post_type = 'stream';
 	elseif ( is_404() )

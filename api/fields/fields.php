@@ -17,6 +17,16 @@ class md_fields extends md_fields_render {
 	public $post_type = array();
 
 	/**
+	 * Keys put in front of every field() and module() path. Set through
+	 * within(), so a panel written for its own screen can save inside
+	 * another setting, like a builder row.
+	 *
+	 * @since 6.0.4
+	 */
+
+	protected $root = array();
+
+	/**
 	 * Set properties of instance.
 	 *
 	 * @since 5.0
@@ -30,6 +40,20 @@ class md_fields extends md_fields_render {
 		$this->_prefix = $args['prefix'];
 		$this->_option = isset( $args['option'] ) ? $args['option'] : 'marketers_delight';
 		$this->post_type = $args['post_type'] ?? array();
+	}
+
+	/**
+	 * Get a copy of these fields that saves within the given keys, e.g.
+	 * array( 'builder', $row, 'section_cta' ). The original is unchanged.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function within( $keys ) {
+		$fields = clone $this;
+		$fields->root = array_merge( $this->root, (array) $keys );
+
+		return $fields;
 	}
 
 	/**
@@ -81,6 +105,11 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function field( $field, $args ) {
+		$args['path'] = $field;
+
+		if ( $this->root )
+			$field = array_merge( $this->root, (array) $field );
+
 		$wrap_classes = array( 'md-field' );
 		$clean_id = $this->_clean_id;
 		$has_option = false;
@@ -363,14 +392,40 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Get field values based on current admin screen.
+	 * Get field values based on current admin screen, inheriting from the
+	 * levels above it (term, then taxonomy, then post type) when unset.
 	 *
 	 * @since 4.1
 	 */
 
 	public function module( $keys, $default = null ) {
+		return $this->lookup( $keys, $default, true );
+	}
+
+	/**
+	 * Get only what's saved on the current screen, without inheriting.
+	 * Use it where a control shows this screen's own choice, like which
+	 * CTA type panel is open.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function saved( $keys, $default = null ) {
+		return $this->lookup( $keys, $default, false );
+	}
+
+	/**
+	 * Resolve a setting for the current screen, optionally inheriting.
+	 *
+	 * @since 6.0.4
+	 */
+
+	protected function lookup( $keys, $default, $inherit ) {
 		if ( is_string( $keys ) )
 			$keys = (array) $keys;
+
+		if ( $this->root )
+			$keys = array_merge( $this->root, $keys );
 
 		$screen = $this->_get_screen;
 		$context = $this->get_context();
@@ -388,6 +443,9 @@ class md_fields extends md_fields_render {
 		if ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) {
 			$field_keys = array_merge( array( $this->_clean_id ), $keys );
 			$value = md_term_meta( $field_keys, $screen['screen_id'], null );
+
+			if ( ! $inherit )
+				return $value ?? $default;
 
 			if ( is_null( $value ) )
 				$value = md_taxonomy_field( $field_keys, null, $screen['post_type'], $screen['taxonomy'] );
@@ -409,8 +467,8 @@ class md_fields extends md_fields_render {
 			if ( $context['taxonomy'] ) {
 				$value = md_taxonomy_field( $field_keys, null, $context['page_id'], $context['taxonomy'] );
 
-				if ( ! is_null( $value ) )
-					return $value;
+				if ( ! is_null( $value ) || ! $inherit )
+					return $value ?? $default;
 			}
 
 			return md_post_type_field( $field_keys, $default, $context['page_id'] );

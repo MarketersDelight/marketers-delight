@@ -116,6 +116,7 @@ cite, .tiny {
 .circle { border-radius: 50%; }
 
 .border, .border-tb, .border-bottom {
+	border-color: var(--md-border);
 	border-style: solid;
 	border-width: 1px;
 }

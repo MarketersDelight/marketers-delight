@@ -124,7 +124,7 @@
 	color: var(--md-links);
 }
 
-.loop-timeline .timeline-dot, .loop-timeline .byline .avatar {
+.loop-timeline .timeline-dot, .loop-timeline:not(.columns) .timeline-wrap > .entry-top .avatar {
 	height: var(--timeline-dot-size);
 	position: absolute;
 		inset-block-start: 0;
@@ -139,7 +139,7 @@
 	width: var(--timeline-empty-dot-size);
 }
 
-.loop-timeline .byline .avatar {
+.loop-timeline:not(.columns) .timeline-wrap > .entry-top .avatar {
 	margin: 0;
 	z-index: 10;
 }
@@ -174,13 +174,6 @@
 	line-height: inherit;
 	position: static;
 	white-space: normal;
-}
-
-.loop-timeline.columns .byline .avatar {
-	height: auto;
-	inset: auto;
-	position: static;
-	width: auto;
 }
 
 </style>

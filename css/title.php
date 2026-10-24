@@ -8,7 +8,8 @@
 
 .page-title, .header-cover .main > .post-title { margin-block-end: var(--md-single); }
 
-.is-border-style .page-title:not(.cover) {
+.is-border-style .page-title:not(.cover),
+.is-border-style .section-title:not(.cover) {
 	border-block-end: 1px solid var(--md-border);
 	padding-block-end: var(--md-mid);
 }
@@ -128,13 +129,14 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	padding-block: var(--md-single);
 	position: relative;
 }
 
+:where(.cover) { padding-block: var(--md-single); }
+
 .cover.repeat { background-size: auto; }
 
-.entry .cover, .content .page-title.cover { padding-inline: var(--md-half); }
+:where(.entry .cover, .content .page-title.cover, .section-title.cover) { padding-inline: var(--md-half); }
 
 .full-cover .page-title,
 .full-cover .main > .post-title { padding-block: calc(var(--md-quad) * 2) var(--md-double-x); }
@@ -177,8 +179,8 @@
 /* QUERIES */
 
 @media (min-width: <?php echo $post_width; ?>px) {
-	.cover { padding-block: var(--md-mid); }
-	.entry .cover, .content .page-title.cover { padding-inline: var(--md-mid); }
+	:where(.cover) { padding-block: var(--md-mid); }
+	:where(.entry .cover, .content .page-title.cover, .section-title.cover) { padding-inline: var(--md-mid); }
 }
 
 @media (max-width: 800px) {
@@ -268,13 +270,13 @@
 	}
 	.cover.image-inline .inner > :not(.wrap, .featured-media) { flex-basis: 100%; }
 	.cover.image-inline .wrap { flex: 1; }
-	.cover.image-inline .featured-media {
+	.cover.image-inline .inner > .featured-media {
 		flex: 0 1 auto;
 		float: none;
 		margin: 0;
 		max-width: min(45%, var(--md-media-width, 100%));
 		order: 1;
 	}
-	.cover.image-inline.image-left .featured-media { order: -1; }
+	.cover.image-inline.image-left .inner > .featured-media { order: -1; }
 	.cover.image-inline.image-right .inner { justify-content: space-between; }
 }

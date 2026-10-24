@@ -13,7 +13,7 @@ if ( ! empty( $fields['settings']['first_name'] ) ) {
 
 	<?php if ( ! empty( $fields['settings']['avatar'] ) ) {
 		$avatar_size = isset( $fields['image_size'] ) ? $fields['image_size'] : 30;
-		echo get_avatar( $author_id, $avatar_size );
+		echo '<a href="' . esc_url( get_author_posts_url( $author_id ) ) . '" class="clickout" tabindex="-1" aria-hidden="true">' . get_avatar( $author_id, $avatar_size ) . '</a>';
 	}
 	else echo md_icon( 'user' ); ?>
 

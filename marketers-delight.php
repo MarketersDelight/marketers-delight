@@ -131,6 +131,7 @@ final class marketers_delight {
 
 		require_once MD_DIR . 'features/archive/archive-meta.php';
 		require_once MD_DIR . 'features/archive/taxonomy-filter.php';
+		require_once MD_DIR . 'features/archive/title-section.php';
 		require_once MD_DIR . 'features/archive/archive-sections.php';
 		require_once MD_DIR . 'features/blog.php';
 	}

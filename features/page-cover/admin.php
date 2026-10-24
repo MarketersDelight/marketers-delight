@@ -42,25 +42,9 @@ class md_page_cover extends md_api {
 	 */
 
 	public function fields() {
-		$fields = array(
-			'photo' => array(
-				'type' => 'upload',
-				'upload_type' => 'media'
-			),
-			'position' => array(
-				'type' => 'select',
-				'options' => array( 'headline_cover', 'header_cover', 'header_cover_full', 'remove' )
-			),
-			'bg_color' => array( 'type' => 'color' ),
-			'display' => array(
-				'type' => 'checkbox',
-				'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'single', 'show_excerpt' )
-			),
-			'title_content' => array( 'type' => 'text' )
-		);
-
-		return $fields;
+		return md_page_cover_fields();
 	}
+
 	/**
 	 * Add settings template and script to various screens.
 	 *

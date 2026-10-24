@@ -1,80 +1,96 @@
-<?php $can_edit_code = current_user_can( 'manage_options' ) && current_user_can( 'unfiltered_html' ); ?>
-<div class="columns-3 columns-single md-full-select">
+<div class="columns-2 columns-single md-full-select">
 
-	<div class="col">
-		<?php if ( ! $can_edit_code && $media_type === 'custom_html' ) : ?>
-			<p class="md-label"><?php esc_html_e( 'Custom HTML is managed by an administrator.', 'md' ); ?></p>
-		<?php else : ?>
-		<?php $this->fields->field( 'media_type', array(
-			'type' => 'select',
-			'label' => __( 'Media Type', 'md' ),
-			'classes' => 'md-conditional-option',
-			'empty_label' => __( 'Featured Image', 'md' ),
-			'options' => $can_edit_code ? array(
-				'video' => __( 'Video Embed', 'md' ),
-				'custom_html' => __( 'Custom HTML', 'md' )
-			) : array( 'video' => __( 'Video Embed', 'md' ) )
-		) ); ?>
+	<!-- Media -->
+
+	<div class="col col1">
+
+		<?php if ( ! $args['image_only'] ) : ?>
+		<div class="md-sep-small">
+			<?php if ( ! $can_edit_code && $media_type === 'custom_html' ) : ?>
+				<p class="md-label"><?php esc_html_e( 'Custom HTML is managed by an administrator.', 'md' ); ?></p>
+			<?php else :
+				$fields->field( 'media_type', array(
+					'type' => 'select',
+					'label' => __( 'Media Type', 'md' ),
+					'classes' => 'md-conditional-option',
+					'empty_label' => $args['is_post'] ? __( 'Featured Image', 'md' ) : __( 'Image', 'md' ),
+					'options' => $can_edit_code ? array(
+						'video' => __( 'Video Embed', 'md' ),
+						'custom_html' => __( 'Custom HTML', 'md' )
+					) : array( 'video' => __( 'Video Embed', 'md' ) )
+				) );
+			endif; ?>
+		</div>
 		<?php endif; ?>
+
+		<?php if ( ! $args['is_post'] ) : ?>
+		<div id="<?php echo $prefix; ?>_featured_media_image" class="md-conditional-item md-conditional-image md-conditional-default" style="display: <?php echo in_array( $media_type, array( '', 'image' ) ) ? 'block' : 'none'; ?>">
+			<?php $fields->field( 'image', array(
+				'type' => 'upload',
+				'label' => __( 'Image', 'md' ),
+				'upload_type' => 'media'
+			) ); ?>
+		</div>
+		<?php endif; ?>
+
+		<?php if ( ! $args['image_only'] ) : ?>
+		<div id="<?php echo $prefix; ?>_featured_media_video" class="md-conditional-item md-conditional-video" style="display: <?php echo $media_type == 'video' ? 'block' : 'none'; ?>">
+			<?php $fields->field( 'video', array(
+				'type' => 'url',
+				'label' => __( 'Video URL', 'md' )
+			) ); ?>
+		</div>
+
+		<?php if ( $can_edit_code ) : ?>
+		<div id="<?php echo $prefix; ?>_featured_media_custom_html" class="md-conditional-item md-conditional-custom_html" style="display: <?php echo $media_type == 'custom_html' ? 'block' : 'none'; ?>">
+			<?php $fields->field( 'custom_html', array(
+				'type' => 'code',
+				'label' => __( 'Custom HTML', 'md' )
+			) ); ?>
+		</div>
+		<?php endif; ?>
+		<?php endif; ?>
+
 	</div>
 
-	<div class="col">
-		<?php $this->fields->field( 'position', array(
-			'type' => 'select',
-			'label' => __( 'Position', 'md' ),
-			'empty_label' => __( 'Use default position', 'md' ),
-			'wrap_classes' => 'md-sep-small',
-			'options' => $this->fields->data->values['featured_image']
-		) ); ?>
-	</div>
+	<!-- Layout -->
 
-	<div class="col">
-		<?php $this->fields->field( 'mobile', array(
-			'type' => 'select',
-			'label' => __( 'Position on mobile', 'md' ),
-			'empty_label' => __( 'Stack (default)', 'md' ),
-			'options' => array(
-				'beside' => __( 'Keep beside', 'md' ),
-				'hide' => __( 'Hide', 'md' )
-			)
-		) ); ?>
-	</div>
+	<div class="col col2">
 
-</div>
+		<div class="md-conditional md-sep-micro">
 
-<div class="columns-3 columns-single mt-half">
-	<div class="col">
-		<?php $this->fields->field( 'image_width', array(
+			<div class="md-sep-micro">
+				<?php $fields->field( 'position', array(
+					'type' => 'select',
+					'label' => __( 'Position', 'md' ),
+					'classes' => 'md-conditional-option',
+					'empty_label' => $args['position_label'],
+					'options' => $positions,
+					'groups' => $position_groups
+				) ); ?>
+			</div>
+
+			<div class="md-conditional-item md-conditional-default md-conditional-title_left md-conditional-title_right md-conditional-left md-conditional-right" style="display: <?php echo in_array( $position, $side_positions, true ) ? 'block' : 'none'; ?>">
+				<?php $fields->field( 'mobile', array(
+					'type' => 'select',
+					'label' => __( 'Position on mobile', 'md' ),
+					'empty_label' => __( 'Stack (default)', 'md' ),
+					'options' => array(
+						'beside' => __( 'Keep beside', 'md' ),
+						'hide' => __( 'Hide', 'md' )
+					)
+				) ); ?>
+			</div>
+
+		</div>
+
+		<?php $fields->field( 'image_width', array(
 			'type' => 'range',
-			'label' => __( 'Width', 'md' ),
+			'label' => __( 'Max width', 'md' ),
 			'unit' => 'px',
 			'max' => '550'
 		) ); ?>
+
 	</div>
-</div>
 
-<div id="<?php echo $prefix; ?>_featured_media_image" class="md-conditional-item md-conditional-image mt-half" style="display: <?php echo in_array( $media_type, array( '', 'image' ) ) ? 'block' : 'none'; ?>">
-	<?php if ( ! $is_post )
-		$this->fields->field( 'image', array(
-			'type' => 'upload',
-			'label' => __( 'Upload Image', 'md' ),
-			'upload_type' => 'media'
-		) );
-	?>
 </div>
-
-<div id="<?php echo $prefix; ?>_featured_media_video" class="md-conditional-item md-conditional-video mt-half" style="display: <?php echo $media_type == 'video' ? 'block' : 'none'; ?>">
-	<?php $this->fields->field( 'video', array(
-		'type' => 'url',
-		'label' => __( 'Video URL', 'md' )
-	) ); ?>
-</div>
-
-<?php if ( $can_edit_code ) : ?>
-<div id="<?php echo $prefix; ?>_featured_media_custom_html" class="md-conditional-item md-conditional-custom_html mt-half" style="display: <?php echo $media_type == 'custom_html' ? 'block' : 'none'; ?>">
-	<?php $this->fields->field( 'custom_html', array(
-		'type' => 'code',
-		'label' => __( 'Custom HTML', 'md' )
-	) ); ?>
-</div>
-<?php endif; ?>

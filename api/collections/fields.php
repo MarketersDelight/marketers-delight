@@ -42,6 +42,7 @@ class md_collection_fields extends md_fields_render {
 			$attributes['aria-required'] = 'true';
 
 		$args['field'] = $field;
+		$args['path'] = $field;
 		$args['attributes'] = $attributes;
 		$this->rendered[$field] = true;
 
