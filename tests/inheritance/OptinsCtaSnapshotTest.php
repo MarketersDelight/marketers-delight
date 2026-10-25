@@ -2,7 +2,7 @@
 /**
  * Snapshot tests for the Optins drop-in's md_optins_cta(): the full CTA box
  * markup across positions, image positions, colors, backgrounds and CTA
- * types. Guards the move of CTA boxes onto md_render_title() (Phase 5 of
+ * types. Guards the move of CTA boxes onto md_title_template() (Phase 5 of
  * MD/deploy/title-sections/PLAN.md).
  *
  * A missing snapshot is recorded from the current output and the test is

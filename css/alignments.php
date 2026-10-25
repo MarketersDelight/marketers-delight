@@ -129,7 +129,7 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 	:is(.columns, .slim) .image-right > :where(.the-content) > :where(.wrap) > .featured-media { margin-inline-start: var(--md-half); }
 	.slim :is(.image-left, .image-right) > :where(.the-content) > .featured-media,
 	.slim :is(.image-left, .image-right) > :where(.the-content) > :where(.wrap) > .featured-media,
-	.slim .image-title .featured-media { max-width: var(--md-quad); }
+	.slim .image-title .featured-media { max-width: min(var(--md-quad), var(--md-media-width, var(--md-quad))); }
 	.compact .box-style.full :is(.alignfull, .alignwide), .compact .box-style.full .alignleft.wrap,
 	.compact .box-style .entry.full .image-left > :where(.the-content) > .featured-media,
 	.compact .box-style .entry.full .image-left > :where(.the-content) > :where(.wrap) > .featured-media,

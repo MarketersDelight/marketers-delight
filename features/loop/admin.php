@@ -46,6 +46,10 @@ class md_loop extends md_api {
 				'type' => 'select',
 				'options' => array_merge( array( 'full' ), get_intermediate_image_sizes() )
 			),
+			'featured_image_mobile' => array(
+				'type' => 'select',
+				'options' => array( 'beside', 'hide' )
+			),
 			'content' => array(
 				'type' => 'select',
 				'options' => array( 'full', 'excerpt', 'hide' )

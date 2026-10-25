@@ -18,7 +18,10 @@ if ( $has_inner ) {
 }
 
 if ( $context != 'post' )
-	md_featured_media( $context, array( 'media' => $data['media'], 'show_image' => array( 'above_headline' ) ) );
+	md_featured_media( $context, array(
+		'media' => $data['media'],
+		'show_image' => array( 'above_headline' )
+	) );
 
 // If media position is set to align directly with the title
 
@@ -39,6 +42,7 @@ if ( $media && in_array( $media_position, $title_images, true ) ) {
 
 	if ( $context != 'post' ) {
 		md_description( $context, array( 'description' => $data['description'] ) );
+
 		md_cta( $context, $data['cta'] );
 
 		if ( ! empty( $data['foot'] ) )
@@ -58,7 +62,10 @@ else {
 		$args['byline'] = true;
 
 	if ( $context != 'post' )
-		md_featured_media( $context, array( 'media' => $data['media'], 'show_image' => array( 'left', 'right' ) ) );
+		md_featured_media( $context, array(
+			'media' => $data['media'],
+			'show_image' => array( 'left', 'right' )
+		) );
 
 	if ( $has_wrap )
 		echo '<div class="wrap">';
@@ -66,7 +73,10 @@ else {
 	md_the_title( $context, $args );
 
 	if ( $context != 'post' )
-		md_featured_media( $context, array( 'media' => $data['media'], 'show_image' => array( 'below_headline' ) ) );
+		md_featured_media( $context, array(
+			'media' => $data['media'],
+			'show_image' => array( 'below_headline' )
+		) );
 
 	md_description( $context, array( 'description' => $data['description'] ) );
 
@@ -85,7 +95,10 @@ else {
 		echo '</div>';
 
 	if ( $context != 'post' )
-		md_featured_media( $context, array( 'media' => $data['media'], 'show_image' => array( 'center' ) ) );
+		md_featured_media( $context, array(
+			'media' => $data['media'],
+			'show_image' => array( 'center' )
+		) );
 
 }
 

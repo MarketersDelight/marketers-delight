@@ -151,6 +151,8 @@ class md_archive_meta extends md_api {
 	 */
 
 	public function post_count_fields( $group, $type, $fields ) {
+		$this->source_field( $group, $fields );
+
 		$fields->field( array( 'builder', $group, 'singular_name' ), array(
 			'type' => 'text',
 			'label' => __( 'Singular Text', 'md' ),
@@ -158,6 +160,45 @@ class md_archive_meta extends md_api {
 		) );
 
 		echo '<p class="description">' . wp_kses_post( __( 'Use <code>{count}</code> in the text above to insert the number. The singular text is used only when the count is one.', 'md' ) ) . '</p>';
+	}
+
+	/**
+	 * Render Last Added controls.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function last_added_fields( $group, $type, $fields ) {
+		$this->source_field( $group, $fields );
+		$this->item_fields();
+	}
+
+	/**
+	 * Choose which post type an item counts. Empty counts the archive's
+	 * own posts.
+	 *
+	 * @since 6.0.4
+	 */
+
+	private function source_field( $group, $fields ) {
+		$fields->field( array( 'builder', $group, 'source' ), array(
+			'type' => 'select',
+			'label' => __( 'Post Type', 'md' ),
+			'empty_label' => __( 'This archive', 'md' ),
+			'options' => md_query_loop_sources()
+		) );
+	}
+
+	/**
+	 * Return an item's chosen post type when it isn't the archive's own.
+	 *
+	 * @since 6.0.4
+	 */
+
+	private function source( $fields, $post_type ) {
+		$source = sanitize_key( $fields['source'] ?? '' );
+
+		return $source && $source !== $post_type && post_type_exists( $source ) ? $source : '';
 	}
 
 	/**
@@ -191,7 +232,8 @@ class md_archive_meta extends md_api {
 				'admin_icon' => 'admin-post',
 				'color' => '#2271b1',
 				'fields' => array(
-					'singular_name' => array( 'type' => 'text' )
+					'singular_name' => array( 'type' => 'text' ),
+					'source' => array( 'type' => 'text' )
 				),
 				'callback' => array( $this, 'post_count' ),
 				'admin_callback' => array( $this, 'post_count_fields' )
@@ -213,7 +255,11 @@ class md_archive_meta extends md_api {
 				'placeholder' => __( 'last added', 'md' ),
 				'icon' => 'calendar',
 				'color' => '#d44c3c',
-				'callback' => array( $this, 'last_added' )
+				'fields' => array(
+					'source' => array( 'type' => 'text' )
+				),
+				'callback' => array( $this, 'last_added' ),
+				'admin_callback' => array( $this, 'last_added_fields' )
 			)
 		) );
 
@@ -228,7 +274,12 @@ class md_archive_meta extends md_api {
 
 	public function post_count( $fields, $post_type ) {
 		$queried = get_queried_object();
-		$count = (int) ( $queried instanceof WP_Term ? $queried->count : wp_count_posts( $post_type )->publish );
+		$source = $this->source( $fields, $post_type );
+
+		if ( $source )
+			$count = (int) wp_count_posts( $source )->publish;
+		else
+			$count = (int) ( $queried instanceof WP_Term ? $queried->count : wp_count_posts( $post_type )->publish );
 		$number = number_format_i18n( $count );
 		$template = $count === 1 ? __( '{count} post', 'md' ) : __( '{count} posts', 'md' );
 
@@ -271,8 +322,9 @@ class md_archive_meta extends md_api {
 	 */
 
 	public function last_added( $fields, $post_type ) {
+		$source = $this->source( $fields, $post_type );
 		$args = array(
-			'post_type' => $post_type,
+			'post_type' => $source ?: $post_type,
 			'post_status' => 'publish',
 			'posts_per_page' => 1,
 			'orderby' => 'date',
@@ -280,7 +332,7 @@ class md_archive_meta extends md_api {
 			'fields' => 'ids'
 		);
 
-		if ( is_tax() || is_category() ) {
+		if ( ! $source && ( is_tax() || is_category() ) ) {
 			$term = get_queried_object();
 			$args['tax_query'] = array( array(
 				'taxonomy' => $term->taxonomy,
@@ -296,7 +348,9 @@ class md_archive_meta extends md_api {
 		$relative = human_time_diff( get_post_time( 'U', false, $posts[0] ), current_time( 'U' ) );
 		$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'last added', 'md' );
 
-		return esc_html( sprintf( __( '%1$s %2$s ago', 'md' ), $label, $relative ) );
+		// The whole time reads as the value, like a count's number
+
+		return esc_html( $label ) . ' <strong>' . esc_html( sprintf( __( '%s ago', 'md' ), $relative ) ) . '</strong>';
 	}
 }
 

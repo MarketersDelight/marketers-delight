@@ -154,7 +154,7 @@
 
 .cover.text-white { color: var(--md-site-text-contrast); }
 
-.cover :where(a, .byline, .title, .lede) { color: inherit; }
+.cover :where(a:not(.button), .byline, .title, .lede) { color: inherit; }
 
 .cover .foot { color: inherit; }
 .cover :is(.byline, .title) a { color: inherit; }

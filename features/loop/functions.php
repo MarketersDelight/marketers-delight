@@ -491,6 +491,7 @@ function md_loop_featured( $loop ) {
 		'featured_content' => 'content',
 		'featured_featured_image' => 'featured_image',
 		'featured_featured_image_size' => 'featured_image_size',
+		'featured_featured_image_mobile' => 'featured_image_mobile',
 		'featured_inherit' => 'inherit',
 		'featured_excerpt_more' => 'excerpt_more',
 		'featured_excerpt_length' => 'excerpt_length',
@@ -544,7 +545,7 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	$position = isset( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : '';
 
 	if ( $position && ! in_array( $position, array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => is_singular() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : '' ) ) );
+		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => is_singular() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : ( $loop['featured_image_mobile'] ?? '' ) ) ) );
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';

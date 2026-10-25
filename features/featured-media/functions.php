@@ -173,7 +173,7 @@ function md_has_media( $context = 'post', $args = array() ) {
 	if ( $position == 'remove' )
 		return;
 
-	if ( ! empty( $args['loop']['content'] ) && $args['loop']['content'] === 'hide' && in_array( $position, array( 'left', 'right', 'center' ), true ) )
+	if ( $context == 'post' && ! empty( $args['loop']['content'] ) && $args['loop']['content'] === 'hide' && in_array( $position, array( 'left', 'right', 'center' ), true ) )
 		return;
 
 	if (

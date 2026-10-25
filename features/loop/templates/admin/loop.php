@@ -338,21 +338,42 @@
 			</div>
 
 			</div>
-			<div class="md-loop-inline-options">
-				<div class="md-loop-inline-option md-checkbox-description">
-					<?php $this->fields->field( "{$p}inherit", array(
-						'type' => 'checkbox',
-						'options' => array( 'position' => __( 'Inherit Media Position', 'md' ) )
-					) ); ?>
-					<p class="description"><?php echo esc_html__( 'Use each post’s own media position.', 'md' ); ?></p>
+
+			<div class="columns-33-67 columns-single md-full-select md-loop-media-row">
+
+			<div class="col col1">
+				<?php $this->fields->field( "{$p}featured_image_mobile", array(
+					'type' => 'select',
+					'label' => __( 'Mobile Image', 'md' ),
+					'description' => __( 'Featured image on small screens.', 'md' ),
+					'empty_label' => __( 'Stack above or below', 'md' ),
+					'inherit' => true,
+					'options' => array(
+						'beside' => __( 'Keep beside', 'md' ),
+						'hide' => __( 'Hide', 'md' )
+					)
+				) ); ?>
+			</div>
+
+			<div class="col col2">
+				<div class="md-loop-inline-options">
+					<div class="md-loop-inline-option md-checkbox-description">
+						<?php $this->fields->field( "{$p}inherit", array(
+							'type' => 'checkbox',
+							'options' => array( 'position' => __( 'Inherit Media Position', 'md' ) )
+						) ); ?>
+						<p class="description"><?php echo esc_html__( 'Use each post’s own media position.', 'md' ); ?></p>
+					</div>
+					<div class="md-loop-inline-option md-checkbox-description">
+						<?php $this->fields->field( "{$p}inherit", array(
+							'type' => 'checkbox',
+							'options' => array( 'page_cover' => __( 'Inherit Page Cover', 'md' ) )
+						) ); ?>
+						<p class="description"><?php echo esc_html__( 'Show each post’s own Page Cover in this loop.', 'md' ); ?></p>
+					</div>
 				</div>
-				<div class="md-loop-inline-option md-checkbox-description">
-					<?php $this->fields->field( "{$p}inherit", array(
-						'type' => 'checkbox',
-						'options' => array( 'page_cover' => __( 'Inherit Page Cover', 'md' ) )
-					) ); ?>
-					<p class="description"><?php echo esc_html__( 'Show each post’s own Page Cover in this loop.', 'md' ); ?></p>
-				</div>
+			</div>
+
 			</div>
 		</div>
 

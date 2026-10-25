@@ -84,6 +84,10 @@ function md_query_loop_fields() {
 			'type' => 'select',
 			'options' => array_keys( $data->values['featured_image'] )
 		),
+		'featured_image_mobile' => array(
+			'type' => 'select',
+			'options' => array( 'beside', 'hide' )
+		),
 		'byline' => array(
 			'type' => 'select',
 			'options' => array( 'hide' )
@@ -218,7 +222,7 @@ function md_query_loop( $fields, $post_type, $id = '' ) {
 
 	// Display settings left blank use the Query Loop defaults above
 
-	foreach ( array( 'loop', 'columns', 'columns_mobile', 'content', 'featured_image' ) as $key )
+	foreach ( array( 'loop', 'columns', 'columns_mobile', 'content', 'featured_image', 'featured_image_mobile' ) as $key )
 		if ( ( $fields[$key] ?? '' ) !== '' )
 			$args[$key] = $fields[$key];
 
@@ -232,6 +236,9 @@ function md_query_loop( $fields, $post_type, $id = '' ) {
 
 	if ( isset( $args['featured_image'] ) )
 		$args['featured_featured_image'] = $args['featured_image'];
+
+	if ( isset( $args['featured_image_mobile'] ) )
+		$args['featured_featured_image_mobile'] = $args['featured_image_mobile'];
 
 	if ( ( $fields['byline'] ?? '' ) === 'hide' )
 		$args['remove_byline'] = $args['featured_remove_byline'] = array( 'remove' => true );

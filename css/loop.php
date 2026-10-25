@@ -189,6 +189,7 @@
 /* LOOP LIST */
 
 .loop-list > .entry {
+	--md-media-width: var(--md-double);
 	border-block-end: 1px solid var(--md-border);
 	display: flex;
 	flex-direction: column;
@@ -222,6 +223,11 @@
 }
 
 .loop-list > .entry > .post-title .title a:hover { text-decoration: none; }
+
+.loop-list > .entry .byline {
+	font-size: var(--md-font-size-tiny);
+	line-height: var(--md-line-height-tiny);
+}
 
 /* LOOP DATES */
 

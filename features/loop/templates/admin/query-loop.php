@@ -256,6 +256,19 @@ $shows_category = in_array( $display_mode, array( 'category', 'category_posts' )
 				) ); ?>
 			</div>
 			<div class="md-query-loop-field">
+				<?php $fields->field( array( 'builder', $group, 'featured_image_mobile' ), array(
+					'type' => 'select',
+					'value' => $row['featured_image_mobile'] ?? '',
+					'label' => __( 'Mobile Image', 'md' ),
+					'description' => __( 'Featured image on small screens.', 'md' ),
+					'empty_label' => __( 'Stack above or below', 'md' ),
+					'options' => array(
+						'beside' => __( 'Keep beside', 'md' ),
+						'hide' => __( 'Hide', 'md' )
+					)
+				) ); ?>
+			</div>
+			<div class="md-query-loop-field">
 				<?php $fields->field( array( 'builder', $group, 'byline' ), array(
 					'type' => 'select',
 					'value' => $row['byline'] ?? '',

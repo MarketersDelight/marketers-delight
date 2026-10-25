@@ -1,43 +1,6 @@
 <?php
 
 /**
- * Render the inner content of a title.
- *
- * @since 6.0
- */
-
-function md_the_title( $context = 'post', $args = array() ) {
-	$h = ! empty( $args['heading'] ) ? $args['heading'] : 'h1';
-	$h_class = ! empty( $args['title_class'] ) ? ' ' . $args['title_class'] : '';
-	$h_style = ! empty( $args['title_style'] ) ? md_style( $args['title_style'] ) : '';
-	$lede = ! empty( $args['data']['lede'] ) ? $args['data']['lede'] : '';
-	$title = apply_filters( "md_{$context}_title", isset( $args['data']['title'] ) ? $args['data']['title'] : md_get_title( $context ) );
-
-	// Outside of posts, an empty title leaves no empty wrappers behind
-
-	if ( $context !== 'post' && empty( $title ) && ! $lede )
-		return;
-
-	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
-		$level = ! empty( $args['loop']['by_category'] ) ? 3 : 2;
-		$h = md_loop_heading( $level, $args['loop'] ?? array() );
-
-		// A lowered heading keeps its original level's look, such as <h3 class="h2">.
-
-		if ( $h !== "h$level" )
-			$h_class = " h$level" . $h_class;
-
-		if ( ! empty( $title ) )
-			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
-	}
-
-	$has_inside = isset( $args['byline'] ) && ! empty( md_get_byline( 'inside_title', $args ) );
-	$has_category_icon = ! empty( $args['category_icon'] );
-
-	include md_template( 'features', 'page-title/the-title', true );
-}
-
-/**
  * Get the plaintext title of the current page based on content type.
  *
  * @since 6.0
@@ -46,12 +9,16 @@ function md_the_title( $context = 'post', $args = array() ) {
 function md_get_title( $context = 'post' ) {
 	$title = get_the_title();
 
+	// A title inside a loop, like a blog post
+
 	if ( $context == 'post' ) {
 		if ( is_404() && ! md_has_custom_404() )
 			$title = __( 'Page not found', 'md' );
 
 		return $title;
 	}
+
+	// Titles outside a loop like post type archives, category, etc.
 
 	if ( is_home() || is_post_type_archive() || is_singular( 'post' ) ) {
 		$post_type_title = post_type_archive_title( '', false );
@@ -82,34 +49,7 @@ function md_get_title( $context = 'post' ) {
 }
 
 /**
- * Get a category's validated icon and color, plus the text color that
- * reads best on that color.
- *
- * @since 6.0
- */
-
-function md_category_identity( $term = null ) {
-	$term = $term ?: get_queried_object();
-
-	if ( ! $term instanceof WP_Term )
-		return array( 'icon' => '', 'color' => '', 'text' => '' );
-
-	$icon = md_term_meta( array( 'hero', 'archives_icon' ), $term->term_id, '' );
-	$color = md_color_hex( md_term_meta( array( 'hero', 'archives_color' ), $term->term_id, '' ) );
-
-	return array(
-		'icon' => $icon && isset( md_icons()[$icon] ) ? $icon : '',
-		'color' => $color,
-		'text' => md_contrast_text( $color )
-	);
-}
-
-/**
- * Resolve everything the Post or Page title shows for the current page:
- * title, description, featured media, cover, CTA, category identity, and
- * whether to show Archive Meta, with all of their setting inheritance. Returns an empty array when the
- * title shouldn't render. The title is the raw value; md_the_title()
- * applies the md_{$context}_title filter.
+ * A valet way to get all the needed data about a post/page title.
  *
  * @since 6.0.4
  */
@@ -118,21 +58,28 @@ function md_title_data( $context = 'post', $args = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_title", true, $args ) )
 		return array();
 
-	if ( $context === 'page' && md_module( array( 'layout', 'content', 'headline' ) ) )
+	$is_page = $context === 'page';
+
+	// Don't show title under conditions
+
+	if ( $is_page && md_module( array( 'layout', 'content', 'headline' ) ) )
+		return array();
+
+	if ( ! $is_page && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
 		return array();
 
 	$title = md_get_title( $context );
 
-	if ( ! $title && $context !== 'post' )
+	if ( $is_page && ! $title )
 		return array();
 
-	if ( $context === 'post' && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
-		return array();
-
-	$has_header_cover = md_has_header_cover( $context );
+	$cover = md_cover( $context );
+	$has_header_cover = md_has_header_cover( $context, $cover );
 
 	if ( $has_header_cover && in_the_loop() )
 		return array();
+
+	// Ok, show title
 
 	$loop = md_get_loop();
 
@@ -140,10 +87,10 @@ function md_title_data( $context = 'post', $args = array() ) {
 		'title' => $title,
 		'description' => md_get_description( $context ),
 		'media' => md_has_media( $context, array( 'loop' => $loop ) ),
-		'cover' => md_cover( $context ),
+		'cover' => $cover,
 		'cta' => md_get_cta( $context ),
-		'identity' => $context === 'page' ? md_category_identity() : array(),
-		'archive_meta' => $context === 'page' && ! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ),
+		'identity' => $is_page ? md_category_identity() : array(),
+		'archive_meta' => $is_page &&! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ),
 		'header_cover' => $has_header_cover,
 		'has_sidebar' => md_has_sidebar(),
 		'loop' => $loop
@@ -151,11 +98,40 @@ function md_title_data( $context = 'post', $args = array() ) {
 }
 
 /**
- * Render the layout markup of the Post or Page title with supporting
- * elements like image, byline, etc. A title used within a loop
- * has key differences than when rendered as the main Page Title.
+ * Render the inner content of a title and heading itself.
  *
- * $context accepts 'post' by default or 'page'
+ * @since 6.0
+ */
+
+function md_the_title( $context = 'post', $args = array() ) {
+	$h = ! empty( $args['heading'] ) ? $args['heading'] : 'h1';
+	$h_class = ! empty( $args['title_class'] ) ? ' ' . $args['title_class'] : '';
+	$h_style = ! empty( $args['title_style'] ) ? md_style( $args['title_style'] ) : '';
+	$lede = ! empty( $args['data']['lede'] ) ? $args['data']['lede'] : '';
+	$title = apply_filters( "md_{$context}_title", isset( $args['data']['title'] ) ? $args['data']['title'] : md_get_title( $context ) );
+
+	if ( $context !== 'post' && empty( $title ) && ! $lede )
+		return;
+
+	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
+		$level = ! empty( $args['loop']['by_category'] ) ? 3 : 2;
+		$h = md_loop_heading( $level, $args['loop'] ?? array() );
+
+		if ( $h !== "h$level" )
+			$h_class = " h$level" . $h_class;
+
+		if ( ! empty( $title ) )
+			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
+	}
+
+	$has_inside = isset( $args['byline'] ) && ! empty( md_get_byline( 'inside_title', $args ) );
+	$has_category_icon = ! empty( $args['category_icon'] );
+
+	include md_template( 'features', 'page-title/the-title', true );
+}
+
+/**
+ * Call the title template with conditions in place.
  *
  * @since 6.0
  */
@@ -166,25 +142,16 @@ function md_title( $context = 'post', $args = array() ) {
 	if ( ! $data )
 		return;
 
-	md_render_title( $context, $data, $args );
+	md_title_template( $context, $data, $args );
 }
 
 /**
- * Render title markup from resolved data. Reads nothing from the page
- * itself, so any caller can pass its own data in the shape
- * md_title_data() returns, plus an optional 'lede' printed above the
- * title and 'foot' printed after the CTA.
- *
- * $args also takes 'tag' and 'heading' for the wrapper and title tags,
- * 'id', 'classes' and 'style' for the wrapper, 'title_class' and
- * 'title_style' for the title, 'top' for HTML printed first inside the
- * wrapper (like a close button), and 'inner' to wrap the content in
- * .inner without a Header Cover.
+ * Build the full title template with surrounding markup.
  *
  * @since 6.0.4
  */
 
-function md_render_title( $context, $data, $args = array() ) {
+function md_title_template( $context, $data, $args = array() ) {
 	$args['data'] = $data;
 	$classes = $style = array();
 	$inline_images = array( 'left', 'right' );
@@ -205,7 +172,7 @@ function md_render_title( $context, $data, $args = array() ) {
 	if ( $context === 'post' && ! $data['title'] && ! ( $media && in_array( $media_position, $title_images, true ) ) )
 		return;
 
-	// Category identity.
+	// Category identity
 
 	if ( $data['identity'] ) {
 		$category_identity = $data['identity'];
@@ -226,10 +193,15 @@ function md_render_title( $context, $data, $args = array() ) {
 	else
 		$classes[] = 'wide';
 
-	// Featured image related classes
+	// Featured media classes
+
+	$mobile = $media['mobile'] ?? '';
+
+	if ( $context === 'post' && ! $mobile && ! empty( $args['loop']['featured_image_mobile'] ) )
+		$mobile = $args['loop']['featured_image_mobile'];
 
 	if ( $media && ( $context != 'post' || in_array( $media_position, $title_images, true ) ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $media_position, array( 'mobile' => $media['mobile'] ?? '' ) ) );
+		$classes = array_merge( $classes, md_get_image_position_classes( $media_position, array( 'mobile' => $mobile ) ) );
 	elseif ( ! $media && $context == 'post' && empty( $cover['position'] ) )
 		$classes[] = 'no-media';
 
@@ -325,4 +297,26 @@ function md_get_description( $context = 'post' ) {
 	}
 
 	return $description;
+}
+
+/**
+ * Get a category's icon, bg color, and best contrast color.
+ *
+ * @since 6.0
+ */
+
+function md_category_identity( $term = null ) {
+	$term = $term ?: get_queried_object();
+
+	if ( ! $term instanceof WP_Term )
+		return array( 'icon' => '', 'color' => '', 'text' => '' );
+
+	$icon = md_term_meta( array( 'hero', 'archives_icon' ), $term->term_id, '' );
+	$color = md_color_hex( md_term_meta( array( 'hero', 'archives_color' ), $term->term_id, '' ) );
+
+	return array(
+		'icon' => $icon && isset( md_icons()[$icon] ) ? $icon : '',
+		'color' => $color,
+		'text' => md_contrast_text( $color )
+	);
 }

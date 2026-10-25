@@ -81,18 +81,16 @@ function md_cover_classes( $context = 'post', $cover = null ) {
 }
 
 /**
- * Check if has either type of Header Cover to make
- * special layout considerations. Headline cover == false.
+ * Check if Header Cover or Header Cover Full.
  *
- * @return Returns value of cover position if set, FALSE if not
  * @since 6.0
  */
 
-function md_has_header_cover( $context = null ) {
+function md_has_header_cover( $context = null, $cover = null ) {
 	if ( ! isset( $context ) )
 		$context = is_singular() || is_404() ? 'post' : 'page';
 
-	$cover = md_cover( $context );
+	$cover = $cover ?? md_cover( $context );
 
 	if (
 		( ( $context == 'post' && ( is_singular() || is_404() ) ) || $context == 'page' ) &&

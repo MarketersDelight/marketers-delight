@@ -97,8 +97,6 @@ class md_archive_sections extends md_api {
 		foreach ( $this->elements() as $element ) {
 			$element_fields = $element['fields'] ?? array();
 
-			// A function name is only called in the admin, where settings are saved
-
 			if ( is_string( $element_fields ) )
 				$element_fields = is_admin() ? call_user_func( $element_fields ) : array();
 

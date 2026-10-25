@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_render_title(): it renders only the data it's given, never the
+ * Tests md_title_template(): it renders only the data it's given, never the
  * current page's settings, so other features (Title Sections) can pass
  * their own data. Page Title markup is covered by TitleSnapshotTest.
  *
@@ -44,7 +44,7 @@ class TitleRenderTest extends MD_InheritanceTestCase {
 
 	private function render( $data ) {
 		ob_start();
-		md_render_title( 'page', $data );
+		md_title_template( 'page', $data );
 
 		return ob_get_clean();
 	}

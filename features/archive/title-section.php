@@ -1,12 +1,4 @@
 <?php
-/**
- * Title Section: an Archive Sections element that renders like a Page
- * Title (title, text, featured media, cover, CTA) from its own row
- * settings. It shares the Page Title renderer and the Featured Media,
- * Page Cover and Page CTA field schemas.
- *
- * @since 6.0.4
- */
 
 /**
  * Row fields and their save rules.
@@ -33,7 +25,7 @@ function md_title_section_fields() {
 }
 
 /**
- * Turn a row's settings into the data md_render_title() takes. A row is
+ * Turn a row's settings into the data md_title_template() takes. A row is
  * literal: nothing inherits from the page it's shown on.
  *
  * @since 6.0.4
@@ -47,10 +39,7 @@ function md_title_section_data( $row ) {
 		$media['media_type'] = 'image';
 		$media['position'] = ! empty( $media['position'] ) ? $media['position'] : 'title_left';
 	}
-	else
-		$media = array();
-
-	// Any background makes it a cover; sections don't use cover positions
+	else $media = array();
 
 	if ( ! empty( $cover['bg_color'] ) || ! empty( $cover['photo']['id'] ) )
 		$cover['position'] = 'headline_cover';
@@ -83,11 +72,9 @@ function md_title_section( $row, $post_type, $id, $main_query ) {
 	if ( ! $data['title'] && ! $data['description'] && ! $data['media'] )
 		return;
 
-	// Beside a sidebar, the section lines up like a Page Title does
-
 	$data['has_sidebar'] = md_has_sidebar();
 
-	md_render_title( 'section', $data, array(
+	md_title_template( 'section', $data, array(
 		'tag' => 'section',
 		'heading' => ! empty( $row['section_heading'] ) ? $row['section_heading'] : 'h2'
 	) );

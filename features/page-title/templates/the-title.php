@@ -7,6 +7,7 @@ if ( $has_category_icon ) {
 		 '<span class="category-title-icon square-icon mid" aria-hidden="true">' . md_icon( $args['category_icon'] ) . '</span>'.
 		 '<div class="title-wrap">';
 }
+
 elseif ( $has_wrap )
 	echo '<div class="title-wrap">';
 
@@ -17,8 +18,6 @@ if ( isset( $args['byline'] ) )
 	md_byline( 'before_title', $args );
 
 do_action( "md_hook_before_{$context}_title" );
-
-// Inside Title items follow the title's last word and wrap with it
 
 if ( $has_inside )
 	echo '<div class="title-inline">';
@@ -45,8 +44,7 @@ if ( isset( $args['cta'] ) )
 	md_cta( $context, isset( $args['data'] ) ? $args['data']['cta'] : array() );
 
 if ( $has_category_icon )
-	echo '</div>'.
-		 '</div>';
+	echo '</div></div>';
 
 elseif ( $has_wrap )
 	echo '</div>';

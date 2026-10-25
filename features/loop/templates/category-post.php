@@ -4,13 +4,14 @@ $h_class = $h !== 'h2' ? ' h2' : '';
 $category_identity = md_category_identity( $category );
 $category_style = $category_identity['color'] ? md_style( array( 'vars' => array( 'md-category-color' => $category_identity['color'], 'md-category-text' => $category_identity['text'] ) ) ) : '';
 $category_description = term_description( $category->term_id );
-$has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category ) ) );
+$has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category, 'loop' => $loop ) ) );
 ?>
 
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
 
 	<?php md_byline( 'entry_top', array(
 		'context' => 'category_entry',
+		'loop' => $loop,
 		'category' => $category
 	) ); ?>
 
@@ -26,6 +27,7 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 			<?php md_byline( 'before_title', array(
 				'context' => 'category_entry',
+				'loop' => $loop,
 				'category' => $category
 			) ); ?>
 
@@ -43,6 +45,7 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 			<?php md_byline( 'inside_title', array(
 				'context' => 'category_entry',
+				'loop' => $loop,
 				'category' => $category
 			) ); ?>
 
@@ -52,6 +55,7 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 			<?php md_byline( 'after_title', array(
 				'context' => 'category_entry',
+				'loop' => $loop,
 				'category' => $category
 			) ); ?>
 
@@ -84,7 +88,7 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 		<?php if ( $posts->query_vars['posts_per_page'] > 0 && $posts->post_count >= $posts->query_vars['posts_per_page'] ) : ?>
 
-		<div class="category-more item byline mt-half">
+		<div class="category-more item byline <?php echo strpos( " $loop_classes ", ' columns ' ) !== false ? 'col-full' : 'mt-half'; ?>">
 			<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>">
 				<?php echo sprintf( esc_html__( 'View all posts &rarr;', 'md' ), esc_html( $category->name ) ); ?>
 			</a>
@@ -102,6 +106,7 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 	md_byline( 'entry_footer', array(
 		'context' => 'category_entry',
+		'loop' => $loop,
 		'category' => $category,
 		'classes' => 'post-footer'
 	) ); ?>
