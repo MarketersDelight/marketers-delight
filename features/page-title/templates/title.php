@@ -27,12 +27,18 @@ if ( $context != 'post' )
 
 if ( $media && in_array( $media_position, $title_images, true ) ) {
 
+	$has_title_text = $context == 'post' || $args['aside'];
+
+	if ( $has_title_text ) {
+		$args['description'] = true;
+
+		if ( $args['aside'] )
+			$args['regions'] = true;
+	}
+
 	echo '<div class="wrap">';
 
 	$args['wrap'] = true;
-
-	if ( $context == 'post' )
-		$args['byline'] = $args['description'] = $args['cta'] = true;
 
 	md_the_title( $context, $args );
 
@@ -40,16 +46,10 @@ if ( $media && in_array( $media_position, $title_images, true ) ) {
 
 	echo '</div>';
 
-	if ( $context != 'post' ) {
+	if ( ! $has_title_text ) {
 		md_description( $context, array( 'description' => $data['description'] ) );
 
-		md_cta( $context, $data['cta'] );
-
-		if ( ! empty( $data['foot'] ) )
-			echo '<p class="foot">' . $data['foot'] . '</p>';
-
-		if ( ! empty( $data['archive_meta'] ) )
-			md_archive_meta();
+		md_title_position( 'after_title', $context, $args );
 	}
 
 }
@@ -57,9 +57,6 @@ if ( $media && in_array( $media_position, $title_images, true ) ) {
 // Default markup
 
 else {
-
-	if ( $context == 'post' )
-		$args['byline'] = true;
 
 	if ( $context != 'post' )
 		md_featured_media( $context, array(
@@ -69,6 +66,9 @@ else {
 
 	if ( $has_wrap )
 		echo '<div class="wrap">';
+
+	if ( $args['aside'] )
+		echo '<div class="title-main">';
 
 	md_the_title( $context, $args );
 
@@ -80,16 +80,15 @@ else {
 
 	md_description( $context, array( 'description' => $data['description'] ) );
 
-	if ( isset( $args['byline'] ) )
-		md_byline( 'after_title', $args );
+	md_title_position( 'after_title', $context, $args );
 
-	md_cta( $context, $data['cta'] );
+	if ( $args['aside'] ) {
+		echo '</div><div class="title-aside">';
 
-	if ( ! empty( $data['foot'] ) )
-		echo '<p class="foot">' . $data['foot'] . '</p>';
+		md_title_position( 'byline_aside', $context, $args );
 
-	if ( ! empty( $data['archive_meta'] ) )
-		md_archive_meta();
+		echo '</div>';
+	}
 
 	if ( $has_wrap )
 		echo '</div>';

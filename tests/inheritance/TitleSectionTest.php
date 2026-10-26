@@ -53,7 +53,7 @@ class TitleSectionTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'image', $data['media']['media_type'] );
 		$this->assertSame( array(), $data['cover'], 'No background means no cover' );
 		$this->assertSame( array(), $data['cta'] );
-		$this->assertFalse( $data['archive_meta'], 'Archive Meta is opt-in' );
+		$this->assertSame( array(), $data['archive_meta'], 'Archive Meta is opt-in' );
 		$this->assertFalse( $data['header_cover'] );
 	}
 

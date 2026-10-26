@@ -10,14 +10,7 @@
 function md_byline_items( $post_type = null ) {
 	$items = apply_filters( 'md_byline', array() );
 
-	if ( $post_type === null )
-		return $items;
-
-	foreach ( $items as $id => $fields )
-		if ( ! empty( $fields['post_types'] ) && ( ! $post_type || ! in_array( $post_type, (array) $fields['post_types'], true ) ) )
-			unset( $items[$id] );
-
-	return $items;
+	return $post_type === null ? $items : md_builder_items_for( $items, $post_type );
 }
 
 /**
@@ -60,24 +53,13 @@ function md_byline_item( $type, $fields = array() ) {
  */
 
 function md_byline( $location = 'before_title', $args = array() ) {
-	if ( has_action( 'md_hook_byline_' . get_post_type() ) )
-		return do_action( 'md_hook_byline_' . get_post_type(), true );
-
+	$data = $args['byline_items'] = md_byline_items();
 	$items = md_get_byline( $location, $args );
 
 	if ( empty( $items ) )
 		return;
 
 	$post_type = $args['loop']['post_type'] ?? get_post_type();
-	$data = md_byline_items();
-
-	foreach ( $items as $item => $groups )
-		if ( ! empty( $data[$item]['post_types'] ) && ( ! $post_type || ! in_array( $post_type, (array) $data[$item]['post_types'], true ) ) )
-			unset( $items[$item] );
-
-	if ( empty( $items ) )
-		return;
-
 	$c = 1;
 	$classes = array( 'byline' );
 	$classes[] = str_replace( '_', '-', $location );
@@ -101,7 +83,10 @@ function md_byline( $location = 'before_title', $args = array() ) {
 /**
  * Get byline items based on location and source.
  *
- * Accepts: entry_top | before_title | after_title | before_content | entry_footer
+ * Accepts: entry_top | before_title | inside_title | after_title | byline_aside |
+ * before_content | after_content | entry_footer
+ *
+ * $args['byline_items'] reuses an already loaded item registry.
  *
  * @since 6.0
  */
@@ -161,5 +146,16 @@ function md_get_byline( $position, $args = array() ) {
 			}
 	}
 
-	return apply_filters( 'md_filter_byline_items', $byline, $position, $args );
+	$byline = apply_filters( 'md_filter_byline_items', $byline, $position, $args );
+
+	// Items made for other post types don't show
+
+	$registered = $args['byline_items'] ?? md_byline_items();
+	$available = md_builder_items_for( $registered, $args['loop']['post_type'] ?? get_post_type() );
+
+	foreach ( $byline as $item => $groups )
+		if ( isset( $registered[$item] ) && ! isset( $available[$item] ) )
+			unset( $byline[$item] );
+
+	return $byline;
 }

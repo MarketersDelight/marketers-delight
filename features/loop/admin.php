@@ -56,7 +56,7 @@ class md_loop extends md_api {
 			),
 			'remove_byline' => array(
 				'type' => 'checkbox',
-				'options' => array( 'entry_top', 'before_title', 'after_title', 'before_content', 'entry_footer', 'remove' )
+				'options' => array( 'entry_top', 'before_title', 'inside_title', 'after_title', 'before_content', 'after_content', 'entry_footer', 'remove' )
 			),
 			'inherit' => array(
 				'type' => 'checkbox',

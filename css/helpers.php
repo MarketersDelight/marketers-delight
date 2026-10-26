@@ -56,12 +56,6 @@ a.no-underline, .no-underline a { text-decoration: none; }
 
 .has-muted-color a, .foot a, a.has-muted-color, a.foot { color: var(--md-links-muted); }
 
-.middot:not(:first-child)::before {
-	color: var(--md-text-muted);
-	content: '\00b7';
-	margin-inline-end: var(--md-third);
-}
-
 cite, .tiny {
 	font-size: var(--md-font-size-tiny);
 	line-height: var(--md-line-height-tiny);
@@ -409,8 +403,6 @@ echo ".gap-none { gap: 0; }";
 	}
 	.scroll-mobile::-webkit-scrollbar { display: none; }
 	.scroll-mobile > * { scroll-snap-align: start; }
-	.middot:has([class*="md-icon-"]) { white-space: nowrap; }
-	.middot:has([class*="md-icon-"])::before { content: none; }
 }
 
 <?php

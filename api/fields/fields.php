@@ -627,8 +627,8 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * A valet method to render the Byline Position field
-	 * when adding custom byline items.
+	 * Render the Byline Position field. The Byline builder adds it to
+	 * every item, so item callbacks don't call it themselves.
 	 *
 	 * @since 6.0
 	 */
@@ -638,26 +638,23 @@ class md_fields extends md_fields_render {
 
 		$row = md_get_post_type_builder( 'byline', $post_type )[$group] ?? array();
 
-		if ( isset( $args['dropin'] ) )
-			$this->field( array( 'builder', $group, 'dropin' ), array(
-				'id' => 'byline',
-				'type' => 'text',
-				'hidden' => true,
-				'default' => $args['dropin']
-			) );
+		$title_positions = md_title_meta_positions();
+		$entry_positions = array(
+			'entry_top' => __( 'Entry Top', 'md' ),
+			'before_content' => __( 'Before Content', 'md' ),
+			'after_content' => __( 'After Content', 'md' ),
+			'entry_footer' => __( 'Entry Footer', 'md' )
+		);
 
 		$position = array(
 			'id' => 'byline',
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
 			'wrap_classes' => $args['wrap_classes'] ?? 'md-sep-micro',
-			'empty_label' => __( 'Before Title (default)', 'md' ),
-			'options' => array(
-				'entry_top' => __( 'Entry Top', 'md' ),
-				'inside_title' => __( 'Inside Title', 'md' ),
-				'after_title' =>  __( 'After Title', 'md' ),
-				'before_content' => __( 'Before Content', 'md' ),
-				'entry_footer' => __( 'Entry Footer', 'md' )
+			'options' => array_merge( $title_positions, $entry_positions ),
+			'groups' => array(
+				__( 'Title', 'md' ) => array_keys( $title_positions ),
+				__( 'Entry', 'md' ) => array_keys( $entry_positions )
 			)
 		);
 

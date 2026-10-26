@@ -60,6 +60,27 @@ function md_parse_text( $text, $context = '' ) {
 }
 
 /**
+ * Word a count from an item's Text and Singular Text settings, falling
+ * back to the given singular and plural text. {count} places the number;
+ * text without it gets the number in front. Pass $number to print the
+ * number with markup of its own.
+ *
+ * @since 6.0.4
+ */
+
+function md_count_text( $count, $fields, $singular, $plural, $number = '' ) {
+	$template = $count === 1 ? $singular : $plural;
+
+	if ( ! empty( $fields['name'] ) )
+		$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
+
+	if ( strpos( $template, '{count}' ) === false )
+		$template = '{count} ' . $template;
+
+	return str_replace( '{count}', $number ?: esc_html( number_format_i18n( $count ) ), esc_html( $template ) );
+}
+
+/**
  * Get token key→value map (or key list) for archive text replacement.
  *
  * @since 6.0

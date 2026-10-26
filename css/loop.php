@@ -5,8 +5,7 @@
 \*------------------------------*/
 
 .clear:after,
-.entry.image-inline .the-content .wrap:after,
-.entry.image-inline .the-content .featured-media + :is(h2, h3, h4, h5, h6) {
+.entry.image-inline .the-content .wrap:after {
 	clear: both;
 	content: '';
 	display: table;

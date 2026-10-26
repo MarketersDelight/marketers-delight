@@ -222,17 +222,11 @@ class md_archive_sections extends md_api {
 			unset( $elements['taxonomy_filter'] );
 
 		if ( $post_type )
-			foreach ( $elements as $id => $element )
-				if ( ! empty( $element['post_types'] ) && ! in_array( $post_type, (array) $element['post_types'], true ) )
-					unset( $elements[$id] );
+			$elements = md_builder_items_for( $elements, $post_type );
 
-		foreach ( $elements as $id => $element ) {
-			if ( ! empty( $element['admin_icon'] ) )
-				$elements[$id]['icon'] = $element['admin_icon'];
-
+		foreach ( $elements as $id => $element )
 			if ( empty( $element['admin_callback'] ) )
 				$elements[$id]['admin_callback'] = array( $this, 'element_fields' );
-		}
 
 		return $elements;
 	}

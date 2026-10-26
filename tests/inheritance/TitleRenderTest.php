@@ -56,6 +56,81 @@ class TitleRenderTest extends MD_InheritanceTestCase {
 		$this->assertStringNotContainsString( 'Page title', $html );
 	}
 
+	public function test_archive_meta_prints_at_its_positions() {
+		$html = $this->render( $this->data( array(
+			'description' => 'Section description',
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' ),
+			'archive_meta' => array(
+				'before_title' => '<div class="byline before-title archive-meta">Before</div>',
+				'inside_title' => '<div class="byline inside-title archive-meta">Inside</div>',
+				'after_title' => '<div class="byline after-title archive-meta">After</div>'
+			)
+		) ) );
+
+		$order = array( 'Before', '<h1 class="title">Section title</h1>', 'Inside', 'Section description', 'After', 'Join' );
+		$last = -1;
+
+		foreach ( $order as $needle ) {
+			$position = strpos( $html, $needle );
+
+			$this->assertIsInt( $position, "$needle prints" );
+			$this->assertGreaterThan( $last, $position, "$needle prints in order" );
+
+			$last = $position;
+		}
+
+		$this->assertStringContainsString( '<div class="title-inline">', $html );
+	}
+
+	public function test_title_aside_meta_splits_the_title_into_regions() {
+		$html = $this->render( $this->data( array(
+			'description' => 'Section description',
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' ),
+			'archive_meta' => array(
+				'after_title' => '<div class="byline after-title archive-meta">After</div>',
+				'byline_aside' => '<div class="byline byline-aside archive-meta">Aside</div>'
+			)
+		) ) );
+
+		$main = strpos( $html, '<div class="title-main">' );
+		$aside = strpos( $html, '<div class="title-aside"><div class="byline byline-aside archive-meta">Aside</div>' );
+
+		$this->assertStringContainsString( 'has-aside', $html );
+		$this->assertIsInt( $main );
+		$this->assertIsInt( $aside );
+		$this->assertGreaterThan( strpos( $html, 'After' ), $aside, 'Main holds the title, description and After Title meta' );
+		$this->assertGreaterThan( strpos( $html, 'Join' ), $aside, 'The CTA stays in main by default' );
+	}
+
+	public function test_cta_placed_in_title_aside_splits_the_title() {
+		$html = $this->render( $this->data( array(
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>', 'title_position' => 'byline_aside' )
+		) ) );
+
+		$this->assertStringContainsString( 'has-aside', $html );
+		$this->assertGreaterThan( strpos( $html, '<div class="title-aside">' ), strpos( $html, 'Join' ), 'The CTA prints in the aside' );
+	}
+
+	public function test_cta_placed_before_the_title() {
+		$html = $this->render( $this->data( array(
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>', 'title_position' => 'before_title' )
+		) ) );
+
+		$this->assertGreaterThan( strpos( $html, 'Join' ), strpos( $html, '<h1 class="title">' ) );
+		$this->assertStringNotContainsString( 'has-aside', $html );
+	}
+
+	public function test_no_title_aside_meta_prints_no_regions() {
+		$html = $this->render( $this->data( array(
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' ),
+			'archive_meta' => array( 'after_title' => '<div class="byline after-title archive-meta">After</div>' )
+		) ) );
+
+		$this->assertStringNotContainsString( 'has-aside', $html );
+		$this->assertStringNotContainsString( 'title-main', $html );
+		$this->assertStringNotContainsString( 'title-aside', $html );
+	}
+
 	public function test_empty_data_does_not_fall_back_to_the_page() {
 		$html = $this->render( $this->data() );
 

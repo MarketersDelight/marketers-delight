@@ -49,6 +49,10 @@ class md_archive_meta extends md_api {
 			'builder_type' => array( 'type' => 'text' ),
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
+			'position' => array(
+				'type' => 'select',
+				'options' => array_keys( md_title_meta_positions() )
+			),
 			'scope' => array( 'type' => 'checkbox', 'options' => array( 'post_type_only', 'paged' ) )
 		);
 
@@ -84,11 +88,29 @@ class md_archive_meta extends md_api {
 		$this->fields->field( 'builder', array(
 			'type' => 'builder',
 			'title' => __( 'Add Archive Meta', 'md' ),
-			'description' => __( 'Choose the aggregate details shown beneath the archive title.', 'md' ),
+			'description' => __( 'Choose the aggregate details shown in the archive title.', 'md' ),
+			'wrap_classes' => 'md-tabs',
+			'active_tab' => 'archives',
+			'tabs' => array(
+				'archives' => array(
+					'label' => __( 'Archive Title', 'md' ),
+					'context' => 'archives'
+				),
+				'category_entry' => array(
+					'label' => __( 'Category Entry', 'md' ),
+					'context' => 'category_entry'
+				)
+			),
 			'areas' => array(
 				'archives' => array(
-					'title' => __( 'Archive Meta', 'md' ),
-					'description' => __( 'Drag items into the order they should appear beneath the title.', 'md' )
+					'title' => __( 'Archive Title', 'md' ),
+					'description' => __( 'Drag items into order, and set where each one shows in the archive title.', 'md' ),
+					'tab' => 'archives'
+				),
+				'category_entry' => array(
+					'title' => __( 'Category Entry', 'md' ),
+					'description' => __( 'Details about each category, shown in its title when the loop lists posts by category.', 'md' ),
+					'tab' => 'category_entry'
 				)
 			),
 			'elements' => $this->elements( $post_type ),
@@ -123,15 +145,33 @@ class md_archive_meta extends md_api {
 	private function elements( $post_type ) {
 		$elements = md_archive_meta_items( $post_type );
 
-		foreach ( $elements as $id => $element ) {
-			if ( ! empty( $element['admin_icon'] ) )
-				$elements[$id]['icon'] = $element['admin_icon'];
-
-			if ( empty( $element['admin_callback'] ) )
-				$elements[$id]['admin_callback'] = array( $this, 'item_fields' );
-		}
+		foreach ( $elements as $id => $element )
+			$elements[$id]['admin_callback'] = array( $this, 'item_fields' );
 
 		return $elements;
+	}
+
+	/**
+	 * Render every item's Position, then the item's own controls.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function item_fields( $group, $type, $fields, $row = array() ) {
+		$fields->field( array( 'builder', $group, 'position' ), array(
+			'type' => 'select',
+			'label' => __( 'Position', 'md' ),
+			'default' => 'after_title',
+			'options' => md_title_meta_positions()
+		) );
+
+		$items = md_archive_meta_items( $fields->screen_post_type() );
+		$callback = $items[$type]['admin_callback'] ?? null;
+
+		if ( is_callable( $callback ) )
+			call_user_func( $callback, $group, $type, $fields, $row );
+		else
+			$this->label_note();
 	}
 
 	/**
@@ -140,7 +180,7 @@ class md_archive_meta extends md_api {
 	 * @since 6.0
 	 */
 
-	public function item_fields() {
+	public function label_note() {
 		echo '<p class="description">' . esc_html__( 'Use the item label above to override its default text.', 'md' ) . '</p>';
 	}
 
@@ -170,7 +210,17 @@ class md_archive_meta extends md_api {
 
 	public function last_added_fields( $group, $type, $fields ) {
 		$this->source_field( $group, $fields );
-		$this->item_fields();
+
+		$fields->field( array( 'builder', $group, 'settings' ), array(
+			'type' => 'checkbox',
+			'label' => __( 'Settings', 'md' ),
+			'options' => array(
+				'updated' => __( 'Use the last updated date', 'md' ),
+				'date' => __( 'Show the date instead of how long ago', 'md' )
+			)
+		) );
+
+		$this->label_note();
 	}
 
 	/**
@@ -228,8 +278,8 @@ class md_archive_meta extends md_api {
 			'post_count' => array(
 				'title' => __( 'Post Count', 'md' ),
 				'placeholder' => __( '{count} posts', 'md' ),
-				'icon' => 'file',
-				'admin_icon' => 'admin-post',
+				'icon' => 'admin-post',
+				'meta_icon' => 'file',
 				'color' => '#2271b1',
 				'fields' => array(
 					'singular_name' => array( 'type' => 'text' ),
@@ -241,8 +291,8 @@ class md_archive_meta extends md_api {
 			'comment_count' => array(
 				'title' => __( 'Comment Count', 'md' ),
 				'placeholder' => __( '{count} comments', 'md' ),
-				'icon' => 'chat',
-				'admin_icon' => 'admin-comments',
+				'icon' => 'admin-comments',
+				'meta_icon' => 'chat',
 				'color' => '#ff6000',
 				'fields' => array(
 					'singular_name' => array( 'type' => 'text' )
@@ -253,10 +303,15 @@ class md_archive_meta extends md_api {
 			'last_added' => array(
 				'title' => __( 'Last Added', 'md' ),
 				'placeholder' => __( 'last added', 'md' ),
-				'icon' => 'calendar',
+				'icon' => 'calendar-alt',
+				'meta_icon' => 'calendar',
 				'color' => '#d44c3c',
 				'fields' => array(
-					'source' => array( 'type' => 'text' )
+					'source' => array( 'type' => 'text' ),
+					'settings' => array(
+						'type' => 'checkbox',
+						'options' => array( 'updated', 'date' )
+					)
 				),
 				'callback' => array( $this, 'last_added' ),
 				'admin_callback' => array( $this, 'last_added_fields' )
@@ -267,90 +322,96 @@ class md_archive_meta extends md_api {
 	}
 
 	/**
-	 * Format the published post count for an archive.
+	 * Format the published post count for an archive or term.
 	 *
 	 * @since 6.0
 	 */
 
-	public function post_count( $fields, $post_type ) {
-		$queried = get_queried_object();
+	public function post_count( $fields, $post_type, $term = null ) {
 		$source = $this->source( $fields, $post_type );
+		$term = $this->term( $term );
 
 		if ( $source )
 			$count = (int) wp_count_posts( $source )->publish;
+		elseif ( $term )
+			$count = md_term_post_count( $term, $post_type );
 		else
-			$count = (int) ( $queried instanceof WP_Term ? $queried->count : wp_count_posts( $post_type )->publish );
-		$number = number_format_i18n( $count );
-		$template = $count === 1 ? __( '{count} post', 'md' ) : __( '{count} posts', 'md' );
+			$count = (int) wp_count_posts( $post_type )->publish;
 
-		if ( ! empty( $fields['name'] ) )
-			$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
+		if ( $source )
+			$url = get_post_type_archive_link( $source );
+		elseif ( $term )
+			$url = get_term_link( $term );
+		else
+			$url = get_post_type_archive_link( $post_type );
 
-		return esc_html( strtr( $template, array( '{count}' => $number ) ) );
+		return md_archive_meta_link( md_count_text( $count, $fields, __( '{count} post', 'md' ), __( '{count} posts', 'md' ) ), $url );
 	}
 
 	/**
-	 * Format the approved comment count for an archive.
+	 * Format the approved comment count for an archive or term.
 	 *
 	 * @since 6.0
 	 */
 
-	public function comment_count( $fields, $post_type ) {
-		return $this->comment_count_text( $fields, md_archive_comment_total( $post_type ) );
+	public function comment_count( $fields, $post_type, $term = null ) {
+		return md_count_text( md_archive_comment_total( $post_type, $this->term( $term ) ), $fields, __( '{count} comment', 'md' ), __( '{count} comments', 'md' ) );
 	}
 
 	/**
-	 * Apply configured singular and plural Comment Count text.
+	 * Format when the newest entry of an archive or term was added, or
+	 * last updated.
 	 *
 	 * @since 6.0
 	 */
 
-	private function comment_count_text( $fields, $count ) {
-		$number = number_format_i18n( $count );
-		$template = $count === 1 ? __( '{count} comment', 'md' ) : __( '{count} comments', 'md' );
-
-		if ( ! empty( $fields['name'] ) )
-			$template = $count === 1 && ! empty( $fields['singular_name'] ) ? $fields['singular_name'] : $fields['name'];
-
-		return esc_html( strtr( $template, array( '{count}' => $number ) ) );
-	}
-
-	/**
-	 * Format the relative date of the newest archive entry.
-	 *
-	 * @since 6.0
-	 */
-
-	public function last_added( $fields, $post_type ) {
+	public function last_added( $fields, $post_type, $term = null ) {
 		$source = $this->source( $fields, $post_type );
+		$term = $this->term( $term );
+		$updated = ! empty( $fields['settings']['updated'] );
 		$args = array(
 			'post_type' => $source ?: $post_type,
 			'post_status' => 'publish',
 			'posts_per_page' => 1,
-			'orderby' => 'date',
+			'orderby' => $updated ? 'modified' : 'date',
 			'order' => 'DESC',
 			'fields' => 'ids'
 		);
 
-		if ( ! $source && ( is_tax() || is_category() ) ) {
-			$term = get_queried_object();
+		if ( ! $source && $term )
 			$args['tax_query'] = array( array(
 				'taxonomy' => $term->taxonomy,
 				'terms' => $term->term_id
 			) );
-		}
 
 		$posts = get_posts( $args );
 
 		if ( ! $posts )
 			return '';
 
-		$relative = human_time_diff( get_post_time( 'U', false, $posts[0] ), current_time( 'U' ) );
-		$label = ! empty( $fields['name'] ) ? $fields['name'] : __( 'last added', 'md' );
+		$time = $updated ? get_post_modified_time( 'U', false, $posts[0] ) : get_post_time( 'U', false, $posts[0] );
+		$date = ! empty( $fields['settings']['date'] ) ? date_i18n( get_option( 'date_format' ), $time ) : sprintf( __( '%s ago', 'md' ), human_time_diff( $time, current_time( 'U' ) ) );
+		$label = ! empty( $fields['name'] ) ? $fields['name'] : ( $updated ? __( 'last updated', 'md' ) : __( 'last added', 'md' ) );
 
-		// The whole time reads as the value, like a count's number
+		// The whole date reads as the value, like a count's number
 
-		return esc_html( $label ) . ' <strong>' . esc_html( sprintf( __( '%s ago', 'md' ), $relative ) ) . '</strong>';
+		return esc_html( $label ) . ' <strong>' . esc_html( $date ) . '</strong>';
+	}
+
+	/**
+	 * The term an item measures: the given one, or the term archive
+	 * being viewed.
+	 *
+	 * @since 6.0.4
+	 */
+
+	private function term( $term = null ) {
+		if ( $term instanceof WP_Term )
+			return $term;
+
+		$queried = get_queried_object();
+
+		return $queried instanceof WP_Term ? $queried : null;
 	}
 }
 

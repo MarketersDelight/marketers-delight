@@ -299,6 +299,21 @@ function md_get_builder( $id, $type = null, $key = null ) {
 }
 
 /**
+ * Drop builder items made for other post types. Items without
+ * post_types are available everywhere.
+ *
+ * @since 6.0.4
+ */
+
+function md_builder_items_for( $items, $post_type ) {
+	foreach ( $items as $id => $fields )
+		if ( ! empty( $fields['post_types'] ) && ( ! $post_type || ! in_array( $post_type, (array) $fields['post_types'], true ) ) )
+			unset( $items[$id] );
+
+	return $items;
+}
+
+/**
  * Resolve builder areas from inherited post types, taxonomies, and terms.
  * Each configured area replaces the same area from the preceding layer.
  *

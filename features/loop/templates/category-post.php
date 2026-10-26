@@ -4,16 +4,12 @@ $h_class = $h !== 'h2' ? ' h2' : '';
 $category_identity = md_category_identity( $category );
 $category_style = $category_identity['color'] ? md_style( array( 'vars' => array( 'md-category-color' => $category_identity['color'], 'md-category-text' => $category_identity['text'] ) ) ) : '';
 $category_description = term_description( $category->term_id );
-$has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 'category_entry', 'category' => $category, 'loop' => $loop ) ) );
+$meta = md_get_archive_meta( 'category_entry', $category, $loop['post_type'] ?? '' );
+$has_inside_entry = ! empty( $meta['inside_title'] );
+$has_aside_entry = ! empty( $meta['byline_aside'] );
 ?>
 
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
-
-	<?php md_byline( 'entry_top', array(
-		'context' => 'category_entry',
-		'loop' => $loop,
-		'category' => $category
-	) ); ?>
 
 	<div class="category-title category-title-wrap fl items-start"<?php echo $category_style; ?>>
 
@@ -23,13 +19,15 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 		<?php endif; ?>
 
-		<div class="entry-title grow">
+		<div class="entry-title grow<?php echo $has_aside_entry ? ' has-aside' : ''; ?>">
 
-			<?php md_byline( 'before_title', array(
-				'context' => 'category_entry',
-				'loop' => $loop,
-				'category' => $category
-			) ); ?>
+			<?php if ( $has_aside_entry ) : ?>
+
+			<div class="title-main">
+
+			<?php endif; ?>
+
+			<?php echo $meta['before_title'] ?? ''; ?>
 
 			<?php if ( $has_inside_entry ) : ?>
 
@@ -43,21 +41,23 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 
 			<?php if ( $has_inside_entry ) : ?>
 
-			<?php md_byline( 'inside_title', array(
-				'context' => 'category_entry',
-				'loop' => $loop,
-				'category' => $category
-			) ); ?>
+			<?php echo $meta['inside_title']; ?>
 
 			</div>
 
 			<?php endif; ?>
 
-			<?php md_byline( 'after_title', array(
-				'context' => 'category_entry',
-				'loop' => $loop,
-				'category' => $category
-			) ); ?>
+			<?php echo $meta['after_title'] ?? ''; ?>
+
+			<?php if ( $has_aside_entry ) : ?>
+
+			</div>
+
+			<div class="title-aside">
+				<?php echo $meta['byline_aside']; ?>
+			</div>
+
+			<?php endif; ?>
 
 		</div>
 
@@ -102,13 +102,6 @@ $has_inside_entry = ! empty( md_get_byline( 'inside_title', array( 'context' => 
 		$term = $category;
 		include md_template( 'features', 'loop/subcategory', true );
 
-	endif;
-
-	md_byline( 'entry_footer', array(
-		'context' => 'category_entry',
-		'loop' => $loop,
-		'category' => $category,
-		'classes' => 'post-footer'
-	) ); ?>
+	endif; ?>
 
 </section>

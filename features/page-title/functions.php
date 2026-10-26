@@ -79,9 +79,9 @@ function md_title_data( $context = 'post', $args = array() ) {
 	if ( $has_header_cover && in_the_loop() )
 		return array();
 
-	// Ok, show title
+	// Ok, show title. Posts in a loop use that loop's settings, like a Query Loop's
 
-	$loop = md_get_loop();
+	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
 	return array(
 		'title' => $title,
@@ -90,7 +90,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 		'cover' => $cover,
 		'cta' => md_get_cta( $context ),
 		'identity' => $is_page ? md_category_identity() : array(),
-		'archive_meta' => $is_page &&! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ),
+		'archive_meta' => $is_page && ! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ) ? md_get_archive_meta() : array(),
 		'header_cover' => $has_header_cover,
 		'has_sidebar' => md_has_sidebar(),
 		'loop' => $loop
@@ -124,10 +124,102 @@ function md_the_title( $context = 'post', $args = array() ) {
 			$title = '<a href="' . get_permalink() . '">' . $title . '</a>';
 	}
 
-	$has_inside = isset( $args['byline'] ) && ! empty( md_get_byline( 'inside_title', $args ) );
+	$has_inside = md_has_title_meta( 'inside_title', $context, $args );
 	$has_category_icon = ! empty( $args['category_icon'] );
 
 	include md_template( 'features', 'page-title/the-title', true );
+}
+
+/**
+ * The meta positions a title has, shared by byline and Archive Meta
+ * items.
+ *
+ * @since 6.0.4
+ */
+
+function md_title_meta_positions() {
+	return array(
+		'before_title' => __( 'Before Title', 'md' ),
+		'inside_title' => __( 'Inside Title', 'md' ),
+		'after_title' => __( 'After Title', 'md' ),
+		'byline_aside' => __( 'Title Aside', 'md' )
+	);
+}
+
+/**
+ * Print a title's meta at one position: byline items on posts, the
+ * title's Archive Meta everywhere else.
+ *
+ * @since 6.0.4
+ */
+
+function md_title_meta( $position, $context, $args = array() ) {
+	if ( $context != 'post' )
+		echo $args['data']['archive_meta'][$position] ?? '';
+	elseif ( isset( $args['byline'] ) )
+		md_byline( $position, $args );
+}
+
+/**
+ * Check if a title has meta at one position.
+ *
+ * @since 6.0.4
+ */
+
+function md_has_title_meta( $position, $context, $args = array() ) {
+	if ( $context != 'post' )
+		return ! empty( $args['data']['archive_meta'][$position] );
+
+	return isset( $args['byline'] ) && ! empty( md_get_byline( $position, $args ) );
+}
+
+/**
+ * Get the title position the CTA is placed in. Titles rendered without
+ * data, like bare md_the_title() calls, have no CTA.
+ *
+ * @since 6.0.4
+ */
+
+function md_get_title_cta_position( $args = array() ) {
+	if ( ! isset( $args['data'] ) )
+		return '';
+
+	$cta = $args['data']['cta'] ?? array();
+	$foot = $args['data']['foot'] ?? '';
+
+	if ( ( empty( $cta['page_cta'] ) || $cta['page_cta'] === 'remove' ) && ! $foot )
+		return '';
+
+	return ! empty( $cta['title_position'] ) ? $cta['title_position'] : 'after_title';
+}
+
+/**
+ * Print everything placed at one title position: its meta, then the CTA
+ * and foot text when the CTA is placed there.
+ *
+ * @since 6.0.4
+ */
+
+function md_title_position( $position, $context, $args = array() ) {
+	md_title_meta( $position, $context, $args );
+
+	if ( md_get_title_cta_position( $args ) !== $position )
+		return;
+
+	md_cta( $context, $args['data']['cta'] ?? array() );
+
+	if ( ! empty( $args['data']['foot'] ) )
+		echo '<p class="foot">' . $args['data']['foot'] . '</p>';
+}
+
+/**
+ * Check if anything is placed at one title position.
+ *
+ * @since 6.0.4
+ */
+
+function md_has_title_position( $position, $context, $args = array() ) {
+	return md_has_title_meta( $position, $context, $args ) || md_get_title_cta_position( $args ) === $position;
 }
 
 /**
@@ -171,6 +263,18 @@ function md_title_template( $context, $data, $args = array() ) {
 
 	if ( $context === 'post' && ! $data['title'] && ! ( $media && in_array( $media_position, $title_images, true ) ) )
 		return;
+
+	// Anything placed in Title Aside splits the title into main and side regions
+
+	if ( $context == 'post' )
+		$args['byline'] = true;
+
+	$args['aside'] = md_has_title_position( 'byline_aside', $context, $args );
+
+	// The regions always sit in .wrap, so full width images stay out of the split
+
+	if ( $args['aside'] )
+		$has_wrap = true;
 
 	// Category identity
 
@@ -218,6 +322,11 @@ function md_title_template( $context, $data, $args = array() ) {
 		elseif ( ! empty( $cover['bg_color'] ) )
 			$style['bg_color'] = $cover['bg_color'];
 	}
+
+	// A centered title image keeps its aside stacked under the title
+
+	if ( $args['aside'] && $media_position !== 'title_center' )
+		$classes[] = 'has-aside';
 
 	// Caller's own wrapper attributes
 

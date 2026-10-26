@@ -28,7 +28,6 @@ class md_byline extends md_api {
 		return array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#a424ec',
 				'icon' => 'admin-users',
@@ -36,7 +35,6 @@ class md_byline extends md_api {
 			),
 			'date' => array(
 				'title' => __( 'Date', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#d44c3c',
 				'icon' => 'calendar',
@@ -44,7 +42,6 @@ class md_byline extends md_api {
 			),
 			'comments' => array(
 				'title' => __( 'Comments', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#ff6000',
 				'icon' => 'admin-comments',
@@ -52,7 +49,6 @@ class md_byline extends md_api {
 			),
 			'category' => array(
 				'title' => __( 'Category', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#7d695c',
 				'icon' => 'category',
@@ -67,7 +63,6 @@ class md_byline extends md_api {
 			),
 			'badge' => array(
 				'title' => __( 'Badge', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#1eb54b',
 				'icon' => 'warning',
@@ -75,25 +70,9 @@ class md_byline extends md_api {
 			),
 			'edit' => array(
 				'title' => __( 'Edit', 'md' ),
-				'context' => 'post',
 				'hide_title' => false,
 				'color' => '#2772af',
-				'icon' => 'edit',
-				'admin_callback' => array( $this, 'edit' )
-			),
-			'category/post-count' => array(
-				'title' => __( 'Post Count', 'md' ),
-				'context' => 'category_entry',
-				'color' => '#e07b2a',
-				'icon' => 'editor-ul',
-				'admin_callback' => array( $this, 'post_count' )
-			),
-			'category/date' => array(
-				'title' => __( 'Date', 'md' ),
-				'context' => 'category_entry',
-				'color' => '#d44c3c',
-				'icon' => 'calendar-alt',
-				'admin_callback' => array( $this, 'category_date' )
+				'icon' => 'edit'
 			)
 		);
 	}
@@ -136,10 +115,9 @@ class md_byline extends md_api {
 			'builder_area' => array( 'type' => 'text' ),
 			'name' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
-			'dropin' => array( 'type' => 'text' ),
 			'position' => array(
 				'type' => 'select',
-				'options' => array( 'entry_top', 'before_title', 'inside_title', 'after_title', 'before_content', 'entry_footer' )
+				'options' => array( 'entry_top', 'before_title', 'inside_title', 'after_title', 'byline_aside', 'before_content', 'after_content', 'entry_footer' )
 			),
 			'settings' => array(
 				'type' => 'checkbox',
@@ -181,35 +159,20 @@ class md_byline extends md_api {
 		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
 			$active_tab = 'archives';
 			$tabs = array(
-				'archives' => array(
-					'label' => __( 'Archives', 'md' ),
-					'context' => 'post'
-				),
-				'category_entry' => array(
-					'label' => __( 'Category Entry', 'md' ),
-					'context' => 'category_entry'
-				)
+				'archives' => __( 'Archives', 'md' )
 			);
 			$areas = array(
 				'archives' => array(
 					'title' => __( 'Archives', 'md' ),
 					'description' => __( 'Override post bylines for this taxonomy\'s archive pages.', 'md' ),
 					'tab' => 'archives'
-				),
-				'category_entry' => array(
-					'title' => __( 'Category Entry', 'md' ),
-					'description' => __( 'Override category entry bylines for this taxonomy.', 'md' ),
-					'tab' => 'category_entry'
 				)
 			);
 		}
 		elseif ( $screen['is_admin'] && $post_type === 'author' ) {
 			$active_tab = 'archives';
 			$tabs = array(
-				'archives' => array(
-					'label' => __( 'Author Loop', 'md' ),
-					'context' => 'post'
-				)
+				'archives' => __( 'Author Loop', 'md' )
 			);
 			$areas = array(
 				'archives' => array(
@@ -222,18 +185,8 @@ class md_byline extends md_api {
 		elseif ( $screen['is_admin'] ) {
 			$active_tab = 'archives';
 			$tabs = array(
-				'archives' => array(
-					'label' => __( 'Archives', 'md' ),
-					'context' => 'post'
-				),
-				'single' => array(
-					'label' => __( 'Single', 'md' ),
-					'context' => 'post'
-				),
-				'category_entry' => array(
-					'label' => __( 'Category Entry', 'md' ),
-					'context' => 'category_entry'
-				)
+				'archives' => __( 'Archives', 'md' ),
+				'single' => __( 'Single', 'md' )
 			);
 			$areas = array(
 				'archives' => array(
@@ -245,11 +198,6 @@ class md_byline extends md_api {
 					'title' => __( 'Single', 'md' ),
 					'description' => __( 'Byline items shown on single post pages.', 'md' ),
 					'tab' => 'single'
-				),
-				'category_entry' => array(
-					'title' => __( 'Category Entry', 'md' ),
-					'description' => __( 'Byline items shown on category section headers. Applies when loop type is set to List Posts by Category.', 'md' ),
-					'tab' => 'category_entry'
 				)
 			);
 		}
@@ -267,79 +215,41 @@ class md_byline extends md_api {
 			'active_tab' => $active_tab,
 			'tabs' => $tabs,
 			'areas' => $areas,
-			'elements' => md_byline_items( $post_type )
+			'elements' => $this->elements( $post_type )
 		) );
 
 		echo '</div>';
 	}
 
 	/**
-	 * Edit post link.
+	 * Byline items for the builder, each rendered through item_fields().
 	 *
-	 * @since 6.0
+	 * @since 6.0.4
 	 */
 
-	public function edit( $group ) {
-		$this->fields->byline_fields( $group );
+	private function elements( $post_type ) {
+		$elements = md_byline_items( $post_type );
+
+		foreach ( $elements as $id => $element )
+			$elements[$id]['admin_callback'] = array( $this, 'item_fields' );
+
+		return $elements;
 	}
 
 	/**
-	 * Category post count fields.
+	 * Render every item's Position, then the item's own controls.
 	 *
-	 * @since 6.0
+	 * @since 6.0.4
 	 */
 
-	public function post_count( $group ) {
-		$this->fields->byline_fields( $group );
+	public function item_fields( $group, $type, $fields, $row = array() ) {
+		$items = md_byline_items();
+		$callback = $items[$type]['admin_callback'] ?? null;
 
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
-			'options' => array(
-				'label' => __( 'Show label', 'md' ),
-				'hide' => __( 'Hide if zero', 'md' )
-			)
-		) );
+		$fields->byline_fields( $group );
 
-		echo '<div class="columns-2 columns-single"><div class="col">';
-
-		$this->fields->field( array( 'builder', $group, 'title' ), array(
-			'type' => 'text',
-			'label' => __( 'Singular label', 'md' ),
-			'placeholder' => __( 'post', 'md' )
-		) );
-
-		echo '</div><div class="col">';
-
-		$this->fields->field( array( 'builder', $group, 'label' ), array(
-			'type' => 'text',
-			'label' => __( 'Plural label', 'md' ),
-			'placeholder' => __( 'posts', 'md' )
-		) );
-
-		echo '</div></div>';
-	}
-
-	/**
-	 * Category date fields.
-	 *
-	 * @since 6.0
-	 */
-
-	public function category_date( $group ) {
-		$this->fields->byline_fields( $group );
-
-		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
-			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
-			'options' => array(
-				'label' => __( 'Show label', 'md' ),
-				'relative' => __( 'Show relative date', 'md' ),
-				'alt' => __( 'Show as <strong>Last Updated</strong> date', 'md' )
-			)
-		) );
+		if ( is_callable( $callback ) )
+			call_user_func( $callback, $group, $type, $fields, $row );
 	}
 
 	/**
@@ -349,8 +259,6 @@ class md_byline extends md_api {
 	 */
 
 	public function badge( $group ) {
-		$this->fields->byline_fields( $group );
-
 		$this->fields->field( array( 'builder', $group, 'time' ), array(
 			'type' => 'number',
 			'label' => __( 'New duration', 'md' ),
@@ -365,9 +273,7 @@ class md_byline extends md_api {
 	 * @since 6.0
 	 */
 
-	public function date( $group ) {
-		$row = $this->fields->byline_fields( $group );
-
+	public function date( $group, $type, $fields, $row ) {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
 			'default' => $row['settings'] ?? array(),
@@ -389,8 +295,6 @@ class md_byline extends md_api {
 	 */
 
 	public function author( $group ) {
-		$this->fields->byline_fields( $group );
-
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
@@ -418,8 +322,6 @@ class md_byline extends md_api {
 	 */
 
 	public function comments( $group ) {
-		$this->fields->byline_fields( $group );
-
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
@@ -450,10 +352,7 @@ class md_byline extends md_api {
 	 * @since 6.0
 	 */
 
-	public function category( $group ) {
-		$row = $this->fields->byline_fields( $group, array(
-			'wrap_classes' => 'md-sep-micro'
-		) );
+	public function category( $group, $type, $fields, $row ) {
 		$style = $row['style'] ?? '';
 
 		if ( is_array( $style ) )

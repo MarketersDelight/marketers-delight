@@ -53,7 +53,7 @@ function md_title_section_data( $row ) {
 		'cover' => $cover,
 		'cta' => $row['section_cta'] ?? array(),
 		'identity' => array(),
-		'archive_meta' => ! empty( $row['section_display']['archive_meta'] ),
+		'archive_meta' => ! empty( $row['section_display']['archive_meta'] ) ? md_get_archive_meta() : array(),
 		'header_cover' => false,
 		'has_sidebar' => false,
 		'loop' => array()

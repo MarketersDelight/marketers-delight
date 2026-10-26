@@ -31,6 +31,11 @@ if ( $show_full_content ) {
 elseif ( $has_excerpt )
     echo md_excerpt( $loop );
 
+md_byline( 'after_content', array(
+    'loop' => $loop,
+    'classes' => 'post-meta'
+) );
+
 md_hook_the_content_bottom();
 
 if ( ! $has_builder )

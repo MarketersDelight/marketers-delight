@@ -117,6 +117,10 @@ function md_page_cta_fields() {
 		'page_cta' => array(
 			'type' => 'select',
 			'options' => array_merge( array_keys( $types ), array( 'remove' ) )
+		),
+		'title_position' => array(
+			'type' => 'select',
+			'options' => array( 'before_title', 'byline_aside' )
 		)
 	);
 

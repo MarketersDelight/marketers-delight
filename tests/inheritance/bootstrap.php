@@ -416,6 +416,10 @@ function home_url( $path = '' ) {
 	return 'https://example.test' . $path;
 }
 
+function untrailingslashit( $value ) {
+	return rtrim( $value, '/\\' );
+}
+
 function get_the_title( $post_id = 0 ) {
 	if ( is_object( $post_id ) ) {
 		if ( isset( $post_id->ID ) && isset( $GLOBALS['__test_titles'][$post_id->ID] ) )
@@ -696,6 +700,7 @@ if ( ! class_exists( 'WP_Term' ) ) {
 		public $taxonomy = '';
 		public $name = '';
 		public $slug = '';
+		public $count = 0;
 
 		public function __construct( $props = array() ) {
 			foreach ( $props as $key => $value )

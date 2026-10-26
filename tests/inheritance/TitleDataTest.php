@@ -57,7 +57,7 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		$this->assertSame( '#2a1938', $data['cover']['bg_color'] );
 		$this->assertSame( 'header_cover', $data['header_cover'] );
 		$this->assertSame( 'custom', $data['cta']['page_cta'] );
-		$this->assertTrue( $data['archive_meta'], 'Page titles show Archive Meta' );
+		$this->assertSame( array(), $data['archive_meta'], 'No Archive Meta items, no markup' );
 	}
 
 	public function test_category_resolves_term_overrides() {
@@ -89,12 +89,39 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		md_test_set_query( array( 'is_home' => true, 'post_type' => 'post' ) );
 		md_test_set_option( 'marketers_delight', array( 'post' => array(
 			'archives_title' => 'Blog',
-			'archive_meta' => array( 'display' => array( 'hide_page_title' => true ) )
+			'archive_meta' => array(
+				'builder' => array( 'count' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives' ) ),
+				'display' => array( 'hide_page_title' => true )
+			)
 		) ) );
+		md_test_set_filter( 'md_archive_meta_items', array(
+			'test_posts' => array( 'icon' => '', 'callback' => 'md_test_title_data_posts' )
+		) );
 
 		$data = md_title_data( 'page' );
 
-		$this->assertFalse( $data['archive_meta'] );
+		$this->assertSame( array(), $data['archive_meta'] );
+	}
+
+	public function test_archive_meta_resolves_by_position() {
+		md_test_set_query( array( 'is_home' => true, 'post_type' => 'post' ) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array(
+			'archives_title' => 'Blog',
+			'archive_meta' => array( 'builder' => array(
+				'count' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives' ),
+				'aside' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives', 'position' => 'byline_aside' ),
+				'before' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives', 'position' => 'before_title' )
+			) )
+		) ) );
+		md_test_set_filter( 'md_archive_meta_items', array(
+			'test_posts' => array( 'icon' => '', 'callback' => 'md_test_title_data_posts' )
+		) );
+
+		$meta = md_title_data( 'page' )['archive_meta'];
+
+		$this->assertSame( array( 'after_title', 'byline_aside', 'before_title' ), array_keys( $meta ), 'Items without a position are After Title' );
+		$this->assertStringStartsWith( '<div class="byline after-title archive-meta">', $meta['after_title'] );
+		$this->assertStringContainsString( '<strong>12</strong> posts', $meta['byline_aside'] );
 	}
 
 	public function test_category_cta_saved_without_a_type_inherits() {
@@ -167,7 +194,12 @@ class TitleDataTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( 'custom', $data['cta']['page_cta'] );
 		$this->assertSame( array(), $data['identity'] );
-		$this->assertFalse( $data['archive_meta'] );
+		$this->assertSame( array(), $data['archive_meta'] );
 	}
 
+}
+
+
+function md_test_title_data_posts() {
+	return '12 posts';
 }

@@ -387,8 +387,10 @@
 					'options' => array(
 						'entry_top' => __( 'Entry Top', 'md' ),
 						'before_title' => __( 'Before Title', 'md' ),
+						'inside_title' => __( 'Inside Title', 'md' ),
 						'after_title' => __( 'After Title', 'md' ),
 						'before_content' => __( 'Before Content', 'md' ),
+						'after_content' => __( 'After Content', 'md' ),
 						'entry_footer' => __( 'Entry Footer', 'md' ),
 						'remove' => __( 'All', 'md' )
 					),
@@ -401,6 +403,10 @@
 							'on' => __( 'Remove Before Title byline', 'md' ),
 							'off' => __( 'Show Before Title byline', 'md' )
 						),
+						'inside_title' => array(
+							'on' => __( 'Remove Inside Title byline', 'md' ),
+							'off' => __( 'Show Inside Title byline', 'md' )
+						),
 						'after_title' => array(
 							'on' => __( 'Remove After Title byline', 'md' ),
 							'off' => __( 'Show After Title byline', 'md' )
@@ -408,6 +414,10 @@
 						'before_content' => array(
 							'on' => __( 'Remove Before Content byline', 'md' ),
 							'off' => __( 'Show Before Content byline', 'md' )
+						),
+						'after_content' => array(
+							'on' => __( 'Remove After Content byline', 'md' ),
+							'off' => __( 'Show After Content byline', 'md' )
 						),
 						'entry_footer' => array(
 							'on' => __( 'Remove Entry Footer byline', 'md' ),
