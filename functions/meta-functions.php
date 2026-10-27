@@ -137,10 +137,7 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 
 function md_user_meta( $keys = null, $id = null, $default = null ) {
 	if ( empty( $id ) )
-		if ( is_admin() )
-			$id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : '';
-		else
-			$id = get_current_user_id();
+		$id = is_admin() && isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id();
 
 	$meta = get_user_meta( $id, 'marketers_delight', true );
 

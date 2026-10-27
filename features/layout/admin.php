@@ -74,7 +74,7 @@ class md_layout extends md_api {
 			),
 			'content' => array(
 				'type' => 'checkbox',
-				'options' => array( 'remove', 'builder', 'the_content', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'wpautop' )
+				'options' => array( 'remove', 'builder', 'the_content', 'headline', 'author_box', 'add_author_box', 'post_nav', 'add_post_nav', 'full', 'wpautop', 'hide_title_image' )
 			),
 			'content_style' => array(
 				'type' => 'select',
@@ -345,6 +345,7 @@ class md_layout extends md_api {
 		// Data for individual elements (note the pattern emerging)
 
 		$author_box = md_post_type_field( array( 'layout', 'content', 'add_author_box' ), null, $post_type );
+		$author_photo = md_post_type_field( array( 'author_photo', 'display', 'show' ), null, $post_type );
 
 		$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
 

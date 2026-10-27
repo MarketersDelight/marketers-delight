@@ -329,7 +329,7 @@ class md_archive_meta extends md_api {
 
 	public function post_count( $fields, $post_type, $term = null ) {
 		$source = $this->source( $fields, $post_type );
-		$term = $this->term( $term );
+		$term = $this->item_term( $term );
 
 		if ( $source )
 			$count = (int) wp_count_posts( $source )->publish;
@@ -355,7 +355,7 @@ class md_archive_meta extends md_api {
 	 */
 
 	public function comment_count( $fields, $post_type, $term = null ) {
-		return md_count_text( md_archive_comment_total( $post_type, $this->term( $term ) ), $fields, __( '{count} comment', 'md' ), __( '{count} comments', 'md' ) );
+		return md_count_text( md_archive_comment_total( $post_type, $this->item_term( $term ) ), $fields, __( '{count} comment', 'md' ), __( '{count} comments', 'md' ) );
 	}
 
 	/**
@@ -367,7 +367,7 @@ class md_archive_meta extends md_api {
 
 	public function last_added( $fields, $post_type, $term = null ) {
 		$source = $this->source( $fields, $post_type );
-		$term = $this->term( $term );
+		$term = $this->item_term( $term );
 		$updated = ! empty( $fields['settings']['updated'] );
 		$args = array(
 			'post_type' => $source ?: $post_type,
@@ -405,7 +405,7 @@ class md_archive_meta extends md_api {
 	 * @since 6.0.4
 	 */
 
-	private function term( $term = null ) {
+	private function item_term( $term = null ) {
 		if ( $term instanceof WP_Term )
 			return $term;
 

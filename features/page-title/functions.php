@@ -83,10 +83,19 @@ function md_title_data( $context = 'post', $args = array() ) {
 
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
+	$media = md_has_media( $context, array( 'loop' => $loop ) );
+
+	// An Author photo takes the title unless the post's own image sits there
+
+	$title_image = $media && in_array( $media['position'], array( 'title_left', 'title_right', 'title_center' ), true );
+
+	if ( ! $title_image && ! $is_page && is_singular() && get_the_ID() === get_queried_object_id() && ( $author_media = md_get_title_author_media() ) )
+		$media = $author_media;
+
 	return array(
 		'title' => $title,
 		'description' => md_get_description( $context ),
-		'media' => md_has_media( $context, array( 'loop' => $loop ) ),
+		'media' => $media,
 		'cover' => $cover,
 		'cta' => md_get_cta( $context ),
 		'identity' => $is_page ? md_category_identity() : array(),
@@ -257,7 +266,7 @@ function md_title_template( $context, $data, $args = array() ) {
 	$has_sidebar = $data['has_sidebar'];
 	$has_wrap = $context != 'post' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();
-	$media_position = $context == 'post' && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
+	$media_position = $context == 'post' && empty( $media['author'] ) && ! empty( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : ( $media['position'] ?? '' );
 
 	// An untitled post keeps its title area only to hold an image beside the title
 

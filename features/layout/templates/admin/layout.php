@@ -160,6 +160,7 @@
 
 		echo '</div>';
 
+
 		echo '<div class="md-sep-micro">';
 
 		do_action( 'md_hook_layout_admin_single_fields', $this->fields );
@@ -228,6 +229,14 @@
 					)
 				) );
 			}
+
+			if ( $is_post && $author_photo )
+				$this->fields->field( 'content', array(
+					'type' => 'checkbox',
+					'options' => array(
+						'hide_title_image' => __( 'Remove <b>Author photo</b>', 'md' )
+					)
+				) );
 
 			if ( $post_type !== 'page' && $is_post ) {
 				if ( $author_box )

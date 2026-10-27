@@ -141,7 +141,7 @@ class md_fields extends md_fields_render {
 		elseif ( $context['is_term'] )
 			$setting = get_term_meta( $screen['screen_id'], $this->_option, true );
 		elseif ( $context['is_user'] ) {
-			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : 1;
+			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id();
 			$setting = get_user_meta( $user_id, $this->_option, true );
 		}
 		else {

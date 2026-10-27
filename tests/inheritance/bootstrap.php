@@ -305,6 +305,16 @@ function get_user_meta( $id, $key, $single = false ) {
 	return isset( $GLOBALS['__test_user_meta'][$id] ) ? $GLOBALS['__test_user_meta'][$id] : array();
 }
 
+// The current post's author is user 3; attachment IDs over 900 aren't images.
+
+function get_post_field( $field, $post = null, $context = 'display' ) {
+	return $field === 'post_author' ? 3 : '';
+}
+
+function wp_attachment_is_image( $id ) {
+	return $id > 0 && $id < 900;
+}
+
 function is_admin() {
 	return $GLOBALS['__test_query']['is_admin'];
 }
@@ -748,6 +758,7 @@ require_once dirname( __DIR__, 2 ) . '/features/layout/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/integrations/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/content.php';
+require_once dirname( __DIR__, 2 ) . '/features/author/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/comments.php';
 require_once dirname( __DIR__, 2 ) . '/features/featured-media/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cover/functions.php';
