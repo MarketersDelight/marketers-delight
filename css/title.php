@@ -113,9 +113,12 @@
 .byline-item, .byline-item > a {
 	align-items: center;
 	display: inline-flex;
-	flex-wrap: wrap;
-	gap: 0 var(--md-small);
+	gap: var(--md-small);
+	min-width: 0;
+	overflow-wrap: break-word;
 }
+
+:is(.byline-item, .byline-item > a) > [class*="md-icon-"] { flex-shrink: 0; }
 
 .title-inline { text-wrap: pretty; }
 
