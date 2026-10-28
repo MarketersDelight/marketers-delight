@@ -65,7 +65,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 	if ( $is_page && md_module( array( 'layout', 'content', 'headline' ) ) )
 		return array();
 
-	if ( ! $is_page && is_singular() && get_the_ID() === get_queried_object_id() && md_meta( array( 'layout', 'content', 'headline' ) ) )
+	if ( ! $is_page && md_is_queried_post() && md_meta( array( 'layout', 'content', 'headline' ) ) )
 		return array();
 
 	$title = md_get_title( $context );
@@ -76,7 +76,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 	$cover = md_cover( $context );
 	$has_header_cover = md_has_header_cover( $context, $cover );
 
-	if ( $has_header_cover && in_the_loop() )
+	if ( $has_header_cover && in_the_loop() && md_is_queried_post() )
 		return array();
 
 	// Ok, show title. Posts in a loop use that loop's settings, like a Query Loop's
@@ -89,7 +89,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 
 	$title_image = $media && in_array( $media['position'], array( 'title_left', 'title_right', 'title_center' ), true );
 
-	if ( ! $title_image && ! $is_page && is_singular() && get_the_ID() === get_queried_object_id() && ( $author_media = md_get_title_author_media() ) )
+	if ( ! $title_image && ! $is_page && md_is_queried_post() && ( $author_media = md_get_title_author_media() ) )
 		$media = $author_media;
 
 	return array(
@@ -122,7 +122,7 @@ function md_the_title( $context = 'post', $args = array() ) {
 	if ( $context !== 'post' && empty( $title ) && ! $lede )
 		return;
 
-	if ( $context == 'post' && ! is_singular() && ! is_404() ) {
+	if ( $context == 'post' && ! md_is_queried_post() && ! is_404() ) {
 		$level = ! empty( $args['loop']['by_category'] ) ? 3 : 2;
 		$h = md_loop_heading( $level, $args['loop'] ?? array() );
 
@@ -386,14 +386,14 @@ function md_description( $context = 'post', $args = array() ) {
 function md_get_description( $context = 'post' ) {
 	$description = '';
 
-	if ( $context == 'post' && is_singular() ) {
+	if ( $context == 'post' && md_is_queried_post() ) {
 		$excerpt = md_post_type_field( array( 'page_cover', 'display', 'show_excerpt' ) ) && has_excerpt() ? get_the_excerpt() : '';
 		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $excerpt );
 	}
 	elseif ( $context == 'page' ) {
 		if ( is_post_type_archive() || is_home() )
 			$description = md_parse_text( md_post_type_field( 'archives_text' ), 'archive' );
-		elseif ( ( is_category() || is_tax() ) && get_queried_object() ) {
+		elseif ( ( is_category() || is_tag() || is_tax() ) && get_queried_object() ) {
 			$description = md_term_meta( array( 'hero', 'archives_text' ) );
 
 			if ( ! $description )

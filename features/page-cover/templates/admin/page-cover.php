@@ -69,14 +69,3 @@
 	</div>
 
 </div>
-
-<?php if ( $is_post ) {
-	echo '<hr class="md-sep-small" />';
-	$this->fields->field( 'title_content', array(
-		'type' => 'editor',
-		'init' => true,
-		'label' => __( 'Page Content', 'md' ),
-		'description' => __( 'Overwrite the page excerpt or display formatted content to show below the page title.', 'md' ),
-		'rows' => 4
-	) );
-} ?>

@@ -9,7 +9,7 @@ class md_featured_media extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Featured Media', 'md' );
+		$this->name = __( 'Media', 'md' );
 		return array(
 			'admin_page' => array(
 				'name' => $this->name,
@@ -19,7 +19,7 @@ class md_featured_media extends md_api {
 			'meta_box' => array(
 				'name' => $this->name,
 				'edit_post' => true,
-				'child_of' => 'page_settings',
+				'child_of' => 'hero',
 				'fields' => $this->fields()
 			),
 			'term' => array(

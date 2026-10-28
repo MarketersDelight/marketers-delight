@@ -7,7 +7,7 @@
  */
 
 function md_has_author_box() {
-	if ( ! is_singular() || get_the_ID() !== get_queried_object_id() )
+	if ( ! md_is_queried_post() )
 		return false;
 
 	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );

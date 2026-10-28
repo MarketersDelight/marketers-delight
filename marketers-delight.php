@@ -107,7 +107,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/wordpress.php';
 		require_once MD_DIR . 'features/page-cta/functions.php';
 		require_once MD_DIR . 'features/byline/functions.php';
-		require_once MD_DIR . 'features/archive/functions.php';
+		require_once MD_DIR . 'features/sections/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
 		require_once MD_DIR . 'features/loop/query-loop.php';
@@ -119,22 +119,23 @@ final class marketers_delight {
 		if ( is_admin() ) {
 			require_once MD_DIR . 'features/integrations/admin.php';
 			require_once MD_DIR . 'features/page-title/admin.php';
-			require_once MD_DIR . 'features/byline/admin.php';
 			require_once MD_DIR . 'features/header/admin.php';
 			require_once MD_DIR . 'features/header/logo.php';
 			require_once MD_DIR . 'features/layout/admin.php';
+			require_once MD_DIR . 'features/page-title/text.php';
 			require_once MD_DIR . 'features/featured-media/admin.php';
 			require_once MD_DIR . 'features/page-cta/admin.php';
 			require_once MD_DIR . 'features/page-cover/admin.php';
+			require_once MD_DIR . 'features/byline/admin.php';
 			require_once MD_DIR . 'features/author/admin.php';
 			require_once MD_DIR . 'features/loop/admin.php';
-			require_once MD_DIR . 'features/archive/admin.php';
+			require_once MD_DIR . 'features/sections/sections.php';
 		}
 
-		require_once MD_DIR . 'features/archive/archive-meta.php';
-		require_once MD_DIR . 'features/archive/taxonomy-filter.php';
-		require_once MD_DIR . 'features/archive/title-section.php';
-		require_once MD_DIR . 'features/archive/archive-sections.php';
+		require_once MD_DIR . 'features/sections/meta.php';
+		require_once MD_DIR . 'features/sections/taxonomy-filter.php';
+		require_once MD_DIR . 'features/sections/archive.php';
+		require_once MD_DIR . 'features/sections/single.php';
 		require_once MD_DIR . 'features/blog.php';
 	}
 

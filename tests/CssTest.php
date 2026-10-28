@@ -306,7 +306,7 @@ class CssTest extends MD_TestCase {
 	public function test_muted_links_use_the_active_context_colors() {
 		$helpers = $this->source( 'css/helpers.php' );
 
-		$this->assertStringContainsString( '.has-muted-color, .foot { color: var(--md-text-muted); }', $helpers );
+		$this->assertStringContainsString( '.foot, .has-muted-color { color: var(--md-text-muted); }', $helpers );
 		$this->assertStringContainsString( 'color: var(--md-links-muted);', $helpers );
 		$this->assertStringNotContainsString( '.text-sec', $helpers );
 	}

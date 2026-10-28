@@ -97,6 +97,7 @@
 	--md-header-border: <?php echo $colors['header']['border_color']; ?>;
 	--md-header-menu-links: <?php echo $colors['header']['menu']['link_color']; ?>;
 	--md-header-menu-hover: <?php echo $colors['header']['menu']['link_hover_color']; ?>;
+	--md-header-menu-hover-background: <?php echo $colors['header']['menu']['hover_bg_color'] ?: 'rgba(0, 0, 0, 0.08)'; ?>;
 	--md-header-menu-active: <?php echo $colors['header']['menu']['link_active_color']; ?>;
 	--md-header-submenu-background: <?php echo $colors['header']['submenu']['bg_color']; ?>;
 	--md-header-submenu-links: <?php echo $colors['header']['submenu']['link_color']; ?>;

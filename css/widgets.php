@@ -28,23 +28,6 @@
 
 /* MENU */
 
-.format .widget_nav_menu :is(.menu, .sub-menu) {
-	margin-inline-start: 0;
-	margin-block-start: 0;
-}
-
-.widget_nav_menu .sub-menu { display: none; }
-
-.widget_nav_menu .menu-item {
-	display: block;
-	margin-block-end: 0;
-}
-
-.widget_nav_menu .menu-item a {
-	padding: var(--md-third) 0;
-	width: 100%;
-}
-
 .widget_nav_menu .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-border); }
 
 /* SEARCH */

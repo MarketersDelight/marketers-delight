@@ -228,6 +228,14 @@ class md_design {
 			'mobile' => round( $font_size_mobile * $step_ratio_mobile )
 		);
 
+		// Saved heading sizes replace their scale steps, so line heights follow them
+
+		$h2 = $this->saved_font_size( $typography, 'h2', $h2 );
+		$h3 = $this->saved_font_size( $typography, 'h3', $h3 );
+		$h4 = $this->saved_font_size( $typography, 'h4', $h4 );
+		$h5 = $this->saved_font_size( $typography, 'h5', $h5 );
+		$h6 = $this->saved_font_size( $typography, 'h6', $h6 );
+
 		$typography['body']['font_size']['desktop'] = $font_size;
 		$typography['body']['font_size']['mobile'] = $font_size_mobile;
 		$typography['h1']['font_size']['desktop'] = $h1_desktop;
@@ -312,6 +320,20 @@ class md_design {
 				'line_height' => array( 'desktop' => round( $line_height * 0.9 ) )
 			)
 		), $typography );
+	}
+
+	/**
+	 * A heading's saved font size on each device, else its scale size.
+	 *
+	 * @since 6.0.4
+	 */
+
+	private function saved_font_size( $typography, $type, $sizes ) {
+		foreach ( $sizes as $device => $size )
+			if ( ! empty( $typography[$type]['font_size'][$device] ) )
+				$sizes[$device] = (int) $typography[$type]['font_size'][$device];
+
+		return $sizes;
 	}
 
 	/**

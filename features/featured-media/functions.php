@@ -35,7 +35,7 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	$attr = $style = array();
 	$type = $media['media_type'];
 
-	if ( $context == 'post' && ! is_singular() && ! is_404() )
+	if ( $context == 'post' && ! md_is_queried_post() && ! is_404() )
 		$permalink = get_permalink();
 
 	$size = 'full';
@@ -150,7 +150,7 @@ function md_get_media( $context = 'post' ) {
 
 	$media = wp_parse_args( $option, $defaults );
 
-	if ( ! is_singular() && $media['media_type'] == 'custom_html' )
+	if ( ! md_is_queried_post() && $media['media_type'] == 'custom_html' )
 		$media['media_type'] = 'image';
 
 	return $media;
@@ -264,7 +264,7 @@ function md_media_position( $context = 'post' ) {
 			$position = md_term_meta( $key, null, $position );
 		}
 	}
-	elseif ( is_singular() ) {
+	elseif ( md_is_queried_post() ) {
 		$position = md_post_type_field( $single_key, $default );
 		$position = md_post_meta( $key, null, $position );
 	}
@@ -304,7 +304,7 @@ function md_media_position( $context = 'post' ) {
  */
 
 function md_get_caption( $id = null ) {
-	if ( ! is_singular() || ! in_the_loop() )
+	if ( ! md_is_queried_post() || ! in_the_loop() )
 		return;
 
 	if ( empty( $id ) )
@@ -320,7 +320,7 @@ function md_get_caption( $id = null ) {
 
 /**
  * Featured Media fields and their save rules, shared by the Featured Media
- * settings and Title Sections.
+ * settings and Section Titles.
  *
  * @since 6.0.4
  */
@@ -354,7 +354,7 @@ function md_featured_media_fields() {
 
 /**
  * Render the Featured Media settings: the media on the left, its layout
- * on the right. Shared by Featured Media and Title Sections. $args:
+ * on the right. Shared by Featured Media and Section Titles. $args:
  * is_post (posts use their own featured image, so there's no upload),
  * image_only (no Media Type select), position_label (the empty Position
  * choice) and remove (offer "Don't show").
@@ -394,6 +394,13 @@ function md_featured_media_admin( $fields, $prefix, $args = array() ) {
 
 	if ( $args['remove'] )
 		$positions['remove'] = __( 'Don\'t show', 'md' );
+
+	$width = array(
+		'type' => 'range',
+		'label' => __( 'Max width', 'md' ),
+		'unit' => 'px',
+		'max' => '550'
+	);
 
 	include md_template( 'features', 'featured-media/admin/featured-media', true );
 }

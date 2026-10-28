@@ -100,6 +100,8 @@ function md_activate_dropin( $dropin ) {
 	$dropins['installed'][$dropin]['status']['enable'] = true;
 
 	md_update_dropins( $dropins );
+
+	update_option( 'md_compile_after_upgrade', true, false );
 }
 
 /**

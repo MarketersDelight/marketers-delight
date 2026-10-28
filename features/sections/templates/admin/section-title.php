@@ -1,17 +1,17 @@
-<div class="md-title-section md-tabs">
+<div class="md-section-title md-tabs">
 
 	<div class="nav-tab-wrapper">
-		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-title-section-content"><?php echo __( 'Content', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-title-section-image"><?php echo __( 'Image', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-title-section-cover"><?php echo __( 'Cover', 'md' ); ?></a>
-		<a href="#" class="md-tab nav-tab" data-md-tab="md-title-section-cta"><?php echo __( 'Call to action', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab nav-tab-active" data-md-tab="md-section-title-content"><?php echo __( 'Content', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-section-title-image"><?php echo __( 'Image', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-section-title-cover"><?php echo __( 'Cover', 'md' ); ?></a>
+		<a href="#" class="md-tab nav-tab" data-md-tab="md-section-title-cta"><?php echo __( 'Call to action', 'md' ); ?></a>
 	</div>
 
-	<div class="md-title-section-content md-tab-content active">
+	<div class="md-section-title-content md-tab-content active">
 
-		<div class="md-title-section-title md-sep-micro">
+		<div class="md-section-title-field md-sep-micro">
 
-			<div class="md-title-section-heading">
+			<div class="md-section-title-heading">
 				<?php $fields->field( array( 'builder', $group, 'section_heading' ), array(
 					'type' => 'select',
 					'empty_label' => __( 'H2', 'md' ),
@@ -48,7 +48,7 @@
 
 	</div>
 
-	<div class="md-title-section-image md-tab-content">
+	<div class="md-section-title-image md-tab-content">
 		<?php md_featured_media_admin( $media_fields, $media_prefix, array(
 			'image_only' => true,
 			'position_label' => __( 'Left, beside the title (default)', 'md' ),
@@ -56,7 +56,7 @@
 		) ); ?>
 	</div>
 
-	<div class="md-title-section-cover md-tab-content">
+	<div class="md-section-title-cover md-tab-content">
 
 		<div class="columns-2 columns-single">
 
@@ -94,7 +94,7 @@
 
 	</div>
 
-	<div class="md-title-section-cta md-tab-content">
+	<div class="md-section-title-cta md-tab-content">
 		<?php md_page_cta_admin( $cta_fields, $cta_prefix, false ); ?>
 	</div>
 

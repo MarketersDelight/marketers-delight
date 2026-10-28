@@ -1,4 +1,10 @@
 <?php
+/**
+ * Sections functions: how Archive Meta renders, and the Section Title
+ * item. The Taxonomy Filter item lives in taxonomy-filter.php.
+ *
+ * @since 6.0
+ */
 
 /**
  * Get list of items that can be used in Archive Meta, optionally
@@ -61,34 +67,17 @@ function md_archive_comment_total( $post_type, $term = null ) {
 }
 
 /**
- * Emphasize the numbers in an Archive Meta value, leaving any
- * markup an item returns untouched.
+ * Emphasize the numbers in a plain text Archive Meta value. A value with
+ * markup marks its own numbers, like a link or a strong date, so it's
+ * left as it is.
  *
  * @since 6.0
  */
 
 function md_archive_meta_value( $value ) {
-	$parts = preg_split( '/(<[^>]*>)/', wp_kses_post( $value ), -1, PREG_SPLIT_DELIM_CAPTURE );
-	$depth = 0;
+	$value = wp_kses_post( $value );
 
-	foreach ( $parts as $i => $part ) {
-		if ( $part === '' )
-			continue;
-
-		if ( $part[0] === '<' ) {
-			if ( strpos( $part, '</' ) === 0 )
-				$depth--;
-			elseif ( substr( $part, -2 ) !== '/>' )
-				$depth++;
-
-			continue;
-		}
-
-		if ( ! $depth )
-			$parts[$i] = preg_replace( '/\d[\d,.]*/', '<strong>$0</strong>', $part );
-	}
-
-	return join( '', $parts );
+	return strpos( $value, '<' ) === false ? preg_replace( '/\d[\d,.]*/', '<strong>$0</strong>', $value ) : $value;
 }
 
 /**
@@ -103,7 +92,7 @@ function md_archive_meta_link( $text, $url ) {
 	if ( ! $url || is_wp_error( $url ) )
 		return $text;
 
-	$current = untrailingslashit( home_url( '/' . ( $GLOBALS['wp']->request ?? '' ) ) );
+	$current = untrailingslashit( strtok( get_pagenum_link( 1, false ), '?#' ) );
 
 	if ( untrailingslashit( strtok( $url, '?#' ) ) === $current )
 		return $text;
@@ -186,4 +175,100 @@ function md_get_archive_meta( $area = 'archives', $term = null, $post_type = '' 
 		$meta[$position] = '<div class="byline ' . esc_attr( str_replace( '_', '-', $position ) ) . ' archive-meta">' . $output . '</div>';
 
 	return $meta;
+}
+
+/**
+ * Row fields and their save rules.
+ *
+ * @since 6.0.4
+ */
+
+function md_section_title_fields() {
+	return array(
+		'section_title' => array( 'type' => 'text' ),
+		'section_text' => array( 'type' => 'textarea' ),
+		'section_heading' => array(
+			'type' => 'select',
+			'options' => array( 'h2', 'h3' )
+		),
+		'section_display' => array(
+			'type' => 'checkbox',
+			'options' => array( 'archive_meta' )
+		),
+		'section_media' => md_featured_media_fields(),
+		'section_cover' => md_page_cover_fields(),
+		'section_cta' => md_page_cta_fields()
+	);
+}
+
+/**
+ * Turn a row's settings into the data md_title_template() takes. A row is
+ * literal: nothing inherits from the page it's shown on.
+ *
+ * @since 6.0.4
+ */
+
+function md_section_title_data( $row ) {
+	$media = $row['section_media'] ?? array();
+	$cover = $row['section_cover'] ?? array();
+
+	if ( ! empty( $media['image']['id'] ) ) {
+		$media['media_type'] = 'image';
+		$media['position'] = ! empty( $media['position'] ) ? $media['position'] : 'title_left';
+	}
+	else $media = array();
+
+	if ( ! empty( $cover['bg_color'] ) || ! empty( $cover['photo']['id'] ) )
+		$cover['position'] = 'headline_cover';
+	else
+		$cover = array();
+
+	return array(
+		'title' => $row['section_title'] ?? '',
+		'description' => $row['section_text'] ?? '',
+		'media' => $media,
+		'cover' => $cover,
+		'cta' => $row['section_cta'] ?? array(),
+		'identity' => array(),
+		'archive_meta' => ! empty( $row['section_display']['archive_meta'] ) ? md_get_archive_meta() : array(),
+		'header_cover' => false,
+		'has_sidebar' => false,
+		'loop' => array()
+	);
+}
+
+/**
+ * Render a Section Title row.
+ *
+ * @since 6.0.4
+ */
+
+function md_section_title( $row, $post_type, $id, $main_query ) {
+	$data = md_section_title_data( $row );
+
+	if ( ! $data['title'] && ! $data['description'] && ! $data['media'] )
+		return;
+
+	$data['has_sidebar'] = md_has_sidebar();
+
+	md_title_template( 'section', $data, array(
+		'tag' => 'section',
+		'heading' => ! empty( $row['section_heading'] ) ? $row['section_heading'] : 'h2'
+	) );
+}
+
+/**
+ * Render a Section Title row's controls.
+ *
+ * @since 6.0.4
+ */
+
+function md_section_title_admin_fields( $group, $type, $fields ) {
+	$prefix = 'md_section_title_' . sanitize_key( $group );
+	$media_fields = $fields->within( array( 'builder', $group, 'section_media' ) );
+	$media_prefix = "{$prefix}_media";
+	$cta_fields = $fields->within( array( 'builder', $group, 'section_cta' ) );
+	$cta_prefix = "{$prefix}_cta";
+
+	include md_template( 'features', 'sections/admin/section-title', true );
 }

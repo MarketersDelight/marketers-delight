@@ -133,6 +133,10 @@ class md_design_colors {
 					'label' => 'Links Hover',
 					'default' => 'primary'
 				),
+				'hover_bg_color' => array(
+					'label' => 'Hover Background',
+					'default' => ''
+				),
 				'link_active_color' => array(
 					'label' => 'Links Active',
 					'default' => '',

@@ -533,7 +533,7 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	$loop = $loop ?: md_get_loop();
 	$classes[] = ! empty( $loop['featured'] ) && isset( $loop['is_featured'] ) ? 'featured' : 'standard';
 
-	if ( ! is_singular() ) {
+	if ( ! md_is_queried_post() ) {
 		$classes[] = $c % 2 == 0 ? 'even' : 'odd';
 
 		if ( is_sticky() )
@@ -545,7 +545,7 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	$position = isset( $loop['featured_image'] ) ? md_loop_media_position( $loop ) : '';
 
 	if ( $position && ! in_array( $position, array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) )
-		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => is_singular() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : ( $loop['featured_image_mobile'] ?? '' ) ) ) );
+		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => md_is_queried_post() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : ( $loop['featured_image_mobile'] ?? '' ) ) ) );
 
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
@@ -589,7 +589,7 @@ function md_the_content( $loop ) {
 
 	$has_wrap = ! isset( $loop['is_slim'] );
 	$has_builder = isset( $loop['has_builder'] );
-	$id = is_singular() ? ' id="the_content"' : '';
+	$id = md_is_queried_post() ? ' id="the_content"' : '';
 	$has_excerpt = ( empty( $loop['content'] ) || $loop['content'] == 'excerpt' ) && get_the_excerpt();
 	$show_full_content = $loop['content'] == 'full' || ( empty( $loop['query'] ) && ( is_singular() || is_404() ) && ( in_the_loop() || isset( $loop['in_loop'] ) ) );
 

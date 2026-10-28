@@ -36,7 +36,7 @@ hr, .wp-block-separator {
 	height: 0;
 }
 
-code {
+:not(pre) > code {
 	border-radius: var(--md-border-radius);
 	padding: 2px 5px;
 }
@@ -48,9 +48,12 @@ pre {
 }
 
 code, pre {
-	background-color: rgba(0, 0, 0, 0.1);
 	color: #3e3e3e;
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
+}
+
+:not(pre) > code, pre {
+	background-color: rgba(0, 0, 0, 0.1);
 	font-size: 0.9em;
 }
 

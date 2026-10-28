@@ -26,8 +26,7 @@
 	z-index: 60;
 }
 
-.close,
-.close.circle-icon {
+.close, .close.circle-icon {
 	background-color: transparent;
 	color: var(--md-color-danger);
 	cursor: pointer;
@@ -153,13 +152,13 @@
 /* TABS */
 
 .tabs {
-	--md-tab-color: var(--md-text-muted);
 	--md-tab-bg: transparent;
 	--md-tab-border: transparent;
 	--md-tab-active-color: var(--md-color-text);
 	--md-tab-active-bg: var(--md-content-box-background);
 	--md-tab-active-border: var(--md-border);
 	--md-tab-active-weight: var(--md-bold);
+	--md-tab-color: var(--md-text-muted);
 	margin-block-end: calc(var(--md-single) - 1px);
 	overflow-x: auto;
 	padding-block-end: 1px;
@@ -211,6 +210,25 @@
 
 .tab-panel:not(.active):not(.editor-styles-wrapper *) { display: none; }
 
+/* ICON BLOCK */
+
+.wp-block-icon { line-height: 0; }
+
+.wp-block-icon.aligncenter {
+	display: flex;
+	justify-content: center;
+}
+
+.wp-block-icon svg {
+	box-sizing: border-box;
+	fill: currentColor;
+}
+
+:where(.wp-block-icon) svg {
+	height: 1.5em;
+	width: 1.5em;
+}
+
 /* ACCORDION */
 
 .wp-block-details {
@@ -230,8 +248,7 @@
 
 .has-surface-background-color .wp-block-details[open] { background-color: var(--md-color-white); }
 
-.wp-block-details.is-style-plain,
-.wp-block-details.is-style-plain[open] {
+.wp-block-details.is-style-plain, .wp-block-details.is-style-plain[open] {
 	background: linear-gradient(var(--md-color-divider), var(--md-color-divider)) no-repeat center bottom / 100% 1px;
 	border-radius: 0;
 	box-shadow: none;

@@ -26,7 +26,7 @@ class md_page_cta extends md_api {
 		return array(
 			'admin_page' => $args,
 			'term' => $args,
-			'meta_box' => $args
+			'meta_box' => array_merge( $args, array( 'child_of' => 'hero' ) )
 		);
 	}
 

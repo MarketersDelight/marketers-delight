@@ -118,7 +118,9 @@ function md_get_byline( $position, $args = array() ) {
 		foreach ( $items as $item => $item_fields )
 			$byline[$item][] = $item_fields;
 	else {
-		$context = ( is_home() || is_archive() ? 'archives' : 'single' );
+		// A Query Loop lists posts, so it uses archive bylines even on a single
+
+		$context = ( is_home() || is_archive() || ! empty( $loop['query'] ) ? 'archives' : 'single' );
 		$context = ! empty( $args['context'] ) ? $args['context'] : $context;
 
 		// Single inherits Archives builder entirely if empty

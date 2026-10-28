@@ -869,7 +869,7 @@ class md_api {
 						return $fields;
 
 					$fields[$this->_clean_id] = array(
-						'name' => $this->name,
+						'name' => ! empty( $register['name'] ) ? $register['name'] : $this->name,
 						'callback' => array( $this, $group_callback )
 					);
 					return $fields;

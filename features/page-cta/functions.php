@@ -63,7 +63,7 @@ function md_get_cta( $context = 'post' ) {
 		return $cta;
 	}
 
-	if ( $context == 'post' && is_singular() )
+	if ( $context == 'post' && md_is_queried_post() )
 		return md_post_meta( 'page_cta' );
 
 	return array();
@@ -74,7 +74,7 @@ function md_get_cta( $context = 'post' ) {
  * their own types through the md_page_cta_types filter. A type's
  * admin_callback gets ( $fields, $prefix ) and renders its fields with
  * $fields, which saves wherever the CTA settings live (Page CTA, or a
- * Title Section row).
+ * Section Title row).
  *
  * @since 6.0.4
  */
@@ -106,7 +106,7 @@ function md_page_cta_types() {
 
 /**
  * Page CTA fields and their save rules: the CTA type plus every type's
- * own fields. Shared by the Page CTA settings and Title Sections.
+ * own fields. Shared by the Page CTA settings and Section Titles.
  *
  * @since 6.0.4
  */
@@ -134,7 +134,7 @@ function md_page_cta_fields() {
 /**
  * Render the CTA type select and each type's panel. With $inherit, an
  * empty select names the CTA it inherits, like "Use default (Email
- * Form)"; settings that don't inherit, like a Title Section row, pass
+ * Form)"; settings that don't inherit, like a Section Title row, pass
  * false.
  *
  * @since 6.0.4

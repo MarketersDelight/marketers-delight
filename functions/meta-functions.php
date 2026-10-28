@@ -247,6 +247,17 @@ function md_get_post_type( $post_id = null ) {
 }
 
 /**
+ * Check whether the current post is the single being viewed, not a post
+ * that a Query Loop lists on its page.
+ *
+ * @since 6.0.4
+ */
+
+function md_is_queried_post() {
+	return is_singular() && get_the_ID() === get_queried_object_id();
+}
+
+/**
  * Builder fields are flexible, repeatable settings groups with
  * extra layout details attached to the builder groups.
  * See Header or Byline for examples of how to construct Builder layouts.
@@ -311,8 +322,9 @@ function md_builder_items_for( $items, $post_type ) {
 }
 
 /**
- * Resolve builder areas from inherited post types, taxonomies, and terms.
- * Each configured area replaces the same area from the preceding layer.
+ * Resolve builder areas from inherited post types, taxonomies, terms, and
+ * the single being viewed. Each configured area replaces the same area
+ * from the preceding layer.
  *
  * @since 6.0
  */
@@ -342,6 +354,11 @@ function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = fa
 		else
 			$builder = md_replace_builder_areas( $builder, $saved );
 	}
+
+	// The single being viewed replaces the areas it saves
+
+	if ( is_singular() && $post_type === get_post_type( get_queried_object_id() ) )
+		return md_replace_builder_areas( $builder, md_post_meta( array( $key, 'builder' ), true ) );
 
 	if ( ! is_category() && ! is_tax() )
 		return $builder;

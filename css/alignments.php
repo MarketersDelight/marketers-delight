@@ -69,18 +69,18 @@ img.alignwide, .alignwide img, img.alignfull, .alignfull img { width: 100%; }
 			inset-inline: 50%;
 		width: 100vw;
 	}
-
-	.expanded .content-wrap.builder .alignwide {
-		inset-inline: auto;
-		margin-inline: auto;
-		width: 100%;
-	}
 }
 
 @media (width > <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded :is(.alignwide, .alignright.wrap-small) { margin-inline-end: -<?php echo $alignwide_breakout; ?>%; }
 	.expanded :is(.alignwide, .alignleft.wrap-small) { margin-inline-start: -<?php echo $alignwide_breakout; ?>%; }
 	.expanded .alignwide { width: calc(100% + <?php echo $alignwide_breakout * 2; ?>%); }
+}
+
+.expanded .content-wrap.builder .alignwide {
+	inset-inline: auto;
+	margin-inline: auto;
+	width: 100%;
 }
 
 @media (width > <?php echo $site_width; ?>px) {

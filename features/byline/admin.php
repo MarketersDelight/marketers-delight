@@ -24,8 +24,8 @@ class md_byline extends md_api {
 	 * @since 6.0
 	 */
 
-	public function byline_items() {
-		return array(
+	public function byline_items( $items = array() ) {
+		return array_merge( $items, array(
 			'author' => array(
 				'title' => __( 'Author', 'md' ),
 				'hide_title' => false,
@@ -74,7 +74,7 @@ class md_byline extends md_api {
 				'color' => '#2772af',
 				'icon' => 'edit'
 			)
-		);
+		) );
 	}
 
 	/**
@@ -93,6 +93,12 @@ class md_byline extends md_api {
 				'name' => $this->name,
 				'group' => 'page_settings',
 				'position' => 15,
+				'fields' => $fields
+			),
+			'meta_box' => array(
+				'name' => $this->name,
+				'edit_post' => true,
+				'child_of' => 'page_settings',
 				'fields' => $fields
 			),
 			'term' => array(
@@ -131,9 +137,16 @@ class md_byline extends md_api {
 			)
 		);
 
+		// Items can share a field: their options combine, so one item can't
+		// narrow what another item's checkboxes or selects may save
+
 		foreach ( md_byline_items() as $byline_id => $byline_fields )
-			if ( isset( $byline_fields['fields'] ) )
-				$fields = array_merge( $fields, $byline_fields['fields'] );
+			foreach ( $byline_fields['fields'] ?? array() as $key => $field ) {
+				if ( isset( $fields[$key]['options'], $field['options'] ) && ( $fields[$key]['type'] ?? '' ) === ( $field['type'] ?? '' ) )
+					$fields[$key]['options'] = array_values( array_unique( array_merge( $fields[$key]['options'], $field['options'] ) ) );
+				else
+					$fields[$key] = $field;
+			}
 
 		return array(
 			'builder' => array(
@@ -151,26 +164,28 @@ class md_byline extends md_api {
 	 */
 
 	public function admin_fields() {
-		$active_tab = '';
+		$active_tab = $description = '';
 		$tabs = $areas = array();
 		$screen = $this->_get_screen;
 		$post_type = $this->fields->screen_post_type( true );
 
 		if ( $screen['is_taxonomy'] || $screen['is_term'] ) {
 			$active_tab = 'archives';
+			$description = __( 'Replaces the post type\'s bylines on this taxonomy\'s archive pages.', 'md' );
 			$tabs = array(
 				'archives' => __( 'Archives', 'md' )
 			);
 			$areas = array(
 				'archives' => array(
 					'title' => __( 'Archives', 'md' ),
-					'description' => __( 'Override post bylines for this taxonomy\'s archive pages.', 'md' ),
+					'description' => __( 'Byline items shown in post listing loops.', 'md' ),
 					'tab' => 'archives'
 				)
 			);
 		}
 		elseif ( $screen['is_admin'] && $post_type === 'author' ) {
 			$active_tab = 'archives';
+			$description = __( 'Add byline items to the posts on author pages.', 'md' );
 			$tabs = array(
 				'archives' => __( 'Author Loop', 'md' )
 			);
@@ -182,8 +197,23 @@ class md_byline extends md_api {
 				)
 			);
 		}
+		elseif ( $screen['is_post'] ) {
+			$active_tab = 'single';
+			$description = __( 'Replaces the post type\'s Single byline on this post. Leave empty to keep it.', 'md' );
+			$tabs = array(
+				'single' => __( 'Single', 'md' )
+			);
+			$areas = array(
+				'single' => array(
+					'title' => __( 'Single', 'md' ),
+					'description' => __( 'Shown on this post.', 'md' ),
+					'tab' => 'single'
+				)
+			);
+		}
 		elseif ( $screen['is_admin'] ) {
 			$active_tab = 'archives';
+			$description = __( 'Add byline items to post listings and single posts.', 'md' );
 			$tabs = array(
 				'archives' => __( 'Archives', 'md' ),
 				'single' => __( 'Single', 'md' )
@@ -202,16 +232,22 @@ class md_byline extends md_api {
 			);
 		}
 
-		echo
-			'<div class="md-widget md-toggle md-sep-small">'.
-			'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
+		// A post's Byline is a tab of its Page Settings; elsewhere it's a box of its own
+
+		if ( $screen['is_post'] )
+			echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
+		else
+			echo
+				'<div class="md-widget md-toggle md-sep-small">'.
+				'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
 
 		$this->fields->field( 'builder', array(
 			'type' => 'builder',
-			'populate' => ! $screen['is_term'],
+			'populate' => ! $screen['is_term'] && ! $screen['is_post'],
 			'defaults' => md_get_post_type_builder( 'byline', $post_type ),
 			'title' => __( 'Edit Byline', 'md' ),
-			'wrap_classes' => 'md-widget-item md-tabs',
+			'description' => $description,
+			'wrap_classes' => $screen['is_post'] ? 'md-tabs' : 'md-widget-item md-tabs',
 			'active_tab' => $active_tab,
 			'tabs' => $tabs,
 			'areas' => $areas,
@@ -358,13 +394,7 @@ class md_byline extends md_api {
 		if ( is_array( $style ) )
 			$style = ! empty( $style['tag'] ) ? 'tag' : '';
 
-		if ( isset( $_GET['post_type'] ) )
-			$post_type = sanitize_text_field( $_GET['post_type'] );
-		elseif ( isset( $_GET['page'] ) )
-			$post_type = sanitize_text_field( $_GET['page'] );
-
-		$post_type = md_clean_id( $post_type );
-		$terms = get_object_taxonomies( $post_type );
+		$terms = get_object_taxonomies( $this->fields->screen_post_type() );
 
 		$options = array();
 

@@ -49,21 +49,26 @@ class ArchiveMetaTest extends MD_InheritanceTestCase {
 		$this->assertArrayHasKey( 'inside_title', $entry );
 	}
 
+	public function test_plain_values_get_their_numbers_emphasized() {
+		$this->assertSame( '<strong>1,204</strong> books', md_archive_meta_value( '1,204 books' ) );
+	}
+
+	public function test_values_with_markup_keep_their_own_emphasis() {
+		$this->assertSame( 'last added <strong>2 weeks ago</strong>', md_archive_meta_value( 'last added <strong>2 weeks ago</strong>' ) );
+		$this->assertSame( '<a href="https://example.test/"><strong>3</strong> posts</a>', md_archive_meta_value( '<a href="https://example.test/"><strong>3</strong> posts</a>' ) );
+	}
+
 	public function test_meta_links_to_another_page() {
-		$GLOBALS['wp'] = (object) array( 'request' => '' );
+		md_test_set_query( array( 'current_url' => 'https://example.test/' ) );
 
 		$this->assertSame( '<a href="https://example.test/bookshelf/"><strong>446</strong> books</a>', md_archive_meta_link( '446 books', 'https://example.test/bookshelf/' ) );
-
-		unset( $GLOBALS['wp'] );
 	}
 
 	public function test_meta_never_links_to_the_page_being_viewed() {
-		$GLOBALS['wp'] = (object) array( 'request' => 'bookshelf' );
+		md_test_set_query( array( 'current_url' => 'https://example.test/bookshelf/' ) );
 
 		$this->assertSame( '446 books', md_archive_meta_link( '446 books', 'https://example.test/bookshelf/' ) );
 		$this->assertSame( '446 books', md_archive_meta_link( '446 books', '' ) );
-
-		unset( $GLOBALS['wp'] );
 	}
 
 }

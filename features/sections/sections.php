@@ -1,7 +1,8 @@
 <?php
-
 /**
- * Group archive display and navigation controls.
+ * Group the Sections box: Meta for page titles, and Sections for
+ * archives and singles. The class keeps its archive name, which is the
+ * group id its tabs register into.
  *
  * @since 6.0
  */
@@ -9,13 +10,13 @@
 class md_archive extends md_api {
 
 	/**
-	 * Register the shared Archive settings group.
+	 * Register the shared Sections settings group.
 	 *
 	 * @since 6.0
 	 */
 
 	public function register() {
-		$this->name = __( 'Archive', 'md' );
+		$this->name = __( 'Sections', 'md' );
 
 		return array(
 			'admin_page' => array(
@@ -31,7 +32,7 @@ class md_archive extends md_api {
 	}
 
 	/**
-	 * Render the Archive group on post type settings pages.
+	 * Render the Sections group on post type settings pages.
 	 *
 	 * @since 6.0
 	 */
@@ -41,7 +42,7 @@ class md_archive extends md_api {
 	}
 
 	/**
-	 * Render the Archive group on taxonomy term screens.
+	 * Render the Sections group on taxonomy term screens.
 	 *
 	 * @since 6.0
 	 */

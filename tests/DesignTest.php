@@ -327,6 +327,21 @@ class DesignTest extends MD_TestCase {
 		$this->assertEquals( array( 18, 19, 20, 21, 22, 23, 24 ), $this->sizes( $typography, 'mobile' ) );
 	}
 
+	public function test_saved_heading_sizes_set_their_line_heights() {
+		md_test_set_settings( array(
+			'typography' => array(
+				'h2' => array(
+					'font_size' => array( 'desktop' => 33 )
+				)
+			)
+		) );
+
+		$typography = $this->design->values()['typography'];
+
+		$this->assertEquals( 33, $typography['h2']['font_size']['desktop'] );
+		$this->assertEquals( 45, $typography['h2']['line_height']['desktop'] );
+	}
+
 	public function test_zero_anchors_fall_back_without_division_by_zero() {
 		md_test_set_settings( array(
 			'typography' => array(

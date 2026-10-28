@@ -11,13 +11,14 @@ function md_has_comments( $post_id = null ) {
 }
 
 /**
- * Displays full comments template.
+ * Displays full comments template, for the post being viewed only, not
+ * the posts a Query Loop lists on its page.
  *
  * @since 4.1
  */
 
 function md_comments() {
-	if ( md_has_comments() )
+	if ( md_is_queried_post() && md_has_comments() )
 		comments_template();
 }
 

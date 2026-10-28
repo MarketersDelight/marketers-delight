@@ -122,6 +122,20 @@ class BylineTest extends MD_InheritanceTestCase {
 		$this->assertSame( array( 'category' ), array_keys( md_get_byline( 'entry_footer', $args ) ) );
 	}
 
+	public function test_query_loops_on_a_single_use_archive_bylines() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'page', 'queried_object_id' => 1 ) );
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array( 'byline' => array( 'builder' => array(
+				'archive-date' => array( 'builder_area' => 'archives', 'builder_type' => 'date', 'position' => 'after_title' ),
+				'single-share' => array( 'builder_area' => 'single', 'builder_type' => 'share', 'position' => 'after_title' )
+			) ) )
+		) );
+
+		$args = array( 'loop' => array( 'post_type' => 'post', 'query' => true, 'remove_byline' => array() ) );
+
+		$this->assertSame( array( 'date' ), array_keys( md_get_byline( 'after_title', $args ) ) );
+	}
+
 	public function test_taxonomy_and_term_builder_rows_replace_their_configured_areas() {
 		md_test_set_object_taxonomies( 'book_quote', array( 'bookshelf_topic' ) );
 		md_test_set_filter( 'md_setting_defaults', array(

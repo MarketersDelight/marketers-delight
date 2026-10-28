@@ -415,7 +415,7 @@ function get_post_thumbnail_id() {
 }
 
 function get_the_ID() {
-	return 1;
+	return $GLOBALS['__test_query']['the_id'] ?? 1;
 }
 
 function get_post_time( $format = 'U', $gmt = false, $post = null ) {
@@ -598,8 +598,8 @@ function add_query_arg( $args, $url ) {
 	return $url . '?' . http_build_query( $args );
 }
 
-function get_pagenum_link( $page ) {
-	return "https://example.test/page/{$page}/";
+function get_pagenum_link( $page, $escape = true ) {
+	return $GLOBALS['__test_query']['current_url'] ?? "https://example.test/page/{$page}/";
 }
 
 function remove_query_arg( $key, $url ) {
@@ -766,9 +766,8 @@ require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-title/document-title.php';
 require_once dirname( __DIR__, 2 ) . '/features/wordpress.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
-require_once dirname( __DIR__, 2 ) . '/features/archive/functions.php';
+require_once dirname( __DIR__, 2 ) . '/features/sections/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/fields/data.php';
-require_once dirname( __DIR__, 2 ) . '/features/archive/title-section.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
 require_once dirname( __DIR__, 2 ) . '/api/colors.php';

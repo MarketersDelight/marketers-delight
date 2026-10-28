@@ -46,7 +46,7 @@ function md_cover( $context = null ) {
 
 	if (
 		( isset( $cover['position'] ) && $cover['position'] === 'remove' ) ||
-		( $context === 'post' && ! is_singular() && ! $inherit )
+		( $context === 'post' && ! md_is_queried_post() && ! $inherit )
 	)
 		$cover = array();
 
@@ -124,7 +124,7 @@ function md_overlay( $context = 'post', $cover = null ) {
 
 /**
  * Page Cover fields and their save rules, shared by the Page Cover
- * settings and Title Sections.
+ * settings and Section Titles.
  *
  * @since 6.0.4
  */

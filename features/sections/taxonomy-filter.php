@@ -37,31 +37,18 @@ function md_taxonomy_filter_admin_fields( $group, $type, $fields ) {
 		if ( $object->public )
 			$options[$taxonomy] = $object->labels->name;
 
-	include md_template( 'features', 'archive/admin/taxonomy-filter', true );
+	include md_template( 'features', 'sections/admin/taxonomy-filter', true );
 }
 
 /**
- * Render taxonomy navigation from a section builder row.
+ * Render taxonomy navigation from a section builder row: an All link,
+ * then the terms of the branch being viewed, each with its post count.
  *
  * @since 6.0.3
  */
 
 function md_taxonomy_filter( $fields, $post_type, $id, $main_query ) {
-	$current_id = get_queried_object_id();
-	$taxonomies = get_object_taxonomies( $post_type, 'objects' );
-	$taxonomy = $fields['taxonomy'] ?? '';
-	$options = $fields['taxonomy_settings'] ?? array();
-
-	if ( empty( $taxonomies[$taxonomy] ) ) {
-		$taxonomy = is_tax() || is_category() ? get_queried_object()->taxonomy : '';
-
-		if ( empty( $taxonomies[$taxonomy] ) )
-			foreach ( $taxonomies as $name => $object )
-				if ( $object->public ) {
-					$taxonomy = $name;
-					break;
-				}
-	}
+	$taxonomy = md_taxonomy_filter_taxonomy( $fields['taxonomy'] ?? '', $post_type );
 
 	if ( ! $taxonomy )
 		return;
@@ -69,7 +56,7 @@ function md_taxonomy_filter( $fields, $post_type, $id, $main_query ) {
 	$excluded = md_taxonomy_filter_excluded_term_ids( $taxonomy, $main_query );
 	$all = get_terms( array(
 		'taxonomy' => $taxonomy,
-		'hide_empty' => ! empty( $options['hide_empty'] ),
+		'hide_empty' => ! empty( $fields['taxonomy_settings']['hide_empty'] ),
 		'pad_counts' => true,
 		'exclude' => $excluded
 	) );
@@ -78,31 +65,74 @@ function md_taxonomy_filter( $fields, $post_type, $id, $main_query ) {
 		return;
 
 	$navigation_term = md_taxonomy_filter_navigation_term( $all, $taxonomy );
+	$terms = md_taxonomy_filter_terms( $all, $navigation_term );
+
+	if ( ! $terms )
+		return;
+
+	$is_single = is_singular();
+	$current_ids = md_taxonomy_filter_current_ids( $taxonomy );
+	$archive_url = $navigation_term ? get_term_link( $navigation_term ) : get_post_type_archive_link( $post_type );
+	$active = ! $is_single && ( $navigation_term ? in_array( $navigation_term->term_id, $current_ids, true ) : ( is_post_type_archive( $post_type ) || ( is_home() && $post_type === 'post' ) ) );
+	$total = md_taxonomy_filter_count( $post_type, $taxonomy, $navigation_term, $excluded );
+
+	include md_template( 'features', 'sections/taxonomy-filter', true );
+}
+
+/**
+ * The taxonomy a filter lists: the one chosen in its settings, else the
+ * one being viewed, else the post type's first public taxonomy.
+ *
+ * @since 6.0.4
+ */
+
+function md_taxonomy_filter_taxonomy( $taxonomy, $post_type ) {
+	$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+	$queried = get_queried_object();
+
+	if ( isset( $taxonomies[$taxonomy] ) )
+		return $taxonomy;
+
+	if ( $queried instanceof WP_Term && isset( $taxonomies[$queried->taxonomy] ) )
+		return $queried->taxonomy;
+
+	foreach ( $taxonomies as $name => $object )
+		if ( $object->public )
+			return $name;
+
+	return '';
+}
+
+/**
+ * Term IDs a filter marks active: a single's own terms, or the term
+ * archive being viewed.
+ *
+ * @since 6.0.4
+ */
+
+function md_taxonomy_filter_current_ids( $taxonomy ) {
+	if ( ! is_singular() )
+		return array( get_queried_object_id() );
+
+	$ids = wp_get_post_terms( get_queried_object_id(), $taxonomy, array( 'fields' => 'ids' ) );
+
+	return is_wp_error( $ids ) ? array() : array_map( 'intval', $ids );
+}
+
+/**
+ * The terms a filter lists: the navigation term's children, stepping down
+ * past any level with a single term so the filter always offers a choice.
+ *
+ * @since 6.0.4
+ */
+
+function md_taxonomy_filter_terms( $all, $navigation_term ) {
 	$terms = md_taxonomy_filter_child_terms( $all, $navigation_term ? $navigation_term->term_id : 0 );
 
 	while ( count( $terms ) === 1 && md_taxonomy_filter_child_terms( $all, $terms[0]->term_id ) )
 		$terms = md_taxonomy_filter_child_terms( $all, $terms[0]->term_id );
 
-	if ( ! $terms )
-		return;
-
-	if ( $navigation_term ) {
-		$active = $current_id === $navigation_term->term_id;
-		$archive_url = get_term_link( $navigation_term );
-	}
-	else {
-		$active = is_post_type_archive( $post_type ) || ( is_home() && $post_type === 'post' );
-
-		if ( $post_type === 'post' ) {
-			$page_for_posts = get_option( 'page_for_posts' );
-			$archive_url = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
-		}
-		else $archive_url = get_post_type_archive_link( $post_type );
-	}
-
-	$total = $active ? (int) $main_query->found_posts : md_taxonomy_filter_count( $post_type, $taxonomy, $navigation_term, $excluded );
-
-	include md_template( 'features', 'archive/taxonomy-filter', true );
+	return $terms;
 }
 
 /**

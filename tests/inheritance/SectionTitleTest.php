@@ -1,13 +1,13 @@
 <?php
 /**
- * Tests the Title Section Archive Sections element: its row-to-data
+ * Tests the Section Title Archive Sections element: its row-to-data
  * mapping, its markup through the shared Page Title renderer, and that its
  * fields are the Featured Media, Page Cover and Page CTA schemas.
  *
  * @since 6.0.4
  */
 
-class TitleSectionTest extends MD_InheritanceTestCase {
+class SectionTitleTest extends MD_InheritanceTestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
@@ -30,13 +30,13 @@ class TitleSectionTest extends MD_InheritanceTestCase {
 
 	private function render( $row ) {
 		ob_start();
-		md_title_section( $row, 'post', 'section1', null );
+		md_section_title( $row, 'post', 'section1', null );
 
 		return ob_get_clean();
 	}
 
 	public function test_fields_reuse_the_featured_media_cover_and_cta_schemas() {
-		$fields = md_title_section_fields();
+		$fields = md_section_title_fields();
 
 		$this->assertSame( md_featured_media_fields(), $fields['section_media'] );
 		$this->assertSame( md_page_cover_fields(), $fields['section_cover'] );
@@ -44,7 +44,7 @@ class TitleSectionTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_data_defaults_the_image_to_title_left_and_skips_empty_parts() {
-		$data = md_title_section_data( array(
+		$data = md_section_title_data( array(
 			'section_title' => 'Blog',
 			'section_media' => array( 'image' => array( 'id' => 34 ) )
 		) );
@@ -58,7 +58,7 @@ class TitleSectionTest extends MD_InheritanceTestCase {
 	}
 
 	public function test_a_background_makes_a_cover() {
-		$data = md_title_section_data( array( 'section_cover' => array( 'bg_color' => '#1f1d1c' ) ) );
+		$data = md_section_title_data( array( 'section_cover' => array( 'bg_color' => '#1f1d1c' ) ) );
 
 		$this->assertSame( 'headline_cover', $data['cover']['position'] );
 	}

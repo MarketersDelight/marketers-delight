@@ -29,6 +29,11 @@ class md_hero extends md_api {
 				'group' => 'page_settings',
 				'position' => 5
 			),
+			'meta_box' => array(
+				'name' => __( 'Featured', 'md' ),
+				'edit_post' => true,
+				'child_of' => 'page_settings'
+			),
 			'term' => array(
 				'name' => $this->name,
 				'position' => 10,
@@ -51,6 +56,22 @@ class md_hero extends md_api {
 			</div>
 		</div>
 	<?php }
+
+	/**
+	 * Render the post editor's Featured tab: Featured Media, Call to Action
+	 * and Page Cover as tabs of their own. A single's media can sit in its
+	 * content, so it isn't labeled Page Title here.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function meta_box() {
+		echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
+
+		$this->fields->settings_group( 'post_meta' );
+
+		echo '</div>';
+	}
 
 	/**
 	 * Render meta box template.

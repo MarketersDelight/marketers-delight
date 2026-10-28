@@ -1,7 +1,7 @@
 <?php
 /**
  * Tests md_title_template(): it renders only the data it's given, never the
- * current page's settings, so other features (Title Sections) can pass
+ * current page's settings, so other features (Section Titles) can pass
  * their own data. Page Title markup is covered by TitleSnapshotTest.
  *
  * @since 6.0.4

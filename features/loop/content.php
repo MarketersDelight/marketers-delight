@@ -28,7 +28,7 @@ function md_post_nav() {
  */
 
 function md_has_post_nav() {
-	if ( ! is_singular() || is_page() || get_the_ID() !== get_queried_object_id() )
+	if ( ! md_is_queried_post() || is_page() )
 		return false;
 
 	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );

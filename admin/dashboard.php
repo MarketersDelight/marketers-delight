@@ -96,6 +96,9 @@ class md_settings extends md_api {
 		if ( $status == 'failed' )
 			$message['text'] = __( 'Something went wrong. Please try to connect your license key again.', 'md' );
 
+		if ( $status == 'error' )
+			$message['text'] = __( 'Enter your <b>MD license key</b>, then select <b>Activate license key</b>.', 'md' );
+
 		if ( $status == 'disabled' || $status == 'revoked' ) {
 			$message['status'] = __( 'Disabled', 'md' );
 			$message['text'] = __( 'Your license key has been disabled. Please contact MD support for more information.', 'md' );

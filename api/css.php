@@ -409,6 +409,7 @@ class md_css {
 	public function templates( $file ) {
 		$g = 1.618;
 		$design = new md_design;
+		$design_colors = new md_design_colors;
 		$values = $design->values();
 		$theme_url = wp_make_link_relative( get_stylesheet_directory_uri() );
 		$queries = array( 600 => 'mobile' );

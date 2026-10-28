@@ -6,11 +6,6 @@
 
 /* TEXT */
 
-.underline { text-decoration: underline; }
-a.underline:hover, a:hover .underline { text-decoration: none; }
-
-.no-underline { text-decoration: none; }
-
 .normal { font-weight: <?php echo $font_weight; ?>; }
 
 .bold { font-weight: var(--md-bold); }
@@ -22,20 +17,12 @@ a.underline:hover, a:hover .underline { text-decoration: none; }
 .h-font { font-family: <?php echo $h1_font_family; ?>; }
 
 .text-left, .has-text-align-left { text-align: left; }
-
 .text-right, .has-text-align-right { text-align: right; }
-
 .text-center, .has-text-align-center { text-align: center; }
 
 .lh1 { line-height: 1; }
 
 .caps { text-transform: uppercase; }
-
-@media (prefers-reduced-motion: no-preference) {
-	html:has(.smooth-scroll) { scroll-behavior: smooth; }
-}
-
-a.no-underline, .no-underline a { text-decoration: none; }
 
 .font-size {
 	font-size: var(--md-font-size);
@@ -52,9 +39,24 @@ a.no-underline, .no-underline a { text-decoration: none; }
 	line-height: 1;
 }
 
-.has-muted-color, .foot { color: var(--md-text-muted); }
+.underline { text-decoration: underline; }
 
-.has-muted-color a, .foot a, a.has-muted-color, a.foot { color: var(--md-links-muted); }
+.no-underline, a.no-underline, .no-underline a,
+a.underline:hover, a:hover .underline { text-decoration: none; }
+
+.foot, .has-muted-color { color: var(--md-text-muted); }
+
+.foot a, a.foot,
+.has-muted-color a, a.has-muted-color { color: var(--md-links-muted); }
+
+.has-headline-link-color a,
+a.has-headline-link-color {
+	color: var(--md-headline-links);
+	text-decoration: none;
+}
+
+.has-headline-link-color a:hover,
+a.has-headline-link-color:hover { text-decoration: underline; }
 
 cite, .tiny {
 	font-size: var(--md-font-size-tiny);
@@ -116,7 +118,6 @@ cite, .tiny {
 }
 
 .border-tb { border-width: 1px 0; }
-
 .border-bottom { border-width: 0 0 1px; }
 
 /* SHADOWS */
@@ -187,7 +188,6 @@ cite, .tiny {
 /* LAYOUT */
 
 .relative { position: relative; }
-
 .absolute { position: absolute; }
 
 .fl {
@@ -208,29 +208,22 @@ cite, .tiny {
 
 .full-basis { flex-basis: 100%; }
 
+.wrap { flex-wrap: wrap; }
+
 .shrink { flex-shrink: 0; }
 
 .reverse { flex-direction: row-reverse; }
-
 .column { flex-direction: column; }
 
-.wrap { flex-wrap: wrap; }
-
 .justify-start { justify-content: flex-start; }
-
 .justify-center { justify-content: center; }
-
 .justify-end { justify-content: flex-end; }
-
 .justify-between { justify-content: space-between; }
 
-.items-start { align-items: flex-start; }
-
-.items-center { align-items: center; }
-
-.items-end { align-items: flex-end; }
-
 .items-stretch { align-items: stretch; }
+.items-start, .are-vertically-aligned-top { align-items: flex-start; }
+.items-center, .are-vertically-aligned-center { align-items: center; }
+.items-end, .are-vertically-aligned-bottom { align-items: flex-end; }
 
 .self-center, .is-vertically-aligned-center { align-self: center; }
 
@@ -248,54 +241,32 @@ cite, .tiny {
 /* WIDTHS */
 
 .content-width { max-width: var(--md-width-content); }
-
 .post-width { max-width: var(--md-width-post); }
-
 .wide-width { max-width: var(--md-width-alignwide); }
-
 .sidebar-width { max-width: var(--md-width-sidebar); }
-
 .width-full { width: 100%; }
 
 /* COLUMNS */
 
-.wp-block-columns { display: flex; gap: var(--md-single); }
+.wp-block-columns {
+	display: flex;
+	gap: var(--md-single);
+}
 
-.wp-block-column { flex-basis: 0; flex-grow: 1; min-width: 0; }
-
-.are-vertically-aligned-top { align-items: flex-start; }
-
-.are-vertically-aligned-center { align-items: center; }
-
-.are-vertically-aligned-bottom { align-items: flex-end; }
+.wp-block-column {
+	flex-basis: 0;
+	flex-grow: 1;
+	min-width: 0;
+}
 
 @media (max-width: 781px) {
 	.wp-block-columns:not(.is-not-stacked-on-mobile) { flex-wrap: wrap; }
 	.wp-block-columns:not(.is-not-stacked-on-mobile) > .wp-block-column { flex-basis: 100%; }
 }
 
-/* ICON BLOCK */
-
-.wp-block-icon { line-height: 0; }
-
-.wp-block-icon.aligncenter {
-	display: flex;
-	justify-content: center;
-}
-
-.wp-block-icon svg {
-	box-sizing: border-box;
-	fill: currentColor;
-}
-
-:where(.wp-block-icon) svg {
-	height: 1.5em;
-	width: 1.5em;
-}
-
 .columns, [class*="columns-"] {
-	--md-columns-base: 1;
 	--md-columns: var(--md-columns-base);
+	--md-columns-base: 1;
 	--md-columns-mobile: var(--md-columns-base);
 	--md-columns-template: repeat(var(--md-columns), minmax(0, 1fr));
 	display: grid;
@@ -379,33 +350,29 @@ foreach ( array( 'half', 'third', 'small' ) as $size )
 foreach ( array_keys( $spacers ) as $size )
 	echo ".gap-$size, .columns-$size { gap: var(--md-$size); }\n";
 
-echo ".gap-none { gap: 0; }";
+echo ".gap-none { gap: 0; }\n";
 
-?>
+/* SCROLL */
 
-/* MOBILE: SCROLL, MIDDOT */
+foreach ( array( 'scroll' => '', 'scroll-mobile' => '(max-width: 800px)' ) as $scroll => $scroll_media ) {
+	$scroll_css = ".$scroll {\n".
+		"\talign-items: center;\n".
+		"\tgap: var(--md-scroll-gap, var(--md-half));\n".
+		"\tgrid: none / auto-flow var(--md-scroll-column, min(85%, 360px));\n".
+		"\tmargin: calc(-1 * var(--md-scroll-inset, var(--md-half)));\n".
+		"\toverflow-x: auto;\n".
+		"\toverscroll-behavior-x: contain;\n".
+		"\tpadding: var(--md-scroll-inset, var(--md-half));\n".
+		"\tscroll-padding-inline: var(--md-scroll-inset, var(--md-half));\n".
+		"\tscroll-snap-type: x mandatory;\n".
+		"\tscrollbar-width: none;\n".
+		"\twidth: auto;\n".
+		"}\n".
+		".$scroll::-webkit-scrollbar { display: none; }\n".
+		".$scroll > * { scroll-snap-align: start; }\n";
 
-@media (max-width: 800px) {
-	.scroll-mobile {
-		align-items: center;
-		gap: var(--md-scroll-gap, var(--md-half));
-		grid-auto-columns: var(--md-scroll-column, min(85%, 360px));
-		grid-auto-flow: column;
-		grid-template-columns: none;
-		margin: calc(-1 * var(--md-half));
-		overflow-x: auto;
-		overscroll-behavior-x: contain;
-		padding: var(--md-half);
-		scroll-padding-inline: var(--md-half);
-		scroll-snap-type: x mandatory;
-		scrollbar-width: none;
-		width: auto;
-	}
-	.scroll-mobile::-webkit-scrollbar { display: none; }
-	.scroll-mobile > * { scroll-snap-align: start; }
+	echo $scroll_media ? "@media $scroll_media {\n$scroll_css}\n" : $scroll_css;
 }
-
-<?php
 
 /* BLOCKS / PADDING */
 
@@ -428,8 +395,6 @@ echo ".pb-none { padding-block-end: 0; }\n";
 
 /* EDITOR COLORS */
 
-$design_colors = new md_design_colors;
-
 foreach ( $design_colors->editor_colors() as $color_group => $color_fields ) {
 	$color_slug = $color_fields['slug'];
 	$color_val = $color_fields['color'];
@@ -445,6 +410,10 @@ foreach ( $design_colors->editor_gradients() as $gradient )
 	echo ".has-{$gradient['slug']}-gradient-background { background: {$gradient['gradient']}; }\n"; ?>
 
 /* ANIMATIONS */
+
+@media (prefers-reduced-motion: no-preference) {
+	html:has(.smooth-scroll) { scroll-behavior: smooth; }
+}
 
 @keyframes md-fade {
 	from { opacity: 0; }
@@ -478,9 +447,9 @@ foreach ( $design_colors->editor_gradients() as $gradient )
 /* VISIBILITY */
 
 @media all and (width > 700px) {
-	.show-mobile { display: none; }
+	.show-mobile, .nav-menu .show-mobile { display: none; }
 }
 
 @media all and (width <= 700px) {
-	.show-desktop { display: none; }
+	.show-desktop, .nav-menu .show-desktop { display: none; }
 }

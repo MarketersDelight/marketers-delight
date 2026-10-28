@@ -5,7 +5,7 @@
 
 <?php do_action( "md_{$context}_{$this->_clean_id}_before" ); ?>
 
-<div class="md-tabs">
+<div class="md-tabs md-group-tabs">
 
 	<div class="nav-tab-wrapper">
 		<?php foreach ( $fields as $id => $field ) : ?>

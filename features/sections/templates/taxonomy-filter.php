@@ -9,9 +9,9 @@ foreach ( $terms as $term ) {
 	$classes = 'tag';
 	$count = '<span class="small has-muted-color">' . esc_html( number_format_i18n( $term->count ) ) . '</span>';
 
-	if ( $current_id === $term->term_id ) {
+	if ( in_array( $term->term_id, $current_ids, true ) ) {
 		$classes .= ' active';
-		$aria = ' aria-current="page"';
+		$aria = $is_single ? '' : ' aria-current="page"';
 	}
 
 	$items[] = '<a href="' . esc_url( get_term_link( $term ) ) . "\" class=\"$classes\"$aria>" . esc_html( $term->name ) . ' ' . $count . '</a>';

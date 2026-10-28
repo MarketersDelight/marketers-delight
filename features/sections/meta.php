@@ -15,6 +15,45 @@ class md_archive_meta extends md_api {
 
 	public function actions() {
 		add_filter( 'md_archive_meta_items', array( $this, 'items' ), 10, 2 );
+		add_filter( 'md_byline', array( $this, 'byline_items' ), 20 );
+	}
+
+	/**
+	 * Offer site stats as byline items, so a single post or page can show
+	 * the same counts an archive title does. Items opt in with singles.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function byline_items( $items ) {
+		foreach ( md_archive_meta_items() as $type => $item )
+			if ( ! empty( $item['singles'] ) && ! isset( $items[$type] ) )
+				$items[$type] = array_merge( $item, array( 'template' => array( $this, 'byline_item' ) ) );
+
+		return $items;
+	}
+
+	/**
+	 * Render a stat as a byline item, with Archive Meta's value markup.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function byline_item( $fields ) {
+		$type = $fields['builder_type'] ?? '';
+		$items = md_archive_meta_items();
+
+		if ( empty( $items[$type]['callback'] ) || ! is_callable( $items[$type]['callback'] ) )
+			return;
+
+		$value = call_user_func( $items[$type]['callback'], $fields, $fields['post_type'] ?? md_get_post_type() );
+
+		if ( ! $value )
+			return;
+
+		$icon = ! empty( $items[$type]['meta_icon'] ) ? md_icon( $items[$type]['meta_icon'] ) : '';
+
+		echo '<span class="' . md_byline_classes( $fields, 'byline-' . str_replace( '_', '-', $type ) ) . '">' . $icon . '<span class="byline-value">' . md_archive_meta_value( $value ) . '</span></span>';
 	}
 
 	/**
@@ -130,7 +169,7 @@ class md_archive_meta extends md_api {
 					'off' => __( 'Show in Page Title', 'md' )
 				)
 			),
-			'description' => __( 'Hide from the main Page Title, and optionally add back in a <b>Title Section</b>.', 'md' )
+			'description' => __( 'Hide from the main Page Title, and optionally add back in a <b>Section Title</b>.', 'md' )
 		) );
 
 		echo '</div>';
@@ -234,7 +273,7 @@ class md_archive_meta extends md_api {
 		$fields->field( array( 'builder', $group, 'source' ), array(
 			'type' => 'select',
 			'label' => __( 'Post Type', 'md' ),
-			'empty_label' => __( 'This archive', 'md' ),
+			'empty_label' => __( 'This post type', 'md' ),
 			'options' => md_query_loop_sources()
 		) );
 	}
@@ -268,6 +307,16 @@ class md_archive_meta extends md_api {
 	}
 
 	/**
+	 * Explain the Text item, whose label is its whole value.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function text_fields() {
+		echo '<p class="description">' . esc_html__( 'Enter the text in the item label above. Numbers in it are emphasized like the other stats.', 'md' ) . '</p>';
+	}
+
+	/**
 	 * Get the registered Archive Meta items.
 	 *
 	 * @since 6.0
@@ -281,6 +330,7 @@ class md_archive_meta extends md_api {
 				'icon' => 'admin-post',
 				'meta_icon' => 'file',
 				'color' => '#2271b1',
+				'singles' => true,
 				'fields' => array(
 					'singular_name' => array( 'type' => 'text' ),
 					'source' => array( 'type' => 'text' )
@@ -306,6 +356,7 @@ class md_archive_meta extends md_api {
 				'icon' => 'calendar-alt',
 				'meta_icon' => 'calendar',
 				'color' => '#d44c3c',
+				'singles' => true,
 				'fields' => array(
 					'source' => array( 'type' => 'text' ),
 					'settings' => array(
@@ -315,6 +366,15 @@ class md_archive_meta extends md_api {
 				),
 				'callback' => array( $this, 'last_added' ),
 				'admin_callback' => array( $this, 'last_added_fields' )
+			),
+			'text' => array(
+				'title' => __( 'Text', 'md' ),
+				'placeholder' => __( 'Founded 2019', 'md' ),
+				'icon' => 'editor-textcolor',
+				'color' => '#646970',
+				'singles' => true,
+				'callback' => array( $this, 'text' ),
+				'admin_callback' => array( $this, 'text_fields' )
 			)
 		) );
 
@@ -356,6 +416,16 @@ class md_archive_meta extends md_api {
 
 	public function comment_count( $fields, $post_type, $term = null ) {
 		return md_count_text( md_archive_comment_total( $post_type, $this->item_term( $term ) ), $fields, __( '{count} comment', 'md' ), __( '{count} comments', 'md' ) );
+	}
+
+	/**
+	 * Print a Text item's own words.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function text( $fields ) {
+		return $fields['name'] ?? '';
 	}
 
 	/**

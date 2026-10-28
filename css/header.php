@@ -216,7 +216,7 @@
 	.left .header-triggers, .center .header-triggers { justify-content: end; }
 	.right .header-triggers { order: -1; }
 	/* COVER */
-	.full-cover .header[class*="toggle-"] :is(.site-name a, .tagline, .trigger, .menu > .menu-item > a) { color: inherit; }
+	.full-cover .header[class*="toggle-"] :is(.site-name a, .tagline, .trigger, .nav-menu > .menu-item > a) { color: inherit; }
 }
 
 @media (min-width: 600px) {

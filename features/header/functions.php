@@ -240,7 +240,7 @@ function md_menu( $fields = array() ) {
 
 	$location = $fields['area'];
 	$menu_id = $fields['menu'];
-	$menu_class = 'menu menu-' . esc_attr( $location );
+	$menu_class = 'menu nav-menu menu-' . esc_attr( $location );
 
 	if ( $fields['layout'] == 'right' || ( $fields['layout'] == 'center' && $fields['location'] == 'primary' ) )
 		$menu_class .= ' sub-alt';

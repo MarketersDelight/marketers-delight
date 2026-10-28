@@ -1,4 +1,4 @@
-<div class="columns-2 columns-single md-full-select">
+<div class="<?php echo $args['is_post'] ? 'columns-33-67' : 'columns-2'; ?> columns-single md-full-select">
 
 	<!-- Media -->
 
@@ -33,23 +33,8 @@
 		</div>
 		<?php endif; ?>
 
-		<?php if ( ! $args['image_only'] ) : ?>
-		<div id="<?php echo $prefix; ?>_featured_media_video" class="md-conditional-item md-conditional-video" style="display: <?php echo $media_type == 'video' ? 'block' : 'none'; ?>">
-			<?php $fields->field( 'video', array(
-				'type' => 'url',
-				'label' => __( 'Video URL', 'md' )
-			) ); ?>
-		</div>
-
-		<?php if ( $can_edit_code ) : ?>
-		<div id="<?php echo $prefix; ?>_featured_media_custom_html" class="md-conditional-item md-conditional-custom_html" style="display: <?php echo $media_type == 'custom_html' ? 'block' : 'none'; ?>">
-			<?php $fields->field( 'custom_html', array(
-				'type' => 'code',
-				'label' => __( 'Custom HTML', 'md' )
-			) ); ?>
-		</div>
-		<?php endif; ?>
-		<?php endif; ?>
+		<?php if ( ! $args['is_post'] && ! $args['image_only'] )
+			include md_template( 'features', 'featured-media/admin/media-source', true ); ?>
 
 	</div>
 
@@ -57,9 +42,9 @@
 
 	<div class="col col2">
 
-		<div class="md-conditional md-sep-micro">
+		<div class="md-conditional md-sep-micro<?php echo $args['is_post'] ? ' columns-2 columns-single' : ''; ?>">
 
-			<div class="md-sep-micro">
+			<div class="md-sep-micro<?php echo $args['is_post'] ? ' col' : ''; ?>">
 				<?php $fields->field( 'position', array(
 					'type' => 'select',
 					'label' => __( 'Position', 'md' ),
@@ -70,7 +55,7 @@
 				) ); ?>
 			</div>
 
-			<div class="md-conditional-item md-conditional-default md-conditional-title_left md-conditional-title_right md-conditional-left md-conditional-right" style="display: <?php echo in_array( $position, $side_positions, true ) ? 'block' : 'none'; ?>">
+			<div class="md-conditional-item md-conditional-default md-conditional-title_left md-conditional-title_right md-conditional-left md-conditional-right<?php echo $args['is_post'] ? ' col' : ''; ?>" style="display: <?php echo in_array( $position, $side_positions, true ) ? 'block' : 'none'; ?>">
 				<?php $fields->field( 'mobile', array(
 					'type' => 'select',
 					'label' => __( 'Position on mobile', 'md' ),
@@ -84,13 +69,31 @@
 
 		</div>
 
-		<?php $fields->field( 'image_width', array(
-			'type' => 'range',
-			'label' => __( 'Max width', 'md' ),
-			'unit' => 'px',
-			'max' => '550'
-		) ); ?>
+		<?php if ( ! $args['is_post'] )
+			$fields->field( 'image_width', $width ); ?>
 
 	</div>
 
 </div>
+
+<?php if ( $args['is_post'] ) : ?>
+
+<!-- Width -->
+
+<div class="columns-3 columns-single">
+	<div class="col">
+		<?php $fields->field( 'image_width', $width ); ?>
+	</div>
+</div>
+
+<!-- Source -->
+
+<?php if ( ! $args['image_only'] ) : ?>
+<div class="columns-67-33 columns-single">
+	<div class="col col1">
+		<?php include md_template( 'features', 'featured-media/admin/media-source', true ); ?>
+	</div>
+</div>
+<?php endif; ?>
+
+<?php endif; ?>

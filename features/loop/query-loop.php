@@ -195,6 +195,7 @@ function md_query_loop( $fields, $post_type, $id = '' ) {
 		'no_pagination' => $pagination === 'none',
 		'pagination_type' => $pagination,
 		'pagination_arg' => 'md_loop_' . sanitize_key( $id ),
+		'has_sidebar' => md_has_sidebar(),
 		'skip_subcategory' => true,
 		'by_category' => $category_loop ? true : null,
 		'by_date' => false,

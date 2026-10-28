@@ -7,6 +7,10 @@ $category_description = term_description( $category->term_id );
 $meta = md_get_archive_meta( 'category_entry', $category, $loop['post_type'] ?? '' );
 $has_inside_entry = ! empty( $meta['inside_title'] );
 $has_aside_entry = ! empty( $meta['byline_aside'] );
+$has_more = isset( $posts ) && $posts->query_vars['posts_per_page'] > 0 && $posts->post_count >= $posts->query_vars['posts_per_page'];
+$more_in_title = $has_more && $loop['columns'] > 1;
+$post_type_object = $more_in_title ? get_post_type_object( $post_type ) : null;
+$more = $post_type_object ? '<div class="category-more byline"><a href="' . esc_url( get_term_link( $category->term_id ) ) . '">' . esc_html( $post_type_object->labels->all_items ) . ' &rarr;</a></div>' : '';
 ?>
 
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
@@ -54,12 +58,14 @@ $has_aside_entry = ! empty( $meta['byline_aside'] );
 			</div>
 
 			<div class="title-aside">
-				<?php echo $meta['byline_aside']; ?>
+				<?php echo $meta['byline_aside'] . $more; ?>
 			</div>
 
 			<?php endif; ?>
 
 		</div>
+
+		<?php echo ! $has_aside_entry ? $more : ''; ?>
 
 	</div>
 
@@ -86,15 +92,13 @@ $has_aside_entry = ! empty( $meta['byline_aside'] );
 			include md_template( 'features', 'loop/the-post', true );
 		} ?>
 
-		<?php if ( $posts->query_vars['posts_per_page'] > 0 && $posts->post_count >= $posts->query_vars['posts_per_page'] ) : ?>
+		<?php if ( $has_more && ! $more_in_title ) : ?>
 
-		<div class="category-more item byline <?php echo strpos( " $loop_classes ", ' columns ' ) !== false ? 'col-full' : 'mt-half'; ?>">
-			<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>">
-				<?php echo sprintf( esc_html__( 'View all posts &rarr;', 'md' ), esc_html( $category->name ) ); ?>
-			</a>
+		<div class="category-more item byline mt-half">
+			<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>"><?php echo sprintf( esc_html__( 'See more in %s &rarr;', 'md' ), '<strong>' . esc_html( $category->name ) . '</strong>' ); ?></a>
 		</div>
 
-		<?php endif ?>
+		<?php endif; ?>
 
 	</div>
 

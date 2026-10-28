@@ -7,7 +7,7 @@
 
 class md_archive_sections extends md_api {
 
-	private $main_query;
+	protected $main_query;
 
 	/**
 	 * Register Archive Sections query hooks.
@@ -62,7 +62,7 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function register() {
-		$this->name = __( 'Sections', 'md' );
+		$this->name = __( 'Archives', 'md' );
 
 		$args = array(
 			'name' => $this->name,
@@ -123,28 +123,57 @@ class md_archive_sections extends md_api {
 
 		echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
 
-		$builder_args = array(
+		$builder_args = $this->builder_args( $post_type, array(
+			'title' => __( 'Add Sections', 'md' ),
+			'description' => __( 'Add reusable content before or after the archive entries.', 'md' ),
+			'before_content' => __( 'Shown before the archive entries.', 'md' ),
+			'after_content' => __( 'Shown after the archive entries and pagination.', 'md' )
+		) );
+
+		if ( empty( $this->_get_screen['is_taxonomy'] ) && $post_type !== 'author' && get_post_type_object( $post_type ) )
+			$builder_args['scope'] = true;
+
+		if ( $post_type === 'author' ) {
+			$builder_args['populate'] = true;
+			$builder_args['save_empty'] = true;
+			$builder_args['defaults'] = md_get_post_type_builder( 'archive_sections', 'author', true );
+		}
+
+		$this->fields->field( 'builder', $builder_args );
+
+		echo '</div>';
+	}
+
+	/**
+	 * Builder settings shared by every Sections screen, with the wording
+	 * for its context.
+	 *
+	 * @since 6.0.4
+	 */
+
+	protected function builder_args( $post_type, $text ) {
+		return array(
 			'type' => 'builder',
 			'wrap_classes' => 'md-tabs',
-			'title' => __( 'Add Archive Widgets', 'md' ),
-			'description' => __( 'Add reusable content before or after the archive entries.', 'md' ),
-			'active_tab' => 'before_loop',
+			'title' => $text['title'],
+			'description' => $text['description'],
+			'active_tab' => 'before_content',
 			'tabs' => array(
-				'before_loop' => __( 'Before Loop', 'md' ),
-				'after_loop' => __( 'After Loop', 'md' ),
+				'before_content' => __( 'Before Content', 'md' ),
+				'after_content' => __( 'After Content', 'md' ),
 				'before_sidebar' => __( 'Before Sidebar', 'md' ),
 				'after_sidebar' => __( 'After Sidebar', 'md' )
 			),
 			'areas' => array(
-				'before_loop' => array(
-					'title' => __( 'Before Loop', 'md' ),
-					'description' => __( 'Shown before the archive entries.', 'md' ),
-					'tab' => 'before_loop'
+				'before_content' => array(
+					'title' => __( 'Before Content', 'md' ),
+					'description' => $text['before_content'],
+					'tab' => 'before_content'
 				),
-				'after_loop' => array(
-					'title' => __( 'After Loop', 'md' ),
-					'description' => __( 'Shown after the archive entries and pagination.', 'md' ),
-					'tab' => 'after_loop'
+				'after_content' => array(
+					'title' => __( 'After Content', 'md' ),
+					'description' => $text['after_content'],
+					'tab' => 'after_content'
 				),
 				'before_sidebar' => array(
 					'title' => __( 'Before Sidebar', 'md' ),
@@ -159,19 +188,6 @@ class md_archive_sections extends md_api {
 			),
 			'elements' => $this->elements( $post_type )
 		);
-
-		if ( empty( $this->_get_screen['is_taxonomy'] ) && $post_type !== 'author' && get_post_type_object( $post_type ) )
-			$builder_args['scope'] = true;
-
-		if ( $post_type === 'author' ) {
-			$builder_args['populate'] = true;
-			$builder_args['save_empty'] = true;
-			$builder_args['defaults'] = md_get_post_type_builder( 'archive_sections', 'author', true );
-		}
-
-		$this->fields->field( 'builder', $builder_args );
-
-		echo '</div>';
 	}
 
 	/**
@@ -206,15 +222,15 @@ class md_archive_sections extends md_api {
 				'callback' => 'md_taxonomy_filter',
 				'admin_callback' => 'md_taxonomy_filter_admin_fields'
 			),
-			'title_section' => array(
-				'title' => __( 'Title Section', 'md' ),
+			'section_title' => array(
+				'title' => __( 'Section Title', 'md' ),
 				'placeholder' => __( 'Section title...', 'md' ),
 				'icon' => 'heading',
 				'color' => '#8a5e0e',
 				'classes' => 'col-full',
-				'fields' => 'md_title_section_fields',
-				'callback' => 'md_title_section',
-				'admin_callback' => 'md_title_section_admin_fields'
+				'fields' => 'md_section_title_fields',
+				'callback' => 'md_section_title',
+				'admin_callback' => 'md_section_title_admin_fields'
 			)
 		) );
 
@@ -246,7 +262,7 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function before_loop( $args = array() ) {
-		$this->html( 'before_loop', $args );
+		$this->html( 'before_content', $args );
 	}
 
 	/**
@@ -256,7 +272,7 @@ class md_archive_sections extends md_api {
 	 */
 
 	public function after_loop( $args = array() ) {
-		$this->html( 'after_loop', $args );
+		$this->html( 'after_content', $args );
 	}
 
 	/**
@@ -285,7 +301,7 @@ class md_archive_sections extends md_api {
 	 * @since 6.0
 	 */
 
-	private function is_archive_loop( $args ) {
+	protected function in_context( $args ) {
 		if ( ! is_home() && ! is_archive() )
 			return false;
 
@@ -303,13 +319,13 @@ class md_archive_sections extends md_api {
 	 * @since 6.0
 	 */
 
-	private function group( $sections, $area, $scroll = true ) {
+	protected function group( $sections, $area, $scroll = true ) {
 		if ( $sections === '' )
 			return '';
 
 		$classes = 'archive-sections-group columns-fluid-2 gap-single';
 
-		if ( $scroll && in_array( $area, array( 'before_loop', 'after_loop' ), true ) )
+		if ( $scroll && in_array( $area, array( 'before_content', 'after_content' ), true ) )
 			$classes .= ' scroll-mobile';
 
 		return '<div class="' . esc_attr( $classes ) . '">' . $sections . '</div>';
@@ -324,15 +340,15 @@ class md_archive_sections extends md_api {
 	 * @since 6.0
 	 */
 
-	private function html( $area, $args ) {
-		if ( ! $this->is_archive_loop( $args ) )
+	protected function html( $area, $args ) {
+		if ( ! $this->in_context( $args ) )
 			return;
 
 		$output = $group = '';
 		$scroll = true;
 		$is_author = is_author() && empty( $args['query'] ) && empty( $args['in_loop'] );
 		$post_type = $is_author ? 'author' : ( $args['loop']['post_type'] ?? md_get_post_type() );
-		$builder = md_get_post_type_builder( 'archive_sections', $post_type, $is_author );
+		$builder = md_get_post_type_builder( $this->_clean_id, $post_type, $is_author );
 		$elements = $this->elements( $post_type );
 
 		foreach ( $builder as $id => $fields ) {

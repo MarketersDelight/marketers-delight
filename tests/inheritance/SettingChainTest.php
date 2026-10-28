@@ -168,7 +168,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_filter( 'md_setting_defaults', array(
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
 				'default-highlight' => array(
-					'builder_area' => 'before_loop',
+					'builder_area' => 'before_content',
 					'builder_type' => 'bookshelf_highlight'
 				)
 			) ) )
@@ -180,7 +180,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( array(
 			'default-highlight' => array(
-				'builder_area' => 'before_loop',
+				'builder_area' => 'before_content',
 				'builder_type' => 'bookshelf_highlight'
 			)
 		), md_get_post_type_builder( 'archive_sections', 'bookshelf' ) );
@@ -190,7 +190,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_filter( 'md_setting_defaults', array(
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
 				'default-highlight' => array(
-					'builder_area' => 'before_loop',
+					'builder_area' => 'before_content',
 					'builder_type' => 'bookshelf_highlight'
 				)
 			) ) )
@@ -201,6 +201,67 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		) );
 
 		$this->assertSame( array(), md_get_post_type_builder( 'archive_sections', 'bookshelf', true ) );
+	}
+
+	public function test_viewed_single_replaces_only_the_areas_it_saves() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'post', 'queried_object_id' => 1 ) );
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array( 'byline' => array( 'builder' => array(
+				'archive-date' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+				'single-date' => array( 'builder_area' => 'single', 'builder_type' => 'date' )
+			) ) )
+		) );
+		md_test_set_post_meta( array( 'byline' => array( 'builder' => array(
+			'post-count' => array( 'builder_area' => 'single', 'builder_type' => 'post_count' )
+		) ) ) );
+
+		$this->assertSame( array(
+			'archive-date' => array( 'builder_area' => 'archives', 'builder_type' => 'date' ),
+			'post-count' => array( 'builder_area' => 'single', 'builder_type' => 'post_count' )
+		), md_get_post_type_builder( 'byline', 'post' ) );
+	}
+
+	public function test_viewed_single_layer_skips_other_post_types() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'page', 'queried_object_id' => 1 ) );
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array( 'byline' => array( 'builder' => array(
+				'single-date' => array( 'builder_area' => 'single', 'builder_type' => 'date' )
+			) ) )
+		) );
+		md_test_set_post_meta( array( 'byline' => array( 'builder' => array(
+			'post-count' => array( 'builder_area' => 'single', 'builder_type' => 'post_count' )
+		) ) ) );
+
+		$this->assertSame( array(
+			'single-date' => array( 'builder_area' => 'single', 'builder_type' => 'date' )
+		), md_get_post_type_builder( 'byline', 'post' ), 'A loop of posts on a page keeps the posts\' bylines' );
+	}
+
+	public function test_viewed_single_without_rows_inherits() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'post', 'queried_object_id' => 1 ) );
+		md_test_set_option( 'marketers_delight', array(
+			'post' => array( 'byline' => array( 'builder' => array(
+				'single-date' => array( 'builder_area' => 'single', 'builder_type' => 'date' )
+			) ) )
+		) );
+
+		$this->assertSame( array(
+			'single-date' => array( 'builder_area' => 'single', 'builder_type' => 'date' )
+		), md_get_post_type_builder( 'byline', 'post' ) );
+	}
+
+	public function test_queried_post_is_the_queried_single_only() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'page', 'queried_object_id' => 1 ) );
+
+		$this->assertTrue( md_is_queried_post() );
+
+		md_test_set_query( array( 'the_id' => 7 ) );
+
+		$this->assertFalse( md_is_queried_post(), 'A post a Query Loop lists on the page' );
+
+		md_test_set_query( array( 'is_singular' => false, 'the_id' => 1 ) );
+
+		$this->assertFalse( md_is_queried_post(), 'Archives have no viewed post' );
 	}
 
 	public function test_term_meta_preserves_explicit_empty_builder() {

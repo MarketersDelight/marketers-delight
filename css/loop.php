@@ -249,6 +249,14 @@
 	line-height: var(--md-h3-line-height);
 }
 
+.category-title-wrap > .category-more {
+	align-self: baseline;
+	flex-shrink: 0;
+	margin-inline-start: auto;
+}
+
+.category-title-wrap > .category-more a { color: var(--md-links); }
+
 :is(.category-view, .category-posts) > .entry > :is(.category-title, .description):not(:last-child, :has(+ .post-footer, + .description)) { margin-block-end: var(--md-single); }
 
 :is(.category-view, .category-posts) > .entry > .category-title:has(+ .description) { margin-block-end: var(--md-third); }
@@ -271,8 +279,8 @@
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	.box-entry.full { --md-loop-item-padding: var(--md-mid); }
-	.loop.slim .title {
-		font-size: var(--md-h4);
-		line-height: var(--md-h4-line-height);
+	:is(.loop, .categories).slim .title {
+		font-size: var(--md-h5);
+		line-height: var(--md-h5-line-height);
 	}
 }

@@ -22,9 +22,9 @@ class md_page_cover extends md_api {
 				'fields' => $this->fields()
 			),
 			'meta_box' => array(
-				'name' => $this->name,
+				'name' => __( 'Cover', 'md' ),
 				'edit_post' => true,
-				'child_of' => array( 'hero', 'page_settings' ),
+				'child_of' => 'hero',
 				'fields' => $this->fields()
 			),
 			'term' => array(
@@ -33,6 +33,33 @@ class md_page_cover extends md_api {
 				'fields' => $this->fields()
 			)
 		);
+	}
+
+	/**
+	 * Print the Description in the post editor's Text tab.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function actions() {
+		add_action( 'md_post_meta_page_text', array( $this, 'description_field' ), 20 );
+	}
+
+	/**
+	 * A post's Description shows with its title, in place of the excerpt
+	 * when the post type shows excerpts in titles.
+	 *
+	 * @since 6.0.4
+	 */
+
+	public function description_field() {
+		$this->fields->field( 'title_content', array(
+			'type' => 'editor',
+			'init' => true,
+			'label' => __( 'Description', 'md' ),
+			'description' => __( 'Show formatted text with the page title. Replaces the excerpt when excerpts show in titles.', 'md' ),
+			'rows' => 4
+		) );
 	}
 
 	/**

@@ -356,6 +356,17 @@
 			}
 		},
 		tabs: function() {
+			$( '.md-tabs' ).each( function() {
+				var tabs = $( this ),
+					active = tabs.children( '.nav-tab-wrapper' ).find( '.nav-tab-active' ).data( 'md-tab' );
+
+				if ( active && tabs.children( '.' + active ).length ) {
+					tabs.children( '.md-tab-content' ).removeClass( 'active' );
+					tabs.children( '.' + active ).addClass( 'active' );
+				}
+
+				tabs.addClass( 'md-tabs-ready' );
+			});
 			$( document ).on( 'click', '.md-tab', function( e ) {
 				e.preventDefault();
 				var tab = $( this ).data( 'md-tab' ),

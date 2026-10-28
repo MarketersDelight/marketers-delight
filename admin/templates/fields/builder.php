@@ -20,7 +20,7 @@ if ( is_array( $option ) )
 
 	<h3 class="md-builder-title"><i class="dashicons dashicons-plus-alt"></i> <?php echo isset( $args['title'] ) ? esc_html( $args['title'] ) : __( 'Add Elements', 'md' ); ?></h3>
 
-	<?php if ( isset( $args['description'] ) ) : ?>
+	<?php if ( ! empty( $args['description'] ) ) : ?>
 	<p class="description"><?php echo esc_html( $args['description'] ); ?></p>
 	<?php endif; ?>
 
