@@ -91,8 +91,6 @@ class md_admin {
 		add_action( 'upgrader_process_complete', array( $this->requests, 'delete_theme_update' ), 10, 2 );
 		add_action( 'load-themes.php', array( $this, 'load_themes_screen' ) );
 		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
-		add_action( 'update-custom_upload-md-dropin', array( $this->requests, 'upload_dropin' ) );
-		add_action( 'update-custom_upload-dropin-cancel-overwrite', array( $this->requests, 'cancel_dropin_overwrite' ) );
 
 		// Actions + requests
 		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );

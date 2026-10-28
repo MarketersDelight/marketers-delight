@@ -293,3 +293,13 @@ function md_template_shortcode( $atts, $content = null ) {
 
 	return ob_get_clean();
 }
+
+/**
+ * Allow safe HTML in a saved text field.
+ *
+ * @since 4.0
+ */
+
+function md_text_field( $string ) {
+	return wp_kses_post( $string );
+}

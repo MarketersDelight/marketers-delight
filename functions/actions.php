@@ -79,6 +79,10 @@ function md_hook_header_details() {
 	do_action( 'md_hook_header_details' );
 }
 
+function md_hook_header_triggers() {
+	do_action( 'md_hook_header_triggers' );
+}
+
 function md_hook_header_logo_bottom() {
 	do_action( 'md_hook_header_logo_bottom' );
 }

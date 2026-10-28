@@ -2,7 +2,6 @@
 
 require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 require_once 'dropin-upgrader-skin.php';
-require_once 'dropin-installer-skin.php';
 
 /**
  * Run installation, upgrade, activate, and other various upgrades
@@ -63,20 +62,6 @@ class MD_Dropin_Upgrader extends WP_Upgrader {
 		$this->strings['process_failed'] = __( 'Drop-in installation failed.', 'md' );
 		$this->strings['process_success'] = __( 'Drop-in installed successfully.', 'md' );
 		$this->strings['process_success_specific'] = __( 'Successfully installed the drop-in <strong>%1$s %2$s</strong>.', 'md' );
-
-		if ( ! empty( $this->skin->overwrite ) ) {
-			if ( 'update-dropin' === $this->skin->overwrite ) {
-				$this->strings['installing_package'] = __( 'Updating the drop-in&#8230;', 'md' );
-				$this->strings['process_failed'] = __( 'Drop-in update failed.', 'md' );
-				$this->strings['process_success'] = __( 'Drop-in updated successfully.', 'md' );
-			}
-
-			if ( 'downgrade-dropin' === $this->skin->overwrite ) {
-				$this->strings['installing_package'] = __( 'Downgrading the drop-in&#8230;', 'md' );
-				$this->strings['process_failed'] = __( 'Drop-in downgrade failed.', 'md' );
-				$this->strings['process_success'] = __( 'Drop-in downgraded successfully.', 'md' );
-			}
-		}
 	}
 
 	/**

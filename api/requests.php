@@ -381,44 +381,6 @@ class md_requests {
 	}
 
 	/**
-	 * Processes uploaded drop-in file when installed through <form>.
-	 *
-	 * @since 5.4
-	 */
-
-	public function upload_dropin() {
-		if ( ! current_user_can( 'install_plugins' ) || ! current_user_can( 'upload_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to install drop-ins on this site.' ) );
-
-		check_admin_referer( 'dropin-upload' );
-
-		$title = __( 'Upload Drop-in', 'md' );
-		$parent_file = 'plugins.php';
-		$submenu_file = 'plugin-install.php';
-		$file_upload = new File_Upload_Upgrader( 'dropinzip', 'package' );
-
-		require_once ABSPATH . 'wp-admin/admin-header.php';
-
-		$filename = esc_html( basename( $file_upload->filename ) );
-		$title = sprintf( __( 'Installing drop-in from uploaded file: %s', 'md' ), $filename );
-		$nonce = 'dropin-upload';
-		$url = add_query_arg( array( 'package' => $file_upload->id ), 'update.php?action=upload-md-dropin' );
-		$type = 'upload';
-		$overwrite = isset( $_GET['overwrite'] ) ? sanitize_text_field( $_GET['overwrite'] ) : '';
-		$overwrite = in_array( $overwrite, array( 'update-dropin', 'downgrade-dropin' ), true ) ? $overwrite : '';
-
-		$upgrader = new MD_Dropin_Upgrader( new Dropin_Installer_Skin( compact( 'type', 'title', 'nonce', 'url', 'overwrite' ) ) );
-		$result = $upgrader->install( $file_upload->package, array(
-			'overwrite_package' => $overwrite
-		) );
-
-		if ( $result || is_wp_error( $result ) )
-			$file_upload->cleanup();
-
-		require_once ABSPATH . 'wp-admin/admin-footer.php';
-	}
-
-	/**
 	 * Called during a single Drop-in upgrade initialization.
 	 *
 	 * @since 5.4
@@ -458,33 +420,6 @@ class md_requests {
 	}
 
 	/**
-	 * Cancel the drop-in upload process if user chooses to bail.
-	 *
-	 * @since 5.4
-	 */
-
-	public function cancel_dropin_overwrite() {
-		if ( ! current_user_can( 'upload_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to install drop-ins on this site.' ) );
-
-		check_admin_referer( 'dropin-upload-cancel-overwrite' );
-
-		// Make sure the attachment still exists, or File_Upload_Upgrader will call wp_die()
-		// that shows a generic "Please select a file" error.
-		if ( ! empty( $_GET['package'] ) ) {
-			$attachment_id = (int) $_GET['package'];
-
-			if ( get_post( $attachment_id ) ) {
-				$file_upload = new File_Upload_Upgrader( 'dropinzip', 'package' );
-				$file_upload->cleanup();
-			}
-		}
-
-		wp_redirect( self_admin_url( 'admin.php?page=md_dropins' ) );
-		exit;
-	}
-
-	/**
 	 * Run delete Drop-in file actions.
 	 *
 	 * @since 5.4
@@ -494,40 +429,4 @@ class md_requests {
 		$files = new md_files;
 		$files->file_action( 'delete-dropin' );
 	}
-
-	/**
-	 * BULK Drop-ins updater return value.
-	 *
-	 * @since 5.4
-	 */
-/*
-	private function dropins_updater() {
-		if ( ! current_user_can( 'update_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to update plugins for this site.' ) );
-
-	//	check_admin_referer( 'bulk-update-plugins' );
-
-		if ( isset( $_GET['plugins'] ) ) {
-			$plugins = explode( ',', stripslashes( $_GET['plugins'] ) );
-		} elseif ( isset( $_POST['checked'] ) ) {
-			$plugins = (array) $_POST['checked'];
-		} else {
-			$plugins = array();
-		}
-
-		$plugins = array_map( 'urldecode', $plugins );
-
-		$url   = 'update.php?action=update-md-dropins&amp;plugins=' . urlencode( implode( ',', $plugins ) );
-		$nonce = 'bulk-update-md-dropins';
-
-		wp_enqueue_script( 'updates' );
-
-		iframe_header();
-
-		$upgrader = new MD_Dropin_Upgrader( new Bulk_Plugin_Upgrader_Skin( compact( 'nonce', 'url' ) ) );
-		$upgrader->bulk_upgrade( $plugins );
-
-		iframe_footer();
-	}
-*/
 }

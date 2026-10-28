@@ -67,7 +67,6 @@
 
 .md .green { color: #30a146; }
 .md .red { color: #ae2525; }
-.md .orange { color: #F5B843; }
 
 .md .opacity { opacity: 0.5; }
 .md .opacity:hover { opacity: 1; }
@@ -121,7 +120,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 .mt-half { margin-top: 15px; }
 .mb-half { margin-bottom: 12px; }
 .mt-small { margin-top: 2px; }
-.mt-micro { margin-top: 7px; }
 .mt-small .md-label-wrap { margin-bottom: 4px; }
 
 /* TYPOGRAPHY */
@@ -401,9 +399,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 	.md .columns-70-30 > .col1, .md .columns-30-70 > .col2 { width: 70%; }
 	.md .columns-60-40 > .col1, .md .columns-40-60 > .col2 { width: 60%; }
 	.md .columns-60-40 > .col2, .md .columns-40-60 > .col1 { width: 40%; }
-	.md .columns-20-60-20 > .col1, .md .columns-20-60-20 > .col3 { width: 20%; }
-	.md .columns-20-60-20 > .col2 { width: 60%; }
-	.md .col.col-right, .md-right{ float: right; }
 	.md .col.col-full { width: 100%; }
 	.md-flex-columns {
 		align-items: center;
@@ -885,8 +880,6 @@ body.toplevel_page_md_settings #toplevel_page_md_settings .wp-first-item a {
 
 .md-popups .md-clone-new .md-popup-message { display: block; }
 
-.md-optins-popups .columns-4 .col1, .md-optins-popups .columns-4 .col2 { width: 30%; }
-.md-optins-popups .columns-4 .col3, .md-optins-popups .columns-4 .col4 { width: 20%; }
 .md-optins-popups select { width: 100%; }
 
 
@@ -2248,9 +2241,6 @@ a.md-circle-badge {
 	margin: 0;
 	line-height: 1.4;
 }
-.md .postbox .hndle .regular-text,
-.md .md-repeat-bar .regular-text,
-.md .postbox .hndle .regular-text { max-width: 13em; }
 .term-md-wrap .postbox, .md .mb-none { margin-bottom: 0; }
 .term-md-wrap td { padding-left: 0; padding-right: 0; }
 .md .mt-none { margin-top: 0; }
@@ -2346,7 +2336,7 @@ a.md-circle-badge {
 	margin-top: 22px;
 }
 
-.md-dropin .md-title small, .md-store h3 small {
+.md-dropin .md-title small {
 	color: #777;
 	font-size: 0.85em;
 }
@@ -2529,48 +2519,6 @@ a.md-circle-badge {
 .md-license-actions .md-action-check-updates { color: #359346; }
 .md-license-actions .md-action-check-updates:hover { color: #247b32; }
 .md-license-actions .md-action-check-updates:disabled { cursor: wait; opacity: .6; }
-
-/* DROPIN STORE */
-
-.md-store .col { margin-bottom: 11px; }
-.md-store .col-inner {
-	background-color: #fff;
-	border-radius: 3px;
-	box-shadow: 0 4px 10px #ddd;
-	padding: 15px;
-}
-.md-store h3 {
-	font-size: 19px;
-	line-height: 24px;
-	margin-bottom: 6px;
-	margin-top: 0;
-}
-.md-store h3 a { color: inherit; text-decoration: none; }
-.md-store p { margin-bottom: 0; margin-top: 0; }
-.md-store-item-image { display: block; }
-.md-store-item-image img { border-radius: 3px 3px 0 0; }
-.md-store-item-byline {
-	border-top: 1px solid #ddd;
-	padding-top: 12px;
-	margin-top: 8px;
-}
-.md-store-item i { font-size: 12px; }
-.md-store-item-status {
-	color: green;
-	cursor: default;
-	float: right;
-	font-size: 13px;
-	font-weight: normal;
-	position: relative;
-		top: 4px;
-}
-.md-store-item-status .dashicons {
-	font-size: 14px;
-	height: 12px;
-	position: relative;
-		top: 3px;
-	width: 12px;
-}
 
 /* FONT ICONS */
 

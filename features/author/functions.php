@@ -18,6 +18,16 @@ function md_has_author_box() {
 }
 
 /**
+ * Print the author box on md_hook_content_item.
+ *
+ * @since 4.0
+ */
+
+function md_author() {
+	md_author_box();
+}
+
+/**
  * Theme author box, shown after the content on a single entry.
  *
  * It pulls information from the author's profile in the WordPress dashboard.
