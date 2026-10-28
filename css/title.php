@@ -118,7 +118,12 @@
 	overflow-wrap: break-word;
 }
 
-:is(.byline-item, .byline-item > a) > [class*="md-icon-"] { flex-shrink: 0; }
+:is(.byline-item, .byline-item > a):has(> [class*="md-icon-"]) { line-height: var(--md-line-height-tiny); }
+
+:is(.byline-item, .byline-item > a) > [class*="md-icon-"] {
+	align-self: flex-start;
+	flex-shrink: 0;
+}
 
 .title-inline { text-wrap: pretty; }
 
