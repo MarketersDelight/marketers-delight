@@ -168,7 +168,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_filter( 'md_setting_defaults', array(
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
 				'default-highlight' => array(
-					'builder_area' => 'before_content',
+					'builder_area' => 'before_loop',
 					'builder_type' => 'bookshelf_highlight'
 				)
 			) ) )
@@ -180,7 +180,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( array(
 			'default-highlight' => array(
-				'builder_area' => 'before_content',
+				'builder_area' => 'before_loop',
 				'builder_type' => 'bookshelf_highlight'
 			)
 		), md_get_post_type_builder( 'archive_sections', 'bookshelf' ) );
@@ -190,7 +190,7 @@ class SettingChainTest extends MD_InheritanceTestCase {
 		md_test_set_filter( 'md_setting_defaults', array(
 			'bookshelf' => array( 'archive_sections' => array( 'builder' => array(
 				'default-highlight' => array(
-					'builder_area' => 'before_content',
+					'builder_area' => 'before_loop',
 					'builder_type' => 'bookshelf_highlight'
 				)
 			) ) )

@@ -270,6 +270,11 @@ function md_filter_loops() {
 			'description'  => __( 'A simple list with a condensed post listing.', 'md' ),
 			'style_target' => 'group',
 			'is_slim' => true
+		),
+		'timeline' => array(
+			'name' => __( 'Timeline', 'md' ),
+			'description' => __( 'A chronological timeline layout perfect for status updates and activity streams.', 'md' ),
+			'single' => true
 		)
 	) );
 }

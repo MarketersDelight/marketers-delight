@@ -107,10 +107,8 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/wordpress.php';
 		require_once MD_DIR . 'features/page-cta/functions.php';
 		require_once MD_DIR . 'features/byline/functions.php';
-		require_once MD_DIR . 'features/sections/functions.php';
 		require_once MD_DIR . 'features/header/functions.php';
 		require_once MD_DIR . 'features/loop/functions.php';
-		require_once MD_DIR . 'features/loop/query-loop.php';
 		require_once MD_DIR . 'features/loop/category-loop.php';
 		require_once MD_DIR . 'features/loop/content.php';
 		require_once MD_DIR . 'features/author/functions.php';
@@ -129,13 +127,8 @@ final class marketers_delight {
 			require_once MD_DIR . 'features/byline/admin.php';
 			require_once MD_DIR . 'features/author/admin.php';
 			require_once MD_DIR . 'features/loop/admin.php';
-			require_once MD_DIR . 'features/sections/sections.php';
 		}
 
-		require_once MD_DIR . 'features/sections/meta.php';
-		require_once MD_DIR . 'features/sections/taxonomy-filter.php';
-		require_once MD_DIR . 'features/sections/archive.php';
-		require_once MD_DIR . 'features/sections/single.php';
 		require_once MD_DIR . 'features/blog.php';
 	}
 

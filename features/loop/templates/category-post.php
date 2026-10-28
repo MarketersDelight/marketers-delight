@@ -4,7 +4,7 @@ $h_class = $h !== 'h2' ? ' h2' : '';
 $category_identity = md_category_identity( $category );
 $category_style = $category_identity['color'] ? md_style( array( 'vars' => array( 'md-category-color' => $category_identity['color'], 'md-category-text' => $category_identity['text'] ) ) ) : '';
 $category_description = term_description( $category->term_id );
-$meta = md_get_archive_meta( 'category_entry', $category, $loop['post_type'] ?? '' );
+$meta = apply_filters( 'md_title_archive_meta', array(), 'category_entry', $category, $loop['post_type'] ?? '' );
 $has_inside_entry = ! empty( $meta['inside_title'] );
 $has_aside_entry = ! empty( $meta['byline_aside'] );
 $has_more = isset( $posts ) && $posts->query_vars['posts_per_page'] > 0 && $posts->post_count >= $posts->query_vars['posts_per_page'];

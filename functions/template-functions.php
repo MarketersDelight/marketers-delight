@@ -81,6 +81,78 @@ function md_count_text( $count, $fields, $singular, $plural, $number = '' ) {
 }
 
 /**
+ * Count the approved comments across everything the current archive, or
+ * a given term, lists. The result is remembered for the request, so the
+ * Comment Count meta and anything else showing it share one query.
+ *
+ * @since 6.0
+ */
+
+function md_archive_comment_total( $post_type, $term = null ) {
+	static $totals = array();
+
+	$queried = $term ?: get_queried_object();
+	$term_id = $queried instanceof WP_Term ? $queried->term_id : 0;
+	$key = implode( ',', (array) $post_type ) . ":$term_id";
+
+	if ( isset( $totals[$key] ) )
+		return $totals[$key];
+
+	$args = array(
+		'post_type' => $post_type,
+		'post_status' => 'publish',
+		'status' => 'approve',
+		'type' => 'comment',
+		'count' => true
+	);
+
+	if ( $term_id ) {
+		$post_ids = get_posts( array(
+			'post_type' => $post_type,
+			'post_status' => 'publish',
+			'posts_per_page' => -1,
+			'fields' => 'ids',
+			'tax_query' => array( array(
+				'taxonomy' => $queried->taxonomy,
+				'terms' => $term_id
+			) )
+		) );
+
+		if ( ! $post_ids )
+			return $totals[$key] = 0;
+
+		$args['post__in'] = $post_ids;
+	}
+
+	return $totals[$key] = (int) get_comments( $args );
+}
+
+/**
+ * Count a term's published posts, including its child terms' posts, like
+ * its archive page lists them. Posts in several child terms count once.
+ *
+ * @since 6.1
+ */
+
+function md_term_post_count( $term, $post_type = '' ) {
+	$taxonomy = get_taxonomy( $term->taxonomy );
+
+	$query = new WP_Query( array(
+		'post_type' => $post_type ?: ( $taxonomy ? $taxonomy->object_type : 'any' ),
+		'post_status' => 'publish',
+		'posts_per_page' => 1,
+		'fields' => 'ids',
+		'tax_query' => array( array(
+			'taxonomy' => $term->taxonomy,
+			'terms' => $term->term_id,
+			'include_children' => true
+		) )
+	) );
+
+	return (int) $query->found_posts;
+}
+
+/**
  * Get token key→value map (or key list) for archive text replacement.
  *
  * @since 6.0
@@ -128,21 +200,8 @@ function md_parse_tokens( $args = array() ) {
 				'{plural}' => $post_type ? $post_type->labels->name : ''
 			);
 
-			if ( strpos( $text, '{count}' ) !== false && $taxonomy && $taxonomy->hierarchical && get_term_children( $term->term_id, $term->taxonomy ) ) {
-				$query = new WP_Query( array(
-					'post_type' => $taxonomy->object_type,
-					'post_status' => 'publish',
-					'posts_per_page' => 1,
-					'fields' => 'ids',
-					'tax_query' => array( array(
-						'taxonomy' => $term->taxonomy,
-						'terms' => $term->term_id,
-						'include_children' => true
-					) )
-				) );
-
-				$tokens['{count}'] = $query->found_posts;
-			}
+			if ( strpos( $text, '{count}' ) !== false && $taxonomy && $taxonomy->hierarchical && get_term_children( $term->term_id, $term->taxonomy ) )
+				$tokens['{count}'] = md_term_post_count( $term );
 
 			if ( strpos( $text, '{parent}' ) !== false )
 				$tokens['{parent}'] = $term->parent ? get_term( $term->parent, $term->taxonomy )->name : '';

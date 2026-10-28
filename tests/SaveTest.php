@@ -339,6 +339,82 @@ class SaveTest extends MD_TestCase {
 		$this->assertSame( 'keep-topic', $result['book']['topic']['layout'] );
 	}
 
+	public function test_taxonomy_save_clears_every_field_type_emptied_in_the_form() {
+		$this->schema = array(
+			'book' => array( 'fields' => array(
+				'title' => array( 'type' => 'text' ),
+				'text' => array( 'type' => 'editor' ),
+				'script' => array( 'type' => 'code' ),
+				'count' => array( 'type' => 'number' ),
+				'link' => array( 'type' => 'url' ),
+				'style' => array( 'type' => 'select', 'options' => array( 'a', 'b' ) ),
+				'show' => array( 'type' => 'checkbox', 'options' => array( 'one', 'two' ) ),
+				'color' => array( 'type' => 'color' ),
+				'image' => array( 'type' => 'upload' ),
+				'rows' => array( 'type' => 'builder', 'fields' => array( 'name' => array( 'type' => 'text' ) ) )
+			) )
+		);
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_option( 'marketers_delight', array( 'book' => array( 'genre' => array(
+			'title' => 'Old',
+			'text' => '<p>Old</p>',
+			'script' => '<script>old()</script>',
+			'count' => 4,
+			'link' => 'https://example.test/',
+			'style' => 'b',
+			'show' => array( 'one' => true, 'two' => true ),
+			'color' => '#ff0000',
+			'image' => array( 'id' => 7, 'url' => 'https://example.test/a.jpg' ),
+			'rows' => array( 'r1' => array( 'name' => 'Row' ) )
+		) ) ) );
+		$_POST['md_save_taxonomy_post_type'] = 'book';
+		$_POST['md_save_taxonomy'] = 'genre';
+
+		// As the form posts it: blanks, unchecked boxes left out, every row removed
+
+		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+			'title' => '',
+			'text' => '',
+			'script' => '',
+			'count' => '',
+			'link' => '',
+			'style' => '',
+			'color' => '',
+			'image' => array( 'id' => '', 'url' => '' ),
+			'rows_data' => ''
+		) ) ) );
+
+		$this->assertArrayNotHasKey( 'book', $result, 'Clearing every field removes the taxonomy branch' );
+	}
+
+	public function test_taxonomy_save_keeps_settings_no_registered_field_owns() {
+		$this->schema = array(
+			'book' => array( 'fields' => array(
+				'layout' => array( 'type' => 'text' )
+			) )
+		);
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_option( 'marketers_delight', array(
+			'book' => array(
+				'genre' => array(
+					'layout' => 'old-layout',
+					'archive_sections' => array( 'builder' => array( 'a' => array( 'builder_type' => 'query_loop' ) ) )
+				)
+			)
+		) );
+		$_POST['md_save_taxonomy_post_type'] = 'book';
+		$_POST['md_save_taxonomy'] = 'genre';
+
+		$result = $this->save->admin_save( array(
+			'book' => array(
+				'genre' => array( 'layout' => '' )
+			)
+		) );
+
+		$this->assertArrayNotHasKey( 'layout', $result['book']['genre'], 'Registered fields still clear' );
+		$this->assertSame( 'query_loop', $result['book']['genre']['archive_sections']['builder']['a']['builder_type'], 'An inactive Drop-in\'s settings stay' );
+	}
+
 	public function test_taxonomy_save_preserves_explicit_checkbox_zero() {
 		$this->schema = array(
 			'book' => array( 'fields' => array(

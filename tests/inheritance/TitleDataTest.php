@@ -85,43 +85,21 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'custom', $data['cta']['page_cta'], 'Categories inherit the post type CTA' );
 	}
 
-	public function test_hide_in_page_title_turns_off_archive_meta() {
+	public function test_archive_meta_comes_from_the_title_filter() {
 		md_test_set_query( array( 'is_home' => true, 'post_type' => 'post' ) );
-		md_test_set_option( 'marketers_delight', array( 'post' => array(
-			'archives_title' => 'Blog',
-			'archive_meta' => array(
-				'builder' => array( 'count' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives' ) ),
-				'display' => array( 'hide_page_title' => true )
-			)
-		) ) );
-		md_test_set_filter( 'md_archive_meta_items', array(
-			'test_posts' => array( 'icon' => '', 'callback' => 'md_test_title_data_posts' )
-		) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'archives_title' => 'Blog' ) ) );
+		md_test_set_filter( 'md_title_archive_meta', function( $meta, $area ) {
+			return $area === 'archives' ? array( 'after_title' => '<div class="byline after-title archive-meta"></div>' ) : $meta;
+		} );
 
-		$data = md_title_data( 'page' );
-
-		$this->assertSame( array(), $data['archive_meta'] );
+		$this->assertSame( array( 'after_title' ), array_keys( md_title_data( 'page' )['archive_meta'] ) );
 	}
 
-	public function test_archive_meta_resolves_by_position() {
+	public function test_archive_meta_is_empty_without_sections() {
 		md_test_set_query( array( 'is_home' => true, 'post_type' => 'post' ) );
-		md_test_set_option( 'marketers_delight', array( 'post' => array(
-			'archives_title' => 'Blog',
-			'archive_meta' => array( 'builder' => array(
-				'count' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives' ),
-				'aside' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives', 'position' => 'byline_aside' ),
-				'before' => array( 'builder_type' => 'test_posts', 'builder_area' => 'archives', 'position' => 'before_title' )
-			) )
-		) ) );
-		md_test_set_filter( 'md_archive_meta_items', array(
-			'test_posts' => array( 'icon' => '', 'callback' => 'md_test_title_data_posts' )
-		) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'archives_title' => 'Blog' ) ) );
 
-		$meta = md_title_data( 'page' )['archive_meta'];
-
-		$this->assertSame( array( 'after_title', 'byline_aside', 'before_title' ), array_keys( $meta ), 'Items without a position are After Title' );
-		$this->assertStringStartsWith( '<div class="byline after-title archive-meta">', $meta['after_title'] );
-		$this->assertStringContainsString( '<strong>12</strong> posts', $meta['byline_aside'] );
+		$this->assertSame( array(), md_title_data( 'page' )['archive_meta'] );
 	}
 
 	public function test_category_cta_saved_without_a_type_inherits() {
@@ -199,7 +177,3 @@ class TitleDataTest extends MD_InheritanceTestCase {
 
 }
 
-
-function md_test_title_data_posts() {
-	return '12 posts';
-}

@@ -296,12 +296,10 @@ class md_save {
 		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
 		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
 		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
-		$options = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
-		$options = isset( $options[$post_type] ) ? $this->prune_empty( $options[$post_type] ) : array();
+		$save = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
 		$schema = md_register( 'admin_pages' );
-
-		if ( ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) && ! empty( $schema[$post_type]['fields'] ) )
-			$options = $this->preserve_code_fields( $options, $settings[$post_type][$taxonomy] ?? array(), $schema[$post_type]['fields'] );
+		$old = $settings[$post_type][$taxonomy] ?? array();
+		$options = $this->prune_empty( $this->merge_fields( is_array( $old ) ? $old : array(), $save[$post_type] ?? array(), $schema[$post_type]['fields'] ?? array() ) );
 
 		if ( ! empty( $options ) )
 			$settings[$post_type][$taxonomy] = $options;
@@ -313,35 +311,6 @@ class md_save {
 		}
 
 		return $settings;
-	}
-
-	/**
-	 * Preserve raw code when a taxonomy settings form is saved by someone
-	 * without code permissions. This save path replaces its whole branch.
-	 */
-
-	private function preserve_code_fields( $save, $old, $schema ) {
-		$save = is_array( $save ) ? $save : array();
-		$old = is_array( $old ) ? $old : array();
-
-		foreach ( $schema as $key => $field ) {
-			$type = $field['type'] ?? null;
-
-			if ( $type === 'code' ) {
-				if ( array_key_exists( $key, $old ) )
-					$save[$key] = $old[$key];
-				else
-					unset( $save[$key] );
-			}
-			elseif ( $type === null && is_array( $field ) ) {
-				$save[$key] = $this->preserve_code_fields( $save[$key] ?? array(), $old[$key] ?? array(), $field );
-
-				if ( ! $save[$key] )
-					unset( $save[$key] );
-			}
-		}
-
-		return $save;
 	}
 
 	/**

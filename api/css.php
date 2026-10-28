@@ -107,6 +107,7 @@ class md_css {
 			'title' => locate_template( 'css/title.php' ),
 			'layout' => locate_template( 'css/layout.php' ),
 			'loop' => locate_template( 'css/loop.php' ),
+			'timeline' => locate_template( 'css/timeline.php' ),
 			'alignments' => locate_template( 'css/alignments.php' ),
 			'page' => locate_template( 'css/page.php' ),
 			'comments' => locate_template( 'css/comments.php' ),

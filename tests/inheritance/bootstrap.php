@@ -285,8 +285,9 @@ function md_template( $file, $path = null, $include = null ) {
 	$name = array_pop( $parts );
 	$first = array_shift( $parts );
 	$dir = trim( $first . '/templates/' . implode( '/', $parts ), '/' );
+	$base = $file === 'dropins' ? dirname( __DIR__, 4 ) . '/md-dropins' : dirname( __DIR__, 2 ) . "/$file";
 
-	return dirname( __DIR__, 2 ) . "/$file/$dir/$name.php";
+	return "$base/$dir/$name.php";
 }
 
 function get_option( $key, $default = false ) {
@@ -766,7 +767,6 @@ require_once dirname( __DIR__, 2 ) . '/features/page-title/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-title/document-title.php';
 require_once dirname( __DIR__, 2 ) . '/features/wordpress.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
-require_once dirname( __DIR__, 2 ) . '/features/sections/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/fields/data.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';

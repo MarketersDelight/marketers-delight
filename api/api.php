@@ -176,6 +176,11 @@ class md_api {
 
 		add_filter( 'md_register', array( $this, '_register' ) );
 
+		// Group admin settings together
+
+		if ( isset( $this->register['admin_page']['has_groups'] ) )
+			add_action( 'init', array( $this, '_register_groups' ), 99 );
+
 		// Register standalone meta box fields with WordPress and the REST API
 
 		$this->_register_standalone_meta();
@@ -669,6 +674,17 @@ class md_api {
 		}
 
 		return $prefix;
+	}
+
+	/**
+	 * Build a group host's registration again, now that every group child
+	 * has added its fields.
+	 *
+	 * @since 6.1
+	 */
+
+	public function _register_groups() {
+		$this->register = $this->register();
 	}
 
 	/**

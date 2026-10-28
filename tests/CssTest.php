@@ -341,12 +341,12 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '<section', $template );
 	}
 
-	public function test_timeline_is_an_opt_in_css_template() {
+	public function test_timeline_is_a_core_css_template_after_loop() {
 		$templates = $this->call( $this->css, 'css_templates' );
 		$loop = $this->source( 'css/loop.php' );
 		$timeline = $this->source( 'css/timeline.php' );
 
-		$this->assertArrayNotHasKey( 'timeline', $templates );
+		$this->assertSame( 'timeline', array_keys( $templates )[ array_search( 'loop', array_keys( $templates ), true ) + 1 ] );
 		$this->assertStringNotContainsString( 'loop-timeline', $loop );
 		$this->assertStringContainsString( '.loop-timeline', $timeline );
 		$this->assertStringContainsString( '.box-entry.loop-timeline', $timeline );

@@ -99,7 +99,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 		'cover' => $cover,
 		'cta' => md_get_cta( $context ),
 		'identity' => $is_page ? md_category_identity() : array(),
-		'archive_meta' => $is_page && ! md_module( array( 'archive_meta', 'display', 'hide_page_title' ) ) ? md_get_archive_meta() : array(),
+		'archive_meta' => $is_page ? apply_filters( 'md_title_archive_meta', array(), 'archives' ) : array(),
 		'header_cover' => $has_header_cover,
 		'has_sidebar' => md_has_sidebar(),
 		'loop' => $loop

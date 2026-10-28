@@ -21,6 +21,32 @@ function md_post_type_meta() {
 }
 
 /**
+ * Public post types with MD settings, as options for a post type select.
+ * Child/helper types inherit another type's settings and are excluded.
+ * Pass search to leave out types excluded from search.
+ *
+ * @since 6.1
+ */
+
+function md_post_type_options( $context = '' ) {
+	$options = array();
+
+	foreach ( array_unique( md_post_type_meta() ) as $post_type ) {
+		$object = get_post_type_object( $post_type );
+
+		if ( $post_type === 'page' || ! $object || ! $object->public || ! $object->publicly_queryable || ! empty( $object->md_settings_parent ) )
+			continue;
+
+		if ( $context === 'search' && $object->exclude_from_search )
+			continue;
+
+		$options[$post_type] = $object->labels->name;
+	}
+
+	return $options;
+}
+
+/**
  * Default taxonomy screens MD metaboxes are added to.
  *
  * @since 4.5.4
