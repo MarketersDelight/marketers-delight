@@ -227,12 +227,15 @@
 }
 
 @media (min-width: 800px) {
-	.expanded .page-title:not(.image-inline, .has-aside) .cta { justify-content: center; }
-	.expanded .wide:not(.image-inline, .has-aside), .expanded .wide:not(.image-inline, .has-aside) .inner {
+	.expanded .page-title:not(.image-inline, .has-aside) .cta,
+	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside) .cta { justify-content: center; }
+	.expanded .wide:not(.image-inline, .has-aside), .expanded .wide:not(.image-inline, .has-aside) .inner,
+	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside), :where(.header-cover .main) > .wide:not(.image-inline, .has-aside) .inner {
 		align-items: center;
 		text-align: center;
 	}
-	.expanded .wide:not(.image-inline, .has-aside) :is(.subtitle, .description) { margin-inline: auto; }
+	.expanded .wide:not(.image-inline, .has-aside) :is(.subtitle, .description),
+	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside) :is(.subtitle, .description) { margin-inline: auto; }
 	.title-left .wrap, .title-right .wrap {
 		align-items: center;
 		flex-flow: row;
@@ -269,7 +272,7 @@
 	.image-inline .featured-media { max-width: min(40%, var(--md-width-sidebar), var(--md-media-width, 100%)); }
 	.image-title.wide .wrap { column-gap: var(--md-mid); }
 	.wide .byline { width: 100%; }
-	.expanded .wide .byline { justify-content: center; }
+	.expanded .wide .byline, :where(.header-cover .main) > .wide .byline { justify-content: center; }
 	.wide:is(.image-inline, .has-aside) .byline, .wide:is(.title-left, .title-right) .wrap .byline { justify-content: flex-start; }
 	.wide .title-inline > .inside-title {
 		justify-content: flex-start;
