@@ -22,7 +22,7 @@ class md_archive_meta extends md_api {
 	 * Offer site stats as byline items, so a single post or page can show
 	 * the same counts an archive title does. Items opt in with singles.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function byline_items( $items ) {
@@ -36,7 +36,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Render a stat as a byline item, with Archive Meta's value markup.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function byline_item( $fields ) {
@@ -193,7 +193,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Render every item's Position, then the item's own controls.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function item_fields( $group, $type, $fields, $row = array() ) {
@@ -244,7 +244,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Render Last Added controls.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function last_added_fields( $group, $type, $fields ) {
@@ -266,7 +266,7 @@ class md_archive_meta extends md_api {
 	 * Choose which post type an item counts. Empty counts the archive's
 	 * own posts.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	private function source_field( $group, $fields ) {
@@ -281,7 +281,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Return an item's chosen post type when it isn't the archive's own.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	private function source( $fields, $post_type ) {
@@ -309,7 +309,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Explain the Text item, whose label is its whole value.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function text_fields() {
@@ -421,7 +421,7 @@ class md_archive_meta extends md_api {
 	/**
 	 * Print a Text item's own words.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function text( $fields ) {
@@ -472,7 +472,7 @@ class md_archive_meta extends md_api {
 	 * The term an item measures: the given one, or the term archive
 	 * being viewed.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	private function item_term( $term = null ) {

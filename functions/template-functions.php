@@ -65,7 +65,7 @@ function md_parse_text( $text, $context = '' ) {
  * text without it gets the number in front. Pass $number to print the
  * number with markup of its own.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_count_text( $count, $fields, $singular, $plural, $number = '' ) {

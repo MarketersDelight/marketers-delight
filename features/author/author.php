@@ -10,7 +10,7 @@ class md_author extends md_api {
 	/**
 	 * Use authors' uploaded photos as their avatars.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function actions() {
@@ -76,7 +76,7 @@ class md_author extends md_api {
 	/**
 	 * Render the Author photo field on user profiles.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function user_meta( $user_meta ) {
@@ -93,7 +93,7 @@ class md_author extends md_api {
 	 * Swap an author's avatar for their uploaded photo, so it shows without
 	 * a request to Gravatar. Authors without a photo keep their avatar.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function avatar_data( $args, $id_or_email ) {

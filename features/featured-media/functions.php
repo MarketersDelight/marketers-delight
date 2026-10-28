@@ -161,7 +161,7 @@ function md_get_media( $context = 'post' ) {
  * shows one and the post doesn't hide it. Authors without an uploaded
  * photo get no title image. 'author' marks the image as the author's.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_get_title_author_media() {
@@ -322,7 +322,7 @@ function md_get_caption( $id = null ) {
  * Featured Media fields and their save rules, shared by the Featured Media
  * settings and Section Titles.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_featured_media_fields() {
@@ -359,7 +359,7 @@ function md_featured_media_fields() {
  * image_only (no Media Type select), position_label (the empty Position
  * choice) and remove (offer "Don't show").
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_featured_media_admin( $fields, $prefix, $args = array() ) {

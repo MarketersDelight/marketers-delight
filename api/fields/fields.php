@@ -21,7 +21,7 @@ class md_fields extends md_fields_render {
 	 * within(), so a panel written for its own screen can save inside
 	 * another setting, like a builder row.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	protected $root = array();
@@ -46,7 +46,7 @@ class md_fields extends md_fields_render {
 	 * Get a copy of these fields that saves within the given keys, e.g.
 	 * array( 'builder', $row, 'section_cta' ). The original is unchanged.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function within( $keys ) {
@@ -407,7 +407,7 @@ class md_fields extends md_fields_render {
 	 * Use it where a control shows this screen's own choice, like which
 	 * CTA type panel is open.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function saved( $keys, $default = null ) {
@@ -417,7 +417,7 @@ class md_fields extends md_fields_render {
 	/**
 	 * Resolve a setting for the current screen, optionally inheriting.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	protected function lookup( $keys, $default, $inherit ) {

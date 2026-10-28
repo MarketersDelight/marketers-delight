@@ -126,7 +126,7 @@ function md_overlay( $context = 'post', $cover = null ) {
  * Page Cover fields and their save rules, shared by the Page Cover
  * settings and Section Titles.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cover_fields() {

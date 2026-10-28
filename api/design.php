@@ -325,7 +325,7 @@ class md_design {
 	/**
 	 * A heading's saved font size on each device, else its scale size.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	private function saved_font_size( $typography, $type, $sizes ) {

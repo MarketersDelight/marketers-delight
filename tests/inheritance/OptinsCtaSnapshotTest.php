@@ -9,7 +9,7 @@
  * marked incomplete. Delete a snapshot file to record it again. Skipped when
  * the Optins drop-in isn't installed beside the theme.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 if ( ! function_exists( 'add_shortcode' ) ) {

@@ -3,7 +3,7 @@
  * Tests Author photos: the uploaded photo, the Author photo title image
  * on singles, and that a post's own image keeps its place.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class AuthorPhotoTest extends MD_InheritanceTestCase {

@@ -9,7 +9,7 @@
  * actions() and template() are overridden on purpose, and anything
  * hook-bearing added to Archive Sections must be checked here too.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class md_single_sections extends md_archive_sections {
@@ -17,7 +17,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Hooks. The archive query variable is registered by Archive Sections.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function actions() {
@@ -28,7 +28,7 @@ class md_single_sections extends md_archive_sections {
 	 * Only post types have singles, so skip the tab on taxonomy and
 	 * author archive settings.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function tabs( $fields ) {
@@ -41,7 +41,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Register Single Sections on post type settings and the post editor.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function register() {
@@ -65,7 +65,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Render the Sections builder for single posts.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function admin_fields() {
@@ -89,7 +89,7 @@ class md_single_sections extends md_archive_sections {
 	 * the content and footer byline, before the author box and comments.
 	 * With Remove Post Content there's no entry, so they take its place.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function template() {
@@ -107,7 +107,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Render both content areas where the entry would be.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function without_content() {
@@ -118,7 +118,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Render the Before Content area.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function before_content() {
@@ -128,7 +128,7 @@ class md_single_sections extends md_archive_sections {
 	/**
 	 * Render the After Content area.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function after_content() {
@@ -139,7 +139,7 @@ class md_single_sections extends md_archive_sections {
 	 * Confirm the entry is the single post being viewed, not a post in a
 	 * Query Loop on its page.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	protected function in_context( $args ) {

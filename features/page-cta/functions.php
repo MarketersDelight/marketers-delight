@@ -44,7 +44,7 @@ function md_cta( $context = 'post', $cta = array() ) {
  * settings, or a single post's own CTA. Other contexts pass their CTA
  * to md_cta() directly.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_get_cta( $context = 'post' ) {
@@ -76,7 +76,7 @@ function md_get_cta( $context = 'post' ) {
  * $fields, which saves wherever the CTA settings live (Page CTA, or a
  * Section Title row).
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cta_types() {
@@ -108,7 +108,7 @@ function md_page_cta_types() {
  * Page CTA fields and their save rules: the CTA type plus every type's
  * own fields. Shared by the Page CTA settings and Section Titles.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cta_fields() {
@@ -137,7 +137,7 @@ function md_page_cta_fields() {
  * Form)"; settings that don't inherit, like a Section Title row, pass
  * false.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cta_admin( $fields, $prefix, $inherit = true ) {
@@ -157,7 +157,7 @@ function md_page_cta_admin( $fields, $prefix, $inherit = true ) {
 /**
  * Links CTA panel.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cta_links_admin( $fields ) {
@@ -167,7 +167,7 @@ function md_page_cta_links_admin( $fields ) {
 /**
  * Custom HTML CTA panel.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_page_cta_custom_admin( $fields ) {

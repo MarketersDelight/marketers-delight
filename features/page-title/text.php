@@ -3,7 +3,7 @@
  * Register the post editor's Text tab: the title's text fields, gathered
  * from the features and Drop-ins that own them.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class md_page_text extends md_api {
@@ -11,7 +11,7 @@ class md_page_text extends md_api {
 	/**
 	 * Register the Text tab, first in the Featured tab.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function register() {
@@ -30,7 +30,7 @@ class md_page_text extends md_api {
 	 * Render the Text tab. Its fields save with the features that print
 	 * them, like the Page Cover's Description.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function admin_fields() {

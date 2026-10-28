@@ -4,7 +4,7 @@
  * and the values it resolves for the blog home, a category, and a single
  * post. Markup is covered by TitleSnapshotTest.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class TitleDataTest extends MD_InheritanceTestCase {

@@ -385,7 +385,7 @@ class md_collection {
 	 * Sanitize and validate Collection item values before anything is saved.
 	 * New items have no post yet, so required fields fall back to defaults.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function validate( $values, $post_id = 0 ) {
@@ -433,7 +433,7 @@ class md_collection {
 	 * Get the WP core post fields a new item is created with, so WP
 	 * sees its title, content, and excerpt in the first insert.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function insert_fields( $resolved ) {

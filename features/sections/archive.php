@@ -148,7 +148,7 @@ class md_archive_sections extends md_api {
 	 * Builder settings shared by every Sections screen, with the wording
 	 * for its context.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	protected function builder_args( $post_type, $text ) {

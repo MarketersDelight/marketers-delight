@@ -250,7 +250,7 @@ function md_get_post_type( $post_id = null ) {
  * Check whether the current post is the single being viewed, not a post
  * that a Query Loop lists on its page.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_is_queried_post() {
@@ -310,7 +310,7 @@ function md_get_builder( $id, $type = null, $key = null ) {
  * Drop builder items made for other post types. Items without
  * post_types are available everywhere.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_builder_items_for( $items, $post_type ) {

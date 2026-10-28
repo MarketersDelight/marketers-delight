@@ -8,7 +8,7 @@
  * A missing snapshot is recorded from the current output and the test is
  * marked incomplete. Delete a snapshot file to record it again.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class TitleSnapshotTest extends MD_InheritanceTestCase {

@@ -260,7 +260,7 @@ class md_byline extends md_api {
 	/**
 	 * Byline items for the builder, each rendered through item_fields().
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	private function elements( $post_type ) {
@@ -275,7 +275,7 @@ class md_byline extends md_api {
 	/**
 	 * Render every item's Position, then the item's own controls.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function item_fields( $group, $type, $fields, $row = array() ) {

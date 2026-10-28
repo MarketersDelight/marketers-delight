@@ -3,7 +3,7 @@
  * The Author Photo tab of a post type's Page Title settings: show the
  * post author's photo beside single post titles.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class md_author_photo extends md_api {
@@ -11,7 +11,7 @@ class md_author_photo extends md_api {
 	/**
 	 * Hooks.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function actions() {
@@ -22,7 +22,7 @@ class md_author_photo extends md_api {
 	 * Only singles show the photo, so skip the tab on taxonomy and
 	 * author archive settings.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function tabs( $fields ) {
@@ -35,7 +35,7 @@ class md_author_photo extends md_api {
 	/**
 	 * Register the tab on post type settings screens.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function register() {
@@ -53,7 +53,7 @@ class md_author_photo extends md_api {
 	/**
 	 * Set options for save.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function fields() {
@@ -77,7 +77,7 @@ class md_author_photo extends md_api {
 	/**
 	 * Render the tab.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function admin_fields() {

@@ -117,7 +117,7 @@ class CssTest extends MD_TestCase {
 		$style = $this->source( 'style.css' );
 
 		$this->assertStringContainsString( 'Theme Name: Marketers Delight', $style );
-		$this->assertStringContainsString( 'Version: 6.0', $style );
+		$this->assertStringContainsString( 'Version: 6.', $style );
 		$this->assertStringNotContainsString( '{', $style );
 		$this->assertStringNotContainsString( '@font-face', $style );
 	}

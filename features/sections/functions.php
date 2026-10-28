@@ -85,7 +85,7 @@ function md_archive_meta_value( $value ) {
  * viewed. Numbers inside the link are emphasized here, since values
  * only get that outside markup.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_archive_meta_link( $text, $url ) {
@@ -104,7 +104,7 @@ function md_archive_meta_link( $text, $url ) {
  * Count a term's published posts, including its child terms' posts, like
  * its archive page lists them. Posts in several child terms count once.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_term_post_count( $term, $post_type = '' ) {
@@ -131,7 +131,7 @@ function md_term_post_count( $term, $post_type = '' ) {
  * archives area measures the current archive; category_entry measures
  * the given term, with the settings of the post type its loop lists.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_get_archive_meta( $area = 'archives', $term = null, $post_type = '' ) {
@@ -180,7 +180,7 @@ function md_get_archive_meta( $area = 'archives', $term = null, $post_type = '' 
 /**
  * Row fields and their save rules.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_section_title_fields() {
@@ -205,7 +205,7 @@ function md_section_title_fields() {
  * Turn a row's settings into the data md_title_template() takes. A row is
  * literal: nothing inherits from the page it's shown on.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_section_title_data( $row ) {
@@ -240,7 +240,7 @@ function md_section_title_data( $row ) {
 /**
  * Render a Section Title row.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_section_title( $row, $post_type, $id, $main_query ) {
@@ -260,7 +260,7 @@ function md_section_title( $row, $post_type, $id, $main_query ) {
 /**
  * Render a Section Title row's controls.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_section_title_admin_fields( $group, $type, $fields ) {

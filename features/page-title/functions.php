@@ -51,7 +51,7 @@ function md_get_title( $context = 'post' ) {
 /**
  * A valet way to get all the needed data about a post/page title.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_title_data( $context = 'post', $args = array() ) {
@@ -143,7 +143,7 @@ function md_the_title( $context = 'post', $args = array() ) {
  * The meta positions a title has, shared by byline and Archive Meta
  * items.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_title_meta_positions() {
@@ -159,7 +159,7 @@ function md_title_meta_positions() {
  * Print a title's meta at one position: byline items on posts, the
  * title's Archive Meta everywhere else.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_title_meta( $position, $context, $args = array() ) {
@@ -172,7 +172,7 @@ function md_title_meta( $position, $context, $args = array() ) {
 /**
  * Check if a title has meta at one position.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_has_title_meta( $position, $context, $args = array() ) {
@@ -186,7 +186,7 @@ function md_has_title_meta( $position, $context, $args = array() ) {
  * Get the title position the CTA is placed in. Titles rendered without
  * data, like bare md_the_title() calls, have no CTA.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_get_title_cta_position( $args = array() ) {
@@ -206,7 +206,7 @@ function md_get_title_cta_position( $args = array() ) {
  * Print everything placed at one title position: its meta, then the CTA
  * and foot text when the CTA is placed there.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_title_position( $position, $context, $args = array() ) {
@@ -224,7 +224,7 @@ function md_title_position( $position, $context, $args = array() ) {
 /**
  * Check if anything is placed at one title position.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_has_title_position( $position, $context, $args = array() ) {
@@ -249,7 +249,7 @@ function md_title( $context = 'post', $args = array() ) {
 /**
  * Build the full title template with surrounding markup.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_title_template( $context, $data, $args = array() ) {
@@ -380,7 +380,7 @@ function md_description( $context = 'post', $args = array() ) {
  * Get the description of the current page title: a single post's cover
  * text or excerpt, or the archive, term, or author description.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_get_description( $context = 'post' ) {

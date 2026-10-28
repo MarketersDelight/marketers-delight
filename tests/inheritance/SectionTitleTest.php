@@ -4,7 +4,7 @@
  * mapping, its markup through the shared Page Title renderer, and that its
  * fields are the Featured Media, Page Cover and Page CTA schemas.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class SectionTitleTest extends MD_InheritanceTestCase {

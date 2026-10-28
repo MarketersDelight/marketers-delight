@@ -83,7 +83,7 @@ function md_taxonomy_filter( $fields, $post_type, $id, $main_query ) {
  * The taxonomy a filter lists: the one chosen in its settings, else the
  * one being viewed, else the post type's first public taxonomy.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_taxonomy_filter_taxonomy( $taxonomy, $post_type ) {
@@ -107,7 +107,7 @@ function md_taxonomy_filter_taxonomy( $taxonomy, $post_type ) {
  * Term IDs a filter marks active: a single's own terms, or the term
  * archive being viewed.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_taxonomy_filter_current_ids( $taxonomy ) {
@@ -123,7 +123,7 @@ function md_taxonomy_filter_current_ids( $taxonomy ) {
  * The terms a filter lists: the navigation term's children, stepping down
  * past any level with a single term so the filter always offers a choice.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_taxonomy_filter_terms( $all, $navigation_term ) {

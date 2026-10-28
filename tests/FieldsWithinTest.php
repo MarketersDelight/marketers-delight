@@ -5,7 +5,7 @@
  * own screen saves inside another setting, like a builder row. Covers
  * nested group fields, which call back into field() from their template.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class MD_Fields_Within_Capture extends md_fields {

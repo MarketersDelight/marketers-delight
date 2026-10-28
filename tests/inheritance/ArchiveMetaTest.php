@@ -4,7 +4,7 @@
  * Category Entry items stay apart, Category Entry items measure the term
  * they're given, and term post counts include child terms.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class ArchiveMetaTest extends MD_InheritanceTestCase {

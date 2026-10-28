@@ -62,7 +62,7 @@ class md_hero extends md_api {
 	 * and Page Cover as tabs of their own. A single's media can sit in its
 	 * content, so it isn't labeled Page Title here.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function meta_box() {

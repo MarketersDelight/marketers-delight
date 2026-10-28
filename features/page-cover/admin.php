@@ -38,7 +38,7 @@ class md_page_cover extends md_api {
 	/**
 	 * Print the Description in the post editor's Text tab.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function actions() {
@@ -49,7 +49,7 @@ class md_page_cover extends md_api {
 	 * A post's Description shows with its title, in place of the excerpt
 	 * when the post type shows excerpts in titles.
 	 *
-	 * @since 6.0.4
+	 * @since 6.1
 	 */
 
 	public function description_field() {

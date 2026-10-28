@@ -4,7 +4,7 @@
  * ID always wins, and only a missing ID falls back to the admin screen's
  * tag_ID or the current page's queried term.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class TermMetaTest extends MD_InheritanceTestCase {

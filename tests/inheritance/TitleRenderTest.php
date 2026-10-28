@@ -4,7 +4,7 @@
  * current page's settings, so other features (Section Titles) can pass
  * their own data. Page Title markup is covered by TitleSnapshotTest.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 class TitleRenderTest extends MD_InheritanceTestCase {

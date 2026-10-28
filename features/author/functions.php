@@ -60,7 +60,7 @@ function md_author_box() {
  * A user's uploaded Author photo, as an attachment ID. 0 when they have
  * none. Gravatar is never used here.
  *
- * @since 6.0.4
+ * @since 6.1
  */
 
 function md_author_photo_id( $user_id ) {
