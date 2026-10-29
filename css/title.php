@@ -237,8 +237,10 @@
 @media (min-width: 800px) {
 	.expanded .page-title:not(.image-inline, .title-left, .title-right, .has-aside) .cta,
 	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) .cta { justify-content: center; }
-	.expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside), .expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner,
-	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside), :where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner {
+	.expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside),
+	.expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner,
+	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside),
+	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner {
 		align-items: center;
 		text-align: center;
 	}
