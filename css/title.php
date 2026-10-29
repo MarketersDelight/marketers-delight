@@ -235,15 +235,15 @@
 }
 
 @media (min-width: 800px) {
-	.expanded .page-title:not(.image-inline, .has-aside) .cta,
-	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside) .cta { justify-content: center; }
-	.expanded .wide:not(.image-inline, .has-aside), .expanded .wide:not(.image-inline, .has-aside) .inner,
-	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside), :where(.header-cover .main) > .wide:not(.image-inline, .has-aside) .inner {
+	.expanded .page-title:not(.image-inline, .title-left, .title-right, .has-aside) .cta,
+	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) .cta { justify-content: center; }
+	.expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside), .expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner,
+	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside), :where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) .inner {
 		align-items: center;
 		text-align: center;
 	}
-	.expanded .wide:not(.image-inline, .has-aside) :is(.subtitle, .description),
-	:where(.header-cover .main) > .wide:not(.image-inline, .has-aside) :is(.subtitle, .description) { margin-inline: auto; }
+	.expanded .wide:not(.image-inline, .title-left, .title-right, .has-aside) :is(.subtitle, .description),
+	:where(.header-cover .main) > .wide:not(.image-inline, .title-left, .title-right, .has-aside) :is(.subtitle, .description) { margin-inline: auto; }
 	.title-left .wrap, .title-right .wrap {
 		align-items: center;
 		flex-flow: row;
