@@ -6,6 +6,7 @@
  * @since 4.0
  */
 
+add_action( 'md_hook_content_item', 'md_author_box', 20 );
 add_action( 'md_hook_content_item', 'md_comments', 20 );
 add_action( 'md_hook_content_item', 'md_post_nav', 50 );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );

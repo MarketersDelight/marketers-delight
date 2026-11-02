@@ -759,6 +759,7 @@ require_once dirname( __DIR__, 2 ) . '/features/layout/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/integrations/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/content.php';
+require_once dirname( __DIR__, 2 ) . '/features/author/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/loop/comments.php';
 require_once dirname( __DIR__, 2 ) . '/features/featured-media/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/page-cover/functions.php';
