@@ -85,7 +85,7 @@ final class marketers_delight {
 
 		$this->features();
 		$this->dropins();
-		require_once MD_DIR . 'features/author/author.php';
+		require_once MD_DIR . 'features/author.php';
 
 		require_once MD_DIR . 'functions/actions.php';
 		include_once MD_DIR . 'functions/deprecated-functions.php';
@@ -111,7 +111,6 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/loop/functions.php';
 		require_once MD_DIR . 'features/loop/category-loop.php';
 		require_once MD_DIR . 'features/loop/content.php';
-		require_once MD_DIR . 'features/author/functions.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 
 		if ( is_admin() ) {
@@ -125,7 +124,6 @@ final class marketers_delight {
 			require_once MD_DIR . 'features/page-cta/admin.php';
 			require_once MD_DIR . 'features/page-cover/admin.php';
 			require_once MD_DIR . 'features/byline/admin.php';
-			require_once MD_DIR . 'features/author/admin.php';
 			require_once MD_DIR . 'features/loop/admin.php';
 		}
 

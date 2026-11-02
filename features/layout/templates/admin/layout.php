@@ -230,41 +230,16 @@
 				) );
 			}
 
-			if ( $is_post && $author_photo )
-				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'hide_title_image' => __( 'Remove <b>Author photo</b>', 'md' )
-					)
-				) );
-
-			if ( $post_type !== 'page' && $is_post ) {
-				if ( $author_box )
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
-						)
-					) );
-				else
-					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
-						'options' => array(
-							'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
-						)
-					) );
-
+			if ( $post_type !== 'page' && $is_post )
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => $post_nav_options
 				) );
-			}
 
 			if ( $is_admin && ! $is_taxonomy && $settings_post_type !== 'author' )
 				$this->fields->field( 'content', array(
 					'type' => 'checkbox',
 					'options' => array(
-						'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
 						'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
 					)
 				) );

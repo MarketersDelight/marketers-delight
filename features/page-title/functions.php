@@ -83,14 +83,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 
 	$loop = ! empty( $args['loop'] ) ? $args['loop'] : md_get_loop();
 
-	$media = md_has_media( $context, array( 'loop' => $loop ) );
-
-	// An Author photo takes the title unless the post's own image sits there
-
-	$title_image = $media && in_array( $media['position'], array( 'title_left', 'title_right', 'title_center' ), true );
-
-	if ( ! $title_image && ! $is_page && md_is_queried_post() && ( $author_media = md_get_title_author_media() ) )
-		$media = $author_media;
+	$media = apply_filters( 'md_title_media', md_has_media( $context, array( 'loop' => $loop ) ), $context );
 
 	return array(
 		'title' => $title,

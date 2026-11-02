@@ -21,32 +21,6 @@ class PredicateTest extends MD_InheritanceTestCase {
 		$this->assertSame( true, md_has_builder() );
 	}
 
-	public function test_author_box_returns_boolean() {
-		md_test_set_query( array( 'post_type' => 'post' ) );
-		$this->assertSame( false, md_has_author_box() );
-
-		md_test_set_query( array( 'is_singular' => true ) );
-		md_test_set_option( 'marketers_delight', array(
-			'post' => array(
-				'layout' => array(
-					'content' => array(
-						'add_author_box' => true
-					)
-				)
-			)
-		) );
-		$this->assertSame( true, md_has_author_box() );
-
-		md_test_set_post_meta( array(
-			'layout' => array(
-				'content' => array(
-					'author_box' => true
-				)
-			)
-		) );
-		$this->assertSame( false, md_has_author_box() );
-	}
-
 	public function test_post_navigation_returns_boolean() {
 		md_test_set_query( array(
 			'is_singular' => true,
@@ -66,17 +40,6 @@ class PredicateTest extends MD_InheritanceTestCase {
 			'previous_post' => true,
 			'queried_object_id' => 99
 		) );
-		md_test_set_option( 'marketers_delight', array(
-			'post' => array(
-				'layout' => array(
-					'content' => array(
-						'add_author_box' => true
-					)
-				)
-			)
-		) );
-
-		$this->assertSame( false, md_has_author_box() );
 		$this->assertSame( false, md_has_post_nav() );
 	}
 
