@@ -47,6 +47,10 @@ class md_settings extends md_api {
 						'type' => 'checkbox',
 						'options' => array( 'inline', 'child', 'critical' )
 					),
+					'abilities' => array(
+						'type' => 'checkbox',
+						'options' => array( 'disable' )
+					),
 					'sidebars' => array(
 						'type' => 'group',
 						'group_key_lowercase' => true, // widgets must save all lowercase

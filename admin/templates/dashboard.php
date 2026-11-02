@@ -58,6 +58,17 @@
 						) ); ?>
 					</div>
 
+					<div class="md-sep-small">
+						<?php $this->fields->field( 'abilities', array(
+							'type' => 'checkbox',
+							'label' => __( 'Apps & AI', 'md' ),
+							'description' => __( 'Apps and AI assistants you sign in with an application password can use actions from MD and its Drop-ins, such as creating a Stream post. Nothing is shared with anyone who isn&rsquo;t signed in.', 'md' ),
+							'options' => array(
+								'disable' => __( '<b>Disable</b> MD abilities for apps and AI assistants', 'md' )
+							)
+						) ); ?>
+					</div>
+
 				</div>
 
 			</div>
