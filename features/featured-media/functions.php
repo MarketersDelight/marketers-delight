@@ -129,13 +129,6 @@ function md_get_media( $context = 'post' ) {
 		$option = is_author()
 			? md_post_type_field( 'featured_media', array(), 'author' )
 			: md_module( 'featured_media', array(), array( 'inherit_post_type' => false ) );
-
-		// An author page shows the author's photo, or the sitewide image without one
-
-		if ( is_author() && ( $photo_id = md_author_photo_id( get_queried_object_id() ) ) ) {
-			$option['image'] = array( 'id' => $photo_id );
-			$option['author'] = get_queried_object_id();
-		}
 	}
 	else {
 		$option = md_post_meta( 'featured_media', true, array() );
@@ -153,37 +146,7 @@ function md_get_media( $context = 'post' ) {
 	if ( ! md_is_queried_post() && $media['media_type'] == 'custom_html' )
 		$media['media_type'] = 'image';
 
-	return $media;
-}
-
-/**
- * The post author's uploaded photo as a title image, when the post type
- * shows one and the post doesn't hide it. Authors without an uploaded
- * photo get no title image. 'author' marks the image as the author's.
- *
- * @since 6.1
- */
-
-function md_get_title_author_media() {
-	$settings = md_post_type_field( 'author_photo', array() );
-
-	if ( empty( $settings['display']['show'] ) || md_post_meta( array( 'layout', 'content', 'hide_title_image' ) ) )
-		return array();
-
-	$author_id = (int) get_post_field( 'post_author' );
-	$photo_id = md_author_photo_id( $author_id );
-
-	if ( ! $photo_id )
-		return array();
-
-	return array(
-		'media_type' => 'image',
-		'image' => array( 'id' => $photo_id ),
-		'author' => $author_id,
-		'position' => ! empty( $settings['position'] ) ? $settings['position'] : 'title_left',
-		'mobile' => $settings['mobile'] ?? '',
-		'image_width' => $settings['image_width'] ?? ''
-	);
+	return apply_filters( 'md_media', $media, $context );
 }
 
 /**

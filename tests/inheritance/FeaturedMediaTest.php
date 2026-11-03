@@ -17,18 +17,6 @@ class FeaturedMediaTest extends MD_InheritanceTestCase {
 		) );
 	}
 
-	public function test_author_photo_takes_priority_over_sitewide_image() {
-		$this->set_author_media( array(
-			'image' => array( 'id' => 42 )
-		) );
-		md_test_set_user_meta( 7, array( 'author' => array( 'photo' => array( 'id' => 55 ) ) ) );
-
-		$media = md_has_media( 'page' );
-
-		$this->assertSame( 7, $media['author'] );
-		$this->assertSame( 55, $media['image']['id'] );
-	}
-
 	public function test_sitewide_image_is_used_when_author_has_no_photo() {
 		$this->set_author_media( array(
 			'image' => array( 'id' => 42 )

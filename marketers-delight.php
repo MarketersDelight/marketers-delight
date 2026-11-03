@@ -127,7 +127,6 @@ final class marketers_delight {
 			require_once MD_DIR . 'features/page-cta/admin.php';
 			require_once MD_DIR . 'features/page-cover/admin.php';
 			require_once MD_DIR . 'features/byline/admin.php';
-			require_once MD_DIR . 'features/author/admin.php';
 			require_once MD_DIR . 'features/loop/admin.php';
 		}
 

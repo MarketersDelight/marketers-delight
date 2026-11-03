@@ -18,20 +18,8 @@ function md_has_author_box() {
 }
 
 /**
- * Print the author box on md_hook_content_item.
- *
- * @since 4.0
- */
-
-function md_author() {
-	md_author_box();
-}
-
-/**
- * Theme author box, shown after the content on a single entry.
- *
- * It pulls information from the author's profile in the WordPress dashboard.
- * This way, all user's can show their bio after each post.
+ * The author box after a single post's content, built from the author's
+ * profile: photo, name, bio and links. Runs on md_hook_content_item.
  *
  * @since 4.0
  */
@@ -54,17 +42,4 @@ function md_author_box() {
 	$has_avatar = get_option( 'show_avatars' );
 
 	include md_template( 'features', 'author/author-box', true );
-}
-
-/**
- * A user's uploaded Author photo, as an attachment ID. 0 when they have
- * none. Gravatar is never used here.
- *
- * @since 6.1
- */
-
-function md_author_photo_id( $user_id ) {
-	$photo_id = (int) md_user_meta( array( 'author', 'photo', 'id' ), $user_id, 0 );
-
-	return $photo_id && wp_attachment_is_image( $photo_id ) ? $photo_id : 0;
 }

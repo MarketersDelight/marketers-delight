@@ -230,14 +230,6 @@
 				) );
 			}
 
-			if ( $is_post && $author_photo )
-				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
-					'options' => array(
-						'hide_title_image' => __( 'Remove <b>Author photo</b>', 'md' )
-					)
-				) );
-
 			if ( $post_type !== 'page' && $is_post ) {
 				if ( $author_box )
 					$this->fields->field( 'content', array(
