@@ -70,7 +70,9 @@ class md_dropins extends md_api {
 					'colors' => array( 'type' => 'text' ),
 					'status' => array(
 						'type' => 'checkbox',
-						'options' => array( 'enable' )
+						'options' => array(
+							'enable' => __( '<b>Activate</b>', 'md' )
+						)
 					),
 					'plugin_name' => array( 'type' => 'text' ),
 					'plugin_class' => array( 'type' => 'text' ),

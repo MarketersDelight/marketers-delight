@@ -10,22 +10,15 @@ $fonts = array(
 	'font_size' => __( 'Font Size', 'md' ),
 	'line_height' => __( 'Line Height', 'md' )
 );
-$font_types = array(
-	'default' => array(
-		'name' => __( 'Default Fonts', 'md' ),
-		'image' => MD_URL . 'admin/images/fonts.png'
-	),
-	'google' => array(
-		'name' => __( 'Google Fonts', 'md' ),
-		'image' => MD_URL . 'admin/images/google.png'
-	)
-);
+$area = end( $field );
+$saved = md_setting( 'typography' );
+$inherit = md_design::FONT_FAMILY;
 
-if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
-	$font_types['typekit'] = array(
-		'name' => __( 'Adobe Fonts', 'md' ),
-		'image' => MD_URL . 'admin/images/adobe-fonts.gif'
-	);
+if ( $area !== 'body' && ! empty( $saved['body']['font_family'] ) )
+	$inherit = $saved['body']['font_family'];
+
+if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( $saved['h1']['font_family'] ) )
+	$inherit = $saved['h1']['font_family'];
 ?>
 
 <div class="columns-2 columns-single">
@@ -53,22 +46,27 @@ if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 	<div class="col">
 
 		<?php $this->field( array_merge( $field, array( 'font_family' ) ), array(
-			'type' => 'text',
+			'type' => 'font',
 			'label' => __( 'Font Family', 'md' ),
-			'placeholder' => isset( $args['font_family']['placeholder'] ) ? $args['font_family']['placeholder'] : $defaults['typography']['body']['font_family'],
-			'wrap_classes' => 'md-sep-micro'
+			'default_label' => isset( $args['font_family']['placeholder'] ) ? $args['font_family']['placeholder'] : __( 'Theme default', 'md' ),
+			'default_stack' => $inherit
 		) ); ?>
 
 		<?php $this->field( array_merge( $field, array( 'font_type' ) ), array(
-			'type' => 'radio',
-			'options' => $font_types
+			'type' => 'text',
+			'hidden' => true,
+			'classes' => 'md-font-type'
 		) ); ?>
 
 	</div>
 
 	<div class="col">
 
-		<div class="md-sep-micro">
+		<?php if ( isset( $args['bold'] ) ) : ?>
+		<div class="columns-2 columns-single">
+		<?php endif; ?>
+
+		<div class="md-sep-micro<?php echo isset( $args['bold'] ) ? ' col' : ''; ?>">
 			<?php $this->field( array_merge( $field, array( 'font_weight' ) ), array(
 				'type' => 'select',
 				'label' => __( 'Font Weight', 'md' ),
@@ -78,13 +76,14 @@ if ( md_setting( array( 'integrations', 'api_keys', 'typekit' ) ) )
 		</div>
 
 		<?php if ( isset( $args['bold'] ) ) : ?>
-		<div class="md-sep-micro">
+		<div class="md-sep-micro col">
 			<?php $this->field( array_merge( $field, array( 'bold' ) ), array(
 				'type' => 'select',
 				'label' => __( 'Bold Text', 'md' ),
 				'empty_label' => isset( $args['font_weight']['empty_label'] ) ? $args['font_weight']['empty_label'] : __( 'Select font weight...', 'md' ),
 				'options' => $this->data->font_weights()
 			) ); ?>
+		</div>
 		</div>
 		<?php endif; ?>
 

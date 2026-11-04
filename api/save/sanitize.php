@@ -34,6 +34,23 @@ class md_sanitize {
 	}
 
 	/**
+	 * A CSS font-family value. Not checked against real fonts, only kept
+	 * from breaking out of the CSS rule it's printed in.
+	 *
+	 * @since 6.2
+	 */
+
+	public function font( $input ) {
+		if ( is_null( $input ) )
+			return null;
+
+		if ( ! is_scalar( $input ) )
+			return '';
+
+		return trim( str_replace( array( ';', '{', '}', '<', '>', '\\' ), '', sanitize_text_field( $input ) ) );
+	}
+
+	/**
 	 * Ensure only a valid integer or decimal is saved.
 	 *
 	 * @since 4.7
@@ -99,10 +116,7 @@ class md_sanitize {
 
 		if ( isset( $fields['options'] ) ) {
 			$save = array();
-			$options = $fields['options'];
-			$option_keys = array_keys( $options );
-			$is_list = $option_keys === ( empty( $options ) ? array() : range( 0, count( $options ) - 1 ) );
-			$allowed = array_map( 'strval', $is_list ? $options : $option_keys );
+			$allowed = self::choices( $fields['options'] );
 
 			if ( is_array( $input ) )
 				foreach ( $input as $check => $val ) {
@@ -118,6 +132,40 @@ class md_sanitize {
 		else $save = (bool) $input;
 
 		return $save;
+	}
+
+	/**
+	 * The values a field's options allow. Options are either a list of
+	 * values or value => label pairs.
+	 *
+	 * @since 6.2
+	 */
+
+	public static function choices( $options ) {
+		$options = is_array( $options ) ? $options : array();
+		$keys = array_keys( $options );
+		$is_list = $keys === ( empty( $options ) ? array() : range( 0, count( $options ) - 1 ) );
+
+		return array_map( 'strval', $is_list ? array_values( $options ) : $keys );
+	}
+
+	/**
+	 * The labels of value => label options, empty for a list of values.
+	 *
+	 * @since 6.2
+	 */
+
+	public static function labels( $options ) {
+		$labels = array();
+
+		if ( self::choices( $options ) === array_map( 'strval', array_values( (array) $options ) ) )
+			return $labels;
+
+		foreach ( $options as $value => $label )
+			if ( is_scalar( $label ) )
+				$labels[(string) $value] = (string) $label;
+
+		return $labels;
 	}
 
 	/**

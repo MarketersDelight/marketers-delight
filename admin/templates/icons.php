@@ -32,38 +32,32 @@
 
 </div>
 
-<div class="md-font-icons columns-5 columns-flex columns-half md-content-wrap-wide md-sep-small">
+<div class="md-font-icons md-content-wrap-wide md-sep-small">
 
 	<?php foreach ( $icons as $icon => $fields ) : ?>
-		<div class="col md-sep-micro">
-			<div class="col-style">
-				<p><?php echo md_icon( $icon ); ?></p>
-				<?php if ( in_array( $icon, $default_icons_ids ) ) : ?>
-					<p class="md-med-title"><?php echo esc_html( $fields['label'] ); ?></p>
-				<?php else : ?>
-					<p>
-						<?php $this->fields->field( array( 'data', $icon, 'label' ), array(
-							'type' => 'text',
-							'placeholder' => __( 'Enter icon name...', 'md' ),
-							'classes' => 'md-med-title'
-						) ); ?>
-					</p>
-				<?php endif; ?>
-				<p><code><?php echo esc_attr( "md-icon-$icon" ); ?></code></p>
-				<p><?php echo sprintf( __( 'Unicode: %s', 'md' ), '<code>\\' . esc_html( $fields['unicode'] ) . '</code>' ); ?></p>
-				<?php if ( ! in_array( $icon, $default_icons_ids ) ) : ?>
-					<p>
-						<?php $this->fields->field( array( 'data', $icon, 'unicode' ), array(
-							'type' => 'text',
-							'hidden' => true
-						) ); ?>
-					</p>
-				<?php endif; ?>
-			</div>
+		<div class="col-style">
+			<p><?php echo md_icon( $icon ); ?></p>
+			<?php if ( in_array( $icon, $default_icons_ids ) ) : ?>
+				<p class="md-med-title"><?php echo esc_html( $fields['label'] ); ?></p>
+			<?php else : ?>
+				<p>
+					<?php $this->fields->field( array( 'data', $icon, 'label' ), array(
+						'placeholder' => __( 'Enter icon name...', 'md' ),
+						'classes' => 'md-med-title'
+					) ); ?>
+				</p>
+			<?php endif; ?>
+			<p><code><?php echo esc_attr( "md-icon-$icon" ); ?></code></p>
+			<p><?php echo sprintf( __( 'Unicode: %s', 'md' ), '<code>\\' . esc_html( $fields['unicode'] ) . '</code>' ); ?></p>
+			<?php if ( ! in_array( $icon, $default_icons_ids ) ) : ?>
+				<p>
+					<?php $this->fields->field( array( 'data', $icon, 'unicode' ), array(
+						'hidden' => true
+					) ); ?>
+				</p>
+			<?php endif; ?>
 		</div>
 
 	<?php endforeach; ?>
 
 </div>
-
-<?php $this->fields->save(); ?>

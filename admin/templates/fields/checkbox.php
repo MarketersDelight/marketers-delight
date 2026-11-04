@@ -25,7 +25,8 @@ $input_class = isset( $args['classes'] ) ? ' class="' . esc_attr( $args['classes
 		$inherit_attr = array_key_exists( 'parent', $inherited ) ? ' data-md-inherit-parent="' . esc_attr( $inherited['parent'] ) . '"' : '';
 	?>
 		<p class="md-checkbox md-checkbox-<?php echo esc_attr( $val ); ?>">
-			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo $inherit_attr . $input_class . checked( $check ); ?> />
+			<input type="hidden" name="<?php echo $nameval; ?>" value="" />
+			<input type="checkbox" name="<?php echo $nameval; ?>" id="<?php echo $idval; ?>" value="<?php echo esc_attr( $value ); ?>"<?php echo $inherit_attr . $input_class . checked( $check, true, false ); ?> />
 			<label for="<?php echo $idval; ?>"><?php echo $label; ?></label>
 		</p>
 	<?php endforeach; ?>

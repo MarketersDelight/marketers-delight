@@ -55,12 +55,7 @@
 								<h4 class="md-title"><a href="<?php echo esc_url( $fields['dropin_url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $fields['name'] ); ?> <small><?php echo esc_html( $fields['version'] ); ?></small></a></h4>
 								<div class="md-dropin-controls">
 									<?php if ( ! $needs_plugin ) : ?>
-										<?php $this->fields->field( array( 'installed', $dropin, 'status' ), array(
-											'type' => 'checkbox',
-											'options' => array(
-												'enable' => __( '<b>Activate</b>', 'md' )
-											)
-										) ); ?>
+										<?php $this->fields->field( array( 'installed', $dropin, 'status' ) ); ?>
 									<?php else : ?>
 										<span class="md-dropin-plugin"><i class="dashicons dashicons-no"></i> <?php printf( __( 'Requires <b>%s</b> plugin', 'md' ), esc_html( $fields['plugin_name'] ) ); ?></span>
 									<?php endif; ?>
@@ -94,5 +89,4 @@
 			</div>
 		<?php endif; ?>
 	</div>
-	<?php $this->fields->save(); ?>
 </div>

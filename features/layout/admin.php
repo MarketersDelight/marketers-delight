@@ -82,7 +82,8 @@ class md_layout extends md_api {
 			),
 			'featured_image' => array(
 				'type' => 'select',
-				'options' => array_keys( $this->fields->data->values['featured_image'] )
+				'label' => __( 'Featured image', 'md' ),
+				'options' => $this->fields->data->values['featured_image']
 			),
 			'footer' => array(
 				'type' => 'checkbox',

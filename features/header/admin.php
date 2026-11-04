@@ -44,15 +44,26 @@ class md_header extends md_api {
 					),
 					'layout' => array(
 						'type' => 'radio',
+						'label' => __( 'Layout', 'md' ),
 						'options' => array( 'left', 'right', 'center' )
 					),
 					'layout_mobile' => array(
 						'type' => 'radio',
+						'label' => __( 'Mobile Layout', 'md' ),
 						'options' => array( 'standard', 'expanded', 'scroll' )
 					),
 					'display' => array(
 						'type' => 'checkbox',
-						'options' => array( 'sticky', 'site_title', 'site_tagline', 'align_tagline', 'align_logo', 'hide_title_mobile', 'hide_tagline_mobile' )
+						'label' => __( 'Display', 'md' ),
+						'options' => array(
+							'sticky' => __( 'Use <strong>Sticky</strong> Header', 'md' ),
+							'site_title' => __( 'Remove <strong>Title</strong>', 'md' ),
+							'site_tagline' => __( 'Remove <strong>Tagline</strong>', 'md' ),
+							'hide_title_mobile' => __( 'Hide <strong>Title</strong> on mobile', 'md' ),
+							'hide_tagline_mobile' => __( 'Hide <strong>Tagline</strong> on mobile', 'md' ),
+							'align_tagline' => __( 'Show Title and Tagline on one line', 'md' ),
+							'align_logo' => __( 'Show Logo on one line', 'md' )
+						)
 					)
 				)
 			)

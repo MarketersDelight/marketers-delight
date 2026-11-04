@@ -9,7 +9,6 @@
 		<div class="md-conditional md-conditional-invert md-sep-small">
 
 			<?php $this->fields->field( 'header', array(
-				'type' => 'checkbox',
 				'label' => __( 'Header', 'md' ),
 				'classes' => 'md-conditional-option',
 				'options' => array(
@@ -27,7 +26,6 @@
 
 				<?php
 				$this->fields->field( 'header', array(
-					'type' => 'checkbox',
 					'options' => array(
 						'logo' => __( 'Remove <b>Logo</b>', 'md' ),
 					),
@@ -41,7 +39,6 @@
 
 				if ( ! md_setting( array( 'header', 'display', 'site_tagline' ) ) )
 					$this->fields->field( 'header', array(
-						'type' => 'checkbox',
 						'options' => array(
 							'tagline' => __( 'Remove <b>Tagline</b>', 'md' )
 						),
@@ -55,7 +52,6 @@
 
 				if ( md_has_header_elements() )
 					$this->fields->field( 'header', array(
-						'type' => 'checkbox',
 						'options' => array(
 							'elements' => __( 'Remove <b>Elements</b>', 'md' )
 						),
@@ -72,7 +68,6 @@
 					echo '<div class="md-conditional md-conditional-invert">';
 
 					$this->fields->field( 'header', array(
-						'type' => 'checkbox',
 						'classes' => 'md-conditional-option',
 						'options' => array(
 							'menu' => __( 'Remove <b>Menu</b>', 'md' )
@@ -88,7 +83,6 @@
 					echo '<div class="md-conditional-item md-conditional-1' . ( empty( $header['menu'] ) ? ' is-condition' : '' ) . '">';
 
 					$this->fields->field( 'header_menu', array(
-						'type' => 'select',
 						'empty_label' => __( 'Use default menu', 'md' ),
 						'inherit' => true,
 						'options' => $menus
@@ -105,7 +99,6 @@
 		<div class="md-conditional md-conditional-invert">
 
 			<?php $this->fields->field( 'footer', array(
-				'type' => 'checkbox',
 				'label' => __( 'Footer', 'md' ),
 				'classes' => 'md-conditional-option',
 				'options' => array(
@@ -121,7 +114,6 @@
 
 			<div id="footer_options" class="md-conditional-item md-conditional-1<?php echo empty( $footer['remove'] ) ? ' is-condition' : ''; ?>">
 				<?php $this->fields->field( 'footer', array(
-					'type' => 'checkbox',
 					'options' => array(
 						'columns' => __( 'Remove <b>Columns</b>', 'md' )
 					),
@@ -148,14 +140,9 @@
 
 		echo '<div class="md-sep-micro">';
 
-		$featured_image_options = $this->fields->data->values['featured_image'];
-
 		$this->fields->field( 'featured_image', array(
-			'type' => 'select',
-			'label' => __( 'Featured image', 'md' ),
 			'empty_label' => __( 'Use default position', 'md' ),
-			'inherit' => true,
-			'options' => $featured_image_options
+			'inherit' => true
 		) );
 
 		echo '</div>';
@@ -204,7 +191,6 @@
 		}
 
 		$this->fields->field( 'content', array(
-			'type' => 'checkbox',
 			'options' => $content_options,
 			'inherit' => $content_inherit
 		) );
@@ -217,7 +203,6 @@
 
 			if ( ! $is_taxonomy ) {
 				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
 					'options' => array(
 						'headline' => __( 'Remove <b>Page Title</b>', 'md' )
 					),
@@ -233,28 +218,24 @@
 			if ( $post_type !== 'page' && $is_post ) {
 				if ( $author_box )
 					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
 						'options' => array(
 							'author_box' => __( 'Remove <b>Author Box</b>', 'md' )
 						)
 					) );
 				else
 					$this->fields->field( 'content', array(
-						'type' => 'checkbox',
 						'options' => array(
 							'add_author_box' => __( 'Add <b>Author Box</b>', 'md' )
 						)
 					) );
 
 				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
 					'options' => $post_nav_options
 				) );
 			}
 
 			if ( $is_admin && ! $is_taxonomy && $settings_post_type !== 'author' )
 				$this->fields->field( 'content', array(
-					'type' => 'checkbox',
 					'options' => array(
 						'add_author_box' => __( 'Add <b>Author Box</b>', 'md' ),
 						'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' )
@@ -264,7 +245,6 @@
 			$content_style_options = md_filter_loop_styles();
 
 			$this->fields->field( 'content_style', array(
-				'type' => 'select',
 				'empty_label' => __( 'Use default style', 'md' ),
 				'inherit' => true,
 				'wrap_classes' => 'md-sep-micro',

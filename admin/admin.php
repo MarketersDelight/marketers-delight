@@ -9,6 +9,7 @@
 class md_admin {
 
 	public $save;
+	public $settings;
 	public $requests;
 	public $files;
 	public $_option = 'marketers_delight';
@@ -47,14 +48,16 @@ class md_admin {
 	 */
 
 	public function actions() {
+		include_once 'save-settings.php';
+
 		$this->save = new md_save;
+		$this->settings = new md_save_settings( $this->save );
 		$this->requests = new md_requests;
 		$this->files = new md_files;
 
 		add_action( 'wp_update_nav_menu', 'md_compile' );
 
 		// Admin pages
-		add_action( 'admin_init', array( $this, 'register_setting' ) );
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
 		add_filter( 'post_row_actions', array( $this, 'admin_row'), 10, 2 );
 		add_filter( 'page_row_actions', array( $this, 'admin_row'), 10, 2 );
@@ -65,7 +68,7 @@ class md_admin {
 
 		// Meta Boxes
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
-		add_action( 'save_post', array( $this->save, 'meta_save' ), 10, 2 );
+		add_action( 'save_post', array( $this->settings, 'meta_save' ), 10, 2 );
 		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
 
 		// Terms
@@ -74,7 +77,7 @@ class md_admin {
 		// User meta
 		add_action( 'show_user_profile', array( $this, 'user_meta' ) );
 		add_action( 'edit_user_profile', array( $this, 'user_meta' ) );
-		add_action( 'profile_update', array( $this->save, 'user_meta_save' ), 10, 2 );
+		add_action( 'profile_update', array( $this->settings, 'user_meta_save' ), 10, 2 );
 
 		// Enqueue
 		if ( ! is_customize_preview() )
@@ -95,31 +98,6 @@ class md_admin {
 		// Actions + requests
 		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
 		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
-	}
-
-	/**
-	 * Create sanitize method to run various options set through.
-	 *
-	 * @since 4.0
-	 */
-
-	public function register_setting() {
-		register_setting( $this->_option, $this->_option, array( $this->save, 'admin_save' ) );
-
-		// Register settings for custom option keys
-
-		$custom = array();
-
-		foreach ( md_register( 'admin_pages' ) as $fields ) {
-			$option = isset( $fields['_option'] ) ? $fields['_option'] : $this->_option;
-
-			if ( $option === $this->_option || isset( $custom[$option] ) )
-				continue;
-
-			$custom[$option] = true;
-
-			register_setting( $option, $option, array( $this->save, 'admin_save_custom' ) );
-		}
 	}
 
 	/**
@@ -152,11 +130,14 @@ class md_admin {
 			$menu_title = isset( $fields['menu_title'] ) ? $fields['menu_title'] : $fields['name'];
 
 			if ( ! empty( $fields['toplevel'] ) )
-				add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
+				$hook = add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
 			else {
 				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
-				add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback, $position );
+				$hook = add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback, $position );
 			}
+
+			if ( $hook )
+				add_action( "load-$hook", array( $this->settings, 'load' ) );
 
 			if ( ! empty( $fields['hide_menu'] ) )
 				remove_submenu_page( $parent_slug, $menu_slug );
@@ -193,6 +174,16 @@ class md_admin {
 			'user_id' => get_current_user_id(),
 			'nonce' => wp_create_nonce( "{$this->_option}_nonce" ),
 			'license_request_error' => __( 'Could not connect. Please try again.', 'md' ),
+			'save' => array(
+				'clean' => __( 'All changes saved', 'md' ),
+				'dirty' => __( 'Unsaved changes', 'md' ),
+				'saving' => __( 'Saving…', 'md' ),
+				'saved' => __( 'Saved', 'md' ),
+				'error' => __( 'Couldn\'t save: %s', 'md' ),
+				'failed' => __( 'check your connection and try again', 'md' ),
+				'button' => __( 'Save', 'md' ),
+				'saving_button' => __( 'Saving…', 'md' )
+			),
 			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
 
@@ -332,14 +323,11 @@ class md_admin {
 		$page_id = md_clean_id( $page );
 		$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : '';
 		$hook = ! empty( $tab ) ? $tab : $page;
-		$hook_id = md_clean_id( $hook );
-		$option = isset( $admin_pages[$hook_id]['_option'] ) ? $admin_pages[$hook_id]['_option'] : $this->_option;
 
-		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
-		$taxonomy_tabs = ! empty( $taxonomies[$page] ) ? array_keys( $taxonomies[$page] ) : array();
-		$active_taxonomy_tab = isset( $_GET['md_tab'] ) ? sanitize_key( $_GET['md_tab'] ) : '';
-
+		ob_start();
 		include md_template( 'admin/admin', true );
+
+		echo md_save_settings::close_form( ob_get_clean() );
 	}
 
 	/**
@@ -434,7 +422,7 @@ class md_admin {
 	public function add_terms() {
 		foreach ( md_taxonomy_meta() as $term ) {
 			add_action( "{$term}_edit_form_fields", array( $this, 'term' ) );
-			add_action( "edited_{$term}", array( $this->save, 'term_save' ), 10, 2 );
+			add_action( "edited_{$term}", array( $this->settings, 'term_save' ), 10, 2 );
 		}
 	}
 

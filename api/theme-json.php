@@ -19,6 +19,8 @@ class md_theme_json {
 	private $alignwide_width;
 	private $design_colors;
 
+	private $theme_fonts = array();
+
 	/**
 	 * Merge live MD design settings into WordPress theme.json data.
 	 * ClassicPress safely ignores this WordPress-specific filter.
@@ -39,6 +41,14 @@ class md_theme_json {
 	public function filter( $theme_json ) {
 		if ( ! is_object( $theme_json ) || ! method_exists( $theme_json, 'update_with' ) )
 			return $theme_json;
+
+		$data = method_exists( $theme_json, 'get_data' ) ? $theme_json->get_data() : array();
+		$families = isset( $data['settings']['typography']['fontFamilies']['theme'] ) ? (array) $data['settings']['typography']['fontFamilies']['theme'] : array();
+		$this->theme_fonts = array();
+
+		foreach ( $families as $family )
+			if ( ! empty( $family['fontFace'] ) )
+				$this->theme_fonts[] = $family;
 
 		return $theme_json->update_with( $this->build() );
 	}
@@ -291,7 +301,7 @@ class md_theme_json {
 				'slug' => 'heading'
 			);
 
-		return $families;
+		return array_merge( $families, $this->theme_fonts );
 	}
 
 	/**

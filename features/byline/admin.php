@@ -55,9 +55,15 @@ class md_byline extends md_api {
 				'fields' => array(
 					'style' => array(
 						'type' => 'select',
+						'label' => __( 'Style', 'md' ),
 						'options' => array( 'icon', 'tag' )
 					),
-					'limit' => array( 'type' => 'number' )
+					'limit' => array(
+						'type' => 'number',
+						'label' => __( 'Archive tag limit', 'md' ),
+						'min' => 0,
+						'step' => 1
+					)
 				),
 				'admin_callback' => array( $this, 'category' )
 			),
@@ -129,10 +135,17 @@ class md_byline extends md_api {
 				'type' => 'checkbox',
 				'options' => array( 'label', 'avatar', 'first_name', 'hide', 'relative', 'first', 'alt' )
 			),
-			'time' => array( 'type' => 'number' ),
-			'image_size' => array( 'type' => 'number' ),
+			'time' => array(
+				'type' => 'number',
+				'label' => __( 'New duration', 'md' )
+			),
+			'image_size' => array(
+				'type' => 'number',
+				'label' => __( 'Avatar size', 'md' )
+			),
 			'term' => array(
 				'type' => 'select',
+				'label' => __( 'Taxonomy', 'md' ),
 				'options' => array_merge( array( 'all' ), array_values( get_taxonomies() ) )
 			)
 		);
@@ -242,7 +255,6 @@ class md_byline extends md_api {
 				'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
 
 		$this->fields->field( 'builder', array(
-			'type' => 'builder',
 			'populate' => ! $screen['is_term'] && ! $screen['is_post'],
 			'defaults' => md_get_post_type_builder( 'byline', $post_type ),
 			'title' => __( 'Edit Byline', 'md' ),
@@ -296,8 +308,6 @@ class md_byline extends md_api {
 
 	public function badge( $group ) {
 		$this->fields->field( array( 'builder', $group, 'time' ), array(
-			'type' => 'number',
-			'label' => __( 'New duration', 'md' ),
 			'placeholder' => 7,
 			'unit' => __( 'days', 'md' )
 		) );
@@ -311,7 +321,6 @@ class md_byline extends md_api {
 
 	public function date( $group, $type, $fields, $row ) {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
 			'default' => $row['settings'] ?? array(),
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
@@ -332,7 +341,6 @@ class md_byline extends md_api {
 
 	public function author( $group ) {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
 			'description' => __( 'In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot.', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
@@ -344,8 +352,6 @@ class md_byline extends md_api {
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'image_size' ), array(
-			'type' => 'number',
-			'label' => __( 'Avatar size', 'md' ),
 			'unit' => 'px',
 			'placeholder' => 30
 		) );
@@ -359,7 +365,6 @@ class md_byline extends md_api {
 
 	public function comments( $group ) {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
@@ -369,7 +374,6 @@ class md_byline extends md_api {
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
-			'type' => 'text',
 			'label' => __( 'Zero comments label', 'md' ),
 			'style' => 'width: 30%',
 			'wrap_classes' => 'md-sep-small'
@@ -404,26 +408,19 @@ class md_byline extends md_api {
 		$options['all'] = __( 'Show all', 'md' );
 
 		$this->fields->field( array( 'builder', $group, 'term' ), array(
-			'type' => 'select',
 			'default' => $row['term'] ?? '',
-			'label' => __( 'Taxonomy', 'md' ),
 			'empty_label' => __( 'Use default category', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => $options
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'limit' ), array(
-			'type' => 'number',
-			'label' => __( 'Archive tag limit', 'md' ),
 			'description' => __( 'Defaults to 3. Enter 0 to show all tags on archives.', 'md' ),
 			'placeholder' => 3,
-			'min' => 0,
-			'step' => 1,
 			'wrap_classes' => 'md-sep-micro'
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
-			'type' => 'checkbox',
 			'label' => __( 'Only show', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'options' => array(
@@ -432,9 +429,7 @@ class md_byline extends md_api {
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'style' ), array(
-			'type' => 'select',
 			'default' => $style,
-			'label' => __( 'Style', 'md' ),
 			'wrap_classes' => 'md-sep-micro',
 			'empty_label' => __( 'Show links', 'md' ),
 			'options' => array(

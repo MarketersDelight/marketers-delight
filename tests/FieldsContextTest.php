@@ -583,7 +583,7 @@ class FieldsContextTest extends MD_TestCase {
 			) )
 		) );
 
-		$this->assertSame( 'marketers_delight[post][category][loop][date]', $fields->rendered['name'] );
+		$this->assertSame( 'md[taxonomy:post/category][post][loop][date]', $fields->rendered['name'] );
 		$this->assertSame( array( 'group' => 0 ), $fields->rendered['option'] );
 		$this->assertSame( 0, $fields->rendered['args']['_inherit']['group']['value'] );
 		$this->assertTrue( $fields->rendered['args']['_inherit']['group']['checked'] );
@@ -618,5 +618,66 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( '', $fields->rendered['option'] );
 	}
 
+	// One field list: field() draws from the field's registration
+
+	public function test_field_draws_from_its_registration_and_the_template_wins() {
+		md_test_set_filter( 'md_register', array( 'admin_pages' => array( 'my_page' => array( 'fields' => array(
+			'width' => array( 'type' => 'range', 'max' => 500, 'label' => 'Width', 'default' => 80, 'description' => 'Not drawn' ),
+			'show' => array( 'type' => 'checkbox', 'label' => 'Show', 'options' => array( 'date' => 'Date' ) )
+		) ) ) ) );
+		$fields = $this->make_capturing_fields( array() );
+
+		$fields->field( 'width', array( 'label' => 'Width on this screen' ) );
+		$args = $fields->rendered['args'];
+
+		$this->assertSame( 'range', $args['type'] );
+		$this->assertSame( 500, $args['max'] );
+		$this->assertSame( 'Width on this screen', $args['label'], 'A template can still change what it draws' );
+		$this->assertArrayNotHasKey( 'default', $args, 'Stored defaults are not drawn as values' );
+		$this->assertArrayNotHasKey( 'description', $args, 'Help text is drawn from the template only' );
+
+		$fields->field( 'show', array() );
+
+		$this->assertSame( array( 'date' => 'Date' ), $fields->rendered['args']['options'] );
+	}
+
+	public function test_registered_options_without_labels_stay_with_the_template() {
+		md_test_set_filter( 'md_register', array( 'admin_pages' => array( 'my_page' => array( 'fields' => array(
+			'style' => array( 'type' => 'select', 'options' => array( 'box', 'plain' ) )
+		) ) ) ) );
+		$fields = $this->make_capturing_fields( array() );
+
+		$fields->field( 'style', array( 'options' => array( 'box' => 'Box' ) ) );
+		$this->assertSame( array( 'box' => 'Box' ), $fields->rendered['args']['options'] );
+
+		$fields->field( 'style', array( 'type' => 'select' ) );
+		$this->assertArrayNotHasKey( 'options', $fields->rendered['args'] );
+	}
+
+	public function test_group_item_fields_are_found_past_the_item_key() {
+		md_test_set_filter( 'md_register', array( 'admin_pages' => array( 'my_page' => array( 'fields' => array(
+			'popups' => array( 'type' => 'group', 'fields' => array(
+				'show' => array( 'type' => 'select', 'label' => 'Show Method', 'options' => array( 'exit' => 'On exit' ) )
+			) )
+		) ) ) ) );
+		$fields = $this->make_capturing_fields( array() );
+
+		$fields->field( array( 'popups', 'a1B2', 'show' ), array() );
+
+		$this->assertSame( 'Show Method', $fields->rendered['args']['label'] );
+		$this->assertSame( 'select', $fields->rendered['args']['type'] );
+	}
+
+	public function test_post_screens_draw_from_the_meta_box_registration() {
+		md_test_set_filter( 'md_register', array(
+			'admin_pages' => array( 'my_page' => array( 'fields' => array( 'title' => array( 'type' => 'text', 'label' => 'Site label' ) ) ) ),
+			'meta_boxes' => array( 'my_page' => array( 'fields' => array( 'title' => array( 'type' => 'text', 'label' => 'Post label' ) ) ) )
+		) );
+		$fields = $this->make_capturing_fields( array( 'is_post' => true ) );
+
+		$fields->field( 'title', array() );
+
+		$this->assertSame( 'Post label', $fields->rendered['args']['label'] );
+	}
 
 }

@@ -27,7 +27,7 @@ abstract class md_fields_render {
 	 * @since 4.0
 	 */
 
-	abstract public function field( $field, $args );
+	abstract public function field( $field, $args = array() );
 
 	/**
 	 * Render the common label, control, description, and field wrapper.
@@ -49,12 +49,46 @@ abstract class md_fields_render {
 
 		echo '<div class="' . esc_attr( join( ' ', $wrap_classes ) ) . '">';
 
+		$tokens = ! empty( $args['tokens'] ) ? md_parse_tokens( array( 'context' => $args['tokens'], 'list' => true ) ) : array();
+
+		if ( $tokens )
+			echo '<div class="md-picker md-token-field">';
+
 		$this->field_type( $args['type'], $name, $id, $option, $args );
+
+		if ( $tokens ) {
+			echo '<button type="button" class="md-token-button" data-set="' . esc_attr( $args['tokens'] ) . '" aria-expanded="false" aria-label="' . esc_attr__( 'Insert a token', 'md' ) . '" title="' . esc_attr__( 'Insert a token', 'md' ) . '">{ }</button>';
+			$this->token_menu( $args['tokens'], $tokens );
+			echo '</div>';
+		}
 
 		if ( isset( $args['description'] ) && $args['type'] !== 'builder' )
 			$this->description( $args['description'] );
 
 		echo '</div>';
+	}
+
+	/**
+	 * A token set's menu, printed once per screen. Each token field's
+	 * button moves it under that field when opened.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function token_menu( $set, $tokens ) {
+		static $printed = array();
+
+		if ( isset( $printed[$set] ) )
+			return;
+
+		$printed[$set] = true;
+
+		echo '<div class="md-picker-menu md-picker-list md-token-menu" data-set="' . esc_attr( $set ) . '" role="dialog" aria-label="' . esc_attr__( 'Insert a token', 'md' ) . '" hidden><div class="md-picker-section">';
+
+		foreach ( $tokens as $token => $label )
+			echo '<button type="button" class="md-picker-option md-token-option" data-token="' . esc_attr( $token ) . '"><span class="md-picker-copy"><code class="md-picker-title">' . esc_html( $token ) . '</code><span class="md-picker-meta">' . esc_html( $label ) . '</span></span></button>';
+
+		echo '</div></div>';
 	}
 
 	/**
@@ -93,6 +127,9 @@ abstract class md_fields_render {
 
 		if ( $type === 'color' )
 			$this->color( $name, $id, $option, $args );
+
+		if ( $type === 'font' )
+			$this->font( $name, $id, $option, $args );
 
 		if ( $type === 'editor' )
 			$this->editor( $name, $id, $option, $args );
@@ -239,6 +276,25 @@ abstract class md_fields_render {
 
 	protected function color( $name, $id, $option, $args ) {
 		include md_template( 'admin/fields/color', true );
+	}
+
+	/**
+	 * Font picker: a font stack, a Font Library font or any CSS
+	 * font-family value. Prints the Font Library's @font-face rules once
+	 * so the picker can preview those fonts.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function font( $name, $id, $option, $args ) {
+		static $faces = false;
+
+		if ( ! $faces && function_exists( 'wp_print_font_faces' ) ) {
+			$faces = true;
+			wp_print_font_faces();
+		}
+
+		include md_template( 'admin/fields/font', true );
 	}
 
 	/**

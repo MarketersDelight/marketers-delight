@@ -17,29 +17,56 @@ class md_logo extends md_api {
 		$typography = $this->fields->data->typography();
 		$fields = array(
 			'site_title' => array_merge( array(
-				'text' => array( 'type' => 'text' ),
-				'color' => array( 'type' => 'color' ),
+				'text' => array(
+					'type' => 'text',
+					'label' => __( 'Site Title', 'md' )
+				),
+				'color' => array(
+					'type' => 'color',
+					'label' => __( 'Color', 'md' )
+				)
 			), $typography ),
 			'site_tagline' => array_merge( array(
-				'text' => array( 'type' => 'text' ),
-				'color' => array( 'type' => 'color' ),
+				'text' => array(
+					'type' => 'text',
+					'label' => __( 'Site Tagline', 'md' )
+				),
+				'color' => array(
+					'type' => 'color',
+					'label' => __( 'Color', 'md' )
+				)
 			), $typography ),
 			'logo' => array(
 				'type' => 'upload',
-				'upload_type' => 'media'
+				'upload_type' => 'media',
+				'label' => __( 'Logo', 'md' )
 			),
 			'logo_alt' => array(
 				'type' => 'upload',
 				'upload_type' => 'media'
 			),
 			'logo_width' => array(
-				'desktop' => array( 'type' => 'range' ),
-				'mobile' => array( 'type' => 'range' )
+				'desktop' => array(
+					'type' => 'range',
+					'max' => 500,
+					'label' => sprintf( __( 'Logo Width%s', 'md' ), ' (desktop)' )
+				),
+				'mobile' => array(
+					'type' => 'range',
+					'max' => 500,
+					'label' => sprintf( __( 'Logo Width%s', 'md' ), ' (mobile)' )
+				)
 			),
-			'logo_html' => array( 'type' => 'code' ),
+			'logo_html' => array(
+				'type' => 'code',
+				'label' => __( 'Logo HTML code', 'md' )
+			),
 			'logo_html_display' => array(
 				'type' => 'checkbox',
-				'options' => array( 'enable' )
+				'label' => __( 'Custom logo', 'md' ),
+				'options' => array(
+					'enable' => __( 'Enable custom logo HTML', 'md' )
+				)
 			)
 		);
 		return array(

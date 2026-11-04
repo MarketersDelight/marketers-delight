@@ -250,6 +250,8 @@
 		align-items: center;
 		flex-flow: row;
 	}
+	.expanded .wide:is(.title-left, .title-right):not(.has-aside) .inner,
+	:where(.header-cover .main) > .wide:is(.title-left, .title-right):not(.has-aside) .inner { align-items: center; }
 	.wide:is(.title-left, .title-right) .wrap { text-align: start; }
 	.wide:is(.title-left, .title-right) .featured-media { width: var(--md-media-width, auto); }
 	.image-inline {

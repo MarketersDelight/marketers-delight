@@ -62,6 +62,8 @@ function md_test_reset() {
 	$GLOBALS['__test_posts'] = array();
 	$GLOBALS['__test_terms'] = array();
 	$GLOBALS['__test_thumbnails'] = array();
+	$GLOBALS['__test_term_store'] = array();
+	$GLOBALS['__test_user_store'] = array();
 	$GLOBALS['__test_current_post'] = 0;
 	$GLOBALS['__test_capabilities'] = array();
 	$GLOBALS['__test_dropins'] = array();
@@ -194,6 +196,84 @@ function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $t
 
 function get_option( $key, $default = false ) {
 	return array_key_exists( $key, $GLOBALS['__test_options'] ) ? $GLOBALS['__test_options'][$key] : $default;
+}
+
+function update_option( $key, $value, $autoload = null ) {
+	$GLOBALS['__test_options'][$key] = $value;
+
+	return true;
+}
+
+function delete_option( $key ) {
+	unset( $GLOBALS['__test_options'][$key] );
+
+	return true;
+}
+
+// The stubs store values as given, so slashing is a no-op
+
+function wp_slash( $value ) {
+	return $value;
+}
+
+function wp_unslash( $value ) {
+	return $value;
+}
+
+function get_post( $post_id ) {
+	return $GLOBALS['__test_posts'][$post_id] ?? null;
+}
+
+// The metadata API routes to the per-type stubs above and below
+
+function get_metadata( $type, $id, $meta_key, $single = false ) {
+	$get = "get_{$type}_meta";
+
+	return $get( $id, $meta_key, $single );
+}
+
+function update_metadata( $type, $id, $meta_key, $value ) {
+	$update = "update_{$type}_meta";
+
+	return $update( $id, $meta_key, $value );
+}
+
+function delete_metadata( $type, $id, $meta_key ) {
+	$delete = "delete_{$type}_meta";
+
+	return $delete( $id, $meta_key );
+}
+
+function get_term_meta( $term_id, $meta_key, $single = false ) {
+	return $GLOBALS['__test_term_store'][$term_id][$meta_key] ?? '';
+}
+
+function update_term_meta( $term_id, $meta_key, $value ) {
+	$GLOBALS['__test_term_store'][$term_id][$meta_key] = $value;
+
+	return true;
+}
+
+function delete_term_meta( $term_id, $meta_key ) {
+	unset( $GLOBALS['__test_term_store'][$term_id][$meta_key] );
+
+	return true;
+}
+
+function get_user_meta( $user_id, $meta_key, $single = false ) {
+	return $GLOBALS['__test_user_store'][$user_id][$meta_key] ?? '';
+}
+
+function update_user_meta( $user_id, $meta_key, $value ) {
+	$GLOBALS['__test_user_store'][$user_id][$meta_key] = $value;
+
+	return true;
+}
+
+function delete_user_meta( $user_id, $meta_key ) {
+	unset( $GLOBALS['__test_user_store'][$user_id][$meta_key] );
+
+	return true;
 }
 
 function wp_get_upload_dir() {
@@ -596,7 +676,9 @@ require_once dirname( __DIR__ ) . '/functions/asset-functions.php';
 require_once dirname( __DIR__ ) . '/functions/design-functions.php';
 require_once dirname( __DIR__ ) . '/api/save/sanitize.php';
 require_once dirname( __DIR__ ) . '/api/save/validate.php';
+require_once dirname( __DIR__ ) . '/api/save/scope.php';
 require_once dirname( __DIR__ ) . '/api/save/save.php';
+require_once dirname( __DIR__ ) . '/admin/save-settings.php';
 require_once dirname( __DIR__ ) . '/api/fields/data.php';
 require_once dirname( __DIR__ ) . '/api/fields/render.php';
 require_once dirname( __DIR__ ) . '/api/fields/fields.php';

@@ -97,7 +97,10 @@ function md_page_cta_types() {
 		'custom' => array(
 			'label' => __( 'Custom HTML', 'md' ),
 			'fields' => array(
-				'custom_html' => array( 'type' => 'code' )
+				'custom_html' => array(
+					'type' => 'code',
+					'label' => __( 'Custom HTML', 'md' )
+				)
 			),
 			'admin_callback' => 'md_page_cta_custom_admin'
 		)
@@ -116,11 +119,16 @@ function md_page_cta_fields() {
 	$save = array(
 		'page_cta' => array(
 			'type' => 'select',
+			'label' => __( 'CTA Type', 'md' ),
 			'options' => array_merge( array_keys( $types ), array( 'remove' ) )
 		),
 		'title_position' => array(
 			'type' => 'select',
-			'options' => array( 'before_title', 'byline_aside' )
+			'label' => __( 'Position', 'md' ),
+			'options' => array(
+				'before_title' => __( 'Before Title', 'md' ),
+				'byline_aside' => __( 'Title Aside', 'md' )
+			)
 		)
 	);
 
@@ -171,8 +179,5 @@ function md_page_cta_links_admin( $fields ) {
  */
 
 function md_page_cta_custom_admin( $fields ) {
-	$fields->field( 'custom_html', array(
-		'type' => 'code',
-		'label' => __( 'Custom HTML', 'md' )
-	) );
+	$fields->field( 'custom_html' );
 }

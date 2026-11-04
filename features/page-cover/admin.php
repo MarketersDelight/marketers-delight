@@ -54,10 +54,9 @@ class md_page_cover extends md_api {
 
 	public function description_field() {
 		$this->fields->field( 'title_content', array(
+			'description' => __( 'Show formatted text with the page title. Replaces the excerpt when excerpts show in titles.', 'md' ),
 			'type' => 'editor',
 			'init' => true,
-			'label' => __( 'Description', 'md' ),
-			'description' => __( 'Show formatted text with the page title. Replaces the excerpt when excerpts show in titles.', 'md' ),
 			'rows' => 4
 		) );
 	}

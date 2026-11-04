@@ -85,6 +85,26 @@ function md_get_dropins( $status = null, $key = null ) {
 }
 
 /**
+ * A Drop-in's icon tile: its dashicon on its colors, as the Drop-ins and
+ * Updates screens show it. Drop-ins can put it beside their settings
+ * titles. $size: small (24px), or the default 32px.
+ *
+ * @since 6.2
+ */
+
+function md_get_dropin_icon( $slug, $size = '' ) {
+	$dropin = md_dropins_setting( array( 'installed', $slug ) );
+	$icon = ! empty( $dropin['icon'] ) ? $dropin['icon'] : 'dashicons-admin-plugins';
+	$colors = ! empty( $dropin['colors'] ) ? array_map( 'trim', explode( ',', $dropin['colors'] ) ) : array();
+	$style = md_style( array(
+		'bg_color' => isset( $colors[0] ) ? $colors[0] : '',
+		'color' => isset( $colors[1] ) ? $colors[1] : ''
+	) );
+
+	return '<span class="md-dropin-icon' . ( $size ? ' md-dropin-icon-' . esc_attr( $size ) : '' ) . '"' . $style . ' aria-hidden="true"><i class="dashicons ' . esc_attr( $icon ) . '"></i></span>';
+}
+
+/**
  * Run this function to activate drop-ins to the MD Drop-ins
  * Manager. Not recommended for use outside of upgrader utilities.
  *

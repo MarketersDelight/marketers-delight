@@ -9,6 +9,8 @@ if ( ! empty( $columns ) ) {
 	$style['width_unit'] = '%';
 }
 
+echo '<input type="hidden" name="' . esc_attr( $name ) . '" value="" />';
+
 foreach ( $args['options'] as $val => $label ) {
 	$idval = esc_attr( "{$id}_$val" );
 	$image = is_array( $label ) && isset( $label['image'] ) ? esc_url( $label['image'] ) : '';

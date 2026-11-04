@@ -87,7 +87,7 @@ class ValidateTest extends MD_TestCase {
 	// — an unchecked checkbox submits nothing at all, so its key never
 	// appeared in the loop and the old `true` value survived untouched.
 
-	public function test_unchecked_checkbox_inside_clone_item_is_still_validated() {
+	public function test_unchecked_checkbox_inside_clone_item_posts_empty_and_saves_off() {
 		$this->register_schema( array(
 			'dropins' => array( 'fields' => array(
 				'installed' => array(
@@ -100,12 +100,11 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		// The checkbox is unchecked, so the form submits nothing for
-		// 'status' at all — only 'name' comes through in $_POST.
+		// The checkbox is unchecked, so only its hidden empty partner posts
 
 		$save = $this->validate->validate( 'admin_pages', array(
 			'dropins' => array( 'installed' => array(
-				'my-dropin' => array( 'name' => 'My Dropin' )
+				'my-dropin' => array( 'name' => 'My Dropin', 'status' => '' )
 			) )
 		) );
 
@@ -221,7 +220,7 @@ class ValidateTest extends MD_TestCase {
 		$this->assertSame( array(), $save['header']['builder'] );
 	}
 
-	public function test_builder_marker_saves_empty_result_after_last_row_is_deleted() {
+	public function test_emptied_builder_posts_empty_and_saves_no_rows() {
 		$this->register_schema( array(
 			'header' => array( 'fields' => array(
 				'builder' => array(
@@ -234,7 +233,7 @@ class ValidateTest extends MD_TestCase {
 		) );
 
 		$save = $this->validate->validate( 'admin_pages', array( 'header' => array(
-			'builder_data' => ''
+			'builder' => ''
 		) ) );
 
 		$this->assertSame( array(), $save['header']['builder'] );
@@ -493,11 +492,11 @@ class ValidateTest extends MD_TestCase {
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $merge_schema ) );
 
 		$save_class = new md_save;
-		$merge = $this->call( $save_class, 'merge_recursive', array( array(), $save ) );
+		$merge = $this->call( $save_class, 'merge_fields', array( array(), $save['dropins'], $merge_schema['dropins']['fields'] ) );
 
 		$this->assertSame(
 			'Deep Value',
-			$merge['dropins']['installed']['my-dropin']['meta']['details']['value']
+			$merge['installed']['my-dropin']['meta']['details']['value']
 		);
 	}
 

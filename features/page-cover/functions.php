@@ -133,17 +133,25 @@ function md_page_cover_fields() {
 	return array(
 		'photo' => array(
 			'type' => 'upload',
-			'upload_type' => 'media'
+			'upload_type' => 'media',
+			'label' => __( 'Upload Image', 'md' )
 		),
 		'position' => array(
 			'type' => 'select',
+			'label' => __( 'Position', 'md' ),
 			'options' => array( 'headline_cover', 'header_cover', 'header_cover_full', 'remove' )
 		),
-		'bg_color' => array( 'type' => 'color' ),
+		'bg_color' => array(
+			'type' => 'color',
+			'label' => __( 'Overlay Color', 'md' )
+		),
 		'display' => array(
 			'type' => 'checkbox',
 			'options' => array( 'alternate', 'disable_overlay', 'bg_repeat', 'single', 'show_excerpt' )
 		),
-		'title_content' => array( 'type' => 'text' )
+		'title_content' => array(
+			'type' => 'text',
+			'label' => __( 'Description', 'md' )
+		)
 	);
 }

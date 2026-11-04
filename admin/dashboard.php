@@ -38,21 +38,40 @@ class md_settings extends md_api {
 				'parent_slug' => 'themes.php',
 				'icon' => 'dashicons-marketers-delight',
 				'fields' => array(
-					'404_page' => array( 'type' => 'number' ),
+					'404_page' => array(
+						'type' => 'number',
+						'label' => __( '404 Page ID', 'md' )
+					),
 					'head' => array(
 						'type' => 'checkbox',
-						'options' => array( 'blocks', 'optimize', 'wpjson', 'oembed', 'widgets' )
+						'label' => __( 'Optimize WP', 'md' ),
+						'options' => array(
+							'widgets' => __( '<b>Disable</b> Widgets blocks editor', 'md' ),
+							'blocks' => __( '<b>Enable</b> Advanced block styling<br><span class="description">MD replaces WordPress&rsquo;s block CSS, global styles, and layout engine for leaner pages. Unsupported blocks and controls are hidden in the editor.</span>', 'md' ),
+							'wpjson' => __( '<code>&lt;head&gt;</code> <b>Remove</b> REST API and oEmbed discovery links', 'md' ),
+							'optimize' => __( '<code>&lt;head&gt;</code> <b>Restore</b> all default <code>wp_head</code> tags', 'md' ),
+							'oembed' => __( '<code>&lt;/body&gt;</code> <b>Remove</b> <code>wp-embed.js</code> script', 'md' )
+						)
 					),
 					'css' => array(
 						'type' => 'checkbox',
-						'options' => array( 'inline', 'child', 'critical' )
+						'label' => __( 'CSS Manager', 'md' ),
+						'options' => array(
+							'child' => sprintf( __( 'Combine child theme CSS into %s', 'md' ), '<code>style.css</code>' ),
+							'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' ),
+							'critical' => sprintf( __( 'Inline Critical CSS (defer %s)', 'md' ), '<code>style.css</code>' )
+						)
 					),
 					'abilities' => array(
 						'type' => 'checkbox',
-						'options' => array( 'disable' )
+						'label' => __( 'Apps & AI', 'md' ),
+						'options' => array(
+							'disable' => __( '<b>Disable</b> MD abilities for apps and AI assistants', 'md' )
+						)
 					),
 					'sidebars' => array(
 						'type' => 'group',
+						'label' => __( 'Manage Sidebars', 'md' ),
 						'group_key_lowercase' => true, // widgets must save all lowercase
 						'fields' => array(
 							'name' => array( 'type' => 'text' )
@@ -60,6 +79,7 @@ class md_settings extends md_api {
 					),
 					'panels' => array(
 						'type' => 'group',
+						'label' => __( 'Manage Panels', 'md' ),
 						'group_key_lowercase' => true, // widgets must save all lowercase
 						'fields' => array(
 							'name' => array( 'type' => 'text' )

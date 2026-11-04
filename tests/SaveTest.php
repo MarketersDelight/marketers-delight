@@ -1,9 +1,8 @@
 <?php
 /**
- * Tests md_save's merge logic (merge_recursive/merge_fields/merge_clone_items)
- * directly via reflection, since they're private and the public entry points
- * (admin_save/admin_save_custom) add nonce/$_POST plumbing that's orthogonal
- * to the merge behavior itself.
+ * Tests md_save's merge logic (merge_fields/merge_clone_items) directly via
+ * reflection, and settings screen saves through md_save_settings, which
+ * routes a screen's form to md_save::apply().
  *
  * @since 6.0
  */
@@ -17,20 +16,46 @@ class SaveTest extends MD_TestCase {
 		$this->save = new md_save;
 	}
 
-	private function merge( $old, $new ) {
-		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+	// Merge validated groups over stored ones, the way apply() does per group
 
-		return $this->call( $this->save, 'merge_recursive', array( $old, $new ) );
+	private function merge( $old, $new, $settings = 'admin_pages' ) {
+		md_test_set_filter( 'md_register', array( $settings => $this->schema ) );
+
+		foreach ( $new as $key => $value ) {
+			$merged = $this->call( $this->save, 'merge_fields', array( $old[$key] ?? array(), $value, $this->schema[$key]['fields'] ?? array() ) );
+			$old = $this->call( $this->save, 'set_path', array( $old, array( $key ), $merged ) );
+		}
+
+		return $old;
 	}
 
 	private function merge_meta( $old, $new, $settings = 'meta_boxes' ) {
-		md_test_set_filter( 'md_register', array( $settings => $this->schema ) );
-		$merged = $this->call( $this->save, 'merge_recursive', array( $old, $new, $settings ) );
-
-		return $this->call( $this->save, 'prune_empty', array( $merged ) );
+		return $this->call( $this->save, 'prune_empty', array( $this->merge( $old, $new, $settings ) ) );
 	}
 
 	private $schema = array();
+
+	// Submit a settings screen's form (fields named md[scope][group][...]) and return the option it saved
+
+	private function save_screen( $input, $scope = 'site', $option = 'marketers_delight' ) {
+		$_POST['md'][$scope] = $input;
+		$settings = new md_save_settings( $this->save );
+		$this->call( $settings, 'save_screen' );
+
+		return get_option( $option );
+	}
+
+	// Taxonomy tabs belong to a post type settings host: book, with a genre and a topic taxonomy
+
+	private function save_taxonomy( $input ) {
+		foreach ( $this->schema as $key => $page )
+			$this->schema[$key]['has_groups'] = true;
+
+		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
+		md_test_set_filter( 'md_taxonomy_groups', array( 'md_book' => array( 'genre' => true, 'topic' => true ) ) );
+
+		return $this->save_screen( array( 'book' => $input['book']['genre'] ?? array() ), 'taxonomy:book/genre' );
+	}
 
 	public function test_post_editor_saves_editorial_meta_without_erasing_or_changing_restricted_groups() {
 		$this->schema = array(
@@ -45,12 +70,12 @@ class SaveTest extends MD_TestCase {
 		);
 		md_test_set_capability( 'manage_options', false );
 		$_POST['marketers_delight_nonce'] = 'valid';
-		$_POST['marketers_delight'] = array(
+		$_POST['md']['post'] = array(
 			'page_cover' => array( 'title' => 'New cover' ),
 			'layout' => array( 'style' => '' )
 		);
 
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 		$result = get_post_meta( 10, 'marketers_delight', true );
 
 		$this->assertSame( 'New cover', $result['page_cover']['title'] );
@@ -70,8 +95,8 @@ class SaveTest extends MD_TestCase {
 		$_POST['marketers_delight_nonce'] = 'valid';
 
 		foreach ( array( array(), array( 'scripts' => array( 'body_class' => '' ) ) ) as $input ) {
-			$_POST['marketers_delight'] = $input;
-			$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+			$_POST['md']['post'] = $input;
+			( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 			$this->assertSame( 'existing', get_post_meta( 10, 'marketers_delight', true )['scripts']['body_class'] );
 		}
 	}
@@ -84,14 +109,14 @@ class SaveTest extends MD_TestCase {
 		md_test_set_post( array( 'ID' => 10, 'post_type' => 'post' ) );
 		md_test_set_capability( 'manage_options', false );
 		$_POST['marketers_delight_nonce'] = 'valid';
-		$_POST['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'custom_html' ) );
+		$_POST['md']['post'] = array( 'featured_media' => array( 'media_type' => 'custom_html' ) );
 
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 		$this->assertSame( '', get_post_meta( 10, 'marketers_delight', true ) );
 
 		$GLOBALS['__test_object_meta'][10]['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'custom_html' ) );
-		$_POST['marketers_delight'] = array( 'featured_media' => array( 'media_type' => 'video' ) );
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		$_POST['md']['post'] = array( 'featured_media' => array( 'media_type' => 'video' ) );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 		$this->assertSame( 'custom_html', get_post_meta( 10, 'marketers_delight', true )['featured_media']['media_type'] );
 	}
 
@@ -107,11 +132,11 @@ class SaveTest extends MD_TestCase {
 		);
 		md_test_set_capability( 'unfiltered_html', false );
 		$_POST['marketers_delight_nonce'] = 'valid';
-		$_POST['marketers_delight'] = array( 'page' => array(
+		$_POST['md']['post'] = array( 'page' => array(
 			'title' => 'New', 'script' => '<script>changed()</script>'
 		) );
 
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 		$result = get_post_meta( 10, 'marketers_delight', true );
 
 		$this->assertSame( 'New', $result['page']['title'] );
@@ -129,11 +154,11 @@ class SaveTest extends MD_TestCase {
 		);
 		md_test_set_capability( 'manage_options', false );
 		$_POST['marketers_delight_nonce'] = 'valid';
-		$_POST['marketers_delight'] = array( 'page' => array(
+		$_POST['md']['post'] = array( 'page' => array(
 			'script' => '<script>changed()</script>'
 		) );
 
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 
 		$this->assertSame( '<script>original()</script>', get_post_meta( 10, 'marketers_delight', true )['page']['script'] );
 	}
@@ -145,11 +170,11 @@ class SaveTest extends MD_TestCase {
 		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
 		md_test_set_post( array( 'ID' => 10, 'post_type' => 'page' ) );
 		$_POST['marketers_delight_nonce'] = 'valid';
-		$_POST['marketers_delight'] = array( 'page' => array(
+		$_POST['md']['post'] = array( 'page' => array(
 			'script' => '<script src="https://example.com/tag.js"></script>'
 		) );
 
-		$this->save->meta_save( 10, $GLOBALS['__test_posts'][10] );
+		( new md_save_settings( $this->save ) )->meta_save( 10, $GLOBALS['__test_posts'][10] );
 
 		$this->assertSame( '<script src="https://example.com/tag.js"></script>', get_post_meta( 10, 'marketers_delight', true )['page']['script'] );
 	}
@@ -164,10 +189,8 @@ class SaveTest extends MD_TestCase {
 			'genre' => array( 'title' => 'Old', 'script' => '<script>original()</script>' )
 		) ) );
 		md_test_set_capability( 'unfiltered_html', false );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+		$result = $this->save_taxonomy( array( 'book' => array( 'genre' => array(
 			'title' => 'New', 'script' => '<script>changed()</script>'
 		) ) ) );
 
@@ -184,10 +207,8 @@ class SaveTest extends MD_TestCase {
 			'genre' => array( 'script' => '<script>original()</script>' )
 		) ) );
 		md_test_set_capability( 'manage_options', false );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+		$result = $this->save_taxonomy( array( 'book' => array( 'genre' => array(
 			'script' => '<script>changed()</script>'
 		) ) ) );
 
@@ -208,10 +229,7 @@ class SaveTest extends MD_TestCase {
 			'dropins' => array( 'installed' => array( 'share' => array( 'name' => 'Share' ) ) ),
 			'custom_icons' => array( 'star' )
 		) );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
-
-		$result = $this->save->admin_save( array(
+		$result = $this->save_screen( array(
 			'settings' => array( 'title' => 'New title' )
 		) );
 
@@ -241,15 +259,12 @@ class SaveTest extends MD_TestCase {
 			),
 			'internal' => array( 'version' => 2 )
 		) );
-		$_POST['option_page'] = 'client_portal';
-		$_POST['action'] = 'update';
-
-		$result = $this->save->admin_save_custom( array(
+		$result = $this->save_screen( array(
 			'portal' => array(
 				'title' => 'New title',
 				'layout' => 'sidebar'
 			)
-		) );
+		), 'site', 'client_portal' );
 
 		$this->assertSame( 'New title', $result['portal']['title'] );
 		$this->assertSame( 'sidebar', $result['portal']['layout'] );
@@ -273,10 +288,7 @@ class SaveTest extends MD_TestCase {
 			'settings' => array( 'title' => 'Old title' ),
 			'dropins' => array( 'active' => array( 'share' ) )
 		) );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
-
-		$result = $this->save->admin_save( array(
+		$result = $this->save_screen( array(
 			'settings' => array( 'title' => 'New title' ),
 			'dropins' => array( 'installed' => array() )
 		) );
@@ -299,10 +311,8 @@ class SaveTest extends MD_TestCase {
 			),
 			'colors' => array( 'site' => '#ffffff' )
 		) );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array(
+		$result = $this->save_taxonomy( array(
 			'book' => array(
 				'genre' => array( 'layout' => 'new-layout' )
 			)
@@ -326,10 +336,8 @@ class SaveTest extends MD_TestCase {
 				'topic' => array( 'layout' => 'keep-topic' )
 			)
 		) );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array(
+		$result = $this->save_taxonomy( array(
 			'book' => array(
 				'genre' => array( 'layout' => '' )
 			)
@@ -367,21 +375,20 @@ class SaveTest extends MD_TestCase {
 			'image' => array( 'id' => 7, 'url' => 'https://example.test/a.jpg' ),
 			'rows' => array( 'r1' => array( 'name' => 'Row' ) )
 		) ) ) );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		// As the form posts it: blanks, unchecked boxes left out, every row removed
+		// As the form posts it: blanks, unchecked boxes as their empty partners, every row removed
 
-		$result = $this->save->admin_save( array( 'book' => array( 'genre' => array(
+		$result = $this->save_taxonomy( array( 'book' => array( 'genre' => array(
 			'title' => '',
 			'text' => '',
 			'script' => '',
 			'count' => '',
 			'link' => '',
 			'style' => '',
+			'show' => array( 'one' => '', 'two' => '' ),
 			'color' => '',
 			'image' => array( 'id' => '', 'url' => '' ),
-			'rows_data' => ''
+			'rows' => ''
 		) ) ) );
 
 		$this->assertArrayNotHasKey( 'book', $result, 'Clearing every field removes the taxonomy branch' );
@@ -402,10 +409,8 @@ class SaveTest extends MD_TestCase {
 				)
 			)
 		) );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array(
+		$result = $this->save_taxonomy( array(
 			'book' => array(
 				'genre' => array( 'layout' => '' )
 			)
@@ -431,10 +436,8 @@ class SaveTest extends MD_TestCase {
 				'topic' => array( 'date' => array( 'group' => true ) )
 			)
 		) );
-		$_POST['md_save_taxonomy_post_type'] = 'book';
-		$_POST['md_save_taxonomy'] = 'genre';
 
-		$result = $this->save->admin_save( array(
+		$result = $this->save_taxonomy( array(
 			'book' => array(
 				'genre' => array( 'date' => array( 'group' => '0' ) )
 			)
@@ -480,14 +483,12 @@ class SaveTest extends MD_TestCase {
 			) ),
 			'license' => array( 'updates' => array( 'dropins' => array() ) )
 		) );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
-
-		$result = $this->save->admin_save( array(
+		$result = $this->save_screen( array(
 			'dropins' => array( 'installed' => array(
 				'share' => array(
 					'name' => 'Share',
 					'version' => '2.0',
+					'status' => array( 'enable' => '' ),
 					'plugin_name' => ''
 				),
 				'bookshelf' => array(
@@ -634,7 +635,7 @@ class SaveTest extends MD_TestCase {
 				'book_rating' => '4.5',
 				'book_author' => ''
 			)
-		) ) );
+		), array( 'bookshelf' ) ) );
 
 		$this->assertSame( array( 'bookshelf' => array( 'review_title' => 'Great read' ) ), $save );
 		$this->assertSame( '4.5', $GLOBALS['__test_object_meta'][25]['book_rating'] );
@@ -704,10 +705,7 @@ class SaveTest extends MD_TestCase {
 		);
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
 		md_test_set_option( 'marketers_delight', array() );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
-
-		$result = $this->save->admin_save( array(
+		$result = $this->save_screen( array(
 			'settings' => array( 'title' => '' )
 		) );
 
@@ -738,18 +736,11 @@ class SaveTest extends MD_TestCase {
 			) )
 		);
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
 
-		$result = $this->call( $this->save, 'settings_input', array(
-			array(
-				'settings' => array( 'title' => 'Keep' ),
-				'unregistered' => array( 'unsafe' => '<script>alert(1)</script>' )
-			),
-			'marketers_delight'
+		$result = $this->save_screen( array(
+			'settings' => array( 'title' => 'Keep' ),
+			'unregistered' => array( 'unsafe' => '<script>alert(1)</script>' )
 		) );
-
-		unset( $_POST['option_page'], $_POST['action'] );
 
 		$this->assertSame( array( 'settings' => array( 'title' => 'Keep' ) ), $result );
 	}
@@ -761,36 +752,11 @@ class SaveTest extends MD_TestCase {
 			)
 		);
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $this->schema ) );
-		$_POST['option_page'] = 'marketers_delight';
-		$_POST['action'] = 'update';
+		md_test_set_option( 'marketers_delight', array( 'integrations' => array( 'enabled' => array( 'typekit' => true ) ) ) );
 
-		$result = $this->call( $this->save, 'settings_input', array(
-			array( 'integrations' => array( 'unsafe' => '<script>alert(1)</script>' ) ),
-			'marketers_delight'
-		) );
+		$result = $this->save_screen( array( 'integrations' => array( 'unsafe' => '<script>alert(1)</script>' ) ) );
 
-		unset( $_POST['option_page'], $_POST['action'] );
-
-		$this->assertSame( array(), $result );
-	}
-
-	public function test_programmatic_update_preserves_internal_top_level_key() {
-		md_test_set_filter( 'md_register', array( 'admin_pages' => array() ) );
-
-		$result = $this->save->admin_save( array(
-			'license' => array( 'status' => 'valid' ),
-			'integrations' => array( 'enabled' => array( 'mailchimp' => true ) ),
-			'custom_icons' => array( 'star' )
-		) );
-
-		$this->assertSame(
-			array(
-				'license' => array( 'status' => 'valid' ),
-				'integrations' => array( 'enabled' => array( 'mailchimp' => true ) ),
-				'custom_icons' => array( 'star' )
-			),
-			$result
-		);
+		$this->assertSame( array( 'integrations' => array( 'enabled' => array( 'typekit' => true ) ) ), $result );
 	}
 
 	// Clone item list: deleting/reordering is authoritative from $save.

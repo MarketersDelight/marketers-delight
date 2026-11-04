@@ -27,6 +27,15 @@ class md_fields extends md_fields_render {
 	protected $root = array();
 
 	/**
+	 * Registered fields per settings type, read once per instance when
+	 * the first field draws.
+	 *
+	 * @since 6.2
+	 */
+
+	protected $registered = array();
+
+	/**
 	 * Set properties of instance.
 	 *
 	 * @since 5.0
@@ -104,7 +113,7 @@ class md_fields extends md_fields_render {
 	 * @since 4.0
 	 */
 
-	public function field( $field, $args ) {
+	public function field( $field, $args = array() ) {
 		$args['path'] = $field;
 
 		if ( $this->root )
@@ -117,14 +126,19 @@ class md_fields extends md_fields_render {
 		if ( isset( $args['id'] ) )
 			$clean_id = $args['id'];
 
-		$name = "{$this->_option}[$clean_id]";
+		$args = $args + $this->registered_args( $field, $clean_id );
+
+		if ( ! empty( $args['tokens'] ) )
+			$args['tokens'] = $this->token_set( $args );
+
+		$context = $this->get_context();
+		$scope = $this->scope( $context );
+		$name = "md[$scope][$clean_id]";
 		$id = "{$this->_option}_{$clean_id}";
 		$args['field'] = $field;
 		$screen = $this->_get_screen;
 
 		// Determine screen context and build name/id/settings key
-
-		$context = $this->get_context();
 
 		if ( $context['is_post'] || wp_doing_ajax() ) {
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
@@ -153,20 +167,17 @@ class md_fields extends md_fields_render {
 
 				if ( $context['is_child'] ) {
 					$setting = ! empty( $setting[$page_id] ) ? $setting[$page_id] : array();
-					$name = "{$this->_option}[$page_id]";
+					$name = "md[$scope][$page_id][$clean_id]";
 					$id = "{$this->_option}_{$page_id}";
 
 					if ( $taxonomy ) {
 						$setting = ! empty( $setting[$taxonomy] ) ? $setting[$taxonomy] : array();
-						$name .= "[$taxonomy]";
 						$id .= "_{$taxonomy}";
 					}
 
-					$name .= "[$clean_id]";
 					$id .= "_{$clean_id}";
 				}
 				elseif ( $taxonomy ) {
-					$name = "{$this->_option}[$clean_id][$taxonomy]";
 					$id = "{$this->_option}_{$clean_id}_{$taxonomy}";
 					$setting = array( $clean_id => ! empty( $setting[$clean_id][$taxonomy] ) ? $setting[$clean_id][$taxonomy] : array() );
 				}
@@ -213,6 +224,118 @@ class md_fields extends md_fields_render {
 			$args = $this->prepare_inheritance( $field, $option, $args );
 
 		$this->render_field( $name, $id, $option, $args, $wrap_classes );
+	}
+
+	/**
+	 * The scope a field saves to, which leads its name: md[scope][group][...].
+	 * md_save::apply() reads the same scopes. Post, term and user screens
+	 * name the object type only, their save hook knows the ID.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function scope( $context ) {
+		if ( $context['is_post'] || wp_doing_ajax() )
+			return 'post';
+
+		if ( $context['is_term'] )
+			return 'term';
+
+		if ( $context['is_user'] )
+			return 'user';
+
+		if ( $context['is_group'] )
+			return $context['taxonomy'] ? "taxonomy:{$context['page_id']}/{$context['taxonomy']}" : "post_type:{$context['page_id']}";
+
+		return 'site';
+	}
+
+	/**
+	 * What a field's registration says about how it draws, for the keys
+	 * the template didn't pass: its type, label, limits and labeled
+	 * options (see md_validate::FIELD_KEYS). A list of option values has
+	 * no labels to draw, so those stay with the template.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function registered_args( $field, $clean_id ) {
+		$registered = $this->registered_field( $field, $clean_id );
+		$keys = array( 'type', 'label', 'min', 'max', 'step', 'upload_type', 'multiple', 'tokens' );
+		$args = array_intersect_key( $registered, array_flip( $keys ) );
+
+		if ( ! empty( $registered['options'] ) && md_sanitize::labels( $registered['options'] ) )
+			$args['options'] = $registered['options'];
+
+		return $args;
+	}
+
+	/**
+	 * The token set a field's `tokens` key asks for: a set name as given,
+	 * or for `true` the set this screen's archive text uses. Only plain
+	 * text and textarea fields outside groups and builders get tokens.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function token_set( $args ) {
+		$type = isset( $args['type'] ) ? $args['type'] : '';
+
+		if ( ! is_string( $args['path'] ) || ! in_array( $type, array( 'text', 'textarea' ), true ) )
+			return '';
+
+		if ( is_string( $args['tokens'] ) )
+			return $args['tokens'];
+
+		$context = $this->get_context();
+
+		if ( $context['is_term'] || $context['taxonomy'] )
+			return 'term';
+
+		if ( $context['is_post'] || $context['is_user'] )
+			return '';
+
+		if ( md_clean_id( isset( $this->_get_screen['page'] ) ? $this->_get_screen['page'] : '' ) === 'author' )
+			return 'author';
+
+		return 'archive';
+	}
+
+	/**
+	 * Find a field's registration for this screen by its path. A group or
+	 * builder field's path holds the item key after the field's own key.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function registered_field( $field, $clean_id ) {
+		$context = $this->get_context();
+		$settings = $context['is_post'] ? 'meta_boxes' : ( $context['is_term'] ? 'terms' : ( $context['is_user'] ? 'user_meta' : 'admin_pages' ) );
+
+		if ( ! isset( $this->registered[$settings] ) )
+			$this->registered[$settings] = md_register( $settings );
+
+		$node = isset( $this->registered[$settings][$clean_id]['fields'] ) ? $this->registered[$settings][$clean_id]['fields'] : array();
+		$definition = array();
+		$item = false;
+
+		foreach ( (array) $field as $key ) {
+			if ( $item ) {
+				$item = false;
+				$node = isset( $definition['fields'] ) ? $definition['fields'] : array();
+				$definition = array();
+				continue;
+			}
+
+			if ( ! is_array( $node ) || ! isset( $node[$key] ) || ! is_array( $node[$key] ) )
+				return array();
+
+			$node = $node[$key];
+			$definition = isset( $node['type'] ) ? $node : array();
+			$item = isset( $node['type'] ) && in_array( $node['type'], array( 'group', 'builder' ), true );
+		}
+
+		return $definition;
 	}
 
 	/**
@@ -504,14 +627,25 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Output MD Save button with optional flush rules.
+	 * A screen title with the save status and Save button beside it, for
+	 * settings templates without a header of their own.
+	 *
+	 * @since 6.2
+	 */
+
+	public function title( $title ) {
+		echo md_save_settings::bar( '', $title );
+	}
+
+	/**
+	 * Settings templates call this where the Save button used to print.
+	 * Save now lives in the save bar at the top of every settings screen
+	 * (md_save_settings::bar()), so this prints nothing.
 	 *
 	 * @since 5.0
 	 */
 
-	public function save( $label = null, $args = null ) {
-		include md_template( 'admin/fields/save', true );
-	}
+	public function save( $label = null, $args = null ) {}
 
 	/**
 	 * Devices toggle controls, adds device classes to .md.wrap
@@ -635,9 +769,7 @@ class md_fields extends md_fields_render {
 
 	public function byline_fields( $group, $args = array() ) {
 		$post_type = $this->screen_post_type();
-
 		$row = md_get_post_type_builder( 'byline', $post_type )[$group] ?? array();
-
 		$title_positions = md_title_meta_positions();
 		$entry_positions = array(
 			'entry_top' => __( 'Entry Top', 'md' ),

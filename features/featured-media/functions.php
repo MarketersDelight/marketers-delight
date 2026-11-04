@@ -294,24 +294,41 @@ function md_featured_media_fields() {
 	return array(
 		'media_type' => array(
 			'type' => 'select',
+			'label' => __( 'Media Type', 'md' ),
 			'options' => array( 'image', 'video', 'custom_html' ),
 			'code_options' => array( 'custom_html' )
 		),
 		'position' => array(
 			'type' => 'select',
+			'label' => __( 'Position', 'md' ),
 			'options' => array_keys( $data->values['featured_image'] )
 		),
 		'image' => array(
 			'type' => 'upload',
-			'upload_type' => 'media'
+			'upload_type' => 'media',
+			'label' => __( 'Image', 'md' )
 		),
-		'image_width' => array( 'type' => 'number' ),
+		'image_width' => array(
+			'type' => 'number',
+			'max' => 550,
+			'label' => __( 'Max width', 'md' )
+		),
 		'mobile' => array(
 			'type' => 'select',
-			'options' => array( 'beside', 'hide' )
+			'label' => __( 'Position on mobile', 'md' ),
+			'options' => array(
+				'beside' => __( 'Keep beside', 'md' ),
+				'hide' => __( 'Hide', 'md' )
+			)
 		),
-		'video' => array( 'type' => 'url' ),
-		'custom_html' => array( 'type' => 'code' )
+		'video' => array(
+			'type' => 'url',
+			'label' => __( 'Video URL', 'md' )
+		),
+		'custom_html' => array(
+			'type' => 'code',
+			'label' => __( 'Custom HTML', 'md' )
+		)
 	);
 }
 
@@ -360,9 +377,7 @@ function md_featured_media_admin( $fields, $prefix, $args = array() ) {
 
 	$width = array(
 		'type' => 'range',
-		'label' => __( 'Max width', 'md' ),
-		'unit' => 'px',
-		'max' => '550'
+		'unit' => 'px'
 	);
 
 	include md_template( 'features', 'featured-media/admin/featured-media', true );

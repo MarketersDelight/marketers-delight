@@ -1,18 +1,23 @@
 <?php
 /**
- * Houses the save functions across various settings screen types.
+ * One save path for every MD setting. apply() validates a group's values
+ * against its registered fields, merges them over what's stored and
+ * writes the result to the option, post, term or user it belongs to.
  *
- * Call chain for the Admin Settings API:
- *   admin_save( $input )                                — WP Settings API hook
- *     -> validate->validate( 'admin_pages', $input )     — see api/validate.php
- *     -> merge_settings( $old, $save )
- *          -> merge_recursive( $old, $save )             — top-level keys
- *               -> merge_fields( $old, $save, $schema )  — recurses per field
- *                    -> merge_clone_items( ... )         — group/builder fields
- *                         -> merge_fields( ... )          — merges each item
+ * The methods below follow apply() in order:
  *
- * admin_save_custom works the same for a custom option key.
- * Meta, term, and user saves use their own registered field schemas.
+ *   apply( $scope, $group, $input )
+ *     -> targets()                              — where each group lives, see md_scope in api/save/scope.php
+ *     -> md_validate::fields()                  — the keys given, see api/save/validate.php
+ *     -> post_values()                          — post meta filter and per-box permissions
+ *     -> read()                                 — what's stored now
+ *     -> merge_fields() / merge_clone_items()   — the new values over it
+ *     -> diff()                                 — what changed, for the result
+ *     -> write()                                — update_option / update_metadata
+ *     -> after_save()                           — compile CSS/JS, rebuild rewrite rules next request
+ *
+ * Settings, meta box, term and user forms save through
+ * admin/save-settings.php, which calls apply().
  *
  * @since 6.0
  */
@@ -26,147 +31,204 @@ class md_save {
 	}
 
 	/**
-	 * Save the main option on Settings API save.
+	 * Save one group's values to a scope. $group can also be a list of
+	 * groups, then $input is keyed by group, ex: every meta box a post
+	 * form submitted. Only the keys given change, and null resets a key.
 	 *
-	 * @since 4.0
+	 * dry_run : return what would change without writing anything.
+	 * compile : run after_save() once the values are written.
+	 *
+	 * Returns array( scope, group, changed => array( key, before, after ), warnings )
+	 * or a WP_Error.
+	 *
+	 * @since 6.2
 	 */
 
-	public function admin_save( $input ) {
-		$settings = get_option( 'marketers_delight', array() );
-		$settings = is_array( $settings ) ? $settings : array();
-		$input = is_array( $input ) ? $input : array();
+	public function apply( $scope, $group, $input, $args = array() ) {
+		$args = array_merge( array(
+			'dry_run' => false,
+			'compile' => true
+		), (array) $args );
+		$where = md_scope::parse( $scope );
 
-		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
-			return $this->save_taxonomy( $input, $settings );
+		if ( is_wp_error( $where ) )
+			return $where;
 
-		if ( ! $this->is_settings_save( 'marketers_delight' ) )
-			return $input;
+		if ( in_array( $where->type, array( 'post', 'term', 'user' ), true ) && ! $where->id )
+			return new WP_Error( 'md_save_scope', sprintf( __( 'Saving to %s needs an ID.', 'md' ), $scope ), array( 'status' => 400 ) );
 
-		$input = $this->settings_input( $input, 'marketers_delight' );
-		$save = $this->validate->validate( 'admin_pages', $input );
+		if ( ! $where->can() )
+			return new WP_Error( 'md_save_forbidden', __( 'Sorry, you are not allowed to change these settings.', 'md' ), array( 'status' => 403 ) );
 
-		return $this->merge_settings( $settings, $save );
-	}
+		$groups = is_array( $group ) ? $group : array( $group );
+		$targets = $this->targets( $where, $groups );
 
-	/**
-	 * Same as admin_save(), for a custom option key registered by a child
-	 * theme or dropin instead of the main option key.
-	 *
-	 * @since 6.0
-	 */
+		if ( is_wp_error( $targets ) )
+			return $targets;
 
-	public function admin_save_custom( $input ) {
-		$option = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : '';
-		$input = is_array( $input ) ? $input : array();
+		// Validate each group's values against its fields
 
-		if ( ! empty( $_POST['md_save_taxonomy_post_type'] ) && ! empty( $_POST['md_save_taxonomy'] ) )
-			return $this->save_taxonomy( $input, get_option( $option, array() ) );
+		$saves = $warnings = array();
 
-		if ( ! $this->is_settings_save( $option ) )
-			return $input;
-
-		$settings = get_option( $option, array() );
-		$settings = is_array( $settings ) ? $settings : array();
-		$input = $this->settings_input( $input, $option );
-		$save = $this->validate->validate( 'admin_pages', $input );
-
-		$settings = $this->merge_recursive( $settings, $save );
-
-		return apply_filters( "md_save_{$option}", $settings );
-	}
-
-	/**
-	 * Only registered top-level settings may come from an options.php form.
-	 * Programmatic option updates can contain internal data branches that do
-	 * not have admin fields and are validated by their own write handlers.
-	 *
-	 * @since 6.0
-	 */
-
-	private function is_settings_save( $option ) {
-		$option_page = isset( $_POST['option_page'] ) ? sanitize_key( $_POST['option_page'] ) : '';
-		$action = isset( $_POST['action'] ) ? sanitize_key( $_POST['action'] ) : '';
-
-		return $option_page === $option && $action === 'update';
-	}
-
-	/**
-	 * Limit an options.php submission to fields owned by its option.
-	 *
-	 * @since 6.0
-	 */
-
-	private function settings_input( $input, $option ) {
-		$registered = md_register( 'admin_pages' );
-		$allowed = array();
-
-		foreach ( $registered as $key => $settings ) {
-			$settings_option = isset( $settings['_option'] ) ? $settings['_option'] : 'marketers_delight';
-
-			if ( $settings_option === $option && ! empty( $settings['fields'] ) )
-				$allowed[$key] = true;
+		foreach ( $groups as $key ) {
+			$values = is_array( $group ) ? ( isset( $input[$key] ) ? $input[$key] : array() ) : $input;
+			$saves[$key] = $this->validate->fields( is_array( $values ) ? $values : array(), $targets[$key]['fields'] );
+			$warnings = array_merge( $warnings, $this->validate->warnings() );
 		}
 
-		return array_intersect_key( $input, $allowed );
+		if ( $where->type === 'post' )
+			$saves = $this->post_values( $where->id, $saves, $warnings );
+
+		// Merge each group over what's stored
+
+		$option = $this->option( $targets );
+		$stored = $this->read( $where, $option );
+		$new = $stored;
+		$changed = array();
+
+		foreach ( $saves as $key => $save ) {
+			$path = isset( $targets[$key] ) ? $targets[$key]['path'] : array( $key );
+			$old = $this->get_path( $stored, $path );
+
+			if ( $where->type === 'post' && isset( $targets[$key] ) )
+				$old = $this->standalone_meta( $where->id, $targets[$key]['fields'], $old );
+
+			// Values a md_post_meta_save filter adds without registered fields are stored as given
+
+			if ( isset( $targets[$key] ) )
+				$branch = $this->merge_fields( is_array( $old ) ? $old : array(), is_array( $save ) ? $save : array(), $targets[$key]['fields'] );
+			else
+				$branch = $save;
+
+			if ( $where->type === 'taxonomy' || $this->is_meta( $where ) )
+				$branch = $this->prune_empty( $branch );
+
+			$new = $this->set_path( $new, $path, $branch );
+			$changed = array_merge( $changed, $this->diff( $old, $branch, is_array( $group ) ? "$key." : '' ) );
+		}
+
+		$result = array(
+			'scope' => $scope,
+			'group' => $group,
+			'changed' => $changed,
+			'warnings' => $warnings
+		);
+
+		if ( $args['dry_run'] )
+			return $result;
+
+		$this->write( $where, $option, $new, array_keys( $saves ) );
+
+		if ( $args['compile'] && in_array( $where->type, array( 'site', 'post_type', 'taxonomy' ), true ) )
+			$this->after_save();
+
+		return $result;
 	}
 
 	/**
-	 * Standard swapping of old data to new, with special handling so
-	 * settings pages that share top level keys across different forms
-	 * don't empty on save (eventual AJAX saving will simplify this).
+	 * Where each group saves in a scope. One save writes one option, so
+	 * the groups must share it.
 	 *
-	 * @since 6.0
+	 * @since 6.2
 	 */
 
-	private function merge_settings( $old, $save ) {
-		$new = $this->merge_recursive( $old, $save );
-		$groups = apply_filters( 'md_taxonomy_groups', array() );
+	private function targets( $scope, $groups ) {
+		$targets = $options = array();
 
-		foreach ( $groups as $group_id => $group ) {
-			$group_id = md_clean_id( $group_id );
+		foreach ( $groups as $group ) {
+			$target = $scope->target( $group );
 
-			if ( ! isset( $save[$group_id] ) )
+			if ( is_wp_error( $target ) )
+				return $target;
+
+			$targets[$group] = $target;
+			$options[$target['option']] = true;
+		}
+
+		if ( count( $options ) > 1 )
+			return new WP_Error( 'md_save_option', __( 'These settings groups are saved to different options.', 'md' ), array( 'status' => 400 ) );
+
+		return $targets;
+	}
+
+	/**
+	 * The option a save writes to. Meta scopes name marketers_delight,
+	 * their meta key.
+	 *
+	 * @since 6.2
+	 */
+
+	private function option( $targets ) {
+		foreach ( $targets as $target )
+			return $target['option'];
+
+		return 'marketers_delight';
+	}
+
+	/**
+	 * Post meta boxes can be changed by other code before they save, and
+	 * groups that need manage_options are left out for post editors.
+	 *
+	 * @since 6.2
+	 */
+
+	private function post_values( $post_id, $values, &$warnings ) {
+		$registered = md_register( 'meta_boxes' );
+		$values = (array) apply_filters( 'md_post_meta_save', $values, get_post( $post_id ) );
+
+		foreach ( array_keys( $values ) as $group ) {
+			if ( ! isset( $registered[$group] ) )
 				continue;
 
-			foreach ( array_keys( $group ) as $child_slug )
-				if ( isset( $old[$group_id][$child_slug] ) )
-					$new[$group_id][$child_slug] = $old[$group_id][$child_slug];
+			$capability = ! empty( $registered[$group]['edit_post'] ) ? 'edit_post' : 'manage_options';
+
+			if ( ! current_user_can( $capability, $post_id ) ) {
+				unset( $values[$group] );
+				$warnings[] = sprintf( __( 'You are not allowed to change the %s settings, so they were left as they are.', 'md' ), $group );
+			}
 		}
 
-		return $new;
+		return $values;
 	}
 
 	/**
-	 * Merge save into old at top level of array. A key with registered
-	 * fields is merged recursively, otherwise data is overwritten.
+	 * Read the stored values a scope writes to. Post, term and user
+	 * settings are the object's marketers_delight meta, read through the
+	 * metadata API every object type shares.
 	 *
-	 * @since 6.0
+	 * @since 6.2
 	 */
 
-	private function merge_recursive( $old, $save, $settings = 'admin_pages' ) {
-		$schema = md_register( $settings );
-		$old = is_array( $old ) ? $old : array();
+	private function read( $scope, $option ) {
+		if ( $this->is_meta( $scope ) )
+			$stored = get_metadata( $scope->type, $scope->id, 'marketers_delight', true );
+		else
+			$stored = get_option( $option, array() );
 
-		foreach ( $save as $key => $value ) {
-			if ( ! empty( $schema[$key]['fields'] ) && is_array( $value ) ) {
-				$merged = $this->merge_fields(
-					isset( $old[$key] ) && is_array( $old[$key] ) ? $old[$key] : array(),
-					$value,
-					$schema[$key]['fields']
-				);
+		return is_array( $stored ) ? $stored : array();
+	}
 
-				if ( empty( $merged ) )
-					unset( $old[$key] );
-				else
-					$old[$key] = $merged;
+	/**
+	 * Standalone post meta is stored in its own key. Read it into its
+	 * group, the way the fields show it.
+	 *
+	 * @since 6.2
+	 */
+
+	private function standalone_meta( $post_id, $fields, $group ) {
+		foreach ( $fields as $key => $field ) {
+			if ( empty( $field['standalone'] ) )
+				continue;
+
+			$value = get_post_meta( $post_id, $key, true );
+
+			if ( $value !== '' ) {
+				$group = is_array( $group ) ? $group : array();
+				$group[$key] = $value;
 			}
-			elseif ( $this->is_empty_value( $value ) )
-				unset( $old[$key] );
-			else
-				$old[$key] = $value;
 		}
 
-		return $old;
+		return $group;
 	}
 
 	/**
@@ -251,17 +313,6 @@ class md_save {
 	}
 
 	/**
-	 * Values with no stored meaning are deletion signals. Use exact
-	 * comparisons so valid zero values remain saved.
-	 *
-	 * @since 6.0
-	 */
-
-	private function is_empty_value( $value ) {
-		return $value === '' || $value === false || $value === null || $value === array();
-	}
-
-	/**
 	 * Recursively remove empty values after a settings or meta merge.
 	 *
 	 * @since 6.0
@@ -284,80 +335,137 @@ class md_save {
 	}
 
 	/**
-	 * Taxonomy settings pages are attached to main settings pages
-	 * and come from a different form, so detect that and save onto
-	 * the same key level admin page settings group.
+	 * Values with no stored meaning are deletion signals. Use exact
+	 * comparisons so valid zero values remain saved.
 	 *
 	 * @since 6.0
 	 */
 
-	private function save_taxonomy( $input, $settings ) {
-		$settings = is_array( $settings ) ? $settings : array();
-		$post_type = sanitize_key( $_POST['md_save_taxonomy_post_type'] );
-		$taxonomy = sanitize_key( $_POST['md_save_taxonomy'] );
-		$group = isset( $input[$post_type][$taxonomy] ) ? $input[$post_type][$taxonomy] : array();
-		$save = $this->validate->validate( 'admin_pages', array( $post_type => $group ) );
-		$schema = md_register( 'admin_pages' );
-		$old = $settings[$post_type][$taxonomy] ?? array();
-		$options = $this->prune_empty( $this->merge_fields( is_array( $old ) ? $old : array(), $save[$post_type] ?? array(), $schema[$post_type]['fields'] ?? array() ) );
-
-		if ( ! empty( $options ) )
-			$settings[$post_type][$taxonomy] = $options;
-		else {
-			unset( $settings[$post_type][$taxonomy] );
-
-			if ( empty( $settings[$post_type] ) )
-				unset( $settings[$post_type] );
-		}
-
-		return $settings;
+	private function is_empty_value( $value ) {
+		return $value === '' || $value === false || $value === null || $value === array();
 	}
 
 	/**
-	 * Save custom post meta fields.
+	 * Get the value at a list of keys, or null when it isn't stored.
 	 *
-	 * @since 4.0
+	 * @since 6.2
 	 */
 
-	public function meta_save( $post_id, $post ) {
-		$option = 'marketers_delight';
+	private function get_path( $value, $path ) {
+		foreach ( $path as $key ) {
+			if ( ! is_array( $value ) || ! array_key_exists( $key, $value ) )
+				return null;
 
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			return $post_id;
-
-		if ( ! isset( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
-			return $post_id;
-
-		if ( ! current_user_can( get_post_type_object( $post->post_type )->cap->edit_post, $post_id ) )
-			return $post_id;
-
-		if ( ! isset( $_POST[$option] ) )
-			return $post_id;
-
-		// The form belongs to the post being edited, not to other posts saved during its request (like Stream activity)
-
-		if ( isset( $_POST['post_ID'] ) && absint( $_POST['post_ID'] ) !== absint( $post_id ) )
-			return $post_id;
-
-		$value = get_post_meta( $post_id, $option, true );
-		$value = is_array( $value ) ? $value : array();
-		$save = $this->validate->validate( 'meta_boxes', $_POST[$option] );
-		$save = apply_filters( 'md_post_meta_save', $save, $post );
-
-		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
-			$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
-			if ( isset( $save[$id] ) && ! current_user_can( $capability, $post_id ) )
-				unset( $save[$id] );
+			$value = $value[$key];
 		}
 
-		$save = $this->merge_recursive( $value, $save, 'meta_boxes' );
-		$save = $this->save_standalone_meta( $post_id, $save );
-		$save = $this->prune_empty( $save );
+		return $value;
+	}
 
-		if ( $save )
-			update_post_meta( $post_id, $option, $save );
-		elseif ( $value )
-			delete_post_meta( $post_id, $option );
+	/**
+	 * Set the value at a list of keys. An empty value removes the key,
+	 * and any parent it leaves empty.
+	 *
+	 * @since 6.2
+	 */
+
+	private function set_path( $array, $path, $value ) {
+		$key = array_shift( $path );
+		$array = is_array( $array ) ? $array : array();
+
+		if ( ! empty( $path ) )
+			$value = $this->set_path( isset( $array[$key] ) ? $array[$key] : array(), $path, $value );
+
+		if ( $this->is_empty_value( $value ) )
+			unset( $array[$key] );
+		else
+			$array[$key] = $value;
+
+		return $array;
+	}
+
+	/**
+	 * List what changed between two branches, one entry per value by its
+	 * dotted key, ex: layout.content.full.
+	 *
+	 * @since 6.2
+	 */
+
+	private function diff( $before, $after, $prefix = '' ) {
+		$before = $this->flatten( $before, $prefix );
+		$after = $this->flatten( $after, $prefix );
+		$changed = array();
+
+		foreach ( array_keys( $before + $after ) as $key ) {
+			$old = array_key_exists( $key, $before ) ? $before[$key] : null;
+			$new = array_key_exists( $key, $after ) ? $after[$key] : null;
+
+			if ( $old !== $new )
+				$changed[] = array(
+					'key' => (string) $key,
+					'before' => $old,
+					'after' => $new
+				);
+		}
+
+		return $changed;
+	}
+
+	/**
+	 * Flatten nested values to dotted keys: array( 'a' => array( 'b' => 1 ) )
+	 * becomes array( 'a.b' => 1 ).
+	 *
+	 * @since 6.2
+	 */
+
+	private function flatten( $value, $prefix = '' ) {
+		if ( is_null( $value ) )
+			return array();
+
+		if ( ! is_array( $value ) || empty( $value ) )
+			return array( rtrim( $prefix, '.' ) => $value );
+
+		$flat = array();
+
+		foreach ( $value as $key => $item )
+			$flat += $this->flatten( $item, "$prefix$key." );
+
+		return $flat;
+	}
+
+	/**
+	 * Write the merged values: site, post type and taxonomy settings to
+	 * their option, post, term and user settings to the object's
+	 * marketers_delight meta, deleted once nothing is left.
+	 *
+	 * @since 6.2
+	 */
+
+	private function write( $scope, $option, $new, $groups ) {
+		if ( ! $this->is_meta( $scope ) ) {
+			update_option( $option, apply_filters( "md_save_{$option}", $new ) );
+			return;
+		}
+
+		if ( $scope->type === 'post' )
+			$new = $this->save_standalone_meta( $scope->id, $new, $groups );
+
+		$new = $this->prune_empty( $new );
+
+		if ( $new )
+			update_metadata( $scope->type, $scope->id, 'marketers_delight', wp_slash( $new ) );
+		else
+			delete_metadata( $scope->type, $scope->id, 'marketers_delight' );
+	}
+
+	/**
+	 * Post, term and user settings are meta; the rest are options.
+	 *
+	 * @since 6.2
+	 */
+
+	private function is_meta( $scope ) {
+		return in_array( $scope->type, array( 'post', 'term', 'user' ), true );
 	}
 
 	/**
@@ -368,20 +476,29 @@ class md_save {
 	 * @since 6.0
 	 */
 
-	private function save_standalone_meta( $post_id, $save ) {
+	private function save_standalone_meta( $post_id, $save, $groups ) {
 		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
 			$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
-			if ( empty( $save[$id] ) || empty( $meta_box['fields'] ) || ! current_user_can( $capability, $post_id ) )
+			if ( empty( $meta_box['fields'] ) || ! current_user_can( $capability, $post_id ) )
 				continue;
 
 			foreach ( $meta_box['fields'] as $key => $field ) {
-				if ( empty( $field['standalone'] ) || ! array_key_exists( $key, $save[$id] ) )
+				if ( empty( $field['standalone'] ) )
 					continue;
+
+				// A saved group without the key had it cleared
+
+				if ( ! isset( $save[$id] ) || ! is_array( $save[$id] ) || ! array_key_exists( $key, $save[$id] ) ) {
+					if ( in_array( $id, $groups, true ) )
+						delete_post_meta( $post_id, $key );
+
+					continue;
+				}
 
 				if ( $save[$id][$key] === '' )
 					delete_post_meta( $post_id, $key );
 				else
-					update_post_meta( $post_id, $key, $save[$id][$key] );
+					update_post_meta( $post_id, $key, wp_slash( $save[$id][$key] ) );
 
 				unset( $save[$id][$key] );
 			}
@@ -391,56 +508,17 @@ class md_save {
 	}
 
 	/**
-	 * Saves term meta fields.
+	 * Rebuild what's made from settings on the next request, once
+	 * Drop-ins, post types and fields have loaded with the new settings:
+	 * the compiled CSS/JS (see md_enqueue::compile_after_upgrade()) and
+	 * the rewrite rules, which WordPress rebuilds when they're missing.
 	 *
-	 * @since 4.3.5
+	 * @since 6.2
 	 */
 
-	public function term_save( $term_id ) {
-		$option = 'marketers_delight';
-
-		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_term', $term_id ) )
-			return;
-
-		if ( isset( $_POST[$option] ) && isset( $_POST["{$option}_nonce"] ) && wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) ) {
-			$value = get_term_meta( $term_id, $option, true );
-			$value = is_array( $value ) ? $value : array();
-			$save = $this->validate->validate( 'terms', $_POST[$option] );
-			$save = $this->merge_recursive( $value, $save, 'terms' );
-			$save = $this->prune_empty( $save );
-
-			if ( $save )
-				update_term_meta( $term_id, $option, $save );
-			else
-				delete_term_meta( $term_id, $option );
-		}
-	}
-
-	/**
-	 * Saves user meta fields.
-	 *
-	 * @since 5.3.1
-	 */
-
-	public function user_meta_save( $user_id, $old_meta ) {
-		$option = 'marketers_delight';
-
-		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_user', $user_id ) )
-			return;
-
-		if ( ! isset( $_POST[$option] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )
-			return;
-
-		$value = get_user_meta( $user_id, $option, true );
-		$value = is_array( $value ) ? $value : array();
-		$save = $this->validate->validate( 'user_meta', $_POST[$option] );
-		$save = $this->merge_recursive( $value, $save, 'user_meta' );
-		$save = $this->prune_empty( $save );
-
-		if ( $save )
-			update_user_meta( $user_id, $option, $save );
-		else
-			delete_user_meta( $user_id, $option );
+	public function after_save() {
+		update_option( 'md_compile_after_upgrade', true, false );
+		delete_option( 'rewrite_rules' );
 	}
 
 }

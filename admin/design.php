@@ -25,9 +25,18 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 
 		$fields = $this->build_color_fields( $this->colors->roles );
-		$fields['width']['site'] = array( 'type' => 'range' );
-		$fields['width']['content'] = array( 'type' => 'range' );
-		$fields['width']['sidebar'] = array( 'type' => 'range' );
+		$fields['width']['site'] = array(
+			'type' => 'range',
+			'label' => __( 'Site Width', 'md' )
+		);
+		$fields['width']['content'] = array(
+			'type' => 'range',
+			'label' => __( 'Post Width', 'md' )
+		);
+		$fields['width']['sidebar'] = array(
+			'type' => 'range',
+			'label' => __( 'Sidebar Width', 'md' )
+		);
 		$fields['palette'] = array(
 			'type' => 'group',
 			'fields' => array(
@@ -36,10 +45,21 @@ class md_colors extends md_api {
 		);
 		$fields['custom'] = array(
 			'type' => 'group',
+			'label' => __( 'Additional Colors', 'md' ),
 			'fields' => array(
-				'hex' => array( 'type' => 'color', 'hex_only' => true ),
-				'name' => array( 'type' => 'text' ),
-				'key' => array( 'type' => 'text' )
+				'hex' => array(
+					'type' => 'color',
+					'hex_only' => true,
+					'label' => __( 'Color', 'md' )
+				),
+				'name' => array(
+					'type' => 'text',
+					'label' => __( 'Name', 'md' )
+				),
+				'key' => array(
+					'type' => 'text',
+					'label' => __( 'Key', 'md' )
+				)
 			)
 		);
 
@@ -53,6 +73,7 @@ class md_colors extends md_api {
 				'fields' => array_merge( $fields, array(
 					'design' => array(
 						'type' => 'select',
+						'label' => __( 'Site style', 'md' ),
 						'options' => array_keys( md_filter_loop_styles() )
 					)
 				) )
@@ -155,7 +176,6 @@ class md_colors extends md_api {
 			$default = $source;
 
 		$args = array(
-			'type' => 'color',
 			'label' => __( $options['label'], 'md' ),
 			'default' => $default
 		);

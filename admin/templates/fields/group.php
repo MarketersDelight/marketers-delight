@@ -34,6 +34,8 @@ $classes[] = "md-group-$style";
 $classes = join( ' ', $classes );
 ?>
 
+<?php if ( $style !== 'simple' ) : ?>
+
 <div class="md-group-head md-clear">
 
 	<?php if ( isset( $args['label'] ) )
@@ -47,6 +49,8 @@ $classes = join( ' ', $classes );
 	} ?>
 
 </div>
+
+<?php endif; ?>
 
 <div id="md_group_<?php echo esc_attr( "{$this->_id}_$group_id" ); ?>" class="<?php echo esc_attr( $classes ); ?>">
 
@@ -99,3 +103,12 @@ $classes = join( ' ', $classes );
 	<?php endforeach; ?>
 
 </div>
+
+<?php if ( $style === 'simple' ) : // Adds a row named from this input, through the same clone as Add New ?>
+
+<div class="md-group-add">
+	<input type="text" class="md-group-add-name regular-text" placeholder="<?php echo esc_attr( isset( $args['add_label'] ) ? $args['add_label'] : __( 'New entry name', 'md' ) ); ?>" aria-label="<?php echo esc_attr( isset( $args['add_label'] ) ? $args['add_label'] : __( 'New entry name', 'md' ) ); ?>" />
+	<span class="button md-clone-add" data-clone-group="<?php echo esc_attr( "{$this->_id}_{$group_id}" ); ?>"><?php echo __( 'Add', 'md' ); ?></span>
+</div>
+
+<?php endif; ?>

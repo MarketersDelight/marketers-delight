@@ -73,8 +73,6 @@ class md_author extends md_api {
 		do_action( 'md_admin_page_page_settings' );
 		do_action( 'md_admin_page_author' );
 
-		$this->fields->save();
-
 		echo '</div>';
 	}
 }

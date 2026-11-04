@@ -14,12 +14,16 @@
 			this.codeEditor();
 			this.media();
 			this.color();
+			this.picker();
 			this.colorScheme();
+			this.fontPicker();
+			this.tokens();
 			this.devices();
 			this.update();
 			this.clipboard();
 			this.initWpEditor();
 			this.select2Init();
+			this.liveSave.init();
 		},
 		initWpEditor: function() {
 			$( document ).on( 'click', '.md-toggle-wp-editor', function() {
@@ -180,6 +184,186 @@
 				} );
 			} );
 		},
+		liveSave: {
+			init: function() {
+				var form = document.getElementById( 'md-form' );
+
+				if ( ! form || ! form.querySelector( '.md-save-button' ) )
+					return;
+
+				this.form = form;
+				this.button = form.querySelector( '.md-save-button' );
+				this.status = form.querySelector( '.md-save-status' );
+				this.fingerprint = this.fingerprintOf( form );
+
+				// The bar is drawn clean, so the script starts there
+
+				this.phase = 'clean';
+				this.text = MDJS.save.clean;
+
+				window.addEventListener( 'load', this.remember.bind( this ) );
+				form.addEventListener( 'submit', this.submit.bind( this ) );
+				document.addEventListener( 'keydown', this.shortcut.bind( this ) );
+				window.addEventListener( 'beforeunload', this.leave.bind( this ) );
+				$( document ).on( 'md:clone-added', this.added.bind( this ) );
+
+				// Rows added, deleted or sorted change the form without an input event
+
+				form.addEventListener( 'input', this.check.bind( this ) );
+				form.addEventListener( 'change', this.check.bind( this ) );
+				new MutationObserver( this.check.bind( this ) ).observe( form, { childList: true, subtree: true } );
+			},
+			fingerprintOf: function( form ) {
+				return form.elements.md_fingerprint ? form.elements.md_fingerprint.value : '';
+			},
+			values: function( form ) {
+				var entries = [];
+
+				if ( window.tinymce )
+					tinymce.triggerSave();
+
+				new FormData( form ).forEach( function( value, name ) {
+					if ( typeof value === 'string' && name.indexOf( 'nonce' ) === -1 && name !== '_wp_http_referer' && name !== 'md_fingerprint' )
+						entries.push( name + '=' + value.replace( /\r\n?/g, '\n' ) );
+				} );
+
+				return entries.join( '&' );
+			},
+			remember: function() {
+				this.saved = this.values( this.form );
+				this.state( 'clean' );
+			},
+			dirty: function() {
+				return this.saved !== undefined && this.values( this.form ) !== this.saved;
+			},
+			check: function() {
+				var self = this;
+
+				if ( this.busy || this.saved === undefined || this.checking )
+					return;
+
+				this.checking = true;
+
+				requestAnimationFrame( function() {
+					self.checking = false;
+
+					if ( self.phase !== 'error' && ! self.busy )
+						self.state( self.dirty() ? 'dirty' : ( self.phase === 'saved' ? 'saved' : 'clean' ) );
+				} );
+			},
+			submit: function( e ) {
+				if ( ! e.submitter || e.submitter !== this.button )
+					return;
+
+				e.preventDefault();
+				this.save();
+			},
+			shortcut: function( e ) {
+				if ( ( e.metaKey || e.ctrlKey ) && ! e.altKey && ! e.shiftKey && ( e.key === 's' || e.key === 'S' ) ) {
+					e.preventDefault();
+					this.save();
+				}
+			},
+			leave: function( e ) {
+				if ( this.busy || ! this.dirty() )
+					return;
+
+				e.preventDefault();
+				e.returnValue = '';
+			},
+			added: function( e, clone ) {
+				var name = $( clone ).find( '.md-widget-edit input[type="text"]' ).first();
+
+				if ( ! name.length )
+					return;
+
+				// An empty new row would be dropped on save, so it starts with its placeholder as its name
+
+				if ( ! name.val() )
+					name.val( ( name.attr( 'placeholder' ) || '' ).replace( /\.+$/, '' ) );
+
+				this.save( true );
+			},
+			state: function( phase, message ) {
+				var strings = MDJS.save,
+					self = this,
+					text = phase === 'error' ? strings.error.replace( '%s', message || strings.failed ) : strings[phase];
+
+				if ( phase === this.phase && text === this.text )
+					return;
+
+				clearTimeout( this.timer );
+				this.phase = phase;
+				this.text = text;
+				this.status.className = 'md-save-status is-' + phase;
+				this.status.setAttribute( 'aria-live', phase === 'error' ? 'assertive' : 'polite' );
+				this.status.title = text;
+				this.status.querySelector( '.md-save-text' ).textContent = text;
+				this.button.value = phase === 'saving' ? strings.saving_button : strings.button;
+				this.button.disabled = phase === 'saving' || phase === 'clean' || phase === 'saved';
+
+				if ( phase === 'saved' )
+					this.timer = setTimeout( function() {
+						self.state( 'clean' );
+					}, 3000 );
+			},
+			lock: function( locked ) {
+				if ( locked )
+					this.focus = document.activeElement;
+
+				this.form.inert = locked;
+				this.form.classList.toggle( 'md-is-saving', locked );
+
+				// inert drops focus, so give it back where it was
+
+				if ( ! locked && this.focus && document.body.contains( this.focus ) )
+					this.focus.focus( { preventScroll: true } );
+			},
+			save: function( force ) {
+				var self = this;
+
+				if ( this.busy || ( ! force && this.phase !== 'error' && ! this.dirty() ) )
+					return;
+
+				this.busy = true;
+				this.state( 'saving' );
+				this.lock( true );
+
+				// The save redirects back to the screen, so the response is the screen drawn with the new settings
+
+				fetch( this.form.action, {
+					method: 'POST',
+					body: new FormData( this.form ),
+					credentials: 'same-origin'
+				} ).then( function( response ) {
+					return response.text();
+				} ).then( function( html ) {
+					var page = new DOMParser().parseFromString( html, 'text/html' ),
+						fresh = page.getElementById( 'md-form' ),
+						error = page.querySelector( '.settings-error.notice-error, .wp-die-message, #error-page p' );
+
+					if ( ! fresh || error )
+						throw new Error( error ? error.textContent : '' );
+
+					// Reload when the saved screen draws other fields or other values than were sent
+
+					if ( self.fingerprintOf( fresh ) !== self.fingerprint || self.values( fresh ) !== self.values( self.form ) ) {
+						self.saved = self.values( self.form );
+						window.location.reload();
+						return;
+					}
+
+					self.saved = self.values( self.form );
+					self.busy = false;
+					self.lock( false );
+					self.state( 'saved' );
+				} ).catch( function( error ) {
+					self.busy = false;
+					self.lock( false );
+					self.state( 'error', error.message.trim() );
+				} );
+			}
+		},
 		uniqueID: function() {
 			var ret = '',
 				n = Math.round( new Date().getTime() + ( Math.random() * 100 ) ),
@@ -199,13 +383,27 @@
 						groupID = $( document.getElementById( 'md_group_' + group ) ),
 						empty = groupID.children( '.md-group.empty' ).first(),
 						clone = empty.clone( true ),
-						token = '{clone:' + group + '}';
+						token = '{clone:' + group + '}',
+						addName = $( this ).siblings( '.md-group-add-name' );
+
+					// Simple lists name the new row from the input beside Add
+
+					if ( addName.length && ! addName.val().trim() ) {
+						addName.focus();
+						return;
+					}
+
 					MD.clone.filter( clone, token );
 					clone.insertAfter( groupID.children( '.md-group' ).last() );
-					clone.addClass( 'md-clone-new' );
 					clone.removeClass( 'empty' );
 					clone.show();
-					clone.find( '.md-focus' ).focus();
+
+					if ( addName.length ) {
+						clone.find( 'input[type="text"]' ).first().val( addName.val().trim() ).trigger( 'change' );
+						addName.val( '' ).focus();
+					}
+					else
+						clone.find( '.md-focus' ).focus();
 					MD.select2Init();
 					MD.initWpEditor();
 					MD.linkFields.init();
@@ -213,6 +411,7 @@
 					clone.find( '.md-groups, .md-sort' ).each( function() {
 						new Sortable( this, { handle: '.md-reorder', animation: 150 } );
 					});
+					$( document ).trigger( 'md:clone-added', [ clone ] );
 				});
 			},
 			filter: function( e, token ) {
@@ -417,8 +616,19 @@
 				}
 				jscolor.install();
 			});
+			$( document ).on( 'click', '.md-toggle > .md-updates-head', function( e ) {
+				if ( ! $( e.target ).closest( 'button, a' ).length )
+					$( this ).parent().toggleClass( 'open' );
+			});
+			$( document ).on( 'keydown', '.md-group-add-name', function( e ) {
+				if ( e.key !== 'Enter' )
+					return;
+
+				e.preventDefault();
+				$( this ).siblings( '.md-clone-add' ).trigger( 'click' );
+			});
 			$( document ).on( 'click', '.md-license-toggle', function() {
-				var fields = $( this ).closest( '.md-license-fields' );
+				var fields = $( this ).closest( '.md-license' ).find( '.md-license-fields' );
 				fields.toggleClass( 'open' );
 				$( this ).attr( 'aria-expanded', fields.hasClass( 'open' ) ? 'true' : 'false' );
 			});
@@ -471,6 +681,7 @@
 			jscolor.presets.default = {
 				format: 'any',
 				required: false,
+				uppercase: false,
 				width: 140,
 				height: 140,
 				paletteCols: 8,
@@ -492,25 +703,133 @@
 				$( this ).parent().parent().find( '.md-color-picker' ).removeClass( 'md-has-color-value' ).css( 'background-image', 'none' ).val( '' );
 			});
 		},
-		colorScheme: function() {
-			$( document ).on( 'click', '.md-color-source-trigger', function( e ) {
+		picker: function() {
+			$( document ).on( 'click', '.md-picker-trigger', function( e ) {
 				e.preventDefault();
 				e.stopPropagation();
 
 				var trigger = $( this ),
-					wrap = trigger.closest( '.md-color-source-wrap' ),
+					wrap = trigger.closest( '.md-picker' ),
 					isOpen = wrap.hasClass( 'is-open' );
 
-				MD.closeColorSources();
+				MD.closePickers();
 
 				if ( ! isOpen ) {
 					wrap.addClass( 'is-open' );
 					trigger.attr( 'aria-expanded', 'true' );
-					wrap.find( '.md-color-source-menu' ).prop( 'hidden', false );
+					wrap.find( '.md-picker-menu' ).prop( 'hidden', false );
 				}
 			} );
 
-			$( document ).on( 'click', '.md-color-source-option, .md-color-source-palette-option', function() {
+			$( document ).on( 'keydown', function( e ) {
+				if ( e.key === 'Escape' ) {
+					var open = $( '.md-picker.is-open' );
+					MD.closePickers();
+					open.find( '.md-picker-trigger' ).trigger( 'focus' );
+				}
+			} );
+
+			$( document ).on( 'click', function( e ) {
+				if ( $( '.md-picker.is-open' ).length && ! $( e.target ).closest( '.md-picker, .jscolor-wrap' ).length )
+					MD.closePickers();
+			} );
+		},
+		closePickers: function() {
+			$( '.md-picker.is-open' ).each( function() {
+				$( this ).removeClass( 'is-open' ).find( '.md-picker-trigger' ).attr( 'aria-expanded', 'false' );
+				$( this ).find( '.md-picker-menu' ).prop( 'hidden', true );
+			} );
+
+			jscolor.hide();
+		},
+		fontPicker: function() {
+			$( document ).on( 'click', '.md-font-picker .md-picker-option:not(.md-font-custom-open)', function() {
+				var wrap = $( this ).closest( '.md-font-picker' );
+
+				MD.setFont( wrap, $( this ) );
+				wrap.closest( '.col' ).find( '.md-font-type' ).val( '' );
+				MD.closePickers();
+				wrap.find( '.md-picker-trigger' ).trigger( 'focus' );
+			} );
+
+			$( document ).on( 'click', '.md-font-custom-open', function() {
+				var wrap = $( this ).closest( '.md-font-picker' );
+
+				MD.closePickers();
+				wrap.find( '.md-picker-option' ).removeClass( 'is-selected' );
+				$( this ).addClass( 'is-selected' );
+				wrap.addClass( 'is-custom' ).find( '.md-font-custom-input' ).trigger( 'focus' );
+			} );
+
+			$( document ).on( 'click', '.md-font-list', function() {
+				var wrap = $( this ).closest( '.md-font-picker' ),
+					value = wrap.find( '.md-font-custom-input' ).val(),
+					options = wrap.find( '.md-picker-option' ),
+					match = options.filter( function() {
+						return $( this ).data( 'stack' ) === value;
+					} );
+
+				wrap.removeClass( 'is-custom' );
+				MD.setFont( wrap, match.length ? match.first() : options.first() );
+				wrap.find( '.md-picker-trigger' ).trigger( 'focus' );
+			} );
+		},
+		setFont: function( wrap, option ) {
+			var input = wrap.find( '.md-font-custom-input' ),
+				title = option.find( '.md-picker-title' ),
+				stack = option.data( 'stack' );
+
+			wrap.find( '.md-picker-option' ).removeClass( 'is-selected' );
+			option.addClass( 'is-selected' );
+			wrap.find( '.md-picker-trigger .md-picker-title' ).text( title.text() ).css( 'font-family', stack || option.data( 'preview' ) || '' );
+			wrap.find( '.md-picker-trigger .md-font-badge' ).text( option.data( 'badge' ) );
+
+			if ( input.val() !== stack ) {
+				input.val( stack );
+				input[0].dispatchEvent( new Event( 'change', { bubbles: true } ) );
+			}
+		},
+		tokens: function() {
+			$( document ).on( 'mousedown', '.md-token-button, .md-token-option', function( e ) {
+				e.preventDefault();
+			} );
+
+			$( document ).on( 'focus', '.md-token-field > input, .md-token-field > textarea', function() {
+				this.mdTokenCaret = true;
+			} );
+
+			$( document ).on( 'click', '.md-token-button', function( e ) {
+				e.stopPropagation();
+
+				var button = $( this ),
+					wrap = button.closest( '.md-token-field' ),
+					isOpen = wrap.hasClass( 'is-open' );
+
+				MD.closePickers();
+				$( '.md-token-button' ).attr( 'aria-expanded', 'false' );
+
+				if ( isOpen )
+					return;
+
+				wrap.append( $( '.md-token-menu[data-set="' + button.data( 'set' ) + '"]' ).first().prop( 'hidden', false ) ).addClass( 'is-open' );
+				button.attr( 'aria-expanded', 'true' );
+			} );
+
+			$( document ).on( 'click', '.md-token-option', function() {
+				var wrap = $( this ).closest( '.md-token-field' ),
+					input = wrap.children( 'input, textarea' ).get( 0 ),
+					start = input.mdTokenCaret ? input.selectionStart : input.value.length,
+					end = input.mdTokenCaret ? input.selectionEnd : input.value.length;
+
+				input.setRangeText( $( this ).data( 'token' ), start, end, 'end' );
+				input.focus();
+				input.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+				MD.closePickers();
+				wrap.find( '.md-token-button' ).attr( 'aria-expanded', 'false' );
+			} );
+		},
+		colorScheme: function() {
+			$( document ).on( 'click', '.md-color-source-wrap .md-picker-option, .md-color-source-palette-option', function() {
 				var option = $( this ),
 					wrap = option.closest( '.md-color-source-wrap' ),
 					mode = option.data( 'mode' );
@@ -521,8 +840,8 @@
 					wrap.find( '.md-color-source-palette-value' ).val( option.data( 'palette-key' ) );
 
 				MD.updateColorSource( wrap );
-				MD.closeColorSources();
-				wrap.find( '.md-color-source-trigger' ).trigger( 'focus' );
+				MD.closePickers();
+				wrap.find( '.md-picker-trigger' ).trigger( 'focus' );
 			} );
 
 			$( document ).on( 'input change', '.md-color-source-custom .md-color-picker', function() {
@@ -548,8 +867,8 @@
 				}
 
 				MD.setColorSourceCustom( wrap );
-				MD.closeColorSources();
-				wrap.find( '.md-color-source-trigger' ).trigger( 'focus' );
+				MD.closePickers();
+				wrap.find( '.md-picker-trigger' ).trigger( 'focus' );
 			} );
 
 			$( document ).on( 'keydown', '.md-color-source-custom .md-color-picker', function( e ) {
@@ -559,26 +878,6 @@
 				}
 			} );
 
-			$( document ).on( 'keydown', function( e ) {
-				if ( e.key === 'Escape' ) {
-					var open = $( '.md-color-source-wrap.is-open' );
-					MD.closeColorSources();
-					open.find( '.md-color-source-trigger' ).trigger( 'focus' );
-				}
-			} );
-
-			$( document ).on( 'click', function( e ) {
-				if ( $( '.md-color-source-wrap.is-open' ).length && ! $( e.target ).closest( '.md-color-source-wrap, .jscolor-wrap' ).length )
-					MD.closeColorSources();
-			} );
-		},
-		closeColorSources: function() {
-			$( '.md-color-source-wrap.is-open' ).each( function() {
-				$( this ).removeClass( 'is-open' ).find( '.md-color-source-trigger' ).attr( 'aria-expanded', 'false' );
-				$( this ).find( '.md-color-source-menu' ).prop( 'hidden', true );
-			} );
-
-			jscolor.hide();
 		},
 		setColorSourceCustom: function( wrap ) {
 			wrap.find( '.md-color-source-mode' ).val( 'custom' );
@@ -620,9 +919,9 @@
 				meta = wrap.data( 'hex-meta' );
 			}
 
-			wrap.find( '.md-color-source-title' ).first().text( title );
-			wrap.find( '.md-color-source-meta' ).first().text( meta );
-			wrap.find( '.md-color-source-option, .md-color-source-palette-option' ).removeClass( 'is-selected' ).attr( 'aria-pressed', 'false' );
+			wrap.find( '.md-picker-title' ).first().text( title );
+			wrap.find( '.md-picker-meta' ).first().text( meta );
+			wrap.find( '.md-picker-option, .md-color-source-palette-option' ).removeClass( 'is-selected' ).attr( 'aria-pressed', 'false' );
 			wrap.find( '.md-color-source-custom' ).toggleClass( 'is-selected', mode === 'custom' );
 
 			if ( mode !== 'custom' )
@@ -765,7 +1064,7 @@
 					integration = button.data( 'md-integration' ),
 					block = '.md-integration.' + integration,
 					loading = $( block + ' .md-loading' ),
-					formFields = $( '#md-form' ).find( '[name="option_page"], [name="_wpnonce"]' );
+					formFields = $( '#md-form' ).find( '[name="md_save_nonce"]' );
 				if ( actionType == 'manual_refresh' ) {
 					$( block ).addClass( 'manual-refresh' );
 					$( block + ' .step-1' ).show();

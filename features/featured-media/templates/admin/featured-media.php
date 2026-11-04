@@ -10,8 +10,6 @@
 				<p class="md-label"><?php esc_html_e( 'Custom HTML is managed by an administrator.', 'md' ); ?></p>
 			<?php else :
 				$fields->field( 'media_type', array(
-					'type' => 'select',
-					'label' => __( 'Media Type', 'md' ),
 					'classes' => 'md-conditional-option',
 					'empty_label' => $args['is_post'] ? __( 'Featured Image', 'md' ) : __( 'Image', 'md' ),
 					'options' => $can_edit_code ? array(
@@ -25,11 +23,7 @@
 
 		<?php if ( ! $args['is_post'] ) : ?>
 		<div id="<?php echo $prefix; ?>_featured_media_image" class="md-conditional-item md-conditional-image md-conditional-default" style="display: <?php echo in_array( $media_type, array( '', 'image' ) ) ? 'block' : 'none'; ?>">
-			<?php $fields->field( 'image', array(
-				'type' => 'upload',
-				'label' => __( 'Image', 'md' ),
-				'upload_type' => 'media'
-			) ); ?>
+			<?php $fields->field( 'image' ); ?>
 		</div>
 		<?php endif; ?>
 
@@ -46,8 +40,6 @@
 
 			<div class="md-sep-micro<?php echo $args['is_post'] ? ' col' : ''; ?>">
 				<?php $fields->field( 'position', array(
-					'type' => 'select',
-					'label' => __( 'Position', 'md' ),
 					'classes' => 'md-conditional-option',
 					'empty_label' => $args['position_label'],
 					'options' => $positions,
@@ -57,13 +49,7 @@
 
 			<div class="md-conditional-item md-conditional-default md-conditional-title_left md-conditional-title_right md-conditional-left md-conditional-right<?php echo $args['is_post'] ? ' col' : ''; ?>" style="display: <?php echo in_array( $position, $side_positions, true ) ? 'block' : 'none'; ?>">
 				<?php $fields->field( 'mobile', array(
-					'type' => 'select',
-					'label' => __( 'Position on mobile', 'md' ),
-					'empty_label' => __( 'Stack (default)', 'md' ),
-					'options' => array(
-						'beside' => __( 'Keep beside', 'md' ),
-						'hide' => __( 'Hide', 'md' )
-					)
+					'empty_label' => __( 'Stack (default)', 'md' )
 				) ); ?>
 			</div>
 

@@ -20,7 +20,6 @@
 				<?php foreach ( $palette as $color_key => $color ) : ?>
 				<div class="md-palette-item">
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
-						'type' => 'color',
 						'hex_only' => true,
 						'label' => $color['name'],
 						'default' => $palette_defaults[$color_key]
@@ -32,8 +31,6 @@
 			<?php
 
 			$this->fields->field( 'custom', array(
-				'type' => 'group',
-				'label' => __( 'Additional Colors', 'md' ),
 				'button_text' => __( 'Add Color', 'md' ),
 				'wrap_classes' => 'md-custom-colors md-sep',
 				'callback' => function( $group, $field ) {
@@ -44,33 +41,24 @@
 						 '<div class="col col1">';
 
 					$this->fields->field( array( $group, $field, 'hex' ), array(
-						'type' => 'color',
-						'hex_only' => true,
-						'label' => __( 'Color', 'md' )
+						'hex_only' => true
 					) );
 
 					echo '</div>'.
 						 '<div class="col col2">';
 
-					$this->fields->field( array( $group, $field, 'name' ), array(
-						'type' => 'text',
-						'label' => __( 'Name', 'md' )
-					) );
+					$this->fields->field( array( $group, $field, 'name' ) );
 
 					echo '</div>'.
 						 '<div class="col col3">';
 
 					$this->fields->field( array( $group, $field, 'key' ), array(
-						'type' => 'text',
-						'label' => __( 'Key', 'md' ),
 						'placeholder' => sanitize_title( $key )
 					) );
 
 					echo '</div></div>';
 				}
-			) );
-
-			$this->fields->save(); ?>
+			) ); ?>
 
 		</div>
 
@@ -83,8 +71,6 @@
 		<div class="md-widget-item">
 
 			<?php $this->fields->field( 'design', array(
-				'type' => 'select',
-				'label' => __( 'Site style', 'md' ),
 				'empty_label' => __( 'Box style', 'md' ),
 				'description' => __( 'Change your site from box style to simple, or add your own styles.', 'md' ),
 				'options' => $content_style
@@ -95,8 +81,6 @@
 			<div class="columns-2 columns-single md-sep-micro">
 				<div class="col md-sep-small">
 					<?php $this->fields->field( array( 'width', 'content' ), array(
-						'type' => 'range',
-						'label' => __( 'Post Width', 'md' ),
 						'placeholder' => $defaults['colors']['width']['post'],
 						'min' => ( $defaults['colors']['width']['post'] - $line_height * 4 ),
 						'max' => ( $defaults['colors']['width']['post'] + $line_height * 8 )
@@ -104,8 +88,6 @@
 				</div>
 				<div class="col md-sep-small">
 					<?php $this->fields->field( array( 'width', 'sidebar' ), array(
-						'type' => 'range',
-						'label' => __( 'Sidebar Width', 'md' ),
 						'placeholder' => $defaults['colors']['width']['sidebar'],
 						'min' => ( $defaults['colors']['width']['sidebar'] - $line_height * 4 ),
 						'max' => ( $defaults['colors']['width']['sidebar'] + $line_height * 8 )
@@ -113,8 +95,6 @@
 				</div>
 				<div class="col md-sep-small">
 					<?php $this->fields->field( array( 'width', 'site' ), array(
-						'type' => 'range',
-						'label' => __( 'Site Width', 'md' ),
 						'placeholder' => $defaults['colors']['width']['site'],
 						'min' => ( $defaults['colors']['width']['site'] - $line_height * 4 ),
 						'max' => ( $defaults['colors']['width']['site'] + $line_height * 8 )
@@ -237,8 +217,5 @@
 
 	<?php endforeach; ?>
 
-	<hr class="md-sep-small" />
-
-	<?php $this->fields->save(); ?>
 
 </div>

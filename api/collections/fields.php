@@ -27,7 +27,7 @@ class md_collection_fields extends md_fields_render {
 	 * @since 6.0
 	 */
 
-	public function field( $field, $args ) {
+	public function field( $field, $args = array() ) {
 		$definition = $this->collection->fields[$field];
 		$args = wp_parse_args( $args, $definition );
 		$suffix = $this->post_id ? $this->post_id : 'new';

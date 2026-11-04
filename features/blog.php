@@ -62,8 +62,6 @@ class md_post extends md_api {
 
 		do_action( 'md_admin_page_page_settings' );
 
-		$this->fields->save();
-
 		echo '</div>';
 	}
 

@@ -129,7 +129,8 @@ class md_enqueue {
 	}
 
 	/**
-	 * Enqueue configured Google Fonts and Adobe Fonts stylesheets.
+	 * Enqueue Google Fonts and Adobe Fonts stylesheets for sites that
+	 * picked them before 6.2 (see deprecated-functions.php).
 	 *
 	 * @since 4.8
 	 */
@@ -289,6 +290,7 @@ class md_enqueue {
 
 	/**
 	 * Compile upgraded assets after the updated theme and Drop-ins have loaded.
+	 * Settings saves schedule this too (md_save::after_save()).
 	 *
 	 * @since 6.0.1
 	 *
@@ -299,7 +301,7 @@ class md_enqueue {
 		if ( $this->upgraded_this_request || ! get_option( 'md_compile_after_upgrade' ) )
 			return;
 
-		$result = md_compile();
+		$result = md_compile( true );
 
 		if ( $result === true )
 			delete_option( 'md_compile_after_upgrade' );

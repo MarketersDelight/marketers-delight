@@ -64,8 +64,8 @@ class FieldsWithinTest extends MD_TestCase {
 		$cta_fields->field( array( 'email_input', 'name' ), array( 'type' => 'checkbox' ) );
 
 		$this->assertSame( array(
-			'marketers_delight[archive_sections][builder][blog_heading][section_cta][custom_html]',
-			'marketers_delight[archive_sections][builder][blog_heading][section_cta][email_input][name]'
+			'md[site][archive_sections][builder][blog_heading][section_cta][custom_html]',
+			'md[site][archive_sections][builder][blog_heading][section_cta][email_input][name]'
 		), $cta_fields->names );
 	}
 
@@ -75,7 +75,7 @@ class FieldsWithinTest extends MD_TestCase {
 
 		$fields->field( 'custom_html', array( 'type' => 'code' ) );
 
-		$this->assertSame( array( 'marketers_delight[archive_sections][custom_html]' ), $fields->names );
+		$this->assertSame( array( 'md[site][archive_sections][custom_html]' ), $fields->names );
 		$this->assertSame( array(), $cta_fields->names );
 	}
 
@@ -84,7 +84,7 @@ class FieldsWithinTest extends MD_TestCase {
 
 		$fields->field( 'page_cta', array( 'type' => 'select', 'options' => array() ) );
 
-		$this->assertSame( array( 'marketers_delight[archive_sections][builder][blog_heading][section_cta][page_cta]' ), $fields->names );
+		$this->assertSame( array( 'md[site][archive_sections][builder][blog_heading][section_cta][page_cta]' ), $fields->names );
 	}
 
 	public function test_within_reads_module_values_from_the_row() {
@@ -105,7 +105,7 @@ class FieldsWithinTest extends MD_TestCase {
 
 		$cta_fields = $this->make_fields()->within( $this->row );
 		$html = $this->render_links( $cta_fields );
-		$base = 'marketers_delight[archive_sections][builder][blog_heading][section_cta][links]';
+		$base = 'md[site][archive_sections][builder][blog_heading][section_cta][links]';
 
 		$this->assertContains( $base, $cta_fields->names );
 		$this->assertContains( "{$base}[join][name]", $cta_fields->names );
@@ -122,8 +122,8 @@ class FieldsWithinTest extends MD_TestCase {
 		$fields = $this->make_fields();
 		$this->render_links( $fields );
 
-		$this->assertContains( 'marketers_delight[archive_sections][links]', $fields->names );
-		$this->assertContains( 'marketers_delight[archive_sections][links][{clone:archive_sections_links}][name]', $fields->names );
+		$this->assertContains( 'md[site][archive_sections][links]', $fields->names );
+		$this->assertContains( 'md[site][archive_sections][links][{clone:archive_sections_links}][name]', $fields->names );
 	}
 
 }

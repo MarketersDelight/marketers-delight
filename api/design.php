@@ -10,6 +10,8 @@ class md_design {
 
 	// Setup properties
 
+	const FONT_FAMILY = 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif';
+
 	private $colors;
 
 	/**
@@ -253,7 +255,7 @@ class md_design {
 					'desktop' => $line_height,
 					'mobile' => $line_height_mobile
 				),
-				'font_family' => 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif'
+				'font_family' => self::FONT_FAMILY
 			),
 			'huge' => array(
 				'font_size' => array(

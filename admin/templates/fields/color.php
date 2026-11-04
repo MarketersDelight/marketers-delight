@@ -74,37 +74,37 @@ elseif ( $mode === 'custom' ) {
 $menu_id = "{$id}_source_menu";
 ?>
 
-<div class="md-color-source-wrap" data-custom-label="<?php echo esc_attr( __( 'Custom', 'md' ) ); ?>" data-hex-meta="<?php echo esc_attr( __( 'Not linked to palette', 'md' ) ); ?>">
+<div class="md-picker md-color-source-wrap" data-custom-label="<?php echo esc_attr( __( 'Custom', 'md' ) ); ?>" data-hex-meta="<?php echo esc_attr( __( 'Not linked to palette', 'md' ) ); ?>">
 
 	<input type="hidden" name="<?php echo esc_attr( $name ); ?>[mode]" class="md-color-source-mode" value="<?php echo esc_attr( $mode ); ?>" />
 	<input type="hidden" name="<?php echo esc_attr( $name ); ?>[palette]" class="md-color-source-palette-value" value="<?php echo esc_attr( $palette_value ); ?>" />
 
-	<button type="button" id="<?php echo esc_attr( $id ); ?>" class="md-color-source-trigger" aria-expanded="false" aria-controls="<?php echo esc_attr( $menu_id ); ?>" aria-haspopup="dialog">
+	<button type="button" id="<?php echo esc_attr( $id ); ?>" class="md-picker-trigger" aria-expanded="false" aria-controls="<?php echo esc_attr( $menu_id ); ?>" aria-haspopup="dialog">
 		<span class="md-color-source-swatch<?php echo ! $swatch ? ' is-empty' : ''; ?>"<?php echo $swatch ? md_style( array( 'bg_color' => $swatch ) ) : ''; ?>></span>
-		<span class="md-color-source-copy">
-			<span class="md-color-source-title"><?php echo esc_html( $source_title ); ?></span>
-			<span class="md-color-source-meta"><?php echo esc_html( $source_meta ); ?></span>
+		<span class="md-picker-copy">
+			<span class="md-picker-title"><?php echo esc_html( $source_title ); ?></span>
+			<span class="md-picker-meta"><?php echo esc_html( $source_meta ); ?></span>
 		</span>
-		<span class="dashicons dashicons-arrow-down-alt2 md-color-source-chevron" aria-hidden="true"></span>
+		<span class="dashicons dashicons-arrow-down-alt2 md-picker-chevron" aria-hidden="true"></span>
 	</button>
 
-	<div id="<?php echo esc_attr( $menu_id ); ?>" class="md-color-source-menu" role="dialog" aria-label="<?php echo esc_attr( sprintf( __( 'Choose %s', 'md' ), $args['label'] ) ); ?>" hidden>
+	<div id="<?php echo esc_attr( $menu_id ); ?>" class="md-picker-menu" role="dialog" aria-label="<?php echo esc_attr( sprintf( __( 'Choose %s', 'md' ), $args['label'] ) ); ?>" hidden>
 
-		<div class="md-color-source-section">
-			<span class="md-color-source-heading"><?php echo __( 'Theme default', 'md' ); ?></span>
+		<div class="md-picker-section">
+			<span class="md-picker-heading"><?php echo __( 'Theme default', 'md' ); ?></span>
 
-			<button type="button" class="md-color-source-option md-color-source-default<?php echo $mode === 'default' ? ' is-selected' : ''; ?>" data-mode="default" data-hex="<?php echo esc_attr( $resolved_default ); ?>" data-summary-title="<?php echo esc_attr( $default_title ); ?>" data-summary-meta="<?php echo esc_attr( $default_summary ); ?>" aria-pressed="<?php echo $mode === 'default' ? 'true' : 'false'; ?>">
+			<button type="button" class="md-picker-option md-color-source-default<?php echo $mode === 'default' ? ' is-selected' : ''; ?>" data-mode="default" data-hex="<?php echo esc_attr( $resolved_default ); ?>" data-summary-title="<?php echo esc_attr( $default_title ); ?>" data-summary-meta="<?php echo esc_attr( $default_summary ); ?>" aria-pressed="<?php echo $mode === 'default' ? 'true' : 'false'; ?>">
 				<span class="md-color-source-option-swatch<?php echo ! $resolved_default ? ' is-empty' : ''; ?>"<?php echo $resolved_default ? md_style( array( 'bg_color' => $resolved_default ) ) : ''; ?>></span>
-				<span class="md-color-source-copy">
-					<span class="md-color-source-title"><?php echo esc_html( $default_name ); ?></span>
-					<span class="md-color-source-meta"><?php echo esc_html( $resolved_default ? strtoupper( $resolved_default ) : __( 'No background color', 'md' ) ); ?></span>
+				<span class="md-picker-copy">
+					<span class="md-picker-title"><?php echo esc_html( $default_name ); ?></span>
+					<span class="md-picker-meta"><?php echo esc_html( $resolved_default ? strtoupper( $resolved_default ) : __( 'No background color', 'md' ) ); ?></span>
 				</span>
-				<span class="dashicons dashicons-yes md-color-source-check" aria-hidden="true"></span>
+				<span class="dashicons dashicons-yes md-picker-check" aria-hidden="true"></span>
 			</button>
 		</div>
 
-		<div class="md-color-source-section">
-			<span class="md-color-source-heading"><?php echo __( 'Global palette', 'md' ); ?></span>
+		<div class="md-picker-section">
+			<span class="md-picker-heading"><?php echo __( 'Global palette', 'md' ); ?></span>
 
 			<div class="md-color-source-palette" role="group" aria-label="<?php echo esc_attr( __( 'Global palette colors', 'md' ) ); ?>">
 				<?php foreach ( $palette as $key => $color ) : ?>
@@ -116,8 +116,8 @@ $menu_id = "{$id}_source_menu";
 			</div>
 		</div>
 
-		<div class="md-color-source-section">
-			<label class="md-color-source-heading" for="<?php echo esc_attr( $id ); ?>_custom"><?php echo __( 'Custom color', 'md' ); ?></label>
+		<div class="md-picker-section">
+			<label class="md-picker-heading" for="<?php echo esc_attr( $id ); ?>_custom"><?php echo __( 'Custom color', 'md' ); ?></label>
 
 			<div class="md-color-source-custom<?php echo $mode === 'custom' ? ' is-selected' : ''; ?>">
 				<div class="md-color-source-custom-field">

@@ -5,11 +5,11 @@
 	do_action( "{$hook}_admin_page_before_form" );
 ?>
 
-<form id="md-form" class="md wrap" method="post" action="options.php">
+<form id="md-form" class="md wrap" method="post" action="<?php echo esc_url( md_save_settings::url() ); ?>">
 
 	<?php if ( ! empty( $admin_pages[$page_id]['admin_header'] ) ) : ?>
 
-	<div class="md-header md-content-wrap-med md-clear">
+	<div class="md-header md-content-wrap-wide md-clear">
 
 		<div class="md-header-title">
 			<h1><?php echo __( 'Marketers Delight', 'md' ); ?><?php if ( ! empty( $theme_version ) ) : ?> <a href="https://marketersdelight.com/changelog/" target="_blank" class="title-count theme-count"><?php echo esc_html( $theme_version ); ?></a><?php endif; ?></h1>
@@ -20,7 +20,7 @@
 
 			<p class="md-links">
 				<a href="https://marketersdelight.com/docs/" target="_blank" title="Try reading the docs"><?php echo __( 'Docs', 'md' ); ?></a> &nbsp;&middot;&nbsp;
-				<a href="https://marketersdelight.com/support/" target="_blank" title="Get tutorials & ask questions"><?php echo __( 'Get support', 'md' ); ?></a> &nbsp;&middot;&nbsp;
+				<a href="https://marketersdelight.com/?xfwp_forum=1" target="_blank" title="Get tutorials & ask questions"><?php echo __( 'Get support', 'md' ); ?></a> &nbsp;&middot;&nbsp;
 				<a href="https://marketersdelight.com/account/" target="_blank" title="Go to your MD.com account"><?php echo __( 'My account', 'md' ); ?></a>
 				<a href="https://kolakube.com/" target="_blank" title="by Kolakube"><span class="kolakube"></span></a>
 			</p>
@@ -49,6 +49,14 @@
 
 		</div>
 
+	</div>
+
+	<?php $save_actions = md_save_settings::actions(); ?>
+
+	<?php if ( ! empty( $admin_tabs ) || $save_actions ) : ?>
+
+	<div class="md-save-bar md-content-wrap-wide">
+
 		<?php if ( ! empty( $admin_tabs ) ) : asort( $admin_order ); ?>
 
 		<div class="md-submenu">
@@ -66,8 +74,8 @@
 					$tab_url = '';
 			?>
 
-			<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo esc_attr( $child['name'] ); ?>">
-				<?php echo esc_html( isset( $child['tab_name'] ) ? $child['tab_name'] : $child['name'] ); ?>
+			<a href="?page=<?php echo urlencode( $page ) . $tab_url; ?>" class="md-submenu-item<?php echo $tab == $admin_tab ? ' md-submenu-active' : ''; ?>" title="<?php echo esc_attr( wp_strip_all_tags( $child['name'] ) ); ?>">
+				<?php echo esc_html( wp_strip_all_tags( isset( $child['tab_name'] ) ? $child['tab_name'] : $child['name'] ) ); ?>
 			</a>
 
 			<?php endforeach; ?>
@@ -76,22 +84,17 @@
 
 		<?php endif; ?>
 
+		<?php echo $save_actions; ?>
+
 	</div>
+
+	<?php endif; ?>
 
 	<?php endif;
 
-	settings_fields( $option );
+	md_save_settings::fields();
 
-	if ( $active_taxonomy_tab && in_array( $active_taxonomy_tab, $taxonomy_tabs ) ) {
-		echo '<input type="hidden" name="md_save_taxonomy_post_type" value="' . esc_attr( $page_id ) . '">';
-		echo '<input type="hidden" name="md_save_taxonomy" value="' . esc_attr( $active_taxonomy_tab ) . '">';
-
-		if ( isset( $admin_pages[$page_id]['callback'] ) )
-			call_user_func( $admin_pages[$page_id]['callback'] );
-		else
-			do_action( "{$hook}_admin_page" );
-	}
-	elseif ( isset( $admin_pages[$page_id]['callback'] ) )
+	if ( isset( $admin_pages[$page_id]['callback'] ) )
 		call_user_func( $admin_pages[$page_id]['callback'] );
 	else
 		do_action( "{$hook}_admin_page" );

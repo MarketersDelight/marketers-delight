@@ -18,9 +18,13 @@ class md_hero extends md_api {
 		$term_fields = array_merge( $this->fields->data->page_fields(), array(
 			'archives_icon' => array(
 				'type' => 'select',
+				'label' => __( 'Icon', 'md' ),
 				'options' => md_get_icons( 'ids' )
 			),
-			'archives_color' => array( 'type' => 'color' )
+			'archives_color' => array(
+				'type' => 'color',
+				'label' => __( 'Color', 'md' )
+			)
 		) );
 
 		return array(
@@ -88,16 +92,12 @@ class md_hero extends md_api {
 					<div class="md-field columns-2 columns-single md-full-select">
 						<div class="col">
 						<?php $this->fields->field( 'archives_color', array(
-							'type' => 'color',
-							'label' => __( 'Color', 'md' ),
 							'description' => __( 'Set the category icon color.', 'md' )
 						) ); ?>
 						</div>
 
 						<div class="col">
 						<?php $this->fields->field( 'archives_icon', array(
-							'type' => 'select',
-							'label' => __( 'Icon', 'md' ),
 							'description' => __( 'Show beside the category title.', 'md' ),
 							'empty_label' => __( 'No icon', 'md' ),
 							'options' => md_get_icons( 'options' )

@@ -4,8 +4,6 @@
 
 		<div class="col col1">
 			<?php $fields->field( 'page_cta', array(
-				'type' => 'select',
-				'label' => __( 'CTA Type', 'md' ),
 				'empty_label' => __( 'None', 'md' ),
 				'inherit' => $inherit,
 				'classes' => 'md-conditional-option',
@@ -15,13 +13,7 @@
 
 		<div class="col col2">
 			<?php $fields->field( 'title_position', array(
-				'type' => 'select',
-				'label' => __( 'Position', 'md' ),
-				'empty_label' => __( 'After Title', 'md' ),
-				'options' => array(
-					'before_title' => __( 'Before Title', 'md' ),
-					'byline_aside' => __( 'Title Aside', 'md' )
-				)
+				'empty_label' => __( 'After Title', 'md' )
 			) ); ?>
 		</div>
 

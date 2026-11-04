@@ -145,22 +145,20 @@ class md_integrations extends md_api {
 		$form_data = isset( $_POST['form'] ) && is_string( $_POST['form'] ) ? wp_unslash( $_POST['form'] ) : '';
 		wp_parse_str( $form_data, $form );
 
-		$option_page = isset( $form['option_page'] ) && is_string( $form['option_page'] ) ? sanitize_key( $form['option_page'] ) : '';
-		$nonce = isset( $form['_wpnonce'] ) && is_string( $form['_wpnonce'] ) ? $form['_wpnonce'] : '';
+		$nonce = isset( $form['md_save_nonce'] ) && is_string( $form['md_save_nonce'] ) ? $form['md_save_nonce'] : '';
 		$integration = isset( $_POST['integration'] ) && is_string( $_POST['integration'] ) ? sanitize_key( $_POST['integration'] ) : '';
 		$action = isset( $_POST['action_type'] ) && is_string( $_POST['action_type'] ) ? sanitize_key( $_POST['action_type'] ) : '';
 		$integrations = $this->data();
 
 		if (
-			$option_page !== 'marketers_delight' ||
-			! wp_verify_nonce( $nonce, 'marketers_delight-options' ) ||
+			! wp_verify_nonce( $nonce, 'md_save_settings' ) ||
 			! current_user_can( 'manage_options' ) ||
 			! isset( $integrations[$integration] ) ||
 			! in_array( $action, array( 'connect', 'refresh', 'disconnect' ), true )
 		)
 			die ( __( 'Sorry, there was an error during the connection process. Please try again.', 'md' ) );
 
-		$submitted = $action === 'refresh' ? ( md_integration_data()['api_keys'][$integration] ?? array() ) : ( $form['marketers_delight']['integrations']['api_keys'][$integration] ?? array() );
+		$submitted = $action === 'refresh' ? ( md_integration_data()['api_keys'][$integration] ?? array() ) : ( $form['md']['site']['integrations']['api_keys'][$integration] ?? array() );
 		$submitted = is_array( $submitted ) ? $submitted : array();
 		$allowed = array( 'key' );
 		$credentials = array();

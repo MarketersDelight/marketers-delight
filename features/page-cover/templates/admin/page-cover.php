@@ -6,8 +6,6 @@
 
 			<div class="col">
 				<?php $this->fields->field( 'position', array(
-					'type' => 'select',
-					'label' => __( 'Position', 'md' ),
 					'style' => 'width: 100%',
 					'empty_label' => $position_label,
 					'inherit' => true,
@@ -17,9 +15,7 @@
 
 			<div class="col">
 				<?php $this->fields->field( 'bg_color', array(
-					'type' => 'color',
 //					'hex_only' => true,
-					'label' =>  __( 'Overlay Color', 'md' ),
 					'default' => $overlay_color
 				) ); ?>
 			</div>
@@ -28,7 +24,6 @@
 
 		<?php
 		$this->fields->field( 'display', array(
-			'type' => 'checkbox',
 			'label' => __( 'Settings', 'md' ),
 			'inline' => true,
 			'wrap_classes' => 'md-sep-micro',
@@ -51,7 +46,6 @@
 
 		if ( $inherit_options )
 			$this->fields->field( 'display', array(
-				'type' => 'checkbox',
 				'label' => __( 'Single posts', 'md' ),
 				'inline' => true,
 				'options' => $inherit_options
@@ -61,11 +55,7 @@
 	</div>
 
 	<div class="col col2">
-		<?php $this->fields->field( 'photo', array(
-			'type' => 'upload',
-			'label' => __( 'Upload Image', 'md' ),
-			'upload_type' => 'media'
-		) ); ?>
+		<?php $this->fields->field( 'photo' ); ?>
 	</div>
 
 </div>

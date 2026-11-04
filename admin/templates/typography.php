@@ -108,8 +108,5 @@
 
 	</div>
 
-	<hr class="md-sep-small" />
-
-	<?php $this->fields->save(); ?>
 
 </div>

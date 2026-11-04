@@ -14,25 +14,12 @@
 
 			<div class="md-sep-small">
 			<?php $this->fields->field( 'display', array(
-				'type' => 'checkbox',
-				'label' => __( 'Display', 'md' ),
-				'multi' => true,
-				'options' => array(
-					'sticky' => __( 'Use <strong>Sticky</strong> Header', 'md' ),
-					'site_title' => __( 'Remove <strong>Title</strong>', 'md' ),
-					'site_tagline' => __( 'Remove <strong>Tagline</strong>', 'md' ),
-					'hide_title_mobile' => __( 'Hide <strong>Title</strong> on mobile', 'md' ),
-					'hide_tagline_mobile' => __( 'Hide <strong>Tagline</strong> on mobile', 'md' ),
-					'align_tagline' => __( 'Show Title and Tagline on one line', 'md' ),
-					'align_logo' => __( 'Show Logo on one line', 'md' )
-				)
+				'multi' => true
 			) ); ?>
 			</div>
 
 			<div class="md-header-layout md-radio-fields md-clear md-sep-small">
 			<?php $this->fields->field( 'layout', array(
-				'type' => 'radio',
-				'label' => __( 'Layout', 'md' ),
 				'label_icon' => 'dashicons dashicons-desktop',
 				'layout' => 'banner',
 				'options' => array(
@@ -57,8 +44,6 @@
 
 			<div class="md-radio-fields md-clear md-sep-micro">
 			<?php $this->fields->field( 'layout_mobile', array(
-				'type' => 'radio',
-				'label' => __( 'Mobile Layout', 'md' ),
 				'label_icon' => 'dashicons dashicons-smartphone',
 				'layout' => 'banner',
 				'options' => array(
@@ -86,7 +71,6 @@
 	</div>
 
 	<?php $this->fields->field( 'builder', array(
-		'type' => 'builder',
 		'wrap_classes' => 'md-tabs',
 		'tabs' => array(
 			'header' => __( 'Header', 'md' )
@@ -105,8 +89,6 @@
 			)
 		),
 		'elements' => $this->builder_items()
-	) );
-
-	$this->fields->save(); ?>
+	) ); ?>
 
 </div>

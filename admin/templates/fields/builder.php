@@ -14,6 +14,10 @@ if ( is_array( $option ) )
 			$area_counts[$fields['builder_area']]++;
 ?>
 
+<?php if ( ! empty( $args['save_empty'] ) ) : // Before the rows, which replace it when there are any ?>
+<input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="" />
+<?php endif; ?>
+
 <div class="md-builder-controls">
 
 	<?php if ( isset( $args['devices'] ) ) $this->devices(); ?>
@@ -92,6 +96,3 @@ if ( is_array( $option ) )
 </div>
 
 <?php endforeach; ?>
-
-<?php if ( ! empty( $args['save_empty'] ) )
-	$this->field( "{$key}_data", array( 'type' => 'text', 'hidden' => true ) ); ?>
