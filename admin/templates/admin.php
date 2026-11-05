@@ -3,9 +3,15 @@
 
 	do_action( 'md_admin_page_before_form' );
 	do_action( "{$hook}_admin_page_before_form" );
+
+	$has_form = ! isset( $admin_pages[$page_id]['form'] ) || $admin_pages[$page_id]['form'] !== false;
 ?>
 
-<form id="md-form" class="md wrap" method="post" action="<?php echo esc_url( md_save_settings::url() ); ?>">
+<?php if ( $has_form ) : ?>
+<form id="md-form" class="md md-form wrap" method="post" action="<?php echo esc_url( md_save_settings::url() ); ?>">
+<?php else : ?>
+<div id="md-form" class="md md-form wrap">
+<?php endif; ?>
 
 	<?php if ( ! empty( $admin_pages[$page_id]['admin_header'] ) ) : ?>
 
@@ -38,7 +44,7 @@
 
 					$name = isset( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
 					$slug = isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $fields['id'];
-					$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'admin.php';
+					$parent_slug = isset( $fields['parent_slug'] ) && substr( $fields['parent_slug'], -4 ) === '.php' ? $fields['parent_slug'] : 'admin.php';
 				?>
 
 				<a href="<?php echo admin_url( "{$parent_slug}?page={$slug}" ); ?>" class="nav-tab<?php echo $page == $fields['id'] ? ' nav-tab-active' : ''; ?>"><?php echo esc_html( $name ); ?></a>
@@ -51,17 +57,36 @@
 
 	</div>
 
-	<?php $save_actions = md_save_settings::actions(); ?>
+	<?php
+		$save_actions = md_save_settings::actions();
+		$self_tab = ! empty( $admin_pages[$page_id]['self_tab'] );
+		$bar_content = ! empty( $admin_pages[$page_id]['bar_content'] ) && is_callable( $admin_pages[$page_id]['bar_content'] ) ? call_user_func( $admin_pages[$page_id]['bar_content'] ) : '';
 
-	<?php if ( ! empty( $admin_tabs ) || $save_actions ) : ?>
+		if ( ! empty( $admin_pages[$page_id]['bar_actions'] ) && is_callable( $admin_pages[$page_id]['bar_actions'] ) )
+			$save_actions .= call_user_func( $admin_pages[$page_id]['bar_actions'] );
+	?>
+
+	<?php if ( ! empty( $admin_tabs ) || $self_tab || $save_actions ) : ?>
 
 	<div class="md-save-bar md-content-wrap-wide">
 
-		<?php if ( ! empty( $admin_tabs ) ) : asort( $admin_order ); ?>
+		<?php if ( ! empty( $admin_tabs ) || $self_tab ) : asort( $admin_order ); ?>
 
 		<div class="md-submenu">
 
-			<?php foreach ( $admin_order as $admin_tab => $order ) :
+			<?php if ( $bar_content ) : ?>
+
+			<?php echo $bar_content; ?>
+
+			<?php elseif ( $self_tab ) : ?>
+
+			<a href="?page=<?php echo urlencode( $page ); ?>" class="md-submenu-item<?php echo $tab === '' ? ' md-submenu-active' : ''; ?>">
+				<?php echo esc_html( wp_strip_all_tags( isset( $admin_pages[$page_id]['tab_name'] ) ? $admin_pages[$page_id]['tab_name'] : $admin_pages[$page_id]['name'] ) ); ?>
+			</a>
+
+			<?php endif; ?>
+
+			<?php foreach ( (array) $admin_order as $admin_tab => $order ) :
 				$child = $admin_tabs[$admin_tab];
 				$tab_url = "&tab=$admin_tab";
 
@@ -92,7 +117,8 @@
 
 	<?php endif;
 
-	md_save_settings::fields();
+	if ( $has_form )
+		md_save_settings::fields();
 
 	if ( isset( $admin_pages[$page_id]['callback'] ) )
 		call_user_func( $admin_pages[$page_id]['callback'] );
@@ -100,4 +126,4 @@
 		do_action( "{$hook}_admin_page" );
 	?>
 
-</form>
+<?php echo $has_form ? '</form>' : '</div>'; ?>

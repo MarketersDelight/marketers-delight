@@ -99,7 +99,7 @@ if ( $type == 'media' ) :
 <div class="md-file-upload">
 	<div class="md-file-upload-field md-tooltip-parent">
 
-		<input type="file" name="<?php echo esc_attr( $name ); ?>[url]" id="<?php echo esc_attr( "{$id}_file" ); ?>"<?php echo $accept; ?> />
+		<input type="file" name="<?php echo esc_attr( $name ); ?>[url]" id="<?php echo esc_attr( "{$id}_file" ); ?>" data-md-upload-action="<?php echo esc_attr( $upload_action ); ?>"<?php echo $accept; ?> />
 
 		<span class="md-loading md-file-uploading"><i class="dashicons dashicons-update-alt"></i></span>
 
@@ -107,7 +107,5 @@ if ( $type == 'media' ) :
 
 	</div>
 </div>
-
-<?php wp_add_inline_script( 'marketers-delight', "MD.fileUpload( '" . esc_attr( "{$id}_file" ) . "', '{$upload_action}' );" ); ?>
 
 <?php endif; ?>

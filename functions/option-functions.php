@@ -328,6 +328,7 @@ function md_update_dropins( $dropins ) {
 	if ( ! is_array( $dropins ) )
 		return false;
 
+	$dropins = md_dropins_state( $dropins );
 	$option = array( 'dropins' => $dropins );
 
 	if ( null === get_option( 'marketers_delight_dropins', null ) )
@@ -338,6 +339,25 @@ function md_update_dropins( $dropins ) {
 	md_sync_active_dropins( $dropins );
 
 	return $updated;
+}
+
+/**
+ * Keep only site state in the Drop-ins option: which Drop-ins are on.
+ * Details are read from each Drop-in's files (md_get_dropin_details()),
+ * so copies saved by MD 6.1 and older are dropped on the next write.
+ *
+ * @since 6.2
+ */
+
+function md_dropins_state( $dropins ) {
+	$installed = isset( $dropins['installed'] ) && is_array( $dropins['installed'] ) ? $dropins['installed'] : array();
+	$state = array();
+
+	foreach ( $installed as $slug => $fields )
+		if ( ! empty( $fields['status']['enable'] ) )
+			$state['installed'][sanitize_key( $slug )]['status']['enable'] = true;
+
+	return $state;
 }
 
 /**
@@ -353,22 +373,6 @@ function md_sync_active_dropins( $dropins ) {
 		)
 	) );
 }
-
-/**
- * Sync the frontend Drop-in list after a Settings API form save.
- *
- * @since 6.0
- */
-
-function md_save_dropins_option( $option ) {
-	$dropins = isset( $option['dropins'] ) && is_array( $option['dropins'] ) ? $option['dropins'] : array();
-
-	md_sync_active_dropins( $dropins );
-
-	return $option;
-}
-
-add_filter( 'md_save_marketers_delight_dropins', 'md_save_dropins_option' );
 
 /**
  * To pull data from custom options, use this function with

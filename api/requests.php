@@ -23,9 +23,7 @@ class md_requests {
 		if ( isset( $_POST['action_type'] ) ) {
 			$action_type = sanitize_key( $_POST['action_type'] );
 
-			if ( $action_type === 'delete-dropin' )
-				$this->delete_dropin();
-			elseif ( $action_type === 'reset-icons' ) {
+			if ( $action_type === 'reset-icons' ) {
 				$option = $this->reset_icons( md_setting_part( array( 'icons', 'custom_icons' ) ) );
 				md_update_setting_part( $option );
 			}
@@ -46,12 +44,12 @@ class md_requests {
 				md_update_license( $license );
 
 				if ( $action_type === 'activate-license' && ( $license['status'] ?? '' ) === 'valid' ) {
-				$updates = $this->check_for_updates( $license );
+					$updates = $this->check_for_updates( $license );
 
-				if ( is_array( $updates ) ) {
-					$license = $updates;
-					md_update_license( $license );
-				}
+					if ( is_array( $updates ) ) {
+						$license = $updates;
+						md_update_license( $license );
+					}
 				}
 
 				do_action( 'md_license_updater', $license, $check_status );
@@ -241,7 +239,6 @@ class md_requests {
 		$license = array( 'status' => $status );
 
 		delete_site_transient( 'update_themes' );
-//		delete_site_transient( 'update_md_dropins' );
 
 		return $license;
 	}
@@ -320,113 +317,151 @@ class md_requests {
 				return $license;
 
 			$check_status = 'success';
+			$license['last_check'] = time();
 
 			$update_data = $response;
 
-			unset( $license['updates'] );
-			unset( $license['dropins'] );
+			unset( $license['updates'], $license['dropins'], $license['available'] );
 
-			// Has update
+			if ( ! empty( $update_data->package ) && version_compare( $license_input['version'], $update_data->new_version, '<' ) )
+				$license['updates']['theme'] = array(
+					'name' => sanitize_text_field( $update_data->name ),
+					'theme' => sanitize_key( $license_input['theme_slug'] ),
+					'new_version' => sanitize_text_field( $update_data->new_version ),
+					'stable_version' => sanitize_text_field( $update_data->stable_version ),
+					'slug' => sanitize_key( $update_data->slug ),
+					'url' => esc_url_raw( $update_data->url ),
+					'last_updated' => sanitize_text_field( $update_data->last_updated ),
+					'package' => esc_url_raw( $update_data->package ),
+					'download_link'  => esc_url_raw( $update_data->download_link )
+				);
 
-			if ( ! empty( $update_data ) ) {
-
-				// Theme
-
-				if ( ! empty( $update_data->package ) && version_compare( $license_input['version'], $update_data->new_version, '<' ) )
-					$license['updates']['theme'] = array(
-						'name' => sanitize_text_field( $update_data->name ),
-						'theme' => sanitize_key( $license_input['theme_slug'] ),
-						'new_version' => sanitize_text_field( $update_data->new_version ),
-						'stable_version' => sanitize_text_field( $update_data->stable_version ),
-						'slug' => sanitize_key( $update_data->slug ),
-						'url' => esc_url_raw( $update_data->url ),
-						'last_updated' => sanitize_text_field( $update_data->last_updated ),
-						'package' => esc_url_raw( $update_data->package ),
-						'download_link'  => esc_url_raw( $update_data->download_link )
-					);
-
-				// drop-ins
-				if ( ! empty( $update_data->dropins ) ) {
-					$installed_dropins = md_dropins_setting( 'installed' );
-
-					foreach ( $update_data->dropins as $dropin_id => $dropin_fields ) {
-						if ( ! isset( $dropin_fields->slug ) || empty( $installed_dropins[$dropin_fields->slug] ) )
-							continue;
-
-						$dropin_slug = sanitize_key( $dropin_fields->slug );
-						$dropin_version = ! empty( $installed_dropins[$dropin_slug]['version'] ) ? sanitize_text_field( $installed_dropins[$dropin_slug]['version'] ) : '';
-						$new_version = ! empty( $dropin_fields->version ) ? $dropin_fields->version : $dropin_version;
-						$license['dropins'][] = $dropin_slug;
-
-						if ( ! empty( $dropin_fields->package ) && version_compare( $dropin_version, $new_version, '<' ) )
-							$license['updates']['dropins']["$dropin_slug/$dropin_slug.php"] = array(
-								'name' => sanitize_text_field( $dropin_fields->name ),
-								'slug' => $dropin_slug,
-								'version' => sanitize_text_field( $new_version ),
-								'new_version' => sanitize_text_field( $new_version ),
-								'package' => esc_url_raw( $dropin_fields->package )
-							);
-					}
-				}
-
-			}
-
+			if ( ! empty( $update_data->dropins ) )
+				$license = $this->dropin_updates( $license, $update_data->dropins );
 		}
 		else unset( $license['updates'] );
 
 		delete_site_transient( 'update_themes' );
-//		delete_site_transient( 'update_md_dropins' );
 
 		return $license;
 	}
 
 	/**
-	 * Called during a single Drop-in upgrade initialization.
+	 * Drop-ins from an update check: each one MD.com lists, Available ones
+	 * this site hasn't installed (and installed ones a higher plan covers,
+	 * for the upgrade banner), and updates for installed ones.
 	 *
-	 * @since 5.4
+	 * @since 6.2
 	 */
 
-	public function update_dropin() {
-		global $title, $parent_file, $submenu_file;
+	private function dropin_updates( $license, $dropins ) {
+		md_flush_dropin_details();
 
-		if ( ! current_user_can( 'update_plugins' ) )
-			wp_die( __( 'Sorry, you are not allowed to update drop-ins for this website.', 'md' ) );
+		foreach ( $dropins as $fields ) {
+			if ( empty( $fields->slug ) )
+				continue;
 
-		if ( empty( $_GET['dropin'] ) )
-			wp_die( __( 'Please select a dropin to update.', 'md' ) );
+			$slug = sanitize_key( $fields->slug );
+			$installed = md_get_dropin_details( $slug );
+			$available = $this->available_dropin( $slug, $fields );
+			$license['dropins'][] = $slug;
 
-		$dropin = sanitize_text_field( wp_unslash( $_GET['dropin'] ) );
+			if ( $available && ( ! $installed || $available['status'] === 'upgrade' ) )
+				$license['available'][$slug] = $available;
 
-		if ( ! preg_match( '~^([a-z0-9_-]+)/\\1\\.php$~', $dropin ) || ! md_license_setting( array( 'updates', 'dropins', $dropin ) ) )
-			wp_die( __( 'No update is available for this drop-in.', 'md' ) );
+			if ( ! $installed )
+				continue;
 
-		check_admin_referer( 'upgrade-dropin_' . $dropin );
+			$new_version = ! empty( $fields->version ) ? $fields->version : $installed['Version'];
 
-		$title = __( 'Update Drop-in' );
-		$parent_file = 'plugins.php';
-		$submenu_file = 'plugins.php';
+			if ( ! empty( $fields->package ) && version_compare( $installed['Version'], $new_version, '<' ) )
+				$license['updates']['dropins']["$slug/$slug.php"] = array(
+					'name' => sanitize_text_field( $fields->name ),
+					'slug' => $slug,
+					'new_version' => sanitize_text_field( $new_version ),
+					'package' => esc_url_raw( $fields->package )
+				);
+		}
 
-		wp_enqueue_script( 'updates' );
-
-		require_once ABSPATH . 'wp-admin/admin-header.php';
-
-		$nonce = 'update-dropin_' . $dropin;
-		$url = 'update.php?action=update-md-dropins&dropin=' . urlencode( $dropin );
-
-		$upgrader = new MD_Dropin_Upgrader( new Dropin_Upgrader_Skin( compact( 'title', 'nonce', 'url', 'dropin' ) ) );
-		$upgrader->upgrade( $dropin );
-
-		require_once ABSPATH . 'wp-admin/admin-footer.php';
+		return $license;
 	}
 
 	/**
-	 * Run delete Drop-in file actions.
+	 * One Drop-in the license can see but this site hasn't installed:
+	 * `claimed` (in the customer's orders, with a package), `included` (the
+	 * plan covers it; MD.com claims it on install) or `upgrade` (a higher
+	 * plan covers it). Responses from before MD.com sent a status only list
+	 * claimed Drop-ins, so a package alone means claimed.
 	 *
-	 * @since 5.4
+	 * @since 6.2
 	 */
 
-	private function delete_dropin() {
-		$files = new md_files;
-		$files->file_action( 'delete-dropin' );
+	private function available_dropin( $slug, $fields ) {
+		$status = isset( $fields->status ) ? sanitize_key( $fields->status ) : ( empty( $fields->package ) ? '' : 'claimed' );
+
+		if ( ! in_array( $status, array( 'claimed', 'included', 'upgrade' ), true ) )
+			return false;
+
+		if ( $status === 'claimed' && empty( $fields->package ) )
+			return false;
+
+		return array_filter( array(
+			'name' => sanitize_text_field( $fields->name ?? $slug ),
+			'slug' => $slug,
+			'status' => $status,
+			'plan' => sanitize_text_field( $fields->plan ?? '' ),
+			'version' => sanitize_text_field( $fields->version ?? '' ),
+			'description' => sanitize_text_field( $fields->description ?? '' ),
+			'icon' => sanitize_text_field( $fields->icon ?? '' ),
+			'colors' => sanitize_text_field( $fields->colors ?? '' ),
+			'upgrade_url' => esc_url_raw( $fields->upgrade_url ?? '' ),
+			'ready' => isset( $fields->ready ) ? ( $fields->ready ? '1' : '0' ) : '',
+			'package' => esc_url_raw( $fields->package ?? '' )
+		), 'strlen' );
 	}
+
+	/**
+	 * Ask MD.com to claim a Drop-in the license's plan includes, and return
+	 * its package URL.
+	 *
+	 * @since 6.2
+	 */
+
+	public function claim_dropin( $slug ) {
+		$license = md_license_setting();
+
+		if ( ( $license['status'] ?? '' ) !== 'valid' || empty( $license['key'] ) )
+			return new WP_Error( 'md_license_invalid', __( 'Activate your license key to install this Drop-in.', 'md' ) );
+
+		$response = $this->get_api( array(
+			'edd_action' => 'md_claim_dropin',
+			'license' => trim( $license['key'] ),
+			'item_id' => $this->license( 'download_id' ),
+			'url' => home_url(),
+			'slug' => $slug
+		) );
+
+		if ( ! empty( $response->failed ) || empty( $response->success ) || empty( $response->package ) )
+			return new WP_Error( 'md_claim_failed', ! empty( $response->message ) ? sanitize_text_field( $response->message ) : __( 'Marketers Delight could not add this Drop-in to your account. Please try again.', 'md' ) );
+
+		return esc_url_raw( $response->package );
+	}
+
+	/**
+	 * Check for updates and save what was found. Returns `success` or
+	 * `failed`. Used by cron and md_check_dropin_updates().
+	 *
+	 * @since 6.2
+	 */
+
+	public function check_updates() {
+		$check_status = 'failed';
+		$license = $this->check_for_updates( md_license_setting(), $check_status );
+
+		if ( is_array( $license ) )
+			md_update_license( $license );
+
+		return $check_status;
+	}
+
 }

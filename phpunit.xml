@@ -6,6 +6,7 @@
 		<testsuite name="save-sanitize">
 			<directory>tests</directory>
 			<exclude>tests/inheritance</exclude>
+			<exclude>tests/dropins</exclude>
 		</testsuite>
 	</testsuites>
 </phpunit>

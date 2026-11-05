@@ -22,8 +22,11 @@ final class marketers_delight {
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
 		define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 		define( 'MD_PLUGIN_DIR', '' );
-		define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
-		define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
+		if ( ! defined( 'MD_INSTALLED_DROPINS' ) )
+			define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
+
+		if ( ! defined( 'MD_INSTALLED_DROPINS_URL' ) )
+			define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
 		define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 	}
 
@@ -146,22 +149,41 @@ final class marketers_delight {
 		if ( empty( $dropins ) )
 			return;
 
-		foreach ( $dropins as $dropin )
-			if ( md_has( $dropin ) )
-				if ( file_exists( $file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php" ) ) {
-					md_load_dropin_textdomain( $dropin );
-					require_once( $file );
-				}
-				else {
-					$dropins = md_dropins_setting();
-					unset( $dropins['installed'][$dropin]['status']['enable'] );
-					md_update_dropins( $dropins );
-				}
+		$missing = array();
 
-		// Refresh defaults after WordPress and active Drop-ins register post types.
-		add_action( 'wp_loaded', function() {
-			md_setting_defaults( true );
-		}, 99 );
+		foreach ( $dropins as $dropin ) {
+			$file = MD_INSTALLED_DROPINS . "/$dropin/$dropin.php";
+
+			if ( ! file_exists( $file ) ) {
+				$missing[] = $dropin;
+				continue;
+			}
+
+			md_load_dropin_textdomain( $dropin );
+			require_once $file;
+		}
+
+		if ( $missing ) {
+			$state = md_dropins_setting();
+
+			foreach ( $missing as $dropin )
+				unset( $state['installed'][$dropin]['status']['enable'] );
+
+			md_update_dropins( $state );
+		}
+
+		add_action( 'wp_loaded', array( $this, 'refresh_defaults' ), 99 );
+	}
+
+	/**
+	 * Refresh setting defaults after WordPress and active Drop-ins register
+	 * their post types.
+	 *
+	 * @since 6.2
+	 */
+
+	public function refresh_defaults() {
+		md_setting_defaults( true );
 	}
 
 	/**

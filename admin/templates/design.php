@@ -4,9 +4,9 @@
 
 	<p><?php echo __( 'Configure your site\'s design and brand settings here.', 'md' ); ?></p>
 
-	<hr class="md-sep" />
+	<hr class="mb-mid" />
 
-	<div class="md-widget md-toggle md-color-widget md-sep-small">
+	<div class="md-widget md-toggle md-color-widget mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Color Palette', 'md' ); ?></h3>
 
@@ -14,9 +14,9 @@
 
 			<p class="description"><?php echo __( 'Enter the colors from your brand guide. These colors will be available throughout your website.', 'md' ); ?></p>
 
-			<hr class="md-sep-small" />
+			<hr class="mb-single" />
 
-			<div class="md-palette-grid md-sep">
+			<div class="md-palette-grid mb-mid">
 				<?php foreach ( $palette as $color_key => $color ) : ?>
 				<div class="md-palette-item">
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
@@ -32,7 +32,7 @@
 
 			$this->fields->field( 'custom', array(
 				'button_text' => __( 'Add Color', 'md' ),
-				'wrap_classes' => 'md-custom-colors md-sep',
+				'wrap_classes' => 'md-custom-colors mb-mid',
 				'callback' => function( $group, $field ) {
 					$color = md_setting( array( 'colors', $group, $field ) );
 					$key = ! empty( $color['key'] ) ? $color['key'] : ( ! empty( $color['name'] ) ? $color['name'] : '' );
@@ -64,7 +64,7 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Site Layout', 'md' ); ?></h3>
 
@@ -76,24 +76,24 @@
 				'options' => $content_style
 			) ); ?>
 
-			<hr class="md-sep-small" />
+			<hr class="mb-single" />
 
-			<div class="columns-2 columns-single md-sep-micro">
-				<div class="col md-sep-small">
+			<div class="columns-2 columns-single mb-third gap-single">
+				<div class="col">
 					<?php $this->fields->field( array( 'width', 'content' ), array(
 						'placeholder' => $defaults['colors']['width']['post'],
 						'min' => ( $defaults['colors']['width']['post'] - $line_height * 4 ),
 						'max' => ( $defaults['colors']['width']['post'] + $line_height * 8 )
 					) ); ?>
 				</div>
-				<div class="col md-sep-small">
+				<div class="col">
 					<?php $this->fields->field( array( 'width', 'sidebar' ), array(
 						'placeholder' => $defaults['colors']['width']['sidebar'],
 						'min' => ( $defaults['colors']['width']['sidebar'] - $line_height * 4 ),
 						'max' => ( $defaults['colors']['width']['sidebar'] + $line_height * 8 )
 					) ); ?>
 				</div>
-				<div class="col md-sep-small">
+				<div class="col">
 					<?php $this->fields->field( array( 'width', 'site' ), array(
 						'placeholder' => $defaults['colors']['width']['site'],
 						'min' => ( $defaults['colors']['width']['site'] - $line_height * 4 ),
@@ -119,15 +119,15 @@
 
 	</div>
 
-	<hr class="md-sep-small" />
+	<hr class="mb-single" />
 
-	<div class="md-widget md-toggle md-color-widget md-sep-small">
+	<div class="md-widget md-toggle md-color-widget mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Site Colors', 'md' ); ?></h3>
 
 		<div class="md-widget-item columns-2 columns-single">
 			<?php foreach ( $options['site'] as $field => $opts ) : ?>
-			<div class="col md-sep-small">
+			<div class="col mb-single">
 				<?php $this->color_field( array( 'site', $field ), $opts ); ?>
 			</div>
 			<?php endforeach; ?>
@@ -135,7 +135,7 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-color-widget md-sep-small">
+	<div class="md-widget md-toggle md-color-widget mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Actions', 'md' ); ?></h3>
 
@@ -148,9 +148,9 @@
 			) as $action => $label ) : ?>
 			<h4><?php echo esc_html( $label ); ?></h4>
 
-			<div class="columns-2 columns-single<?php echo $action !== 'status' ? ' md-sep-small' : ''; ?>">
+			<div class="columns-2 columns-single<?php echo $action !== 'status' ? ' mb-single' : ''; ?>">
 				<?php foreach ( $options['actions'][$action] as $field => $opts ) : ?>
-				<div class="col md-sep-small">
+				<div class="col mb-single">
 					<?php $this->color_field( array( 'actions', $action, $field ), $opts ); ?>
 				</div>
 				<?php endforeach; ?>
@@ -161,15 +161,15 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-color-widget md-sep-small">
+	<div class="md-widget md-toggle md-color-widget mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Header and Navigation', 'md' ); ?></h3>
 
 		<div class="md-widget-item">
 
-			<div class="columns-2 columns-single md-sep">
+			<div class="columns-2 columns-single mb-mid">
 				<?php foreach ( array( 'bg_color', 'text_color', 'border_color' ) as $field ) : ?>
-				<div class="col md-sep-small">
+				<div class="col mb-single">
 					<?php $this->color_field( array( 'header', $field ), $options['header'][$field] ); ?>
 				</div>
 				<?php endforeach; ?>
@@ -177,9 +177,9 @@
 
 			<h4><?php echo __( 'Menu', 'md' ); ?></h4>
 
-			<div class="columns-2 columns-single md-sep">
+			<div class="columns-2 columns-single mb-mid">
 				<?php foreach ( $options['header']['menu'] as $field => $opts ) : ?>
-				<div class="col md-sep-small">
+				<div class="col mb-single">
 					<?php $this->color_field( array( 'header', 'menu', $field ), $opts ); ?>
 				</div>
 				<?php endforeach; ?>
@@ -189,7 +189,7 @@
 
 			<div class="columns-2 columns-single">
 				<?php foreach ( $options['header']['submenu'] as $field => $opts ) : ?>
-				<div class="col md-sep-small">
+				<div class="col mb-single">
 					<?php $this->color_field( array( 'header', 'submenu', $field ), $opts ); ?>
 				</div>
 				<?php endforeach; ?>
@@ -201,13 +201,13 @@
 
 	<?php foreach ( array( 'content' => __( 'Content', 'md' ), 'sidebar' => __( 'Sidebar', 'md' ), 'panel' => __( 'Panel', 'md' ), 'footer' => __( 'Footer', 'md' ) ) as $group => $label ) : ?>
 
-	<div class="md-widget md-toggle md-color-widget md-sep-small">
+	<div class="md-widget md-toggle md-color-widget mb-single">
 
 		<h3 class="md-widget-title"><?php echo esc_html( $label ); ?></h3>
 
 		<div class="md-widget-item columns-2 columns-single">
 			<?php foreach ( $options[$group] as $field => $opts ) : ?>
-			<div class="col md-sep-small">
+			<div class="col mb-single">
 				<?php $this->color_field( array( $group, $field ), $opts ); ?>
 			</div>
 			<?php endforeach; ?>

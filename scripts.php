@@ -18,27 +18,12 @@
  */
 ?>
 
-number: function( value ) {
-	const parsed = parseInt( value, 10 );
-	return isNaN( parsed ) ? 0 : parsed;
-},
-hasClass: function( el, className ) {
-	return el.classList.contains( className );
-},
-addClass: function( el, className ) {
-	el.classList.add( className );
-},
-removeClass: function( el, className ) {
-	el.classList.remove( className );
-},
-removeClassByPrefix: function( el, prefix ) {
-	Array.from( el.classList ).forEach( function( className ) {
-		if ( className.indexOf( prefix ) === 0 )
-			el.classList.remove( className );
-	});
-},
-toggleClass: function( el, className ) {
-	el.classList.toggle( className );
+bound: {},
+once: function( name ) {
+	if ( this.bound[name] )
+		return false;
+
+	return this.bound[name] = true;
 },
 cookie: {
 	create: function( name, value, days ) {
@@ -48,7 +33,7 @@ cookie: {
 			date.setTime( date.getTime() + ( days * 24 * 60 * 60 * 1000 ) );
 			expires = '; expires=' + date.toUTCString();
 		}
-		document.cookie = name + '=' + value + expires + '; SameSite=None; Secure; path=/';
+		document.cookie = name + '=' + value + expires + '; SameSite=Lax' + ( location.protocol === 'https:' ? '; Secure' : '' ) + '; path=/';
 	},
 	get: function( name ) {
 		const match = document.cookie.split( '; ' ).find( function( row ) {
@@ -93,14 +78,14 @@ tabs: function() {
 		} );
 		tabs.forEach( function( tab, i ) {
 			tab.setAttribute( 'role', 'tab' );
-			tab.onclick = function( e ) {
+			tab.addEventListener( 'click', function( e ) {
 				e.preventDefault();
 				activate( i );
 				const href = tab.getAttribute( 'href' );
 				if ( href && href.startsWith( '#' ) )
 					history.replaceState( null, '', location.pathname + location.search + href );
-			};
-			tab.onkeydown = function( e ) {
+			} );
+			tab.addEventListener( 'keydown', function( e ) {
 				const step = { ArrowLeft: -1, ArrowUp: -1, ArrowRight: 1, ArrowDown: 1 }[ e.key ];
 				if ( ! step )
 					return;
@@ -108,7 +93,7 @@ tabs: function() {
 				const next = ( i + step + tabs.length ) % tabs.length;
 				activate( next );
 				tabs[ next ].focus();
-			};
+			} );
 		} );
 		panels.forEach( function( panel ) {
 			panel.setAttribute( 'role', 'tabpanel' );
@@ -118,109 +103,147 @@ tabs: function() {
 	} );
 },
 clipboard: function() {
-	const copy = document.getElementsByClassName( 'copy' );
-	for ( let i = 0; i < copy.length; i++ ) {
-		copy[i].onclick = function( e ) {
-			e.preventDefault();
-			const val = this.getAttribute( 'data-md-copy' );
-			navigator.clipboard.writeText( val );
-		}
-	}
+	if ( ! MD.once( 'clipboard' ) )
+		return;
+
+	document.addEventListener( 'click', function( e ) {
+		const copy = e.target.closest( '.copy[data-md-copy]' );
+
+		if ( ! copy )
+			return;
+
+		e.preventDefault();
+		navigator.clipboard.writeText( copy.getAttribute( 'data-md-copy' ) );
+	} );
 },
 toggle: function() {
-	const toggles = document.getElementsByClassName( 'toggle' );
-	for ( let i = 0; i < toggles.length; i++ ) {
-		toggles[i].onclick = function( e ) {
-			const trigger = this,
-				  toggle = trigger.getAttribute( 'data-toggle' ),
-				  target = trigger.getAttribute( 'data-toggle-target' ),
-				  parent = target ? document.querySelector( target ) : trigger.closest( '.' + toggle ),
-				  className = 'toggle-' + toggle;
+	if ( ! MD.once( 'toggle' ) )
+		return;
 
-			if ( ! parent )
-				return;
+	const closers = [];
 
-			if ( ! parent.classList.contains( className ) ) {
-				const isOpen = document.querySelectorAll( '.' + className );
-				for ( let j = 0; j < isOpen.length; j++ )
-					if ( ! isOpen[j].contains( parent ) )
-						isOpen[j].classList.remove( className );
-			}
+	document.addEventListener( 'click', function( e ) {
+		for ( let i = closers.length - 1; i >= 0; i-- ) {
+			if ( closers[i].parent.contains( e.target ) )
+				continue;
 
-			parent.classList.toggle( className );
-			trigger.setAttribute( 'aria-expanded', parent.classList.contains( className ) );
-
-			if ( trigger.getAttribute( 'data-toggle-close' ) )
-				document.onclick = function( e ) {
-					if ( ! parent.contains( e.target ) ) {
-						parent.classList.remove( 'toggle-' + toggle );
-						trigger.setAttribute( 'aria-expanded', false );
-					}
-				}
+			closers[i].parent.classList.remove( closers[i].className );
+			closers[i].trigger.setAttribute( 'aria-expanded', false );
+			closers.splice( i, 1 );
 		}
 
-		const menuItem = toggles[i].hasAttribute( 'aria-expanded' ) ? toggles[i].closest( '.menu-item-has-children' ) : null;
+		const trigger = e.target.closest( '.toggle' );
 
-		if ( menuItem )
-			menuItem.onmouseenter = menuItem.onmouseleave = function( e ) {
-				toggles[i].setAttribute(
-					'aria-expanded',
-					e.type === 'mouseenter' || menuItem.classList.contains( 'toggle-menu-item' )
-				);
-			}
-	}
+		if ( ! trigger )
+			return;
+
+		const toggle = trigger.getAttribute( 'data-toggle' ),
+			  target = trigger.getAttribute( 'data-toggle-target' ),
+			  parent = target ? document.querySelector( target ) : trigger.closest( '.' + toggle ),
+			  className = 'toggle-' + toggle;
+
+		if ( ! parent )
+			return;
+
+		if ( ! parent.classList.contains( className ) ) {
+			const isOpen = document.querySelectorAll( '.' + className );
+			for ( let j = 0; j < isOpen.length; j++ )
+				if ( ! isOpen[j].contains( parent ) )
+					isOpen[j].classList.remove( className );
+		}
+
+		parent.classList.toggle( className );
+		trigger.setAttribute( 'aria-expanded', parent.classList.contains( className ) );
+
+		if ( trigger.getAttribute( 'data-toggle-close' ) && parent.classList.contains( className ) )
+			closers.push( { parent: parent, trigger: trigger, className: className } );
+	} );
+
+	document.querySelectorAll( '.toggle[aria-expanded]' ).forEach( function( toggle ) {
+		const menuItem = toggle.closest( '.menu-item-has-children' );
+
+		if ( ! menuItem )
+			return;
+
+		const hover = function( e ) {
+			toggle.setAttribute( 'aria-expanded', e.type === 'mouseenter' || menuItem.classList.contains( 'toggle-menu-item' ) );
+		};
+
+		menuItem.addEventListener( 'mouseenter', hover );
+		menuItem.addEventListener( 'mouseleave', hover );
+	} );
 },
 triggers: function() {
-	const triggers = document.getElementsByClassName( 'trigger' );
-	for ( let i = 0; i < triggers.length; i++ ) {
-		triggers[i].onclick = function( e ) {
-			const type = this.getAttribute( 'data-md-trigger' ),
-				location = this.getAttribute( 'data-md-location' ),
-				parent = this.getAttribute( 'data-md-parent' ),
-				container = document.querySelector( '.' + parent ),
-				toggleClass = 'toggle-' + type,
-				fromClass = 'from-' + location,
-				isMobile = window.matchMedia( '(max-width: 1200px)' ).matches,
-				isActive = container.classList.contains( toggleClass ) && ( ! isMobile || container.classList.contains( fromClass ) ),
-				classes = Array.from( container.classList );
+	if ( ! MD.once( 'triggers' ) )
+		return;
 
-			for ( let t = 0; t < triggers.length; t++ )
-				triggers[t].classList.remove( 'toggled' );
+	const onTrigger = function( e ) {
+		const type = this.getAttribute( 'data-md-trigger' ),
+			location = this.getAttribute( 'data-md-location' ),
+			parent = this.getAttribute( 'data-md-parent' ),
+			container = document.querySelector( '.' + parent );
 
-			for ( let c = 0; c < classes.length; c++ )
-				if ( classes[c].startsWith( 'toggle' ) || classes[c].startsWith( 'from-' ) )
-					container.classList.remove( classes[c] );
+		if ( ! container )
+			return;
 
-			if ( ! isActive ) {
-				this.classList.add( 'toggled' );
-				container.classList.add( toggleClass );
-				container.classList.add( fromClass );
+		const triggers = document.getElementsByClassName( 'trigger' ),
+			toggleClass = 'toggle-' + type,
+			fromClass = 'from-' + location,
+			isActive = container.classList.contains( toggleClass ) && container.classList.contains( fromClass ),
+			classes = Array.from( container.classList );
 
-				const controls = this.getAttribute( 'aria-controls' ),
-					  target = controls ? document.getElementById( controls ) : null;
+		for ( let t = 0; t < triggers.length; t++ )
+			triggers[t].classList.remove( 'toggled' );
 
-				if ( target )
-					target.focus();
-			}
+		for ( let c = 0; c < classes.length; c++ )
+			if ( classes[c].startsWith( 'toggle' ) || classes[c].startsWith( 'from-' ) )
+				container.classList.remove( classes[c] );
 
-			this.setAttribute( 'aria-expanded', ! isActive );
+		if ( ! isActive ) {
+			this.classList.add( 'toggled' );
+			container.classList.add( toggleClass );
+			container.classList.add( fromClass );
 
-			if ( type === 'search' )
-				container.querySelector( '.input' ).focus();
+			const controls = this.getAttribute( 'aria-controls' ),
+				  target = controls ? document.getElementById( controls ) : null;
 
-			<?php md_hook_js_custom_triggers(); ?>
+			if ( target )
+				target.focus();
 		}
-	}
+
+		this.setAttribute( 'aria-expanded', ! isActive );
+
+		if ( type === 'search' )
+			container.querySelector( '.input' ).focus();
+
+		<?php md_hook_js_custom_triggers(); ?>
+	};
+
+	document.addEventListener( 'click', function( e ) {
+		const trigger = e.target.closest( '.trigger[data-md-trigger]' );
+
+		if ( trigger )
+			onTrigger.call( trigger, e );
+	} );
 },
 closeOverlay: function( name, parent ) {
-	document.querySelector( '.' + name + '-overlay' ).onclick = function() {
-		document.querySelector( parent ).classList.remove( 'toggle-' + name );
-		const triggers = document.getElementsByClassName( 'trigger-' + name );
+	const overlay = document.querySelector( '.' + name + '-overlay' );
+
+	if ( ! overlay )
+		return;
+
+	overlay.addEventListener( 'click', function() {
+		const container = document.querySelector( parent ),
+			  triggers = document.getElementsByClassName( 'trigger-' + name );
+
+		if ( container )
+			container.classList.remove( 'toggle-' + name );
+
 		for ( let i = 0; i < triggers.length; i++ ) {
 			triggers[i].classList.remove( 'toggled' );
 			triggers[i].setAttribute( 'aria-expanded', false );
 		}
-	};
+	} );
 },
 scrollerNav: function() {
 	const wraps = document.getElementsByClassName( 'scroller-nav' );
@@ -230,6 +253,11 @@ scrollerNav: function() {
 			prev = wrap.querySelector( '.scroller-arrow-prev' ),
 			next = wrap.querySelector( '.scroller-arrow-next' );
 
+		if ( ! list || wrap.mdScroller )
+			continue;
+
+		wrap.mdScroller = true;
+
 		function updateArrows() {
 			const overflow = list.scrollWidth > wrap.clientWidth,
 				start = list.scrollLeft <= 0,
@@ -238,27 +266,21 @@ scrollerNav: function() {
 			list.classList.toggle( 'scroller-overflow', overflow );
 
 			if ( prev )
-				if ( ! overflow || start )
-					prev.classList.add( 'arrow-hidden' );
-				else
-					prev.classList.remove( 'arrow-hidden' );
+				prev.classList.toggle( 'arrow-hidden', ! overflow || start );
 
 			if ( next )
-				if ( ! overflow || end )
-					next.classList.add( 'arrow-hidden' );
-				else
-					next.classList.remove( 'arrow-hidden' );
+				next.classList.toggle( 'arrow-hidden', ! overflow || end );
 		}
 
 		if ( prev )
-			prev.onclick = function() {
+			prev.addEventListener( 'click', function() {
 				list.scrollBy( { left: -160, behavior: 'smooth' } );
-			};
+			} );
 
 		if ( next )
-			next.onclick = function() {
+			next.addEventListener( 'click', function() {
 				list.scrollBy( { left: 160, behavior: 'smooth' } );
-			};
+			} );
 
 		list.addEventListener( 'scroll', updateArrows, { passive: true } );
 		window.addEventListener( 'resize', updateArrows );
@@ -273,20 +295,20 @@ scrollerNav: function() {
 <?php if ( has_action( 'md_hook_js_onscroll' ) ) : ?>
 onScroll: function() {
 	let pos = 0, ticking = false;
-	window.onscroll = function( e ) {
+	window.addEventListener( 'scroll', function( e ) {
 		pos = window.scrollY;
 		if ( ! ticking ) {
 			window.requestAnimationFrame( function() {
+				ticking = false;
 				const contentBox = document.getElementById( 'main' );
 				if ( contentBox == null ) return;
 				const contentBoxOffsetTop = contentBox.offsetTop,
 					content = document.getElementById( 'the_content' );
 				if ( content == null ) return;
 				<?php md_hook_js_onscroll(); ?>
-				ticking = false;
 			});
 		}
 		ticking = true;
-	}
+	}, { passive: true } );
 },
 <?php endif; ?>

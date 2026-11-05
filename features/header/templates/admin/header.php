@@ -4,7 +4,7 @@
 
 	<p><?php echo __( 'Customize your header with the header builder and layout options.', 'md' ); ?></p>
 
-	<hr class="md-sep-small" />
+	<hr class="mb-single" />
 
 	<div class="md-widget md-toggle">
 
@@ -12,13 +12,13 @@
 
 		<div class="md-widget-item">
 
-			<div class="md-sep-small">
+			<div class="mb-single">
 			<?php $this->fields->field( 'display', array(
 				'multi' => true
 			) ); ?>
 			</div>
 
-			<div class="md-header-layout md-radio-fields md-clear md-sep-small">
+			<div class="md-header-layout md-radio-fields mb-single">
 			<?php $this->fields->field( 'layout', array(
 				'label_icon' => 'dashicons dashicons-desktop',
 				'layout' => 'banner',
@@ -42,7 +42,7 @@
 			) ); ?>
 			</div>
 
-			<div class="md-radio-fields md-clear md-sep-micro">
+			<div class="md-radio-fields mb-third">
 			<?php $this->fields->field( 'layout_mobile', array(
 				'label_icon' => 'dashicons dashicons-smartphone',
 				'layout' => 'banner',

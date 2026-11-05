@@ -176,7 +176,7 @@ class md_layout extends md_api {
 		$layout = array(
 			'global' => false,
 			'display' => 'none',
-			'classes' => array( 'md-layouts', 'md-sep-small' ),
+			'classes' => array( 'md-layouts', 'mb-single' ),
 			'areas' => md_layout_areas( $id ),
 			'has' => md_has_layout( $id, array(
 			'page' => ( $context['is_author'] ? 'author' : ( $context['is_post'] ? 'single' : 'term' ) ),
@@ -291,7 +291,7 @@ class md_layout extends md_api {
 	 */
 
 	public function admin_fields() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-toggle mb-single">
 			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template(); ?>

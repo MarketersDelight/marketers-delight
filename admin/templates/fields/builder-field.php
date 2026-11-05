@@ -70,7 +70,7 @@
 					?>
 					<p class="description"><?php echo esc_html__( 'Hide this on category pages, or on page 2 and beyond.', 'md' ); ?></p>
 				</div>
-				<hr class="md-sep-micro" />
+				<hr class="mb-third" />
 				<?php endif;
 
 				call_user_func( $fields['admin_callback'], $group, $type, $this, $row );

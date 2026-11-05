@@ -20,11 +20,11 @@
 		<h2 class="md-updates-title"><?php echo __( 'Updates', 'md' ); ?></h2>
 
 		<?php if ( $status ) : ?>
-		<span class="md-updates-badge"><?php echo esc_html( $badge ); ?></span>
+		<span class="md-badge <?php echo ! $is_valid ? 'is-error' : ( $count ? 'is-warning' : 'is-success' ); ?>"><?php echo esc_html( $badge ); ?></span>
 		<?php endif; ?>
 
 		<?php if ( $is_valid && $count ) : ?>
-		<button type="button" class="button button-primary md-update-all" disabled title="<?php esc_attr_e( 'Updating everything at once is coming soon.', 'md' ); ?>"><?php printf( esc_html__( 'Update all (%d)', 'md' ), $count ); ?></button>
+		<button type="button" class="button button-primary md-update-all"><?php printf( esc_html__( 'Update all (%d)', 'md' ), $count ); ?></button>
 		<?php endif; ?>
 
 	</div>
@@ -34,13 +34,13 @@
 		$theme_version = esc_html( $theme['new_version'] );
 	?>
 
-	<div class="md-theme-update">
-		<span class="md-dropin-icon md-dropin-icon-theme" aria-hidden="true"><img src="<?php echo esc_url( MD_URL . 'admin/images/md-mark.png' ); ?>" alt=""></span>
+	<div class="md-theme-update md-update-row" data-md-update="theme" data-slug="<?php echo esc_attr( $slug ); ?>">
+		<span class="md-dropin-icon md-dropin-icon-theme md-mark" aria-hidden="true"></span>
 		<div class="md-update-info">
-			<strong class="md-update-name"><?php printf( esc_html__( '%1$s %2$s available', 'md' ), $theme_name, $theme_version ); ?></strong>
-			<span class="md-update-meta"><?php esc_html_e( 'Update the theme first, then your Drop-ins.', 'md' ); ?></span>
+			<strong class="md-update-name"><?php printf( esc_html__( '%1$s %2$s available', 'md' ), esc_html( $theme_name ), esc_html( $theme_version ) ); ?></strong>
+			<span class="md-update-meta"><?php esc_html_e( 'Updated last, after your Drop-ins.', 'md' ); ?></span>
 		</div>
-		<a href="<?php echo admin_url( wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $slug ), 'upgrade-theme_' . $slug ) ); ?>" class="button button-primary md-update-button" data-md-alert="<?php echo __( 'NOTICE: You are about to update the Marketers Delight WordPress theme files. Any changes made directly to the MD parent theme will be erased. Your child theme files will always remain untouched.', 'md' ); ?>"><?php esc_html_e( 'Update theme', 'md' ); ?></a>
+		<a href="<?php echo esc_url( wp_nonce_url( self_admin_url( 'update.php?action=upgrade-theme&theme=' . urlencode( $slug ) ), 'upgrade-theme_' . $slug ) ); ?>" class="button button-primary md-update-button" data-md-alert="<?php esc_attr_e( 'NOTICE: You are about to update the Marketers Delight WordPress theme files. Any changes made directly to the MD parent theme will be erased. Your child theme files will always remain untouched.', 'md' ); ?>"><?php esc_html_e( 'Update theme', 'md' ); ?></a>
 	</div>
 
 	<?php endif; ?>
@@ -49,17 +49,17 @@
 
 	<div class="md-update-grid">
 
-		<?php foreach ( $dropins as $dropin_path => $dropin_update ) :
+		<?php foreach ( $dropins as $dropin_update ) :
 			$dropin_name = $dropin_update['name'];
 		?>
 
-		<div class="md-update-item">
+		<div class="md-update-item md-update-row" data-md-update="dropin" data-slug="<?php echo esc_attr( $dropin_update['slug'] ); ?>">
 			<?php echo md_get_dropin_icon( $dropin_update['slug'] ); ?>
 			<div class="md-update-info">
 				<strong class="md-update-name"><?php echo esc_html( $dropin_name ); ?></strong>
-				<span class="md-update-meta"><?php printf( esc_html__( 'Version %s available', 'md' ), esc_html( $dropin_update['new_version'] ?? $dropin_update['version'] ) ); ?></span>
+				<span class="md-update-meta"><?php printf( esc_html__( 'Version %s available', 'md' ), esc_html( $dropin_update['new_version'] ) ); ?></span>
 			</div>
-			<a href="<?php echo admin_url( wp_nonce_url( 'update.php?action=update-md-dropins&amp;dropin=' . urlencode( $dropin_path ), 'upgrade-dropin_' . $dropin_path ) ); ?>" class="button md-update-button" data-md-alert="<?php echo sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the dropin files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $dropin_name ); ?>"><?php esc_html_e( 'Update', 'md' ); ?></a>
+			<a href="<?php echo esc_url( md_dropin_update_url( $dropin_update['slug'] ) ); ?>" class="button md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the Drop-in files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $dropin_name ) ); ?>"><?php esc_html_e( 'Update', 'md' ); ?></a>
 		</div>
 
 		<?php endforeach; ?>
@@ -71,7 +71,7 @@
 	<?php if ( $is_valid && ! $count ) : ?>
 
 	<div class="md-updates-state is-current">
-		<span class="md-updates-state-icon" aria-hidden="true"></span>
+		<span class="md-status-icon" aria-hidden="true"></span>
 		<div>
 			<strong><?php printf( esc_html__( 'Marketers Delight %s and all Drop-ins are up to date.', 'md' ), esc_html( MD_VERSION ) ); ?></strong>
 			<?php if ( $check_status === 'success' ) : ?>
@@ -83,7 +83,7 @@
 	<?php elseif ( ! $is_valid && ! empty( $license_message['text'] ) ) : ?>
 
 	<div class="md-updates-state is-invalid">
-		<span class="md-updates-state-icon" aria-hidden="true"></span>
+		<span class="md-status-icon is-error" aria-hidden="true"></span>
 		<div><?php echo wp_kses_post( $license_message['text'] ); ?></div>
 	</div>
 
@@ -120,13 +120,13 @@
 				'label' => __( 'Enter MD license key', 'md' ),
 				'placeholder' => __( 'Enter license key here...', 'md' ),
 				'option' => $is_valid && ! empty( $license['key'] ) ? '••••' . substr( $license['key'], -4 ) : '',
-				'wrap_classes' => 'md-spacer-small',
+				'wrap_classes' => 'mb-third',
 				'readonly_after_save' => $is_valid
 			) ); ?>
 
 			<div class="md-license-button">
-				<span class="button button-primary md-action md-action-activate-license" data-md-action="activate-license" data-md-canvas="#md_update"><?php echo __( 'Activate license key', 'md' ); ?> <i class="dashicons dashicons-update-alt"></i></span>
-				<span class="md-delete md-delete-text md-action md-action-deactivate-license" data-md-action="deactivate-license" data-md-canvas="#md_update" data-md-alert="<?php echo __( 'NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?', 'md' ); ?>"><?php echo __( 'Deactivate site', 'md' ); ?> <i class="dashicons dashicons-no"></i></span>
+				<span class="button button-primary md-action md-action-activate-license" data-md-action="activate-license" data-md-canvas="#md_update"><?php esc_html_e( 'Activate license key', 'md' ); ?> <i class="dashicons dashicons-update-alt"></i></span>
+				<span class="md-delete md-delete-text md-action md-action-deactivate-license" data-md-action="deactivate-license" data-md-canvas="#md_update" data-md-alert="<?php esc_attr_e( 'NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?', 'md' ); ?>"><?php esc_html_e( 'Deactivate site', 'md' ); ?> <i class="dashicons dashicons-no"></i></span>
 			</div>
 
 		</div>

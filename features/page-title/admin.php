@@ -53,7 +53,7 @@ class md_hero extends md_api {
 	 */
 
 	public function admin_page() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-toggle mb-single">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
 				<?php $this->fields->settings_group( 'admin_page' ); ?>
@@ -84,10 +84,10 @@ class md_hero extends md_api {
 	 */
 
 	public function term() { ?>
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-toggle mb-single">
 			<h3 class="md-widget-title"><?php echo $this->name; ?></h3>
 			<div class="md-widget-item">
-				<div class="md-field-row md-sep-small">
+				<div class="md-field-row mb-single">
 					<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Identity', 'md' ); ?></label></p>
 					<div class="md-field columns-2 columns-single md-full-select">
 						<div class="col">

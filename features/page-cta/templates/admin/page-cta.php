@@ -1,6 +1,6 @@
 <div class="md-conditional">
 
-	<div class="columns-2 columns-single md-full-select md-sep-small">
+	<div class="columns-2 columns-single md-full-select mb-single">
 
 		<div class="col col1">
 			<?php $fields->field( 'page_cta', array(

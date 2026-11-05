@@ -32,13 +32,14 @@ class md_admin {
 	 */
 
 	public function includes() {
+		include_once 'dropins/functions.php';
 		include_once 'dashboard.php';
 		include_once 'icons.php';
-		include_once 'dropins.php';
+		include_once 'dropins/dropins.php';
+		include_once 'dropins/actions.php';
 		include_once 'page-settings.php';
 		include_once 'typography.php';
 		include_once 'design.php';
-		include_once 'upgrade/dropin-upgrader.php';
 	}
 
 	/**
@@ -59,6 +60,9 @@ class md_admin {
 
 		// Admin pages
 		add_action( 'admin_menu', array( $this, 'add_menu' ) );
+		add_filter( 'parent_file', array( $this, 'parent_file' ) );
+		add_action( 'admin_page_access_denied', array( $this, 'redirect_moved_pages' ) );
+		add_action( 'admin_init', array( $this, 'redirect_moved_pages' ) );
 		add_filter( 'post_row_actions', array( $this, 'admin_row'), 10, 2 );
 		add_filter( 'page_row_actions', array( $this, 'admin_row'), 10, 2 );
 
@@ -93,11 +97,71 @@ class md_admin {
 		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
 		add_action( 'upgrader_process_complete', array( $this->requests, 'delete_theme_update' ), 10, 2 );
 		add_action( 'load-themes.php', array( $this, 'load_themes_screen' ) );
-		add_action( 'update-custom_update-md-dropins', array( $this->requests, 'update_dropin' ) );
 
 		// Actions + requests
 		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
 		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
+	}
+
+	/**
+	 * Keep the Theme menu open on MD screens that have no menu item of their
+	 * own (tabs like Design or Popups), with their parent item current.
+	 *
+	 * @since 6.2
+	 */
+
+	public function parent_file( $parent_file ) {
+		global $plugin_page, $submenu_file;
+
+		$page = $this->menu_tab_parent( $plugin_page );
+
+		if ( ! $page )
+			return $parent_file;
+
+		$submenu_file = $page;
+
+		return 'md_settings';
+	}
+
+	/**
+	 * The Theme menu item an MD tab screen belongs to, ex: md_optins for
+	 * Popups. Empty for screens that aren't hidden MD tabs.
+	 *
+	 * @since 6.2
+	 */
+
+	private function menu_tab_parent( $plugin_page ) {
+		if ( ! $plugin_page || strpos( $plugin_page, 'md_' ) !== 0 )
+			return '';
+
+		$admin_pages = md_register( 'admin_pages' );
+		$id = substr( $plugin_page, 3 );
+
+		if ( empty( $admin_pages[$id] ) || ! empty( $admin_pages[$id]['parent_slug'] ) || ! empty( $admin_pages[$id]['toplevel'] ) )
+			return '';
+
+		return ! empty( $admin_pages[$id]['parent'] ) ? $admin_pages[$id]['parent'] : 'md_settings';
+	}
+
+	/**
+	 * Old addresses of the screens that moved to the Theme menu in 6.2
+	 * (Appearance and Tools) go to their new ones, ex: bookmarks and docs
+	 * links to themes.php?page=md_settings.
+	 *
+	 * @since 6.2
+	 */
+
+	public function redirect_moved_pages() {
+		global $pagenow;
+
+		$page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
+
+		if ( ! in_array( $pagenow, array( 'themes.php', 'tools.php' ), true ) || ! in_array( $page, array( 'md_settings', 'md_dropins', 'md_integrations' ), true ) )
+			return;
+
+		wp_safe_redirect( add_query_arg( wp_unslash( $_GET ), self_admin_url( 'admin.php' ) ) );
+
+		exit;
 	}
 
 	/**
@@ -121,19 +185,25 @@ class md_admin {
 			if ( ! isset( $fields['name'] ) )
 				continue;
 
-			$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : 'md_settings';
+			$parent_slug = isset( $fields['parent_slug'] ) ? $fields['parent_slug'] : '';
 			$capability = isset( $fields['capability'] ) ? $fields['capability'] : 'manage_options';
 			$callback = array( $this, 'admin_page' );
 			$menu_slug = 'md_' . ( isset( $fields['menu_slug'] ) ? $fields['menu_slug'] : $admin_page );
 			$icon = isset( $fields['icon'] ) ? $fields['icon'] : '';
-			$position = isset( $fields['position'] ) ? $fields['position'] : null;
+			$position = isset( $fields['menu_position'] ) ? $fields['menu_position'] : ( isset( $fields['position'] ) ? $fields['position'] : null );
 			$menu_title = isset( $fields['menu_title'] ) ? $fields['menu_title'] : $fields['name'];
 
-			if ( ! empty( $fields['toplevel'] ) )
+			if ( ! empty( $fields['toplevel'] ) ) {
 				$hook = add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
+
+				// The top-level page is also its menu's first item, named by its tab
+
+				if ( ! empty( $fields['tab_name'] ) )
+					add_submenu_page( $menu_slug, $fields['tab_name'], $fields['tab_name'], $capability, $menu_slug, $callback, 0 );
+			}
 			else {
 				$sub_page_title = ! empty( $fields['tab_name'] ) ? $fields['tab_name'] : $fields['name'];
-				$hook = add_submenu_page( $parent_slug, $sub_page_title, $fields['name'], $capability, $menu_slug, $callback, $position );
+				$hook = add_submenu_page( $parent_slug, $sub_page_title, $menu_title, $capability, $menu_slug, $callback, $position );
 			}
 
 			if ( $hook )
@@ -158,22 +228,30 @@ class md_admin {
 		wp_enqueue_style( 'marketers-delight', MD_URL . $style, array(), md_ver( $style ) );
 		wp_enqueue_script( 'marketers-delight', MD_URL . $script, array( 'jquery', 'md-sortable', 'md-color' ), md_ver( $script ), true );
 
-		if ( $screen->base === 'post' ) {
+		$is_block_editor = $screen->base === 'post' && (bool) $screen->is_block_editor();
+		$sticky = $is_block_editor && in_array( $screen->post_type, md_sticky_post_types() ) && current_user_can( get_post_type_object( $screen->post_type )->cap->edit_others_posts );
+
+		if ( $screen->base === 'post' && ( $sticky || in_array( $screen->post_type, md_post_type_meta() ) ) ) {
 			$post_id = get_the_ID();
 			$editor = 'admin/js/editors.js';
+			$editor_deps = $is_block_editor ? array( 'jquery', 'wp-plugins', 'wp-element', 'wp-components', 'wp-data', 'wp-editor' ) : array( 'jquery' );
 
-			wp_enqueue_script( 'md-editors', MD_URL . $editor, array( 'jquery' ), md_ver( $editor ), true );
+			wp_enqueue_script( 'md-editors', MD_URL . $editor, $editor_deps, md_ver( $editor ), true );
 			wp_localize_script( 'md-editors', 'mdEditorContext', array(
-				'isBlockEditor' => (bool) $screen->is_block_editor(),
+				'isBlockEditor' => $is_block_editor,
 				'contentStyles' => array_keys( md_filter_loop_styles() ),
-				'inheritedContentStyle' => empty( $post_id ) ? 'box' : $this->editor_content_style( $post_id, true )
+				'inheritedContentStyle' => empty( $post_id ) ? 'box' : $this->editor_content_style( $post_id, true ),
+				'sticky' => $sticky,
+				'stickyLabel' => __( 'Sticky', 'md' ),
+				'stickyHelp' => sprintf( __( 'Keep this post at the top of %s.', 'md' ), get_post_type_object( $screen->post_type )->labels->name )
 			) );
 		}
 
 		$vars = array(
-			'user_id' => get_current_user_id(),
 			'nonce' => wp_create_nonce( "{$this->_option}_nonce" ),
 			'license_request_error' => __( 'Could not connect. Please try again.', 'md' ),
+			'copied' => __( 'Copied!', 'md' ),
+			'preview_image' => __( 'Preview image', 'md' ),
 			'save' => array(
 				'clean' => __( 'All changes saved', 'md' ),
 				'dirty' => __( 'Unsaved changes', 'md' ),
@@ -187,31 +265,15 @@ class md_admin {
 			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
 
-		if ( in_array( $screen->base, array( 'edit', 'post' ) ) && ! in_array( $screen->post_type, array( 'post', 'page' ) ) ) {
-			if ( $screen->base == 'post' )
-				$vars = array_merge( $vars, array(
-					'screen' => 'post',
-					'is_sticky' => (bool) is_sticky(),
-					'checked_attribute' => checked( is_sticky(), true, false ),
-					'label_text' => __( 'Stick this post to the front page', 'md' ),
-					'sticky_visibility_text' => __( 'Public, Sticky', 'md' )
-				) );
-			else $vars = array_merge( $vars, array(
-				'screen' => 'edit',
-				'post_type' => $screen->post_type,
-				'status_label_text' => __( 'Status', 'md' ),
-				'label_text' => __( 'Make this post sticky', 'md' ),
-				'sticky_text' => __( 'Sticky', 'md' )
-			) );
+		if ( $screen->base == 'edit' && in_array( $screen->post_type, md_sticky_post_types() ) ) {
+			$vars['label_text'] = sprintf( __( 'Keep at the top of %s', 'md' ), get_post_type_object( $screen->post_type )->labels->name );
 
 			wp_add_inline_script( 'marketers-delight', 'MD.stickyPostTypes();' );
 		}
 
 		wp_localize_script( 'marketers-delight', 'MDJS', $vars );
-		wp_register_script( 'md-color', MD_URL . 'admin/js/jscolor.js', array(), '', true );
-		wp_register_script( 'md-sortable', MD_URL . 'admin/js/sortable.js', array(), '', true );
-		wp_register_style( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css' );
-		wp_register_script( 'md-select2', 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js', array( 'marketers-delight' ) );
+		wp_register_script( 'md-color', MD_URL . 'admin/js/jscolor.js', array(), md_ver( 'admin/js/jscolor.js' ), true );
+		wp_register_script( 'md-sortable', MD_URL . 'admin/js/sortable.js', array(), md_ver( 'admin/js/sortable.js' ), true );
 	}
 
 	/**

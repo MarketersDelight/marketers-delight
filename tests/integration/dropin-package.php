@@ -7,7 +7,8 @@
  */
 require_once dirname( __DIR__, 2 ) . '/functions/dropin-functions.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
-require_once dirname( __DIR__, 2 ) . '/admin/upgrade/dropin-upgrader.php';
+require_once dirname( __DIR__, 2 ) . '/admin/dropins/functions.php';
+require_once dirname( __DIR__, 2 ) . '/admin/dropins/upgrader.php';
 
 $upgrader = new MD_Dropin_Upgrader( new WP_Upgrader_Skin() );
 $method = new ReflectionMethod( $upgrader, 'discover_package' );

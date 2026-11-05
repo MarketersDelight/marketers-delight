@@ -1,4 +1,4 @@
-<div class="md-content-wrap md-sep-small">
+<div class="md-content-wrap mb-single">
 
 	<h2 class="md-title"><?php echo sprintf( __( 'Icons <small>(%s)</small>', 'md' ), $icons_count ); ?></h2>
 
@@ -10,7 +10,7 @@
 
 		<div class="md-widget-item">
 
-			<div class="md-sep-micro">
+			<div class="mb-third">
 				<?php $this->fields->field( 'upload', array(
 					'type' => 'upload',
 					'upload_type' => 'file',
@@ -22,7 +22,7 @@
 				) ); ?>
 			</div>
 
-			<div class="md-sep-small">
+			<div class="mb-single">
 				<button class="button md-action" data-md-action="reset-icons" data-md-alert="<?php echo __( "You are about to revert to the default MD font icons set. No files will be deleted, but your current icons\ndata will be removed and any custom icons may no longer show on your website. Do you wish to proceed?", 'md' ); ?>"<?php echo ! md_setting( 'custom_icons' ) ? ' disabled' : ''; ?>><i class="dashicons dashicons-update-alt"></i> <?php echo __( 'Restore default icons', 'md' ); ?></button>
 			</div>
 
@@ -32,7 +32,7 @@
 
 </div>
 
-<div class="md-font-icons md-content-wrap-wide md-sep-small">
+<div class="md-font-icons md-content-wrap-wide mb-single">
 
 	<?php foreach ( $icons as $icon => $fields ) : ?>
 		<div class="col-style">

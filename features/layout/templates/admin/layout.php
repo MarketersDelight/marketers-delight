@@ -6,7 +6,7 @@
 
 		<!-- Header -->
 
-		<div class="md-conditional md-conditional-invert md-sep-small">
+		<div class="md-conditional md-conditional-invert mb-single">
 
 			<?php $this->fields->field( 'header', array(
 				'label' => __( 'Header', 'md' ),
@@ -22,7 +22,7 @@
 				)
 			) ); ?>
 
-			<div id="header_options" class="md-conditional-item md-conditional-1 md-sep-small<?php echo empty( $header['remove'] ) ? ' is-condition' : ''; ?>">
+			<div id="header_options" class="md-conditional-item md-conditional-1 mb-single<?php echo empty( $header['remove'] ) ? ' is-condition' : ''; ?>">
 
 				<?php
 				$this->fields->field( 'header', array(
@@ -138,7 +138,7 @@
 
 		<?php if ( $is_admin ) {
 
-		echo '<div class="md-sep-micro">';
+		echo '<div class="mb-third">';
 
 		$this->fields->field( 'featured_image', array(
 			'empty_label' => __( 'Use default position', 'md' ),
@@ -148,7 +148,7 @@
 		echo '</div>';
 
 
-		echo '<div class="md-sep-micro">';
+		echo '<div class="mb-third">';
 
 		do_action( 'md_hook_layout_admin_single_fields', $this->fields );
 
@@ -156,7 +156,7 @@
 
 		} ?>
 
-		<div class="md-sep-micro">
+		<div class="mb-third">
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
@@ -197,7 +197,7 @@
 
 		endif; ?>
 
-		<div id="content_options" class="md-sep-small" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
+		<div id="content_options" class="mb-single" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<?php do_action( 'md_hook_layout_content_fields', $this->fields, $context );
 
@@ -247,7 +247,7 @@
 			$this->fields->field( 'content_style', array(
 				'empty_label' => __( 'Use default style', 'md' ),
 				'inherit' => true,
-				'wrap_classes' => 'md-sep-micro',
+				'wrap_classes' => 'mb-third',
 				'options' => $content_style_options
 			) ); ?>
 

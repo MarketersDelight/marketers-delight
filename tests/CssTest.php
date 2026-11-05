@@ -505,7 +505,9 @@ class CssTest extends MD_TestCase {
 			$script
 		);
 		$this->assertStringContainsString( "wp_enqueue_script( 'md-editors'", $admin );
-		$this->assertStringContainsString( "'isBlockEditor' => (bool) \$screen->is_block_editor()", $admin );
+		$this->assertStringContainsString( "\$is_block_editor = \$screen->base === 'post' && (bool) \$screen->is_block_editor();", $admin );
+		$this->assertStringContainsString( "in_array( \$screen->post_type, md_post_type_meta() )", $admin );
+		$this->assertStringContainsString( "'isBlockEditor' => \$is_block_editor", $admin );
 		$this->assertStringNotContainsString( 'enqueue_block_editor_assets', $admin );
 		$this->assertStringContainsString( "'is-' . \$this->editor_content_style( \$post_id ) . '-style'", $admin );
 		$this->assertStringContainsString( "add_filter( 'tiny_mce_before_init', array( \$this, 'classic_editor_layout' ) );", $admin );

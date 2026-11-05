@@ -12,30 +12,8 @@ foreach ( $args['attributes'] ?? array() as $key => $value )
 if ( isset( $args['classes'] ) )
 	$classes[] = $args['classes'];
 
-if ( isset( $args['select2'] ) )
-	$classes[] = 'md-select2';
-
 $classes = join( ' ' , $classes );
-
-if ( isset( $args['select2'] ) ) { // Select2 Init field
-	$init_label = '';
-
-	if ( ! empty( $args['options'] ) && is_array( $option ) ) {
-		$a = 1;
-		$select_count = count( $option );
-		foreach ( $args['options'] as $author_id => $author_name ) {
-			if ( ! in_array( $author_id, $option ) )
-				continue;
-			$init_label .= $author_name;
-			if ( $a < $select_count )
-				$init_label .= ', ';
-			$a++;
-		}
-	}
-	else $init_label = __( 'Select author(s)...', 'md' );
-
-	echo '<input type="text" class="md-select2-init regular-text" placeholder="' . esc_html( $init_label ) . '" />';
-} ?>
+?>
 
 <?php if ( $b ) : ?>
 <input type="hidden" name="<?php echo esc_attr( $name ); ?>" value="" />
@@ -103,8 +81,3 @@ if ( isset( $args['select2'] ) ) { // Select2 Init field
 	endif; ?>
 
 </select>
-
-<?php if ( isset( $args['select2'] ) ) {
-	wp_enqueue_style( 'md-select2' );
-	wp_enqueue_script( 'md-select2' );
-} ?>

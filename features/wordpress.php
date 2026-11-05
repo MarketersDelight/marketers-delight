@@ -162,3 +162,60 @@ function md_sitemaps_post_types( $post_types ) {
 }
 
 add_filter( 'wp_sitemaps_post_types', 'md_sitemaps_post_types' );
+
+/**
+ * Get the custom post types that support Sticky posts. Core
+ * already handles Sticky for the post type.
+ *
+ * @since 6.2
+ */
+
+function md_sticky_post_types() {
+	return array_values( get_post_types( array(
+		'_builtin' => false,
+		'show_ui' => true,
+		'show_in_rest' => true
+	) ) );
+}
+
+/**
+ * Add a sticky field to the REST API for custom post types so
+ * the Block Editor can stick and unstick their posts.
+ *
+ * @since 6.2
+ */
+
+function md_register_sticky_rest_field() {
+	register_rest_field( md_sticky_post_types(), 'sticky', array(
+		'get_callback' => 'md_get_sticky_rest_field',
+		'update_callback' => 'md_update_sticky_rest_field',
+		'schema' => array(
+			'description' => __( 'Whether or not the post should be treated as sticky.', 'md' ),
+			'type' => 'boolean',
+			'context' => array( 'view', 'edit' )
+		)
+	) );
+}
+
+function md_get_sticky_rest_field( $post ) {
+	return is_sticky( $post['id'] );
+}
+
+function md_update_sticky_rest_field( $value, $post ) {
+	$sticky = (bool) $value;
+
+	if ( $sticky === is_sticky( $post->ID ) )
+		return true;
+
+	if ( ! current_user_can( get_post_type_object( $post->post_type )->cap->edit_others_posts ) )
+		return new WP_Error( 'rest_cannot_assign_sticky', __( 'Sorry, you are not allowed to make posts sticky.', 'md' ), array( 'status' => rest_authorization_required_code() ) );
+
+	if ( $sticky )
+		stick_post( $post->ID );
+	else
+		unstick_post( $post->ID );
+
+	return true;
+}
+
+add_action( 'rest_api_init', 'md_register_sticky_rest_field' );

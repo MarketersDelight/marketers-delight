@@ -10,7 +10,7 @@
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-micro">
+	<div class="col mb-third">
 		<?php $this->field( array( 'builder', $group, 'toggle' ), array(
 			'type' => 'checkbox',
 			'label' => __( 'Display', 'md' ),
@@ -20,7 +20,7 @@
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-small">
+	<div class="col mb-single">
 		<?php $this->field( array( 'builder', $group, 'submenu_width' ), array(
 			'type' => 'number',
 			'label' => __( 'Submenu Width', 'md' ),

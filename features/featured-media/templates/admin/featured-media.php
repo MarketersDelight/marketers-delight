@@ -5,7 +5,7 @@
 	<div class="col col1">
 
 		<?php if ( ! $args['image_only'] ) : ?>
-		<div class="md-sep-small">
+		<div class="mb-single">
 			<?php if ( ! $can_edit_code && $media_type === 'custom_html' ) : ?>
 				<p class="md-label"><?php esc_html_e( 'Custom HTML is managed by an administrator.', 'md' ); ?></p>
 			<?php else :
@@ -36,9 +36,9 @@
 
 	<div class="col col2">
 
-		<div class="md-conditional md-sep-micro<?php echo $args['is_post'] ? ' columns-2 columns-single' : ''; ?>">
+		<div class="md-conditional mb-third<?php echo $args['is_post'] ? ' columns-2 columns-single' : ''; ?>">
 
-			<div class="md-sep-micro<?php echo $args['is_post'] ? ' col' : ''; ?>">
+			<div class="mb-third<?php echo $args['is_post'] ? ' col' : ''; ?>">
 				<?php $fields->field( 'position', array(
 					'classes' => 'md-conditional-option',
 					'empty_label' => $args['position_label'],

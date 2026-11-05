@@ -6,9 +6,9 @@
 
 	<p><?php echo __( 'Assign custom fonts and fine-tune your website\'s typography.', 'md' ); ?></p>
 
-	<hr class="md-sep" />
+	<hr class="mb-mid" />
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Body', 'md' ); ?></h3>
 
@@ -26,13 +26,13 @@
 
 	</div>
 
-	<hr class="md-sep-small" />
+	<hr class="mb-single" />
 
 	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $h ) :
 		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
 	?>
 
-		<div class="md-widget md-toggle md-sep-small">
+		<div class="md-widget md-toggle mb-single">
 
 			<h3 class="md-widget-title"><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?></h3>
 
@@ -55,9 +55,9 @@
 
 	<?php endforeach; ?>
 
-	<hr class="md-sep-small" />
+	<hr class="mb-single" />
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
 
@@ -74,7 +74,7 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
 
@@ -91,7 +91,7 @@
 
 	</div>
 
-	<div class="md-widget md-toggle md-sep-small">
+	<div class="md-widget md-toggle mb-single">
 
 		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
 

@@ -1,8 +1,12 @@
-<div class="md-integration <?php echo esc_attr( $id ); ?> md-widget md-toggle md-sep-small type-<?php echo esc_attr( $fields['type'] ) . ( $error ? ' invalid' : '' ) . ( ! empty( $option['enabled'][$id] ) ? ' valid' : ' inactive' ); ?>">
+<div class="md-integration <?php echo esc_attr( $id ); ?> md-widget md-toggle mb-single type-<?php echo esc_attr( $fields['type'] ) . ( $error ? ' invalid' : '' ) . ( ! empty( $option['enabled'][$id] ) ? ' valid' : ' inactive' ); ?>">
 
 	<h3 class="md-widget-title">
 
-		<img src="<?php echo esc_url( $icon_url ); ?>" alt="<?php echo esc_html( $fields['name'] ); ?>" class="mr-half" width="25" />
+		<?php if ( ! empty( $fields['icon'] ) ) : ?>
+		<?php echo md_dropin_icon_tile( $fields['icon'], isset( $fields['colors'] ) ? $fields['colors'] : '', 'small' ); ?>
+		<?php elseif ( $icon_url ) : ?>
+		<img src="<?php echo esc_url( $icon_url ); ?>" alt="<?php echo esc_attr( $fields['name'] ); ?>" class="mr-half" width="25" />
+		<?php endif; ?>
 
 		<?php echo esc_html( $fields['name'] ); ?>
 
@@ -36,7 +40,7 @@
 			<p><input type="text" name="md[site][integrations][api_keys][<?php echo esc_attr( $id ); ?>][account_id]" id="marketers_delight_integrations_api_keys_<?php echo esc_attr( $id ); ?>_account_id" placeholder="<?php echo sprintf( __( 'Enter %s Account ID...', 'md' ), $fields['name'] ); ?>" value="<?php echo ( $fields['type'] === 'site' && ! empty( $option['api_keys'][$id]['account_id'] ) ? esc_attr( $option['api_keys'][$id]['account_id'] ) : '' ); ?>" class="md-input regular-text" /></p>
 			<?php endif; ?>
 
-			<div class="md-sep-small">
+			<div class="mb-single">
 				<button class="md-integration-button md-button-med button button-primary" data-md-integration="<?php echo esc_attr( $id ); ?>" data-md-integration-action="connect"><?php echo sprintf( __( 'Connect to %s', 'md' ), $fields['name'] ); ?></button>
 				<span class="md-loading dashicons dashicons-update"></span>
 			</div>

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Reading Drop-ins: which are active, their details, icons and
+ * translations, and the daily update check's hooks. Safe to call from
+ * anywhere: front end, admin, cron or REST. Functions that change
+ * Drop-ins live in admin/dropins/functions.php.
+ *
+ * @since 6.2
+ */
 
 /**
  * Check if MD has a specific feature enabled.
@@ -11,41 +19,27 @@ function md_has( $dropin ) {
 }
 
 /**
- * Returns list of enabled Drop-ins, sortable by a variety of statuses.
- * $status === active, inactive, files
- * `files` returns list of drop-ins in Drop-in CodeBlock format.
+ * Installed Drop-in slugs in load order, all or only the `active` or
+ * `inactive` ones. $dropins holds only site state
+ * (`installed[slug][status][enable]`), so the details and load priority
+ * come from md_get_dropin_details().
  *
  * @since 5.3
  */
 
 function md_dropin_list( $dropins, $status = null ) {
-	$installed = isset( $dropins['installed'] ) && is_array( $dropins['installed'] ) ? $dropins['installed'] : array();
+	$state = isset( $dropins['installed'] ) && is_array( $dropins['installed'] ) ? $dropins['installed'] : array();
+	$details = md_get_dropin_details();
+	$list = $priority = array();
 
-	if ( $status === 'files' ) {
-		$files = array();
-
-		foreach ( $installed as $dropin => $fields ) {
-			foreach ( $fields as $header => $field ) {
-				$title = ucwords( $header );
-				$files["$dropin/$dropin.php"][$title] = $field;
-			}
-
-			$files["$dropin/$dropin.php"]['ID'] = $dropin;
-		}
-
-		return $files;
-	}
-
-	$dropins = $priority = array();
-
-	foreach ( $installed as $dropin => $fields ) {
-		$enabled = ! empty( $fields['status']['enable'] );
+	foreach ( $details as $dropin => $fields ) {
+		$enabled = ! empty( $state[$dropin]['status']['enable'] );
 
 		if ( $status === null || ( $status === 'active' && $enabled ) || ( $status === 'inactive' && ! $enabled ) ) {
-			if ( is_numeric( $fields['priority'] ?? null ) )
-				$priority[$fields['priority']][] = sanitize_key( $dropin );
+			if ( is_numeric( $fields['LoadPriority'] ) )
+				$priority[(int) $fields['LoadPriority']][] = $dropin;
 			else
-				$dropins[] = sanitize_key( $dropin );
+				$list[] = $dropin;
 		}
 	}
 
@@ -55,87 +49,254 @@ function md_dropin_list( $dropins, $status = null ) {
 	foreach ( $priority as $group )
 		$sorted_priority = array_merge( $sorted_priority, $group );
 
-	$dropins = array_merge( $sorted_priority, $dropins );
-
-	return $dropins;
+	return array_merge( $sorted_priority, $list );
 }
 
 /**
- * Return enabled, disabled, or installed Drop-ins.
- *
- * Active Drop-ins come from the compact frontend settings projection. Full
- * inventory is loaded only for admin and upgrader operations.
+ * Active, inactive or all installed Drop-in slugs. Active ones come from
+ * the compact front-end settings, so the front end never reads files.
  *
  * @since 5.3
  */
 
-function md_get_dropins( $status = null, $key = null ) {
-	if ( $status === 'active' ) {
-		$dropins = md_setting_part( array( 'dropins' ) );
-		$active = isset( $dropins['dropins']['active'] ) ? $dropins['dropins']['active'] : array();
-		$dropins = is_array( $active ) ? $active : array();
-	}
-	else
-		$dropins = md_dropin_list( md_dropins_setting(), $status );
+function md_get_dropins( $status = null ) {
+	if ( $status !== 'active' )
+		return md_dropin_list( md_dropins_setting(), $status );
 
-	if ( $status === 'files' && ! empty( $key ) )
-		return isset( $dropins["$key/$key.php"] ) ? $dropins["$key/$key.php"] : array();
+	$dropins = md_setting_part( array( 'dropins' ) );
+	$active = isset( $dropins['dropins']['active'] ) ? $dropins['dropins']['active'] : array();
 
-	return ! empty( $key ) ? ( isset( $dropins[$key] ) ? $dropins[$key] : null ) : $dropins;
+	return is_array( $active ) ? $active : array();
 }
 
 /**
- * A Drop-in's icon tile: its dashicon on its colors, as the Drop-ins and
- * Updates screens show it. Drop-ins can put it beside their settings
- * titles. $size: small (24px), or the default 32px.
+ * The header keys a Drop-in's main file can declare. Its docblock is the
+ * one source of a Drop-in's details.
+ *
+ * @since 6.2
+ */
+
+function md_dropin_headers() {
+	return array(
+		'Name' => 'Drop-in Name',
+		'DropinURI' => 'Drop-in URI',
+		'Version' => 'Version',
+		'Description' => 'Description',
+		'Slug' => 'Drop-in Slug',
+		'Author' => 'Author',
+		'AuthorURI' => 'Author URI',
+		'TextDomain' => 'Text Domain',
+		'RequiresWP' => 'Requires at least',
+		'RequiresPHP' => 'Requires PHP',
+		'RequiresMD' => 'Requires MD',
+		'Icon' => 'Icon',
+		'Colors' => 'Colors',
+		'SettingsURL' => 'Settings URL',
+		'LoadPriority' => 'Load Priority',
+		'ActivateOnInstall' => 'Activate On Install'
+	);
+}
+
+/**
+ * Every installed Drop-in's details, or one Drop-in's. Read from the
+ * files once per request, like core's get_plugins(), so an edited header
+ * shows on the next page load. The front end never calls this: it loads
+ * Drop-ins from the active list saved in the main option.
+ *
+ * @since 6.2
+ */
+
+function md_get_dropin_details( $slug = null, $refresh = false ) {
+	static $details = null;
+
+	if ( $refresh )
+		$details = null;
+
+	if ( $details === null ) {
+		$details = array();
+		$folders = is_dir( MD_INSTALLED_DROPINS ) ? scandir( MD_INSTALLED_DROPINS ) : false;
+
+		foreach ( $folders ? $folders : array() as $folder ) {
+			if ( $folder[0] === '.' || ! preg_match( '/^[a-z0-9_-]+$/', $folder ) )
+				continue;
+
+			$data = md_read_dropin_details( MD_INSTALLED_DROPINS . "/$folder", $folder );
+
+			if ( $data )
+				$details[$folder] = $data;
+		}
+
+		ksort( $details );
+	}
+
+	if ( $slug === null )
+		return $details;
+
+	return isset( $details[$slug] ) ? $details[$slug] : false;
+}
+
+/**
+ * Forget the details read this request, after files change.
+ *
+ * @since 6.2
+ */
+
+function md_flush_dropin_details() {
+	md_get_dropin_details( null, true );
+}
+
+/**
+ * Read one Drop-in folder's details: its header, with any config.json
+ * values on top.
+ *
+ * @since 6.2
+ */
+
+function md_read_dropin_details( $directory, $slug ) {
+	$file = trailingslashit( $directory ) . "$slug.php";
+
+	if ( ! is_file( $file ) || is_link( $file ) )
+		return false;
+
+	$data = md_merge_dropin_config( $directory, get_file_data( $file, md_dropin_headers(), 'dropin' ) );
+
+	if ( $data['Name'] === '' )
+		return false;
+
+	$data = md_sanitize_dropin_details( $data );
+	$data['slug'] = $slug;
+	$data['file'] = "$slug/$slug.php";
+
+	return $data;
+}
+
+/**
+ * Deprecated: Drop-ins that still ship a config.json have its values
+ * used over their header, as before 6.2. Drop-ins made for 6.2 and later
+ * put everything in their header and ship no config.json.
+ *
+ * @since 6.2
+ */
+
+function md_merge_dropin_config( $directory, $data ) {
+	$file = trailingslashit( $directory ) . 'config.json';
+
+	if ( ! is_file( $file ) || is_link( $file ) )
+		return $data;
+
+	$config = json_decode( (string) file_get_contents( $file ), true );
+
+	if ( ! is_array( $config ) )
+		return $data;
+
+	$keys = array(
+		'name' => 'Name',
+		'author' => 'Author',
+		'version' => 'Version',
+		'description' => 'Description',
+		'dropin_url' => 'DropinURI',
+		'author_url' => 'AuthorURI',
+		'settings_url' => 'SettingsURL',
+		'icon' => 'Icon',
+		'colors' => 'Colors',
+		'priority' => 'LoadPriority',
+		'active' => 'ActivateOnInstall'
+	);
+
+	foreach ( $keys as $config_key => $header ) {
+		if ( ! isset( $config[$config_key] ) || ! is_scalar( $config[$config_key] ) || $config[$config_key] === '' )
+			continue;
+
+		$data[$header] = is_bool( $config[$config_key] ) ? ( $config[$config_key] ? 'true' : '' ) : (string) $config[$config_key];
+	}
+
+	return $data;
+}
+
+/**
+ * Clean a Drop-in's details for display and storage.
+ *
+ * @since 6.2
+ */
+
+function md_sanitize_dropin_details( $data ) {
+	$clean = array();
+
+	foreach ( md_dropin_headers() as $key => $header ) {
+		$value = isset( $data[$key] ) && is_scalar( $data[$key] ) ? $data[$key] : '';
+		$clean[$key] = sanitize_text_field( $value );
+	}
+
+	$clean['DropinURI'] = esc_url_raw( $clean['DropinURI'] );
+	$clean['AuthorURI'] = esc_url_raw( $clean['AuthorURI'] );
+	$clean['SettingsURL'] = esc_url_raw( $clean['SettingsURL'] );
+
+	$is_dashicon = preg_match( '/^dashicons-[a-z0-9-]+$/', $clean['Icon'] );
+	$is_image = preg_match( '/^[A-Za-z0-9_-][A-Za-z0-9._-]*\.(svg|png|jpe?g|webp|gif)$/i', $clean['Icon'] );
+
+	if ( ! $is_dashicon && ! $is_image )
+		$clean['Icon'] = '';
+
+	$colors = array();
+
+	foreach ( explode( ',', $clean['Colors'] ) as $color ) {
+		$color = sanitize_hex_color( trim( $color ) );
+
+		if ( $color && count( $colors ) < 2 )
+			$colors[] = $color;
+	}
+
+	$clean['Colors'] = implode( ', ', $colors );
+
+	if ( is_numeric( $clean['LoadPriority'] ) )
+		$clean['LoadPriority'] = (string) (int) $clean['LoadPriority'];
+	else
+		$clean['LoadPriority'] = '';
+
+	$activate = strtolower( $clean['ActivateOnInstall'] );
+	$clean['ActivateOnInstall'] = $activate === 'true' || $activate === 'yes' || $activate === '1';
+
+	return $clean;
+}
+
+/**
+ * A Drop-in's icon tile: its dashicon or image file on its colors, as
+ * the Drop-ins and Updates screens show it. Drop-ins can put it beside
+ * their settings titles. $size: small (24px), large (40px), or the default
+ * 32px.
  *
  * @since 6.2
  */
 
 function md_get_dropin_icon( $slug, $size = '' ) {
-	$dropin = md_dropins_setting( array( 'installed', $slug ) );
-	$icon = ! empty( $dropin['icon'] ) ? $dropin['icon'] : 'dashicons-admin-plugins';
-	$colors = ! empty( $dropin['colors'] ) ? array_map( 'trim', explode( ',', $dropin['colors'] ) ) : array();
+	$dropin = md_get_dropin_details( $slug );
+	$icon = ! empty( $dropin['Icon'] ) ? $dropin['Icon'] : '';
+	$image = $icon && strpos( $icon, 'dashicons-' ) !== 0 && is_file( MD_INSTALLED_DROPINS . "/$slug/$icon" ) ? MD_INSTALLED_DROPINS_URL . "/$slug/" . rawurlencode( $icon ) : '';
+
+	return md_dropin_icon_tile( $image ? $image : $icon, ! empty( $dropin['Colors'] ) ? $dropin['Colors'] : '', $size );
+}
+
+/**
+ * An icon tile from a dashicon or an image URL and a `bg, color` pair.
+ * Used for Drop-ins that aren't installed yet, whose details come from
+ * MD.com.
+ *
+ * @since 6.2
+ */
+
+function md_dropin_icon_tile( $icon, $colors = '', $size = '' ) {
+	$colors = $colors ? array_map( 'trim', explode( ',', $colors ) ) : array();
 	$style = md_style( array(
-		'bg_color' => isset( $colors[0] ) ? $colors[0] : '',
-		'color' => isset( $colors[1] ) ? $colors[1] : ''
+		'bg_color' => isset( $colors[0] ) ? sanitize_hex_color( $colors[0] ) : '',
+		'color' => isset( $colors[1] ) ? sanitize_hex_color( $colors[1] ) : ''
 	) );
 
-	return '<span class="md-dropin-icon' . ( $size ? ' md-dropin-icon-' . esc_attr( $size ) : '' ) . '"' . $style . ' aria-hidden="true"><i class="dashicons ' . esc_attr( $icon ) . '"></i></span>';
-}
+	if ( preg_match( '#^https?://#', $icon ) )
+		$inner = '<img src="' . esc_url( $icon ) . '" alt="">';
+	else
+		$inner = '<i class="dashicons ' . esc_attr( preg_match( '/^dashicons-[a-z0-9-]+$/', $icon ) ? $icon : 'dashicons-admin-plugins' ) . '"></i>';
 
-/**
- * Run this function to activate drop-ins to the MD Drop-ins
- * Manager. Not recommended for use outside of upgrader utilities.
- *
- * @since 5.4
- */
-
-function md_activate_dropin( $dropin ) {
-	$dropins = md_dropins_setting();
-
-	if ( empty( $dropins['installed'][$dropin] ) )
-		return false;
-
-	$dropins['installed'][$dropin]['status']['enable'] = true;
-
-	md_update_dropins( $dropins );
-
-	update_option( 'md_compile_after_upgrade', true, false );
-}
-
-/**
- * Check if any given drop-in is active by looking up drop-in
- * file path (ex: pass `dropin-name/dropin-name.php` as $path).
- *
- * @since 5.4
- */
-
-function md_is_dropin_active( $path ) {
-	$active = md_get_dropins( 'active' );
-	$basename = str_replace( '.php', '', basename( $path ) );
-
-	return in_array( $basename, $active, true );
+	return '<span class="md-dropin-icon' . ( $size ? ' md-dropin-icon-' . esc_attr( $size ) : '' ) . '"' . $style . ' aria-hidden="true">' . $inner . '</span>';
 }
 
 /**
@@ -168,80 +329,47 @@ function md_dropin_languages_path( $dropin ) {
 }
 
 /**
- * Return a list of details as entered from Drop-in DocBlock.
+ * Whether a license key is saved. Sites without one never contact MD.com.
  *
- * @note Based off core function get_plugin_data()
- * @since 5.4
+ * @since 6.2
  */
 
-function md_get_dropin_data( $dropin_file ) {
-	$default_headers = array(
-		'Name' => 'Drop-in Name',
-		'DropinURI' => 'Drop-in URI',
-		'Version' => 'Version',
-		'Description' => 'Description',
-		'Slug' => 'Drop-in Slug',
-		'Author' => 'Author',
-		'AuthorURI' => 'Author URI',
-		'TextDomain' => 'Text Domain',
-		'DomainPath' => 'Domain Path',
-		'Network' => 'Network',
-		'RequiresWP' => 'Requires at least',
-		'RequiresPHP' => 'Requires PHP',
-		'RequiresMD' => 'Requires MD',
-		'UpdateURI' => 'Update URI',
-		'_sitewide'   => 'Site Wide Only'
-	);
+function md_has_license_key() {
+	$key = md_license_setting( 'key', '' );
 
-	$dropin_data = get_file_data( $dropin_file, $default_headers, 'dropin' );
-
-	if ( ! $dropin_data['Network'] && $dropin_data['_sitewide'] ) {
-		_deprecated_argument( __FUNCTION__, '3.0.0', sprintf( __( 'The %1$s drop-in header is deprecated. Use %2$s instead.' ), '<code>Site Wide Only: true</code>', '<code>Network: true</code>' ) );
-		$dropin_data['Network'] = $dropin_data['_sitewide'];
-	}
-
-	$dropin_data['Network'] = ( 'true' === strtolower( $dropin_data['Network'] ) );
-
-	unset( $dropin_data['_sitewide'] );
-
-	// If no text domain is defined fall back to the plugin slug.
-	if ( ! $dropin_data['TextDomain'] ) {
-		$dropin_slug = $dropin_data['Slug'];
-
-		if ( '.' !== $dropin_slug && false === strpos( $dropin_slug, '/' ) )
-			$dropin_data['TextDomain'] = $dropin_slug;
-	}
-
-	return $dropin_data;
+	return is_string( $key ) && trim( $key ) !== '';
 }
 
 /**
- * Validate a staged Drop-in before it replaces installed files.
+ * Check MD.com for theme and Drop-in updates and save the result. Runs
+ * daily from cron. Sites without a license key never contact MD.com:
+ * they install Drop-ins by uploading ZIPs only.
  *
- * @since 6.0
+ * @since 6.2
  */
-function md_validate_dropin_package( $directory, $slug ) {
-	if ( ! preg_match( '/^[a-z0-9_-]+$/', $slug ) )
-		return new WP_Error( 'invalid_dropin_slug', __( 'Invalid Drop-in package name.', 'md' ) );
 
-	$file = trailingslashit( $directory ) . "$slug.php";
+function md_check_dropin_updates() {
+	if ( ! md_has_license_key() )
+		return 'skipped';
 
-	if ( ! is_file( $file ) || is_link( $file ) )
-		return new WP_Error( 'invalid_dropin_package', sprintf( __( 'The package must contain %s.', 'md' ), "$slug.php" ) );
+	if ( ! class_exists( 'md_requests' ) )
+		require_once MD_DIR . 'api/requests.php';
 
-	$data = md_get_dropin_data( $file );
+	$requests = new md_requests;
 
-	if ( empty( $data['Name'] ) || ( ! empty( $data['Slug'] ) && $data['Slug'] !== $slug ) )
-		return new WP_Error( 'invalid_dropin_identity', __( 'The package does not match the selected Drop-in.', 'md' ) );
-
-	if ( ! is_php_version_compatible( $data['RequiresPHP'] ?? null ) )
-		return new WP_Error( 'incompatible_php_required_version', sprintf( __( 'This Drop-in requires PHP %s.', 'md' ), $data['RequiresPHP'] ) );
-
-	if ( ! is_wp_version_compatible( $data['RequiresWP'] ?? null ) )
-		return new WP_Error( 'incompatible_wp_required_version', sprintf( __( 'This Drop-in requires WordPress %s.', 'md' ), $data['RequiresWP'] ) );
-
-	if ( ! empty( $data['RequiresMD'] ) && version_compare( MD_VERSION, $data['RequiresMD'], '<' ) )
-		return new WP_Error( 'incompatible_md_required_version', sprintf( __( 'This Drop-in requires Marketers Delight %s.', 'md' ), $data['RequiresMD'] ) );
-
-	return $data;
+	return $requests->check_updates();
 }
+
+add_action( 'md_check_updates', 'md_check_dropin_updates' );
+
+/**
+ * Stop the daily update check when MD stops being the active theme.
+ *
+ * @since 6.2
+ */
+
+function md_clear_update_check() {
+	wp_clear_scheduled_hook( 'md_check_updates' );
+}
+
+add_action( 'switch_theme', 'md_clear_update_check' );

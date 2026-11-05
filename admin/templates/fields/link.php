@@ -15,7 +15,7 @@ $classes = join( ' ', $classes );
 		'type' => 'select',
 		'label' => __( 'Type', 'md' ),
 		'classes' => 'md-conditional-option',
-		'wrap_classes' => 'md-sep-small',
+		'wrap_classes' => 'mb-single',
 		'options' => array(
 			'url' => __( 'Page URL', 'md' ),
 			'popup' => __( 'Open Popup', 'md' ),
@@ -23,7 +23,7 @@ $classes = join( ' ', $classes );
 		)
 	) ); ?>
 
-	<div class="columns-2 columns-20-80 columns-single md-sep-small">
+	<div class="columns-2 columns-20-80 columns-single mb-single">
 		<div class="col col1">
 			<?php $this->field( $fields['icon']['field'], array(
 				'type' => 'select',
@@ -71,7 +71,7 @@ $classes = join( ' ', $classes );
 	</div>
 
 	<?php if ( isset( $args['show_title'] ) || isset( $args['show_subtitle'] ) ) : ?>
-	<div class="columns-2 columns-half md-sep-micro">
+	<div class="columns-2 columns-half mb-third">
 		<?php if ( isset( $args['show_title'] ) ) : ?>
 		<div class="col">
 			<?php $this->field( $fields['text']['field'], array(
@@ -91,7 +91,7 @@ $classes = join( ' ', $classes );
 	</div>
 	<?php endif; ?>
 
-	<div class="columns-2 columns-single md-full-select md-sep-small">
+	<div class="columns-2 columns-single md-full-select mb-single">
 
 		<div class="col">
 			<?php $this->field( $fields['style']['field'], array(
@@ -114,10 +114,9 @@ $classes = join( ' ', $classes );
 
 	</div>
 
-	<div class="md-sep-small">
+	<div class="mb-single">
 		<?php $this->field( $fields['toggle']['field'], array(
 			'type' => 'checkbox',
-			'classes' => 'md-sep-top-small',
 			'inline' => true,
 			'options' => array(
 				'hide_label' => __( 'Hide label', 'md' ),
@@ -126,7 +125,7 @@ $classes = join( ' ', $classes );
 		) ); ?>
 	</div>
 
-	<div class="is-button columns-4 columns-single md-sep-micro">
+	<div class="is-button columns-4 columns-single mb-third">
 
 		<div class="col">
 			<?php $this->field( $fields['button_style']['field'], array(

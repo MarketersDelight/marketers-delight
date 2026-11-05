@@ -1,6 +1,6 @@
 <?php do_action( 'md_admin_before_page_title' ); ?>
 
-<div class="md-field-row md-sep-small">
+<div class="md-field-row mb-single">
 	<?php $this->field( 'archives_title', array(
 		'type' => 'text',
 		'label' => __( 'Page Title', 'md' ),
@@ -11,7 +11,7 @@
 
 <?php do_action( 'md_admin_after_page_title' ); ?>
 
-<div class="md-field-row md-sep-small">
+<div class="md-field-row mb-single">
 	<?php $this->field( 'archives_text', array(
 		'type' => 'editor',
 		'init' => true,

@@ -32,11 +32,12 @@ class md_settings extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Edit Theme', 'md' ),
+				'menu_title' => __( 'Theme', 'md' ) . md_dropin_update_badge(),
 				'tab_name' => __( 'Settings', 'md' ),
 				'admin_header' => true,
-				'position' => 1,
-				'parent_slug' => 'themes.php',
-				'icon' => 'dashicons-marketers-delight',
+				'toplevel' => true,
+				'position' => 61,
+				'icon' => 'none',
 				'fields' => array(
 					'404_page' => array(
 						'type' => 'number',
@@ -156,7 +157,7 @@ class md_settings extends md_api {
 		$license_message = $this->license_message();
 		$slug = $this->license['theme_slug'];
 		$theme = ! empty( $license['updates']['theme'] ) ? $license['updates']['theme'] : array();
-		$dropins = ! empty( $license['updates']['dropins'] ) ? $license['updates']['dropins'] : array();
+		$dropins = md_dropin_updates();
 
 		include md_template( 'admin/license-key', true );
 	}

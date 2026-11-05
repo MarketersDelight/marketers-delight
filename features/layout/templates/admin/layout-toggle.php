@@ -2,12 +2,12 @@
 
 	if ( empty( $context['is_author'] ) )
 		$this->fields->field( $id, array(
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => array( 'global' => __( 'Enable on all pages', 'md' ) )
 		) );
 
 	foreach ( $page_types as $type => $label ) {
-		echo '<div class="md-flex-columns md-sep-micro">'.
+		echo '<div class="md-flex-columns mb-third">'.
 			 '<div class="md-flex-column">';
 
 		$this->fields->field( "{$id}_{$type}_show", array(
@@ -32,7 +32,7 @@
 
 	$this->fields->field( $id, array(
 		'label' => __( 'Settings', 'md' ),
-		'wrap_classes' => 'md-sep-micro',
+		'wrap_classes' => 'mb-third',
 		'options' => $this->layout_labels( $id, $context['toggles'][$id]['settings'], $context, true )
 	) );
 
@@ -51,13 +51,13 @@ $this->fields->field( $id, array(
 if ( empty( $layout['areas'] ) )
 	return;
 
-echo '<div id="' . esc_attr( "{$id}_options" ) . '" class="md-sep-micro" style="display: ' . esc_attr( $layout['display'] ) . ';">';
+echo '<div id="' . esc_attr( "{$id}_options" ) . '" class="mb-third" style="display: ' . esc_attr( $layout['display'] ) . ';">';
 
 $this->fields->field( $id, array(
 	'options' => $this->layout_labels( $id, $context['toggles'][$id]['settings'], $context, false )
 ) );
 
-echo '<div id="' . esc_attr( "{$this->_id}_custom_{$id}_option" ) . '" class="md-sep-micro">';
+echo '<div id="' . esc_attr( "{$this->_id}_custom_{$id}_option" ) . '" class="mb-third">';
 
 $this->fields->field( "custom_$id", array(
 	'empty_label' => sprintf( __( 'Use default %s', 'md' ), $context['toggles'][$id]['title'] ),
@@ -69,7 +69,7 @@ echo '</div>';
 if ( $context['is_term'] )
 	$this->fields->field( "entries_$id", array(
 		'empty_label' => __( 'Posts in this category...', 'md' ),
-		'wrap_classes' => 'md-sep-micro',
+		'wrap_classes' => 'mb-third',
 		'options' => $layout['areas']
 	) );
 

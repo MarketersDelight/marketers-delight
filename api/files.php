@@ -1,6 +1,7 @@
 <?php
 /**
- * Handle MD icon and Drop-in file actions.
+ * Handle MD file uploads: the IcoMoon icons import. Drop-in installs
+ * use md_install_dropin().
  *
  * @since 5.2.3
  */
@@ -29,10 +30,6 @@ class md_files {
 
 		if ( $action === 'md_icons' )
 			$this->upload_icons( $wp_filesystem );
-		elseif ( $action === 'md_dropin' )
-			$this->upload_dropin( $wp_filesystem );
-		elseif ( $action === 'delete-dropin' )
-			$this->delete_dropin( sanitize_file_name( $_POST['dropin_id'] ?? '' ), $wp_filesystem );
 
 		wp_die();
 	}
@@ -47,12 +44,6 @@ class md_files {
 		if ( $action === 'md_icons' )
 			return current_user_can( 'manage_options' );
 
-		if ( $action === 'md_dropin' )
-			return current_user_can( 'install_plugins' ) && current_user_can( 'upload_plugins' );
-
-		if ( $action === 'delete-dropin' )
-			return current_user_can( 'delete_plugins' );
-
 		return false;
 	}
 
@@ -63,7 +54,7 @@ class md_files {
 	 */
 
 	private function filesystem() {
-		$url = wp_nonce_url( 'admin.php?page=md_dropins', 'marketers-delight' );
+		$url = wp_nonce_url( 'admin.php?page=md_settings&tab=md_icons', 'marketers-delight' );
 		$creds = request_filesystem_credentials( $url, '', false, false, null );
 
 		if ( false === $creds || ! WP_Filesystem( $creds ) )
@@ -139,182 +130,6 @@ class md_files {
 		md_update_setting_part( $option );
 
 		md_compile_css();
-	}
-
-	/**
-	 * Extract and register a Drop-in ZIP.
-	 *
-	 * @since 5.3
-	 */
-
-	private function upload_dropin( $wp_filesystem ) {
-		$upload = $this->uploaded_file( 'zip' );
-
-		if ( ! $upload )
-			wp_send_json_error( __( 'Choose a valid Drop-in ZIP file.', 'md' ), 400 );
-
-		$uploads_dir = MD_INSTALLED_DROPINS;
-
-		if ( ! $wp_filesystem->exists( $uploads_dir ) ) {
-			if ( ! $wp_filesystem->mkdir( $uploads_dir, FS_CHMOD_DIR ) )
-				wp_send_json_error( __( 'Could not create the Drop-ins directory.', 'md' ), 500 );
-
-			$this->protect_directory( $uploads_dir, $wp_filesystem );
-		}
-
-		require_once get_template_directory() . '/admin/upgrade/dropin-upgrader.php';
-		$upgrader = new MD_Dropin_Upgrader( new WP_Ajax_Upgrader_Skin() );
-		$result = $upgrader->install( $upload['tmp_name'], array(
-			'overwrite_package' => true
-		) );
-
-		if ( is_wp_error( $result ) )
-			wp_send_json_error( $result->get_error_message(), 400 );
-		if ( ! $result )
-			wp_send_json_error( __( 'Could not install the Drop-in.', 'md' ), 500 );
-
-		$dropin_id = $upgrader->installed_dropin;
-
-		$dropins = md_dropins_setting();
-
-		$dropins = $this->register_dropin( $dropin_id, $dropins, $wp_filesystem );
-
-		md_update_dropins( $dropins );
-		wp_send_json_success();
-	}
-
-	/**
-	 * Read and save a Drop-in's configuration.
-	 *
-	 * @since 5.3
-	 */
-
-	private function register_dropin( $dropin_id, $dropins, $wp_filesystem ) {
-		$dropin_dir = MD_INSTALLED_DROPINS . "/$dropin_id";
-		$dropin_file = "$dropin_dir/$dropin_id.php";
-		$config_file = "$dropin_dir/config.json";
-
-		if ( ! $wp_filesystem->is_dir( $dropin_dir ) || ! $wp_filesystem->exists( $dropin_file ) )
-			return $dropins;
-
-		$this->protect_directory( $dropin_dir, $wp_filesystem );
-
-		if ( ! $wp_filesystem->exists( $config_file ) )
-			return $dropins;
-
-		$data = json_decode( $wp_filesystem->get_contents( $config_file ), true );
-
-		if ( ! is_array( $data ) )
-			return $dropins;
-
-		foreach ( $this->sanitize_dropin_config( $data ) as $setting => $value )
-			$dropins['installed'][$dropin_id][$setting] = $value;
-
-		if ( ! empty( $data['active'] ) && current_user_can( 'activate_plugins' ) )
-			$dropins['installed'][$dropin_id]['status']['enable'] = true;
-
-		if ( ! empty( $data['priority'] ) )
-			$dropins['priority'][$dropin_id] = true;
-
-		return $dropins;
-	}
-
-	/**
-	 * Sanitize supported config.json values.
-	 *
-	 * @since 6.0
-	 */
-
-	private function sanitize_dropin_config( $data ) {
-		$save = array();
-		$urls = array( 'dropin_url', 'author_url', 'settings_url' );
-		$text = array( 'name', 'author', 'version', 'description', 'icon', 'plugin_name', 'plugin_class', 'priority' );
-
-		foreach ( $urls as $setting ) {
-			$value = isset( $data[$setting] ) && is_scalar( $data[$setting] ) ? esc_url_raw( $data[$setting] ) : '';
-
-			if ( $value )
-				$save[$setting] = $value;
-		}
-
-		foreach ( $text as $setting ) {
-			$value = isset( $data[$setting] ) && is_scalar( $data[$setting] ) ? sanitize_text_field( $data[$setting] ) : '';
-
-			if ( $value !== '' )
-				$save[$setting] = $value;
-		}
-
-		if ( ! empty( $data['colors'] ) && is_string( $data['colors'] ) ) {
-			$colors = array_filter( array_map( 'sanitize_hex_color', array_map( 'trim', explode( ',', $data['colors'] ) ) ) );
-
-			if ( $colors )
-				$save['colors'] = implode( ', ', $colors );
-		}
-
-		if ( ! empty( $data['active'] ) )
-			$save['active'] = true;
-
-		return $save;
-	}
-
-	/**
-	 * Delete a Drop-in and its saved state.
-	 *
-	 * @since 5.3
-	 */
-
-	private function delete_dropin( $dropin_id, $wp_filesystem ) {
-		$uploads_dir = MD_INSTALLED_DROPINS;
-		$dropin_dir = "$uploads_dir/$dropin_id";
-
-		if ( ! $dropin_id || ! $this->path_is_contained( $dropin_dir, $uploads_dir ) )
-			return;
-
-		if ( $wp_filesystem->exists( $dropin_dir ) )
-			$wp_filesystem->delete( $dropin_dir, true );
-
-		$dropins = md_dropins_setting();
-		$license = md_license_setting();
-
-		unset( $dropins['installed'][$dropin_id] );
-		unset( $license['updates']['dropins']["$dropin_id/$dropin_id.php"] );
-
-		md_update_dropins( $dropins );
-		md_update_license( $license );
-		md_compile();
-	}
-
-	/**
-	 * Confirm a path resolves inside a base directory.
-	 *
-	 * @since 6.0
-	 */
-
-	private function path_is_contained( $path, $base_dir ) {
-		$real_base = realpath( $base_dir );
-
-		if ( ! $real_base )
-			return false;
-
-		$real_path = realpath( $path );
-
-		if ( $real_path )
-			return $real_path === $real_base || strpos( $real_path, $real_base . DIRECTORY_SEPARATOR ) === 0;
-
-		return strpos( wp_normalize_path( $path ), trailingslashit( wp_normalize_path( $real_base ) ) ) === 0;
-	}
-
-	/**
-	 * Add an index file to discourage directory browsing.
-	 *
-	 * @since 5.3
-	 */
-
-	private function protect_directory( $directory, $wp_filesystem ) {
-		$index = trailingslashit( $directory ) . 'index.php';
-
-		if ( ! $wp_filesystem->exists( $index ) )
-			$wp_filesystem->put_contents( $index, "<?php\n// Silence is golden.", FS_CHMOD_FILE );
 	}
 
 }

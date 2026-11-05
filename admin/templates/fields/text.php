@@ -11,9 +11,6 @@ $classes = array( 'regular-text' );
 if ( ! empty( $args['classes'] ) )
     $classes[] = $args['classes'];
 
-if ( ! empty( $args['populate'] ) )
-    $classes[] = 'md-populate-' . $args['populate'];
-
 $attrs = array(
 	'type' => $type,
 	'name' => $name,

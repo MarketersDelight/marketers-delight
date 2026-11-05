@@ -1,6 +1,6 @@
-<div class="columns-3 columns-half">
+<div class="columns-3 columns-half gap-third">
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $this->field( array( 'builder', $group, 'toggle' ), array(
 			'type' => 'checkbox',
 			'label' => __( 'Display', 'md' ),
@@ -17,7 +17,7 @@
 			'type' => 'text',
 			'label' => __( 'Placeholder Text', 'md' ),
 			'placeholder' => __( 'Type to search...', 'md' ),
-			'wrap_classes' => 'md-sep-micro'
+			'wrap_classes' => 'mb-third'
 		) ); ?>
 		<?php $this->field( array( 'builder', $group, 'submit_text' ), array(
 			'type' => 'text',

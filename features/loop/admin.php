@@ -266,39 +266,7 @@ class md_loop extends md_api {
 	}
 
 	/**
-	 * Load scripts to admin pages.
-	 *
-	 * @since 6.0
-	 */
-
-	public function admin_enqueue() {
-		$this->enqueue_script();
-	}
-
-	/**
-	 * Load scripts to Edit Term pages.
-	 *
-	 * @since 6.0
-	 */
-
-	public function term_enqueue() {
-		$this->enqueue_script();
-	}
-
-	/**
-	 * Register/enqueue the toggle script.
-	 *
-	 * @since 6.0
-	 */
-
-	private function enqueue_script() {
-		$script = 'admin/js/loop.js';
-
-		wp_enqueue_script( 'md-loop', MD_URL . $script, array( 'jquery' ), md_ver( $script ), true );
-	}
-
-	/**
-	 * Add settings template and script to Page Settings sections.
+	 * Add settings template to Page Settings sections.
 	 *
 	 * @since 5.1
 	 */
@@ -313,7 +281,7 @@ class md_loop extends md_api {
 		$subcat_label = $subcat_key === 'show_subcategory' ? __( 'Show child categories', 'md' ) : __( 'Hide child categories', 'md' );
 	?>
 
-	<div class="md-widget md-loop md-toggle md-sep-small<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts is-category-inherited' : ''; ?>">
+	<div class="md-widget md-loop md-toggle mb-single<?php echo $featured >= 1 ? ' has-featured' : ''; ?><?php echo in_array( $loop_type, array( 'category', 'category_posts' ) ) ? ' has-category-posts is-category-inherited' : ''; ?>">
 		<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
 		<div class="md-widget-item">
 			<?php include md_template( 'features', 'loop/admin/loop', true ); ?>

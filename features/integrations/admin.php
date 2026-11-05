@@ -23,7 +23,8 @@ class md_integrations extends md_api {
 			'labels' => array(
 				'api_key' => __( 'Kit ID', 'md' )
 			),
-			'icon_name' => 'adobe-fonts.gif',
+			'icon' => 'dashicons-editor-textcolor',
+			'colors' => '#eb1000, #ffffff',
 			'message' => sprintf( __( 'Your Font Kit is now loading on your site! Go to the <a href="%s">Fonts and Typography</a> section in the Site Design panel to assign fonts to your design.', 'md' ), admin_url( 'customize.php?autofocus[section]=md_design[typography]' ) )
 		);
 		$integrations['google_analytics'] = array(
@@ -34,7 +35,8 @@ class md_integrations extends md_api {
 			'labels' => array(
 				'api_key' => __( 'Tracking ID', 'md' )
 			),
-			'icon_name' => 'stats-icon.png',
+			'icon' => 'dashicons-chart-area',
+			'colors' => '#f9ab00, #ffffff',
 			'message' => __( 'The Google Analytics tracking code is now loading on your site! For best performance the script has been placed at the bottom of every page.', 'md' )
 		);
 
@@ -85,9 +87,10 @@ class md_integrations extends md_api {
 		return array(
 			'admin_page' => array(
 				'name' => __( 'Site Integrations', 'md' ),
+				'menu_title' => __( 'Integrations', 'md' ),
 				'tab_name' => __( 'Integrations', 'md' ),
-				'position' => 4,
-				'parent_slug' => 'tools.php',
+				'position' => 3,
+				'parent_slug' => 'md_settings',
 				'admin_header' => true
 			)
 		);
@@ -104,16 +107,6 @@ class md_integrations extends md_api {
 	}
 
 	/**
-	 * Initiate Integrations script.
-	 *
-	 * @since 4.9
-	 */
-
-	public function admin_scripts() { ?>
-		<script>MD.integrations();</script>
-	<?php }
-
-	/**
 	 * Return template as individual integration boxes.
 	 *
 	 * @since 4.9
@@ -125,9 +118,7 @@ class md_integrations extends md_api {
 		$error = isset( $args['error'] ) ? true : '';
 
 		foreach ( $integrations as $id => $fields ) {
-			$icon_path = isset( $fields['icon_path'] ) ? $fields['icon_path'] : MD_URL . 'admin/images';
-			$icon_name = isset( $fields['icon_name'] ) ? $fields['icon_name'] : str_replace( '_', '-', "{$id}.png" );
-			$icon_url = "$icon_path/$icon_name";
+			$icon_url = ! empty( $fields['icon_path'] ) ? $fields['icon_path'] . '/' . ( isset( $fields['icon_name'] ) ? $fields['icon_name'] : str_replace( '_', '-', "{$id}.png" ) ) : '';
 			$api_key_label = ! empty( $fields['labels']['api_key'] ) ? $fields['labels']['api_key'] : __( 'API Key', 'md' );
 			$account_url_label = ! empty( $fields['labels']['account_url'] ) ? $fields['labels']['account_url'] : __( 'Account URL', 'md' );
 

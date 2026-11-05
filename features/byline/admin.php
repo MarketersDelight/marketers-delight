@@ -251,7 +251,7 @@ class md_byline extends md_api {
 			echo '<div class="md-' . esc_attr( $this->_clean_id ) . ' md-tab-content">';
 		else
 			echo
-				'<div class="md-widget md-toggle md-sep-small">'.
+				'<div class="md-widget md-toggle mb-single">'.
 				'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
 
 		$this->fields->field( 'builder', array(
@@ -323,7 +323,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'default' => $row['settings'] ?? array(),
 			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => array(
 				'label' => __( 'Show label', 'md' ),
 				'relative' => __( 'Show relative date', 'md' ),
@@ -343,7 +343,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'label' => __( 'Settings', 'md' ),
 			'description' => __( 'In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot.', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => array(
 				'label' => __( 'Hide label', 'md' ),
 				'avatar' => __( 'Show avatar', 'md' ),
@@ -366,7 +366,7 @@ class md_byline extends md_api {
 	public function comments( $group ) {
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'label' => __( 'Settings', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => array(
 				'label' => __( 'Show label', 'md' ),
 				'hide' => __( 'Hide if zero comments', 'md' )
@@ -376,7 +376,7 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'title' ), array(
 			'label' => __( 'Zero comments label', 'md' ),
 			'style' => 'width: 30%',
-			'wrap_classes' => 'md-sep-small'
+			'wrap_classes' => 'mb-single'
 		) );
 
 		echo
@@ -410,19 +410,19 @@ class md_byline extends md_api {
 		$this->fields->field( array( 'builder', $group, 'term' ), array(
 			'default' => $row['term'] ?? '',
 			'empty_label' => __( 'Use default category', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => $options
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'limit' ), array(
 			'description' => __( 'Defaults to 3. Enter 0 to show all tags on archives.', 'md' ),
 			'placeholder' => 3,
-			'wrap_classes' => 'md-sep-micro'
+			'wrap_classes' => 'mb-third'
 		) );
 
 		$this->fields->field( array( 'builder', $group, 'settings' ), array(
 			'label' => __( 'Only show', 'md' ),
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => array(
 				'first' => __( 'Only show first category', 'md' )
 			)
@@ -430,7 +430,7 @@ class md_byline extends md_api {
 
 		$this->fields->field( array( 'builder', $group, 'style' ), array(
 			'default' => $style,
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'empty_label' => __( 'Show links', 'md' ),
 			'options' => array(
 				'icon' => __( 'Show with icon', 'md' ),

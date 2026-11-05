@@ -168,9 +168,46 @@
 		} );
 	}
 
+	// Sticky toggle for custom post types
+
+	function registerSticky() {
+		var wp = window.wp || {},
+			PostStatusInfo = ( wp.editor && wp.editor.PluginPostStatusInfo ) || ( wp.editPost && wp.editPost.PluginPostStatusInfo ),
+			el, data;
+
+		if ( ! editorContext.sticky || ! wp.plugins || ! wp.element || ! wp.components || ! wp.data || ! PostStatusInfo )
+			return;
+
+		el = wp.element.createElement;
+		data = wp.data;
+
+		function StickyToggle() {
+			var sticky = data.useSelect( function( select ) {
+					return !! select( 'core/editor' ).getEditedPostAttribute( 'sticky' );
+				}, [] ),
+				editPost = data.useDispatch( 'core/editor' ).editPost;
+
+			return el( PostStatusInfo, { className: 'md-post-sticky' },
+				el( wp.components.ToggleControl, {
+					label: editorContext.stickyLabel,
+					help: editorContext.stickyHelp,
+					checked: sticky,
+					onChange: function( value ) {
+						editPost( { sticky: value } );
+					},
+					__nextHasNoMarginBottom: true
+				} )
+			);
+		}
+
+		wp.plugins.registerPlugin( 'md-post-sticky', { render: StickyToggle } );
+	}
+
 	$( function() {
-		if ( isBlockEditor )
+		if ( isBlockEditor ) {
+			registerSticky();
 			initBlockEditor();
+		}
 		else
 			initClassicEditor();
 	} );

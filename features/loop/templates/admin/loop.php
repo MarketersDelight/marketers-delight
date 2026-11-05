@@ -18,21 +18,21 @@
 		<div class="col">
 			<?php $this->fields->field( 'loop_type', array(
 				'description' => __( 'Listing style.', 'md' ),
-				'wrap_classes' => 'md-sep-micro',
+				'wrap_classes' => 'mb-third',
 				'classes' => 'md-check-val',
 				'empty_label' => __( 'Use default', 'md' ),
 				'inherit' => true
 			) ); ?>
 		</div>
 
-		<div class="col md-sep-micro">
+		<div class="col mb-third">
 			<?php $this->fields->field( 'columns', array(
 				'description' => __( 'Desktop columns.', 'md' ),
 				'inherit' => array( 'default' => 1 )
 			) ); ?>
 		</div>
 
-		<div class="col md-sep-micro">
+		<div class="col mb-third">
 			<?php $this->fields->field( 'columns_mobile', array(
 				'description' => __( 'Mobile columns.', 'md' ),
 				'inherit' => array( 'default' => 1 )
@@ -49,7 +49,7 @@
 	</div>
 </div>
 
-<div class="md-loop-options md-tabs md-sep-micro">
+<div class="md-loop-options md-tabs mb-third">
 
 	<?php if ( $screen['is_admin'] || $screen['is_term'] ) : ?>
 	<div class="nav-tab-wrapper mt-half">
@@ -62,9 +62,9 @@
 		<div class="md-loop-section">
 			<h4><?php echo esc_html__( 'Results', 'md' ); ?></h4>
 			<p class="description"><?php echo esc_html__( 'Control which posts appear and in what order.', 'md' ); ?></p>
-			<div class="columns-4 columns-single md-full-select md-sep-small">
+			<div class="columns-4 columns-single md-full-select mb-single gap-third">
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $orderby_options = array(
 					'title' => __( 'Title', 'md' ),
 //					'author' => __( 'Author', 'md' ),
@@ -82,7 +82,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'order', array(
 					'description' => __( 'Sort direction.', 'md' ),
 					'empty_label' => __( 'Descending', 'md' ),
@@ -90,14 +90,14 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'posts_per_page', array(
 					'description' => __( 'Items per page.', 'md' ),
 					'inherit' => array( 'default' => get_option( 'posts_per_page' ) )
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'featured', array(
 					'description' => __( 'Feature first X.', 'md' ),
 					'inherit' => true,
@@ -107,9 +107,9 @@
 
 			</div>
 
-			<div class="columns-2 columns-single md-full-select">
+			<div class="columns-2 columns-single md-full-select gap-third">
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'exclude_posts', array(
 					'description' => __( 'Post IDs to leave out of this archive, separated by commas.', 'md' ),
 					'placeholder' => '12, 48',
@@ -117,7 +117,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'exclude_terms', array(
 					'description' => __( 'Category, tag or term IDs to leave out, separated by commas.', 'md' ),
 					'placeholder' => '3, 17',
@@ -131,30 +131,30 @@
 
 	<?php if ( $screen['is_admin'] || $screen['is_term'] ) : ?>
 	<div class="md-loop-category-options md-tab-content">
-		<div class="columns-4 columns-single md-full-select">
+		<div class="columns-4 columns-single md-full-select gap-third">
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_per_page', array(
 					'description' => __( 'Show category sections', 'md' ),
 					'inherit' => true
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'posts_per_category', array(
 					'description' => __( 'Posts per category section', 'md' ),
 					'inherit' => array( 'default' => get_option( 'posts_per_page' ) )
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_columns', array(
 					'description' => __( 'Show category columns', 'md' ),
 					'inherit' => array( 'default' => 1 )
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_orderby', array(
 					'description' => __( 'Sort order of categories', 'md' ),
 					'empty_label' => __( 'Name', 'md' ),
@@ -162,7 +162,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_order', array(
 					'description' => __( 'Lowest/highest value', 'md' ),
 					'empty_label' => __( 'Ascending', 'md' ),
@@ -170,21 +170,21 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_include', array(
 					'description' => __( 'Comma-separated term IDs', 'md' ),
 					'placeholder' => '1, 4, 7'
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category_exclude', array(
 					'description' => __( 'Comma-separated term IDs', 'md' ),
 					'placeholder' => '2, 5'
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col">
 				<?php $this->fields->field( 'category', array(
 					'label' => __( 'Settings', 'md' ),
 					'options' => array(
@@ -345,7 +345,7 @@
 				) ); ?>
 			</div>
 
-			<div class="col md-sep-micro">
+			<div class="col mb-third">
 				<?php $this->fields->field( "{$p}excerpt_more", array(
 					'description' => __( 'Excerpt ending text.', 'md' ),
 					'inherit' => array( 'default' => '[...]' )
@@ -395,9 +395,9 @@
 <h4><?php echo esc_html__( 'Pagination', 'md' ); ?></h4>
 <p class="description"><?php echo esc_html__( 'Choose how visitors navigate between pages of results.', 'md' ); ?></p>
 
-<div class="columns-3 columns-half md-sep-small">
+<div class="columns-3 columns-half mb-single gap-third">
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $pagination_options = array(
 			'prev_next' => __( 'Previous/Next Links', 'md' )
 		);
@@ -411,14 +411,14 @@
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $this->fields->field( 'previous_label', array(
 			'description' => __( 'Label for the previous page link.', 'md' ),
 			'inherit' => array( 'default' => __( 'Previous', 'md' ) )
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $this->fields->field( 'next_label', array(
 			'description' => __( 'Label for the next page link.', 'md' ),
 			'inherit' => array( 'default' => __( 'Next', 'md' ) )
@@ -434,9 +434,9 @@
 <h4><?php echo esc_html__( 'Call to Action', 'md' ); ?></h4>
 <p class="description"><?php echo esc_html__( 'Display a call to action within the loop.', 'md' ); ?></p>
 
-<div class="columns-3 columns-half md-full-select">
+<div class="columns-3 columns-half md-full-select gap-third">
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $this->fields->field( 'x_cta', array(
 			'description' => sprintf( __( 'Choose a pre-made <a href="%s">call to action</a>.', 'md' ), admin_url( 'admin.php?page=md_optins&tab=md_cta' ) ),
 			'empty_label' => __( 'Select call to action...', 'md' ),
@@ -445,7 +445,7 @@
 		) ); ?>
 	</div>
 
-	<div class="col md-sep-micro">
+	<div class="col">
 		<?php $this->fields->field( 'cta_x_loop', array(
 			'description' => __( 'Show after this many posts.', 'md' ),
 			'inherit' => true

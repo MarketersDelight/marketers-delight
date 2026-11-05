@@ -782,7 +782,7 @@ class md_fields extends md_fields_render {
 			'id' => 'byline',
 			'type' => 'select',
 			'label' => __( 'Position', 'md' ),
-			'wrap_classes' => $args['wrap_classes'] ?? 'md-sep-micro',
+			'wrap_classes' => $args['wrap_classes'] ?? 'mb-third',
 			'options' => array_merge( $title_positions, $entry_positions ),
 			'groups' => array(
 				__( 'Title', 'md' ) => array_keys( $title_positions ),

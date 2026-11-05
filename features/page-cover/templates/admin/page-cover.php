@@ -1,4 +1,4 @@
-<div class="columns-2 columns-60-40 columns-single md-sep-small">
+<div class="columns-2 columns-60-40 columns-single mb-single">
 
 	<div class="col col1">
 
@@ -26,7 +26,7 @@
 		$this->fields->field( 'display', array(
 			'label' => __( 'Settings', 'md' ),
 			'inline' => true,
-			'wrap_classes' => 'md-sep-micro',
+			'wrap_classes' => 'mb-third',
 			'options' => $display_options,
 			'inherit' => array(
 				'alternate' => array(
