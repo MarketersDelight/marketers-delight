@@ -10,8 +10,7 @@ class md_admin {
 
 	public $save;
 	public $settings;
-	public $requests;
-	public $files;
+	public $license;
 	public $_option = 'marketers_delight';
 
 	/**
@@ -54,8 +53,7 @@ class md_admin {
 
 		$this->save = new md_save;
 		$this->settings = new md_save_settings( $this->save );
-		$this->requests = new md_requests;
-		$this->files = new md_files;
+		$this->license = new md_license;
 
 		add_action( 'wp_update_nav_menu', 'md_compile' );
 
@@ -95,13 +93,11 @@ class md_admin {
 		add_filter( 'tiny_mce_before_init', array( $this, 'classic_editor_layout' ) );
 
 		// Upgrader hooks
-		add_filter( 'pre_set_site_transient_update_themes', array( $this->requests, 'set_theme_update' ) );
-		add_action( 'upgrader_process_complete', array( $this->requests, 'delete_theme_update' ), 10, 2 );
+		add_action( 'upgrader_process_complete', array( $this->license, 'delete_theme_update' ), 10, 2 );
 		add_action( 'load-themes.php', array( $this, 'load_themes_screen' ) );
 
 		// Actions + requests
-		add_action( 'wp_ajax_md_action', array( $this->requests, 'request' ) );
-		add_action( 'wp_ajax_md_file', array( $this->files, 'file_action' ) );
+		add_action( 'wp_ajax_md_action', array( $this->license, 'request' ) );
 	}
 
 	/**
@@ -555,7 +551,7 @@ class md_admin {
 			'update-available' => '<strong>%1$s %2$s</strong> is available. <a href="%3$s" onclick="document.querySelector(this.hash).showModal();return false;" title="%4s">Check out what\'s new</a> or <a href="%5$s"%6$s>update now</a>'
 		);
 
-		$theme_slug = $this->requests->license( 'theme_slug' );
+		$theme_slug = $this->license->license( 'theme_slug' );
 		$theme_name = str_replace( ' 4', '', $theme['name'] );
 
 		$update_url = wp_nonce_url( 'update.php?action=upgrade-theme&amp;theme=' . urlencode( $theme_slug ), 'upgrade-theme_' . $theme_slug );

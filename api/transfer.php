@@ -161,9 +161,8 @@ class md_transfer {
 	 * all by default. Returns the parts imported and what was skipped.
 	 *
 	 * Fields can list values the same file brings (custom sidebars, palette
-	 * colors, Share icons), and they're registered before anything saves.
-	 * Run it again in a new request to save those: the second run's result
-	 * is what's left.
+	 * colors, Share icons). So settings save twice, rebuilding fields in
+	 * between, and only the second pass's skips are reported.
 	 *
 	 * @since 6.2
 	 */
@@ -171,12 +170,13 @@ class md_transfer {
 	public static function import( $file, $parts = null ) {
 		$all = self::parts( $file );
 		$parts = $parts === null ? array_keys( $all ) : array_values( array_intersect( (array) $parts, array_keys( $all ) ) );
-		$skipped = $imported = array();
+		$imported = array();
 		$save = new md_save;
 
-		foreach ( self::entries( $file ) as $entry )
-			if ( in_array( $entry['part'], $parts, true ) )
-				self::import_entry( $entry, $file['refs'], $save, $skipped );
+		self::import_entries( $file, $parts, $save );
+		md_refresh_fields();
+
+		$skipped = self::import_entries( $file, $parts, $save );
 
 		if ( in_array( 'dropins', $parts, true ) && ! empty( $file['sections']['options'] ) )
 			self::import_options( $file['sections']['options'], $skipped );
@@ -194,9 +194,23 @@ class md_transfer {
 
 		$save->after_save();
 
-		do_action( 'md_imported', $result, $file );
-
 		return $result;
+	}
+
+	/**
+	 * Save a file's selected settings entries. Returns what was skipped.
+	 *
+	 * @since 6.2
+	 */
+
+	private static function import_entries( $file, $parts, $save ) {
+		$skipped = array();
+
+		foreach ( self::entries( $file ) as $entry )
+			if ( in_array( $entry['part'], $parts, true ) )
+				self::import_entry( $entry, $file['refs'], $save, $skipped );
+
+		return $skipped;
 	}
 
 	/**
@@ -239,35 +253,6 @@ class md_transfer {
 					if ( isset( $stored[$key][$item] ) && is_array( $item_values ) )
 						$input[$key][$item] = self::replace_input( $stored[$key][$item], $item_values, $item_fields );
 			}
-		}
-
-		return $input;
-	}
-
-	/**
-	 * Merge mode, for setup files: only the file's keys change, and
-	 * group/builder items are added to the stored ones by item ID (the
-	 * same ID updates its item), so apply()'s item-list replacement keeps
-	 * the site's other items.
-	 *
-	 * @since 6.2
-	 */
-
-	public static function merge_input( $stored, $values, $fields ) {
-		$input = is_array( $values ) ? $values : array();
-		$stored = is_array( $stored ) ? $stored : array();
-
-		foreach ( $input as $key => $value ) {
-			if ( ! isset( $fields[$key] ) || ! is_array( $fields[$key] ) || ! is_array( $value ) )
-				continue;
-
-			$type = isset( $fields[$key]['type'] ) ? $fields[$key]['type'] : null;
-			$old = isset( $stored[$key] ) && is_array( $stored[$key] ) ? $stored[$key] : array();
-
-			if ( in_array( $type, array( 'group', 'builder' ), true ) )
-				$input[$key] = array_replace( $old, $value );
-			elseif ( $type === null )
-				$input[$key] = self::merge_input( $old, $value, $fields[$key] );
 		}
 
 		return $input;
@@ -355,9 +340,10 @@ class md_transfer {
 	 */
 
 	private static function export_entry( $entry, &$refs ) {
-		$target = md_scope::parse( $entry['scope'] )->target( $entry['group'] );
+		$scope = md_scope::parse( $entry['scope'] );
+		$target = $scope->target( $entry['group'] );
 		$fields = self::section_fields( $entry['section'], $entry['group'], $target['fields'] );
-		$values = self::limit( self::stored( $target ), $fields );
+		$values = self::limit( $scope->read( $entry['group'] ), $fields );
 
 		self::collect_refs( $values, $fields, $refs );
 
@@ -433,25 +419,6 @@ class md_transfer {
 		}
 
 		return $limited;
-	}
-
-	/**
-	 * What's stored for a target: its option, walked down its path.
-	 *
-	 * @since 6.2
-	 */
-
-	private static function stored( $target ) {
-		$value = get_option( $target['option'], array() );
-
-		foreach ( $target['path'] as $key ) {
-			if ( ! is_array( $value ) || ! isset( $value[$key] ) )
-				return array();
-
-			$value = $value[$key];
-		}
-
-		return is_array( $value ) ? $value : array();
 	}
 
 	/**
@@ -633,7 +600,7 @@ class md_transfer {
 			return;
 		}
 
-		$applied = $save->apply( $entry['scope'], $entry['group'], self::entry_input( $entry, $target, $refs, $skipped ), array( 'compile' => false ) );
+		$applied = $save->apply( $entry['scope'], $entry['group'], self::entry_input( $entry, $scope, $target, $refs, $skipped ), array( 'compile' => false ) );
 
 		if ( is_wp_error( $applied ) )
 			$skipped[] = $applied->get_error_message();
@@ -648,16 +615,16 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function entry_input( $entry, $target, $refs, &$skipped ) {
+	private static function entry_input( $entry, $scope, $target, $refs, &$skipped ) {
 		$fields = self::section_fields( $entry['section'], $entry['group'], $target['fields'] );
-		$stored = self::stored( $target );
+		$stored = $scope->read( $entry['group'] );
 		$values = self::limit( $entry['values'], $fields );
 
 		foreach ( array_keys( array_diff_key( $entry['values'], $values ) ) as $key )
 			$skipped[] = sprintf( __( '`%1$s.%2$s` isn\'t used on this site.', 'md' ), $entry['group'], $key );
 
 		$input = isset( $entry['mode'] ) && $entry['mode'] === 'merge' ?
-			self::merge_input( $stored, $values, $fields ) :
+			md_save::merge_items( $stored, $values, $fields ) :
 			self::replace_input( $stored, $values, $fields );
 
 		return self::swap_refs( $input, $fields, $refs, $skipped );
@@ -890,7 +857,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function kses_widget( $instance ) {
+	public static function kses_widget( $instance ) {
 		foreach ( $instance as $key => $value ) {
 			if ( is_array( $value ) )
 				$instance[$key] = self::kses_widget( $value );
@@ -907,7 +874,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function widget_types() {
+	public static function widget_types() {
 		global $wp_widget_factory;
 
 		$types = array();
@@ -926,7 +893,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function widget_areas() {
+	public static function widget_areas() {
 		global $wp_registered_sidebars;
 
 		$settings = get_option( 'marketers_delight', array() );

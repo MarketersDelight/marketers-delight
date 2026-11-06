@@ -1,15 +1,15 @@
 <?php
 /**
- * A collection of requests to update MD theme, drop-ins, and
- * other upgrader actions.
+ * The MD license: activating and checking it, and finding theme and
+ * Drop-in updates through it. Sites without a key never call out.
  *
  * @since 5.4
  */
 
-class md_requests {
+class md_license {
 
 	/**
-	 * Run various MD actions sent through AJAX.
+	 * Run license actions sent through AJAX.
 	 *
 	 * @since 5.2.3
 	 */
@@ -23,11 +23,7 @@ class md_requests {
 		if ( isset( $_POST['action_type'] ) ) {
 			$action_type = sanitize_key( $_POST['action_type'] );
 
-			if ( $action_type === 'reset-icons' ) {
-				$option = $this->reset_icons( md_setting_part( array( 'icons', 'custom_icons' ) ) );
-				md_update_setting_part( $option );
-			}
-			elseif ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ), true ) ) {
+			if ( in_array( $action_type, array( 'activate-license', 'deactivate-license', 'check-updates' ), true ) ) {
 				$license = md_license_setting();
 				$check_status = '';
 
@@ -111,18 +107,6 @@ class md_requests {
 			$license = $license[$field];
 
 		return $license;
-	}
-
-	/**
-	 * Reset custom font icons.
-	 *
-	 * @since 5.4
-	 */
-
-	private function reset_icons( $option ) {
-		$option['icons'] = $option['custom_icons'] = array();
-
-		return $option;
 	}
 
 	/**
@@ -241,27 +225,6 @@ class md_requests {
 		delete_site_transient( 'update_themes' );
 
 		return $license;
-	}
-
-	/**
-	 * Set update data for theme, simply adds new theme details
-	 * to WP update_themes transient.
-	 *
-	 * @since 4.7
-	 */
-
-	public function set_theme_update( $transient ) {
-		$updates = md_license_setting( 'updates' );
-		$license_input = $this->license();
-		$theme_slug = $license_input['theme_slug'];
-
-		if ( is_object( $transient ) && ! empty( $updates['theme'] ) )
-			if ( version_compare( $license_input['version'], $updates['theme']['new_version'], '<' ) )
-				$transient->response[$theme_slug] = $updates['theme'];
-			else
-				$transient->no_update[$theme_slug] = $updates['theme'];
-
-		return $transient;
 	}
 
 	/**

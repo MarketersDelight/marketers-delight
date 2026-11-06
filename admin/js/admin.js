@@ -471,12 +471,15 @@
 					body: formData,
 					credentials: 'same-origin'
 				} ).then( function( response ) {
-					if ( ! response.ok )
-						throw new Error();
+					return response.json();
+				} ).then( function( result ) {
+					if ( ! result.success )
+						throw new Error( result.data );
 
 					window.location.reload();
-				} ).catch( function() {
+				} ).catch( function( error ) {
 					loading.hide();
+					window.alert( error.message );
 				} );
 			});
 		},
@@ -775,6 +778,9 @@
 						trigger.find( '.dashicons' ).addClass( 'md-loading' );
 					},
 					success: function( response ) {
+						if ( action === 'reset-icons' )
+							window.location.reload();
+
 						$( canvas ).html( response );
 					},
 					error: function() {
@@ -868,24 +874,10 @@
 						tinymce.triggerSave();
 
 					fieldRoot.find( '[data-md-collection-field]' ).each( function() {
-						var field = $( this ),
-							value = field.val();
+						var field = $( this );
 
-						if ( field.data( 'md-collection-type' ) === 'terms' )
-							value = value.split( ',' ).map( function( term ) {
-								return term.trim();
-							} ).filter( Boolean );
-
-						fields[field.data( 'md-collection-field' )] = value;
+						fields[field.data( 'md-collection-field' )] = field.val();
 					} );
-				}
-
-				if ( action === 'more' ) {
-					var exclude = items.find( '[data-md-collection-item]' ).map( function() {
-						return $( this ).data( 'md-collection-item' );
-					} ).get();
-
-					url += '?exclude=' + encodeURIComponent( exclude.join( ',' ) );
 				}
 
 				status.text( '' ).removeClass( 'is-error' );
@@ -896,8 +888,7 @@
 					type: {
 						add: 'POST',
 						save: 'PATCH',
-						trash: 'DELETE',
-						more: 'GET'
+						trash: 'DELETE'
 					}[action],
 					headers: { 'X-WP-Nonce': collection.data( 'md-collection-nonce' ) },
 					contentType: fields ? 'application/json' : undefined,
@@ -945,11 +936,8 @@
 						collection.find( '[data-md-collection-empty]' ).prop( 'hidden', !! items.find( '[data-md-collection-item]' ).length );
 						status.text( collection.data( 'md-collection-trashed' ) );
 					}
-					else if ( ! result.has_more )
-						button.closest( '.md-collection-more' ).remove();
 
-					if ( action !== 'more' )
-						collection.find( '[data-md-collection-count]' ).text( result.count );
+					collection.find( '[data-md-collection-count]' ).text( result.count );
 				} ).fail( function( request ) {
 					var message = request.responseJSON && request.responseJSON.message ? request.responseJSON.message : collection.data( 'md-collection-error' );
 					status.text( message ).addClass( 'is-error' );

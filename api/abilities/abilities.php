@@ -31,6 +31,13 @@ class md_abilities {
 	public static $category = 'marketers-delight';
 
 	/**
+	 * Abilities WordPress is adding itself: an ability here, keyed to the
+	 * core ability that replaces it, registers only while core has none.
+	 */
+
+	public $bridges = array();
+
+	/**
 	 * Register abilities when the Abilities API asks for them.
 	 *
 	 * @since 6.2
@@ -38,7 +45,7 @@ class md_abilities {
 
 	public function __construct() {
 		if ( self::enabled() )
-			add_action( 'wp_abilities_api_init', array( $this, 'register' ) );
+			add_action( 'wp_abilities_api_init', array( $this, 'register' ), 20 );
 	}
 
 	/**
@@ -88,7 +95,8 @@ class md_abilities {
 		$namespace = $this->slug ? "md-{$this->slug}" : 'marketers-delight';
 
 		foreach ( $this->abilities() as $name => $ability )
-			wp_register_ability( "$namespace/$name", $this->args( $ability ) );
+			if ( ! isset( $this->bridges[$name] ) || ! wp_has_ability( $this->bridges[$name] ) )
+				wp_register_ability( "$namespace/$name", $this->args( $ability ) );
 	}
 
 	/**
@@ -126,6 +134,104 @@ class md_abilities {
 	}
 
 	/**
+	 * Messages mark names with backticks for screens. Apps get plain text.
+	 *
+	 * @since 6.2
+	 */
+
+	public function plain( $messages ) {
+		return str_replace( '`', '', $messages );
+	}
+
+	/**
+	 * An ability's result, with its messages as plain text.
+	 *
+	 * @since 6.2
+	 */
+
+	public function result( $result ) {
+		if ( is_wp_error( $result ) )
+			return new WP_Error( $result->get_error_code(), $this->plain( $result->get_error_message() ), $result->get_error_data() );
+
+		foreach ( array( 'warnings', 'skipped' ) as $key )
+			if ( isset( $result[$key] ) )
+				$result[$key] = $this->plain( $result[$key] );
+
+		return $result;
+	}
+
+	/**
+	 * Internal fields are written by MD itself, never by an app.
+	 *
+	 * @since 6.2
+	 */
+
+	public function without_internal( $values, $fields ) {
+		foreach ( $values as $key => $value ) {
+			if ( ! isset( $fields[$key] ) || ! is_array( $fields[$key] ) )
+				continue;
+
+			if ( ! empty( $fields[$key]['internal'] ) )
+				unset( $values[$key] );
+			elseif ( ! isset( $fields[$key]['type'] ) && is_array( $value ) )
+				$values[$key] = $this->without_internal( $value, $fields[$key] );
+		}
+
+		return $values;
+	}
+
+	/**
+	 * The input for small text changes.
+	 *
+	 * @since 6.2
+	 */
+
+	public function edits_input() {
+		return array(
+			'type' => 'array',
+			'description' => __( 'Exact text replacements in the content. Each find must appear exactly once.', 'md' ),
+			'items' => array(
+				'type' => 'object',
+				'properties' => array(
+					'find' => array( 'type' => 'string', 'minLength' => 1 ),
+					'replace' => array( 'type' => 'string' )
+				),
+				'required' => array( 'find', 'replace' )
+			)
+		);
+	}
+
+	/**
+	 * Apply exact text replacements, refusing any that don't match once.
+	 *
+	 * @since 6.2
+	 */
+
+	public function edited_text( $text, $edits ) {
+		foreach ( $edits as $edit ) {
+			$matches = substr_count( $text, $edit['find'] );
+
+			if ( $matches !== 1 )
+				return new WP_Error( 'md_abilities_edit', sprintf( __( '"%1$s" appears %2$d times. Use longer text that appears once.', 'md' ), $edit['find'], $matches ) );
+
+			$text = str_replace( $edit['find'], $edit['replace'], $text );
+		}
+
+		return $text;
+	}
+
+	/**
+	 * With the Trash turned off, WordPress deletes what it's told to trash,
+	 * so abilities refuse rather than delete for good.
+	 *
+	 * @since 6.2
+	 */
+
+	public function trash_off() {
+		return new WP_Error( 'md_abilities_trash_off', __( 'This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete it permanently. Delete it from wp-admin instead.', 'md' ) );
+	}
+
+	/**
 	 * Check a post type capability for the current user, such as
 	 * 'edit_posts', 'create_posts' or 'publish_posts'.
 	 *
@@ -146,18 +252,6 @@ class md_abilities {
 
 	public function plain_title( $post ) {
 		return html_entity_decode( get_the_title( $post ), ENT_QUOTES, 'UTF-8' );
-	}
-
-	/**
-	 * The image positions MD offers for Featured Media and other images.
-	 *
-	 * @since 6.2
-	 */
-
-	public function image_positions() {
-		$data = new md_fields_data;
-
-		return array_keys( $data->values['featured_image'] );
 	}
 
 	/**

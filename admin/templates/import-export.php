@@ -32,7 +32,7 @@
 
 		<form class="md-widget-item" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
-			<p><?php esc_html_e( 'Download this site\'s MD settings as a file. Posts, pages, menus and media go in the WordPress export under Tools → Export.', 'md' ); ?></p>
+			<p><?php esc_html_e( 'Download this site\'s MD settings as a file. Posts, pages, menus and media go in Tools → Export.', 'md' ); ?></p>
 
 			<p><strong><?php esc_html_e( 'Choose what to export:', 'md' ); ?></strong></p>
 

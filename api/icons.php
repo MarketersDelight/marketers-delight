@@ -221,7 +221,6 @@ return array(
 		'label' => __( 'OK', 'md' ),
 		'classes' => array( '.md-icon-ok-circled', '.list-check li' )
 	),
-
 	'pencil' => array(
 		'unicode' => 'e80d',
 		'label' => __( 'Pencil', 'md' )

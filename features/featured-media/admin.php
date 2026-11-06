@@ -20,7 +20,7 @@ class md_featured_media extends md_api {
 				'name' => $this->name,
 				'edit_post' => true,
 				'child_of' => 'hero',
-				'fields' => $this->fields()
+				'fields' => array_diff_key( $this->fields(), array( 'image' => true ) )
 			),
 			'term' => array(
 				'name' => $this->name,

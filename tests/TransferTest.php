@@ -638,7 +638,7 @@ class TransferTest extends MD_TestCase {
 		$this->assertSame( array( 'primary' => '#000' ), $this->settings()['colors'] );
 	}
 
-	public function test_an_import_marks_one_compile_and_fires_md_imported() {
+	public function test_an_import_marks_one_compile_and_rebuilds_fields_once() {
 		$this->site_a();
 		$file = md_transfer::export();
 
@@ -646,7 +646,7 @@ class TransferTest extends MD_TestCase {
 		md_transfer::import( $file );
 
 		$this->assertTrue( get_option( 'md_compile_after_upgrade' ) );
-		$this->assertSame( array( 'md_imported' ), $GLOBALS['__transfer']['actions'] );
+		$this->assertSame( array( 'md_refresh_fields' ), $GLOBALS['__transfer']['actions'] );
 	}
 
 	// Merge mode and labels
@@ -749,7 +749,7 @@ class TransferTest extends MD_TestCase {
 	public function test_every_handler_needs_manage_options_and_its_nonce() {
 		$page = new md_import_export;
 
-		foreach ( array( 'export', 'upload', 'import', 'import_continue', 'cancel' ) as $handler ) {
+		foreach ( array( 'export', 'upload', 'import', 'cancel' ) as $handler ) {
 			md_test_set_capability( 'manage_options', false );
 			$GLOBALS['__transfer']['nonce_ok'] = true;
 

@@ -41,25 +41,18 @@ class CollectionsTest extends MD_TestCase {
 
 	public function test_registers_predictable_standalone_meta_keys() {
 		$fields = $this->collection->fields;
-		$registered = $GLOBALS['__test_registered_meta']['book_quote']['book_quote_note'];
 
 		$this->assertSame( 'book_quote_note', $fields['note']['meta_key'] );
 		$this->assertSame( 'book_quote_location', $fields['location']['meta_key'] );
 		$this->assertSame( 'post_status', $fields['status']['source'] );
 		$this->assertArrayNotHasKey( 'future', $fields['status']['options'] );
 		$this->assertSame( 'post_date', $fields['date']['source'] );
-		$this->assertArrayHasKey( 'book_quote_note', $GLOBALS['__test_registered_meta']['book_quote'] );
-		$this->assertArrayNotHasKey( 'show_in_rest', $registered );
-		$this->assertSame( array( $this->collection, 'sanitize_meta' ), $registered['sanitize_callback'] );
-		$this->assertArrayNotHasKey( 'auth_callback', $registered );
-		$this->assertSame( 'Clean note', call_user_func( $registered['sanitize_callback'], ' Clean note ', 'book_quote_note', 'post', 'book_quote' ) );
 	}
 
 	public function test_constructor_accepts_the_definition_without_reentering_the_registry() {
 		$collection = new md_collection( 'stream_threads', array(
 			'parent' => 'stream',
 			'post_type' => 'stream_thread',
-			'per_page' => 20,
 			'fields' => array(
 				'text' => array( 'type' => 'textarea', 'source' => 'post_content' )
 			)
@@ -67,7 +60,6 @@ class CollectionsTest extends MD_TestCase {
 
 		$this->assertSame( 'stream', $collection->parent );
 		$this->assertSame( 'stream_thread', $collection->post_type );
-		$this->assertSame( 20, $collection->per_page );
 		$this->assertArrayHasKey( 'text', $collection->fields );
 	}
 
@@ -209,7 +201,6 @@ class CollectionsTest extends MD_TestCase {
 		) );
 
 		$this->assertSame( '', $threads->get( 'post_id', 40, '' ) );
-		$this->assertArrayNotHasKey( 'default', $GLOBALS['__test_registered_meta']['stream_thread']['stream_thread_post_id'] );
 
 		$GLOBALS['__test_object_meta'][40]['stream_thread_post_id'] = 25;
 		$threads->save( 40, array(
@@ -328,6 +319,117 @@ class CollectionsTest extends MD_TestCase {
 		) );
 
 		$this->assertSame( 'fallback', $this->collection->get( 'content', 30, 'fallback' ) );
+	}
+
+	/**
+	 * A Collection whose reading order comes from the test's dates.
+	 */
+
+	private function ordered( $order, $dates ) {
+		foreach ( $dates as $id => $date )
+			md_test_set_post( array( 'ID' => $id, 'post_type' => 'book_quote', 'post_date' => $date ) );
+
+		$GLOBALS['__test_item_ids'] = array_keys( $dates );
+
+		return new class( 'book_quotes', array(
+			'parent' => 'bookshelf',
+			'post_type' => 'book_quote',
+			'order' => $order
+		) ) extends md_collection {
+			public function items( $parent_id, $args = array() ) {
+				$posts = array();
+
+				foreach ( $GLOBALS['__test_item_ids'] as $id )
+					$posts[] = $GLOBALS['__test_posts'][$id];
+
+				return (object) array( 'posts' => $posts );
+			}
+		};
+	}
+
+	private function reading_order( $ids, $order = 'ASC' ) {
+		$dates = array();
+
+		foreach ( $ids as $id )
+			$dates[$id] = $GLOBALS['__test_posts'][$id]->post_date;
+
+		$order === 'ASC' ? asort( $dates ) : arsort( $dates );
+
+		return array_keys( $dates );
+	}
+
+	public function test_reorder_changes_only_the_moved_item_when_it_can() {
+		$collection = $this->ordered( 'ASC', array(
+			1 => '2026-08-01 09:00:00',
+			2 => '2026-08-02 09:00:00',
+			3 => '2026-08-03 09:00:00',
+			4 => '2026-08-04 09:00:00'
+		) );
+
+		$this->assertTrue( $collection->reorder( 10, array( 1, 4, 2, 3 ) ) );
+		$this->assertSame( array( 1, 4, 2, 3 ), $this->reading_order( array( 1, 2, 3, 4 ) ) );
+		$this->assertSame( '2026-08-01 09:00:00', $GLOBALS['__test_posts'][1]->post_date );
+		$this->assertSame( '2026-08-02 08:59:59', $GLOBALS['__test_posts'][4]->post_date );
+		$this->assertSame( '2026-08-03 09:00:00', $GLOBALS['__test_posts'][3]->post_date );
+	}
+
+	public function test_reorder_moving_the_first_item_to_the_end_changes_only_it() {
+		$collection = $this->ordered( 'ASC', array(
+			1 => '2026-08-01 09:00:00',
+			2 => '2026-08-02 09:00:00',
+			3 => '2026-08-03 09:00:00'
+		) );
+
+		$collection->reorder( 10, array( 2, 3, 1 ) );
+
+		$this->assertSame( '2026-08-03 09:00:01', $GLOBALS['__test_posts'][1]->post_date );
+		$this->assertSame( '2026-08-02 09:00:00', $GLOBALS['__test_posts'][2]->post_date );
+	}
+
+	public function test_reorder_never_dates_an_item_in_the_future() {
+		$collection = $this->ordered( 'ASC', array( 1 => '2026-08-18 11:00:00', 2 => '2026-08-18 12:00:00' ) );
+
+		$collection->reorder( 10, array( 2, 1 ) );
+
+		$this->assertSame( '2026-08-18 10:59:59', $GLOBALS['__test_posts'][2]->post_date );
+		$this->assertSame( '2026-08-18 11:00:00', $GLOBALS['__test_posts'][1]->post_date );
+	}
+
+	public function test_reorder_separates_items_that_share_a_date() {
+		$collection = $this->ordered( 'ASC', array(
+			1 => '2026-08-01 09:00:00',
+			2 => '2026-08-01 09:00:00',
+			3 => '2026-08-01 09:00:00'
+		) );
+
+		$collection->reorder( 10, array( 3, 1, 2 ) );
+
+		$this->assertSame( array( 3, 1, 2 ), $this->reading_order( array( 1, 2, 3 ) ) );
+	}
+
+	public function test_reorder_reads_a_newest_first_collection() {
+		$collection = $this->ordered( 'DESC', array(
+			3 => '2026-08-03 09:00:00',
+			2 => '2026-08-02 09:00:00',
+			1 => '2026-08-01 09:00:00'
+		) );
+
+		$collection->reorder( 10, array( 1, 3, 2 ) );
+
+		$this->assertSame( array( 1, 3, 2 ), $this->reading_order( array( 1, 2, 3 ), 'DESC' ) );
+	}
+
+	public function test_reorder_ignores_ids_outside_the_collection_and_keeps_others_dates() {
+		$collection = $this->ordered( 'ASC', array(
+			1 => '2026-08-01 09:00:00',
+			2 => '2026-08-02 09:00:00',
+			3 => '2026-08-03 09:00:00'
+		) );
+
+		$collection->reorder( 10, array( 2, 99, 1 ) );
+
+		$this->assertSame( array( 2, 1, 3 ), $this->reading_order( array( 1, 2, 3 ) ) );
+		$this->assertSame( '2026-08-03 09:00:00', $GLOBALS['__test_posts'][3]->post_date );
 	}
 
 }

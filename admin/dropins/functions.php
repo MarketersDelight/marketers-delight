@@ -185,6 +185,7 @@ function md_upgrade_dropins( $slugs, $skin = null ) {
 	if ( ! current_user_can( 'update_plugins' ) )
 		return new WP_Error( 'md_cannot_update', __( 'Sorry, you are not allowed to update Drop-ins.', 'md' ) );
 
+	require_once ABSPATH . 'wp-admin/includes/admin.php';
 	require_once MD_DIR . 'admin/dropins/upgrader.php';
 
 	$slugs = md_clean_dropin_slugs( $slugs );
@@ -324,10 +325,10 @@ function md_install_available_dropin( $slug, $args = array() ) {
 	$package = isset( $available[$slug]['package'] ) ? $available[$slug]['package'] : '';
 
 	if ( $available[$slug]['status'] === 'included' ) {
-		if ( ! class_exists( 'md_requests' ) )
-			require_once MD_DIR . 'api/requests.php';
+		if ( ! class_exists( 'md_license' ) )
+			require_once MD_DIR . 'admin/license.php';
 
-		$requests = new md_requests;
+		$requests = new md_license;
 		$package = $requests->claim_dropin( $slug );
 
 		if ( is_wp_error( $package ) )

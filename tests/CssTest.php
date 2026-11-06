@@ -428,28 +428,6 @@ class CssTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'component', $classic );
 	}
 
-	public function test_critical_pruning_only_changes_the_frontend_stylesheet() {
-		md_test_set_settings( array(
-			'settings' => array(
-				'css' => array( 'critical' => true )
-			)
-		) );
-		$templates = array(
-			'style' => '/tmp/style.php',
-			'format' => '/tmp/format.php',
-			'component' => '/tmp/component.php'
-		);
-
-		$frontend = $this->css->style_css( $templates );
-		$block = $this->call( $this->css, 'block_editor_css', array( $templates ) );
-
-		$this->assertArrayNotHasKey( 'style', $frontend );
-		$this->assertArrayHasKey( 'format', $frontend );
-		$this->assertArrayHasKey( 'component', $frontend );
-		$this->assertArrayHasKey( 'style', $block );
-		$this->assertArrayHasKey( 'component', $block );
-	}
-
 	public function test_render_applies_file_replacements_before_cleanup() {
 		$css = new class extends md_css {
 			public function __construct() {}

@@ -63,21 +63,6 @@ class md_compiled_assets {
 	}
 
 	/**
-	 * Read a compiled asset, or return false when unavailable.
-	 *
-	 * @since 6.0
-	 */
-
-	public function read( $file ) {
-		$path = $this->path( $file );
-
-		if ( ! $path || ! is_readable( $path ) )
-			return false;
-
-		return file_get_contents( $path );
-	}
-
-	/**
 	 * Return a cache version for a compiled asset without emitting
 	 * filesystem warnings when the file has not been generated yet.
 	 *
@@ -143,34 +128,6 @@ class md_compiled_assets {
 
 		if ( $filesystem->exists( $backup ) )
 			$filesystem->delete( $backup );
-
-		return true;
-	}
-
-	/**
-	 * Delete an obsolete compiled asset.
-	 *
-	 * @since 6.0
-	 */
-
-	public function delete( $file ) {
-		$file = $this->validate( $file );
-
-		if ( is_wp_error( $file ) )
-			return $file;
-
-		$path = $this->directory() . $file;
-
-		if ( ! file_exists( $path ) )
-			return true;
-
-		$filesystem = $this->filesystem();
-
-		if ( is_wp_error( $filesystem ) )
-			return $filesystem;
-
-		if ( ! $filesystem->delete( $path ) )
-			return new WP_Error( 'md_compiled_delete', sprintf( __( 'The compiled asset could not be deleted: %s', 'md' ), $file ) );
 
 		return true;
 	}

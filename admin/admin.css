@@ -925,16 +925,6 @@ body {
 	border-bottom-color: #fff;
 }
 
-.md-taxonomy-col {
-	display: flex;
-	gap: 30px;
-}
-
-.md-taxonomy-col > div {
-	flex-basis: 0;
-	flex-grow: 1;
-}
-
 .md-admin-header {
 	padding-block-start: 15px;
 	margin-block-end: 15px;
@@ -1258,6 +1248,10 @@ body {
 .columns-4 .md-range-number { width: 50%; }
 
 .md .md-layout-admin.columns-3 { --md-columns: 27fr 27fr 46fr; }
+
+.md-layouts .md-checkboxes .md-checkbox-disable,
+.md-layouts.is-global .md-checkbox-enable { display: none; }
+.md-layouts.is-global .md-checkbox-disable { display: block; }
 
 /* DEVICE FIELDS */
 
@@ -1834,21 +1828,6 @@ body {
 }
 
 .md-token-menu .md-picker-meta { font-family: inherit; }
-
-/* TERMS LIST */
-
-.md-terms-list {
-	background-color: #fff;
-	border: 1px solid var(--md-ui-gray-10);
-	border-radius: var(--md-ui-radius);
-	height: 175px;
-	overflow-y: auto;
-	margin-bottom: 0;
-	margin-top: 0;
-	padding: 15px;
-}
-
-.md-terms-list .children { margin-left: 20px; }
 
 /* GROUPS/CLONES */
 
@@ -2476,6 +2455,13 @@ body {
 }
 
 /* CODE EDITOR */
+
+.md-code {
+	background-color: #fffaca;
+	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
+	font-size: 12px;
+	font-weight: normal;
+}
 
 .md-code-editor { position: relative; }
 

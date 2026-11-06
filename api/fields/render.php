@@ -142,9 +142,6 @@ abstract class md_fields_render {
 
 		if ( $type === 'builder' )
 			$this->builder( $name, $id, $option, $args );
-
-		if ( $type === 'terms' )
-			$this->terms( $name, $id, $option, $args );
 	}
 
 	/**
@@ -295,16 +292,6 @@ abstract class md_fields_render {
 		}
 
 		include md_template( 'admin/fields/font', true );
-	}
-
-	/**
-	 * Return terms hierarchy category structure.
-	 *
-	 * @since 5.3.1
-	 */
-
-	protected function terms( $name, $id, $option, $args ) {
-		include md_template( 'admin/fields/terms', true );
 	}
 
 	/**

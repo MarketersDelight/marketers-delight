@@ -123,6 +123,11 @@
 					'placeholder' => '3, 17',
 					'inherit' => true
 				) ); ?>
+
+				<?php $this->fields->field( 'classes', array(
+					'description' => __( 'Add your own CSS classes to this loop.', 'md' ),
+					'inherit' => true
+				) ); ?>
 			</div>
 
 			</div>

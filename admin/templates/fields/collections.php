@@ -40,12 +40,4 @@
 
 	<p class="md-collection-empty" data-md-collection-empty<?php echo $query->have_posts() ? ' hidden' : ''; ?>><?php echo esc_html( sprintf( __( 'No %s have been added yet.', 'md' ), $plural ) ); ?></p>
 
-	<?php if ( $query->max_num_pages > 1 ) : ?>
-
-	<p class="md-collection-more">
-		<button type="button" class="button" data-md-collection-action="more"><?php echo esc_html( sprintf( __( 'Load more %s', 'md' ), $plural ) ); ?></button>
-	</p>
-
-	<?php endif; ?>
-
 </div>

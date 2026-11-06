@@ -10,7 +10,7 @@
  *     -> targets()                              — where each group lives, see md_scope in api/save/scope.php
  *     -> md_validate::fields()                  — the keys given, see api/save/validate.php
  *     -> post_values()                          — post meta filter and per-box permissions
- *     -> read()                                 — what's stored now
+ *     -> md_scope::stored()                     — what's stored now
  *     -> merge_fields() / merge_clone_items()   — the new values over it
  *     -> diff()                                 — what changed, for the result
  *     -> write()                                — update_option / update_metadata
@@ -37,8 +37,12 @@ class md_save {
 	 * groups, then $input is keyed by group, ex: every meta box a post
 	 * form submitted. Only the keys given change, and null resets a key.
 	 *
-	 * dry_run : return what would change without writing anything.
-	 * compile : run after_save() once the values are written.
+	 * dry_run     : return what would change without writing anything.
+	 * compile     : run after_save() once the values are written.
+	 * merge_items : group and builder items are added to the stored ones
+	 *               by ID, instead of the given items replacing the list.
+	 * order       : with merge_items, the item IDs of a field in the order
+	 *               they should be, shaped like the values.
 	 *
 	 * Returns array( scope, group, changed => array( key, before, after ), warnings )
 	 * or a WP_Error.
@@ -49,7 +53,9 @@ class md_save {
 	public function apply( $scope, $group, $input, $args = array() ) {
 		$args = array_merge( array(
 			'dry_run' => false,
-			'compile' => true
+			'compile' => true,
+			'merge_items' => false,
+			'order' => array()
 		), (array) $args );
 		$where = md_scope::parse( $scope );
 
@@ -74,6 +80,10 @@ class md_save {
 
 		foreach ( $groups as $key ) {
 			$values = is_array( $group ) ? ( isset( $input[$key] ) ? $input[$key] : array() ) : $input;
+
+			if ( $args['merge_items'] )
+				$values = self::merge_items( $where->read( $key ), is_array( $values ) ? $values : array(), $targets[$key]['fields'], $args['order'] );
+
 			$saves[$key] = $this->validate->fields( is_array( $values ) ? $values : array(), $targets[$key]['fields'] );
 			$warnings = array_merge( $warnings, $this->validate->warnings() );
 		}
@@ -84,7 +94,7 @@ class md_save {
 		// Merge each group over what's stored
 
 		$option = $this->option( $targets );
-		$stored = $this->read( $where, $option );
+		$stored = $where->stored( $option );
 		$new = $stored;
 		$changed = $this->skipped = array();
 
@@ -93,7 +103,7 @@ class md_save {
 			$old = $this->get_path( $stored, $path );
 
 			if ( $where->type === 'post' && isset( $targets[$key] ) )
-				$old = $this->standalone_meta( $where->id, $targets[$key]['fields'], $old );
+				$old = $where->standalone_meta( $targets[$key]['fields'], $old );
 
 			// Values a md_post_meta_save filter adds without registered fields are stored as given
 
@@ -102,11 +112,12 @@ class md_save {
 			else
 				$branch = $save;
 
-			if ( $where->type === 'taxonomy' || $this->is_meta( $where ) )
+			if ( $where->type === 'taxonomy' || $where->is_meta() )
 				$branch = $this->prune_empty( $branch );
 
 			$new = $this->set_path( $new, $path, $branch );
-			$changed = array_merge( $changed, $this->diff( $old, $branch, is_array( $group ) ? "$key." : '' ) );
+			if ( $old || $branch )
+				$changed = array_merge( $changed, $this->diff( $old, $branch, is_array( $group ) || ! isset( $targets[$key] ) ? "$key." : '' ) );
 		}
 
 		$result = array(
@@ -194,43 +205,44 @@ class md_save {
 	}
 
 	/**
-	 * Read the stored values a scope writes to. Post, term and user
-	 * settings are the object's marketers_delight meta, read through the
-	 * metadata API every object type shares.
+	 * Build input that changes only what's given. In group and builder
+	 * fields, stored items stay, the same ID updates its item, a new ID is
+	 * added, and null removes one. A checkbox keeps its other options. $order
+	 * rearranges a field's items, and IDs it leaves out stay after the ones
+	 * it names.
 	 *
 	 * @since 6.2
 	 */
 
-	private function read( $scope, $option ) {
-		if ( $this->is_meta( $scope ) )
-			$stored = get_metadata( $scope->type, $scope->id, 'marketers_delight', true );
-		else
-			$stored = get_option( $option, array() );
+	public static function merge_items( $stored, $values, $fields, $order = array() ) {
+		$input = is_array( $values ) ? $values : array();
+		$stored = is_array( $stored ) ? $stored : array();
+		$order = is_array( $order ) ? $order : array();
 
-		return is_array( $stored ) ? $stored : array();
-	}
+		foreach ( array_keys( $order ) as $key )
+			if ( ! array_key_exists( $key, $input ) && isset( $stored[$key] ) )
+				$input[$key] = array();
 
-	/**
-	 * Standalone post meta is stored in its own key. Read it into its
-	 * group, the way the fields show it.
-	 *
-	 * @since 6.2
-	 */
-
-	private function standalone_meta( $post_id, $fields, $group ) {
-		foreach ( $fields as $key => $field ) {
-			if ( empty( $field['standalone'] ) )
+		foreach ( $input as $key => $value ) {
+			if ( ! isset( $fields[$key] ) || ! is_array( $fields[$key] ) || ! is_array( $value ) )
 				continue;
 
-			$value = get_post_meta( $post_id, $key, true );
+			$type = isset( $fields[$key]['type'] ) ? $fields[$key]['type'] : null;
+			$old = isset( $stored[$key] ) && is_array( $stored[$key] ) ? $stored[$key] : array();
 
-			if ( $value !== '' ) {
-				$group = is_array( $group ) ? $group : array();
-				$group[$key] = $value;
+			if ( $type === 'checkbox' )
+				$input[$key] = array_replace( $old, $value );
+			elseif ( in_array( $type, array( 'group', 'builder' ), true ) ) {
+				$input[$key] = array_replace( $old, $value );
+
+				if ( isset( $order[$key] ) && is_array( $order[$key] ) )
+					$input[$key] = array_replace( array_intersect_key( array_flip( $order[$key] ), $input[$key] ), $input[$key] );
 			}
+			elseif ( $type === null )
+				$input[$key] = self::merge_items( $old, $value, $fields[$key], isset( $order[$key] ) ? $order[$key] : array() );
 		}
 
-		return $group;
+		return $input;
 	}
 
 	/**
@@ -406,7 +418,7 @@ class md_save {
 			$old = array_key_exists( $key, $before ) ? $before[$key] : null;
 			$new = array_key_exists( $key, $after ) ? $after[$key] : null;
 
-			if ( $old !== $new )
+			if ( $old !== $new && (string) $key !== '' )
 				$changed[] = array(
 					'key' => (string) $key,
 					'before' => $old,
@@ -448,7 +460,7 @@ class md_save {
 	 */
 
 	private function write( $scope, $option, $new, $groups ) {
-		if ( ! $this->is_meta( $scope ) ) {
+		if ( ! $scope->is_meta() ) {
 			update_option( $option, apply_filters( "md_save_{$option}", $new ) );
 			return;
 		}
@@ -462,16 +474,6 @@ class md_save {
 			update_metadata( $scope->type, $scope->id, 'marketers_delight', wp_slash( $new ) );
 		else
 			delete_metadata( $scope->type, $scope->id, 'marketers_delight' );
-	}
-
-	/**
-	 * Post, term and user settings are meta; the rest are options.
-	 *
-	 * @since 6.2
-	 */
-
-	private function is_meta( $scope ) {
-		return in_array( $scope->type, array( 'post', 'term', 'user' ), true );
 	}
 
 	/**

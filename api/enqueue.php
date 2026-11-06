@@ -31,7 +31,6 @@ class md_enqueue {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_fonts' ) );
 		add_action( 'wp_head', array( $this, 'head' ) );
-		add_filter( 'style_loader_tag', array( $this, 'defer_style' ), 10, 2 );
 		add_filter( 'wp_preload_resources', array( $this, 'preload' ) );
 
 		if ( function_exists( 'render_block' ) ) {
@@ -40,7 +39,6 @@ class md_enqueue {
 		}
 
 		add_filter( 'mce_css', array( $this, 'classic_editor_styles' ) );
-
 		add_action( 'init', array( $this, 'compile' ) );
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
@@ -106,24 +104,12 @@ class md_enqueue {
 	}
 
 	/**
-	 * Print configured critical or fully inline theme CSS.
+	 * Print style.css inline, if enabled.
 	 *
 	 * @since 4.8
 	 */
 
 	public function head() {
-
-		// Print critical css to <head>
-
-		if ( md_setting( array( 'settings', 'css', 'critical' ) ) ) {
-			$css = $this->compiled->read( 'critical.css' );
-
-			if ( ! empty( $css ) )
-				echo '<style id="md-critical-css">' . $css . "</style>\n";
-		}
-
-		// Print style.css as inline, if enabled
-
 		if ( md_setting( array( 'settings', 'css', 'inline' ) ) )
 			echo '<style type="text/css">' . get_option( 'marketers_delight_style_css' ) . "</style>\n";
 	}
@@ -202,30 +188,6 @@ class md_enqueue {
 				$editor_styles[] = add_query_arg( 'ver', $this->compiled->version( $file ), $this->compiled->url( $file ) );
 
 		return trim( $stylesheets . ',' . implode( ',', $editor_styles ), ' ,' );
-	}
-
-	/**
-	 * Defer selected stylesheets when Critical CSS is enabled.
-	 *
-	 * @since 6.0
-	 */
-
-	public function defer_style( $tag, $handle ) {
-		$deferred = apply_filters( 'md_deferred_styles', array( 'marketers-delight' ) );
-
-		if (
-			is_admin() ||
-			! md_setting( array( 'settings', 'css', 'critical' ) ) ||
-			! $this->compiled->exists( 'critical.css' ) ||
-			! in_array( $handle, $deferred )
-		)
-			return $tag;
-
-		if ( ! preg_match( '/href=([\'\"])(.*?)\1/', $tag, $href ) )
-			return $tag;
-
-		return '<link rel="preload" as="style" href="' . esc_url( $href[2] ) . '" onload="this.onload=null;this.rel=\'stylesheet\'">' . "\n"
-			. '<noscript>' . $tag . '</noscript>';
 	}
 
 	/**

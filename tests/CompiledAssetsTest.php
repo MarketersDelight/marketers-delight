@@ -69,7 +69,7 @@ class CompiledAssetsTest extends MD_TestCase {
 
 		$this->assertTrue( $result );
 		$this->assertTrue( $this->compiled->exists( 'style.css' ) );
-		$this->assertSame( 'body { color: red; }', $this->compiled->read( 'style.css' ) );
+		$this->assertSame( 'body { color: red; }', file_get_contents( $this->compiled->path( 'style.css' ) ) );
 		$this->assertIsInt( $this->compiled->version( 'style.css' ) );
 	}
 
@@ -81,7 +81,7 @@ class CompiledAssetsTest extends MD_TestCase {
 
 		$this->assertInstanceOf( WP_Error::class, $result );
 		$this->assertSame( 'md_compiled_write', $result->get_error_code() );
-		$this->assertSame( 'window.old = true;', $this->compiled->read( 'scripts.js' ) );
+		$this->assertSame( 'window.old = true;', file_get_contents( $this->compiled->path( 'scripts.js' ) ) );
 	}
 
 	public function test_failed_publish_restores_the_last_asset() {
@@ -92,7 +92,7 @@ class CompiledAssetsTest extends MD_TestCase {
 
 		$this->assertInstanceOf( WP_Error::class, $result );
 		$this->assertSame( 'md_compiled_publish', $result->get_error_code() );
-		$this->assertSame( 'body { color: blue; }', $this->compiled->read( 'style.css' ) );
+		$this->assertSame( 'body { color: blue; }', file_get_contents( $this->compiled->path( 'style.css' ) ) );
 	}
 }
 

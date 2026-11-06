@@ -86,7 +86,6 @@ function md_page_cta_types() {
 		'links' => array(
 			'label' => __( 'Links', 'md' ),
 			'fields' => array(
-				'links_sort' => array( 'type' => 'text' ),
 				'links' => array(
 					'type' => 'group',
 					'fields' => $data->links( array( 'sort' => 'save' ) )

@@ -24,7 +24,7 @@ class md_scope {
 
 	/**
 	 * Read a scope string. post, term and user without an ID describe
-	 * their fields only, ex: for md_api::schema().
+	 * their fields only.
 	 *
 	 * @since 6.2
 	 */
@@ -66,6 +66,16 @@ class md_scope {
 	}
 
 	/**
+	 * Post, term and user settings are meta; the rest are options.
+	 *
+	 * @since 6.2
+	 */
+
+	public function is_meta() {
+		return in_array( $this->type, array( 'post', 'term', 'user' ), true );
+	}
+
+	/**
 	 * Settings, post type and taxonomy screens change the whole site,
 	 * posts, terms and users their own object.
 	 *
@@ -101,6 +111,67 @@ class md_scope {
 			return $this->post_type_target( $group );
 
 		return $this->meta_target( $group );
+	}
+
+	/**
+	 * A group's stored values in this scope, with no defaults or inherited
+	 * values added. Returns a WP_Error for a group this scope doesn't have.
+	 *
+	 * @since 6.2
+	 */
+
+	public function read( $group ) {
+		$target = $this->target( $group );
+
+		if ( is_wp_error( $target ) )
+			return $target;
+
+		$value = $this->stored( $target['option'] );
+
+		foreach ( $target['path'] as $key )
+			$value = is_array( $value ) && isset( $value[$key] ) ? $value[$key] : array();
+
+		if ( $this->type === 'post' )
+			$value = $this->standalone_meta( $target['fields'], $value );
+
+		return is_array( $value ) ? $value : array();
+	}
+
+	/**
+	 * Everything stored where this scope saves: the object's
+	 * marketers_delight meta, read through the metadata API every object
+	 * type shares, or the option.
+	 *
+	 * @since 6.2
+	 */
+
+	public function stored( $option ) {
+		$stored = $this->is_meta() ? get_metadata( $this->type, $this->id, 'marketers_delight', true ) : get_option( $option, array() );
+
+		return is_array( $stored ) ? $stored : array();
+	}
+
+	/**
+	 * Standalone post meta is stored in its own key. Read it into its
+	 * group, the way the fields show it.
+	 *
+	 * @since 6.2
+	 */
+
+	public function standalone_meta( $fields, $group ) {
+		foreach ( $fields as $key => $field ) {
+			if ( empty( $field['standalone'] ) )
+				continue;
+
+			$value = get_post_meta( $this->id, $key, true );
+
+			if ( $value !== '' ) {
+				$group = is_array( $group ) ? $group : array();
+				$group[$key] = $value;
+			}
+		}
+
+		return $group;
 	}
 
 	/**
@@ -149,7 +220,7 @@ class md_scope {
 				return $this->unknown( $group );
 
 			$path[] = $group;
-			$fields = $fields[$group];
+			$fields = $this->type === 'taxonomy' && ! empty( $pages[$group]['taxonomy_fields'] ) ? $pages[$group]['taxonomy_fields'] : $fields[$group];
 		}
 
 		return array(
@@ -195,7 +266,24 @@ class md_scope {
 	}
 
 	/**
-	 * Every scope a group can be saved to, ex: for md_api::schema().
+	 * Groups on the Page Settings screen are read per post type, so a site
+	 * value would never show. A group that's also read site-wide says so with
+	 * 'site' => true.
+	 *
+	 * @since 6.2
+	 */
+
+	private static function has_site( $page ) {
+		if ( ! empty( $page['site'] ) )
+			return true;
+
+		$placed = array_merge( (array) ( $page['group'] ?? array() ), (array) ( $page['child_of'] ?? array() ) );
+
+		return ! in_array( 'page_settings', $placed, true );
+	}
+
+	/**
+	 * Every scope a group can be saved to.
 	 *
 	 * @since 6.2
 	 */
@@ -206,7 +294,7 @@ class md_scope {
 		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
 		$scopes = array();
 
-		if ( ! empty( $pages[$group]['fields'] ) && empty( $pages[$group]['has_groups'] ) )
+		if ( ! empty( $pages[$group]['fields'] ) && empty( $pages[$group]['has_groups'] ) && self::has_site( $pages[$group] ) )
 			$scopes[] = 'site';
 
 		foreach ( $pages as $host => $page ) {

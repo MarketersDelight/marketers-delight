@@ -82,6 +82,38 @@ function md_register( $group = null ) {
 }
 
 /**
+ * Whether this request registers settings fields: wp-admin, and the
+ * Abilities API and MCP routes, which read and save them. Front end pages
+ * and other REST routes don't pay for them.
+ *
+ * @since 6.2
+ */
+
+function md_loads_settings() {
+	if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) )
+		return true;
+
+	$route =isset( $_GET['rest_route'] ) ? $_GET['rest_route'] : ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' );
+
+	return (bool) apply_filters( 'md_loads_settings', is_string( $route ) && preg_match( '#/(wp-abilities|mcp)/#', $route ) );
+}
+
+/**
+ * Rebuild registered fields from what's saved now. Field options can list
+ * saved values (custom sidebars, palette colors, Share icons), and they're
+ * built once per request, so a save that adds one needs this before another
+ * save can use it.
+ *
+ * @since 6.2
+ */
+
+function md_refresh_fields() {
+	md_option_cache( null, true );
+
+	do_action( 'md_refresh_fields' );
+}
+
+/**
  * Get all registered MD Collections or one Collection definition.
  *
  * @since 6.0

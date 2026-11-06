@@ -352,10 +352,10 @@ function md_check_dropin_updates() {
 	if ( ! md_has_license_key() )
 		return 'skipped';
 
-	if ( ! class_exists( 'md_requests' ) )
-		require_once MD_DIR . 'api/requests.php';
+	if ( ! class_exists( 'md_license' ) )
+		require_once MD_DIR . 'admin/license.php';
 
-	$requests = new md_requests;
+	$requests = new md_license;
 
 	return $requests->check_updates();
 }
@@ -373,3 +373,27 @@ function md_clear_update_check() {
 }
 
 add_action( 'switch_theme', 'md_clear_update_check' );
+
+/**
+ * Tell WordPress about a waiting MD theme update, from the last license
+ * check. Runs whenever WordPress rebuilds its theme updates, including on
+ * cron, so the update isn't lost between admin visits.
+ *
+ * @since 4.7
+ */
+
+function md_theme_update_transient( $transient ) {
+	$update = md_license_setting( array( 'updates', 'theme' ) );
+
+	if ( ! is_object( $transient ) || empty( $update['new_version'] ) )
+		return $transient;
+
+	if ( version_compare( MD_VERSION, $update['new_version'], '<' ) )
+		$transient->response['marketers-delight'] = $update;
+	else
+		$transient->no_update['marketers-delight'] = $update;
+
+	return $transient;
+}
+
+add_filter( 'pre_set_site_transient_update_themes', 'md_theme_update_transient' );

@@ -1,7 +1,5 @@
 <div id="md_layout" class="<?php echo esc_attr( $classes ); ?>">
 
-	<?php if ( ! $is_taxonomy ) : ?>
-
 	<div class="col col1">
 
 		<!-- Header -->
@@ -130,13 +128,11 @@
 
 	</div>
 
-	<?php endif; ?>
-
 	<!-- Content -->
 
-	<div class="<?php echo $is_taxonomy ? 'md-taxonomy-col' : 'col col2'; ?>">
+	<div class="col col2">
 
-		<?php if ( $is_admin ) {
+		<?php if ( $is_admin && ! $is_taxonomy ) {
 
 		echo '<div class="mb-third">';
 
@@ -160,9 +156,7 @@
 
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
-		<?php if ( ! $is_taxonomy ) :
-
-		$content_options = array(
+		<?php $content_options = array(
 			'remove' => __( 'Remove <b>Content Box</b>', 'md' )
 		);
 		$content_inherit = array(
@@ -193,27 +187,23 @@
 		$this->fields->field( 'content', array(
 			'options' => $content_options,
 			'inherit' => $content_inherit
-		) );
-
-		endif; ?>
+		) ); ?>
 
 		<div id="content_options" class="mb-single" style="display: <?php echo empty( $content['remove'] ) ? 'block' : 'none'; ?>;">
 
 			<?php do_action( 'md_hook_layout_content_fields', $this->fields, $context );
 
-			if ( ! $is_taxonomy ) {
-				$this->fields->field( 'content', array(
-					'options' => array(
-						'headline' => __( 'Remove <b>Page Title</b>', 'md' )
-					),
-					'inherit' => array(
-						'headline' => array(
-							'on' => __( 'Remove <b>Page Title</b>', 'md' ),
-							'off' => __( 'Show <b>Page Title</b>', 'md' )
-						)
+			$this->fields->field( 'content', array(
+				'options' => array(
+					'headline' => __( 'Remove <b>Page Title</b>', 'md' )
+				),
+				'inherit' => array(
+					'headline' => array(
+						'on' => __( 'Remove <b>Page Title</b>', 'md' ),
+						'off' => __( 'Show <b>Page Title</b>', 'md' )
 					)
-				) );
-			}
+				)
+			) );
 
 			if ( $post_type !== 'page' && $is_post ) {
 				if ( $author_box )

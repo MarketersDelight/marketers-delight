@@ -8,8 +8,7 @@
  * (columns, featured, etc).
  *
  * Plain, unconditional cascade with recursive replacement so sibling options
- * continue to inherit. The four term-ID fields (category_include/exclude and
- * include_cats/exclude_cats) are resolved separately via md_module( ...,
+ * continue to inherit. The term-ID fields (category_include/exclude) are resolved separately via md_module( ...,
  * array( 'inherit_post_type' =>
  * false ) ) since a term ID inherited from a broader tier may not exist in
  * the narrower tier's own context at all.

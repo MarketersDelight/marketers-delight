@@ -24,46 +24,123 @@ class md_layout extends md_api {
 			'admin_page' => array(
 				'name' => $this->name,
 				'group' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $this->fields(),
+				'taxonomy_fields' => apply_filters( 'md_filter_save_layout_fields', $this->shared_fields(), 'taxonomy' )
 			),
 			'meta_box' => array(
 				'name' => $this->name,
 				'child_of' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $this->item_fields()
 			),
 			'term' => array(
 				'name' => $this->name,
 				'group' => 'page_settings',
-				'fields' => $this->fields()
+				'fields' => $this->item_fields( true )
 			)
 		);
 	}
 
 	/**
-	 * All known custom fields across the Layout interfaces.
+	 * Fields for a post type's settings: where the sidebar and panel show
+	 * across its pages, and the featured image on its singles.
 	 *
 	 * @since 4.7
 	 * @moved 6.0
 	 */
 
 	public function fields() {
-		$menus = array();
-		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
-		foreach ( $nav_menus as $menu )
-			$menus[] = esc_attr( $menu->slug );
+		$fields = $this->shared_fields();
+		$fields['featured_image'] = array(
+			'type' => 'select',
+			'label' => __( 'Featured image', 'md' ),
+			'options' => $this->fields->data->values['featured_image']
+		);
 
-		$toggle_fields = array(
+		foreach ( $this->area_fields() as $id => $data ) {
+			$fields[$id] = array(
+				'type' => 'checkbox',
+				'options' => array_merge( array( 'global' ), $data['options'] )
+			);
+
+			foreach ( array( 'archive', 'term', 'single', 'author' ) as $type ) {
+				$fields["{$id}_$type"] = array(
+					'type' => 'select',
+					'options' => $data['areas']
+				);
+				$fields["{$id}_{$type}_show"] = array(
+					'type' => 'checkbox',
+					'options' => array( 'enable', 'disable' )
+				);
+			}
+		}
+
+		return apply_filters( 'md_filter_save_layout_fields', $fields, 'post_type' );
+	}
+
+	/**
+	 * Fields for one post or term: add or remove the sidebar and panel, and
+	 * choose which to show. A term also picks them for its posts.
+	 *
+	 * @since 6.2
+	 */
+
+	private function item_fields( $is_term = false ) {
+		$fields = $this->shared_fields();
+
+		foreach ( $this->area_fields() as $id => $data ) {
+			$fields[$id] = array(
+				'type' => 'checkbox',
+				'options' => array_merge( array( 'add', 'remove' ), $data['options'] )
+			);
+			$fields["custom_$id"] = array(
+				'type' => 'select',
+				'options' => $data['areas']
+			);
+
+			if ( $is_term )
+				$fields["entries_$id"] = array(
+					'type' => 'select',
+					'options' => $data['areas']
+				);
+		}
+
+		return apply_filters( 'md_filter_save_layout_fields', $fields, $is_term ? 'term' : 'post' );
+	}
+
+	/**
+	 * The sidebar and panel's shared options and areas.
+	 *
+	 * @since 6.2
+	 */
+
+	private function area_fields() {
+		return array(
 			'sidebar' => array(
-				'options' => array( 'add', 'remove', 'global', 'alt' ),
+				'options' => array( 'alt' ),
 				'areas' => md_layout_areas( 'sidebar', true )
 			),
 			'panel' => array(
-				'options' => array( 'add', 'remove', 'global', 'alt', 'close' ),
+				'options' => array( 'alt', 'close' ),
 				'areas' => md_layout_areas( 'panel', true )
 			)
 		);
+	}
 
-		$fields = array(
+	/**
+	 * Fields every Layout interface saves. These are all a taxonomy's
+	 * settings use.
+	 *
+	 * @since 6.2
+	 */
+
+	private function shared_fields() {
+		$menus = array();
+		$nav_menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );
+
+		foreach ( $nav_menus as $menu )
+			$menus[] = esc_attr( $menu->slug );
+
+		return array(
 			'header' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'logo', 'tagline', 'menu', 'elements' )
@@ -80,44 +157,11 @@ class md_layout extends md_api {
 				'type' => 'select',
 				'options' => array_keys( md_filter_loop_styles() )
 			),
-			'featured_image' => array(
-				'type' => 'select',
-				'label' => __( 'Featured image', 'md' ),
-				'options' => $this->fields->data->values['featured_image']
-			),
 			'footer' => array(
 				'type' => 'checkbox',
 				'options' => array( 'remove', 'columns' )
 			)
 		);
-
-		foreach ( $toggle_fields as $id => $data ) {
-			$fields[$id] = array(
-				'type' => 'checkbox',
-				'options' => $data['options']
-			);
-			$fields["custom_$id"] = array(
-				'type' => 'select',
-				'options' => $data['areas']
-			);
-			$fields["entries_$id"] = array(
-				'type' => 'select',
-				'options' => $data['areas']
-			);
-
-			foreach ( array( 'archive', 'term', 'single', 'author' ) as $type ) {
-				$fields["{$id}_$type"] = array(
-					'type' => 'select',
-					'options' => $data['areas']
-				);
-				$fields["{$id}_{$type}_show"] = array(
-					'type' => 'checkbox',
-					'options' => array( 'enable', 'disable' )
-				);
-			}
-		}
-
-		return apply_filters( 'md_filter_save_layout_fields', $fields );
 	}
 
 	/**

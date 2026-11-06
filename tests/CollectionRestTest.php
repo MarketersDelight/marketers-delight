@@ -114,6 +114,7 @@ class CollectionRestTest extends MD_TestCase {
 		$response = $method->invoke( $this->controller, $GLOBALS['__test_posts'][25], $collection );
 
 		$this->assertSame( array(
+			'id' => 25,
 			'html' => '<article>Quote</article>',
 			'count' => 1
 		), $response->get_data() );

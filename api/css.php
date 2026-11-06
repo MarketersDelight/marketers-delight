@@ -36,7 +36,7 @@ class md_css {
 		$files = array(
 			'style' => array(
 				'output' => 'style.css',
-				'templates' => $this->style_css( $templates ),
+				'templates' => $templates,
 				'style_guide' => $this->style_guide( $templates )
 			),
 			'classic-editor' => array(
@@ -62,20 +62,6 @@ class md_css {
 				)
 			)
 		);
-
-		// Generate a critical CSS file which we inline later
-
-		if ( $this->critical_enabled() ) {
-			$keys = $this->critical_keys();
-
-			$critical = array( 'critical' => array(
-				'output' => 'critical.css',
-				'minify' => true,
-				'templates' => array_intersect_key( $templates, array_flip( $keys ) )
-			) );
-
-			$files = array_merge( $critical, $files );
-		}
 
 		$files = array_merge( $files, apply_filters( 'md_css_files', array() ) );
 
@@ -134,20 +120,6 @@ class md_css {
 	}
 
 	/**
-	 * Remove Critical CSS templates from the frontend file when they
-	 * are already rendered into the inline critical stylesheet.
-	 *
-	 * @since 4.9.4
-	 */
-
-	public function style_css( $templates ) {
-		if ( $this->critical_enabled() )
-			$templates = array_diff_key( $templates, array_flip( $this->critical_keys() ) );
-
-		return $templates;
-	}
-
-	/**
 	 * Compile the full canonical stylesheet into the Block Editor,
 	 * then load editor-only corrections last.
 	 *
@@ -185,28 +157,6 @@ class md_css {
 	}
 
 	/**
-	 * Whether the Critical CSS feature is enabled.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function critical_enabled() {
-		return md_setting( array( 'settings', 'css', 'critical' ) );
-	}
-
-	/**
-	 * The CSS template parts to inline as Critical CSS.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function critical_keys() {
-		return apply_filters( 'md_critical_css_templates', array(
-			'style', 'header', 'menus', 'buttons', 'layout', 'title', 'page'
-		) );
-	}
-
-	/**
 	 * Compile CSS in the user designated manner on call.
 	 *
 	 * @since 4.8
@@ -228,13 +178,6 @@ class md_css {
 
 			$css = $this->generate( $file );
 			$result = $this->compiled->write( $fields['output'], $css );
-
-			if ( is_wp_error( $result ) )
-				return $result;
-		}
-
-		if ( ! $this->critical_enabled() ) {
-			$result = $this->compiled->delete( 'critical.css' );
 
 			if ( is_wp_error( $result ) )
 				return $result;

@@ -170,7 +170,7 @@ function md_get_loop( $args = array() ) {
 					$loop['subcategory'] = true;
 			}
 
-			foreach ( array( 'category_include', 'category_exclude', 'include_cats', 'exclude_cats' ) as $key )
+			foreach ( array( 'category_include', 'category_exclude' ) as $key )
 				$loop[$key] = md_module( array( 'loop', $key ), null, array( 'inherit_post_type' => false ) );
 		}
 		elseif ( $category_loop )

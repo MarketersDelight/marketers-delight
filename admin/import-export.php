@@ -40,7 +40,6 @@ class md_import_export extends md_api {
 		add_action( 'admin_post_md_export', array( $this, 'export' ) );
 		add_action( 'admin_post_md_import_upload', array( $this, 'upload' ) );
 		add_action( 'admin_post_md_import', array( $this, 'import' ) );
-		add_action( 'admin_post_md_import_continue', array( $this, 'import_continue' ) );
 		add_action( 'admin_post_md_import_cancel', array( $this, 'cancel' ) );
 		add_action( 'admin_menu', array( $this, 'menu_link' ), 20 );
 		add_filter( 'submenu_file', array( $this, 'menu_current' ) );
@@ -168,37 +167,6 @@ class md_import_export extends md_api {
 
 		if ( empty( $parts ) )
 			self::back( 'error', __( 'Select at least one part.', 'md' ) );
-
-		// Some fields list values the same file brings, ex: custom sidebars or palette colors. They're registered before this request saves anything, so a first pass saves what it can and the next request's pass saves the rest.
-
-		md_transfer::import( $file, $parts );
-
-		set_transient( self::key( 'continue' ), $parts, HOUR_IN_SECONDS );
-
-		wp_safe_redirect( add_query_arg( array(
-			'action' => 'md_import_continue',
-			'_wpnonce' => wp_create_nonce( 'md_import_continue' )
-		), admin_url( 'admin-post.php' ) ) );
-		exit;
-	}
-
-	/**
-	 * The second pass of an import, with its fields registered from the
-	 * first pass's values. What it reports is what's left.
-	 *
-	 * @since 6.2
-	 */
-
-	public function import_continue() {
-		self::verify( 'md_import_continue' );
-
-		$file = get_transient( self::key( 'file' ) );
-		$parts = get_transient( self::key( 'continue' ) );
-
-		delete_transient( self::key( 'continue' ) );
-
-		if ( ! is_array( $file ) || ! is_array( $parts ) )
-			self::back( 'error', __( 'The uploaded file has expired. Upload it again.', 'md' ) );
 
 		$result = md_transfer::import( $file, $parts );
 

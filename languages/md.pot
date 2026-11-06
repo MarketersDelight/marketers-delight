@@ -199,11 +199,6 @@ msgstr ""
 msgid "Print %s inline"
 msgstr ""
 
-#: admin/templates/dashboard.php:27
-#, php-format
-msgid "Inline Critical CSS (defer %s)"
-msgstr ""
-
 #: admin/templates/dashboard.php:36
 msgid "404 Page ID"
 msgstr ""
@@ -1408,11 +1403,6 @@ msgstr ""
 #: api/compile.php:141
 #, php-format
 msgid "The compiled asset could not be published: %s"
-msgstr ""
-
-#: api/compile.php:173
-#, php-format
-msgid "The compiled asset could not be deleted: %s"
 msgstr ""
 
 #: api/compile.php:203

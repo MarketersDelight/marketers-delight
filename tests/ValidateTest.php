@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_validate::validate() against representative schemas. Several of
+ * Tests md_validate::fields() against representative schemas. Several of
  * these pin down bugs found live this session — see the comment on each
  * regression test for what broke and why.
  *
@@ -20,6 +20,17 @@ class ValidateTest extends MD_TestCase {
 		md_test_set_filter( 'md_register', array( 'admin_pages' => $schema ) );
 	}
 
+	private function validate_groups( $input ) {
+		$groups = md_register( 'admin_pages' );
+		$save = array();
+
+		foreach ( $input as $group => $values )
+			if ( ! empty( $groups[$group]['fields'] ) )
+				$save[$group] = $this->validate->fields( $values, $groups[$group]['fields'] );
+
+		return $save;
+	}
+
 	// Leaf fields
 
 	public function test_leaf_field_absent_from_input_is_omitted_not_nulled_out() {
@@ -29,7 +40,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'page' => array() ) );
+		$save = $this->validate_groups( array( 'page' => array() ) );
 
 		$this->assertArrayNotHasKey( 'title', $save['page'] );
 	}
@@ -41,7 +52,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'page' => array( 'title' => '' ) ) );
+		$save = $this->validate_groups( array( 'page' => array( 'title' => '' ) ) );
 
 		$this->assertSame( '', $save['page']['title'] );
 	}
@@ -53,7 +64,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'page' => array( 'title' => '' ) ) );
+		$save = $this->validate_groups( array( 'page' => array( 'title' => '' ) ) );
 
 		$this->assertSame( '', $save['page']['title'] );
 	}
@@ -76,7 +87,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'colors' => array( 'custom' => array() ) ) );
+		$save = $this->validate_groups( array( 'colors' => array( 'custom' => array() ) ) );
 
 		$this->assertSame( array(), $save['colors']['custom'] );
 	}
@@ -102,7 +113,7 @@ class ValidateTest extends MD_TestCase {
 
 		// The checkbox is unchecked, so only its hidden empty partner posts
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'dropins' => array( 'installed' => array(
 				'my-dropin' => array( 'name' => 'My Dropin', 'status' => '' )
 			) )
@@ -124,7 +135,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'dropins' => array( 'installed' => array(
 				'my-dropin' => array( 'status' => '1', 'name' => 'My Dropin' )
 			) )
@@ -153,7 +164,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'cta' => array( 'forms' => array(
 				'{clone:md_cta_forms}' => array( 'name' => '' ),
 				'primary' => array( 'name' => 'Sign up' )
@@ -185,7 +196,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'cta' => array( 'forms' => array(
 				'primary' => array( 'name' => 'Sign up', 'links' => array(
 					'{clone:md_cta_forms_{clone:md_cta_forms}_links}' => array( 'name' => '' ),
@@ -215,7 +226,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'header' => array( 'builder' => array() ) ) );
+		$save = $this->validate_groups( array( 'header' => array( 'builder' => array() ) ) );
 
 		$this->assertSame( array(), $save['header']['builder'] );
 	}
@@ -232,7 +243,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'header' => array(
+		$save = $this->validate_groups( array( 'header' => array(
 			'builder' => ''
 		) ) );
 
@@ -252,7 +263,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'page' => array( 'section' => array( 'field_a' => 'value-a' ) )
 		) );
 
@@ -267,10 +278,10 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$valid = $this->validate->validate( 'admin_pages', array(
+		$valid = $this->validate_groups( array(
 			'bookshelf' => array( 'book_rating' => '4.5' )
 		) );
-		$invalid = $this->validate->validate( 'admin_pages', array(
+		$invalid = $this->validate_groups( array(
 			'bookshelf' => array( 'book_rating' => '4.7' )
 		) );
 
@@ -290,7 +301,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'colors' => array( 'primary' => '#AE2525' ) ) );
+		$save = $this->validate_groups( array( 'colors' => array( 'primary' => '#AE2525' ) ) );
 
 		$this->assertSame( '', $save['colors']['primary'] );
 	}
@@ -302,7 +313,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'colors' => array( 'primary' => '#FF0000' ) ) );
+		$save = $this->validate_groups( array( 'colors' => array( 'primary' => '#FF0000' ) ) );
 
 		$this->assertSame( '#ff0000', $save['colors']['primary'] );
 	}
@@ -314,7 +325,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'logo' => array( 'image' => array( 'id' => '5' ) ) ) );
+		$save = $this->validate_groups( array( 'logo' => array( 'image' => array( 'id' => '5' ) ) ) );
 
 		$this->assertArrayNotHasKey( 'image', $save['logo'] );
 	}
@@ -340,7 +351,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'page' => array( 'section' => array( 'items' => array(
 				'item-1' => array( 'name' => 'First' )
 			) ) )
@@ -377,7 +388,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'page' => array( 'items' => array(
 				'item-1' => array( 'links' => array(
 					'link-1' => array( 'label' => 'First' ),
@@ -406,7 +417,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'layout' => array( 'sidebars' => array(
 				'Main-Sidebar' => array( 'name' => 'Main' )
 			) )
@@ -430,7 +441,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		) );
 
-		$save = $this->validate->validate( 'admin_pages', array(
+		$save = $this->validate_groups( array(
 			'page' => array( 'group' => array( 'option' => array( 'val' => 'deep-value' ) ) )
 		) );
 
@@ -475,7 +486,7 @@ class ValidateTest extends MD_TestCase {
 			) )
 		);
 
-		$save = $this->validate->validate( 'admin_pages', $input );
+		$save = $this->validate_groups( $input );
 
 		$this->assertSame(
 			'Deep Value',
@@ -509,7 +520,7 @@ class ValidateTest extends MD_TestCase {
 	public function test_unregistered_top_level_key_is_discarded() {
 		$this->register_schema( array() );
 
-		$save = $this->validate->validate( 'admin_pages', array( 'integrations' => array( 'foo' => 'bar' ) ) );
+		$save = $this->validate_groups( array( 'integrations' => array( 'foo' => 'bar' ) ) );
 
 		$this->assertSame( array(), $save );
 	}

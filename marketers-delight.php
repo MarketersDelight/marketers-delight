@@ -76,17 +76,23 @@ final class marketers_delight {
 		require_once MD_DIR . 'api/fields/fields.php';
 		require_once MD_DIR . 'api/walker.php';
 		require_once MD_DIR . 'api/api.php';
-		require_once MD_DIR . 'api/abilities.php';
+		require_once MD_DIR . 'api/abilities/abilities.php';
 
 		require_once MD_DIR . 'functions/link-functions.php';
 		require_once MD_DIR . 'functions/template-functions.php';
 		require_once MD_DIR . 'functions/page-functions.php';
 
 		if ( is_admin() ) {
-			require_once MD_DIR . 'api/files.php';
-			require_once MD_DIR . 'api/requests.php';
+			require_once MD_DIR . 'admin/license.php';
 			require_once MD_DIR . 'api/transfer.php';
 			require_once MD_DIR . 'admin/admin.php';
+		}
+		elseif ( md_loads_settings() ) {
+			require_once MD_DIR . 'api/transfer.php';
+			require_once MD_DIR . 'admin/dropins/functions.php';
+
+			foreach ( array( 'dashboard', 'icons', 'page-settings', 'typography', 'design' ) as $file )
+				require_once MD_DIR . "admin/$file.php";
 		}
 
 		$this->features();
@@ -107,7 +113,6 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/layout/functions.php';
 		require_once MD_DIR . 'features/integrations/functions.php';
 		require_once MD_DIR . 'features/featured-media/functions.php';
-		require_once MD_DIR . 'features/featured-media/abilities.php';
 		require_once MD_DIR . 'features/page-cover/functions.php';
 		require_once MD_DIR . 'features/page-title/functions.php';
 		require_once MD_DIR . 'features/page-title/document-title.php';
@@ -121,7 +126,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/author/functions.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 
-		if ( is_admin() ) {
+		if ( md_loads_settings() ) {
 			require_once MD_DIR . 'features/integrations/admin.php';
 			require_once MD_DIR . 'features/page-title/admin.php';
 			require_once MD_DIR . 'features/header/admin.php';
@@ -133,6 +138,11 @@ final class marketers_delight {
 			require_once MD_DIR . 'features/page-cover/admin.php';
 			require_once MD_DIR . 'features/byline/admin.php';
 			require_once MD_DIR . 'features/loop/admin.php';
+			require_once MD_DIR . 'api/abilities/settings.php';
+			require_once MD_DIR . 'api/abilities/items.php';
+			require_once MD_DIR . 'api/abilities/content.php';
+			require_once MD_DIR . 'api/abilities/site.php';
+			require_once MD_DIR . 'api/abilities/dropins.php';
 		}
 
 		require_once MD_DIR . 'features/blog.php';

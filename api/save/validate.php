@@ -5,7 +5,7 @@
  * groups of fields, and clone-style group/builder fields (repeaters).
  *
  * Call chain from the one public entry point:
- *   validate( $settings, $input )                  — resolves each top-level key's schema
+ *   fields( $input, $fields_schema )                — one group's values
  *     -> validate_fields( $input, $fields_schema )  — recurses per field
  *          -> validate_field( $val, $fields )       — sanitizes one field's value
  *          -> clone_groups( $groups, $item_schema ) — group/builder fields
@@ -28,6 +28,7 @@ class md_validate {
 
 	const FIELD_KEYS = array(
 		'type',
+		'internal',
 		'label',
 		'options',
 		'default',
@@ -54,28 +55,6 @@ class md_validate {
 
 	public function __construct() {
 		$this->sanitize = new md_sanitize;
-	}
-
-	/**
-	 * Validates $input against the schema registered under $settings (e.g.
-	 * 'admin_pages', 'meta_boxes', 'terms', 'user_meta' — see
-	 * md_register()). Top-level keys without a registered field schema are
-	 * discarded.
-	 *
-	 * @since 4.7
-	 */
-
-	public function validate( $settings, $input ) {
-		$save = array();
-		$data = md_register( $settings );
-		$input = is_array( $input ) ? $input : array();
-
-		foreach ( array_keys( $input ) as $key ) {
-			if ( ! empty( $data[$key]['fields'] ) )
-				$save[$key] = $this->validate_fields( $input[$key], $data[$key]['fields'] );
-		}
-
-		return $save;
 	}
 
 	/**
@@ -260,164 +239,6 @@ class md_validate {
 		}
 
 		return $save;
-	}
-
-	/**
-	 * JSON Schema for a set of fields: an object with a property per
-	 * field, nested sets of fields becoming nested objects. Each type's
-	 * schema matches what validate_field() saves for it.
-	 *
-	 * @since 6.2
-	 */
-
-	public function schema( $fields ) {
-		$properties = array();
-
-		foreach ( $fields as $key => $field ) {
-			if ( ! is_array( $field ) )
-				continue;
-
-			$property = isset( $field['type'] ) ? $this->schema_field( $field ) : $this->schema( $field );
-
-			if ( $property )
-				$properties[$key] = $property;
-		}
-
-		return array(
-			'type' => 'object',
-			'properties' => $properties,
-			'additionalProperties' => false
-		);
-	}
-
-	/**
-	 * Schema for one field, by the values md_validate saves for its type.
-	 * Types md_validate doesn't save have no schema.
-	 *
-	 * @since 6.2
-	 */
-
-	private function schema_field( $field ) {
-		$options = isset( $field['options'] ) && is_array( $field['options'] ) ? $field['options'] : array();
-		$choices = md_sanitize::choices( $options );
-		$labels = array_map( 'wp_strip_all_tags', md_sanitize::labels( $options ) );
-
-		switch ( $field['type'] ) {
-			case 'text':
-			case 'textarea':
-				$schema = array( 'type' => 'string' );
-				break;
-
-			case 'font':
-				$schema = array(
-					'type' => 'string',
-					'description' => __( 'A CSS font-family value, ex: Georgia, serif.', 'md' )
-				);
-				break;
-
-			case 'code':
-				$schema = array(
-					'type' => 'string',
-					'description' => __( 'Raw code, saved only for administrators who can post unfiltered HTML.', 'md' )
-				);
-				break;
-
-			case 'url':
-				$schema = array( 'type' => 'string', 'format' => 'uri' );
-				break;
-
-			case 'number':
-			case 'range':
-				$schema = array( 'type' => 'number' );
-
-				if ( isset( $field['min'] ) && is_numeric( $field['min'] ) )
-					$schema['minimum'] = $field['min'] + 0;
-
-				if ( isset( $field['max'] ) && is_numeric( $field['max'] ) )
-					$schema['maximum'] = $field['max'] + 0;
-
-				if ( isset( $field['step'] ) && is_numeric( $field['step'] ) && $field['step'] > 0 && empty( $field['min'] ) )
-					$schema['multipleOf'] = $field['step'] + 0;
-				break;
-
-			case 'checkbox':
-				if ( empty( $options ) ) {
-					$schema = array( 'type' => 'boolean' );
-					break;
-				}
-
-				$schema = array(
-					'type' => 'object',
-					'description' => __( 'true turns an option on, 0 turns it off over an inherited setting.', 'md' ),
-					'properties' => array(),
-					'additionalProperties' => false
-				);
-
-				foreach ( $choices as $choice ) {
-					$schema['properties'][$choice] = array( 'type' => array( 'boolean', 'integer' ), 'enum' => array( true, false, 0, 1 ) );
-
-					if ( isset( $labels[$choice] ) )
-						$schema['properties'][$choice]['title'] = $labels[$choice];
-				}
-
-				$labels = array();
-				break;
-
-			case 'select':
-			case 'radio':
-				$schema = array( 'type' => 'string', 'enum' => array_values( array_unique( array_merge( array( '' ), $choices ) ) ) );
-				break;
-
-			case 'upload':
-				if ( ! empty( $field['upload_type'] ) && $field['upload_type'] !== 'media' )
-					return null;
-
-				$schema = array(
-					'type' => 'object',
-					'description' => __( 'A Media Library attachment ID.', 'md' ),
-					'properties' => array(
-						'id' => isset( $field['multiple'] ) ?
-							array( 'type' => 'string', 'description' => __( 'Comma-separated attachment IDs.', 'md' ) ) :
-							array( 'type' => 'integer', 'minimum' => 1 )
-					),
-					'required' => array( 'id' )
-				);
-				break;
-
-			case 'color':
-				$schema = array(
-					'type' => 'string',
-					'description' => __( 'A hex color, an rgba() color or a palette key.', 'md' )
-				);
-				break;
-
-			case 'group':
-			case 'builder':
-				$item = $this->schema( isset( $field['fields'] ) && is_array( $field['fields'] ) ? $field['fields'] : array() );
-				$schema = array(
-					'type' => 'object',
-					'description' => $field['type'] === 'builder' ?
-						__( 'Builder rows keyed by row ID, in order.', 'md' ) :
-						__( 'Items keyed by item ID, in order.', 'md' ),
-					'patternProperties' => array( '^[A-Za-z0-9_-]+$' => $item ),
-					'additionalProperties' => false
-				);
-				break;
-
-			default:
-				return null;
-		}
-
-		if ( $labels )
-			$schema['x-labels'] = $labels;
-
-		if ( array_key_exists( 'default', $field ) )
-			$schema['default'] = $field['default'];
-
-		if ( ! empty( $field['label'] ) )
-			$schema = array_merge( array( 'title' => wp_strip_all_tags( $field['label'] ) ), $schema );
-
-		return $schema;
 	}
 
 }

@@ -7,8 +7,6 @@
 
 class md_settings extends md_api {
 
-	public $license;
-
 	/**
 	 * Run dashboard actions.
 	 *
@@ -16,9 +14,6 @@ class md_settings extends md_api {
 	 */
 
 	public function actions() {
-		$requests = new md_requests;
-		$this->license = $requests->license();
-
 		add_action( 'md_license_updater', array( $this, 'updater' ), 10, 2 );
 	}
 
@@ -59,8 +54,7 @@ class md_settings extends md_api {
 						'label' => __( 'CSS Manager', 'md' ),
 						'options' => array(
 							'child' => sprintf( __( 'Combine child theme CSS into %s', 'md' ), '<code>style.css</code>' ),
-							'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' ),
-							'critical' => sprintf( __( 'Inline Critical CSS (defer %s)', 'md' ), '<code>style.css</code>' )
+							'inline' => sprintf( __( 'Print %s inline', 'md' ), '<code>style.css</code>' )
 						)
 					),
 					'abilities' => array(
@@ -136,7 +130,7 @@ class md_settings extends md_api {
 			$message['status'] = __( 'Expired', 'md' );
 			$message['text'] = sprintf(
 				__( 'Your <b>MD license key has expired!</b> Renew it from your <a href="%s" class="md-renew-link" target="_blank" rel="noopener noreferrer">MD account</a> to continue receiving updates.', 'md' ),
-				esc_url( $this->license['remote_api_url'] . '/downloads/' )
+				esc_url( MD_THEME_UPDATER_URL . '/downloads/' )
 			);
 		}
 
@@ -155,7 +149,7 @@ class md_settings extends md_api {
 	public function updater( $license = null, $check_status = '' ) {
 		$license = is_array( $license ) ? $license : md_license_setting();
 		$license_message = $this->license_message();
-		$slug = $this->license['theme_slug'];
+		$slug = 'marketers-delight';
 		$theme = ! empty( $license['updates']['theme'] ) ? $license['updates']['theme'] : array();
 		$dropins = md_dropin_updates();
 

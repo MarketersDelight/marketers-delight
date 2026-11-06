@@ -409,4 +409,43 @@ class SaveApplyTest extends MD_TestCase {
 		$this->assertFalse( get_option( 'marketers_delight' ) );
 	}
 
+	public function test_scope_read_returns_only_a_groups_stored_values() {
+		$this->register( 'admin_pages', array( 'layout' => array( 'fields' => array( 'sidebar' => array( 'type' => 'text' ) ) ) ) );
+		$GLOBALS['__test_options']['marketers_delight'] = array( 'layout' => array( 'sidebar' => 'left' ), 'header' => array( 'x' => 1 ) );
+
+		$this->assertSame( array( 'sidebar' => 'left' ), md_scope::parse( 'site' )->read( 'layout' ) );
+		$this->assertSame( 'md_save_group', md_scope::parse( 'site' )->read( 'missing' )->get_error_code() );
+	}
+
+	public function test_merge_items_keeps_others_updates_adds_and_removes_by_id() {
+		$fields = array( 'list' => array( 'type' => 'group', 'fields' => array( 'item' => array( 'type' => 'text' ) ) ) );
+		$stored = array( 'list' => array( 'a' => array( 'item' => 'A' ), 'b' => array( 'item' => 'B' ), 'c' => array( 'item' => 'C' ) ) );
+
+		$input = md_save::merge_items( $stored, array( 'list' => array( 'b' => array( 'item' => 'B2' ), 'c' => null, 'd' => array( 'item' => 'D' ) ) ), $fields );
+
+		$this->assertSame( array( 'a', 'b', 'c', 'd' ), array_keys( $input['list'] ) );
+		$this->assertSame( 'B2', $input['list']['b']['item'] );
+		$this->assertNull( $input['list']['c'] );
+	}
+
+	public function test_merge_items_orders_a_list_with_or_without_new_values() {
+		$fields = array( 'list' => array( 'type' => 'group', 'fields' => array( 'item' => array( 'type' => 'text' ) ) ) );
+		$stored = array( 'list' => array( 'a' => array( 'item' => 'A' ), 'b' => array( 'item' => 'B' ), 'c' => array( 'item' => 'C' ) ) );
+
+		$moved = md_save::merge_items( $stored, array(), $fields, array( 'list' => array( 'c', 'a', 'gone' ) ) );
+
+		$this->assertSame( array( 'c', 'a', 'b' ), array_keys( $moved['list'] ) );
+
+		$added = md_save::merge_items( $stored, array( 'list' => array( 'd' => array( 'item' => 'D' ) ) ), $fields, array( 'list' => array( 'a', 'd', 'b', 'c' ) ) );
+
+		$this->assertSame( array( 'a', 'd', 'b', 'c' ), array_keys( $added['list'] ) );
+	}
+
+	public function test_merge_items_keeps_a_checkboxs_other_options() {
+		$fields = array( 'sidebar' => array( 'type' => 'checkbox', 'options' => array( 'global', 'remove' ) ) );
+		$input = md_save::merge_items( array( 'sidebar' => array( 'global' => true ) ), array( 'sidebar' => array( 'remove' => true ) ), $fields );
+
+		$this->assertSame( array( 'global' => true, 'remove' => true ), $input['sidebar'] );
+	}
+
 }

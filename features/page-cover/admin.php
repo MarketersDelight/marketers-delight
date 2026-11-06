@@ -25,7 +25,7 @@ class md_page_cover extends md_api {
 				'name' => __( 'Cover', 'md' ),
 				'edit_post' => true,
 				'child_of' => 'hero',
-				'fields' => $this->fields()
+				'fields' => md_page_cover_fields()
 			),
 			'term' => array(
 				'name' => $this->name,
@@ -68,7 +68,7 @@ class md_page_cover extends md_api {
 	 */
 
 	public function fields() {
-		return md_page_cover_fields();
+		return array_diff_key( md_page_cover_fields(), array( 'title_content' => true ) );
 	}
 
 	/**

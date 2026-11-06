@@ -177,6 +177,11 @@ class md_api {
 
 		add_filter( 'md_register', array( $this, '_register' ) );
 
+		// Hosts rebuild after their groups, which they read their fields from
+
+		if ( method_exists( $this, 'register' ) )
+			add_action( 'md_refresh_fields', array( $this, '_register_groups' ), isset( $this->register['admin_page']['has_groups'] ) ? 20 : 10 );
+
 		// Group admin settings together
 
 		if ( isset( $this->register['admin_page']['has_groups'] ) )
@@ -191,7 +196,7 @@ class md_api {
 		if ( isset( $this->register['taxonomy'] ) )
 			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
 
-		if ( ! is_admin() )
+		if ( ! md_loads_settings() )
 			return;
 
 		add_action( 'current_screen', function() {
@@ -1006,45 +1011,6 @@ class md_api {
 
 		if ( $screen->base == 'profile' && method_exists( $this, "user_meta_$suffix" ) )
 			call_user_func( array( $this, "user_meta_$suffix" ) );
-	}
-
-	/**
-	 * Describe a settings group as JSON Schema, generated from its
-	 * registered fields (see md_validate::schema()), with the scopes it
-	 * can be saved to. $scope picks whose fields to describe, the first
-	 * scope by default.
-	 *
-	 * @since 6.2
-	 */
-
-	public static function schema( $group, $scope = '' ) {
-		$validate = new md_validate;
-		$scopes = md_scope::all( $group );
-
-		if ( empty( $scopes ) )
-			return new WP_Error( 'md_schema_group', sprintf( __( 'Unknown settings group: %s', 'md' ), $group ), array( 'status' => 404 ) );
-
-		$scope = $scope ? $scope : $scopes[0];
-
-		if ( ! in_array( $scope, $scopes, true ) )
-			return new WP_Error( 'md_schema_scope', sprintf( __( 'The %1$s settings can\'t be saved to %2$s.', 'md' ), $group, $scope ), array( 'status' => 400 ) );
-
-		$target = md_scope::parse( $scope )->target( $group );
-
-		if ( is_wp_error( $target ) )
-			return $target;
-
-		$object = $validate->schema( $target['fields'] );
-
-		return array(
-			'$schema' => 'http://json-schema.org/draft-04/schema#',
-			'title' => $group,
-			'type' => 'object',
-			'properties' => $object['properties'],
-			'additionalProperties' => false,
-			'x-scope' => $scope,
-			'x-scopes' => $scopes
-		);
 	}
 
 }

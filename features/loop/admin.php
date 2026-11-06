@@ -104,9 +104,6 @@ class md_loop extends md_api {
 			$post_content["featured_{$content_id}"] = $content_fields;
 
 		return array_merge( array(
-			'name' => array( 'type' => 'text' ),
-			'title' => array( 'type' => 'text' ),
-			'description' => array( 'type' => 'text' ),
 			'loop' => array(
 				'type' => 'radio',
 				'label' => __( 'Template', 'md' ),
@@ -215,11 +212,6 @@ class md_loop extends md_api {
 				'label' => __( 'Call to Action', 'md' ),
 				'options' => array_keys( md_setting( array( 'cta', 'forms' ), array() ) )
 			),
-			'position' => array(
-				'type' => 'select',
-				'options' => array( 'before_content_box', 'before_content', 'content', 'before_footer' )
-			),
-			'offset' => array( 'type' => 'number' ),
 			'exclude_posts' => array(
 				'type' => 'text',
 				'label' => __( 'Exclude Posts', 'md' )
@@ -228,40 +220,10 @@ class md_loop extends md_api {
 				'type' => 'text',
 				'label' => __( 'Exclude Terms', 'md' )
 			),
-			'show_query' => array(
-				'type' => 'select',
-				'options' => array( 'before_loop', 'after_loop' )
-			),
-			'post_type' => array(
-				'type' => 'select',
-				'options' => array_keys( get_post_types( array( 'public' => true ) ) )
-			),
-			'sidebar' => array(
-				'type' => 'checkbox',
-				'options' => array( 'enable', 'sticky' )
-			),
-			'custom_sidebar' => array(
-				'type' => 'select',
-				'options' => md_layout_areas( 'sidebar', true )
-			),
-			'content_layout' => array(
-				'type' => 'select',
-				'options' => array( 'sidebar_content' )
-			),
-			'size' => array(
-				'type' => 'select',
-				'options' => array( 'large', 'medium', 'small', 'normal' )
-			),
-			'tags' => array( 'type' => 'text' ),
-			'include_cats' => array(
-				'type' => 'checkbox',
-				'options' => $this->fields->data->terms()
-			),
-			'exclude_cats' => array(
-				'type' => 'checkbox',
-				'options' => $this->fields->data->terms()
-			),
-			'classes' => array( 'type' => 'text' )
+			'classes' => array(
+				'type' => 'text',
+				'label' => __( 'CSS Classes', 'md' )
+			)
 		), $post_content );
 	}
 

@@ -383,6 +383,9 @@ function get_post_status( $post_id ) {
 }
 
 function current_time( $format ) {
+	if ( $format === 'mysql' )
+		return '2026-08-18 12:00:00';
+
 	return $format === 'Y-m-d' ? '2026-08-18' : '';
 }
 
@@ -446,6 +449,29 @@ function wp_update_post( $post, $wp_error = false ) {
 	return $post_id;
 }
 
+function wp_list_pluck( $list, $field, $index_key = null ) {
+	$out = array();
+
+	foreach ( $list as $item ) {
+		$item = (object) $item;
+
+		if ( $index_key )
+			$out[$item->$index_key] = $item->$field;
+		else
+			$out[] = $item->$field;
+	}
+
+	return $out;
+}
+
+function get_gmt_from_date( $date ) {
+	return $date;
+}
+
+function md_refresh_fields() {
+	do_action( 'md_refresh_fields' );
+}
+
 function is_wp_error( $thing ) {
 	return $thing instanceof WP_Error;
 }
@@ -463,6 +489,10 @@ class WP_Error {
 
 	public function get_error_code() {
 		return $this->code;
+	}
+
+	public function get_error_data() {
+		return $this->data ?? null;
 	}
 
 	public function get_error_message() {
