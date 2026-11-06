@@ -25,7 +25,8 @@ class md_header extends md_api {
 			'submenu_width' => array( 'type' => 'number' ),
 			'menu' => array(
 				'type' => 'select',
-				'options' => $menus['ids']
+				'options' => $menus['ids'],
+				'ref' => 'nav_menu'
 			),
 			'button_text' => array( 'type' => 'text' ),
 		), $links );

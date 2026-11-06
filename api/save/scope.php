@@ -62,7 +62,7 @@ class md_scope {
 			return $scope;
 		}
 
-		return new WP_Error( 'md_save_scope', sprintf( __( 'Unknown settings scope: %s', 'md' ), $string ), array( 'status' => 400 ) );
+		return new WP_Error( 'md_save_scope', sprintf( __( 'Unknown settings scope: `%s`', 'md' ), $string ), array( 'status' => 400 ) );
 	}
 
 	/**
@@ -136,10 +136,10 @@ class md_scope {
 		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
 
 		if ( empty( $pages[$host]['has_groups'] ) || empty( $pages[$host]['fields'] ) )
-			return new WP_Error( 'md_save_scope', sprintf( __( 'No settings are registered for %s.', 'md' ), $host ), array( 'status' => 400 ) );
+			return new WP_Error( 'md_save_scope', sprintf( __( 'No settings are registered for `%s`.', 'md' ), $host ), array( 'status' => 400 ) );
 
 		if ( $this->type === 'taxonomy' && empty( $taxonomies["md_$host"][$this->name] ) )
-			return new WP_Error( 'md_save_scope', sprintf( __( 'No settings are registered for the %1$s taxonomy of %2$s.', 'md' ), $this->name, $host ), array( 'status' => 400 ) );
+			return new WP_Error( 'md_save_scope', sprintf( __( 'No settings are registered for the `%1$s` taxonomy of `%2$s`.', 'md' ), $this->name, $host ), array( 'status' => 400 ) );
 
 		$path = $this->type === 'taxonomy' ? array( $host, $this->name ) : array( $host );
 		$fields = $pages[$host]['fields'];
@@ -191,7 +191,7 @@ class md_scope {
 	 */
 
 	private function unknown( $group ) {
-		return new WP_Error( 'md_save_group', sprintf( __( 'Unknown settings group: %s', 'md' ), is_string( $group ) ? $group : '' ), array( 'status' => 400 ) );
+		return new WP_Error( 'md_save_group', sprintf( __( 'Unknown settings group: `%s`', 'md' ), is_string( $group ) ? $group : '' ), array( 'status' => 400 ) );
 	}
 
 	/**

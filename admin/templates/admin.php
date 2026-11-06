@@ -4,7 +4,8 @@
 	do_action( 'md_admin_page_before_form' );
 	do_action( "{$hook}_admin_page_before_form" );
 
-	$has_form = ! isset( $admin_pages[$page_id]['form'] ) || $admin_pages[$page_id]['form'] !== false;
+	$form_page = md_clean_id( $hook );
+	$has_form = ! isset( $admin_pages[$form_page]['form'] ) || $admin_pages[$form_page]['form'] !== false;
 ?>
 
 <?php if ( $has_form ) : ?>

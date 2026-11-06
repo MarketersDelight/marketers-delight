@@ -40,6 +40,7 @@ class md_admin {
 		include_once 'page-settings.php';
 		include_once 'typography.php';
 		include_once 'design.php';
+		include_once 'import-export.php';
 	}
 
 	/**

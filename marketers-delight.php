@@ -85,6 +85,7 @@ final class marketers_delight {
 		if ( is_admin() ) {
 			require_once MD_DIR . 'api/files.php';
 			require_once MD_DIR . 'api/requests.php';
+			require_once MD_DIR . 'api/transfer.php';
 			require_once MD_DIR . 'admin/admin.php';
 		}
 

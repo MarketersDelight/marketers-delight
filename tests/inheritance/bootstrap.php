@@ -431,6 +431,19 @@ function untrailingslashit( $value ) {
 	return rtrim( $value, '/\\' );
 }
 
+if ( ! function_exists( 'trailingslashit' ) ) {
+	function trailingslashit( $value ) {
+		return untrailingslashit( $value ) . '/';
+	}
+}
+
+function wp_normalize_path( $path ) {
+	return str_replace( '\\', '/', $path );
+}
+
+if ( ! defined( 'MD_INSTALLED_DROPINS' ) )
+	define( 'MD_INSTALLED_DROPINS', dirname( __DIR__ ) . '/fixtures/dropins' );
+
 function get_the_title( $post_id = 0 ) {
 	if ( is_object( $post_id ) ) {
 		if ( isset( $post_id->ID ) && isset( $GLOBALS['__test_titles'][$post_id->ID] ) )

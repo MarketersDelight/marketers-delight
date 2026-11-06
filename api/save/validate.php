@@ -44,7 +44,8 @@ class md_validate {
 		'code_options',
 		'preserve_empty',
 		'group_key_lowercase',
-		'tokens'
+		'tokens',
+		'ref'
 	);
 
 	private $sanitize;
@@ -118,7 +119,7 @@ class md_validate {
 		$input = is_array( $input ) ? $input : array();
 
 		foreach ( array_diff_key( $input, $fields_schema ) as $key => $value )
-			$this->warnings[] = sprintf( __( 'Unknown setting %s was skipped.', 'md' ), implode( '.', array_merge( $path, array( $key ) ) ) );
+			$this->warnings[] = sprintf( __( '`%s` isn\'t a setting on this site.', 'md' ), implode( '.', array_merge( $path, array( $key ) ) ) );
 
 		foreach ( $fields_schema as $key => $field ) {
 			if ( ! array_key_exists( $key, $input ) || ! is_array( $field ) )
@@ -148,11 +149,15 @@ class md_validate {
 
 				if ( $validated !== null )
 					$save[$key] = $validated;
-				else
-					$this->warnings[] = sprintf( __( 'Setting %s has a value that can\'t be saved and was skipped.', 'md' ), $name );
+
+				$given = is_array( $field_input ) ? array_filter( $field_input ) : $field_input;
+				$rejected = in_array( $validated, array( '', array() ), true ) && ! in_array( $given, array( '', false, 0, '0', array() ), true );
+
+				if ( $validated === null || $rejected )
+					$this->warnings[] = sprintf( __( '`%s` has a value this site can\'t use.', 'md' ), $name );
 			}
 			elseif ( ! is_array( $field_input ) )
-				$this->warnings[] = sprintf( __( 'Setting %s takes a set of values and was skipped.', 'md' ), $name );
+				$this->warnings[] = sprintf( __( '`%s` needs a set of values.', 'md' ), $name );
 			else {
 				$nested = $this->validate_fields( $field_input, $field, array_merge( $path, array( $key ) ) );
 

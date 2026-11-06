@@ -26,6 +26,8 @@ class md_save {
 
 	private $validate;
 
+	private $skipped = array();
+
 	public function __construct() {
 		$this->validate = new md_validate;
 	}
@@ -84,7 +86,7 @@ class md_save {
 		$option = $this->option( $targets );
 		$stored = $this->read( $where, $option );
 		$new = $stored;
-		$changed = array();
+		$changed = $this->skipped = array();
 
 		foreach ( $saves as $key => $save ) {
 			$path = isset( $targets[$key] ) ? $targets[$key]['path'] : array( $key );
@@ -111,7 +113,7 @@ class md_save {
 			'scope' => $scope,
 			'group' => $group,
 			'changed' => $changed,
-			'warnings' => $warnings
+			'warnings' => array_merge( $warnings, $this->skipped )
 		);
 
 		if ( $args['dry_run'] )
@@ -184,7 +186,7 @@ class md_save {
 
 			if ( ! current_user_can( $capability, $post_id ) ) {
 				unset( $values[$group] );
-				$warnings[] = sprintf( __( 'You are not allowed to change the %s settings, so they were left as they are.', 'md' ), $group );
+				$warnings[] = sprintf( __( 'You are not allowed to change the `%s` settings, so they were left as they are.', 'md' ), $group );
 			}
 		}
 
@@ -245,8 +247,12 @@ class md_save {
 			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
 
 			// Raw code is executable. Keep an existing value when another editor saves.
-			if ( $type === 'code' && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) )
+			if ( $type === 'code' && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) ) {
+				if ( $value !== ( $old[$key] ?? null ) && ! $this->is_empty_value( $value ) )
+					$this->skipped[] = sprintf( __( '`%s` is code, which needs an administrator who can add unfiltered HTML. It was left as it is.', 'md' ), $key );
+
 				continue;
+			}
 
 			if ( ! empty( $field['code_options'] ) && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) &&
 				( in_array( $value, $field['code_options'], true ) || in_array( $old[$key] ?? null, $field['code_options'], true ) ) )

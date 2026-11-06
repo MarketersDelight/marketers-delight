@@ -25,6 +25,7 @@ class md_api {
 	protected static $sanitize;
 	protected static $design;
 	public $_args = array();
+	public $_source;
 	public $register = array();
 	public $_option = 'marketers_delight';
 
@@ -701,6 +702,7 @@ class md_api {
 			$data['admin_pages'][$this->_clean_id] = $this->register['admin_page'];
 			$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
 			$data['admin_pages'][$this->_clean_id]['_option'] = $this->_option;
+			$data['admin_pages'][$this->_clean_id]['_source'] = $this->_source();
 		}
 
 		if ( isset( $this->register['meta_box'] ) ) {
@@ -719,6 +721,26 @@ class md_api {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * The Drop-in that registered this instance, by its folder, or theme.
+	 * Import and export name it beside each settings group.
+	 *
+	 * @since 6.2
+	 */
+
+	public function _source() {
+		if ( isset( $this->_source ) )
+			return $this->_source;
+
+		$reflection = new ReflectionClass( $this );
+		$file = wp_normalize_path( $reflection->getFileName() );
+		$dropins = trailingslashit( wp_normalize_path( MD_INSTALLED_DROPINS ) );
+		$folders = explode( '/', substr( $file, strlen( $dropins ) ) );
+		$this->_source = strpos( $file, $dropins ) === 0 ? $folders[0] : 'theme';
+
+		return $this->_source;
 	}
 
 	/**
