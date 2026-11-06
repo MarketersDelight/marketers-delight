@@ -96,7 +96,7 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_editor_stylesheets_compile_minified() {
-		$css = $this->source( 'api/css.php' );
+		$css = $this->source( 'api/assets/css.php' );
 
 		foreach ( array( 'classic-editor', 'block-editor' ) as $file ) {
 			$this->assertMatchesRegularExpression(
@@ -134,10 +134,10 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( '2. Format', $guide );
 		$this->assertStringContainsString( '3. Page Cover', $guide );
 		$this->assertStringNotContainsString( '$style_header', $template );
-		$this->assertStringContainsString( 'prepend_theme_header( $css, $file )', $this->source( 'api/css.php' ) );
+		$this->assertStringContainsString( 'prepend_theme_header( $css, $file )', $this->source( 'api/assets/css.php' ) );
 		$this->assertStringContainsString( 'Table of contents:', $template );
-		$this->assertStringContainsString( "MD_DIR . 'style.css'", $this->source( 'api/css.php' ) );
-		$this->assertStringNotContainsString( 'preg_replace_callback', $this->source( 'api/css.php' ) );
+		$this->assertStringContainsString( "MD_DIR . 'style.css'", $this->source( 'api/assets/css.php' ) );
+		$this->assertStringNotContainsString( 'preg_replace_callback', $this->source( 'api/assets/css.php' ) );
 	}
 
 	public function test_generated_stylesheet_prepends_parent_metadata_outside_overridable_templates() {
@@ -150,9 +150,9 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_compiler_does_not_maintain_retry_or_error_state() {
-		$enqueue = $this->source( 'api/enqueue.php' );
-		$compile = $this->source( 'api/compile.php' );
-		$css = $this->source( 'api/css.php' );
+		$enqueue = $this->source( 'api/assets/enqueue.php' );
+		$compile = $this->source( 'api/assets/compile.php' );
+		$css = $this->source( 'api/assets/css.php' );
 		$source = $enqueue . $compile . $css . $this->source( 'functions/asset-functions.php' );
 
 		$this->assertStringNotContainsString( 'maybe_compile', $source );
@@ -173,9 +173,9 @@ class CssTest extends MD_TestCase {
 		$theme = dirname( __DIR__ );
 
 		$this->assertDirectoryDoesNotExist( $theme . '/compile' );
-		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/css.php' ) );
-		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/js.php' ) );
-		$this->assertStringNotContainsString( "MD_URL . 'compile/", $this->source( 'api/enqueue.php' ) );
+		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/assets/css.php' ) );
+		$this->assertStringNotContainsString( "MD_DIR . 'compile/", $this->source( 'api/assets/js.php' ) );
+		$this->assertStringNotContainsString( "MD_URL . 'compile/", $this->source( 'api/assets/enqueue.php' ) );
 	}
 
 	public function test_helpers_expose_the_canonical_layout_contract() {
@@ -451,7 +451,7 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_block_styles_use_a_cacheable_settings_import() {
-		$enqueue = $this->source( 'api/enqueue.php' );
+		$enqueue = $this->source( 'api/assets/enqueue.php' );
 
 		$this->assertStringContainsString(
 			"add_filter( 'block_editor_settings_all', array( \$this, 'block_editor_styles' ) );",

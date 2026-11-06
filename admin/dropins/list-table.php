@@ -345,7 +345,7 @@ class md_dropins_list_table extends WP_List_Table {
 		$message = sprintf( __( 'There is a new version of %1$s available: %2$s.', 'md' ), esc_html( $item['Name'] ), esc_html( $item['update']['new_version'] ) );
 
 		if ( current_user_can( 'update_plugins' ) ) {
-			$url = md_dropin_update_url( $item['slug'] );
+			$url = md_dropins::update_url( $item['slug'] );
 			$message .= ' <a href="' . esc_url( $url ) . '" class="update-link">' . esc_html__( 'Update now', 'md' ) . '</a>';
 		}
 

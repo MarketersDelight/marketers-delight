@@ -57,7 +57,7 @@ $GLOBALS['wp_filter']['upload_dir'][1][] = array( 'function' => array( 'MD_Dropi
 require_once $wp_load;
 require_once ABSPATH . 'wp-admin/includes/admin.php';
 require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
-require_once dirname( __DIR__, 2 ) . '/admin/dropins/functions.php';
+require_once dirname( __DIR__, 2 ) . '/api/dropins/manage.php';
 
 if ( ! function_exists( 'md_get_dropin_details' ) )
 	define( 'MD_DROPIN_TESTS_SKIP', 'Marketers Delight is not the active theme of the test site.' );

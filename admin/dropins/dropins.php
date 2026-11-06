@@ -306,6 +306,26 @@ class md_dropins extends md_api {
 		include md_template( 'admin/dropins/list', true );
 	}
 
+	/**
+	 * The Update Drop-ins screen URL for one or more Drop-ins.
+	 *
+	 * @since 6.2
+	 */
+
+	public static function update_url( $slugs ) {
+		return wp_nonce_url( self_admin_url( 'update.php?action=update-md-dropins&dropins=' . rawurlencode( implode( ',', (array) $slugs ) ) ), 'bulk-dropins' );
+	}
+
+	/**
+	 * The link that activates one installed Drop-in from the list.
+	 *
+	 * @since 6.2
+	 */
+
+	public static function activate_url( $slug ) {
+		return wp_nonce_url( add_query_arg( array( 'action' => 'activate', 'dropin' => $slug ), self_admin_url( 'admin.php?page=md_dropins' ) ), "md-dropin-activate_$slug" );
+	}
+
 }
 
 new md_dropins;

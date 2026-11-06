@@ -2,7 +2,7 @@
 /**
  * Settings → Import & Export: download this site's MD settings as a file,
  * or upload one, check what it holds and import the selected parts. The
- * file format and the work are md_transfer's (api/transfer.php).
+ * file format and the work are md_transfer's (api/save/transfer.php).
  *
  * @since 6.2
  */
@@ -110,10 +110,12 @@ class md_import_export extends md_api {
 			self::back( 'error', __( 'Select at least one section.', 'md' ) );
 
 		nocache_headers();
+
 		header( 'Content-Type: application/json; charset=utf-8' );
 		header( 'Content-Disposition: attachment; filename=' . md_transfer::file_name() );
 
 		echo wp_json_encode( md_transfer::export( $sections ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+
 		exit;
 	}
 
@@ -141,6 +143,7 @@ class md_import_export extends md_api {
 			self::back( 'error', $file->get_error_message() );
 
 		set_transient( self::key( 'file' ), $file, HOUR_IN_SECONDS );
+
 		self::back();
 	}
 
@@ -152,8 +155,6 @@ class md_import_export extends md_api {
 
 	public function import() {
 		self::verify( 'md_import' );
-
-		// The backup button shares this form: every setting this site has now
 
 		if ( isset( $_POST['md_backup'] ) )
 			self::download( array_keys( md_transfer::sections() ) );
@@ -171,6 +172,7 @@ class md_import_export extends md_api {
 		$result = md_transfer::import( $file, $parts );
 
 		delete_transient( self::key( 'file' ) );
+
 		self::back( 'success', sprintf( __( 'Imported: %s.', 'md' ), implode( ', ', $result['imported'] ) ), $result['skipped'] );
 	}
 
@@ -184,6 +186,7 @@ class md_import_export extends md_api {
 		self::verify( 'md_import_cancel' );
 
 		delete_transient( self::key( 'file' ) );
+
 		self::back();
 	}
 
@@ -216,6 +219,7 @@ class md_import_export extends md_api {
 			), HOUR_IN_SECONDS );
 
 		wp_safe_redirect( self::url() );
+
 		exit;
 	}
 

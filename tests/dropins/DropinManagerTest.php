@@ -1,6 +1,6 @@
 <?php
 /**
- * Drop-in operations (admin/dropins/functions.php): install from a ZIP or
+ * Drop-in operations (api/dropins/manage.php): install from a ZIP or
  * a licensed package, replace, activate, deactivate, delete, update and the
  * update check, as the screens, AJAX and cron call them.
  *

@@ -1,44 +1,5 @@
 <?php
 /**
- * Custom Category Walker for displaying terms/categories
- * checkbox options with MD API.
- *
- * @since 5.3.1
- */
-
-class md_category_options_walker extends Walker_Category {
-	public function __construct( $option_name, $fields, $parsed_args ) {
-		$this->option_name = $option_name;
-		$this->fields = $fields;
-		$this->parsed_args = $parsed_args;
-	}
-    public function start_el( &$output, $category, $depth = 0, $args = array(), $id = 0 ) {
-		$cat_name = apply_filters( 'list_cats', esc_attr( $category->name ), $category );
-		if ( '' === $cat_name )
-			return;
-		$attributes = '';
-		$atts = array();
-		$atts['href'] = get_term_link( $category );
-		$count = '<a href="' . admin_url( 'term.php?taxonomy=' . $category->taxonomy  . '&tag_ID=' . $category->term_id . '&post_type=' . $this->parsed_args['post_type'] ) . '">' . number_format_i18n( $category->count ) . '</a>';
-		if ( 'list' == $args['style'] ) {
-			$output .= "\t<li";
-			$css_classes = array( 'cat-item', 'cat-item-' . $category->term_id );
-			$css_classes = implode( ' ', apply_filters( 'category_css_class', $css_classes, $category, $depth, $args ) );
-			$css_classes = $css_classes ? ' class="' . esc_attr( $css_classes ) . '"' : '';
-			$output .= $css_classes;
-			$output .= '>';
-			ob_start();
-			$this->fields->field( $this->option_name, array(
-				'type' => 'checkbox',
-				'options' => array( $category->term_id => "$category->name ($count)" )
-			) );
-			$output .= ob_get_contents();
-			ob_end_clean();
-		}
-	}
-}
-
-/**
  * This adds 2 arguments that lets any menu using it determine
  * whether or not to show the title and description of each menu item.
  *
@@ -46,6 +7,9 @@ class md_category_options_walker extends Walker_Category {
  */
 
 class md_menu_walker extends Walker_Nav_Menu {
+	public $md_title;
+	public $md_desc;
+
 	function __construct( $title = true, $desc = false ) {
 		$this->md_title = $title;
 		$this->md_desc  = $desc;

@@ -31,15 +31,15 @@ class md_admin {
 	 */
 
 	public function includes() {
-		include_once 'dropins/functions.php';
-		include_once 'dashboard.php';
-		include_once 'icons.php';
-		include_once 'dropins/dropins.php';
-		include_once 'dropins/actions.php';
-		include_once 'page-settings.php';
-		include_once 'typography.php';
-		include_once 'design.php';
-		include_once 'import-export.php';
+		include_once MD_DIR . 'api/dropins/manage.php';
+		include_once __DIR__ . '/dashboard.php';
+		include_once __DIR__ . '/icons.php';
+		include_once __DIR__ . '/dropins/dropins.php';
+		include_once __DIR__ . '/dropins/actions.php';
+		include_once __DIR__ . '/page-settings.php';
+		include_once __DIR__ . '/typography.php';
+		include_once __DIR__ . '/design.php';
+		include_once __DIR__ . '/import-export.php';
 	}
 
 	/**
@@ -49,7 +49,7 @@ class md_admin {
 	 */
 
 	public function actions() {
-		include_once 'save-settings.php';
+		include_once __DIR__ . '/save-settings.php';
 
 		$this->save = new md_save;
 		$this->settings = new md_save_settings( $this->save );

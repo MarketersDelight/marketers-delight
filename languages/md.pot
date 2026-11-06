@@ -837,14 +837,14 @@ msgid "Button size"
 msgstr ""
 
 #: admin/templates/fields/link.php:150
-#: api/theme-json.php:131
-#: api/theme-json.php:164
-#: api/theme-json.php:209
+#: api/design/theme-json.php:131
+#: api/design/theme-json.php:164
+#: api/design/theme-json.php:209
 msgid "Small"
 msgstr ""
 
 #: admin/templates/fields/link.php:151
-#: api/theme-json.php:211
+#: api/design/theme-json.php:211
 msgid "Large"
 msgstr ""
 
@@ -1066,7 +1066,7 @@ msgid "Assign custom fonts and fine-tune your website's typography."
 msgstr ""
 
 #: admin/templates/typography.php:13
-#: api/theme-json.php:236
+#: api/design/theme-json.php:236
 msgid "Body"
 msgstr ""
 
@@ -1296,7 +1296,7 @@ msgstr ""
 msgid "Edit %s Settings"
 msgstr ""
 
-#: api/collections/admin.php:78
+#: admin/collections.php:78
 #, php-format
 msgid "%s Details"
 msgstr ""
@@ -1380,36 +1380,36 @@ msgstr ""
 msgid "You cannot create new terms."
 msgstr ""
 
-#: api/compile.php:118
+#: api/assets/compile.php:118
 #, php-format
 msgid "The compiled assets directory could not be created: %s"
 msgstr ""
 
-#: api/compile.php:126
+#: api/assets/compile.php:126
 #, php-format
 msgid "The compiled asset could not be written: %s"
 msgstr ""
 
-#: api/compile.php:132
+#: api/assets/compile.php:132
 #, php-format
 msgid "The existing compiled asset could not be preserved: %s"
 msgstr ""
 
-#: api/compile.php:139
+#: api/assets/compile.php:139
 #, php-format
 msgid "The previous compiled asset could not be restored: %s"
 msgstr ""
 
-#: api/compile.php:141
+#: api/assets/compile.php:141
 #, php-format
 msgid "The compiled asset could not be published: %s"
 msgstr ""
 
-#: api/compile.php:203
+#: api/assets/compile.php:203
 msgid "WordPress could not initialize the filesystem for compiled assets."
 msgstr ""
 
-#: api/compile.php:221
+#: api/assets/compile.php:221
 msgid "Invalid compiled asset filename."
 msgstr ""
 
@@ -1868,87 +1868,87 @@ msgstr ""
 msgid "Please select a dropin to update."
 msgstr ""
 
-#: api/theme-json.php:132
+#: api/design/theme-json.php:132
 msgid "Normal"
 msgstr ""
 
-#: api/theme-json.php:133
+#: api/design/theme-json.php:133
 msgid "Intro"
 msgstr ""
 
-#: api/theme-json.php:137
+#: api/design/theme-json.php:137
 msgid "H6"
 msgstr ""
 
-#: api/theme-json.php:138
+#: api/design/theme-json.php:138
 msgid "H5"
 msgstr ""
 
-#: api/theme-json.php:139
+#: api/design/theme-json.php:139
 msgid "H4"
 msgstr ""
 
-#: api/theme-json.php:140
+#: api/design/theme-json.php:140
 msgid "H3"
 msgstr ""
 
-#: api/theme-json.php:141
+#: api/design/theme-json.php:141
 msgid "H2"
 msgstr ""
 
-#: api/theme-json.php:142
+#: api/design/theme-json.php:142
 msgid "H1"
 msgstr ""
 
-#: api/theme-json.php:151
-#: api/theme-json.php:212
+#: api/design/theme-json.php:151
+#: api/design/theme-json.php:212
 msgid "Huge"
 msgstr ""
 
-#: api/theme-json.php:165
+#: api/design/theme-json.php:165
 msgid "Third"
 msgstr ""
 
-#: api/theme-json.php:166
+#: api/design/theme-json.php:166
 msgid "Half"
 msgstr ""
 
-#: api/theme-json.php:167
+#: api/design/theme-json.php:167
 #: features/byline/admin.php:216
 #: features/byline/admin.php:231
 #: features/layout/admin.php:242
 msgid "Single"
 msgstr ""
 
-#: api/theme-json.php:168
+#: api/design/theme-json.php:168
 msgid "Mid"
 msgstr ""
 
-#: api/theme-json.php:169
+#: api/design/theme-json.php:169
 msgid "Double"
 msgstr ""
 
-#: api/theme-json.php:170
+#: api/design/theme-json.php:170
 msgid "Triple"
 msgstr ""
 
-#: api/theme-json.php:171
+#: api/design/theme-json.php:171
 msgid "Quad"
 msgstr ""
 
-#: api/theme-json.php:194
+#: api/design/theme-json.php:194
 msgid "Rounded"
 msgstr ""
 
-#: api/theme-json.php:210
+#: api/design/theme-json.php:210
 msgid "Medium"
 msgstr ""
 
-#: api/theme-json.php:244
+#: api/design/theme-json.php:244
 msgid "Heading"
 msgstr ""
 
-#: api/walker.php:105
+#: features/header/menu-walker.php:105
 #, php-format
 msgid "Toggle the %s submenu"
 msgstr ""

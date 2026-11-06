@@ -59,7 +59,7 @@
 				<strong class="md-update-name"><?php echo esc_html( $dropin_name ); ?></strong>
 				<span class="md-update-meta"><?php printf( esc_html__( 'Version %s available', 'md' ), esc_html( $dropin_update['new_version'] ) ); ?></span>
 			</div>
-			<a href="<?php echo esc_url( md_dropin_update_url( $dropin_update['slug'] ) ); ?>" class="button md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the Drop-in files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $dropin_name ) ); ?>"><?php esc_html_e( 'Update', 'md' ); ?></a>
+			<a href="<?php echo esc_url( md_dropins::update_url( $dropin_update['slug'] ) ); ?>" class="button md-update-button" data-md-alert="<?php echo esc_attr( sprintf( __( 'NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the Drop-in files in the /md-dropins/ directory will be overwritten with the latest files.', 'md' ), $dropin_name ) ); ?>"><?php esc_html_e( 'Update', 'md' ); ?></a>
 		</div>
 
 		<?php endforeach; ?>

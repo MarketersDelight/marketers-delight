@@ -268,7 +268,7 @@ class md_transfer {
 	 */
 
 	private static function site_entries() {
-		$design = md_design_groups();
+		$design = self::design_groups();
 		$entries = array();
 
 		foreach ( md_register( 'admin_pages' ) as $group => $page ) {
@@ -363,7 +363,7 @@ class md_transfer {
 	 */
 
 	private static function section_fields( $section, $group, $fields ) {
-		$design = md_design_groups();
+		$design = self::design_groups();
 
 		if ( ! isset( $design[$group] ) || $design[$group] === true )
 			return $fields;
@@ -906,26 +906,25 @@ class md_transfer {
 		return $areas;
 	}
 
-}
+	/**
+	 * The one list of what Design is: whole groups, and trees of keys
+	 * inside groups that mix design with site content.
+	 *
+	 * @since 6.2
+	 */
 
-/**
- * The one list of what Design is: whole groups, and trees of keys
- * inside groups that mix design with site content. Export's Design
- * section reads it; so will 6.3's Styles.
- *
- * @since 6.2
- */
+	private static function design_groups() {
+		$type = array_fill_keys( array( 'color', 'font_family', 'font_type', 'font_weight', 'font_size', 'line_height' ), true );
 
-function md_design_groups() {
-	$type = array_fill_keys( array( 'color', 'font_family', 'font_type', 'font_weight', 'font_size', 'line_height' ), true );
+		return array(
+			'colors' => true,
+			'typography' => true,
+			'logo' => array(
+				'logo_width' => true,
+				'site_title' => $type,
+				'site_tagline' => $type
+			)
+		);
+	}
 
-	return array(
-		'colors' => true,
-		'typography' => true,
-		'logo' => array(
-			'logo_width' => true,
-			'site_title' => $type,
-			'site_tagline' => $type
-		)
-	);
 }

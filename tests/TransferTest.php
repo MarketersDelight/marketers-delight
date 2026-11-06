@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_transfer (api/transfer.php): export, read, check and import of
+ * Tests md_transfer (api/save/transfer.php): export, read, check and import of
  * MD settings files, replace and merge modes, refs, widgets, menu
  * locations, drop-in options and the Import & Export handlers.
  *
@@ -135,7 +135,7 @@ if ( ! function_exists( 'wp_normalize_path' ) ) {
 	}
 }
 
-require_once dirname( __DIR__ ) . '/api/transfer.php';
+require_once dirname( __DIR__ ) . '/api/save/transfer.php';
 require_once dirname( __DIR__ ) . '/admin/import-export.php';
 
 class TransferTest extends MD_TestCase {

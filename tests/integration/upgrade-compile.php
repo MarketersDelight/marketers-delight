@@ -10,7 +10,7 @@ function delete_option($key) { unset($GLOBALS['options'][$key]); }
 class WP_Error {}
 function is_wp_error($value) { return $value instanceof WP_Error; }
 function md_compile() { $GLOBALS['compiles']++; return $GLOBALS['compile_result']; }
-require dirname(__DIR__,2).'/api/enqueue.php';
+require dirname(__DIR__,2).'/api/assets/enqueue.php';
 $new_request=function(){return (new ReflectionClass('md_enqueue'))->newInstanceWithoutConstructor();};
 $checks=0;
 $check=function($condition,$message)use(&$checks){if(!$condition)throw new RuntimeException($message);$checks++;};

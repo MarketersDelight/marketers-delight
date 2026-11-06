@@ -2,7 +2,7 @@
 /**
  * Per-type field value sanitizers. Pure functions of (value, field-config)
  * to a clean, storable value — no $_POST, no WP option/meta access. Called
- * from md_validate::validate_field() (api/validate.php), one method per
+ * from md_validate::validate_field() (api/save/validate.php), one method per
  * field type. Most return null when there's no value to save, and the
  * sanitized value otherwise. Empty results are clearing signals removed by
  * md_save rather than values intended for storage.

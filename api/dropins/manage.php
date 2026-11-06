@@ -1,9 +1,9 @@
 <?php
 /**
  * Changing Drop-ins: activate, install, update, delete, claim and
- * validate packages. Loaded with the admin screens; anything else that
- * changes Drop-ins (abilities) includes this file itself. Reading
- * Drop-ins lives in functions/dropin-functions.php.
+ * validate packages. Loaded wherever settings load, so the Drop-ins
+ * screen and abilities share it. Reading Drop-ins lives in
+ * functions/dropin-functions.php.
  *
  * @since 6.2
  */
@@ -127,7 +127,7 @@ function md_install_dropin( $package, $args = array() ) {
 		md_protect_dropin_directory( MD_INSTALLED_DROPINS, $filesystem );
 	}
 
-	require_once MD_DIR . 'admin/dropins/upgrader.php';
+	require_once MD_DIR . 'api/dropins/upgrader.php';
 
 	$skin = $args['skin'] ? $args['skin'] : new WP_Ajax_Upgrader_Skin();
 	$upgrader = new MD_Dropin_Upgrader( $skin );
@@ -186,7 +186,7 @@ function md_upgrade_dropins( $slugs, $skin = null ) {
 		return new WP_Error( 'md_cannot_update', __( 'Sorry, you are not allowed to update Drop-ins.', 'md' ) );
 
 	require_once ABSPATH . 'wp-admin/includes/admin.php';
-	require_once MD_DIR . 'admin/dropins/upgrader.php';
+	require_once MD_DIR . 'api/dropins/upgrader.php';
 
 	$slugs = md_clean_dropin_slugs( $slugs );
 	$upgrader = new MD_Dropin_Upgrader( $skin ? $skin : new Automatic_Upgrader_Skin() );
@@ -326,7 +326,7 @@ function md_install_available_dropin( $slug, $args = array() ) {
 
 	if ( $available[$slug]['status'] === 'included' ) {
 		if ( ! class_exists( 'md_license' ) )
-			require_once MD_DIR . 'admin/license.php';
+			require_once MD_DIR . 'api/license.php';
 
 		$requests = new md_license;
 		$package = $requests->claim_dropin( $slug );
@@ -496,24 +496,4 @@ function md_validate_dropin_package( $directory, $slug ) {
 	$requirements = md_check_dropin_requirements( $details );
 
 	return is_wp_error( $requirements ) ? $requirements : $details;
-}
-
-/**
- * The Update Drop-ins screen URL for one or more Drop-ins.
- *
- * @since 6.2
- */
-
-function md_dropin_update_url( $slugs ) {
-	return wp_nonce_url( self_admin_url( 'update.php?action=update-md-dropins&dropins=' . rawurlencode( implode( ',', (array) $slugs ) ) ), 'bulk-dropins' );
-}
-
-/**
- * The link that activates one installed Drop-in from the list.
- *
- * @since 6.2
- */
-
-function md_dropin_activate_url( $slug ) {
-	return wp_nonce_url( add_query_arg( array( 'action' => 'activate', 'dropin' => $slug ), self_admin_url( 'admin.php?page=md_dropins' ) ), "md-dropin-activate_$slug" );
 }

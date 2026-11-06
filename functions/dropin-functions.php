@@ -3,7 +3,7 @@
  * Reading Drop-ins: which are active, their details, icons and
  * translations, and the daily update check's hooks. Safe to call from
  * anywhere: front end, admin, cron or REST. Functions that change
- * Drop-ins live in admin/dropins/functions.php.
+ * Drop-ins live in api/dropins/manage.php.
  *
  * @since 6.2
  */
@@ -353,7 +353,7 @@ function md_check_dropin_updates() {
 		return 'skipped';
 
 	if ( ! class_exists( 'md_license' ) )
-		require_once MD_DIR . 'admin/license.php';
+		require_once MD_DIR . 'api/license.php';
 
 	$requests = new md_license;
 

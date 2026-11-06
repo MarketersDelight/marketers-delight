@@ -716,12 +716,12 @@ require_once dirname( __DIR__ ) . '/api/api.php';
 require_once dirname( __DIR__ ) . '/api/collections/fields.php';
 require_once dirname( __DIR__ ) . '/api/collections/collections.php';
 require_once dirname( __DIR__ ) . '/api/collections/rest.php';
-require_once dirname( __DIR__ ) . '/api/collections/admin.php';
-require_once dirname( __DIR__ ) . '/api/colors.php';
-require_once dirname( __DIR__ ) . '/api/design.php';
-require_once dirname( __DIR__ ) . '/api/compile.php';
-require_once dirname( __DIR__ ) . '/api/theme-json.php';
-require_once dirname( __DIR__ ) . '/api/css.php';
+require_once dirname( __DIR__ ) . '/admin/collections.php';
+require_once dirname( __DIR__ ) . '/api/design/colors.php';
+require_once dirname( __DIR__ ) . '/api/design/design.php';
+require_once dirname( __DIR__ ) . '/api/assets/compile.php';
+require_once dirname( __DIR__ ) . '/api/design/theme-json.php';
+require_once dirname( __DIR__ ) . '/api/assets/css.php';
 
 /**
  * Base test case: reflection helper for exercising the private merge/

@@ -59,22 +59,22 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
 		require_once MD_DIR . 'functions/design-functions.php';
-		require_once MD_DIR . 'api/compile.php';
-		require_once MD_DIR . 'api/enqueue.php';
+		require_once MD_DIR . 'api/assets/compile.php';
+		require_once MD_DIR . 'api/assets/enqueue.php';
 		require_once MD_DIR . 'api/collections/api.php';
 		require_once MD_DIR . 'api/save/sanitize.php';
 		require_once MD_DIR . 'api/save/validate.php';
 		require_once MD_DIR . 'api/save/scope.php';
 		require_once MD_DIR . 'api/save/save.php';
-		require_once MD_DIR . 'api/colors.php';
-		require_once MD_DIR . 'api/design.php';
-		require_once MD_DIR . 'api/css.php';
-		require_once MD_DIR . 'api/theme-json.php';
-		require_once MD_DIR . 'api/js.php';
+		require_once MD_DIR . 'api/design/colors.php';
+		require_once MD_DIR . 'api/design/design.php';
+		require_once MD_DIR . 'api/assets/css.php';
+		require_once MD_DIR . 'api/design/theme-json.php';
+		require_once MD_DIR . 'api/assets/js.php';
 		require_once MD_DIR . 'api/fields/data.php';
 		require_once MD_DIR . 'api/fields/render.php';
 		require_once MD_DIR . 'api/fields/fields.php';
-		require_once MD_DIR . 'api/walker.php';
+		require_once MD_DIR . 'features/header/menu-walker.php';
 		require_once MD_DIR . 'api/api.php';
 		require_once MD_DIR . 'api/abilities/abilities.php';
 
@@ -83,13 +83,13 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/page-functions.php';
 
 		if ( is_admin() ) {
-			require_once MD_DIR . 'admin/license.php';
-			require_once MD_DIR . 'api/transfer.php';
+			require_once MD_DIR . 'api/license.php';
+			require_once MD_DIR . 'api/save/transfer.php';
 			require_once MD_DIR . 'admin/admin.php';
 		}
 		elseif ( md_loads_settings() ) {
-			require_once MD_DIR . 'api/transfer.php';
-			require_once MD_DIR . 'admin/dropins/functions.php';
+			require_once MD_DIR . 'api/save/transfer.php';
+			require_once MD_DIR . 'api/dropins/manage.php';
 
 			foreach ( array( 'dashboard', 'icons', 'page-settings', 'typography', 'design' ) as $file )
 				require_once MD_DIR . "admin/$file.php";

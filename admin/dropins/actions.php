@@ -3,7 +3,7 @@
  * Everything the Drop-ins screens run: list actions, the Install and
  * Update Drop-ins screens, AJAX uploads and updates, the daily update
  * check and Drop-in counts on Dashboard → Updates. Each calls the
- * operations in admin/dropins/functions.php.
+ * operations in api/dropins/manage.php.
  *
  * @since 6.2
  */
@@ -125,7 +125,7 @@ class md_dropin_actions {
 		$submenu_file = 'md_dropins';
 
 		require_once ABSPATH . 'wp-admin/admin-header.php';
-		require_once MD_DIR . 'admin/dropins/upgrader.php';
+		require_once MD_DIR . 'api/dropins/upgrader.php';
 
 		echo '<div class="wrap' . ( $class ? ' ' . esc_attr( $class ) : '' ) . '"><h1>' . esc_html( $title ) . '</h1>';
 	}
@@ -179,7 +179,7 @@ class md_dropin_actions {
 			if ( is_array( $result ) && $result['active'] )
 				echo '<p>' . esc_html( sprintf( __( '%s is active.', 'md' ), $name ) ) . '</p>';
 			elseif ( is_array( $result ) && current_user_can( 'activate_plugins' ) )
-				echo '<p><a href="' . esc_url( md_dropin_activate_url( $result['slug'] ) ) . '" class="button button-primary">' . esc_html( sprintf( __( 'Activate %s', 'md' ), $name ) ) . '</a></p>';
+				echo '<p><a href="' . esc_url( md_dropins::activate_url( $result['slug'] ) ) . '" class="button button-primary">' . esc_html( sprintf( __( 'Activate %s', 'md' ), $name ) ) . '</a></p>';
 		}
 
 		echo '<p><a href="' . esc_url( md_dropins::url( array( 'dropin_status' => 'inactive' ) ) ) . '">' . esc_html__( 'Go to Drop-ins', 'md' ) . '</a></p>';
@@ -246,7 +246,7 @@ class md_dropin_actions {
 				'data' => $result->get_error_data()
 			), $result->get_error_code() === 'md_dropin_exists' ? 409 : 400 );
 
-		$result['activate_url'] = ! $result['active'] && current_user_can( 'activate_plugins' ) ? md_dropin_activate_url( $result['slug'] ) : '';
+		$result['activate_url'] = ! $result['active'] && current_user_can( 'activate_plugins' ) ? md_dropins::activate_url( $result['slug'] ) : '';
 
 		wp_send_json_success( $result );
 	}
@@ -266,7 +266,7 @@ class md_dropin_actions {
 		if ( ! $slug || empty( $updates["$slug/$slug.php"] ) )
 			wp_send_json_error( array( 'message' => __( 'No update is available for this Drop-in.', 'md' ) ), 400 );
 
-		require_once MD_DIR . 'admin/dropins/upgrader.php';
+		require_once MD_DIR . 'api/dropins/upgrader.php';
 
 		$skin = new WP_Ajax_Upgrader_Skin();
 		$results = md_upgrade_dropins( array( $slug ), $skin );

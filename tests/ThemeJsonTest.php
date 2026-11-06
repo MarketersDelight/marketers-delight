@@ -175,7 +175,7 @@ class ThemeJsonTest extends MD_TestCase {
 			}
 		};
 		$result = ( new md_theme_json )->filter( $data );
-		$source = file_get_contents( dirname( __DIR__ ) . '/api/theme-json.php' );
+		$source = file_get_contents( dirname( __DIR__ ) . '/api/design/theme-json.php' );
 		$bootstrap = file_get_contents( dirname( __DIR__ ) . '/functions.php' );
 
 		$this->assertSame( $data, $result );

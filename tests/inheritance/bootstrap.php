@@ -783,7 +783,7 @@ require_once dirname( __DIR__, 2 ) . '/features/page-cta/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/fields/data.php';
 require_once dirname( __DIR__, 2 ) . '/features/byline/functions.php';
 require_once dirname( __DIR__, 2 ) . '/api/api.php';
-require_once dirname( __DIR__, 2 ) . '/api/colors.php';
+require_once dirname( __DIR__, 2 ) . '/api/design/colors.php';
 require_once dirname( __DIR__, 2 ) . '/functions/design-functions.php';
 
 /**

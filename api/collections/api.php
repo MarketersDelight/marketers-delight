@@ -33,7 +33,7 @@ class md_collections_api {
 		require_once MD_DIR . 'api/collections/collections.php';
 
 		if ( is_admin() )
-			require_once MD_DIR . 'api/collections/admin.php';
+			require_once MD_DIR . 'admin/collections.php';
 
 		foreach ( $collections as $id => $args ) {
 			$collection = new md_collection( $id, $args );

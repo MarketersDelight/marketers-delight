@@ -212,9 +212,8 @@ function md_style( $fields ) {
  */
 
 function md_icons( $show_defaults = null ) {
-	$icons = locate_template( 'api/icons.php', true );
-	$icons = $icons ? include $icons : array();
-	$data = md_setting( array( 'icons', 'data' ), array() );
+	$icons = include MD_DIR . 'api/icons.php';
+	$data =md_setting( array( 'icons', 'data' ), array() );
 	$custom = md_setting( 'custom_icons', array() );
 
 	if ( $show_defaults !== true && ! empty( $custom ) ) {
