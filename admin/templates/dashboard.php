@@ -10,9 +10,11 @@
 
 		<div class="md-dashboard-main">
 
+			<h2 class="md-dashboard-title"><?php echo __( 'General', 'md' ); ?></h2>
+
 			<div class="md-widget md-toggle md-dashboard-card md-site-tools">
 
-				<h3 class="md-widget-title"><?php echo __( 'Site Tools', 'md' ); ?></h3>
+				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-admin-tools', '', 'small' ); ?><span><?php echo __( 'Site Tools', 'md' ); ?><span class="md-widget-description"><?php echo __( 'CSS, 404 page, WordPress cleanup and AI access', 'md' ); ?></span></span></h3>
 
 				<div class="md-tools-row">
 					<?php $this->fields->field( 'css', array(
@@ -44,6 +46,10 @@
 
 			</div>
 
+			<?php if ( has_action( 'md_hook_admin_after_tools' ) || has_action( 'md_hook_admin_settings_groups' ) ) : ?>
+			<h2 class="md-dashboard-title"><?php echo __( 'Drop-ins', 'md' ); ?></h2>
+			<?php endif; ?>
+
 			<?php do_action( 'md_hook_admin_after_tools' ); ?>
 
 			<?php do_action( 'md_hook_admin_settings_groups' ); ?>
@@ -52,9 +58,11 @@
 
 		<div class="md-dashboard-side">
 
+			<h2 class="md-dashboard-title"><?php echo __( 'Widget Areas', 'md' ); ?></h2>
+
 			<div class="md-widget md-toggle md-dashboard-card">
 
-				<h3 class="md-widget-title"><?php echo __( 'Sidebars', 'md' ); ?></h3>
+				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-align-pull-right', '', 'small' ); ?><span><?php echo __( 'Sidebars', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Custom sidebar areas', 'md' ); ?></span></span></h3>
 
 				<p class="md-dashboard-card-description"><?php printf( __( 'Create new sidebar areas to use in the <a href="%s">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens.', 'md' ), admin_url( 'widgets.php' ) ); ?></p>
 
@@ -73,7 +81,7 @@
 
 			<div class="md-widget md-toggle md-dashboard-card">
 
-				<h3 class="md-widget-title"><?php echo __( 'Panels', 'md' ); ?></h3>
+				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-layout', '', 'small' ); ?><span><?php echo __( 'Panels', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Custom widget areas', 'md' ); ?></span></span></h3>
 
 				<p class="md-dashboard-card-description"><?php printf( __( 'Create new Panel areas to use in the <a href="%s">Widgets</a> screen. You can assign custom panels to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens.', 'md' ), admin_url( 'widgets.php' ) ); ?></p>
 

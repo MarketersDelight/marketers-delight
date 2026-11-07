@@ -252,7 +252,7 @@ class md_byline extends md_api {
 		else
 			echo
 				'<div class="md-widget md-toggle mb-single">'.
-				'<h3 class="md-widget-title">' . __( 'Byline', 'md' ) . '</h3>';
+				'<h3 class="md-widget-title"><span>' . __( 'Byline', 'md' ) . '<span class="md-widget-description">' . __( 'Author, date and other post details', 'md' ) . '</span></span></h3>';
 
 		$this->fields->field( 'builder', array(
 			'populate' => ! $screen['is_term'] && ! $screen['is_post'],

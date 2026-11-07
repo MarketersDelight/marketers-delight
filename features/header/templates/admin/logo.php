@@ -38,7 +38,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Site Title', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Site Title', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Color and text of your site name', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -71,7 +71,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Site Tagline', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Site Tagline', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Color and text of your tagline', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 

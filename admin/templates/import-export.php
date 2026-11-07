@@ -28,11 +28,11 @@
 
 	<div class="md-widget md-widget-fill">
 
-		<h3 class="md-widget-title"><?php esc_html_e( 'Export', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php esc_html_e( 'Export', 'md' ); ?><span class="md-widget-description"><?php esc_html_e( 'Download your settings as a file', 'md' ); ?></span></span></h3>
 
 		<form class="md-widget-item" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
-			<p><?php esc_html_e( 'Download this site\'s MD settings as a file. Posts, pages, menus and media go in Tools → Export.', 'md' ); ?></p>
+			<p><?php esc_html_e( 'Posts, pages, menus and media aren\'t in this file. Export those from WordPress under Tools → Export.', 'md' ); ?></p>
 
 			<p><strong><?php esc_html_e( 'Choose what to export:', 'md' ); ?></strong></p>
 
@@ -62,8 +62,11 @@
 	<div class="md-widget md-widget-fill">
 
 		<h3 class="md-widget-title">
-			<?php esc_html_e( 'Import', 'md' ); ?>
-			<span class="md-badge<?php echo $check ? ' is-warning' : ''; ?>"><?php $check ? esc_html_e( 'Step 2 of 2', 'md' ) : esc_html_e( 'Step 1 of 2', 'md' ); ?></span>
+			<span>
+				<?php esc_html_e( 'Import', 'md' ); ?>
+				<span class="md-badge<?php echo $check ? ' is-warning' : ''; ?>"><?php $check ? esc_html_e( 'Step 2 of 2', 'md' ) : esc_html_e( 'Step 1 of 2', 'md' ); ?></span>
+				<span class="md-widget-description"><?php esc_html_e( 'Load settings from an export file', 'md' ); ?></span>
+			</span>
 		</h3>
 
 		<?php if ( ! $check ) : ?>

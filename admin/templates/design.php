@@ -8,7 +8,7 @@
 
 	<div class="md-widget md-toggle md-color-widget mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Color Palette', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Color Palette', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Your brand colors, used across your site', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -66,7 +66,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Site Layout', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Site Layout', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Content, sidebar and site widths', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -123,7 +123,7 @@
 
 	<div class="md-widget md-toggle md-color-widget mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Site Colors', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Site Colors', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Default colors across your site', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item columns-2 columns-single">
 			<?php foreach ( $options['site'] as $field => $opts ) : ?>
@@ -137,7 +137,7 @@
 
 	<div class="md-widget md-toggle md-color-widget mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Actions', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Actions', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Button and status colors', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -163,7 +163,7 @@
 
 	<div class="md-widget md-toggle md-color-widget mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Header and Navigation', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Header and Navigation', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Header, menu and submenu colors', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -199,11 +199,18 @@
 
 	</div>
 
-	<?php foreach ( array( 'content' => __( 'Content', 'md' ), 'sidebar' => __( 'Sidebar', 'md' ), 'panel' => __( 'Panel', 'md' ), 'footer' => __( 'Footer', 'md' ) ) as $group => $label ) : ?>
+	<?php $areas = array(
+		'content' => array( 'label' => __( 'Content', 'md' ), 'description' => __( 'Colors for your posts and pages', 'md' ) ),
+		'sidebar' => array( 'label' => __( 'Sidebar', 'md' ), 'description' => __( 'Colors for your sidebars', 'md' ) ),
+		'panel' => array( 'label' => __( 'Panel', 'md' ), 'description' => __( 'Colors for your panels', 'md' ) ),
+		'footer' => array( 'label' => __( 'Footer', 'md' ), 'description' => __( 'Colors for your site footer', 'md' ) )
+	);
+
+	foreach ( $areas as $group => $area ) : ?>
 
 	<div class="md-widget md-toggle md-color-widget mb-single">
 
-		<h3 class="md-widget-title"><?php echo esc_html( $label ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo esc_html( $area['label'] ); ?><span class="md-widget-description"><?php echo esc_html( $area['description'] ); ?></span></span></h3>
 
 		<div class="md-widget-item columns-2 columns-single">
 			<?php foreach ( $options[$group] as $field => $opts ) : ?>

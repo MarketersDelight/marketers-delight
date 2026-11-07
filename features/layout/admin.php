@@ -334,7 +334,7 @@ class md_layout extends md_api {
 
 	public function admin_fields() { ?>
 		<div class="md-widget md-toggle mb-single">
-			<h3 class="md-widget-title"><?php echo esc_html( $this->name ); ?></h3>
+			<h3 class="md-widget-title"><span><?php echo esc_html( $this->name ); ?><span class="md-widget-description"><?php echo __( 'Header, sidebar, footer and content options', 'md' ); ?></span></span></h3>
 			<div class="md-widget-item">
 				<?php $this->admin_template(); ?>
 			</div>

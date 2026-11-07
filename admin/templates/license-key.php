@@ -17,6 +17,8 @@
 
 	<div class="md-widget-title md-updates-head">
 
+		<?php echo md_dropin_icon_tile( 'dashicons-update', '', 'small' ); ?>
+
 		<h2 class="md-updates-title"><?php echo __( 'Updates', 'md' ); ?></h2>
 
 		<?php if ( $status ) : ?>
@@ -121,7 +123,8 @@
 				'placeholder' => __( 'Enter license key here...', 'md' ),
 				'option' => $is_valid && ! empty( $license['key'] ) ? '••••' . substr( $license['key'], -4 ) : '',
 				'wrap_classes' => 'mb-third',
-				'readonly_after_save' => $is_valid
+				'readonly_after_save' => $is_valid,
+				'attributes' => array( 'name' => '' )
 			) ); ?>
 
 			<div class="md-license-button">

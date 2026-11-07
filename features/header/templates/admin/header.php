@@ -8,7 +8,7 @@
 
 	<div class="md-widget md-toggle">
 
-		<h3 class="md-widget-title"><?php echo __( 'Settings', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Settings', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Display and layout on desktop and mobile', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 

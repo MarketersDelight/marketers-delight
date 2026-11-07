@@ -6,7 +6,7 @@
 
 	<div class="md-widget md-toggle">
 
-		<h3 class="md-widget-title"><?php echo __( 'Manage Icons', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Manage Icons', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Upload your own font icons', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 

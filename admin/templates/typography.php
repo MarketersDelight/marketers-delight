@@ -10,7 +10,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Body', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Body', 'md' ); ?><span class="md-widget-description"><?php echo __( 'The main text across your site', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 			<?php $this->fields->typography( 'body', array(
@@ -34,7 +34,7 @@
 
 		<div class="md-widget md-toggle mb-single">
 
-			<h3 class="md-widget-title"><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?></h3>
+			<h3 class="md-widget-title"><span><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?><?php if ( $h === 'h1' ) : ?><span class="md-widget-description"><?php echo __( 'H2 to H6 inherit this font and weight', 'md' ); ?></span><?php endif; ?></span></h3>
 
 			<div class="md-widget-item">
 
@@ -59,7 +59,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Header', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Header', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Text in your site header', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 			<?php $this->fields->typography( 'header', array(
@@ -76,7 +76,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Sidebar', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Sidebar', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Text in your sidebars', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 			<?php $this->fields->typography( 'sidebar', array(
@@ -93,7 +93,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><?php echo __( 'Footer', 'md' ); ?></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Footer', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Text in your site footer', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 			<?php $this->fields->typography( 'footer', array(
