@@ -426,6 +426,7 @@
 						parent.find( '.md-upload-preview-image img' ).attr( 'src', getUploadPreviewSrc( upload ) );
 					}
 					parent.addClass( 'has-upload' );
+					uploadID[0].dispatchEvent( new Event( 'change', { bubbles: true } ) );
 				});
 				media.open();
 			});
