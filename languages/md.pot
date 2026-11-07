@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-07T03:14:48+00:00\n"
+"POT-Creation-Date: 2026-11-07T03:36:35+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -263,23 +263,29 @@ msgstr ""
 msgid "This license key could not be activated for this site. Check the key or contact MD support."
 msgstr ""
 
-#: admin/design.php:29
+#: admin/design.php:35
+#: admin/design.php:101
+#: api/save/settings-file.php:40
+msgid "Design"
+msgstr ""
+
+#: admin/design.php:63
 msgid "Site Width"
 msgstr ""
 
-#: admin/design.php:33
+#: admin/design.php:67
 msgid "Post Width"
 msgstr ""
 
-#: admin/design.php:37
+#: admin/design.php:71
 msgid "Sidebar Width"
 msgstr ""
 
-#: admin/design.php:47
+#: admin/design.php:81
 msgid "Additional Colors"
 msgstr ""
 
-#: admin/design.php:52
+#: admin/design.php:86
 #: admin/templates/fields/link.php:111
 #: features/header/logo.php:26
 #: features/header/logo.php:36
@@ -287,118 +293,113 @@ msgstr ""
 msgid "Color"
 msgstr ""
 
-#: admin/design.php:56
+#: admin/design.php:90
 #: features/loop/templates/admin/loop.php:165
 msgid "Name"
 msgstr ""
 
-#: admin/design.php:60
+#: admin/design.php:94
 #: api/icons.php:176
 msgid "Key"
 msgstr ""
 
-#: admin/design.php:67
-#: api/save/settings-file.php:40
-msgid "Design"
-msgstr ""
-
-#: admin/design.php:75
+#: admin/design.php:109
 msgid "Site style"
 msgstr ""
 
-#: admin/design.php:175
+#: admin/design.php:209
 msgid "Best contrast on background"
 msgstr ""
 
-#: admin/design.php:190
+#: admin/design.php:224
 msgid "Background"
 msgstr ""
 
-#: admin/design.php:191
+#: admin/design.php:225
 #: api/design/colors.php:304
 msgid "Border"
 msgstr ""
 
-#: admin/design.php:192
+#: admin/design.php:226
 msgid "Box Border"
 msgstr ""
 
-#: admin/design.php:193
+#: admin/design.php:227
 msgid "Content Border"
 msgstr ""
 
-#: admin/design.php:194
+#: admin/design.php:228
 msgid "Content Box"
 msgstr ""
 
-#: admin/design.php:195
+#: admin/design.php:229
 msgid "Contrast Text"
 msgstr ""
 
-#: admin/design.php:196
+#: admin/design.php:230
 msgid "Danger"
 msgstr ""
 
-#: admin/design.php:197
+#: admin/design.php:231
 msgid "Headline Links"
 msgstr ""
 
-#: admin/design.php:198
+#: admin/design.php:232
 msgid "Headlines"
 msgstr ""
 
-#: admin/design.php:199
+#: admin/design.php:233
 msgid "Hover Background"
 msgstr ""
 
-#: admin/design.php:200
+#: admin/design.php:234
 #: features/page-cta/functions.php:84
 msgid "Links"
 msgstr ""
 
-#: admin/design.php:201
+#: admin/design.php:235
 msgid "Links Active"
 msgstr ""
 
-#: admin/design.php:202
+#: admin/design.php:236
 msgid "Links Hover"
 msgstr ""
 
-#: admin/design.php:203
+#: admin/design.php:237
 msgid "Main Background"
 msgstr ""
 
-#: admin/design.php:204
+#: admin/design.php:238
 msgid "Muted Links"
 msgstr ""
 
-#: admin/design.php:205
+#: admin/design.php:239
 #: api/design/colors.php:307
 msgid "Muted Text"
 msgstr ""
 
-#: admin/design.php:206
+#: admin/design.php:240
 msgid "Page Cover Overlay"
 msgstr ""
 
-#: admin/design.php:207
+#: admin/design.php:241
 #: admin/templates/fields/link.php:79
 #: api/design/colors.php:306
 #: features/page-title/text.php:18
 msgid "Text"
 msgstr ""
 
-#: admin/design.php:208
+#: admin/design.php:242
 #: api/fields/fields.php:782
 #: features/loop/templates/admin/loop.php:69
 msgid "Title"
 msgstr ""
 
-#: admin/design.php:209
+#: admin/design.php:243
 msgid "Title Link"
 msgstr ""
 
-#: admin/design.php:210
+#: admin/design.php:244
 msgid "Warning"
 msgstr ""
 
@@ -467,6 +468,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: admin/dropins/dropins.php:31
+#: admin/templates/dashboard.php:50
 #: admin/templates/dropins/core-updates.php:1
 msgid "Drop-ins"
 msgstr ""
@@ -596,7 +598,7 @@ msgstr ""
 
 #: admin/dropins/dropins.php:263
 #: admin/templates/fields/collection.php:37
-#: admin/templates/import-export.php:143
+#: admin/templates/import-export.php:146
 #: features/loop/comments.php:66
 msgid "Cancel"
 msgstr ""
@@ -642,7 +644,7 @@ msgid "Retry"
 msgstr ""
 
 #: admin/dropins/dropins.php:274
-#: admin/templates/license-key.php:27
+#: admin/templates/license-key.php:29
 #, php-format
 msgid "Update all (%d)"
 msgstr ""
@@ -716,7 +718,7 @@ msgid "Deactivate"
 msgstr ""
 
 #: admin/dropins/list-table.php:263
-#: admin/templates/license-key.php:62
+#: admin/templates/license-key.php:64
 msgid "Update"
 msgstr ""
 
@@ -863,61 +865,81 @@ msgstr ""
 msgid "My account"
 msgstr ""
 
-#: admin/templates/dashboard.php:15
+#: admin/templates/dashboard.php:13
+msgid "General"
+msgstr ""
+
+#: admin/templates/dashboard.php:17
 #: features/integrations/templates/admin/integrations.php:19
 msgid "Site Tools"
 msgstr ""
 
-#: admin/templates/dashboard.php:19
+#: admin/templates/dashboard.php:17
+msgid "CSS, 404 page, WordPress cleanup and AI access"
+msgstr ""
+
+#: admin/templates/dashboard.php:21
 #, php-format
 msgid "If using a child theme you can save an extra HTTP request by combining your custom stylesheet with MD's stylesheet file. For further optimization you can print your stylesheets inline to your site's %s."
 msgstr ""
 
-#: admin/templates/dashboard.php:28
+#: admin/templates/dashboard.php:30
 #, php-format
 msgid "<a href=\"%s\">Edit your <strong>404 page</strong> &rarr;</a>"
 msgstr ""
 
-#: admin/templates/dashboard.php:30
+#: admin/templates/dashboard.php:32
 #, php-format
 msgid "Create a custom 404 page by attaching a new <a href=\"%s\">Page ID</a> here."
 msgstr ""
 
-#: admin/templates/dashboard.php:41
+#: admin/templates/dashboard.php:43
 msgid "Apps and AI assistants you sign in with an application password can use actions from MD and its Drop-ins, such as creating a Stream post. Nothing is shared with anyone who isn&rsquo;t signed in."
 msgstr ""
 
-#: admin/templates/dashboard.php:57
+#: admin/templates/dashboard.php:61
+msgid "Widget Areas"
+msgstr ""
+
+#: admin/templates/dashboard.php:65
 msgid "Sidebars"
 msgstr ""
 
-#: admin/templates/dashboard.php:59
+#: admin/templates/dashboard.php:65
+msgid "Custom sidebar areas"
+msgstr ""
+
+#: admin/templates/dashboard.php:67
 #, php-format
 msgid "Create new sidebar areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
 msgstr ""
 
-#: admin/templates/dashboard.php:63
+#: admin/templates/dashboard.php:71
 msgid "New sidebar name"
 msgstr ""
 
-#: admin/templates/dashboard.php:66
+#: admin/templates/dashboard.php:74
 msgid "Enter sidebar name..."
 msgstr ""
 
-#: admin/templates/dashboard.php:76
+#: admin/templates/dashboard.php:84
 msgid "Panels"
 msgstr ""
 
-#: admin/templates/dashboard.php:78
+#: admin/templates/dashboard.php:84
+msgid "Custom widget areas"
+msgstr ""
+
+#: admin/templates/dashboard.php:86
 #, php-format
 msgid "Create new Panel areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom panels to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
 msgstr ""
 
-#: admin/templates/dashboard.php:82
+#: admin/templates/dashboard.php:90
 msgid "New panel name"
 msgstr ""
 
-#: admin/templates/dashboard.php:85
+#: admin/templates/dashboard.php:93
 msgid "Enter panel name..."
 msgstr ""
 
@@ -933,6 +955,10 @@ msgstr ""
 msgid "Color Palette"
 msgstr ""
 
+#: admin/templates/design.php:11
+msgid "Your brand colors, used across your site"
+msgstr ""
+
 #: admin/templates/design.php:15
 msgid "Enter the colors from your brand guide. These colors will be available throughout your website."
 msgstr ""
@@ -943,6 +969,10 @@ msgstr ""
 
 #: admin/templates/design.php:69
 msgid "Site Layout"
+msgstr ""
+
+#: admin/templates/design.php:69
+msgid "Content, sidebar and site widths"
 msgstr ""
 
 #: admin/templates/design.php:74
@@ -966,8 +996,16 @@ msgstr ""
 msgid "Site Colors"
 msgstr ""
 
+#: admin/templates/design.php:126
+msgid "Default colors across your site"
+msgstr ""
+
 #: admin/templates/design.php:140
 msgid "Actions"
+msgstr ""
+
+#: admin/templates/design.php:140
+msgid "Button and status colors"
 msgstr ""
 
 #: admin/templates/design.php:145
@@ -987,6 +1025,10 @@ msgstr ""
 msgid "Header and Navigation"
 msgstr ""
 
+#: admin/templates/design.php:166
+msgid "Header, menu and submenu colors"
+msgstr ""
+
 #: admin/templates/design.php:178
 #: admin/templates/fields/builder-menu.php:6
 #: api/icons.php:209
@@ -999,29 +1041,45 @@ msgstr ""
 msgid "Submenu"
 msgstr ""
 
-#: admin/templates/design.php:202
+#: admin/templates/design.php:203
 #: admin/templates/fields/page.php:18
 #: features/layout/templates/admin/layout.php:157
 #: features/loop/templates/admin/loop.php:234
 msgid "Content"
 msgstr ""
 
-#: admin/templates/design.php:202
+#: admin/templates/design.php:203
+msgid "Colors for your posts and pages"
+msgstr ""
+
+#: admin/templates/design.php:204
 #: admin/templates/typography.php:79
 #: api/icons.php:283
 #: features/layout/admin.php:177
 msgid "Sidebar"
 msgstr ""
 
-#: admin/templates/design.php:202
+#: admin/templates/design.php:204
+msgid "Colors for your sidebars"
+msgstr ""
+
+#: admin/templates/design.php:205
 #: features/layout/admin.php:189
 msgid "Panel"
 msgstr ""
 
-#: admin/templates/design.php:202
+#: admin/templates/design.php:205
+msgid "Colors for your panels"
+msgstr ""
+
+#: admin/templates/design.php:206
 #: admin/templates/typography.php:96
 #: features/layout/templates/admin/layout.php:100
 msgid "Footer"
+msgstr ""
+
+#: admin/templates/design.php:206
+msgid "Colors for your site footer"
 msgstr ""
 
 #: admin/templates/dropins/core-updates.php:5
@@ -1628,6 +1686,10 @@ msgstr ""
 msgid "Manage Icons"
 msgstr ""
 
+#: admin/templates/icons.php:9
+msgid "Upload your own font icons"
+msgstr ""
+
 #: admin/templates/icons.php:19
 msgid "Upload font icons JSON file"
 msgstr ""
@@ -1671,8 +1733,12 @@ msgstr[1] ""
 msgid "Export"
 msgstr ""
 
+#: admin/templates/import-export.php:31
+msgid "Download your settings as a file"
+msgstr ""
+
 #: admin/templates/import-export.php:35
-msgid "Download this site's MD settings as a file. Posts, pages, menus and media go in Tools → Export."
+msgid "Posts, pages, menus and media aren't in this file. Export those from WordPress under Tools → Export."
 msgstr ""
 
 #: admin/templates/import-export.php:37
@@ -1683,77 +1749,81 @@ msgstr ""
 msgid "Integrations, license keys and logo images are never exported."
 msgstr ""
 
-#: admin/templates/import-export.php:65
+#: admin/templates/import-export.php:66
 msgid "Import"
 msgstr ""
 
-#: admin/templates/import-export.php:66
+#: admin/templates/import-export.php:67
 msgid "Step 2 of 2"
 msgstr ""
 
-#: admin/templates/import-export.php:66
+#: admin/templates/import-export.php:67
 msgid "Step 1 of 2"
 msgstr ""
 
-#: admin/templates/import-export.php:73
+#: admin/templates/import-export.php:68
+msgid "Load settings from an export file"
+msgstr ""
+
+#: admin/templates/import-export.php:76
 msgid "Upload an MD settings file, then choose which parts to import. Moving a whole site? First install the same Drop-ins and import the WordPress XML file under Tools → Import."
 msgstr ""
 
-#: admin/templates/import-export.php:80
+#: admin/templates/import-export.php:83
 msgid "Upload"
 msgstr ""
 
-#: admin/templates/import-export.php:88
+#: admin/templates/import-export.php:91
 msgid "Nothing has changed yet."
 msgstr ""
 
-#: admin/templates/import-export.php:88
+#: admin/templates/import-export.php:91
 msgid "Check this file's details, then choose what to import."
 msgstr ""
 
-#: admin/templates/import-export.php:92
+#: admin/templates/import-export.php:95
 msgid "From"
 msgstr ""
 
-#: admin/templates/import-export.php:95
+#: admin/templates/import-export.php:98
 msgid "MD version"
 msgstr ""
 
-#: admin/templates/import-export.php:98
+#: admin/templates/import-export.php:101
 msgid "Exported"
 msgstr ""
 
-#: admin/templates/import-export.php:103
+#: admin/templates/import-export.php:106
 #, php-format
 msgid "%s isn't installed, so its settings will be skipped. Install it under Theme → Drop-ins, then upload the file again."
 msgstr ""
 
-#: admin/templates/import-export.php:108
+#: admin/templates/import-export.php:111
 #, php-format
 msgid "%1$s is inactive, so its settings will be skipped. %2$s, then come back to this page."
 msgstr ""
 
-#: admin/templates/import-export.php:110
+#: admin/templates/import-export.php:113
 msgid "Activate it under Theme → Drop-ins"
 msgstr ""
 
-#: admin/templates/import-export.php:116
+#: admin/templates/import-export.php:119
 msgid "Choose what to import:"
 msgstr ""
 
-#: admin/templates/import-export.php:125
+#: admin/templates/import-export.php:128
 msgid "These can't be imported here:"
 msgstr ""
 
-#: admin/templates/import-export.php:137
+#: admin/templates/import-export.php:140
 msgid "Selected parts replace this site's current values. Back up first to keep a copy of all its MD settings."
 msgstr ""
 
-#: admin/templates/import-export.php:138
+#: admin/templates/import-export.php:141
 msgid "Back up all settings"
 msgstr ""
 
-#: admin/templates/import-export.php:142
+#: admin/templates/import-export.php:145
 msgid "Finish import"
 msgstr ""
 
@@ -1764,79 +1834,79 @@ msgid_plural "%d Updates"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/templates/license-key.php:20
+#: admin/templates/license-key.php:22
 msgid "Updates"
 msgstr ""
 
-#: admin/templates/license-key.php:40
+#: admin/templates/license-key.php:42
 #, php-format
 msgid "%1$s %2$s available"
 msgstr ""
 
-#: admin/templates/license-key.php:41
+#: admin/templates/license-key.php:43
 msgid "Updated last, after your Drop-ins."
 msgstr ""
 
-#: admin/templates/license-key.php:43
+#: admin/templates/license-key.php:45
 msgid "NOTICE: You are about to update the Marketers Delight WordPress theme files. Any changes made directly to the MD parent theme will be erased. Your child theme files will always remain untouched."
 msgstr ""
 
-#: admin/templates/license-key.php:43
+#: admin/templates/license-key.php:45
 msgid "Update theme"
-msgstr ""
-
-#: admin/templates/license-key.php:60
-#, php-format
-msgid "Version %s available"
 msgstr ""
 
 #: admin/templates/license-key.php:62
 #, php-format
+msgid "Version %s available"
+msgstr ""
+
+#: admin/templates/license-key.php:64
+#, php-format
 msgid "NOTICE: You are about to upgrade to the latest version of %s. Any changes made directly to the Drop-in files in the /md-dropins/ directory will be overwritten with the latest files."
 msgstr ""
 
-#: admin/templates/license-key.php:76
+#: admin/templates/license-key.php:78
 #, php-format
 msgid "Marketers Delight %s and all Drop-ins are up to date."
 msgstr ""
 
-#: admin/templates/license-key.php:78
+#: admin/templates/license-key.php:80
 msgid "Just checked: no updates are available."
 msgstr ""
 
-#: admin/templates/license-key.php:93
+#: admin/templates/license-key.php:95
 msgid "Could not check for updates right now. Please try again."
 msgstr ""
 
-#: admin/templates/license-key.php:100
+#: admin/templates/license-key.php:102
 msgid "View changelog"
 msgstr ""
 
-#: admin/templates/license-key.php:105
+#: admin/templates/license-key.php:107
 msgid "Check for updates"
 msgstr ""
 
-#: admin/templates/license-key.php:107
+#: admin/templates/license-key.php:109
 msgid "Edit site license"
 msgstr ""
 
-#: admin/templates/license-key.php:120
+#: admin/templates/license-key.php:122
 msgid "Enter MD license key"
 msgstr ""
 
-#: admin/templates/license-key.php:121
+#: admin/templates/license-key.php:123
 msgid "Enter license key here..."
 msgstr ""
 
-#: admin/templates/license-key.php:128
+#: admin/templates/license-key.php:131
 msgid "Activate license key"
 msgstr ""
 
-#: admin/templates/license-key.php:129
+#: admin/templates/license-key.php:132
 msgid "NOTICE: you are about to disconnect this domain from your MD account and will stop receiving one-click updates to this website. Are you sure?"
 msgstr ""
 
-#: admin/templates/license-key.php:129
+#: admin/templates/license-key.php:132
 msgid "Deactivate site"
 msgstr ""
 
@@ -1853,6 +1923,10 @@ msgstr ""
 msgid "Body"
 msgstr ""
 
+#: admin/templates/typography.php:13
+msgid "The main text across your site"
+msgstr ""
+
 #: admin/templates/typography.php:32
 msgid "Inherit from body"
 msgstr ""
@@ -1866,6 +1940,10 @@ msgstr ""
 msgid "Headline (%s)"
 msgstr ""
 
+#: admin/templates/typography.php:37
+msgid "H2 to H6 inherit this font and weight"
+msgstr ""
+
 #: admin/templates/typography.php:62
 #: features/header/admin.php:37
 #: features/header/templates/admin/header.php:3
@@ -1873,6 +1951,18 @@ msgstr ""
 #: features/header/templates/admin/header.php:81
 #: features/layout/templates/admin/layout.php:10
 msgid "Header"
+msgstr ""
+
+#: admin/templates/typography.php:62
+msgid "Text in your site header"
+msgstr ""
+
+#: admin/templates/typography.php:79
+msgid "Text in your sidebars"
+msgstr ""
+
+#: admin/templates/typography.php:96
+msgid "Text in your site footer"
 msgstr ""
 
 #: admin/typography.php:33
@@ -3699,6 +3789,10 @@ msgstr ""
 msgid "Byline items shown on single post pages."
 msgstr ""
 
+#: features/byline/admin.php:255
+msgid "Author, date and other post details"
+msgstr ""
+
 #: features/byline/admin.php:260
 msgid "Edit Byline"
 msgstr ""
@@ -3988,6 +4082,10 @@ msgstr ""
 msgid "Customize your header with the header builder and layout options."
 msgstr ""
 
+#: features/header/templates/admin/header.php:11
+msgid "Display and layout on desktop and mobile"
+msgstr ""
+
 #: features/header/templates/admin/header.php:27
 msgid "Header Left"
 msgstr ""
@@ -4053,8 +4151,16 @@ msgstr ""
 msgid "<b>Tip:</b> Use custom HTML here, including <a href=\"%s\" target=\"_blank\">MD helper classes</a>."
 msgstr ""
 
+#: features/header/templates/admin/logo.php:41
+msgid "Color and text of your site name"
+msgstr ""
+
 #: features/header/templates/admin/logo.php:49
 msgid "Header Text"
+msgstr ""
+
+#: features/header/templates/admin/logo.php:74
+msgid "Color and text of your tagline"
 msgstr ""
 
 #: features/header/templates/admin/logo.php:82
@@ -4206,6 +4312,10 @@ msgstr ""
 
 #: features/layout/admin.php:286
 msgid "Categories"
+msgstr ""
+
+#: features/layout/admin.php:337
+msgid "Header, sidebar, footer and content options"
 msgstr ""
 
 #: features/layout/admin.php:392
@@ -4569,6 +4679,10 @@ msgstr ""
 
 #: features/loop/admin.php:243
 msgid "Hide child categories"
+msgstr ""
+
+#: features/loop/admin.php:247
+msgid "Which posts show and how they look"
 msgstr ""
 
 #: features/loop/comments.php:62
@@ -5108,6 +5222,11 @@ msgstr ""
 
 #: features/page-title/admin.php:37
 msgid "Featured"
+msgstr ""
+
+#: features/page-title/admin.php:57
+#: features/page-title/admin.php:88
+msgid "Title, intro text, media and call to action"
 msgstr ""
 
 #: features/page-title/admin.php:91
