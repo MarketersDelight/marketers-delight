@@ -107,7 +107,7 @@
 
 			</div>
 
-			<div class="columns-2 columns-single md-full-select gap-third">
+			<div class="columns-3 columns-single md-full-select gap-third">
 
 			<div class="col">
 				<?php $this->fields->field( 'exclude_posts', array(
@@ -123,7 +123,9 @@
 					'placeholder' => '3, 17',
 					'inherit' => true
 				) ); ?>
+			</div>
 
+			<div class="col">
 				<?php $this->fields->field( 'classes', array(
 					'description' => __( 'Add your own CSS classes to this loop.', 'md' ),
 					'inherit' => true
