@@ -102,7 +102,7 @@
 	text-decoration: none;
 }
 
-.comment-controls a:hover { background-color: rgba(0, 0, 0, 0.05); }
+.comment-controls a:hover { background-color: var(--md-tint); }
 
 .comment-controls i {
 	font-size: 0.85em;
@@ -152,7 +152,7 @@
 /* TIMELINE */
 
 .comment-timeline {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: var(--md-tint);
 	display: block;
 	height: 100%;
 	position: absolute;

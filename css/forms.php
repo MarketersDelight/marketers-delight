@@ -30,7 +30,7 @@ input[type="text"], input[type="url"], input[type="email"], input[type="search"]
 
 input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
-	outline: none;
+	outline: 2px solid var(--md-links);
 }
 
 input.no-style, input.no-style:focus {
@@ -39,6 +39,7 @@ input.no-style, input.no-style:focus {
 	border: 0;
 	box-shadow: none;
 	padding: 0;
+	outline: none;
 }
 
 textarea {
@@ -94,7 +95,7 @@ select {
 .form-style .input { padding-inline-start: var(--md-half); }
 
 .form-style .input-icon {
-	background-color: rgba(0, 0, 0, 0.15);
+	background-color: var(--md-tint-strong);
 	border-inline-end: 1px solid var(--md-border);
 	border-radius: var(--md-border-radius) 0 0 var(--md-border-radius);
 	padding-inline-end: var(--md-half);

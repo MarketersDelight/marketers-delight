@@ -33,7 +33,7 @@
 	font-size: var(--md-h6);
 }
 
-.close:hover { background-color: rgba(0, 0, 0, 0.2); }
+.close:hover { background-color: var(--md-tint-strong); }
 
 /* SCROLLER */
 
@@ -275,7 +275,7 @@
 
 .wp-block-details summary::after {
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.06);
+	background-color: var(--md-tint);
 	border-radius: 50%;
 	content: '+';
 	display: flex;

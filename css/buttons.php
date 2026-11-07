@@ -154,7 +154,7 @@ input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform:
 .button.button-cancel { background-color: var(--md-color-danger); }
 
 .button.button-disabled {
-	background-color: #999;
+	background-color: color-mix(in srgb, var(--md-text) 45%, transparent);
 	cursor: not-allowed;
 }
 

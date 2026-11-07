@@ -48,12 +48,12 @@ pre {
 }
 
 code, pre {
-	color: #3e3e3e;
+	color: var(--md-text);
 	font-family: Consolas, Monaco, Menlo, Courier, Verdana, sans-serif;
 }
 
 :not(pre) > code, pre {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: var(--md-tint);
 	font-size: 0.9em;
 }
 
@@ -99,7 +99,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 .list-links li:last-child a { border-block-end: 0; }
 
 .list-check li:before {
-	background-color: rgba(0, 0, 0, 0.08);
+	background-color: var(--md-tint);
 	border-radius: 50%;
 	color: var(--md-action-primary);
 	margin-inline: -<?php echo $single + $small + 2; ?>px var(--md-third);
@@ -146,7 +146,7 @@ blockquote {
 }
 
 blockquote:before, blockquote:after {
-	color: #ddd;
+	color: var(--md-border);
 	font-family: Georgia, serif;
 	font-size: var(--md-huge);
 	font-weight: var(--md-bold);

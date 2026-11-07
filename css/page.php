@@ -126,7 +126,7 @@
 }
 
 .post-nav-links {
-	background-color: rgba(0, 0, 0, 0.05);
+	background-color: var(--md-tint);
 	border-radius: var(--md-border-radius);
 	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);

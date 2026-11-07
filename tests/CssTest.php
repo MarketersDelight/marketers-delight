@@ -225,6 +225,12 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( '@media (prefers-reduced-motion: reduce)', $helpers );
 	}
 
+	public function test_alert_text_follows_the_highlight_color() {
+		$helpers = $this->source( 'css/helpers.php' );
+
+		$this->assertStringContainsString( "md_color_is_light( \$colors['palette']['highlight'] )", $helpers );
+	}
+
 	public function test_theme_json_presets_have_matching_portable_css_fallbacks() {
 		$json = ( new md_theme_json )->build();
 		$css = $this->render_variables();

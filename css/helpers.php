@@ -81,7 +81,8 @@ cite, .tiny {
 }
 
 .alert {
-	background-color: #fefbd1;
+	background-color: var(--md-color-highlight);
+	color: <?php echo md_color_is_light( $colors['palette']['highlight'] ) ? '#1E1E1E' : '#FFFFFF'; ?>;
 	border-radius: var(--md-border-radius);
 	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
@@ -144,7 +145,7 @@ cite, .tiny {
 }
 
 .circle-icon, a.circle-icon {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: var(--md-tint);
 	border-radius: 50%;
 	color: var(--md-text);
 	height: var(--md-single);
@@ -152,7 +153,7 @@ cite, .tiny {
 }
 
 .square-icon, a.square-icon {
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: var(--md-tint);
 	border-radius: var(--md-border-radius);
 	height: var(--md-mid);
 	width: var(--md-mid);

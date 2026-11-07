@@ -31,7 +31,7 @@
 	transition: var(--md-transition);
 }
 
-.trigger-panel:hover { background-color: rgba(0, 0, 0, 0.08); }
+.trigger-panel:hover { background-color: var(--md-tint); }
 
 /* QUERIES */
 
@@ -48,7 +48,7 @@
 	.panel-left .panel { inset-inline-start: calc(-1 * var(--md-width-panel)); }
 	.panel-right .panel { inset-inline-end: calc(-1 * var(--md-width-panel)); }
 	.toggle-panel[class*="from-"] { overflow: hidden; }
-	.toggle-panel[class*="from-"] .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.toggle-panel[class*="from-"] .trigger-panel { background-color: var(--md-tint); }
 	.panel-left.toggle-panel[class*="from-"] .panel { inset-inline-start: 0; }
 	.panel-right.toggle-panel[class*="from-"] .panel { inset-inline-end: 0; }
 	.panel-overlay {
@@ -98,7 +98,7 @@
 	}
 	.panel-right .panel:after { inset-inline-end: -100vw; }
 	.toggle-panel .panel { display: block; }
-	.toggle-panel .trigger-panel { background-color: rgba(0, 0, 0, 0.08); }
+	.toggle-panel .trigger-panel { background-color: var(--md-tint); }
 	.toggle-panel .inner { max-width: var(--md-width-site-wide); }
 	.toggle-panel .content-wrap {
 		align-items: stretch;

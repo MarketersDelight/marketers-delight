@@ -80,6 +80,8 @@
 	--md-site-headlines: <?php echo $colors['site']['headline_color']; ?>;
 	--md-site-headline-links: <?php echo $colors['site']['headline_link_color']; ?>;
 
+	--md-tint: color-mix(in srgb, currentColor 8%, transparent);
+	--md-tint-strong: color-mix(in srgb, currentColor 15%, transparent);
 	--md-text: var(--md-site-text);
 	--md-text-muted: var(--md-site-text-muted);
 	--md-links: var(--md-site-links);

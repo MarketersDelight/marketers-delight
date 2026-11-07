@@ -111,7 +111,7 @@
 	}
 	.nav-menu .sub-menu .menu-item { align-items: end; }
 	.nav-menu .sub-menu .menu-item:hover {
-		background-color: rgba(0, 0, 0, 0.08);
+		background-color: var(--md-tint);
 		color: var(--md-header-submenu-hover);
 	}
 	.nav-menu .sub-menu .menu-item:first-child:hover { border-radius: var(--md-border-radius) var(--md-border-radius) 0 0; }
@@ -142,7 +142,7 @@
 	/* SUB MENU */
 	.nav-menu .sub-menu { flex-basis: 100%; }
 	.nav-menu .toggle-menu-item > .sub-menu {
-		background-color: rgba(0, 0, 0, 0.08);
+		background-color: var(--md-tint);
 		height: auto;
 		opacity: 1;
 		transition: opacity 200ms linear, transform 200ms ease-out;

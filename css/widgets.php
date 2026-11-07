@@ -87,7 +87,7 @@
 
 #wp-calendar thead th { padding-block: var(--md-third); }
 
-#wp-calendar thead th { background-color: #f9f9f9; }
+#wp-calendar thead th { background-color: var(--md-color-surface); }
 
 #wp-calendar tbody a { font-weight: var(--md-bold); }
 
