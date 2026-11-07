@@ -11,10 +11,25 @@ function md_sanitize_document_title( $title ) {
 }
 
 /**
- * Resolve MD archive titles and guarantee a title for untitled singular posts.
+ * A post's first words, for a title when it has none. Empty for protected
+ * posts, and for posts with no words of their own, like a pasted link.
  *
- * Only the page-specific title part is changed. WordPress remains responsible
- * for the site name, pagination, separator, and other document title parts.
+ * @since 6.2
+ */
+
+function md_first_words( $post, $words = 9 ) {
+	if ( post_password_required( $post ) )
+		return '';
+
+	$text = strip_shortcodes( excerpt_remove_blocks( (string) $post->post_content ) );
+	$text = preg_replace( '#https?://\S+#i', '', wp_strip_all_tags( $text, true ) );
+
+	return md_sanitize_document_title( wp_trim_words( $text, $words, '…' ) );
+}
+
+/**
+ * Resolve MD archive titles and give untitled posts a title: their first words,
+ * else their type's name. WordPress keeps the site name and other title parts.
  *
  * @since 6.0
  */
@@ -29,15 +44,13 @@ function md_document_title_parts( $parts ) {
 
 		if ( is_object( $post ) && ! empty( $post->post_type ) ) {
 			$post_type = get_post_type_object( $post->post_type );
-			$stored_title = isset( $post->post_title ) ? trim( (string) $post->post_title ) : '';
+			$title = md_first_words( $post );
 
-			if ( $stored_title )
-				$title = get_the_title( $post );
-			elseif ( $post_type && ! empty( $post_type->labels->singular_name ) )
+			if ( ! $title && $post_type && ! empty( $post_type->labels->singular_name ) )
 				$title = $post_type->labels->singular_name;
-			elseif ( $post_type && ! empty( $post_type->labels->name ) )
+			elseif ( ! $title && $post_type && ! empty( $post_type->labels->name ) )
 				$title = $post_type->labels->name;
-			else
+			elseif ( ! $title )
 				$title = __( 'Post', 'md' );
 		}
 	}

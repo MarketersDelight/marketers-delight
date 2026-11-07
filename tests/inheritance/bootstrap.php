@@ -536,8 +536,25 @@ function get_comments_number() {
 	return $GLOBALS['__test_query']['comments_number'];
 }
 
-function post_password_required() {
+function post_password_required( $post = null ) {
+	if ( is_object( $post ) )
+		return ! empty( $post->post_password );
+
 	return $GLOBALS['__test_query']['post_password_required'];
+}
+
+function strip_shortcodes( $content ) {
+	return preg_replace( '/\[[^\]]+\]/', '', $content );
+}
+
+function excerpt_remove_blocks( $content ) {
+	return $content;
+}
+
+function wp_trim_words( $text, $num_words = 55, $more = '…' ) {
+	$words = preg_split( '/\s+/', trim( wp_strip_all_tags( $text ) ), -1, PREG_SPLIT_NO_EMPTY );
+
+	return count( $words ) > $num_words ? implode( ' ', array_slice( $words, 0, $num_words ) ) . $more : implode( ' ', $words );
 }
 
 function get_query_var( $var ) {

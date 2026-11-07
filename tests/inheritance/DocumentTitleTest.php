@@ -6,7 +6,8 @@ class DocumentTitleTest extends MD_InheritanceTestCase {
 		$post = (object) array(
 			'ID' => 25,
 			'post_type' => 'book_quote',
-			'post_title' => ''
+			'post_title' => '',
+			'post_content' => ''
 		);
 
 		md_test_set_post_type_object( 'book_quote', 'Book Highlights', true, false, 'Book Highlight' );
@@ -21,6 +22,51 @@ class DocumentTitleTest extends MD_InheritanceTestCase {
 
 		$this->assertSame( 'Book Highlight', $parts['title'] );
 		$this->assertSame( 'Example', $parts['site'] );
+	}
+
+	private function untitled_title( $post ) {
+		md_test_set_post_type_object( 'book_quote', 'Book Highlights', true, false, 'Book Highlight' );
+		md_test_set_query( array(
+			'is_singular' => true,
+			'post_type' => 'book_quote',
+			'queried_object' => $post,
+			'queried_object_id' => 25
+		) );
+
+		return md_document_title_parts( array( 'title' => '', 'site' => 'Example' ) )['title'];
+	}
+
+	public function test_untitled_post_uses_its_first_words() {
+		$title = $this->untitled_title( (object) array(
+			'post_type' => 'book_quote',
+			'post_content' => '<p>You do not <em>rise</em> to the level of your goals, you fall to your systems.</p>'
+		) );
+
+		$this->assertSame( 'You do not rise to the level of your…', $title );
+	}
+
+	public function test_first_words_skip_links_and_shortcodes() {
+		$title = $this->untitled_title( (object) array(
+			'post_type' => 'book_quote',
+			'post_content' => '[gallery ids="1"] https://example.test/a Shipped it today'
+		) );
+
+		$this->assertSame( 'Shipped it today', $title );
+	}
+
+	public function test_a_post_that_is_only_a_link_uses_the_label() {
+		$this->assertSame( 'Book Highlight', $this->untitled_title( (object) array(
+			'post_type' => 'book_quote',
+			'post_content' => 'https://example.test/a'
+		) ) );
+	}
+
+	public function test_password_protected_text_stays_out_of_the_title() {
+		$this->assertSame( 'Book Highlight', $this->untitled_title( (object) array(
+			'post_type' => 'book_quote',
+			'post_content' => 'Secret words',
+			'post_password' => 'pw'
+		) ) );
 	}
 
 	public function test_archive_uses_plaintext_md_page_title() {
@@ -43,7 +89,8 @@ class DocumentTitleTest extends MD_InheritanceTestCase {
 		$post = (object) array(
 			'ID' => 25,
 			'post_type' => 'book_quote',
-			'post_title' => ''
+			'post_title' => '',
+			'post_content' => ''
 		);
 		$api = new class extends md_api {
 			public $post_type = 'book_quote';
