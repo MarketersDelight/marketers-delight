@@ -12,9 +12,8 @@ function md_email_data( $atts = null ) {
 }
 
 /**
- * The Google Fonts stylesheet URL for the fonts and weights in use.
- * Kept so sites that picked Google Fonts before 6.2 keep loading them;
- * 6.2 fonts come from font stacks, the Font Library or the theme.
+ * The Google Fonts URL for the fonts in use, kept for sites that picked them
+ * before 6.2.
  *
  * @since 4.8
  * @deprecated 6.2

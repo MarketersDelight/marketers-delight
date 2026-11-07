@@ -1,26 +1,11 @@
 <?php
 /**
- * Share Marketers Delight actions through the WordPress Abilities API
- * (WordPress 6.9+), so apps and AI assistants can find and use them,
- * including through the MCP Adapter plugin.
+ * Share MD's actions through the WordPress Abilities API (6.9+), so apps and
+ * AI assistants can find and use them, including over the MCP Adapter.
  *
- * A Drop-in extends md_abilities, sets its $slug, and describes its
- * abilities in abilities():
- *
- *     'find-posts' => array(
- *         'label' => __( 'Find posts' ),
- *         'description' => __( 'What it does and when to use it.' ),
- *         'input' => array( JSON Schema ),
- *         'output' => array( JSON Schema ),
- *         'execute' => 'find_posts',     // method on the class
- *         'permission' => 'can_edit',    // method on the class
- *         'readonly' => true,            // only reads; otherwise it adds content
- *         'destructive' => true          // only for abilities that remove content
- *     )
- *
- * The ability registers as md-{$slug}/find-posts. Theme features leave
- * $slug empty and register under the theme's own slug, as
- * marketers-delight/find-posts.
+ * A Drop-in extends md_abilities, sets $slug and describes its abilities in
+ * abilities(). They register as md-{$slug}/name, or marketers-delight/name in
+ * the theme.
  *
  * @since 6.2
  */

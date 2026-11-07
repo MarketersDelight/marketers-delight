@@ -82,10 +82,8 @@ class md_collection {
 	}
 
 	/**
-	 * The wrapper that renders the actual Ccollections meta box,
-	 * including user set custom fields and predefined fields.
-	 * Set meta_only to true when dealing with fields on a post screen,
-	 * not the quick editor.
+	 * Render a Collection item's fields, custom and predefined. Set $meta_only on
+	 * post screens, not the quick editor.
 	 *
 	 * @since 6.0
 	 */
@@ -634,10 +632,9 @@ class md_collection {
 	}
 
 	/**
-	 * Put items in a new reading order, given their IDs. Items are ordered
-	 * by date, so the ones out of order get a date next to their new
-	 * neighbor. It moves whichever way changes the fewest dates, and never
-	 * into the future.
+	 * Put items in a new reading order. Items sort by date, so out-of-order ones
+	 * get a date next to their new neighbor: the fewest changes, never in the
+	 * future.
 	 *
 	 * @since 6.2
 	 */

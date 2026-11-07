@@ -333,11 +333,8 @@ function md_featured_media_fields() {
 }
 
 /**
- * Render the Featured Media settings: the media on the left, its layout
- * on the right. Shared by Featured Media and Section Titles. $args:
- * is_post (posts use their own featured image, so there's no upload),
- * image_only (no Media Type select), position_label (the empty Position
- * choice) and remove (offer "Don't show").
+ * Render Featured Media settings, shared by Featured Media and Section Titles.
+ * $args: is_post, image_only, position_label and remove.
  *
  * @since 6.1
  */

@@ -1,17 +1,11 @@
 <?php
 /**
- * Moves MD's settings between sites as one JSON file: design, theme
- * settings, post type settings, drop-in settings and widgets. Posts,
- * pages, menus and their meta travel in the WordPress XML export; this
- * file carries what that one doesn't.
+ * Moves MD's settings between sites as one JSON file: design, theme, post type
+ * and drop-in settings, and widgets. Content and menus travel in WordPress's
+ * XML export.
  *
- *   export( $sections )        — build a file from this site
- *   read( $json )              — decode an uploaded file
- *   check( $file )             — what a file holds, for the check step
- *   import( $file, $parts )    — write the selected parts through md_save::apply()
- *
- * Every value goes through apply(), so this class builds input and
- * reports, it doesn't validate.
+ * export() builds a file, read() decodes one, check() says what it holds and
+ * import() writes parts through md_save::apply(), which does the validating.
  *
  * @since 6.2
  */
@@ -157,12 +151,9 @@ class md_transfer {
 	}
 
 	/**
-	 * Import a file's selected parts. $parts lists part keys from check(),
-	 * all by default. Returns the parts imported and what was skipped.
-	 *
-	 * Fields can list values the same file brings (custom sidebars, palette
-	 * colors, Share icons). So settings save twice, rebuilding fields in
-	 * between, and only the second pass's skips are reported.
+	 * Import a file's selected parts and report what was skipped. Settings save
+	 * twice, rebuilding fields between, since fields can list values the same
+	 * file brings.
 	 *
 	 * @since 6.2
 	 */
@@ -214,10 +205,9 @@ class md_transfer {
 	}
 
 	/**
-	 * Replace mode: the file's values, plus null for every registered
-	 * field this site has stored and the file doesn't, so the group ends
-	 * up matching the file. Only registered keys get null, so taxonomy
-	 * branches stored inside a post type's branch stay.
+	 * Replace mode: the file's values, plus null for each registered field stored
+	 * here and not in the file. Taxonomy branches inside a post type's branch
+	 * stay.
 	 *
 	 * @since 6.2
 	 */
@@ -259,10 +249,9 @@ class md_transfer {
 	}
 
 	/**
-	 * Site settings groups and the section each exports to: whole design
-	 * groups to Design, the theme's other groups to Theme settings, drop-in
-	 * groups to Drop-in settings. A group with design keys inside (logo) is
-	 * split between Design and Theme settings.
+	 * Site settings groups and the section each exports to: Design, Theme
+	 * settings or Drop-in settings. A mixed group, ex: logo, is split between
+	 * Design and Theme settings.
 	 *
 	 * @since 6.2
 	 */

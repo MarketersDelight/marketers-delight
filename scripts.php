@@ -1,18 +1,8 @@
 <script>
 <?php
 /**
- * This file compiles to scripts.js to serve to the frontend.
- *
- * Use Conditional Logic to write dynamic JS and get values from
- * the database and user settings. Not conditional on a per-page basis.
- *
- * To re-build the JS file, press the Save button on any MD options screen.
- *
- * Or, use the md_compile_js(); function into your child theme/dropin/plugin
- * to rebuild scripts.js with new code.
- *
- * Tip: Use md_compile(); to rebuild both CSS and JS.
- * Remove: Remove compile functions when done adding custom code.
+ * Compiles to scripts.js. Saving any MD screen or calling md_compile_js()
+ * rebuilds it, so conditions here run per site, not per page.
  *
  * @since 5.5
  */

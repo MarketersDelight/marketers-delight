@@ -273,13 +273,9 @@ function md_layout_areas( $layout = 'sidebar', $keys = null ) {
 }
 
 /**
- * Users can override layout elements on Single views based on
- * Term-level settings (example: show Sidebar X on all Posts in
- * Category Y).
- *
- * Taxonomies are checked in their registered order. Within each taxonomy,
- * the deepest configured term wins, with term ID as a stable tie-breaker.
- * Filter `md_layout_taxonomies` to change taxonomy priority.
+ * Find the term-level layout override for a single, ex: Sidebar X on all Posts
+ * in Category Y. The deepest term wins; md_layout_taxonomies sets taxonomy
+ * priority.
  *
  * @since 6.0
  */

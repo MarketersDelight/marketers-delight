@@ -103,12 +103,8 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Versatile in nature, this is the method called to load every field
-	 * within the MD API. To support many nested option formats field()
-	 * switches up how it processes data based on the user's needs.
-	 * In its simplest form, field accepts the field name ($field) and an array
-	 * of arguments ($args), but to create different option groups per page
-	 * the argument names get switched up between $parent, $fields, and $args.
+	 * Load any MD field. Takes a field name and arguments, which switch between
+	 * $parent, $fields and $args to create option groups per page.
 	 *
 	 * @since 4.0
 	 */
@@ -251,10 +247,9 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * What a field's registration says about how it draws, for the keys
-	 * the template didn't pass: its type, label, limits and labeled
-	 * options (see md_validate::FIELD_KEYS). A list of option values has
-	 * no labels to draw, so those stay with the template.
+	 * What a field's registration says about how it draws, for keys the template
+	 * didn't pass. A list of option values has no labels, so those stay with the
+	 * template.
 	 *
 	 * @since 6.2
 	 */
@@ -659,10 +654,9 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Renders two checkbox groups for visibility conditions — one for PHP-gated
-	 * conditions (check), one for CSS-based visibility (class). Reusable across
-	 * any admin field template. Field paths are passed directly so this works
-	 * in any context regardless of field group structure.
+	 * Render checkbox groups for visibility conditions: PHP-gated (check) and
+	 * CSS-based (class). Field paths are passed directly, so it works in any
+	 * field group.
 	 *
 	 * @since 6.0
 	 */

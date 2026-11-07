@@ -70,11 +70,8 @@ function md_get_cta( $context = 'post' ) {
 }
 
 /**
- * CTA types with their labels, save rules, and admin panels. Drop-ins add
- * their own types through the md_page_cta_types filter. A type's
- * admin_callback gets ( $fields, $prefix ) and renders its fields with
- * $fields, which saves wherever the CTA settings live (Page CTA, or a
- * Section Title row).
+ * CTA types with their labels, save rules and admin panels. Drop-ins add types
+ * through md_page_cta_types; admin_callback gets ( $fields, $prefix ).
  *
  * @since 6.1
  */
@@ -139,10 +136,8 @@ function md_page_cta_fields() {
 }
 
 /**
- * Render the CTA type select and each type's panel. With $inherit, an
- * empty select names the CTA it inherits, like "Use default (Email
- * Form)"; settings that don't inherit, like a Section Title row, pass
- * false.
+ * Render the CTA type select and each type's panel. With $inherit, an empty
+ * select names the CTA it inherits.
  *
  * @since 6.1
  */

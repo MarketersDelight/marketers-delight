@@ -320,10 +320,7 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Registers a Twitter user profile field. If Yoast SEO is enabled,
-	 * this field will not register and we'll just use the Twitter field
-	 * Yoast registers in their plugin. The user will never notice the
-	 * transition or need to reinsert their Twitter username to the field.
+	 * Register a Twitter profile field, unless Yoast SEO already adds one.
 	 *
 	 * @since 4.1
 	 */

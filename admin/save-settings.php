@@ -1,20 +1,10 @@
 <?php
 /**
- * Saves MD forms. Every field is named md[scope][group][...], so each
- * group goes to md_save::apply() for the scope it names.
+ * Saves MD forms. Every field is named md[scope][group][...], so each group
+ * goes to md_save::apply() for the scope it names.
  *
- * Saving:
- *   load() -> save_screen()   — settings screens post back to their own URL,
- *                               save on its load hook and redirect back
- *   meta_save(), term_save(), user_meta_save()
- *                             — meta boxes, term and user screens, on their
- *                               WordPress save hooks
- *
- * Drawing the form (admin/templates/admin.php):
- *   fields(), url()           — the form's hidden fields and action
- *   bar(), actions()          — the sticky save bar: sub-tabs, status and Save
- *   close_form()              — adds the save bar where no header printed it,
- *                               and the fingerprint live saving compares
+ * It also draws what forms need to save: the hidden fields, the sticky save
+ * bar and the fingerprint live saving compares.
  *
  * @since 6.2
  */
@@ -62,10 +52,8 @@ class md_save_settings {
 	}
 
 	/**
-	 * Save what the form posted: each field is named md[scope][group][...],
-	 * so every group saves to the scope it names. Settings screens save
-	 * site, post type and taxonomy settings; groups without registered
-	 * fields (ex: Integrations, saved by its own requests) are skipped.
+	 * Save what a settings screen posted, each group to the scope it names.
+	 * Groups without registered fields, ex: Integrations, are skipped.
 	 *
 	 * @since 6.2
 	 */
@@ -211,12 +199,9 @@ class md_save_settings {
 	}
 
 	/**
-	 * The save bar: a screen's title or sub-tabs on the left, its save
-	 * status and Save button on the right. It sticks to the top of the
-	 * screen. Headers print it in place of their tabs row; a screen with
-	 * no header gets it at the top of its form, titled with the screen's
-	 * name (see close_form()). Templates call md_fields::title() for a
-	 * title of their own.
+	 * The sticky save bar: a screen's title or sub-tabs on the left, status and
+	 * Save on the right. Headers print it in place of their tabs row; other
+	 * screens get it from close_form().
 	 *
 	 * @since 6.2
 	 */
@@ -290,11 +275,8 @@ class md_save_settings {
 	}
 
 	/**
-	 * Fingerprint what a screen draws, without its values: its fields,
-	 * their choices, its links and the admin menu. A live save compares
-	 * the screen it loaded with the screen drawn after saving, and reloads
-	 * when they differ, ex: a new popup, a connected integration or a
-	 * switch that adds a tab.
+	 * Fingerprint a screen without its values: fields, choices, links and the
+	 * admin menu. A live save reloads when the screen drawn after saving differs.
 	 *
 	 * @since 6.2
 	 */

@@ -775,10 +775,8 @@ class md_api {
 	}
 
 	/**
-	 * Taxonomy settings pages apply to every term in a post type's taxonomy.
-	 * They inherit admin settings since they live in the Settings API, and thus
-	 * inherit the same group/child structure, with the biggest difference being that
-	 * they must be applied to an accompanying post_types from a register_post_type() call.
+	 * Taxonomy settings apply to every term in a post type's taxonomy. They work
+	 * like admin settings groups, but attach to a post type.
 	 *
 	 * @since 6.0
 	 */
@@ -801,19 +799,9 @@ class md_api {
 	}
 
 	/**
-	 * Wire admin page hooks for this instance based on register['admin_page'] parameters.
-	 * Render admin page settings fields in various nested formats. Based on the extensions
-	 * register() method, admin page fields can render inline, as children, or created as parents.
-	 *
-	 * has_groups : Marks as fields group host and allows children to add themselves.
-	 *              See blog.php for Core example, common pattern in Drop-ins.
-	 *
-	 * group      : Creates the group that can be added to group hosts, will inherit children.
-	 *              See page_settings for example of a Core group.
-	 *
-	 * child_of   : Add fields into a group.
-	 *
-	 * position   : add_action priority, changes the load order (default 10). ignored when child_of set.
+	 * Wire admin page hooks from register['admin_page']. has_groups hosts groups
+	 * (see blog.php), group creates one, child_of adds fields to one and position
+	 * sets the hook priority.
 	 *
 	 * @since 6.0
 	 */
@@ -880,12 +868,8 @@ class md_api {
 	}
 
 	/**
-	 * Meta boxes can be registered outright, or the contents of the post meta
-	 * can be applied to a metagroup with the child_of parameter. Since meta boxes are
-	 * inherently groups, the register() method doesn't need the same parameters as general
-	 * admin settings. Useful for when creating Single settings related to global admin settings.
-	 *
-	 * child_of : Add fields into a group.
+	 * Register a meta box, or add post meta fields to a group with child_of.
+	 * Useful for single settings related to global admin settings.
 	 *
 	 * @since 6.0
 	 */
@@ -928,12 +912,8 @@ class md_api {
 	}
 
 	/**
-	 * Term meta applies to edit category/tags type admin pages, and the WP Term API
-	 * is open like the Settings API but meant to be used contextually like the
-	 * Post Meta API, so registering fields has similar outcomes to both.
-	 *
-	 * child_of : Add fields into a group.
-	 * position : add_action priority, changes the load order (default 100).
+	 * Register term meta for category and tag screens. child_of adds fields to a
+	 * group; position sets the hook priority (default 100).
 	 *
 	 * @since 6.0
 	 */

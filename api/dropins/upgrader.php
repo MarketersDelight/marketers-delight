@@ -4,10 +4,9 @@ require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 require_once __DIR__ . '/upgrader-skin.php';
 
 /**
- * Install and update MD Drop-ins with WordPress's upgrader. Updates run
- * through bulk_upgrade(), modelled on Plugin_Upgrader::bulk_upgrade(),
- * for one Drop-in or many. Use md_install_dropin() and
- * md_upgrade_dropins() rather than this class directly.
+ * Install and update Drop-ins with WordPress's upgrader. Use
+ * md_install_dropin() and md_upgrade_dropins() rather than this class
+ * directly.
  *
  * @since 5.4
  */

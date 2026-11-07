@@ -1,18 +1,10 @@
 <?php
 /**
- * Bootstrap for the Drop-ins manager tests. These run against a real
- * WordPress (the local site this theme sits in, or MD_TEST_WP_LOAD), because
- * installs and updates go through WP_Upgrader and the filesystem API.
+ * Bootstrap for the Drop-ins manager tests, which run on a real WordPress
+ * because installs and updates use WP_Upgrader and the filesystem API.
  *
- * Nothing in that site changes:
- * - Drop-ins install into a temporary folder (MD_INSTALLED_DROPINS is
- *   defined before the theme loads), never the site's md-dropins.
- * - Every option write, from the moment WordPress starts loading, is kept
- *   in memory and read back from there (MD_Dropin_Test_Options). The theme
- *   switches off active Drop-ins it can't find while it loads, and that
- *   write must not reach the database.
- * - Uploads (compiled CSS/JS) go to the temporary folder, and WP-Cron is off.
- * - MD.com and package downloads are mocked.
+ * Nothing in that site changes: Drop-ins and uploads go to a temporary folder,
+ * option writes stay in memory, and MD.com and downloads are mocked.
  *
  * @since 6.2
  */

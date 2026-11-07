@@ -1,16 +1,10 @@
 <?php
 /**
- * Where settings are saved. A scope names a place settings live, and
- * target() finds where one group's values are stored there and the
- * fields registered for them.
+ * Where settings are saved. A scope names a place settings live, and target()
+ * finds where one group's values and fields are.
  *
- *   site                    — the site's settings, an option per group
- *   post_type:NAME          — a post type's settings
- *   taxonomy:POST_TYPE/NAME — a taxonomy's settings, under its post type
- *   post:ID, term:ID, user:ID — one object's meta
- *
- * md_save::apply(), the settings forms and the abilities all read
- * scopes the same way.
+ * Scopes: site, post_type:NAME, taxonomy:POST_TYPE/NAME, post:ID, term:ID and
+ * user:ID. Saves, forms and abilities all read them the same way.
  *
  * @since 6.2
  */

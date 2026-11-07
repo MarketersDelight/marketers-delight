@@ -108,10 +108,9 @@ function md_contrast_text( $bg ) {
 }
 
 /**
- * Read a block's colors into one setting per color: a palette slug or a hex
- * value. Older blocks saved a palette pick beside the color as a slug
- * ({color}Slug) or a class ({color}Class); those win and are removed. An
- * empty color takes its block.json default.
+ * Read a block's colors into one setting per color: a palette slug or hex.
+ * Older {color}Slug and {color}Class values win and are removed; empty takes
+ * block.json's default.
  *
  * @since 6.0.3
  */

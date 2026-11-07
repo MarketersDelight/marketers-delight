@@ -177,10 +177,8 @@ class GetLoopTest extends MD_InheritanceTestCase {
 	}
 
 	/**
-	 * Term-ID fields (category_exclude here): a post-type-tier value does
-	 * NOT leak onto a taxonomy archive -- an ID list meant for the post
-	 * type's own top-level archive may not even reference this term's
-	 * siblings/children.
+	 * A post-type-tier category_exclude doesn't leak onto a taxonomy archive: its
+	 * IDs are meant for the post type's own archive.
 	 */
 
 	public function test_post_type_tier_category_exclude_does_not_leak_onto_taxonomy_archive() {

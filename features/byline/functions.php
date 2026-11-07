@@ -81,12 +81,8 @@ function md_byline( $location = 'before_title', $args = array() ) {
 }
 
 /**
- * Get byline items based on location and source.
- *
- * Accepts: entry_top | before_title | inside_title | after_title | byline_aside |
- * before_content | after_content | entry_footer
- *
- * $args['byline_items'] reuses an already loaded item registry.
+ * Get byline items for a position, ex: entry_top, before_title or
+ * after_content. $args['byline_items'] reuses a loaded item registry.
  *
  * @since 6.0
  */

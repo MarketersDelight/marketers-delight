@@ -28,10 +28,9 @@ function md_check_dropin_requirements( $data ) {
 }
 
 /**
- * Turn Drop-ins on or off in the saved state, with no capability check.
- * Screens, AJAX and abilities call md_activate_dropins() and
- * md_deactivate_dropins() instead. The CSS compiles once, on the next
- * load, however many Drop-ins changed.
+ * Turn Drop-ins on or off in saved state, with no capability check; callers
+ * use md_activate_dropins() and md_deactivate_dropins(). The CSS compiles
+ * once, on the next load.
  *
  * @since 6.2
  */
@@ -173,10 +172,8 @@ function md_install_dropin( $package, $args = array() ) {
 }
 
 /**
- * Update one or more Drop-ins from the packages found by the last update
- * check. Pass a skin to show progress (the Update Drop-ins screen uses
- * Bulk_Dropin_Upgrader_Skin); without one it runs quietly. Returns each
- * slug's result: true, false or a WP_Error.
+ * Update Drop-ins from the last update check's packages. Pass a skin to show
+ * progress. Returns each slug's result: true, false or a WP_Error.
  *
  * @since 6.2
  */
@@ -254,9 +251,8 @@ function md_delete_dropins( $slugs ) {
 
 /**
  * Licensed Drop-ins this site can install but hasn't, from the last update
- * check: claimed ones and ones the plan includes. Pass `upgrade` for the
- * Drop-ins a higher plan would add. Drop-ins MD.com marks as not ready for
- * this MD version are left out. Sites without a license have none.
+ * check. Pass `upgrade` for those a higher plan adds. Sites without a license
+ * have none.
  *
  * @since 6.2
  */
@@ -282,10 +278,8 @@ function md_available_dropins( $statuses = array( 'claimed', 'included' ) ) {
 }
 
 /**
- * Drop-ins a higher plan covers, from the last update check, installed or
- * not, each with `installed` set. Starter sites use it for the upgrade
- * banner: Pro Drop-ins to add, or installed ones a Pro license would keep
- * updated.
+ * Drop-ins a higher plan covers, installed or not, each with `installed` set.
+ * Starter sites use it for the upgrade banner.
  *
  * @since 6.2
  */

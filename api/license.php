@@ -350,11 +350,9 @@ class md_license {
 	}
 
 	/**
-	 * One Drop-in the license can see but this site hasn't installed:
-	 * `claimed` (in the customer's orders, with a package), `included` (the
-	 * plan covers it; MD.com claims it on install) or `upgrade` (a higher
-	 * plan covers it). Responses from before MD.com sent a status only list
-	 * claimed Drop-ins, so a package alone means claimed.
+	 * One Drop-in the license can see but this site hasn't installed, with its
+	 * status: claimed, included or upgrade. A package with no status means
+	 * claimed.
 	 *
 	 * @since 6.2
 	 */

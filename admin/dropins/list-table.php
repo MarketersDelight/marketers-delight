@@ -203,10 +203,8 @@ class md_dropins_list_table extends WP_List_Table {
 	}
 
 	/**
-	 * All / Active / Inactive / Update Available, then Available (licensed,
-	 * not installed) and Pro Drop-ins (a higher plan adds them), as links
-	 * in the header row. The first four filter in place; the last two load
-	 * their rows from MD.com's details.
+	 * The header row's views: All, Active, Inactive and Update Available filter
+	 * in place; Available and Pro Drop-ins load rows from MD.com's details.
 	 *
 	 * @since 6.2
 	 */

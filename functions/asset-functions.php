@@ -1,21 +1,8 @@
 <?php
 /**
- * Call this function to load MD template files. Checks the /templates/ folder
- * in child themes first, if not found loads file from parent theme.
- *
- * As of MD5.2 parent templates can now be stored outside of the main
- * templates folder but still be overridden from the child theme templates folder.
- *
- * For example, to change the path to /wp-content/md-dropins/ for calling Drop-in
- * templates, use the following: md_template( 'dropins', 'admin/meta-box' );
- *
- * Built-in feature templates live with their owner and use the feature slug as
- * the first file segment, ex: md_template( 'features', 'loop/the-post' ).
- * Frontend templates sit at templates/ and admin views at templates/admin/.
- *
- * As of MD6.0, this function no longer looks for the deprecated /content/ folder.
- *
- * Set $path to true to return the file path instead.
+ * Load an MD template, checking the child theme's /templates/ folder first.
+ * $file can name a folder, ex: md_template( 'features', 'loop/the-post' ). Set
+ * $path to true to get the file path.
  *
  * @since 5.0
  */
@@ -229,10 +216,8 @@ function md_compile( $delete = null ) {
 }
 
 /**
- * Use this function to recompile MD's dynamic CSS. Based on user
- * selection, CSS will be recompiled to <head> or printed to
- * style.css. Only call on save actions or in design mode where
- * you need the CSS to be constantly rebuilt. Never run live.
+ * Recompile MD's CSS to <head> or style.css, based on settings. Only call on
+ * save actions or in design mode, never live.
  *
  * @since 4.8
  */

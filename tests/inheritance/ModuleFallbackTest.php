@@ -29,15 +29,8 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 	}
 
 	/**
-	 * LATENT BUG, not a real tiering exception: md_taxonomy_field() and
-	 * md_post_type_field() both accept explicit $post_type/$taxonomy
-	 * arguments so a caller can resolve a value for ANY term, independent of
-	 * what page is currently rendering. md_module()'s taxonomy-tier fallback
-	 * (`md_taxonomy_field( $keys, null )`) does not
-	 * -- it always reads get_queried_object() internally. So calling
-	 * md_module() for a term other than the one actually being viewed
-	 * silently resolves against the WRONG taxonomy context (or none at all),
-	 * unlike the other two cascades which are safe to call for any tier.
+	 * Latent bug: md_module()'s taxonomy tier always reads get_queried_object(),
+	 * so asking about any other term resolves against the wrong context.
 	 */
 
 	public function test_taxonomy_fallback_ignores_the_requested_term_and_uses_current_page_context_instead() {
@@ -84,11 +77,8 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 	}
 
 	/**
-	 * inherit_post_type: false is a deliberate FEATURE (used by Loop's
-	 * term-ID fields), not related to the latent-bug finding above -- when
-	 * neither term_meta nor the taxonomy tier has a value, it stops there
-	 * and returns the bare $default instead of falling through to
-	 * md_post_type_field().
+	 * inherit_post_type: false is a feature, used by Loop's term-ID fields: with
+	 * no term or taxonomy value it returns $default, skipping the post type tier.
 	 */
 
 	public function test_inherit_post_type_false_stops_before_post_type_tier() {
@@ -106,11 +96,8 @@ class ModuleFallbackTest extends MD_InheritanceTestCase {
 	}
 
 	/**
-	 * The singular-branch fix: the is_singular()/is_404() branch used to
-	 * read md_post_meta() only, with no md_post_type_field() fallback --
-	 * unlike every hand-rolled cascade elsewhere in the theme (e.g.
-	 * md_media_position()). Now it falls through the same way the taxonomy
-	 * branch already did.
+	 * The singular branch falls through to the post type tier when post meta is
+	 * unset, the same way the taxonomy branch does.
 	 */
 
 	public function test_singular_branch_falls_through_to_post_type_tier_when_post_meta_unset() {

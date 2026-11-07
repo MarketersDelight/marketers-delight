@@ -1,17 +1,10 @@
 <?php
 /**
- * Walks a registered field schema (from md_register()) against raw input,
- * sanitizing each field via md_sanitize. Handles single fields, nested
- * groups of fields, and clone-style group/builder fields (repeaters).
+ * Checks raw input against a group's registered fields, sanitizing each with
+ * md_sanitize. Handles single fields, nested groups and repeaters.
  *
- * Call chain from the one public entry point:
- *   fields( $input, $fields_schema )                — one group's values
- *     -> validate_fields( $input, $fields_schema )  — recurses per field
- *          -> validate_field( $val, $fields )       — sanitizes one field's value
- *          -> clone_groups( $groups, $item_schema ) — group/builder fields
- *               -> validate_fields( ... )            — validates each item
- *
- * md_save::apply() (api/save/save.php) merges the result over existing data.
+ * fields() is the one way in. md_save::apply() merges what it returns over
+ * what's stored, so nothing here writes to the database.
  *
  * @since 6.0
  */
@@ -82,13 +75,9 @@ class md_validate {
 	}
 
 	/**
-	 * Recursively validates the keys $input gives against $fields_schema,
-	 * in the schema's order. A key left out isn't touched; forms post every
-	 * field they draw (unchecked boxes post an empty value), so a missing
-	 * key only means that field wasn't on the screen. null resets a key.
-	 * A schema entry with a 'type' is one field: group/builder fields go
-	 * through clone_groups(), anything else through validate_field(). A
-	 * schema entry with no 'type' is a nested group of fields and recurses.
+	 * Validate the keys $input gives, in the schema's order. A missing key isn't
+	 * touched and null resets one. A schema entry with no 'type' is a nested
+	 * group.
 	 *
 	 * @since 6.0
 	 */
@@ -149,10 +138,8 @@ class md_validate {
 	}
 
 	/**
-	 * Sanitizes one field's value based on its 'type'. Returns null if the
-	 * value shouldn't be saved (e.g. an upload field with the wrong
-	 * upload_type) — otherwise returns the sanitized value. Empty results
-	 * tell md_save to remove a field that was legitimately cleared.
+	 * Sanitize one field by its type. Returns null when it shouldn't be saved,
+	 * ex: an upload of the wrong type. An empty result removes a cleared field.
 	 *
 	 * @since 5.0
 	 */

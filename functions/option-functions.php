@@ -99,10 +99,9 @@ function md_loads_settings() {
 }
 
 /**
- * Rebuild registered fields from what's saved now. Field options can list
- * saved values (custom sidebars, palette colors, Share icons), and they're
- * built once per request, so a save that adds one needs this before another
- * save can use it.
+ * Rebuild registered fields from what's saved now. Options can list saved
+ * values, ex: custom sidebars, so a save adding one needs this before the
+ * next.
  *
  * @since 6.2
  */
@@ -132,11 +131,8 @@ function md_collections( $id = null ) {
 }
 
 /**
- * Get a normalized field or full item from a registered MD Collection.
- *
- * Collection fields may be backed by native post columns, taxonomies,
- * or registered post meta. This accessor keeps those storage details
- * out of frontend templates.
+ * Get a field or full item from a registered Collection, keeping how it's
+ * stored (post columns, taxonomies or meta) out of templates.
  *
  * @since 6.0
  */
@@ -267,11 +263,9 @@ function md_setting_part( $keys ) {
 }
 
 /**
- * Merge changed top-level branches into the raw stored option before saving.
- *
- * Unlike Settings API form saves, programmatic writes can run on frontend,
- * REST, or early admin requests where the registered sanitize callback is not
- * available to merge a partial option safely.
+ * Merge changed top-level branches into the stored option before saving.
+ * Programmatic writes can run where the sanitize callback that merges partial
+ * options isn't available.
  *
  * @since 6.0
  */

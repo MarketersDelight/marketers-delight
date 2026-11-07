@@ -1,23 +1,10 @@
 <?php
 /**
  * One save path for every MD setting. apply() validates a group's values
- * against its registered fields, merges them over what's stored and
- * writes the result to the option, post, term or user it belongs to.
+ * against its fields, merges them over what's stored and writes the result.
  *
- * The methods below follow apply() in order:
- *
- *   apply( $scope, $group, $input )
- *     -> targets()                              — where each group lives, see md_scope in api/save/scope.php
- *     -> md_validate::fields()                  — the keys given, see api/save/validate.php
- *     -> post_values()                          — post meta filter and per-box permissions
- *     -> md_scope::stored()                     — what's stored now
- *     -> merge_fields() / merge_clone_items()   — the new values over it
- *     -> diff()                                 — what changed, for the result
- *     -> write()                                — update_option / update_metadata
- *     -> after_save()                           — compile CSS/JS, rebuild rewrite rules next request
- *
- * Settings, meta box, term and user forms save through
- * admin/save-settings.php, which calls apply().
+ * The methods below follow apply() in order. Forms reach it through
+ * admin/save-settings.php, and abilities and imports call it directly.
  *
  * @since 6.0
  */
@@ -33,19 +20,9 @@ class md_save {
 	}
 
 	/**
-	 * Save one group's values to a scope. $group can also be a list of
-	 * groups, then $input is keyed by group, ex: every meta box a post
-	 * form submitted. Only the keys given change, and null resets a key.
-	 *
-	 * dry_run     : return what would change without writing anything.
-	 * compile     : run after_save() once the values are written.
-	 * merge_items : group and builder items are added to the stored ones
-	 *               by ID, instead of the given items replacing the list.
-	 * order       : with merge_items, the item IDs of a field in the order
-	 *               they should be, shaped like the values.
-	 *
-	 * Returns array( scope, group, changed => array( key, before, after ), warnings )
-	 * or a WP_Error.
+	 * Save one group's values, or several keyed by group. Only keys given change;
+	 * null resets one. $args: dry_run, compile, merge_items and order. Returns
+	 * scope, group, changed and warnings, or a WP_Error.
 	 *
 	 * @since 6.2
 	 */
@@ -205,11 +182,9 @@ class md_save {
 	}
 
 	/**
-	 * Build input that changes only what's given. In group and builder
-	 * fields, stored items stay, the same ID updates its item, a new ID is
-	 * added, and null removes one. A checkbox keeps its other options. $order
-	 * rearranges a field's items, and IDs it leaves out stay after the ones
-	 * it names.
+	 * Build input that changes only what's given: stored items stay, an ID
+	 * updates or adds one, null removes one. $order rearranges items; IDs it
+	 * omits follow.
 	 *
 	 * @since 6.2
 	 */
@@ -516,10 +491,8 @@ class md_save {
 	}
 
 	/**
-	 * Rebuild what's made from settings on the next request, once
-	 * Drop-ins, post types and fields have loaded with the new settings:
-	 * the compiled CSS/JS (see md_enqueue::compile_after_upgrade()) and
-	 * the rewrite rules, which WordPress rebuilds when they're missing.
+	 * Rebuild what's made from settings on the next request, once everything has
+	 * loaded: compiled CSS/JS and rewrite rules.
 	 *
 	 * @since 6.2
 	 */

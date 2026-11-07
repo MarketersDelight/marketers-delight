@@ -60,10 +60,8 @@ function md_parse_text( $text, $context = '' ) {
 }
 
 /**
- * Word a count from an item's Text and Singular Text settings, falling
- * back to the given singular and plural text. {count} places the number;
- * text without it gets the number in front. Pass $number to print the
- * number with markup of its own.
+ * Word a count from an item's Text and Singular Text settings, else the given
+ * text. {count} places the number; $number prints it with its own markup.
  *
  * @since 6.1
  */

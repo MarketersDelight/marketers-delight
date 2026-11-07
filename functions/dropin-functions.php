@@ -19,10 +19,8 @@ function md_has( $dropin ) {
 }
 
 /**
- * Installed Drop-in slugs in load order, all or only the `active` or
- * `inactive` ones. $dropins holds only site state
- * (`installed[slug][status][enable]`), so the details and load priority
- * come from md_get_dropin_details().
+ * Installed Drop-in slugs in load order: all, `active` or `inactive`. Details
+ * and load priority come from md_get_dropin_details().
  *
  * @since 5.3
  */
@@ -98,10 +96,9 @@ function md_dropin_headers() {
 }
 
 /**
- * Every installed Drop-in's details, or one Drop-in's. Read from the
- * files once per request, like core's get_plugins(), so an edited header
- * shows on the next page load. The front end never calls this: it loads
- * Drop-ins from the active list saved in the main option.
+ * Every installed Drop-in's details, or one's, read from files once per
+ * request. The front end never calls this: it loads from the saved active
+ * list.
  *
  * @since 6.2
  */
@@ -260,10 +257,8 @@ function md_sanitize_dropin_details( $data ) {
 }
 
 /**
- * A Drop-in's icon tile: its dashicon or image file on its colors, as
- * the Drop-ins and Updates screens show it. Drop-ins can put it beside
- * their settings titles. $size: small (24px), large (40px), or the default
- * 32px.
+ * A Drop-in's icon tile, as the Drop-ins and Updates screens show it. $size:
+ * small (24px), large (40px) or the default 32px.
  *
  * @since 6.2
  */

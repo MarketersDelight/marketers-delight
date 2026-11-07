@@ -165,10 +165,8 @@ class md_layout extends md_api {
 	}
 
 	/**
-	 * Layout Toggles are used for Sidebar and Panel, and open to other
-	 * elements. The purpose is to provide a simple way to reuse
-	 * interface options and visibility logic to show layout elements
-	 * across page types (post type, tax, single).
+	 * Shared toggles for showing Sidebar, Panel and other layout elements across
+	 * post types, taxonomies and singles.
 	 *
 	 * @since 6.0
 	 */
