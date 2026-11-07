@@ -294,11 +294,25 @@ class md_design_colors {
 
 	public function base_palette() {
 		$palette = array();
+		$names = array(
+			'background' => __( 'Page', 'md' ),
+			'surface' => __( 'Surface', 'md' ),
+			'card' => __( 'Card', 'md' ),
+			'primary' => __( 'Primary', 'md' ),
+			'secondary' => __( 'Secondary', 'md' ),
+			'tertiary' => __( 'Accent', 'md' ),
+			'divider' => __( 'Border', 'md' ),
+			'highlight' => __( 'Highlight', 'md' ),
+			'text-main' => __( 'Text', 'md' ),
+			'text-secondary' => __( 'Muted Text', 'md' ),
+			'button' => __( 'Button', 'md' ),
+			'white' => __( 'White', 'md' )
+		);
 
 		foreach ( $this->palette as $key => $hex )
 			$palette[$key] = array(
 				'hex' => $hex,
-				'name' => ucwords( str_replace( '-', ' ', $key ) )
+				'name' => $names[$key]
 			);
 
 		$colors = md_setting( 'colors' );
