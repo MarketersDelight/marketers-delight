@@ -45,7 +45,10 @@ $classes = join( ' ', $classes );
 		$button_label = ! empty( $args['button_text'] ) ? $args['button_text'] : __( 'Add New', 'md' );
 		$button_classes = ! empty( $args['classes'] ) ? ' ' . $args['classes'] : '';
 
-		echo '<span class="md-clone-add button' . esc_attr( $button_classes ) . '" data-clone-group="' . esc_attr( "{$this->_id}_{$group_id}" ) . '">' . $button_label . '</span>';
+		if ( ! empty( $args['save_on_add'] ) )
+			echo '<input type="text" class="md-group-add-name regular-text" placeholder="' . esc_attr( isset( $args['add_label'] ) ? $args['add_label'] : '' ) . '" />';
+
+		echo '<span class="md-clone-add button' . esc_attr( $button_classes ) . '" data-clone-group="' . esc_attr( "{$this->_id}_{$group_id}" ) . '"' . ( ! empty( $args['save_on_add'] ) ? ' data-save-on-add="1"' : '' ) . '>' . $button_label . '</span>';
 	} ?>
 
 </div>

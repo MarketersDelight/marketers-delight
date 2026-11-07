@@ -46,7 +46,7 @@ class md_collection_fields extends md_fields_render {
 		$args['attributes'] = $attributes;
 		$this->rendered[$field] = true;
 
-		echo '<div class="md md-collection-control mt-small">';
+		echo '<div class="md md-collection-control mt-small' . ( empty( $args['fit'] ) ? '' : ' is-fit' ) . '">';
 
 		$this->render_field( $name, $id, $option, $args, array( 'md-field', 'md-collection-field' ) );
 

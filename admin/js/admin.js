@@ -54,6 +54,7 @@
 					MD.clone.filter( clone, token );
 					clone.insertAfter( groupID.children( '.md-group' ).last() );
 					clone.removeClass( 'empty' );
+					clone.filter( '.md-toggle' ).addClass( 'open' );
 					clone.show();
 
 					if ( addName.length ) {
@@ -61,13 +62,15 @@
 						addName.val( '' ).focus();
 					}
 					else
-						clone.find( '.md-focus' ).focus();
+						clone.find( '.md-widget-edit input[type="text"], .md-focus' ).first().focus();
 
 					jscolor.install();
 					clone.find( '.md-groups, .md-sort' ).each( function() {
 						new Sortable( this, { handle: '.md-reorder', animation: 150 } );
 					});
-					$( document ).trigger( 'md:clone-added', [ clone ] );
+
+					if ( $( this ).data( 'save-on-add' ) )
+						$( document ).trigger( 'md:clone-added' );
 				});
 				$( document ).on( 'keydown', '.md-group-add-name', function( e ) {
 					if ( e.key !== 'Enter' )
@@ -979,6 +982,7 @@
 				this.fingerprint = this.fingerprintOf( form );
 				this.phase = 'clean';
 				this.text = MDJS.save.clean;
+				this.restorePanels();
 
 				window.addEventListener( 'load', this.remember.bind( this ) );
 				form.addEventListener( 'submit', this.submit.bind( this ) );
@@ -987,7 +991,12 @@
 				$( document ).on( 'md:clone-added', this.added.bind( this ) );
 				form.addEventListener( 'input', this.check.bind( this ) );
 				form.addEventListener( 'change', this.check.bind( this ) );
+				form.addEventListener( 'click', this.check.bind( this ) );
 				new MutationObserver( this.check.bind( this ) ).observe( form, { childList: true, subtree: true } );
+				$( document ).on( 'tinymce-editor-setup', function( e, editor ) {
+					editor.on( 'input change undo redo', this.check.bind( this ) );
+					editor.on( 'keydown', this.shortcut.bind( this ) );
+				}.bind( this ) );
 			},
 			fingerprintOf: function( form ) {
 				return form.elements.md_fingerprint ? form.elements.md_fingerprint.value : '';
@@ -1004,6 +1013,20 @@
 				} );
 
 				return entries.join( '&' );
+			},
+			shape: function( form ) {
+				var parts = [];
+
+				form.querySelectorAll( '[name], option, a[href]' ).forEach( function( el ) {
+					if ( el.tagName !== 'TEXTAREA' && el.closest( '.wp-editor-wrap' ) )
+						return;
+
+					var valued = el.tagName === 'OPTION' || el.type === 'checkbox' || el.type === 'radio';
+
+					parts.push( ( el.getAttribute( 'href' ) || el.name + ( valued ? '=' + el.value : '' ) ).replace( '&settings-updated=true', '' ) );
+				} );
+
+				return parts.join( '\n' );
 			},
 			remember: function() {
 				this.saved = this.values( this.form );
@@ -1047,16 +1070,24 @@
 				e.preventDefault();
 				e.returnValue = '';
 			},
-			added: function( e, clone ) {
-				var name = $( clone ).find( '.md-widget-edit input[type="text"]' ).first();
-
-				if ( ! name.length )
-					return;
-
-				if ( ! name.val() )
-					name.val( ( name.attr( 'placeholder' ) || '' ).replace( /\.+$/, '' ) );
-
+			added: function() {
 				this.save( true );
+			},
+			keepPanels: function() {
+				var names = $( this.form ).find( '.md-toggle.open' ).map( function() {
+					return $( this ).find( '[name]' ).attr( 'name' );
+				} ).get();
+
+				sessionStorage.setItem( 'md-open-panels', JSON.stringify( names ) );
+			},
+			restorePanels: function() {
+				var names = JSON.parse( sessionStorage.getItem( 'md-open-panels' ) ) || [];
+
+				sessionStorage.removeItem( 'md-open-panels' );
+
+				names.forEach( function( name ) {
+					$( this.form.elements[name] ).closest( '.md-toggle' ).addClass( 'open' );
+				}, this );
 			},
 			state: function( phase, message ) {
 				var strings = MDJS.save,
@@ -1115,8 +1146,9 @@
 					if ( ! fresh || error )
 						throw new Error( error ? error.textContent : '' );
 
-					if ( self.fingerprintOf( fresh ) !== self.fingerprint || self.values( fresh ) !== self.values( self.form ) ) {
+					if ( self.fingerprintOf( fresh ) !== self.fingerprint || self.shape( fresh ) !== self.shape( self.form ) || self.values( fresh ) !== self.values( self.form ) ) {
 						self.saved = self.values( self.form );
+						self.keepPanels();
 						window.location.reload();
 						return;
 					}

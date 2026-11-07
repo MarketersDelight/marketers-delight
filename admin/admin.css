@@ -1846,6 +1846,8 @@ body {
 
 .md .md-group-head :is(.md-label-wrap, label) { margin: 0; }
 
+.md .md-group-head .md-group-add-name { flex: 0 1 240px; width: auto; }
+
 .md-meta-box .md-group-head .md-label-wrap { margin-top: 8px; }
 
 .md-meta-box .md-group-head .md-label-wrap label { font-size: 1.4em; }
@@ -2130,25 +2132,28 @@ body {
 
 .md-collection-control .md-label { cursor: pointer; }
 
-.md-collection-details { margin-top: 8px; }
-
-.md-collection-details > summary {
-	cursor: pointer;
-	font-weight: 600;
-	width: fit-content;
-}
-
-.md-collection-details[open] > summary { margin-bottom: 8px; }
-
-.md-collection-details > :not(summary) + :not(summary) { margin-top: 8px; }
-
 .md-collection-field-columns {
-	display: grid;
+	align-items: flex-end;
+	display: flex;
+	flex-wrap: wrap;
 	gap: 8px 12px;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.md-collection-field-columns > .md-collection-control { margin-top: 0; }
+.md-collection-field-columns > .md-collection-control {
+	flex: 1 1 140px;
+	margin-top: 0;
+	min-width: 0;
+}
+
+.md-collection-field-columns > div > .md-collection-control:first-child { margin-top: 0; }
+
+.md-collection-field-columns > div > .md-collection-control + .md-collection-control { margin-top: 16px; }
+
+.md-collection-field-columns > .md-collection-control.is-fit { flex: 0 0 auto; }
+
+.md-collection-field-columns .md-upload.is-single { width: 240px; }
+
+.md-collection-control .md-range { margin-bottom: 0; }
 
 .md-collection-status {
 	min-height: 20px;
@@ -2233,7 +2238,6 @@ body {
 .md-collection-more { text-align: center; }
 
 @media (width <= 600px) {
-	.md-collection-field-columns { grid-template-columns: 1fr; }
 	.md-collection-head { align-items: flex-start; display: block; }
 }
 

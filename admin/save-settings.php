@@ -266,7 +266,7 @@ class md_save_settings {
 		if ( ! preg_match( '/<form id="md-form"[^>]*>/', $html, $form, PREG_OFFSET_CAPTURE ) )
 			return $html;
 
-		$top = '<input type="hidden" name="md_fingerprint" value="' . esc_attr( self::fingerprint( $html ) ) . '" />';
+		$top = '<input type="hidden" name="md_fingerprint" value="' . esc_attr( self::fingerprint() ) . '" />';
 
 		if ( ! self::$bar )
 			$top .= self::bar( '', self::name() );
@@ -275,33 +275,14 @@ class md_save_settings {
 	}
 
 	/**
-	 * Fingerprint a screen without its values: fields, choices, links and the
-	 * admin menu. A live save reloads when the screen drawn after saving differs.
+	 * Fingerprint the admin menu, which a save can change outside the form. A
+	 * live save reloads when this or the form's own fields differ after saving.
 	 *
 	 * @since 6.2
 	 */
 
-	public static function fingerprint( $html ) {
+	public static function fingerprint() {
 		global $menu, $submenu;
-
-		$tags = new WP_HTML_Tag_Processor( $html );
-		$parts = array();
-
-		while ( $tags->next_tag() ) {
-			$tag = $tags->get_tag();
-			$name = (string) $tags->get_attribute( 'name' );
-
-			if ( $tag === 'INPUT' ) {
-				$type = strtolower( (string) $tags->get_attribute( 'type' ) );
-				$parts[] = "input $type $name" . ( in_array( $type, array( 'checkbox', 'radio' ), true ) ? '=' . $tags->get_attribute( 'value' ) : '' );
-			}
-			elseif ( in_array( $tag, array( 'SELECT', 'TEXTAREA', 'BUTTON' ), true ) )
-				$parts[] = strtolower( $tag ) . " $name";
-			elseif ( $tag === 'OPTION' )
-				$parts[] = 'option ' . $tags->get_attribute( 'value' );
-			elseif ( $tag === 'A' )
-				$parts[] = 'a ' . self::fingerprint_url( (string) $tags->get_attribute( 'href' ) );
-		}
 
 		$menu_items = array();
 
@@ -316,7 +297,7 @@ class md_save_settings {
 
 		sort( $menu_items );
 
-		return md5( implode( "\n", array_merge( $parts, $menu_items ) ) );
+		return md5( implode( "\n", $menu_items ) );
 	}
 
 	/**

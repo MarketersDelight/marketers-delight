@@ -53,6 +53,7 @@ class md_collection {
 				'type' => 'select',
 				'label' => __( 'Status', 'md' ),
 				'source' => 'post_status',
+				'fit' => true,
 				'options' => array(
 					'publish' => __( 'Published', 'md' ),
 					'draft' => __( 'Draft', 'md' ),
@@ -67,6 +68,7 @@ class md_collection {
 				'type' => 'date',
 				'label' => __( 'Update Date', 'md' ),
 				'source' => 'post_date',
+				'fit' => true,
 				'default' => current_time( 'Y-m-d' )
 			);
 
