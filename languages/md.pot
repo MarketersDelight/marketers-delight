@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-07T01:05:48+00:00\n"
+"POT-Creation-Date: 2026-11-07T03:14:48+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -17,8 +17,8 @@ msgstr ""
 #. Theme Name of the theme
 #: style.css
 #: admin/templates/admin.php:22
-#: api/abilities/abilities.php:58
-#: marketers-delight.php:236
+#: api/abilities/abilities.php:51
+#: marketers-delight.php:238
 msgid "Marketers Delight"
 msgstr ""
 
@@ -133,7 +133,7 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: admin/collections.php:78
+#: admin/collections.php:81
 #, php-format
 msgid "%s Details"
 msgstr ""
@@ -298,7 +298,7 @@ msgid "Key"
 msgstr ""
 
 #: admin/design.php:67
-#: api/save/settings-file.php:29
+#: api/save/settings-file.php:40
 msgid "Design"
 msgstr ""
 
@@ -315,6 +315,7 @@ msgid "Background"
 msgstr ""
 
 #: admin/design.php:191
+#: api/design/colors.php:304
 msgid "Border"
 msgstr ""
 
@@ -372,6 +373,7 @@ msgid "Muted Links"
 msgstr ""
 
 #: admin/design.php:205
+#: api/design/colors.php:307
 msgid "Muted Text"
 msgstr ""
 
@@ -381,6 +383,7 @@ msgstr ""
 
 #: admin/design.php:207
 #: admin/templates/fields/link.php:79
+#: api/design/colors.php:306
 #: features/page-title/text.php:18
 msgid "Text"
 msgstr ""
@@ -592,7 +595,7 @@ msgid "Replace current with uploaded"
 msgstr ""
 
 #: admin/dropins/dropins.php:263
-#: admin/templates/fields/collection.php:35
+#: admin/templates/fields/collection.php:37
 #: admin/templates/import-export.php:143
 #: features/loop/comments.php:66
 msgid "Cancel"
@@ -720,7 +723,7 @@ msgstr ""
 #: admin/dropins/list-table.php:266
 #: admin/dropins/list-table.php:406
 #: admin/templates/fields/builder-field.php:35
-#: admin/templates/fields/group.php:87
+#: admin/templates/fields/group.php:90
 msgid "Delete"
 msgstr ""
 
@@ -976,7 +979,7 @@ msgid "Secondary Button"
 msgstr ""
 
 #: admin/templates/design.php:147
-#: api/collections/collections.php:51
+#: api/collections/collections.php:54
 msgid "Status"
 msgstr ""
 
@@ -1105,22 +1108,22 @@ msgid "Enter label..."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:26
-#: admin/templates/fields/group.php:76
+#: admin/templates/fields/group.php:79
 msgid "Add subtitle (optional)"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:32
-#: admin/templates/fields/group.php:83
+#: admin/templates/fields/group.php:86
 msgid "Click here to reorder this group."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:37
-#: admin/templates/fields/group.php:89
+#: admin/templates/fields/group.php:92
 msgid "Reorder"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:38
-#: admin/templates/fields/group.php:91
+#: admin/templates/fields/group.php:94
 msgid "Click to toggle"
 msgstr ""
 
@@ -1219,11 +1222,11 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: admin/templates/fields/collection.php:24
+#: admin/templates/fields/collection.php:25
 msgid "Trash"
 msgstr ""
 
-#: admin/templates/fields/collection.php:34
+#: admin/templates/fields/collection.php:36
 #, php-format
 msgid "Save %s"
 msgstr ""
@@ -1270,6 +1273,11 @@ msgstr ""
 #: admin/templates/fields/collections.php:41
 #, php-format
 msgid "No %s have been added yet."
+msgstr ""
+
+#: admin/templates/fields/collections.php:46
+#, php-format
+msgid "Load more %s"
 msgstr ""
 
 #: admin/templates/fields/color.php:15
@@ -1417,15 +1425,15 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: admin/templates/fields/group.php:70
+#: admin/templates/fields/group.php:73
 msgid "New entry..."
 msgstr ""
 
-#: admin/templates/fields/group.php:110
+#: admin/templates/fields/group.php:113
 msgid "New entry name"
 msgstr ""
 
-#: admin/templates/fields/group.php:111
+#: admin/templates/fields/group.php:114
 #: features/layout/templates/admin/layout-toggle.php:43
 msgid "Add"
 msgstr ""
@@ -1491,6 +1499,7 @@ msgid "Text link"
 msgstr ""
 
 #: admin/templates/fields/link.php:103
+#: api/design/colors.php:308
 msgid "Button"
 msgstr ""
 
@@ -1870,137 +1879,137 @@ msgstr ""
 msgid "Typography"
 msgstr ""
 
-#: api/abilities/abilities.php:59
+#: api/abilities/abilities.php:52
 msgid "Actions from the Marketers Delight theme and its Drop-ins."
 msgstr ""
 
-#: api/abilities/abilities.php:177
+#: api/abilities/abilities.php:169
 msgid "Exact text replacements in the content. Each find must appear exactly once."
 msgstr ""
 
-#: api/abilities/abilities.php:200
+#: api/abilities/abilities.php:192
 #, php-format
 msgid "\"%1$s\" appears %2$d times. Use longer text that appears once."
 msgstr ""
 
-#: api/abilities/abilities.php:216
+#: api/abilities/abilities.php:208
 msgid "This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete it permanently. Delete it from wp-admin instead."
 msgstr ""
 
-#: api/abilities/abilities.php:255
+#: api/abilities/abilities.php:247
 msgid "That isn't a date WordPress understands. Use a format like 2026-10-23T09:30:00-05:00."
 msgstr ""
 
-#: api/abilities/abilities.php:259
+#: api/abilities/abilities.php:251
 msgid "The date must be in the past or now."
 msgstr ""
 
-#: api/abilities/content.php:29
+#: api/abilities/content.php:21
 msgid "Taxonomy names and their term names, slugs or IDs, ex: { \"category\": [\"News\"] }."
 msgstr ""
 
-#: api/abilities/content.php:34
+#: api/abilities/content.php:26
 msgid "Find content"
 msgstr ""
 
-#: api/abilities/content.php:35
+#: api/abilities/content.php:27
 msgid "Finds posts, pages, any Drop-in's content, or images (type attachment), including drafts and trash. Give an id to get one item with its full content. Results include IDs for Get settings, Update settings and Find items."
 msgstr ""
 
-#: api/abilities/content.php:43
+#: api/abilities/content.php:35
 msgid "A post type, or attachment for images. Leave out for all content."
 msgstr ""
 
-#: api/abilities/content.php:48
+#: api/abilities/content.php:40
 msgid "Leave out for anything but trash."
 msgstr ""
 
-#: api/abilities/content.php:53
+#: api/abilities/content.php:45
 msgid "A term slug in taxonomy."
 msgstr ""
 
-#: api/abilities/content.php:57
+#: api/abilities/content.php:49
 msgid "Include each result's full content."
 msgstr ""
 
-#: api/abilities/content.php:70
+#: api/abilities/content.php:62
 msgid "Save content"
 msgstr ""
 
-#: api/abilities/content.php:71
+#: api/abilities/content.php:63
 msgid "Creates content when given a type (a draft unless status says otherwise), or changes it when given an id: only what's given changes. terms replaces a taxonomy's terms and add_terms keeps the others. Use edits for small text changes. settings saves MD settings on it in the same call, shaped { group: values }; Describe settings lists them."
 msgstr ""
 
-#: api/abilities/content.php:80
+#: api/abilities/content.php:72
 msgid "Block markup or HTML."
 msgstr ""
 
-#: api/abilities/content.php:89
+#: api/abilities/content.php:81
 msgid "When it was posted, in the past or now."
 msgstr ""
 
-#: api/abilities/content.php:93
+#: api/abilities/content.php:85
 msgid "A Media Library image for the featured image, 0 to remove it."
 msgstr ""
 
-#: api/abilities/content.php:105
+#: api/abilities/content.php:97
 msgid "Trash content"
 msgstr ""
 
-#: api/abilities/content.php:106
+#: api/abilities/content.php:98
 msgid "Moves content to the Trash, or brings it back with restore. Nothing is deleted permanently. Warns about menu items pointing at it."
 msgstr ""
 
-#: api/abilities/content.php:121
+#: api/abilities/content.php:113
 msgid "Find terms"
 msgstr ""
 
-#: api/abilities/content.php:122
+#: api/abilities/content.php:114
 msgid "Lists a taxonomy's terms, ex: its categories or tags, with IDs for term:ID settings."
 msgstr ""
 
-#: api/abilities/content.php:138
+#: api/abilities/content.php:130
 msgid "Save term"
 msgstr ""
 
-#: api/abilities/content.php:139
+#: api/abilities/content.php:131
 msgid "Creates a term, or renames or changes one when given its id."
 msgstr ""
 
-#: api/abilities/content.php:274
+#: api/abilities/content.php:266
 msgid "Give an id to change content, or a post type to create it."
 msgstr ""
 
-#: api/abilities/content.php:297
+#: api/abilities/content.php:289
 msgid "That ID isn't an image in the Media Library. Find content with type attachment lists them."
 msgstr ""
 
-#: api/abilities/content.php:361
+#: api/abilities/content.php:353
 msgid "That content couldn't be changed."
 msgstr ""
 
-#: api/abilities/content.php:366
+#: api/abilities/content.php:358
 #, php-format
 msgid "%d menu item points at this."
 msgid_plural "%d menu items point at this."
 msgstr[0] ""
 msgstr[1] ""
 
-#: api/abilities/content.php:407
+#: api/abilities/content.php:399
 msgid "A new term needs a name."
 msgstr ""
 
-#: api/abilities/content.php:429
+#: api/abilities/content.php:421
 #, php-format
 msgid "%1$s doesn't have a taxonomy named %2$s."
 msgstr ""
 
-#: api/abilities/content.php:432
-#: api/collections/collections.php:697
+#: api/abilities/content.php:424
+#: api/collections/collections.php:730
 msgid "You cannot assign these terms."
 msgstr ""
 
-#: api/abilities/content.php:449
+#: api/abilities/content.php:441
 #, php-format
 msgid "No %1$s term named %2$s. Find terms lists them, and Save term adds one."
 msgstr ""
@@ -2254,46 +2263,51 @@ msgstr ""
 msgid "Changes a sidebar's widgets. widgets is a list of operations: { op: add, type, settings }; { op: update, id, settings }, which changes only the settings given; { op: remove, id }. New widgets go at the end; send order to arrange them."
 msgstr ""
 
-#: api/abilities/site.php:208
+#: api/abilities/site.php:213
 msgid "That menu doesn't exist. Get menu with no input lists them."
 msgstr ""
 
-#: api/abilities/site.php:222
+#: api/abilities/site.php:231
 msgid "Each item needs an op: add, update or remove."
 msgstr ""
 
-#: api/abilities/site.php:228
+#: api/abilities/site.php:258
 #, php-format
 msgid "Menu item %d couldn't be removed."
 msgstr ""
 
-#: api/abilities/site.php:314
+#: api/abilities/site.php:340
 #, php-format
 msgid "This menu has no item with ID %d. Get menu lists its items."
 msgstr ""
 
-#: api/abilities/site.php:357
+#: api/abilities/site.php:383
 #, php-format
 msgid "Points at content with status %s."
 msgstr ""
 
-#: api/abilities/site.php:411
+#: api/abilities/site.php:438
 #, php-format
 msgid "No sidebar named %s. Get widgets lists them."
 msgstr ""
 
-#: api/abilities/site.php:449
+#: api/abilities/site.php:481
 #, php-format
 msgid "No widget type named %s. Get widgets lists them."
 msgstr ""
 
-#: api/abilities/site.php:466
+#: api/abilities/site.php:502
 #, php-format
 msgid "This sidebar has no widget %s."
 msgstr ""
 
-#: api/abilities/site.php:477
+#: api/abilities/site.php:520
 msgid "Each widget needs an op: add, update or remove."
+msgstr ""
+
+#: api/abilities/site.php:546
+#, php-format
+msgid "Widget %s wasn't saved: its type is missing or it refused these settings."
 msgstr ""
 
 #: api/api.php:339
@@ -2313,8 +2327,8 @@ msgstr ""
 
 #: api/api.php:342
 #: api/api.php:343
-#: api/api.php:638
-#: api/api.php:640
+#: api/api.php:637
+#: api/api.php:639
 #, php-format
 msgid "View %s"
 msgstr ""
@@ -2413,7 +2427,7 @@ msgstr ""
 msgid "New %s Category"
 msgstr ""
 
-#: api/api.php:646
+#: api/api.php:645
 #, php-format
 msgid "Edit %s Settings"
 msgstr ""
@@ -2451,112 +2465,144 @@ msgstr ""
 msgid "Invalid compiled asset filename."
 msgstr ""
 
-#: api/collections/collections.php:54
+#: api/collections/collections.php:58
 msgid "Published"
 msgstr ""
 
-#: api/collections/collections.php:55
+#: api/collections/collections.php:59
 msgid "Draft"
 msgstr ""
 
-#: api/collections/collections.php:56
+#: api/collections/collections.php:60
 msgid "Pending Review"
 msgstr ""
 
-#: api/collections/collections.php:57
+#: api/collections/collections.php:61
 msgid "Private"
 msgstr ""
 
-#: api/collections/collections.php:65
+#: api/collections/collections.php:69
 msgid "Update Date"
 msgstr ""
 
-#: api/collections/collections.php:371
+#: api/collections/collections.php:396
 #, php-format
 msgid "%s must be a valid date."
 msgstr ""
 
-#: api/collections/collections.php:374
+#: api/collections/collections.php:399
 msgid "Select a valid publication status."
 msgstr ""
 
-#: api/collections/collections.php:377
+#: api/collections/collections.php:402
 #, php-format
 msgid "%s isn't one of its options."
 msgstr ""
 
-#: api/collections/collections.php:380
+#: api/collections/collections.php:405
 msgid "You cannot assign this item to another user."
 msgstr ""
 
-#: api/collections/collections.php:397
+#: api/collections/collections.php:422
 #, php-format
 msgid "%s is required."
 msgstr ""
 
-#: api/collections/collections.php:411
-#: api/collections/collections.php:513
+#: api/collections/collections.php:436
+#: api/collections/collections.php:538
 msgid "Collection item not found."
 msgstr ""
 
-#: api/collections/collections.php:506
+#: api/collections/collections.php:531
 msgid "Collection parent not found."
 msgstr ""
 
-#: api/collections/collections.php:509
+#: api/collections/collections.php:534
 msgid "You cannot edit this Collection."
 msgstr ""
 
-#: api/collections/collections.php:516
+#: api/collections/collections.php:541
+#: api/collections/collections.php:698
 msgid "You cannot modify this Collection item."
 msgstr ""
 
-#: api/collections/collections.php:528
+#: api/collections/collections.php:553
 msgid "You cannot create Collection items."
 msgstr ""
 
-#: api/collections/collections.php:537
+#: api/collections/collections.php:562
 msgid "You cannot publish Collection items."
 msgstr ""
 
-#: api/collections/collections.php:553
+#: api/collections/collections.php:578
 msgid "Publish the parent before adding Collection items."
 msgstr ""
 
-#: api/collections/collections.php:601
+#: api/collections/collections.php:626
+msgid "This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete the item permanently."
+msgstr ""
+
+#: api/collections/collections.php:629
 msgid "The Collection item could not be moved to Trash."
 msgstr ""
 
-#: api/collections/collections.php:615
+#: api/collections/collections.php:643
 msgid "The Collection item could not be restored."
 msgstr ""
 
-#: api/collections/collections.php:701
+#: api/collections/collections.php:734
 msgid "You cannot create new terms."
 msgstr ""
 
-#: api/collections/collections.php:729
+#: api/collections/collections.php:762
 msgid "Collection Item"
 msgstr ""
 
-#: api/design/colors.php:368
-msgid "Primary to Secondary"
+#: api/design/colors.php:298
+msgid "Page"
 msgstr ""
 
-#: api/design/colors.php:369
-msgid "Primary Fade"
-msgstr ""
-
-#: api/design/colors.php:370
+#: api/design/colors.php:299
+#: api/design/colors.php:384
 msgid "Surface"
 msgstr ""
 
-#: api/design/colors.php:371
+#: api/design/colors.php:300
+msgid "Card"
+msgstr ""
+
+#: api/design/colors.php:301
+#: api/design/theme-json.php:270
+msgid "Primary"
+msgstr ""
+
+#: api/design/colors.php:302
+msgid "Secondary"
+msgstr ""
+
+#: api/design/colors.php:303
+msgid "Accent"
+msgstr ""
+
+#: api/design/colors.php:305
+#: api/design/colors.php:385
 #: api/design/theme-json.php:275
 msgid "Highlight"
 msgstr ""
 
-#: api/design/colors.php:372
+#: api/design/colors.php:309
+msgid "White"
+msgstr ""
+
+#: api/design/colors.php:382
+msgid "Primary to Secondary"
+msgstr ""
+
+#: api/design/colors.php:383
+msgid "Primary Fade"
+msgstr ""
+
+#: api/design/colors.php:386
 msgid "Dark"
 msgstr ""
 
@@ -2648,10 +2694,6 @@ msgstr ""
 
 #: api/design/theme-json.php:265
 msgid "Ink"
-msgstr ""
-
-#: api/design/theme-json.php:270
-msgid "Primary"
 msgstr ""
 
 #: api/design/theme-json.php:300
@@ -3398,81 +3440,76 @@ msgstr ""
 msgid "Unknown settings group: `%s`"
 msgstr ""
 
-#: api/save/settings-file.php:28
+#: api/save/settings-file.php:39
 msgid "Theme settings"
 msgstr ""
 
-#: api/save/settings-file.php:30
+#: api/save/settings-file.php:41
 msgid "Post type settings"
 msgstr ""
 
-#: api/save/settings-file.php:31
+#: api/save/settings-file.php:42
 msgid "Drop-in settings"
 msgstr ""
 
-#: api/save/settings-file.php:32
+#: api/save/settings-file.php:43
 msgid "Widgets"
 msgstr ""
 
-#: api/save/settings-file.php:99
+#: api/save/settings-file.php:115
 msgid "This file is too large to be an MD settings file."
 msgstr ""
 
-#: api/save/settings-file.php:104
+#: api/save/settings-file.php:120
 msgid "This file can't be read. Upload a .json file exported from Settings → Import & Export."
 msgstr ""
 
-#: api/save/settings-file.php:107
+#: api/save/settings-file.php:123
 msgid "This isn't an MD settings file."
 msgstr ""
 
-#: api/save/settings-file.php:110
+#: api/save/settings-file.php:126
 msgid "This file was made by a newer version of MD. Update MD, then upload it again."
 msgstr ""
 
-#: api/save/settings-file.php:131
+#: api/save/settings-file.php:147
 #, php-format
 msgid "The `%s` section isn't used by this version of MD."
 msgstr ""
 
-#: api/save/settings-file.php:482
+#: api/save/settings-file.php:498
 #, php-format
 msgid "The image for `%s` isn't in this site's Media Library, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:494
+#: api/save/settings-file.php:511
+#, php-format
+msgid "The image for `%s` isn't in this site's Media Library, so it was left out."
+msgstr ""
+
+#: api/save/settings-file.php:512
 #, php-format
 msgid "The menu for `%s` wasn't found on this site, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:574
+#: api/save/settings-file.php:592
 #, php-format
 msgid "An entry in `%s` can't be read."
 msgstr ""
 
-#: api/save/settings-file.php:581
+#: api/save/settings-file.php:599
 #, php-format
 msgid "Settings for `%s` can't be imported."
 msgstr ""
 
-#: api/save/settings-file.php:613
+#: api/save/settings-file.php:631
 #, php-format
 msgid "`%1$s.%2$s` isn't used on this site."
 msgstr ""
 
-#: api/save/settings-file.php:727
+#: api/save/settings-file.php:746
 #, php-format
 msgid "The `%s` settings can't be imported on this site."
-msgstr ""
-
-#: api/save/settings-file.php:801
-#, php-format
-msgid "The `%s` sidebar doesn't exist here, so its widgets weren't placed. Select Theme settings to create it."
-msgstr ""
-
-#: api/save/settings-file.php:821
-#, php-format
-msgid "The `%s` widget isn't available on this site."
 msgstr ""
 
 #: api/save/validate.php:90
@@ -3488,6 +3525,21 @@ msgstr ""
 #: api/save/validate.php:128
 #, php-format
 msgid "`%s` needs a set of values."
+msgstr ""
+
+#: api/save/widgets.php:80
+#, php-format
+msgid "The `%s` sidebar doesn't exist here, so its widgets weren't placed. Select Theme settings to create it."
+msgstr ""
+
+#: api/save/widgets.php:100
+#, php-format
+msgid "The `%s` widget isn't available on this site."
+msgstr ""
+
+#: api/save/widgets.php:112
+#, php-format
+msgid "The `%s` widget refused its settings, so it wasn't placed."
 msgstr ""
 
 #: comments.php:9
@@ -3554,7 +3606,7 @@ msgstr ""
 
 #: features/blog.php:43
 #: features/loop/content.php:19
-#: features/page-title/document-title.php:41
+#: features/page-title/document-title.php:54
 msgid "Post"
 msgstr ""
 
@@ -5204,57 +5256,57 @@ msgstr ""
 msgid "Toggle Panel"
 msgstr ""
 
-#: marketers-delight.php:263
+#: marketers-delight.php:265
 msgid "Header Menu"
 msgstr ""
 
-#: marketers-delight.php:264
+#: marketers-delight.php:266
 msgid "Header Menu (logged-in users only)"
 msgstr ""
 
-#: marketers-delight.php:265
+#: marketers-delight.php:267
 msgid "Main Menu"
 msgstr ""
 
-#: marketers-delight.php:330
+#: marketers-delight.php:332
 msgid "Twitter username (without @)"
 msgstr ""
 
-#: marketers-delight.php:344
+#: marketers-delight.php:346
 msgid "Sidebar: Default"
 msgstr ""
 
-#: marketers-delight.php:345
+#: marketers-delight.php:347
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: marketers-delight.php:356
+#: marketers-delight.php:358
 #, php-format
 msgid "Sidebar: %s"
 msgstr ""
 
-#: marketers-delight.php:366
+#: marketers-delight.php:368
 msgid "Panel: Default"
 msgstr ""
 
-#: marketers-delight.php:367
+#: marketers-delight.php:369
 msgid "The default panel used around your site."
 msgstr ""
 
-#: marketers-delight.php:378
+#: marketers-delight.php:380
 #, php-format
 msgid "Panel: %s"
 msgstr ""
 
-#: marketers-delight.php:390
+#: marketers-delight.php:392
 #, php-format
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: marketers-delight.php:401
+#: marketers-delight.php:403
 msgid "Footer Copy"
 msgstr ""
 
-#: marketers-delight.php:402
+#: marketers-delight.php:404
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
