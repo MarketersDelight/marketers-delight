@@ -1,6 +1,6 @@
 <?php
 /**
- * Every registered field may only use md_validate::FIELD_KEYS. How a
+ * Every registered field may only use $field_keys on md_validate. How a
  * field draws (description, placeholder, classes...) belongs in its template.
  * Checks the theme and every active Drop-in on a real site.
  *
@@ -21,7 +21,9 @@ function md_test_registration_keys( $fields, $where, &$problems ) {
 			continue;
 		}
 
-		foreach ( array_diff( array_keys( $field ), md_validate::FIELD_KEYS ) as $unknown )
+		$validate = new md_validate;
+
+		foreach ( array_diff( array_keys( $field ), $validate->field_keys ) as $unknown )
 			$problems["$where.$key"][] = $unknown;
 
 		if ( isset( $field['fields'] ) )

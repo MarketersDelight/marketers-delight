@@ -8,6 +8,20 @@
 
 class md_site_abilities extends md_abilities {
 
+	private $settings_file;
+
+	/**
+	 * Set up the settings file these abilities read and write.
+	 *
+	 * @since 6.2
+	 */
+
+	public function __construct() {
+		$this->settings_file = new md_settings_file;
+
+		parent::__construct();
+	}
+
 	/**
 	 * Describe the site abilities.
 	 *
@@ -360,7 +374,7 @@ class md_site_abilities extends md_abilities {
 		$placed = wp_get_sidebars_widgets();
 		$sidebars = array();
 
-		foreach ( md_transfer::widget_areas() as $id ) {
+		foreach ( $this->settings_file->widget_areas() as $id ) {
 			$widgets = array();
 
 			foreach ( isset( $placed[$id] ) ? (array) $placed[$id] : array() as $widget ) {
@@ -381,7 +395,7 @@ class md_site_abilities extends md_abilities {
 			);
 		}
 
-		return array( 'sidebars' => $sidebars, 'types' => md_transfer::widget_types() );
+		return array( 'sidebars' => $sidebars, 'types' => $this->settings_file->widget_types() );
 	}
 
 	/**
@@ -393,7 +407,7 @@ class md_site_abilities extends md_abilities {
 	public function update_widgets( $input = array() ) {
 		$sidebar = $input['sidebar'];
 
-		if ( ! in_array( $sidebar, md_transfer::widget_areas(), true ) )
+		if ( ! in_array( $sidebar, $this->settings_file->widget_areas(), true ) )
 			return new WP_Error( 'md_abilities_sidebar', sprintf( __( 'No sidebar named %s. Get widgets lists them.', 'md' ), $sidebar ) );
 
 		$placed = wp_get_sidebars_widgets();
@@ -426,12 +440,12 @@ class md_site_abilities extends md_abilities {
 		$settings = isset( $operation['settings'] ) ? (array) $operation['settings'] : array();
 
 		if ( ! current_user_can( 'unfiltered_html' ) )
-			$settings = md_transfer::kses_widget( $settings );
+			$settings = $this->settings_file->kses_widget( $settings );
 
 		if ( $op === 'add' ) {
 			$type = $operation['type'] ?? '';
 
-			if ( ! in_array( $type, md_transfer::widget_types(), true ) )
+			if ( ! in_array( $type, $this->settings_file->widget_types(), true ) )
 				return new WP_Error( 'md_abilities_widget', sprintf( __( 'No widget type named %s. Get widgets lists them.', 'md' ), $type ) );
 
 			$instances = get_option( "widget_$type", array() );

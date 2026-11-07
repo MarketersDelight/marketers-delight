@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests md_transfer (api/save/transfer.php): export, read, check and import of
+ * Tests md_settings_file (api/save/settings-file.php): export, read, check and import of
  * MD settings files, replace and merge modes, refs, widgets, menu
  * locations, drop-in options and the Import & Export handlers.
  *
@@ -21,7 +21,7 @@ if ( ! function_exists( 'md_has' ) ) {
 
 if ( ! function_exists( 'md_get_dropin_details' ) ) {
 	function md_get_dropin_details( $slug = null ) {
-		$details = $GLOBALS['__transfer']['details'] ?? array();
+		$details = $GLOBALS['__settings_file']['details'] ?? array();
 
 		return $slug === null ? $details : ( $details[$slug] ?? false );
 	}
@@ -29,7 +29,7 @@ if ( ! function_exists( 'md_get_dropin_details' ) ) {
 
 if ( ! function_exists( 'do_action' ) ) {
 	function do_action( $tag, ...$args ) {
-		$GLOBALS['__transfer']['actions'][] = $tag;
+		$GLOBALS['__settings_file']['actions'][] = $tag;
 	}
 }
 
@@ -68,7 +68,7 @@ if ( ! function_exists( 'wp_get_attachment_url' ) ) {
 if ( ! function_exists( 'get_posts' ) ) {
 	function get_posts( $args ) {
 		$file = $args['meta_query'][0]['value'] ?? '';
-		$found = $GLOBALS['__transfer']['attachments'][$file] ?? 0;
+		$found = $GLOBALS['__settings_file']['attachments'][$file] ?? 0;
 
 		return $found ? array( $found ) : array();
 	}
@@ -76,7 +76,7 @@ if ( ! function_exists( 'get_posts' ) ) {
 
 if ( ! function_exists( 'wp_get_nav_menu_object' ) ) {
 	function wp_get_nav_menu_object( $menu ) {
-		foreach ( $GLOBALS['__transfer']['menus'] ?? array() as $id => $name )
+		foreach ( $GLOBALS['__settings_file']['menus'] ?? array() as $id => $name )
 			if ( $menu === $name || ( is_int( $menu ) && $menu === $id ) || ( is_numeric( $menu ) && (int) $menu === $id ) )
 				return (object) array( 'term_id' => $id, 'name' => $name );
 
@@ -116,7 +116,7 @@ if ( ! function_exists( 'wp_die' ) ) {
 
 if ( ! function_exists( 'check_admin_referer' ) ) {
 	function check_admin_referer( $action ) {
-		if ( empty( $GLOBALS['__transfer']['nonce_ok'] ) )
+		if ( empty( $GLOBALS['__settings_file']['nonce_ok'] ) )
 			throw new Exception( 'nonce' );
 
 		return 1;
@@ -135,17 +135,21 @@ if ( ! function_exists( 'wp_normalize_path' ) ) {
 	}
 }
 
-require_once dirname( __DIR__ ) . '/api/save/transfer.php';
+require_once dirname( __DIR__ ) . '/api/save/settings-file.php';
 require_once dirname( __DIR__ ) . '/admin/import-export.php';
 
-class TransferTest extends MD_TestCase {
+class SettingsFileTest extends MD_TestCase {
+
+	protected $file;
 
 	protected function setUp(): void {
 		parent::setUp();
 
+		$this->file = new md_settings_file;
+
 		global $wp_widget_factory, $wp_registered_sidebars;
 
-		$GLOBALS['__transfer'] = array(
+		$GLOBALS['__settings_file'] = array(
 			'details' => array(
 				'share' => array( 'Name' => 'Share', 'Version' => '2.0' ),
 				'docs' => array( 'Name' => 'Docs', 'Version' => '1.0' ),
@@ -187,7 +191,7 @@ class TransferTest extends MD_TestCase {
 			'header' => array( '_source' => 'theme', 'fields' => array(
 				'builder' => array( 'type' => 'builder', 'fields' => array(
 					'builder_type' => array( 'type' => 'text' ),
-					'menu' => array( 'type' => 'select', 'options' => array_keys( $GLOBALS['__transfer']['menus'] ), 'ref' => 'nav_menu' )
+					'menu' => array( 'type' => 'select', 'options' => array_keys( $GLOBALS['__settings_file']['menus'] ), 'ref' => 'nav_menu' )
 				) )
 			) ),
 			'share' => array( '_source' => 'share', 'fields' => array(
@@ -246,7 +250,7 @@ class TransferTest extends MD_TestCase {
 
 	public function test_export_holds_every_section_with_scope_and_source() {
 		$this->site_a();
-		$file = md_transfer::export();
+		$file = $this->file->export();
 
 		$this->assertSame( 'md-export', $file['format'] );
 		$this->assertSame( 1, $file['version'] );
@@ -261,17 +265,17 @@ class TransferTest extends MD_TestCase {
 
 	public function test_design_only_export_holds_only_design_keys() {
 		$this->site_a();
-		$file = md_transfer::export( array( 'design' ) );
+		$file = $this->file->export( array( 'design' ) );
 		$logo = $this->entry( $file, 'design', 'site', 'logo' );
 
 		$this->assertSame( array( 'design' ), array_keys( $file['sections'] ) );
 		$this->assertSame( array( 'site_title' => array( 'color' => 'primary' ), 'logo_width' => array( 'desktop' => '200' ) ), $logo['values'], 'No site title text or logo image' );
-		$this->assertSame( 'md-aexamplecom-' . gmdate( 'Y-m-d' ) . '.json', md_transfer::file_name() );
+		$this->assertSame( 'md-aexamplecom-' . gmdate( 'Y-m-d' ) . '.json', $this->file->file_name() );
 	}
 
 	public function test_export_never_holds_license_integrations_or_active_dropins() {
 		$this->site_a();
-		$json = json_encode( md_transfer::export() );
+		$json = json_encode( $this->file->export() );
 
 		$this->assertStringNotContainsString( 'SECRET', $json );
 		$this->assertStringNotContainsString( 'api_keys', $json );
@@ -284,10 +288,10 @@ class TransferTest extends MD_TestCase {
 	public function test_round_trip_to_an_empty_site_gives_the_same_values() {
 		$this->site_a();
 		$before = $this->settings();
-		$file = md_transfer::read( json_encode( md_transfer::export() ) );
+		$file = $this->file->read( json_encode( $this->file->export() ) );
 
 		$this->empty_site();
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 		$after = $this->settings();
 
 		foreach ( array( 'settings', 'colors', 'typography', 'logo', 'header', 'share', 'docs' ) as $group )
@@ -299,7 +303,7 @@ class TransferTest extends MD_TestCase {
 
 	public function test_replace_removes_keys_the_file_does_not_have() {
 		$this->site_a();
-		$file = md_transfer::export( array( 'design' ) );
+		$file = $this->file->export( array( 'design' ) );
 
 		md_test_set_option( 'marketers_delight', array(
 			'colors' => array( 'primary' => '#222', 'background' => '#000' ),
@@ -308,7 +312,7 @@ class TransferTest extends MD_TestCase {
 		) );
 		$file['sections']['design'][0]['values'] = array( 'primary' => '#111' );
 
-		md_transfer::import( $file );
+		$this->file->import( $file );
 		$after = $this->settings();
 
 		$this->assertSame( array( 'primary' => '#111' ), $after['colors'] );
@@ -318,7 +322,7 @@ class TransferTest extends MD_TestCase {
 	}
 
 	public function test_a_design_file_without_a_split_groups_branch_keeps_its_other_keys() {
-		$file = md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
+		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
 			'design' => array( array( 'scope' => 'site', 'group' => 'logo', 'values' => array( 'logo_width' => array( 'desktop' => '52' ) ) ) )
 		) ) ) );
 		md_test_set_option( 'marketers_delight', array( 'logo' => array(
@@ -326,7 +330,7 @@ class TransferTest extends MD_TestCase {
 			'logo' => array( 'id' => 5 )
 		) ) );
 
-		md_transfer::import( $file );
+		$this->file->import( $file );
 
 		$this->assertSame( array(
 			'site_title' => array( 'text' => 'Site B' ),
@@ -345,7 +349,7 @@ class TransferTest extends MD_TestCase {
 			'docs_category' => array( 'archives_title' => 'Topics' )
 		) ) );
 
-		md_transfer::import( $file );
+		$this->file->import( $file );
 		$docs = $this->settings()['docs'];
 
 		$this->assertSame( 'Handbook', $docs['archives_title'] );
@@ -355,23 +359,23 @@ class TransferTest extends MD_TestCase {
 
 	public function test_a_full_export_clears_taxonomy_settings_the_source_does_not_set() {
 		md_test_set_option( 'marketers_delight', array( 'docs' => array( 'archives_title' => 'Docs' ) ) );
-		$file = md_transfer::export( array( 'post_types' ) );
+		$file = $this->file->export( array( 'post_types' ) );
 
 		md_test_set_option( 'marketers_delight', array( 'docs' => array( 'docs_category' => array( 'archives_title' => 'Target only' ) ) ) );
-		md_transfer::import( $file );
+		$this->file->import( $file );
 
 		$this->assertSame( array( 'archives_title' => 'Docs' ), $this->settings()['docs'] );
 	}
 
 	public function test_unticked_sections_are_untouched() {
 		$this->site_a();
-		$file = md_transfer::export();
+		$file = $this->file->export();
 
 		$this->empty_site();
 		md_test_set_option( 'marketers_delight', array( 'colors' => array( 'primary' => '#999' ), 'share' => array( 'label' => 'Mine' ) ) );
 		md_test_set_option( 'sidebars_widgets', array( 'sidebar-main' => array() ) );
 
-		md_transfer::import( $file, array( 'settings' ) );
+		$this->file->import( $file, array( 'settings' ) );
 
 		$this->assertSame( array( 'primary' => '#999' ), $this->settings()['colors'] );
 		$this->assertSame( array( 'label' => 'Mine' ), $this->settings()['share'] );
@@ -385,7 +389,7 @@ class TransferTest extends MD_TestCase {
 			'rows' => array( 'type' => 'group', 'fields' => array( 'name' => array( 'type' => 'text' ), 'icon' => array( 'type' => 'text' ) ) )
 		);
 		$stored = array( 'title' => 'Old', 'body' => array( 'size' => 1, 'font' => 'x' ), 'rows' => array( 'a' => array( 'name' => 'A', 'icon' => 'i' ) ), 'category' => array( 'kept' => 1 ) );
-		$input = md_transfer::replace_input( $stored, array( 'body' => array( 'size' => 2 ), 'rows' => array( 'a' => array( 'name' => 'A2' ) ) ), $fields );
+		$input = $this->file->replace_input( $stored, array( 'body' => array( 'size' => 2 ), 'rows' => array( 'a' => array( 'name' => 'A2' ) ) ), $fields );
 
 		$this->assertSame( array(
 			'body' => array( 'size' => 2, 'font' => null ),
@@ -399,25 +403,25 @@ class TransferTest extends MD_TestCase {
 	public function test_attachment_is_swapped_by_file_path() {
 		$GLOBALS['__test_object_meta'][41]['_wp_attached_file'] = '2026/10/logo.png';
 		md_test_set_option( 'marketers_delight', array( 'logo' => array( 'logo' => array( 'id' => 41 ) ) ) );
-		$file = md_transfer::export( array( 'settings' ) );
+		$file = $this->file->export( array( 'settings' ) );
 
 		$this->assertSame( array( 'file' => '2026/10/logo.png' ), $file['refs']['attachment:41'] );
 
 		$this->empty_site();
-		$GLOBALS['__transfer']['attachments']['2026/10/logo.png'] = 77;
-		md_transfer::import( $file );
+		$GLOBALS['__settings_file']['attachments']['2026/10/logo.png'] = 77;
+		$this->file->import( $file );
 
 		$this->assertSame( array( 'id' => 77 ), $this->settings()['logo']['logo'] );
 	}
 
 	public function test_menu_is_swapped_by_name() {
 		$this->site_a();
-		$file = md_transfer::export( array( 'settings' ) );
+		$file = $this->file->export( array( 'settings' ) );
 
 		$this->empty_site();
-		$GLOBALS['__transfer']['menus'] = array( 5 => 'Top', 9 => 'Main' );
+		$GLOBALS['__settings_file']['menus'] = array( 5 => 'Top', 9 => 'Main' );
 		$this->register();
-		md_transfer::import( $file );
+		$this->file->import( $file );
 
 		$this->assertSame( '9', $this->settings()['header']['builder']['abc']['menu'] );
 	}
@@ -428,13 +432,13 @@ class TransferTest extends MD_TestCase {
 			'logo' => array( 'logo' => array( 'id' => 41 ) ),
 			'header' => array( 'builder' => array( 'abc' => array( 'builder_type' => 'menu', 'menu' => '2' ) ) )
 		) );
-		$file = md_transfer::export( array( 'settings' ) );
+		$file = $this->file->export( array( 'settings' ) );
 
 		$this->empty_site();
-		$GLOBALS['__transfer']['menus'] = array( 3 => 'Top' );
+		$GLOBALS['__settings_file']['menus'] = array( 3 => 'Top' );
 		$this->register();
 		md_test_set_option( 'marketers_delight', array( 'logo' => array( 'logo' => array( 'id' => 5 ) ) ) );
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertSame( array( 'id' => 5 ), $this->settings()['logo']['logo'], 'The site\'s own logo stays' );
 		$this->assertSame( array( 'abc' => array( 'builder_type' => 'menu' ) ), $this->settings()['header']['builder'] );
@@ -447,12 +451,12 @@ class TransferTest extends MD_TestCase {
 
 	public function test_widgets_are_renumbered_with_their_settings_and_placed() {
 		$this->site_a();
-		$file = md_transfer::export( array( 'widgets' ) );
+		$file = $this->file->export( array( 'widgets' ) );
 
 		$this->empty_site();
 		md_test_set_option( 'widget_text', array( 2 => array( 'title' => 'Existing' ), 4 => array( 'title' => 'In footer' ), '_multiwidget' => 1 ) );
 		md_test_set_option( 'sidebars_widgets', array( 'sidebar-main' => array( 'text-2' ), 'footer-copy' => array( 'text-4' ) ) );
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 		$sidebars = get_option( 'sidebars_widgets' );
 
 		$this->assertSame( array( 'text-5', 'block-2' ), $sidebars['sidebar-main'] );
@@ -464,12 +468,12 @@ class TransferTest extends MD_TestCase {
 	}
 
 	public function test_an_empty_sidebar_that_does_not_exist_here_is_not_listed() {
-		$file = md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array( 'widgets' => array(
+		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array( 'widgets' => array(
 			'sidebars' => array( 'old-area' => array(), 'sidebar-main' => array() ),
 			'instances' => array()
 		) ) ) ) );
 
-		$this->assertSame( array(), md_transfer::import( $file )['skipped'] );
+		$this->assertSame( array(), $this->file->import( $file )['skipped'] );
 	}
 
 	public function test_unknown_widget_type_is_skipped_and_listed() {
@@ -478,7 +482,7 @@ class TransferTest extends MD_TestCase {
 			'instances' => array( 'stream_widget-2' => array( 'count' => 3 ), 'text-2' => array( 'title' => 'Hi' ) )
 		) ) );
 
-		$result = md_transfer::import( md_transfer::read( json_encode( $file ) ) );
+		$result = $this->file->import( $this->file->read( json_encode( $file ) ) );
 
 		$this->assertSame( array( 'text-2' ), get_option( 'sidebars_widgets' )['sidebar-main'] );
 		$this->assertSame( array( 'The `stream_widget` widget isn\'t available on this site.' ), $result['skipped'] );
@@ -486,10 +490,10 @@ class TransferTest extends MD_TestCase {
 
 	public function test_custom_sidebar_from_theme_settings_gets_its_widgets() {
 		$this->site_a();
-		$file = md_transfer::export( array( 'settings', 'widgets' ) );
+		$file = $this->file->export( array( 'settings', 'widgets' ) );
 
 		$this->empty_site();
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertSame( array( 'name' => 'Docs' ), $this->settings()['settings']['sidebars']['docs-side'] );
 		$this->assertSame( array( 'text-3' ), get_option( 'sidebars_widgets' )['docs-side'] );
@@ -502,14 +506,14 @@ class TransferTest extends MD_TestCase {
 		$this->site_a();
 		md_test_set_option( 'marketers_delight', array_merge( $this->settings(), array( 'stream' => array( 'title' => 'Activity' ) ) ) );
 		$this->register( array( 'stream' => array( '_source' => 'stream', 'has_groups' => true, 'fields' => array( 'title' => array( 'type' => 'text' ) ) ) ) );
-		$file = md_transfer::export();
+		$file = $this->file->export();
 
 		$this->empty_site();
-		unset( $GLOBALS['__transfer']['details']['docs'] );
+		unset( $GLOBALS['__settings_file']['details']['docs'] );
 		md_test_set_dropins( array( 'share' ) );
 		$this->register( array( 'docs' => array(), 'stream' => array() ) );
-		$check = md_transfer::check( $file );
-		$result = md_transfer::import( $file );
+		$check = $this->file->check( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertSame( array( 'docs' => 'Docs' ), $check['missing'] );
 		$this->assertSame( array( 'stream' => 'Stream' ), $check['inactive'] );
@@ -521,12 +525,12 @@ class TransferTest extends MD_TestCase {
 	public function test_option_without_sanitize_is_exported_but_not_imported() {
 		md_test_set_filter( 'md_export_options', array( 'md_popups' => array( 'source' => 'optins' ) ) );
 		md_test_set_option( 'md_popups', array( 'p1' => array( 'content' => array( 'headline' => 'Join' ) ) ) );
-		$file = md_transfer::export( array( 'dropins' ) );
+		$file = $this->file->export( array( 'dropins' ) );
 
 		$this->assertSame( array( 'source' => 'optins', 'values' => array( 'p1' => array( 'content' => array( 'headline' => 'Join' ) ) ) ), $file['sections']['options']['md_popups'] );
 
 		$this->empty_site();
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertFalse( get_option( 'md_popups' ) );
 		$this->assertContains( 'The `md_popups` settings can\'t be imported on this site.', $result['skipped'] );
@@ -535,10 +539,10 @@ class TransferTest extends MD_TestCase {
 	public function test_option_with_sanitize_is_imported_through_it() {
 		md_test_set_filter( 'md_export_options', array( 'md_popups' => array( 'source' => 'optins', 'sanitize' => 'array_reverse' ) ) );
 		md_test_set_option( 'md_popups', array( 'a' => 1, 'b' => 2 ) );
-		$file = md_transfer::export( array( 'dropins' ) );
+		$file = $this->file->export( array( 'dropins' ) );
 
 		$this->empty_site();
-		md_transfer::import( $file );
+		$this->file->import( $file );
 
 		$this->assertSame( array( 'b' => 2, 'a' => 1 ), get_option( 'md_popups' ) );
 	}
@@ -547,22 +551,22 @@ class TransferTest extends MD_TestCase {
 
 	public function test_code_field_imports_for_an_admin_and_is_skipped_with_a_warning_without() {
 		md_test_set_option( 'marketers_delight', array( 'settings' => array( 'css' => 'body{color:red}' ) ) );
-		$file = md_transfer::export( array( 'settings' ) );
+		$file = $this->file->export( array( 'settings' ) );
 
 		$this->empty_site();
-		md_transfer::import( $file );
+		$this->file->import( $file );
 		$this->assertSame( 'body{color:red}', $this->settings()['settings']['css'] );
 
 		$this->empty_site();
 		md_test_set_capability( 'unfiltered_html', false );
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertArrayNotHasKey( 'settings', $this->settings() );
 		$this->assertContains( '`css` is code, which needs an administrator who can add unfiltered HTML. It was left as it is.', $result['skipped'] );
 	}
 
 	public function test_a_rejected_value_is_listed_in_the_result() {
-		$file = md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
+		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
 			'settings' => array( array( 'scope' => 'site', 'group' => 'header', 'values' => array(
 				'builder' => array( 'abc' => array( 'builder_type' => 'menu', 'menu' => '2' ) )
 			) ) ),
@@ -573,7 +577,7 @@ class TransferTest extends MD_TestCase {
 			'empty' => array( 'type' => 'select', 'options' => array( 'a', 'b' ) )
 		) ) ) );
 
-		$result = md_transfer::import( $file, array( 'dropins' ) );
+		$result = $this->file->import( $file, array( 'dropins' ) );
 
 		$this->assertSame( array( '`list` has a value this site can\'t use.' ), $result['skipped'] );
 		$this->assertArrayNotHasKey( 'pick', $this->settings() );
@@ -583,25 +587,25 @@ class TransferTest extends MD_TestCase {
 		$this->register( array( 'pick' => array( '_source' => 'theme', 'fields' => array(
 			'show' => array( 'type' => 'checkbox', 'options' => array( 'date', 'author' ) )
 		) ) ) );
-		$file = md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
+		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
 			'settings' => array( array( 'scope' => 'site', 'group' => 'pick', 'values' => array( 'show' => array( 'date' => false ) ) ) )
 		) ) ) );
 
-		$this->assertSame( array(), md_transfer::import( $file )['skipped'] );
+		$this->assertSame( array(), $this->file->import( $file )['skipped'] );
 	}
 
 	// Bad files
 
 	public function test_bad_files_are_refused() {
-		$this->assertSame( 'md_import_json', md_transfer::read( '{not json' )->get_error_code() );
-		$this->assertSame( 'md_import_format', md_transfer::read( json_encode( array( 'format' => 'other', 'version' => 1 ) ) )->get_error_code() );
-		$this->assertSame( 'md_import_version', md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 2 ) ) )->get_error_code() );
-		$this->assertSame( 'md_import_size', md_transfer::read( str_repeat( ' ', md_transfer::MAX_SIZE + 1 ) )->get_error_code() );
-		$this->assertSame( 'md_import_json', md_transfer::read( str_repeat( '[', 70 ) . str_repeat( ']', 70 ) )->get_error_code(), 'Too deep' );
+		$this->assertSame( 'md_import_json', $this->file->read( '{not json' )->get_error_code() );
+		$this->assertSame( 'md_import_format', $this->file->read( json_encode( array( 'format' => 'other', 'version' => 1 ) ) )->get_error_code() );
+		$this->assertSame( 'md_import_version', $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 2 ) ) )->get_error_code() );
+		$this->assertSame( 'md_import_size', $this->file->read( str_repeat( ' ', $this->file->max_size + 1 ) )->get_error_code() );
+		$this->assertSame( 'md_import_json', $this->file->read( str_repeat( '[', 70 ) . str_repeat( ']', 70 ) )->get_error_code(), 'Too deep' );
 	}
 
 	public function test_bad_entries_are_skipped_and_the_rest_imports() {
-		$file = md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
+		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
 			'settings' => array(
 				array( 'scope' => 'style:dark', 'group' => 'colors', 'values' => array( 'primary' => '#000' ) ),
 				array( 'scope' => 'post:4', 'group' => 'layout', 'values' => array() ),
@@ -610,7 +614,7 @@ class TransferTest extends MD_TestCase {
 			)
 		) ) ) );
 
-		$result = md_transfer::import( $file );
+		$result = $this->file->import( $file );
 
 		$this->assertContains( 'Unknown settings scope: `style:dark`', $result['skipped'] );
 		$this->assertContains( 'Settings for `post:4` can\'t be imported.', $result['skipped'] );
@@ -620,7 +624,7 @@ class TransferTest extends MD_TestCase {
 	}
 
 	public function test_unknown_sections_are_listed_and_a_style_file_applies_its_design() {
-		$file = md_transfer::read( json_encode( array(
+		$file = $this->file->read( json_encode( array(
 			'format' => 'md-style',
 			'version' => 1,
 			'style' => array( 'name' => 'Midnight', 'kind' => 'visitor' ),
@@ -630,8 +634,8 @@ class TransferTest extends MD_TestCase {
 			)
 		) ) );
 
-		$check = md_transfer::check( $file );
-		md_transfer::import( $file );
+		$check = $this->file->check( $file );
+		$this->file->import( $file );
 
 		$this->assertSame( array( 'The `patterns` section isn\'t used by this version of MD.' ), $check['skipped'] );
 		$this->assertSame( array( 'design' ), array_keys( $check['parts'] ) );
@@ -640,19 +644,19 @@ class TransferTest extends MD_TestCase {
 
 	public function test_an_import_marks_one_compile_and_rebuilds_fields_once() {
 		$this->site_a();
-		$file = md_transfer::export();
+		$file = $this->file->export();
 
 		$this->empty_site();
-		md_transfer::import( $file );
+		$this->file->import( $file );
 
 		$this->assertTrue( get_option( 'md_compile_after_upgrade' ) );
-		$this->assertSame( array( 'md_refresh_fields' ), $GLOBALS['__transfer']['actions'] );
+		$this->assertSame( array( 'md_refresh_fields' ), $GLOBALS['__settings_file']['actions'] );
 	}
 
 	// Merge mode and labels
 
 	private function setup_file( $mode = 'merge' ) {
-		return md_transfer::read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
+		return $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
 			'settings' => array( array(
 				'scope' => 'site',
 				'group' => 'settings',
@@ -684,7 +688,7 @@ class TransferTest extends MD_TestCase {
 			'docs' => array( 'layout' => array( 'sidebar' => 'shop' ) )
 		) );
 
-		md_transfer::import( $this->setup_file() );
+		$this->file->import( $this->setup_file() );
 		$settings = $this->settings();
 
 		$this->assertSame( array( 'shop', 'blog', 'docs-single', 'docs-archive', 'docs-panel' ), array_keys( $settings['settings']['sidebars'] ) );
@@ -693,11 +697,11 @@ class TransferTest extends MD_TestCase {
 	}
 
 	public function test_merge_reimport_updates_the_same_ids_without_duplicates() {
-		md_transfer::import( $this->setup_file() );
+		$this->file->import( $this->setup_file() );
 		$file = $this->setup_file();
 		$file['sections']['settings'][0]['values']['sidebars']['docs-panel']['name'] = 'Docs help panel';
 
-		md_transfer::import( $file );
+		$this->file->import( $file );
 		$sidebars = $this->settings()['settings']['sidebars'];
 
 		$this->assertCount( 3, $sidebars );
@@ -710,7 +714,7 @@ class TransferTest extends MD_TestCase {
 		md_test_set_option( 'sidebars_widgets', array( 'sidebar-main' => array( 'block-2' ) ) );
 		md_test_set_option( 'widget_block', array( 2 => array( 'content' => 'Mine' ), '_multiwidget' => 1 ) );
 
-		md_transfer::import( $this->setup_file() );
+		$this->file->import( $this->setup_file() );
 
 		$this->assertSame( array( 'block-2' ), get_option( 'sidebars_widgets' )['sidebar-main'] );
 		$this->assertSame( array( 'text-2' ), get_option( 'sidebars_widgets' )['docs-single'] );
@@ -718,12 +722,12 @@ class TransferTest extends MD_TestCase {
 
 	public function test_labelled_parts_can_be_unticked_on_their_own() {
 		$file = $this->setup_file();
-		$check = md_transfer::check( $file );
+		$check = $this->file->check( $file );
 
 		$this->assertSame( array( 'settings:docs-sidebars', 'post_types:docs-archive-title', 'widgets' ), array_keys( $check['parts'] ) );
 		$this->assertSame( 'Docs sidebars', $check['parts']['settings:docs-sidebars'] );
 
-		$result = md_transfer::import( $file, array( 'settings:docs-sidebars', 'widgets' ) );
+		$result = $this->file->import( $file, array( 'settings:docs-sidebars', 'widgets' ) );
 
 		$this->assertArrayNotHasKey( 'docs', $this->settings() );
 		$this->assertCount( 3, $this->settings()['settings']['sidebars'] );
@@ -743,7 +747,9 @@ class TransferTest extends MD_TestCase {
 	// Handlers
 
 	public function test_messages_show_marked_names_as_code_and_stay_escaped() {
-		$this->assertSame( '<code>a_b</code> &lt;b&gt;', md_import_export::message( '`a_b` <b>' ) );
+		$page = new md_import_export;
+
+		$this->assertSame( '<code>a_b</code> &lt;b&gt;', $page->message( '`a_b` <b>' ) );
 	}
 
 	public function test_every_handler_needs_manage_options_and_its_nonce() {
@@ -751,7 +757,7 @@ class TransferTest extends MD_TestCase {
 
 		foreach ( array( 'export', 'upload', 'import', 'cancel' ) as $handler ) {
 			md_test_set_capability( 'manage_options', false );
-			$GLOBALS['__transfer']['nonce_ok'] = true;
+			$GLOBALS['__settings_file']['nonce_ok'] = true;
 
 			try {
 				$page->$handler();
@@ -762,7 +768,7 @@ class TransferTest extends MD_TestCase {
 			}
 
 			md_test_set_capability( 'manage_options', true );
-			$GLOBALS['__transfer']['nonce_ok'] = false;
+			$GLOBALS['__settings_file']['nonce_ok'] = false;
 
 			try {
 				$page->$handler();

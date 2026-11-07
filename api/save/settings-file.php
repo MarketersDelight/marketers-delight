@@ -10,11 +10,11 @@
  * @since 6.2
  */
 
-class md_transfer {
+class md_settings_file {
 
-	const FORMAT = 'md-export';
-	const VERSION = 1;
-	const MAX_SIZE = 2097152;
+	public $format = 'md-export';
+	public $version = 1;
+	public $max_size = 2097152;
 
 	/**
 	 * The sections a file can hold, in import order: Theme settings
@@ -23,7 +23,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function sections() {
+	public function sections() {
 		return array(
 			'settings' => __( 'Theme settings', 'md' ),
 			'design' => __( 'Design', 'md' ),
@@ -40,35 +40,35 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function export( $sections = null ) {
-		$sections = $sections === null ? array_keys( self::sections() ) : (array) $sections;
+	public function export( $sections = null ) {
+		$sections = $sections === null ? array_keys( $this->sections() ) : (array) $sections;
 		$refs = $out = array();
 
-		foreach ( self::site_entries() as $entry )
+		foreach ( $this->site_entries() as $entry )
 			if ( in_array( $entry['section'], $sections, true ) )
-				$out[$entry['section']][] = self::export_entry( $entry, $refs );
+				$out[$entry['section']][] = $this->export_entry( $entry, $refs );
 
 		if ( in_array( 'post_types', $sections, true ) )
-			foreach ( self::post_type_entries() as $entry )
-				$out['post_types'][] = self::export_entry( $entry, $refs );
+			foreach ( $this->post_type_entries() as $entry )
+				$out['post_types'][] = $this->export_entry( $entry, $refs );
 
 		if ( in_array( 'dropins', $sections, true ) )
-			foreach ( self::export_options() as $option => $args )
+			foreach ( $this->export_options() as $option => $args )
 				$out['options'][$option] = array(
 					'source' => $args['source'],
 					'values' => get_option( $option, array() )
 				);
 
 		if ( in_array( 'widgets', $sections, true ) )
-			$out['widgets'] = self::export_widgets();
+			$out['widgets'] = $this->export_widgets();
 
 		return array(
-			'format' => self::FORMAT,
-			'version' => self::VERSION,
+			'format' => $this->format,
+			'version' => $this->version,
 			'md_version' => MD_VERSION,
 			'created' => gmdate( 'Y-m-d\TH:i:s\Z' ),
 			'site' => home_url(),
-			'dropins' => self::dropins_list(),
+			'dropins' => $this->dropins_list(),
 			'sections' => $out,
 			'refs' => $refs
 		);
@@ -80,7 +80,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function file_name() {
+	public function file_name() {
 		$host = sanitize_title( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
 
 		return "md-$host-" . gmdate( 'Y-m-d' ) . '.json';
@@ -94,8 +94,8 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function read( $json ) {
-		if ( ! is_string( $json ) || strlen( $json ) > self::MAX_SIZE )
+	public function read( $json ) {
+		if ( ! is_string( $json ) || strlen( $json ) > $this->max_size )
 			return new WP_Error( 'md_import_size', __( 'This file is too large to be an MD settings file.', 'md' ) );
 
 		$file = json_decode( $json, true, 64 );
@@ -103,10 +103,10 @@ class md_transfer {
 		if ( ! is_array( $file ) )
 			return new WP_Error( 'md_import_json', __( 'This file can\'t be read. Upload a .json file exported from Settings → Import & Export.', 'md' ) );
 
-		if ( ! isset( $file['format'] ) || ! in_array( $file['format'], array( self::FORMAT, 'md-style' ), true ) )
+		if ( ! isset( $file['format'] ) || ! in_array( $file['format'], array( $this->format, 'md-style' ), true ) )
 			return new WP_Error( 'md_import_format', __( 'This isn\'t an MD settings file.', 'md' ) );
 
-		if ( ! isset( $file['version'] ) || ! is_numeric( $file['version'] ) || (int) $file['version'] > self::VERSION )
+		if ( ! isset( $file['version'] ) || ! is_numeric( $file['version'] ) || (int) $file['version'] > $this->version )
 			return new WP_Error( 'md_import_version', __( 'This file was made by a newer version of MD. Update MD, then upload it again.', 'md' ) );
 
 		$file['sections'] = isset( $file['sections'] ) && is_array( $file['sections'] ) ? $file['sections'] : array();
@@ -124,13 +124,13 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function check( $file ) {
+	public function check( $file ) {
 		$missing = $inactive = $skipped = array();
 
-		foreach ( array_diff( array_keys( $file['sections'] ), array_keys( self::sections() ), array( 'options' ) ) as $section )
+		foreach ( array_diff( array_keys( $file['sections'] ), array_keys( $this->sections() ), array( 'options' ) ) as $section )
 			$skipped[] = sprintf( __( 'The `%s` section isn\'t used by this version of MD.', 'md' ), $section );
 
-		foreach ( self::file_sources( $file ) as $source ) {
+		foreach ( $this->file_sources( $file ) as $source ) {
 			$name = isset( $file['dropins'][$source]['name'] ) ? $file['dropins'][$source]['name'] : $source;
 
 			if ( ! md_get_dropin_details( $source ) )
@@ -143,7 +143,7 @@ class md_transfer {
 			'site' => isset( $file['site'] ) ? (string) $file['site'] : '',
 			'md_version' => isset( $file['md_version'] ) ? (string) $file['md_version'] : '',
 			'created' => isset( $file['created'] ) ? (string) $file['created'] : '',
-			'parts' => self::parts( $file ),
+			'parts' => $this->parts( $file ),
 			'missing' => $missing,
 			'inactive' => $inactive,
 			'skipped' => $skipped
@@ -158,22 +158,22 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function import( $file, $parts = null ) {
-		$all = self::parts( $file );
+	public function import( $file, $parts = null ) {
+		$all = $this->parts( $file );
 		$parts = $parts === null ? array_keys( $all ) : array_values( array_intersect( (array) $parts, array_keys( $all ) ) );
 		$imported = array();
 		$save = new md_save;
 
-		self::import_entries( $file, $parts, $save );
+		$this->import_entries( $file, $parts, $save );
 		md_refresh_fields();
 
-		$skipped = self::import_entries( $file, $parts, $save );
+		$skipped = $this->import_entries( $file, $parts, $save );
 
 		if ( in_array( 'dropins', $parts, true ) && ! empty( $file['sections']['options'] ) )
-			self::import_options( $file['sections']['options'], $skipped );
+			$this->import_options( $file['sections']['options'], $skipped );
 
 		if ( in_array( 'widgets', $parts, true ) && ! empty( $file['sections']['widgets'] ) )
-			self::import_widgets( $file['sections']['widgets'], $skipped );
+			$this->import_widgets( $file['sections']['widgets'], $skipped );
 
 		foreach ( $parts as $part )
 			$imported[] = $all[$part];
@@ -194,12 +194,12 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function import_entries( $file, $parts, $save ) {
+	private function import_entries( $file, $parts, $save ) {
 		$skipped = array();
 
-		foreach ( self::entries( $file ) as $entry )
+		foreach ( $this->entries( $file ) as $entry )
 			if ( in_array( $entry['part'], $parts, true ) )
-				self::import_entry( $entry, $file['refs'], $save, $skipped );
+				$this->import_entry( $entry, $file['refs'], $save, $skipped );
 
 		return $skipped;
 	}
@@ -212,7 +212,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function replace_input( $stored, $values, $fields ) {
+	public function replace_input( $stored, $values, $fields ) {
 		$input = is_array( $values ) ? $values : array();
 		$stored = is_array( $stored ) ? $stored : array();
 
@@ -222,7 +222,7 @@ class md_transfer {
 
 			if ( ! array_key_exists( $key, $input ) ) {
 				if ( ! isset( $field['type'] ) && isset( $stored[$key] ) && is_array( $stored[$key] ) )
-					$input[$key] = self::replace_input( $stored[$key], array(), $field );
+					$input[$key] = $this->replace_input( $stored[$key], array(), $field );
 				elseif ( array_key_exists( $key, $stored ) )
 					$input[$key] = null;
 
@@ -235,13 +235,13 @@ class md_transfer {
 			$type = isset( $field['type'] ) ? $field['type'] : null;
 
 			if ( $type === null )
-				$input[$key] = self::replace_input( $stored[$key], $input[$key], $field );
+				$input[$key] = $this->replace_input( $stored[$key], $input[$key], $field );
 			elseif ( in_array( $type, array( 'group', 'builder' ), true ) ) {
 				$item_fields = isset( $field['fields'] ) ? $field['fields'] : array();
 
 				foreach ( $input[$key] as $item => $item_values )
 					if ( isset( $stored[$key][$item] ) && is_array( $item_values ) )
-						$input[$key][$item] = self::replace_input( $stored[$key][$item], $item_values, $item_fields );
+						$input[$key][$item] = $this->replace_input( $stored[$key][$item], $item_values, $item_fields );
 			}
 		}
 
@@ -256,8 +256,8 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function site_entries() {
-		$design = self::design_groups();
+	private function site_entries() {
+		$design = $this->design_groups();
 		$entries = array();
 
 		foreach ( md_register( 'admin_pages' ) as $group => $page ) {
@@ -292,7 +292,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function post_type_entries() {
+	private function post_type_entries() {
 		$taxonomies = apply_filters( 'md_taxonomy_groups', array() );
 		$entries = array();
 
@@ -328,13 +328,13 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function export_entry( $entry, &$refs ) {
+	private function export_entry( $entry, &$refs ) {
 		$scope = md_scope::parse( $entry['scope'] );
 		$target = $scope->target( $entry['group'] );
-		$fields = self::section_fields( $entry['section'], $entry['group'], $target['fields'] );
-		$values = self::limit( $scope->read( $entry['group'] ), $fields );
+		$fields = $this->section_fields( $entry['section'], $entry['group'], $target['fields'] );
+		$values = $this->limit( $scope->read( $entry['group'] ), $fields );
 
-		self::collect_refs( $values, $fields, $refs );
+		$this->collect_refs( $values, $fields, $refs );
 
 		return array(
 			'scope' => $entry['scope'],
@@ -351,13 +351,13 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function section_fields( $section, $group, $fields ) {
-		$design = self::design_groups();
+	private function section_fields( $section, $group, $fields ) {
+		$design = $this->design_groups();
 
 		if ( ! isset( $design[$group] ) || $design[$group] === true )
 			return $fields;
 
-		return self::filter_fields( $fields, $design[$group], $section === 'design' );
+		return $this->filter_fields( $fields, $design[$group], $section === 'design' );
 	}
 
 	/**
@@ -366,12 +366,12 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function filter_fields( $fields, $keys, $keep ) {
+	private function filter_fields( $fields, $keys, $keep ) {
 		$filtered = array();
 
 		foreach ( $fields as $key => $field ) {
 			if ( isset( $keys[$key] ) && is_array( $keys[$key] ) ) {
-				$nested = self::filter_fields( $field, $keys[$key], $keep );
+				$nested = $this->filter_fields( $field, $keys[$key], $keep );
 
 				if ( $nested )
 					$filtered[$key] = $nested;
@@ -390,7 +390,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function limit( $values, $fields ) {
+	private function limit( $values, $fields ) {
 		$limited = array();
 
 		foreach ( is_array( $values ) ? $values : array() as $key => $value ) {
@@ -398,7 +398,7 @@ class md_transfer {
 				continue;
 
 			if ( ! isset( $fields[$key]['type'] ) && is_array( $value ) ) {
-				$nested = self::limit( $value, $fields[$key] );
+				$nested = $this->limit( $value, $fields[$key] );
 
 				if ( $nested )
 					$limited[$key] = $nested;
@@ -417,24 +417,24 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function collect_refs( $values, $fields, &$refs ) {
+	private function collect_refs( $values, $fields, &$refs ) {
 		foreach ( $values as $key => $value ) {
 			$field = isset( $fields[$key] ) && is_array( $fields[$key] ) ? $fields[$key] : array();
 			$type = isset( $field['type'] ) ? $field['type'] : null;
 
 			if ( $type === 'upload' && is_array( $value ) && ! empty( $value['id'] ) ) {
 				foreach ( wp_parse_id_list( $value['id'] ) as $id )
-					self::add_ref( 'attachment', $id, $refs );
+					$this->add_ref( 'attachment', $id, $refs );
 			}
 			elseif ( ! empty( $field['ref'] ) && is_scalar( $value ) && is_numeric( $value ) )
-				self::add_ref( $field['ref'], (int) $value, $refs );
+				$this->add_ref( $field['ref'], (int) $value, $refs );
 			elseif ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
 				foreach ( $value as $item )
 					if ( is_array( $item ) )
-						self::collect_refs( $item, isset( $field['fields'] ) ? $field['fields'] : array(), $refs );
+						$this->collect_refs( $item, isset( $field['fields'] ) ? $field['fields'] : array(), $refs );
 			}
 			elseif ( $type === null && is_array( $value ) )
-				self::collect_refs( $value, $field, $refs );
+				$this->collect_refs( $value, $field, $refs );
 		}
 	}
 
@@ -444,7 +444,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function add_ref( $type, $id, &$refs ) {
+	private function add_ref( $type, $id, &$refs ) {
 		if ( ! $id || isset( $refs["$type:$id"] ) )
 			return;
 
@@ -465,7 +465,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function swap_refs( $input, $fields, $refs, &$skipped, $prefix = '' ) {
+	private function swap_refs( $input, $fields, $refs, &$skipped, $prefix = '' ) {
 		foreach ( $input as $key => $value ) {
 			$field = isset( $fields[$key] ) && is_array( $fields[$key] ) ? $fields[$key] : array();
 			$type = isset( $field['type'] ) ? $field['type'] : null;
@@ -475,7 +475,7 @@ class md_transfer {
 				$ids = array();
 
 				foreach ( wp_parse_id_list( $value['id'] ) as $id )
-					$ids[] = self::find_ref( 'attachment', $id, $refs );
+					$ids[] = $this->find_ref( 'attachment', $id, $refs );
 
 				if ( in_array( 0, $ids, true ) ) {
 					unset( $input[$key] );
@@ -485,7 +485,7 @@ class md_transfer {
 					$input[$key]['id'] = isset( $field['multiple'] ) ? implode( ',', $ids ) : $ids[0];
 			}
 			elseif ( ! empty( $field['ref'] ) && is_scalar( $value ) && is_numeric( $value ) && $value ) {
-				$id = self::find_ref( $field['ref'], (int) $value, $refs );
+				$id = $this->find_ref( $field['ref'], (int) $value, $refs );
 
 				if ( $id )
 					$input[$key] = (string) $id;
@@ -497,10 +497,10 @@ class md_transfer {
 			elseif ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
 				foreach ( $value as $item => $item_values )
 					if ( is_array( $item_values ) )
-						$input[$key][$item] = self::swap_refs( $item_values, isset( $field['fields'] ) ? $field['fields'] : array(), $refs, $skipped, "$name.$item." );
+						$input[$key][$item] = $this->swap_refs( $item_values, isset( $field['fields'] ) ? $field['fields'] : array(), $refs, $skipped, "$name.$item." );
 			}
 			elseif ( $type === null && is_array( $value ) )
-				$input[$key] = self::swap_refs( $value, $field, $refs, $skipped, "$name." );
+				$input[$key] = $this->swap_refs( $value, $field, $refs, $skipped, "$name." );
 		}
 
 		return $input;
@@ -512,7 +512,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function find_ref( $type, $id, $refs ) {
+	private function find_ref( $type, $id, $refs ) {
 		$ref = isset( $refs["$type:$id"] ) && is_array( $refs["$type:$id"] ) ? $refs["$type:$id"] : array();
 
 		if ( $type === 'attachment' && ! empty( $ref['file'] ) && is_string( $ref['file'] ) ) {
@@ -543,17 +543,17 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function entries( $file ) {
+	private function entries( $file ) {
 		$entries = array();
 
-		foreach ( array_keys( self::sections() ) as $section ) {
+		foreach ( array_keys( $this->sections() ) as $section ) {
 			if ( $section === 'widgets' || empty( $file['sections'][$section] ) || ! is_array( $file['sections'][$section] ) )
 				continue;
 
 			foreach ( $file['sections'][$section] as $raw ) {
 				$raw = is_array( $raw ) ? $raw : array();
 				$raw['section'] = $section;
-				$raw['part'] = self::part_key( $section, $raw );
+				$raw['part'] = $this->part_key( $section, $raw );
 				$entries[] = $raw;
 			}
 		}
@@ -569,7 +569,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function import_entry( $entry, $refs, $save, &$skipped ) {
+	private function import_entry( $entry, $refs, $save, &$skipped ) {
 		if ( ! isset( $entry['scope'], $entry['group'], $entry['values'] ) || ! is_string( $entry['scope'] ) || ! is_string( $entry['group'] ) || ! is_array( $entry['values'] ) ) {
 			$skipped[] = sprintf( __( 'An entry in `%s` can\'t be read.', 'md' ), $entry['section'] );
 			return;
@@ -589,7 +589,7 @@ class md_transfer {
 			return;
 		}
 
-		$applied = $save->apply( $entry['scope'], $entry['group'], self::entry_input( $entry, $scope, $target, $refs, $skipped ), array( 'compile' => false ) );
+		$applied = $save->apply( $entry['scope'], $entry['group'], $this->entry_input( $entry, $scope, $target, $refs, $skipped ), array( 'compile' => false ) );
 
 		if ( is_wp_error( $applied ) )
 			$skipped[] = $applied->get_error_message();
@@ -604,19 +604,19 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function entry_input( $entry, $scope, $target, $refs, &$skipped ) {
-		$fields = self::section_fields( $entry['section'], $entry['group'], $target['fields'] );
+	private function entry_input( $entry, $scope, $target, $refs, &$skipped ) {
+		$fields = $this->section_fields( $entry['section'], $entry['group'], $target['fields'] );
 		$stored = $scope->read( $entry['group'] );
-		$values = self::limit( $entry['values'], $fields );
+		$values = $this->limit( $entry['values'], $fields );
 
 		foreach ( array_keys( array_diff_key( $entry['values'], $values ) ) as $key )
 			$skipped[] = sprintf( __( '`%1$s.%2$s` isn\'t used on this site.', 'md' ), $entry['group'], $key );
 
 		$input = isset( $entry['mode'] ) && $entry['mode'] === 'merge' ?
 			md_save::merge_items( $stored, $values, $fields ) :
-			self::replace_input( $stored, $values, $fields );
+			$this->replace_input( $stored, $values, $fields );
 
-		return self::swap_refs( $input, $fields, $refs, $skipped );
+		return $this->swap_refs( $input, $fields, $refs, $skipped );
 	}
 
 	/**
@@ -626,10 +626,10 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function parts( $file ) {
+	private function parts( $file ) {
 		$parts = array();
 
-		foreach ( self::sections() as $section => $label ) {
+		foreach ( $this->sections() as $section => $label ) {
 			$data = isset( $file['sections'][$section] ) && is_array( $file['sections'][$section] ) ? $file['sections'][$section] : array();
 
 			if ( $section === 'widgets' ) {
@@ -640,7 +640,7 @@ class md_transfer {
 			}
 
 			foreach ( $data as $raw )
-				$parts[self::part_key( $section, $raw )] = is_array( $raw ) && ! empty( $raw['label'] ) && is_string( $raw['label'] ) ? sanitize_text_field( $raw['label'] ) : $label;
+				$parts[$this->part_key( $section, $raw )] = is_array( $raw ) && ! empty( $raw['label'] ) && is_string( $raw['label'] ) ? sanitize_text_field( $raw['label'] ) : $label;
 
 			if ( $section === 'dropins' && ! empty( $file['sections']['options'] ) )
 				$parts[$section] = $label;
@@ -655,7 +655,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function part_key( $section, $raw ) {
+	private function part_key( $section, $raw ) {
 		return is_array( $raw ) && ! empty( $raw['label'] ) && is_string( $raw['label'] ) ? "$section:" . sanitize_title( $raw['label'] ) : $section;
 	}
 
@@ -665,7 +665,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function file_sources( $file ) {
+	private function file_sources( $file ) {
 		$sources = array();
 
 		foreach ( array( 'settings', 'design', 'post_types', 'dropins', 'options' ) as $section )
@@ -682,7 +682,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function dropins_list() {
+	private function dropins_list() {
 		$list = array();
 
 		foreach ( md_get_dropins( 'active' ) as $slug ) {
@@ -703,7 +703,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function export_options() {
+	private function export_options() {
 		$options = array();
 
 		foreach ( (array) apply_filters( 'md_export_options', array() ) as $option => $args )
@@ -719,8 +719,8 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function import_options( $options, &$skipped ) {
-		$declared = self::export_options();
+	private function import_options( $options, &$skipped ) {
+		$declared = $this->export_options();
 
 		foreach ( (array) $options as $option => $data ) {
 			if ( empty( $declared[$option]['sanitize'] ) || ! is_callable( $declared[$option]['sanitize'] ) ) {
@@ -738,7 +738,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function export_widgets() {
+	private function export_widgets() {
 		$sidebars = get_option( 'sidebars_widgets', array() );
 		$widgets = array( 'sidebars' => array(), 'instances' => array() );
 
@@ -749,7 +749,7 @@ class md_transfer {
 			$widgets['sidebars'][$sidebar] = array();
 
 			foreach ( $ids as $id ) {
-				$instance = self::widget_instance( $id );
+				$instance = $this->widget_instance( $id );
 
 				if ( $instance === null )
 					continue;
@@ -768,7 +768,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function widget_instance( $id ) {
+	private function widget_instance( $id ) {
 		if ( ! is_string( $id ) || ! preg_match( '/^(.+)-(\d+)$/', $id, $match ) )
 			return null;
 
@@ -785,12 +785,12 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function import_widgets( $widgets, &$skipped ) {
+	private function import_widgets( $widgets, &$skipped ) {
 		$sidebars = get_option( 'sidebars_widgets', array() );
 		$sidebars = is_array( $sidebars ) ? $sidebars : array();
 		$instances = isset( $widgets['instances'] ) && is_array( $widgets['instances'] ) ? $widgets['instances'] : array();
-		$types = self::widget_types();
-		$areas = self::widget_areas();
+		$types = $this->widget_types();
+		$areas = $this->widget_areas();
 		$options = array();
 
 		foreach ( isset( $widgets['sidebars'] ) && is_array( $widgets['sidebars'] ) ? $widgets['sidebars'] : array() as $sidebar => $ids ) {
@@ -827,7 +827,7 @@ class md_transfer {
 				$numbers = array_filter( array_keys( $options[$type] ), 'is_int' );
 				$number = max( array_merge( array( 1 ), $numbers ) ) + 1;
 
-				$options[$type][$number] = current_user_can( 'unfiltered_html' ) ? $instances[$id] : self::kses_widget( $instances[$id] );
+				$options[$type][$number] = current_user_can( 'unfiltered_html' ) ? $instances[$id] : $this->kses_widget( $instances[$id] );
 				$options[$type]['_multiwidget'] = 1;
 				$sidebars[$sidebar][] = "$type-$number";
 			}
@@ -846,10 +846,10 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function kses_widget( $instance ) {
+	public function kses_widget( $instance ) {
 		foreach ( $instance as $key => $value ) {
 			if ( is_array( $value ) )
-				$instance[$key] = self::kses_widget( $value );
+				$instance[$key] = $this->kses_widget( $value );
 			elseif ( is_string( $value ) )
 				$instance[$key] = wp_kses_post( $value );
 		}
@@ -863,7 +863,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function widget_types() {
+	public function widget_types() {
 		global $wp_widget_factory;
 
 		$types = array();
@@ -882,7 +882,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	public static function widget_areas() {
+	public function widget_areas() {
 		global $wp_registered_sidebars;
 
 		$settings = get_option( 'marketers_delight', array() );
@@ -902,7 +902,7 @@ class md_transfer {
 	 * @since 6.2
 	 */
 
-	private static function design_groups() {
+	private function design_groups() {
 		$type = array_fill_keys( array( 'color', 'font_family', 'font_type', 'font_weight', 'font_size', 'line_height' ), true );
 
 		return array(

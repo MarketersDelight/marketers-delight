@@ -2,14 +2,27 @@
 /**
  * Settings → Import & Export: download this site's MD settings as a file,
  * or upload one, check what it holds and import the selected parts. The
- * file format and the work are md_transfer's (api/save/transfer.php).
+ * file format and the work are md_settings_file's (api/save/settings-file.php).
  *
  * @since 6.2
  */
 
 class md_import_export extends md_api {
 
-	const MENU_SLUG = 'admin.php?page=md_settings&tab=md_import_export';
+	private $menu_slug = 'admin.php?page=md_settings&tab=md_import_export';
+	private $settings_file;
+
+	/**
+	 * Set up the settings file before md_api registers the page.
+	 *
+	 * @since 6.2
+	 */
+
+	public function __construct( $id = null, $args = array() ) {
+		$this->settings_file = new md_settings_file;
+
+		parent::__construct( $id, $args );
+	}
 
 	/**
 	 * Register the admin page.
@@ -54,7 +67,7 @@ class md_import_export extends md_api {
 	public function menu_link() {
 		$name = __( 'Import & Export', 'md' );
 
-		add_submenu_page( 'md_settings', $name, $name, 'manage_options', self::MENU_SLUG );
+		add_submenu_page( 'md_settings', $name, $name, 'manage_options', $this->menu_slug );
 	}
 
 	/**
@@ -64,7 +77,7 @@ class md_import_export extends md_api {
 	 */
 
 	public function menu_current( $submenu_file ) {
-		return isset( $_GET['tab'] ) && $_GET['tab'] === $this->_id ? self::MENU_SLUG : $submenu_file;
+		return isset( $_GET['tab'] ) && $_GET['tab'] === $this->_id ? $this->menu_slug : $submenu_file;
 	}
 
 	/**
@@ -75,12 +88,12 @@ class md_import_export extends md_api {
 	 */
 
 	public function admin_page() {
-		$sections = md_transfer::sections();
-		$file = get_transient( self::key( 'file' ) );
-		$check = is_array( $file ) ? md_transfer::check( $file ) : null;
-		$notice = get_transient( self::key( 'notice' ) );
+		$sections = $this->settings_file->sections();
+		$file = get_transient( $this->key( 'file' ) );
+		$check = is_array( $file ) ? $this->settings_file->check( $file ) : null;
+		$notice = get_transient( $this->key( 'notice' ) );
 
-		delete_transient( self::key( 'notice' ) );
+		delete_transient( $this->key( 'notice' ) );
 
 		include md_template( 'admin/import-export', true );
 	}
@@ -92,9 +105,9 @@ class md_import_export extends md_api {
 	 */
 
 	public function export() {
-		self::verify( 'md_export' );
+		$this->verify( 'md_export' );
 
-		self::download( isset( $_POST['md_sections'] ) ? array_map( 'sanitize_key', (array) wp_unslash( $_POST['md_sections'] ) ) : array() );
+		$this->download( isset( $_POST['md_sections'] ) ? array_map( 'sanitize_key', (array) wp_unslash( $_POST['md_sections'] ) ) : array() );
 	}
 
 	/**
@@ -103,18 +116,18 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	private static function download( $requested ) {
-		$sections = array_values( array_intersect( array_keys( md_transfer::sections() ), $requested ) );
+	private function download( $requested ) {
+		$sections = array_values( array_intersect( array_keys( $this->settings_file->sections() ), $requested ) );
 
 		if ( empty( $sections ) )
-			self::back( 'error', __( 'Select at least one section.', 'md' ) );
+			$this->back( 'error', __( 'Select at least one section.', 'md' ) );
 
 		nocache_headers();
 
 		header( 'Content-Type: application/json; charset=utf-8' );
-		header( 'Content-Disposition: attachment; filename=' . md_transfer::file_name() );
+		header( 'Content-Disposition: attachment; filename=' . $this->settings_file->file_name() );
 
-		echo wp_json_encode( md_transfer::export( $sections ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		echo wp_json_encode( $this->settings_file->export( $sections ), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 
 		exit;
 	}
@@ -127,24 +140,24 @@ class md_import_export extends md_api {
 	 */
 
 	public function upload() {
-		self::verify( 'md_import_upload' );
+		$this->verify( 'md_import_upload' );
 
 		$upload = isset( $_FILES['md_import_file'] ) && is_array( $_FILES['md_import_file'] ) ? $_FILES['md_import_file'] : array();
 
 		if ( empty( $upload['tmp_name'] ) || ! empty( $upload['error'] ) || ! is_uploaded_file( $upload['tmp_name'] ) )
-			self::back( 'error', __( 'Choose a file to upload.', 'md' ) );
+			$this->back( 'error', __( 'Choose a file to upload.', 'md' ) );
 
-		if ( strtolower( pathinfo( (string) $upload['name'], PATHINFO_EXTENSION ) ) !== 'json' || $upload['size'] > md_transfer::MAX_SIZE )
-			self::back( 'error', __( 'Upload a .json file under 2 MB, exported from Settings → Import & Export.', 'md' ) );
+		if ( strtolower( pathinfo( (string) $upload['name'], PATHINFO_EXTENSION ) ) !== 'json' || $upload['size'] > $this->settings_file->max_size )
+			$this->back( 'error', __( 'Upload a .json file under 2 MB, exported from Settings → Import & Export.', 'md' ) );
 
-		$file = md_transfer::read( file_get_contents( $upload['tmp_name'] ) );
+		$file = $this->settings_file->read( file_get_contents( $upload['tmp_name'] ) );
 
 		if ( is_wp_error( $file ) )
-			self::back( 'error', $file->get_error_message() );
+			$this->back( 'error', $file->get_error_message() );
 
-		set_transient( self::key( 'file' ), $file, HOUR_IN_SECONDS );
+		set_transient( $this->key( 'file' ), $file, HOUR_IN_SECONDS );
 
-		self::back();
+		$this->back();
 	}
 
 	/**
@@ -154,26 +167,26 @@ class md_import_export extends md_api {
 	 */
 
 	public function import() {
-		self::verify( 'md_import' );
+		$this->verify( 'md_import' );
 
 		if ( isset( $_POST['md_backup'] ) )
-			self::download( array_keys( md_transfer::sections() ) );
+			$this->download( array_keys( $this->settings_file->sections() ) );
 
-		$file = get_transient( self::key( 'file' ) );
+		$file = get_transient( $this->key( 'file' ) );
 
 		if ( ! is_array( $file ) )
-			self::back( 'error', __( 'The uploaded file has expired. Upload it again.', 'md' ) );
+			$this->back( 'error', __( 'The uploaded file has expired. Upload it again.', 'md' ) );
 
 		$parts = isset( $_POST['md_parts'] ) ? array_map( 'sanitize_text_field', (array) wp_unslash( $_POST['md_parts'] ) ) : array();
 
 		if ( empty( $parts ) )
-			self::back( 'error', __( 'Select at least one part.', 'md' ) );
+			$this->back( 'error', __( 'Select at least one part.', 'md' ) );
 
-		$result = md_transfer::import( $file, $parts );
+		$result = $this->settings_file->import( $file, $parts );
 
-		delete_transient( self::key( 'file' ) );
+		delete_transient( $this->key( 'file' ) );
 
-		self::back( 'success', sprintf( __( 'Imported: %s.', 'md' ), implode( ', ', $result['imported'] ) ), $result['skipped'] );
+		$this->back( 'success', sprintf( __( 'Imported: %s.', 'md' ), implode( ', ', $result['imported'] ) ), $result['skipped'] );
 	}
 
 	/**
@@ -183,11 +196,11 @@ class md_import_export extends md_api {
 	 */
 
 	public function cancel() {
-		self::verify( 'md_import_cancel' );
+		$this->verify( 'md_import_cancel' );
 
-		delete_transient( self::key( 'file' ) );
+		delete_transient( $this->key( 'file' ) );
 
-		self::back();
+		$this->back();
 	}
 
 	/**
@@ -197,7 +210,7 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	private static function verify( $action ) {
+	private function verify( $action ) {
 		if ( ! current_user_can( 'manage_options' ) )
 			wp_die( esc_html__( 'Sorry, you are not allowed to import or export settings.', 'md' ), 403 );
 
@@ -210,15 +223,15 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	private static function back( $type = '', $message = '', $items = array() ) {
+	private function back( $type = '', $message = '', $items = array() ) {
 		if ( $message )
-			set_transient( self::key( 'notice' ), array(
+			set_transient( $this->key( 'notice' ), array(
 				'type' => $type,
 				'message' => $message,
 				'items' => $items
 			), HOUR_IN_SECONDS );
 
-		wp_safe_redirect( self::url() );
+		wp_safe_redirect( $this->url() );
 
 		exit;
 	}
@@ -230,7 +243,7 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	public static function message( $text ) {
+	public function message( $text ) {
 		return preg_replace( '/`([^`]+)`/', '<code>$1</code>', esc_html( $text ) );
 	}
 
@@ -240,7 +253,7 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	private static function key( $name ) {
+	private function key( $name ) {
 		return "md_import_{$name}_" . get_current_user_id();
 	}
 
@@ -250,8 +263,8 @@ class md_import_export extends md_api {
 	 * @since 6.2
 	 */
 
-	public static function url() {
-		return admin_url( self::MENU_SLUG );
+	public function url() {
+		return admin_url( $this->menu_slug );
 	}
 
 }

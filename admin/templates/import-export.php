@@ -7,13 +7,13 @@
 
 	<div class="notice notice-<?php echo $status; ?> is-compact inline">
 
-		<p><?php echo md_import_export::message( $notice['message'] ); ?></p>
+		<p><?php echo $this->message( $notice['message'] ); ?></p>
 
 		<?php if ( $skipped ) : ?>
 		<p><strong><?php echo esc_html( sprintf( _n( '%d item was skipped:', '%d items were skipped:', count( $skipped ), 'md' ), count( $skipped ) ) ); ?></strong></p>
 		<ul class="md-bullet-list mt-none">
 			<?php foreach ( $skipped as $item ) : ?>
-			<li><?php echo md_import_export::message( $item ); ?></li>
+			<li><?php echo $this->message( $item ); ?></li>
 			<?php endforeach; ?>
 		</ul>
 		<?php endif; ?>
@@ -125,7 +125,7 @@
 				<p><?php esc_html_e( 'These can\'t be imported here:', 'md' ); ?></p>
 				<ul class="md-bullet-list mt-none">
 					<?php foreach ( $check['skipped'] as $item ) : ?>
-					<li><?php echo md_import_export::message( $item ); ?></li>
+					<li><?php echo $this->message( $item ); ?></li>
 					<?php endforeach; ?>
 				</ul>
 				<?php endif; ?>

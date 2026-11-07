@@ -9,6 +9,20 @@
 
 class md_settings_abilities extends md_abilities {
 
+	private $settings_file;
+
+	/**
+	 * Set up the settings file these abilities read and write.
+	 *
+	 * @since 6.2
+	 */
+
+	public function __construct() {
+		$this->settings_file = new md_settings_file;
+
+		parent::__construct();
+	}
+
 	/**
 	 * Describe the settings abilities.
 	 *
@@ -91,7 +105,7 @@ class md_settings_abilities extends md_abilities {
 					'properties' => array(
 						'sections' => array(
 							'type' => 'array',
-							'items' => array( 'type' => 'string', 'enum' => array_keys( md_transfer::sections() ) ),
+							'items' => array( 'type' => 'string', 'enum' => array_keys( $this->settings_file->sections() ) ),
 							'description' => __( 'Leave out for everything.', 'md' )
 						)
 					),
@@ -99,7 +113,7 @@ class md_settings_abilities extends md_abilities {
 					'default' => array()
 				),
 				'execute' => 'export_settings',
-				'permission' => 'can_transfer',
+				'permission' => 'can_use_settings_file',
 				'readonly' => true
 			),
 			'import-settings' => array(
@@ -120,7 +134,7 @@ class md_settings_abilities extends md_abilities {
 					'additionalProperties' => false
 				),
 				'execute' => 'import_settings',
-				'permission' => 'can_transfer',
+				'permission' => 'can_use_settings_file',
 				'destructive' => true
 			)
 		);
@@ -155,7 +169,7 @@ class md_settings_abilities extends md_abilities {
 	 * @since 6.2
 	 */
 
-	public function can_transfer() {
+	public function can_use_settings_file() {
 		return current_user_can( 'manage_options' );
 	}
 
@@ -469,7 +483,7 @@ class md_settings_abilities extends md_abilities {
 	 */
 
 	public function export_settings( $input = array() ) {
-		return md_transfer::export( $input['sections'] ?? null );
+		return $this->settings_file->export( $input['sections'] ?? null );
 	}
 
 	/**
@@ -479,15 +493,15 @@ class md_settings_abilities extends md_abilities {
 	 */
 
 	public function import_settings( $input = array() ) {
-		$file = md_transfer::read( wp_json_encode( $input['file'] ) );
+		$file = $this->settings_file->read( wp_json_encode( $input['file'] ) );
 
 		if ( is_wp_error( $file ) )
 			return $this->result( $file );
 
 		if ( ! empty( $input['check'] ) )
-			return $this->result( md_transfer::check( $file ) );
+			return $this->result( $this->settings_file->check( $file ) );
 
-		return $this->result( md_transfer::import( $file, $input['parts'] ?? null ) );
+		return $this->result( $this->settings_file->import( $file, $input['parts'] ?? null ) );
 	}
 
 }

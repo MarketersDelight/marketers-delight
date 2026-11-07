@@ -19,7 +19,7 @@ class md_validate {
 	 * @since 6.2
 	 */
 
-	const FIELD_KEYS = array(
+	public $field_keys = array(
 		'type',
 		'internal',
 		'label',
