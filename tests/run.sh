@@ -10,6 +10,12 @@
 set -e
 cd "$(dirname "$0")/.."
 
+# Lint every PHP file first: the suites don't load features/*/admin.php.
+
+if find . -name '*.php' -not -path './tests/bin/*' -not -path './dist/*' -not -path './node_modules/*' -print0 | xargs -0 -n1 -P4 php -l | grep -v '^No syntax errors'; then
+	exit 1
+fi
+
 php tests/bin/phpunit.phar -c phpunit.xml "$@"
 php tests/bin/phpunit.phar -c phpunit-inheritance.xml "$@"
 php tests/bin/phpunit.phar -c phpunit-dropins.xml "$@"

@@ -22,6 +22,9 @@ function md_color_hex( $value ) {
 	if ( empty( $value ) )
 		return '';
 
+	if ( is_string( $value ) && $value[0] === '#' )
+		return $value;
+
 	$palette = md_color_palette();
 
 	return isset( $palette[$value] ) ? $palette[$value]['hex'] : $value;

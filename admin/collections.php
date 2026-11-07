@@ -52,7 +52,10 @@ class md_collection_admin {
 	public function parent_meta_box( $post ) {
 		$collection = $this->collection;
 		$labels = $this->labels();
-		$query = $collection->query( $post->ID );
+		$query = $collection->query( $post->ID, array(
+			'posts_per_page' => $collection->per_page,
+			'post__not_in' => $collection->hidden_items( $post->ID )
+		) );
 		$can_add = $post->post_status === 'publish';
 		$singular = $labels->singular_name;
 		$plural = $labels->name;

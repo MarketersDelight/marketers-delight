@@ -92,6 +92,9 @@ if ( ! EMPTY_TRASH_DAYS ) {
 	$done = md_test_call( 'trash-item', array( 'collection' => 'book_quotes', 'item_id' => $item['saved_id'] ) );
 	md_test( 'trash-item refused', is_wp_error( $done ) && get_post_status( $item['saved_id'] ) === 'publish', $done );
 
+	$response = rest_do_request( new WP_REST_Request( 'DELETE', "/md/v1/collections/book_quotes/$book/{$item['saved_id']}" ) );
+	md_test( 'Collections REST delete refused', $response->is_error() && get_post_status( $item['saved_id'] ) === 'publish', $response->get_data() );
+
 	md_test_report();
 	return;
 }
@@ -354,6 +357,81 @@ $placed = md_test_widgets( $widgets, 'side-b' );
 md_test( 'update and order widgets', ( $placed[0]['settings']['title'] ?? '' ) === 'New' && ( $placed[0]['settings']['text'] ?? '' ) === 'x', $placed );
 $widgets = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'remove', 'id' => $block ) ) ) );
 md_test( 'remove widget', count( md_test_widgets( $widgets, 'side-b' ) ) === 1, $widgets );
+
+$number = (int) substr( $text, strlen( 'text-' ) );
+$done = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'remove', 'id' => $text ), array( 'op' => 'remove', 'id' => 'missing-42' ) ) ) );
+md_test( 'a failed widget batch changes nothing', is_wp_error( $done ) && isset( get_option( 'widget_text' )[$number] ) && in_array( $text, wp_get_sidebars_widgets()['side-b'], true ), $done );
+
+$update_calls = 0;
+$count_updates = function( $instance ) use ( &$update_calls ) {
+	$update_calls++;
+	return $instance;
+};
+add_filter( 'widget_update_callback', $count_updates );
+$widgets = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'add', 'type' => 'recent-posts', 'settings' => array( 'title' => 'Latest', 'number' => '999abc' ) ) ) ) );
+remove_filter( 'widget_update_callback', $count_updates );
+$placed = md_test_widgets( $widgets, 'side-b' );
+md_test( 'widgets save through their own update', $update_calls === 1 && ( end( $placed )['settings']['number'] ?? '' ) === 999, $placed );
+
+add_filter( 'widget_update_callback', '__return_false' );
+$before = wp_get_sidebars_widgets()['side-b'];
+$done = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'add', 'type' => 'text', 'settings' => array( 'title' => 'No' ) ) ) ) );
+remove_filter( 'widget_update_callback', '__return_false' );
+md_test( 'a widget filter can refuse', is_wp_error( $done ) && wp_get_sidebars_widgets()['side-b'] === $before, $done );
+
+// A parent's editor doesn't get other people's items
+
+$item_author = wp_insert_user( array( 'user_login' => 'item_author', 'user_pass' => wp_generate_password(), 'user_email' => 'item_author@example.test', 'role' => 'author' ) );
+$own_book = wp_insert_post( array( 'post_type' => 'bookshelf', 'post_title' => 'Own book', 'post_status' => 'publish', 'post_author' => $item_author ) );
+$foreign = array();
+
+foreach ( array( array( 'private', '2025-03-01 12:00:00' ), array( 'publish', '2025-01-01 12:00:00' ), array( 'publish', '2025-02-01 12:00:00' ) ) as $row )
+	$foreign[] = wp_insert_post( array( 'post_type' => 'book_quote', 'post_parent' => $own_book, 'post_title' => 'Q', 'post_content' => 'x', 'post_status' => $row[0], 'post_date' => $row[1], 'post_author' => $admin ) );
+
+md_test_as( $item_author );
+$found = md_test_call( 'find-items', array( 'collection' => 'book_quotes', 'parent_id' => $own_book, 'include' => array( 'drafts' ) ) );
+md_test( 'find-items hides another user\'s private item', ! in_array( $foreign[0], md_test_ids( $found ), true ) && in_array( $foreign[1], md_test_ids( $found ), true ), $found );
+$date = get_post_field( 'post_date', $foreign[1] );
+$done = md_test_call( 'save-item', array( 'collection' => 'book_quotes', 'parent_id' => $own_book, 'order' => array( $foreign[2], $foreign[1] ) ) );
+clean_post_cache( $foreign[1] );
+clean_post_cache( $foreign[2] );
+md_test( 'reorder refuses another user\'s items', is_wp_error( $done ) && get_post_field( 'post_date', $foreign[1] ) === $date && get_post_field( 'post_date', $foreign[2] ) === '2025-02-01 12:00:00', $done );
+
+// Global settings follow the settings screens
+
+$delegate = wp_insert_user( array( 'user_login' => 'theme_only', 'user_pass' => wp_generate_password(), 'user_email' => 'theme_only@example.test', 'role' => 'subscriber' ) );
+( new WP_User( $delegate ) )->add_cap( 'edit_theme_options' );
+md_test_as( $delegate );
+md_test( 'site settings need manage_options', is_wp_error( md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'settings', 'values' => array( '404_page' => 9876 ) ) ) ) );
+md_test_as( $admin );
+
+// A manager page and the next page, with nothing shown twice
+
+$paged_book = wp_insert_post( array( 'post_type' => 'bookshelf', 'post_title' => 'Long book', 'post_status' => 'publish', 'post_author' => $admin ) );
+$paged = array();
+
+for ( $i = 0; $i < 25; $i++ )
+	$paged[] = wp_insert_post( array( 'post_type' => 'book_quote', 'post_parent' => $paged_book, 'post_title' => "Q$i", 'post_content' => 'x', 'post_status' => 'publish', 'post_author' => $admin ) );
+
+$collection = new md_collection( 'book_quotes' );
+$first_page = wp_list_pluck( $collection->query( $paged_book, array( 'posts_per_page' => $collection->per_page ) )->posts, 'ID' );
+$request = new WP_REST_Request( 'GET', "/md/v1/collections/book_quotes/$paged_book" );
+$request->set_param( 'exclude', implode( ',', $first_page ) );
+$next = rest_do_request( $request )->get_data();
+md_test( 'manager shows 20, then the rest', count( $first_page ) === 20 && substr_count( $next['html'] ?? '', 'data-md-collection-item=' ) === 5 && empty( $next['has_more'] ), $next );
+md_test( 'readers still get every item', count( $collection->query( $paged_book )->posts ) === 25 );
+
+// A Like keeps other values' backslashes
+
+$slashed = wp_insert_post( array( 'post_title' => 'Slashed', 'post_status' => 'publish', 'post_author' => $admin ) );
+update_post_meta( $slashed, 'marketers_delight', wp_slash( array( 'featured_media' => array( 'custom_html' => 'C:\\new' ) ) ) );
+$like = new WP_REST_Request( 'POST', "/md/v1/share/posts/$slashed/like" );
+$like->set_param( 'type', 'post' );
+md_test_as( 0 );
+$liked = rest_do_request( $like );
+md_test_as( $admin );
+wp_cache_delete( $slashed, 'post_meta' );
+md_test( 'a Like keeps backslashes', $liked->get_status() === 200 && ( get_post_meta( $slashed, 'marketers_delight', true )['featured_media']['custom_html'] ?? '' ) === 'C:\\new', $liked->get_data() );
 
 // Export and import
 

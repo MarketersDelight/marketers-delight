@@ -495,10 +495,10 @@ class md_content_abilities extends md_abilities {
 		);
 
 		foreach ( get_object_taxonomies( $post->post_type ) as $taxonomy ) {
-			$names = wp_get_post_terms( $post->ID, $taxonomy, array( 'fields' => 'names' ) );
+			$terms = get_the_terms( $post, $taxonomy );
 
-			if ( $names && ! is_wp_error( $names ) )
-				$result['terms'][$taxonomy] = $names;
+			if ( $terms && ! is_wp_error( $terms ) )
+				$result['terms'][$taxonomy] = wp_list_pluck( $terms, 'name' );
 		}
 
 		foreach ( md_collections() as $id => $collection )

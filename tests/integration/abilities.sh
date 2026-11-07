@@ -46,7 +46,7 @@ ln -s "$THEME" "$SITE/wp-content/themes/marketers-delight"
 ln -s "$DROPINS" "$SITE/wp-content/md-dropins"
 
 $WP theme activate marketers-delight --path="$SITE" --quiet
-$WP eval --path="$SITE" --user=builder 'md_activate_dropins( array( "stream", "bookshelf", "changelog", "optins", "footnotes" ) );'
+$WP eval --path="$SITE" --user=builder 'md_activate_dropins( array( "stream", "bookshelf", "changelog", "optins", "footnotes", "share" ) );'
 
 echo "Trash on:"
 $WP eval-file "$CHECKS" --path="$SITE" --user=builder --exec='define( "MD_ABILITIES_SCRATCH", true );'

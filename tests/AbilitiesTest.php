@@ -4,6 +4,7 @@
  * API. Calls through it are covered by running them over MCP.
  */
 
+require_once dirname( __DIR__ ) . '/api/save/widgets.php';
 require_once dirname( __DIR__ ) . '/api/save/settings-file.php';
 require_once dirname( __DIR__ ) . '/api/abilities/abilities.php';
 require_once dirname( __DIR__ ) . '/api/abilities/settings.php';

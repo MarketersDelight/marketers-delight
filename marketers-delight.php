@@ -84,10 +84,12 @@ final class marketers_delight {
 
 		if ( is_admin() ) {
 			require_once MD_DIR . 'api/license.php';
+			require_once MD_DIR . 'api/save/widgets.php';
 			require_once MD_DIR . 'api/save/settings-file.php';
 			require_once MD_DIR . 'admin/admin.php';
 		}
 		elseif ( md_loads_settings() ) {
+			require_once MD_DIR . 'api/save/widgets.php';
 			require_once MD_DIR . 'api/save/settings-file.php';
 			require_once MD_DIR . 'api/dropins/manage.php';
 

@@ -15,6 +15,17 @@ class md_settings_file {
 	public $format = 'md-export';
 	public $version = 1;
 	public $max_size = 2097152;
+	private $widgets;
+
+	/**
+	 * Set up the widgets this file carries.
+	 *
+	 * @since 6.2
+	 */
+
+	public function __construct() {
+		$this->widgets = new md_widgets;
+	}
 
 	/**
 	 * The sections a file can hold, in import order: Theme settings
@@ -60,7 +71,7 @@ class md_settings_file {
 				);
 
 		if ( in_array( 'widgets', $sections, true ) )
-			$out['widgets'] = $this->export_widgets();
+			$out['widgets'] = $this->widgets->export();
 
 		return array(
 			'format' => $this->format,
@@ -173,7 +184,7 @@ class md_settings_file {
 			$this->import_options( $file['sections']['options'], $skipped );
 
 		if ( in_array( 'widgets', $parts, true ) && ! empty( $file['sections']['widgets'] ) )
-			$this->import_widgets( $file['sections']['widgets'], $skipped );
+			$this->widgets->import( $file['sections']['widgets'], $skipped );
 
 		foreach ( $parts as $part )
 			$imported[] = $all[$part];
@@ -730,169 +741,6 @@ class md_settings_file {
 
 			update_option( $option, call_user_func( $declared[$option]['sanitize'], isset( $data['values'] ) && is_array( $data['values'] ) ? $data['values'] : array() ) );
 		}
-	}
-
-	/**
-	 * Widgets with their settings and the sidebar each sits in.
-	 *
-	 * @since 6.2
-	 */
-
-	private function export_widgets() {
-		$sidebars = get_option( 'sidebars_widgets', array() );
-		$widgets = array( 'sidebars' => array(), 'instances' => array() );
-
-		foreach ( is_array( $sidebars ) ? $sidebars : array() as $sidebar => $ids ) {
-			if ( ! is_array( $ids ) || $sidebar === 'wp_inactive_widgets' || strpos( $sidebar, 'orphaned_widgets' ) === 0 )
-				continue;
-
-			$widgets['sidebars'][$sidebar] = array();
-
-			foreach ( $ids as $id ) {
-				$instance = $this->widget_instance( $id );
-
-				if ( $instance === null )
-					continue;
-
-				$widgets['sidebars'][$sidebar][] = $id;
-				$widgets['instances'][$id] = $instance;
-			}
-		}
-
-		return $widgets;
-	}
-
-	/**
-	 * A widget's settings by its ID, ex: text-2, or null.
-	 *
-	 * @since 6.2
-	 */
-
-	private function widget_instance( $id ) {
-		if ( ! is_string( $id ) || ! preg_match( '/^(.+)-(\d+)$/', $id, $match ) )
-			return null;
-
-		$option = get_option( "widget_{$match[1]}", array() );
-
-		return isset( $option[$match[2]] ) && is_array( $option[$match[2]] ) ? $option[$match[2]] : null;
-	}
-
-	/**
-	 * Replace the widgets of each sidebar in the file that exists here.
-	 * Each widget gets a new number in its type's option; the sidebar's
-	 * old widgets are deleted.
-	 *
-	 * @since 6.2
-	 */
-
-	private function import_widgets( $widgets, &$skipped ) {
-		$sidebars = get_option( 'sidebars_widgets', array() );
-		$sidebars = is_array( $sidebars ) ? $sidebars : array();
-		$instances = isset( $widgets['instances'] ) && is_array( $widgets['instances'] ) ? $widgets['instances'] : array();
-		$types = $this->widget_types();
-		$areas = $this->widget_areas();
-		$options = array();
-
-		foreach ( isset( $widgets['sidebars'] ) && is_array( $widgets['sidebars'] ) ? $widgets['sidebars'] : array() as $sidebar => $ids ) {
-			if ( ! in_array( $sidebar, $areas, true ) ) {
-				if ( ! $ids )
-					continue;
-
-				$skipped[] = sprintf( __( 'The `%s` sidebar doesn\'t exist here, so its widgets weren\'t placed. Select Theme settings to create it.', 'md' ), $sidebar );
-				continue;
-			}
-
-			foreach ( isset( $sidebars[$sidebar] ) && is_array( $sidebars[$sidebar] ) ? $sidebars[$sidebar] : array() as $old ) {
-				if ( preg_match( '/^(.+)-(\d+)$/', $old, $match ) ) {
-					$options[$match[1]] = isset( $options[$match[1]] ) ? $options[$match[1]] : get_option( "widget_{$match[1]}", array() );
-					unset( $options[$match[1]][$match[2]] );
-				}
-			}
-
-			$sidebars[$sidebar] = array();
-
-			foreach ( (array) $ids as $id ) {
-				if ( ! is_string( $id ) || ! preg_match( '/^(.+)-(\d+)$/', $id, $match ) || ! isset( $instances[$id] ) || ! is_array( $instances[$id] ) )
-					continue;
-
-				$type = $match[1];
-
-				if ( ! in_array( $type, $types, true ) ) {
-					$skipped[] = sprintf( __( 'The `%s` widget isn\'t available on this site.', 'md' ), $type );
-					continue;
-				}
-
-				$options[$type] = isset( $options[$type] ) ? $options[$type] : get_option( "widget_$type", array() );
-				$options[$type] = is_array( $options[$type] ) ? $options[$type] : array();
-				$numbers = array_filter( array_keys( $options[$type] ), 'is_int' );
-				$number = max( array_merge( array( 1 ), $numbers ) ) + 1;
-
-				$options[$type][$number] = current_user_can( 'unfiltered_html' ) ? $instances[$id] : $this->kses_widget( $instances[$id] );
-				$options[$type]['_multiwidget'] = 1;
-				$sidebars[$sidebar][] = "$type-$number";
-			}
-		}
-
-		foreach ( $options as $type => $option )
-			update_option( "widget_$type", $option );
-
-		update_option( 'sidebars_widgets', $sidebars );
-	}
-
-	/**
-	 * Widget text through wp_kses_post() for users who can't post
-	 * unfiltered HTML.
-	 *
-	 * @since 6.2
-	 */
-
-	public function kses_widget( $instance ) {
-		foreach ( $instance as $key => $value ) {
-			if ( is_array( $value ) )
-				$instance[$key] = $this->kses_widget( $value );
-			elseif ( is_string( $value ) )
-				$instance[$key] = wp_kses_post( $value );
-		}
-
-		return $instance;
-	}
-
-	/**
-	 * Widget types registered here, by ID base.
-	 *
-	 * @since 6.2
-	 */
-
-	public function widget_types() {
-		global $wp_widget_factory;
-
-		$types = array();
-
-		if ( isset( $wp_widget_factory->widgets ) )
-			foreach ( $wp_widget_factory->widgets as $widget )
-				$types[] = $widget->id_base;
-
-		return $types;
-	}
-
-	/**
-	 * Sidebars that exist here: the registered ones, and MD's custom
-	 * sidebars and panels from settings the same import just saved.
-	 *
-	 * @since 6.2
-	 */
-
-	public function widget_areas() {
-		global $wp_registered_sidebars;
-
-		$settings = get_option( 'marketers_delight', array() );
-		$areas = is_array( $wp_registered_sidebars ) ? array_keys( $wp_registered_sidebars ) : array();
-
-		foreach ( array( 'sidebars', 'panels' ) as $type )
-			if ( isset( $settings['settings'][$type] ) && is_array( $settings['settings'][$type] ) )
-				$areas = array_merge( $areas, array_map( 'strval', array_keys( $settings['settings'][$type] ) ) );
-
-		return $areas;
 	}
 
 	/**

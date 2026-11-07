@@ -880,6 +880,14 @@
 					} );
 				}
 
+				if ( action === 'more' ) {
+					var exclude = items.find( '[data-md-collection-item]' ).map( function() {
+						return $( this ).data( 'md-collection-item' );
+					} ).get();
+
+					url += ( url.indexOf( '?' ) === -1 ? '?' : '&' ) + 'exclude=' + encodeURIComponent( exclude.join( ',' ) );
+				}
+
 				status.text( '' ).removeClass( 'is-error' );
 				button.prop( 'disabled', true ).addClass( 'is-busy' );
 
@@ -888,7 +896,8 @@
 					type: {
 						add: 'POST',
 						save: 'PATCH',
-						trash: 'DELETE'
+						trash: 'DELETE',
+						more: 'GET'
 					}[action],
 					headers: { 'X-WP-Nonce': collection.data( 'md-collection-nonce' ) },
 					contentType: fields ? 'application/json' : undefined,
@@ -936,8 +945,16 @@
 						collection.find( '[data-md-collection-empty]' ).prop( 'hidden', !! items.find( '[data-md-collection-item]' ).length );
 						status.text( collection.data( 'md-collection-trashed' ) );
 					}
+					else if ( action === 'more' ) {
+						items.append( result.html );
+						jscolor.install();
 
-					collection.find( '[data-md-collection-count]' ).text( result.count );
+						if ( ! result.has_more )
+							button.closest( '.md-collection-more' ).remove();
+					}
+
+					if ( action !== 'more' )
+						collection.find( '[data-md-collection-count]' ).text( result.count );
 				} ).fail( function( request ) {
 					var message = request.responseJSON && request.responseJSON.message ? request.responseJSON.message : collection.data( 'md-collection-error' );
 					status.text( message ).addClass( 'is-error' );

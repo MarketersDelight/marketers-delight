@@ -385,13 +385,13 @@ class md_save {
 	 */
 
 	private function diff( $before, $after, $prefix = '' ) {
-		$before = $this->flatten( $before, $prefix );
-		$after = $this->flatten( $after, $prefix );
+		$flat_before = $this->flatten( $before, $prefix );
+		$flat_after = $this->flatten( $after, $prefix );
 		$changed = array();
 
-		foreach ( array_keys( $before + $after ) as $key ) {
-			$old = array_key_exists( $key, $before ) ? $before[$key] : null;
-			$new = array_key_exists( $key, $after ) ? $after[$key] : null;
+		foreach ( array_keys( $flat_before + $flat_after ) as $key ) {
+			$old = array_key_exists( $key, $flat_before ) ? $flat_before[$key] : null;
+			$new = array_key_exists( $key, $flat_after ) ? $flat_after[$key] : null;
 
 			if ( $old !== $new && (string) $key !== '' )
 				$changed[] = array(
@@ -401,7 +401,36 @@ class md_save {
 				);
 		}
 
-		return $changed;
+		return array_merge( $changed, $this->moved( $before, $after, $prefix ) );
+	}
+
+	/**
+	 * List items that only changed places, which flattened values can't
+	 * show, with their keys in the old and new order.
+	 *
+	 * @since 6.2
+	 */
+
+	private function moved( $before, $after, $prefix ) {
+		if ( ! is_array( $before ) || ! is_array( $after ) )
+			return array();
+
+		$old = array_keys( $before );
+		$new = array_keys( $after );
+		$shared = array_values( array_intersect( $new, $old ) );
+		$moved = array();
+
+		if ( $prefix !== '' && $shared !== array_values( array_intersect( $old, $new ) ) )
+			$moved[] = array(
+				'key' => rtrim( $prefix, '.' ),
+				'before' => $old,
+				'after' => $new
+			);
+
+		foreach ( $shared as $key )
+			$moved = array_merge( $moved, $this->moved( $before[$key], $after[$key], "$prefix$key." ) );
+
+		return $moved;
 	}
 
 	/**

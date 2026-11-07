@@ -15,6 +15,7 @@ class md_collection {
 	public $post_type;
 	public $fields_callback;
 	public $order = 'DESC';
+	public $per_page = 20;
 	public $fields = array();
 	public $meta_fields = array();
 	protected $sources = array( 'meta', 'post_title', 'post_content', 'post_date', 'post_status', 'post_author', 'taxonomy' );
@@ -31,6 +32,7 @@ class md_collection {
 			'parent' => '',
 			'post_type' => '',
 			'order' => 'DESC',
+			'per_page' => 20,
 			'fields' => array(),
 			'fields_callback' => null
 		) );
@@ -41,6 +43,7 @@ class md_collection {
 		$this->parent = sanitize_key( $args['parent'] );
 		$this->post_type = sanitize_key( $args['post_type'] );
 		$this->order = strtoupper( $args['order'] ) === 'ASC' ? 'ASC' : 'DESC';
+		$this->per_page = absint( $args['per_page'] );
 		$this->fields_callback = $args['fields_callback'];
 
 		// Status and date are editable fields that are added to each collection
@@ -180,7 +183,25 @@ class md_collection {
 	}
 
 	/**
-	 * Count number of items in a collection.
+	 * Unpublished items under a parent the current user can't read. Editing
+	 * a parent doesn't give access to other people's private items and drafts.
+	 *
+	 * @since 6.2
+	 */
+
+	public function hidden_items( $parent_id ) {
+		$hidden = array();
+
+		foreach ( $this->query( $parent_id, array( 'post_status' => array( 'future', 'draft', 'pending', 'private', 'trash' ), 'no_found_rows' => true ) )->posts as $post )
+			if ( ! current_user_can( 'read_post', $post->ID ) )
+				$hidden[] = $post->ID;
+
+		return $hidden;
+	}
+
+	/**
+	 * Count number of items in a collection. With no status, counts the
+	 * items the current user can see.
 	 *
 	 * @since 6.0
 	 */
@@ -193,6 +214,8 @@ class md_collection {
 
 		if ( isset( $post_status ) )
 			$args['post_status'] = $post_status;
+		else
+			$args['post__not_in'] = $this->hidden_items( $parent_id );
 
 		return (int) $this->query( $parent_id, $args )->found_posts;
 	}
@@ -597,6 +620,9 @@ class md_collection {
 	 */
 
 	public function trash_item( $item_id ) {
+		if ( ! EMPTY_TRASH_DAYS )
+			return new WP_Error( 'md_collection_trash_off', __( 'This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete the item permanently.', 'md' ), array( 'status' => 400 ) );
+
 		if ( ! wp_trash_post( $item_id ) )
 			return new WP_Error( 'md_collection_trash', __( 'The Collection item could not be moved to Trash.', 'md' ), array( 'status' => 500 ) );
 
@@ -663,8 +689,13 @@ class md_collection {
 
 		$is_past = ! $later || max( $later ) <= strtotime( current_time( 'mysql' ) . ' UTC' );
 		$new = $is_past && count( array_diff_assoc( $later, $times ) ) < count( array_diff_assoc( $earlier, $times ) ) ? $later : $earlier;
+		$moved = array_diff_assoc( $new, $times );
 
-		foreach ( array_diff_assoc( $new, $times ) as $i => $time ) {
+		foreach ( array_keys( $moved ) as $i )
+			if ( ! current_user_can( 'edit_post', $ids[$i] ) )
+				return new WP_Error( 'md_collection_permission', __( 'You cannot modify this Collection item.', 'md' ), array( 'status' => 403 ) );
+
+		foreach ( $moved as $i => $time ) {
 			$date = gmdate( 'Y-m-d H:i:s', $time );
 			$saved = wp_update_post( array(
 				'ID' => $ids[$i],

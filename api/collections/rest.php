@@ -20,6 +20,11 @@ class md_collections_rest {
 
 		register_rest_route( 'md/v1', $collection, array(
 			array(
+				'methods' => WP_REST_Server::READABLE,
+				'callback' => array( $this, 'get_items' ),
+				'permission_callback' => array( $this, 'permissions_check' )
+			),
+			array(
 				'methods' => WP_REST_Server::CREATABLE,
 				'callback' => array( $this, 'save_item' ),
 				'permission_callback' => array( $this, 'permissions_check' )
@@ -52,10 +57,36 @@ class md_collections_rest {
 
 		if ( $method === WP_REST_Server::DELETABLE )
 			$action = 'trash';
+		elseif ( $method === WP_REST_Server::READABLE )
+			$action = 'read';
 		else
 			$action = $item_id ? 'update' : 'create';
 
 		return $this->get_collection( $request )->can( $action, absint( $request['parent_id'] ), $item_id, $request->get_param( 'fields' ) );
+	}
+
+	/**
+	 * Return the next Collection items after the ones already shown.
+	 *
+	 * @since 6.0
+	 */
+
+	public function get_items( $request ) {
+		$collection = $this->get_collection( $request );
+		$parent_id = absint( $request['parent_id'] );
+		$query = $collection->query( $parent_id, array(
+			'posts_per_page' => $collection->per_page,
+			'post__not_in' => array_merge( wp_parse_id_list( $request['exclude'] ), $collection->hidden_items( $parent_id ) )
+		) );
+		$html = '';
+
+		foreach ( $query->posts as $post )
+			$html .= $collection->render_item( $post );
+
+		return rest_ensure_response( array(
+			'html' => $html,
+			'has_more' => $query->max_num_pages > 1
+		) );
 	}
 
 	/**

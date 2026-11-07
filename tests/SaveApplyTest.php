@@ -349,12 +349,38 @@ class SaveApplyTest extends MD_TestCase {
 		$this->assertFalse( get_option( 'marketers_delight' ) );
 	}
 
-	public function test_site_settings_need_edit_theme_options() {
+	public function test_site_settings_need_manage_options() {
 		$this->register( 'admin_pages', array( 'layout' => array( 'fields' => $this->fields ) ) );
-		md_test_set_capability( 'edit_theme_options', false );
+		md_test_set_capability( 'manage_options', false );
 
 		$this->assertSame( 'md_save_forbidden', $this->apply( 'site', 'layout', array( 'title' => 'A' ) )->get_error_code() );
 		$this->assertFalse( get_option( 'marketers_delight' ) );
+	}
+
+	public function test_an_order_only_change_is_reported() {
+		$this->register( 'admin_pages', array( 'layout' => array( 'fields' => $this->fields ) ) );
+		$this->apply( 'site', 'layout', array( 'rows' => array( 'a' => array( 'name' => 'A' ), 'b' => array( 'name' => 'B' ) ) ) );
+
+		$result = $this->apply( 'site', 'layout', array( 'rows' => array( 'b' => array( 'name' => 'B' ), 'a' => array( 'name' => 'A' ) ) ) );
+
+		$this->assertSame( array( array( 'key' => 'rows', 'before' => array( 'a', 'b' ), 'after' => array( 'b', 'a' ) ) ), $result['changed'] );
+	}
+
+	public function test_changing_a_value_reports_no_move() {
+		$this->register( 'admin_pages', array( 'layout' => array( 'fields' => $this->fields ) ) );
+		$this->apply( 'site', 'layout', array( 'title' => 'A', 'rows' => array( 'a' => array( 'name' => 'A' ), 'b' => array( 'name' => 'B' ) ) ) );
+
+		$result = $this->apply( 'site', 'layout', array( 'title' => 'B', 'rows' => array( 'a' => array( 'name' => 'A' ), 'b' => array( 'name' => 'B' ) ) ) );
+
+		$this->assertSame( array( 'title' ), array_column( $result['changed'], 'key' ) );
+	}
+
+	public function test_saving_without_changes_still_schedules_a_rebuild() {
+		$this->register( 'admin_pages', array( 'layout' => array( 'fields' => $this->fields ) ) );
+		$this->apply( 'site', 'layout', array( 'title' => 'A' ) );
+
+		$this->apply( 'site', 'layout', array( 'title' => 'A' ), array( 'compile' => true ) );
+		$this->assertTrue( get_option( 'md_compile_after_upgrade' ) );
 	}
 
 	// Settings screens: fields are named md[scope][group][...]

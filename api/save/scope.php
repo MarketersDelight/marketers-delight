@@ -86,7 +86,7 @@ class md_scope {
 		if ( $this->type === 'user' )
 			return current_user_can( 'manage_options' ) && current_user_can( 'edit_user', $this->id );
 
-		return current_user_can( 'edit_theme_options' );
+		return current_user_can( 'manage_options' );
 	}
 
 	/**

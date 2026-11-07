@@ -240,9 +240,6 @@ class md_item_abilities extends md_abilities {
 		$collection = $this->collection( $input['collection'] );
 		$item_id = absint( $input['item_id'] );
 
-		if ( empty( $input['restore'] ) && ! EMPTY_TRASH_DAYS )
-			return $this->trash_off();
-
 		$done = empty( $input['restore'] ) ? $collection->trash_item( $item_id ) : $collection->restore_item( $item_id );
 
 		if ( is_wp_error( $done ) )
@@ -275,8 +272,9 @@ class md_item_abilities extends md_abilities {
 	protected function items_result( $collection, $parent_id, $statuses = array( 'publish' ) ) {
 		$items = array();
 		$position = 0;
+		$hidden = $statuses === array( 'publish' ) ? array() : $collection->hidden_items( $parent_id );
 
-		foreach ( $collection->items( $parent_id, array( 'post_status' => $statuses ) )->posts as $post ) {
+		foreach ( $collection->items( $parent_id, array( 'post_status' => $statuses, 'post__not_in' => $hidden ) )->posts as $post ) {
 			$item = array(
 				'id' => $post->ID,
 				'status' => $post->post_status,

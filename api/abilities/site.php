@@ -8,16 +8,16 @@
 
 class md_site_abilities extends md_abilities {
 
-	private $settings_file;
+	private $widgets;
 
 	/**
-	 * Set up the settings file these abilities read and write.
+	 * Set up the widgets these abilities read and write.
 	 *
 	 * @since 6.2
 	 */
 
 	public function __construct() {
-		$this->settings_file = new md_settings_file;
+		$this->widgets = new md_widgets;
 
 		parent::__construct();
 	}
@@ -154,6 +154,11 @@ class md_site_abilities extends md_abilities {
 		if ( is_wp_error( $menu ) )
 			return $menu;
 
+		$checked = $this->check_menu_changes( (int) $menu->term_id, $input );
+
+		if ( is_wp_error( $checked ) )
+			return $checked;
+
 		// WordPress can give a first item position 0, then reads 0 as "add to the end"
 
 		$posts = $this->menu_posts( (int) $menu->term_id );
@@ -209,6 +214,37 @@ class md_site_abilities extends md_abilities {
 	}
 
 	/**
+	 * Check every item operation and the order before anything changes, so
+	 * one bad entry leaves the menu as it was.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function check_menu_changes( $menu_id, $input ) {
+		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' );
+
+		foreach ( (array) ( $input['items'] ?? array() ) as $operation ) {
+			$op = $operation['op'] ?? '';
+			$id = absint( $operation['id'] ?? 0 );
+
+			if ( ! in_array( $op, array( 'add', 'update', 'remove' ), true ) )
+				return new WP_Error( 'md_abilities_menu_op', __( 'Each item needs an op: add, update or remove.', 'md' ) );
+
+			if ( $op !== 'add' && ! in_array( $id, $current, true ) )
+				return $this->no_menu_item( $id );
+
+			if ( $op === 'remove' )
+				$current = array_diff( $current, array( $id ) );
+		}
+
+		foreach ( array_map( 'absint', (array) ( $input['order'] ?? array() ) ) as $id )
+			if ( ! in_array( $id, $current, true ) )
+				return $this->no_menu_item( $id );
+
+		return true;
+	}
+
+	/**
 	 * Run one menu item operation.
 	 *
 	 * @since 6.2
@@ -217,12 +253,6 @@ class md_site_abilities extends md_abilities {
 	protected function menu_operation( $menu_id, $operation ) {
 		$op = $operation['op'] ?? '';
 		$id = absint( $operation['id'] ?? 0 );
-
-		if ( ! in_array( $op, array( 'add', 'update', 'remove' ), true ) )
-			return new WP_Error( 'md_abilities_menu_op', __( 'Each item needs an op: add, update or remove.', 'md' ) );
-
-		if ( $op !== 'add' && ! is_object_in_term( $id, 'nav_menu', $menu_id ) )
-			return $this->no_menu_item( $id );
 
 		if ( $op === 'remove' )
 			return wp_delete_post( $id, true ) ? true : new WP_Error( 'md_abilities_menu_remove', sprintf( __( 'Menu item %d couldn\'t be removed.', 'md' ), $id ) );
@@ -289,10 +319,6 @@ class md_site_abilities extends md_abilities {
 	protected function order_menu( $menu_id, $order ) {
 		$order = array_map( 'absint', $order );
 		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' );
-
-		foreach ( $order as $id )
-			if ( ! in_array( $id, $current, true ) )
-				return $this->no_menu_item( $id );
 
 		foreach ( array_values( array_unique( array_merge( $order, $current ) ) ) as $index => $id ) {
 			$done = $this->save_menu_item( $menu_id, $id, array( 'menu-item-position' => $index + 1 ) );
@@ -374,7 +400,7 @@ class md_site_abilities extends md_abilities {
 		$placed = wp_get_sidebars_widgets();
 		$sidebars = array();
 
-		foreach ( $this->settings_file->widget_areas() as $id ) {
+		foreach ( $this->widgets->areas() as $id ) {
 			$widgets = array();
 
 			foreach ( isset( $placed[$id] ) ? (array) $placed[$id] : array() as $widget ) {
@@ -395,11 +421,12 @@ class md_site_abilities extends md_abilities {
 			);
 		}
 
-		return array( 'sidebars' => $sidebars, 'types' => $this->settings_file->widget_types() );
+		return array( 'sidebars' => $sidebars, 'types' => $this->widgets->types() );
 	}
 
 	/**
-	 * Change a sidebar's widgets. Only that sidebar changes.
+	 * Change a sidebar's widgets. Only that sidebar changes, and nothing
+	 * is written until every operation has passed.
 	 *
 	 * @since 6.2
 	 */
@@ -407,14 +434,15 @@ class md_site_abilities extends md_abilities {
 	public function update_widgets( $input = array() ) {
 		$sidebar = $input['sidebar'];
 
-		if ( ! in_array( $sidebar, $this->settings_file->widget_areas(), true ) )
+		if ( ! in_array( $sidebar, $this->widgets->areas(), true ) )
 			return new WP_Error( 'md_abilities_sidebar', sprintf( __( 'No sidebar named %s. Get widgets lists them.', 'md' ), $sidebar ) );
 
 		$placed = wp_get_sidebars_widgets();
 		$widgets = isset( $placed[$sidebar] ) ? array_values( (array) $placed[$sidebar] ) : array();
+		$options = array();
 
 		foreach ( (array) ( $input['widgets'] ?? array() ) as $operation ) {
-			$widgets = $this->widget_operation( $widgets, (array) $operation );
+			$widgets = $this->widget_operation( $widgets, (array) $operation, $options );
 
 			if ( is_wp_error( $widgets ) )
 				return $widgets;
@@ -423,6 +451,9 @@ class md_site_abilities extends md_abilities {
 		if ( ! empty( $input['order'] ) )
 			$widgets = array_values( array_unique( array_merge( array_intersect( array_map( 'strval', $input['order'] ), $widgets ), $widgets ) ) );
 
+		foreach ( $options as $type => $option )
+			update_option( "widget_$type", $option );
+
 		$placed[$sidebar] = $widgets;
 		wp_set_sidebars_widgets( $placed );
 
@@ -430,30 +461,35 @@ class md_site_abilities extends md_abilities {
 	}
 
 	/**
-	 * Run one widget operation, returning the sidebar's widgets.
+	 * Run one widget operation on $options, the widget options to write,
+	 * returning the sidebar's widgets.
 	 *
 	 * @since 6.2
 	 */
 
-	protected function widget_operation( $widgets, $operation ) {
+	protected function widget_operation( $widgets, $operation, &$options ) {
 		$op = $operation['op'] ?? '';
 		$settings = isset( $operation['settings'] ) ? (array) $operation['settings'] : array();
 
 		if ( ! current_user_can( 'unfiltered_html' ) )
-			$settings = $this->settings_file->kses_widget( $settings );
+			$settings = $this->widgets->kses( $settings );
 
 		if ( $op === 'add' ) {
 			$type = $operation['type'] ?? '';
 
-			if ( ! in_array( $type, $this->settings_file->widget_types(), true ) )
+			if ( ! in_array( $type, $this->widgets->types(), true ) )
 				return new WP_Error( 'md_abilities_widget', sprintf( __( 'No widget type named %s. Get widgets lists them.', 'md' ), $type ) );
 
-			$instances = get_option( "widget_$type", array() );
-			$instances = is_array( $instances ) ? $instances : array();
+			$instances = $this->widget_option( $type, $options );
 			$number = max( array_merge( array( 1 ), array_filter( array_keys( $instances ), 'is_int' ) ) ) + 1;
-			$instances[$number] = $settings;
+			$instance = $this->widgets->update( $type, $number, $settings );
+
+			if ( $instance === false )
+				return $this->widget_refused( "$type-$number" );
+
+			$instances[$number] = $instance;
 			$instances['_multiwidget'] = 1;
-			update_option( "widget_$type", $instances );
+			$options[$type] = $instances;
 			$widgets[] = "$type-$number";
 
 			return $widgets;
@@ -465,10 +501,17 @@ class md_site_abilities extends md_abilities {
 		if ( ! $parts || ! in_array( $id, $widgets, true ) )
 			return new WP_Error( 'md_abilities_widget', sprintf( __( 'This sidebar has no widget %s.', 'md' ), $id ) );
 
-		$instances = get_option( "widget_{$parts['type']}", array() );
+		$instances = $this->widget_option( $parts['type'], $options );
 
-		if ( $op === 'update' )
-			$instances[$parts['number']] = array_merge( (array) ( $instances[$parts['number']] ?? array() ), $settings );
+		if ( $op === 'update' ) {
+			$old = (array) ( $instances[$parts['number']] ?? array() );
+			$instance = $this->widgets->update( $parts['type'], $parts['number'], array_merge( $old, $settings ), $old );
+
+			if ( $instance === false )
+				return $this->widget_refused( $id );
+
+			$instances[$parts['number']] = $instance;
+		}
 		elseif ( $op === 'remove' ) {
 			unset( $instances[$parts['number']] );
 			$widgets = array_values( array_diff( $widgets, array( $id ) ) );
@@ -476,9 +519,31 @@ class md_site_abilities extends md_abilities {
 		else
 			return new WP_Error( 'md_abilities_widget_op', __( 'Each widget needs an op: add, update or remove.', 'md' ) );
 
-		update_option( "widget_{$parts['type']}", $instances );
+		$options[$parts['type']] = $instances;
 
 		return $widgets;
+	}
+
+	/**
+	 * A widget type's instances, with this call's changes so far.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function widget_option( $type, $options ) {
+		$option = isset( $options[$type] ) ? $options[$type] : get_option( "widget_$type", array() );
+
+		return is_array( $option ) ? $option : array();
+	}
+
+	/**
+	 * The error for a widget that's missing or refused its settings.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function widget_refused( $id ) {
+		return new WP_Error( 'md_abilities_widget_refused', sprintf( __( 'Widget %s wasn\'t saved: its type is missing or it refused these settings.', 'md' ), $id ) );
 	}
 
 	/**

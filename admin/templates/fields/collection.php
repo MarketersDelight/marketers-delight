@@ -21,7 +21,9 @@
 			<a href="<?php echo esc_url( $permalink ); ?>" class="dashicons-before dashicons-visibility" target="_blank" rel="noopener"><?php esc_html_e( 'View', 'md' ); ?></a>
 			<?php endif; ?>
 
+			<?php if ( EMPTY_TRASH_DAYS ) : ?>
 			<button type="button" class="button-link button-link-delete dashicons-before dashicons-trash" data-md-collection-action="trash"><?php esc_html_e( 'Trash', 'md' ); ?></button>
+			<?php endif; ?>
 
 		</p>
 

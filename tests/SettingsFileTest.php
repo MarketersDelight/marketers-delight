@@ -135,8 +135,32 @@ if ( ! function_exists( 'wp_normalize_path' ) ) {
 	}
 }
 
+require_once dirname( __DIR__ ) . '/api/save/widgets.php';
 require_once dirname( __DIR__ ) . '/api/save/settings-file.php';
 require_once dirname( __DIR__ ) . '/admin/import-export.php';
+
+class MD_Test_Widget {
+
+	public $id_base;
+	public $refuses = false;
+
+	public function __construct( $id_base ) {
+		$this->id_base = $id_base;
+	}
+
+	public function _set( $number ) {}
+
+	public function update( $new, $old ) {
+		if ( $this->refuses )
+			return false;
+
+		if ( isset( $new['count'] ) )
+			$new['count'] = min( 5, (int) $new['count'] );
+
+		return $new;
+	}
+
+}
 
 class SettingsFileTest extends MD_TestCase {
 
@@ -161,8 +185,8 @@ class SettingsFileTest extends MD_TestCase {
 			'nonce_ok' => true
 		);
 		$wp_widget_factory = (object) array( 'widgets' => array(
-			(object) array( 'id_base' => 'text' ),
-			(object) array( 'id_base' => 'block' )
+			new MD_Test_Widget( 'text' ),
+			new MD_Test_Widget( 'block' )
 		) );
 		$wp_registered_sidebars = array( 'sidebar-main' => array(), 'panel-main' => array(), 'footer-copy' => array() );
 
@@ -486,6 +510,34 @@ class SettingsFileTest extends MD_TestCase {
 
 		$this->assertSame( array( 'text-2' ), get_option( 'sidebars_widgets' )['sidebar-main'] );
 		$this->assertSame( array( 'The `stream_widget` widget isn\'t available on this site.' ), $result['skipped'] );
+	}
+
+	public function test_imported_widgets_go_through_their_own_update() {
+		$file = array( 'format' => 'md-export', 'version' => 1, 'sections' => array( 'widgets' => array(
+			'sidebars' => array( 'sidebar-main' => array( 'text-2' ) ),
+			'instances' => array( 'text-2' => array( 'count' => 999 ) )
+		) ) );
+
+		$this->file->import( $this->file->read( json_encode( $file ) ) );
+
+		$placed = get_option( 'sidebars_widgets' )['sidebar-main'];
+		$number = (int) substr( $placed[0], strlen( 'text-' ) );
+		$this->assertSame( 5, get_option( 'widget_text' )[$number]['count'] );
+	}
+
+	public function test_a_widget_that_refuses_is_skipped_and_listed() {
+		global $wp_widget_factory;
+
+		$wp_widget_factory->widgets[0]->refuses = true;
+		$file = array( 'format' => 'md-export', 'version' => 1, 'sections' => array( 'widgets' => array(
+			'sidebars' => array( 'sidebar-main' => array( 'text-2' ) ),
+			'instances' => array( 'text-2' => array( 'title' => 'Hi' ) )
+		) ) );
+
+		$result = $this->file->import( $this->file->read( json_encode( $file ) ) );
+
+		$this->assertSame( array(), get_option( 'sidebars_widgets' )['sidebar-main'] );
+		$this->assertSame( array( 'The `text` widget refused its settings, so it wasn\'t placed.' ), $result['skipped'] );
 	}
 
 	public function test_custom_sidebar_from_theme_settings_gets_its_widgets() {
