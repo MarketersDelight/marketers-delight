@@ -98,7 +98,8 @@ class md_post extends md_api {
 		$term_id = $wp->is_category ? $wp->get( 'cat' ) : (int) $wp->get( 'tag_id' );
 
 		if ( $is_term && ! $term_id ) {
-			$slug = $wp->is_category ? basename( $wp->get( 'category_name' ) ) : $wp->get( 'tag' );
+			$category = $wp->get( 'category_name' );
+			$slug = $wp->is_category ? ( is_string( $category ) ? basename( $category ) : '' ) : $wp->get( 'tag' );
 			$obj = $slug ? get_term_by( 'slug', $slug, $taxonomy ) : false;
 			$term_id = $obj ? $obj->term_id : 0;
 		}

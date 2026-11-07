@@ -20,7 +20,7 @@ class md_author extends md_api {
 		$loop = md_post_type_field( 'loop', array(), 'author' );
 
 		if ( ! empty( $loop['posts_per_page'] ) )
-			$query->set( 'posts_per_page', absint( $loop['posts_per_page'] ) );
+			$query->set( 'posts_per_page', intval( $loop['posts_per_page'] ) );
 
 		if ( ! empty( $loop['date']['group'] ) )
 			$query->set( 'orderby', 'date' );

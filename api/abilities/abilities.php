@@ -16,13 +16,6 @@ class md_abilities {
 	public static $category = 'marketers-delight';
 
 	/**
-	 * Abilities WordPress is adding itself: an ability here, keyed to the
-	 * core ability that replaces it, registers only while core has none.
-	 */
-
-	public $bridges = array();
-
-	/**
 	 * Register abilities when the Abilities API asks for them.
 	 *
 	 * @since 6.2
@@ -80,8 +73,7 @@ class md_abilities {
 		$namespace = $this->slug ? "md-{$this->slug}" : 'marketers-delight';
 
 		foreach ( $this->abilities() as $name => $ability )
-			if ( ! isset( $this->bridges[$name] ) || ! wp_has_ability( $this->bridges[$name] ) )
-				wp_register_ability( "$namespace/$name", $this->args( $ability ) );
+			wp_register_ability( "$namespace/$name", $this->args( $ability ) );
 	}
 
 	/**

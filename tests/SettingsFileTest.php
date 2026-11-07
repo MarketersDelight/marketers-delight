@@ -512,6 +512,33 @@ class SettingsFileTest extends MD_TestCase {
 		$this->assertSame( array( 'The `stream_widget` widget isn\'t available on this site.' ), $result['skipped'] );
 	}
 
+	public function test_ids_in_an_option_are_swapped_by_file_and_missing_ones_listed() {
+		$GLOBALS['__test_object_meta'][41]['_wp_attached_file'] = '2026/10/a.png';
+		$GLOBALS['__test_object_meta'][42]['_wp_attached_file'] = '2026/10/b.png';
+		md_test_set_filter( 'md_export_options', array( 'md_popups' => array(
+			'source' => 'optins',
+			'sanitize' => function( $values ) {
+				return $values;
+			},
+			'item_fields' => array( 'featured_image' => array( 'id' => array( 'ref' => 'attachment' ) ) )
+		) ) );
+		md_test_set_option( 'md_popups', array(
+			'one' => array( 'featured_image' => array( 'id' => '41', 'width' => '300' ) ),
+			'two' => array( 'featured_image' => array( 'id' => '42' ) )
+		) );
+		$file = $this->file->export( array( 'dropins' ) );
+
+		$this->assertSame( array( 'file' => '2026/10/a.png' ), $file['refs']['attachment:41'] );
+
+		$GLOBALS['__settings_file']['attachments']['2026/10/a.png'] = 77;
+		$result = $this->file->import( $this->file->read( json_encode( $file ) ) );
+		$popups = get_option( 'md_popups' );
+
+		$this->assertSame( array( 'id' => '77', 'width' => '300' ), $popups['one']['featured_image'] );
+		$this->assertArrayNotHasKey( 'id', $popups['two']['featured_image'] );
+		$this->assertSame( array( 'The image for `two.featured_image.id` isn\'t in this site\'s Media Library, so it was left out.' ), $result['skipped'] );
+	}
+
 	public function test_imported_widgets_go_through_their_own_update() {
 		$file = array( 'format' => 'md-export', 'version' => 1, 'sections' => array( 'widgets' => array(
 			'sidebars' => array( 'sidebar-main' => array( 'text-2' ) ),

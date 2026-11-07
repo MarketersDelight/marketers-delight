@@ -421,6 +421,54 @@ $next = rest_do_request( $request )->get_data();
 md_test( 'manager shows 20, then the rest', count( $first_page ) === 20 && substr_count( $next['html'] ?? '', 'data-md-collection-item=' ) === 5 && empty( $next['has_more'] ), $next );
 md_test( 'readers still get every item', count( $collection->query( $paged_book )->posts ) === 25 );
 
+// Main queries: odd query strings, sticky posts and the admin bar's links
+
+function md_test_main_query( $args ) {
+	$query = new WP_Query;
+	$GLOBALS['wp_the_query'] = $query;
+	$GLOBALS['wp_query'] = $query;
+	$query->query( $args );
+
+	return $query;
+}
+
+function md_test_settings_link( $user_id ) {
+	require_once ABSPATH . WPINC . '/class-wp-admin-bar.php';
+
+	md_test_as( $user_id );
+	$bar = new WP_Admin_Bar;
+	do_action( 'admin_bar_menu', $bar );
+
+	return $bar->get_node( 'md_bookshelf-settings-link' );
+}
+
+$crashed = false;
+
+try {
+	md_test_main_query( array( 'category_name' => array( 'x' ) ) );
+}
+catch ( TypeError $error ) {
+	$crashed = $error->getMessage();
+}
+
+md_test( 'an array category_name doesn\'t crash', $crashed === false, $crashed );
+
+$shelf = array();
+
+foreach ( array( 'Sticky', 'Hidden', 'Plain' ) as $title )
+	$shelf[$title] = wp_insert_post( array( 'post_type' => 'bookshelf', 'post_title' => $title, 'post_status' => 'publish', 'post_author' => $admin ) );
+
+stick_post( $shelf['Sticky'] );
+md_test_call( 'update-settings', array( 'scope' => 'post_type:bookshelf', 'group' => 'loop', 'values' => array( 'loop_type' => null, 'exclude_posts' => (string) $shelf['Hidden'] ) ) );
+$shelf_query = md_test_main_query( array( 'post_type' => 'bookshelf' ) );
+$shelf_counts = array_count_values( wp_list_pluck( $shelf_query->posts, 'ID' ) );
+md_test( 'a sticky post shows once with exclusions set', ( $shelf_counts[$shelf['Sticky']] ?? 0 ) === 1 && empty( $shelf_counts[$shelf['Hidden']] ), $shelf_counts );
+
+$bar_editor = wp_insert_user( array( 'user_login' => 'bar_editor', 'user_pass' => wp_generate_password(), 'user_email' => 'bar_editor@example.test', 'role' => 'editor' ) );
+md_test( 'admins get the archive\'s settings link', (bool) md_test_settings_link( $admin ) );
+md_test( 'editors don\'t get a link they can\'t open', ! md_test_settings_link( $bar_editor ) );
+md_test_as( $admin );
+
 // A Like keeps other values' backslashes
 
 $slashed = wp_insert_post( array( 'post_title' => 'Slashed', 'post_status' => 'publish', 'post_author' => $admin ) );

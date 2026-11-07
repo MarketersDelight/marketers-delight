@@ -64,11 +64,16 @@ class md_settings_file {
 				$out['post_types'][] = $this->export_entry( $entry, $refs );
 
 		if ( in_array( 'dropins', $sections, true ) )
-			foreach ( $this->export_options() as $option => $args )
+			foreach ( $this->export_options() as $option => $args ) {
+				$values = get_option( $option, array() );
+				$values = is_array( $values ) ? $values : array();
+				$this->collect_refs( $values, $this->option_fields( $args, $values ), $refs );
+
 				$out['options'][$option] = array(
 					'source' => $args['source'],
-					'values' => get_option( $option, array() )
+					'values' => $values
 				);
+			}
 
 		if ( in_array( 'widgets', $sections, true ) )
 			$out['widgets'] = $this->widgets->export();
@@ -181,7 +186,7 @@ class md_settings_file {
 		$skipped = $this->import_entries( $file, $parts, $save );
 
 		if ( in_array( 'dropins', $parts, true ) && ! empty( $file['sections']['options'] ) )
-			$this->import_options( $file['sections']['options'], $skipped );
+			$this->import_options( $file['sections']['options'], $file['refs'], $skipped );
 
 		if ( in_array( 'widgets', $parts, true ) && ! empty( $file['sections']['widgets'] ) )
 			$this->widgets->import( $file['sections']['widgets'], $skipped );
@@ -502,7 +507,9 @@ class md_settings_file {
 					$input[$key] = (string) $id;
 				else {
 					unset( $input[$key] );
-					$skipped[] = sprintf( __( 'The menu for `%s` wasn\'t found on this site, so it was left as it is.', 'md' ), $name );
+					$skipped[] = $field['ref'] === 'attachment' ?
+						sprintf( __( 'The image for `%s` isn\'t in this site\'s Media Library, so it was left out.', 'md' ), $name ) :
+						sprintf( __( 'The menu for `%s` wasn\'t found on this site, so it was left as it is.', 'md' ), $name );
 				}
 			}
 			elseif ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
@@ -708,8 +715,9 @@ class md_settings_file {
 
 	/**
 	 * Options a drop-in stores outside MD's settings and exports through
-	 * md_export_options: array( option => array( source, sanitize ) ).
-	 * Without a sanitize callback an option is exported but not imported.
+	 * md_export_options: array( option => array( source, sanitize, item_fields ) ).
+	 * Without sanitize an option is exported but not imported. item_fields marks
+	 * the IDs in each item of an option keyed by item.
 	 *
 	 * @since 6.2
 	 */
@@ -730,7 +738,7 @@ class md_settings_file {
 	 * @since 6.2
 	 */
 
-	private function import_options( $options, &$skipped ) {
+	private function import_options( $options, $refs, &$skipped ) {
 		$declared = $this->export_options();
 
 		foreach ( (array) $options as $option => $data ) {
@@ -739,8 +747,21 @@ class md_settings_file {
 				continue;
 			}
 
-			update_option( $option, call_user_func( $declared[$option]['sanitize'], isset( $data['values'] ) && is_array( $data['values'] ) ? $data['values'] : array() ) );
+			$values = isset( $data['values'] ) && is_array( $data['values'] ) ? $data['values'] : array();
+			$values = $this->swap_refs( $values, $this->option_fields( $declared[$option], $values ), $refs, $skipped );
+
+			update_option( $option, call_user_func( $declared[$option]['sanitize'], $values ) );
 		}
+	}
+
+	/**
+	 * An option's item_fields, for each item it holds.
+	 *
+	 * @since 6.2
+	 */
+
+	private function option_fields( $args, $values ) {
+		return ! empty( $args['item_fields'] ) ? array_fill_keys( array_keys( $values ), $args['item_fields'] ) : array();
 	}
 
 	/**

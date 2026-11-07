@@ -49,6 +49,27 @@ class LoopQueryVarsTest extends MD_InheritanceTestCase {
 		$this->assertSame( 6, $vars['posts_per_page'] );
 	}
 
+	// -1 is WordPress's "show all", not 1 post.
+
+	public function test_negative_one_posts_per_page_means_show_all() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'loop' => array( 'posts_per_page' => -1 ) ) ) );
+
+		$this->assertSame( -1, $this->query_vars()['posts_per_page'] );
+	}
+
+	// A second instance on the same post type must not drop what the first
+	// excluded, ex: sticky posts it's about to prepend.
+
+	public function test_excluded_posts_add_to_earlier_exclusions() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'loop' => array( 'exclude_posts' => '7,8' ) ) ) );
+		$wp = new stdClass;
+		$wp->query_vars = array( 'post__not_in' => array( 8, 9 ) );
+
+		$this->call( $this->make_api( 'post', 'category' ), 'loop_query_vars', array( $wp ) );
+
+		$this->assertSame( array( 8, 9, 7 ), $wp->query_vars['post__not_in'] );
+	}
+
 	// An explicit taxonomy-tier override wins over the post-type tier.
 
 	public function test_explicit_taxonomy_tier_value_overrides_post_type_tier() {

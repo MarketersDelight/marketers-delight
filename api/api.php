@@ -24,6 +24,7 @@ class md_api {
 	public $singular;
 	protected static $sanitize;
 	protected static $design;
+	protected static $screens = array();
 	public $_args = array();
 	public $_source;
 	public $register = array();
@@ -282,29 +283,28 @@ class md_api {
 	}
 
 	/**
-	 * Determine the admin page context and cache it so instances
-	 * can know where they are loading settings.
+	 * Determine the admin page context and cache it by screen, since every
+	 * instance asks and WordPress can change screens during a request.
 	 *
 	 * @since 6.0
 	 */
 
 	protected function _get_screen() {
-		static $screen = null;
-
-		if ( $screen !== null )
-			return $screen;
-
 		$get = get_current_screen();
+
+		if ( isset( self::$screens[$get->id] ) )
+			return self::$screens[$get->id];
+
 		$base = $get->base;
 		$is_post = in_array( $base, array( 'post', 'post-new' ), true );
 		$is_term = $base === 'term';
 		$is_user = in_array( $base, array( 'profile', 'user-edit' ), true );
 		$is_admin = ! ( $is_post || $is_term || $is_user );
-		$page = sanitize_key( $_GET['page']   ?? '' );
+		$page = sanitize_key( $_GET['page'] ?? '' );
 		$md_tab = sanitize_key( $_GET['md_tab'] ?? '' );
 		$groups = apply_filters( 'md_taxonomy_groups', array() );
 
-		return array(
+		return self::$screens[$get->id] = array(
 			'base' => $base,
 			'is_post' => $is_post,
 			'is_term' => $is_term,
@@ -531,13 +531,13 @@ class md_api {
 			$value = $this->loop_setting( $key, $default, $taxonomy, $term_id );
 
 			if ( $value )
-				$wp->query_vars[$key] = $key === 'posts_per_page' ? absint( $value ) : sanitize_key( $value );
+				$wp->query_vars[$key] = $key === 'posts_per_page' ? intval( $value ) : sanitize_key( $value );
 		}
 
 		$exclude_posts = array_values( array_filter( wp_parse_id_list( $this->loop_setting( 'exclude_posts', '', $taxonomy, $term_id ) ) ) );
 
 		if ( $exclude_posts )
-			$wp->query_vars['post__not_in'] = $exclude_posts;
+			$wp->query_vars['post__not_in'] = array_values( array_unique( array_merge( $wp->query_vars['post__not_in'] ?? array(), $exclude_posts ) ) );
 
 		$exclude_terms = array();
 
@@ -625,22 +625,21 @@ class md_api {
 		$post_type = $this->post_type;
 		$label = $this->plural ?: ucfirst( $post_type );
 
-		if ( is_admin() && ! empty( $register['admin_page'] ) && ! empty( $screen['page'] ) && $screen['page'] === $id ) {
-			$href = get_site_url() . '/' . ( $this->slug ?: $post_type );
+		if ( empty( $register['admin_page'] ) )
+			return;
 
-			if ( $post_type === 'post' ) {
-				$page_for_posts = get_option( 'page_for_posts' );
-				$href = $page_for_posts ? get_permalink( $page_for_posts ) : home_url( '/' );
-			}
+		if ( is_admin() ) {
+			$href = ! empty( $screen['page'] ) && $screen['page'] === $id ? get_post_type_archive_link( $post_type ) : false;
 
-			$admin_bar->add_menu( array(
-				'id' => "{$this->_prefix}-archives-link",
-				'title' => sprintf( __( 'View %s', 'md' ), $label ),
-				'href' => esc_url( $href ),
-				'meta' => array( 'title' => sprintf( __( 'View %s', 'md' ), $label ), 'target' => '_blank' )
-			) );
+			if ( $href )
+				$admin_bar->add_menu( array(
+					'id' => "{$this->_prefix}-archives-link",
+					'title' => sprintf( __( 'View %s', 'md' ), $label ),
+					'href' => esc_url( $href ),
+					'meta' => array( 'title' => sprintf( __( 'View %s', 'md' ), $label ), 'target' => '_blank' )
+				) );
 		}
-		elseif ( ! is_admin() && ( is_post_type_archive( $post_type ) || ( $post_type === 'post' && is_home() ) ) )
+		elseif ( ( is_post_type_archive( $post_type ) || ( $post_type === 'post' && is_home() ) ) && current_user_can( $register['admin_page']['capability'] ?? 'manage_options' ) )
 			$admin_bar->add_menu( array(
 				'id' => "{$id}-settings-link",
 				'title' => '<span class="ab-icon dashicons dashicons-edit"></span>' . sprintf( __( 'Edit %s Settings', 'md' ), $label ),

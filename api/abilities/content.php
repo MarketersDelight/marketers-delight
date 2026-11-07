@@ -1,21 +1,13 @@
 <?php
 /**
  * Abilities for posts, pages, images and terms of any post type, including a
- * Drop-in's, for apps and AI assistants. WordPress is adding its own: each of
- * these registers only until the core ability named in $bridges exists.
+ * Drop-in's, for apps and AI assistants. WordPress is adding its own: retire
+ * each of these by hand in an MD release, once core's does the same job.
  *
  * @since 6.2
  */
 
 class md_content_abilities extends md_abilities {
-
-	public $bridges = array(
-		'find-content' => 'core/content-query',
-		'save-content' => 'core/content-update',
-		'trash-content' => 'core/content-delete',
-		'find-terms' => 'core/terms-query',
-		'save-term' => 'core/term-create'
-	);
 
 	/**
 	 * Describe the content abilities.
