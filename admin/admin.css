@@ -219,9 +219,9 @@ body {
 /* BADGES */
 
 .md-badge {
-	background-color: var(--md-ui-gray-2);
+	background-color: var(--md-ui-gray-5);
 	border-radius: var(--md-ui-radius-pill);
-	color: var(--md-ui-gray-60);
+	color: var(--md-ui-gray-70);
 	display: inline-block;
 	font-size: var(--md-ui-text-xs);
 	font-weight: 600;
@@ -2894,7 +2894,7 @@ body {
 }
 
 .md-dropins-table tbody tr > * {
-	border-top: 1px solid var(--md-ui-gray-2);
+	border-top: 1px solid var(--md-ui-gray-5);
 	padding-block: 14px;
 	vertical-align: top;
 }
