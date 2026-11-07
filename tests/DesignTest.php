@@ -121,7 +121,7 @@ class DesignTest extends MD_TestCase {
 
 		$colors = $this->design->values()['colors'];
 
-		$this->assertSame( '#FFFFFF', $colors['site']['text_color'] );
+		$this->assertSame( '#1E1E1E', $colors['site']['text_color'] );
 		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
 		$this->assertSame( '#CCCCCC', $colors['content']['box_border_color'] );
 		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
@@ -334,6 +334,34 @@ class DesignTest extends MD_TestCase {
 		) ) );
 
 		$this->assertSame( '#FFFFFF', $this->design->values()['colors']['header']['text_color'] );
+	}
+
+	public function test_page_text_stays_readable_on_the_main_area() {
+		$colors = $this->palette_colors( array( 'surface' => '#1A1A1A' ) );
+
+		$this->assertSame( '#FFFFFF', $colors['site']['text_color'] );
+		$this->assertSame( '#FFFFFF', $colors['site']['headline_color'] );
+	}
+
+	public function test_page_text_ignores_a_dark_page_behind_a_light_main_area() {
+		$colors = $this->palette_colors( array( 'background' => '#111111' ) );
+
+		$this->assertSame( '#1E1E1E', $colors['site']['text_color'] );
+	}
+
+	public function test_muted_text_falls_back_to_page_text() {
+		$colors = $this->palette_colors( array( 'text-secondary' => '#EEEEEE' ) );
+
+		$this->assertSame( '#1E1E1E', $colors['site']['muted_text_color'] );
+	}
+
+	public function test_saved_page_text_wins_even_when_unreadable() {
+		md_test_set_settings( array( 'colors' => array(
+			'palette' => array( 'surface' => array( 'hex' => '#1A1A1A' ) ),
+			'site' => array( 'text_color' => '#1E1E1E' )
+		) ) );
+
+		$this->assertSame( '#1E1E1E', $this->design->values()['colors']['site']['text_color'] );
 	}
 
 	public function test_font_inheritance_is_resolved_for_compilers() {

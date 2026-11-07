@@ -48,11 +48,13 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => 'text-main'
+				'default' => 'text-main',
+				'auto' => array( 'content', 'main_bg_color' )
 			),
 			'muted_text_color' => array(
 				'label' => 'Muted Text',
-				'default' => 'text-secondary'
+				'default' => 'text-secondary',
+				'auto' => array( 'content', 'main_bg_color' )
 			),
 			'contrast_text_color' => array(
 				'label' => 'Contrast Text',
@@ -493,12 +495,14 @@ class md_design_colors {
 			return $color;
 
 		$light = md_color_is_light( $bg );
+		$fixed = $light ? '#1E1E1E' : '#FFFFFF';
+
+		if ( $path === array( 'site', 'text_color' ) )
+			return $fixed;
+
 		$text = $this->role_color( array( 'site', $light ? 'text_color' : 'contrast_text_color' ) );
 
-		if ( $this->contrast( $text, $bg ) >= $this->min_contrast )
-			return $text;
-
-		return $light ? '#1E1E1E' : '#FFFFFF';
+		return $this->contrast( $text, $bg ) >= $this->min_contrast ? $text : $fixed;
 	}
 
 	/**
