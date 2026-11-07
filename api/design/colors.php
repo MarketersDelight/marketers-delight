@@ -9,6 +9,7 @@ class md_design_colors {
 
 	private $merged = array();
 	private $saved = array();
+	private $min_contrast = 3;
 
 	/**
 	 * Fixed palette keys and their built-in hex values.
@@ -19,6 +20,7 @@ class md_design_colors {
 	public $palette = array(
 		'background' => '#FFFFFF',
 		'surface' => '#F0F0F0',
+		'card' => '#FFFFFF',
 		'primary' => '#AE2525',
 		'secondary' => '#2E2E2E',
 		'tertiary' => '#DDDDDD',
@@ -113,16 +115,16 @@ class md_design_colors {
 		'header' => array(
 			'bg_color' => array(
 				'label' => 'Background',
-				'default' => '#FFFFFF'
+				'default' => 'card'
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E',
+				'default' => 'text-main',
 				'auto' => array( 'header', 'bg_color' )
 			),
 			'border_color' => array(
 				'label' => 'Border',
-				'default' => '#CCCCCC'
+				'default' => 'divider'
 			),
 			'menu' => array(
 				'link_color' => array(
@@ -147,7 +149,7 @@ class md_design_colors {
 			'submenu' => array(
 				'bg_color' => array(
 					'label' => 'Background',
-					'default' => '#FFFFFF'
+					'default' => 'card'
 				),
 				'link_color' => array(
 					'label' => 'Links',
@@ -161,7 +163,7 @@ class md_design_colors {
 				),
 				'border_color' => array(
 					'label' => 'Border',
-					'default' => '#CCCCCC'
+					'default' => 'divider'
 				)
 			)
 		),
@@ -176,7 +178,7 @@ class md_design_colors {
 			),
 			'box_bg_color' => array(
 				'label' => 'Content Box',
-				'default' => '#FFFFFF'
+				'default' => 'card'
 			),
 			'box_border_color' => array(
 				'label' => 'Box Border',
@@ -185,12 +187,13 @@ class md_design_colors {
 			),
 			'box_text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E',
+				'default' => 'text-main',
 				'auto' => array( 'content', 'box_bg_color' )
 			),
 			'box_muted_text_color' => array(
 				'label' => 'Muted Text',
-				'default' => '#757575'
+				'default' => 'text-secondary',
+				'auto' => array( 'content', 'box_bg_color' )
 			),
 			'box_link_color' => array(
 				'label' => 'Links',
@@ -213,7 +216,7 @@ class md_design_colors {
 			),
 			'title_color' => array(
 				'label' => 'Title',
-				'default' => '#1E1E1E',
+				'default' => 'text-main',
 				'auto' => array( 'sidebar', 'bg_color' )
 			),
 			'title_link_color' => array(
@@ -234,7 +237,7 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E',
+				'default' => 'text-main',
 				'auto' => array( 'panel', 'bg_color' )
 			),
 			'link_color' => array(
@@ -251,16 +254,16 @@ class md_design_colors {
 		'footer' => array(
 			'bg_color' => array(
 				'label' => 'Background',
-				'default' => '#FFFFFF'
+				'default' => 'card'
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#1E1E1E',
+				'default' => 'text-main',
 				'auto' => array( 'footer', 'bg_color' )
 			),
 			'border_color' => array(
 				'label' => 'Border',
-				'default' => '#CCCCCC'
+				'default' => 'divider'
 			),
 			'title_color' => array(
 				'label' => 'Title',
@@ -465,8 +468,8 @@ class md_design_colors {
 
 	/**
 	 * One role's final color: its own, else the role it inherits. An unsaved
-	 * `auto` role as light or dark as its background becomes the site's Text
-	 * or Contrast Text.
+	 * `auto` role too close to its background becomes the site's Text or
+	 * Contrast Text, or a fixed dark or light color if that's too close too.
 	 *
 	 * @since 6.2
 	 */
@@ -482,12 +485,37 @@ class md_design_colors {
 			return $color;
 
 		$bg = $this->role_color( $role['auto'] );
-		$light = md_color_is_light( $bg );
 
-		if ( ! $bg || $light !== md_color_is_light( $color ) )
+		if ( ! $bg )
+			$bg = $this->role_color( array( 'content', 'main_bg_color' ) );
+
+		if ( ! $bg || $this->contrast( $color, $bg ) >= $this->min_contrast )
 			return $color;
 
-		return $this->role_color( array( 'site', $light ? 'text_color' : 'contrast_text_color' ) );
+		$light = md_color_is_light( $bg );
+		$text = $this->role_color( array( 'site', $light ? 'text_color' : 'contrast_text_color' ) );
+
+		if ( $this->contrast( $text, $bg ) >= $this->min_contrast )
+			return $text;
+
+		return $light ? '#1E1E1E' : '#FFFFFF';
+	}
+
+	/**
+	 * The WCAG contrast ratio of two colors. A color that can't be measured
+	 * counts as readable, so nothing changes it.
+	 *
+	 * @since 6.2
+	 */
+
+	private function contrast( $first, $second ) {
+		$first = md_color_luminance( $first );
+		$second = md_color_luminance( $second );
+
+		if ( $first === null || $second === null )
+			return 21;
+
+		return ( max( $first, $second ) + 0.05 ) / ( min( $first, $second ) + 0.05 );
 	}
 
 	/**

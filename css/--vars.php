@@ -59,6 +59,7 @@
 
 	--md-color-background: <?php echo $colors['palette']['background']; ?>;
 	--md-color-surface: <?php echo $colors['palette']['surface']; ?>;
+	--md-color-card: <?php echo $colors['palette']['card']; ?>;
 	--md-color-primary: <?php echo $colors['palette']['primary']; ?>;
 	--md-color-secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--md-color-tertiary: <?php echo $colors['palette']['tertiary']; ?>;
@@ -157,6 +158,7 @@
 
 	--wp--preset--color--background: <?php echo $colors['palette']['background']; ?>;
 	--wp--preset--color--surface: <?php echo $colors['palette']['surface']; ?>;
+	--wp--preset--color--card: <?php echo $colors['palette']['card']; ?>;
 	--wp--preset--color--primary: <?php echo $colors['palette']['primary']; ?>;
 	--wp--preset--color--secondary: <?php echo $colors['palette']['secondary']; ?>;
 	--wp--preset--color--tertiary: <?php echo $colors['palette']['tertiary']; ?>;

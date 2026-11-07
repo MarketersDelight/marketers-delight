@@ -77,13 +77,13 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( 'button', $colors['actions']['primary']['bg_color'] );
 		$this->assertSame( '#AE2525', $colors['actions']['status']['danger_color'] );
 		$this->assertSame( '#C75000', $colors['actions']['status']['warning_color'] );
-		$this->assertSame( '#FFFFFF', $colors['header']['bg_color'] );
+		$this->assertSame( 'card', $colors['header']['bg_color'] );
 		$this->assertSame( '', $colors['header']['menu']['link_color'] );
 		$this->assertSame( 'surface', $colors['content']['main_bg_color'] );
-		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
+		$this->assertSame( 'card', $colors['content']['box_bg_color'] );
 		$this->assertSame( '', $colors['content']['box_border_color'] );
-		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
-		$this->assertSame( '#757575', $colors['content']['box_muted_text_color'] );
+		$this->assertSame( 'text-main', $colors['content']['box_text_color'] );
+		$this->assertSame( 'text-secondary', $colors['content']['box_muted_text_color'] );
 		$this->assertSame( 'primary', $colors['content']['box_link_color'] );
 		$this->assertArrayNotHasKey( 'box_headline_color', $roles['content'] );
 		$this->assertArrayNotHasKey( 'box_headline_link_color', $roles['content'] );
@@ -244,9 +244,96 @@ class DesignTest extends MD_TestCase {
 		$colors = $this->design->values()['colors'];
 
 		$this->assertSame( '#F5F5F5', $this->colors->base_palette()['background']['hex'] );
-		$this->assertSame( '#FFFFFF', $this->colors->roles['header']['bg_color']['default'] );
+		$this->assertSame( 'card', $this->colors->roles['header']['bg_color']['default'] );
 		$this->assertSame( '#345678', $this->colors->path_value( $colors, $this->colors->roles['header']['menu']['link_color']['inherit'] ) );
 		$this->assertSame( '#456789', $colors['header']['menu']['link_color'] );
+	}
+
+	private function palette_colors( $palette ) {
+		$saved = array();
+
+		foreach ( $palette as $key => $hex )
+			$saved[$key] = array( 'hex' => $hex );
+
+		md_test_set_settings( array( 'colors' => array( 'palette' => $saved ) ) );
+
+		return $this->design->values()['colors'];
+	}
+
+	public function test_changing_background_only_changes_the_page() {
+		$colors = $this->palette_colors( array( 'background' => '#FAF6EE' ) );
+
+		$this->assertSame( '#FAF6EE', $colors['site']['bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['header']['bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['content']['box_bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['footer']['bg_color'] );
+	}
+
+	public function test_card_moves_the_boxes_and_bars_together() {
+		$colors = $this->palette_colors( array( 'card' => '#FAF6EE' ) );
+
+		$this->assertSame( '#FAF6EE', $colors['header']['bg_color'] );
+		$this->assertSame( '#FAF6EE', $colors['header']['submenu']['bg_color'] );
+		$this->assertSame( '#FAF6EE', $colors['content']['box_bg_color'] );
+		$this->assertSame( '#FAF6EE', $colors['footer']['bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['site']['bg_color'] );
+	}
+
+	public function test_text_main_reaches_text_but_not_secondary() {
+		$colors = $this->palette_colors( array( 'secondary' => '#1E1E1E', 'text-main' => '#777777' ) );
+
+		$this->assertSame( '#777777', $colors['header']['text_color'] );
+		$this->assertSame( '#777777', $colors['content']['box_text_color'] );
+		$this->assertSame( '#777777', $colors['footer']['text_color'] );
+		$this->assertSame( '#1E1E1E', $colors['actions']['secondary']['bg_color'] );
+	}
+
+	public function test_text_secondary_leaves_sidebar_text_and_footer_links_alone() {
+		$colors = $this->palette_colors( array( 'text-secondary' => '#0F766E' ) );
+
+		$this->assertSame( '#0F766E', $colors['content']['box_muted_text_color'] );
+		$this->assertSame( '#757575', $colors['sidebar']['text_color'] );
+		$this->assertSame( '#757575', $colors['footer']['link_color'] );
+	}
+
+	public function test_auto_keeps_readable_colors_like_white_on_green() {
+		$colors = $this->palette_colors( array( 'button' => '#22A340' ) );
+
+		$this->assertSame( '#FFFFFF', $colors['actions']['primary']['text_color'] );
+	}
+
+	public function test_light_text_on_a_white_card_never_stays_unreadable() {
+		$colors = $this->palette_colors( array( 'background' => '#1C1C1C', 'text-main' => '#FFFFFF' ) );
+
+		$this->assertSame( '#FFFFFF', $colors['header']['bg_color'] );
+		$this->assertSame( '#1E1E1E', $colors['header']['text_color'] );
+		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
+	}
+
+	public function test_a_dark_palette_makes_a_dark_readable_site() {
+		$colors = $this->palette_colors( array(
+			'background' => '#1C1C1C',
+			'surface' => '#2A2A2A',
+			'card' => '#2A2A2A',
+			'text-main' => '#FFFFFF',
+			'text-secondary' => '#BBBBBB',
+			'divider' => '#343434'
+		) );
+
+		$this->assertSame( '#2A2A2A', $colors['header']['bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['header']['text_color'] );
+		$this->assertSame( '#2A2A2A', $colors['footer']['bg_color'] );
+		$this->assertSame( '#FFFFFF', $colors['footer']['text_color'] );
+		$this->assertSame( '#343434', $colors['header']['border_color'] );
+	}
+
+	public function test_saved_colors_win_even_when_unreadable() {
+		md_test_set_settings( array( 'colors' => array(
+			'palette' => array( 'text-main' => array( 'hex' => '#FFFFFF' ) ),
+			'header' => array( 'text_color' => '#FFFFFF' )
+		) ) );
+
+		$this->assertSame( '#FFFFFF', $this->design->values()['colors']['header']['text_color'] );
 	}
 
 	public function test_font_inheritance_is_resolved_for_compilers() {

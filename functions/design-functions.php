@@ -68,18 +68,16 @@ function md_get_color( $value, $type = 'color' ) {
 }
 
 /**
- * Check whether a palette color or hex is light enough for dark text. Dark
- * text reads better above a relative luminance of about 0.18, light text
- * below it. Anything that isn't a palette color or hex counts as dark.
+ * A color's relative luminance from 0 to 1, or null if it isn't a hex color.
  *
- * @since 6.0.3
+ * @since 6.2
  */
 
-function md_color_is_light( $color ) {
+function md_color_luminance( $color ) {
 	$hex = preg_replace( '/^#?([a-f0-9])([a-f0-9])([a-f0-9])$/i', '$1$1$2$2$3$3', md_color_hex( $color ) );
 
 	if ( ! preg_match( '/^#?([a-f0-9]{6})/i', $hex, $match ) )
-		return false;
+		return null;
 
 	$luminance = 0;
 	$weights = array( 0.2126, 0.7152, 0.0722 );
@@ -90,7 +88,21 @@ function md_color_is_light( $color ) {
 		$luminance += $weights[$index] * $value;
 	}
 
-	return $luminance > 0.18;
+	return $luminance;
+}
+
+/**
+ * Check whether a palette color or hex is light enough for dark text. Dark
+ * text reads better above a relative luminance of about 0.18, light text
+ * below it. Anything that isn't a palette color or hex counts as dark.
+ *
+ * @since 6.0.3
+ */
+
+function md_color_is_light( $color ) {
+	$luminance = md_color_luminance( $color );
+
+	return $luminance !== null && $luminance > 0.18;
 }
 
 /**
