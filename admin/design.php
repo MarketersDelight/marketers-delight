@@ -12,6 +12,40 @@ class md_colors extends md_api {
 	private $colors;
 	private $palette;
 	private $resolved;
+	private $menu_slug = 'admin.php?page=md_settings&tab=md_colors';
+
+	/**
+	 * Link to the Settings tab from the Theme menu.
+	 *
+	 * @since 6.2
+	 */
+
+	public function actions() {
+		add_action( 'admin_menu', array( $this, 'menu_link' ), 20 );
+		add_filter( 'submenu_file', array( $this, 'menu_current' ) );
+	}
+
+	/**
+	 * Add the Design link right after Settings.
+	 *
+	 * @since 6.2
+	 */
+
+	public function menu_link() {
+		$name = __( 'Design', 'md' );
+
+		add_submenu_page( 'md_settings', $name, $name, 'manage_options', $this->menu_slug, '', 1 );
+	}
+
+	/**
+	 * Show the Theme menu link as current on the tab.
+	 *
+	 * @since 6.2
+	 */
+
+	public function menu_current( $submenu_file ) {
+		return isset( $_GET['tab'] ) && $_GET['tab'] === $this->_id ? $this->menu_slug : $submenu_file;
+	}
 
 	/**
 	 * Register admin page.
