@@ -12,7 +12,7 @@ $fonts = array(
 );
 $area = end( $field );
 $saved = md_setting( 'typography' );
-$inherit = md_design::FONT_FAMILY;
+$inherit = $design->font_family;
 
 if ( $area !== 'body' && ! empty( $saved['body']['font_family'] ) )
 	$inherit = $saved['body']['font_family'];

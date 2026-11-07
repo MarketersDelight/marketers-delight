@@ -10,7 +10,6 @@ class md_colors extends md_api {
 	// Setup properties
 
 	private $colors;
-	private $fallbacks;
 	private $palette;
 	private $resolved;
 
@@ -93,7 +92,6 @@ class md_colors extends md_api {
 		$defaults = $this->design()->defaults();
 		$values = $this->design()->values();
 		$this->resolved = $values['colors'];
-		$this->fallbacks = $this->colors->inheritance( $values['colors'] );
 		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$this->palette = $this->colors->base_palette();
 		$palette = $this->palette;
@@ -115,11 +113,9 @@ class md_colors extends md_api {
 	}
 
 	/**
-	 * Project the normalized semantic role tree into the field schema used to
-	 * sanitize saved Design settings. An entry containing `default` is a color
-	 * field. Palette-key defaults retain a `palette` marker so choosing that
-	 * built-in swatch is saved as no override; literal and empty defaults are
-	 * registered directly. Group nesting and setting paths remain unchanged.
+	 * Turn the color roles into the field schema that sanitizes saved Design
+	 * settings. Palette defaults keep a `palette` marker, so picking that swatch
+	 * saves no override.
 	 *
 	 * @since 6.0
 	 */
@@ -146,10 +142,8 @@ class md_colors extends md_api {
 	}
 
 	/**
-	 * Translate one semantic role into color-picker arguments. Palette defaults
-	 * display the current built-in palette value, literal defaults pass through,
-	 * and inherited fields read their fallback value and label from the role's
-	 * functional `inherit` path.
+	 * Turn one role into color picker arguments: its palette, literal or
+	 * inherited default, and the label of the role it inherits from.
 	 *
 	 * @since 6.0
 	 */
@@ -158,25 +152,15 @@ class md_colors extends md_api {
 		$source = $options['default'];
 		$palette = isset( $this->palette[$source] ) ? $source : '';
 
-		if ( ! empty( $options['inherit'] ) ) {
-			$default = $this->fallbacks;
-
-			foreach ( $path as $key ) {
-				if ( ! is_array( $default ) || ! array_key_exists( $key, $default ) ) {
-					$default = '';
-					break;
-				}
-
-				$default = $default[$key];
-			}
-		}
+		if ( ! empty( $options['inherit'] ) )
+			$default = $this->colors->path_value( $this->resolved, $options['inherit'] );
 		elseif ( $palette )
 			$default = $this->palette[$palette]['hex'];
 		else
 			$default = $source;
 
 		$args = array(
-			'label' => __( $options['label'], 'md' ),
+			'label' => $this->role_label( $options['label'] ),
 			'default' => $default
 		);
 
@@ -184,19 +168,49 @@ class md_colors extends md_api {
 			$args['palette'] = $palette;
 
 		if ( ! empty( $options['inherit'] ) )
-			$args['fallback_label'] = __( $this->colors->role_label( $options['inherit'] ), 'md' );
+			$args['fallback_label'] = $this->role_label( $this->colors->role_label( $options['inherit'] ) );
 
 		if ( ! empty( $options['auto'] ) && in_array( md_setting( array_merge( array( 'colors' ), $path ) ), array( '', null ), true ) ) {
-			$auto = $this->resolved;
-
-			foreach ( $path as $key )
-				$auto = $auto[$key] ?? '';
-
-			$args['default'] = $auto;
+			$args['default'] = $this->colors->path_value( $this->resolved, $path );
 			$args['auto_label'] = __( 'Best contrast on background', 'md' );
 		}
 
 		$this->fields->field( $path, $args );
+	}
+
+	/**
+	 * A role's label, translated. Roles keep plain labels because they load
+	 * outside the admin too; listing them here gets them translated.
+	 *
+	 * @since 6.2
+	 */
+
+	private function role_label( $label ) {
+		$labels = array(
+			'Background' => __( 'Background', 'md' ),
+			'Border' => __( 'Border', 'md' ),
+			'Box Border' => __( 'Box Border', 'md' ),
+			'Content Border' => __( 'Content Border', 'md' ),
+			'Content Box' => __( 'Content Box', 'md' ),
+			'Contrast Text' => __( 'Contrast Text', 'md' ),
+			'Danger' => __( 'Danger', 'md' ),
+			'Headline Links' => __( 'Headline Links', 'md' ),
+			'Headlines' => __( 'Headlines', 'md' ),
+			'Hover Background' => __( 'Hover Background', 'md' ),
+			'Links' => __( 'Links', 'md' ),
+			'Links Active' => __( 'Links Active', 'md' ),
+			'Links Hover' => __( 'Links Hover', 'md' ),
+			'Main Background' => __( 'Main Background', 'md' ),
+			'Muted Links' => __( 'Muted Links', 'md' ),
+			'Muted Text' => __( 'Muted Text', 'md' ),
+			'Page Cover Overlay' => __( 'Page Cover Overlay', 'md' ),
+			'Text' => __( 'Text', 'md' ),
+			'Title' => __( 'Title', 'md' ),
+			'Title Link' => __( 'Title Link', 'md' ),
+			'Warning' => __( 'Warning', 'md' )
+		);
+
+		return $labels[$label] ?? $label;
 	}
 
 }

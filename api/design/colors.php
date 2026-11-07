@@ -7,6 +7,9 @@
 
 class md_design_colors {
 
+	private $merged = array();
+	private $saved = array();
+
 	/**
 	 * Fixed palette keys and their built-in hex values.
 	 *
@@ -28,11 +31,9 @@ class md_design_colors {
 	);
 
 	/**
-	 * Semantic color roles. Each field has one unresolved default: a palette
-	 * key, an independent color, or an empty inherited value. An `inherit` array
-	 * points to another role in this tree and is the single source of truth for
-	 * both color resolution and the admin's inherited label. An `auto` array
-	 * points to the background a text role sits on (see auto_text()).
+	 * Color roles. Each default is a palette key, a color or empty. `inherit`
+	 * points to the role it falls back to; `auto` points to the background a text
+	 * role sits on.
 	 *
 	 * @since 6.0
 	 */
@@ -280,10 +281,8 @@ class md_design_colors {
 	);
 
 	/**
-	 * Build the fixed, built-in palette used by the theme. Each declared key is
-	 * paired with its display name, then any saved hex override for that same
-	 * key is applied. Additional custom colors are intentionally excluded so
-	 * the main palette admin always represents the stable set of theme colors.
+	 * The built-in palette with saved hex overrides. Additional colors are left
+	 * out, so the palette screen always shows the same set.
 	 *
 	 * @since 6.0
 	 */
@@ -308,10 +307,8 @@ class md_design_colors {
 	}
 
 	/**
-	 * Build the complete selectable palette. Additional Colors are layered onto
-	 * the built-in palette using their saved key (or a key generated from their
-	 * name). This is the palette used by color pickers, helper functions, the
-	 * editor, and semantic color resolution.
+	 * The full selectable palette: built-in colors plus Additional Colors, used
+	 * by color pickers, helpers, the editor and role resolution.
 	 *
 	 * @since 6.0
 	 */
@@ -412,26 +409,26 @@ class md_design_colors {
 	}
 
 	/**
-	 * Convert a merged semantic color tree into final CSS-ready values. Palette
-	 * keys are resolved first so parents already contain their active hex value.
-	 * inheritance() then builds the fallback tree, and the original tree is
-	 * layered back over it so explicit saved values win.
+	 * Turn a merged color tree into final CSS values: palette keys become hex,
+	 * then each role resolves. $saved holds only what was saved, which `auto`
+	 * leaves alone.
 	 *
 	 * @since 6.0
 	 */
 
-	public function resolve( $colors, $palette ) {
+	public function resolve( $colors, $palette, $saved = array() ) {
 		foreach ( array_keys( $this->roles ) as $group )
 			if ( isset( $colors[$group] ) )
 				$colors[$group] = $this->resolve_palette_colors( $colors[$group], $palette );
 
-		return $this->apply_explicit_colors( $this->inheritance( $colors ), $colors );
+		$this->merged = $colors;
+		$this->saved = (array) $saved;
+
+		return $this->resolve_roles( $this->roles, array(), $colors );
 	}
 
 	/**
-	 * Recursively replace scalar values that match an active palette key with
-	 * that color's current hex value. resolve() only calls this for known
-	 * semantic groups, so custom palette metadata is left untouched.
+	 * Replace scalar values matching a palette key with that color's hex.
 	 *
 	 * @since 6.0
 	 */
@@ -448,25 +445,49 @@ class md_design_colors {
 	}
 
 	/**
-	 * Layer explicit nonblank colors over the inherited fallback tree. Blank
-	 * values intentionally leave their inherited or transparent defaults intact.
+	 * Walk the role tree, setting each role to its final color.
 	 *
-	 * @since 6.0
+	 * @since 6.2
 	 */
 
-	private function apply_explicit_colors( $fallbacks, $colors ) {
-		foreach ( $colors as $key => $value ) {
-			if ( is_array( $value ) ) {
-				if ( isset( $fallbacks[$key] ) && is_array( $fallbacks[$key] ) )
-					$fallbacks[$key] = $this->apply_explicit_colors( $fallbacks[$key], $value );
-				else
-					$fallbacks[$key] = $value;
-			}
-			elseif ( $value !== '' && $value !== null )
-				$fallbacks[$key] = $value;
+	private function resolve_roles( $roles, $path, $values ) {
+		foreach ( $roles as $key => $role ) {
+			$role_path = array_merge( $path, array( $key ) );
+
+			if ( array_key_exists( 'default', $role ) )
+				$values[$key] = $this->role_color( $role_path );
+			else
+				$values[$key] = $this->resolve_roles( $role, $role_path, $values[$key] ?? array() );
 		}
 
-		return $fallbacks;
+		return $values;
+	}
+
+	/**
+	 * One role's final color: its own, else the role it inherits. An unsaved
+	 * `auto` role as light or dark as its background becomes the site's Text
+	 * or Contrast Text.
+	 *
+	 * @since 6.2
+	 */
+
+	private function role_color( $path ) {
+		$role = $this->path_value( $this->roles, $path );
+		$color = $this->path_value( $this->merged, $path );
+
+		if ( ( $color === '' || $color === null ) && ! empty( $role['inherit'] ) )
+			$color = $this->role_color( $role['inherit'] );
+
+		if ( empty( $role['auto'] ) || $this->path_value( $this->saved, $path ) )
+			return $color;
+
+		$bg = $this->role_color( $role['auto'] );
+		$light = md_color_is_light( $bg );
+
+		if ( ! $bg || $light !== md_color_is_light( $color ) )
+			return $color;
+
+		return $this->role_color( array( 'site', $light ? 'text_color' : 'contrast_text_color' ) );
 	}
 
 	/**
@@ -483,117 +504,13 @@ class md_design_colors {
 	}
 
 	/**
-	 * Build a full fallback copy of the resolved color tree. Each field with an
-	 * `inherit` path receives the referenced role's effective color, following
-	 * additional inheritance paths when the referenced field is also empty.
-	 *
-	 * Inherited fields are replaced even when the input contains an explicit
-	 * selection because this copy represents the value a reset should reveal.
-	 * resolve() layers the original nonblank selections back over this copy, so
-	 * saved child values still win.
-	 *
-	 * @since 6.0
-	 */
-
-	public function inheritance( $colors ) {
-		return $this->apply_inheritance( $this->roles, $colors, $colors );
-	}
-
-	/**
-	 * Walk the role and value trees together, replacing inherited fields in the
-	 * returned subtree. The untouched root tree remains available for resolving
-	 * references across groups.
-	 *
-	 * @since 6.0
-	 */
-
-	private function apply_inheritance( $roles, $colors, $root ) {
-		foreach ( $roles as $key => $role ) {
-			if ( array_key_exists( 'default', $role ) ) {
-				if ( ! empty( $role['inherit'] ) )
-					$colors[$key] = $this->inherit_value( $root, $role['inherit'] );
-			}
-			else {
-				$values = ! empty( $colors[$key] ) && is_array( $colors[$key] ) ? $colors[$key] : array();
-				$colors[$key] = $this->apply_inheritance( $role, $values, $root );
-			}
-		}
-
-		return $colors;
-	}
-
-	/**
-	 * Resolve one inherited role path. A nonblank explicit/default value wins;
-	 * otherwise the referenced role's own inheritance path is followed. Already
-	 * visited paths return blank to prevent circular definitions from recursing.
-	 *
-	 * @since 6.0
-	 */
-
-	private function inherit_value( $colors, $path, $visited = array() ) {
-		if ( in_array( $path, $visited, true ) )
-			return '';
-
-		$visited[] = $path;
-		$value = $this->path_value( $colors, $path );
-		$role = $this->path_value( $this->roles, $path );
-
-		if ( $value !== '' && $value !== null )
-			return $value;
-
-		if ( ! empty( $role['inherit'] ) )
-			return $this->inherit_value( $colors, $role['inherit'], $visited );
-
-		return '';
-	}
-
-	/**
-	 * Keep unsaved text colors readable. When a role with an `auto` background
-	 * is as light or as dark as that background, it switches to the site's
-	 * text or contrast text color. Checks read $resolved; changes go to $colors.
-	 *
-	 * @since 6.0.3
-	 */
-
-	public function auto_text( $colors, $resolved, $roles = null, $path = array() ) {
-		foreach ( $roles ?? $this->roles as $key => $role ) {
-			$role_path = array_merge( $path, array( $key ) );
-
-			if ( ! array_key_exists( 'default', $role ) )
-				$colors = $this->auto_text( $colors, $resolved, $role, $role_path );
-			elseif ( ! empty( $role['auto'] ) && ! md_setting( array_merge( array( 'colors' ), $role_path ) ) ) {
-				$bg = $this->path_value( $resolved, $role['auto'] );
-				$light = md_color_is_light( $bg );
-
-				if ( $bg && $light === md_color_is_light( $this->path_value( $resolved, $role_path ) ) )
-					$colors = $this->path_set( $colors, $role_path, $light ? $resolved['site']['text_color'] : $resolved['site']['contrast_text_color'] );
-			}
-		}
-
-		return $colors;
-	}
-
-	/**
-	 * Return a copy of a nested array with one array-key path set to a value.
-	 *
-	 * @since 6.0.3
-	 */
-
-	private function path_set( $values, $path, $value ) {
-		$key = array_shift( $path );
-		$values[$key] = $path ? $this->path_set( $values[$key] ?? array(), $path, $value ) : $value;
-
-		return $values;
-	}
-
-	/**
 	 * Read a nested value from an array-key path without modifying the source.
 	 * Invalid paths return null.
 	 *
 	 * @since 6.0
 	 */
 
-	private function path_value( $values, $path ) {
+	public function path_value( $values, $path ) {
 		foreach ( $path as $key ) {
 			if ( ! is_array( $values ) || ! array_key_exists( $key, $values ) )
 				return null;

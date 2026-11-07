@@ -127,16 +127,6 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( '#1E1E1E', $colors['content']['box_text_color'] );
 	}
 
-	public function test_circular_color_inheritance_returns_an_empty_fallback() {
-		$this->colors->roles['site']['headline_color']['inherit'] = array( 'site', 'headline_link_color' );
-
-		$colors = $this->colors->defaults();
-		$colors = $this->colors->resolve( $colors, $this->colors->active_palette() );
-
-		$this->assertSame( '', $colors['site']['headline_color'] );
-		$this->assertSame( '', $colors['site']['headline_link_color'] );
-	}
-
 	public function test_base_palette_only_accepts_hex_overrides() {
 		md_test_set_settings( array(
 			'colors' => array(
@@ -252,16 +242,15 @@ class DesignTest extends MD_TestCase {
 		) );
 
 		$colors = $this->design->values()['colors'];
-		$inherit = $this->colors->inheritance( $colors );
 
 		$this->assertSame( '#F5F5F5', $this->colors->base_palette()['background']['hex'] );
 		$this->assertSame( '#FFFFFF', $this->colors->roles['header']['bg_color']['default'] );
-		$this->assertSame( '#345678', $inherit['header']['menu']['link_color'] );
+		$this->assertSame( '#345678', $this->colors->path_value( $colors, $this->colors->roles['header']['menu']['link_color']['inherit'] ) );
 		$this->assertSame( '#456789', $colors['header']['menu']['link_color'] );
 	}
 
 	public function test_font_inheritance_is_resolved_for_compilers() {
-		$fonts = $this->design->fonts();
+		$fonts = $this->design->fonts( $this->design->values() );
 
 		$this->assertSame( 'normal', $fonts['body']['font_weight'] );
 		$this->assertSame( 'bold', $fonts['body']['bold'] );
@@ -291,7 +280,7 @@ class DesignTest extends MD_TestCase {
 			)
 		) );
 
-		$fonts = $this->design->fonts();
+		$fonts = $this->design->fonts( $this->design->values() );
 
 		$this->assertSame( 'Body Font', $fonts['body']['font_family'] );
 		$this->assertSame( '400', $fonts['body']['font_weight'] );

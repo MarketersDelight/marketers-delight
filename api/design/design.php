@@ -8,9 +8,7 @@
 
 class md_design {
 
-	// Setup properties
-
-	const FONT_FAMILY = 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif';
+	public $font_family = 'system-ui, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif';
 
 	private $colors;
 
@@ -25,11 +23,9 @@ class md_design {
 	}
 
 	/**
-	 * Merge saved design settings over the calculated defaults.
-	 *
-	 * Most settings merge directly here. Typography is already resolved
-	 * so raw saved values cannot replace its safe scale anchors. Palette
-	 * references are converted to final colors below.
+	 * Merge saved design settings over the calculated defaults, then turn palette
+	 * references into final colors. Typography is already resolved, so saved
+	 * values can't replace its scale.
 	 *
 	 * @since 4.8
 	 */
@@ -45,10 +41,7 @@ class md_design {
 		// Resolve semantic color fallbacks and palette references.
 
 		$palette = $this->colors->active_palette();
-		$resolved = $this->colors->resolve( $values['colors'], $palette );
-		$colors = $this->colors->auto_text( $values['colors'], $resolved );
-		$resolved = $this->colors->resolve( $colors, $palette );
-		$values['colors'] = $this->colors->auto_text( $resolved, $resolved );
+		$values['colors'] = $this->colors->resolve( $values['colors'], $palette, md_setting( 'colors' ) );
 
 		if ( empty( $values['logo']['site_title']['color'] ) )
 			$values['logo']['site_title']['color'] = $values['colors']['header']['text_color'];
@@ -72,10 +65,8 @@ class md_design {
 	}
 
 	/**
-	 * Layer saved settings on top of the computed defaults. A saved value
-	 * wins wherever it's set — but a blank/null value is treated as if the
-	 * user never touched that field, so the computed default shows through
-	 * instead of a blank.
+	 * Layer saved settings over computed defaults. A blank or null value counts
+	 * as untouched, so the default shows through.
 	 *
 	 * @since 6.0
 	 */
@@ -96,14 +87,8 @@ class md_design {
 	}
 
 	/**
-	 * Default design values. Typography is calculated and merged with its
-	 * saved settings first; remaining settings are merged in values().
-	 *
-	 * Body font size defaults to 20px desktop and 90% of desktop on mobile,
-	 * with a 16px minimum. Body line height uses the golden ratio. h1 is
-	 * calculated from body, then h2-h6 fill a six-step geometric scale:
-	 * body is step zero, h6 is step one, and h1 is step six. Heading line
-	 * heights are calculated from each heading's resolved font size.
+	 * Default design values, with typography already merged. Body sets the scale:
+	 * line height uses the golden ratio and h2-h6 are geometric steps up to h1.
 	 *
 	 * @since 4.8
 	 */
@@ -209,34 +194,31 @@ class md_design {
 		$step_ratio = pow( $h1['desktop'] / $font_size, 1 / $steps );
 		$step_ratio_mobile = pow( $h1['mobile'] / $font_size_mobile, 1 / $steps );
 
-		$h2 = array(
-			'desktop' => round( $font_size * pow( $step_ratio, 5 ) ),
-			'mobile' => round( $font_size_mobile * pow( $step_ratio_mobile, 5 ) )
-		);
-		$h3 = array(
-			'desktop' => round( $font_size * pow( $step_ratio, 4 ) ),
-			'mobile' => round( $font_size_mobile * pow( $step_ratio_mobile, 4 ) )
-		);
-		$h4 = array(
-			'desktop' => round( $font_size * pow( $step_ratio, 3 ) ),
-			'mobile' => round( $font_size_mobile * pow( $step_ratio_mobile, 3 ) )
-		);
-		$h5 = array(
-			'desktop' => round( $font_size * pow( $step_ratio, 2 ) ),
-			'mobile' => round( $font_size_mobile * pow( $step_ratio_mobile, 2 ) )
-		);
-		$h6 = array(
-			'desktop' => round( $font_size * $step_ratio ),
-			'mobile' => round( $font_size_mobile * $step_ratio_mobile )
-		);
-
 		// Saved heading sizes replace their scale steps, so line heights follow them
 
-		$h2 = $this->saved_font_size( $typography, 'h2', $h2 );
-		$h3 = $this->saved_font_size( $typography, 'h3', $h3 );
-		$h4 = $this->saved_font_size( $typography, 'h4', $h4 );
-		$h5 = $this->saved_font_size( $typography, 'h5', $h5 );
-		$h6 = $this->saved_font_size( $typography, 'h6', $h6 );
+		$scale = array(
+			'h2' => array( 'step' => 5, 'desktop' => 1.35, 'mobile' => 1.35 ),
+			'h3' => array( 'step' => 4, 'desktop' => 1.4, 'mobile' => 1.4 ),
+			'h4' => array( 'step' => 3, 'desktop' => 1.45, 'mobile' => 1.45 ),
+			'h5' => array( 'step' => 2, 'desktop' => 1.5, 'mobile' => 1.5 ),
+			'h6' => array( 'step' => 1, 'desktop' => 1.55, 'mobile' => 1.55 )
+		);
+		$headings = array();
+
+		foreach ( $scale as $type => $heading ) {
+			$sizes = $this->saved_font_size( $typography, $type, array(
+				'desktop' => round( $font_size * pow( $step_ratio, $heading['step'] ) ),
+				'mobile' => round( $font_size_mobile * pow( $step_ratio_mobile, $heading['step'] ) )
+			) );
+
+			$headings[$type] = array(
+				'font_size' => $sizes,
+				'line_height' => array(
+					'desktop' => round( $sizes['desktop'] * $heading['desktop'] ),
+					'mobile' => round( $sizes['mobile'] * $heading['mobile'] )
+				)
+			);
+		}
 
 		$typography['body']['font_size']['desktop'] = $font_size;
 		$typography['body']['font_size']['mobile'] = $font_size_mobile;
@@ -245,7 +227,7 @@ class md_design {
 
 		// Build typography list
 
-		return $this->merge_defaults( array(
+		$base = array(
 			'body' => array(
 				'font_size' => array(
 					'desktop' => $font_size,
@@ -255,7 +237,7 @@ class md_design {
 					'desktop' => $line_height,
 					'mobile' => $line_height_mobile
 				),
-				'font_family' => self::FONT_FAMILY
+				'font_family' => $this->font_family
 			),
 			'huge' => array(
 				'font_size' => array(
@@ -273,42 +255,10 @@ class md_design {
 					'desktop' => round( $h1['desktop'] * 1.3 ),
 					'mobile' => round( $h1['mobile'] * 1.3 )
 				)
-			),
-			'h2' => array(
-				'font_size' => $h2,
-				'line_height' => array(
-					'desktop' => round( $h2['desktop'] * 1.35 ),
-					'mobile' => round( $h2['mobile'] * 1.35 )
-				)
-			),
-			'h3' => array(
-				'font_size' => $h3,
-				'line_height' => array(
-					'desktop' => round( $h3['desktop'] * 1.4 ),
-					'mobile' => round( $h3['mobile'] * 1.4 )
-				)
-			),
-			'h4' => array(
-				'font_size' => $h4,
-				'line_height' => array(
-					'desktop' => round( $h4['desktop'] * 1.4 ),
-					'mobile' => round( $h4['mobile'] * 1.45 )
-				)
-			),
-			'h5' => array(
-				'font_size' => $h5,
-				'line_height' => array(
-					'desktop' => round( $h5['desktop'] * 1.55 ),
-					'mobile' => round( $h5['mobile'] * 1.55 )
-				)
-			),
-			'h6' => array(
-				'font_size' => $h6,
-				'line_height' => array(
-					'desktop' => round( $h6['desktop'] * 1.5 ),
-					'mobile' => round( $h6['mobile'] * 1.5 )
-				)
-			),
+			)
+		);
+
+		$areas = array(
 			'header' => array(
 				'font_size' => array( 'desktop' => $font_size ),
 				'line_height' => array( 'desktop' => $line_height )
@@ -321,7 +271,9 @@ class md_design {
 				'font_size' => array( 'desktop' => round( $font_size * 0.95 ) ),
 				'line_height' => array( 'desktop' => round( $line_height * 0.9 ) )
 			)
-		), $typography );
+		);
+
+		return $this->merge_defaults( array_merge( $base, $headings, $areas ), $typography );
 	}
 
 	/**
@@ -344,10 +296,7 @@ class md_design {
 	 * @since 6.0
 	 */
 
-	public function fonts( $values = array() ) {
-		if ( empty( $values ) )
-			$values = $this->values();
-
+	public function fonts( $values ) {
 		$body = $values['typography']['body'];
 		$bold = ! empty( $body['bold'] ) ? $body['bold'] : 'bold';
 
@@ -409,16 +358,12 @@ class md_design {
 	}
 
 	/**
-	 * Returns layout widths. Existing values may be passed to avoid
-	 * calculating them again during compilation.
+	 * Returns layout widths.
 	 *
 	 * @since 6.0
 	 */
 
-	public function widths( $values = array() ) {
-		if ( empty( $values ) )
-			$values = $this->values();
-
+	public function widths( $values ) {
 		$w = $values['colors']['width'];
 
 		return array(
@@ -434,16 +379,12 @@ class md_design {
 
 	/**
 	 * Calculate common spacing values from single line height,
-	 * as desktop/mobile pairs for fluid scaling. Existing values may
-	 * be passed to avoid calculating them again during compilation.
+	 * as desktop/mobile pairs for fluid scaling.
 	 *
 	 * @since 6.0
 	 */
 
-	public function spacers( $values = array() ) {
-		if ( empty( $values ) )
-			$values = $this->values();
-
+	public function spacers( $values ) {
 		$lh_desktop = $values['typography']['body']['line_height']['desktop'];
 		$lh_mobile = round( $lh_desktop * 0.65 );
 
