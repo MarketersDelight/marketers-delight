@@ -255,7 +255,7 @@ class md_byline extends md_api {
 				'<h3 class="md-widget-title"><span>' . __( 'Byline', 'md' ) . '<span class="md-widget-description">' . __( 'Author, date and other post details', 'md' ) . '</span></span></h3>';
 
 		$this->fields->field( 'builder', array(
-			'populate' => ! $screen['is_term'] && ! $screen['is_post'],
+			'populate' => ! $screen['is_term'] && ! $screen['is_post'] && ! $screen['is_taxonomy'],
 			'defaults' => md_get_post_type_builder( 'byline', $post_type ),
 			'title' => __( 'Edit Byline', 'md' ),
 			'description' => $description,
