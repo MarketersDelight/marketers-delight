@@ -3072,22 +3072,33 @@ body {
 
 .md-dropins-upload .upload-plugin {
 	display: block;
-	margin: 0 0 16px;
-	padding: 8px 0 24px;
+	margin: 0;
+	padding: 8px 0 0;
 	top: 0;
 }
 
-.md-dropin-results { margin: 0; }
+.md-dropin-results [hidden] { display: none; }
 
-.md-dropin-result.notice {
+.md-dropin-results-actions {
+	align-items: center;
+	display: flex;
+	gap: 12px;
+	justify-content: flex-end;
 	margin: 0 0 8px;
-	padding: 10px 12px;
+}
+
+.md-dropin-result td { vertical-align: middle; }
+
+.md-dropin-result.is-done .md-dropin-result-status { color: var(--md-ui-green-dark); }
+
+.md-dropin-result.is-error .md-dropin-result-status { color: var(--md-ui-brand); }
+
+.md-dropin-result-buttons {
+	display: inline-flex;
+	gap: 6px;
+	margin-left: 12px;
 }
 
 .md-dropin-result .button-small { margin-left: 8px; }
 
-.md-dropin-compare { margin-top: 10px; }
-
-.md-dropin-compare table { max-width: 480px; }
-
-.md-dropin-compare-actions { margin-bottom: 0; }
+.md-dropin-result-buttons .button-small { margin-left: 0; }

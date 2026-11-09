@@ -133,6 +133,7 @@
 			var form = $( '.md-dropin-upload-form' ),
 				input = form.find( 'input[type="file"]' ),
 				submit = form.find( 'input[type="submit"]' ),
+				results = $( '.md-dropin-results' ),
 				self = this;
 
 			if ( ! form.length )
@@ -143,8 +144,7 @@
 			} );
 
 			form.on( 'submit', function( e ) {
-				var files = $.makeArray( input.prop( 'files' ) ),
-					results = $( '.md-dropin-results' );
+				var files = $.makeArray( input.prop( 'files' ) );
 
 				e.preventDefault();
 
@@ -153,26 +153,52 @@
 
 				submit.prop( 'disabled', true );
 				input.prop( 'disabled', true );
+				results.prop( 'hidden', false );
 
 				self.queue( $.map( files, function( file ) {
-					var row = $( '<li class="md-dropin-result notice inline"><strong></strong> <span class="md-dropin-result-status"></span></li>' );
+					var row = $( '<tr class="md-dropin-result"><td><strong></strong></td><td class="md-dropin-result-current">—</td><td class="md-dropin-result-uploaded">—</td><td class="md-dropin-result-requires">—</td><td><span class="md-dropin-result-status"></span></td></tr>' );
 
 					self.resultState( row, 'busy' );
-					row.find( 'strong' ).text( file.name );
+					row.data( 'file', file ).find( 'strong' ).text( file.name );
 					row.find( '.md-dropin-result-status' ).text( text.installing );
 
-					results.append( row );
+					results.find( 'tbody' ).append( row );
 
 					return function() {
 						return self.uploadOne( file, row, false );
 					};
 				} ) ).always( function() {
 					input.val( '' ).prop( 'disabled', false );
-
-					if ( results.find( '.is-done' ).length && ! results.find( '.md-dropin-results-refresh' ).length )
-						results.append( $( '<li class="md-dropin-results-refresh"></li>' ).append( $( '<a></a>' ).attr( 'href', window.location.href ).text( text.refresh ) ) );
 				} );
 			} );
+
+			results.on( 'click', '.md-dropin-replace-all', function() {
+				var waiting = results.find( '.md-dropin-result.is-exists' );
+
+				if ( ! confirm( self.format( text.replaceAllConfirm, waiting.length ) ) )
+					return;
+
+				self.queue( waiting.map( function() {
+					var row = $( this );
+
+					return function() {
+						return self.uploadOne( row.data( 'file' ), row, true );
+					};
+				} ).get() );
+			} );
+		},
+
+		resultActions: function() {
+			var results = $( '.md-dropin-results' ),
+				waiting = results.find( '.md-dropin-result.is-exists' ).length,
+				busy = results.find( '.md-dropin-result.is-busy' ).length,
+				all = results.find( '.md-dropin-replace-all' ),
+				refresh = results.find( '.md-dropin-results-refresh' );
+
+			all.text( this.format( text.updateAll, waiting ) ).prop( 'hidden', busy || waiting < 2 );
+			refresh.prop( 'hidden', busy || ! results.find( '.is-new' ).length );
+			results.find( '.md-dropin-results-actions' ).prop( 'hidden', all.prop( 'hidden' ) && refresh.prop( 'hidden' ) );
+			results.prop( 'hidden', ! results.find( '.md-dropin-result' ).length );
 		},
 
 		queue: function( jobs ) {
@@ -198,7 +224,8 @@
 
 			this.resultState( row, 'busy' );
 			row.find( '.md-dropin-result-status' ).text( text.installing );
-			row.find( '.md-dropin-compare' ).remove();
+			row.find( '.md-dropin-result-buttons' ).remove();
+			this.resultActions();
 
 			return this.install( { file: file, overwrite: overwrite ? 1 : '' } ).done( function( response ) {
 				self.installed( row, response.data );
@@ -211,20 +238,25 @@
 					self.resultState( row, 'error' );
 					row.find( '.md-dropin-result-status' ).text( error.message );
 				}
+			} ).always( function() {
+				self.resultActions();
 			} );
 		},
 
 		resultState: function( row, state ) {
-			var notices = { busy: 'notice-info', done: 'notice-success', error: 'notice-error', exists: 'notice-warning' };
-
-			row.removeClass( 'is-busy is-done is-error is-exists notice-info notice-success notice-error notice-warning' ).addClass( 'is-' + state + ' ' + notices[state] );
+			row.removeClass( 'is-busy is-done is-error is-exists' ).addClass( 'is-' + state );
 		},
 
 		installed: function( row, data ) {
 			var status = row.find( '.md-dropin-result-status' );
 
 			this.resultState( row, 'done' );
-			row.find( 'strong' ).text( data.name + ' ' + data.version );
+			row.toggleClass( 'is-new', ! data.replaced );
+			row.find( 'strong' ).text( data.name );
+			row.find( '.md-dropin-result-uploaded' ).text( data.version );
+
+			if ( data.replaced )
+				$( '.md-dropins-table tr[data-slug="' + data.slug + '"] .md-dropin-title .md-badge' ).text( data.version );
 
 			status.text( data.replaced ? text.replaced : ( data.active ? text.activated : text.installed ) );
 
@@ -233,41 +265,24 @@
 		},
 
 		compare: function( file, row, data ) {
-			var self = this,
-				table = $( '<table class="widefat"><thead><tr><th></th><th></th><th></th></tr></thead><tbody></tbody></table>' ),
-				actions = $( '<p class="md-dropin-compare-actions"></p>' ),
-				rows = [
-					[ text.version, 'Version' ],
-					[ text.requiresMD, 'RequiresMD' ]
-				];
+			var self = this;
 
 			this.resultState( row, 'exists' );
 			row.find( 'strong' ).text( data.current.Name || file.name );
-			row.find( '.md-dropin-result-status' ).text( text.exists );
-
-			table.find( 'th' ).eq( 1 ).text( text.current );
-			table.find( 'th' ).eq( 2 ).text( text.uploaded );
-
-			$.each( rows, function( i, item ) {
-				var tr = $( '<tr><th></th><td></td><td></td></tr>' );
-
-				tr.find( 'th' ).text( item[0] );
-				tr.find( 'td' ).eq( 0 ).text( data.current[item[1]] || '—' );
-				tr.find( 'td' ).eq( 1 ).text( data.uploaded[item[1]] || '—' );
-				table.find( 'tbody' ).append( tr );
-			} );
-
-			actions.append(
-				$( '<button type="button" class="button button-primary"></button>' ).text( text.replace ).on( 'click', function() {
-					self.uploadOne( file, row, true );
-				} ),
-				' ',
-				$( '<button type="button" class="button"></button>' ).text( text.cancel ).on( 'click', function() {
-					row.remove();
-				} )
+			row.find( '.md-dropin-result-current' ).text( data.current.Version || '—' );
+			row.find( '.md-dropin-result-uploaded' ).text( data.uploaded.Version || '—' );
+			row.find( '.md-dropin-result-requires' ).text( data.uploaded.RequiresMD || '—' );
+			row.find( '.md-dropin-result-status' ).text( text.exists ).after(
+				$( '<span class="md-dropin-result-buttons"></span>' ).append(
+					$( '<button type="button" class="button button-small button-primary"></button>' ).text( text.replace ).on( 'click', function() {
+						self.uploadOne( file, row, true );
+					} ),
+					$( '<button type="button" class="button button-small"></button>' ).text( text.cancel ).on( 'click', function() {
+						row.remove();
+						self.resultActions();
+					} )
+				)
 			);
-
-			row.append( $( '<div class="md-dropin-compare"></div>' ).append( table, actions ) );
 		},
 
 		updates: function() {

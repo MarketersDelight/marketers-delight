@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-07T03:36:35+00:00\n"
+"POT-Creation-Date: 2026-11-09T17:33:00+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -156,7 +156,7 @@ msgstr ""
 #: features/byline/admin.php:368
 #: features/header/templates/admin/header.php:11
 #: features/layout/templates/admin/layout-toggle.php:34
-#: features/loop/templates/admin/loop.php:194
+#: features/loop/templates/admin/loop.php:196
 #: features/page-cover/templates/admin/page-cover.php:27
 msgid "Settings"
 msgstr ""
@@ -294,7 +294,7 @@ msgid "Color"
 msgstr ""
 
 #: admin/design.php:90
-#: features/loop/templates/admin/loop.php:165
+#: features/loop/templates/admin/loop.php:167
 msgid "Name"
 msgstr ""
 
@@ -456,7 +456,7 @@ msgid "No update is available for this Drop-in."
 msgstr ""
 
 #: admin/dropins/actions.php:281
-#: admin/dropins/dropins.php:272
+#: admin/dropins/dropins.php:268
 msgid "Update failed."
 msgstr ""
 
@@ -573,27 +573,30 @@ msgid "Installing…"
 msgstr ""
 
 #: admin/dropins/dropins.php:257
-msgid "Show them in the list"
-msgstr ""
-
-#: admin/dropins/dropins.php:258
 msgid "Installed"
 msgstr ""
 
-#: admin/dropins/dropins.php:259
+#: admin/dropins/dropins.php:258
 msgid "Installed and activated"
 msgstr ""
 
+#: admin/dropins/dropins.php:259
+msgid "Updated"
+msgstr ""
+
 #: admin/dropins/dropins.php:260
-msgid "Replaced"
+msgid "Already Installed"
 msgstr ""
 
 #: admin/dropins/dropins.php:261
-msgid "Already installed"
+#: admin/dropins/list-table.php:263
+#: admin/templates/license-key.php:64
+msgid "Update"
 msgstr ""
 
 #: admin/dropins/dropins.php:262
-msgid "Replace current with uploaded"
+#, php-format
+msgid "NOTICE: You are about to update %d Drop-ins with the uploaded versions. Any changes made directly to these Drop-in files in /md-dropins/ will be overwritten."
 msgstr ""
 
 #: admin/dropins/dropins.php:263
@@ -604,80 +607,65 @@ msgid "Cancel"
 msgstr ""
 
 #: admin/dropins/dropins.php:264
-msgid "Current"
-msgstr ""
-
-#: admin/dropins/dropins.php:265
-msgid "Uploaded"
-msgstr ""
-
-#: admin/dropins/dropins.php:266
-msgid "Version"
-msgstr ""
-
-#: admin/dropins/dropins.php:267
-msgid "Requires MD"
-msgstr ""
-
-#: admin/dropins/dropins.php:268
 #: api/dropins/manage.php:143
 msgid "Could not install the Drop-in."
 msgstr ""
 
-#: admin/dropins/dropins.php:269
+#: admin/dropins/dropins.php:265
 #: admin/dropins/list-table.php:258
 #: admin/dropins/list-table.php:402
 msgid "Activate"
 msgstr ""
 
-#: admin/dropins/dropins.php:270
+#: admin/dropins/dropins.php:266
 #, php-format
 msgid "Updated to %s"
 msgstr ""
 
-#: admin/dropins/dropins.php:271
+#: admin/dropins/dropins.php:267
 msgid "Updating…"
 msgstr ""
 
-#: admin/dropins/dropins.php:273
+#: admin/dropins/dropins.php:269
 msgid "Retry"
 msgstr ""
 
-#: admin/dropins/dropins.php:274
+#: admin/dropins/dropins.php:270
 #: admin/templates/license-key.php:29
 #, php-format
 msgid "Update all (%d)"
 msgstr ""
 
-#: admin/dropins/dropins.php:275
+#: admin/dropins/dropins.php:271
 msgid "NOTICE: You are about to update everything listed here. Any changes made directly to the Marketers Delight parent theme or to Drop-in files in /md-dropins/ will be overwritten. Your child theme stays untouched."
 msgstr ""
 
-#: admin/dropins/dropins.php:276
+#: admin/dropins/dropins.php:272
 #, php-format
 msgid "%d Updates"
 msgstr ""
 
-#: admin/dropins/dropins.php:277
+#: admin/dropins/dropins.php:273
 msgid "1 Update"
 msgstr ""
 
-#: admin/dropins/dropins.php:278
+#: admin/dropins/dropins.php:274
 #: admin/templates/license-key.php:11
 msgid "Up to date"
 msgstr ""
 
-#: admin/dropins/dropins.php:279
+#: admin/dropins/dropins.php:275
 #, php-format
 msgid "%s item"
 msgstr ""
 
-#: admin/dropins/dropins.php:280
+#: admin/dropins/dropins.php:276
 #, php-format
 msgid "%s items"
 msgstr ""
 
 #: admin/dropins/list-table.php:184
+#: admin/templates/dropins/list.php:40
 msgid "Drop-in"
 msgstr ""
 
@@ -715,11 +703,6 @@ msgstr ""
 #: admin/dropins/list-table.php:259
 #: admin/dropins/list-table.php:400
 msgid "Deactivate"
-msgstr ""
-
-#: admin/dropins/list-table.php:263
-#: admin/templates/license-key.php:64
-msgid "Update"
 msgstr ""
 
 #: admin/dropins/list-table.php:266
@@ -1017,6 +1000,7 @@ msgid "Secondary Button"
 msgstr ""
 
 #: admin/templates/design.php:147
+#: admin/templates/dropins/list.php:44
 #: api/collections/collections.php:54
 msgid "Status"
 msgstr ""
@@ -1044,7 +1028,7 @@ msgstr ""
 #: admin/templates/design.php:203
 #: admin/templates/fields/page.php:18
 #: features/layout/templates/admin/layout.php:157
-#: features/loop/templates/admin/loop.php:234
+#: features/loop/templates/admin/loop.php:236
 msgid "Content"
 msgstr ""
 
@@ -1157,7 +1141,23 @@ msgstr ""
 msgid "Install Now"
 msgstr ""
 
-#: admin/templates/dropins/list.php:38
+#: admin/templates/dropins/list.php:33
+msgid "Show them in the list"
+msgstr ""
+
+#: admin/templates/dropins/list.php:41
+msgid "Current"
+msgstr ""
+
+#: admin/templates/dropins/list.php:42
+msgid "Uploaded"
+msgstr ""
+
+#: admin/templates/dropins/list.php:43
+msgid "Requires MD"
+msgstr ""
+
+#: admin/templates/dropins/list.php:58
 msgid "These Drop-ins come with MD Pro. Upgrade and they move to Available, ready to install from here."
 msgstr ""
 
@@ -3653,14 +3653,14 @@ msgstr ""
 
 #: comments.php:33
 #: features/loop/admin.php:200
-#: features/loop/templates/admin/loop.php:422
+#: features/loop/templates/admin/loop.php:424
 #: features/loop/templates/pagination.php:4
 msgid "Previous"
 msgstr ""
 
 #: comments.php:34
 #: features/loop/admin.php:204
-#: features/loop/templates/admin/loop.php:429
+#: features/loop/templates/admin/loop.php:431
 #: features/loop/templates/pagination.php:6
 msgid "Next"
 msgstr ""
@@ -3728,7 +3728,7 @@ msgstr ""
 
 #: features/byline/admin.php:93
 #: features/byline/admin.php:255
-#: features/loop/templates/admin/loop.php:298
+#: features/loop/templates/admin/loop.php:300
 msgid "Byline"
 msgstr ""
 
@@ -3942,7 +3942,7 @@ msgstr ""
 
 #: features/featured-media/functions.php:346
 #: features/layout/templates/admin/layout.php:140
-#: features/loop/templates/admin/loop.php:250
+#: features/loop/templates/admin/loop.php:252
 msgid "Use default position"
 msgstr ""
 
@@ -4576,7 +4576,7 @@ msgid "List posts by category"
 msgstr ""
 
 #: features/loop/admin.php:128
-#: features/loop/templates/admin/loop.php:222
+#: features/loop/templates/admin/loop.php:224
 msgid "Featured Posts"
 msgstr ""
 
@@ -4647,7 +4647,7 @@ msgid "Order by"
 msgstr ""
 
 #: features/loop/admin.php:190
-#: features/loop/templates/admin/loop.php:173
+#: features/loop/templates/admin/loop.php:175
 msgid "Ascending"
 msgstr ""
 
@@ -4656,7 +4656,7 @@ msgid "Show CTA after"
 msgstr ""
 
 #: features/loop/admin.php:212
-#: features/loop/templates/admin/loop.php:439
+#: features/loop/templates/admin/loop.php:441
 #: features/page-cta/admin.php:18
 msgid "Call to Action"
 msgstr ""
@@ -4722,7 +4722,7 @@ msgid "No style"
 msgstr ""
 
 #: features/loop/functions.php:453
-#: features/loop/templates/admin/loop.php:349
+#: features/loop/templates/admin/loop.php:351
 msgid "Continue reading &rarr;"
 msgstr ""
 
@@ -4752,7 +4752,7 @@ msgstr ""
 
 #: features/loop/templates/admin/loop.php:12
 #: features/loop/templates/admin/loop.php:23
-#: features/loop/templates/admin/loop.php:242
+#: features/loop/templates/admin/loop.php:244
 msgid "Use default"
 msgstr ""
 
@@ -4832,259 +4832,259 @@ msgstr ""
 msgid "Category, tag or term IDs to leave out, separated by commas."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:128
+#: features/loop/templates/admin/loop.php:130
 msgid "Add your own CSS classes to this loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:143
+#: features/loop/templates/admin/loop.php:145
 msgid "Show category sections"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:150
+#: features/loop/templates/admin/loop.php:152
 msgid "Posts per category section"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:157
+#: features/loop/templates/admin/loop.php:159
 msgid "Show category columns"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:164
+#: features/loop/templates/admin/loop.php:166
 msgid "Sort order of categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:172
+#: features/loop/templates/admin/loop.php:174
 msgid "Lowest/highest value"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:180
-#: features/loop/templates/admin/loop.php:187
+#: features/loop/templates/admin/loop.php:182
+#: features/loop/templates/admin/loop.php:189
 msgid "Comma-separated term IDs"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:196
-#: features/loop/templates/admin/loop.php:201
+#: features/loop/templates/admin/loop.php:198
+#: features/loop/templates/admin/loop.php:203
 msgid "Hide description"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:197
-#: features/loop/templates/admin/loop.php:205
+#: features/loop/templates/admin/loop.php:199
+#: features/loop/templates/admin/loop.php:207
 msgid "Show empty categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:202
+#: features/loop/templates/admin/loop.php:204
 msgid "Show description"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:206
+#: features/loop/templates/admin/loop.php:208
 msgid "Hide empty categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:221
+#: features/loop/templates/admin/loop.php:223
 msgid "Standard Posts"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:235
+#: features/loop/templates/admin/loop.php:237
 msgid "Configure what appears for each post in the loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:240
+#: features/loop/templates/admin/loop.php:242
 msgid "Content shown per post."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:249
+#: features/loop/templates/admin/loop.php:251
 msgid "Featured image position."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:258
+#: features/loop/templates/admin/loop.php:260
 msgid "Featured image size."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:259
+#: features/loop/templates/admin/loop.php:261
 msgid "Show full size image"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:271
+#: features/loop/templates/admin/loop.php:273
 msgid "Featured image on small screens."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:272
+#: features/loop/templates/admin/loop.php:274
 msgid "Stack above or below"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:281
+#: features/loop/templates/admin/loop.php:283
 msgid "Inherit Media Position"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:283
+#: features/loop/templates/admin/loop.php:285
 msgid "Use each post’s own media position."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:287
+#: features/loop/templates/admin/loop.php:289
 msgid "Inherit Page Cover"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:289
+#: features/loop/templates/admin/loop.php:291
 msgid "Show each post’s own Page Cover in this loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:299
+#: features/loop/templates/admin/loop.php:301
 msgid "Hide elements of the post byline."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:305
+#: features/loop/templates/admin/loop.php:307
 msgid "Remove Entry Top byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:306
+#: features/loop/templates/admin/loop.php:308
 msgid "Show Entry Top byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:309
+#: features/loop/templates/admin/loop.php:311
 msgid "Remove Before Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:310
+#: features/loop/templates/admin/loop.php:312
 msgid "Show Before Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:313
+#: features/loop/templates/admin/loop.php:315
 msgid "Remove Inside Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:314
+#: features/loop/templates/admin/loop.php:316
 msgid "Show Inside Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:317
+#: features/loop/templates/admin/loop.php:319
 msgid "Remove After Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:318
+#: features/loop/templates/admin/loop.php:320
 msgid "Show After Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:321
+#: features/loop/templates/admin/loop.php:323
 msgid "Remove Before Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:322
+#: features/loop/templates/admin/loop.php:324
 msgid "Show Before Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:325
+#: features/loop/templates/admin/loop.php:327
 msgid "Remove After Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:326
+#: features/loop/templates/admin/loop.php:328
 msgid "Show After Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:329
+#: features/loop/templates/admin/loop.php:331
 msgid "Remove Entry Footer byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:330
+#: features/loop/templates/admin/loop.php:332
 msgid "Show Entry Footer byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:333
+#: features/loop/templates/admin/loop.php:335
 msgid "Remove all bylines"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:334
+#: features/loop/templates/admin/loop.php:336
 msgid "Show bylines"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:342
+#: features/loop/templates/admin/loop.php:344
 msgid "Excerpt and links"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:343
+#: features/loop/templates/admin/loop.php:345
 msgid "Control the excerpt and read more text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:348
+#: features/loop/templates/admin/loop.php:350
 msgid "Read More link text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:355
+#: features/loop/templates/admin/loop.php:357
 msgid "Excerpt ending text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:362
+#: features/loop/templates/admin/loop.php:364
 msgid "Length in words."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:364
+#: features/loop/templates/admin/loop.php:366
 msgid "words"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:373
+#: features/loop/templates/admin/loop.php:375
 msgid "Do not show Read More"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:376
+#: features/loop/templates/admin/loop.php:378
 msgid "Hide Read More link"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:377
+#: features/loop/templates/admin/loop.php:379
 msgid "Show Read More link"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:382
+#: features/loop/templates/admin/loop.php:384
 msgid "Do not show Excerpt More"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:385
+#: features/loop/templates/admin/loop.php:387
 msgid "Hide excerpt more"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:386
+#: features/loop/templates/admin/loop.php:388
 msgid "Show excerpt more"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:400
+#: features/loop/templates/admin/loop.php:402
 msgid "Pagination"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:401
+#: features/loop/templates/admin/loop.php:403
 msgid "Choose how visitors navigate between pages of results."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:407
+#: features/loop/templates/admin/loop.php:409
 msgid "Previous/Next Links"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:411
+#: features/loop/templates/admin/loop.php:413
 msgid "The pagination style to use."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:412
+#: features/loop/templates/admin/loop.php:414
 msgid "Page Numbers"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:421
+#: features/loop/templates/admin/loop.php:423
 msgid "Label for the previous page link."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:428
+#: features/loop/templates/admin/loop.php:430
 msgid "Label for the next page link."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:440
+#: features/loop/templates/admin/loop.php:442
 msgid "Display a call to action within the loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:446
+#: features/loop/templates/admin/loop.php:448
 #, php-format
 msgid "Choose a pre-made <a href=\"%s\">call to action</a>."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:447
+#: features/loop/templates/admin/loop.php:449
 msgid "Select call to action..."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:455
+#: features/loop/templates/admin/loop.php:457
 msgid "Show after this many posts."
 msgstr ""
 

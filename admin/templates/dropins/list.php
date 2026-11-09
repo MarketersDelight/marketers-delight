@@ -27,7 +27,27 @@
 
 		</div>
 
-		<ul class="md-dropin-results" aria-live="polite"></ul>
+		<div class="md-dropin-results" hidden>
+
+			<p class="md-dropin-results-actions" hidden>
+				<a class="md-dropin-results-refresh" href="<?php echo esc_url( admin_url( 'admin.php?page=md_dropins' ) ); ?>" hidden><?php esc_html_e( 'Show them in the list', 'md' ); ?></a>
+				<button type="button" class="button button-primary md-dropin-replace-all" hidden></button>
+			</p>
+
+			<table class="widefat">
+				<thead>
+					<tr>
+						<th><?php esc_html_e( 'Drop-in', 'md' ); ?></th>
+						<th><?php esc_html_e( 'Current', 'md' ); ?></th>
+						<th><?php esc_html_e( 'Uploaded', 'md' ); ?></th>
+						<th><?php esc_html_e( 'Requires MD', 'md' ); ?></th>
+						<th><?php esc_html_e( 'Status', 'md' ); ?></th>
+					</tr>
+				</thead>
+				<tbody aria-live="polite"></tbody>
+			</table>
+
+		</div>
 
 	</div>
 
