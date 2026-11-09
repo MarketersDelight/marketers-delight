@@ -12,7 +12,6 @@
 class md_save {
 
 	private $validate;
-
 	private $skipped = array();
 
 	public function __construct() {
@@ -34,6 +33,7 @@ class md_save {
 			'merge_items' => false,
 			'order' => array()
 		), (array) $args );
+
 		$where = md_scope::parse( $scope );
 
 		if ( is_wp_error( $where ) )
