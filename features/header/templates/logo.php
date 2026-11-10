@@ -8,7 +8,7 @@
 
 		<?php if ( md_has_site_title() ) : ?>
 		<p class="site-name">
-			<a href="<?php echo home_url( '/' ); ?>"><span><?php echo md_site_title(); ?></span></a>
+			<a href="<?php echo home_url( '/' ); ?>" aria-label="<?php echo esc_attr( wp_strip_all_tags( md_site_title() ) ); ?>"><span><?php echo md_site_title(); ?></span></a>
 		</p>
 		<?php md_hook_after_site_title(); endif; ?>
 

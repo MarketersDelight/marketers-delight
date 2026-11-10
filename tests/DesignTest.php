@@ -106,7 +106,7 @@ class DesignTest extends MD_TestCase {
 		$colors = $this->colors->defaults();
 		$colors = $this->colors->resolve( $colors, $this->colors->active_palette() );
 
-		$this->assertSame( '#757575', $colors['content']['meta_color'] );
+		$this->assertSame( '#6B6B6B', $colors['content']['meta_color'] );
 		$this->assertSame( 'Muted Text', $this->colors->role_label( array( 'site', 'muted_text_color' ) ) );
 	}
 
@@ -292,8 +292,8 @@ class DesignTest extends MD_TestCase {
 		$colors = $this->palette_colors( array( 'text-secondary' => '#0F766E' ) );
 
 		$this->assertSame( '#0F766E', $colors['content']['box_muted_text_color'] );
-		$this->assertSame( '#757575', $colors['sidebar']['text_color'] );
-		$this->assertSame( '#757575', $colors['footer']['link_color'] );
+		$this->assertSame( '#6b6b6b', $colors['sidebar']['text_color'] );
+		$this->assertSame( '#6b6b6b', $colors['footer']['link_color'] );
 	}
 
 	public function test_auto_keeps_readable_colors_like_white_on_green() {

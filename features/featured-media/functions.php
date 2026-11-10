@@ -59,6 +59,9 @@ function md_featured_media( $context = 'post', $args = array() ) {
 		$attr['style'] = "max-width: $image_width";
 	}
 
+	if ( $permalink && $type === 'image' && ! get_post_meta( $media['image']['id'], '_wp_attachment_image_alt', true ) )
+		$attr['alt'] = get_the_title();
+
 	// Set classes
 
 	$classes[] = 'media-' . str_replace( '_', '-', $type );

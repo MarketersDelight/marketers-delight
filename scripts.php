@@ -66,6 +66,8 @@ tabs: function() {
 		window.addEventListener( 'hashchange', function() {
 			open( location.hash );
 		} );
+		if ( tabs.length )
+			tabs[0].parentElement.setAttribute( 'role', 'tablist' );
 		tabs.forEach( function( tab, i ) {
 			tab.setAttribute( 'role', 'tab' );
 			tab.addEventListener( 'click', function( e ) {

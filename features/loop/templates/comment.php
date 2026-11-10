@@ -1,8 +1,6 @@
 <li id="comment-<?php echo $comment_id; ?>" <?php comment_class( $classes ); ?>>
 
-	<a href="<?php echo esc_url( $comment_link ); ?>" class="comment-timeline">
-		<span class="comment-timeline-text"<?php echo sprintf( __( 'Jump to comment %s', 'md' ), $comment_id ); ?></span>
-	</a>
+	<a href="<?php echo esc_url( $comment_link ); ?>" class="comment-timeline" aria-label="<?php echo esc_attr( sprintf( __( 'Jump to comment %s', 'md' ), $comment_id ) ); ?>"></a>
 
 	<div class="comment-details">
 

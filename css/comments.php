@@ -163,8 +163,6 @@
 
 .comment-timeline:hover, .comment:hover > .comment-timeline { background-color: var(--md-border); }
 
-.comment-timeline-text { display: none; }
-
 /* FORM */
 
 .comment-form p { margin-block-end: var(--md-half); }

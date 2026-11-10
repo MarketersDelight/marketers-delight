@@ -27,7 +27,7 @@ class md_design_colors {
 		'divider' => '#CCCCCC',
 		'highlight' => '#FFFBCC',
 		'text-main' => '#1E1E1E',
-		'text-secondary' => '#757575',
+		'text-secondary' => '#6B6B6B',
 		'button' => '#1C8735',
 		'white' => '#FFFFFF'
 	);
@@ -213,7 +213,7 @@ class md_design_colors {
 			),
 			'text_color' => array(
 				'label' => 'Text',
-				'default' => '#757575',
+				'default' => '#6b6b6b',
 				'auto' => array( 'sidebar', 'bg_color' )
 			),
 			'title_color' => array(
@@ -279,7 +279,7 @@ class md_design_colors {
 			),
 			'link_color' => array(
 				'label' => 'Links',
-				'default' => '#757575',
+				'default' => '#6b6b6b',
 				'auto' => array( 'footer', 'bg_color' )
 			)
 		)
