@@ -94,6 +94,7 @@ class md_settings extends md_api {
 	public function license_message() {
 		$message = array();
 		$status = md_license_setting( 'status' );
+		$network = md_license_setting( 'network', array() );
 
 		$message['status'] = __( 'Inactive', 'md' );
 
@@ -126,6 +127,19 @@ class md_settings extends md_api {
 		if ( $status == 'no_activations_left' )
 			$message['text'] = sprintf( __( 'You\'ve reached your license activation limit. Please purchase more sites or disable other sites from your <a href="%s" target="_blank">MD account</a>.', 'md' ), 'https://marketersdelight.com/downloads/' );
 
+		if ( $network ) {
+			$message['text'] = sprintf(
+				__( 'Your license covers <b>%1$s sites</b> and is now on <b>%2$s</b>. This network counts as %3$s, one per site. <a href="%4$s" target="_blank" rel="noopener noreferrer">Add site activations</a> to get updates and install Drop-ins again.', 'md' ),
+				number_format_i18n( $network['limit'] ),
+				number_format_i18n( $network['used'] ),
+				number_format_i18n( $network['sites'] ),
+				esc_url( $network['expansion_url'] ? $network['expansion_url'] : MD_THEME_UPDATER_URL . '/downloads/' )
+			);
+
+			if ( $status == 'valid' )
+				$message['status'] = __( 'Paused', 'md' );
+		}
+
 		if ( $status == 'expired' ) {
 			$message['status'] = __( 'Expired', 'md' );
 			$message['text'] = sprintf(
@@ -149,6 +163,9 @@ class md_settings extends md_api {
 	public function updater( $license = null, $check_status = '' ) {
 		$license = is_array( $license ) ? $license : md_license_setting();
 		$license_message = $this->license_message();
+		$network = ! empty( $license['network'] );
+		$license_api = new md_license;
+		$can_edit = $license_api->can_edit();
 		$slug = 'marketers-delight';
 		$theme = ! empty( $license['updates']['theme'] ) ? $license['updates']['theme'] : array();
 		$dropins = md_dropin_updates();

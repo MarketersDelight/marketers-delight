@@ -183,6 +183,7 @@ final class marketers_delight {
 				unset( $state['installed'][$dropin]['status']['enable'] );
 
 			md_update_dropins( $state );
+			update_option( 'md_missing_dropins', array_unique( array_merge( (array) get_option( 'md_missing_dropins', array() ), $missing ) ), false );
 		}
 
 		add_action( 'wp_loaded', array( $this, 'refresh_defaults' ), 99 );

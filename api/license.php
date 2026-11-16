@@ -15,7 +15,7 @@ class md_license {
 	 */
 
 	public function request() {
-		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'marketers_delight_nonce' ) || ! current_user_can( 'manage_options' ) )
+		if ( ! wp_verify_nonce( $_POST['nonce'] ?? '', 'marketers_delight_nonce' ) || ! $this->can_edit() )
 			return;
 
 		$license_key = isset( $_POST['license_key'] ) ? sanitize_text_field( wp_unslash( $_POST['license_key'] ) ) : '';
@@ -68,7 +68,7 @@ class md_license {
 		$response = wp_remote_post( $license_input['remote_api_url'], array(
 			'timeout' => 15,
 			'sslverify' => (bool) apply_filters( 'edd_sl_api_request_verify_ssl', true ),
-			'body' => $api_params
+			'body' => array_merge( $api_params, $this->site() )
 		) );
 
 		if ( is_wp_error( $response ) || 200 !== wp_remote_retrieve_response_code( $response ) )
@@ -80,6 +80,55 @@ class md_license {
 		}
 
 		return $update_data;
+	}
+
+	/**
+	 * The site every license request is for. A network sends its main site
+	 * and how many sites it has, since each one counts toward the license.
+	 *
+	 * @since 6.2.1
+	 */
+
+	private function site() {
+		if ( ! is_multisite() )
+			return array( 'url' => home_url() );
+
+		return array(
+			'url' => get_home_url( get_main_site_id() ),
+			'md_network_sites' => max( 1, (int) get_blog_count() )
+		);
+	}
+
+	/**
+	 * Whether the current user may change the license: super admins on a
+	 * network, admins on a single site.
+	 *
+	 * @since 6.2.1
+	 */
+
+	public function can_edit() {
+		return current_user_can( is_multisite() ? 'manage_network_options' : 'manage_options' );
+	}
+
+	/**
+	 * What MD.com says about a network past its license's limit: its sites,
+	 * the sites the license uses, the limit and where to add activations.
+	 *
+	 * @since 6.2.1
+	 */
+
+	private function network( $response ) {
+		$network = isset( $response->md_network ) ? (array) $response->md_network : array();
+
+		if ( empty( $network['sites'] ) )
+			return array();
+
+		return array(
+			'sites' => absint( $network['sites'] ),
+			'used' => absint( $network['used'] ?? 0 ),
+			'limit' => absint( $network['limit'] ?? 0 ),
+			'expansion_url' => esc_url_raw( $network['expansion_url'] ?? '' )
+		);
 	}
 
 	/**
@@ -129,8 +178,7 @@ class md_license {
 	 	$license_data = $this->get_api( array(
 			'edd_action' => 'check_license',
 			'license' => $license_key,
-			'item_id' => $license_input['download_id'],
-			'url' => home_url()
+			'item_id' => $license_input['download_id']
 		) );
 
 		if ( ! empty( $license_data->failed ) ) {
@@ -174,8 +222,7 @@ class md_license {
 		$license_data = $this->get_api( array(
 			'edd_action' => 'activate_license',
 			'license' => $license_key,
-			'item_id' => $license_input['download_id'],
-			'url' => home_url()
+			'item_id' => $license_input['download_id']
 		) );
 
 		if ( ! empty( $license_data->failed ) )
@@ -186,8 +233,13 @@ class md_license {
 			$license['sites'] = sanitize_text_field( $license_data->site_count );
 			$license['limit'] = sanitize_text_field( $license_data->license_limit );
 		}
-		else
+		else {
 			$license['status'] = sanitize_key( $license_data->error ?? $license_data->license ?? 'invalid' );
+			$network = $this->network( $license_data );
+
+			if ( $network )
+				$license['network'] = $network;
+		}
 
 		return $license;
 	}
@@ -207,8 +259,7 @@ class md_license {
 		 	$license_data = $this->get_api( array(
 				'edd_action' => 'deactivate_license',
 				'license' => $license_key,
-				'item_id' => $this->license( 'download_id' ),
-				'url' => home_url()
+				'item_id' => $this->license( 'download_id' )
 			) );
 
 			if ( ! empty( $license_data->failed ) || empty( $license_data->success ) ) {
@@ -268,7 +319,6 @@ class md_license {
 				'edd_action'  => 'get_version',
 				'license' => trim( $license['key'] ),
 				'item_id' => $license_input['download_id'],
-				'url' => home_url(),
 				'slug' => $license_input['theme_slug'],
 				'version' => $license_input['version'],
 				'author' => $license_input['author'],
@@ -281,10 +331,14 @@ class md_license {
 
 			$check_status = 'success';
 			$license['last_check'] = time();
+			$network = $this->network( $response );
 
 			$update_data = $response;
 
-			unset( $license['updates'], $license['dropins'], $license['available'] );
+			unset( $license['updates'], $license['dropins'], $license['available'], $license['network'] );
+
+			if ( $network )
+				$license['network'] = $network;
 
 			if ( ! empty( $update_data->package ) && version_compare( $license_input['version'], $update_data->new_version, '<' ) )
 				$license['updates']['theme'] = array(
@@ -398,7 +452,6 @@ class md_license {
 			'edd_action' => 'md_claim_dropin',
 			'license' => trim( $license['key'] ),
 			'item_id' => $this->license( 'download_id' ),
-			'url' => home_url(),
 			'slug' => $slug
 		) );
 

@@ -127,6 +127,14 @@ function apply_filters( $tag, $value ) {
 	return array_key_exists( $tag, $GLOBALS['__test_filters'] ) ? $GLOBALS['__test_filters'][$tag] : $value;
 }
 
+function wp_mkdir_p( $directory ) {
+	return is_dir( $directory ) || mkdir( $directory, 0777, true );
+}
+
+function apply_filters_deprecated( $tag, $args ) {
+	return apply_filters( $tag, $args[0] );
+}
+
 function md_collections( $id = null ) {
 	$collections = apply_filters( 'md_filter_collections', array() );
 

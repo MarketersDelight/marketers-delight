@@ -34,7 +34,7 @@ class md_dropins extends md_api {
 			'admin_page' => array(
 				'name' => $name . md_dropin_update_badge(),
 				'parent_slug' => 'md_settings',
-				'capability' => 'activate_plugins',
+				'capability' => 'manage_options',
 				'position' => 2,
 				'admin_header' => true,
 				'admin_tab' => $name,
@@ -180,7 +180,7 @@ class md_dropins extends md_api {
 			return '';
 
 		if ( ! md_has_license_key() )
-			return self::upsell_box( '', __( 'Get every Drop-in with MD Pro.', 'md' ), esc_html__( 'Install them right here in one click, with automatic updates.', 'md' ), MD_THEME_UPDATER_URL . '/pricing/', __( 'See MD Pro', 'md' ) );
+			return self::upsell_box( '', __( 'Get every Drop-in with MD Pro.', 'md' ), esc_html__( 'Install them here in one click. MD checks for updates every day.', 'md' ), MD_THEME_UPDATER_URL . '/pricing/', __( 'See MD Pro', 'md' ) );
 
 		$upgrades = md_plan_upgrade_dropins();
 
@@ -291,6 +291,7 @@ class md_dropins extends md_api {
 			$slugs = md_requested_dropins( $action === 'delete' ? 'dropin' : 'checked' );
 			$details = md_get_dropin_details();
 			$state = md_dropins_setting();
+			$elsewhere = $this->active_elsewhere( $slugs );
 
 			include md_template( 'admin/dropins/delete', true );
 
@@ -300,6 +301,36 @@ class md_dropins extends md_api {
 		$table = self::table();
 
 		include md_template( 'admin/dropins/list', true );
+	}
+
+	/**
+	 * Other sites on the network with each Drop-in turned on, keyed by slug.
+	 * Deleting a Drop-in removes its files for every site.
+	 *
+	 * @since 6.2.1
+	 */
+
+	private function active_elsewhere( $slugs ) {
+		$active = array();
+
+		if ( ! is_multisite() )
+			return $active;
+
+		$sites = get_sites( array(
+			'number' => 0,
+			'site__not_in' => array( get_current_blog_id() ),
+			'deleted' => 0
+		) );
+
+		foreach ( $sites as $site ) {
+			$option = get_blog_option( $site->blog_id, 'marketers_delight_dropins', array() );
+
+			foreach ( $slugs as $slug )
+				if ( ! empty( $option['dropins']['installed'][$slug]['status']['enable'] ) )
+					$active[$slug][] = untrailingslashit( $site->domain . $site->path );
+		}
+
+		return $active;
 	}
 
 	/**

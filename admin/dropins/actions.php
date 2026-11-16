@@ -25,6 +25,29 @@ class md_dropin_actions {
 		add_action( 'update-custom_update-md-dropins', array( $this, 'update_screen' ) );
 		add_action( 'core_upgrade_preamble', array( $this, 'core_updates' ) );
 		add_filter( 'wp_get_update_data', array( $this, 'update_data' ) );
+		add_action( 'admin_notices', array( $this, 'missing_notice' ) );
+	}
+
+	/**
+	 * Say once which Drop-ins MD turned off because their files were gone.
+	 *
+	 * @since 6.2.1
+	 */
+
+	public function missing_notice() {
+		$missing = get_option( 'md_missing_dropins', array() );
+
+		if ( ! $missing || ! current_user_can( 'manage_options' ) )
+			return;
+
+		delete_option( 'md_missing_dropins' );
+
+		$text = sprintf( __( 'Marketers Delight turned off these Drop-ins because their files are gone: %s.', 'md' ), implode( ', ', array_map( 'sanitize_key', (array) $missing ) ) );
+
+		if ( is_multisite() )
+			$text .= ' ' . __( 'A network admin may have deleted them.', 'md' );
+
+		echo '<div class="notice notice-warning is-dismissible"><p>' . esc_html( $text ) . '</p></div>';
 	}
 
 	/**
@@ -178,7 +201,7 @@ class md_dropin_actions {
 
 			if ( is_array( $result ) && $result['active'] )
 				echo '<p>' . esc_html( sprintf( __( '%s is active.', 'md' ), $name ) ) . '</p>';
-			elseif ( is_array( $result ) && current_user_can( 'activate_plugins' ) )
+			elseif ( is_array( $result ) && current_user_can( 'manage_options' ) )
 				echo '<p><a href="' . esc_url( md_dropins::activate_url( $result['slug'] ) ) . '" class="button button-primary">' . esc_html( sprintf( __( 'Activate %s', 'md' ), $name ) ) . '</a></p>';
 		}
 
@@ -246,7 +269,7 @@ class md_dropin_actions {
 				'data' => $result->get_error_data()
 			), $result->get_error_code() === 'md_dropin_exists' ? 409 : 400 );
 
-		$result['activate_url'] = ! $result['active'] && current_user_can( 'activate_plugins' ) ? md_dropins::activate_url( $result['slug'] ) : '';
+		$result['activate_url'] = ! $result['active'] && current_user_can( 'manage_options' ) ? md_dropins::activate_url( $result['slug'] ) : '';
 
 		wp_send_json_success( $result );
 	}
@@ -294,7 +317,7 @@ class md_dropin_actions {
 	/**
 	 * Check licensed sites for updates once a day, so update counts, the
 	 * menu badge and Dashboard → Updates stay current. Sites without a
-	 * license key have nothing to check.
+	 * license key have nothing to check; on a network only the main site checks.
 	 *
 	 * @since 6.2
 	 */
@@ -302,7 +325,7 @@ class md_dropin_actions {
 	public function schedule() {
 		$scheduled = wp_next_scheduled( 'md_check_updates' );
 
-		if ( ! md_has_license_key() ) {
+		if ( ! md_has_license_key() || ! is_main_site() ) {
 			if ( $scheduled )
 				wp_clear_scheduled_hook( 'md_check_updates' );
 		}

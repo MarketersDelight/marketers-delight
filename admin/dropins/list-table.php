@@ -254,7 +254,7 @@ class md_dropins_list_table extends WP_List_Table {
 		if ( $this->status === 'more' )
 			return array();
 
-		if ( current_user_can( 'activate_plugins' ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			$actions['activate-selected'] = __( 'Activate', 'md' );
 			$actions['deactivate-selected'] = __( 'Deactivate', 'md' );
 		}
@@ -395,7 +395,7 @@ class md_dropins_list_table extends WP_List_Table {
 		if ( $item['active'] && $item['SettingsURL'] )
 			$actions['settings'] = '<a href="' . esc_url( admin_url( $item['SettingsURL'] ) ) . '" aria-label="' . esc_attr( sprintf( __( '%s settings', 'md' ), $item['Name'] ) ) . '">' . esc_html__( 'Settings', 'md' ) . '</a>';
 
-		if ( current_user_can( 'activate_plugins' ) ) {
+		if ( current_user_can( 'manage_options' ) ) {
 			if ( $item['active'] )
 				$actions['deactivate'] = $this->action_link( 'deactivate', $item, __( 'Deactivate', 'md' ) );
 			elseif ( ! is_wp_error( $item['requirements'] ) )

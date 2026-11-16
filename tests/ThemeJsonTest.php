@@ -11,7 +11,11 @@ class ThemeJsonTest extends MD_TestCase {
 
 	protected function setUp(): void {
 		parent::setUp();
-		$this->json = ( new md_theme_json )->build();
+		$this->json = array_replace_recursive( $this->packaged(), ( new md_theme_json )->build() );
+	}
+
+	private function packaged() {
+		return json_decode( file_get_contents( dirname( __DIR__ ) . '/theme.json' ), true, 512, JSON_THROW_ON_ERROR );
 	}
 
 	private function presets_by_slug( $presets ) {
@@ -31,20 +35,28 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertFalse( $this->json['settings']['typography']['defaultFontSizes'] );
 	}
 
-	public function test_packaged_theme_json_is_a_valid_bootstrap_manifest() {
-		$packaged = json_decode( file_get_contents( dirname( __DIR__ ) . '/theme.json' ), true, 512, JSON_THROW_ON_ERROR );
+	public function test_packaged_theme_json_holds_fixed_settings_only() {
+		$packaged = $this->packaged();
+		$dynamic = ( new md_theme_json )->build();
 
-		// Ships as {}, but compiling CSS writes the site's generated manifest in its place
-		if ( $packaged === array() ) {
-			$this->assertSame( array(), $packaged );
+		$this->assertSame( $dynamic['version'], $packaged['version'] );
 
-			return;
-		}
+		// Preset lists replace each other whole on merge, so each one lives in build() only
+		$this->assertArrayNotHasKey( 'palette', $packaged['settings']['color'] );
+		$this->assertArrayNotHasKey( 'fontSizes', $packaged['settings']['typography'] );
+		$this->assertArrayNotHasKey( 'fontFamilies', $packaged['settings']['typography'] );
+		$this->assertArrayNotHasKey( 'spacingSizes', $packaged['settings']['spacing'] );
+		$this->assertArrayNotHasKey( 'presets', $packaged['settings']['shadow'] );
+		$this->assertArrayNotHasKey( 'radiusSizes', $packaged['settings']['border'] );
+	}
 
-		$this->assertSame( $this->json['$schema'], $packaged['$schema'] );
-		$this->assertSame( $this->json['version'], $packaged['version'] );
-		$this->assertSame( array_keys( $this->json ), array_keys( $packaged ) );
-		$this->assertSame( array_keys( $this->json['settings'] ), array_keys( $packaged['settings'] ) );
+	public function test_headings_only_repeat_fonts_that_differ_from_the_shared_heading() {
+		$elements = $this->json['styles']['elements'];
+
+		$this->assertArrayHasKey( 'fontWeight', $elements['heading']['typography'] );
+		$this->assertArrayNotHasKey( 'fontWeight', $elements['h1']['typography'] );
+		$this->assertSame( 'var:preset|font-size|h-1', $this->json['styles']['blocks']['core/post-title']['typography']['fontSize'] );
+		$this->assertSame( $elements['h1']['typography']['lineHeight'], $this->json['styles']['blocks']['core/post-title']['typography']['lineHeight'] );
 	}
 
 	public function test_tiny_is_always_smaller_than_small() {
@@ -168,6 +180,13 @@ class ThemeJsonTest extends MD_TestCase {
 		$data = new class {
 			public $merged;
 
+			public function get_data() {
+				return array( 'settings' => array( 'typography' => array( 'fontFamilies' => array( 'theme' => array(
+					array( 'fontFamily' => 'Old Body', 'name' => 'Body', 'slug' => 'body' ),
+					array( 'fontFamily' => 'Child Mono', 'name' => 'Mono', 'slug' => 'mono' )
+				) ) ) ) );
+			}
+
 			public function update_with( $data ) {
 				$this->merged = $data;
 
@@ -178,8 +197,12 @@ class ThemeJsonTest extends MD_TestCase {
 		$source = file_get_contents( dirname( __DIR__ ) . '/api/design/theme-json.php' );
 		$bootstrap = file_get_contents( dirname( __DIR__ ) . '/functions.php' );
 
+		$families = array_column( $data->merged['settings']['typography']['fontFamilies'], 'fontFamily', 'slug' );
+
 		$this->assertSame( $data, $result );
-		$this->assertSame( $this->json, $data->merged );
+		$this->assertSame( 'Child Mono', $families['mono'] );
+		$this->assertNotSame( 'Old Body', $families['body'] );
+		$this->assertCount( count( array_unique( array_keys( $families ) ) ), $data->merged['settings']['typography']['fontFamilies'] );
 		$this->assertStringContainsString( 'wp_theme_json_data_theme', $source );
 		$this->assertStringNotContainsString( 'md_test_compile', $bootstrap );
 	}

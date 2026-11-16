@@ -1,8 +1,8 @@
 <?php
 /**
  * Abilities for managing Drop-ins: what's installed, turning them on and off,
- * installing and updating. Drop-ins are code, so each takes the capability
- * the same action on a plugin does.
+ * installing and updating. Installing and updating take the capability the
+ * same action on a plugin does; turning Drop-ins on and off takes manage_options.
  *
  * @since 6.2
  */
@@ -36,7 +36,7 @@ class md_dropins_abilities extends md_abilities {
 				'label' => __( 'Find Drop-ins', 'md' ),
 				'description' => __( 'Lists installed Drop-ins with their versions and any waiting updates, and Drop-ins this site\'s license can install. From the last update check.', 'md' ),
 				'execute' => 'find_dropins',
-				'permission' => 'can_read_dropins',
+				'permission' => 'can_manage_dropins',
 				'readonly' => true
 			),
 			'update-dropins' => array(
@@ -71,23 +71,14 @@ class md_dropins_abilities extends md_abilities {
 	}
 
 	/**
-	 * Drop-ins are code, so they take the capability plugins do.
+	 * Seeing and turning installed Drop-ins on and off takes manage_options,
+	 * so a site admin on a network manages their own site's Drop-ins.
 	 *
 	 * @since 6.2
 	 */
 
 	public function can_manage_dropins() {
-		return current_user_can( 'activate_plugins' );
-	}
-
-	/**
-	 * Seeing what's installed and waiting is for anyone who may change it.
-	 *
-	 * @since 6.2
-	 */
-
-	public function can_read_dropins() {
-		return current_user_can( 'activate_plugins' ) || current_user_can( 'update_plugins' );
+		return current_user_can( 'manage_options' );
 	}
 
 	/**

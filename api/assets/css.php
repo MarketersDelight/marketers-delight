@@ -183,9 +183,6 @@ class md_css {
 				return $result;
 		}
 
-		$theme_json = new md_theme_json;
-		$theme_json->generate();
-
 		if ( class_exists( 'WP_Theme_JSON_Resolver' ) )
 			WP_Theme_JSON_Resolver::clean_cached_data();
 

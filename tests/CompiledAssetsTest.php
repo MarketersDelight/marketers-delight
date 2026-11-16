@@ -106,7 +106,7 @@ class MD_Test_Filesystem {
 	}
 
 	public function mkdir( $path, $chmod = false ) {
-		return mkdir( $path, $chmod ?: 0755, true );
+		return mkdir( $path, $chmod ?: 0755 );
 	}
 
 	public function put_contents( $path, $contents, $mode = false ) {

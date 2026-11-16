@@ -1,1 +1,136 @@
-{}
+{
+    "$schema": "https://schemas.wp.org/wp/7.0/theme.json",
+    "version": 3,
+    "settings": {
+        "appearanceTools": true,
+        "background": {
+            "backgroundImage": true,
+            "backgroundSize": true
+        },
+        "border": {
+            "color": true,
+            "radius": true,
+            "style": true,
+            "width": true
+        },
+        "color": {
+            "defaultPalette": false,
+            "defaultGradients": false,
+            "defaultDuotone": false,
+            "link": true
+        },
+        "dimensions": {
+            "aspectRatio": true,
+            "minHeight": true
+        },
+        "position": {
+            "sticky": true
+        },
+        "typography": {
+            "defaultFontSizes": false,
+            "fluid": true,
+            "lineHeight": true,
+            "textColumns": true,
+            "writingMode": true
+        },
+        "shadow": {
+            "defaultPresets": false
+        },
+        "spacing": {
+            "customSpacingSize": false,
+            "defaultSpacingSizes": false,
+            "margin": true,
+            "padding": true,
+            "spacingScale": {
+                "steps": 0
+            }
+        }
+    },
+    "styles": {
+        "typography": {
+            "fontFamily": "var:preset|font-family|body",
+            "fontSize": "var:preset|font-size|normal"
+        },
+        "spacing": {
+            "blockGap": "var:preset|spacing|single"
+        },
+        "elements": {
+            "link": {
+                "typography": {
+                    "textDecoration": "underline"
+                },
+                ":hover": {
+                    "typography": {
+                        "textDecoration": "none"
+                    }
+                }
+            },
+            "h1": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-1"
+                }
+            },
+            "h2": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-2"
+                }
+            },
+            "h3": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-3"
+                }
+            },
+            "h4": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-4"
+                }
+            },
+            "h5": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-5"
+                }
+            },
+            "h6": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-6"
+                }
+            },
+            "button": {
+                "border": {
+                    "radius": "var:preset|border-radius|rounded"
+                },
+                "shadow": "0 2px 4px rgba(0, 0, 0, 0.2)",
+                "spacing": {
+                    "padding": {
+                        "top": "var:preset|spacing|half",
+                        "right": "calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))",
+                        "bottom": "var:preset|spacing|half",
+                        "left": "calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))"
+                    }
+                },
+                "typography": {
+                    "lineHeight": "1"
+                }
+            }
+        },
+        "blocks": {
+            "core/button": {
+                "variations": {
+                    "outline": {
+                        "border": {
+                            "width": "3px"
+                        },
+                        "color": {
+                            "background": "transparent"
+                        }
+                    }
+                }
+            },
+            "core/post-title": {
+                "typography": {
+                    "fontSize": "var:preset|font-size|h-1"
+                }
+            }
+        }
+    }
+}

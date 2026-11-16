@@ -77,7 +77,7 @@ function md_set_dropins_status( $slugs, $enable ) {
  */
 
 function md_activate_dropins( $slugs ) {
-	if ( ! current_user_can( 'activate_plugins' ) )
+	if ( ! current_user_can( 'manage_options' ) )
 		return new WP_Error( 'md_cannot_activate', __( 'Sorry, you are not allowed to activate Drop-ins.', 'md' ) );
 
 	return md_set_dropins_status( $slugs, true );
@@ -90,7 +90,7 @@ function md_activate_dropins( $slugs ) {
  */
 
 function md_deactivate_dropins( $slugs ) {
-	if ( ! current_user_can( 'activate_plugins' ) )
+	if ( ! current_user_can( 'manage_options' ) )
 		return new WP_Error( 'md_cannot_deactivate', __( 'Sorry, you are not allowed to deactivate Drop-ins.', 'md' ) );
 
 	return md_set_dropins_status( $slugs, false );
@@ -153,7 +153,7 @@ function md_install_dropin( $package, $args = array() ) {
 	$license = md_license_setting();
 	$replaced = $upgrader->replaced_dropin;
 
-	if ( ! $replaced && ! empty( $details['ActivateOnInstall'] ) && current_user_can( 'activate_plugins' ) && md_check_dropin_requirements( $details ) === true )
+	if ( ! $replaced && ! empty( $details['ActivateOnInstall'] ) && current_user_can( 'manage_options' ) && md_check_dropin_requirements( $details ) === true )
 		$dropins['installed'][$slug]['status']['enable'] = true;
 
 	unset( $license['available'][$slug] );

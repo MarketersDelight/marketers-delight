@@ -528,7 +528,7 @@ body {
 	min-height: 46px;
 	position: sticky;
 	top: 32px;
-	z-index: 99;
+	z-index: 1000;
 }
 
 .md-save-bar-title {
@@ -2977,7 +2977,8 @@ body {
 
 .md-dropins-table .is-locked .md-dropin-title { color: var(--md-ui-gray-60); }
 
-.md-dropins-more-intro {
+.md-dropins-more-intro,
+.md-dropins-network-intro {
 	color: var(--md-ui-gray-60);
 	margin: 0;
 	padding-top: 8px;

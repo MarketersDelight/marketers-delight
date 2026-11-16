@@ -1,29 +1,20 @@
 <?php
 /**
- * Compile theme.json from MD design settings.
+ * Merge MD design settings into theme.json data at runtime. The theme's
+ * theme.json file holds fixed settings; this class adds the values from MD settings.
  *
  * @since 6.0
  */
 
 class md_theme_json {
 
-    // Create properties for re-use in class.
-
-	private $values;
-	private $colors;
-	private $typography;
-	private $fonts;
-	private $effects;
-	private $spacing;
-	private $post_width;
-	private $alignwide_width;
+	private $design;
 	private $design_colors;
-
-	private $theme_fonts = array();
+	private $values;
+	private $fonts;
 
 	/**
 	 * Merge live MD design settings into WordPress theme.json data.
-	 * ClassicPress safely ignores this WordPress-specific filter.
 	 *
 	 * @since 6.0
 	 */
@@ -33,67 +24,66 @@ class md_theme_json {
 	}
 
 	/**
-	 * Merge the current MD design settings into theme data at runtime.
+	 * Merge MD settings into theme data, keeping font families from child theme.json files.
 	 *
 	 * @since 6.0
 	 */
 
 	public function filter( $theme_json ) {
-		if ( ! is_object( $theme_json ) || ! method_exists( $theme_json, 'update_with' ) )
-			return $theme_json;
-
-		$data = method_exists( $theme_json, 'get_data' ) ? $theme_json->get_data() : array();
-		$families = isset( $data['settings']['typography']['fontFamilies']['theme'] ) ? (array) $data['settings']['typography']['fontFamilies']['theme'] : array();
-		$this->theme_fonts = array();
+		$data = $theme_json->get_data();
+		$json = $this->build();
+		$slugs = array_column( $json['settings']['typography']['fontFamilies'], 'slug' );
+		$families = isset( $data['settings']['typography']['fontFamilies']['theme'] ) ? $data['settings']['typography']['fontFamilies']['theme'] : array();
 
 		foreach ( $families as $family )
-			if ( ! empty( $family['fontFace'] ) )
-				$this->theme_fonts[] = $family;
+			if ( ! in_array( $family['slug'], $slugs ) )
+				$json['settings']['typography']['fontFamilies'][] = $family;
 
-		return $theme_json->update_with( $this->build() );
+		return $theme_json->update_with( $json );
 	}
 
 	/**
-	 * Write the compiled theme.json file.
-	 *
-	 * @since 6.0
-	 */
-
-	public function generate() {
-		$json = wp_json_encode( $this->build(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
-
-		if ( ! empty( $json ) )
-			file_put_contents( get_template_directory() . '/theme.json', $json );
-	}
-
-	/**
-	 * Set dynamic values to properties.
+	 * Load MD design values used by the builders.
 	 *
 	 * @since 6.0
 	 */
 
 	private function data() {
-		$design = new md_design;
+		$this->design = new md_design;
 		$this->design_colors = new md_design_colors;
-		$this->values = $design->values();
-		$this->colors = $this->values['colors'];
-		$this->typography = $this->values['typography'];
-		$this->fonts = $design->fonts( $this->values );
-		$this->effects = $design->effects();
-		$this->spacing = $design->spacers( $this->values );
-		$widths = $design->widths( $this->values );
-		$this->post_width = $widths['post_width'];
-		$this->alignwide_width = $widths['alignwide_width'];
+		$this->values = $this->design->values();
+		$this->fonts = $this->design->fonts( $this->values );
 	}
 
 	/**
-	 * Return line height with no unit.
+	 * Build a list of presets from slug => name pairs and a slug-indexed source.
+	 *
+	 * @since 6.2
+	 */
+
+	private function presets( $names, $key, $source ) {
+		$presets = array();
+
+		foreach ( $names as $slug => $name )
+			$presets[] = array(
+				'name' => $name,
+				'slug' => $slug,
+				$key => $source[$slug]
+			);
+
+		return $presets;
+	}
+
+	/**
+	 * Return a typography type's desktop line height with no unit.
 	 *
 	 * @since 6.0
 	 */
 
-	private function line_height( $font_size, $line_height ) {
-		return (string) round( $line_height / $font_size, 2 );
+	private function line_height( $type ) {
+		$typography = $this->values['typography'][$type];
+
+		return (string) round( $typography['line_height']['desktop'] / $typography['font_size']['desktop'], 2 );
 	}
 
 	/**
@@ -119,23 +109,14 @@ class md_theme_json {
 	}
 
 	/**
-	 * Match WordPress's kebab-case CSS slug for heading presets.
-	 *
-	 * @since 6.0
-	 */
-
-	private function heading_slug( $heading ) {
-		return 'h-' . substr( $heading, 1 );
-	}
-
-	/**
 	 * Build font size presets from the MD typography scale.
 	 *
 	 * @since 6.0
 	 */
 
 	private function font_sizes() {
-		$body = $this->typography['body']['font_size'];
+		$typography = $this->values['typography'];
+		$body = $typography['body']['font_size'];
 
 		$font_sizes = array(
 			$this->font_size( __( 'Tiny', 'md' ), 'tiny', md_text_scale( $body['desktop'], 2 ), md_text_scale( $body['mobile'], 2 ) ),
@@ -144,21 +125,12 @@ class md_theme_json {
 			$this->font_size( __( 'Intro', 'md' ), 'intro', round( $body['desktop'] * 1.2 ), round( $body['mobile'] * 1.2 ) )
 		);
 
-		$headings = array(
-			'h6' => __( 'H6', 'md' ),
-			'h5' => __( 'H5', 'md' ),
-			'h4' => __( 'H4', 'md' ),
-			'h3' => __( 'H3', 'md' ),
-			'h2' => __( 'H2', 'md' ),
-			'h1' => __( 'H1', 'md' )
-		);
-
-		foreach ( $headings as $heading => $name ) {
-			$size = $this->typography[$heading]['font_size'];
-			$font_sizes[] = $this->font_size( $name, $this->heading_slug( $heading ), $size['desktop'], $size['mobile'] );
+		foreach ( array( 'h6', 'h5', 'h4', 'h3', 'h2', 'h1' ) as $heading ) {
+			$size = $typography[$heading]['font_size'];
+			$font_sizes[] = $this->font_size( strtoupper( $heading ), 'h-' . substr( $heading, 1 ), $size['desktop'], $size['mobile'] );
 		}
 
-		$huge = $this->typography['huge']['font_size'];
+		$huge = $typography['huge']['font_size'];
 		$font_sizes[] = $this->font_size( __( 'Huge', 'md' ), 'huge', $huge['desktop'], $huge['mobile'] );
 
 		return $font_sizes;
@@ -171,7 +143,12 @@ class md_theme_json {
 	 */
 
 	private function spacing_sizes() {
-		$names = array(
+		$sizes = array();
+
+		foreach ( $this->design->spacers( $this->values ) as $slug => $spacer )
+			$sizes[$slug] = $spacer['desktop'] . 'px';
+
+		return $this->presets( array(
 			'small' => __( 'Small', 'md' ),
 			'third' => __( 'Third', 'md' ),
 			'half' => __( 'Half', 'md' ),
@@ -180,75 +157,25 @@ class md_theme_json {
 			'double' => __( 'Double', 'md' ),
 			'triple' => __( 'Triple', 'md' ),
 			'quad' => __( 'Quad', 'md' )
-		);
-		$sizes = array();
-
-		foreach ( $names as $slug => $name )
-			$sizes[] = array(
-				'name' => $name,
-				'slug' => $slug,
-				'size' => $this->spacing[$slug]['desktop'] . 'px'
-			);
-
-		return $sizes;
+		), 'size', $sizes );
 	}
 
 	/**
-	 * Build the MD border radius preset.
+	 * Build box shadow presets from the MD effects scale, plus a solid offset "card" shadow.
 	 *
 	 * @since 6.0
 	 */
 
-	private function radius_sizes() {
-		return array(
-			array(
-				'name' => __( 'Rounded', 'md' ),
-				'slug' => 'rounded',
-				'size' => $this->effects['border_radius']
-			)
-		);
-	}
+	private function shadow_presets( $shadows ) {
+		$shadows['hard'] = '6px 6px 0 currentColor';
 
-	/**
-	 * Build box shadow presets from the MD effects scale.
-	 *
-	 * @since 6.0
-	 */
-
-	private function shadow_presets() {
-		$names = array(
+		return $this->presets( array(
 			'small' => __( 'Small', 'md' ),
 			'medium' => __( 'Medium', 'md' ),
 			'large' => __( 'Large', 'md' ),
-			'huge' => __( 'Huge', 'md' )
-		);
-		$presets = array();
-
-		foreach ( $names as $slug => $name )
-			$presets[] = array(
-				'name' => $name,
-				'slug' => $slug,
-				'shadow' => $this->effects['box_shadow'][$slug]
-			);
-
-		// A solid offset shadow in the element's own text color, for bordered "card" designs
-		$presets[] = array(
-			'name' => __( 'Hard', 'md' ),
-			'slug' => 'hard',
-			'shadow' => '6px 6px 0 currentColor'
-		);
-
-		return $presets;
-	}
-
-	/**
-	 * Index palette hex values by slug for building other presets.
-	 *
-	 * @since 6.0
-	 */
-
-	private function palette() {
-		return array_column( $this->design_colors->editor_colors(), 'color', 'slug' );
+			'huge' => __( 'Huge', 'md' ),
+			'hard' => __( 'Hard', 'md' )
+		), 'shadow', $shadows );
 	}
 
 	/**
@@ -257,26 +184,18 @@ class md_theme_json {
 	 * @since 6.0
 	 */
 
-	private function duotone_presets() {
-		$c = $this->palette();
+	private function duotone_presets( $palette ) {
+		$c = array_column( $palette, 'color', 'slug' );
 
-		return array(
-			array(
-				'name' => __( 'Ink', 'md' ),
-				'slug' => 'ink',
-				'colors' => array( $c['text-main'], $c['background'] )
-			),
-			array(
-				'name' => __( 'Primary', 'md' ),
-				'slug' => 'primary',
-				'colors' => array( $c['primary'], $c['background'] )
-			),
-			array(
-				'name' => __( 'Highlight', 'md' ),
-				'slug' => 'highlight',
-				'colors' => array( $c['secondary'], $c['highlight'] )
-			)
-		);
+		return $this->presets( array(
+			'ink' => __( 'Ink', 'md' ),
+			'primary' => __( 'Primary', 'md' ),
+			'highlight' => __( 'Highlight', 'md' )
+		), 'colors', array(
+			'ink' => array( $c['text-main'], $c['background'] ),
+			'primary' => array( $c['primary'], $c['background'] ),
+			'highlight' => array( $c['secondary'], $c['highlight'] )
+		) );
 	}
 
 	/**
@@ -294,67 +213,57 @@ class md_theme_json {
 			)
 		);
 
-		if ( ! empty( $this->typography['h1']['font_family'] ) )
+		if ( ! empty( $this->values['typography']['h1']['font_family'] ) )
 			$families[] = array(
-				'fontFamily' => $this->typography['h1']['font_family'],
+				'fontFamily' => $this->values['typography']['h1']['font_family'],
 				'name' => __( 'Heading', 'md' ),
 				'slug' => 'heading'
 			);
 
-		return array_merge( $families, $this->theme_fonts );
+		return $families;
 	}
 
 	/**
-	 * Build heading element typography styles.
+	 * Build a heading's line height, plus any font family or weight that differs from the shared heading.
 	 *
 	 * @since 6.0
 	 */
 
 	private function heading_style( $type ) {
-		$heading = $this->typography[$type];
-		$font = isset( $this->fonts['heading_overrides'][$type] ) ? $this->fonts['heading_overrides'][$type] : array();
-		$typography = array(
-			'fontSize' => 'var:preset|font-size|' . $this->heading_slug( $type ),
-			'fontWeight' => isset( $font['font_weight'] ) ? $font['font_weight'] : $this->fonts['heading']['font_weight'],
-			'lineHeight' => $this->line_height( $heading['font_size']['desktop'], $heading['line_height']['desktop'] )
-		);
+		$typography = array( 'lineHeight' => $this->line_height( $type ) );
 
-		if ( isset( $font['font_family'] ) )
-			$typography['fontFamily'] = $font['font_family'];
+		if ( isset( $this->fonts['heading_overrides'][$type]['font_family'] ) )
+			$typography['fontFamily'] = $this->fonts['heading_overrides'][$type]['font_family'];
 
-		return array(
-			'typography' => $typography
-		);
+		if ( isset( $this->fonts['heading_overrides'][$type]['font_weight'] ) )
+			$typography['fontWeight'] = $this->fonts['heading_overrides'][$type]['font_weight'];
+
+		return array( 'typography' => $typography );
 	}
 
 	/**
-	 * Build shared element styles from MD design values.
+	 * Build element styles from MD design values.
 	 *
 	 * @since 6.0
 	 */
 
 	private function element_styles() {
+		$colors = $this->values['colors'];
 		$elements = array(
 			'link' => array(
-				'color' => array(
-					'text' => $this->colors['site']['link_color']
-				),
-				'typography' => array(
-					'textDecoration' => 'underline'
-				),
-				':hover' => array(
-					'typography' => array(
-						'textDecoration' => 'none'
-					)
-				)
+				'color' => array( 'text' => $colors['site']['link_color'] )
 			),
 			'heading' => array(
-				'color' => array(
-					'text' => $this->colors['site']['headline_color']
-				),
+				'color' => array( 'text' => $colors['site']['headline_color'] ),
 				'typography' => array(
 					'fontFamily' => $this->fonts['heading']['font_family'],
 					'fontWeight' => $this->fonts['heading']['font_weight']
+				)
+			),
+			'button' => array(
+				'color' => array(
+					'background' => $colors['actions']['primary']['bg_color'],
+					'text' => $colors['actions']['primary']['text_color']
 				)
 			)
 		);
@@ -362,33 +271,11 @@ class md_theme_json {
 		foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $heading )
 			$elements[$heading] = $this->heading_style( $heading );
 
-		$elements['button'] = array(
-			'border' => array(
-				'radius' => 'var:preset|border-radius|rounded'
-			),
-			'color' => array(
-				'background' => $this->colors['actions']['primary']['bg_color'],
-				'text' => $this->colors['actions']['primary']['text_color']
-			),
-			'shadow' => '0 2px 4px rgba(0, 0, 0, 0.2)',
-			'spacing' => array(
-				'padding' => array(
-					'top' => 'var:preset|spacing|half',
-					'right' => 'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))',
-					'bottom' => 'var:preset|spacing|half',
-					'left' => 'calc(var(--wp--preset--spacing--half) + var(--wp--preset--spacing--third))'
-				)
-			),
-			'typography' => array(
-				'lineHeight' => '1'
-			)
-		);
-
 		return $elements;
 	}
 
 	/**
-	 * Build theme.json data from MD settings.
+	 * Build the theme.json values that come from MD settings.
 	 *
 	 * @since 6.0
 	 */
@@ -396,107 +283,72 @@ class md_theme_json {
 	public function build() {
 		$this->data();
 
+		$effects = $this->design->effects();
+		$widths = $this->design->widths( $this->values );
+		$palette = $this->design_colors->editor_colors();
+		$colors = $this->values['colors'];
+		$button = $colors['actions']['primary']['bg_color'];
+		$post_title = $this->heading_style( 'h1' );
+		$post_title['typography']['fontFamily'] = $this->fonts['heading']['font_family'];
+		$post_title['typography']['fontWeight'] = $this->fonts['heading']['font_weight'];
+
+		$styles = array(
+			'color' => array(
+				'background' => $colors['site']['bg_color'],
+				'text' => $colors['site']['text_color']
+			),
+			'typography' => array(
+				'fontWeight' => $this->fonts['body']['font_weight'],
+				'lineHeight' => $this->line_height( 'body' )
+			),
+			'elements' => $this->element_styles(),
+			'blocks' => array(
+				'core/button' => array(
+					'variations' => array(
+						'outline' => array(
+							'border' => array( 'color' => $button ),
+							'color' => array( 'text' => $button )
+						)
+					)
+				),
+				'core/post-title' => $post_title
+			)
+		);
+
 		return apply_filters( 'md_theme_json', array(
-			'$schema' => 'https://schemas.wp.org/wp/7.0/theme.json',
 			'version' => 3,
 			'settings' => array(
-				'appearanceTools' => true,
-				'background' => array(
-					'backgroundImage' => true,
-					'backgroundSize' => true
-				),
 				'border' => array(
-					'color' => true,
-					'radius' => true,
-					'radiusSizes' => $this->radius_sizes(),
-					'style' => true,
-					'width' => true
+					'radiusSizes' => array(
+						array(
+							'name' => __( 'Rounded', 'md' ),
+							'slug' => 'rounded',
+							'size' => $effects['border_radius']
+						)
+					)
 				),
 				'color' => array(
-					'defaultPalette' => false,
-					'defaultGradients' => false,
-					'defaultDuotone' => false,
-					'duotone' => $this->duotone_presets(),
+					'duotone' => $this->duotone_presets( $palette ),
 					'gradients' => $this->design_colors->editor_gradients(),
-					'link' => true,
-					'palette' => $this->design_colors->editor_colors()
-				),
-				'dimensions' => array(
-					'aspectRatio' => true,
-					'minHeight' => true
-				),
-				'position' => array(
-					'sticky' => true
+					'palette' => $palette
 				),
 				'typography' => array(
-					'defaultFontSizes' => false,
-					'fluid' => true,
 					'fontSizes' => $this->font_sizes(),
-					'fontFamilies' => $this->font_families(),
-					'lineHeight' => true,
-					'textColumns' => true,
-					'writingMode' => true
+					'fontFamilies' => $this->font_families()
 				),
 				'layout' => array(
-					'contentSize' => $this->post_width . 'px',
-					'wideSize' => $this->alignwide_width . 'px'
+					'contentSize' => $widths['post_width'] . 'px',
+					'wideSize' => $widths['alignwide_width'] . 'px'
 				),
 				'shadow' => array(
-					'defaultPresets' => false,
-					'presets' => $this->shadow_presets()
+					'presets' => $this->shadow_presets( $effects['box_shadow'] )
 				),
 				'spacing' => array(
 					'blockGap' => ! md_setting( array( 'settings', 'head', 'blocks' ) ),
-					'customSpacingSize' => false,
-					'defaultSpacingSizes' => false,
-					'margin' => true,
-					'padding' => true,
-					'spacingScale' => array(
-						'steps' => 0
-					),
 					'spacingSizes' => $this->spacing_sizes()
 				)
 			),
-			'styles' => apply_filters( 'md_theme_json_styles', array(
-				'color' => array(
-					'background' => $this->colors['site']['bg_color'],
-					'text' => $this->colors['site']['text_color']
-				),
-				'typography' => array(
-					'fontFamily' => 'var:preset|font-family|body',
-					'fontSize' => 'var:preset|font-size|normal',
-					'fontWeight' => $this->fonts['body']['font_weight'],
-					'lineHeight' => $this->line_height( $this->typography['body']['font_size']['desktop'], $this->typography['body']['line_height']['desktop'] )
-				),
-				'spacing' => array(
-					'blockGap' => 'var:preset|spacing|single'
-				),
-				'elements' => $this->element_styles(),
-				'blocks' => array(
-					'core/button' => array(
-						'variations' => array(
-							'outline' => array(
-								'border' => array(
-									'color' => $this->colors['actions']['primary']['bg_color'],
-									'width' => '3px'
-								),
-								'color' => array(
-									'background' => 'transparent',
-									'text' => $this->colors['actions']['primary']['bg_color']
-								)
-							)
-						)
-					),
-					'core/post-title' => array(
-						'typography' => array(
-							'fontFamily' => $this->fonts['heading']['font_family'],
-							'fontSize' => 'var:preset|font-size|h1',
-							'fontWeight' => $this->fonts['heading']['font_weight'],
-							'lineHeight' => $this->line_height( $this->typography['h1']['font_size']['desktop'], $this->typography['h1']['line_height']['desktop'] )
-						)
-					)
-				)
-			), $this->values )
+			'styles' => apply_filters_deprecated( 'md_theme_json_styles', array( $styles, $this->values ), '6.2.1', 'md_theme_json' )
 		), $this->values );
 	}
 

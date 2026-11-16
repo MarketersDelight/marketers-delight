@@ -35,6 +35,14 @@ foreach ( $slugs as $slug ) {
 
 	</ul>
 
+	<?php foreach ( array_intersect_key( $elsewhere, $deletable ) as $slug => $sites ) : ?>
+
+	<div class="notice notice-warning inline">
+		<p><?php printf( esc_html__( '%1$s is turned on for other sites on this network: %2$s. Deleting its files turns it off there too.', 'md' ), '<strong>' . esc_html( $deletable[$slug]['Name'] ) . '</strong>', esc_html( implode( ', ', $sites ) ) ); ?></p>
+	</div>
+
+	<?php endforeach; ?>
+
 	<p><?php esc_html_e( 'Are you sure you want to delete these files? Settings the Drop-ins saved stay in the database.', 'md' ); ?></p>
 
 	<form method="post" action="<?php echo esc_url( md_dropins::url() ); ?>" class="md-inline-form">

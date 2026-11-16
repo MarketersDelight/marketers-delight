@@ -5,12 +5,12 @@
 
 	$count = $is_valid ? $count : 0;
 
-	if ( $is_valid && $count )
-		$badge = sprintf( _n( '%d Update', '%d Updates', $count, 'md' ), $count );
-	elseif ( $is_valid )
-		$badge = __( 'Up to date', 'md' );
-	else
+	if ( ! $is_valid || $network )
 		$badge = $license_message['status'];
+	elseif ( $count )
+		$badge = sprintf( _n( '%d Update', '%d Updates', $count, 'md' ), $count );
+	else
+		$badge = __( 'Up to date', 'md' );
 ?>
 
 <div class="md-widget md-toggle open md-dashboard-card md-license md-updates-card <?php echo $is_valid ? 'is-valid' : 'is-invalid'; ?> <?php echo $count ? 'has-updates' : 'no-updates'; ?>">
@@ -22,16 +22,16 @@
 		<h2 class="md-updates-title"><?php echo __( 'Updates', 'md' ); ?></h2>
 
 		<?php if ( $status ) : ?>
-		<span class="md-badge <?php echo ! $is_valid ? 'is-error' : ( $count ? 'is-warning' : 'is-success' ); ?>"><?php echo esc_html( $badge ); ?></span>
+		<span class="md-badge <?php echo ! $is_valid ? 'is-error' : ( $count || $network ? 'is-warning' : 'is-success' ); ?>"><?php echo esc_html( $badge ); ?></span>
 		<?php endif; ?>
 
-		<?php if ( $is_valid && $count ) : ?>
+		<?php if ( $is_valid && $count && $can_edit ) : ?>
 		<button type="button" class="button button-primary md-update-all"><?php printf( esc_html__( 'Update all (%d)', 'md' ), $count ); ?></button>
 		<?php endif; ?>
 
 	</div>
 
-	<?php if ( $is_valid && ! empty( $theme ) ) :
+	<?php if ( $is_valid && $can_edit && ! empty( $theme ) ) :
 		$theme_name = esc_html( str_replace( ' 4', '', $theme['name'] ) );
 		$theme_version = esc_html( $theme['new_version'] );
 	?>
@@ -47,7 +47,7 @@
 
 	<?php endif; ?>
 
-	<?php if ( $is_valid && ! empty( $dropins ) ) : ?>
+	<?php if ( $is_valid && $can_edit && ! empty( $dropins ) ) : ?>
 
 	<div class="md-update-grid">
 
@@ -70,7 +70,7 @@
 
 	<?php endif; ?>
 
-	<?php if ( $is_valid && ! $count ) : ?>
+	<?php if ( $is_valid && ! $count && ! $network ) : ?>
 
 	<div class="md-updates-state is-current">
 		<span class="md-status-icon" aria-hidden="true"></span>
@@ -82,7 +82,7 @@
 		</div>
 	</div>
 
-	<?php elseif ( ! $is_valid && ! empty( $license_message['text'] ) ) : ?>
+	<?php elseif ( ( ! $is_valid || $network ) && ! empty( $license_message['text'] ) ) : ?>
 
 	<div class="md-updates-state is-invalid">
 		<span class="md-status-icon is-error" aria-hidden="true"></span>
@@ -97,20 +97,25 @@
 
 	<div class="md-updates-foot">
 
-		<?php if ( $is_valid && ! empty( $license_message['text'] ) ) : ?>
+		<?php if ( $is_valid && ! $network && ! empty( $license_message['text'] ) ) : ?>
 		<span class="md-license-details"><?php echo wp_kses_post( $license_message['text'] ); ?></span>
 		<a href="https://marketersdelight.com/changelog/" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View changelog', 'md' ); ?> &rarr;</a>
 		<?php endif; ?>
 
 		<span class="md-updates-links">
-			<?php if ( $is_valid ) : ?>
+			<?php if ( $is_valid && $can_edit ) : ?>
 			<button type="button" class="md-action md-action-check-updates" data-md-action="check-updates" data-md-canvas="#md_update"><?php esc_html_e( 'Check for updates', 'md' ); ?> <i class="dashicons dashicons-update-alt" aria-hidden="true"></i></button>
 			<?php endif; ?>
-			<button type="button" class="md-license-toggle" aria-expanded="<?php echo $is_valid ? 'false' : 'true'; ?>" aria-controls="md_license_fields"><?php esc_html_e( 'Edit site license', 'md' ); ?></button>
+			<?php if ( $can_edit ) : ?>
+			<button type="button" class="md-license-toggle" aria-expanded="<?php echo $is_valid ? 'false' : 'true'; ?>" aria-controls="md_license_fields"><?php is_multisite() ? esc_html_e( 'Edit network license', 'md' ) : esc_html_e( 'Edit site license', 'md' ); ?></button>
+			<?php else : ?>
+			<span class="md-license-details"><?php esc_html_e( 'Your network admin manages the license and updates.', 'md' ); ?></span>
+			<?php endif; ?>
 		</span>
 
 	</div>
 
+	<?php if ( $can_edit ) : ?>
 	<div class="md-license-fields<?php echo $status && ! $is_valid ? ' open' : ''; ?>">
 
 		<p class="md-license-request-error" role="alert" hidden></p>
@@ -135,5 +140,6 @@
 		</div>
 
 	</div>
+	<?php endif; ?>
 
 </div>

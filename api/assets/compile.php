@@ -92,12 +92,14 @@ class md_compiled_assets {
 		if ( ! empty( $uploads['error'] ) )
 			return new WP_Error( 'md_compiled_uploads', $uploads['error'] );
 
+		$directory = $this->directory();
+
+		wp_mkdir_p( $directory );
+
 		$filesystem = $this->filesystem();
 
 		if ( is_wp_error( $filesystem ) )
 			return $filesystem;
-
-		$directory = $this->directory();
 
 		if ( ! $filesystem->is_dir( $directory ) && ! $filesystem->mkdir( $directory, FS_CHMOD_DIR ) )
 			return new WP_Error( 'md_compiled_directory', sprintf( __( 'The compiled assets directory could not be created: %s', 'md' ), $directory ) );

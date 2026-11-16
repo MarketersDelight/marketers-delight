@@ -196,7 +196,7 @@ function md_category_loop_posts( $category, $taxonomy, $loop, $stickies = array(
 	);
 
 	if ( $stickies )
-		$query_args['post__not_in'] = $stickies;
+		$query_args['post__not_in'] = array_merge( $query_args['post__not_in'] ?? array(), $stickies );
 
 	$posts = new WP_Query( $query_args );
 
@@ -217,15 +217,30 @@ function md_category_loop_posts( $category, $taxonomy, $loop, $stickies = array(
 }
 
 /**
- * The query vars of a Loop's own query, without its page, so every term in a
- * category Loop reads from the same posts.
+ * The query vars every term in a category Loop reads from: a manual Loop's own
+ * query, or on archives the order and exclusions md_api set on the main query.
  *
  * @since 6.0.3
  */
 
 function md_category_loop_query_args( $loop ) {
 	$query = $loop['query'] ?? null;
-	$query_args = $query instanceof WP_Query ? $query->query : array();
+	$query_args = array();
+
+	if ( $query instanceof WP_Query )
+		$query_args = $query->query;
+	elseif ( empty( $query ) ) {
+		foreach ( array( 'orderby', 'order', 'tax_query' ) as $key )
+			if ( get_query_var( $key ) )
+				$query_args[$key] = get_query_var( $key );
+
+		$excluded = wp_parse_id_list( get_query_var( 'post__not_in' ) );
+		$sticky = wp_parse_id_list( get_query_var( 'md_sticky' ) );
+		$excluded = array_values( array_diff( $excluded, $sticky ) );
+
+		if ( $excluded )
+			$query_args['post__not_in'] = $excluded;
+	}
 
 	unset( $query_args['paged'], $query_args['offset'] );
 

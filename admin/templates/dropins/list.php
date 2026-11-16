@@ -51,6 +51,10 @@
 
 	</div>
 
+	<?php elseif ( is_multisite() ) : ?>
+
+	<p class="md-dropins-network-intro"><?php esc_html_e( 'Your network admin installs, updates and deletes Drop-ins. Turn on the ones you want for this site.', 'md' ); ?></p>
+
 	<?php endif;
 
 	if ( $table->status === 'more' ) : ?>

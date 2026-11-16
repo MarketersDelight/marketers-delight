@@ -344,7 +344,7 @@ function md_has_license_key() {
  */
 
 function md_check_dropin_updates() {
-	if ( ! md_has_license_key() )
+	if ( ! md_has_license_key() || ! is_main_site() )
 		return 'skipped';
 
 	if ( ! class_exists( 'md_license' ) )

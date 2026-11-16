@@ -284,13 +284,14 @@ function md_update_setting_part( $new ) {
 }
 
 /**
- * Read license state from its current storage branch.
+ * Read license state from its current storage branch: a network option, so
+ * one license covers every site on a network. Single sites use wp_options.
  *
  * @since 6.0
  */
 
 function md_license_setting( $keys = null, $default = null ) {
-	$license = get_option( 'marketers_delight_license', array() );
+	$license = get_site_option( 'marketers_delight_license', array() );
 
 	if ( ! isset( $keys ) )
 		return is_array( $license ) ? $license : array();
@@ -315,10 +316,7 @@ function md_update_license( $license ) {
 	if ( ! is_array( $license ) )
 		return false;
 
-	if ( null === get_option( 'marketers_delight_license', null ) )
-		return add_option( 'marketers_delight_license', $license, '', false );
-
-	return update_option( 'marketers_delight_license', $license );
+	return update_site_option( 'marketers_delight_license', $license );
 }
 
 /**
