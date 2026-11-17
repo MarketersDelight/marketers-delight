@@ -155,7 +155,8 @@ class md_layout extends md_api {
 			),
 			'content_style' => array(
 				'type' => 'select',
-				'options' => array_keys( md_filter_loop_styles() )
+				'options' => array_keys( md_filter_loop_styles() ),
+				'internal' => true
 			),
 			'footer' => array(
 				'type' => 'checkbox',
