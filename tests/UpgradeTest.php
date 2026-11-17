@@ -34,8 +34,8 @@ class MD_Test_Upgrade extends md_upgrade {
 
 		$settings = get_option( 'marketers_delight', array() );
 
-		if ( isset( $settings['colors']['width'] ) && ! isset( $settings['layout']['width'] ) ) {
-			$settings['layout']['width'] = $settings['colors']['width'];
+		if ( isset( $settings['colors']['width'] ) && ! isset( $settings['settings']['width'] ) ) {
+			$settings['settings']['width'] = $settings['colors']['width'];
 			update_option( 'marketers_delight', $settings );
 		}
 
@@ -93,7 +93,7 @@ class UpgradeTest extends MD_TestCase {
 		$settings = get_option( 'marketers_delight' );
 
 		$this->assertSame( 900, $settings['colors']['width'] );
-		$this->assertSame( 900, $settings['layout']['width'] );
+		$this->assertSame( 900, $settings['settings']['width'] );
 	}
 
 	public function test_any_version_change_flags_a_compile() {
@@ -169,20 +169,20 @@ class UpgradeTest extends MD_TestCase {
 		( new md_upgrade )->upgrade_622();
 		$settings = get_option( 'marketers_delight' );
 
-		$this->assertSame( array( 'content' => 700, 'site' => 1300 ), $settings['layout']['width'] );
+		$this->assertSame( array( 'content' => 700, 'site' => 1300 ), $settings['settings']['width'] );
 		$this->assertSame( array( 'site' => array( 'bg_color' => 'x' ) ), $settings['colors'] );
 	}
 
 	public function test_moving_widths_removes_colors_when_left_empty() {
 		$moved = ( new md_upgrade )->move_widths( array( 'colors' => array( 'width' => array( 'sidebar' => 300 ) ) ) );
 
-		$this->assertSame( array( 'layout' => array( 'width' => array( 'sidebar' => 300 ) ) ), $moved );
+		$this->assertSame( array( 'settings' => array( 'width' => array( 'sidebar' => 300 ) ) ), $moved );
 	}
 
-	public function test_moving_widths_never_overwrites_a_layout_width() {
-		$moved = ( new md_upgrade )->move_widths( array( 'colors' => array( 'width' => array( 'content' => 700 ) ), 'layout' => array( 'width' => array( 'content' => 640 ) ) ) );
+	public function test_moving_widths_never_overwrites_a_saved_width() {
+		$moved = ( new md_upgrade )->move_widths( array( 'colors' => array( 'width' => array( 'content' => 700 ) ), 'settings' => array( 'width' => array( 'content' => 640 ) ) ) );
 
-		$this->assertSame( array( 'layout' => array( 'width' => array( 'content' => 640 ) ) ), $moved );
+		$this->assertSame( array( 'settings' => array( 'width' => array( 'content' => 640 ) ) ), $moved );
 	}
 
 	public function test_moving_widths_twice_changes_nothing() {

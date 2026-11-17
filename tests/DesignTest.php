@@ -39,8 +39,8 @@ class DesignTest extends MD_TestCase {
 		$this->assertSame( 896.0, $widths['alignwide_width'] );
 	}
 
-	public function test_layout_widths_feed_the_width_maths() {
-		md_test_set_settings( array( 'layout' => array( 'width' => array( 'content' => 700, 'sidebar' => 300, 'panel' => 250, 'site' => 1300 ) ) ) );
+	public function test_saved_widths_feed_the_width_maths() {
+		md_test_set_settings( array( 'settings' => array( 'width' => array( 'content' => 700, 'sidebar' => 300, 'panel' => 250, 'site' => 1300 ) ) ) );
 		$widths = $this->design->widths( $this->design->values() );
 
 		$this->assertEquals( 700, $widths['post_width'] );

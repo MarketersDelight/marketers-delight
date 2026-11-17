@@ -363,23 +363,6 @@ class SettingsFileTest extends MD_TestCase {
 		), $this->settings()['logo'] );
 	}
 
-	private function register_layout() {
-		$width = array( 'type' => 'range' );
-		$this->register( array( 'layout' => array( '_source' => 'theme', 'group' => 'page_settings', 'fields' => array(
-			'sidebar' => array( 'type' => 'text' )
-		), 'site' => array(
-			'width' => array( 'content' => $width, 'sidebar' => $width, 'panel' => $width, 'site' => $width )
-		) ) ) );
-	}
-
-	public function test_site_scope_uses_a_groups_own_site_fields() {
-		$this->register_layout();
-		$target = md_scope::parse( 'site' )->target( 'layout' );
-
-		$this->assertSame( array( 'width' ), array_keys( $target['fields'] ) );
-		$this->assertContains( 'site', md_scope::all( 'layout' ) );
-	}
-
 	public function test_replace_keeps_taxonomy_branches_inside_a_post_type() {
 		$file = array( 'format' => 'md-export', 'version' => 1, 'refs' => array(), 'sections' => array(
 			'post_types' => array( array( 'scope' => 'post_type:docs', 'group' => 'docs', 'source' => 'docs', 'values' => array( 'archives_title' => 'Handbook' ) ) )

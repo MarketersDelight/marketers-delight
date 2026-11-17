@@ -64,6 +64,24 @@ class md_settings extends md_api {
 							'disable' => __( '<b>Disable</b> MD abilities for apps and AI assistants', 'md' )
 						)
 					),
+					'width' => array(
+						'content' => array(
+							'type' => 'range',
+							'label' => __( 'Post Width', 'md' )
+						),
+						'sidebar' => array(
+							'type' => 'range',
+							'label' => __( 'Sidebar Width', 'md' )
+						),
+						'panel' => array(
+							'type' => 'range',
+							'label' => __( 'Panel Width', 'md' )
+						),
+						'site' => array(
+							'type' => 'range',
+							'label' => __( 'Site Width', 'md' )
+						)
+					),
 					'sidebars' => array(
 						'type' => 'group',
 						'label' => __( 'Manage Sidebars', 'md' ),
@@ -181,6 +199,23 @@ class md_settings extends md_api {
 
 	public function admin_page() {
 		$page404 = $this->fields->get_field( array( 'settings', '404_page' ) );
+		$design = $this->design();
+		$defaults = $design->defaults();
+		$values = $design->values();
+		$widths = $design->widths( $values );
+		$line_height = $values['typography']['body']['line_height']['desktop'];
+		$placeholders = array(
+			'content' => $defaults['width']['post'],
+			'sidebar' => $defaults['width']['sidebar'],
+			'panel' => $defaults['width']['panel_width'],
+			'site' => $defaults['width']['site']
+		);
+		$descriptions = array(
+			'content' => __( 'The exact length your text reads in the content box.', 'md' ),
+			'sidebar' => '',
+			'panel' => '',
+			'site' => sprintf( __( 'Content, sidebar and the space between them. Now <code>%spx</code>', 'md' ), esc_html( $widths['site_width'] ) )
+		);
 
 		include md_template( 'admin/dashboard', true );
 	}

@@ -56,7 +56,7 @@ class md_upgrade {
 	}
 
 	/**
-	 * Move colors.width to layout.width, keeping any layout width already set,
+	 * Move colors.width to settings.width, keeping any width already set there,
 	 * then remove colors.width, and colors too if nothing else is in it.
 	 *
 	 * @since 6.2.2
@@ -67,8 +67,8 @@ class md_upgrade {
 			return $settings;
 
 		foreach ( array( 'content', 'sidebar', 'site' ) as $key )
-			if ( ! empty( $settings['colors']['width'][$key] ) && empty( $settings['layout']['width'][$key] ) )
-				$settings['layout']['width'][$key] = $settings['colors']['width'][$key];
+			if ( ! empty( $settings['colors']['width'][$key] ) && empty( $settings['settings']['width'][$key] ) )
+				$settings['settings']['width'][$key] = $settings['colors']['width'][$key];
 
 		unset( $settings['colors']['width'] );
 

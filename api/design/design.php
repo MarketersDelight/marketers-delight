@@ -91,7 +91,7 @@ class md_design {
 	 * line height uses the golden ratio and h2-h6 are geometric steps up to h1.
 	 *
 	 * @since 4.8
-	 * @since 6.2.2 Widths come from layout.width and return as their own branch.
+	 * @since 6.2.2 Widths come from settings.width and return as their own branch.
 	 */
 
 	public function defaults() {
@@ -102,7 +102,7 @@ class md_design {
 		// Layout Widths
 
 		$design = md_value( array( 'colors', 'design' ) );
-		$width = (array) md_value( array( 'layout', 'width' ) );
+		$width = (array) md_value( array( 'settings', 'width' ) );
 		$post_width = ! empty( $width['content'] ) ? $width['content'] : round( 21 * $line_height );
 		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
 		$content_width = apply_filters( 'md_filter_css_content_width', $post_width + $gutter, $post_width, $line_height );

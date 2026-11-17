@@ -310,11 +310,7 @@ class md_fields extends md_fields_render {
 		if ( ! isset( $this->registered[$settings] ) )
 			$this->registered[$settings] = md_register( $settings );
 
-		$page = isset( $this->registered[$settings][$clean_id] ) ? $this->registered[$settings][$clean_id] : array();
-		$node = isset( $page['fields'] ) ? $page['fields'] : array();
-
-		if ( $settings === 'admin_pages' && ! $context['is_group'] && ! empty( $page['site'] ) && is_array( $page['site'] ) )
-			$node = $page['site'];
+		$node = isset( $this->registered[$settings][$clean_id]['fields'] ) ? $this->registered[$settings][$clean_id]['fields'] : array();
 
 		$definition = array();
 		$item = false;
