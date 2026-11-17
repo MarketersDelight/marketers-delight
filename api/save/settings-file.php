@@ -772,7 +772,7 @@ class md_settings_file {
 	 */
 
 	private function design_groups() {
-		$type = array_fill_keys( array( 'color', 'font_family', 'font_type', 'font_weight', 'font_size', 'line_height' ), true );
+		$type = array_fill_keys( array( 'color', 'font_family', 'font_type', 'font_weight', 'font_size', 'line_height', 'letter_spacing', 'text_transform' ), true );
 
 		return array(
 			'colors' => true,

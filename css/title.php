@@ -197,9 +197,11 @@
 	color: inherit;
 }
 
-.cover-text .header :is(.site-name a, .tagline),
+.cover-text .header :is(.site-name a, .logo a, .tagline),
 .cover-text .header :is(.header-controls, .header-triggers, .search-form .triggers) > .trigger,
 .cover-text .header .menu > .menu-item > :where(a, .trigger) { color: var(--md-site-text-contrast); }
+
+.cover-text .header .logo { --md-logo-accent: currentColor; }
 
 /* QUERIES */
 

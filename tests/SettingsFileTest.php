@@ -208,7 +208,7 @@ class SettingsFileTest extends MD_TestCase {
 				'body' => array( 'font_size' => array( 'type' => 'text' ), 'font_family' => array( 'type' => 'text' ) )
 			) ),
 			'logo' => array( '_source' => 'theme', 'fields' => array(
-				'site_title' => array( 'text' => array( 'type' => 'text' ), 'color' => array( 'type' => 'text' ) ),
+				'site_title' => array( 'text' => array( 'type' => 'text' ), 'color' => array( 'type' => 'text' ), 'letter_spacing' => array( 'type' => 'text' ), 'text_transform' => array( 'type' => 'text' ) ),
 				'logo' => array( 'type' => 'upload' ),
 				'logo_width' => array( 'desktop' => array( 'type' => 'text' ) )
 			) ),
@@ -295,6 +295,14 @@ class SettingsFileTest extends MD_TestCase {
 		$this->assertSame( array( 'design' ), array_keys( $file['sections'] ) );
 		$this->assertSame( array( 'site_title' => array( 'color' => 'primary' ), 'logo_width' => array( 'desktop' => '200' ) ), $logo['values'], 'No site title text or logo image' );
 		$this->assertSame( 'md-aexamplecom-' . gmdate( 'Y-m-d' ) . '.json', $this->file->file_name() );
+	}
+
+	public function test_site_title_letter_spacing_and_case_are_design_keys() {
+		md_test_set_option( 'marketers_delight', array( 'logo' => array( 'site_title' => array( 'text' => 'Site A', 'letter_spacing' => '-1.4', 'text_transform' => 'uppercase' ) ) ) );
+		$file = $this->file->export();
+
+		$this->assertSame( array( 'site_title' => array( 'letter_spacing' => '-1.4', 'text_transform' => 'uppercase' ) ), $this->entry( $file, 'design', 'site', 'logo' )['values'] );
+		$this->assertSame( array( 'site_title' => array( 'text' => 'Site A' ) ), $this->entry( $file, 'settings', 'site', 'logo' )['values'] );
 	}
 
 	public function test_export_never_holds_license_integrations_or_active_dropins() {
