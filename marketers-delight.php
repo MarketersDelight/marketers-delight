@@ -56,11 +56,14 @@ final class marketers_delight {
 	public function includes() {
 		require_once MD_DIR . 'functions/option-functions.php';
 		require_once MD_DIR . 'functions/meta-functions.php';
+		include_once MD_DIR . 'functions/deprecated-functions.php';
 		require_once MD_DIR . 'functions/dropin-functions.php';
 		require_once MD_DIR . 'functions/asset-functions.php';
 		require_once MD_DIR . 'functions/design-functions.php';
 		require_once MD_DIR . 'api/assets/compile.php';
 		require_once MD_DIR . 'api/assets/enqueue.php';
+		require_once MD_DIR . 'api/upgrade.php';
+		require_once MD_DIR . 'api/values.php';
 		require_once MD_DIR . 'api/collections/api.php';
 		require_once MD_DIR . 'api/save/sanitize.php';
 		require_once MD_DIR . 'api/save/validate.php';
@@ -102,7 +105,6 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/author/author.php';
 
 		require_once MD_DIR . 'functions/actions.php';
-		include_once MD_DIR . 'functions/deprecated-functions.php';
 	}
 
 	/**
@@ -209,6 +211,9 @@ final class marketers_delight {
 	public function init() {
 		$this->constants();
 		$this->includes();
+
+		$upgrade = new md_upgrade;
+		$upgrade->init();
 
 		$enqueue = new md_enqueue;
 		$enqueue->init();

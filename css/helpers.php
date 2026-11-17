@@ -82,7 +82,7 @@ cite, .tiny {
 
 .alert {
 	background-color: var(--md-color-highlight);
-	color: <?php echo md_color_is_light( $colors['palette']['highlight'] ) ? '#1E1E1E' : '#FFFFFF'; ?>;
+	color: var(--md-highlight-text);
 	border-radius: var(--md-border-radius);
 	box-shadow: var(--md-box-shadow);
 	padding: var(--md-half);
@@ -101,7 +101,7 @@ cite, .tiny {
 
 .avatar {
 	border-radius: 50%;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
 }
 
 .repeat { background-repeat: repeat; }

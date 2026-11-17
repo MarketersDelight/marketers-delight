@@ -10,7 +10,7 @@ function md_has_author_box() {
 	if ( ! md_is_queried_post() )
 		return false;
 
-	$enable = md_post_type_field( array( 'layout', 'content', 'add_author_box' ) );
+	$enable = md_value( array( 'key' => array( 'layout', 'content', 'add_author_box' ), 'post_type' => md_get_post_type() ) );
 	$add = md_post_meta( array( 'layout', 'content', 'add_author_box' ) );
 	$remove = md_post_meta( array( 'layout', 'content', 'author_box' ) );
 

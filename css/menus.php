@@ -88,7 +88,7 @@
 	.nav-menu .sub-menu {
 		background-color: var(--md-header-submenu-background);
 		border-radius: var(--md-border-radius);
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
 		font-size: var(--md-font-size-small);
 		line-height: var(--md-line-height-small);
 		position: absolute;
@@ -168,7 +168,7 @@
 		.menu-scroller .sub-menu {
 			background-color: var(--md-header-submenu-background);
 			border-radius: var(--md-border-radius);
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+			box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
 			position: fixed;
 				inset-block-start: anchor(end);
 				inset-inline-start: anchor(start);

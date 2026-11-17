@@ -1054,7 +1054,7 @@ body {
 
 /* LABELS */
 
-.md-label-wrap, .md-field-row .md-range { margin-top: 0; }
+.md-label-wrap { margin-top: 0; }
 
 .md-label-svg {
 	position: relative;
@@ -1237,7 +1237,10 @@ body {
 	position: relative;
 }
 
-.md-range { width: 100%; }
+.md-range {
+	margin: 0;
+	width: 100%;
+}
 
 .md-range-field {
 	flex: 1;
@@ -1252,8 +1255,8 @@ body {
 
 .md-range-number {
 	box-sizing: border-box;
-	max-width: 75px;
-	width: 75px;
+	max-width: 84px;
+	width: 84px;
 }
 
 .md-range-reset {

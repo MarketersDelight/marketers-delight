@@ -79,7 +79,7 @@
 .comment .comment-awaiting-moderation {
 	background-color: var(--md-color-highlight);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 2px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
 	font-style: italic;
 	margin-block-end: var(--md-half);
 	padding: var(--md-half);
@@ -95,7 +95,7 @@
 	background-color: var(--md-content-box-background);
 	border: 1px solid var(--md-border);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 1px 1px color-mix(in srgb, var(--md-shadow-color) 15%, transparent);
 	color: var(--md-content-box-text-muted);
 	font-size: var(--md-font-size-small);
 	padding: var(--md-small) var(--md-third);
@@ -137,7 +137,7 @@
 }
 
 .toggle-comment .comment-content:after {
-	background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-content-main-background) 80%);
+	background: linear-gradient(to bottom, transparent 0%, var(--md-content-main-background) 80%);
 	content: '';
 	display: block;
 	height: var(--md-single);
@@ -147,7 +147,7 @@
 	width: 100%;
 }
 
-.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, rgba(254, 254, 254, 0) 0%, var(--md-content-box-background) 80%); }
+.box-style .toggle-comment .comment-content:after { background: linear-gradient(to bottom, transparent 0%, var(--md-content-box-background) 80%); }
 
 /* TIMELINE */
 

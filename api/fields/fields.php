@@ -310,7 +310,12 @@ class md_fields extends md_fields_render {
 		if ( ! isset( $this->registered[$settings] ) )
 			$this->registered[$settings] = md_register( $settings );
 
-		$node = isset( $this->registered[$settings][$clean_id]['fields'] ) ? $this->registered[$settings][$clean_id]['fields'] : array();
+		$page = isset( $this->registered[$settings][$clean_id] ) ? $this->registered[$settings][$clean_id] : array();
+		$node = isset( $page['fields'] ) ? $page['fields'] : array();
+
+		if ( $settings === 'admin_pages' && ! $context['is_group'] && ! empty( $page['site'] ) && is_array( $page['site'] ) )
+			$node = $page['site'];
+
 		$definition = array();
 		$item = false;
 
@@ -403,67 +408,32 @@ class md_fields extends md_fields_render {
 	protected function parent_value( $keys, $default = null ) {
 		$screen = $this->_get_screen;
 		$context = $this->get_context();
-		$result = array(
-			'available' => false,
-			'value' => $default
-		);
+		$args = array( 'default' => $default );
 
-		if ( $context['is_user'] )
-			return $result;
-
-		if ( $context['is_post'] ) {
-			if ( empty( $screen['post_type'] ) )
-				return $result;
-
+		if ( $context['is_post'] && ! empty( $screen['post_type'] ) ) {
 			array_unshift( $keys, $this->_clean_id );
-			$result['available'] = true;
-			$result['value'] = md_post_type_field( $keys, $default, $screen['post_type'] );
-
-			return $result;
+			$args['post_type'] = $screen['post_type'];
 		}
-
-		if ( $context['is_term'] ) {
-			if ( empty( $screen['post_type'] ) || empty( $screen['taxonomy'] ) )
-				return $result;
-
+		elseif ( $context['is_term'] && ! empty( $screen['post_type'] ) && ! empty( $screen['taxonomy'] ) ) {
 			array_unshift( $keys, $this->_clean_id );
-			$value = md_taxonomy_field( $keys, null, $screen['post_type'], $screen['taxonomy'] );
+			$args['taxonomy'] = $screen['taxonomy'];
+			$args['post_type'] = $screen['post_type'];
+		}
+		elseif ( $context['is_group'] && ! $context['is_user'] ) {
+			if ( $context['is_child'] )
+				array_unshift( $keys, $this->_clean_id );
 
-			$result['available'] = true;
-
-			if ( is_null( $value ) )
-				$value = md_post_type_field( $keys, $default, $screen['post_type'] );
-
-			$result['value'] = $value;
-
-			return $result;
+			$args['post_type'] = $context['taxonomy'] ? $context['page_id'] : md_post_type_settings_parent( $context['page_id'] );
 		}
 
-		if ( ! $context['is_group'] )
-			return $result;
+		if ( empty( $args['post_type'] ) )
+			return array( 'available' => false, 'value' => $default );
 
-		$field_keys = $keys;
+		$args['key'] = $keys;
 
-		if ( $context['is_child'] )
-			array_unshift( $field_keys, $this->_clean_id );
-
-		if ( $context['taxonomy'] ) {
-			$result['available'] = true;
-			$result['value'] = md_post_type_field( $field_keys, $default, $context['page_id'] );
-
-			return $result;
-		}
-
-		$parent = md_post_type_settings_parent( $context['page_id'] );
-
-		if ( ! $parent )
-			return $result;
-
-		$result['available'] = true;
-		$result['value'] = md_post_type_field( $field_keys, $default, $parent );
-
-		return $result;
+		return array( 'available' => true, 'value' => md_value( $args ) );
 	}
+
 
 	/**
 	 * Get stored field values based on current screen.
@@ -566,10 +536,12 @@ class md_fields extends md_fields_render {
 				return $value ?? $default;
 
 			if ( is_null( $value ) )
-				$value = md_taxonomy_field( $field_keys, null, $screen['post_type'], $screen['taxonomy'] );
-
-			if ( is_null( $value ) )
-				$value = md_post_type_field( $field_keys, $default, $screen['post_type'] );
+				$value = md_value( array(
+					'key' => $field_keys,
+					'default' => $default,
+					'taxonomy' => $screen['taxonomy'],
+					'post_type' => $screen['post_type']
+				) );
 
 			return $value;
 		}
@@ -583,13 +555,22 @@ class md_fields extends md_fields_render {
 				array_unshift( $field_keys, $this->_clean_id );
 
 			if ( $context['taxonomy'] ) {
-				$value = md_taxonomy_field( $field_keys, null, $context['page_id'], $context['taxonomy'] );
+				$value = md_value( array(
+					'key' => $field_keys,
+					'taxonomy' => $context['taxonomy'],
+					'post_type' => $context['page_id'],
+					'inherit_post_type' => false
+				) );
 
 				if ( ! is_null( $value ) || ! $inherit )
 					return $value ?? $default;
 			}
 
-			return md_post_type_field( $field_keys, $default, $context['page_id'] );
+			return md_value( array(
+				'key' => $field_keys,
+				'default' => $default,
+				'post_type' => $context['page_id']
+			) );
 		}
 
 		array_unshift( $keys, $this->_clean_id );

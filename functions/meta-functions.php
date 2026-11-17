@@ -1,7 +1,25 @@
 <?php
 
 /**
- * A simple way to get various levels of post meta.
+ * The value that applies for a setting. md_value( 'key' ) or
+ * md_value( array( 'a', 'b' ), $default ) read the site; args with a 'key' entry
+ * add 'default' and where to read: 'page' => true, 'post', 'term', 'taxonomy', 'post_type'.
+ *
+ * @since 6.2.2
+ */
+
+function md_value( $key, $default = null ) {
+	static $values = null;
+
+	if ( ! $values )
+		$values = new md_values;
+
+	return $values->get( $key, $default );
+}
+
+/**
+ * What a post stores at $keys: the post in the loop, the page being viewed
+ * ($id true), or the post $id names.
  *
  * @since 4.7
  */
@@ -28,7 +46,7 @@ function md_post_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
- * Quickly access taxonomy field data (deprecates md_tax_data()).
+ * What a term stores at $keys: the term being viewed, or the one $id names.
  *
  * @since 4.7
  */
@@ -45,6 +63,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 
 	if ( isset( $keys ) ) {
 		$keys = (array) $keys;
+
 		foreach ( $keys as $key )
 			$meta = is_array( $meta ) && array_key_exists( $key, $meta ) ? $meta[$key] : $default;
 	}
@@ -53,84 +72,7 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
- * Get the post type whose settings are inherited by another post type.
- *
- * @since 6.0
- */
-
-function md_post_type_settings_parent( $post_type ) {
-	$object = get_post_type_object( $post_type );
-
-	return $object && ! empty( $object->md_settings_parent ) ? $object->md_settings_parent : null;
-}
-
-/**
- * Get Post Type specific admin fields.
- *
- * @since 6.0
- */
-
-function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
-	if ( ! isset( $post_type ) )
-		$post_type = md_get_post_type();
-
-	$chain = array();
-
-	// Collect each level once, stopping safely at circular parents
-
-	while ( $post_type && ! array_key_exists( $post_type, $chain ) ) {
-		$chain[$post_type] = md_setting( $post_type, array() );
-		$post_type = md_post_type_settings_parent( $post_type );
-	}
-
-	// Merge from the oldest parent down so each child overrides its defaults
-
-	$settings = array();
-
-	foreach ( array_reverse( $chain ) as $current )
-		if ( is_array( $current ) )
-			$settings = array_replace_recursive( $settings, $current );
-
-	if ( ! isset( $keys ) )
-		return $settings;
-
-	// Follow the requested field path through the resolved settings
-
-	foreach ( (array) $keys as $key ) {
-		if ( ! is_array( $settings ) || ! array_key_exists( $key, $settings ) )
-			return $default;
-
-		$settings = $settings[$key];
-	}
-
-	return $settings;
-}
-
-/**
- * Get taxonomy-level global settings (middle tier between post type archive and individual term).
- *
- * @since 6.0
- */
-
-function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $taxonomy = null ) {
-	if ( ! $post_type )
-		$post_type = md_get_post_type();
-
-	if ( ! $taxonomy ) {
-		$queried = get_queried_object();
-		$taxonomy = isset( $queried->taxonomy ) ? $queried->taxonomy : null;
-	}
-
-	if ( ! $taxonomy )
-		return $default;
-
-	$keys = (array) $keys;
-
-	return md_setting( array_merge( (array) $post_type, (array) $taxonomy, $keys ), $default );
-}
-
-/**
- * Access user meta.
+ * What a user stores at $keys: the current user, or the one $id names.
  *
  * @since 5.3.1
  */
@@ -146,6 +88,7 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
 
 	if ( isset( $keys ) ) {
 		$keys = (array) $keys;
+
 		foreach ( $keys as $key )
 			$meta = ! empty( $meta[$key] ) ? $meta[$key] : $default;
 	}
@@ -154,7 +97,8 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
- * Get meta field from either single or term pages.
+ * What the page being viewed stores itself: its term's meta on term pages,
+ * its post's otherwise.
  *
  * @since 4.7
  */
@@ -172,46 +116,6 @@ function md_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
- * Get module field that is either on single term or post
- * pages, or return global setting as fallback.
- *
- * @since 4.7
- */
-
-function md_module( $keys = null, $default = null, $args = array() ) {
-	$args = wp_parse_args( $args, array(
-		'id' => null,
-		'inherit_post_type' => true
-	) );
-
-	$id = apply_filters( 'md_setting_id', $args['id'] );
-
-	if ( is_author() )
-		$option = md_post_type_field( $keys, $default, 'author' );
-	elseif ( is_home() || is_post_type_archive() )
-		$option = md_post_type_field( $keys, $default );
-	elseif ( is_category() || is_tax() ) {
-		$option = md_term_meta( $keys, $id, null );
-
-		if ( is_null( $option ) )
-			$option = md_taxonomy_field( $keys, null );
-
-		if ( is_null( $option ) )
-			$option = $args['inherit_post_type'] ? md_post_type_field( $keys, $default ) : $default;
-	}
-	elseif ( is_singular() || is_404() ) {
-		$option = md_post_meta( $keys, $id, null );
-
-		if ( is_null( $option ) )
-			$option = $args['inherit_post_type'] ? md_post_type_field( $keys, $default ) : $default;
-	}
-	else
-		$option = md_setting( $keys, $default );
-
-	return $option;
-}
-
-/**
  * Get the current post type of a page. This function exists to cover
  * up a bug that changes the global Loop ID of the first post in the Loop
  * when a Loop Query is modified to combine two post types.
@@ -221,8 +125,6 @@ function md_module( $keys = null, $default = null, $args = array() ) {
 
 function md_get_post_type( $post_id = null ) {
 	$post_type = get_post_type( $post_id );
-
-	// An empty archive has no post to read the type from
 
 	if ( ! $post_type && $post_id === null ) {
 		if ( is_category() || is_tag() || is_tax() ) {
@@ -244,6 +146,18 @@ function md_get_post_type( $post_id = null ) {
 		$post_type = 'error';
 
 	return $post_type;
+}
+
+/**
+ * The post type whose settings another post type inherits.
+ *
+ * @since 6.0
+ */
+
+function md_post_type_settings_parent( $post_type ) {
+	$object = get_post_type_object( $post_type );
+
+	return $object && ! empty( $object->md_settings_parent ) ? $object->md_settings_parent : null;
 }
 
 /**
@@ -307,6 +221,38 @@ function md_get_builder( $id, $type = null, $key = null ) {
 }
 
 /**
+ * Resolve builder areas from inherited post types, taxonomies, terms, and
+ * the single being viewed. Each configured area replaces the same area
+ * from the preceding layer.
+ *
+ * @since 6.0
+ */
+
+function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = false ) {
+	$post_type = $post_type ?: md_get_post_type();
+	$args = array(
+		'key' => array( $key, 'builder' ),
+		'default' => array(),
+		'post_type' => $post_type,
+		'merge' => 'areas',
+		'reset' => $preserve_empty
+	);
+
+	if ( is_singular() && $post_type === get_post_type( get_queried_object_id() ) )
+		$args['post'] = get_queried_object_id();
+	elseif ( is_category() || is_tax() ) {
+		$queried = get_queried_object();
+
+		if ( ! empty( $queried->taxonomy ) && is_object_in_taxonomy( $post_type, $queried->taxonomy ) ) {
+			$args['term'] = get_queried_object_id();
+			$args['taxonomy'] = $queried->taxonomy;
+		}
+	}
+
+	return md_value( $args );
+}
+
+/**
  * Drop builder items made for other post types. Items without
  * post_types are available everywhere.
  *
@@ -319,71 +265,6 @@ function md_builder_items_for( $items, $post_type ) {
 			unset( $items[$id] );
 
 	return $items;
-}
-
-/**
- * Resolve builder areas from inherited post types, taxonomies, terms, and
- * the single being viewed. Each configured area replaces the same area
- * from the preceding layer.
- *
- * @since 6.0
- */
-
-function md_get_post_type_builder( $key, $post_type = null, $preserve_empty = false ) {
-	$post_type = $post_type ?: md_get_post_type();
-	$defaults = md_setting_defaults();
-	$chain = array();
-	$builder = array();
-	$parent = $post_type;
-
-	while ( $parent && ! isset( $chain[$parent] ) ) {
-		$chain[$parent] = true;
-		$parent = md_post_type_settings_parent( $parent );
-	}
-
-	$stored = md_setting_part( array_keys( $chain ) );
-
-	foreach ( array_reverse( array_keys( $chain ) ) as $current ) {
-		$programmed = $defaults[$current][$key]['builder'] ?? null;
-		$saved = $stored[$current][$key]['builder'] ?? null;
-
-		$builder = md_replace_builder_areas( $builder, $programmed );
-
-		if ( $preserve_empty && is_array( $saved ) && ! $saved )
-			$builder = array();
-		else
-			$builder = md_replace_builder_areas( $builder, $saved );
-	}
-
-	// The single being viewed replaces the areas it saves
-
-	if ( is_singular() && $post_type === get_post_type( get_queried_object_id() ) )
-		return md_replace_builder_areas( $builder, md_post_meta( array( $key, 'builder' ), true ) );
-
-	if ( ! is_category() && ! is_tax() )
-		return $builder;
-
-	$queried = get_queried_object();
-	$taxonomy = ! empty( $queried->taxonomy ) ? $queried->taxonomy : null;
-
-	if ( ! $taxonomy || ! is_object_in_taxonomy( $post_type, $taxonomy ) )
-		return $builder;
-
-	$programmed = $defaults[$post_type][$taxonomy][$key]['builder'] ?? null;
-	$saved = $stored[$post_type][$taxonomy][$key]['builder'] ?? null;
-
-	$builder = md_replace_builder_areas( $builder, $programmed );
-
-	if ( $preserve_empty && is_array( $saved ) && ! $saved )
-		$builder = array();
-	else
-		$builder = md_replace_builder_areas( $builder, $saved );
-
-	$term = get_term_meta( get_queried_object_id(), 'marketers_delight', true );
-	$term = is_array( $term ) ? $term : array();
-
-	return md_replace_builder_areas( $builder, $term[$key]['builder'] ?? null );
-
 }
 
 /**
@@ -400,28 +281,4 @@ function md_builder_row_hidden( $row ) {
 		return true;
 
 	return ! empty( $scope['paged'] ) && is_paged();
-}
-
-/**
- * Replace the configured areas in a resolved builder with a new row layer.
- * Empty layers inherit the builder unchanged.
- *
- * @since 6.0
- */
-
-function md_replace_builder_areas( $builder, $rows ) {
-	if ( ! is_array( $rows ) || ! $rows )
-		return $builder;
-
-	$areas = array();
-
-	foreach ( $rows as $fields )
-		if ( ! empty( $fields['builder_area'] ) )
-			$areas[$fields['builder_area']] = true;
-
-	foreach ( $builder as $id => $fields )
-		if ( ! empty( $fields['builder_area'] ) && isset( $areas[$fields['builder_area']] ) )
-			unset( $builder[$id] );
-
-	return array_replace( $builder, $rows );
 }

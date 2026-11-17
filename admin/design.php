@@ -58,18 +58,6 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 
 		$fields = $this->build_color_fields( $this->colors->roles );
-		$fields['width']['site'] = array(
-			'type' => 'range',
-			'label' => __( 'Site Width', 'md' )
-		);
-		$fields['width']['content'] = array(
-			'type' => 'range',
-			'label' => __( 'Post Width', 'md' )
-		);
-		$fields['width']['sidebar'] = array(
-			'type' => 'range',
-			'label' => __( 'Sidebar Width', 'md' )
-		);
 		$fields['palette'] = array(
 			'type' => 'group',
 			'fields' => array(
@@ -123,21 +111,11 @@ class md_colors extends md_api {
 	public function admin_page() {
 		$this->colors = new md_design_colors;
 		$options = $this->colors->roles;
-		$defaults = $this->design()->defaults();
 		$values = $this->design()->values();
 		$this->resolved = $values['colors'];
-		$line_height = $values['typography']['body']['line_height']['desktop'];
 		$this->palette = $this->colors->base_palette();
 		$palette = $this->palette;
 		$palette_defaults = $this->colors->palette;
-		$design = md_setting( array( 'colors', 'design' ) );
-
-		$widths = $this->design()->widths( $values );
-		$post_width = $widths['post_width'];
-		$layout_spacing = $widths['content_width'] - $post_width;
-		$sidebar_width = $widths['sidebar_width'];
-		$gap = $line_height;
-		$site_width = $post_width + $layout_spacing + $sidebar_width + $gap;
 
 		$content_style = md_filter_loop_styles();
 

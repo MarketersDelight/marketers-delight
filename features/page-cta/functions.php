@@ -49,15 +49,20 @@ function md_cta( $context = 'post', $cta = array() ) {
 
 function md_get_cta( $context = 'post' ) {
 	if ( $context == 'page' ) {
-		$cta = md_module( 'page_cta' );
+		$cta = md_value( array( 'key' => 'page_cta', 'page' => true ) );
 
 		// Fields saved without a type don't stop a category inheriting its CTA
 
 		if ( empty( $cta['page_cta'] ) && ( is_category() || is_tax() ) ) {
-			$cta = md_taxonomy_field( 'page_cta' );
+			$cta = md_value( array(
+				'key' => 'page_cta',
+				'taxonomy' => get_queried_object()->taxonomy,
+				'post_type' => md_get_post_type(),
+				'inherit_post_type' => false
+			) );
 
 			if ( empty( $cta['page_cta'] ) )
-				$cta = md_post_type_field( 'page_cta' );
+				$cta = md_value( array( 'key' => 'page_cta', 'post_type' => md_get_post_type() ) );
 		}
 
 		return $cta;

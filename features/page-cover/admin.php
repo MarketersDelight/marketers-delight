@@ -106,7 +106,11 @@ class md_page_cover extends md_api {
 		$overlay_default = $this->design()->values()['colors']['content']['page_cover_overlay_color'];
 
 		if ( $is_post )
-			$overlay_default = md_post_type_field( array( $this->_clean_id, 'bg_color' ), $overlay_default, $this->_get_screen['post_type'] );
+			$overlay_default = md_value( array(
+				'key' => array( $this->_clean_id, 'bg_color' ),
+				'default' => $overlay_default,
+				'post_type' => $this->_get_screen['post_type']
+			) );
 
 		$overlay_color = md_color_hex( $this->fields->module( 'bg_color', $overlay_default ) );
 

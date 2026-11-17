@@ -315,7 +315,7 @@ class md_design_colors {
 				'name' => $names[$key]
 			);
 
-		$colors = md_setting( 'colors' );
+		$colors = md_value( 'colors' );
 
 		if ( ! empty( $colors['palette'] ) )
 			foreach ( $colors['palette'] as $key => $data )
@@ -334,7 +334,7 @@ class md_design_colors {
 
 	public function active_palette() {
 		$palette = $this->base_palette();
-		$colors = md_setting( 'colors' );
+		$colors = md_value( 'colors' );
 
 		if ( ! empty( $colors['custom'] ) )
 			foreach ( $colors['custom'] as $data )

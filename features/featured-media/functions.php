@@ -130,8 +130,17 @@ function md_get_media( $context = 'post' ) {
 
 	if ( $context == 'page' ) {
 		$option = is_author()
-			? md_post_type_field( 'featured_media', array(), 'author' )
-			: md_module( 'featured_media', array(), array( 'inherit_post_type' => false ) );
+			? md_value( array(
+				'key' => 'featured_media',
+				'default' => array(),
+				'post_type' => 'author'
+			) )
+			: md_value( array(
+				'key' => 'featured_media',
+				'default' => array(),
+				'page' => true,
+				'inherit_post_type' => false
+			) );
 	}
 	else {
 		$option = md_post_meta( 'featured_media', true, array() );
@@ -213,50 +222,55 @@ function md_loop_media_position( $loop ) {
  */
 
 function md_media_position( $context = 'post' ) {
-	$default = 'right';
-
-	if ( is_author() && $context === 'page' )
-		return md_post_type_field( array( 'featured_media', 'position' ), $default, 'author' );
-
-	$position = $default;
 	$key = array( 'featured_media', 'position' );
 	$single_key = array( 'layout', 'featured_image' );
+	$args = array(
+		'key' => $key,
+		'default' => 'right',
+		'post_type' => is_author() ? 'author' : md_get_post_type()
+	);
+
+	// On term pages the taxonomy and term override the post type
+
+	if ( is_category() || is_tax() ) {
+		$args['term'] = get_queried_object_id();
+		$args['taxonomy'] = get_queried_object()->taxonomy;
+	}
+
+	// The page's own title media
 
 	if ( $context === 'page' ) {
-		$position = md_post_type_field( $key, $default );
-
-		if ( is_category() || is_tax() ) {
-			$position = md_taxonomy_field( $key, $position );
-			$position = md_term_meta( $key, null, $position );
-		}
+		$position = md_value( $args );
 	}
+
+	// The single being viewed: the post type's single setting, then the post's own
+
 	elseif ( md_is_queried_post() ) {
-		$position = md_post_type_field( $single_key, $default );
+		$position = md_value( array(
+			'key' => $single_key,
+			'default' => 'right',
+			'post_type' => $args['post_type']
+		) );
 		$position = md_post_meta( $key, null, $position );
 	}
+
+	// Loop items: single setting, then loop setting, then the post's own if inherited
+
 	else {
-		$loop_key = array( 'loop', 'featured_image' );
-		$inherit_key = array( 'loop', 'inherit', 'position' );
-		$settings_post_type = is_author() ? 'author' : null;
+		$position = md_value( array(
+			'key' => $single_key,
+			'default' => 'right',
+			'post_type' => $args['post_type']
+		) );
 
-		$position = md_post_type_field( $single_key, $default, $settings_post_type );
-		$position = md_post_type_field( $loop_key, $position, $settings_post_type );
+		$args['key'] = array( 'loop', 'featured_image' );
+		$args['default'] = $position;
+		$position = md_value( $args );
 
-		$is_term = is_category() || is_tax();
+		$args['key'] = array( 'loop', 'inherit', 'position' );
+		$args['default'] = null;
 
-		if ( $is_term ) {
-			$position = md_taxonomy_field( $loop_key, $position );
-			$position = md_term_meta( $loop_key, null, $position );
-		}
-
-		$inherit = md_post_type_field( $inherit_key, null, $settings_post_type );
-
-		if ( $is_term ) {
-			$inherit = md_taxonomy_field( $inherit_key, $inherit );
-			$inherit = md_term_meta( $inherit_key, null, $inherit );
-		}
-
-		if ( $inherit )
+		if ( md_value( $args ) )
 			$position = md_post_meta( $key, null, $position );
 	}
 

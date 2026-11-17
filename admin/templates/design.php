@@ -66,7 +66,7 @@
 
 	<div class="md-widget md-toggle mb-single">
 
-		<h3 class="md-widget-title"><span><?php echo __( 'Site Layout', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Content, sidebar and site widths', 'md' ); ?></span></span></h3>
+		<h3 class="md-widget-title"><span><?php echo __( 'Content Style', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Box, border or no style', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item">
 
@@ -75,45 +75,6 @@
 				'description' => __( 'Change your site from box style to simple, or add your own styles.', 'md' ),
 				'options' => $content_style
 			) ); ?>
-
-			<hr class="mb-single" />
-
-			<div class="columns-2 columns-single mb-third gap-single">
-				<div class="col">
-					<?php $this->fields->field( array( 'width', 'content' ), array(
-						'placeholder' => $defaults['colors']['width']['post'],
-						'min' => ( $defaults['colors']['width']['post'] - $line_height * 4 ),
-						'max' => ( $defaults['colors']['width']['post'] + $line_height * 8 )
-					) ); ?>
-				</div>
-				<div class="col">
-					<?php $this->fields->field( array( 'width', 'sidebar' ), array(
-						'placeholder' => $defaults['colors']['width']['sidebar'],
-						'min' => ( $defaults['colors']['width']['sidebar'] - $line_height * 4 ),
-						'max' => ( $defaults['colors']['width']['sidebar'] + $line_height * 8 )
-					) ); ?>
-				</div>
-				<div class="col">
-					<?php $this->fields->field( array( 'width', 'site' ), array(
-						'placeholder' => $defaults['colors']['width']['site'],
-						'min' => ( $defaults['colors']['width']['site'] - $line_height * 4 ),
-						'max' => ( $defaults['colors']['width']['site'] + $line_height * 8 )
-					) ); ?>
-				</div>
-			</div>
-
-			<p class="description"><?php echo __( '<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box.', 'md' ); ?></p>
-
-			<p class="description"><?php echo __( '<b>Tip:</b> To calculate your own site width you must add any extra spacing within the content and sidebar, which can change based on the <b>Site style</b>.', 'md' ); ?></p>
-
-			<?php echo '<p class="description"><code>';
-
-			if ( $design )
-				echo "<b>$post_width</b> + <b>$sidebar_width</b> + <b>$gap</b> = <b>$site_width</b>";
-			else
-				echo "<b>( $post_width + $layout_spacing )</b> + <b>$sidebar_width</b> + <b>$gap</b> = <b>$site_width</b>";
-
-			echo '</code></p>'; ?>
 
 		</div>
 

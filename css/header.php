@@ -134,10 +134,10 @@
 	line-height: <?php echo $logo['site_title']['line_height']['desktop']; ?>px;
 }
 
-.site-name, .site-name a, .site-name a:hover { color: <?php echo $logo['site_title']['color']; ?>; }
+.site-name, .site-name a, .site-name a:hover { color: var(--md-site-title); }
 
 .tagline {
-	color: <?php echo $logo['site_tagline']['color']; ?>;
+	color: var(--md-site-tagline);
 	<?php if ( ! empty( $logo['site_tagline']['font_family'] ) ) : ?>
 	font-family: <?php echo $logo['site_tagline']['font_family']; ?>;
 	<?php endif; ?>
@@ -152,7 +152,7 @@
 	<?php endif; ?>
 }
 
-.tagline a { color: <?php echo $logo['site_tagline']['color']; ?>; }
+.tagline a { color: var(--md-site-tagline); }
 
 /* QUERIES */
 

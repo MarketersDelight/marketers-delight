@@ -169,7 +169,8 @@ class md_scope {
 	}
 
 	/**
-	 * Site settings: each group is a branch of its option.
+	 * Site settings: each group is a branch of its option, saved with its
+	 * 'site' fields when it has its own.
 	 *
 	 * @since 6.2
 	 */
@@ -183,7 +184,7 @@ class md_scope {
 		return array(
 			'option' => isset( $pages[$group]['_option'] ) ? $pages[$group]['_option'] : 'marketers_delight',
 			'path' => array( $group ),
-			'fields' => $pages[$group]['fields']
+			'fields' => ! empty( $pages[$group]['site'] ) && is_array( $pages[$group]['site'] ) ? $pages[$group]['site'] : $pages[$group]['fields']
 		);
 	}
 
@@ -262,7 +263,7 @@ class md_scope {
 	/**
 	 * Groups on the Page Settings screen are read per post type, so a site
 	 * value would never show. A group that's also read site-wide says so with
-	 * 'site' => true.
+	 * 'site' => true, or 'site' => its site-only fields.
 	 *
 	 * @since 6.2
 	 */

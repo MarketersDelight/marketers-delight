@@ -31,7 +31,7 @@ function md_has_post_nav() {
 	if ( ! md_is_queried_post() || is_page() )
 		return false;
 
-	$disable = md_post_type_field( array( 'layout', 'content', 'post_nav' ) );
+	$disable = md_value( array( 'key' => array( 'layout', 'content', 'post_nav' ), 'post_type' => md_get_post_type() ) );
 	$add = md_post_meta( array( 'layout', 'content', 'add_post_nav' ) );
 	$remove = md_post_meta( array( 'layout', 'content', 'post_nav' ) );
 

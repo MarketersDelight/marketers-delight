@@ -65,7 +65,7 @@ function md_google_fonts() {
 
 function md_web_fonts( $show_type = null ) {
 	$fonts = array();
-	$typography = md_setting( 'typography' );
+	$typography = md_value( 'typography' );
 	$headings = array( 'h1', 'h2', 'h3', 'h4', 'h5', 'header', 'sidebar_title', 'footer_title' );
 	$areas = array_merge( array( 'body', 'site_title', 'site_tagline', 'sidebar', 'footer' ), $headings );
 	$body = $typography['body'] ?? array();
@@ -110,3 +110,72 @@ function md_web_fonts( $show_type = null ) {
 
 	return isset( $show_type ) ? ( $fonts[$show_type] ?? '' ) : $fonts;
 }
+
+/**
+ * A post type's setting, its settings parents' included. Use md_value().
+ *
+ * @since 6.0
+ * @deprecated 6.2.2
+ */
+
+function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
+	if ( ! isset( $post_type ) )
+		$post_type = md_get_post_type();
+
+	return md_value( array(
+		'key' => $keys,
+		'default' => $default,
+		'post_type' => $post_type
+	) );
+}
+
+/**
+ * A taxonomy's setting for a post type. Use md_value().
+ *
+ * @since 6.0
+ * @deprecated 6.2.2
+ */
+
+function md_taxonomy_field( $keys = null, $default = null, $post_type = null, $taxonomy = null ) {
+	if ( ! $post_type )
+		$post_type = md_get_post_type();
+
+	if ( ! $taxonomy ) {
+		$queried = get_queried_object();
+		$taxonomy = isset( $queried->taxonomy ) ? $queried->taxonomy : null;
+	}
+
+	if ( ! $taxonomy )
+		return $default;
+
+	return md_value( array(
+		'key' => $keys,
+		'default' => $default,
+		'taxonomy' => $taxonomy,
+		'post_type' => $post_type,
+		'inherit_post_type' => false
+	) );
+}
+
+/**
+ * The setting for the page being viewed. Use md_value().
+ *
+ * @since 4.7
+ * @deprecated 6.2.2
+ */
+
+function md_module( $keys = null, $default = null, $args = array() ) {
+	$args = wp_parse_args( $args, array(
+		'id' => null,
+		'inherit_post_type' => true
+	) );
+
+	return md_value( array(
+		'key' => $keys,
+		'default' => $default,
+		'page' => true,
+		'id' => $args['id'],
+		'inherit_post_type' => $args['inherit_post_type']
+	) );
+}
+

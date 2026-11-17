@@ -123,8 +123,7 @@ function md_test_reset() {
 	md_setting_defaults( true );
 }
 
-// Sets the marketers_delight option array wholesale (mirrors get_option()).
-// Writes here bypass update_option(), so the merged cache is dropped by hand.
+// Sets the whole option, bypassing update_option(), so it drops the merged cache by hand
 
 function md_test_set_option( $key, $value ) {
 	$GLOBALS['__test_options'][$key] = $value;
@@ -136,8 +135,7 @@ function md_test_set_term_meta( $term_id, $meta ) {
 	$GLOBALS['__test_term_meta'][$term_id] = $meta;
 }
 
-// Defaults to the fixed post ID get_the_ID() returns below, matching how a
-// test sets up "the current post" without needing to pass an ID explicitly.
+// Defaults to the post ID get_the_ID() returns below, the test's "current post"
 
 function md_test_set_post_meta( $meta, $post_id = 1 ) {
 	$GLOBALS['__test_post_meta'][$post_id] = $meta;
@@ -235,8 +233,7 @@ function md_test_set_query( array $state ) {
 	$GLOBALS['__test_query'] = array_merge( $GLOBALS['__test_query'], $state );
 }
 
-// Render the theme's real templates instead of tests/inheritance/fixtures,
-// for snapshot tests of full markup. Reset after every test.
+// Snapshot tests render the theme's real templates, not fixtures; reset after each test
 
 function md_test_use_real_templates() {
 	$GLOBALS['__test_real_templates'] = true;
@@ -278,8 +275,7 @@ function md_template( $file, $path = null, $include = null ) {
 	if ( ! $GLOBALS['__test_real_templates'] || ! is_string( $path ) )
 		return __DIR__ . "/fixtures/$template.php";
 
-	// Same mapping as the real md_template(): features/page-title/title
-	// becomes features/page-title/templates/title.php
+	// Maps like md_template(): features/page-title/title → features/page-title/templates/title.php
 
 	$parts = explode( '/', $template );
 	$name = array_pop( $parts );
@@ -784,6 +780,8 @@ function locate_template( $template_names, $load = false ) {
 
 require_once dirname( __DIR__, 2 ) . '/functions/option-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/meta-functions.php';
+require_once dirname( __DIR__, 2 ) . '/api/values.php';
+require_once dirname( __DIR__, 2 ) . '/functions/deprecated-functions.php';
 require_once dirname( __DIR__, 2 ) . '/functions/page-functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/layout/functions.php';
 require_once dirname( __DIR__, 2 ) . '/features/integrations/functions.php';
@@ -817,8 +815,7 @@ class MD_InheritanceTestCase extends \PHPUnit\Framework\TestCase {
 		md_test_reset();
 	}
 
-	// md_api::__construct() wires up a large number of WP hooks we don't
-	// have stubs for, so build instances without running it.
+	// md_api's constructor wires hooks with no stubs, so build instances without it
 
 	protected function make_api( $post_type = 'post', $taxonomy = 'category' ) {
 		$reflection = new ReflectionClass( 'md_api' );

@@ -32,16 +32,16 @@ class md_design {
 
 	public function values() {
 		$values = $this->merge_defaults( $this->defaults(), array(
-			'colors' => md_setting( 'colors' ),
-			'header' => md_setting( 'header' ),
-			'logo' => md_setting( 'logo' ),
+			'colors' => md_value( 'colors' ),
+			'header' => md_value( 'header' ),
+			'logo' => md_value( 'logo' ),
 			'sidebar' => md_setting( 'sidebars' )
 		) );
 
 		// Resolve semantic color fallbacks and palette references.
 
 		$palette = $this->colors->active_palette();
-		$values['colors'] = $this->colors->resolve( $values['colors'], $palette, md_setting( 'colors' ) );
+		$values['colors'] = $this->colors->resolve( $values['colors'], $palette, md_value( 'colors' ) );
 
 		if ( empty( $values['logo']['site_title']['color'] ) )
 			$values['logo']['site_title']['color'] = $values['colors']['header']['text_color'];
@@ -91,19 +91,19 @@ class md_design {
 	 * line height uses the golden ratio and h2-h6 are geometric steps up to h1.
 	 *
 	 * @since 4.8
+	 * @since 6.2.2 Widths come from layout.width and return as their own branch.
 	 */
 
 	public function defaults() {
 		$typography = $this->typography();
 		$line_height = $typography['body']['line_height']['desktop'];
-		$site_title = md_setting( array( 'logo', 'site_title', 'font_size', 'desktop' ), $typography['h4']['font_size']['desktop'] );
+		$site_title = md_value( array( 'logo', 'site_title', 'font_size', 'desktop' ), $typography['h4']['font_size']['desktop'] );
 
 		// Layout Widths
 
-		$design = md_setting( array( 'colors', 'design' ) );
-		$cw = md_setting( array( 'colors', 'width', 'content' ) );
-		$sw = md_setting( array( 'colors', 'width', 'sidebar' ) );
-		$post_width = ! empty( $cw ) ? $cw : round( 21 * $line_height );
+		$design = md_value( array( 'colors', 'design' ) );
+		$width = (array) md_value( array( 'layout', 'width' ) );
+		$post_width = ! empty( $width['content'] ) ? $width['content'] : round( 21 * $line_height );
 		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
 		$content_width = apply_filters( 'md_filter_css_content_width', $post_width + $gutter, $post_width, $line_height );
 
@@ -112,13 +112,12 @@ class md_design {
 		$spacers = $this->spacer_scale( $line_height );
 		$alignwide_breakout = $content_width > 0 ? $spacers['quad'] / $content_width : 0;
 		$alignwide_width = round( $post_width + ( $post_width * $alignwide_breakout * 2 ) );
-		$sidebar_width = ! empty( $sw ) ? $sw : round( 12 * $line_height );
-		$panel_width = round( 10 * $line_height );
-		$site_width = round( $content_width + $sidebar_width + $spacers['single'] );
+		$sidebar_width = ! empty( $width['sidebar'] ) ? $width['sidebar'] : round( 12 * $line_height );
+		$panel_width = ! empty( $width['panel'] ) ? $width['panel'] : round( 10 * $line_height );
+		$site_width = ! empty( $width['site'] ) ? $width['site'] : round( $content_width + $sidebar_width + $spacers['single'] );
 		$site_width_wide = $content_width + $sidebar_width + $panel_width + ( $line_height * 2 );
 
-		$colors = $this->colors->defaults();
-		$colors['width'] = array(
+		$widths = array(
 			'site' => $site_width,
 			'site_wide' => $site_width_wide,
 			'alignwide' => $alignwide_width,
@@ -129,7 +128,8 @@ class md_design {
 		);
 
 		return array(
-			'colors' => $colors,
+			'colors' => $this->colors->defaults(),
+			'width' => $widths,
 			'typography' => $typography,
 			'logo' => array(
 				'site_title' => array(
@@ -156,7 +156,7 @@ class md_design {
 
 	private function typography() {
 		$g = 1.618;
-		$typography = (array) md_setting( 'typography' );
+		$typography = (array) md_value( 'typography' );
 
 		// Font size / line height
 
@@ -364,7 +364,7 @@ class md_design {
 	 */
 
 	public function widths( $values ) {
-		$w = $values['colors']['width'];
+		$w = $values['width'];
 
 		return array(
 			'site_width' => $w['site'],

@@ -52,7 +52,7 @@
 	.panel-left.toggle-panel[class*="from-"] .panel { inset-inline-start: 0; }
 	.panel-right.toggle-panel[class*="from-"] .panel { inset-inline-end: 0; }
 	.panel-overlay {
-		background-color: rgba(0, 0, 0, 0.5);
+		background-color: var(--md-shade);
 		height: 0;
 		opacity: 0;
 		position: fixed;

@@ -17,7 +17,11 @@ class md_author extends md_api {
 		if ( is_admin() || ! $query->is_main_query() || ! $query->is_author() )
 			return;
 
-		$loop = md_post_type_field( 'loop', array(), 'author' );
+		$loop = md_value( array(
+			'key' => 'loop',
+			'default' => array(),
+			'post_type' => 'author'
+		) );
 
 		if ( ! empty( $loop['posts_per_page'] ) )
 			$query->set( 'posts_per_page', intval( $loop['posts_per_page'] ) );

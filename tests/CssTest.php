@@ -25,6 +25,7 @@ class CssTest extends MD_TestCase {
 			$values = $design->values();
 			$colors = $values['colors'];
 			$typography = $values['typography'];
+			$logo = $values['logo'];
 			$effects = $design->effects();
 			$spacers = $design->spacers( $values );
 			$widths = $design->widths( $values );
@@ -226,9 +227,21 @@ class CssTest extends MD_TestCase {
 	}
 
 	public function test_alert_text_follows_the_highlight_color() {
-		$helpers = $this->source( 'css/helpers.php' );
+		$vars = $this->source( 'css/--vars.php' );
 
-		$this->assertStringContainsString( "md_color_is_light( \$colors['palette']['highlight'] )", $helpers );
+		$this->assertStringContainsString( "--md-highlight-text: <?php echo md_color_is_light( \$colors['palette']['highlight'] )", $vars );
+		$this->assertStringContainsString( 'color: var(--md-highlight-text);', $this->source( 'css/helpers.php' ) );
+	}
+
+	public function test_theme_css_has_no_literal_colors_outside_variables() {
+		foreach ( glob( dirname( __DIR__ ) . '/css/*.php' ) as $file ) {
+			if ( basename( $file ) === '--vars.php' )
+				continue;
+
+			$css = preg_replace( '/\.author-link\.twitter[^}]*}/', '', file_get_contents( $file ) );
+
+			$this->assertDoesNotMatchRegularExpression( '/rgba?\(\s*\d|#[0-9a-fA-F]{3,6}\b/', $css, basename( $file ) . ' has a literal colour' );
+		}
 	}
 
 	public function test_theme_json_presets_have_matching_portable_css_fallbacks() {

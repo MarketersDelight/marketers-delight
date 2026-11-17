@@ -194,6 +194,14 @@ function md_option( $option, $keys = null, $default = null ) {
 	return $value;
 }
 
+function md_post_type_settings_parent( $post_type ) {
+	return null;
+}
+
+function md_value( $key, $default = null ) {
+	return ( new md_values )->get( $key, $default );
+}
+
 function md_post_type_field( $keys = null, $default = null, $post_type = null ) {
 	return md_setting( array_merge( (array) $post_type, (array) $keys ), $default );
 }
@@ -710,6 +718,7 @@ function wp_verify_nonce( $nonce, $action ) {
 	return true;
 }
 
+require_once dirname( __DIR__ ) . '/api/values.php';
 require_once dirname( __DIR__ ) . '/functions/asset-functions.php';
 require_once dirname( __DIR__ ) . '/functions/design-functions.php';
 require_once dirname( __DIR__ ) . '/api/save/sanitize.php';

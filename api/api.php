@@ -570,17 +570,16 @@ class md_api {
 	 */
 
 	protected function loop_setting( $key, $default, $taxonomy = '', $term_id = 0 ) {
-		$path = array( 'loop', $key );
 		$exclude_setting = $key === 'exclude_posts' || $key === 'exclude_terms';
-		$value = $taxonomy && $exclude_setting ? $default : md_post_type_field( $path, $default, $this->post_type );
 
-		if ( $taxonomy )
-			$value = md_taxonomy_field( $path, $value, $this->post_type, $taxonomy );
-
-		if ( $term_id )
-			$value = md_term_meta( $path, $term_id, $value );
-
-		return $value;
+		return md_value( array(
+			'key' => array( 'loop', $key ),
+			'default' => $default,
+			'term' => $term_id,
+			'taxonomy' => $taxonomy,
+			'post_type' => $this->post_type,
+			'inherit_post_type' => ! ( $taxonomy && $exclude_setting )
+		) );
 	}
 
 	/**

@@ -56,7 +56,7 @@
 }
 
 .cover .wp-caption-text {
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: var(--md-shade-strong);
 	position: absolute;
 		inset-block-end: 0;
 		inset-inline-end: 0;
@@ -145,7 +145,7 @@ ul.page-numbers {
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
 	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 2px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
 	padding: var(--md-third) var(--md-half);
 }
 

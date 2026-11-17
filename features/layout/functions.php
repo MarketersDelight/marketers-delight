@@ -35,8 +35,8 @@ function md_has_builder() {
 
 function md_has_content_box() {
 	$remove = is_author()
-		? md_post_type_field( array( 'layout', 'content', 'remove' ), null, 'author' )
-		: md_module( array( 'layout', 'content', 'remove' ) );
+		? md_value( array( 'key' => array( 'layout', 'content', 'remove' ), 'post_type' => 'author' ) )
+		: md_value( array( 'key' => array( 'layout', 'content', 'remove' ), 'page' => true ) );
 	$show = ! $remove;
 
 	return (bool) apply_filters( 'md_filter_has_content_box', $show );
@@ -119,7 +119,7 @@ function md_has_panel( $args = array() ) {
  */
 
 function md_has_footer() {
-	$show = ! md_module( array( 'layout', 'footer', 'remove' ) ) && ( md_has_footer_columns() || is_active_sidebar( 'footer-copy' ) );
+	$show = ! md_value( array( 'key' => array( 'layout', 'footer', 'remove' ), 'page' => true ) ) && ( md_has_footer_columns() || is_active_sidebar( 'footer-copy' ) );
 
 	return (bool) apply_filters( 'md_filter_has_footer', $show );
 }
@@ -131,7 +131,7 @@ function md_has_footer() {
  */
 
 function md_has_footer_columns() {
-	$show = ! empty( md_footer_columns() ) && ! md_module( array( 'layout', 'footer', 'columns' ) );
+	$show = ! empty( md_footer_columns() ) && ! md_value( array( 'key' => array( 'layout', 'footer', 'columns' ), 'page' => true ) );
 
 	return (bool) apply_filters( 'md_filter_has_footer_columns', $show );
 }
@@ -218,7 +218,7 @@ function md_get_layout_toggle( $keys = array(), $args = array() ) {
 	$page = md_layout_context( $args );
 	$post_type = $args['post_type'] ?? ( $page === 'author' ? 'author' : md_get_post_type() );
 	$post_id = $args['post_id'] ?? get_queried_object_id();
-	$default = md_post_type_field( array( 'layout', $keys[0], $keys[1] ), null, $post_type );
+	$default = md_value( array( 'key' => array( 'layout', $keys[0], $keys[1] ), 'post_type' => $post_type ) );
 	$single = $page === 'author' ? false : md_meta( array( 'layout', $keys[0], $keys[1] ), $post_id );
 
 	return (bool) $default !== (bool) $single;
@@ -338,8 +338,12 @@ function md_has_layout( $layout = 'sidebar', $args = array() ) {
 	$page = md_layout_context( $args ) ?: 'single';
 	$post_type = $args['post_type'] ?? ( $page === 'author' ? 'author' : md_get_post_type() );
 
-	$global = md_post_type_field( array( 'layout', $layout, 'global' ), null, $post_type );
-	$page_type = md_post_type_field( array( 'layout', sprintf( "{$layout}_%s_show", $page ) ), array(), $post_type );
+	$global = md_value( array( 'key' => array( 'layout', $layout, 'global' ), 'post_type' => $post_type ) );
+	$page_type = md_value( array(
+		'key' => array( 'layout', sprintf( "{$layout}_%s_show", $page ) ),
+		'default' => array(),
+		'post_type' => $post_type
+	) );
 	$single = $page === 'author' ? array() : md_meta( array( 'layout', $layout ), $post_id, array() );
 
 	$show = ( $global && empty( $page_type['disable'] ) ) || ( ! $global && ! empty( $page_type['enable'] ) );
@@ -368,7 +372,11 @@ function md_get_layout_id( $layout = 'sidebar', $args = array() ) {
 	$page = md_layout_context( $args );
 	$post_type = $args['post_type'] ?? ( $page === 'author' ? 'author' : md_get_post_type() );
 	$post_id = $args['post_id'] ?? get_queried_object_id();
-	$layout_id = $page ? md_post_type_field( array( 'layout', "{$layout}_{$page}" ), $default, $post_type ) : $default;
+	$layout_id = $page ? md_value( array(
+		'key' => array( 'layout', "{$layout}_{$page}" ),
+		'default' => $default,
+		'post_type' => $post_type
+	) ) : $default;
 
 	if ( $page === 'term' )
 		$layout_id = md_term_meta( array( 'layout', "custom_{$layout}" ), null, $layout_id );

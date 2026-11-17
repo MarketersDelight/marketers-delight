@@ -31,8 +31,8 @@ sup { line-height: 1; }
 
 hr, .wp-block-separator {
 	border: 0;
-	border-block-end: 1px solid rgba(255, 255, 255, 0.3);
-	border-block-start: 1px solid rgba(0, 0, 0, 0.1);
+	border-block-end: 1px solid color-mix(in srgb, var(--md-color-white) 30%, transparent);
+	border-block-start: 1px solid color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
 	height: 0;
 }
 
@@ -136,7 +136,7 @@ blockquote {
 	border: 1px solid var(--md-border);
 	border-inline-start-width: 7px;
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 3px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
 	color: var(--md-text-muted);
 	display: block;
 	font-style: italic;

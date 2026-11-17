@@ -11,7 +11,7 @@ $fonts = array(
 	'line_height' => __( 'Line Height', 'md' )
 );
 $area = end( $field );
-$saved = md_setting( 'typography' );
+$saved = md_value( 'typography' );
 $inherit = $design->font_family;
 
 if ( $area !== 'body' && ! empty( $saved['body']['font_family'] ) )

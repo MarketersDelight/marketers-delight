@@ -50,7 +50,7 @@ function md_header_wrap_classes() {
  */
 
 function md_has_header() {
-	$show = ! md_module( array( 'layout', 'header', 'remove' ) ) &&
+	$show = ! md_value( array( 'key' => array( 'layout', 'header', 'remove' ), 'page' => true ) ) &&
 		( md_has_logo() || md_has_menu() || md_has_header_elements() );
 
 	return (bool) apply_filters( 'md_filter_has_header', $show );
@@ -66,7 +66,7 @@ function md_has_header_elements() {
 	$elements = md_get_header_builder( 'elements' );
 
 	return (bool) ( $elements &&
-		! md_module( array( 'layout', 'header', 'remove' ) )
+		! md_value( array( 'key' => array( 'layout', 'header', 'remove' ), 'page' => true ) )
 	);
 }
 
@@ -78,8 +78,8 @@ function md_has_header_elements() {
 
 function md_get_header_builder( $type = null ) {
 	$builder = md_get_builder( 'header' );
-	$remove_elements = md_module( array( 'layout', 'header', 'elements' ) );
-	$remove_menu = md_module( array( 'layout', 'header', 'menu' ) );
+	$remove_elements = md_value( array( 'key' => array( 'layout', 'header', 'elements' ), 'page' => true ) );
+	$remove_menu = md_value( array( 'key' => array( 'layout', 'header', 'menu' ), 'page' => true ) );
 
 	foreach ( $builder['data'] as $area => $items ) {
 		$visible = array();
@@ -144,8 +144,8 @@ function md_has_menu() {
 	$elements = md_get_header_builder( 'elements' );
 
 	return (bool) (
-		! md_module( array( 'layout', 'header', 'remove' ) ) &&
-		! md_module( array( 'layout', 'header', 'menu' ) ) &&
+		! md_value( array( 'key' => array( 'layout', 'header', 'remove' ), 'page' => true ) ) &&
+		! md_value( array( 'key' => array( 'layout', 'header', 'menu' ), 'page' => true ) ) &&
 		( ! empty( $elements['menu'] ) || ( empty( $elements ) && has_nav_menu( 'header' ) ) )
 	);
 }
@@ -246,7 +246,11 @@ function md_menu( $fields = array() ) {
 		$menu_class .= ' sub-alt';
 
 	$args = array(
-		'menu' => md_module( array( 'layout', 'header_menu' ), $menu_id ),
+		'menu' => md_value( array(
+			'key' => array( 'layout', 'header_menu' ),
+			'default' => $menu_id,
+			'page' => true
+		) ),
 		'menu_class' => esc_attr( $menu_class ),
 		'container' => 'nav',
 		'container_class' => "header-menu $location-menu",
@@ -393,7 +397,7 @@ function md_site_title() {
 function md_has_tagline() {
 	return (bool) get_bloginfo( 'description' ) &&
 		! md_setting( array( 'header', 'display', 'site_tagline' ) ) &&
-		! md_module( array( 'layout', 'header', 'tagline' ) );
+		! md_value( array( 'key' => array( 'layout', 'header', 'tagline' ), 'page' => true ) );
 }
 
 /**
@@ -414,7 +418,7 @@ function md_site_tagline() {
 
 function md_has_logo() {
 	return (bool) ( md_custom_logo() || md_has_site_title() || md_has_tagline() ) &&
-		! md_module( array( 'layout', 'header', 'logo' ) );
+		! md_value( array( 'key' => array( 'layout', 'header', 'logo' ), 'page' => true ) );
 }
 
 /**
@@ -426,7 +430,7 @@ function md_has_logo() {
 
 function md_custom_logo() {
 	$custom_logo = false;
-	$logo = md_setting( 'logo' );
+	$logo = md_value( 'logo' );
 
 	if ( ! empty( $logo['logo_html_display']['enable'] ) && ! empty( $logo['logo_html'] ) )
 		$custom_logo = $logo['logo_html'];

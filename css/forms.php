@@ -29,7 +29,7 @@ input[type="text"], input[type="url"], input[type="email"], input[type="search"]
 :is(input[type="text"], input[type="url"], input[type="email"], input[type="search"], input[type="password"], textarea)::placeholder { color: var(--md-text-muted); }
 
 input[type="text"]:focus, input[type="url"]:focus, input[type="email"]:focus, input[type="search"]:focus, input[type="password"]:focus, textarea:focus {
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
+	box-shadow: 0 0 5px color-mix(in srgb, var(--md-shadow-color) 15%, transparent);
 	outline: 2px solid var(--md-links);
 }
 

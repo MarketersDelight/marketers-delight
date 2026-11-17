@@ -98,7 +98,7 @@
 
 .tooltip {
 	align-items: center;
-	background-color: rgba(0, 0, 0, 0.75);
+	background-color: var(--md-shade-strong);
 	border-radius: var(--md-border-radius);
 	color: var(--md-site-text-contrast);
 	cursor: default;
@@ -126,7 +126,7 @@
 }
 
 .tooltip-center:after {
-	border-color: rgba(0, 0, 0, 0.8) transparent transparent transparent;
+	border-color: var(--md-shade-strong) transparent transparent transparent;
 	inset-block-start: 100%;
 	inset-inline-start: 50%;
 	transform: translateX(-50%);
@@ -139,7 +139,7 @@
 }
 
 .tooltip-left:after {
-	border-color: transparent transparent transparent rgba(0, 0, 0, 0.8);
+	border-color: transparent transparent transparent var(--md-shade-strong);
 	inset-block-start: 50%;
 	inset-inline-start: 100%;
 	transform: translateY(-50%);

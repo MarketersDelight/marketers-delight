@@ -13,18 +13,29 @@ function md_cover( $context = null ) {
 
 	$cover = array();
 	$inherit = false;
-	$post_type_cover = md_post_type_field( 'page_cover', array() );
+	$post_type_cover = md_value( array(
+		'key' => 'page_cover',
+		'default' => array(),
+		'post_type' => md_get_post_type()
+	) );
 
 	if ( $context === 'post' ) {
-		$inherit = md_post_type_field( array( 'loop', 'inherit', 'page_cover' ) );
-		$single_cover = array_filter( md_post_meta( 'page_cover', null, array() ), function( $value ) {
-			return $value !== '' && $value !== false && $value !== null && $value !== array();
-		} );
+		$inherit_args = array(
+			'key' => array( 'loop', 'inherit', 'page_cover' ),
+			'post_type' => md_get_post_type()
+		);
 
 		if ( is_category() || is_tax() ) {
-			$inherit = md_taxonomy_field( array( 'loop', 'inherit', 'page_cover' ), $inherit );
-			$inherit = md_term_meta( array( 'loop', 'inherit', 'page_cover' ), null, $inherit );
+			$inherit_args['term'] = get_queried_object_id();
+			$inherit_args['taxonomy'] = get_queried_object()->taxonomy;
 		}
+
+		$inherit = md_value( $inherit_args );
+		$single_cover = (array) md_post_meta( 'page_cover', null, array() );
+
+		foreach ( $single_cover as $key => $value )
+			if ( $value === '' || $value === false || $value === null || $value === array() )
+				unset( $single_cover[$key] );
 
 		if ( ! empty( $post_type_cover['display']['single'] ) )
 			$cover = array_replace_recursive( $post_type_cover, $single_cover );
@@ -34,14 +45,27 @@ function md_cover( $context = null ) {
 	elseif ( is_post_type_archive() || is_home() )
 		$cover = $post_type_cover;
 	elseif ( is_category() || is_tax() ) {
-		$tax_cover = md_taxonomy_field( 'page_cover', array() );
-		$term_cover = array_filter( md_term_meta( 'page_cover', null, array() ), function( $value ) {
-			return $value !== '' && $value !== false && $value !== null && $value !== array();
-		} );
+		$tax_cover = md_value( array(
+			'key' => 'page_cover',
+			'default' => array(),
+			'taxonomy' => get_queried_object()->taxonomy,
+			'post_type' => md_get_post_type(),
+			'inherit_post_type' => false
+		) );
+		$term_cover = (array) md_term_meta( 'page_cover', null, array() );
+
+		foreach ( $term_cover as $key => $value )
+			if ( $value === '' || $value === false || $value === null || $value === array() )
+				unset( $term_cover[$key] );
+
 		$cover = array_replace_recursive( $post_type_cover, $tax_cover, $term_cover );
 	}
 	elseif ( is_author() )
-		$cover = md_post_type_field( 'page_cover', array(), 'author' );
+		$cover = md_value( array(
+			'key' => 'page_cover',
+			'default' => array(),
+			'post_type' => 'author'
+		) );
 	else $cover = md_post_meta( 'page_cover', true, array() );
 
 	if (

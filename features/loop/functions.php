@@ -82,8 +82,7 @@ function md_loop( $args = array() ) {
 		}
 	}
 
-	// Things that don't exist have to go somewhere too. An empty archive
-	// says so with its post type's own "not found" label.
+	// An empty archive says so with its post type's own "not found" label
 
 	elseif ( is_404() || is_search() )
 		md_404();
@@ -118,16 +117,33 @@ function md_get_loop( $args = array() ) {
 
 		if ( $key ) {
 			$post_type = $key;
-			$loop = $args['loop_defaults'] ?? md_post_type_field( 'loop', array(), $key );
+			$loop = $args['loop_defaults'] ?? md_value( array(
+				'key' => 'loop',
+				'default' => array(),
+				'post_type' => $key
+			) );
 		}
 	}
 
 	// Build parameters for auto page detection and admin settings
 
 	else {
-		$post_type_loop = md_post_type_field( 'loop', array(), $settings_type );
-		$loop_template = md_post_type_field( array( 'loop', 'loop' ), 'article', $settings_type );
-		$single = is_author() ? array() : md_module( 'loop', array(), array( 'inherit_post_type' => false ) );
+		$post_type_loop = md_value( array(
+			'key' => 'loop',
+			'default' => array(),
+			'post_type' => $settings_type
+		) );
+		$loop_template = md_value( array(
+			'key' => array( 'loop', 'loop' ),
+			'default' => 'article',
+			'post_type' => $settings_type
+		) );
+		$single = is_author() ? array() : md_value( array(
+			'key' => 'loop',
+			'default' => array(),
+			'page' => true,
+			'inherit_post_type' => false
+		) );
 
 		// Determine main loop keys from contextual admin settings
 
@@ -136,7 +152,16 @@ function md_get_loop( $args = array() ) {
 			$loop = array_merge( array( 'loop' => $single_loop ), $single );
 		}
 		else {
-			$tax = ( is_category() || is_tax() ) ? md_taxonomy_field( 'loop', array() ) : array();
+			$tax = array();
+
+			if ( is_category() || is_tax() )
+				$tax = md_value( array(
+					'key' => 'loop',
+					'default' => array(),
+					'taxonomy' => get_queried_object()->taxonomy,
+					'post_type' => md_get_post_type(),
+					'inherit_post_type' => false
+				) );
 
 			// Blank single settings fall back to the taxonomy and post type settings
 
@@ -156,8 +181,7 @@ function md_get_loop( $args = array() ) {
 
 		$category_loop = in_array( $loop['loop_type'] ?? '', array( 'category_posts', 'category' ), true );
 
-		// Term archives only list categories when the term has children, and
-		// only read term-ID settings set on the term or its taxonomy
+		// Term archives list categories only with children, and term-ID settings only from the term or taxonomy
 
 		if ( is_category() || is_tax() ) {
 			$queried = get_queried_object();
@@ -171,7 +195,11 @@ function md_get_loop( $args = array() ) {
 			}
 
 			foreach ( array( 'category_include', 'category_exclude' ) as $key )
-				$loop[$key] = md_module( array( 'loop', $key ), null, array( 'inherit_post_type' => false ) );
+				$loop[$key] = md_value( array(
+					'key' => array( 'loop', $key ),
+					'page' => true,
+					'inherit_post_type' => false
+				) );
 		}
 		elseif ( $category_loop )
 			$loop['by_category'] = true;
@@ -335,7 +363,7 @@ function md_loop_style( $args = array() ) {
 		'post_type' => null,
 		'exclude_single' => false
 	) );
-	$body = md_setting( array( 'colors', 'design' ), 'box' );
+	$body = md_value( array( 'colors', 'design' ), 'box' );
 
 	if ( isset( $args['body'] ) )
 		return $body;
@@ -344,19 +372,34 @@ function md_loop_style( $args = array() ) {
 
 	if ( ! empty( $args['post_id'] ) ) {
 		$post_type = $args['post_type'] ?: md_get_post_type( $args['post_id'] );
-		$inherited = md_post_type_field( array( 'layout', 'content_style' ), $body, $post_type ) ?: $body;
+		$inherited = md_value( array(
+			'key' => array( 'layout', 'content_style' ),
+			'post_type' => $post_type )
+		) ?: $body;
 
 		if ( ! empty( $args['exclude_single'] ) )
 			return $inherited;
 
-		return md_post_meta( array( 'layout', 'content_style' ), $args['post_id'] ) ?: $inherited;
+		return md_value( array(
+			'key' => array( 'layout', 'content_style' ),
+			'post' => $args['post_id'],
+			'inherit_post_type' => false
+		) ) ?: $inherited;
 	}
 
 	// On the front end: the viewed page's style, then its post type's, then the site's
 
-	$post_type_style = md_post_type_field( array( 'layout', 'content_style' ) );
+	$post_type_style = md_value( array(
+		'key' => array( 'layout', 'content_style' ),
+		'post_type' => md_get_post_type()
+	) );
 
-	return md_module( array( 'layout', 'content_style' ), $post_type_style, array( 'id' => get_queried_object_id() ) ) ?: $body;
+	return md_value( array(
+		'key' => array( 'layout', 'content_style' ),
+		'default' => $post_type_style,
+		'page' => true,
+		'id' => get_queried_object_id()
+	) ) ?: $body;
 }
 
 /**
@@ -576,7 +619,7 @@ function md_loop_heading( $level, $loop = array() ) {
  */
 
 function md_has_post_content() {
-	if ( ( is_singular() || is_404() ) && md_module( array( 'layout', 'content', 'the_content' ) ) )
+	if ( ( is_singular() || is_404() ) && md_value( array( 'key' => array( 'layout', 'content', 'the_content' ), 'page' => true ) ) )
 		return false;
 
 	return (bool) apply_filters( 'md_filter_has_the_content', true );
@@ -609,7 +652,9 @@ function md_the_content( $loop ) {
  */
 
 function md_excerpt( $loop ) {
-	return wpautop( wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] ) ).
+	$excerpt = wp_trim_words( get_the_excerpt(), $loop['excerpt_length'], $loop['excerpt_more'] );
+
+	return ( $excerpt !== '' ? "<p class=\"excerpt\">$excerpt</p>\n" : '' ).
 		( empty( $loop['excerpt_settings']['remove_text'] ) ?
 			'<p class="read-more"><a href="' . get_permalink() . '" class="more-link">' . wp_kses_post( $loop['read_more'] ) . '</a></p>'
 		: '' );
@@ -650,7 +695,7 @@ function md_pagination( $loop = array() ) {
 		return;
 
 	$big = 999999999;
-	$type = $loop['pagination_type'] ?? md_module( array( 'loop', 'pagination' ) );
+	$type = $loop['pagination_type'] ?? md_value( array( 'key' => array( 'loop', 'pagination' ), 'page' => true ) );
 	$classes = $type == 'prev_next' ? 'prev-next' : 'numbers';
 
 	// Count pages from categories, the loop's own query, or the main query

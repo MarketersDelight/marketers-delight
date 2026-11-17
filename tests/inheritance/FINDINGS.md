@@ -3,6 +3,8 @@
 Backed by `tests/inheritance/*Test.php` (run with `php tests/bin/phpunit.phar -c phpunit-inheritance.xml`
 from the theme root). Every claim below is pinned down by a passing assertion, not just read from the source.
 
+**Last verified:** 6.2.1, 2026-11-16. All 212 inheritance tests pass (387 assertions), with the main suite (353) and drop-ins suite (34) also green. This is the baseline for 6.2.2 step 3, the resolver. File and line references below predate later moves: `md_get_loop()` is now in `features/loop/functions.php` and `loop_query_vars()` is at `api/api.php:521`, so find code by function name.
+
 ## TL;DR
 
 The 4-tier cascade (global default → post type → taxonomy → term) that the admin UI implies —

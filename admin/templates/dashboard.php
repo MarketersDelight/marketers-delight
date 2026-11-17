@@ -46,6 +46,8 @@
 
 			</div>
 
+			<?php do_action( 'md_hook_admin_general' ); ?>
+
 			<?php if ( has_action( 'md_hook_admin_after_tools' ) || has_action( 'md_hook_admin_settings_groups' ) ) : ?>
 			<h2 class="md-dashboard-title"><?php echo __( 'Drop-ins', 'md' ); ?></h2>
 			<?php endif; ?>

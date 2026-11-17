@@ -79,7 +79,7 @@
 	--md-border: var(--md-content-box-border);
 	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 2px 15px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
 	color: var(--md-text);
 }
 

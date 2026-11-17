@@ -54,6 +54,8 @@
 	--md-box-shadow-medium: <?php echo $effects['box_shadow']['medium']; ?>;
 	--md-box-shadow-large: <?php echo $effects['box_shadow']['large']; ?>;
 	--md-box-shadow-huge: <?php echo $effects['box_shadow']['huge']; ?>;
+	--md-shadow-color: #000;
+	--md-shade-color: #000;
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;
 
@@ -79,9 +81,14 @@
 	--md-site-links-muted: <?php echo $colors['site']['muted_link_color']; ?>;
 	--md-site-headlines: <?php echo $colors['site']['headline_color']; ?>;
 	--md-site-headline-links: <?php echo $colors['site']['headline_link_color']; ?>;
+	--md-site-title: <?php echo $logo['site_title']['color']; ?>;
+	--md-site-tagline: <?php echo $logo['site_tagline']['color']; ?>;
+	--md-highlight-text: <?php echo md_color_is_light( $colors['palette']['highlight'] ) ? '#1E1E1E' : '#FFFFFF'; ?>;
 
 	--md-tint: color-mix(in srgb, currentColor 8%, transparent);
 	--md-tint-strong: color-mix(in srgb, currentColor 15%, transparent);
+	--md-shade: color-mix(in srgb, var(--md-shade-color) 50%, transparent);
+	--md-shade-strong: color-mix(in srgb, var(--md-shade-color) 75%, transparent);
 	--md-text: var(--md-site-text);
 	--md-text-muted: var(--md-site-text-muted);
 	--md-links: var(--md-site-links);

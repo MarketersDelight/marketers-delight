@@ -25,7 +25,8 @@ class md_layout extends md_api {
 				'name' => $this->name,
 				'group' => 'page_settings',
 				'fields' => $this->fields(),
-				'taxonomy_fields' => apply_filters( 'md_filter_save_layout_fields', $this->shared_fields(), 'taxonomy' )
+				'taxonomy_fields' => apply_filters( 'md_filter_save_layout_fields', $this->shared_fields(), 'taxonomy' ),
+				'site' => $this->site_fields()
 			),
 			'meta_box' => array(
 				'name' => $this->name,
@@ -38,6 +39,69 @@ class md_layout extends md_api {
 				'fields' => $this->item_fields( true )
 			)
 		);
+	}
+
+	/**
+	 * Show the site-wide fields on the Settings dashboard.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function actions() {
+		add_action( 'md_hook_admin_general', array( $this, 'site' ) );
+	}
+
+	/**
+	 * Site-wide layout fields, saved to the site's layout group only:
+	 * post types never see them.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function site_fields() {
+		$labels = array(
+			'content' => __( 'Post Width', 'md' ),
+			'sidebar' => __( 'Sidebar Width', 'md' ),
+			'panel' => __( 'Panel Width', 'md' ),
+			'site' => __( 'Site Width', 'md' )
+		);
+		$fields = array();
+
+		foreach ( $labels as $key => $label )
+			$fields['width'][$key] = array(
+				'type' => 'range',
+				'label' => $label
+			);
+
+		return $fields;
+	}
+
+	/**
+	 * The Site Layout card on the Settings dashboard.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function site() {
+		$design = $this->design();
+		$defaults = $design->defaults();
+		$values = $design->values();
+		$widths = $design->widths( $values );
+		$line_height = $values['typography']['body']['line_height']['desktop'];
+		$placeholders = array(
+			'content' => $defaults['width']['post'],
+			'sidebar' => $defaults['width']['sidebar'],
+			'panel' => $defaults['width']['panel_width'],
+			'site' => $defaults['width']['site']
+		);
+		$descriptions = array(
+			'content' => __( 'The exact length your text reads in the content box.', 'md' ),
+			'sidebar' => '',
+			'panel' => '',
+			'site' => sprintf( __( 'Content, sidebar and the space between them. Now <code>%spx</code>', 'md' ), esc_html( $widths['site_width'] ) )
+		);
+
+		include md_template( 'features', 'layout/admin/site', true );
 	}
 
 	/**
@@ -259,11 +323,19 @@ class md_layout extends md_api {
 			$default = md_setting( array( 'layout', $id, $setting ), $data['default'] );
 
 			if ( $context['is_author'] )
-				$current = ! empty( md_post_type_field( array( 'layout', $id, $setting ), $default, 'author' ) );
+				$current = ! empty( md_value( array(
+					'key' => array( 'layout', $id, $setting ),
+					'default' => $default,
+					'post_type' => 'author'
+				) ) );
 			elseif ( $use_global )
 				$current = ! empty( $default );
 			else
-				$current = md_post_type_field( array( 'layout', $id, $setting ), $default, $context['post_type'] );
+				$current = md_value( array(
+					'key' => array( 'layout', $id, $setting ),
+					'default' => $default,
+					'post_type' => $context['post_type']
+				) );
 
 			$options[$setting] = $data['labels'][! $current];
 		}
@@ -387,11 +459,10 @@ class md_layout extends md_api {
 
 		// Data for individual elements (note the pattern emerging)
 
-		$author_box = md_post_type_field( array( 'layout', 'content', 'add_author_box' ), null, $post_type );
-
+		$author_box = md_value( array( 'key' => array( 'layout', 'content', 'add_author_box' ), 'post_type' => $post_type ) );
 		$post_nav_options = array( 'post_nav' => __( 'Remove <b>Post Nav</b>', 'md' ) );
 
-		if ( md_post_type_field( array( 'layout', 'content', 'post_nav' ), null, $post_type ) )
+		if ( md_value( array( 'key' => array( 'layout', 'content', 'post_nav' ), 'post_type' => $post_type ) ) )
 			$post_nav_options = array( 'add_post_nav' => __( 'Add <b>Post Nav</b>', 'md' ) );
 
 		$menus = array();
