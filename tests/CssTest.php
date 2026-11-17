@@ -617,6 +617,26 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( '$file', $headings );
 	}
 
+	public function test_letters_print_in_each_area_rule_without_variables() {
+		$variables = $this->source( 'css/--vars.php' );
+
+		$this->assertStringNotContainsString( 'letter-spacing', $variables );
+		$this->assertStringNotContainsString( 'text-transform', $variables );
+		$this->assertStringContainsString( '$design->letters( $h1 )', $this->source( 'css/headings.php' ) );
+		$this->assertStringContainsString( "\$design->letters( \$typography['body'] )", $this->source( 'css/style.php' ) );
+		$this->assertStringContainsString( "\$design->letters( \$typography['header'] )", $this->source( 'css/header.php' ) );
+		$this->assertStringContainsString( "\$design->letters( \$logo['site_title'] )", $this->source( 'css/header.php' ) );
+		$this->assertStringContainsString( "\$design->letters( \$logo['site_tagline'] )", $this->source( 'css/header.php' ) );
+		$this->assertStringContainsString( '$design->letters( $typography[$key] )', $this->source( 'css/layout.php' ) );
+	}
+
+	public function test_sidebar_and_footer_print_their_saved_font_family_and_weight() {
+		$layout = $this->source( 'css/layout.php' );
+
+		$this->assertStringContainsString( "font-family: {\$typography[\$key]['font_family']};", $layout );
+		$this->assertStringContainsString( "font-weight: {\$typography[\$key]['font_weight']};", $layout );
+	}
+
 	public function test_classic_resolves_desktop_typography_above_the_admin_breakpoint() {
 		$classic = $this->source( 'css/classic-editor.php' );
 		$block = $this->source( 'css/block-editor.php' );

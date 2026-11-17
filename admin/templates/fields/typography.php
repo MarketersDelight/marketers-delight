@@ -11,6 +11,7 @@ $fonts = array(
 	'line_height' => __( 'Line Height', 'md' )
 );
 $area = end( $field );
+$letters = isset( $args['letters'] ) ? $args['letters'] : array( 'spacing' => '', 'case' => __( 'Normal', 'md' ) );
 $saved = md_value( 'typography' );
 $inherit = $design->font_family;
 
@@ -21,27 +22,9 @@ if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( 
 	$inherit = $saved['h1']['font_family'];
 ?>
 
-<div class="columns-2 columns-single">
+<!-- Font -->
 
-	<?php foreach ( $fonts as $font => $label ) : ?>
-
-	<div class="col mb-single">
-
-		<?php foreach ( $devices as $device ) : ?>
-		<div class="md-<?php echo $device; ?>">
-			<?php $this->field( array_merge( $field, array( $font, $device ) ), array(
-				'type' => 'range',
-				'label' => "$label ($device)",
-				'placeholder' => isset( $args[$font][$device] ) ? $args[$font][$device] : '',
-				'min' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * ( $g / 2 ) ) : '',
-				'max' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * $g ) : ''
-			) ); ?>
-		</div>
-		<?php endforeach; ?>
-
-	</div>
-
-	<?php endforeach; ?>
+<div class="columns-2 columns-single mb-single">
 
 	<div class="col">
 
@@ -60,13 +43,13 @@ if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( 
 
 	</div>
 
-	<div class="col">
+	<div class="col md-full-select">
 
 		<?php if ( isset( $args['bold'] ) ) : ?>
 		<div class="columns-2 columns-single">
 		<?php endif; ?>
 
-		<div class="mb-third<?php echo isset( $args['bold'] ) ? ' col' : ''; ?>">
+		<div<?php echo isset( $args['bold'] ) ? ' class="col"' : ''; ?>>
 			<?php $this->field( array_merge( $field, array( 'font_weight' ) ), array(
 				'type' => 'select',
 				'label' => __( 'Font Weight', 'md' ),
@@ -76,7 +59,7 @@ if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( 
 		</div>
 
 		<?php if ( isset( $args['bold'] ) ) : ?>
-		<div class="mb-third col">
+		<div class="col">
 			<?php $this->field( array_merge( $field, array( 'bold' ) ), array(
 				'type' => 'select',
 				'label' => __( 'Bold Text', 'md' ),
@@ -87,6 +70,55 @@ if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( 
 		</div>
 		<?php endif; ?>
 
+	</div>
+
+</div>
+
+<!-- Size -->
+
+<div class="columns-2 columns-single mb-single">
+
+	<?php foreach ( $fonts as $font => $label ) : ?>
+
+	<div class="col">
+
+		<?php foreach ( $devices as $device ) : ?>
+		<div class="md-<?php echo $device; ?>">
+			<?php $this->field( array_merge( $field, array( $font, $device ) ), array(
+				'type' => 'range',
+				'label' => "$label ($device)",
+				'placeholder' => isset( $args[$font][$device] ) ? $args[$font][$device] : '',
+				'min' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * ( $g / 2 ) ) : '',
+				'max' => isset( $args[$font][$device] ) ? round( $args[$font][$device] * $g ) : ''
+			) ); ?>
+		</div>
+		<?php endforeach; ?>
+
+	</div>
+
+	<?php endforeach; ?>
+
+</div>
+
+<!-- Letters -->
+
+<div class="columns-2 columns-single">
+
+	<div class="col">
+		<?php $this->field( array_merge( $field, array( 'letter_spacing' ) ), array(
+			'placeholder' => $letters['spacing']
+		) ); ?>
+	</div>
+
+	<div class="col md-full-select">
+		<?php $this->field( array_merge( $field, array( 'text_transform' ) ), array(
+			'empty_label' => $letters['case'],
+			'options' => array(
+				'uppercase' => __( 'Uppercase', 'md' ),
+				'lowercase' => __( 'Lowercase', 'md' ),
+				'capitalize' => __( 'Capitalize', 'md' )
+			)
+		) ); ?>
 	</div>
 
 </div>

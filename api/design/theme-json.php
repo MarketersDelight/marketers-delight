@@ -238,6 +238,12 @@ class md_theme_json {
 		if ( isset( $this->fonts['heading_overrides'][$type]['font_weight'] ) )
 			$typography['fontWeight'] = $this->fonts['heading_overrides'][$type]['font_weight'];
 
+		if ( isset( $this->fonts['heading_overrides'][$type]['letter_spacing'] ) )
+			$typography['letterSpacing'] = $this->fonts['heading_overrides'][$type]['letter_spacing'];
+
+		if ( isset( $this->fonts['heading_overrides'][$type]['text_transform'] ) )
+			$typography['textTransform'] = $this->fonts['heading_overrides'][$type]['text_transform'];
+
 		return array( 'typography' => $typography );
 	}
 
@@ -268,6 +274,12 @@ class md_theme_json {
 			)
 		);
 
+		if ( $this->fonts['heading']['letter_spacing'] !== '' )
+			$elements['heading']['typography']['letterSpacing'] = $this->fonts['heading']['letter_spacing'];
+
+		if ( $this->fonts['heading']['text_transform'] !== '' )
+			$elements['heading']['typography']['textTransform'] = $this->fonts['heading']['text_transform'];
+
 		foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $heading )
 			$elements[$heading] = $this->heading_style( $heading );
 
@@ -292,15 +304,29 @@ class md_theme_json {
 		$post_title['typography']['fontFamily'] = $this->fonts['heading']['font_family'];
 		$post_title['typography']['fontWeight'] = $this->fonts['heading']['font_weight'];
 
+		if ( $this->fonts['heading']['letter_spacing'] !== '' )
+			$post_title['typography']['letterSpacing'] = $this->fonts['heading']['letter_spacing'];
+
+		if ( $this->fonts['heading']['text_transform'] !== '' )
+			$post_title['typography']['textTransform'] = $this->fonts['heading']['text_transform'];
+
+		$body = array(
+			'fontWeight' => $this->fonts['body']['font_weight'],
+			'lineHeight' => $this->line_height( 'body' )
+		);
+
+		if ( $this->fonts['body']['letter_spacing'] !== '' )
+			$body['letterSpacing'] = $this->fonts['body']['letter_spacing'];
+
+		if ( $this->fonts['body']['text_transform'] !== '' )
+			$body['textTransform'] = $this->fonts['body']['text_transform'];
+
 		$styles = array(
 			'color' => array(
 				'background' => $colors['site']['bg_color'],
 				'text' => $colors['site']['text_color']
 			),
-			'typography' => array(
-				'fontWeight' => $this->fonts['body']['font_weight'],
-				'lineHeight' => $this->line_height( 'body' )
-			),
+			'typography' => $body,
 			'elements' => $this->element_styles(),
 			'blocks' => array(
 				'core/button' => array(

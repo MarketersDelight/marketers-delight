@@ -12,6 +12,7 @@
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
+	<?php echo $design->letters( $typography['body'] ); ?>
 }
 
 .is-box-style .editor-styles-wrapper {

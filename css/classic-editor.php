@@ -22,8 +22,9 @@ include md_css( 'helpers', true );
 	font-family: <?php echo $typography['body']['font_family']; ?>;
 	font-size: var(--md-font-size);
 	line-height: var(--md-line-height);
-	max-width: <?php echo $post_width; ?>px;
+	<?php echo $design->letters( $typography['body'] ); ?>
 	margin-inline: auto;
+	max-width: <?php echo $post_width; ?>px;
 }
 
 .mce-content-body.is-box-style {

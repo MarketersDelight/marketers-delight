@@ -19,6 +19,7 @@
 	<?php if ( ! empty( $typography['header']['line_height'] ) ) : ?>
 	line-height: <?php echo $typography['header']['line_height']['desktop']; ?>px;
 	<?php endif; ?>
+	<?php echo $design->letters( $typography['header'] ); ?>
 }
 
 .is-border-style .header:not(.cover) { border-block-end: var(--md-border-width) solid var(--md-header-border); }
@@ -132,6 +133,7 @@
 	font-weight: <?php echo $logo['site_title']['font_weight']; ?>;
 	<?php endif; ?>
 	line-height: <?php echo $logo['site_title']['line_height']['desktop']; ?>px;
+	<?php echo $design->letters( $logo['site_title'] ); ?>
 }
 
 .site-name, .site-name a, .site-name a:hover { color: var(--md-site-title); }
@@ -150,6 +152,7 @@
 	<?php if ( ! empty( $logo['site_tagline']['line_height']['desktop'] ) ) : ?>
 	line-height: <?php echo $logo['site_tagline']['line_height']['desktop']; ?>px;
 	<?php endif; ?>
+	<?php echo $design->letters( $logo['site_tagline'] ); ?>
 }
 
 .tagline a { color: var(--md-site-tagline); }

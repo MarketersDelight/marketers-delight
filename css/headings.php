@@ -32,6 +32,7 @@ echo implode( ', ', $headings ) . " {\n".
 	 "\tcolor: var(--md-headlines);\n".
      "\tfont-family: $h1_font_family;\n".
      "\tfont-weight: $h1_font_weight;\n".
+     $design->letters( $h1 ).
 "}\n";
 
 foreach ( $headings as $attribute => $selector ) {
@@ -50,6 +51,12 @@ foreach ( $headings as $attribute => $selector ) {
 
 	if ( isset( $font['font_weight'] ) )
 		$overrides .= "\tfont-weight: {$font['font_weight']};\n";
+
+	if ( isset( $font['letter_spacing'] ) )
+		$overrides .= "\tletter-spacing: {$font['letter_spacing']};\n";
+
+	if ( isset( $font['text_transform'] ) )
+		$overrides .= "\ttext-transform: {$font['text_transform']};\n";
 
 	if ( $overrides )
 		echo "$selector {\n$overrides}\n";

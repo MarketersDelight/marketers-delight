@@ -67,6 +67,20 @@ class md_fields_data {
 			'options' => array_keys( $this->font_weights() )
 		);
 
+		$fields['letter_spacing'] = array(
+			'type' => 'range',
+			'label' => __( 'Letter Spacing', 'md' ),
+			'min' => -5,
+			'max' => 10,
+			'step' => 0.1
+		);
+
+		$fields['text_transform'] = array(
+			'type' => 'select',
+			'label' => __( 'Letter Case', 'md' ),
+			'options' => array( 'uppercase', 'lowercase', 'capitalize' )
+		);
+
 		return $fields;
 	}
 

@@ -59,6 +59,29 @@ class ThemeJsonTest extends MD_TestCase {
 		$this->assertSame( $elements['h1']['typography']['lineHeight'], $this->json['styles']['blocks']['core/post-title']['typography']['lineHeight'] );
 	}
 
+	public function test_heading_letters_reach_the_editor_only_when_saved() {
+		$elements = $this->json['styles']['elements'];
+
+		$this->assertArrayNotHasKey( 'letterSpacing', $elements['heading']['typography'] );
+		$this->assertArrayNotHasKey( 'textTransform', $elements['heading']['typography'] );
+
+		md_test_set_settings( array(
+			'typography' => array(
+				'h1' => array( 'letter_spacing' => '-1', 'text_transform' => 'uppercase' ),
+				'h3' => array( 'text_transform' => 'lowercase' )
+			)
+		) );
+
+		$json = ( new md_theme_json )->build();
+		$elements = $json['styles']['elements'];
+
+		$this->assertSame( '-1px', $elements['heading']['typography']['letterSpacing'] );
+		$this->assertSame( 'uppercase', $elements['heading']['typography']['textTransform'] );
+		$this->assertArrayNotHasKey( 'textTransform', $elements['h2']['typography'] );
+		$this->assertSame( 'lowercase', $elements['h3']['typography']['textTransform'] );
+		$this->assertSame( 'uppercase', $json['styles']['blocks']['core/post-title']['typography']['textTransform'] );
+	}
+
 	public function test_tiny_is_always_smaller_than_small() {
 		$font_sizes = $this->presets_by_slug( $this->json['settings']['typography']['fontSizes'] );
 

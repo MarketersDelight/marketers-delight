@@ -305,7 +305,9 @@ class md_design {
 		$fonts['body'] = array(
 			'font_family' => $body['font_family'],
 			'font_weight' => ! empty( $body['font_weight'] ) ? $body['font_weight'] : 'normal',
-			'bold' => $bold
+			'bold' => $bold,
+			'letter_spacing' => $this->letter_spacing( $body ),
+			'text_transform' => $this->text_transform( $body )
 		);
 
 		// Headings
@@ -316,11 +318,15 @@ class md_design {
 
 		$fonts['heading'] = array(
 			'font_family' => $heading_font_family,
-			'font_weight' => $heading_font_weight
+			'font_weight' => $heading_font_weight,
+			'letter_spacing' => $this->letter_spacing( $heading ),
+			'text_transform' => $this->text_transform( $heading )
 		);
 
 		foreach ( array( 'huge', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $type ) {
 			$font = $values['typography'][$type];
+			$spacing = $this->letter_spacing( $font );
+			$case = $this->text_transform( $font );
 			$override = array();
 
 			if ( ! empty( $font['font_family'] ) && $font['font_family'] !== $heading_font_family )
@@ -329,6 +335,12 @@ class md_design {
 			if ( ! empty( $font['font_weight'] ) && $font['font_weight'] !== $heading_font_weight )
 				$override['font_weight'] = $font['font_weight'];
 
+			if ( $spacing !== '' && $spacing !== $fonts['heading']['letter_spacing'] )
+				$override['letter_spacing'] = $spacing;
+
+			if ( $case !== '' && $case !== $fonts['heading']['text_transform'] )
+				$override['text_transform'] = $case;
+
 			if ( ! empty( $override ) )
 				$fonts['heading_overrides'][$type] = $override;
 		}
@@ -336,6 +348,56 @@ class md_design {
 		// Return font properties
 
 		return $fonts;
+	}
+
+	/**
+	 * A saved letter spacing in px, or empty when unset. Zero is a real value.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function letter_spacing( $font ) {
+		$spacing = '';
+
+		if ( isset( $font['letter_spacing'] ) && is_numeric( $font['letter_spacing'] ) )
+			$spacing = (float) $font['letter_spacing'] . 'px';
+
+		return $spacing;
+	}
+
+	/**
+	 * A saved letter case, or empty when unset or not one of the offered cases.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function text_transform( $font ) {
+		$case = '';
+
+		if ( isset( $font['text_transform'] ) && in_array( $font['text_transform'], array( 'uppercase', 'lowercase', 'capitalize' ), true ) )
+			$case = $font['text_transform'];
+
+		return $case;
+	}
+
+	/**
+	 * An area's saved letter spacing and case as CSS lines for its own rule, or empty.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function letters( $font ) {
+		$css = '';
+		$spacing = $this->letter_spacing( $font );
+		$case = $this->text_transform( $font );
+
+		if ( $spacing !== '' )
+			$css .= "\tletter-spacing: $spacing;\n";
+
+		if ( $case !== '' )
+			$css .= "\ttext-transform: $case;\n";
+
+		return $css;
 	}
 
 	/**

@@ -25,4 +25,5 @@ body {
 	font-size: var(--md-font-size);
 	font-weight: <?php echo $font_weight; ?>;
 	line-height: var(--md-line-height);
+	<?php echo $design->letters( $typography['body'] ); ?>
 }

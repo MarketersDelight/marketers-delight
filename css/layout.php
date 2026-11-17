@@ -27,7 +27,20 @@
 	$aside_font_size = $this->fluid( $typography[$key]['font_size']['desktop'], $typography[$key]['font_size']['mobile'] ?? null );
 	$aside_line_height = $this->fluid( $typography[$key]['line_height']['desktop'], $typography[$key]['line_height']['mobile'] ?? null );
 
+	$aside_fonts = '';
+
+	if ( ! empty( $typography[$key]['font_family'] ) )
+		$aside_fonts .= "\tfont-family: {$typography[$key]['font_family']};\n";
+
+	if ( ! empty( $typography[$key]['font_weight'] ) )
+		$aside_fonts .= "\tfont-weight: {$typography[$key]['font_weight']};\n";
+
+	$aside_fonts .= $design->letters( $typography[$key] );
+
 	echo "$selector { font-size: $aside_font_size; line-height: $aside_line_height; }";
+
+	if ( $aside_fonts )
+		echo "\n$selector {\n$aside_fonts}\n";
 } ?>
 
 /* SIDEBAR / PANEL */

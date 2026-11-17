@@ -30,11 +30,17 @@
 
 	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $h ) :
 		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
+		$letters = array( 'spacing' => '', 'case' => __( 'Normal', 'md' ) );
+
+		if ( $h !== 'h1' ) {
+			$letters['spacing'] = $values['typography']['h1']['letter_spacing'] ?? '';
+			$letters['case'] = $label;
+		}
 	?>
 
 		<div class="md-widget md-toggle mb-single">
 
-			<h3 class="md-widget-title"><span><?php echo sprintf( __( 'Headline (%s)', 'md' ), $h ); ?><?php if ( $h === 'h1' ) : ?><span class="md-widget-description"><?php echo __( 'H2 to H6 inherit this font and weight', 'md' ); ?></span><?php endif; ?></span></h3>
+			<h3 class="md-widget-title"><span><?php echo sprintf( __( 'Heading (%s)', 'md' ), $h ); ?><?php if ( $h === 'h1' ) : ?><span class="md-widget-description"><?php echo __( 'H2 to H6 inherit this font, weight, spacing and case', 'md' ); ?></span><?php endif; ?></span></h3>
 
 			<div class="md-widget-item">
 
@@ -46,7 +52,8 @@
 						'desktop' => $defaults[$h]['line_height']['desktop']
 					),
 					'font_family' => array( 'placeholder' => $label ),
-					'font_weight' => array( 'empty_label' => $label )
+					'font_weight' => array( 'empty_label' => $label ),
+					'letters' => $letters
 				) ); ?>
 
 			</div>

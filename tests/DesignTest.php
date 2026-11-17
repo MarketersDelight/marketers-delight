@@ -424,6 +424,53 @@ class DesignTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'h4', $fonts['heading_overrides'] );
 	}
 
+	public function test_letter_values_are_empty_until_saved() {
+		$fonts = $this->design->fonts( $this->design->values() );
+
+		$this->assertSame( '', $fonts['heading']['letter_spacing'] );
+		$this->assertSame( '', $fonts['heading']['text_transform'] );
+		$this->assertSame( '', $fonts['body']['letter_spacing'] );
+		$this->assertSame( '', $this->design->letters( array() ) );
+	}
+
+	public function test_heading_letters_come_from_h1_and_levels_only_override_differences() {
+		md_test_set_settings( array(
+			'typography' => array(
+				'h1' => array( 'letter_spacing' => '-0.5', 'text_transform' => 'uppercase' ),
+				'h2' => array( 'letter_spacing' => '-0.5', 'text_transform' => 'uppercase' ),
+				'h3' => array( 'letter_spacing' => '0' ),
+				'h4' => array( 'text_transform' => 'lowercase' ),
+				'header' => array( 'letter_spacing' => '1.5', 'text_transform' => 'capitalize' )
+			)
+		) );
+
+		$fonts = $this->design->fonts( $this->design->values() );
+
+		$this->assertSame( '-0.5px', $fonts['heading']['letter_spacing'] );
+		$this->assertSame( 'uppercase', $fonts['heading']['text_transform'] );
+		$this->assertArrayNotHasKey( 'h2', $fonts['heading_overrides'] );
+		$this->assertSame( array( 'letter_spacing' => '0px' ), $fonts['heading_overrides']['h3'] );
+		$this->assertSame( array( 'text_transform' => 'lowercase' ), $fonts['heading_overrides']['h4'] );
+		$this->assertArrayNotHasKey( 'h5', $fonts['heading_overrides'] );
+		$this->assertSame( "\tletter-spacing: 1.5px;\n\ttext-transform: capitalize;\n", $this->design->letters( array( 'letter_spacing' => '1.5', 'text_transform' => 'capitalize' ) ) );
+		$this->assertSame( "\tletter-spacing: 0px;\n", $this->design->letters( array( 'letter_spacing' => 0 ) ) );
+		$this->assertSame( '', $this->design->letters( array( 'letter_spacing' => '', 'text_transform' => 'bogus' ) ) );
+	}
+
+	public function test_empty_h2_letters_take_h1() {
+		md_test_set_settings( array(
+			'typography' => array(
+				'h1' => array( 'letter_spacing' => '2', 'text_transform' => 'uppercase' ),
+				'h2' => array( 'letter_spacing' => '', 'text_transform' => '' )
+			)
+		) );
+
+		$fonts = $this->design->fonts( $this->design->values() );
+
+		$this->assertSame( '2px', $fonts['heading']['letter_spacing'] );
+		$this->assertFalse( isset( $fonts['heading_overrides']['h2'] ) );
+	}
+
 	public function test_close_h1_values_are_given_room_for_six_ordered_steps() {
 		md_test_set_settings( array(
 			'typography' => array(
