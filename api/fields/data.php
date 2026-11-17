@@ -366,11 +366,19 @@ class md_fields_data {
 					'options' => array( 'small', 'large' )
 				)
 			),
+			'button_type' => array(
+				'field' => 'button_type',
+				'save' => array(
+					'type' => 'select',
+					'options' => array_keys( md_button_types() )
+				)
+			),
 			'button_style' => array(
 				'field' => 'button_style',
 				'save' => array(
 					'type' => 'checkbox',
-					'options' => array( 'outline', 'frame' )
+					'options' => array( 'outline', 'frame' ),
+					'internal' => true
 				)
 			),
 		);

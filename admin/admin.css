@@ -2182,8 +2182,9 @@ body {
 
 .md-group-link :is(.is-url, .is-button) { display: none; }
 
-.md-group-link.type-url .is-url,
-.md-group-link.style-button .is-button { display: block; }
+.md-group-link.type-url .is-url { display: block; }
+
+.md-group-link.style-button .is-button { display: grid; }
 
 .md-meta-box .md-group-link { max-width: 650px; }
 

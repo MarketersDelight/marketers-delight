@@ -92,24 +92,39 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 
 input[type="submit"], .button, .wp-element-button {
 	appearance: none;
-	background-color: var(--md-action-primary);
-	border: 0;
-	border-radius: var(--md-border-radius);
-	box-shadow: var(--md-box-shadow-small);
-	color: var(--md-action-primary-text);
+	background-color: var(--md-button-bg);
+	border: var(--md-button-border);
+	border-radius: var(--md-button-radius);
+	box-shadow: var(--md-button-shadow);
+	color: var(--md-button-text);
 	cursor: pointer;
 	font-size: inherit;
 	font-family: inherit;
 	font-style: normal;
+	<?php if ( $buttons['font_weight'] ) : ?>
+	font-weight: <?php echo $buttons['font_weight']; ?>;
+	<?php endif; ?>
 	justify-content: center;
 	padding: var(--md-half) calc(var(--md-half) + var(--md-third));
 	text-decoration: none;
+	<?php if ( $buttons['text_transform'] ) : ?>
+	text-transform: <?php echo $buttons['text_transform']; ?>;
+	<?php endif; ?>
 	transition: var(--md-transition);
 }
 
 a.button { text-decoration: none; }
 
 input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform: translateY(1px); }
+
+/* VARIANTS */
+
+<?php foreach ( md_button_types() as $slug => $type )
+	echo join( ', ', $type['selectors'] ) . ' {' . $design->button_vars( $slug ) . " }\n\n"; ?>
+.button.button-text {
+	padding-inline: 0;
+	text-decoration: underline;
+}
 
 /* COLORS */
 
@@ -118,18 +133,8 @@ input[type="submit"]:hover, .button:hover, .wp-element-button:hover { transform:
 	color: var(--md-text);
 }
 
-.button.button-sec:not(.has-background) { background-color: var(--md-action-secondary); }
-
-.button.button-sec:not(.has-text-color) { color: var(--md-action-secondary-text); }
-
-.button.button-outline,
-.is-style-outline .wp-element-button { border: 3px solid currentColor; }
-
-.button.button-outline:not(.has-background), .is-style-outline .wp-element-button:not(.has-background) { background-color: transparent; }
-
-.button.button-outline:not(.has-text-color), .is-style-outline .wp-element-button:not(.has-text-color) { color: var(--md-action-primary); }
-
 .button.button-outline.white {
+	background-color: transparent;
 	border-color: var(--md-color-white);
 	color: var(--md-color-white);
 }

@@ -110,6 +110,9 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 		$palette = $this->palette;
 		$palette_defaults = $this->colors->palette;
+		$effects = $this->design()->effects();
+		$fonts = $this->design()->fonts( $values );
+		$bold = $fonts['body']['bold'];
 
 		include md_template( 'admin/design', true );
 	}

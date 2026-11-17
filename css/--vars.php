@@ -65,6 +65,11 @@
 	--md-box-shadow-medium: <?php echo $effects['box_shadow']['medium']; ?>;
 	--md-box-shadow-large: <?php echo $effects['box_shadow']['large']; ?>;
 	--md-box-shadow-huge: <?php echo $effects['box_shadow']['huge']; ?>;
+	--md-button-bg: var(--md-action-primary);
+	--md-button-border: 0;
+	--md-button-radius: <?php echo $buttons['radius']; ?>;
+	--md-button-shadow: <?php echo $buttons['shadow']; ?>;
+	--md-button-text: var(--md-action-primary-text);
 	--md-shadow-color: <?php echo $effects['shadow_color']; ?>;
 	--md-shade-color: #000;
 	--md-transition: 0.3s;

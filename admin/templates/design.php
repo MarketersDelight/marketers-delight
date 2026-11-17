@@ -66,6 +66,11 @@
 				<?php $this->color_field( array( 'site', $field ), $opts ); ?>
 			</div>
 			<?php endforeach; ?>
+			<?php foreach ( $options['actions']['status'] as $field => $opts ) : ?>
+			<div class="col mb-single">
+				<?php $this->color_field( array( 'actions', 'status', $field ), $opts ); ?>
+			</div>
+			<?php endforeach; ?>
 		</div>
 
 	</div>
@@ -78,27 +83,70 @@
 
 			<div class="md-widget md-toggle md-color-widget md-dashboard-card">
 
-				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-button', '', 'small' ); ?><span><?php echo __( 'Actions', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Button and status colors', 'md' ); ?></span></span></h3>
+				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-button', '', 'small' ); ?><span><?php echo __( 'Buttons', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Colors and shape for every button', 'md' ); ?></span></span></h3>
 
 				<div class="md-widget-item md-widget-rows">
 
-					<?php foreach ( array(
-						'primary' => __( 'Primary Button', 'md' ),
-						'secondary' => __( 'Secondary Button', 'md' ),
-						'status' => __( 'Status', 'md' )
-					) as $action => $label ) : ?>
 					<div>
-						<h4><?php echo esc_html( $label ); ?></h4>
+						<h4><?php echo __( 'Colors', 'md' ); ?></h4>
 
 						<div class="columns-2 columns-single gap-single">
+							<?php foreach ( array( 'primary' => __( 'Primary', 'md' ), 'secondary' => __( 'Secondary', 'md' ) ) as $action => $label ) : ?>
 							<?php foreach ( $options['actions'][$action] as $field => $opts ) : ?>
 							<div class="col">
-								<?php $this->color_field( array( 'actions', $action, $field ), $opts ); ?>
+								<?php $opts['label'] = $field === 'bg_color' ? $label : sprintf( __( '%s Text', 'md' ), $label );
+								$this->color_field( array( 'actions', $action, $field ), $opts ); ?>
 							</div>
+							<?php endforeach; ?>
 							<?php endforeach; ?>
 						</div>
 					</div>
-					<?php endforeach; ?>
+
+					<div>
+						<h4><?php echo __( 'Shape', 'md' ); ?></h4>
+
+						<div class="columns-2 columns-single gap-single mb-single">
+							<div class="col">
+								<?php $this->fields->field( 'button_radius', array(
+									'id' => 'effects',
+									'type' => 'range',
+									'label' => __( 'Corner Radius', 'md' ),
+									'placeholder' => (int) $effects['border_radius'],
+									'min' => 0,
+									'max' => 48
+								) ); ?>
+							</div>
+							<div class="col md-full-select">
+								<?php $this->fields->field( 'button_weight', array(
+									'id' => 'effects',
+									'type' => 'select',
+									'label' => __( 'Font Weight', 'md' ),
+									'empty_label' => sprintf( __( 'Bold Text (%s)', 'md' ), $bold ),
+									'options' => $this->fields->data->font_weights()
+								) ); ?>
+							</div>
+							<div class="col md-full-select">
+								<?php $this->fields->field( 'button_case', array(
+									'id' => 'effects',
+									'type' => 'select',
+									'label' => __( 'Letter Case', 'md' ),
+									'empty_label' => __( 'Normal', 'md' ),
+									'options' => array(
+										'uppercase' => __( 'Uppercase', 'md' ),
+										'lowercase' => __( 'Lowercase', 'md' ),
+										'capitalize' => __( 'Capitalize', 'md' )
+									)
+								) ); ?>
+							</div>
+						</div>
+
+						<?php $this->fields->field( 'button_shadow', array(
+							'id' => 'effects',
+							'type' => 'checkbox',
+							'label' => '',
+							'options' => array( 'remove' => __( 'Remove <b>Shadow</b>', 'md' ) )
+						) ); ?>
+					</div>
 
 				</div>
 

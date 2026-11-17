@@ -359,6 +359,7 @@ class md_css {
 		$typography = $values['typography'];
 		$fonts = $design->fonts( $values );
 		$effects = $design->effects();
+		$buttons = $design->buttons();
 		$header = $values['header'];
 		$logo = $values['logo'];
 		$sidebar = $values['sidebar'];

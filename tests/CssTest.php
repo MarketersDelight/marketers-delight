@@ -27,6 +27,7 @@ class CssTest extends MD_TestCase {
 			$typography = $values['typography'];
 			$logo = $values['logo'];
 			$effects = $design->effects();
+			$buttons = $design->buttons();
 			$spacers = $design->spacers( $values );
 			$widths = $design->widths( $values );
 			$site_width = $widths['site_width'];

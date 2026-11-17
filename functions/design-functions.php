@@ -31,6 +31,44 @@ function md_color_hex( $value ) {
 }
 
 /**
+ * Button variants beside Primary (plain .button). Each sets only the button
+ * variables, so a style restyles all of them; add your own with md_button_types.
+ *
+ * @since 6.2.3
+ */
+
+function md_button_types() {
+	return apply_filters( 'md_button_types', array(
+		'secondary' => array(
+			'label' => __( 'Secondary', 'md' ),
+			'selectors' => array( '.button-secondary', '.button-sec' ),
+			'vars' => array(
+				'bg' => 'var(--md-action-secondary)',
+				'text' => 'var(--md-action-secondary-text)'
+			)
+		),
+		'outline' => array(
+			'label' => __( 'Outline', 'md' ),
+			'selectors' => array( '.button-outline', '.is-style-outline .wp-element-button' ),
+			'vars' => array(
+				'bg' => 'transparent',
+				'text' => 'var(--md-action-primary)',
+				'border' => '3px solid currentColor'
+			)
+		),
+		'text' => array(
+			'label' => __( 'Text', 'md' ),
+			'selectors' => array( '.button-text' ),
+			'vars' => array(
+				'bg' => 'transparent',
+				'text' => 'var(--md-links)',
+				'shadow' => 'none'
+			)
+		)
+	) );
+}
+
+/**
  * Returns the block editor color class for a palette reference, e.g. has-primary-color.
  * Returns empty string for direct hex/rgba values.
  *

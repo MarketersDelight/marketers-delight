@@ -401,6 +401,43 @@ class md_design {
 	}
 
 	/**
+	 * Button shape for every button and the variant form buttons use, from the
+	 * effects group. Weight and case are empty until set, so nothing prints for them.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function buttons() {
+		$saved = (array) md_value( 'effects' );
+		$types = md_button_types();
+		$form = $saved['form_button'] ?? '';
+
+		return array(
+			'radius' => isset( $saved['button_radius'] ) && is_numeric( $saved['button_radius'] ) ? (int) $saved['button_radius'] . 'px' : 'var(--md-border-radius)',
+			'shadow' => ! empty( $saved['button_shadow']['remove'] ) ? 'none' : 'var(--md-box-shadow-small)',
+			'font_weight' => ! empty( $saved['button_weight'] ) ? $saved['button_weight'] : '',
+			'text_transform' => isset( $saved['button_case'] ) && in_array( $saved['button_case'], array( 'uppercase', 'lowercase', 'capitalize' ), true ) ? $saved['button_case'] : '',
+			'form' => isset( $types[$form] ) ? $form : ''
+		);
+	}
+
+	/**
+	 * A button variant's variables as one CSS declaration list, or empty.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function button_vars( $type ) {
+		$types = md_button_types();
+		$css = '';
+
+		foreach ( $types[$type]['vars'] ?? array() as $var => $value )
+			$css .= " --md-button-$var: $value;";
+
+		return $css;
+	}
+
+	/**
 	 * Corners, borders, form fields and shadows from the saved effects over MD's
 	 * defaults. Soft shadows in the default colour keep their original values.
 	 *
@@ -459,7 +496,7 @@ class md_design {
 			'field_gap' => $join ? '0px' : 'var(--md-half)',
 			'field_align' => $join ? 'stretch' : 'center',
 			'field_inner_radius' => $join ? '0' : 'var(--md-field-radius)',
-			'field_button_radius' => $join ? '0' : 'var(--md-border-radius)',
+			'field_button_radius' => $join ? '0' : 'var(--md-button-radius)',
 			'field_overlap' => $join && ! $underline ? "calc(-1 * $border)" : '0px',
 			'shadow_color' => $color ? $color : '#000',
 			'box_shadow' => $shadows

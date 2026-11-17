@@ -47,6 +47,30 @@ class md_effects extends md_api {
 						'label' => __( 'Dividers', 'md' ),
 						'options' => array( 'divide' )
 					),
+					'button_radius' => array(
+						'type' => 'range',
+						'label' => __( 'Button Radius', 'md' )
+					),
+					'button_weight' => array(
+						'type' => 'select',
+						'label' => __( 'Button Weight', 'md' ),
+						'options' => array_keys( $this->fields->data->font_weights() )
+					),
+					'button_case' => array(
+						'type' => 'select',
+						'label' => __( 'Button Case', 'md' ),
+						'options' => array( 'uppercase', 'lowercase', 'capitalize' )
+					),
+					'button_shadow' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Button Shadow', 'md' ),
+						'options' => array( 'remove' )
+					),
+					'form_button' => array(
+						'type' => 'select',
+						'label' => __( 'Form Button Style', 'md' ),
+						'options' => array_keys( md_button_types() )
+					),
 					'field_style' => array(
 						'type' => 'select',
 						'label' => __( 'Field Style', 'md' ),

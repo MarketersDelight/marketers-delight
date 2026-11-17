@@ -77,6 +77,14 @@
 			) ); ?>
 		</div>
 
+		<div class="md-full-select mb-single">
+			<?php $this->fields->field( 'form_button', array(
+				'label' => __( 'Button Style', 'md' ),
+				'empty_label' => __( 'Primary', 'md' ),
+				'options' => wp_list_pluck( md_button_types(), 'label' )
+			) ); ?>
+		</div>
+
 		<?php $this->fields->field( 'field_join', array(
 			'label' => '',
 			'options' => array( 'join' => __( '<b>Join</b> fields and buttons together', 'md' ) )

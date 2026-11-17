@@ -2,6 +2,11 @@
 $fields = $this->data->links( $args );
 $link_type = $this->module( $fields['type']['field'], 'url' );
 $link_style = $this->module( $fields['style']['field'], 'link' );
+$button_type = array( 'type' => 'select', 'label' => __( 'Button', 'md' ), 'empty_label' => __( 'Primary', 'md' ), 'options' => wp_list_pluck( md_button_types(), 'label' ) );
+$old_style = (array) $this->module( $fields['button_style']['field'], array() );
+
+if ( ! $this->module( $fields['button_type']['field'] ) && ( ! empty( $old_style['outline'] ) || ! empty( $old_style['frame'] ) ) )
+	$button_type['value'] = 'outline';
 
 $classes = array( 'md-group-link', 'md-conditional' );
 $classes[] = 'type-' . $link_type;
@@ -125,18 +130,15 @@ $classes = join( ' ', $classes );
 		) ); ?>
 	</div>
 
-	<div class="is-button columns-4 columns-single mb-third">
+	<div class="is-button columns-2 columns-single md-full-select mb-single">
 
 		<div class="col">
-			<?php $this->field( $fields['button_style']['field'], array(
-				'type' => 'checkbox',
-				'label' => __( 'Button styles', 'md' ),
-				'empty_label' => __( 'Default', 'md' ),
-				'inline' => true,
-				'options' => array(
-					'outline' => __( 'Outline', 'md' ),
-					'frame' => __( 'Frame', 'md' )
-				)
+			<?php $this->field( $fields['button_type']['field'], $button_type );
+
+			$this->field( $fields['button_style']['field'], array(
+				'type' => 'text',
+				'hidden' => true,
+				'value' => ''
 			) ); ?>
 		</div>
 

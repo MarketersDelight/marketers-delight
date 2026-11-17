@@ -39,6 +39,7 @@ function md_get_link( $fields, $p = '' ) {
 		'classes' => '',
 		'styles' => array(),
 		'visibility' => array(),
+		'button_type' => '',
 		'button_style' => array(),
 		'toggle' => array(
 			'hide_label' => '',
@@ -98,16 +99,20 @@ function md_get_link( $fields, $p = '' ) {
 	if ( $fields['style'] == 'button' ) {
 		$classes[] = 'button';
 
+		$types = md_button_types();
+		$type = $fields['button_type'];
+
+		if ( ! $type && ( ! empty( $fields['button_style']['outline'] ) || ! empty( $fields['button_style']['frame'] ) ) )
+			$type = 'outline';
+
 		if ( $fields['size'] )
 			$classes[] = 'button-' . $fields['size'];
 
-		if ( $fields['button_style'] )
-			foreach ( $fields['button_style'] as $button_style => $val )
-				if ( $val )
-					$classes[] = "button-$button_style";
+		if ( isset( $types[$type] ) )
+			$classes[] = "button-$type";
 
 		if ( $fields['color'] ) {
-			if ( ! empty( $fields['button_style']['outline'] ) ) {
+			if ( in_array( $type, array( 'outline', 'text' ), true ) ) {
 				if ( $class = md_color_class( $fields['color'], 'color' ) ) {
 					$classes[] = $class;
 					$classes[] = md_color_class( $fields['color'], 'border_color' );

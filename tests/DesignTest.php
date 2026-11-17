@@ -631,7 +631,7 @@ class DesignTest extends MD_TestCase {
 
 		$this->assertSame( 'var(--md-half)', $apart['field_gap'] );
 		$this->assertSame( 'var(--md-field-radius)', $apart['field_inner_radius'] );
-		$this->assertSame( 'var(--md-border-radius)', $apart['field_button_radius'] );
+		$this->assertSame( 'var(--md-button-radius)', $apart['field_button_radius'] );
 		$this->assertSame( '0px', $apart['field_overlap'] );
 
 		md_test_set_settings( array( 'effects' => array( 'field_join' => array( 'join' => true ), 'border_width' => 2 ) ) );
