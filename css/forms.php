@@ -98,7 +98,7 @@ select {
 <?php if ( $buttons['form'] ) : ?>
 /* FORM BUTTONS */
 
-input[type="submit"], .button.submit {<?php echo $design->button_vars( $buttons['form'] ); ?> }
+input[type="submit"], .button.submit, .wp-block-search__button {<?php echo $design->button_vars( $buttons['form'] ); ?> }
 
 <?php endif; ?>
 /* JOIN */

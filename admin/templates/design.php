@@ -105,17 +105,18 @@
 					<div>
 						<h4><?php echo __( 'Shape', 'md' ); ?></h4>
 
+						<div class="mb-single">
+							<?php $this->fields->field( 'button_radius', array(
+								'id' => 'effects',
+								'type' => 'range',
+								'label' => __( 'Corner Radius', 'md' ),
+								'placeholder' => (int) $effects['border_radius'],
+								'min' => 0,
+								'max' => 48
+							) ); ?>
+						</div>
+
 						<div class="columns-2 columns-single gap-single mb-single">
-							<div class="col">
-								<?php $this->fields->field( 'button_radius', array(
-									'id' => 'effects',
-									'type' => 'range',
-									'label' => __( 'Corner Radius', 'md' ),
-									'placeholder' => (int) $effects['border_radius'],
-									'min' => 0,
-									'max' => 48
-								) ); ?>
-							</div>
 							<div class="col md-full-select">
 								<?php $this->fields->field( 'button_weight', array(
 									'id' => 'effects',
