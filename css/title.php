@@ -161,7 +161,7 @@
 
 .cover.repeat { background-size: auto; }
 
-:where(.entry .cover, .content .page-title.cover, .section-title.cover) { padding-inline: var(--md-half); }
+:where(.entry .cover, .content .page-title.cover, .content .section-title.cover) { padding-inline: var(--md-half); }
 
 .full-cover .page-title,
 .full-cover .main > .post-title { padding-block: calc(var(--md-quad) * 2) var(--md-double-x); }
@@ -205,7 +205,7 @@
 
 @media (min-width: <?php echo $post_width; ?>px) {
 	:where(.cover) { padding-block: var(--md-mid); }
-	:where(.entry .cover, .content .page-title.cover, .section-title.cover) { padding-inline: var(--md-mid); }
+	:where(.entry .cover, .content .page-title.cover, .content .section-title.cover) { padding-inline: var(--md-mid); }
 }
 
 @media (max-width: 800px) {

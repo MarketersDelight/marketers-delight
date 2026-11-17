@@ -68,6 +68,8 @@ $GLOBALS['__test_real_templates'] = false;
  */
 
 function md_test_reset() {
+	$GLOBALS['__test_did_actions'] = array();
+	$GLOBALS['__test_doing_actions'] = array();
 	$GLOBALS['__test_options'] = array();
 	$GLOBALS['__test_post_meta'] = array();
 	$GLOBALS['__test_term_meta'] = array();
@@ -693,6 +695,15 @@ if ( ! function_exists( '__' ) ) {
 // Title markup stubs: plain, deterministic stand-ins for WP output
 
 function do_action() {}
+
+// Tests set $GLOBALS['__test_did_actions'] / ['__test_doing_actions'] to place output around hooks
+function did_action( $hook ) {
+	return $GLOBALS['__test_did_actions'][$hook] ?? 0;
+}
+
+function doing_action( $hook = null ) {
+	return in_array( $hook, $GLOBALS['__test_doing_actions'] ?? array(), true );
+}
 
 function wpautop( $text ) {
 	return '<p>' . trim( (string) $text ) . "</p>\n";

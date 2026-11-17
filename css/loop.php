@@ -67,7 +67,7 @@
 
 .box,
 .content .page-title.cover,
-.section-title.cover,
+.content .section-title.cover,
 .entry .cover,
 .content-wrap.builder > .cover,
 .featured-media { border-radius: var(--md-border-radius); }
