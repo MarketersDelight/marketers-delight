@@ -263,6 +263,10 @@ function add_filter() {
 	return true;
 }
 
+function has_filter( $tag ) {
+	return array_key_exists( $tag, $GLOBALS['__test_filters'] );
+}
+
 function add_action() {
 	return true;
 }
