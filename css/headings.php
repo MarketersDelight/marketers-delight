@@ -86,4 +86,4 @@ echo
 
 .format :is(<?php echo $heading_selectors; ?>):is(.alignwide, .alignfull) { text-align: center; }
 
-:where(.the-content) :where(h2, h3, h4, h5, h6):not(:first-child):not(:where(.featured-media:first-child + *)) { margin-block-start: var(--md-mid); }
+:where(.the-content) :where(h2, h3, h4, h5, h6):not(:first-child):not(:where(.featured-media:first-child + *, :is(.is-layout-flow, .is-layout-constrained, .is-layout-flex, .is-layout-grid, .wp-block-post) > *)) { margin-block-start: var(--md-mid); }

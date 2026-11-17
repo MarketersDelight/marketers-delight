@@ -399,6 +399,7 @@ class md_css {
 		$quad = $spacers['quad']['desktop'];
 		$alignwide_breakout = $content_width > 0 ? ( $quad / $content_width ) * 100 : 0;
 
+		$advanced_blocks = md_setting( array( 'settings', 'head', 'blocks' ) );
 		$submenu_width = md_setting( array( 'header', 'submenu_width' ), ( $double * 5 ) );
 		$gutter_width = round( ( $site_width - $post_width ) / 2 );
 		$breakout = ( $gutter_width / $post_width ) * 100;

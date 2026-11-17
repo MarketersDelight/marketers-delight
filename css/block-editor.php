@@ -31,21 +31,33 @@
 
 /* SPACING */
 
+<?php if ( $advanced_blocks ) : ?>
 :root :where(.is-layout-flow) > *,
+<?php endif; ?>
 .md-builder .editor-styles-wrapper .wp-block-post-content .wp-block-heading:not(:first-child) { margin-block-start: 0; }
 
 .editor-styles-wrapper .wp-block-post-content > :is(ul, ol, p, hr, table, blockquote, pre, .wp-block-image, .wp-block-table):not([class*="mb-"]) { margin-block-end: <?php echo $single; ?>px; }
 
 .editor-styles-wrapper .block-editor-block-list__block.absolute { position: absolute; }
 
+<?php if ( $advanced_blocks ) : ?>
 .editor-styles-wrapper :is(.wp-block-post-content, .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"])) > .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
 
 html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-block-post-content :not(.fl, .stack, .columns, [class*="columns-"])) > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+<?php else : ?>
+.editor-styles-wrapper .is-root-container > * { margin-block-start: 0; }
+
+.editor-styles-wrapper .wp-block-post-content > .wp-block-heading:not([class*="mb-"]):not(:last-child) { margin-block-end: <?php echo $half; ?>px; }
+
+html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
+<?php endif; ?>
 
 .editor-styles-wrapper .wp-block-post-content :is(ul, ol).wp-block-list:not(.list, .list-check) {
 	list-style-position: outside;
 	padding-inline-start: var(--md-single);
 }
+
+.editor-styles-wrapper .wp-block-post-content ul ul.wp-block-list:not(.list, .list-check) { padding-inline-start: var(--md-half); }
 
 .editor-styles-wrapper .list-check li > .rich-text { display: inline; }
 
@@ -66,10 +78,14 @@ html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-blo
 
 /* BLOCK/PULL QUOTES */
 
+<?php if ( $advanced_blocks ) : ?>
 .editor-styles-wrapper .wp-block-pullquote {
 	font-size: inherit;
 	padding: 0;
 }
+<?php else : ?>
+.editor-styles-wrapper .is-root-container > .wp-block-pullquote { margin-block-end: 1em; }
+<?php endif; ?>
 
 .editor-styles-wrapper .wp-block-quote p,
 .editor-styles-wrapper .wp-block-pullquote p { margin-block: 0 <?php echo $half; ?>px; }
@@ -110,3 +126,31 @@ html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-blo
 .editor-styles-wrapper .is-root-container .wide-width { max-width: var(--md-width-alignwide); }
 
 .md-builder .editor-styles-wrapper .alignwide { max-width: var(--md-width-alignwide); }
+
+.editor-styles-wrapper .is-root-container { padding-inline: clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)); }
+
+.editor-styles-wrapper .is-root-container > .alignfull { margin-inline: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half))); }
+
+@media (max-width: <?php echo $post_width; ?>px) {
+	.compact .editor-styles-wrapper .is-root-container > .alignwide {
+		inset-inline-start: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)));
+		max-width: none;
+		position: relative;
+		width: 100vw;
+	}
+}
+
+@media (width <= <?php echo $content_width + ( $quad * 2 ); ?>px) {
+	.expanded .editor-styles-wrapper .is-root-container > .alignwide {
+		inset-inline-start: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)));
+		max-width: none;
+		position: relative;
+		width: 100vw;
+	}
+}
+
+@media (min-width: 782px) {
+	.editor-styles-wrapper .wp-block-details:not(.is-style-plain) { margin-inline: calc(-1 * var(--md-half)); }
+
+	.editor-styles-wrapper .is-root-container > .wp-block-details:not(.is-style-plain) { max-width: calc(var(--wp--style--global--content-size) + 2 * var(--md-half)); }
+}

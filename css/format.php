@@ -69,7 +69,9 @@ code, pre {
 
 .format ul { list-style: square; }
 
-.list-check, .the-content :is(ul, ol) { margin-inline-start: var(--md-single); }
+.list-check { margin-inline-start: var(--md-single); }
+
+.the-content :is(ul, ol):where(.wp-block-list, :not([class*="wp-block-"])):where(:not(.list, .list-check)) { padding-inline-start: var(--md-single); }
 
 .format li, .list-check li:not(:last-child) {
 	margin-block-end: var(--md-third);
@@ -78,7 +80,7 @@ code, pre {
 
 .format ul ul {
 	margin-block-end: var(--md-half);
-	margin-inline-start: var(--md-half);
+	padding-inline-start: var(--md-half);
 }
 
 .format .list { margin-inline-start: 0; }
