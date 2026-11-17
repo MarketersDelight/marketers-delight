@@ -508,12 +508,12 @@ class CssTest extends MD_TestCase {
 		$this->assertStringNotContainsString( 'enqueue_block_editor_assets', $admin );
 		$this->assertStringContainsString( "'is-' . \$this->editor_content_style( \$post_id ) . '-style'", $admin );
 		$this->assertStringContainsString( "add_filter( 'tiny_mce_before_init', array( \$this, 'classic_editor_layout' ) );", $admin );
-		$this->assertStringContainsString( "'marketers_delight_layout_content_style'", $script );
+		$this->assertStringContainsString( "'marketers_delight_layout_content_box_style'", $script );
 		$this->assertStringContainsString( "'is-' + style + '-style'", $script );
 		$this->assertStringContainsString( 'editorContext.inheritedContentStyle', $script );
 		$this->assertStringContainsString( 'iframe.contentDocument.documentElement', $script );
 		$this->assertStringContainsString( "'tinymce-editor-setup.mdEditorClasses'", $script );
-		$this->assertStringContainsString( 'function getContentStyle( contentStyle, builderCheckbox )', $script );
+		$this->assertStringContainsString( 'function getContentStyle( boxStyle, builderCheckbox )', $script );
 		$this->assertStringContainsString( "return 'plain';", $script );
 		$this->assertStringContainsString( "! \$exclude_single && md_post_meta( array( 'layout', 'content', 'builder' ), \$post_id )", $admin );
 		$this->assertStringNotContainsString( 'classicEditorStyle', $admin_script );
@@ -635,6 +635,16 @@ class CssTest extends MD_TestCase {
 
 		$this->assertStringContainsString( "font-family: {\$typography[\$key]['font_family']};", $layout );
 		$this->assertStringContainsString( "font-weight: {\$typography[\$key]['font_weight']};", $layout );
+	}
+
+	public function test_dividers_replace_the_border_style_rules() {
+		foreach ( array( 'css/loop.php', 'css/title.php', 'css/header.php', 'css/layout.php' ) as $file ) {
+			$this->assertStringContainsString( "<?php if ( \$effects['dividers'] ) : ?>", $this->source( $file ) );
+			$this->assertStringNotContainsString( '.border-style', $this->source( $file ) );
+			$this->assertStringNotContainsString( 'is-border-style', $this->source( $file ) );
+		}
+
+		$this->assertStringContainsString( '.plain-style.row > .entry:not(:first-child) {', $this->source( 'css/loop.php' ) );
 	}
 
 	public function test_classic_resolves_desktop_typography_above_the_admin_breakpoint() {

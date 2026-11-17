@@ -7,12 +7,14 @@
 .post-title:empty { display: none; }
 
 .page-title, .header-cover .main > .post-title { margin-block-end: var(--md-single); }
+<?php if ( $effects['dividers'] ) : ?>
 
-.is-border-style .page-title:not(.cover),
-.is-border-style .section-title:not(.cover) {
+.page-title:not(.cover),
+.section-title:not(.cover) {
 	border-block-end: var(--md-border-width) solid var(--md-border);
 	padding-block-end: var(--md-mid);
 }
+<?php endif; ?>
 
 .entry-title, .title-wrap,
 .wide .inner, .wide .wrap,

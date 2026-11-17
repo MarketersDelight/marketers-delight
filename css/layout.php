@@ -93,7 +93,9 @@
 	z-index: 88;
 }
 
-.is-border-style .footer { border-block-start: var(--md-border-width) solid var(--md-border); }
+<?php if ( $effects['dividers'] ) : ?>
+.footer { border-block-start: var(--md-border-width) solid var(--md-border); }
+<?php endif; ?>
 
 .footer :is(.widget-title, .wp-block-heading) { color: var(--md-headlines); }
 

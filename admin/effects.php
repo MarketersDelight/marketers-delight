@@ -37,6 +37,16 @@ class md_effects extends md_api {
 						'type' => 'range',
 						'label' => __( 'Border Width', 'md' )
 					),
+					'box_style' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Box Style', 'md' ),
+						'options' => array( 'remove' )
+					),
+					'dividers' => array(
+						'type' => 'checkbox',
+						'label' => __( 'Dividers', 'md' ),
+						'options' => array( 'divide' )
+					),
 					'field_style' => array(
 						'type' => 'select',
 						'label' => __( 'Field Style', 'md' ),

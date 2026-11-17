@@ -350,11 +350,11 @@ function md_filter_loop_styles() {
 }
 
 /**
- * Determine the current loop/content box style.
- * Pass a post ID to resolve the same inheritance from an admin editor.
- * Exclude the single value to get the post type/global fallback.
+ * Whether content sits in boxes ('box') or on the background ('plain'). Pass a
+ * post ID for the editor; exclude the single value for its inherited style.
  *
  * @since 5.1
+ * @since 6.2.2 Remove Box Style checkboxes; an unsaved post's old No style still reads.
  */
 
 function md_loop_style( $args = array() ) {
@@ -363,43 +363,47 @@ function md_loop_style( $args = array() ) {
 		'post_type' => null,
 		'exclude_single' => false
 	) );
-	$body = md_value( array( 'colors', 'design' ), 'box' );
+	$style = md_value( array( 'effects', 'box_style', 'remove' ) ) ? 'plain' : 'box';
+	$key = array( 'layout', 'content', 'box_style' );
 
 	if ( isset( $args['body'] ) )
-		return $body;
-
-	// In the editor: the post's own style, then its post type's, then the site's
+		return $style;
 
 	if ( ! empty( $args['post_id'] ) ) {
 		$post_type = $args['post_type'] ?: md_get_post_type( $args['post_id'] );
-		$inherited = md_value( array(
-			'key' => array( 'layout', 'content_style' ),
-			'post_type' => $post_type )
-		) ?: $body;
+		$removed = md_value( array( 'key' => $key, 'post_type' => $post_type ) );
 
-		if ( ! empty( $args['exclude_single'] ) )
-			return $inherited;
+		if ( empty( $args['exclude_single'] ) ) {
+			$old = md_post_meta( array( 'layout', 'content_style' ), $args['post_id'] );
+			$own = md_post_meta( $key, $args['post_id'] );
 
-		return md_value( array(
+			if ( ! empty( $old ) )
+				$removed = $old === 'plain';
+
+			if ( $own !== null && $own !== '' )
+				$removed = $own;
+		}
+	}
+	else {
+		$old = md_value( array(
 			'key' => array( 'layout', 'content_style' ),
-			'post' => $args['post_id'],
-			'inherit_post_type' => false
-		) ) ?: $inherited;
+			'page' => true,
+			'id' => get_queried_object_id()
+		) );
+		$removed = md_value( array(
+			'key' => $key,
+			'page' => true,
+			'id' => get_queried_object_id()
+		) );
+
+		if ( ! empty( $old ) )
+			$removed = $old === 'plain';
 	}
 
-	// On the front end: the viewed page's style, then its post type's, then the site's
+	if ( $removed !== null && $removed !== '' )
+		$style = $removed ? 'plain' : 'box';
 
-	$post_type_style = md_value( array(
-		'key' => array( 'layout', 'content_style' ),
-		'post_type' => md_get_post_type()
-	) );
-
-	return md_value( array(
-		'key' => array( 'layout', 'content_style' ),
-		'default' => $post_type_style,
-		'page' => true,
-		'id' => get_queried_object_id()
-	) ) ?: $body;
+	return $style;
 }
 
 /**

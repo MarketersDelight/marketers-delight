@@ -450,6 +450,7 @@ class md_design {
 		return array(
 			'border_radius' => $radius,
 			'border_width' => $border,
+			'dividers' => ! empty( $saved['dividers']['divide'] ),
 			'field_radius' => $underline ? '0' : $field_radius,
 			'field_border_width' => $underline ? "0 0 $border" : $border,
 			'field_bg' => $underline ? 'var(--md-tint)' : 'var(--md-form-background)',

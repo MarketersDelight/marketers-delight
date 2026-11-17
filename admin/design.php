@@ -91,13 +91,7 @@ class md_colors extends md_api {
 				'admin_header' => true,
 				'order' => 3,
 				'hide_tab' => true,
-				'fields' => array_merge( $fields, array(
-					'design' => array(
-						'type' => 'select',
-						'label' => __( 'Site style', 'md' ),
-						'options' => array_keys( md_filter_loop_styles() )
-					)
-				) )
+				'fields' => $fields
 			)
 		);
 	}
@@ -116,10 +110,6 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 		$palette = $this->palette;
 		$palette_defaults = $this->colors->palette;
-
-		$content_style = md_filter_loop_styles();
-
-		unset( $content_style['box'] );
 
 		include md_template( 'admin/design', true );
 	}

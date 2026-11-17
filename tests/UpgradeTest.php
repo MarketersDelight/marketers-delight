@@ -156,7 +156,7 @@ class UpgradeTest extends MD_TestCase {
 
 		$this->assertTrue( ( new md_upgrade )->upgrade_622() );
 		$this->assertFalse( get_option( 'marketers_delight_storage_version' ) );
-		$this->assertSame( array( 'colors' => array() ), get_option( 'marketers_delight' ) );
+		$this->assertSame( array(), get_option( 'marketers_delight' ) );
 	}
 
 	public function test_622_is_registered_for_its_release() {
@@ -171,6 +171,61 @@ class UpgradeTest extends MD_TestCase {
 
 		$this->assertSame( array( 'content' => 700, 'site' => 1300 ), $settings['settings']['width'] );
 		$this->assertSame( array( 'site' => array( 'bg_color' => 'x' ) ), $settings['colors'] );
+	}
+
+	public function test_no_style_site_removes_the_box_in_effects() {
+		$moved = ( new md_upgrade )->move_box_style( array( 'colors' => array( 'design' => 'plain', 'site' => array( 'bg_color' => 'x' ) ) ) );
+
+		$this->assertSame( array( 'colors' => array( 'site' => array( 'bg_color' => 'x' ) ), 'effects' => array( 'box_style' => array( 'remove' => true ) ) ), $moved );
+	}
+
+	public function test_border_site_removes_the_box_and_keeps_its_dividers() {
+		$moved = ( new md_upgrade )->move_box_style( array( 'colors' => array( 'design' => 'border' ), 'effects' => array( 'shadow_style' => 'hard' ) ) );
+
+		$this->assertSame( array( 'shadow_style' => 'hard', 'box_style' => array( 'remove' => true ), 'dividers' => array( 'divide' => true ) ), $moved['effects'] );
+		$this->assertArrayNotHasKey( 'colors', $moved );
+	}
+
+	public function test_border_site_keeps_box_choices_it_already_saved() {
+		$moved = ( new md_upgrade )->move_box_style( array( 'colors' => array( 'design' => 'border' ), 'effects' => array( 'box_style' => array( 'remove' => 0 ) ) ) );
+
+		$this->assertSame( array( 'remove' => 0 ), $moved['effects']['box_style'] );
+		$this->assertSame( array( 'divide' => true ), $moved['effects']['dividers'] );
+	}
+
+	public function test_box_site_only_loses_the_old_select() {
+		$moved = ( new md_upgrade )->move_box_style( array( 'colors' => array( 'design' => 'box' ) ) );
+
+		$this->assertSame( array(), $moved );
+	}
+
+	public function test_post_type_and_taxonomy_no_style_become_checkboxes() {
+		$moved = ( new md_upgrade )->move_box_style( array(
+			'post' => array(
+				'layout' => array( 'content_style' => 'plain', 'sidebar' => array( 'global' => true ) ),
+				'category' => array( 'layout' => array( 'content_style' => 'plain' ) )
+			),
+			'docs' => array( 'layout' => array( 'content_style' => 'border' ) ),
+			'stream' => array( 'layout' => array( 'content_style' => 'box', 'content' => array( 'add_author_box' => true ) ) )
+		) );
+
+		$this->assertSame( array( 'sidebar' => array( 'global' => true ), 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
+		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['category']['layout'] );
+		$this->assertArrayNotHasKey( 'docs', $moved );
+		$this->assertSame( array( 'content' => array( 'add_author_box' => true ) ), $moved['stream']['layout'] );
+	}
+
+	public function test_box_style_move_keeps_empty_arrays_it_did_not_touch() {
+		$settings = array( 'settings' => array( 'sidebars' => array() ), 'post' => array( 'layout' => array( 'content_style' => 'box' ) ) );
+
+		$this->assertSame( array( 'settings' => array( 'sidebars' => array() ) ), ( new md_upgrade )->move_box_style( $settings ) );
+	}
+
+	public function test_moving_box_style_twice_changes_nothing() {
+		$upgrade = new md_upgrade;
+		$once = $upgrade->move_box_style( array( 'colors' => array( 'design' => 'border' ), 'post' => array( 'layout' => array( 'content_style' => 'plain' ) ) ) );
+
+		$this->assertSame( $once, $upgrade->move_box_style( $once ) );
 	}
 
 	public function test_moving_widths_removes_colors_when_left_empty() {

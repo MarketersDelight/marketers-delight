@@ -577,6 +577,14 @@ class DesignTest extends MD_TestCase {
 		), $effects['box_shadow'] );
 	}
 
+	public function test_dividers_only_when_ticked() {
+		$this->assertFalse( $this->design->effects()['dividers'] );
+
+		md_test_set_settings( array( 'effects' => array( 'dividers' => array( 'divide' => true ) ) ) );
+
+		$this->assertTrue( $this->design->effects()['dividers'] );
+	}
+
 	public function test_effects_settings_change_only_their_values() {
 		md_test_set_settings( array( 'effects' => array( 'border_radius' => 4, 'border_width' => 2, 'field_radius' => 12 ) ) );
 		$effects = $this->design->effects();

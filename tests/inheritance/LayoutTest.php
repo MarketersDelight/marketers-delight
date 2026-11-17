@@ -24,31 +24,57 @@ class LayoutTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'single', md_layout_context() );
 	}
 
-	public function test_explicit_editor_post_resolves_content_style_inheritance() {
-		md_test_set_option( 'marketers_delight', array(
-			'colors' => array(
-				'design' => 'plain'
-			),
-			'post' => array(
-				'layout' => array(
-					'content_style' => 'border'
-				)
-			)
-		) );
-		md_test_set_post_meta( array(
-			'layout' => array(
-				'content_style' => 'box'
-			)
-		), 7 );
+	private function viewed_post( $post_id = 5 ) {
+		md_test_set_query( array( 'is_singular' => true, 'the_id' => $post_id, 'queried_object_id' => $post_id, 'post_type' => 'post' ) );
+	}
 
-		$args = array(
-			'post_id' => 7,
-			'post_type' => 'post'
-		);
+	public function test_boxes_show_until_a_checkbox_removes_them() {
+		$this->viewed_post();
 
-		$this->assertSame( 'box', md_loop_style( $args ) );
-		$this->assertSame( 'border', md_loop_style( array_merge( $args, array( 'exclude_single' => true ) ) ) );
-		$this->assertSame( 'border', md_loop_style( array( 'post_id' => 8, 'post_type' => 'post' ) ) );
+		$this->assertSame( 'box', md_loop_style() );
+		$this->assertSame( 'box', md_loop_style( array( 'body' => true ) ) );
+	}
+
+	public function test_site_checkbox_removes_boxes_everywhere() {
+		md_test_set_option( 'marketers_delight', array( 'effects' => array( 'box_style' => array( 'remove' => true ) ) ) );
+		$this->viewed_post();
+
+		$this->assertSame( 'plain', md_loop_style() );
+		$this->assertSame( 'plain', md_loop_style( array( 'body' => true ) ) );
+		$this->assertSame( 'plain', md_loop_style( array( 'post_id' => 5, 'post_type' => 'post' ) ) );
+	}
+
+	public function test_post_type_checkbox_and_a_post_showing_its_box_again() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'layout' => array( 'content' => array( 'box_style' => true ) ) ) ) );
+		md_test_set_post_meta( array( 'layout' => array( 'content' => array( 'box_style' => 0 ) ) ), 7 );
+		$this->viewed_post();
+
+		$this->assertSame( 'plain', md_loop_style() );
+		$this->assertSame( 'box', md_loop_style( array( 'post_id' => 7, 'post_type' => 'post' ) ) );
+		$this->assertSame( 'plain', md_loop_style( array( 'post_id' => 7, 'post_type' => 'post', 'exclude_single' => true ) ) );
+
+		$this->viewed_post( 7 );
+		$this->assertSame( 'box', md_loop_style() );
+	}
+
+	public function test_post_shows_its_box_when_the_site_removes_them() {
+		md_test_set_option( 'marketers_delight', array( 'effects' => array( 'box_style' => array( 'remove' => true ) ) ) );
+		md_test_set_post_meta( array( 'layout' => array( 'content' => array( 'box_style' => 0 ) ) ), 7 );
+		$this->viewed_post( 7 );
+
+		$this->assertSame( 'box', md_loop_style() );
+	}
+
+	public function test_unsaved_old_post_values_still_read() {
+		md_test_set_option( 'marketers_delight', array( 'post' => array( 'layout' => array( 'content' => array( 'box_style' => true ) ) ) ) );
+		md_test_set_post_meta( array( 'layout' => array( 'content_style' => 'plain' ) ), 7 );
+		md_test_set_post_meta( array( 'layout' => array( 'content_style' => 'border' ) ), 8 );
+
+		$this->assertSame( 'plain', md_loop_style( array( 'post_id' => 7, 'post_type' => 'post' ) ) );
+		$this->assertSame( 'box', md_loop_style( array( 'post_id' => 8, 'post_type' => 'post' ) ) );
+
+		$this->viewed_post( 8 );
+		$this->assertSame( 'box', md_loop_style() );
 	}
 
 	public function test_single_add_overrides_page_type_disable() {

@@ -15,8 +15,9 @@ foreach ( $args['attributes'] ?? array() as $key => $value )
 
 <p class="md-range">
 	<input type="range" class="md-range-field" value="<?php echo esc_attr( $option ); ?>" min="<?php echo $min; ?>" max="<?php echo $max; ?>"<?php echo $step; ?> />
-	<span class="md-range-wrap">
-		<input name="<?php echo esc_attr( $name ); ?>" id="<?php echo $id; ?>" class="md-range-number" type="number"<?php echo $step; ?> value="<?php echo esc_attr( $option ); ?>" placeholder="<?php echo $placeholder; ?>"<?php echo $attributes; ?> /> <?php echo esc_html( $unit ); ?>
-		<span class="md-range-reset dashicons dashicons-image-rotate" data-default="<?php echo $default; ?>"></span>
+	<span class="md-range-wrap<?php echo $option !== '' && $option !== null ? ' has-value' : ''; ?>">
+		<input name="<?php echo esc_attr( $name ); ?>" id="<?php echo $id; ?>" class="md-range-number" type="number"<?php echo $step; ?> value="<?php echo esc_attr( $option ); ?>" placeholder="<?php echo $placeholder; ?>"<?php echo $attributes; ?> />
+		<button type="button" class="md-range-reset dashicons dashicons-image-rotate" data-default="<?php echo $default; ?>" title="<?php echo esc_attr__( 'Reset', 'md' ); ?>" aria-label="<?php echo esc_attr__( 'Reset', 'md' ); ?>"></button>
+		<label for="<?php echo $id; ?>" class="md-range-unit"><?php echo esc_html( $unit ); ?></label>
 	</span>
 </p>

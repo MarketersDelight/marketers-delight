@@ -354,7 +354,7 @@ class md_fields extends md_fields_render {
 				if ( ! isset( $inherit[$key] ) || ! is_array( $inherit[$key] ) )
 					continue;
 
-				$option_parent = $this->parent_value( array_merge( (array) $field, array( $key ) ), false );
+				$option_parent = $this->parent_value( array_merge( (array) $field, array( $key ) ), $inherit[$key]['default'] ?? false );
 
 				if ( ! $option_parent['available'] )
 					continue;

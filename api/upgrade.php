@@ -34,8 +34,8 @@ class md_upgrade {
 	}
 
 	/**
-	 * 6.2.2: move widths out of colors, remove the MD 5 site-wide loop (no field
-	 * edits it) and the storage counter the 6.0 migrations left, which nothing reads.
+	 * 6.2.2: move widths and the box style selects, remove the MD 5 site-wide loop
+	 * (no field edits it) and the storage counter the 6.0 migrations left.
 	 *
 	 * @since 6.2.2
 	 */
@@ -43,6 +43,7 @@ class md_upgrade {
 	public function upgrade_622() {
 		$settings = get_option( 'marketers_delight', array() );
 		$upgraded = $this->move_widths( $settings );
+		$upgraded = $this->move_box_style( $upgraded );
 
 		if ( is_array( $upgraded ) )
 			unset( $upgraded['loop'] );
@@ -76,6 +77,74 @@ class md_upgrade {
 			unset( $settings['colors'] );
 
 		return $settings;
+	}
+
+	/**
+	 * Turn the Box / Border / No style selects into Remove Box Style checkboxes.
+	 * No style and Border remove the box in Effects; Border also keeps its divider lines.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function move_box_style( $settings ) {
+		if ( ! is_array( $settings ) )
+			return $settings;
+
+		$design = $settings['colors']['design'] ?? '';
+
+		if ( $design === 'plain' || $design === 'border' )
+			$settings['effects']['box_style'] = $settings['effects']['box_style'] ?? array( 'remove' => true );
+
+		if ( $design === 'border' )
+			$settings['effects']['dividers'] = $settings['effects']['dividers'] ?? array( 'divide' => true );
+
+		unset( $settings['colors']['design'] );
+
+		if ( ( $settings['colors'] ?? null ) === array() )
+			unset( $settings['colors'] );
+
+		foreach ( $settings as $key => $group ) {
+			$moved = is_array( $group ) ? $this->move_layout_box_style( $group, true ) : $group;
+
+			if ( $moved === array() && $group !== array() )
+				unset( $settings[$key] );
+			else
+				$settings[$key] = $moved;
+		}
+
+		return $settings;
+	}
+
+	/**
+	 * A post type group, and with $children its taxonomies: No style becomes the checkbox.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function move_layout_box_style( $group, $children = false ) {
+		$taxonomies = $children ? $group : array();
+
+		if ( is_array( $group['layout'] ?? null ) && array_key_exists( 'content_style', $group['layout'] ) ) {
+			if ( $group['layout']['content_style'] === 'plain' )
+				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? true;
+
+			unset( $group['layout']['content_style'] );
+
+			if ( empty( $group['layout'] ) )
+				unset( $group['layout'] );
+		}
+
+		foreach ( $taxonomies as $key => $child ) {
+			if ( ! is_array( $child ) || ! isset( $child['layout'] ) )
+				continue;
+
+			$group[$key] = $this->move_layout_box_style( $child );
+
+			if ( $group[$key] === array() )
+				unset( $group[$key] );
+		}
+
+		return $group;
 	}
 
 	/**

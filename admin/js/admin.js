@@ -273,22 +273,22 @@
 
 		range: function() {
 			$( document ).on( 'input change', '.md-range-field', function() {
-				var parent = $( this ).parents( '.md-range' ),
-					number = parent.find( '.md-range-number' );
+				var number = $( this ).parents( '.md-range' ).find( '.md-range-number' );
 				number.val( $( this ).val() );
+				number.closest( '.md-range-wrap' ).addClass( 'has-value' );
 			});
 			$( document ).on( 'input change', '.md-range-number', function() {
-				var parent = $( this ).parents( '.md-range' ),
-					range = parent.find( '.md-range-field' );
+				var range = $( this ).parents( '.md-range' ).find( '.md-range-field' );
 				range.val( $( this ).val() );
+				$( this ).closest( '.md-range-wrap' ).toggleClass( 'has-value', this.value !== '' );
 			});
 			$( document ).on( 'click', '.md-range-reset', function() {
-				var data = $( this ).data( 'default' ),
-					parent = $( this ).parents( '.md-range' ),
-					number = parent.find( '.md-range-number' ),
-					range = parent.find( '.md-range-field' );
-				number.val( '' );
-				range.val( data );
+				var wrap = $( this ).closest( '.md-range-wrap' ),
+					number = wrap.find( '.md-range-number' ),
+					range = wrap.closest( '.md-range' ).find( '.md-range-field' );
+				number.val( '' ).trigger( 'input' );
+				range.val( $( this ).data( 'default' ) );
+				number.trigger( 'focus' );
 			});
 		},
 		loop: function() {

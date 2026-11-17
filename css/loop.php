@@ -146,32 +146,34 @@
 
 .box-entry .entry-title:not(.cover, :empty) + .the-content { padding-block-start: 0; }
 
-/* PLAIN + BORDER STYLES */
+/* PLAIN STYLE */
 
-.expanded :is(.plain-style, .border-style).loop-article.row > .entry:not(:last-child) { margin-block-end: var(--md-double); }
+.expanded .plain-style.loop-article.row > .entry:not(:last-child) { margin-block-end: var(--md-double); }
 
-.compact :is(.plain-style, .border-style).loop-article.row > .entry,
-:is(.plain-style, .border-style).row > .entry > .post-title:not(:last-child),
-:is(.plain-style, .border-style).row > .entry > :not(.loop) > .post-title:not(:last-child),
-:is(.plain-style, .border-style).loop-article.row > .entry > .item:not(:last-child) { margin-block-end: var(--md-single); }
+.compact .plain-style.loop-article.row > .entry,
+.plain-style.row > .entry > .post-title:not(:last-child),
+.plain-style.row > .entry > :not(.loop) > .post-title:not(:last-child),
+.plain-style.loop-article.row > .entry > .item:not(:last-child) { margin-block-end: var(--md-single); }
 
-:is(.plain-style, .border-style).columns > .entry > *:not(:last-child) { margin-block-end: var(--md-half); }
+.plain-style.columns > .entry > *:not(:last-child) { margin-block-end: var(--md-half); }
 
-:is(.plain-style, .border-style).loop-article.image-above.has-cover > .featured-media,
-:is(.plain-style, .border-style).loop-article.image-below.has-cover > .post-title { margin-block-end: 0; }
+.plain-style.loop-article.image-above.has-cover > .featured-media,
+.plain-style.loop-article.image-below.has-cover > .post-title { margin-block-end: 0; }
 
-/* BORDER STYLE */
+<?php if ( $effects['dividers'] ) : ?>
+/* DIVIDERS */
 
-.border-style.row > .entry:not(:first-child) {
+.plain-style.row > .entry:not(:first-child) {
 	border-block-start: var(--md-border-width) solid var(--md-border);
 	padding-block-start: var(--md-mid);
 }
 
-.border-style.row > :is(.entry.has-cover, .entry.image-above) {
+.plain-style.row > :is(.entry.has-cover, .entry.image-above) {
 	border-block-start: 0;
 	padding-block-start: 0;
 }
 
+<?php endif; ?>
 /* LOOP LIST */
 
 .loop-list > .entry {

@@ -157,12 +157,12 @@
 		<p class="md-label-wrap"><label class="md-label"><?php echo __( 'Content', 'md' ); ?></label></p>
 
 		<?php $content_options = array(
-			'remove' => __( 'Remove <b>Content Box</b>', 'md' )
+			'remove' => __( 'Remove <b>Content Area</b>', 'md' )
 		);
 		$content_inherit = array(
 			'remove' => array(
-				'on' => __( 'Remove <b>Content Box</b>', 'md' ),
-				'off' => __( 'Show <b>Content Box</b>', 'md' )
+				'on' => __( 'Remove <b>Content Area</b>', 'md' ),
+				'off' => __( 'Show <b>Content Area</b>', 'md' )
 			)
 		);
 
@@ -232,13 +232,28 @@
 					)
 				) );
 
-			$content_style_options = md_filter_loop_styles();
+			$box_style = array(
+				'options' => array(
+					'box_style' => __( 'Remove <b>Box Style</b>', 'md' )
+				),
+				'inherit' => array(
+					'box_style' => array(
+						'on' => __( 'Remove <b>Box Style</b>', 'md' ),
+						'off' => __( 'Show <b>Box Style</b>', 'md' ),
+						'default' => md_loop_style( array( 'body' => true ) ) === 'plain'
+					)
+				)
+			);
+
+			if ( $this->fields->saved( 'content_style' ) === 'plain' && $this->fields->saved( array( 'content', 'box_style' ) ) === null )
+				$box_style['value'] = array( 'box_style' => true );
+
+			$this->fields->field( 'content', $box_style );
 
 			$this->fields->field( 'content_style', array(
-				'empty_label' => __( 'Use default style', 'md' ),
-				'inherit' => true,
-				'wrap_classes' => 'mb-third',
-				'options' => $content_style_options
+				'type' => 'text',
+				'hidden' => true,
+				'value' => ''
 			) ); ?>
 
 		</div>

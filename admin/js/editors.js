@@ -68,29 +68,32 @@
 		syncEditor();
 	}
 
-	function getContentStyle( contentStyle, builderCheckbox ) {
+	function getContentStyle( boxStyle, builderCheckbox ) {
 		if ( builderCheckbox && builderCheckbox.checked )
 			return 'plain';
 
-		return ( contentStyle && contentStyle.value ) || editorContext.inheritedContentStyle || 'box';
+		if ( boxStyle && boxStyle.checked )
+			return boxStyle.value === '0' ? 'box' : 'plain';
+
+		return editorContext.inheritedContentStyle || 'box';
 	}
 
 	// Find Layout options in MD meta boxes
 
 	function attachListeners( doc ) {
 		var builderCheckbox = doc.getElementById( 'marketers_delight_layout_content_builder' ),
-			contentStyle = doc.getElementById( 'marketers_delight_layout_content_style' ),
+			boxStyle = doc.getElementById( 'marketers_delight_layout_content_box_style' ),
 			sidebarAdd = isBlockEditor ? doc.getElementById( 'marketers_delight_layout_sidebar_add' ) : null,
 			sidebarRemove = isBlockEditor ? doc.getElementById( 'marketers_delight_layout_sidebar_remove' ) : null;
 
 		if ( builderCheckbox )
 			builderCheckbox.addEventListener( 'change', function() {
 				document.body.classList.toggle( 'md-builder', !! this.checked );
-				applyContentStyle( getContentStyle( contentStyle, this ) );
+				applyContentStyle( getContentStyle( boxStyle, this ) );
 			} );
 
-		if ( contentStyle )
-			contentStyle.addEventListener( 'change', function() {
+		if ( boxStyle )
+			boxStyle.addEventListener( 'change', function() {
 				applyContentStyle( getContentStyle( this, builderCheckbox ) );
 			} );
 
@@ -104,7 +107,7 @@
 				applySidebarClass( ! this.checked );
 			} );
 
-		return !! ( builderCheckbox || contentStyle || sidebarAdd || sidebarRemove );
+		return !! ( builderCheckbox || boxStyle || sidebarAdd || sidebarRemove );
 	}
 
 	// Initialize Block Editor iframe and delayed meta boxes

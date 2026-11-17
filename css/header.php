@@ -21,8 +21,10 @@
 	<?php endif; ?>
 	<?php echo $design->letters( $typography['header'] ); ?>
 }
+<?php if ( $effects['dividers'] ) : ?>
 
-.is-border-style .header:not(.cover) { border-block-end: var(--md-border-width) solid var(--md-header-border); }
+.header:not(.cover) { border-block-end: var(--md-border-width) solid var(--md-header-border); }
+<?php endif; ?>
 
 .header.sticky {
 	position: sticky;
