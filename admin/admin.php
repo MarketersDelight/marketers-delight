@@ -251,7 +251,7 @@ class md_admin {
 			'copied' => __( 'Copied!', 'md' ),
 			'preview_image' => __( 'Preview image', 'md' ),
 			'save' => array(
-				'clean' => __( 'All changes saved', 'md' ),
+				'clean' => '',
 				'dirty' => __( 'Unsaved changes', 'md' ),
 				'saving' => __( 'Saving…', 'md' ),
 				'saved' => __( 'Saved', 'md' ),

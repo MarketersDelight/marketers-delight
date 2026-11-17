@@ -249,7 +249,7 @@ class md_save_settings {
 
 		return
 			'<div class="md-save-actions">'.
-			'<span class="md-save-status is-clean" role="status" aria-live="polite" title="' . esc_attr__( 'All changes saved', 'md' ) . '"><span class="md-save-icon"></span><span class="md-save-text">' . esc_html__( 'All changes saved', 'md' ) . '</span></span>'.
+			'<span class="md-save-status is-clean" role="status" aria-live="polite"><span class="md-save-icon"></span><span class="md-save-text"></span></span>'.
 			'<input type="submit" name="submit" class="button button-primary md-save-button" value="' . esc_attr__( 'Save', 'md' ) . '" title="' . esc_attr__( 'Save (⌘S)', 'md' ) . '" disabled />'.
 			'</div>';
 	}

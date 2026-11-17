@@ -578,6 +578,8 @@ body {
 	width: 8px;
 }
 
+.md-save-status.is-clean .md-save-icon { display: none; }
+
 .md-save-status:is(.is-dirty, .is-saving) { color: var(--md-ui-gray-90); }
 
 .md-save-status.is-dirty .md-save-icon { background-color: var(--md-ui-yellow); }
