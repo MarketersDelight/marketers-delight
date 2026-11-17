@@ -80,6 +80,8 @@
 
 	</div>
 
+	<?php do_action( 'md_hook_admin_design' ); ?>
+
 	<hr class="mb-single" />
 
 	<div class="md-widget md-toggle md-color-widget mb-single">

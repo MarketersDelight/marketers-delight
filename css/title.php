@@ -10,7 +10,7 @@
 
 .is-border-style .page-title:not(.cover),
 .is-border-style .section-title:not(.cover) {
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	padding-block-end: var(--md-mid);
 }
 

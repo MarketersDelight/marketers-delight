@@ -51,7 +51,7 @@
 }
 
 .entry .wp-caption-text, .wp-element-caption {
-	border-bottom: 1px solid var(--md-border);
+	border-bottom: var(--md-border-width) solid var(--md-border);
 	color: var(--md-text-muted);
 }
 
@@ -145,7 +145,7 @@ ul.page-numbers {
 span.page-numbers, a.page-numbers, .post-nav-links .post-page-numbers {
 	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 2px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 	padding: var(--md-third) var(--md-half);
 }
 
@@ -223,7 +223,7 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 }
 
 .box-style .post-nav {
-	border-block-start: 1px solid var(--md-border);
+	border-block-start: var(--md-border-width) solid var(--md-border);
 	border-end-start-radius: inherit;
 	border-end-end-radius: inherit;
 	overflow: clip;
@@ -243,10 +243,10 @@ span.page-numbers:hover, a.page-numbers:hover, .post-nav-links.post-page-numbers
 	}
 	.post-nav-previous, .post-nav-next { flex: 1; }
 	.post-nav-next { text-align: right; }
-	.box-style .post-nav-previous + .post-nav-next { border-inline-start: 1px solid var(--md-border); }
+	.box-style .post-nav-previous + .post-nav-next { border-inline-start: var(--md-border-width) solid var(--md-border); }
 }
 
 @media (max-width: <?php echo $post_width; ?>px) {
 	.post-nav-next { text-align: left; }
-	.box-style .post-nav-previous + .post-nav-next { border-block-start: 1px solid var(--md-border); }
+	.box-style .post-nav-previous + .post-nav-next { border-block-start: var(--md-border-width) solid var(--md-border); }
 }

@@ -10,11 +10,11 @@
 	position: relative;
 }
 
-.panel-left .panel { border-inline-end: 1px solid var(--md-panel-border); }
+.panel-left .panel { border-inline-end: var(--md-border-width) solid var(--md-panel-border); }
 
 .panel-right { overflow-x: hidden; }
 
-.panel-right .panel { border-inline-start: 1px solid var(--md-panel-border); }
+.panel-right .panel { border-inline-start: var(--md-border-width) solid var(--md-panel-border); }
 
 /* WIDGETS */
 

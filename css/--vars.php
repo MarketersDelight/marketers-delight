@@ -49,12 +49,23 @@
 	--md-width-site-wide: <?php echo $site_width_wide; ?>px;
 
 	--md-border-radius: <?php echo $effects['border_radius']; ?>;
+	--md-border-width: <?php echo $effects['border_width']; ?>;
+	--md-field-radius: <?php echo $effects['field_radius']; ?>;
+	--md-field-border-width: <?php echo $effects['field_border_width']; ?>;
+	--md-field-bg: <?php echo $effects['field_bg']; ?>;
+	--md-field-focus-outline: <?php echo $effects['field_focus_outline']; ?>;
+	--md-field-focus-shadow: <?php echo $effects['field_focus_shadow']; ?>;
+	--md-field-gap: <?php echo $effects['field_gap']; ?>;
+	--md-field-align: <?php echo $effects['field_align']; ?>;
+	--md-field-inner-radius: <?php echo $effects['field_inner_radius']; ?>;
+	--md-field-button-radius: <?php echo $effects['field_button_radius']; ?>;
+	--md-field-overlap: <?php echo $effects['field_overlap']; ?>;
 	--md-box-shadow: <?php echo $effects['box_shadow']['default']; ?>;
 	--md-box-shadow-small: <?php echo $effects['box_shadow']['small']; ?>;
 	--md-box-shadow-medium: <?php echo $effects['box_shadow']['medium']; ?>;
 	--md-box-shadow-large: <?php echo $effects['box_shadow']['large']; ?>;
 	--md-box-shadow-huge: <?php echo $effects['box_shadow']['huge']; ?>;
-	--md-shadow-color: #000;
+	--md-shadow-color: <?php echo $effects['shadow_color']; ?>;
 	--md-shade-color: #000;
 	--md-transition: 0.3s;
 	--md-transition-slow: 0.5s;

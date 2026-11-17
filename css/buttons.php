@@ -95,7 +95,7 @@ input[type="submit"], .button, .wp-element-button {
 	background-color: var(--md-action-primary);
 	border: 0;
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 	color: var(--md-action-primary-text);
 	cursor: pointer;
 	font-size: inherit;

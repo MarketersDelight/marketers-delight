@@ -116,7 +116,7 @@
 .box-entry > .entry > :not(.loop) > :is(.post-footer, .item-sep),
 .box-entry > .entry > :not(.loop) > .wrap > :is(.post-footer, .item-sep),
 .box-style.category-view > .entry > :is(.post-footer, .item-sep),
-.archive-sections-group > .box > .post-footer { border-block-start: 1px solid var(--md-border); }
+.archive-sections-group > .box > .post-footer { border-block-start: var(--md-border-width) solid var(--md-border); }
 
 .box, .box-entry > .entry { width: auto; }
 
@@ -140,7 +140,7 @@
 
 .box-entry > .entry > .byline.entry-top,
 .box-entry > .entry > :not(.loop) > .byline.entry-top {
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	padding: var(--md-third) var(--md-half);
 }
 
@@ -163,7 +163,7 @@
 /* BORDER STYLE */
 
 .border-style.row > .entry:not(:first-child) {
-	border-block-start: 1px solid var(--md-border);
+	border-block-start: var(--md-border-width) solid var(--md-border);
 	padding-block-start: var(--md-mid);
 }
 
@@ -176,7 +176,7 @@
 
 .loop-list > .entry {
 	--md-media-width: var(--md-double);
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	display: flex;
 	flex-direction: column;
 	gap: var(--md-third);

@@ -80,7 +80,7 @@
 	z-index: 88;
 }
 
-.is-border-style .footer { border-block-start: 1px solid var(--md-border); }
+.is-border-style .footer { border-block-start: var(--md-border-width) solid var(--md-border); }
 
 .footer :is(.widget-title, .wp-block-heading) { color: var(--md-headlines); }
 
@@ -94,7 +94,7 @@
 .footer .list a { display: block; }
 
 .footer-copy {
-	border-block-start: 1px solid var(--md-border);
+	border-block-start: var(--md-border-width) solid var(--md-border);
 	padding-block: var(--md-single);
 	text-align: center;
 }

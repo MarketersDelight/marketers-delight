@@ -96,7 +96,7 @@ final class marketers_delight {
 			require_once MD_DIR . 'api/save/settings-file.php';
 			require_once MD_DIR . 'api/dropins/manage.php';
 
-			foreach ( array( 'dashboard', 'icons', 'page-settings', 'typography', 'design' ) as $file )
+			foreach ( array( 'dashboard', 'icons', 'page-settings', 'typography', 'design', 'effects' ) as $file )
 				require_once MD_DIR . "admin/$file.php";
 		}
 

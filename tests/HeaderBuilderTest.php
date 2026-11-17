@@ -54,7 +54,7 @@ class HeaderBuilderTest extends MD_TestCase {
 		$this->assertStringContainsString( '.header:where(:not(.menu-scroll)) :is(.primary-menu, .aside-menu)', $header );
 		$this->assertStringContainsString( '.menu-scroller .scroller-list { overflow: visible; }', $header );
 		$this->assertStringContainsString( '.header .menu-scroller { margin-block-end: 0; }', $header );
-		$this->assertStringContainsString( '.menu-scroller { border-block-start: 1px solid var(--md-header-border); }', $header );
+		$this->assertStringContainsString( '.menu-scroller { border-block-start: var(--md-border-width) solid var(--md-header-border); }', $header );
 		$this->assertStringContainsString( '.menu-scroll .header-controls { padding-block-end: var(--md-half); }', $header );
 		$this->assertStringContainsString( '@supports not (anchor-scope: --item) {', $menus );
 		$this->assertStringContainsString( '.menu-scroller .nav-menu :is(.sub-menu, .trigger) { display: none; }', $menus );

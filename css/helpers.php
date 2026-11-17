@@ -101,7 +101,7 @@ cite, .tiny {
 
 .avatar {
 	border-radius: 50%;
-	box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 }
 
 .repeat { background-repeat: repeat; }
@@ -115,11 +115,11 @@ cite, .tiny {
 .border, .border-tb, .border-bottom {
 	border-color: var(--md-border);
 	border-style: solid;
-	border-width: 1px;
+	border-width: var(--md-border-width);
 }
 
-.border-tb { border-width: 1px 0; }
-.border-bottom { border-width: 0 0 1px; }
+.border-tb { border-width: var(--md-border-width) 0; }
+.border-bottom { border-width: 0 0 var(--md-border-width); }
 
 /* SHADOWS */
 

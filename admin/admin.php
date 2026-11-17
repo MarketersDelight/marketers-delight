@@ -39,6 +39,7 @@ class md_admin {
 		include_once __DIR__ . '/page-settings.php';
 		include_once __DIR__ . '/typography.php';
 		include_once __DIR__ . '/design.php';
+		include_once __DIR__ . '/effects.php';
 		include_once __DIR__ . '/import-export.php';
 	}
 

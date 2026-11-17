@@ -777,6 +777,7 @@ class md_settings_file {
 		return array(
 			'colors' => true,
 			'typography' => true,
+			'effects' => true,
 			'logo' => array(
 				'logo_width' => true,
 				'site_title' => $type,

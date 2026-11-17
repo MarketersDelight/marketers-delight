@@ -88,7 +88,7 @@ ol.list, ul.list, .list-check, .format .list-check { list-style: none; }
 .list-links li a,
 .list li:not(:last-child),
 .list > :is(ul, ol):not(:last-child) {
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	padding-block-end: var(--md-half);
 }
 
@@ -133,10 +133,10 @@ blockquote {
 	--md-headline-links: var(--md-content-box-text);
 	--md-border: var(--md-content-box-border);
 	background-color: var(--md-content-box-background);
-	border: 1px solid var(--md-border);
+	border: var(--md-border-width) solid var(--md-border);
 	border-inline-start-width: 7px;
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 3px color-mix(in srgb, var(--md-shadow-color) 20%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 	color: var(--md-text-muted);
 	display: block;
 	font-style: italic;

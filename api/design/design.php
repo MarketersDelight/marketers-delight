@@ -339,21 +339,67 @@ class md_design {
 	}
 
 	/**
-	 * Return shared border radius and box shadow effects.
+	 * Corners, borders, form fields and shadows from the saved effects over MD's
+	 * defaults. Soft shadows in the default colour keep their original values.
 	 *
 	 * @since 6.0
+	 * @since 6.2.2 Built from the effects settings.
 	 */
 
 	public function effects() {
+		$saved = (array) md_value( 'effects' );
+		$radius = isset( $saved['border_radius'] ) && $saved['border_radius'] !== '' ? (int) $saved['border_radius'] . 'px' : '8px';
+		$border = isset( $saved['border_width'] ) && $saved['border_width'] !== '' ? (int) $saved['border_width'] . 'px' : '1px';
+		$underline = ! empty( $saved['field_style'] ) && $saved['field_style'] === 'underline';
+		$join = ! empty( $saved['field_join']['join'] );
+		$field_radius = isset( $saved['field_radius'] ) && $saved['field_radius'] !== '' ? (int) $saved['field_radius'] . 'px' : $radius;
+		$color = ! empty( $saved['shadow_color'] ) ? md_color_hex( $saved['shadow_color'] ) : '';
+		$style = ! empty( $saved['shadow_style'] ) ? $saved['shadow_style'] : '';
+
+		// Soft shadows: offset, blur and strength for each size
+
+		$soft = array(
+			'default' => array( '0 2px 8px', '0.15' ),
+			'small' => array( '0 1px 3px', '0.15' ),
+			'medium' => array( '0 4px 16px', '0.12' ),
+			'large' => array( '0 8px 32px', '0.15' ),
+			'huge' => array( '0 16px 48px', '0.20' )
+		);
+		$hard = array(
+			'default' => '4px 4px 0',
+			'small' => '2px 2px 0',
+			'medium' => '6px 6px 0',
+			'large' => '8px 8px 0',
+			'huge' => '12px 12px 0'
+		);
+		$shadows = array();
+
+		foreach ( $soft as $size => $shadow ) {
+			if ( $style === 'none' )
+				$shadows[$size] = 'none';
+			elseif ( $style === 'hard' )
+				$shadows[$size] = $hard[$size] . ' ' . ( $color ? $color : '#000' );
+			elseif ( $color )
+				$shadows[$size] = $shadow[0] . ' color-mix(in srgb, ' . $color . ' ' . ( (float) $shadow[1] * 100 ) . '%, transparent)';
+			else
+				$shadows[$size] = $shadow[0] . ' rgba(0, 0, 0, ' . $shadow[1] . ')';
+		}
+
 		return array(
-			'border_radius' => '8px',
-			'box_shadow' => array(
-				'default' => '0 2px 8px rgba(0, 0, 0, 0.15)',
-				'small' => '0 1px 3px rgba(0, 0, 0, 0.15)',
-				'medium' => '0 4px 16px rgba(0, 0, 0, 0.12)',
-				'large' => '0 8px 32px rgba(0, 0, 0, 0.15)',
-				'huge' => '0 16px 48px rgba(0, 0, 0, 0.20)'
-			)
+			'border_radius' => $radius,
+			'border_width' => $border,
+			'field_radius' => $underline ? '0' : $field_radius,
+			'field_border_width' => $underline ? "0 0 $border" : $border,
+			'field_bg' => $underline ? 'var(--md-tint)' : 'var(--md-form-background)',
+			'field_focus_outline' => $underline ? '0' : '2px',
+			'field_focus_shadow' => $underline ? 'none' : 'var(--md-box-shadow-small)',
+			'field_gap' => $join ? '0px' : 'var(--md-half)',
+			'field_align' => $join ? 'stretch' : 'center',
+			'field_inner_radius' => $join ? '0' : 'var(--md-field-radius)',
+			'field_button_radius' => $join ? '0' : 'var(--md-border-radius)',
+			'field_overlap' => $join && ! $underline ? "calc(-1 * $border)" : '0px',
+			'shadow_color' => $color ? $color : '#000',
+			'box_shadow' => $shadows
 		);
 	}
 

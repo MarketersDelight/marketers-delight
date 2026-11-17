@@ -88,7 +88,7 @@
 	.nav-menu .sub-menu {
 		background-color: var(--md-header-submenu-background);
 		border-radius: var(--md-border-radius);
-		box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
+		box-shadow: var(--md-box-shadow-small);
 		font-size: var(--md-font-size-small);
 		line-height: var(--md-line-height-small);
 		position: absolute;
@@ -116,7 +116,7 @@
 	}
 	.nav-menu .sub-menu .menu-item:first-child:hover { border-radius: var(--md-border-radius) var(--md-border-radius) 0 0; }
 	.nav-menu .sub-menu .menu-item:last-child:hover { border-radius: 0 0 var(--md-border-radius) var(--md-border-radius); }
-	.nav-menu .sub-menu .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-submenu-border); }
+	.nav-menu .sub-menu .menu-item:not(:last-child) { border-block-end: var(--md-border-width) solid var(--md-header-submenu-border); }
 	.nav-menu .sub-menu .trigger { padding: var(--md-half); }
 	.nav-menu .sub-menu .trigger-icon:after { content: '\e816'; }
 	/* SUB MENU ALT DIRECTION */
@@ -132,10 +132,10 @@
 	:where(.nav-menu) .menu-item { flex-flow: wrap; }
 	:where(.nav-menu) .menu-item:not(.toggle-menu-item):hover > :is(a, .toggle) { background-color: var(--md-header-menu-hover-background); }
     .header.center.toggle-menu .header-primary:not(:last-child),
-	:where(.nav-menu) .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-header-border); }
+	:where(.nav-menu) .menu-item:not(:last-child) { border-block-end: var(--md-border-width) solid var(--md-header-border); }
 	/* TOGGLE */
 	.nav-menu .toggle {
-		border: 1px solid var(--md-header-border);
+		border: var(--md-border-width) solid var(--md-header-border);
 		border-width: 0 0 0 1px;
 	}
 	.nav-menu .toggle-menu-item > .trigger .trigger-icon:after { content: '\e817'; }
@@ -168,7 +168,7 @@
 		.menu-scroller .sub-menu {
 			background-color: var(--md-header-submenu-background);
 			border-radius: var(--md-border-radius);
-			box-shadow: 0 2px 4px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
+			box-shadow: var(--md-box-shadow-small);
 			position: fixed;
 				inset-block-start: anchor(end);
 				inset-inline-start: anchor(start);

@@ -19,7 +19,7 @@
 
 .content-title {
 	align-items: center;
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	display: flex;
 	gap: var(--md-half);
 	margin-block-end: var(--md-single);
@@ -79,7 +79,7 @@
 .comment .comment-awaiting-moderation {
 	background-color: var(--md-color-highlight);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 2px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 	font-style: italic;
 	margin-block-end: var(--md-half);
 	padding: var(--md-half);
@@ -93,9 +93,9 @@
 
 .comment-controls a {
 	background-color: var(--md-content-box-background);
-	border: 1px solid var(--md-border);
+	border: var(--md-border-width) solid var(--md-border);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 1px 1px color-mix(in srgb, var(--md-shadow-color) 15%, transparent);
+	box-shadow: var(--md-box-shadow-small);
 	color: var(--md-content-box-text-muted);
 	font-size: var(--md-font-size-small);
 	padding: var(--md-small) var(--md-third);

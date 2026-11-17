@@ -21,7 +21,7 @@
 	<?php endif; ?>
 }
 
-.is-border-style .header:not(.cover) { border-block-end: 1px solid var(--md-header-border); }
+.is-border-style .header:not(.cover) { border-block-end: var(--md-border-width) solid var(--md-header-border); }
 
 .header.sticky {
 	position: sticky;
@@ -200,7 +200,7 @@
 		flex-direction: column;
 		width: 100%;
 	}
-	.menu-scroller { border-block-start: 1px solid var(--md-header-border); }
+	.menu-scroller { border-block-start: var(--md-border-width) solid var(--md-header-border); }
 	.menu-scroll .header-controls { padding-block-end: var(--md-half); }
 	.header-triggers { flex: 1; }
 	.header:where(:not(.menu-scroll)) :is(.primary-menu, .aside-menu),

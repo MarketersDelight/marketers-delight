@@ -511,4 +511,85 @@ class DesignTest extends MD_TestCase {
 		$this->assertEquals( array( 16, 17, 18, 19, 20, 21, 22 ), $this->sizes( $typography, 'mobile' ) );
 	}
 
+
+	public function test_effects_defaults_match_the_old_fixed_values() {
+		$effects = $this->design->effects();
+
+		$this->assertSame( '8px', $effects['border_radius'] );
+		$this->assertSame( '1px', $effects['border_width'] );
+		$this->assertSame( '8px', $effects['field_radius'] );
+		$this->assertSame( '1px', $effects['field_border_width'] );
+		$this->assertSame( 'var(--md-form-background)', $effects['field_bg'] );
+		$this->assertSame( '#000', $effects['shadow_color'] );
+		$this->assertSame( array(
+			'default' => '0 2px 8px rgba(0, 0, 0, 0.15)',
+			'small' => '0 1px 3px rgba(0, 0, 0, 0.15)',
+			'medium' => '0 4px 16px rgba(0, 0, 0, 0.12)',
+			'large' => '0 8px 32px rgba(0, 0, 0, 0.15)',
+			'huge' => '0 16px 48px rgba(0, 0, 0, 0.20)'
+		), $effects['box_shadow'] );
+	}
+
+	public function test_effects_settings_change_only_their_values() {
+		md_test_set_settings( array( 'effects' => array( 'border_radius' => 4, 'border_width' => 2, 'field_radius' => 12 ) ) );
+		$effects = $this->design->effects();
+
+		$this->assertSame( '4px', $effects['border_radius'] );
+		$this->assertSame( '2px', $effects['border_width'] );
+		$this->assertSame( '12px', $effects['field_radius'] );
+		$this->assertSame( '2px', $effects['field_border_width'] );
+		$this->assertSame( '0 2px 8px rgba(0, 0, 0, 0.15)', $effects['box_shadow']['default'] );
+	}
+
+	public function test_underline_fields_have_no_radius_or_background_and_a_bottom_border() {
+		md_test_set_settings( array( 'effects' => array( 'field_style' => 'underline', 'border_width' => 2, 'field_radius' => 12 ) ) );
+		$effects = $this->design->effects();
+
+		$this->assertSame( '0', $effects['field_radius'] );
+		$this->assertSame( '0 0 2px', $effects['field_border_width'] );
+		$this->assertSame( 'var(--md-tint)', $effects['field_bg'] );
+		$this->assertSame( '0', $effects['field_focus_outline'] );
+		$this->assertSame( 'none', $effects['field_focus_shadow'] );
+	}
+
+	public function test_hard_and_none_shadow_styles() {
+		md_test_set_settings( array( 'effects' => array( 'shadow_style' => 'hard', 'shadow_color' => '#112233' ) ) );
+		$hard = $this->design->effects();
+
+		$this->assertSame( '4px 4px 0 #112233', $hard['box_shadow']['default'] );
+		$this->assertSame( '2px 2px 0 #112233', $hard['box_shadow']['small'] );
+		$this->assertSame( '#112233', $hard['shadow_color'] );
+
+		md_test_set_settings( array( 'effects' => array( 'shadow_style' => 'none' ) ) );
+
+		$this->assertSame( array_fill_keys( array( 'default', 'small', 'medium', 'large', 'huge' ), 'none' ), $this->design->effects()['box_shadow'] );
+	}
+
+	public function test_a_soft_shadow_color_mixes_at_the_same_strengths() {
+		md_test_set_settings( array( 'effects' => array( 'shadow_color' => '#112233' ) ) );
+
+		$this->assertSame( '0 2px 8px color-mix(in srgb, #112233 15%, transparent)', $this->design->effects()['box_shadow']['default'] );
+	}
+
+	public function test_join_squares_inner_corners_and_overlaps_borders() {
+		$apart = $this->design->effects();
+
+		$this->assertSame( 'var(--md-half)', $apart['field_gap'] );
+		$this->assertSame( 'var(--md-field-radius)', $apart['field_inner_radius'] );
+		$this->assertSame( 'var(--md-border-radius)', $apart['field_button_radius'] );
+		$this->assertSame( '0px', $apart['field_overlap'] );
+
+		md_test_set_settings( array( 'effects' => array( 'field_join' => array( 'join' => true ), 'border_width' => 2 ) ) );
+		$joined = $this->design->effects();
+
+		$this->assertSame( '0px', $joined['field_gap'] );
+		$this->assertSame( 'stretch', $joined['field_align'] );
+		$this->assertSame( '0', $joined['field_inner_radius'] );
+		$this->assertSame( '0', $joined['field_button_radius'] );
+		$this->assertSame( 'calc(-1 * 2px)', $joined['field_overlap'] );
+
+		md_test_set_settings( array( 'effects' => array( 'field_join' => array( 'join' => true ), 'field_style' => 'underline' ) ) );
+
+		$this->assertSame( '0px', $this->design->effects()['field_overlap'] );
+	}
 }

@@ -171,7 +171,7 @@
 .tabs > .tab {
 	align-items: center;
 	background-color: var(--md-tab-bg);
-	border: 1px solid var(--md-tab-border);
+	border: var(--md-border-width) solid var(--md-tab-border);
 	border-radius: var(--md-border-radius) var(--md-border-radius) 0 0;
 	border-width: 1px 1px 0;
 	color: var(--md-tab-color);
@@ -303,7 +303,7 @@
 figure.wp-block-table table { margin-block-end: 0; }
 
 :is(.format, .wp-block-table) table {
-	border: 1px solid var(--md-border);
+	border: var(--md-border-width) solid var(--md-border);
 	border-collapse: separate;
 	border-radius: var(--md-border-radius);
 	border-spacing: 0;
@@ -316,7 +316,7 @@ figure.wp-block-table table { margin-block-end: 0; }
 :is(.format, .wp-block-table) table.has-fixed-layout { table-layout: fixed; }
 
 :is(.format, .wp-block-table) :is(th, td) {
-	border-block-end: 1px solid var(--md-border);
+	border-block-end: var(--md-border-width) solid var(--md-border);
 	padding: var(--md-half);
 	text-align: start;
 	vertical-align: top;
@@ -332,7 +332,7 @@ figure.wp-block-table table { margin-block-end: 0; }
 
 :is(.format, .wp-block-table) tfoot :is(th, td) {
 	background-color: var(--md-color-tertiary);
-	border-block-start: 1px solid var(--md-border);
+	border-block-start: var(--md-border-width) solid var(--md-border);
 	font-weight: 400;
 }
 

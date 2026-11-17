@@ -28,7 +28,7 @@
 
 /* MENU */
 
-.widget_nav_menu .menu-item:not(:last-child) { border-block-end: 1px solid var(--md-border); }
+.widget_nav_menu .menu-item:not(:last-child) { border-block-end: var(--md-border-width) solid var(--md-border); }
 
 /* SEARCH */
 
@@ -79,7 +79,7 @@
 	--md-border: var(--md-content-box-border);
 	background-color: var(--md-content-box-background);
 	border-radius: var(--md-border-radius);
-	box-shadow: 0 2px 15px color-mix(in srgb, var(--md-shadow-color) 10%, transparent);
+	box-shadow: var(--md-box-shadow-medium);
 	color: var(--md-text);
 }
 
@@ -91,7 +91,7 @@
 
 #wp-calendar tbody a { font-weight: var(--md-bold); }
 
-#wp-calendar thead tr, #wp-calendar tbody td { border-block-end: 1px solid var(--md-border); }
+#wp-calendar thead tr, #wp-calendar tbody td { border-block-end: var(--md-border-width) solid var(--md-border); }
 
 #wp-calendar caption {
 	background-color: var(--md-action-primary);
