@@ -268,7 +268,7 @@ function md_title_template( $context, $data, $args = array() ) {
 	$media = $data['media'];
 	$cover = $data['cover'];
 	$has_header_cover = $data['header_cover'];
-	$has_inner = $has_header_cover || ! empty( $args['inner'] );
+	$has_inner = ( $has_header_cover || ! empty( $args['inner'] ) ) && ! md_in_inner();
 	$has_sidebar = $data['has_sidebar'];
 	$has_wrap = $context != 'post' && $media && ! in_array( $media['position'], $full_width, true );
 	$args['loop'] = ! empty( $args['loop'] ) ? $args['loop'] : array();

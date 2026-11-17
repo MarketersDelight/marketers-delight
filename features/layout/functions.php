@@ -20,6 +20,19 @@ function md_has_builder() {
 	return (bool) md_meta( array( 'layout', 'content', 'builder' ) );
 }
 
+/**
+ * Whether output is inside the column's .inner: between the content box top
+ * and bottom hooks, on a page that isn't built with the builder.
+ *
+ * @since 6.2.3
+ */
+
+function md_in_inner() {
+	$column = did_action( 'md_hook_content_box_top' ) && ! doing_action( 'md_hook_content_box_top' ) && ! did_action( 'md_hook_content_box_bottom' );
+
+	return $column && ! md_has_builder();
+}
+
 
 
 /*------------------------------*\

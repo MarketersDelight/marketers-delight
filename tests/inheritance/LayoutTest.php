@@ -24,6 +24,24 @@ class LayoutTest extends MD_InheritanceTestCase {
 		$this->assertSame( 'single', md_layout_context() );
 	}
 
+	public function test_in_inner_only_inside_the_column() {
+		$this->assertFalse( md_in_inner() );
+
+		$GLOBALS['__test_did_actions'] = array( 'md_hook_content_box_top' => 1 );
+		$GLOBALS['__test_doing_actions'] = array( 'md_hook_content_box_top' );
+		$this->assertFalse( md_in_inner(), 'the header cover title prints during content_box_top, outside the column' );
+
+		$GLOBALS['__test_doing_actions'] = array();
+		$this->assertTrue( md_in_inner() );
+
+		md_test_set_post_meta( array( 'layout' => array( 'content' => array( 'builder' => true ) ) ), get_the_ID() );
+		$this->assertFalse( md_in_inner(), 'builder pages have no .inner on the column' );
+
+		md_test_set_post_meta( array(), get_the_ID() );
+		$GLOBALS['__test_did_actions']['md_hook_content_box_bottom'] = 1;
+		$this->assertFalse( md_in_inner() );
+	}
+
 	private function viewed_post( $post_id = 5 ) {
 		md_test_set_query( array( 'is_singular' => true, 'the_id' => $post_id, 'queried_object_id' => $post_id, 'post_type' => 'post' ) );
 	}
