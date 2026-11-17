@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Get Hero/inline CTA of any given page. A CTA can be a
- * link group, email form, custom HTML, or more.
+ * Get Hero/inline CTA of any given page. A CTA can be a link group, email
+ * form, custom HTML, or more; HTML already built in $cta['html'] is used as is.
  *
  * @since 6.0
  */
@@ -11,32 +11,44 @@ function md_cta( $context = 'post', $cta = array() ) {
 	if ( ! apply_filters( "md_has_{$context}_cta", true ) )
 		return;
 
-	$html = '';
-
 	if ( empty( $cta ) )
 		$cta = md_get_cta( $context );
 
 	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
-
-	if ( $type == 'remove' )
-		return;
-
-	if ( $type == 'links' && ! empty( $cta['links'] ) ) {
-		foreach ( $cta['links'] as $group => $fields )
-			if ( ! empty( $cta['links'][$group] ) ) {
-				$cta['links'][$group]['classes'][] = 'cta-link';
-				$html .= md_get_link( $cta['links'][$group] );
-			}
-	}
-	elseif ( $type == 'custom' && ! empty( $cta['custom_html'] ) )
-		$html = $cta['custom_html'];
-	elseif ( ! empty( $type ) )
-		$html = apply_filters( "md_cta_{$type}", $context, $cta );
+	$html = isset( $cta['html'] ) ? $cta['html'] : md_get_cta_html( $context, $cta );
 
 	if ( empty( $html ) )
 		return;
 
 	include md_template( 'features', 'page-cta/cta', true );
+}
+
+/**
+ * Build a CTA's inner HTML: its links, custom HTML, or whatever a Drop-in's
+ * md_cta_{type} filter returns. Empty when there's nothing to show.
+ *
+ * @since 6.2.3
+ */
+
+function md_get_cta_html( $context, $cta ) {
+	$html = '';
+	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
+
+	if ( $type == 'links' ) {
+		$links = ! empty( $cta['links'] ) ? $cta['links'] : array();
+
+		foreach ( $links as $group => $fields )
+			if ( ! empty( $fields ) ) {
+				$fields['classes'][] = 'cta-link';
+				$html .= md_get_link( $fields );
+			}
+	}
+	elseif ( $type == 'custom' && ! empty( $cta['custom_html'] ) )
+		$html = $cta['custom_html'];
+	elseif ( $type && $type != 'remove' && has_filter( "md_cta_{$type}" ) )
+		$html = apply_filters( "md_cta_{$type}", $context, $cta );
+
+	return $html;
 }
 
 /**
