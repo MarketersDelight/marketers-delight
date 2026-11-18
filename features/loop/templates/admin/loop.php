@@ -46,6 +46,12 @@
 			) ); ?>
 			<p class="description"><?php echo esc_html( $subcat_key === 'show_subcategory' ? __( 'Show links to child categories where available.', 'md' ) : __( 'Hide links to child categories.', 'md' ) ); ?></p>
 		</div>
+		<div class="md-checkbox-description">
+			<?php $this->fields->field( 'mixed', array(
+				'options' => array( 'own_look' => __( 'Use each post type\'s own look', 'md' ) )
+			) ); ?>
+			<p class="description"><?php echo esc_html__( 'Only applies when this loop shows more than one post type, like a category shared by Posts and Stream.', 'md' ); ?></p>
+		</div>
 	</div>
 </div>
 

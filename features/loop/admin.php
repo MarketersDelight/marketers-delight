@@ -116,12 +116,17 @@ class md_loop extends md_api {
 					'post_listing' => __( 'Post listing (default)', 'md' ),
 					'month' => __( 'Posts grouped by month', 'md' ),
 					'category' => __( 'Category overview', 'md' ),
-					'category_posts' => __( 'List posts by category', 'md' )
+					'category_posts' => __( 'List posts by category', 'md' ),
+					'post_type' => __( 'List posts by post type', 'md' )
 				)
 			),
 			'category' => array(
 				'type' => 'checkbox',
 				'options' => array( 'hide_subcategory', 'show_subcategory', 'show_empty', 'hide_description' )
+			),
+			'mixed' => array(
+				'type' => 'checkbox',
+				'options' => array( 'own_look' )
 			),
 			'featured' => array(
 				'type' => 'number',

@@ -20,19 +20,12 @@ function md_loop( $args = array() ) {
 	$args = array_merge( $args, array( 'loop' => $loop ) );
 	$loop_template = $loop['loop'];
 	$loop_classes = $loop['loop_classes'];
-	$loop_columns_style = '';
+	$loop_columns_style = md_loop_columns_style( $loop );
 
 	// Choose wrapper tag, if valid
 
 	if ( in_array( $args['html'] ?? '', array( 'article', 'div' ), true ) )
 		$html = $args['html'];
-
-	// Pass column counts to CSS
-
-	if ( $loop['columns'] > 1 || ( $loop['columns_mobile'] ?? 1 ) > 1 ) {
-		$columns_mobile = ! empty( $loop['columns_mobile'] ) ? '; --md-loop-columns-mobile: ' . absint( $loop['columns_mobile'] ) : '';
-		$loop_columns_style = ' style="--md-loop-columns: ' . absint( $loop['columns'] ) . $columns_mobile . '"';
-	}
 
 	md_hook_loop_before( $args );
 
@@ -52,6 +45,9 @@ function md_loop( $args = array() ) {
 
 	elseif ( isset( $loop['by_category'] ) )
 		include md_template( 'features', 'loop/category-posts', true );
+
+	elseif ( ! empty( $loop['by_type'] ) )
+		include md_template( 'features', 'loop/type-posts', true );
 
 	// If grouping a post listing into month sections
 
@@ -114,6 +110,7 @@ function md_get_loop( $args = array() ) {
 	if ( ! empty( $args['query'] ) ) {
 		$query_vars = $args['query'] instanceof WP_Query ? $args['query']->query : $args['query'];
 		$key = ( $args['post_type'] ?? '' ) ?: ( $query_vars['post_type'] ?? '' );
+		$key = is_array( $key ) ? reset( $key ) : $key;
 
 		if ( $key ) {
 			$post_type = $key;
@@ -222,10 +219,22 @@ function md_get_loop( $args = array() ) {
 	$loop['post_type'] = $post_type;
 	$loop['loop_type'] = $loop['loop_type'] ?? '';
 
+	if ( isset( $loop['page_layout'] ) )
+		foreach ( $loop['page_layout'] as $key => $value )
+			if ( ! in_array( $key, $template['own_settings'] ?? array(), true ) )
+				$loop[$key] = $value;
+
 	// Month view groups posts by date, except on single pages
 
 	if ( $loop['loop_type'] === 'month' && empty( $loop['by_category'] ) && ( ! is_singular() || ! empty( $args['query'] ) ) )
 		$loop['by_date'] = true;
+
+	if ( ( $loop['loop_type'] === 'post_type' || ! empty( $loop['mixed']['own_look'] ) ) && count( md_loop_post_types( $loop ) ) > 1 ) {
+		if ( $loop['loop_type'] === 'post_type' )
+			$loop['by_type'] = true;
+		else
+			$loop['own_look'] = true;
+	}
 
 	if ( empty( $loop['columns'] ) )
 		$loop['columns'] = 1;
@@ -441,6 +450,9 @@ function md_loop_classes( $loop = array() ) {
 		$classes[] = ! empty( $loops[$loop['loop']]['is_slim'] ) ? 'slim' : 'full';
 	}
 
+	if ( ! empty( $loop['nested'] ) )
+		$classes[] = 'nested';
+
 	$classes = array_merge( $classes,
 		(array) ( $loops[$loop['loop']]['classes'] ?? array() ),
 		(array) ( $loop['classes'] ?? array() )
@@ -450,7 +462,7 @@ function md_loop_classes( $loop = array() ) {
 
 	// Category wrapper classes
 
-	$category_type = 'category-' . ( $loop['loop_type'] == 'category_posts' ? 'posts' : 'view' );
+	$category_type = 'category-' . ( in_array( $loop['loop_type'], array( 'category_posts', 'post_type' ), true ) ? 'posts' : 'view' );
 	$category_columns = (int) ( $loop['category_columns'] ?? 1 );
 	$categories_classes = array( 'categories', $category_type, 'category-' . $loop['loop'], "{$style}-style" );
 
@@ -528,6 +540,112 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 
 	return $loop;
 
+}
+
+/**
+ * The post types a loop lists: a manual query's own, those a shared taxonomy's
+ * term page queries (all, or the one a link asks for), else the loop's post type.
+ *
+ * @since 6.2.4
+ */
+
+function md_loop_post_types( $loop ) {
+	$query = $loop['query'] ?? array();
+	$query = $query instanceof WP_Query ? $query->query : (array) $query;
+	$taxonomy = is_category() || is_tag() || is_tax() ? ( get_queried_object()->taxonomy ?? '' ) : '';
+	$requested = get_query_var( 'post_type' );
+	$post_types = array();
+
+	if ( ! empty( $query['post_type'] ) )
+		$post_types = (array) $query['post_type'];
+	elseif ( ! $query && md_is_shared_taxonomy( $taxonomy ) )
+		$post_types = $requested ? (array) $requested : md_taxonomy_post_types( $taxonomy );
+	elseif ( ! empty( $loop['post_type'] ) )
+		$post_types[] = $loop['post_type'];
+
+	return $post_types;
+}
+
+/**
+ * One query per post type for a loop grouped by post type: the loop's own
+ * query, else the term being viewed, each showing the loop's Posts per page.
+ *
+ * @since 6.2.4
+ */
+
+function md_loop_type_queries( $loop ) {
+	$queries = array();
+	$query = $loop['query'] ?? array();
+	$query = $query instanceof WP_Query ? $query->query : (array) $query;
+	$term = get_queried_object();
+
+	if ( ! $query && $term instanceof WP_Term )
+		$query['tax_query'] = array( array(
+			'taxonomy' => $term->taxonomy,
+			'terms' => $term->term_id
+		) );
+
+	$query['posts_per_page'] = $loop['posts_per_page'] ?? get_option( 'posts_per_page' );
+	$query['paged'] = 1;
+	$query['no_found_rows'] = true;
+	$query['ignore_sticky_posts'] = 1;
+
+	foreach ( md_loop_post_types( $loop ) as $post_type ) {
+		$query['post_type'] = $post_type;
+		$posts = new WP_Query( $query );
+
+		if ( $posts->have_posts() )
+			$queries[$post_type] = $posts;
+	}
+
+	return $queries;
+}
+
+/**
+ * Column counts for a loop wrapper's style attribute.
+ *
+ * @since 6.2.4
+ */
+
+function md_loop_columns_style( $loop ) {
+	$style = '';
+
+	if ( $loop['columns'] > 1 || ( $loop['columns_mobile'] ?? 1 ) > 1 ) {
+		$columns_mobile = ! empty( $loop['columns_mobile'] ) ? '; --md-loop-columns-mobile: ' . absint( $loop['columns_mobile'] ) : '';
+		$style = ' style="--md-loop-columns: ' . absint( $loop['columns'] ) . $columns_mobile . '"';
+	}
+
+	return $style;
+}
+
+/**
+ * The loop settings a post uses when the loop shows each post type's own look:
+ * the page's for its own post type, else that post type's full loop in one
+ * column, since the page owns layout (except its template's own_settings).
+ *
+ * @since 6.2.4
+ */
+
+function md_loop_own_look( $loop ) {
+	$post_type = md_get_post_type( get_the_ID() );
+	$post_type = md_post_type_settings_parent( $post_type ) ?: $post_type;
+
+	if ( $post_type !== $loop['post_type'] )
+		$loop = md_get_loop( array(
+			'post_type' => $post_type,
+			'query' => array( 'post_type' => $post_type ),
+			'loop_type' => 'post_listing',
+			'page_layout' => array(
+				'columns' => 1,
+				'columns_mobile' => 1,
+				'has_sidebar' => ! empty( $loop['has_sidebar'] )
+			),
+			'heading_offset' => $loop['heading_offset'] ?? 0,
+			'nested' => true,
+			'own_wrap' => true
+		) );
+
+	return $loop;
 }
 
 /**
