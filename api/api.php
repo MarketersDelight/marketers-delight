@@ -774,7 +774,8 @@ class md_api {
 
 	/**
 	 * Taxonomy settings apply to every term in a post type's taxonomy. They work
-	 * like admin settings groups, but attach to a post type.
+	 * like admin settings groups, but attach to a post type; a shared taxonomy's
+	 * attach only to its home post type.
 	 *
 	 * @since 6.0
 	 */
@@ -789,7 +790,7 @@ class md_api {
 			$taxonomies = get_object_taxonomies( $post_type );
 
 			foreach ( $meta as $tax )
-				if ( in_array( $tax, $taxonomies, true ) )
+				if ( in_array( $tax, $taxonomies, true ) && ( ! md_is_shared_taxonomy( $tax ) || md_taxonomy_post_type( $tax ) === $post_type ) )
 					$groups[$page_slug][$tax] = true;
 		}
 
