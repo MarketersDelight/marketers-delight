@@ -52,7 +52,7 @@ html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-blo
 html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
 <?php endif; ?>
 
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol).wp-block-list:not(.list, .list-check) {
+:where(.editor-styles-wrapper .wp-block-post-content) :is(ul, ol):where(.wp-block-list:not(.list, .list-check)) {
 	list-style-position: outside;
 	padding-inline-start: var(--md-single);
 }

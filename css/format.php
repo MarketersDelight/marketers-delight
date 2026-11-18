@@ -67,13 +67,13 @@ code, pre {
 
 /* LISTS */
 
-.format ul { list-style: square; }
+:where(.format) ul { list-style: square; }
 
 .list-check { margin-inline-start: var(--md-single); }
 
 .the-content :is(ul, ol):where(.wp-block-list, :not([class*="wp-block-"])):where(:not(.list, .list-check)) { padding-inline-start: var(--md-single); }
 
-.format li, .list-check li:not(:last-child) {
+:where(.format) li, .list-check li:not(:last-child) {
 	margin-block-end: var(--md-third);
 	position: relative;
 }
