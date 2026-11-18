@@ -43,11 +43,6 @@ class md_enqueue {
 		add_action( 'after_switch_theme', 'md_compile' );
 		add_action( 'upgrader_process_complete', array( $this, 'compile_on_upgrade' ), 10, 2 );
 		add_action( 'wp_loaded', array( $this, 'compile_after_upgrade' ), 100 );
-
-		if ( ! function_exists( 'render_block' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
-			remove_filter( 'render_block', 'wp_render_layout_support_flag', 10, 2 );
-			add_filter( 'should_load_separate_core_block_assets', '__return_false' );
-		}
 	}
 
 	/**
@@ -86,14 +81,6 @@ class md_enqueue {
 		// Print inline JS
 
 		$this->inline_js();
-
-		// Block scripts and styles
-
-		if ( ! function_exists( 'render_block' ) || md_setting( array( 'settings', 'head', 'blocks' ) ) ) {
-			wp_dequeue_style( 'wp-block-library' );
-			wp_dequeue_style( 'global-styles' );
-			wp_dequeue_style( 'block-style-variation-styles' );
-		}
 
 		// Legacy integration, move to Optins
 

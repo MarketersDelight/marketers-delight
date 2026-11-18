@@ -370,7 +370,7 @@ class md_theme_json {
 					'presets' => $this->shadow_presets( $effects['box_shadow'] )
 				),
 				'spacing' => array(
-					'blockGap' => ! md_setting( array( 'settings', 'head', 'blocks' ) ),
+					'blockGap' => true,
 					'spacingSizes' => $this->spacing_sizes()
 				)
 			),

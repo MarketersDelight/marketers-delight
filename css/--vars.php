@@ -174,6 +174,20 @@
 	--wp--preset--spacing--triple: <?php echo $spacers['triple']['desktop']; ?>px;
 	--wp--preset--spacing--quad: <?php echo $spacers['quad']['desktop']; ?>px;
 
+	--wp--preset--font-size--tiny: var(--md-font-size-tiny);
+	--wp--preset--font-size--small: var(--md-font-size-small);
+	--wp--preset--font-size--normal: var(--md-font-size);
+	--wp--preset--font-size--intro: var(--md-font-size-intro);
+<?php foreach ( array( 1, 2, 3, 4, 5, 6 ) as $level ) : ?>
+	--wp--preset--font-size--h-<?php echo $level; ?>: var(--md-h<?php echo $level; ?>);
+<?php endforeach; ?>
+	--wp--preset--font-size--huge: var(--md-huge);
+
+	--wp--preset--font-family--body: <?php echo $typography['body']['font_family']; ?>;
+<?php if ( ! empty( $typography['h1']['font_family'] ) ) : ?>
+	--wp--preset--font-family--heading: <?php echo $typography['h1']['font_family']; ?>;
+<?php endif; ?>
+
 	--wp--preset--border-radius--rounded: <?php echo $effects['border_radius']; ?>;
 	--wp--preset--shadow--small: <?php echo $effects['box_shadow']['small']; ?>;
 	--wp--preset--shadow--medium: <?php echo $effects['box_shadow']['medium']; ?>;
