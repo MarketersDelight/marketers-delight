@@ -21,7 +21,15 @@
 
 	<?php foreach ( $cta_types as $type_id => $type ) : ?>
 
-		<div id="<?php echo $prefix; ?>_page_cta_<?php echo esc_attr( $type_id ); ?>" class="md-conditional-item md-conditional-<?php echo esc_attr( $type_id ); ?>" style="display: <?php echo $cta_type == $type_id ? 'block' : 'none'; ?>">
+		<div id="<?php echo $prefix; ?>_page_cta_<?php echo esc_attr( $type_id ); ?>" class="md-section md-conditional-item md-conditional-<?php echo esc_attr( $type_id ); ?>" style="display: <?php echo $cta_type == $type_id ? 'block' : 'none'; ?>">
+
+		<?php if ( ! isset( $type['heading'] ) || $type['heading'] ) : ?>
+			<h4><?php echo esc_html( $cta_options[$type_id] ); ?></h4>
+
+			<?php if ( ! empty( $type['description'] ) ) : ?>
+				<p class="description"><?php echo esc_html( $type['description'] ); ?></p>
+			<?php endif; ?>
+		<?php endif; ?>
 
 		<?php
 			if ( ! empty( $type['admin_callback'] ) && is_callable( $type['admin_callback'] ) )
@@ -35,5 +43,34 @@
 		</div>
 
 	<?php endforeach; ?>
+
+	<div class="md-section <?php echo esc_attr( $text_classes ); ?>" style="display: <?php echo $text_display; ?>">
+
+		<h4><?php echo __( 'Message', 'md' ); ?></h4>
+
+		<p class="description"><?php echo __( 'Optional words shown with your form or buttons.', 'md' ); ?></p>
+
+		<div class="columns-2 columns-single">
+
+			<div class="col col1 mb-third">
+				<?php $fields->field( 'cta_lede' ); ?>
+			</div>
+
+			<div class="col col2 mb-third">
+				<?php $fields->field( 'cta_title' ); ?>
+			</div>
+
+		</div>
+
+		<div class="mb-third">
+			<?php $fields->field( 'cta_text', array( 'rows' => 3 ) ); ?>
+		</div>
+
+		<?php $fields->field( 'cta_foot', array(
+			'placeholder' => __( 'No spam. Unsubscribe anytime.', 'md' ),
+			'description' => __( 'Shows at the very bottom.', 'md' )
+		) ); ?>
+
+	</div>
 
 </div>

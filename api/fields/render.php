@@ -62,7 +62,7 @@ abstract class md_fields_render {
 			echo '</div>';
 		}
 
-		if ( isset( $args['description'] ) && $args['type'] !== 'builder' )
+		if ( isset( $args['description'] ) && ! in_array( $args['type'], array( 'builder', 'group' ), true ) )
 			$this->description( $args['description'] );
 
 		echo '</div>';

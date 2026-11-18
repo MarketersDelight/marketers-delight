@@ -216,7 +216,7 @@ class md_fields extends md_fields_render {
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
 			$args['save_empty'] = $has_option;
 
-		if ( isset( $args['inherit'] ) )
+		if ( ! empty( $args['inherit'] ) )
 			$args = $this->prepare_inheritance( $field, $option, $args );
 
 		$this->render_field( $name, $id, $option, $args, $wrap_classes );
@@ -484,6 +484,19 @@ class md_fields extends md_fields_render {
 
 	public function module( $keys, $default = null ) {
 		return $this->lookup( $keys, $default, true );
+	}
+
+	/**
+	 * The value this screen inherits from the level above it, or $default
+	 * when nothing is above it.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function inherited( $keys, $default = null ) {
+		$parent = $this->parent_value( array_merge( $this->root, (array) $keys ), $default );
+
+		return $parent['value'];
 	}
 
 	/**

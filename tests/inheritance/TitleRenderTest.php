@@ -55,6 +55,41 @@ class TitleRenderTest extends MD_InheritanceTestCase {
 		$this->assertStringContainsString( '<h1 class="title huge-title">Section title</h1>', $html );
 	}
 
+	public function test_cta_text_wraps_the_cta_in_a_box() {
+		$html = $this->render( $this->data( array(
+			'cta' => array(
+				'page_cta' => 'custom',
+				'custom_html' => '<a href="#join">Join</a>',
+				'cta_lede' => 'Quote',
+				'cta_title' => 'Tagline',
+				'cta_text' => 'Some text',
+				'cta_foot' => 'No spam'
+			)
+		) ) );
+
+		$this->assertStringContainsString( '<div class="cta cta-box"><div class="title-wrap"><p class="lede">Quote</p><p class="title h5">Tagline</p></div><div class="cta-text"><p>Some text</p>' . "\n" . '</div><div class="cta-custom"><a href="#join">Join</a></div><p class="foot">No spam</p></div>', $html );
+	}
+
+	public function test_cta_heading_alone_has_no_title_wrap() {
+		$html = $this->render( $this->data( array(
+			'cta' => array(
+				'page_cta' => 'custom',
+				'custom_html' => '<a href="#join">Join</a>',
+				'cta_title' => 'Tagline'
+			)
+		) ) );
+
+		$this->assertStringContainsString( '<div class="cta cta-box"><p class="title h5">Tagline</p><div class="cta-custom">', $html );
+	}
+
+	public function test_cta_without_text_keeps_its_markup() {
+		$html = $this->render( $this->data( array(
+			'cta' => array( 'page_cta' => 'custom', 'custom_html' => '<a href="#join">Join</a>' )
+		) ) );
+
+		$this->assertStringContainsString( '<div class="cta cta-custom"><a href="#join">Join</a></div>', $html );
+	}
+
 	public function test_renders_only_the_given_title() {
 		$html = $this->render( $this->data() );
 
