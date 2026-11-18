@@ -12,8 +12,12 @@ function md_get_title( $context = 'post' ) {
 	// A title inside a loop, like a blog post
 
 	if ( $context == 'post' ) {
+		$page_title = md_is_queried_post() ? md_post_meta( array( 'page_text', 'title' ) ) : '';
+
 		if ( is_404() && ! md_has_custom_404() )
 			$title = __( 'Page not found', 'md' );
+		elseif ( $page_title )
+			$title = wp_kses_post( $page_title );
 
 		return $title;
 	}
@@ -62,6 +66,44 @@ function md_get_title( $context = 'post' ) {
 }
 
 /**
+ * The Title size set for the current page title: 'huge' or empty. Posts in
+ * a loop keep the default size.
+ *
+ * @since 6.2.3
+ */
+
+function md_title_size( $context = 'post' ) {
+	$size = '';
+
+	if ( $context === 'post' ) {
+		if ( md_is_queried_post() )
+			$size = md_post_meta( array( 'page_text', 'title_size' ) );
+	}
+	elseif ( is_home() || is_post_type_archive() || is_singular( 'post' ) )
+		$size = md_value( array(
+			'key' => 'archives_title_size',
+			'post_type' => md_get_post_type()
+		) );
+	elseif ( is_tax() || is_category() || is_tag() ) {
+		$size = md_term_meta( array( 'hero', 'archives_title_size' ) );
+
+		if ( ! $size )
+			$size = md_value( array(
+				'key' => 'archives_title_size',
+				'page' => true,
+				'inherit_post_type' => false
+			) );
+	}
+	elseif ( is_author() )
+		$size = md_value( array(
+			'key' => 'archives_title_size',
+			'post_type' => 'author'
+		) );
+
+	return $size === 'huge' ? 'huge' : '';
+}
+
+/**
  * A valet way to get all the needed data about a post/page title.
  *
  * @since 6.1
@@ -100,6 +142,7 @@ function md_title_data( $context = 'post', $args = array() ) {
 
 	return array(
 		'title' => $title,
+		'size' => md_title_size( $context ),
 		'description' => md_get_description( $context ),
 		'media' => $media,
 		'cover' => $cover,
@@ -124,6 +167,9 @@ function md_the_title( $context = 'post', $args = array() ) {
 	$h_style = ! empty( $args['title_style'] ) ? md_style( $args['title_style'] ) : '';
 	$lede = ! empty( $args['data']['lede'] ) ? $args['data']['lede'] : '';
 	$title = apply_filters( "md_{$context}_title", isset( $args['data']['title'] ) ? $args['data']['title'] : md_get_title( $context ) );
+
+	if ( ! empty( $args['data']['size'] ) )
+		$h_class .= ' ' . $args['data']['size'] . '-title';
 
 	if ( $context !== 'post' && empty( $title ) && ! $lede )
 		return;

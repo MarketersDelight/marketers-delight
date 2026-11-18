@@ -175,5 +175,26 @@ class TitleDataTest extends MD_InheritanceTestCase {
 		$this->assertSame( array(), $data['archive_meta'] );
 	}
 
+	public function test_single_page_title_changes_only_the_queried_post() {
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'post', 'queried_object_id' => 1, 'the_id' => 1 ) );
+		md_test_set_option( 'marketers_delight', array( 'post' => array() ) );
+		md_test_set_post_meta( array(
+			'page_text' => array( 'title' => '<em>Big</em> idea', 'title_size' => 'huge' )
+		) );
+
+		$data = md_title_data( 'post' );
+
+		$this->assertSame( '<em>Big</em> idea', $data['title'] );
+		$this->assertSame( 'huge', $data['size'] );
+
+		md_test_set_query( array( 'is_singular' => true, 'post_type' => 'post', 'queried_object_id' => 1, 'the_id' => 2 ) );
+		md_test_set_post_meta( array(
+			'page_text' => array( 'title' => 'Loop override', 'title_size' => 'huge' )
+		), 2 );
+
+		$this->assertSame( '', md_title_size( 'post' ) );
+		$this->assertStringNotContainsString( 'override', md_get_title( 'post' ) );
+	}
+
 }
 

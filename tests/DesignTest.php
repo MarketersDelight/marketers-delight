@@ -510,6 +510,28 @@ class DesignTest extends MD_TestCase {
 		$this->assertEquals( 45, $typography['h2']['line_height']['desktop'] );
 	}
 
+	public function test_huge_defaults_to_twice_h1_with_a_tight_line_height() {
+		$huge = $this->design->defaults()['typography']['huge'];
+
+		$this->assertEquals( array( 'desktop' => 90, 'mobile' => 51 ), $huge['font_size'] );
+		$this->assertEquals( array( 'desktop' => 95, 'mobile' => 54 ), $huge['line_height'] );
+	}
+
+	public function test_saved_huge_size_sets_its_line_height() {
+		md_test_set_settings( array(
+			'typography' => array(
+				'huge' => array(
+					'font_size' => array( 'desktop' => 120 )
+				)
+			)
+		) );
+
+		$typography = $this->design->values()['typography'];
+
+		$this->assertEquals( 120, $typography['huge']['font_size']['desktop'] );
+		$this->assertEquals( 126, $typography['huge']['line_height']['desktop'] );
+	}
+
 	public function test_zero_anchors_fall_back_without_division_by_zero() {
 		md_test_set_settings( array(
 			'typography' => array(

@@ -714,6 +714,16 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
+	 * A Page Title text box with its Title size select on the right.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function title_field( $args = array() ) {
+		include md_template( 'admin/fields/title', true );
+	}
+
+	/**
 	 * The post type a settings screen is for: the screen's post type, or the
 	 * post type a top-level MD settings page belongs to (md_docs is docs).
 	 * Set $author to also allow the Author archive settings page.

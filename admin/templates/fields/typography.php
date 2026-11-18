@@ -18,7 +18,7 @@ $inherit = $design->font_family;
 if ( $area !== 'body' && ! empty( $saved['body']['font_family'] ) )
 	$inherit = $saved['body']['font_family'];
 
-if ( in_array( $area, array( 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( $saved['h1']['font_family'] ) )
+if ( in_array( $area, array( 'huge', 'h2', 'h3', 'h4', 'h5', 'h6' ), true ) && ! empty( $saved['h1']['font_family'] ) )
 	$inherit = $saved['h1']['font_family'];
 ?>
 

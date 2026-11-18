@@ -49,6 +49,12 @@ class TitleRenderTest extends MD_InheritanceTestCase {
 		return ob_get_clean();
 	}
 
+	public function test_huge_size_adds_the_huge_title_class() {
+		$html = $this->render( $this->data( array( 'size' => 'huge' ) ) );
+
+		$this->assertStringContainsString( '<h1 class="title huge-title">Section title</h1>', $html );
+	}
+
 	public function test_renders_only_the_given_title() {
 		$html = $this->render( $this->data() );
 
