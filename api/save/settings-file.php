@@ -55,13 +55,9 @@ class md_settings_file {
 		$sections = $sections === null ? array_keys( $this->sections() ) : (array) $sections;
 		$refs = $out = array();
 
-		foreach ( $this->site_entries() as $entry )
+		foreach ( array_merge( $this->site_entries(), $this->post_type_entries() ) as $entry )
 			if ( in_array( $entry['section'], $sections, true ) )
 				$out[$entry['section']][] = $this->export_entry( $entry, $refs );
-
-		if ( in_array( 'post_types', $sections, true ) )
-			foreach ( $this->post_type_entries() as $entry )
-				$out['post_types'][] = $this->export_entry( $entry, $refs );
 
 		if ( in_array( 'dropins', $sections, true ) )
 			foreach ( $this->export_options() as $option => $args ) {
@@ -125,9 +121,8 @@ class md_settings_file {
 		if ( ! isset( $file['version'] ) || ! is_numeric( $file['version'] ) || (int) $file['version'] > $this->version )
 			return new WP_Error( 'md_import_version', __( 'This file was made by a newer version of MD. Update MD, then upload it again.', 'md' ) );
 
-		$file['sections'] = isset( $file['sections'] ) && is_array( $file['sections'] ) ? $file['sections'] : array();
-		$file['refs'] = isset( $file['refs'] ) && is_array( $file['refs'] ) ? $file['refs'] : array();
-		$file['dropins'] = isset( $file['dropins'] ) && is_array( $file['dropins'] ) ? $file['dropins'] : array();
+		foreach ( array( 'sections', 'refs', 'dropins' ) as $key )
+			$file[$key] = isset( $file[$key] ) && is_array( $file[$key] ) ? $file[$key] : array();
 
 		return $file;
 	}
@@ -194,14 +189,12 @@ class md_settings_file {
 		foreach ( $parts as $part )
 			$imported[] = $all[$part];
 
-		$result = array(
+		$save->after_save();
+
+		return array(
 			'imported' => $imported,
 			'skipped' => array_values( array_unique( $skipped ) )
 		);
-
-		$save->after_save();
-
-		return $result;
 	}
 
 	/**
@@ -248,11 +241,9 @@ class md_settings_file {
 			if ( ! isset( $stored[$key] ) || ! is_array( $stored[$key] ) || ! is_array( $input[$key] ) )
 				continue;
 
-			$type = isset( $field['type'] ) ? $field['type'] : null;
-
-			if ( $type === null )
+			if ( ! isset( $field['type'] ) )
 				$input[$key] = $this->replace_input( $stored[$key], $input[$key], $field );
-			elseif ( in_array( $type, array( 'group', 'builder' ), true ) ) {
+			elseif ( in_array( $field['type'], array( 'group', 'builder' ), true ) ) {
 				$item_fields = isset( $field['fields'] ) ? $field['fields'] : array();
 
 				foreach ( $input[$key] as $item => $item_values )
@@ -281,20 +272,18 @@ class md_settings_file {
 				continue;
 
 			$source = isset( $page['_source'] ) ? $page['_source'] : 'theme';
-			$entry = array(
-				'scope' => 'site',
-				'group' => $group,
-				'source' => $source
-			);
+			$sections = isset( $design[$group] ) ? array( 'design' ) : array( $source === 'theme' ? 'settings' : 'dropins' );
 
-			if ( isset( $design[$group] ) && $design[$group] === true )
-				$entries[] = array_merge( $entry, array( 'section' => 'design' ) );
-			elseif ( isset( $design[$group] ) ) {
-				$entries[] = array_merge( $entry, array( 'section' => 'design' ) );
-				$entries[] = array_merge( $entry, array( 'section' => 'settings' ) );
-			}
-			else
-				$entries[] = array_merge( $entry, array( 'section' => $source === 'theme' ? 'settings' : 'dropins' ) );
+			if ( isset( $design[$group] ) && $design[$group] !== true )
+				$sections[] = 'settings';
+
+			foreach ( $sections as $section )
+				$entries[] = array(
+					'scope' => 'site',
+					'group' => $group,
+					'source' => $source,
+					'section' => $section
+				);
 		}
 
 		return $entries;

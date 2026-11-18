@@ -37,16 +37,12 @@ class md_collection {
 			'fields_callback' => null
 		) );
 
-		// Class properties
-
 		$this->id = sanitize_key( $id );
 		$this->parent = sanitize_key( $args['parent'] );
 		$this->post_type = sanitize_key( $args['post_type'] );
 		$this->order = strtoupper( $args['order'] ) === 'ASC' ? 'ASC' : 'DESC';
 		$this->per_page = absint( $args['per_page'] );
 		$this->fields_callback = $args['fields_callback'];
-
-		// Status and date are editable fields that are added to each collection
 
 		if ( ! isset( $args['fields']['status'] ) )
 			$args['fields']['status'] = array(
@@ -114,15 +110,14 @@ class md_collection {
 
 		$remaining = array_diff( array( 'status', 'date' ), array_keys( $fields->rendered ) );
 
-		if ( ! $remaining )
-			return;
+		if ( $remaining ) {
+			echo '<div class="md-collection-field-columns mt-half">';
 
-		echo '<div class="md-collection-field-columns mt-half">';
+			foreach ( $remaining as $field )
+				$fields->field( $field, array() );
 
-		foreach ( $remaining as $field )
-			$fields->field( $field, array() );
-
-		echo '</div>';
+			echo '</div>';
+		}
 	}
 
 	/**
@@ -135,8 +130,7 @@ class md_collection {
 	public function render_item( $item ) {
 		$collection = $this;
 		$item = get_post( $item );
-		$labels = get_post_type_object( $this->post_type )->labels;
-		$singular = $labels->singular_name;
+		$singular = get_post_type_object( $this->post_type )->labels->singular_name;
 		$preview = wp_trim_words( wp_strip_all_tags( $item->post_content ), 35 );
 		$date = get_the_date( '', $item );
 		$status = get_post_status_object( $item->post_status )->label;
@@ -177,7 +171,6 @@ class md_collection {
 	public function items( $parent_id, $args = array() ) {
 		return $this->query( $parent_id, wp_parse_args( $args, array(
 			'post_status' => 'publish',
-			'posts_per_page' => -1,
 			'orderby' => array( 'date' => $this->order, 'ID' => $this->order ),
 			'order' => $this->order,
 			'no_found_rows' => true
@@ -246,12 +239,9 @@ class md_collection {
 		if ( $post->post_type !== $this->post_type )
 			return;
 
-		$parents = array( $post->post_parent );
+		$parents = array_unique( array( (int) $post->post_parent, $post_before ? (int) $post_before->post_parent : 0 ) );
 
-		if ( $post_before )
-			$parents[] = $post_before->post_parent;
-
-		foreach ( array_unique( array_filter( array_map( 'absint', $parents ) ) ) as $parent_id )
+		foreach ( array_filter( $parents ) as $parent_id )
 			$this->refresh_count( $parent_id );
 	}
 
@@ -283,12 +273,11 @@ class md_collection {
 			if ( ! $id )
 				continue;
 
-			$has_default = array_key_exists( 'default', $field );
 			$field = wp_parse_args( $field, array(
 				'type' => 'text',
 				'source' => 'meta',
 				'required' => false,
-				'default' => null
+				'default' => ( $field['type'] ?? 'text' ) === 'terms' ? array() : ''
 			) );
 
 			$field['id'] = $id;
@@ -296,13 +285,6 @@ class md_collection {
 
 			if ( ! in_array( $field['source'], $this->sources, true ) )
 				continue;
-
-			if ( ! $has_default ) {
-				$field['default'] = '';
-
-				if ( $field['type'] === 'terms' )
-					$field['default'] = array();
-			}
 
 			if ( $field['source'] === 'meta' ) {
 				$field['meta_key'] = strpos( $id, "{$this->post_type}_" ) === 0 ? $id : "{$this->post_type}_{$id}";
@@ -435,7 +417,6 @@ class md_collection {
 		if ( get_post_type( $post_id ) !== $this->post_type )
 			return new WP_Error( 'md_collection_item', __( 'Collection item not found.', 'md' ) );
 
-		$values = is_array( $values ) ? $values : array();
 		$resolved = $this->validate( $values, $post_id );
 
 		if ( is_wp_error( $resolved ) )

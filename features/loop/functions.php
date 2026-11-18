@@ -22,8 +22,6 @@ function md_loop( $args = array() ) {
 	$loop_classes = $loop['loop_classes'];
 	$loop_columns_style = md_loop_columns_style( $loop );
 
-	// Choose wrapper tag, if valid
-
 	if ( in_array( $args['html'] ?? '', array( 'article', 'div' ), true ) )
 		$html = $args['html'];
 
@@ -40,27 +38,14 @@ function md_loop( $args = array() ) {
 
 	if ( ! empty( $loop['in_loop'] ) )
 		include md_template( 'features', 'loop/the-post', true );
-
-	// If listing by category
-
 	elseif ( isset( $loop['by_category'] ) )
 		include md_template( 'features', 'loop/category-posts', true );
-
 	elseif ( ! empty( $loop['by_type'] ) )
 		include md_template( 'features', 'loop/type-posts', true );
-
-	// If grouping a post listing into month sections
-
 	elseif ( ! empty( $loop['by_date'] ) )
 		include md_template( 'features', 'loop/date-posts', true );
-
-	// Calling a manual query loop
-
 	elseif ( isset( $args['query'] ) )
 		include md_template( 'features', 'loop/the-query', true );
-
-	// Every default loop on a page
-
 	elseif ( have_posts() ) {
 		echo ! is_singular() ? '<div class="' . esc_attr( $loop_classes ) . '"' . $loop_columns_style . '>' : '';
 
@@ -105,8 +90,6 @@ function md_get_loop( $args = array() ) {
 	$post_type = ! empty( $args['post_type'] ) ? $args['post_type'] : md_get_post_type();
 	$settings_type = is_author() && empty( $args['query'] ) ? 'author' : $post_type;
 
-	// Build parameters if a manual loop query
-
 	if ( ! empty( $args['query'] ) ) {
 		$query_vars = $args['query'] instanceof WP_Query ? $args['query']->query : $args['query'];
 		$key = ( $args['post_type'] ?? '' ) ?: ( $query_vars['post_type'] ?? '' );
@@ -121,8 +104,6 @@ function md_get_loop( $args = array() ) {
 			) );
 		}
 	}
-
-	// Build parameters for auto page detection and admin settings
 
 	else {
 		$post_type_loop = md_value( array(
@@ -169,12 +150,9 @@ function md_get_loop( $args = array() ) {
 			$loop = array_replace_recursive( $post_type_loop, $tax, $single );
 		}
 
-		// Set additional parameters
-
 		$loop['paged'] = get_query_var( 'paged' ) ?: 1;
 
-		if ( empty( $loop['posts_per_page'] ) )
-			$loop['posts_per_page'] = get_option( 'posts_per_page' );
+		$loop['posts_per_page'] = ( $loop['posts_per_page'] ?? 0 ) ?: get_option( 'posts_per_page' );
 
 		$category_loop = in_array( $loop['loop_type'] ?? '', array( 'category_posts', 'category' ), true );
 
@@ -236,8 +214,7 @@ function md_get_loop( $args = array() ) {
 			$loop['own_look'] = true;
 	}
 
-	if ( empty( $loop['columns'] ) )
-		$loop['columns'] = 1;
+	$loop['columns'] = ( $loop['columns'] ?? 0 ) ?: 1;
 
 	// Pick the box style: the template's archive style, else the site and post type setting
 
@@ -284,8 +261,6 @@ function md_get_loop( $args = array() ) {
 			$loop['query']['ignore_sticky_posts'] = 1;
 		}
 	}
-
-	// Return loop data for any given page
 
 	return apply_filters( 'md_filter_set_loop', $loop );
 }
@@ -374,26 +349,18 @@ function md_loop_style( $args = array() ) {
 	) );
 	$style = md_value( array( 'effects', 'box_style', 'remove' ) ) ? 'plain' : 'box';
 	$key = array( 'layout', 'content', 'box_style' );
+	$removed = $old = $own = null;
 
-	if ( isset( $args['body'] ) )
-		return $style;
-
-	if ( ! empty( $args['post_id'] ) ) {
+	if ( ! isset( $args['body'] ) && ! empty( $args['post_id'] ) ) {
 		$post_type = $args['post_type'] ?: md_get_post_type( $args['post_id'] );
 		$removed = md_value( array( 'key' => $key, 'post_type' => $post_type ) );
 
 		if ( empty( $args['exclude_single'] ) ) {
 			$old = md_post_meta( array( 'layout', 'content_style' ), $args['post_id'] );
 			$own = md_post_meta( $key, $args['post_id'] );
-
-			if ( ! empty( $old ) )
-				$removed = $old === 'plain';
-
-			if ( $own !== null && $own !== '' )
-				$removed = $own;
 		}
 	}
-	else {
+	elseif ( ! isset( $args['body'] ) ) {
 		$old = md_value( array(
 			'key' => array( 'layout', 'content_style' ),
 			'page' => true,
@@ -404,10 +371,13 @@ function md_loop_style( $args = array() ) {
 			'page' => true,
 			'id' => get_queried_object_id()
 		) );
-
-		if ( ! empty( $old ) )
-			$removed = $old === 'plain';
 	}
+
+	if ( ! empty( $old ) )
+		$removed = $old === 'plain';
+
+	if ( $own !== null && $own !== '' )
+		$removed = $own;
 
 	if ( $removed !== null && $removed !== '' )
 		$style = $removed ? 'plain' : 'box';
@@ -432,8 +402,6 @@ function md_loop_classes( $loop = array() ) {
 	// When each category section is the box, its posts render Plain
 
 	$loop_style = $category_box ? 'plain' : $style;
-
-	// Loop classes
 
 	$classes = array( 'loop', "loop-$post_type", 'loop-' . $loop['loop'], "{$loop_style}-style", "{$loop_style}-{$target}" );
 
@@ -466,15 +434,10 @@ function md_loop_classes( $loop = array() ) {
 	$category_columns = (int) ( $loop['category_columns'] ?? 1 );
 	$categories_classes = array( 'categories', $category_type, 'category-' . $loop['loop'], "{$style}-style" );
 
-	if ( $category_columns > 1 ) {
-		$categories_classes[] = 'columns';
-		$categories_classes[] = 'columns-' . $category_columns;
-		$categories_classes[] = ( $category_columns >= 3 || ! empty( $loop['has_sidebar'] ) ) ? 'slim' : 'full';
-	}
-	else {
-		$categories_classes[] = 'row';
-		$categories_classes[] = 'full';
-	}
+	if ( $category_columns > 1 )
+		array_push( $categories_classes, 'columns', 'columns-' . $category_columns, ( $category_columns >= 3 || ! empty( $loop['has_sidebar'] ) ) ? 'slim' : 'full' );
+	else
+		array_push( $categories_classes, 'row', 'full' );
 
 	$categories_classes = array_unique( apply_filters( 'md_filter_category_loop_classes', $categories_classes ) );
 
@@ -486,8 +449,6 @@ function md_loop_classes( $loop = array() ) {
 		$category_classes[] = "{$style}-{$target}";
 	elseif ( $category_box )
 		$category_classes[] = 'box-group';
-
-	// Return class sets
 
 	return array(
 		'loop' => join( ' ', $classes ),
@@ -511,8 +472,7 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 	elseif ( empty( $loop['read_more'] ) )
 		$loop['read_more'] = __( 'Continue reading &rarr;', 'md' );
 
-	if ( empty( $loop['excerpt_length'] ) )
-		$loop['excerpt_length'] = 55;
+	$loop['excerpt_length'] = ( $loop['excerpt_length'] ?? 0 ) ?: 55;
 
 	if ( ! empty( $loop['excerpt_settings']['remove_more'] ) )
 		$loop['excerpt_more'] = '';
@@ -530,8 +490,7 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 	}
 	else unset( $loop['featured_image_id'] );
 
-	if ( ! isset( $loop['content'] ) )
-		$loop['content'] = '';
+	$loop['content'] = $loop['content'] ?? '';
 
 	// The first X items use the Featured settings
 
@@ -539,7 +498,6 @@ function md_loop_item( $loop = array(), $c = 1 ) {
 		$loop = md_loop_featured( $loop );
 
 	return $loop;
-
 }
 
 /**
@@ -806,14 +764,9 @@ function md_pagination( $loop = array() ) {
 	$loop = $loop ?: md_get_loop();
 	$query = ( $loop['query'] ?? null ) instanceof WP_Query ? $loop['query'] : null;
 
-	// Single posts only paginate their own queries
+	// Singles only paginate their own queries; array queries never borrow the main query's pages
 
-	if ( is_singular() && ! $query )
-		return;
-
-	// Manual queries passed as arrays never borrow the main query's pages
-
-	if ( isset( $loop['query'] ) && ! $query && ! isset( $loop['by_category'] ) )
+	if ( ! $query && ( is_singular() || ( isset( $loop['query'] ) && ! isset( $loop['by_category'] ) ) ) )
 		return;
 
 	$big = 999999999;

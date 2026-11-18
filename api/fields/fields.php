@@ -115,14 +115,8 @@ class md_fields extends md_fields_render {
 		if ( $this->root )
 			$field = array_merge( $this->root, (array) $field );
 
-		$wrap_classes = array( 'md-field' );
-		$clean_id = $this->_clean_id;
-		$has_option = false;
-
-		if ( isset( $args['id'] ) )
-			$clean_id = $args['id'];
-
-		$args = $args + $this->registered_args( $field, $clean_id );
+		$clean_id = $args['id'] ?? $this->_clean_id;
+		$args = array_merge( $this->registered_args( $field, $clean_id ), $args );
 
 		if ( ! empty( $args['tokens'] ) )
 			$args['tokens'] = $this->token_set( $args );
@@ -132,9 +126,6 @@ class md_fields extends md_fields_render {
 		$name = "md[$scope][$clean_id]";
 		$id = "{$this->_option}_{$clean_id}";
 		$args['field'] = $field;
-		$screen = $this->_get_screen;
-
-		// Determine screen context and build name/id/settings key
 
 		if ( $context['is_post'] || wp_doing_ajax() ) {
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
@@ -149,7 +140,7 @@ class md_fields extends md_fields_render {
 			}
 		}
 		elseif ( $context['is_term'] )
-			$setting = get_term_meta( $screen['screen_id'], $this->_option, true );
+			$setting = get_term_meta( $this->_get_screen['screen_id'], $this->_option, true );
 		elseif ( $context['is_user'] ) {
 			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id();
 			$setting = get_user_meta( $user_id, $this->_option, true );
@@ -180,28 +171,14 @@ class md_fields extends md_fields_render {
 			}
 		}
 
-		// Walk array and build attributes
+		$has_option = is_array( $setting ) && array_key_exists( $clean_id, $setting );
+		$option = $has_option && is_array( $setting[$clean_id] ) ? $setting[$clean_id] : array();
 
-		$has_group = is_array( $setting ) && array_key_exists( $clean_id, $setting );
-		$group = $has_group && is_array( $setting[$clean_id] ) ? $setting[$clean_id] : array();
-
-		if ( is_array( $field ) ) {
-			$has_option = $has_group;
-
-			foreach ( $field as $key ) {
-				$name .= "[$key]";
-				$id .= "_{$key}";
-				$has_option = $has_option && is_array( $group ) && array_key_exists( $key, $group );
-				$group = $has_option ? $group[$key] : '';
-			}
-
-			$option = $group;
-		}
-		else {
-			$name .= "[$field]";
-			$id .= "_{$field}";
-			$has_option = $has_group && is_array( $setting[$clean_id] ) && array_key_exists( $field, $setting[$clean_id] );
-			$option = $has_option ? $setting[$clean_id][$field] : '';
+		foreach ( (array) $field as $key ) {
+			$name .= "[$key]";
+			$id .= "_{$key}";
+			$has_option = $has_option && is_array( $option ) && array_key_exists( $key, $option );
+			$option = $has_option ? $option[$key] : '';
 		}
 
 		if ( $args['type'] === 'builder' && ! $has_option && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
@@ -219,7 +196,7 @@ class md_fields extends md_fields_render {
 		if ( isset( $args['inherit'] ) )
 			$args = $this->prepare_inheritance( $field, $option, $args );
 
-		$this->render_field( $name, $id, $option, $args, $wrap_classes );
+		$this->render_field( $name, $id, $option, $args, array( 'md-field' ) );
 	}
 
 	/**
@@ -378,10 +355,8 @@ class md_fields extends md_fields_render {
 		$parent = $this->parent_value( (array) $field, $default );
 
 		if ( in_array( $type, array( 'text', 'number' ), true ) ) {
-			$value = $parent['available'] ? $parent['value'] : $default;
-
-			if ( is_scalar( $value ) )
-				$args['placeholder'] = $value;
+			if ( is_scalar( $parent['value'] ) )
+				$args['placeholder'] = $parent['value'];
 		}
 		elseif ( $type === 'select' && $parent['available'] ) {
 			$value = $parent['value'];
@@ -430,7 +405,6 @@ class md_fields extends md_fields_render {
 		return array( 'available' => true, 'value' => md_value( $args ) );
 	}
 
-
 	/**
 	 * Get stored field values based on current screen.
 	 *
@@ -438,8 +412,6 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function get_field( $keys, $default = null ) {
-		// Determine page context and set option level
-
 		$context = $this->get_context();
 		$option = $this->stored_option();
 
@@ -462,8 +434,6 @@ class md_fields extends md_fields_render {
 			elseif ( $taxonomy )
 				$option = ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array();
 		}
-
-		// Walk options array
 
 		foreach ( (array) $keys as $key ) {
 			if ( ! is_array( $option ) || ! array_key_exists( $key, $option ) )
@@ -514,15 +484,11 @@ class md_fields extends md_fields_render {
 		$screen = $this->_get_screen;
 		$context = $this->get_context();
 
-		// Return if post meta
-
 		if ( $context['is_post'] ) {
 			array_unshift( $keys, $this->_clean_id );
 
 			return md_post_meta( $keys, null, $default );
 		}
-
-		// Return for term and taxonomy inheritance
 
 		if ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) {
 			$field_keys = array_merge( array( $this->_clean_id ), $keys );
@@ -541,8 +507,6 @@ class md_fields extends md_fields_render {
 
 			return $value;
 		}
-
-		// Determine if admin group setting, taxonomy group, or just normal setting
 
 		if ( $context['is_group'] ) {
 			$field_keys = $keys;
@@ -639,16 +603,11 @@ class md_fields extends md_fields_render {
 	 */
 
 	public function visibility_condition( $field ) {
-		$options = array();
-
-		foreach ( md_visibility_conditions() as $key => $item )
-			$options[$key] = $item['label'];
-
 		$this->field( $field, array(
 			'type' => 'checkbox',
 			'multi' => true,
 			'label' => __( 'Visibility', 'md' ),
-			'options' => $options
+			'options' => wp_list_pluck( md_visibility_conditions(), 'label' )
 		) );
 	}
 

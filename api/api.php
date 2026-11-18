@@ -67,33 +67,29 @@ class md_api {
 		if ( method_exists( $this, 'actions' ) )
 			$this->actions();
 
-		// Print dynamic CSS to master stylesheet
+		// Methods named after a hook's purpose attach to that hook
 
-		if ( method_exists( $this, 'css' ) ) #since 4.9
-			add_filter( 'md_dropins_css_templates', array( $this, 'css' ) );
+		$hooks = array(
+			'css' => 'md_dropins_css_templates',
+			'css_data' => 'md_filter_css_values',
+			'js' => 'md_js_templates',
+			'onscroll' => 'md_hook_js_onscroll',
+			'template' => 'template_redirect',
+			'widgets' => 'widgets_init',
+			'register_loop' => 'md_filter_loops',
+			'byline' => 'md_byline',
+			'breadcrumbs' => 'md_filter_breadcrumbs'
+		);
 
-		if ( method_exists( $this, 'css_data' ) )
-			add_filter( 'md_filter_css_values', array( $this, 'css_data' ) );
-
-		if ( method_exists( $this, 'js' ) ) #since 5.4.2
-			add_filter( 'md_js_templates', array( $this, 'js' ) );
-
-		if ( method_exists( $this, 'onscroll' ) ) #since 5.4.2
-			add_filter( 'md_hook_js_onscroll', array( $this, 'onscroll' ) );
-
-		// Frontend
-
-		if ( method_exists( $this, 'template' ) )
-			add_action( 'template_redirect', array( $this, 'template' ) );
+		foreach ( $hooks as $method => $hook )
+			if ( method_exists( $this, $method ) )
+				add_filter( $hook, array( $this, $method ) );
 
 		if ( method_exists( $this, 'pre_get_posts' ) && ! is_admin() )
 			add_action( 'pre_get_posts', array( $this, 'pre_get_posts' ) );
 
 		if ( method_exists( $this, 'enqueue' ) )
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
-
-		if ( method_exists( $this, 'widgets' ) )
-			add_action( 'widgets_init', array( $this, 'widgets' ) );
 
 		// Post Type + Taxonomy
 
@@ -112,19 +108,8 @@ class md_api {
 			add_filter( 'md_taxonomy_meta', array( $this, 'taxonomy_meta' ) );
 		}
 
-		// Filters
-
-		if ( method_exists( $this, 'register_loop' ) )
-			add_filter( 'md_filter_loops', array( $this, 'register_loop' ) );
-
 		if ( method_exists( $this, 'collections' ) )
 			add_filter( 'md_filter_collections', array( $this, '_collections' ) );
-
-		if ( method_exists( $this, 'byline' ) )
-			add_filter( 'md_byline', array( $this, 'byline' ) );
-
-		if ( method_exists( $this, 'breadcrumbs' ) )
-			add_filter( 'md_filter_breadcrumbs', array( $this, 'breadcrumbs' ) );
 
 		if ( $this->post_type && method_exists( $this, 'document_title' ) )
 			add_filter( 'document_title_parts', array( $this, '_document_title' ), 20 );
@@ -263,10 +248,7 @@ class md_api {
 	 */
 
 	protected function sanitize() {
-		if ( ! isset( self::$sanitize ) )
-			self::$sanitize = new md_sanitize;
-
-		return self::$sanitize;
+		return self::$sanitize ??= new md_sanitize;
 	}
 
 	/**
@@ -276,10 +258,7 @@ class md_api {
 	 */
 
 	protected function design() {
-		if ( ! isset( self::$design ) )
-			self::$design = new md_design;
-
-		return self::$design;
+		return self::$design ??= new md_design;
 	}
 
 	/**
@@ -372,22 +351,14 @@ class md_api {
 	 */
 
 	public function _document_title( $parts ) {
-		if ( ! is_singular( $this->post_type ) )
-			return $parts;
-
 		$post = get_queried_object();
 
-		if ( ! is_object( $post ) || empty( $post->post_type ) || $post->post_type !== $this->post_type )
-			return $parts;
+		if ( is_singular( $this->post_type ) && ! trim( (string) $post->post_title ) ) {
+			$document_title = md_sanitize_document_title( $this->document_title( ! empty( $parts['title'] ) ? $parts['title'] : '', $post ) );
 
-		if ( ! empty( trim( (string) $post->post_title ) ) )
-			return $parts;
-
-		$title = ! empty( $parts['title'] ) ? $parts['title'] : '';
-		$document_title = md_sanitize_document_title( $this->document_title( $title, $post ) );
-
-		if ( $document_title )
-			$parts['title'] = $document_title;
+			if ( $document_title )
+				$parts['title'] = $document_title;
+		}
 
 		return $parts;
 	}
@@ -483,32 +454,34 @@ class md_api {
 
 		$this->loop_query_vars( $wp, $taxonomy, $term_id );
 
-		// Consider sticky posts since CPTs dont natively support
-
-		$exclude = $wp->get( 'post__not_in' ) ?: array();
-		$sticky = empty( $wp->query_vars['ignore_sticky_posts'] ) ? array_diff( md_get_sticky( $post_type ), $exclude ) : array();
-
-		if ( $sticky ) {
-			if ( $term_id && $taxonomy ) {
-				$term_sticky = array();
-
-				foreach ( $sticky as $id )
-					if ( has_term( $term_id, $taxonomy, $id ) )
-						$term_sticky[] = $id;
-
-				$sticky = $term_sticky;
-			}
-
-			if ( $sticky ) {
-				$wp->set( 'post__not_in', array_merge( $exclude, $sticky ) );
-				$wp->set( 'md_sticky', array_values( $sticky ) );
-
-				if ( ! get_query_var( 'paged' ) )
-					add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
-			}
-		}
+		$this->loop_sticky( $wp, $post_type, $taxonomy, $term_id );
 
 		return $wp;
+	}
+
+	/**
+	 * Keep a post type's sticky posts (in the term, if any) out of the query, to
+	 * be added back at the top of the first page by _prepend_sticky().
+	 *
+	 * @since 6.2.4
+	 */
+
+	protected function loop_sticky( $wp, $post_type, $taxonomy = '', $term_id = 0 ) {
+		$exclude = $wp->get( 'post__not_in' ) ?: array();
+		$sticky = array();
+
+		if ( empty( $wp->query_vars['ignore_sticky_posts'] ) )
+			foreach ( array_diff( md_get_sticky( $post_type ), $exclude ) as $id )
+				if ( ! ( $term_id && $taxonomy ) || has_term( $term_id, $taxonomy, $id ) )
+					$sticky[] = $id;
+
+		if ( $sticky ) {
+			$wp->set( 'post__not_in', array_merge( $exclude, $sticky ) );
+			$wp->set( 'md_sticky', $sticky );
+
+			if ( ! get_query_var( 'paged' ) )
+				add_filter( 'the_posts', array( $this, '_prepend_sticky' ), 10, 2 );
+		}
 	}
 
 	/**
@@ -654,29 +627,19 @@ class md_api {
 
 	protected function _prefix() {
 		$prefix = "{$this->_option}_{$this->_clean_id}";
-
-		if ( ! isset( $_GET['page'] ) )
-			return $prefix;
-
-		$page = sanitize_key( $_GET['page'] );
-		$page_types = apply_filters( 'md_admin_groups', array() );
+		$page = sanitize_key( $_GET['page'] ?? '' );
+		$tab = sanitize_key( $_GET['md_tab'] ?? '' );
+		$page_types = $page ? apply_filters( 'md_admin_groups', array() ) : array();
 
 		if ( ! empty( $page_types[$page] ) ) {
-			$page = md_clean_id( $page );
+			$group = md_clean_id( $page );
+			$tax_groups = $tab ? apply_filters( 'md_taxonomy_groups', array() ) : array();
 
-			if ( $page !== $this->_clean_id )
-				$prefix = "{$this->_option}_{$page}_{$this->_clean_id}";
-			else
-				$prefix = "{$this->_option}_{$this->_clean_id}";
+			if ( $group !== $this->_clean_id )
+				$prefix = "{$this->_option}_{$group}_{$this->_clean_id}";
 
-			if ( isset( $_GET['md_tab'] ) ) {
-				$taxonomy = sanitize_key( $_GET['md_tab'] );
-				$tax_groups = apply_filters( 'md_taxonomy_groups', array() );
-				$page_slug = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : '';
-
-				if ( ! empty( $tax_groups[$page_slug][$taxonomy] ) )
-					$prefix .= "_{$taxonomy}";
-			}
+			if ( ! empty( $tax_groups[$page][$tab] ) )
+				$prefix .= "_{$tab}";
 		}
 
 		return $prefix;
@@ -701,26 +664,22 @@ class md_api {
 	 */
 
 	public function _register( $data ) {
+		$types = array(
+			'admin_page' => 'admin_pages',
+			'meta_box' => 'meta_boxes',
+			'term' => 'terms',
+			'user_meta' => 'user_meta'
+		);
+
+		foreach ( $types as $type => $collection )
+			if ( isset( $this->register[$type] ) ) {
+				$data[$collection][$this->_clean_id] = $this->register[$type];
+				$data[$collection][$this->_clean_id]['id'] = $this->_id;
+			}
+
 		if ( isset( $this->register['admin_page'] ) ) {
-			$data['admin_pages'][$this->_clean_id] = $this->register['admin_page'];
-			$data['admin_pages'][$this->_clean_id]['id'] = $this->_id;
 			$data['admin_pages'][$this->_clean_id]['_option'] = $this->_option;
 			$data['admin_pages'][$this->_clean_id]['_source'] = $this->_source();
-		}
-
-		if ( isset( $this->register['meta_box'] ) ) {
-			$data['meta_boxes'][$this->_clean_id] = $this->register['meta_box'];
-			$data['meta_boxes'][$this->_clean_id]['id'] = $this->_id;
-		}
-
-		if ( isset( $this->register['term'] ) ) {
-			$data['terms'][$this->_clean_id] = $this->register['term'];
-			$data['terms'][$this->_clean_id]['id'] = $this->_id;
-		}
-
-		if ( isset( $this->register['user_meta'] ) ) {
-			$data['user_meta'][$this->_clean_id] = $this->register['user_meta'];
-			$data['user_meta'][$this->_clean_id]['id'] = $this->_id;
 		}
 
 		return $data;
@@ -753,10 +712,7 @@ class md_api {
 	 */
 
 	public function _collections( $collections ) {
-		foreach ( (array) $this->collections() as $id => $args )
-			$collections[$id] = $args;
-
-		return $collections;
+		return array_replace( $collections, (array) $this->collections() );
 	}
 
 	/**
@@ -824,44 +780,26 @@ class md_api {
 				return $settings;
 			} );
 
-		// If admin groups or children are set, formulate fields data and template
+		$priority = ! empty( $register['position'] ) ? $register['position'] : 10;
+		$group_callback = method_exists( $this, 'admin_group' ) ? 'admin_group' : $callback;
 
-		if ( isset( $register['group'] ) || isset( $register['child_of'] ) ) {
-			$priority = ! empty( $register['position'] ) ? $register['position'] : 10;
-			$group_callback = method_exists( $this, 'admin_group' ) ? 'admin_group' : $callback;
+		if ( isset( $register['group'] ) ) {
+			foreach ( (array) $register['group'] as $field )
+				add_filter( "md_filter_admin_page_$field", array( $this, '_admin_fields' ) );
 
-			// Assigned as group
-
-			if ( isset( $register['group'] ) ) {
-				$group = $register['group'];
-
-				if ( method_exists( $this, 'fields' ) )
-					foreach ( (array) $group as $field )
-						add_filter( "md_filter_admin_page_$field", array( $this, '_admin_fields' ) );
-
-				add_action( "md_admin_page_{$group}", array( $this, $group_callback ), $priority );
-			}
-
-			// Assigned as children to a group
-
-			elseif ( isset( $register['child_of'] ) ) {
-				$groups = (array) $register['child_of'];
-
-				foreach ( $groups as $group ) {
-					add_filter( "md_admin_page_{$group}_fields", function( $fields ) use( $group_callback ) {
-						$fields[$this->_clean_id] = array(
-							'name' => $this->name,
-							'callback' => array( $this, $group_callback )
-						);
-						return $fields;
-					} );
-				}
-
-				if ( method_exists( $this, 'fields' ) )
-					foreach ( $groups as $group )
-						add_filter( "md_filter_admin_page_$group", array( $this, '_admin_fields' ) );
-			}
+			add_action( "md_admin_page_{$register['group']}", array( $this, $group_callback ), $priority );
 		}
+		elseif ( isset( $register['child_of'] ) )
+			foreach ( (array) $register['child_of'] as $group ) {
+				add_filter( "md_admin_page_{$group}_fields", function( $fields ) use ( $group_callback ) {
+					$fields[$this->_clean_id] = array(
+						'name' => $this->name,
+						'callback' => array( $this, $group_callback )
+					);
+					return $fields;
+				} );
+				add_filter( "md_filter_admin_page_$group", array( $this, '_admin_fields' ) );
+			}
 
 		add_action( "{$this->_id}_admin_page", array( $this, $callback ) );
 	}
