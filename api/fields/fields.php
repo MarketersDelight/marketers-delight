@@ -432,7 +432,7 @@ class md_fields extends md_fields_render {
 					$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
 			}
 			elseif ( $taxonomy )
-				$option = ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array();
+				$option = array( $page_id => ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array() );
 		}
 
 		foreach ( (array) $keys as $key ) {
