@@ -15,7 +15,7 @@ class md_typography extends md_api {
 
 	public function register() {
 		$fields = array();
-		$groups = array( 'body', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'sidebar', 'footer' );
+		$groups = array( 'body', 'huge', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'sidebar', 'footer' );
 
 		foreach ( $groups as $group ) {
 			$fields[$group] = $this->fields->data->typography();

@@ -55,6 +55,9 @@ $classes = join( ' ', $classes );
 
 <?php endif; ?>
 
+<?php if ( isset( $args['description'] ) )
+	$this->description( $args['description'] ); ?>
+
 <div id="md_group_<?php echo esc_attr( "{$this->_id}_$group_id" ); ?>" class="<?php echo esc_attr( $classes ); ?>">
 
 	<?php foreach ( $option as $group => $fields ) :

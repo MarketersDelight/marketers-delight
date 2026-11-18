@@ -263,6 +263,7 @@ class md_fields_data {
 	public function page_fields() {
 		return apply_filters( 'md_page_settings_fields', array(
 			'archives_title' => array( 'type' => 'text', 'tokens' => true ),
+			'archives_title_size' => array( 'type' => 'select', 'options' => array( 'huge' ) ),
 			'archives_text' => array( 'type' => 'textarea' )
 		) );
 	}

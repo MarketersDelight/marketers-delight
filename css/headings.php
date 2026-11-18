@@ -72,7 +72,11 @@ echo
 	".has-tiny-font-size { font-size: var(--md-font-size-tiny); line-height: var(--md-line-height-tiny); }\n".
 	".has-small-font-size { font-size: var(--md-font-size-small); line-height: var(--md-line-height-small); }\n".
 	".has-normal-font-size { font-size: var(--md-font-size); line-height: var(--md-line-height); }\n".
-	".has-intro-font-size { font-size: var(--md-font-size-intro); line-height: var(--md-h6-line-height); }\n";
+	".has-intro-font-size { font-size: var(--md-font-size-intro); line-height: var(--md-h6-line-height); }\n".
+	".has-body-font-family { font-family: var(--wp--preset--font-family--body); }\n";
+
+if ( ! empty( $typography['h1']['font_family'] ) )
+	echo ".has-heading-font-family { font-family: var(--wp--preset--font-family--heading); }\n";
 ?>
 
 :where(<?php echo $heading_selectors ?>) a {

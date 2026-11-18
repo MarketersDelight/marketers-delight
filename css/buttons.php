@@ -27,6 +27,12 @@ input[type="submit"], .link, .tag, .button, .wp-element-button {
 	gap: var(--md-half) calc(var(--md-half) + var(--md-third));
 }
 
+.cta-box {
+	display: flex;
+	flex-direction: column;
+	gap: var(--md-half);
+}
+
 .cta-email { width: 100%; }
 
 :where(.wp-block-buttons) { justify-content: center; }

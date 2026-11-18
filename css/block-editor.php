@@ -52,7 +52,7 @@ html:not(.md-builder) .editor-styles-wrapper :is(.wp-block-post-content, .wp-blo
 html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-heading:not(:first-child) { margin-block-start: <?php echo $mid; ?>px; }
 <?php endif; ?>
 
-.editor-styles-wrapper .wp-block-post-content :is(ul, ol).wp-block-list:not(.list, .list-check) {
+:where(.editor-styles-wrapper .wp-block-post-content) :is(ul, ol):where(.wp-block-list:not(.list, .list-check)) {
 	list-style-position: outside;
 	padding-inline-start: var(--md-single);
 }
@@ -127,13 +127,13 @@ html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-
 
 .md-builder .editor-styles-wrapper .alignwide { max-width: var(--md-width-alignwide); }
 
-.editor-styles-wrapper .is-root-container { padding-inline: clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)); }
+.editor-styles-wrapper .is-root-container { padding-inline: clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half)); }
 
-.editor-styles-wrapper .is-root-container > .alignfull { margin-inline: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half))); }
+.editor-styles-wrapper .is-root-container > .alignfull { margin-inline: calc(-1 * clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half))); }
 
 @media (max-width: <?php echo $post_width; ?>px) {
 	.compact .editor-styles-wrapper .is-root-container > .alignwide {
-		inset-inline-start: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)));
+		inset-inline-start: calc(-1 * clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half)));
 		max-width: none;
 		position: relative;
 		width: 100vw;
@@ -142,7 +142,7 @@ html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-
 
 @media (width <= <?php echo $content_width + ( $quad * 2 ); ?>px) {
 	.expanded .editor-styles-wrapper .is-root-container > .alignwide {
-		inset-inline-start: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half)));
+		inset-inline-start: calc(-1 * clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half)));
 		max-width: none;
 		position: relative;
 		width: 100vw;

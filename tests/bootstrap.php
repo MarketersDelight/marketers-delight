@@ -739,6 +739,7 @@ require_once dirname( __DIR__ ) . '/api/design/design.php';
 require_once dirname( __DIR__ ) . '/api/assets/compile.php';
 require_once dirname( __DIR__ ) . '/api/design/theme-json.php';
 require_once dirname( __DIR__ ) . '/api/assets/css.php';
+require_once dirname( __DIR__ ) . '/api/assets/blocks.php';
 
 /**
  * Base test case: reflection helper for exercising the private merge/

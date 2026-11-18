@@ -28,6 +28,33 @@
 
 	<hr class="mb-single" />
 
+	<?php $huge_label = __( 'Inherit from <h1>', 'md' ); ?>
+
+	<div class="md-widget md-toggle mb-single">
+
+		<h3 class="md-widget-title"><span><?php echo __( 'Huge', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Page titles set to Huge size, and the Huge font size', 'md' ); ?></span></span></h3>
+
+		<div class="md-widget-item">
+
+			<?php $this->fields->typography( 'huge', array(
+				'font_size' => array(
+					'desktop' => $defaults['huge']['font_size']['desktop']
+				),
+				'line_height' => array(
+					'desktop' => $defaults['huge']['line_height']['desktop']
+				),
+				'font_family' => array( 'placeholder' => $huge_label ),
+				'font_weight' => array( 'empty_label' => $huge_label ),
+				'letters' => array(
+					'spacing' => $values['typography']['h1']['letter_spacing'] ?? '',
+					'case' => $huge_label
+				)
+			) ); ?>
+
+		</div>
+
+	</div>
+
 	<?php foreach ( array( 'h1', 'h2', 'h3', 'h4', 'h5', 'h6' ) as $h ) :
 		$label = $h == 'h1' ? __( 'Inherit from body', 'md' ) : __( 'Inherit from <h1>', 'md' );
 		$letters = array( 'spacing' => '', 'case' => __( 'Normal', 'md' ) );
@@ -40,7 +67,7 @@
 
 		<div class="md-widget md-toggle mb-single">
 
-			<h3 class="md-widget-title"><span><?php echo sprintf( __( 'Heading (%s)', 'md' ), $h ); ?><?php if ( $h === 'h1' ) : ?><span class="md-widget-description"><?php echo __( 'H2 to H6 inherit this font, weight, spacing and case', 'md' ); ?></span><?php endif; ?></span></h3>
+			<h3 class="md-widget-title"><span><?php echo sprintf( __( 'Heading (%s)', 'md' ), $h ); ?><?php if ( $h === 'h1' ) : ?><span class="md-widget-description"><?php echo __( 'Huge and H2 to H6 inherit this font, weight, spacing and case', 'md' ); ?></span><?php endif; ?></span></h3>
 
 			<div class="md-widget-item">
 

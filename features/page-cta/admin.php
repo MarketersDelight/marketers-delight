@@ -41,7 +41,8 @@ class md_page_cta extends md_api {
 	}
 
 	/**
-	 * General fields admin template.
+	 * General fields admin template. A post's CTA never inherits, so its
+	 * type select has no default to show.
 	 *
 	 * @since 4.7
 	 */
@@ -49,7 +50,7 @@ class md_page_cta extends md_api {
 	public function admin_fields() {
 		echo "<div class=\"md-$this->_clean_id md-tab-content\">";
 
-		md_page_cta_admin( $this->fields, $this->_prefix );
+		md_page_cta_admin( $this->fields, $this->_prefix, ! $this->_get_screen['is_post'] );
 
 		echo '</div>';
 	}

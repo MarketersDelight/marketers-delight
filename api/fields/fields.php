@@ -193,7 +193,7 @@ class md_fields extends md_fields_render {
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
 			$args['save_empty'] = $has_option;
 
-		if ( isset( $args['inherit'] ) )
+		if ( ! empty( $args['inherit'] ) )
 			$args = $this->prepare_inheritance( $field, $option, $args );
 
 		$this->render_field( $name, $id, $option, $args, array( 'md-field' ) );
@@ -457,6 +457,19 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
+	 * The value this screen inherits from the level above it, or $default
+	 * when nothing is above it.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function inherited( $keys, $default = null ) {
+		$parent = $this->parent_value( array_merge( $this->root, (array) $keys ), $default );
+
+		return $parent['value'];
+	}
+
+	/**
 	 * Get only what's saved on the current screen, without inheriting.
 	 * Use it where a control shows this screen's own choice, like which
 	 * CTA type panel is open.
@@ -670,6 +683,16 @@ class md_fields extends md_fields_render {
 
 	public function page_fields() {
 		include md_template( 'admin/fields/page', true );
+	}
+
+	/**
+	 * A Page Title text box with its Title size select on the right.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function title_field( $args = array() ) {
+		include md_template( 'admin/fields/title', true );
 	}
 
 	/**

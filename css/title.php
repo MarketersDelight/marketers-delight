@@ -170,7 +170,16 @@
 
 .header-cover .main { padding-block-start: 0; }
 
-.cover > :not(.inner, .overlay) { position: relative; }
+.cover > :not(.inner, .overlay, .cover-image) { position: relative; }
+
+.cover-image {
+	border-radius: inherit;
+	height: 100%;
+	inset: 0;
+	object-fit: cover;
+	position: absolute;
+	width: 100%;
+}
 
 .cover {
 	--md-text-muted: color-mix(in srgb, currentColor 80%, transparent);

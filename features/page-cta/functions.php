@@ -88,7 +88,8 @@ function md_get_cta( $context = 'post' ) {
 
 /**
  * CTA types with their labels, save rules and admin panels. Drop-ins add types
- * through md_page_cta_types; admin_callback gets ( $fields, $prefix ).
+ * through md_page_cta_types; admin_callback gets ( $fields, $prefix ), and
+ * 'heading' => false skips the panel heading and description for its own.
  *
  * @since 6.1
  */
@@ -105,7 +106,9 @@ function md_page_cta_types() {
 					'fields' => $data->links( array( 'sort' => 'save' ) )
 				)
 			),
-			'admin_callback' => 'md_page_cta_links_admin'
+			'description' => __( 'Buttons or text links.', 'md' ),
+			'admin_callback' => 'md_page_cta_links_admin',
+			'heading' => false
 		),
 		'custom' => array(
 			'label' => __( 'Custom HTML', 'md' ),
@@ -115,6 +118,7 @@ function md_page_cta_types() {
 					'label' => __( 'Custom HTML', 'md' )
 				)
 			),
+			'description' => __( 'Your own HTML, like a form embed code.', 'md' ),
 			'admin_callback' => 'md_page_cta_custom_admin'
 		)
 	) );
@@ -142,6 +146,22 @@ function md_page_cta_fields() {
 				'before_title' => __( 'Before Title', 'md' ),
 				'byline_aside' => __( 'Title Aside', 'md' )
 			)
+		),
+		'cta_lede' => array(
+			'type' => 'text',
+			'label' => __( 'Lede', 'md' )
+		),
+		'cta_title' => array(
+			'type' => 'text',
+			'label' => __( 'Heading', 'md' )
+		),
+		'cta_text' => array(
+			'type' => 'textarea',
+			'label' => __( 'Text', 'md' )
+		),
+		'cta_foot' => array(
+			'type' => 'text',
+			'label' => __( 'Note below', 'md' )
 		)
 	);
 
@@ -154,7 +174,7 @@ function md_page_cta_fields() {
 
 /**
  * Render the CTA type select and each type's panel. With $inherit, an empty
- * select names the CTA it inherits.
+ * select names the CTA it inherits, and Don't show turns that CTA off.
  *
  * @since 6.1
  */
@@ -167,7 +187,12 @@ function md_page_cta_admin( $fields, $prefix, $inherit = true ) {
 	foreach ( $cta_types as $type_id => $type )
 		$cta_options[$type_id] = ! empty( $type['label'] ) ? $type['label'] : $type_id;
 
-	if ( $inherit )
+	$text_classes = 'md-conditional-item md-conditional-' . join( ' md-conditional-', array_keys( $cta_types ) );
+	$text_display = $cta_type && $cta_type !== 'remove' ? 'block' : 'none';
+
+	$inherited = $inherit ? $fields->inherited( 'page_cta' ) : '';
+
+	if ( $cta_type === 'remove' || ( $inherited && $inherited !== 'remove' ) )
 		$cta_options['remove'] = __( 'Don\'t show', 'md' );
 
 	include md_template( 'features', 'page-cta/admin/page-cta', true );
@@ -180,7 +205,10 @@ function md_page_cta_admin( $fields, $prefix, $inherit = true ) {
  */
 
 function md_page_cta_links_admin( $fields ) {
-	$fields->links_group();
+	$fields->links_group( 'links', array(
+		'label' => __( 'Links', 'md' ),
+		'description' => __( 'Buttons or text links.', 'md' )
+	) );
 }
 
 /**
@@ -190,5 +218,5 @@ function md_page_cta_links_admin( $fields ) {
  */
 
 function md_page_cta_custom_admin( $fields ) {
-	$fields->field( 'custom_html' );
+	$fields->field( 'custom_html', array( 'label' => null ) );
 }

@@ -220,6 +220,11 @@ class md_design {
 			);
 		}
 
+		$huge = $this->saved_font_size( $typography, 'huge', array(
+			'desktop' => round( $h1['desktop'] * 2 ),
+			'mobile' => round( $h1['mobile'] * 1.5 )
+		) );
+
 		$typography['body']['font_size']['desktop'] = $font_size;
 		$typography['body']['font_size']['mobile'] = $font_size_mobile;
 		$typography['h1']['font_size']['desktop'] = $h1_desktop;
@@ -240,13 +245,10 @@ class md_design {
 				'font_family' => $this->font_family
 			),
 			'huge' => array(
-				'font_size' => array(
-					'desktop' => round( $h1['desktop'] * 1.5 ),
-					'mobile' => round( $h1['mobile'] * 1.25 )
-				),
+				'font_size' => $huge,
 				'line_height' => array(
-					'desktop' => round( $h1['desktop'] * 2 ),
-					'mobile' => round( $h1['mobile'] * 1.5 )
+					'desktop' => round( $huge['desktop'] * 1.05 ),
+					'mobile' => round( $huge['mobile'] * 1.05 )
 				)
 			),
 			'h1' => array(

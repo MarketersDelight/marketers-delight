@@ -62,6 +62,7 @@ final class marketers_delight {
 		require_once MD_DIR . 'functions/design-functions.php';
 		require_once MD_DIR . 'api/assets/compile.php';
 		require_once MD_DIR . 'api/assets/enqueue.php';
+		require_once MD_DIR . 'api/assets/blocks.php';
 		require_once MD_DIR . 'api/upgrade.php';
 		require_once MD_DIR . 'api/values.php';
 		require_once MD_DIR . 'api/collections/api.php';
@@ -217,6 +218,9 @@ final class marketers_delight {
 
 		$enqueue = new md_enqueue;
 		$enqueue->init();
+
+		$blocks = new md_blocks;
+		$blocks->init();
 
 		$theme_json = new md_theme_json;
 		$theme_json->init();

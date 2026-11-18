@@ -7,7 +7,7 @@
 .inner {
 	margin-inline: auto;
 	max-width: var(--md-width-site);
-	padding-inline: clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half));
+	padding-inline: clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half));
 	position: relative;
 	width: 100%;
 }

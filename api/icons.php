@@ -302,6 +302,10 @@ return array(
 		'unicode' => 'e922',
 		'label' => __( 'Star Empty', 'md' )
 	),
+	'substack' => array(
+		'unicode' => 'e924',
+		'label' => __( 'Substack', 'md' )
+	),
 	'sun' => array(
 		'unicode' => 'e91f',
 		'label' => __( 'Sun', 'md' )

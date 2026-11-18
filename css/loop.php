@@ -125,7 +125,7 @@
 .box-entry.row.full > .item:not(:last-child),
 .box-entry.row.full > .entry:not(:last-child) { margin-block-end: var(--md-single); }
 
-.box-entry.loop-article.full > .entry { margin-inline: calc(-1 * clamp(0px, calc((100vw - var(--md-width-site)) / -2), var(--md-half))); }
+.box-entry.loop-article.full > .entry { margin-inline: calc(-1 * clamp(0px, calc((var(--md-width-site) + 2 * var(--md-half) - 100vw) / 2), var(--md-half))); }
 
 .box-entry > .entry > :where(.item),
 .box-entry > .entry > :not(.loop) > :where(.item),

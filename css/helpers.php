@@ -454,3 +454,15 @@ foreach ( $design_colors->editor_gradients() as $gradient )
 @media all and (width <= 700px) {
 	.show-desktop, .nav-menu .show-desktop { display: none; }
 }
+
+.screen-reader-text {
+	border: 0;
+	clip-path: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	overflow-wrap: normal;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+}
