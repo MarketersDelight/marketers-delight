@@ -41,7 +41,8 @@
 }
 
 .expanded .loop-timeline.columns,
-.expanded .box-style.loop-timeline.columns { max-width: none; }
+.expanded .box-style.loop-timeline.columns,
+.expanded .loop-timeline.nested { max-width: none; }
 
 .loop-timeline > .entry > .timeline-wrap > .post-title .byline .share:last-child { margin-inline-start: auto; }
 
@@ -49,6 +50,8 @@
 	align-items: inherit;
 	text-align: inherit;
 }
+
+.loop-timeline .post-title.wide .byline { justify-content: flex-start; }
 
 .loop-timeline .timeline-wrap {
 	margin-inline-start: var(--timeline-offset);
