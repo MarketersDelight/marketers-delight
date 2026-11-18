@@ -66,6 +66,24 @@ class md_post extends md_api {
 	}
 
 	/**
+	 * A shared taxonomy's term pages list every post type that uses it, unless
+	 * the link asks for one (?post_type=, "See all" in post type groups).
+	 *
+	 * @since 6.2.4
+	 */
+
+	public function pre_get_posts( $query ) {
+		if ( ! $query->is_main_query() || ! ( $query->is_category() || $query->is_tag() || $query->is_tax() ) || ! empty( $query->query['post_type'] ) )
+			return;
+
+		$term = $query->get_queried_object();
+		$post_types = ! empty( $term->taxonomy ) ? md_taxonomy_post_types( $term->taxonomy ) : array();
+
+		if ( count( $post_types ) > 1 )
+			$query->set( 'post_type', $post_types );
+	}
+
+	/**
 	 * Add user overwrites to the main loop query.
 	 *
 	 * @since 6.0

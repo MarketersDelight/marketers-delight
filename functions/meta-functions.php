@@ -125,14 +125,13 @@ function md_meta( $keys = null, $id = null, $default = null ) {
 
 function md_get_post_type( $post_id = null ) {
 	$post_type = get_post_type( $post_id );
+	$term_page = $post_id === null && ( is_category() || is_tag() || is_tax() );
+	$taxonomy = $term_page ? ( get_queried_object()->taxonomy ?? '' ) : '';
 
-	if ( ! $post_type && $post_id === null ) {
-		if ( is_category() || is_tag() || is_tax() ) {
-			$queried = get_queried_object();
-			$taxonomy = isset( $queried->taxonomy ) ? get_taxonomy( $queried->taxonomy ) : null;
-			$post_type = ! empty( $taxonomy->object_type ) ? reset( $taxonomy->object_type ) : false;
-		}
-		elseif ( is_post_type_archive() ) {
+	if ( $term_page && ( ! $post_type || ( ! in_the_loop() && md_is_shared_taxonomy( $taxonomy ) ) ) )
+		$post_type = md_taxonomy_post_type( $taxonomy );
+	elseif ( ! $post_type && $post_id === null ) {
+		if ( is_post_type_archive() ) {
 			$post_type = get_query_var( 'post_type' );
 			$post_type = is_array( $post_type ) ? reset( $post_type ) : $post_type;
 		}
@@ -146,6 +145,51 @@ function md_get_post_type( $post_id = null ) {
 		$post_type = 'error';
 
 	return $post_type;
+}
+
+/**
+ * A taxonomy's home post type: the first one it was registered to. Its
+ * settings live there, even when other post types share the taxonomy.
+ *
+ * @since 6.2.4
+ */
+
+function md_taxonomy_post_type( $taxonomy ) {
+	$object = $taxonomy ? get_taxonomy( $taxonomy ) : null;
+
+	return ! empty( $object->object_type ) ? reset( $object->object_type ) : false;
+}
+
+/**
+ * MD's post types that use a taxonomy, in the order it was registered to them.
+ *
+ * @since 6.2.4
+ */
+
+function md_taxonomy_post_types( $taxonomy ) {
+	$object = $taxonomy ? get_taxonomy( $taxonomy ) : null;
+	$post_types = array();
+
+	if ( ! empty( $object->object_type ) ) {
+		$options = md_post_type_options();
+
+		foreach ( $object->object_type as $post_type )
+			if ( isset( $options[$post_type] ) )
+				$post_types[] = $post_type;
+	}
+
+	return $post_types;
+}
+
+/**
+ * Whether two or more of MD's post types use a taxonomy, so its term pages
+ * can list several post types.
+ *
+ * @since 6.2.4
+ */
+
+function md_is_shared_taxonomy( $taxonomy ) {
+	return count( md_taxonomy_post_types( $taxonomy ) ) > 1;
 }
 
 /**

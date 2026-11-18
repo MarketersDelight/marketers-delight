@@ -20,15 +20,7 @@ function md_get_title( $context = 'post' ) {
 
 	// Titles outside a loop like post type archives, category, etc.
 
-	if ( is_home() || is_post_type_archive() || is_singular( 'post' ) ) {
-		$post_type_title = post_type_archive_title( '', false );
-		$title = md_parse_text( md_value( array(
-			'key' => 'archives_title',
-			'default' => $post_type_title,
-			'post_type' => md_get_post_type()
-		) ), 'archive' );
-	}
-	elseif ( is_tax() || is_category() || is_tag() ) {
+	if ( is_tax() || is_category() || is_tag() ) {
 		$title = md_term_meta( array( 'hero', 'archives_title' ) );
 
 		if ( ! $title )
@@ -40,6 +32,14 @@ function md_get_title( $context = 'post' ) {
 			) );
 
 		$title = md_parse_text( $title, 'term' );
+	}
+	elseif ( is_home() || is_post_type_archive() || is_singular( 'post' ) ) {
+		$post_type_title = post_type_archive_title( '', false );
+		$title = md_parse_text( md_value( array(
+			'key' => 'archives_title',
+			'default' => $post_type_title,
+			'post_type' => md_get_post_type()
+		) ), 'archive' );
 	}
 	elseif ( is_search() )
 		$title = sprintf( esc_html__( 'Search Results For: %s', 'md' ), '<span class="search-query">' . get_search_query() . '</span>' );
@@ -397,9 +397,7 @@ function md_get_description( $context = 'post' ) {
 		$description = md_post_meta( array( 'page_cover', 'title_content' ), null, $excerpt );
 	}
 	elseif ( $context == 'page' ) {
-		if ( is_post_type_archive() || is_home() )
-			$description = md_parse_text( md_value( array( 'key' => 'archives_text', 'post_type' => md_get_post_type() ) ), 'archive' );
-		elseif ( ( is_category() || is_tag() || is_tax() ) && get_queried_object() ) {
+		if ( ( is_category() || is_tag() || is_tax() ) && get_queried_object() ) {
 			$description = md_term_meta( array( 'hero', 'archives_text' ) );
 
 			if ( ! $description )
@@ -415,6 +413,8 @@ function md_get_description( $context = 'post' ) {
 
 			$description = md_parse_text( $description, 'term' );
 		}
+		elseif ( is_post_type_archive() || is_home() )
+			$description = md_parse_text( md_value( array( 'key' => 'archives_text', 'post_type' => md_get_post_type() ) ), 'archive' );
 		elseif ( is_author() ) {
 			$description = get_the_author_meta( 'description', get_queried_object_id() );
 

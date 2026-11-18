@@ -2,7 +2,7 @@
 
 $categories = $terms = array();
 $post_id = isset( $fields['post_id'] ) ? $fields['post_id'] : get_the_ID();
-$post_type = isset( $fields['post_type'] ) ? $fields['post_type'] : md_get_post_type();
+$post_type = isset( $fields['post_type'] ) ? $fields['post_type'] : md_get_post_type( $post_id );
 $taxonomies = get_object_taxonomies( $post_type );
 
 if ( empty( $fields['term'] ) )

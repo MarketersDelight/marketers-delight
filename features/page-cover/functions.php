@@ -42,8 +42,6 @@ function md_cover( $context = null ) {
 		else
 			$cover = $single_cover;
 	}
-	elseif ( is_post_type_archive() || is_home() )
-		$cover = $post_type_cover;
 	elseif ( is_category() || is_tax() ) {
 		$tax_cover = md_value( array(
 			'key' => 'page_cover',
@@ -60,6 +58,8 @@ function md_cover( $context = null ) {
 
 		$cover = array_replace_recursive( $post_type_cover, $tax_cover, $term_cover );
 	}
+	elseif ( is_post_type_archive() || is_home() )
+		$cover = $post_type_cover;
 	elseif ( is_author() )
 		$cover = md_value( array(
 			'key' => 'page_cover',

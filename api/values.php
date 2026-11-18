@@ -123,11 +123,6 @@ class md_values {
 
 		$post_type = md_get_post_type();
 
-		// The blog and post type archives are their post type's own level
-
-		if ( is_home() || is_post_type_archive() )
-			return array( array( 'type' => 'post_type', 'post_type' => $post_type ) );
-
 		// Category and custom taxonomy terms: the term, its taxonomy, then the post type
 
 		if ( is_category() || is_tax() ) {
@@ -139,6 +134,11 @@ class md_values {
 				array( 'type' => 'post_type', 'post_type' => $post_type, 'inherited' => true )
 			);
 		}
+
+		// The blog and post type archives are their post type's own level
+
+		if ( is_home() || is_post_type_archive() )
+			return array( array( 'type' => 'post_type', 'post_type' => $post_type ) );
 
 		// Singles and 404: the post (in the loop, or $id), then its post type
 
@@ -175,10 +175,8 @@ class md_values {
 			$taxonomy = $term && ! is_wp_error( $term ) ? $term->taxonomy : '';
 		}
 
-		if ( ! $post_type && $taxonomy ) {
-			$object = get_taxonomy( $taxonomy );
-			$post_type = ! empty( $object->object_type ) ? reset( $object->object_type ) : '';
-		}
+		if ( ! $post_type && $taxonomy )
+			$post_type = md_taxonomy_post_type( $taxonomy ) ?: '';
 
 		return array(
 			array( 'type' => 'term', 'id' => $term_id ),
