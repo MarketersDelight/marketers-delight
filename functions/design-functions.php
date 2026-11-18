@@ -315,10 +315,13 @@ function md_text_scale( $value, $step = 1 ) {
  */
 
 function md_font_icons_url() {
+	$path = MD_DIR . 'md.woff2';
 	$file = MD_URL . 'md.woff2';
 
-	if ( file_exists( get_stylesheet_directory() . '/md.woff2' ) )
+	if ( file_exists( get_stylesheet_directory() . '/md.woff2' ) ) {
+		$path = get_stylesheet_directory() . '/md.woff2';
 		$file = get_stylesheet_directory_uri() . '/md.woff2';
+	}
 
-	return $file;
+	return add_query_arg( 'ver', filemtime( $path ), $file );
 }
