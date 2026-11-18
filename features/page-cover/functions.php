@@ -124,6 +124,36 @@ function md_has_header_cover( $context = null, $cover = null ) {
 }
 
 /**
+ * Print a cover's photo as an image behind its content, so it loads sized
+ * files. A repeating photo stays a CSS background. The first hero cover
+ * (a page title, or one marked 'hero') loads first; the rest load lazily.
+ *
+ * @since 6.2.3
+ */
+
+function md_cover_image( $context = 'post', $cover = null ) {
+	static $has_priority = false;
+	$cover = $cover ?? md_cover( $context );
+	$is_hero = ! empty( $cover['hero'] ) || $context === 'page' || ( $context === 'post' && md_is_queried_post() );
+	$attributes = array(
+		'class' => 'cover-image',
+		'sizes' => '100vw',
+		'loading' => 'lazy'
+	);
+
+	if ( empty( $cover['position'] ) || empty( $cover['photo']['id'] ) || ! empty( $cover['display']['bg_repeat'] ) )
+		return;
+
+	if ( $is_hero && ! $has_priority ) {
+		$attributes['loading'] = false;
+		$attributes['fetchpriority'] = 'high';
+		$has_priority = true;
+	}
+
+	echo wp_get_attachment_image( $cover['photo']['id'], 'full', false, $attributes );
+}
+
+/**
  * Add Overlay HTML to covers. Pass $cover to use resolved cover data
  * instead of the current page's, with an optional 'overlay_opacity'.
  *

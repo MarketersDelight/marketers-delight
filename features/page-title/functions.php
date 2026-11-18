@@ -332,8 +332,10 @@ function md_title_template( $context, $data, $args = array() ) {
 	if ( ! empty( $cover['position'] ) ) {
 		$classes[] = md_cover_classes( $context, $cover );
 
-		if ( ! empty( $cover['photo']['id'] ) )
-			$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
+		if ( ! empty( $cover['photo']['id'] ) ) {
+			if ( ! empty( $cover['display']['bg_repeat'] ) )
+				$style['bg_image'] = wp_get_attachment_image_url( $cover['photo']['id'], 'full' );
+		}
 		elseif ( ! empty( $cover['bg_color'] ) )
 			$style['bg_color'] = $cover['bg_color'];
 	}

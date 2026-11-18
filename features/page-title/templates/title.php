@@ -5,6 +5,8 @@ $tag = ! empty( $args['tag'] ) ? $args['tag'] : 'header';
 
 echo "<$tag$id class=\"$context-title entry-title " . esc_attr( $classes ) . "\"$style>";
 
+md_cover_image( $context, $data['cover'] );
+
 if ( ! empty( $args['top'] ) )
 	echo $args['top'];
 

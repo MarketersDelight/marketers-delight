@@ -10,7 +10,7 @@
 	position: absolute;
 }
 
-:where(:has(> .overlay)) > :where(:not(.overlay)) { position: relative; }
+:where(:has(> .overlay, > .cover-image)) > :where(:not(.overlay, .cover-image)) { position: relative; }
 
 .has-image > .overlay { background-image: linear-gradient(to bottom, transparent, color-mix(in srgb, var(--md-overlay, var(--md-page-cover-overlay)) 100%, transparent)); }
 
