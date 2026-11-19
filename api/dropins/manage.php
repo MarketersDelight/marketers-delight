@@ -29,8 +29,8 @@ function md_check_dropin_requirements( $data ) {
 
 /**
  * Turn Drop-ins on or off in saved state, with no capability check; callers
- * use md_activate_dropins() and md_deactivate_dropins(). The CSS compiles
- * once, on the next load.
+ * use md_activate_dropins() and md_deactivate_dropins(). Each Drop-in turned
+ * off hears md_dropin_deactivated_{slug} to stop its background work.
  *
  * @since 6.2
  */
@@ -66,6 +66,10 @@ function md_set_dropins_status( $slugs, $enable ) {
 
 	md_update_dropins( $dropins );
 	update_option( 'md_compile_after_upgrade', true, false );
+
+	foreach ( $results as $slug => $result )
+		if ( ! $enable && $result === true )
+			do_action( "md_dropin_deactivated_{$slug}" );
 
 	return $results;
 }
