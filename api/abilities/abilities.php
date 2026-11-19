@@ -84,6 +84,12 @@ class md_abilities {
 
 	protected function args( $ability ) {
 		$readonly = ! empty( $ability['readonly'] );
+		$input = array(
+			'type' => 'object',
+			'properties' => array(),
+			'additionalProperties' => false,
+			'default' => array()
+		);
 		$args = array(
 			'label' => $ability['label'],
 			'description' => $ability['description'],
@@ -96,18 +102,34 @@ class md_abilities {
 				'annotations' => array(
 					'readonly' => $readonly,
 					'destructive' => ! empty( $ability['destructive'] ),
-					'idempotent' => $readonly
+					'idempotent' => $readonly || ! empty( $ability['idempotent'] )
 				)
-			)
+			),
+			'input_schema' => isset( $ability['input'] ) ? $ability['input'] : $input
 		);
 
-		if ( isset( $ability['input'] ) )
-			$args['input_schema'] = $ability['input'];
-
 		if ( isset( $ability['output'] ) )
-			$args['output_schema'] = $ability['output'];
+			$args['output_schema'] = $this->output( $ability['output'] );
 
 		return $args;
+	}
+
+	/**
+	 * An output schema from the result's keys and their types.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function output( $keys ) {
+		$properties = array();
+
+		foreach ( $keys as $key => $type )
+			$properties[$key] = array( 'type' => $type );
+
+		return array(
+			'type' => 'object',
+			'properties' => $properties
+		);
 	}
 
 	/**
