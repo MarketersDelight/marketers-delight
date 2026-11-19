@@ -119,6 +119,8 @@
 	justify-content: center;
 }
 
+.loop-timeline .timeline-dot > [class*="md-icon"] { display: flex; }
+
 .loop-timeline .timeline-wrap:hover .timeline-dot {
 	border-color: var(--md-links);
 	color: var(--md-links);
