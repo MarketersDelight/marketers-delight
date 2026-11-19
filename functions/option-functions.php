@@ -82,20 +82,17 @@ function md_register( $group = null ) {
 }
 
 /**
- * Whether this request registers settings fields: wp-admin, and the
- * Abilities API and MCP routes, which read and save them. Front end pages
- * and other REST routes don't pay for them.
+ * Whether this request registers settings fields: wp-admin, WP-CLI, and any
+ * request that asks for abilities, which loads them on md_load_settings.
+ * Front end pages don't pay for them.
  *
  * @since 6.2
  */
 
 function md_loads_settings() {
-	if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) )
-		return true;
+	$loads = is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) || did_action( 'md_load_settings' );
 
-	$route =isset( $_GET['rest_route'] ) ? $_GET['rest_route'] : ( isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '' );
-
-	return (bool) apply_filters( 'md_loads_settings', is_string( $route ) && preg_match( '#/(wp-abilities|mcp)/#', $route ) );
+	return (bool) apply_filters( 'md_loads_settings', $loads );
 }
 
 /**

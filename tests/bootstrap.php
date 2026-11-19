@@ -148,6 +148,14 @@ function add_action( $tag, $callback, $priority = 10, $accepted_args = 1 ) {}
 
 function add_filter( $tag, $callback, $priority = 10, $accepted_args = 1 ) {}
 
+function did_action( $tag ) {
+	return 0;
+}
+
+function doing_action( $tag = null ) {
+	return false;
+}
+
 function is_admin() {
 	return false;
 }
