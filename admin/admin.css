@@ -253,6 +253,8 @@ body {
 
 .md .md-detail-list { border-top: 1px solid var(--md-ui-gray-10); }
 
+.md .md-widget-item > .md-detail-list:first-child { border-top: 0; }
+
 .md-detail-list li {
 	align-items: center;
 	border-bottom: 1px solid var(--md-ui-gray-10);
@@ -261,6 +263,8 @@ body {
 	margin: 0;
 	padding: 8px 0;
 }
+
+.md-detail-list li:last-child { border-bottom: 0; }
 
 .md-detail-list .dashicons,
 .md-detail-list .md-mark::before { color: var(--md-ui-gray-50); }
