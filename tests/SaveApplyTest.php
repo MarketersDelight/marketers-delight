@@ -183,6 +183,39 @@ class SaveApplyTest extends MD_TestCase {
 		$this->assertSame( array( 'author' => array( 'title' => 'Editor' ) ), get_user_meta( 3, 'marketers_delight', true ) );
 	}
 
+	public function test_user_scope_moves_standalone_fields_to_their_own_keys_and_clears_them() {
+		$this->register( 'user_meta', array( 'social' => array( 'edit_user' => true, 'fields' => array(
+			'youtube' => array( 'type' => 'url', 'standalone' => true ),
+			'note' => array( 'type' => 'text' )
+		) ) ) );
+		md_test_set_capability( 'manage_options', false );
+
+		$this->apply( 'user:3', 'social', array( 'youtube' => 'https://youtube.com/@someone', 'note' => 'Hi' ) );
+
+		$this->assertSame( 'https://youtube.com/@someone', get_user_meta( 3, 'youtube', true ), 'A user with edit_user saves their own standalone field' );
+		$this->assertSame( array( 'social' => array( 'note' => 'Hi' ) ), get_user_meta( 3, 'marketers_delight', true ) );
+
+		$this->apply( 'user:3', 'social', array( 'youtube' => '', 'note' => 'Hi' ) );
+
+		$this->assertSame( '', get_user_meta( 3, 'youtube', true ) );
+	}
+
+	public function test_user_scope_skips_profile_groups_without_edit_user_for_non_admins() {
+		$this->register( 'user_meta', array(
+			'social' => array( 'edit_user' => true, 'fields' => $this->fields ),
+			'author' => array( 'fields' => $this->fields )
+		) );
+		md_test_set_capability( 'manage_options', false );
+
+		$result = $this->apply( 'user:3', array( 'social', 'author' ), array(
+			'social' => array( 'title' => 'Mine' ),
+			'author' => array( 'title' => 'Admin only' )
+		) );
+
+		$this->assertSame( array( 'social' => array( 'title' => 'Mine' ) ), get_user_meta( 3, 'marketers_delight', true ) );
+		$this->assertCount( 1, $result['warnings'] );
+	}
+
 	public function test_post_scope_writes_post_meta_and_skips_groups_the_editor_cant_change() {
 		$this->register( 'meta_boxes', array(
 			'page_cover' => array( 'edit_post' => true, 'fields' => $this->fields ),

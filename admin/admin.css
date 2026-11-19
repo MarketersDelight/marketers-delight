@@ -2627,6 +2627,14 @@ body {
 .term-md-wrap td { padding-left: 0; padding-right: 0; }
 .md-user-meta { margin-top: 25px; }
 
+.md-user-meta .md-widget { max-width: 760px; }
+
+.md-clone-add[aria-disabled="true"] {
+	cursor: not-allowed;
+	opacity: 0.5;
+	pointer-events: none;
+}
+
 /* FONT ICONS */
 
 .md-font-icons {

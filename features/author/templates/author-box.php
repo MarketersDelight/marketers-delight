@@ -1,53 +1,78 @@
 <footer class="author-box post-footer item">
 
-	<?php echo ! md_has_sidebar() ? '<div class="wrap">' : ''; ?>
+	<div class="wrap">
 
-	<div class="author-meta">
+		<div class="author-meta">
 
-		<?php if ( $has_avatar ) : ?>
+			<?php if ( $has_avatar ) : ?>
 
-		<div class="author-avatar">
-			<?php echo get_avatar( $author_id, 150 ); ?>
+			<div class="author-avatar">
+				<?php echo get_avatar( $author_id, 80 ); ?>
+			</div>
+
+			<?php endif; ?>
+
+			<div class="author-heading">
+				<p class="author-label lede"><?php echo esc_html( $label ); ?></p>
+				<h3 class="author-title"><a href="<?php echo esc_url( $author_url ); ?>"><?php echo esc_html( $author_name ); ?></a></h3>
+
+				<?php if ( $subtitle ) : ?>
+				<p class="author-subtitle"><?php echo esc_html( $subtitle ); ?></p>
+				<?php endif; ?>
+			</div>
+
+		</div>
+
+		<?php if ( ! empty( $description ) ) : ?>
+
+		<div class="author-description">
+			<?php echo wpautop( $description ); ?>
 		</div>
 
 		<?php endif; ?>
 
-		<h3 class="author-title"><?php echo esc_html( $author_name ); ?></h3>
+		<?php if ( $website_name || $sites || $profiles ) : ?>
 
-	</div>
+		<div class="author-links">
 
-	<?php if ( ! empty( $description ) ) : ?>
+			<?php if ( $website_name || $sites ) : ?>
 
-	<div class="author-description">
-		<?php echo wpautop( $description ); ?>
-	</div>
+			<ul class="author-sites">
 
-	<?php endif; ?>
+				<?php if ( $website_name ) : ?>
 
-	<div class="author-links">
+				<li class="author-website"><a href="<?php echo esc_url( $website ); ?>" class="author-link website" rel="me noopener" target="_blank"><?php echo md_icon( 'url' ) . esc_html( $website_name ); ?></a></li>
 
-		<?php if ( ! empty( $twitter ) ) : ?>
+				<?php endif; ?>
 
-		<a href="https://x.com/<?php echo esc_attr( $twitter ); ?>" class="author-link twitter" rel="nofollow" target="_blank">
-			<span class="circle-icon micro"><?php echo md_icon( 'twitter' ); ?></span><span class="author-link-label"><?php echo __( 'Follow on X', 'md' ); ?></span>
-		</a>
+				<?php foreach ( $sites as $key => $link ) : ?>
+
+				<li><a href="<?php echo esc_url( $link['url'] ); ?>" class="author-link <?php echo esc_attr( $key ); ?>" rel="me noopener" target="_blank"><?php echo md_icon( $link['icon'] ) . esc_html( $link['label'] ); ?></a></li>
+
+				<?php endforeach; ?>
+
+			</ul>
+
+			<?php endif; ?>
+
+			<?php if ( $profiles ) : ?>
+
+			<ul class="author-profiles">
+
+				<?php foreach ( $profiles as $key => $link ) : ?>
+
+				<li><a href="<?php echo esc_url( $link['url'] ); ?>" class="author-link <?php echo esc_attr( $key ); ?>" rel="me noopener" target="_blank"><?php echo md_icon( $link['icon'] ) . esc_html( $link['label'] ); ?></a></li>
+
+				<?php endforeach; ?>
+
+			</ul>
+
+			<?php endif; ?>
+
+		</div>
 
 		<?php endif; ?>
 
-		<?php if ( ! empty( $website_url ) ) : ?>
-
-		<a href="<?php echo esc_url( $website_url ); ?>" class="author-link website" target="_blank">
-			<span class="circle-icon micro"><?php echo md_icon( 'url' ); ?></span><span class="author-link-label"><?php echo __( 'Visit website', 'md' ); ?></span>
-		</a>
-
-		<?php endif; ?>
-
-		<a href="<?php echo esc_url( $author_url ); ?>" class="author-link all-posts">
-			<span class="circle-icon micro"><?php echo md_icon( 'pin' ); ?></span><span class="author-link-label"><?php echo __( 'See all posts', 'md' ); ?></span>
-		</a>
-
 	</div>
-
-	<?php echo ! md_has_sidebar() ? '</div>' : ''; ?>
 
 </footer>

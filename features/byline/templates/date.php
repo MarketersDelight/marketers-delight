@@ -22,11 +22,11 @@
 		$icon = 'calendar';
 	}
 
-	$permalink = ! empty( $fields['url'] ) ? $fields['url'] : get_permalink( $post_id );
+	$permalink = ! empty( $fields['url'] ) ? $fields['url'] : '';
 	$relative = human_time_diff( $post_time, current_time( 'U' ) );
 
 	if ( isset( $fields['url_params'] ) )
-		$permalink .= $fields['url_params'];
+		$permalink = ( $permalink ?: get_permalink( $post_id ) ) . $fields['url_params'];
 
 	if ( ! empty( $fields['settings']['relative'] ) || isset( $fields['relative_date'] ) ) {
 		if ( isset( $fields['relative_date'] ) ) {
@@ -46,7 +46,11 @@
 		echo '<span class="byline-label">' . ( ! empty( $fields['name'] ) ? $fields['name'] : $default_name ) . '</span>'; ?>
 
 	<time datetime="<?php echo $datetime; ?>" title="<?php echo esc_attr( $post_date ); ?>">
-		<a href="<?php echo esc_url( $permalink ); ?>" class="clickout"><?php echo esc_attr( $date ); ?></a>
+		<?php if ( $permalink ) : ?>
+			<a href="<?php echo esc_url( $permalink ); ?>" class="clickout"><?php echo esc_html( $date ); ?></a>
+		<?php else : ?>
+			<?php echo esc_html( $date ); ?>
+		<?php endif; ?>
 	</time>
 
 </span>

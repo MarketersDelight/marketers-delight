@@ -72,6 +72,24 @@ function md_term_meta( $keys = null, $id = null, $default = null ) {
 }
 
 /**
+ * The capability a registered meta box or profile group needs: its
+ * edit_post or edit_user flag lets editors and users in, else admins only.
+ *
+ * @since 6.2.4
+ */
+
+function md_meta_group_capability( $type, $group ) {
+	$capability = 'manage_options';
+
+	if ( $type === 'post' && ! empty( $group['edit_post'] ) )
+		$capability = 'edit_post';
+	elseif ( $type === 'user' && ! empty( $group['edit_user'] ) )
+		$capability = 'edit_user';
+
+	return $capability;
+}
+
+/**
  * What a user stores at $keys: the current user, or the one $id names.
  *
  * @since 5.3.1
@@ -313,7 +331,7 @@ function md_builder_items_for( $items, $post_type ) {
 
 /**
  * Check whether a builder row's Don't show options hide it on the current
- * page: on category archives, or after page 1.
+ * page: on category archives, or after page 1 and on filtered term views.
  *
  * @since 6.0.3
  */
@@ -324,5 +342,7 @@ function md_builder_row_hidden( $row ) {
 	if ( ! empty( $scope['post_type_only'] ) && ( is_category() || is_tag() || is_tax() ) )
 		return true;
 
-	return ! empty( $scope['paged'] ) && is_paged();
+	$filtered = ( is_category() || is_tag() || is_tax() ) && is_string( get_query_var( 'post_type' ) ) && get_query_var( 'post_type' );
+
+	return ! empty( $scope['paged'] ) && ( is_paged() || $filtered );
 }

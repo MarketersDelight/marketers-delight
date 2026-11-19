@@ -129,21 +129,14 @@ class md_fields extends md_fields_render {
 
 		if ( $context['is_post'] || wp_doing_ajax() ) {
 			$setting = get_post_meta( get_the_ID(), $this->_option, true );
-
-			if ( is_string( $field ) && $this->is_standalone( $field, $clean_id ) ) {
-				$standalone = get_post_meta( get_the_ID(), $field, true );
-
-				if ( $standalone !== '' ) {
-					$setting = is_array( $setting ) ? $setting : array();
-					$setting[$clean_id][$field] = $standalone;
-				}
-			}
+			$setting = $this->standalone_setting( 'post', get_the_ID(), $setting, $field, $clean_id );
 		}
 		elseif ( $context['is_term'] )
 			$setting = get_term_meta( $this->_get_screen['screen_id'], $this->_option, true );
 		elseif ( $context['is_user'] ) {
 			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id();
 			$setting = get_user_meta( $user_id, $this->_option, true );
+			$setting = $this->standalone_setting( 'user', $user_id, $setting, $field, $clean_id );
 		}
 		else {
 			$setting = $this->stored_option();
@@ -552,15 +545,37 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Check if a field is saving as its own post meta key.
+	 * Check if a field is saving as its own post or user meta key.
 	 *
 	 * @since 6.0
 	 */
 
-	protected function is_standalone( $field, $clean_id ) {
-		$meta_box = md_register( 'meta_boxes' )[$clean_id] ?? array();
+	protected function is_standalone( $field, $clean_id, $settings = 'meta_boxes' ) {
+		$group = md_register( $settings )[$clean_id] ?? array();
 
-		return ! empty( $meta_box['fields'][$field]['standalone'] );
+		return ! empty( $group['fields'][$field]['standalone'] );
+	}
+
+	/**
+	 * A standalone field's own meta key, read into its group the way the
+	 * field shows it.
+	 *
+	 * @since 6.2.4
+	 */
+
+	protected function standalone_setting( $type, $object_id, $setting, $field, $clean_id ) {
+		$result = $setting;
+
+		if ( is_string( $field ) && $this->is_standalone( $field, $clean_id, $type === 'user' ? 'user_meta' : 'meta_boxes' ) ) {
+			$standalone = get_metadata( $type, $object_id, $field, true );
+
+			if ( $standalone !== '' ) {
+				$result = is_array( $result ) ? $result : array();
+				$result[$clean_id][$field] = $standalone;
+			}
+		}
+
+		return $result;
 	}
 
 	/**

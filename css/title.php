@@ -53,6 +53,40 @@
 
 .page-title.image-inline .featured-media { order: 1; }
 
+.media-latest {
+	display: grid;
+	gap: var(--md-third);
+	position: relative;
+	text-align: start;
+}
+
+.media-latest > img {
+	aspect-ratio: 4 / 3;
+	height: auto;
+	object-fit: cover;
+	width: 100%;
+}
+
+.media-latest > .tag {
+	inset-block-start: var(--md-half);
+	inset-inline-start: var(--md-half);
+	position: absolute;
+}
+
+.media-latest > :is(.lede, .title) { margin: 0; }
+
+.image-full .media-latest:has(> img) {
+	align-items: center;
+	column-gap: var(--md-single);
+	grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+}
+
+.image-full .media-latest > img { grid-row: span 2; }
+
+.image-full .media-latest > .lede { align-self: end; }
+
+.image-full .media-latest > .title { align-self: start; }
+
 .image-title.title-center .wrap {
 	align-items: stretch;
 	flex-direction: column;
@@ -144,7 +178,36 @@
 
 .byline :is(.byline-comments, .byline-edit) a { text-decoration: none; }
 
-.byline-author .byline-label { font-style: italic; }
+:is(.byline-author, .byline-author-text) > .byline-label { font-style: italic; }
+
+.byline-author.has-stack { margin-inline-end: auto; }
+
+.byline-author-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.byline-author-text > .author-link { font-weight: var(--md-bold); }
+
+:is(.byline-author-text, .author-title, .author-sites) a {
+	color: var(--md-text);
+	text-decoration: none;
+}
+
+:is(.byline-author-text, .author-title, .author-sites) a:hover, .author-website a { text-decoration: underline; }
+
+.author-website a:hover { text-decoration: none; }
+
+.byline-stack {
+	display: flex;
+	flex-wrap: wrap;
+	font-size: var(--md-font-size-tiny);
+	gap: 0 var(--md-small);
+}
+
+.byline-stack > .byline-item:not(:last-child)::after { content: '\00b7'; }
+
+.byline-stack [class*="md-icon-"] { display: none; }
 
 .byline:not(.can-wrap) .byline-edit:last-child { margin-inline-start: auto; }
 
@@ -221,7 +284,7 @@
 
 @media (max-width: 800px) {
 	.has-aside :has(> .title-aside) { row-gap: var(--md-single); }
-	:is(.image-title, .image-inline) .featured-media {
+	:is(.image-title, .image-inline) .featured-media:not(.media-latest) {
 		margin-inline: auto;
 		text-align: center;
 	}

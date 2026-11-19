@@ -62,6 +62,9 @@ function md_featured_media( $context = 'post', $args = array() ) {
 	if ( $permalink && $type === 'image' && ! get_post_meta( $media['image']['id'], '_wp_attachment_image_alt', true ) )
 		$attr['alt'] = get_the_title();
 
+	if ( $type === 'image' && ! in_the_loop() && wp_increase_content_media_count( 0 ) >= wp_omit_loading_attr_threshold() )
+		$attr['loading'] = 'lazy';
+
 	// Set classes
 
 	$classes[] = 'media-' . str_replace( '_', '-', $type );
@@ -179,6 +182,9 @@ function md_has_media( $context = 'post', $args = array() ) {
 
 	if ( $position == 'remove' )
 		return;
+
+	if ( $type === 'latest' )
+		$media['latest'] = md_latest_media_id();
 
 	if ( $context == 'post' && ! empty( $args['loop']['content'] ) && $args['loop']['content'] === 'hide' && in_array( $position, array( 'left', 'right', 'center' ), true ) )
 		return;
@@ -299,6 +305,51 @@ function md_get_caption( $id = null ) {
 }
 
 /**
+ * The newest item for a Latest item Featured Media: the newest post in the
+ * current term, author or post type archive. Pages show the newest post.
+ *
+ * @since 6.2.4
+ */
+
+function md_latest_media_id() {
+	$object = get_queried_object();
+	$post_type = md_get_post_type();
+	$id = 0;
+
+	if ( ! $post_type || $post_type === 'page' )
+		$post_type = 'post';
+
+	$args = array(
+		'post_type' => $post_type,
+		'posts_per_page' => 1,
+		'ignore_sticky_posts' => true,
+		'no_found_rows' => true,
+		'fields' => 'ids'
+	);
+
+	if ( $object instanceof WP_Term ) {
+		$args['tax_query'] = array(
+			array(
+				'taxonomy' => $object->taxonomy,
+				'terms' => $object->term_id
+			)
+		);
+
+		if ( md_is_shared_taxonomy( $object->taxonomy ) )
+			$args['post_type'] = get_query_var( 'post_type' ) ?: md_taxonomy_post_types( $object->taxonomy );
+	}
+	elseif ( is_author() )
+		$args['author'] = get_queried_object_id();
+
+	$query = new WP_Query( apply_filters( 'md_latest_media_query', $args ) );
+
+	if ( $query->posts )
+		$id = $query->posts[0];
+
+	return $id;
+}
+
+/**
  * Featured Media fields and their save rules, shared by the Featured Media
  * settings and Section Titles.
  *
@@ -312,7 +363,7 @@ function md_featured_media_fields() {
 		'media_type' => array(
 			'type' => 'select',
 			'label' => __( 'Media Type', 'md' ),
-			'options' => array( 'image', 'video', 'custom_html' ),
+			'options' => array( 'image', 'video', 'custom_html', 'latest' ),
 			'code_options' => array( 'custom_html' )
 		),
 		'position' => array(
@@ -368,6 +419,13 @@ function md_featured_media_admin( $fields, $prefix, $args = array() ) {
 	$position = $fields->module( 'position' ) ?: '';
 	$can_edit_code = current_user_can( 'manage_options' ) && current_user_can( 'unfiltered_html' );
 	$side_positions = array( '', 'title_left', 'title_right', 'left', 'right' );
+	$type_options = array( 'video' => __( 'Video Embed', 'md' ) );
+
+	if ( $can_edit_code )
+		$type_options['custom_html'] = __( 'Custom HTML', 'md' );
+
+	if ( ! $args['is_post'] )
+		$type_options['latest'] = __( 'Latest item', 'md' );
 
 	$positions = array(
 		'title_left' => __( 'Left', 'md' ),

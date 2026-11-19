@@ -144,7 +144,7 @@ class md_save_settings {
 	public function user_meta_save( $user_id, $old_meta ) {
 		$option = 'marketers_delight';
 
-		if ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'edit_user', $user_id ) )
+		if ( ! current_user_can( 'edit_user', $user_id ) )
 			return;
 
 		if ( ! isset( $_POST['md']['user'] ) || empty( $_POST["{$option}_nonce"] ) || ! wp_verify_nonce( $_POST["{$option}_nonce"], "{$option}_nonce" ) )

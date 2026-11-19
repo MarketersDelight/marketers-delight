@@ -12,6 +12,7 @@ function md_scroller_nav( $args = array() ) {
 	$classes = array( 'scroller-nav' );
 	$html = ! empty( $args['html'] ) && $args['html'] === 'nav' ? 'nav' : 'div';
 	$label = ! empty( $args['label'] ) ? ' aria-label="' . esc_attr( $args['label'] ) . '"' : '';
+	$id = ! empty( $args['id'] ) ? ' id="' . esc_attr( $args['id'] ) . '"' : '';
 
 	if ( isset( $args['classes'] ) )
 		$classes[] = $args['classes'];
@@ -19,7 +20,7 @@ function md_scroller_nav( $args = array() ) {
 	$classes = join( ' ', $classes );
 
 	$output =
-		"<$html class=\"" . esc_attr( $classes ) . "\"$label>" .
+		"<$html$id class=\"" . esc_attr( $classes ) . "\"$label>" .
 		'<button class="scroller-arrow scroller-arrow-prev" aria-label="' . __( 'Scroll left', 'md' ) . '">' . md_icon( 'angle-left' ) . '</button>' .
 		'<div class="scroller-list">' .
 		join( '', $args['items'] ) .
@@ -242,7 +243,7 @@ function md_parse_tokens( $args = array() ) {
 				$tokens['{total}'] = count_user_posts( $queried->ID, 'post', true );
 		}
 		else {
-			$post_type = get_post_type_object( $queried->name ?? '' );
+			$post_type = get_post_type_object( $queried instanceof WP_Post_Type ? $queried->name : md_get_post_type() );
 
 			if ( ! $post_type )
 				$tokens = array();

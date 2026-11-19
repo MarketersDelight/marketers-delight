@@ -38,12 +38,40 @@ function md_byline_classes( $fields, $classes = '' ) {
  */
 
 function md_byline_item( $type, $fields = array() ) {
-	$items = md_byline_items();
+	md_byline_render( $type, $fields, md_byline_items() );
+}
 
-	if ( isset( $items[$type]['template'] ) )
-		call_user_func( $items[$type]['template'], $fields );
+/**
+ * Render one byline item from a loaded item registry: its own template
+ * callback, or the theme's byline/$type template.
+ *
+ * @since 6.2.4
+ */
+
+function md_byline_render( $type, $fields, $data ) {
+	if ( isset( $data[$type]['template'] ) )
+		call_user_func( $data[$type]['template'], $fields );
 	else
 		include md_template( 'features', "byline/$type", true );
+}
+
+/**
+ * The items set to show under the author's name, by type and builder ID.
+ * Only a byline with an author item stacks; otherwise items stay in the row.
+ *
+ * @since 6.2.4
+ */
+
+function md_byline_stack( $items ) {
+	$stack = array();
+
+	if ( isset( $items['author'] ) )
+		foreach ( $items as $type => $groups )
+			foreach ( $groups as $group => $fields )
+				if ( $type !== 'author' && ! empty( $fields['stack']['author'] ) )
+					$stack[$type][$group] = $fields;
+
+	return $stack;
 }
 
 /**
@@ -58,6 +86,13 @@ function md_byline( $location = 'before_title', $args = array() ) {
 
 	if ( empty( $items ) )
 		return;
+
+	$stack = md_byline_stack( $items );
+
+	foreach ( $stack as $type => $groups )
+		$items[$type] = array_diff_key( $items[$type], $groups );
+
+	$items = array_filter( $items );
 
 	$post_type = $args['loop']['post_type'] ?? get_post_type();
 	$c = 1;

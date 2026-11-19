@@ -13,7 +13,8 @@
 class md_sanitize {
 
 	/**
-	 * Save a generic text string and special formatted strings.
+	 * Save a generic text string and special formatted strings, cut to the
+	 * field's maxlength when it has one.
 	 *
 	 * @since 4.0
 	 */
@@ -30,7 +31,12 @@ class md_sanitize {
 		if ( ! is_scalar( $input ) )
 			$input = '';
 
-		return wp_kses_post( $input );
+		$text = wp_kses_post( $input );
+
+		if ( ! empty( $fields['maxlength'] ) )
+			$text = mb_substr( $text, 0, (int) $fields['maxlength'] );
+
+		return $text;
 	}
 
 	/**

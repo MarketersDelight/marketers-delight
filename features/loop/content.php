@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Creates previous/next post links at the end of a
- * single entry.
+ * Creates previous/next post links below the content and sidebar, at the
+ * site's width. Box style gives them a box of their own.
  *
  * @since 4.0
  */
@@ -10,6 +10,9 @@
 function md_post_nav() {
 	if ( ! md_has_post_nav() )
 		return;
+
+	$loop = md_get_loop();
+	$classes = 'post-nav inner' . ( ( $loop['style'] ?? '' ) === 'box' ? ' box' : '' );
 
 	$previous = get_previous_post();
 	$previous_media = apply_filters( 'md_post_nav_media', '', $previous );

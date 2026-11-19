@@ -241,6 +241,7 @@ function md_menu( $fields = array() ) {
 	$location = $fields['area'];
 	$menu_id = $fields['menu'];
 	$menu_class = 'menu nav-menu menu-' . esc_attr( $location );
+	$menu_label = $location === 'secondary' ? __( 'Secondary', 'md' ) : __( 'Main', 'md' );
 
 	if ( $fields['layout'] == 'right' || ( $fields['layout'] == 'center' && $fields['location'] == 'primary' ) )
 		$menu_class .= ' sub-alt';
@@ -254,6 +255,7 @@ function md_menu( $fields = array() ) {
 		'menu_class' => esc_attr( $menu_class ),
 		'container' => 'nav',
 		'container_class' => "header-menu $location-menu",
+		'container_aria_label' => $menu_label,
 		'echo' => false,
 		'fallback_cb' => false,
 		'walker' => new md_menu_walker( true, true )

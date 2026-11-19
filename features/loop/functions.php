@@ -620,6 +620,7 @@ function md_loop_featured( $loop ) {
 		'featured_featured_image' => 'featured_image',
 		'featured_featured_image_size' => 'featured_image_size',
 		'featured_featured_image_mobile' => 'featured_image_mobile',
+		'featured_image_ratio' => 'image_ratio',
 		'featured_inherit' => 'inherit',
 		'featured_excerpt_more' => 'excerpt_more',
 		'featured_excerpt_length' => 'excerpt_length',
@@ -675,6 +676,9 @@ function md_post_class( $loop = array(), $c = 1 ) {
 	if ( $position && ! in_array( $position, array( 'remove', 'title_left', 'title_right', 'title_center' ), true ) )
 		$classes = array_merge( $classes, md_get_image_position_classes( $position, array( 'mobile' => md_is_queried_post() ? md_post_meta( array( 'featured_media', 'mobile' ) ) : ( $loop['featured_image_mobile'] ?? '' ) ) ) );
 
+	if ( ! md_is_queried_post() && ! empty( $loop['image_ratio'] ) )
+		$classes[] = 'ratio-' . sanitize_html_class( $loop['image_ratio'] );
+
 	if ( isset( $cover['position'] ) )
 		$classes[] = 'has-cover';
 
@@ -689,7 +693,9 @@ function md_post_class( $loop = array(), $c = 1 ) {
  */
 
 function md_loop_heading( $level, $loop = array() ) {
-	return 'h' . min( 6, $level + (int) ( $loop['heading_offset'] ?? 0 ) );
+	$offset = (int) apply_filters( 'md_loop_heading_offset', (int) ( $loop['heading_offset'] ?? 0 ), $loop );
+
+	return 'h' . min( 6, $level + $offset );
 }
 
 /**

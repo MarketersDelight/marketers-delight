@@ -8,7 +8,7 @@
 
 add_action( 'md_hook_content_item', 'md_author_box', 20 );
 add_action( 'md_hook_content_item', 'md_comments', 20 );
-add_action( 'md_hook_content_item', 'md_post_nav', 50 );
+add_action( 'md_hook_content_box_bottom', 'md_post_nav' );
 add_action( 'md_hook_after_comments_list', 'md_comment_form' );
 add_action( 'md_hook_footer', 'md_footer_columns_template' );
 add_action( 'md_hook_footer_bottom', 'md_footer_copy' );

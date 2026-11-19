@@ -241,7 +241,7 @@
 		<div class="md-loop-section">
 			<h4><?php echo esc_html__( 'Content', 'md' ); ?></h4>
 			<p class="description"><?php echo esc_html__( 'Configure what appears for each post in the loop.', 'md' ); ?></p>
-			<div class="columns-3 columns-single md-full-select">
+			<div class="columns-4 columns-single md-full-select">
 
 			<div class="col">
 				<?php $this->fields->field( "{$p}content", array(
@@ -267,6 +267,20 @@
 					'empty_label' => __( 'Show full size image', 'md' ),
 					'inherit' => true,
 					'options' => array_combine( $image_sizes, $image_sizes )
+				) ); ?>
+			</div>
+
+			<div class="col">
+				<?php $this->fields->field( "{$p}image_ratio", array(
+					'description' => __( 'Crop images to one shape.', 'md' ),
+					'empty_label' => __( 'Original', 'md' ),
+					'inherit' => true,
+					'options' => array(
+						'4-3' => '4:3',
+						'16-9' => '16:9',
+						'3-2' => '3:2',
+						'1-1' => __( 'Square', 'md' )
+					)
 				) ); ?>
 			</div>
 

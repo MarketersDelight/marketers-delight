@@ -413,7 +413,7 @@ foreach ( $design_colors->editor_gradients() as $gradient )
 /* ANIMATIONS */
 
 @media (prefers-reduced-motion: no-preference) {
-	html:has(.smooth-scroll) { scroll-behavior: smooth; }
+	html:has(.smooth-scroll, .byline a[href*="#"]) { scroll-behavior: smooth; }
 }
 
 @keyframes md-fade {

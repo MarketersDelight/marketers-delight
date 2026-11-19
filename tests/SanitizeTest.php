@@ -70,6 +70,11 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( 'hello', $this->sanitize->text( 'hello' ) );
 	}
 
+	public function test_text_is_cut_to_the_fields_maxlength() {
+		$this->assertSame( 'Think and Go', $this->sanitize->text( 'Think and Go Hustle', array( 'maxlength' => 12 ) ) );
+		$this->assertSame( 'Short', $this->sanitize->text( 'Short', array( 'maxlength' => 30 ) ) );
+	}
+
 	// number()
 
 	public function test_number_rejects_non_numeric_input() {

@@ -91,7 +91,12 @@ class md_api {
 		if ( method_exists( $this, 'enqueue' ) )
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue' ), 20 );
 
-		// Post Type + Taxonomy
+		// Post Type + Taxonomy, which a site can swap for a shared taxonomy or turn off
+
+		$own_taxonomy = $this->taxonomy;
+
+		if ( $this->post_type && $this->taxonomy )
+			$this->taxonomy = apply_filters( 'md_post_type_taxonomy', $own_taxonomy, $this->post_type );
 
 		if ( $this->post_type ) {
 			if ( ! is_admin() )
@@ -103,7 +108,7 @@ class md_api {
 			add_filter( 'md_post_type_meta', array( $this, 'post_meta' ) );
 		}
 
-		if ( $this->taxonomy ) {
+		if ( $this->taxonomy && $this->taxonomy === $own_taxonomy ) {
 			add_filter( 'md_edit_term_meta', array( $this, 'term_meta' ) );
 			add_filter( 'md_taxonomy_meta', array( $this, 'taxonomy_meta' ) );
 		}
@@ -121,7 +126,7 @@ class md_api {
 
 		add_action( 'init', array( $this, '_init' ) );
 
-		if ( $this->taxonomy && method_exists( $this, 'taxonomy' ) )
+		if ( $this->taxonomy && $this->taxonomy === $own_taxonomy && method_exists( $this, 'taxonomy' ) )
 			add_action( 'init', array( $this, 'taxonomy' ), 0 );
 
 		if ( $this->post_type && method_exists( $this, 'post_type' ) )
@@ -179,7 +184,7 @@ class md_api {
 
 		// Taxonomy settings belong to post type settings, wherever they're saved from
 
-		if ( isset( $this->register['taxonomy'] ) )
+		if ( isset( $this->register['taxonomy'] ) && md_taxonomy_post_type( $this->taxonomy ) === $this->post_type )
 			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
 
 		if ( ! md_loads_settings() )
@@ -197,7 +202,7 @@ class md_api {
 		$this->setup_term();
 
 		if ( method_exists( $this, 'user_meta' ) && isset( $this->register['user_meta'] ) )
-			add_action( 'md_user_meta_fields', array( $this, 'user_meta' ) );
+			add_action( 'md_user_meta_fields', array( $this, '_user_meta' ) );
 
 		// Fire admin enqueue and inline scripts/styles.
 
@@ -643,6 +648,18 @@ class md_api {
 		}
 
 		return $prefix;
+	}
+
+	/**
+	 * Show this profile group to users its capability lets in: admins, or
+	 * anyone who can edit the user when the group has edit_user.
+	 *
+	 * @since 6.2.4
+	 */
+
+	public function _user_meta( $user ) {
+		if ( current_user_can( md_meta_group_capability( 'user', $this->register['user_meta'] ), $user->ID ) )
+			$this->user_meta( $user );
 	}
 
 	/**

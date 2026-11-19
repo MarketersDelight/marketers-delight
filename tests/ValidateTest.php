@@ -74,6 +74,30 @@ class ValidateTest extends MD_TestCase {
 	// result into $save when it was non-empty — so deleting every item never
 	// reached the merge, and the old items silently survived.
 
+	public function test_group_keeps_only_its_max_items_in_order() {
+		$fields = array( 'links' => array( 'type' => 'group', 'max' => 3, 'fields' => array( 'label' => array( 'type' => 'text' ) ) ) );
+
+		$result = $this->validate->fields( array( 'links' => array(
+			'a' => array( 'label' => 'One' ),
+			'b' => array( 'label' => '' ),
+			'c' => array( 'label' => 'Two' ),
+			'd' => array( 'label' => 'Three' ),
+			'e' => array( 'label' => 'Four' )
+		) ), $fields );
+
+		$this->assertSame( array( 'a', 'c', 'd' ), array_keys( $result['links'] ), 'The empty row is dropped, then the first 3 kept' );
+	}
+
+	public function test_group_without_max_keeps_every_item() {
+		$fields = array( 'links' => array( 'type' => 'group', 'fields' => array( 'label' => array( 'type' => 'text' ) ) ) );
+		$items = array();
+
+		foreach ( range( 1, 5 ) as $n )
+			$items["i$n"] = array( 'label' => "Item $n" );
+
+		$this->assertCount( 5, $this->validate->fields( array( 'links' => $items ), $fields )['links'] );
+	}
+
 	public function test_emptying_a_group_field_still_saves_empty_result() {
 		$this->register_schema( array(
 			'colors' => array( 'fields' => array(

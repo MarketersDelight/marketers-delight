@@ -11,7 +11,7 @@ if ( has_action( "md_hook_{$context}_featured_media" ) )
 
 elseif ( $type == 'image' ) {
 
-	echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '">' : '' );
+	echo ( $permalink ? '<a href="' . esc_url( $permalink ) . '"' . ( get_the_title() !== '' ? ' tabindex="-1" aria-hidden="true"' : '' ) . '>' : '' );
 
 	echo wp_get_attachment_image( $media['image']['id'], $size, false, $attr );
 
@@ -24,6 +24,9 @@ elseif ( $type == 'video' )
 
 elseif ( $type == 'custom_html' )
 	echo do_shortcode( $media[$type] );
+
+elseif ( $type == 'latest' )
+	include md_template( 'features', 'featured-media/latest', true );
 
 do_action( "md_hook_{$context}_featured_media_bottom", $media );
 

@@ -265,6 +265,38 @@
 
 .category-title-wrap > .category-more a { color: var(--md-links); }
 
+.loop.scroll { display: grid; }
+
+.scroll > .category-more {
+	align-items: center;
+	align-self: stretch;
+	background-color: var(--md-tint);
+	border-radius: var(--md-border-radius);
+	display: flex;
+	justify-content: center;
+	margin: 0;
+	padding: var(--md-single);
+	position: relative;
+	text-align: center;
+}
+
+.entry[class*="ratio-"] .featured-media img {
+	height: auto;
+	object-fit: cover;
+	width: 100%;
+}
+
+.entry.ratio-4-3 .featured-media img { aspect-ratio: 4 / 3; }
+.entry.ratio-16-9 .featured-media img { aspect-ratio: 16 / 9; }
+.entry.ratio-3-2 .featured-media img { aspect-ratio: 3 / 2; }
+.entry.ratio-1-1 .featured-media img { aspect-ratio: 1; }
+
+:is(.category-view, .category-posts) > .entry > .description {
+	color: var(--md-text-muted);
+	font-size: var(--md-font-size-small);
+	line-height: var(--md-line-height-small);
+}
+
 :is(.category-view, .category-posts) > .entry > :is(.category-title, .description):not(:last-child, :has(+ .post-footer, + .description)) { margin-block-end: var(--md-single); }
 
 :is(.category-view, .category-posts) > .entry > .category-title:has(+ .description) { margin-block-end: var(--md-third); }

@@ -12,10 +12,7 @@
 				$fields->field( 'media_type', array(
 					'classes' => 'md-conditional-option',
 					'empty_label' => $args['is_post'] ? __( 'Featured Image', 'md' ) : __( 'Image', 'md' ),
-					'options' => $can_edit_code ? array(
-						'video' => __( 'Video Embed', 'md' ),
-						'custom_html' => __( 'Custom HTML', 'md' )
-					) : array( 'video' => __( 'Video Embed', 'md' ) )
+					'options' => $type_options
 				) );
 			endif; ?>
 		</div>

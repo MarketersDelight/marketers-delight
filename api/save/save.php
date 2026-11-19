@@ -67,6 +67,8 @@ class md_save {
 
 		if ( $where->type === 'post' )
 			$saves = $this->post_values( $where->id, $saves, $warnings );
+		elseif ( $where->type === 'user' )
+			$saves = $this->user_values( $where->id, $saves, $warnings );
 
 		// Merge each group over what's stored
 
@@ -79,7 +81,7 @@ class md_save {
 			$path = isset( $targets[$key] ) ? $targets[$key]['path'] : array( $key );
 			$old = $this->get_path( $stored, $path );
 
-			if ( $where->type === 'post' && isset( $targets[$key] ) )
+			if ( $where->has_standalone() && isset( $targets[$key] ) )
 				$old = $where->standalone_meta( $targets[$key]['fields'], $old );
 
 			// Values a md_post_meta_save filter adds without registered fields are stored as given
@@ -173,6 +175,26 @@ class md_save {
 			$capability = ! empty( $registered[$group]['edit_post'] ) ? 'edit_post' : 'manage_options';
 
 			if ( ! current_user_can( $capability, $post_id ) ) {
+				unset( $values[$group] );
+				$warnings[] = sprintf( __( 'You are not allowed to change the `%s` settings, so they were left as they are.', 'md' ), $group );
+			}
+		}
+
+		return $values;
+	}
+
+	/**
+	 * Users can change only the profile groups that let them in with
+	 * edit_user; the rest need manage_options and are left as they are.
+	 *
+	 * @since 6.2.4
+	 */
+
+	private function user_values( $user_id, $values, &$warnings ) {
+		$registered = md_register( 'user_meta' );
+
+		foreach ( array_keys( $values ) as $group ) {
+			if ( isset( $registered[$group] ) && ! current_user_can( md_meta_group_capability( 'user', $registered[$group] ), $user_id ) ) {
 				unset( $values[$group] );
 				$warnings[] = sprintf( __( 'You are not allowed to change the `%s` settings, so they were left as they are.', 'md' ), $group );
 			}
@@ -469,8 +491,8 @@ class md_save {
 			return;
 		}
 
-		if ( $scope->type === 'post' )
-			$new = $this->save_standalone_meta( $scope->id, $new, $groups );
+		if ( $scope->has_standalone() )
+			$new = $this->save_standalone_meta( $scope, $new, $groups );
 
 		$new = $this->prune_empty( $new );
 
@@ -482,19 +504,20 @@ class md_save {
 
 	/**
 	 * For maximum query compatibility, we may want to save standalone
-	 * meta keys outside of the single post_meta key we usually save to,
-	 * so a simple standalone => true flag does just that.
+	 * meta keys outside of the single meta key we usually save to, so a
+	 * simple standalone => true flag does just that, for posts and users.
 	 *
 	 * @since 6.0
 	 */
 
-	private function save_standalone_meta( $post_id, $save, $groups ) {
-		foreach ( md_register( 'meta_boxes' ) as $id => $meta_box ) {
-			$capability = ! empty( $meta_box['edit_post'] ) ? 'edit_post' : 'manage_options';
-			if ( empty( $meta_box['fields'] ) || ! current_user_can( $capability, $post_id ) )
+	private function save_standalone_meta( $scope, $save, $groups ) {
+		$settings = $scope->type === 'user' ? 'user_meta' : 'meta_boxes';
+
+		foreach ( md_register( $settings ) as $id => $group ) {
+			if ( empty( $group['fields'] ) || ! current_user_can( md_meta_group_capability( $scope->type, $group ), $scope->id ) )
 				continue;
 
-			foreach ( $meta_box['fields'] as $key => $field ) {
+			foreach ( $group['fields'] as $key => $field ) {
 				if ( empty( $field['standalone'] ) )
 					continue;
 
@@ -502,15 +525,15 @@ class md_save {
 
 				if ( ! isset( $save[$id] ) || ! is_array( $save[$id] ) || ! array_key_exists( $key, $save[$id] ) ) {
 					if ( in_array( $id, $groups, true ) )
-						delete_post_meta( $post_id, $key );
+						delete_metadata( $scope->type, $scope->id, $key );
 
 					continue;
 				}
 
 				if ( $save[$id][$key] === '' )
-					delete_post_meta( $post_id, $key );
+					delete_metadata( $scope->type, $scope->id, $key );
 				else
-					update_post_meta( $post_id, $key, wp_slash( $save[$id][$key] ) );
+					update_metadata( $scope->type, $scope->id, $key, wp_slash( $save[$id][$key] ) );
 
 				unset( $save[$id][$key] );
 			}

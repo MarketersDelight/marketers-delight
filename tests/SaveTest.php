@@ -629,7 +629,7 @@ class SaveTest extends MD_TestCase {
 		md_test_set_filter( 'md_register', array( 'meta_boxes' => $this->schema ) );
 		$GLOBALS['__test_object_meta'][25]['book_author'] = 'Old Author';
 
-		$save = $this->call( $this->save, 'save_standalone_meta', array( 25, array(
+		$save = $this->call( $this->save, 'save_standalone_meta', array( md_scope::parse( 'post:25' ), array(
 			'bookshelf' => array(
 				'review_title' => 'Great read',
 				'book_rating' => '4.5',

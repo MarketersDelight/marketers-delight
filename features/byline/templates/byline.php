@@ -1,5 +1,19 @@
 <?php
 
+$stack_html = '';
+
+if ( $stack ) {
+	ob_start();
+
+	foreach ( $stack as $item => $groups )
+		foreach ( $groups as $group => $fields ) {
+			$fields['post_type'] = $fields['post_type'] ?? $post_type;
+			md_byline_render( $item, $fields, $data );
+		}
+
+	$stack_html = trim( ob_get_clean() );
+}
+
 ob_start();
 
 foreach ( $items as $item => $groups )
@@ -7,10 +21,12 @@ foreach ( $items as $item => $groups )
         $fields['c'] = $c;
 		$fields['post_type'] = $fields['post_type'] ?? $post_type;
 
-        if ( isset( $data[$item]['template'] ) )
-			call_user_func( $data[$item]['template'], $fields );
-		else
-			include md_template( 'features', "byline/$item", true );
+		if ( $item === 'author' && $stack_html ) {
+			$fields['stack'] = $stack_html;
+			$stack_html = '';
+		}
+
+		md_byline_render( $item, $fields, $data );
 
 		$c++;
 	}

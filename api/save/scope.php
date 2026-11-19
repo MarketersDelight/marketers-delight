@@ -84,7 +84,7 @@ class md_scope {
 			return current_user_can( 'manage_options' ) && current_user_can( 'edit_term', $this->id );
 
 		if ( $this->type === 'user' )
-			return current_user_can( 'manage_options' ) && current_user_can( 'edit_user', $this->id );
+			return current_user_can( 'edit_user', $this->id );
 
 		return current_user_can( 'manage_options' );
 	}
@@ -125,7 +125,7 @@ class md_scope {
 		foreach ( $target['path'] as $key )
 			$value = is_array( $value ) && isset( $value[$key] ) ? $value[$key] : array();
 
-		if ( $this->type === 'post' )
+		if ( $this->has_standalone() )
 			$value = $this->standalone_meta( $target['fields'], $value );
 
 		return is_array( $value ) ? $value : array();
@@ -146,8 +146,18 @@ class md_scope {
 	}
 
 	/**
-	 * Standalone post meta is stored in its own key. Read it into its
-	 * group, the way the fields show it.
+	 * Posts and users can store a field in its own meta key.
+	 *
+	 * @since 6.2.4
+	 */
+
+	public function has_standalone() {
+		return in_array( $this->type, array( 'post', 'user' ), true );
+	}
+
+	/**
+	 * Standalone post and user meta is stored in its own key. Read it into
+	 * its group, the way the fields show it.
 	 *
 	 * @since 6.2
 	 */
@@ -157,7 +167,7 @@ class md_scope {
 			if ( empty( $field['standalone'] ) )
 				continue;
 
-			$value = get_post_meta( $this->id, $key, true );
+			$value = get_metadata( $this->type, $this->id, $key, true );
 
 			if ( $value !== '' ) {
 				$group = is_array( $group ) ? $group : array();

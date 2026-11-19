@@ -291,4 +291,34 @@ class BylineTest extends MD_InheritanceTestCase {
 		$this->assertSame( array(), md_get_byline( 'before_content', $args ) );
 	}
 
+	public function test_stack_collects_every_item_set_under_the_author_in_order() {
+		$items = array(
+			'author' => array( 'a' => array( 'settings' => array( 'avatar' => true ) ) ),
+			'date' => array( 'd' => array( 'stack' => array( 'author' => true ) ) ),
+			'video_views' => array( 'v' => array( 'stack' => array( 'author' => true ) ) ),
+			'share' => array( 's' => array() )
+		);
+
+		$stack = md_byline_stack( $items );
+
+		$this->assertSame( array( 'date', 'video_views' ), array_keys( $stack ), 'Both stacked items, in builder order' );
+		$this->assertArrayNotHasKey( 'share', $stack, 'Unstacked items stay in the row' );
+	}
+
+	public function test_without_an_author_item_nothing_stacks() {
+		$items = array(
+			'date' => array( 'd' => array( 'stack' => array( 'author' => true ) ) ),
+			'share' => array( 's' => array() )
+		);
+
+		$this->assertSame( array(), md_byline_stack( $items ) );
+	}
+
+	public function test_the_author_item_never_stacks_under_itself() {
+		$items = array( 'author' => array( 'a' => array( 'stack' => array( 'author' => true ) ) ) );
+
+		$this->assertSame( array(), md_byline_stack( $items ) );
+	}
+
 }
+

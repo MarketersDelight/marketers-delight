@@ -34,12 +34,42 @@ function md_author_box() {
 	if ( ! $author )
 		return;
 
-	$twitter = get_user_meta( $author_id, 'twitter', true );
-	$website_url = $author->user_url;
 	$author_name = $author->display_name;
 	$description = $author->description;
 	$author_url = get_author_posts_url( $author_id );
 	$has_avatar = get_option( 'show_avatars' );
+	$label = apply_filters( 'md_author_box_label', __( 'Written by', 'md' ) );
+	$subtitle = (string) apply_filters( 'md_author_box_subtitle', '', $author_id );
+	$website = $author->user_url;
+	$website_name = preg_replace( '/^www\./', '', (string) wp_parse_url( $website, PHP_URL_HOST ) );
+	$sites = $profiles = array();
+
+	foreach ( md_author_box_links( $author_id ) as $key => $link )
+		if ( empty( $link['custom'] ) )
+			$profiles[$key] = $link;
+		else
+			$sites[$key] = $link;
 
 	include md_template( 'features', 'author/author-box', true );
+}
+
+/**
+ * The author box's links, keyed: X here, and any a Drop-in adds through
+ * md_author_box_links. Links marked custom sit beside the website.
+ *
+ * @since 6.2.4
+ */
+
+function md_author_box_links( $author_id ) {
+	$links = array();
+	$twitter = get_user_meta( $author_id, 'twitter', true );
+
+	if ( $twitter )
+		$links['twitter'] = array(
+			'label' => 'X',
+			'url' => strpos( $twitter, '://' ) !== false ? $twitter : 'https://x.com/' . ltrim( $twitter, '@' ),
+			'icon' => 'x'
+		);
+
+	return (array) apply_filters( 'md_author_box_links', $links, $author_id );
 }

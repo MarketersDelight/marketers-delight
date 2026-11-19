@@ -28,6 +28,7 @@ class md_validate {
 		'min',
 		'max',
 		'step',
+		'maxlength',
 		'upload_type',
 		'multiple',
 		'palette',
@@ -111,6 +112,9 @@ class md_validate {
 							unset( $items[$item_key] );
 
 				$save[$key] = $this->clone_groups( $items, isset( $field['fields'] ) ? $field['fields'] : array(), isset( $field['group_key_lowercase'] ) );
+
+				if ( $type === 'group' && ! empty( $field['max'] ) )
+					$save[$key] = array_slice( array_filter( $save[$key], array( $this, 'has_value' ) ), 0, (int) $field['max'], true );
 			}
 			elseif ( $type !== null ) {
 				$validated = $this->validate_field( $field_input, $field );
@@ -194,6 +198,23 @@ class md_validate {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Whether a group item has anything filled in, so blank rows don't use
+	 * up a group's max.
+	 *
+	 * @since 6.2.4
+	 */
+
+	private function has_value( $item ) {
+		$result = false;
+
+		foreach ( (array) $item as $value )
+			if ( $value !== '' && $value !== null && $value !== array() )
+				$result = true;
+
+		return $result;
 	}
 
 	/**

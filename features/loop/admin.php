@@ -48,6 +48,11 @@ class md_loop extends md_api {
 				'label' => __( 'Image Size', 'md' ),
 				'options' => array_merge( array( 'full' ), get_intermediate_image_sizes() )
 			),
+			'image_ratio' => array(
+				'type' => 'select',
+				'label' => __( 'Image Ratio', 'md' ),
+				'options' => array( '4-3', '16-9', '3-2', '1-1' )
+			),
 			'featured_image_mobile' => array(
 				'type' => 'select',
 				'label' => __( 'Mobile Image', 'md' ),

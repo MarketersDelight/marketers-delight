@@ -21,6 +21,13 @@
 	z-index: 50;
 }
 
+.clickable:focus-visible, .post-nav a:focus-visible { outline: 0; }
+
+.clickable:focus-visible:after, .post-nav a:focus-visible:after {
+	outline: 2px solid;
+	outline-offset: 2px;
+}
+
 .clickout {
 	position: relative;
 	z-index: 60;

@@ -11,7 +11,7 @@ $pagination_base = $query_pagination
 	? str_replace( $big, '%#%', add_query_arg( array( $page_arg => $big ), get_pagenum_link( 1 ) ) )
 	: str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) );
 
-echo '<nav class="pagination ' . esc_attr( $classes ) . '" aria-label=" ' . __( 'Previous and next pages', 'md' ) . '">';
+echo '<nav class="pagination ' . esc_attr( $classes ) . '" aria-label="' . esc_attr__( 'Pagination', 'md' ) . '">';
 
 if ( $type == 'prev_next' && $query_pagination ) {
 

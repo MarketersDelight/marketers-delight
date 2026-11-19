@@ -37,6 +37,14 @@
 				this.new();
 				this.delete();
 			},
+			limit: function( groups ) {
+				var max = parseInt( groups.data( 'max' ), 10 ),
+					full = max > 0 && groups.children( '.md-group:not(.empty)' ).length >= max;
+
+				$( '.md-clone-add[data-clone-group="' + groups.attr( 'id' ).replace( 'md_group_', '' ) + '"]' ).attr( 'aria-disabled', full ? 'true' : null );
+
+				return full;
+			},
 			new: function() {
 				$( document ).on( 'click', '.md-clone-add', function( e ) {
 					var group = $( this ).data( 'clone-group' ),
@@ -51,9 +59,13 @@
 						return;
 					}
 
+					if ( MD.clone.limit( groupID ) )
+						return;
+
 					MD.clone.filter( clone, token );
 					clone.insertAfter( groupID.children( '.md-group' ).last() );
 					clone.removeClass( 'empty' );
+					MD.clone.limit( groupID );
 					clone.filter( '.md-toggle' ).addClass( 'open' );
 					clone.show();
 
@@ -98,6 +110,7 @@
 			delete: function() {
 				$( document ).on( 'click', '.md-delete', function( e ) {
 					var group = $( this ).closest( '.md-group' ),
+						groups = group.parent( '.md-groups' ),
 						row = group.parent( '.md-builder-group' ),
 						field = row.closest( '.md-field-builder' );
 
@@ -106,6 +119,9 @@
 
 					group.slideUp( 'fast', function() {
 						$( this ).remove();
+
+						if ( groups.length )
+							MD.clone.limit( groups );
 
 						if ( field.length )
 							MD.sortable.counts( field );

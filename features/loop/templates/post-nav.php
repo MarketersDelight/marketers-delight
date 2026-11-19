@@ -1,4 +1,4 @@
-<nav class="post-nav" aria-label="<?php esc_attr_e( 'Previous and next posts', 'md' ); ?>">
+<nav class="<?php echo esc_attr( $classes ); ?>" aria-label="<?php esc_attr_e( 'Previous and next posts', 'md' ); ?>">
 
 	<?php if ( $previous ) : ?>
 
@@ -6,7 +6,7 @@
 
 		<?php if ( $previous_media ) : ?>
 
-		<div class="post-nav-media">
+		<div class="post-nav-media" aria-hidden="true">
 			<?php echo $previous_media; ?>
 		</div>
 
@@ -44,7 +44,7 @@
 
 		<?php if ( $next_media ) : ?>
 
-		<div class="post-nav-media">
+		<div class="post-nav-media" aria-hidden="true">
 			<?php echo $next_media; ?>
 		</div>
 

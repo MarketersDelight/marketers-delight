@@ -105,6 +105,10 @@ return array(
 		'unicode' => 'f12a',
 		'label' => __( 'Exclamation (!)', 'md' )
 	),
+	'external' => array(
+		'unicode' => 'e925',
+		'label' => __( 'External Link', 'md' )
+	),
 	'eye' => array(
 		'unicode' => 'e81e',
 		'label' => __( 'Eye', 'md' )

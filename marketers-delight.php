@@ -268,6 +268,7 @@ final class marketers_delight {
 		add_theme_support( 'customize-selective-refresh-widgets' );
 		add_theme_support( 'editor-styles' );
 		add_theme_support( 'responsive-embeds' );
+		add_theme_support( 'html5', array( 'navigation-widgets' ) );
 		add_post_type_support( 'page', 'excerpt' );
 
 		// Register Nav Menus
@@ -322,6 +323,23 @@ final class marketers_delight {
 			}
 		}
 
+		// A term narrowed to one post type (?post_type=) keeps its term classes
+
+		$term = get_queried_object();
+
+		if ( $term instanceof WP_Term && is_post_type_archive() ) {
+			$slug = sanitize_html_class( $term->slug, $term->term_id );
+
+			if ( $term->taxonomy === 'category' )
+				$term_classes = array( 'category', "category-$slug", "category-$term->term_id" );
+			elseif ( $term->taxonomy === 'post_tag' )
+				$term_classes = array( 'tag', "tag-$slug", "tag-$term->term_id" );
+			else
+				$term_classes = array( 'tax-' . sanitize_html_class( $term->taxonomy ), "term-$slug", "term-$term->term_id" );
+
+			$classes = array_unique( array_merge( $classes, $term_classes ) );
+		}
+
 		// Remove excess WP classes
 		$classes = array_diff( $classes, array(
 			'single-format-standard',
@@ -332,14 +350,15 @@ final class marketers_delight {
 	}
 
 	/**
-	 * Register a Twitter profile field, unless Yoast SEO already adds one.
+	 * Register an X profile field until Author Extras, which keeps X with
+	 * the author's other social profiles, is active. Moving out of MD.
 	 *
 	 * @since 4.1
 	 */
 
 	public function profile_fields( $fields ) {
-		if ( ! defined( 'WPSEO_VERSION' ) )
-			$fields['twitter'] = __( 'Twitter username (without @)', 'md' );
+		if ( ! md_has( 'author' ) )
+			$fields['twitter'] = __( 'X username or URL', 'md' );
 
 		return $fields;
 	}

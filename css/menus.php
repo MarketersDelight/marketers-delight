@@ -87,6 +87,7 @@
 	/* SUB MENU */
 	.nav-menu .sub-menu {
 		background-color: var(--md-header-submenu-background);
+		border: var(--md-border-width) solid var(--md-header-submenu-border);
 		border-radius: var(--md-border-radius);
 		box-shadow: var(--md-box-shadow-small);
 		font-size: var(--md-font-size-small);

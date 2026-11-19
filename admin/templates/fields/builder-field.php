@@ -64,7 +64,7 @@
 						'inline' => true,
 						'options' => array(
 							'post_type_only' => __( 'On categories', 'md' ),
-							'paged' => __( 'On page 2+', 'md' )
+							'paged' => __( 'On page 2+ and filtered views', 'md' )
 						)
 					) );
 					?>

@@ -407,7 +407,7 @@ class CssTest extends MD_TestCase {
 		$this->assertMatchesRegularExpression( '/@media \(min-width:[^{]+\) \{.*?\.post-nav \{[^}]*align-items: stretch;/s', $page );
 		$this->assertStringContainsString( '.post-nav-previous, .post-nav-next {', $page );
 		$this->assertStringContainsString( 'padding-block: var(--md-single);', $page );
-		$this->assertStringContainsString( '.box-style :where(.post-nav-previous, .post-nav-next) { padding-inline: var(--md-single); }', $page );
+		$this->assertStringContainsString( '.post-nav.box :where(.post-nav-previous, .post-nav-next) { padding-inline: var(--md-single); }', $page );
 		$this->assertStringContainsString( '.post-nav :where(.post-nav-previous:hover, .post-nav-next:hover) .post-nav-title { text-decoration: underline; }', $page );
 	}
 

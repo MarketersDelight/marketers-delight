@@ -514,13 +514,33 @@ class md_admin {
 	 */
 
 	public function user_meta( $user_meta ) {
-		if ( ! current_user_can( 'manage_options' ) )
+		if ( ! current_user_can( 'edit_user', $user_meta->ID ) )
 			return;
 
 		$this->nonce();
 		echo '<div class="md md-user-meta">';
+
+		if ( ! md_has( 'author' ) )
+			$this->author_extras_note();
+
 		do_action( 'md_user_meta_fields', $user_meta );
 		echo '</div>';
+	}
+
+	/**
+	 * X is moving out of MD: point profile screens to Author Extras, which
+	 * adds X with YouTube, Instagram and more to the author box.
+	 *
+	 * @since 6.2.4
+	 */
+
+	private function author_extras_note() {
+		$link = '';
+
+		if ( current_user_can( 'manage_options' ) )
+			$link = ' <a href="' . esc_url( self_admin_url( 'admin.php?page=md_dropins' ) ) . '">' . esc_html__( 'Go to Drop-ins', 'md' ) . '</a>';
+
+		echo '<p class="description">' . esc_html__( 'Your X profile and other social profiles are moving to the Author Extras Drop-in, which adds YouTube, Instagram and more to the author box.', 'md' ) . $link . '</p>';
 	}
 
 	/**

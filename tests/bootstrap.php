@@ -646,6 +646,16 @@ function md_user_meta( $keys = null, $id = null, $default = null ) {
 	return md_test_walk_meta( $GLOBALS['__test_user_meta'], $keys, $default );
 }
 
+function md_meta_group_capability( $type, $group ) {
+	if ( $type === 'post' && ! empty( $group['edit_post'] ) )
+		return 'edit_post';
+
+	if ( $type === 'user' && ! empty( $group['edit_user'] ) )
+		return 'edit_user';
+
+	return 'manage_options';
+}
+
 if ( ! function_exists( '__' ) ) {
 	function __( $text, $domain = 'default' ) {
 		return $text;

@@ -13,6 +13,13 @@ a {
 
 a:hover { text-decoration: none; }
 
+:focus-visible {
+	outline: 2px solid;
+	outline-offset: 2px;
+}
+
+:is(button, input[type="submit"], .button, .wp-element-button):focus-visible { outline-offset: -4px; }
+
 strong, b { font-weight: var(--md-bold); }
 
 img, a img {
@@ -67,13 +74,13 @@ code, pre {
 
 /* LISTS */
 
-:where(.format) ul { list-style: square; }
+:where(.format ul:is(.wp-block-list, :not([class*="wp-block-"]))) { list-style: square; }
 
 .list-check { margin-inline-start: var(--md-single); }
 
 .the-content :is(ul, ol):where(.wp-block-list, :not([class*="wp-block-"])):where(:not(.list, .list-check)) { padding-inline-start: var(--md-single); }
 
-:where(.format) li, .list-check li:not(:last-child) {
+:where(.format :is(ul, ol):is(.wp-block-list, :not([class*="wp-block-"]))) > li, .list-check li:not(:last-child) {
 	margin-block-end: var(--md-third);
 	position: relative;
 }

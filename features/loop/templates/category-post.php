@@ -8,9 +8,23 @@ $meta = apply_filters( 'md_title_archive_meta', array(), 'category_entry', $cate
 $has_inside_entry = ! empty( $meta['inside_title'] );
 $has_aside_entry = ! empty( $meta['byline_aside'] );
 $has_more = isset( $posts ) && $posts->query_vars['posts_per_page'] > 0 && $posts->post_count >= $posts->query_vars['posts_per_page'];
-$more_in_title = $has_more && $loop['columns'] > 1;
+$scrolls = in_array( 'scroll', explode( ' ', $loop['loop_classes'] ?? '' ), true );
+$more_in_title = $has_more && $loop['columns'] > 1 && ! $scrolls;
 $post_type_object = $more_in_title ? get_post_type_object( $post_type ) : null;
-$more = $post_type_object ? '<div class="category-more byline"><a href="' . esc_url( get_term_link( $category->term_id ) ) . '">' . esc_html( $post_type_object->labels->all_items ) . ' &rarr;</a></div>' : '';
+$more_count = $has_more ? max( 0, md_term_post_count( $category, $post_type ) - $posts->post_count ) : 0;
+$more_object = get_post_type_object( $post_type );
+$more_noun = $more_object ? strtolower( $more_count === 1 ? $more_object->labels->singular_name : $more_object->labels->name ) : '';
+
+if ( $post_type === 'post' )
+	$more_noun = _n( 'post', 'posts', $more_count, 'md' );
+
+$more_label = $more_count && $more_noun ? sprintf( __( 'See %1$s more %2$s', 'md' ), number_format_i18n( $more_count ), $more_noun ) : sprintf( __( 'See more in %s', 'md' ), $category->name );
+$more_url = get_term_link( $category->term_id );
+
+if ( $post_type && md_is_shared_taxonomy( $category->taxonomy ) )
+	$more_url = add_query_arg( 'post_type', $post_type, $more_url );
+
+$more = $post_type_object ? '<div class="category-more byline"><a href="' . esc_url( $more_url ) . '">' . esc_html( $post_type_object->labels->all_items ) . ' &rarr;</a></div>' : '';
 ?>
 
 <section id="<?php echo esc_attr( $category->slug ); ?>" class="<?php echo esc_attr( $loop['category_classes'] ); ?>">
@@ -71,7 +85,7 @@ $more = $post_type_object ? '<div class="category-more byline"><a href="' . esc_
 
 	<?php if ( $category_description && empty( $loop['category']['hide_description'] ) ) : ?>
 
-	<div class="description lede">
+	<div class="description">
 		<?php echo wpautop( $category_description ); ?>
 	</div>
 
@@ -94,8 +108,8 @@ $more = $post_type_object ? '<div class="category-more byline"><a href="' . esc_
 
 		<?php if ( $has_more && ! $more_in_title ) : ?>
 
-		<div class="category-more item byline mt-half">
-			<a href="<?php echo esc_url( get_term_link( $category->term_id ) ); ?>"><?php echo sprintf( esc_html__( 'See more in %s &rarr;', 'md' ), '<strong>' . esc_html( $category->name ) . '</strong>' ); ?></a>
+		<div class="category-more item byline<?php echo $scrolls ? '' : ' mt-half'; ?>">
+			<a href="<?php echo esc_url( $more_url ); ?>" class="clickable"><?php echo esc_html( $more_label ); ?> &rarr;</a>
 		</div>
 
 		<?php endif; ?>

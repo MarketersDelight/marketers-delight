@@ -67,6 +67,12 @@ class md_byline extends md_api {
 				),
 				'admin_callback' => array( $this, 'category' )
 			),
+			'post_type' => array(
+				'title' => __( 'Post Type', 'md' ),
+				'hide_title' => false,
+				'color' => '#0f766e',
+				'icon' => 'admin-post'
+			),
 			'badge' => array(
 				'title' => __( 'Badge', 'md' ),
 				'hide_title' => false,
@@ -142,6 +148,10 @@ class md_byline extends md_api {
 			'image_size' => array(
 				'type' => 'number',
 				'label' => __( 'Avatar size', 'md' )
+			),
+			'stack' => array(
+				'type' => 'checkbox',
+				'options' => array( 'author' )
 			),
 			'term' => array(
 				'type' => 'select',
@@ -285,7 +295,8 @@ class md_byline extends md_api {
 	}
 
 	/**
-	 * Render every item's Position, then the item's own controls.
+	 * Render every item's Position, then the item's own controls, then the
+	 * option to show it under the author's name.
 	 *
 	 * @since 6.1
 	 */
@@ -298,6 +309,14 @@ class md_byline extends md_api {
 
 		if ( is_callable( $callback ) )
 			call_user_func( $callback, $group, $type, $fields, $row );
+
+		if ( $type !== 'author' )
+			$fields->field( array( 'builder', $group, 'stack' ), array(
+				'type' => 'checkbox',
+				'options' => array(
+					'author' => __( 'Show under author name', 'md' )
+				)
+			) );
 	}
 
 	/**

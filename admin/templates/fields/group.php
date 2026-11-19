@@ -11,6 +11,7 @@ $clone = "{clone:$group_key}";
 $sort = "{$group_id}_sort";
 $elements = isset( $args['elements'] ) ? $args['elements'] : array();
 $style = isset( $args['style'] ) ? esc_attr( $args['style'] ) : 'list';
+$max = (int) ( $args['max'] ?? 0 );
 
 if ( isset( $args['sort'] ) ) {
 	$classes = array( 'md-sort' );
@@ -30,6 +31,7 @@ else {
 
 $callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null;
 
+$full = $max && count( $option ) - 1 >= $max;
 $classes[] = "md-group-$style";
 $classes = join( ' ', $classes );
 ?>
@@ -48,7 +50,7 @@ $classes = join( ' ', $classes );
 		if ( ! empty( $args['save_on_add'] ) )
 			echo '<input type="text" class="md-group-add-name regular-text" placeholder="' . esc_attr( isset( $args['add_label'] ) ? $args['add_label'] : '' ) . '" />';
 
-		echo '<span class="md-clone-add button' . esc_attr( $button_classes ) . '" data-clone-group="' . esc_attr( "{$this->_id}_{$group_id}" ) . '"' . ( ! empty( $args['save_on_add'] ) ? ' data-save-on-add="1"' : '' ) . '>' . $button_label . '</span>';
+		echo '<span class="md-clone-add button' . esc_attr( $button_classes ) . '" data-clone-group="' . esc_attr( "{$this->_id}_{$group_id}" ) . '"' . ( ! empty( $args['save_on_add'] ) ? ' data-save-on-add="1"' : '' ) . ( $full ? ' aria-disabled="true"' : '' ) . '>' . $button_label . '</span>';
 	} ?>
 
 </div>
@@ -58,7 +60,7 @@ $classes = join( ' ', $classes );
 <?php if ( isset( $args['description'] ) )
 	$this->description( $args['description'] ); ?>
 
-<div id="md_group_<?php echo esc_attr( "{$this->_id}_$group_id" ); ?>" class="<?php echo esc_attr( $classes ); ?>">
+<div id="md_group_<?php echo esc_attr( "{$this->_id}_$group_id" ); ?>" class="<?php echo esc_attr( $classes ); ?>"<?php echo $max ? ' data-max="' . $max . '"' : ''; ?>>
 
 	<?php foreach ( $option as $group => $fields ) :
 		$valid = isset( $args['active_key'] ) && ! empty( $fields[$args['active_key']] ) ? ' valid' : '';

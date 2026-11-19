@@ -74,6 +74,7 @@ function md_test_reset() {
 	$GLOBALS['__test_post_meta'] = array();
 	$GLOBALS['__test_term_meta'] = array();
 	$GLOBALS['__test_user_meta'] = array();
+	$GLOBALS['__test_user_keys'] = array();
 	$GLOBALS['__test_filters'] = array();
 	$GLOBALS['__test_term_children'] = array();
 	$GLOBALS['__test_object_taxonomies'] = array();
@@ -305,6 +306,9 @@ function get_term_meta( $id, $key, $single = false ) {
 }
 
 function get_user_meta( $id, $key, $single = false ) {
+	if ( isset( $GLOBALS['__test_user_keys'][$id] ) && $key !== 'marketers_delight' )
+		return $GLOBALS['__test_user_keys'][$id][$key] ?? '';
+
 	return isset( $GLOBALS['__test_user_meta'][$id] ) ? $GLOBALS['__test_user_meta'][$id] : array();
 }
 
@@ -729,6 +733,14 @@ function in_the_loop() {
 	return false;
 }
 
+function wp_increase_content_media_count( $amount = 1 ) {
+	return 0;
+}
+
+function wp_omit_loading_attr_threshold() {
+	return 3;
+}
+
 function has_excerpt() {
 	return false;
 }
@@ -742,7 +754,10 @@ function category_description() {
 }
 
 function get_the_author_meta( $field = '', $user_id = 0 ) {
-	return $field === 'display_name' ? 'Test Author' : '';
+	if ( $field === 'display_name' )
+		return 'Test Author';
+
+	return $GLOBALS['__test_user_keys'][$user_id][$field] ?? '';
 }
 
 if ( ! class_exists( 'WP_Term' ) ) {

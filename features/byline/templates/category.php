@@ -36,17 +36,10 @@ $style = $fields['style'] ?? '';
 if ( is_array( $style ) )
 	$style = ! empty( $style['tag'] ) ? 'tag' : '';
 
-echo '<span class="' . md_byline_classes( $fields, 'byline-category' ) . '">';
-
-if ( $style !== 'icon' )
-	echo md_icon( 'tags' );
-
-if ( ! empty( $fields['name'] ) )
-	echo '<span class="byline-label">' . esc_html( $fields['name'] ) . '</span> ';
+$links = array();
 
 foreach ( $visible_terms as $term ) {
-	$tax = 'tax-' . str_replace( '_', '-', $term->taxonomy );
-	$link_classes = array( 'clickout' );
+	$link_classes = array( 'byline-' . $term->slug, 'byline-tax-' . str_replace( '_', '-', $term->taxonomy ), 'clickout' );
 	$term_icon = '';
 
 	if ( $style === 'tag' )
@@ -65,10 +58,29 @@ foreach ( $visible_terms as $term ) {
 		}
 	}
 
-	echo '<span class="byline-item byline-' . esc_attr( $term->slug ) . ' byline-' . esc_attr( $tax ) . '"><a href="' . get_term_link( $term->term_id ) . '" class="' . esc_attr( join( ' ', $link_classes ) ) . '">' . $term_icon . esc_html( $term->name ) . '</a></span>';
+	$links[] = array(
+		'url' => get_term_link( $term->term_id ),
+		'classes' => $link_classes,
+		'html' => $term_icon . esc_html( $term->name )
+	);
 }
 
-if ( $remainder )
-	echo '<span class="byline-item byline-category-more">' . esc_html( sprintf( __( '+%s more', 'md' ), number_format_i18n( $remainder ) ) ) . '</span>';
+if ( count( $links ) === 1 && ! $remainder && $style === 'icon' && empty( $fields['name'] ) )
+	echo '<a href="' . esc_url( $links[0]['url'] ) . '" class="' . md_byline_classes( $fields, array_merge( array( 'byline-category' ), $links[0]['classes'] ) ) . '">' . $links[0]['html'] . '</a>';
+else {
+	echo '<span class="' . md_byline_classes( $fields, 'byline-category' ) . '">';
 
-echo '</span>';
+	if ( $style !== 'icon' )
+		echo md_icon( 'tags' );
+
+	if ( ! empty( $fields['name'] ) )
+		echo '<span class="byline-label">' . esc_html( $fields['name'] ) . '</span> ';
+
+	foreach ( $links as $link )
+		echo '<a href="' . esc_url( $link['url'] ) . '" class="' . esc_attr( join( ' ', $link['classes'] ) ) . '">' . $link['html'] . '</a>';
+
+	if ( $remainder )
+		echo '<span class="byline-category-more">' . esc_html( sprintf( __( '+%s more', 'md' ), number_format_i18n( $remainder ) ) ) . '</span>';
+
+	echo '</span>';
+}
