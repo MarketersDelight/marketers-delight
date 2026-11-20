@@ -29,12 +29,21 @@ class md_dropins_abilities extends md_abilities {
 					'required' => array( 'dropin', 'active' ),
 					'additionalProperties' => false
 				),
+				'output' => array(
+					'dropin' => 'string',
+					'active' => 'boolean'
+				),
 				'execute' => 'set_dropin_status',
-				'permission' => 'can_manage_dropins'
+				'permission' => 'can_manage_dropins',
+				'idempotent' => true
 			),
 			'find-dropins' => array(
 				'label' => __( 'Find Drop-ins', 'md' ),
 				'description' => __( 'Lists installed Drop-ins with their versions and any waiting updates, and Drop-ins this site\'s license can install. From the last update check.', 'md' ),
+				'output' => array(
+					'installed' => 'array',
+					'available' => 'array'
+				),
 				'execute' => 'find_dropins',
 				'permission' => 'can_manage_dropins',
 				'readonly' => true
@@ -50,6 +59,10 @@ class md_dropins_abilities extends md_abilities {
 					'additionalProperties' => false,
 					'default' => array()
 				),
+				'output' => array(
+					'updated' => 'array',
+					'failed' => 'object'
+				),
 				'execute' => 'update_dropins',
 				'permission' => 'can_update_dropins'
 			),
@@ -63,6 +76,11 @@ class md_dropins_abilities extends md_abilities {
 					),
 					'required' => array( 'dropin' ),
 					'additionalProperties' => false
+				),
+				'output' => array(
+					'dropin' => 'string',
+					'installed' => 'boolean',
+					'active' => 'boolean'
 				),
 				'execute' => 'install_dropin',
 				'permission' => 'can_install_dropins'

@@ -43,6 +43,15 @@ class md_settings_abilities extends md_abilities {
 			'describe-site' => array(
 				'label' => __( 'Describe site', 'md' ),
 				'description' => __( 'Call this first. Explains how Marketers Delight settings work on this site: active and installed Drop-ins, settings groups and where each can be saved, post types with settings, Collections, and how settings inherit.', 'md' ),
+				'output' => array(
+					'md_version' => 'string',
+					'inheritance' => 'string',
+					'good_to_know' => 'array',
+					'dropins' => 'array',
+					'groups' => 'array',
+					'post_types' => 'array',
+					'collections' => 'array'
+				),
 				'execute' => 'describe_site',
 				'permission' => 'can_read_site',
 				'readonly' => true
@@ -56,6 +65,14 @@ class md_settings_abilities extends md_abilities {
 					'required' => array( 'group' ),
 					'additionalProperties' => false
 				),
+				'output' => array(
+					'group' => 'string',
+					'scope' => 'string',
+					'scopes' => 'array',
+					'fields' => 'object',
+					'hosted_groups' => 'array',
+					'values_by_type' => 'object'
+				),
 				'execute' => 'describe_settings',
 				'permission' => 'can_read_site',
 				'readonly' => true
@@ -68,6 +85,13 @@ class md_settings_abilities extends md_abilities {
 					'properties' => array( 'scope' => $scope, 'group' => $group ),
 					'required' => array( 'scope' ),
 					'additionalProperties' => false
+				),
+				'output' => array(
+					'scope' => 'string',
+					'group' => 'string',
+					'values' => 'object',
+					'groups' => 'object',
+					'inherits_from' => 'array'
 				),
 				'execute' => 'get_settings',
 				'permission' => 'can_use_scope',
@@ -94,8 +118,15 @@ class md_settings_abilities extends md_abilities {
 					'required' => array( 'scope', 'group' ),
 					'additionalProperties' => false
 				),
+				'output' => array(
+					'scope' => 'string',
+					'group' => 'string',
+					'changed' => 'array',
+					'warnings' => array( 'array', 'object' )
+				),
 				'execute' => 'update_settings',
-				'permission' => 'can_use_scope'
+				'permission' => 'can_use_scope',
+				'idempotent' => true
 			),
 			'export-settings' => array(
 				'label' => __( 'Export settings', 'md' ),
@@ -111,6 +142,16 @@ class md_settings_abilities extends md_abilities {
 					),
 					'additionalProperties' => false,
 					'default' => array()
+				),
+				'output' => array(
+					'format' => 'string',
+					'version' => 'integer',
+					'md_version' => 'string',
+					'created' => 'string',
+					'site' => 'string',
+					'dropins' => 'object',
+					'sections' => 'object',
+					'refs' => 'object'
 				),
 				'execute' => 'export_settings',
 				'permission' => 'can_use_settings_file',
@@ -132,6 +173,16 @@ class md_settings_abilities extends md_abilities {
 					),
 					'required' => array( 'file' ),
 					'additionalProperties' => false
+				),
+				'output' => array(
+					'site' => 'string',
+					'md_version' => 'string',
+					'created' => 'string',
+					'parts' => 'object',
+					'missing' => 'object',
+					'inactive' => 'object',
+					'imported' => 'array',
+					'skipped' => array( 'array', 'object' )
 				),
 				'execute' => 'import_settings',
 				'permission' => 'can_use_settings_file',

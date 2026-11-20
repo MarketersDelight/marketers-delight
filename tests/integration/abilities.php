@@ -111,6 +111,30 @@ md_test( 'describe-site', ! is_wp_error( $site ) && ! empty( $site['md_version']
 $describe = md_test_call( 'describe-settings', array( 'group' => 'layout' ) );
 md_test( 'describe-settings', ! empty( $describe['fields'] ) && isset( $describe['values_by_type'] ), $describe );
 
+// Schemas and annotations, for MCP clients other than the MCP Adapter
+
+foreach ( wp_get_abilities() as $ability ) {
+	if ( strpos( $ability->get_name(), 'marketers-delight/' ) !== 0 )
+		continue;
+
+	md_test( "{$ability->get_name()} input schema", ( $ability->get_input_schema()['type'] ?? '' ) === 'object' );
+	md_test( "{$ability->get_name()} output schema", ( $ability->get_output_schema()['type'] ?? '' ) === 'object' && ! empty( $ability->get_output_schema()['properties'] ) );
+}
+
+foreach ( array( 'describe-site', 'get-widgets', 'find-dropins' ) as $name ) {
+	md_test( "$name takes {}", ! is_wp_error( md_test_call( $name, array() ) ), md_test_call( $name, array() ) );
+	md_test( "$name takes no input", ! is_wp_error( md_test_call( $name ) ) );
+}
+
+$idempotent = array();
+
+foreach ( wp_get_abilities() as $ability )
+	if ( strpos( $ability->get_name(), 'marketers-delight/' ) === 0 && empty( $ability->get_meta()['annotations']['readonly'] ) && ! empty( $ability->get_meta()['annotations']['idempotent'] ) )
+		$idempotent[] = $ability->get_name();
+
+sort( $idempotent );
+md_test( 'idempotent writes', $idempotent === array( 'marketers-delight/set-dropin-status', 'marketers-delight/trash-content', 'marketers-delight/trash-item', 'marketers-delight/update-settings' ), $idempotent );
+
 // Content
 
 $page = md_test_call( 'save-content', array( 'type' => 'page', 'title' => 'About Us', 'content' => 'Hello world. Second sentence.', 'status' => 'publish' ) );
@@ -264,6 +288,9 @@ md_test( 'changelog insert between', array_keys( $settings['values']['list'] ?? 
 
 // Popups
 
+if ( ! wp_get_ability( 'md-optins/get-popup-design' ) )
+	echo "SKIP popups: Optins isn't loaded (it may require a newer MD).\n";
+else {
 $update = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'popups', 'values' => array( 'popups' => array( 'join' => array( 'name' => 'Join', 'locations' => array( 'sitewide' => true ) ) ) ) ) );
 md_test( 'create popup', ! empty( $update['changed'] ), $update );
 $design = md_test_call( 'md-optins/get-popup-design', array( 'popup' => 'join' ) );
@@ -280,6 +307,7 @@ md_test( 'update-popup-design', strpos( $values['content']['headline'] ?? '', 'J
 md_test( 'popup background drops bad protocol', strpos( (string) ( $values['design']['bg_image'] ?? '' ), 'javascript' ) === false, $values );
 md_test( 'popup classes lose markup', ( $values['custom']['classes'] ?? '' ) === 'nice x', $values );
 md_test( 'unknown popup', is_wp_error( md_test_call( 'md-optins/get-popup-design', array( 'popup' => 'none' ) ) ) );
+}
 
 // Drop-ins
 

@@ -48,6 +48,13 @@ class md_site_abilities extends md_abilities {
 					'additionalProperties' => false,
 					'default' => array()
 				),
+				'output' => array(
+					'id' => 'integer',
+					'name' => 'string',
+					'items' => 'array',
+					'menus' => 'array',
+					'locations' => 'object'
+				),
 				'execute' => 'get_menu',
 				'permission' => 'can_edit_site',
 				'readonly' => true
@@ -66,6 +73,13 @@ class md_site_abilities extends md_abilities {
 					),
 					'additionalProperties' => false
 				),
+				'output' => array(
+					'id' => 'integer',
+					'name' => 'string',
+					'items' => 'array',
+					'menus' => 'array',
+					'locations' => 'object'
+				),
 				'execute' => 'update_menu',
 				'permission' => 'can_edit_site',
 				'destructive' => true
@@ -73,6 +87,10 @@ class md_site_abilities extends md_abilities {
 			'get-widgets' => array(
 				'label' => __( 'Get widgets', 'md' ),
 				'description' => __( 'Lists sidebars with their widgets and settings, and the widget types available.', 'md' ),
+				'output' => array(
+					'sidebars' => 'array',
+					'types' => array( 'array', 'object' )
+				),
 				'execute' => 'get_widgets',
 				'permission' => 'can_edit_site',
 				'readonly' => true
@@ -89,6 +107,10 @@ class md_site_abilities extends md_abilities {
 					),
 					'required' => array( 'sidebar' ),
 					'additionalProperties' => false
+				),
+				'output' => array(
+					'sidebars' => 'array',
+					'types' => array( 'array', 'object' )
 				),
 				'execute' => 'update_widgets',
 				'permission' => 'can_edit_site',
