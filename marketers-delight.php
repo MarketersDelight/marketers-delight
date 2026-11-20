@@ -22,11 +22,13 @@ final class marketers_delight {
 		define( 'MD_DIR', trailingslashit( get_template_directory() ) );
 		define( 'MD_URL', trailingslashit( get_template_directory_uri() ) );
 		define( 'MD_PLUGIN_DIR', '' );
+
 		if ( ! defined( 'MD_INSTALLED_DROPINS' ) )
 			define( 'MD_INSTALLED_DROPINS', WP_CONTENT_DIR . '/md-dropins' ); #5.3
 
 		if ( ! defined( 'MD_INSTALLED_DROPINS_URL' ) )
 			define( 'MD_INSTALLED_DROPINS_URL', content_url() . '/md-dropins' ); #5.3
+
 		define( 'MD_CSS_DIR', MD_DIR . 'css/' ); #4.9.4
 	}
 
@@ -95,8 +97,8 @@ final class marketers_delight {
 
 		$this->features();
 		$this->dropins();
-		require_once MD_DIR . 'features/author/author.php';
 
+		require_once MD_DIR . 'features/author/author.php';
 		require_once MD_DIR . 'functions/actions.php';
 
 		if ( md_loads_settings() )
