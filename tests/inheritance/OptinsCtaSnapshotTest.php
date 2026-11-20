@@ -56,6 +56,11 @@ class OptinsCtaSnapshotTest extends MD_InheritanceTestCase {
 		if ( ! file_exists( $optins ) )
 			$this->markTestSkipped( 'Optins drop-in not installed' );
 
+		$countdown = dirname( $optins ) . '/countdown/countdown.php';
+
+		if ( file_exists( $countdown ) )
+			require_once $countdown;
+
 		require_once $optins;
 
 		$this->dir = __DIR__ . '/fixtures/optins-cta-snapshots';
