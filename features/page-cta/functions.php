@@ -27,7 +27,7 @@ function md_cta( $context = 'post', $cta = array() ) {
  * Build a CTA's inner HTML: its links, custom HTML, or whatever a Drop-in's
  * md_cta_{type} filter returns. Empty when there's nothing to show.
  *
- * @since 6.2.3
+ * @since 6.2.2
  */
 
 function md_get_cta_html( $context, $cta ) {

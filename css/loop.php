@@ -13,7 +13,7 @@
 
 .loop:not(.content):not(:last-child) { margin-block-end: var(--md-single); }
 
-.expanded { --md-loop-content-width: var(--md-width-post); }
+.expanded, .loop { --md-loop-content-width: var(--md-width-post); }
 
 .expanded .entry .item:not(.post-title) > .wrap,
 .expanded .content-wrap.builder > .item:not(.post-title) > .wrap {
@@ -185,6 +185,8 @@
 	padding-block: var(--md-half);
 }
 
+.expanded .loop-list.nested { --md-loop-content-width: 100%; }
+
 .loop-list > .entry:first-child { padding-block-start: 0; }
 
 .loop-list > .entry:last-child {
@@ -217,7 +219,7 @@
 
 .loop-list > .entry > :is(.post-title, .the-content) {
 	margin-inline: auto;
-	max-width: var(--md-width-post);
+	max-width: var(--md-loop-content-width);
 	width: 100%;
 }
 

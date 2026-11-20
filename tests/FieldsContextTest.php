@@ -231,7 +231,7 @@ class FieldsContextTest extends MD_TestCase {
 			'md_tab' => 'category',
 		), 'my_page' );
 
-		$this->assertSame( 'Tax Setting', $fields->get_field( 'title' ) );
+		$this->assertSame( 'Tax Setting', $fields->get_field( array( 'my_page', 'title' ) ) );
 	}
 
 	// Note: for a child field under a taxonomy tab, get_field() narrows to
@@ -250,6 +250,50 @@ class FieldsContextTest extends MD_TestCase {
 		), 'child_field' );
 
 		$this->assertSame( 'Tax Setting', $fields->get_field( 'title' ) );
+	}
+
+	// admin/templates/fields/group.php reads a group's stored rows with
+	// get_field( array( $this->_clean_id, $group_id ) ). It must find the
+	// value field() shows (and saves) for the same group on every page shape.
+
+	private function group_template_read( $screen, $clean_id, $stored ) {
+		md_test_set_filter( 'md_admin_groups', array( 'my_page' => array( 'label' => 'My Page' ) ) );
+		md_test_set_settings( $stored );
+
+		$field = $this->make_capturing_fields( $screen, $clean_id );
+		$field->field( 'elements', array( 'type' => 'text' ) );
+
+		return array(
+			'field' => $field->rendered['option'],
+			'template' => $this->make_fields( $screen, $clean_id )->get_field( array( $clean_id, 'elements' ) )
+		);
+	}
+
+	public function test_group_template_reads_what_field_shows_on_a_group_root() {
+		$read = $this->group_template_read( array( 'page' => 'my_page' ), 'my_page', array(
+			'my_page' => array( 'elements' => 'root rows' )
+		) );
+
+		$this->assertSame( 'root rows', $read['field'] );
+		$this->assertSame( $read['field'], $read['template'] );
+	}
+
+	public function test_group_template_reads_what_field_shows_on_a_child_taxonomy_tab() {
+		$read = $this->group_template_read( array( 'page' => 'my_page', 'is_taxonomy' => true, 'md_tab' => 'category' ), 'child_field', array(
+			'my_page' => array( 'category' => array( 'child_field' => array( 'elements' => 'child tab rows' ) ) )
+		) );
+
+		$this->assertSame( 'child tab rows', $read['field'] );
+		$this->assertSame( $read['field'], $read['template'] );
+	}
+
+	public function test_group_template_reads_what_field_shows_on_a_group_root_taxonomy_tab() {
+		$read = $this->group_template_read( array( 'page' => 'my_page', 'is_taxonomy' => true, 'md_tab' => 'category' ), 'my_page', array(
+			'my_page' => array( 'category' => array( 'elements' => 'root tab rows' ) )
+		) );
+
+		$this->assertSame( 'root tab rows', $read['field'] );
+		$this->assertSame( $read['field'], $read['template'] );
 	}
 
 	// module() — post/term meta paths prefix keys with clean_id.
