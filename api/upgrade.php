@@ -11,6 +11,8 @@
 
 class md_upgrade {
 
+	private $border = false;
+
 	/**
 	 * Check before md_enqueue::compile_after_upgrade() reads the compile flag.
 	 *
@@ -34,8 +36,8 @@ class md_upgrade {
 	}
 
 	/**
-	 * 6.2.2: move widths and the box style selects, remove the MD 5 site-wide loop
-	 * (no field edits it) and the storage counter the 6.0 migrations left.
+	 * 6.2.2: move widths and the box style selects, and remove the storage counter the
+	 * 6.0 migrations left. The site-wide loop stays: search, tag and date archives use it.
 	 *
 	 * @since 6.2.2
 	 */
@@ -44,9 +46,6 @@ class md_upgrade {
 		$settings = get_option( 'marketers_delight', array() );
 		$upgraded = $this->move_widths( $settings );
 		$upgraded = $this->move_box_style( $upgraded );
-
-		if ( is_array( $upgraded ) )
-			unset( $upgraded['loop'] );
 
 		if ( $upgraded !== $settings )
 			update_option( 'marketers_delight', $upgraded );
@@ -81,7 +80,8 @@ class md_upgrade {
 
 	/**
 	 * Turn the Box / Border / No style selects into Remove Box Style checkboxes.
-	 * No style and Border remove the box in Effects; Border also keeps its divider lines.
+	 * No style and Border remove the box; Border keeps its lines as site Dividers
+	 * when the site has no box, since dividers are site-wide now.
 	 *
 	 * @since 6.2.2
 	 */
@@ -103,8 +103,11 @@ class md_upgrade {
 		if ( ( $settings['colors'] ?? null ) === array() )
 			unset( $settings['colors'] );
 
+		$removed = ! empty( $settings['effects']['box_style']['remove'] );
+		$this->border = false;
+
 		foreach ( $settings as $key => $group ) {
-			$moved = is_array( $group ) ? $this->move_layout_box_style( $group, true ) : $group;
+			$moved = is_array( $group ) ? $this->move_layout_box_style( $group, $removed, true ) : $group;
 
 			if ( $moved === array() && $group !== array() )
 				unset( $settings[$key] );
@@ -112,21 +115,32 @@ class md_upgrade {
 				$settings[$key] = $moved;
 		}
 
+		if ( $this->border && $removed )
+			$settings['effects']['dividers'] = $settings['effects']['dividers'] ?? array( 'divide' => true );
+
 		return $settings;
 	}
 
 	/**
-	 * A post type group, and with $children its taxonomies: No style becomes the checkbox.
+	 * A post type group, and with $children its taxonomies. No style and Border remove
+	 * the box; Box keeps it on a site whose box is removed.
 	 *
 	 * @since 6.2.2
 	 */
 
-	private function move_layout_box_style( $group, $children = false ) {
+	private function move_layout_box_style( $group, $removed, $children = false ) {
 		$taxonomies = $children ? $group : array();
 
 		if ( is_array( $group['layout'] ?? null ) && array_key_exists( 'content_style', $group['layout'] ) ) {
-			if ( $group['layout']['content_style'] === 'plain' )
+			$style = $group['layout']['content_style'];
+
+			if ( $style === 'plain' || $style === 'border' )
 				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? true;
+			elseif ( $style === 'box' && $removed )
+				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? false;
+
+			if ( $style === 'border' )
+				$this->border = true;
 
 			unset( $group['layout']['content_style'] );
 
@@ -138,7 +152,7 @@ class md_upgrade {
 			if ( ! is_array( $child ) || ! isset( $child['layout'] ) )
 				continue;
 
-			$group[$key] = $this->move_layout_box_style( $child );
+			$group[$key] = $this->move_layout_box_style( $child, $removed );
 
 			if ( $group[$key] === array() )
 				unset( $group[$key] );

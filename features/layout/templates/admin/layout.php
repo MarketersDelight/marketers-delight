@@ -245,7 +245,7 @@
 				)
 			);
 
-			if ( $this->fields->saved( 'content_style' ) === 'plain' && $this->fields->saved( array( 'content', 'box_style' ) ) === null )
+			if ( in_array( $this->fields->saved( 'content_style' ), array( 'plain', 'border' ), true ) && $this->fields->saved( array( 'content', 'box_style' ) ) === null )
 				$box_style['value'] = array( 'box_style' => true );
 
 			$this->fields->field( 'content', $box_style );
