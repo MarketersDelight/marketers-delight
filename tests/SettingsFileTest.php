@@ -659,7 +659,7 @@ class SettingsFileTest extends MD_TestCase {
 			) ) ),
 			'dropins' => array( array( 'scope' => 'site', 'group' => 'pick', 'source' => 'theme', 'values' => array( 'list' => 'gone', 'empty' => '' ) ) )
 		) ) ) );
-		$this->register( array( 'pick' => array( '_source' => 'theme', 'fields' => array(
+		$this->register( array( 'pick' => array( '_source' => 'share', 'fields' => array(
 			'list' => array( 'type' => 'select', 'options' => array( 'a', 'b' ) ),
 			'empty' => array( 'type' => 'select', 'options' => array( 'a', 'b' ) )
 		) ) ) );
@@ -671,11 +671,11 @@ class SettingsFileTest extends MD_TestCase {
 	}
 
 	public function test_checkboxes_saved_as_off_are_not_listed_as_rejected() {
-		$this->register( array( 'pick' => array( '_source' => 'theme', 'fields' => array(
+		$this->register( array( 'pick' => array( '_source' => 'share', 'fields' => array(
 			'show' => array( 'type' => 'checkbox', 'options' => array( 'date', 'author' ) )
 		) ) ) );
 		$file = $this->file->read( json_encode( array( 'format' => 'md-export', 'version' => 1, 'sections' => array(
-			'settings' => array( array( 'scope' => 'site', 'group' => 'pick', 'values' => array( 'show' => array( 'date' => false ) ) ) )
+			'dropins' => array( array( 'scope' => 'site', 'group' => 'pick', 'values' => array( 'show' => array( 'date' => false ) ) ) )
 		) ) ) );
 
 		$this->assertSame( array(), $this->file->import( $file )['skipped'] );
@@ -696,7 +696,9 @@ class SettingsFileTest extends MD_TestCase {
 			'settings' => array(
 				array( 'scope' => 'style:dark', 'group' => 'colors', 'values' => array( 'primary' => '#000' ) ),
 				array( 'scope' => 'post:4', 'group' => 'layout', 'values' => array() ),
-				'not an entry',
+				'not an entry'
+			),
+			'dropins' => array(
 				array( 'scope' => 'site', 'group' => 'share', 'source' => 'share', 'values' => array( 'label' => 'Ok', 'unknown' => 1 ) )
 			)
 		) ) ) );

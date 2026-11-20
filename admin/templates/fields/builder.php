@@ -86,6 +86,8 @@ if ( is_array( $option ) )
 
 				if ( $area == $area_id && ! empty( $elements[$type] ) )
 					$this->builder_field( $key, $group, $type, $elements[$type], $fields, $args );
+				elseif ( $area == $area_id && $type )
+					$this->builder_kept( $key, $group, $fields );
 			} ?>
 		<?php endif; ?>
 
@@ -95,4 +97,9 @@ if ( is_array( $option ) )
 
 </div>
 
-<?php endforeach; ?>
+<?php endforeach;
+
+if ( is_array( $option ) )
+	foreach ( $option as $group => $fields )
+		if ( is_array( $fields ) && ! empty( $fields['builder_type'] ) && ! isset( $areas[$fields['builder_area'] ?? ''] ) )
+			$this->builder_kept( $key, esc_attr( $group ), $fields );

@@ -200,20 +200,22 @@ function md_nav_menu_archive_context( $items ) {
 	$parents = array();
 
 	foreach ( $items as $item )
-		$parents[$item->ID] = $item->menu_item_parent;
+		$parents[$item->ID] = (int) $item->menu_item_parent;
 
-	foreach ( $items as $item ) {
-		$parent_id = $item->menu_item_parent;
+	$ancestors = array();
 
-		while ( $parent_id ) {
-			if ( in_array( $parent_id, $current_ids, true ) ) {
-				$item->classes[] = 'current-menu-ancestor';
-				break;
-			}
+	foreach ( $current_ids as $id ) {
+		$parent_id = $parents[$id] ?? 0;
 
+		while ( $parent_id && ! isset( $ancestors[$parent_id] ) ) {
+			$ancestors[$parent_id] = true;
 			$parent_id = $parents[$parent_id] ?? 0;
 		}
 	}
+
+	foreach ( $items as $item )
+		if ( isset( $ancestors[$item->ID] ) )
+			$item->classes[] = 'current-menu-ancestor';
 
 	return $items;
 }

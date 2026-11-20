@@ -54,12 +54,14 @@ function md_get_cta_html( $context, $cta ) {
 /**
  * Get the saved CTA for the current page title: the archive's Page CTA
  * settings, or a single post's own CTA. Other contexts pass their CTA
- * to md_cta() directly.
+ * to md_cta() directly; only they can pass built HTML.
  *
  * @since 6.1
  */
 
 function md_get_cta( $context = 'post' ) {
+	$cta = array();
+
 	if ( $context == 'page' ) {
 		$cta = md_value( array( 'key' => 'page_cta', 'page' => true ) );
 
@@ -76,14 +78,14 @@ function md_get_cta( $context = 'post' ) {
 			if ( empty( $cta['page_cta'] ) )
 				$cta = md_value( array( 'key' => 'page_cta', 'post_type' => md_get_post_type() ) );
 		}
-
-		return $cta;
 	}
+	elseif ( $context == 'post' && md_is_queried_post() )
+		$cta = md_post_meta( 'page_cta' );
 
-	if ( $context == 'post' && md_is_queried_post() )
-		return md_post_meta( 'page_cta' );
+	if ( is_array( $cta ) )
+		unset( $cta['html'] );
 
-	return array();
+	return $cta;
 }
 
 /**
