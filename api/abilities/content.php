@@ -81,6 +81,14 @@ class md_content_abilities extends md_abilities {
 						'slug' => array( 'type' => 'string' ),
 						'status' => array( 'type' => 'string', 'enum' => array( 'draft', 'pending', 'publish', 'private' ) ),
 						'parent' => array( 'type' => 'integer' ),
+						'author' => array(
+							'type' => 'integer',
+							'description' => __( 'The author\'s user ID. New content is yours unless this says otherwise.', 'md' )
+						),
+						'menu_order' => array(
+							'type' => 'integer',
+							'description' => __( 'Its place among the same parent\'s content, lowest first, ex: the order of Docs.', 'md' )
+						),
 						'date' => array(
 							'type' => 'string',
 							'description' => __( 'When it was posted, in the past or now.', 'md' )
@@ -184,6 +192,8 @@ class md_content_abilities extends md_abilities {
 			'date' => 'string',
 			'link' => array( 'string', 'boolean' ),
 			'parent' => 'integer',
+			'author' => 'integer',
+			'menu_order' => 'integer',
 			'first_line' => 'string',
 			'image_id' => 'integer',
 			'terms' => 'object',
@@ -228,7 +238,22 @@ class md_content_abilities extends md_abilities {
 				return false;
 		}
 
+		if ( ! empty( $input['author'] ) && absint( $input['author'] ) !== get_current_user_id() && ! $this->can( 'edit_others_posts', $type ) )
+			return false;
+
 		return ! in_array( $status, array( 'publish', 'private' ), true ) || $this->can( 'publish_posts', $type );
+	}
+
+	/**
+	 * Whether a user can be the author of this type of content.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function can_author( $user_id, $type ) {
+		$object = get_post_type_object( $type );
+
+		return $object && get_userdata( $user_id ) && user_can( $user_id, $object->cap->edit_posts );
 	}
 
 	/**
@@ -265,6 +290,10 @@ class md_content_abilities extends md_abilities {
 
 	public function find_content( $input = array() ) {
 		$type = $input['type'] ?? '';
+
+		if ( $type && ! post_type_exists( $type ) )
+			return new WP_Error( 'md_abilities_type', sprintf( __( 'No content type named %1$s. Types: %2$s.', 'md' ), $type, implode( ', ', array_diff( get_post_types( array( 'show_ui' => true ) ), array( 'wp_block', 'wp_navigation' ) ) ) ) );
+
 		$limit = absint( $input['limit'] ?? 10 );
 		$offset = absint( $input['offset'] ?? 0 );
 		$default = $type === 'attachment' ? array( 'inherit' ) : array( 'publish', 'future', 'draft', 'pending', 'private' );
@@ -312,7 +341,7 @@ class md_content_abilities extends md_abilities {
 		if ( ! $id && ( empty( $input['type'] ) || ! post_type_exists( $input['type'] ) ) )
 			return new WP_Error( 'md_abilities_type', __( 'Give an id to change content, or a post type to create it.', 'md' ) );
 
-		foreach ( array( 'title' => 'post_title', 'content' => 'post_content', 'excerpt' => 'post_excerpt', 'slug' => 'post_name', 'status' => 'post_status', 'parent' => 'post_parent' ) as $key => $field )
+		foreach ( array( 'title' => 'post_title', 'content' => 'post_content', 'excerpt' => 'post_excerpt', 'slug' => 'post_name', 'status' => 'post_status', 'parent' => 'post_parent', 'author' => 'post_author', 'menu_order' => 'menu_order' ) as $key => $field )
 			if ( isset( $input[$key] ) )
 				$post[$field] = $input[$key];
 
@@ -336,6 +365,10 @@ class md_content_abilities extends md_abilities {
 			return new WP_Error( 'md_abilities_image', __( 'That ID isn\'t an image in the Media Library. Find content with type attachment lists them.', 'md' ) );
 
 		$type = $id ? get_post_type( $id ) : $input['type'];
+
+		if ( ! empty( $input['author'] ) && ! $this->can_author( absint( $input['author'] ), $type ) )
+			return new WP_Error( 'md_abilities_author', __( 'That user doesn\'t exist or can\'t write this type of content.', 'md' ) );
+
 		$terms = $this->resolve_terms( $input['terms'] ?? array(), $type );
 		$add_terms = is_wp_error( $terms ) ? $terms : $this->resolve_terms( $input['add_terms'] ?? array(), $type );
 
@@ -528,6 +561,8 @@ class md_content_abilities extends md_abilities {
 			'date' => get_post_time( 'c', false, $post ),
 			'link' => get_permalink( $post ),
 			'parent' => (int) $post->post_parent,
+			'author' => (int) $post->post_author,
+			'menu_order' => (int) $post->menu_order,
 			'first_line' => wp_trim_words( wp_strip_all_tags( $post->post_content ), 25 ),
 			'image_id' => (int) get_post_thumbnail_id( $post ),
 			'terms' => array()

@@ -61,12 +61,13 @@ class md_site_abilities extends md_abilities {
 			),
 			'update-menu' => array(
 				'label' => __( 'Update menu', 'md' ),
-				'description' => __( 'Changes a menu, or creates one with create. items is a list of operations: { op: add, title, url } or { op: add, object: post type or taxonomy, object_id, title }; { op: update, id, title, url, parent }; { op: remove, id }. New items go at the end; send order to arrange them, and items left out follow the ones listed. location puts the menu in a theme location.', 'md' ),
+				'description' => __( 'Changes a menu, or creates one with create. items is a list of operations, run in order: { op: add, title, url } or { op: add, object: post type or taxonomy, object_id, title }; { op: update, id, title, url, parent, position }; { op: remove, id }. parent nests an item under another: an item ID, or the ref of an item added earlier in the same call, so { op: add, ref: "school", title: "School", url } then { op: add, parent: "school", ... } builds a nested menu in one call. position is the item\'s place in the menu, from 1; new items go at the end. order arranges many at once, and items left out follow the ones listed. name renames the menu; on phones the menu toggle shows it. location puts the menu in a theme location.', 'md' ),
 				'input' => array(
 					'type' => 'object',
 					'properties' => array(
 						'menu' => array( 'type' => array( 'integer', 'string' ) ),
 						'create' => array( 'type' => 'string', 'description' => __( 'The name of a new menu.', 'md' ) ),
+						'name' => array( 'type' => 'string', 'description' => __( 'A new name for the menu.', 'md' ) ),
 						'location' => array( 'type' => 'string' ),
 						'items' => array( 'type' => 'array', 'items' => array( 'type' => 'object' ) ),
 						'order' => $order
@@ -86,10 +87,11 @@ class md_site_abilities extends md_abilities {
 			),
 			'get-widgets' => array(
 				'label' => __( 'Get widgets', 'md' ),
-				'description' => __( 'Lists sidebars with their widgets and settings, and the widget types available.', 'md' ),
+				'description' => __( 'Lists sidebars with their widgets and settings, the widget types available, and the setting keys each type saves in type_settings. Some widgets only show their keys once one is added.', 'md' ),
 				'output' => array(
 					'sidebars' => 'array',
-					'types' => array( 'array', 'object' )
+					'types' => array( 'array', 'object' ),
+					'type_settings' => 'object'
 				),
 				'execute' => 'get_widgets',
 				'permission' => 'can_edit_site',
@@ -110,7 +112,9 @@ class md_site_abilities extends md_abilities {
 				),
 				'output' => array(
 					'sidebars' => 'array',
-					'types' => array( 'array', 'object' )
+					'types' => array( 'array', 'object' ),
+					'type_settings' => 'object',
+					'warnings' => 'array'
 				),
 				'execute' => 'update_widgets',
 				'permission' => 'can_edit_site',
@@ -192,8 +196,24 @@ class md_site_abilities extends md_abilities {
 				return $done;
 		}
 
+		$refs = $positions = array();
+
 		foreach ( (array) ( $input['items'] ?? array() ) as $operation ) {
-			$done = $this->menu_operation( (int) $menu->term_id, (array) $operation );
+			$operation = (array) $operation;
+			$done = $this->menu_operation( (int) $menu->term_id, $operation, $refs );
+
+			if ( is_wp_error( $done ) )
+				return $done;
+
+			if ( isset( $operation['ref'] ) && ( $operation['op'] ?? '' ) === 'add' )
+				$refs[(string) $operation['ref']] = (int) $done;
+
+			if ( ! empty( $operation['position'] ) && ( $operation['op'] ?? '' ) !== 'remove' )
+				$positions[(int) $done] = absint( $operation['position'] );
+		}
+
+		if ( $positions ) {
+			$done = $this->order_menu( (int) $menu->term_id, $this->positioned( (int) $menu->term_id, $positions ) );
 
 			if ( is_wp_error( $done ) )
 				return $done;
@@ -204,6 +224,15 @@ class md_site_abilities extends md_abilities {
 
 			if ( is_wp_error( $done ) )
 				return $done;
+		}
+
+		if ( ! empty( $input['name'] ) && $input['name'] !== $menu->name ) {
+			$renamed = wp_update_nav_menu_object( (int) $menu->term_id, array( 'menu-name' => $input['name'] ) );
+
+			if ( is_wp_error( $renamed ) )
+				return $renamed;
+
+			$menu = wp_get_nav_menu_object( (int) $menu->term_id );
 		}
 
 		if ( ! empty( $input['location'] ) ) {
@@ -244,16 +273,31 @@ class md_site_abilities extends md_abilities {
 
 	protected function check_menu_changes( $menu_id, $input ) {
 		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' );
+		$refs = array();
 
 		foreach ( (array) ( $input['items'] ?? array() ) as $operation ) {
+			$operation = (array) $operation;
 			$op = $operation['op'] ?? '';
 			$id = absint( $operation['id'] ?? 0 );
+			$parent = $operation['parent'] ?? 0;
 
 			if ( ! in_array( $op, array( 'add', 'update', 'remove' ), true ) )
 				return new WP_Error( 'md_abilities_menu_op', __( 'Each item needs an op: add, update or remove.', 'md' ) );
 
 			if ( $op !== 'add' && ! in_array( $id, $current, true ) )
 				return $this->no_menu_item( $id );
+
+			if ( $parent && ! is_numeric( $parent ) && ! isset( $refs[(string) $parent] ) )
+				return new WP_Error( 'md_abilities_menu_parent', sprintf( __( 'No item added earlier in this call has the ref %s.', 'md' ), $parent ) );
+
+			if ( $parent && is_numeric( $parent ) && ! in_array( absint( $parent ), $current, true ) )
+				return $this->no_menu_item( absint( $parent ) );
+
+			if ( isset( $operation['position'] ) && ( ! is_numeric( $operation['position'] ) || $operation['position'] < 1 ) )
+				return new WP_Error( 'md_abilities_menu_position', __( 'position is the item\'s place in the menu, from 1.', 'md' ) );
+
+			if ( $op === 'add' && isset( $operation['ref'] ) )
+				$refs[(string) $operation['ref']] = true;
 
 			if ( $op === 'remove' )
 				$current = array_diff( $current, array( $id ) );
@@ -272,7 +316,7 @@ class md_site_abilities extends md_abilities {
 	 * @since 6.2
 	 */
 
-	protected function menu_operation( $menu_id, $operation ) {
+	protected function menu_operation( $menu_id, $operation, $refs = array() ) {
 		$op = $operation['op'] ?? '';
 		$id = absint( $operation['id'] ?? 0 );
 
@@ -284,6 +328,9 @@ class md_site_abilities extends md_abilities {
 		foreach ( array( 'title' => 'menu-item-title', 'url' => 'menu-item-url', 'parent' => 'menu-item-parent-id' ) as $key => $field )
 			if ( isset( $operation[$key] ) )
 				$item[$field] = $operation[$key];
+
+		if ( isset( $item['menu-item-parent-id'] ) && ! is_numeric( $item['menu-item-parent-id'] ) )
+			$item['menu-item-parent-id'] = $refs[(string) $item['menu-item-parent-id']] ?? 0;
 
 		if ( $op === 'add' ) {
 			$item['menu-item-status'] = 'publish';
@@ -350,6 +397,24 @@ class md_site_abilities extends md_abilities {
 		}
 
 		return true;
+	}
+
+	/**
+	 * The menu's item IDs in order, with each positioned item moved to its
+	 * place, lowest position first.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function positioned( $menu_id, $positions ) {
+		$ids = array_values( array_diff( wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' ), array_keys( $positions ) ) );
+
+		asort( $positions );
+
+		foreach ( $positions as $id => $position )
+			array_splice( $ids, $position - 1, 0, array( $id ) );
+
+		return $ids;
 	}
 
 	/**
@@ -443,7 +508,11 @@ class md_site_abilities extends md_abilities {
 			);
 		}
 
-		return array( 'sidebars' => $sidebars, 'types' => $this->widgets->types() );
+		return array(
+			'sidebars' => $sidebars,
+			'types' => $this->widgets->types(),
+			'type_settings' => (object) $this->widgets->settings()
+		);
 	}
 
 	/**
@@ -461,10 +530,10 @@ class md_site_abilities extends md_abilities {
 
 		$placed = wp_get_sidebars_widgets();
 		$widgets = isset( $placed[$sidebar] ) ? array_values( (array) $placed[$sidebar] ) : array();
-		$options = array();
+		$options = $warnings = array();
 
 		foreach ( (array) ( $input['widgets'] ?? array() ) as $operation ) {
-			$widgets = $this->widget_operation( $widgets, (array) $operation, $options );
+			$widgets = $this->widget_operation( $widgets, (array) $operation, $options, $warnings );
 
 			if ( is_wp_error( $widgets ) )
 				return $widgets;
@@ -479,17 +548,18 @@ class md_site_abilities extends md_abilities {
 		$placed[$sidebar] = $widgets;
 		wp_set_sidebars_widgets( $placed );
 
-		return $this->get_widgets();
+		return array_merge( $this->get_widgets(), array( 'warnings' => $warnings ) );
 	}
 
 	/**
 	 * Run one widget operation on $options, the widget options to write,
-	 * returning the sidebar's widgets.
+	 * returning the sidebar's widgets. Settings the widget didn't keep go
+	 * in $warnings.
 	 *
 	 * @since 6.2
 	 */
 
-	protected function widget_operation( $widgets, $operation, &$options ) {
+	protected function widget_operation( $widgets, $operation, &$options, &$warnings = array() ) {
 		$op = $operation['op'] ?? '';
 		$settings = isset( $operation['settings'] ) ? (array) $operation['settings'] : array();
 
@@ -509,6 +579,7 @@ class md_site_abilities extends md_abilities {
 			if ( $instance === false )
 				return $this->widget_refused( "$type-$number" );
 
+			$warnings = array_merge( $warnings, $this->dropped_settings( $type, $settings, $instance ) );
 			$instances[$number] = $instance;
 			$instances['_multiwidget'] = 1;
 			$options[$type] = $instances;
@@ -532,6 +603,7 @@ class md_site_abilities extends md_abilities {
 			if ( $instance === false )
 				return $this->widget_refused( $id );
 
+			$warnings = array_merge( $warnings, $this->dropped_settings( $parts['type'], $settings, $instance ) );
 			$instances[$parts['number']] = $instance;
 		}
 		elseif ( $op === 'remove' ) {
@@ -544,6 +616,21 @@ class md_site_abilities extends md_abilities {
 		$options[$parts['type']] = $instances;
 
 		return $widgets;
+	}
+
+	/**
+	 * A warning for each setting given that the widget didn't save.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function dropped_settings( $type, $settings, $instance ) {
+		$warnings = array();
+
+		foreach ( array_keys( array_diff_key( $settings, $instance ) ) as $key )
+			$warnings[] = sprintf( __( '`%1$s` isn\'t a setting on %2$s, so it wasn\'t saved.', 'md' ), $key, $type );
+
+		return $warnings;
 	}
 
 	/**

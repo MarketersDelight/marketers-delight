@@ -121,7 +121,9 @@ class md_validate {
 				$given = is_array( $field_input ) ? array_filter( $field_input ) : $field_input;
 				$rejected = in_array( $validated, array( '', array() ), true ) && ! in_array( $given, array( '', false, 0, '0', array() ), true );
 
-				if ( $validated === null || $rejected )
+				if ( $rejected && $this->is_default( $field_input, $field ) )
+					$this->warnings[] = sprintf( __( '`%s` is already its default, so nothing was saved and it keeps inheriting.', 'md' ), $name );
+				elseif ( $validated === null || $rejected )
 					$this->warnings[] = sprintf( __( '`%s` has a value this site can\'t use.', 'md' ), $name );
 			}
 			elseif ( ! is_array( $field_input ) )
@@ -135,6 +137,23 @@ class md_validate {
 		}
 
 		return $save;
+	}
+
+	/**
+	 * Whether a color is its field's own default, which saves nothing but
+	 * isn't a wrong value either.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function is_default( $value, $field ) {
+		$defaults = array();
+
+		foreach ( array( 'default', 'palette' ) as $key )
+			if ( ! empty( $field[$key] ) && is_string( $field[$key] ) )
+				$defaults[] = strtolower( $field[$key] );
+
+		return ( $field['type'] ?? '' ) === 'color' && is_string( $value ) && in_array( strtolower( $value ), $defaults, true );
 	}
 
 	/**

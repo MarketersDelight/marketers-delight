@@ -347,8 +347,9 @@ class md_settings_abilities extends md_abilities {
 			'values_by_type' => array(
 				'checkbox with options' => __( 'An object: { "option": true } turns an option on, { "option": 0 } turns it off over an inherited setting, and null resets it. Not a list of options.', 'md' ),
 				'group or builder' => __( 'An object of items keyed by ID, each shaped like item_fields. Pick a new ID to add one.', 'md' ),
-				'color' => __( 'A hex, rgba() or palette key.', 'md' ),
-				'upload' => __( '{ "id": attachment ID }.', 'md' )
+				'color' => sprintf( __( 'A hex, rgba() or one of this site\'s palette keys: %s. A field\'s palette is the key it uses by default. New colors go in colors > custom, each with a key.', 'md' ), implode( ', ', array_keys( md_color_palette() ) ) ),
+				'upload' => __( '{ "id": attachment ID }.', 'md' ),
+				'text' => __( 'Saved as HTML, so & reads back as &amp; and still shows as &. Send it back either way.', 'md' )
 			)
 		);
 	}
@@ -361,7 +362,7 @@ class md_settings_abilities extends md_abilities {
 
 	public function fields( $fields, $is_host = false ) {
 		$described = array();
-		$keys = array( 'type' => 1, 'default' => 1, 'min' => 1, 'max' => 1, 'step' => 1, 'multiple' => 1, 'hex_only' => 1, 'upload_type' => 1 );
+		$keys = array( 'type' => 1, 'default' => 1, 'palette' => 1, 'min' => 1, 'max' => 1, 'step' => 1, 'multiple' => 1, 'hex_only' => 1, 'upload_type' => 1 );
 
 		foreach ( $fields as $key => $field ) {
 			if ( ! is_array( $field ) || ! empty( $field['internal'] ) )
