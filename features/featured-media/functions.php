@@ -245,9 +245,8 @@ function md_media_position( $context = 'post' ) {
 
 	// The page's own title media
 
-	if ( $context === 'page' ) {
+	if ( $context === 'page' )
 		$position = md_value( $args );
-	}
 
 	// The single being viewed: the post type's single setting, then the post's own
 
