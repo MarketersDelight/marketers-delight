@@ -24,7 +24,7 @@ function md_has_builder() {
  * Whether output is inside the column's .inner: between the content box top
  * and bottom hooks, on a page that isn't built with the builder.
  *
- * @since 6.2.3
+ * @since 6.2.2
  */
 
 function md_in_inner() {
