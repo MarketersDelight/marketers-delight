@@ -92,7 +92,28 @@ final class marketers_delight {
 			require_once MD_DIR . 'api/save/settings-file.php';
 			require_once MD_DIR . 'admin/admin.php';
 		}
-		elseif ( md_loads_settings() ) {
+
+		$this->features();
+		$this->dropins();
+		require_once MD_DIR . 'features/author/author.php';
+
+		require_once MD_DIR . 'functions/actions.php';
+
+		if ( md_loads_settings() )
+			do_action( 'md_load_settings' );
+		else
+			add_action( 'wp_abilities_api_init', array( $this, 'load_settings' ), 1 );
+	}
+
+	/**
+	 * Settings fields and the abilities that use them. Admin screens and
+	 * WP-CLI load them with the theme, abilities requests on demand.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function settings() {
+		if ( ! is_admin() ) {
 			require_once MD_DIR . 'api/save/widgets.php';
 			require_once MD_DIR . 'api/save/settings-file.php';
 			require_once MD_DIR . 'api/dropins/manage.php';
@@ -101,11 +122,36 @@ final class marketers_delight {
 				require_once MD_DIR . "admin/$file.php";
 		}
 
-		$this->features();
-		$this->dropins();
-		require_once MD_DIR . 'features/author/author.php';
+		require_once MD_DIR . 'features/integrations/admin.php';
+		require_once MD_DIR . 'features/page-title/admin.php';
+		require_once MD_DIR . 'features/header/admin.php';
+		require_once MD_DIR . 'features/header/logo.php';
+		require_once MD_DIR . 'features/layout/admin.php';
+		require_once MD_DIR . 'features/page-title/text.php';
+		require_once MD_DIR . 'features/featured-media/admin.php';
+		require_once MD_DIR . 'features/page-cta/admin.php';
+		require_once MD_DIR . 'features/page-cover/admin.php';
+		require_once MD_DIR . 'features/byline/admin.php';
+		require_once MD_DIR . 'features/loop/admin.php';
+		require_once MD_DIR . 'api/abilities/settings.php';
+		require_once MD_DIR . 'api/abilities/items.php';
+		require_once MD_DIR . 'api/abilities/content.php';
+		require_once MD_DIR . 'api/abilities/site.php';
+		require_once MD_DIR . 'api/abilities/dropins.php';
+	}
 
-		require_once MD_DIR . 'functions/actions.php';
+	/**
+	 * Load settings when something first asks for abilities. That's after
+	 * init, so their fields and defaults register again.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function load_settings() {
+		add_action( 'md_load_settings', array( $this, 'settings' ), 1 );
+		do_action( 'md_load_settings' );
+		md_refresh_fields();
+		md_setting_defaults( true );
 	}
 
 	/**
@@ -131,24 +177,8 @@ final class marketers_delight {
 		require_once MD_DIR . 'features/author/functions.php';
 		require_once MD_DIR . 'features/loop/comments.php';
 
-		if ( md_loads_settings() ) {
-			require_once MD_DIR . 'features/integrations/admin.php';
-			require_once MD_DIR . 'features/page-title/admin.php';
-			require_once MD_DIR . 'features/header/admin.php';
-			require_once MD_DIR . 'features/header/logo.php';
-			require_once MD_DIR . 'features/layout/admin.php';
-			require_once MD_DIR . 'features/page-title/text.php';
-			require_once MD_DIR . 'features/featured-media/admin.php';
-			require_once MD_DIR . 'features/page-cta/admin.php';
-			require_once MD_DIR . 'features/page-cover/admin.php';
-			require_once MD_DIR . 'features/byline/admin.php';
-			require_once MD_DIR . 'features/loop/admin.php';
-			require_once MD_DIR . 'api/abilities/settings.php';
-			require_once MD_DIR . 'api/abilities/items.php';
-			require_once MD_DIR . 'api/abilities/content.php';
-			require_once MD_DIR . 'api/abilities/site.php';
-			require_once MD_DIR . 'api/abilities/dropins.php';
-		}
+		if ( md_loads_settings() )
+			$this->settings();
 
 		require_once MD_DIR . 'features/blog.php';
 	}

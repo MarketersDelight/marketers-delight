@@ -43,6 +43,7 @@ class md_item_abilities extends md_abilities {
 					'required' => array( 'collection', 'parent_id' ),
 					'additionalProperties' => false
 				),
+				'output' => $this->items_output(),
 				'execute' => 'find_items',
 				'permission' => 'can_read_items',
 				'readonly' => true
@@ -77,6 +78,7 @@ class md_item_abilities extends md_abilities {
 					'required' => array( 'collection', 'parent_id' ),
 					'additionalProperties' => false
 				),
+				'output' => $this->items_output(),
 				'execute' => 'save_item',
 				'permission' => 'can_save_item'
 			),
@@ -93,10 +95,28 @@ class md_item_abilities extends md_abilities {
 					'required' => array( 'collection', 'item_id' ),
 					'additionalProperties' => false
 				),
+				'output' => $this->items_output(),
 				'execute' => 'trash_item',
 				'permission' => 'can_trash_item',
-				'destructive' => true
+				'destructive' => true,
+				'idempotent' => true
 			)
+		);
+	}
+
+	/**
+	 * The keys every item ability returns. Saving and trashing add saved_id.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function items_output() {
+		return array(
+			'saved_id' => 'integer',
+			'collection' => 'string',
+			'parent_id' => 'integer',
+			'published' => 'integer',
+			'items' => 'array'
 		);
 	}
 

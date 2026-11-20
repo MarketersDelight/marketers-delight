@@ -122,9 +122,12 @@ class md_api {
 		if ( method_exists( $this, 'save_post_meta' ) )
 			add_filter( 'md_post_meta_save', array( $this, 'save_post_meta' ), 10, 2 );
 
-		// WP init
+		// WP init, or right away for settings loaded after it
 
-		add_action( 'init', array( $this, '_init' ) );
+		if ( did_action( 'init' ) && ! doing_action( 'init' ) )
+			$this->_init();
+		else
+			add_action( 'init', array( $this, '_init' ) );
 
 		if ( $this->taxonomy && $this->taxonomy === $own_taxonomy && method_exists( $this, 'taxonomy' ) )
 			add_action( 'init', array( $this, 'taxonomy' ), 0 );
@@ -187,9 +190,20 @@ class md_api {
 		if ( isset( $this->register['taxonomy'] ) && md_taxonomy_post_type( $this->taxonomy ) === $this->post_type )
 			add_filter( 'md_taxonomy_groups', array( $this, '_taxonomy_groups' ) );
 
-		if ( ! md_loads_settings() )
-			return;
+		if ( md_loads_settings() )
+			$this->_settings();
+		else
+			add_action( 'md_load_settings', array( $this, '_settings' ) );
+	}
 
+	/**
+	 * Admin screens and hosting for this group's settings. Runs on init when
+	 * settings load with the theme, or later on md_load_settings.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function _settings() {
 		add_action( 'current_screen', function() {
 			$this->_get_screen = $this->_get_screen();
 			$this->fields->_get_screen = $this->_get_screen;

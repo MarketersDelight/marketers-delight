@@ -54,6 +54,11 @@ class md_content_abilities extends md_abilities {
 					'additionalProperties' => false,
 					'default' => array()
 				),
+				'output' => array(
+					'items' => 'array',
+					'total' => 'integer',
+					'next_offset' => array( 'integer', 'null' )
+				),
 				'execute' => 'find_content',
 				'permission' => 'can_find',
 				'readonly' => true
@@ -90,6 +95,7 @@ class md_content_abilities extends md_abilities {
 					),
 					'additionalProperties' => false
 				),
+				'output' => $this->content_output(),
 				'execute' => 'save_content',
 				'permission' => 'can_save'
 			),
@@ -105,9 +111,11 @@ class md_content_abilities extends md_abilities {
 					'required' => array( 'id' ),
 					'additionalProperties' => false
 				),
+				'output' => $this->content_output(),
 				'execute' => 'trash_content',
 				'permission' => 'can_trash',
-				'destructive' => true
+				'destructive' => true,
+				'idempotent' => true
 			),
 			'find-terms' => array(
 				'label' => __( 'Find terms', 'md' ),
@@ -121,6 +129,10 @@ class md_content_abilities extends md_abilities {
 					),
 					'required' => array( 'taxonomy' ),
 					'additionalProperties' => false
+				),
+				'output' => array(
+					'taxonomy' => 'string',
+					'terms' => 'array'
 				),
 				'execute' => 'find_terms',
 				'permission' => 'can_find',
@@ -142,9 +154,44 @@ class md_content_abilities extends md_abilities {
 					'required' => array( 'taxonomy' ),
 					'additionalProperties' => false
 				),
+				'output' => array(
+					'id' => 'integer',
+					'name' => 'string',
+					'slug' => 'string',
+					'description' => 'string',
+					'parent' => 'integer',
+					'count' => 'integer'
+				),
 				'execute' => 'save_term',
 				'permission' => 'can_save_term'
 			)
+		);
+	}
+
+	/**
+	 * The keys Save content and Trash content return.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function content_output() {
+		return array(
+			'id' => 'integer',
+			'type' => 'string',
+			'title' => 'string',
+			'slug' => 'string',
+			'status' => 'string',
+			'date' => 'string',
+			'link' => array( 'string', 'boolean' ),
+			'parent' => 'integer',
+			'first_line' => 'string',
+			'image_id' => 'integer',
+			'terms' => 'object',
+			'items' => 'object',
+			'alt' => 'string',
+			'url' => array( 'string', 'boolean' ),
+			'content' => 'string',
+			'warnings' => array( 'array', 'object' )
 		);
 	}
 
