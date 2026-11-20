@@ -89,10 +89,10 @@ class LayoutTest extends MD_InheritanceTestCase {
 		md_test_set_post_meta( array( 'layout' => array( 'content_style' => 'border' ) ), 8 );
 
 		$this->assertSame( 'plain', md_loop_style( array( 'post_id' => 7, 'post_type' => 'post' ) ) );
-		$this->assertSame( 'box', md_loop_style( array( 'post_id' => 8, 'post_type' => 'post' ) ) );
+		$this->assertSame( 'plain', md_loop_style( array( 'post_id' => 8, 'post_type' => 'post' ) ) );
 
 		$this->viewed_post( 8 );
-		$this->assertSame( 'box', md_loop_style() );
+		$this->assertSame( 'plain', md_loop_style() );
 	}
 
 	public function test_single_add_overrides_page_type_disable() {

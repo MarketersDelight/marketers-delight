@@ -211,8 +211,28 @@ class UpgradeTest extends MD_TestCase {
 
 		$this->assertSame( array( 'sidebar' => array( 'global' => true ), 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
 		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['category']['layout'] );
-		$this->assertArrayNotHasKey( 'docs', $moved );
+		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['docs']['layout'] );
 		$this->assertSame( array( 'content' => array( 'add_author_box' => true ) ), $moved['stream']['layout'] );
+		$this->assertArrayNotHasKey( 'effects', $moved );
+	}
+
+	public function test_no_style_site_keeps_post_type_boxes_and_border_lines() {
+		$moved = ( new md_upgrade )->move_box_style( array(
+			'colors' => array( 'design' => 'plain' ),
+			'post' => array( 'layout' => array( 'content_style' => 'border' ) ),
+			'stream' => array( 'layout' => array( 'content_style' => 'box' ) )
+		) );
+
+		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
+		$this->assertSame( array( 'content' => array( 'box_style' => false ) ), $moved['stream']['layout'] );
+		$this->assertSame( array( 'box_style' => array( 'remove' => true ), 'dividers' => array( 'divide' => true ) ), $moved['effects'] );
+	}
+
+	public function test_box_site_border_post_type_adds_no_dividers() {
+		$moved = ( new md_upgrade )->move_box_style( array( 'post' => array( 'layout' => array( 'content_style' => 'border' ) ) ) );
+
+		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
+		$this->assertArrayNotHasKey( 'effects', $moved );
 	}
 
 	public function test_box_style_move_keeps_empty_arrays_it_did_not_touch() {
@@ -256,11 +276,12 @@ class UpgradeTest extends MD_TestCase {
 		$this->assertSame( $settings, get_option( 'marketers_delight' ) );
 	}
 
-	public function test_622_removes_the_md5_site_loop() {
-		md_test_set_option( 'marketers_delight', array( 'loop' => array( 'columns' => '2' ), 'post' => array( 'loop' => array( 'columns' => 3 ) ) ) );
+	public function test_622_keeps_the_site_loop_search_reads() {
+		$settings = array( 'loop' => array( 'columns' => '2' ), 'post' => array( 'loop' => array( 'columns' => 3 ) ) );
+		md_test_set_option( 'marketers_delight', $settings );
 
 		( new md_upgrade )->upgrade_622();
 
-		$this->assertSame( array( 'post' => array( 'loop' => array( 'columns' => 3 ) ) ), get_option( 'marketers_delight' ) );
+		$this->assertSame( $settings, get_option( 'marketers_delight' ) );
 	}
 }

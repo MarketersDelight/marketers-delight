@@ -378,7 +378,7 @@ function md_loop_style( $args = array() ) {
 			$own = md_post_meta( $key, $args['post_id'] );
 
 			if ( ! empty( $old ) )
-				$removed = $old === 'plain';
+				$removed = $old !== 'box';
 
 			if ( $own !== null && $own !== '' )
 				$removed = $own;
@@ -397,7 +397,7 @@ function md_loop_style( $args = array() ) {
 		) );
 
 		if ( ! empty( $old ) )
-			$removed = $old === 'plain';
+			$removed = $old !== 'box';
 	}
 
 	if ( $removed !== null && $removed !== '' )
