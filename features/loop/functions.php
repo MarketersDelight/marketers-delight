@@ -374,7 +374,7 @@ function md_loop_style( $args = array() ) {
 	}
 
 	if ( ! empty( $old ) )
-		$removed = $old === 'plain';
+		$removed = $old !== 'box';
 
 	if ( $own !== null && $own !== '' )
 		$removed = $own;

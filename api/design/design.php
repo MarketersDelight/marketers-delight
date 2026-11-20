@@ -101,10 +101,9 @@ class md_design {
 
 		// Layout Widths
 
-		$design = md_value( array( 'colors', 'design' ) );
 		$width = (array) md_value( array( 'settings', 'width' ) );
 		$post_width = ! empty( $width['content'] ) ? $width['content'] : round( 21 * $line_height );
-		$gutter = ! $design ? ( $line_height + round( $line_height / 2 ) ) * 2 : 0;
+		$gutter = md_value( array( 'effects', 'box_style', 'remove' ) ) ? 0 : ( $line_height + round( $line_height / 2 ) ) * 2;
 		$content_width = apply_filters( 'md_filter_css_content_width', $post_width + $gutter, $post_width, $line_height );
 
 		// Match theme.json wideSize to the frontend's percentage breakout.

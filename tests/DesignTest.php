@@ -49,6 +49,16 @@ class DesignTest extends MD_TestCase {
 		$this->assertEquals( 1300, $widths['site_width'] );
 	}
 
+	public function test_removed_box_style_drops_the_content_gutter() {
+		$box = $this->design->widths( $this->design->values() );
+		md_test_set_settings( array( 'effects' => array( 'box_style' => array( 'remove' => true ) ) ) );
+		$plain = $this->design->widths( $this->design->values() );
+
+		$this->assertGreaterThan( $box['post_width'], $box['content_width'] );
+		$this->assertEquals( $plain['post_width'], $plain['content_width'] );
+		$this->assertLessThan( $box['site_width'], $plain['site_width'] );
+	}
+
 	public function test_old_colors_widths_are_ignored() {
 		$default = $this->design->widths( $this->design->values() );
 		md_test_set_settings( array( 'colors' => array( 'width' => array( 'content' => 700, 'sidebar' => 300, 'site' => 1300 ) ) ) );
