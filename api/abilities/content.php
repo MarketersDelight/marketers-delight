@@ -238,7 +238,7 @@ class md_content_abilities extends md_abilities {
 				return false;
 		}
 
-		if ( ! empty( $input['author'] ) && absint( $input['author'] ) !== get_current_user_id() && ! $this->can( 'edit_others_posts', $type ) )
+		if ( isset( $input['author'] ) && (int) $input['author'] !== get_current_user_id() && ! $this->can( 'edit_others_posts', $type ) )
 			return false;
 
 		return ! in_array( $status, array( 'publish', 'private' ), true ) || $this->can( 'publish_posts', $type );
@@ -366,8 +366,12 @@ class md_content_abilities extends md_abilities {
 
 		$type = $id ? get_post_type( $id ) : $input['type'];
 
-		if ( ! empty( $input['author'] ) && ! $this->can_author( absint( $input['author'] ), $type ) )
-			return new WP_Error( 'md_abilities_author', __( 'That user doesn\'t exist or can\'t write this type of content.', 'md' ) );
+		if ( isset( $input['author'] ) ) {
+			$post['post_author'] = (int) $input['author'];
+
+			if ( $post['post_author'] < 1 || ! $this->can_author( $post['post_author'], $type ) )
+				return new WP_Error( 'md_abilities_author', __( 'That user doesn\'t exist or can\'t write this type of content.', 'md' ) );
+		}
 
 		$terms = $this->resolve_terms( $input['terms'] ?? array(), $type );
 		$add_terms = is_wp_error( $terms ) ? $terms : $this->resolve_terms( $input['add_terms'] ?? array(), $type );

@@ -224,7 +224,7 @@ class UpgradeTest extends MD_TestCase {
 		) );
 
 		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
-		$this->assertSame( array( 'content' => array( 'box_style' => false ) ), $moved['stream']['layout'] );
+		$this->assertSame( array( 'content' => array( 'box_style' => 0 ) ), $moved['stream']['layout'] );
 		$this->assertSame( array( 'box_style' => array( 'remove' => true ), 'dividers' => array( 'divide' => true ) ), $moved['effects'] );
 	}
 

@@ -18,6 +18,22 @@ function md_value( $key, $default = null ) {
 }
 
 /**
+ * MD's meta is saved only through MD's save, so WordPress treats the key as protected
+ * on every request: hidden from Custom Fields, closed to XML-RPC and other meta writes.
+ *
+ * @since 6.2.2
+ */
+
+function md_protect_meta_key( $protected, $meta_key ) {
+	if ( $meta_key === 'marketers_delight' )
+		$protected = true;
+
+	return $protected;
+}
+
+add_filter( 'is_protected_meta', 'md_protect_meta_key', 10, 2 );
+
+/**
  * What a post stores at $keys: the post in the loop, the page being viewed
  * ($id true), or the post $id names.
  *
@@ -198,9 +214,9 @@ function md_get_builder( $id, $type = null, $key = null ) {
 
 			$row_type = $fields['builder_type'];
 			$row_area = $fields['builder_area'];
-			$callback = $elements[$row_type]['callback'] ?? 'md_' . sanitize_key( $row_type );
+			$callback = md_builder_callback( $id, $row_type, $elements );
 
-			if ( ! is_callable( $callback ) )
+			if ( ! $callback || ! is_scalar( $row_area ) )
 				continue;
 
 			$item = array( 'type' => $row_type, 'id' => $row_id, 'callback' => $callback );
@@ -218,6 +234,34 @@ function md_get_builder( $id, $type = null, $key = null ) {
 		$builder = ! empty( $builder[$key] ) ? $builder[$key] : array();
 
 	return $builder;
+}
+
+/**
+ * The callback that prints a builder row: one a Drop-in registers for its type,
+ * or MD's own for the Header's link, search and menu. Other types don't print.
+ *
+ * @since 6.2.2
+ */
+
+function md_builder_callback( $id, $type, $elements ) {
+	$built_in = array(
+		'header' => array(
+			'link' => 'md_link',
+			'search' => 'md_search',
+			'menu' => 'md_menu'
+		)
+	);
+	$callback = '';
+
+	if ( is_string( $type ) && isset( $elements[$type]['callback'] ) )
+		$callback = $elements[$type]['callback'];
+	elseif ( is_string( $type ) && isset( $built_in[$id][$type] ) )
+		$callback = $built_in[$id][$type];
+
+	if ( ! is_callable( $callback ) )
+		$callback = '';
+
+	return $callback;
 }
 
 /**

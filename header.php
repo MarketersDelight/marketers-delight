@@ -77,7 +77,7 @@ if ( md_has_header() ) :
 				if ( empty( $header['data'][$section] ) )
 					continue;
 
-				echo "<div class=\"header-$section\">";
+				echo '<div class="header-' . esc_attr( $section ) . '">';
 
 				foreach ( $header['data'][$section] as $order => $items ) {
 					$id = $items['id'];

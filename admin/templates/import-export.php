@@ -114,6 +114,10 @@
 			); ?></p></div>
 			<?php endforeach; ?>
 
+			<?php if ( $check['older'] ) : ?>
+			<div class="notice notice-info is-compact inline"><p><?php esc_html_e( 'This file is from an older version of MD, so its settings only add and change values: anything it doesn\'t hold, like settings this version moved or added (ex: widths and Box Style), keeps its current value. Two parts still replace: Widgets replaces every sidebar the file lists, empty ones included, and Drop-ins that keep their own lists, like popup designs, get the file\'s list as a whole.', 'md' ); ?></p></div>
+			<?php endif; ?>
+
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 
 				<p><strong><?php esc_html_e( 'Choose what to import:', 'md' ); ?></strong></p>
@@ -137,7 +141,7 @@
 				<?php wp_nonce_field( 'md_import' ); ?>
 
 				<div class="mt-auto">
-					<p class="description"><?php esc_html_e( 'Selected parts replace this site\'s current values. Back up first to keep a copy of all its MD settings.', 'md' ); ?></p>
+					<p class="description"><?php echo esc_html( $check['older'] ? __( 'Selected settings merge into this site\'s values. Widgets and Drop-in lists like popup designs are replaced. Back up first to keep a copy of all its MD settings.', 'md' ) : __( 'Selected parts replace this site\'s current values. Back up first to keep a copy of all its MD settings.', 'md' ) ); ?></p>
 					<p><button type="submit" name="md_backup" value="1" class="button"><?php esc_html_e( 'Back up all settings', 'md' ); ?></button></p>
 				</div>
 

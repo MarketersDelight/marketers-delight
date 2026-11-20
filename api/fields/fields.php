@@ -846,6 +846,29 @@ class md_fields extends md_fields_render {
 		include md_template( 'admin/fields/builder-field', true );
 	}
 
+	/**
+	 * A row this screen can't show, ex: from an inactive Drop-in, posted back as
+	 * its type and area so saving keeps the whole stored row in its place.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function builder_kept( $key, $group, $row ) {
+		echo '<div class="md-builder-kept" hidden>';
+
+		foreach ( array( 'builder_type', 'builder_area' ) as $field ) {
+			$value = $row[$field] ?? '';
+
+			$this->field( array( $key, $group, $field ), array(
+				'type' => 'text',
+				'hidden' => true,
+				'value' => is_scalar( $value ) ? (string) $value : ''
+			) );
+		}
+
+		echo '</div>';
+	}
+
 	protected function builder_search( $group ) {
 		include md_template( 'admin/fields/builder-search', true );
 	}

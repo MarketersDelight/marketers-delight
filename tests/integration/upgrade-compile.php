@@ -9,7 +9,8 @@ function update_option($key,$value,$autoload=null) { $GLOBALS['options'][$key]=$
 function delete_option($key) { unset($GLOBALS['options'][$key]); }
 class WP_Error {}
 function is_wp_error($value) { return $value instanceof WP_Error; }
-function md_compile() { $GLOBALS['compiles']++; return $GLOBALS['compile_result']; }
+function md_compile() { $GLOBALS['compiles']++; if(!empty($GLOBALS['save_during']))update_option('md_compile_after_upgrade',true); if(!empty($GLOBALS['other_compile'])){$GLOBALS['options']['marketers_delight']=array('width'=>1259);delete_option('md_compile_after_upgrade');} return $GLOBALS['compile_result']; }
+function wp_cache_delete($key,$group='') { return true; }
 require dirname(__DIR__,2).'/api/assets/enqueue.php';
 $new_request=function(){return (new ReflectionClass('md_enqueue'))->newInstanceWithoutConstructor();};
 $checks=0;
@@ -32,4 +33,12 @@ $request=$new_request();$GLOBALS['compile_result']=true;
 $check($request->compile_after_upgrade()===true && !get_option('md_compile_after_upgrade'),'Clear the pending rebuild after success.');
 $count=$GLOBALS['compiles'];$new_request()->compile_after_upgrade();
 $check($GLOBALS['compiles']===$count,'Do not rebuild again after success.');
+$request=$new_request();update_option('md_compile_after_upgrade',true);$GLOBALS['save_during']=true;
+$check($request->compile_after_upgrade()===true && get_option('md_compile_after_upgrade')===true,'Keep a rebuild asked for during compilation.');
+$GLOBALS['save_during']=false;$count=$GLOBALS['compiles'];
+$check($new_request()->compile_after_upgrade()===true && $GLOBALS['compiles']===$count+1 && !get_option('md_compile_after_upgrade'),'Run that rebuild on the next request.');
+$GLOBALS['options']['marketers_delight']=array('width'=>1147);update_option('md_compile_after_upgrade',true);$GLOBALS['other_compile']=true;
+$check($new_request()->compile_after_upgrade()===true && get_option('md_compile_after_upgrade')===true,'Ask again when settings changed and another request compiled meanwhile.');
+$GLOBALS['other_compile']=false;$count=$GLOBALS['compiles'];
+$check($new_request()->compile_after_upgrade()===true && $GLOBALS['compiles']===$count+1 && !get_option('md_compile_after_upgrade'),'The next request compiles the current settings and stops.');
 echo "Passed $checks deferred compilation checks.\n";
