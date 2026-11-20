@@ -524,6 +524,69 @@ $settings = md_test_call( 'get-settings', array( 'scope' => 'site', 'group' => '
 md_test( 'import restored', isset( $settings['values']['sidebars']['side-b'] ), $settings );
 md_test( 'bad file', is_wp_error( md_test_call( 'import-settings', array( 'file' => array( 'format' => 'nope', 'version' => 1 ) ) ) ) );
 
+// Walls from the Crumb build (mcp-lab/showcase/REPORT.md)
+
+$typography = md_test_call( 'describe-settings', array( 'group' => 'typography' ) );
+md_test( 'line height says px', strpos( (string) ( $typography['fields']['body']['fields']['line_height']['fields']['desktop']['label'] ?? '' ), 'px' ) !== false, $typography['fields']['body'] ?? $typography );
+
+$colors = md_test_call( 'describe-settings', array( 'group' => 'colors' ) );
+md_test( 'color values list palette keys', strpos( (string) ( $colors['values_by_type']['color'] ?? '' ), 'text-main' ) !== false, $colors['values_by_type'] ?? $colors );
+
+$default = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'colors', 'values' => array( 'actions' => array( 'primary' => array( 'text_color' => '#FFFFFF' ) ) ), 'dry_run' => true ) );
+md_test( 'a default color says so', strpos( (string) wp_json_encode( $default['warnings'] ?? array() ), 'already its default' ) !== false && strpos( (string) wp_json_encode( $default['warnings'] ), 'can\'t use' ) === false, $default );
+$wrong = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'colors', 'values' => array( 'actions' => array( 'primary' => array( 'text_color' => 'nope' ) ) ), 'dry_run' => true ) );
+md_test( 'a wrong color still warns', strpos( (string) wp_json_encode( $wrong['warnings'] ?? array() ), 'can\'t use' ) !== false, $wrong );
+
+$pictured = md_test_call( 'save-item', array( 'collection' => 'stream_threads', 'parent_id' => $stream_id, 'fields' => array( 'title' => 'pictured', 'content' => 'x', 'image' => array( 'id' => $image ) ) ) );
+md_test( 'Collection image takes { id }', ! is_wp_error( $pictured ) && ! empty( $pictured['saved_id'] ), $pictured );
+
+$editor = wp_insert_user( array( 'user_login' => 'editor_' . wp_generate_password( 6, false ), 'user_pass' => wp_generate_password(), 'role' => 'editor' ) );
+$by = md_test_call( 'save-content', array( 'type' => 'post', 'title' => 'By someone else', 'author' => $editor, 'menu_order' => 3 ) );
+md_test( 'save-content sets author and menu_order', ( $by['author'] ?? 0 ) === $editor && ( $by['menu_order'] ?? -1 ) === 3, $by );
+md_test( 'save-content refuses a missing author', is_wp_error( md_test_call( 'save-content', array( 'id' => $by['id'], 'author' => 999999 ) ) ) );
+md_test( 'save-content refuses a subscriber author', is_wp_error( md_test_call( 'save-content', array( 'id' => $by['id'], 'author' => wp_insert_user( array( 'user_login' => 'sub_' . wp_generate_password( 6, false ), 'user_pass' => wp_generate_password(), 'role' => 'subscriber' ) ) ) ) ) );
+
+md_test( 'find-content refuses an unknown type', is_wp_error( md_test_call( 'find-content', array( 'type' => 'nonsense_type' ) ) ) );
+
+$nested = md_test_call( 'update-menu', array( 'create' => 'Nested', 'name' => 'Crumb', 'items' => array(
+	array( 'op' => 'add', 'ref' => 'school', 'title' => 'School', 'url' => 'https://example.test/school' ),
+	array( 'op' => 'add', 'ref' => 'rye', 'parent' => 'school', 'title' => 'Rye', 'url' => 'https://example.test/rye' ),
+	array( 'op' => 'add', 'parent' => 'rye', 'title' => 'Lesson', 'url' => 'https://example.test/lesson' ),
+	array( 'op' => 'add', 'title' => 'First', 'url' => 'https://example.test/first', 'position' => 1 )
+) ) );
+$rows = array_column( $nested['items'] ?? array(), null, 'title' );
+md_test( 'menu renamed', ( $nested['name'] ?? '' ) === 'Crumb', $nested );
+md_test( 'nested by ref in one call', ( $rows['Rye']['parent'] ?? 0 ) === ( $rows['School']['id'] ?? -1 ) && ( $rows['Lesson']['parent'] ?? 0 ) === ( $rows['Rye']['id'] ?? -1 ), $nested );
+md_test( 'position puts an item in place', ( $nested['items'][0]['title'] ?? '' ) === 'First' && md_test_ids( $nested, 'order' ) === array( 1, 2, 3, 4 ), $nested );
+$before = md_test_ids( $nested );
+$done = md_test_call( 'update-menu', array( 'menu' => $nested['id'], 'items' => array(
+	array( 'op' => 'add', 'title' => 'Fine', 'url' => 'https://example.test/f' ),
+	array( 'op' => 'add', 'parent' => 'nowhere', 'title' => 'Lost', 'url' => 'https://example.test/l' )
+) ) );
+md_test( 'unknown parent ref changes nothing', is_wp_error( $done ) && md_test_ids( md_test_call( 'get-menu', array( 'menu' => $nested['id'] ) ) ) === $before, $done );
+
+$widgets = md_test_call( 'get-widgets' );
+md_test( 'widget type settings', in_array( 'title', $widgets['type_settings']['text'] ?? array(), true ), $widgets['type_settings'] ?? $widgets );
+md_test( 'no duplicate sidebars', count( array_column( $widgets['sidebars'], 'id' ) ) === count( array_unique( array_column( $widgets['sidebars'], 'id' ) ) ), array_column( $widgets['sidebars'], 'id' ) );
+$widgets = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'add', 'type' => 'search', 'settings' => array( 'title' => 'Find', 'colour' => 'red' ) ) ) ) );
+md_test( 'dropped widget setting warns', strpos( (string) wp_json_encode( $widgets['warnings'] ?? array() ), 'colour' ) !== false && strpos( (string) wp_json_encode( $widgets['warnings'] ), '`title`' ) === false, $widgets['warnings'] ?? $widgets );
+
+// Walls from the Crumb build, 6.2.3: palette keys, builder values, image shapes
+
+$palette = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'colors', 'values' => array( 'palette' => array( 'accent' => array( 'hex' => '#123456' ), 'primary' => array( 'hex' => '#123456' ) ) ), 'dry_run' => true ) );
+md_test( 'unknown palette key warns', strpos( (string) wp_json_encode( $palette['warnings'] ?? array() ), 'palette.accent' ) !== false, $palette );
+md_test( 'built-in palette key saves', strpos( (string) wp_json_encode( $palette['changed'] ?? array() ), 'primary' ) !== false && strpos( (string) wp_json_encode( $palette['changed'] ), 'accent' ) === false, $palette );
+
+$header = md_test_call( 'describe-settings', array( 'group' => 'header' ) );
+md_test( 'header builder lists its types', in_array( 'menu', $header['fields']['builder']['item_fields']['builder_type']['options'] ?? array(), true ) && in_array( 'aside', $header['fields']['builder']['item_fields']['builder_area']['options'] ?? array(), true ), $header['fields']['builder'] ?? $header );
+$builder = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'header', 'values' => array( 'builder' => array( 'walls' => array( 'builder_type' => 'carousel', 'builder_area' => 'secondary' ) ) ), 'dry_run' => true ) );
+md_test( 'unknown builder type and area warn', substr_count( (string) wp_json_encode( $builder['warnings'] ?? array() ), 'options' ) === 2, $builder );
+$builder = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'header', 'values' => array( 'builder' => array( 'walls' => array( 'builder_type' => 'search', 'builder_area' => 'aside' ) ) ), 'dry_run' => true ) );
+md_test( 'known builder type and area don\'t warn', empty( $builder['warnings'] ) && ! empty( $builder['changed'] ), $builder );
+
+$logo = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'logo', 'values' => array( 'logo' => $image ), 'dry_run' => true ) );
+md_test( 'settings image takes a bare ID', empty( $logo['warnings'] ) && ! empty( $logo['changed'] ), $logo );
+
 // Least privilege
 
 md_test_as( $author );

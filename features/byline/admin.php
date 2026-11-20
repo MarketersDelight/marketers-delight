@@ -129,8 +129,14 @@ class md_byline extends md_api {
 
 	public function fields() {
 		$fields = array(
-			'builder_type' => array( 'type' => 'text' ),
-			'builder_area' => array( 'type' => 'text' ),
+			'builder_type' => array(
+				'type' => 'text',
+				'options' => array_keys( md_byline_items() )
+			),
+			'builder_area' => array(
+				'type' => 'text',
+				'options' => array( 'archives', 'single' )
+			),
 			'name' => array( 'type' => 'text' ),
 			'title' => array( 'type' => 'text' ),
 			'position' => array(

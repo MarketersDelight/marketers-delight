@@ -58,12 +58,8 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 
 		$fields = $this->build_color_fields( $this->colors->roles );
-		$fields['palette'] = array(
-			'type' => 'group',
-			'fields' => array(
-				'hex' => array( 'type' => 'color', 'hex_only' => true )
-			)
-		);
+		foreach ( array_keys( $this->palette ) as $key )
+			$fields['palette'][$key]['hex'] = array( 'type' => 'color', 'hex_only' => true );
 		$fields['custom'] = array(
 			'type' => 'group',
 			'label' => __( 'Additional Colors', 'md' ),

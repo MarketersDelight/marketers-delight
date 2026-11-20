@@ -185,6 +185,36 @@ class md_widgets {
 	}
 
 	/**
+	 * Each widget type's setting keys: what its own update() keeps from an
+	 * empty save. Notices from widgets that expect every key are ignored.
+	 *
+	 * @since 6.2.2
+	 */
+
+	public function settings() {
+		global $wp_widget_factory;
+
+		$settings = array();
+
+		set_error_handler( '__return_true' );
+
+		foreach ( isset( $wp_widget_factory->widgets ) ? $wp_widget_factory->widgets : array() as $widget ) {
+			try {
+				$instance = $widget->update( array(), array() );
+			}
+			catch ( Throwable $error ) {
+				$instance = array();
+			}
+
+			$settings[$widget->id_base] = is_array( $instance ) ? array_keys( $instance ) : array();
+		}
+
+		restore_error_handler();
+
+		return $settings;
+	}
+
+	/**
 	 * Sidebars that exist here: the registered ones, and MD's custom
 	 * sidebars and panels from settings the same import just saved.
 	 *
@@ -201,7 +231,7 @@ class md_widgets {
 			if ( isset( $settings['settings'][$type] ) && is_array( $settings['settings'][$type] ) )
 				$areas = array_merge( $areas, array_map( 'strval', array_keys( $settings['settings'][$type] ) ) );
 
-		return $areas;
+		return array_values( array_unique( $areas ) );
 	}
 
 }
