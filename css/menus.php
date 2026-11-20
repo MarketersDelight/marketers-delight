@@ -91,9 +91,10 @@
 		border-radius: var(--md-border-radius);
 		box-shadow: var(--md-box-shadow-small);
 		font-size: var(--md-font-size-small);
+		inset-block-start: 100%;
+		inset-inline-end: 0;
 		line-height: var(--md-line-height-small);
 		position: absolute;
-			inset-inline-end: 0;
 		width: <?php echo $submenu_width; ?>px;
 	}
 	.nav-menu .sub-menu .menu-item-has-children { flex-direction: row-reverse; }
@@ -103,7 +104,6 @@
 		opacity: 1;
 		transition: opacity 200ms linear,transform 200ms ease-out;
 		transform: translateY(0);
-		inset-block-start: calc(var(--md-mid) + var(--md-third));
 		visibility: visible;
 	}
 	.nav-menu .sub-menu .sub-menu {
