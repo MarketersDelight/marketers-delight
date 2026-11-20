@@ -110,7 +110,7 @@ class md_validate {
 						if ( is_string( $item_key ) && strpos( $item_key, '{clone' ) === 0 )
 							unset( $items[$item_key] );
 
-				$save[$key] = $this->clone_groups( $items, isset( $field['fields'] ) ? $field['fields'] : array(), isset( $field['group_key_lowercase'] ) );
+				$save[$key] = $this->clone_groups( $items, isset( $field['fields'] ) ? $field['fields'] : array(), isset( $field['group_key_lowercase'] ), array_merge( $path, array( $key ) ) );
 			}
 			elseif ( $type !== null ) {
 				$validated = $this->validate_field( $field_input, $field );
@@ -120,6 +120,9 @@ class md_validate {
 
 				$given = is_array( $field_input ) ? array_filter( $field_input ) : $field_input;
 				$rejected = in_array( $validated, array( '', array() ), true ) && ! in_array( $given, array( '', false, 0, '0', array() ), true );
+
+				if ( $type === 'text' && ! empty( $field['options'] ) && is_string( $validated ) && $validated !== '' && ! in_array( $validated, md_sanitize::choices( $field['options'] ), true ) )
+					$this->warnings[] = sprintf( __( '`%1$s` isn\'t one of this site\'s options: %2$s.', 'md' ), $name, implode( ', ', md_sanitize::choices( $field['options'] ) ) );
 
 				if ( $rejected && $this->is_default( $field_input, $field ) )
 					$this->warnings[] = sprintf( __( '`%s` is already its default, so nothing was saved and it keeps inheriting.', 'md' ), $name );
@@ -223,7 +226,7 @@ class md_validate {
 	 * @since 6.0
 	 */
 
-	private function clone_groups( $groups, $item_schema, $lowercase = false ) {
+	private function clone_groups( $groups, $item_schema, $lowercase = false, $path = array() ) {
 		$save = array();
 
 		if ( ! is_array( $groups ) )
@@ -238,7 +241,7 @@ class md_validate {
 			if ( $lowercase )
 				$group = strtolower( $group );
 
-			$validated = $this->validate_fields( is_array( $submitted ) ? $submitted : array(), $item_schema );
+			$validated = $this->validate_fields( is_array( $submitted ) ? $submitted : array(), $item_schema, array_merge( $path, array( $group ) ) );
 
 			if ( ! empty( $validated ) )
 				$save[$group] = $validated;

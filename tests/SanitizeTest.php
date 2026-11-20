@@ -240,8 +240,10 @@ class SanitizeTest extends MD_TestCase {
 		$this->assertSame( '', $this->sanitize->upload( array( 'id' => 'invalid' ), array() ) );
 	}
 
-	public function test_upload_rejects_non_array_input() {
-		$this->assertSame( '', $this->sanitize->upload( '42', array() ) );
+	public function test_upload_takes_a_bare_id() {
+		$this->assertSame( array( 'id' => 42 ), $this->sanitize->upload( '42', array() ) );
+		$this->assertSame( '', $this->sanitize->upload( '', array() ) );
+		$this->assertSame( '', $this->sanitize->upload( 'logo', array() ) );
 	}
 
 	public function test_upload_multiple_preserves_id_list_contract() {

@@ -99,7 +99,7 @@ class md_settings_abilities extends md_abilities {
 			),
 			'update-settings' => array(
 				'label' => __( 'Update settings', 'md' ),
-				'description' => __( 'Changes only the values given. null resets a value, so it inherits again. On a checkbox with options, true turns an option on and 0 turns it off over an inherited setting. Colors take a hex, rgba() or palette key; images take { "id": attachment ID }. Group and builder items are keyed by ID: a new ID adds an item, null removes one, others stay. Set dry_run to see the changes without saving.', 'md' ),
+				'description' => __( 'Changes only the values given. null resets a value, so it inherits again. On a checkbox with options, true turns an option on and 0 turns it off over an inherited setting. Colors take a hex, rgba() or palette key; images take an attachment ID or { "id": ID }. Group and builder items are keyed by ID: a new ID adds an item, null removes one, others stay. Set dry_run to see the changes without saving.', 'md' ),
 				'input' => array(
 					'type' => 'object',
 					'properties' => array(
@@ -348,7 +348,7 @@ class md_settings_abilities extends md_abilities {
 				'checkbox with options' => __( 'An object: { "option": true } turns an option on, { "option": 0 } turns it off over an inherited setting, and null resets it. Not a list of options.', 'md' ),
 				'group or builder' => __( 'An object of items keyed by ID, each shaped like item_fields. Pick a new ID to add one.', 'md' ),
 				'color' => sprintf( __( 'A hex, rgba() or one of this site\'s palette keys: %s. A field\'s palette is the key it uses by default. New colors go in colors > custom, each with a key.', 'md' ), implode( ', ', array_keys( md_color_palette() ) ) ),
-				'upload' => __( '{ "id": attachment ID }.', 'md' ),
+				'upload' => __( 'An attachment ID or { "id": ID }.', 'md' ),
 				'text' => __( 'Saved as HTML, so & reads back as &amp; and still shows as &. Send it back either way.', 'md' )
 			)
 		);

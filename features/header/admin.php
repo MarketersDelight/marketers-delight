@@ -17,8 +17,14 @@ class md_header extends md_api {
 		$menus = $this->fields->data->menus();
 		$links = $this->fields->data->links( array( 'sort' => 'save' ) );
 		$builder = array_merge( array(
-			'builder_type' => array( 'type' => 'text' ),
-			'builder_area' => array( 'type' => 'text' ),
+			'builder_type' => array(
+				'type' => 'text',
+				'options' => array_keys( $this->builder_items() )
+			),
+			'builder_area' => array(
+				'type' => 'text',
+				'options' => array_keys( $this->builder_areas() )
+			),
 			'name' => array( 'type' => 'text' ),
 			'placeholder' => array( 'type' => 'text' ),
 			'submit_text' => array( 'type' => 'text' ),
@@ -99,6 +105,27 @@ class md_header extends md_api {
 				'admin_callback' => array( $this->fields, 'builder_menu' )
 			)
 		) );
+	}
+
+	/**
+	 * Areas of the Header builder.
+	 *
+	 * @since 6.2.3
+	 */
+
+	public function builder_areas() {
+		return array(
+			'primary' => array(
+				'title' => __( 'Header', 'md' ),
+				'description' => __( 'The main branding and navigation area at the top of every page.', 'md' ),
+				'tab' => 'header'
+			),
+			'aside' => array(
+				'title' => __( 'Header Aside', 'md' ),
+				'description' => __( 'A secondary content area for the header area.', 'md' ),
+				'tab' => 'header'
+			)
+		);
 	}
 
 	/**

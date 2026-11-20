@@ -205,6 +205,9 @@ class md_sanitize {
 		if ( $upload_type !== 'media' )
 			return null;
 
+		if ( is_scalar( $input ) && $input !== '' )
+			$input = array( 'id' => $input );
+
 		if ( ! is_array( $input ) || empty( $input['id'] ) )
 			return '';
 

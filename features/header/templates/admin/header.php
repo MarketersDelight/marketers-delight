@@ -76,18 +76,7 @@
 			'header' => __( 'Header', 'md' )
 		),
 		'active_tab' => 'header',
-		'areas' => array(
-			'primary' => array(
-				'title' => __( 'Header', 'md' ),
-				'description' => __( 'The main branding and navigation area at the top of every page.', 'md' ),
-				'tab' => 'header'
-			),
-			'aside' => array(
-				'title' => __( 'Header Aside', 'md' ),
-				'description' => __( 'A secondary content area for the header area.', 'md' ),
-				'tab' => 'header'
-			)
-		),
+		'areas' => $this->builder_areas(),
 		'elements' => $this->builder_items()
 	) ); ?>
 

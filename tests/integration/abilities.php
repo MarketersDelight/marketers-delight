@@ -571,6 +571,22 @@ md_test( 'no duplicate sidebars', count( array_column( $widgets['sidebars'], 'id
 $widgets = md_test_call( 'update-widgets', array( 'sidebar' => 'side-b', 'widgets' => array( array( 'op' => 'add', 'type' => 'search', 'settings' => array( 'title' => 'Find', 'colour' => 'red' ) ) ) ) );
 md_test( 'dropped widget setting warns', strpos( (string) wp_json_encode( $widgets['warnings'] ?? array() ), 'colour' ) !== false && strpos( (string) wp_json_encode( $widgets['warnings'] ), '`title`' ) === false, $widgets['warnings'] ?? $widgets );
 
+// Walls from the Crumb build, 6.2.3: palette keys, builder values, image shapes
+
+$palette = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'colors', 'values' => array( 'palette' => array( 'accent' => array( 'hex' => '#123456' ), 'primary' => array( 'hex' => '#123456' ) ) ), 'dry_run' => true ) );
+md_test( 'unknown palette key warns', strpos( (string) wp_json_encode( $palette['warnings'] ?? array() ), 'palette.accent' ) !== false, $palette );
+md_test( 'built-in palette key saves', strpos( (string) wp_json_encode( $palette['changed'] ?? array() ), 'primary' ) !== false && strpos( (string) wp_json_encode( $palette['changed'] ), 'accent' ) === false, $palette );
+
+$header = md_test_call( 'describe-settings', array( 'group' => 'header' ) );
+md_test( 'header builder lists its types', in_array( 'menu', $header['fields']['builder']['item_fields']['builder_type']['options'] ?? array(), true ) && in_array( 'aside', $header['fields']['builder']['item_fields']['builder_area']['options'] ?? array(), true ), $header['fields']['builder'] ?? $header );
+$builder = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'header', 'values' => array( 'builder' => array( 'walls' => array( 'builder_type' => 'carousel', 'builder_area' => 'secondary' ) ) ), 'dry_run' => true ) );
+md_test( 'unknown builder type and area warn', substr_count( (string) wp_json_encode( $builder['warnings'] ?? array() ), 'options' ) === 2, $builder );
+$builder = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'header', 'values' => array( 'builder' => array( 'walls' => array( 'builder_type' => 'search', 'builder_area' => 'aside' ) ) ), 'dry_run' => true ) );
+md_test( 'known builder type and area don\'t warn', empty( $builder['warnings'] ) && ! empty( $builder['changed'] ), $builder );
+
+$logo = md_test_call( 'update-settings', array( 'scope' => 'site', 'group' => 'logo', 'values' => array( 'logo' => $image ), 'dry_run' => true ) );
+md_test( 'settings image takes a bare ID', empty( $logo['warnings'] ) && ! empty( $logo['changed'] ), $logo );
+
 // Least privilege
 
 md_test_as( $author );
