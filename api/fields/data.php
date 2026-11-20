@@ -51,8 +51,14 @@ class md_fields_data {
 		$fields = array();
 
 		foreach ( array( 'desktop', 'mobile' ) as $device ) {
-			$fields['font_size'][$device]['type'] = 'range';
-			$fields['line_height'][$device]['type'] = 'range';
+			$fields['font_size'][$device] = array(
+				'type' => 'range',
+				'label' => __( 'Font Size (px)', 'md' )
+			);
+			$fields['line_height'][$device] = array(
+				'type' => 'range',
+				'label' => __( 'Line Height (px, not a ratio)', 'md' )
+			);
 		}
 
 		$fields['font_family']['type'] = 'font';

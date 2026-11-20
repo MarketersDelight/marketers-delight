@@ -62,7 +62,7 @@ class md_item_abilities extends md_abilities {
 						),
 						'fields' => array(
 							'type' => 'object',
-							'description' => __( 'The field values, using the field names from Describe site or Find items.', 'md' )
+							'description' => __( 'The field values, using the field names from Describe site or Find items. Images take an attachment ID or { "id": ID }.', 'md' )
 						),
 						'edits' => $this->edits_input(),
 						'date' => array(
@@ -218,6 +218,10 @@ class md_item_abilities extends md_abilities {
 			if ( is_wp_error( $fields[$field] ) )
 				return $fields[$field];
 		}
+
+		foreach ( $fields as $key => $value )
+			if ( ( $collection->fields[$key]['type'] ?? '' ) === 'upload' && is_array( $value ) )
+				$fields[$key] = $value['id'] ?? '';
 
 		$fields = apply_filters( 'md_abilities_save_item', $fields, $collection->id, $item_id );
 
