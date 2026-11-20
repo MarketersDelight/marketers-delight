@@ -180,12 +180,10 @@ select {
 		align-items: var(--md-field-align);
 		gap: var(--md-field-gap);
 	}
-
 	.form.inline > .inputs > :last-child {
 		border-start-end-radius: var(--md-field-inner-radius);
 		border-end-end-radius: var(--md-field-inner-radius);
 	}
-
 	.form.inline > .submit {
 		border-start-start-radius: var(--md-field-button-radius);
 		border-end-start-radius: var(--md-field-button-radius);
@@ -197,7 +195,6 @@ select {
 	.form:is(.multi, .inline) { flex-direction: column; }
 	.form:is(.multi, .inline) .inputs { flex-basis: 100%; flex-direction: column; width: 100%; }
 	.form:is(.multi, .inline) .submit { width: 100%; }
-
 	.form:is(.multi, .inline) .inputs > :not(:first-child) {
 		border-start-start-radius: var(--md-field-inner-radius);
 		border-start-end-radius: var(--md-field-inner-radius);
@@ -205,13 +202,11 @@ select {
 		margin-inline-start: 0;
 		margin-block-start: var(--md-field-overlap);
 	}
-
 	.form:is(.multi, .inline) .inputs > :not(:last-child) {
 		border-start-end-radius: var(--md-field-radius);
 		border-end-start-radius: var(--md-field-inner-radius);
 		border-end-end-radius: var(--md-field-inner-radius);
 	}
-
 	.form:is(.multi, .inline) .inputs > :not(:first-child):not(:last-child) { border-start-end-radius: var(--md-field-inner-radius); }
 }
 
