@@ -122,9 +122,9 @@ class md_api {
 		if ( method_exists( $this, 'save_post_meta' ) )
 			add_filter( 'md_post_meta_save', array( $this, 'save_post_meta' ), 10, 2 );
 
-		// WP init, or right away for settings loaded after it
+		// WP init, or right away for settings loaded once init has started
 
-		if ( did_action( 'init' ) && ! doing_action( 'init' ) )
+		if ( did_action( 'init' ) )
 			$this->_init();
 		else
 			add_action( 'init', array( $this, '_init' ) );

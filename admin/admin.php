@@ -73,7 +73,6 @@ class md_admin {
 		// Meta Boxes
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ), 10, 2 );
 		add_action( 'save_post', array( $this->settings, 'meta_save' ), 10, 2 );
-		add_filter( 'is_protected_meta', array( $this, 'hide_meta_keys' ), 10, 2 );
 
 		// Terms
 		add_action( 'init', array( $this, 'add_terms' ) );
@@ -457,20 +456,6 @@ class md_admin {
 			do_action( $meta_box['id'] . '_meta_box' );
 
 		echo '</div>';
-	}
-
-	/**
-	 * So no meta values show up in the Custom Fields meta
-	 * box, loop through all fields to hide them.
-	 *
-	 * @since 4.0
-	 */
-
-	public function hide_meta_keys( $protected, $meta_key ) {
-		if ( 'marketers_delight' == $meta_key )
-			return true;
-
-		return $protected;
 	}
 
 	/**

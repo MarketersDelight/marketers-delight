@@ -158,9 +158,9 @@ class md_validate {
 
 		foreach ( array( 'default', 'palette' ) as $key )
 			if ( ! empty( $field[$key] ) && is_string( $field[$key] ) )
-				$defaults[] = strtolower( $field[$key] );
+				$defaults[] = ltrim( strtolower( $field[$key] ), '#' );
 
-		return ( $field['type'] ?? '' ) === 'color' && is_string( $value ) && in_array( strtolower( $value ), $defaults, true );
+		return ( $field['type'] ?? '' ) === 'color' && is_string( $value ) && in_array( ltrim( strtolower( $value ), '#' ), $defaults, true );
 	}
 
 	/**
@@ -207,6 +207,9 @@ class md_validate {
 
 			case 'select':
 			case 'radio':
+				if ( is_array( $val ) && ! isset( $fields['multiple'] ) )
+					$val = '';
+
 				return $this->sanitize->select( $val, md_sanitize::choices( $sub_options ) );
 
 			case 'upload':

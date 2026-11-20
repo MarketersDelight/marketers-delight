@@ -47,12 +47,14 @@ class md_upgrade {
 		$upgraded = $this->move_widths( $settings );
 		$upgraded = $this->move_box_style( $upgraded );
 
-		if ( $upgraded !== $settings )
-			update_option( 'marketers_delight', $upgraded );
+		$result = true;
 
-		delete_option( 'marketers_delight_storage_version' );
+		if ( $upgraded !== $settings && ! update_option( 'marketers_delight', $upgraded ) && get_option( 'marketers_delight' ) !== $upgraded )
+			$result = new WP_Error( 'md_upgrade', __( 'The MD 6.2.2 data upgrade couldn\'t save its changes.', 'md' ) );
+		else
+			delete_option( 'marketers_delight_storage_version' );
 
-		return true;
+		return $result;
 	}
 
 	/**
@@ -123,7 +125,7 @@ class md_upgrade {
 
 	/**
 	 * A post type group, and with $children its taxonomies. No style and Border remove
-	 * the box; Box keeps it on a site whose box is removed.
+	 * the box; Box keeps it (0) where the site or post type removes it.
 	 *
 	 * @since 6.2.2
 	 */
@@ -137,7 +139,7 @@ class md_upgrade {
 			if ( $style === 'plain' || $style === 'border' )
 				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? true;
 			elseif ( $style === 'box' && $removed )
-				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? false;
+				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? 0;
 
 			if ( $style === 'border' )
 				$this->border = true;
@@ -147,6 +149,9 @@ class md_upgrade {
 			if ( empty( $group['layout'] ) )
 				unset( $group['layout'] );
 		}
+
+		if ( isset( $group['layout']['content']['box_style'] ) )
+			$removed = (bool) $group['layout']['content']['box_style'];
 
 		foreach ( $taxonomies as $key => $child ) {
 			if ( ! is_array( $child ) || ! isset( $child['layout'] ) )

@@ -36,11 +36,10 @@ function md_check_dropin_requirements( $data ) {
  */
 
 function md_set_dropins_status( $slugs, $enable ) {
-	$dropins = md_dropins_setting();
-	$results = array();
+	$dropins = $was = md_dropins_setting();
+	$results = $changed = array();
 
-	foreach ( (array) $slugs as $slug ) {
-		$slug = sanitize_key( $slug );
+	foreach ( md_clean_dropin_slugs( $slugs ) as $slug ) {
 		$details = md_get_dropin_details( $slug );
 
 		if ( ! $details ) {
@@ -61,14 +60,19 @@ function md_set_dropins_status( $slugs, $enable ) {
 		else
 			unset( $dropins['installed'][$slug]['status']['enable'] );
 
+		if ( $enable !== ! empty( $was['installed'][$slug]['status']['enable'] ) )
+			$changed[] = $slug;
+
 		$results[$slug] = true;
 	}
 
-	md_update_dropins( $dropins );
-	update_option( 'md_compile_after_upgrade', true, false );
+	if ( $changed ) {
+		md_update_dropins( $dropins );
+		update_option( 'md_compile_after_upgrade', true, false );
+	}
 
-	foreach ( $results as $slug => $result )
-		if ( ! $enable && $result === true )
+	if ( ! $enable )
+		foreach ( $changed as $slug )
 			do_action( "md_dropin_deactivated_{$slug}" );
 
 	return $results;

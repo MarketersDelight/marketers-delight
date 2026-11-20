@@ -238,22 +238,26 @@ class md_enqueue {
 	}
 
 	/**
-	 * Compile upgraded assets after the updated theme and Drop-ins have loaded.
-	 * Settings saves schedule this too (md_save::after_save()).
+	 * Compile when an update or save asked; settings changed meanwhile ask again.
 	 *
 	 * @since 6.0.1
-	 *
-	 * @return bool|WP_Error|null Compilation result, or null when no rebuild is due.
 	 */
 
 	public function compile_after_upgrade() {
-		if ( $this->upgraded_this_request || ! get_option( 'md_compile_after_upgrade' ) )
-			return;
+		$result = null;
 
-		$result = md_compile( true );
-
-		if ( $result === true )
+		if ( ! $this->upgraded_this_request && get_option( 'md_compile_after_upgrade' ) ) {
 			delete_option( 'md_compile_after_upgrade' );
+
+			$settings = get_option( 'marketers_delight' );
+			$result = md_compile( true );
+
+			wp_cache_delete( 'alloptions', 'options' );
+			wp_cache_delete( 'marketers_delight', 'options' );
+
+			if ( $result !== true || get_option( 'marketers_delight' ) !== $settings )
+				update_option( 'md_compile_after_upgrade', true, false );
+		}
 
 		return $result;
 	}

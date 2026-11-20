@@ -245,8 +245,10 @@
 				)
 			);
 
-			if ( in_array( $this->fields->saved( 'content_style' ), array( 'plain', 'border' ), true ) && $this->fields->saved( array( 'content', 'box_style' ) ) === null )
-				$box_style['value'] = array( 'box_style' => true );
+			$legacy_style = $this->fields->saved( 'content_style' );
+
+			if ( $legacy_style && $this->fields->saved( array( 'content', 'box_style' ) ) === null )
+				$box_style['value'] = array( 'box_style' => $legacy_style === 'box' ? 0 : true );
 
 			$this->fields->field( 'content', $box_style );
 

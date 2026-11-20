@@ -246,16 +246,19 @@ class md_sanitize {
 	 */
 
 	public function color( $input, $fields = array() ) {
+		$palette = md_color_palette();
+
 		if ( ! is_array( $fields ) )
 			$fields = array();
 
 		if ( is_array( $input ) )
-			return $this->color_selection( $input, $fields );
+			$result = $this->color_selection( $input, $fields );
+		elseif ( is_scalar( $input ) && isset( $palette[$input] ) )
+			$result = ! empty( $fields['palette'] ) && is_string( $fields['palette'] ) && sanitize_key( $input ) === sanitize_key( $fields['palette'] ) ? '' : sanitize_key( $input );
+		else
+			$result = $this->color_value( $input, $fields );
 
-		if ( is_scalar( $input ) && isset( md_color_palette()[$input] ) )
-			return sanitize_key( $input );
-
-		return $this->color_value( $input, $fields );
+		return $result;
 	}
 
 	/**
@@ -302,18 +305,17 @@ class md_sanitize {
 			return null;
 
 		$input = is_scalar( $input ) ? (string) $input : '';
-		$default = ! empty( $fields['default'] ) ? $fields['default'] : '';
-
-		if ( $default === $input )
-			return '';
-
+		$default = ! empty( $fields['default'] ) && is_string( $fields['default'] ) ? strtolower( ltrim( $fields['default'], '#' ) ) : '';
 		$hex = ltrim( $input, '#' );
 
-		if ( ctype_xdigit( $hex ) && in_array( strlen( $hex ), array( 3, 4, 6, 8 ), true ) )
+		if ( $default === strtolower( $hex ) )
+			return '';
+
+		if ( preg_match( '/^[0-9a-f]+\z/i', $hex ) && in_array( strlen( $hex ), array( 3, 4, 6, 8 ), true ) )
 			return '#' . strtolower( $hex );
 
 		if ( ! preg_match( '/^rgba\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*([0-9]*\.?[0-9]+)\s*\)$/', $input, $rgba ) )
-			return sanitize_hex_color( $input ) ?: '';
+			return '';
 
 		$r = intval( $rgba[1] );
 		$g = intval( $rgba[2] );

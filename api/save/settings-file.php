@@ -157,6 +157,7 @@ class md_settings_file {
 			'parts' => $this->parts( $file ),
 			'missing' => $missing,
 			'inactive' => $inactive,
+			'older' => $this->is_older( $file ),
 			'skipped' => $skipped
 		);
 	}
@@ -174,11 +175,12 @@ class md_settings_file {
 		$parts = $parts === null ? array_keys( $all ) : array_values( array_intersect( (array) $parts, array_keys( $all ) ) );
 		$imported = array();
 		$save = new md_save;
+		$entries = $this->entries( $file );
 
-		$this->import_entries( $file, $parts, $save );
+		$this->import_entries( $entries, $file['refs'], $parts, $save );
 		md_refresh_fields();
 
-		$skipped = $this->import_entries( $file, $parts, $save );
+		$skipped = $this->import_entries( $entries, $file['refs'], $parts, $save );
 
 		if ( in_array( 'dropins', $parts, true ) && ! empty( $file['sections']['options'] ) )
 			$this->import_options( $file['sections']['options'], $file['refs'], $skipped );
@@ -198,19 +200,49 @@ class md_settings_file {
 	}
 
 	/**
-	 * Save a file's selected settings entries. Returns what was skipped.
+	 * Save the selected settings entries. Each pass checks them against the
+	 * section, scope and group this site exports before writing any.
 	 *
 	 * @since 6.2
 	 */
 
-	private function import_entries( $file, $parts, $save ) {
+	private function import_entries( $entries, $refs, $parts, $save ) {
 		$skipped = array();
+		$allowed = $this->allowed_entries();
 
-		foreach ( $this->entries( $file ) as $entry )
+		foreach ( $entries as $entry )
 			if ( in_array( $entry['part'], $parts, true ) )
-				$this->import_entry( $entry, $file['refs'], $save, $skipped );
+				$this->import_entry( $entry, $refs, $allowed, $save, $skipped );
 
 		return $skipped;
+	}
+
+	/**
+	 * Every section, scope and group this site exports, as section|scope|group keys.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function allowed_entries() {
+		$allowed = array();
+
+		foreach ( array_merge( $this->site_entries(), $this->post_type_entries() ) as $entry )
+			$allowed["{$entry['section']}|{$entry['scope']}|{$entry['group']}"] = true;
+
+		return $allowed;
+	}
+
+	/**
+	 * Whether an older MD version made the file. Its entries merge, so fields added
+	 * since then keep this site's values instead of clearing.
+	 *
+	 * @since 6.2.2
+	 */
+
+	private function is_older( $file ) {
+		$version = isset( $file['md_version'] ) && is_string( $file['md_version'] ) ? $file['md_version'] : '';
+
+		return $version !== '' && version_compare( $version, MD_VERSION, '<' );
 	}
 
 	/**
@@ -402,8 +434,8 @@ class md_settings_file {
 			if ( ! isset( $fields[$key] ) || ! is_array( $fields[$key] ) )
 				continue;
 
-			if ( ! isset( $fields[$key]['type'] ) && is_array( $value ) ) {
-				$nested = $this->limit( $value, $fields[$key] );
+			if ( ! isset( $fields[$key]['type'] ) ) {
+				$nested = is_array( $value ) ? $this->limit( $value, $fields[$key] ) : array();
 
 				if ( $nested )
 					$limited[$key] = $nested;
@@ -552,6 +584,7 @@ class md_settings_file {
 
 	private function entries( $file ) {
 		$entries = array();
+		$older = $this->is_older( $file );
 
 		foreach ( array_keys( $this->sections() ) as $section ) {
 			if ( $section === 'widgets' || empty( $file['sections'][$section] ) || ! is_array( $file['sections'][$section] ) )
@@ -559,6 +592,10 @@ class md_settings_file {
 
 			foreach ( $file['sections'][$section] as $raw ) {
 				$raw = is_array( $raw ) ? $raw : array();
+
+				if ( $older )
+					$raw['mode'] = 'merge';
+
 				$raw['section'] = $section;
 				$raw['part'] = $this->part_key( $section, $raw );
 				$entries[] = $raw;
@@ -576,7 +613,7 @@ class md_settings_file {
 	 * @since 6.2
 	 */
 
-	private function import_entry( $entry, $refs, $save, &$skipped ) {
+	private function import_entry( $entry, $refs, $allowed, $save, &$skipped ) {
 		if ( ! isset( $entry['scope'], $entry['group'], $entry['values'] ) || ! is_string( $entry['scope'] ) || ! is_string( $entry['group'] ) || ! is_array( $entry['values'] ) ) {
 			$skipped[] = sprintf( __( 'An entry in `%s` can\'t be read.', 'md' ), $entry['section'] );
 			return;
@@ -593,6 +630,13 @@ class md_settings_file {
 
 		if ( is_wp_error( $target ) ) {
 			$skipped[] = $target->get_error_message();
+			return;
+		}
+
+		$sections = $this->sections();
+
+		if ( ! isset( $allowed["{$entry['section']}|{$entry['scope']}|{$entry['group']}"] ) ) {
+			$skipped[] = sprintf( __( '`%1$s` settings for `%2$s` aren\'t part of %3$s, so they weren\'t imported.', 'md' ), $entry['group'], $entry['scope'], $sections[$entry['section']] );
 			return;
 		}
 
