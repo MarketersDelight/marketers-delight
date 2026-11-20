@@ -15,7 +15,7 @@ function md_cta( $context = 'post', $cta = array() ) {
 		$cta = md_get_cta( $context );
 
 	$type = ! empty( $cta['page_cta'] ) ? $cta['page_cta'] : '';
-	$html = isset( $cta['html'] ) ? $cta['html'] : md_get_cta_html( $context, $cta );
+	$html = ! empty( $cta['html'] ) ? $cta['html'] : md_get_cta_html( $context, $cta );
 
 	if ( empty( $html ) )
 		return;
