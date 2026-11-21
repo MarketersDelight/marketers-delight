@@ -146,7 +146,14 @@ class md_fields extends md_fields_render {
 		if ( $this->context !== null && $this->context_screen === $this->_get_screen )
 			return $this->context;
 
-		$screen = $this->_get_screen;
+		$screen = array_merge( array(
+			'is_post' => false,
+			'is_term' => false,
+			'is_user' => false,
+			'is_taxonomy' => false,
+			'page' => '',
+			'md_tab' => ''
+		), (array) $this->_get_screen );
 		$context = array(
 			'is_post' => $screen['is_post'],
 			'is_term' => $screen['is_term'],
@@ -168,7 +175,7 @@ class md_fields extends md_fields_render {
 		}
 
 		$this->context = $context;
-		$this->context_screen = $screen;
+		$this->context_screen = $this->_get_screen;
 
 		return $context;
 	}
