@@ -110,6 +110,28 @@ class md_colors extends md_api {
 		$this->palette = $this->colors->base_palette();
 		$palette = $this->palette;
 		$palette_defaults = $this->colors->palette;
+		$areas = array(
+			'content' => array(
+				'label' => __( 'Content', 'md' ),
+				'description' => __( 'Colors for your posts and pages', 'md' ),
+				'icon' => 'dashicons-text-page'
+			),
+			'sidebar' => array(
+				'label' => __( 'Sidebar', 'md' ),
+				'description' => __( 'Colors for your sidebars', 'md' ),
+				'icon' => 'dashicons-align-pull-right'
+			),
+			'panel' => array(
+				'label' => __( 'Panel', 'md' ),
+				'description' => __( 'Colors for your panels', 'md' ),
+				'icon' => 'dashicons-align-pull-left'
+			),
+			'footer' => array(
+				'label' => __( 'Footer', 'md' ),
+				'description' => __( 'Colors for your site footer', 'md' ),
+				'icon' => 'dashicons-table-row-after'
+			)
+		);
 
 		include md_template( 'admin/design', true );
 	}

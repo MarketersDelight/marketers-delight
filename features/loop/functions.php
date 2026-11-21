@@ -365,11 +365,13 @@ function md_loop_style( $args = array() ) {
 	) );
 	$style = md_value( array( 'effects', 'box_style', 'remove' ) ) ? 'plain' : 'box';
 	$key = array( 'layout', 'content', 'box_style' );
+	$body = isset( $args['body'] );
+	$removed = null;
 
-	if ( isset( $args['body'] ) )
-		return $style;
+	if ( ! $body && empty( $args['post_id'] ) && is_singular() )
+		$args['post_id'] = get_queried_object_id();
 
-	if ( ! empty( $args['post_id'] ) ) {
+	if ( ! $body && ! empty( $args['post_id'] ) ) {
 		$post_type = $args['post_type'] ?: md_get_post_type( $args['post_id'] );
 		$removed = md_value( array( 'key' => $key, 'post_type' => $post_type ) );
 
@@ -384,20 +386,31 @@ function md_loop_style( $args = array() ) {
 				$removed = $own;
 		}
 	}
-	else {
-		$old = md_value( array(
-			'key' => array( 'layout', 'content_style' ),
-			'page' => true,
-			'id' => get_queried_object_id()
-		) );
+	elseif ( ! $body ) {
+		$id = get_queried_object_id();
+		$own = null;
 		$removed = md_value( array(
 			'key' => $key,
 			'page' => true,
-			'id' => get_queried_object_id()
+			'id' => $id
 		) );
+
+		if ( is_category() || is_tag() || is_tax() ) {
+			$old = md_term_meta( array( 'layout', 'content_style' ), $id );
+			$own = md_term_meta( $key, $id );
+		}
+		else
+			$old = md_value( array(
+				'key' => array( 'layout', 'content_style' ),
+				'page' => true,
+				'id' => $id
+			) );
 
 		if ( ! empty( $old ) )
 			$removed = $old !== 'box';
+
+		if ( $own !== null && $own !== '' )
+			$removed = $own;
 	}
 
 	if ( $removed !== null && $removed !== '' )

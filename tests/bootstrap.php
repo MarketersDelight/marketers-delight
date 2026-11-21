@@ -54,6 +54,7 @@ function md_test_reset() {
 	$GLOBALS['__test_filters'] = array();
 	$GLOBALS['__test_settings'] = array();
 	$GLOBALS['__test_options'] = array();
+	$GLOBALS['__test_update_fails'] = array();
 	$GLOBALS['__test_post_meta'] = array();
 	$GLOBALS['__test_term_meta'] = array();
 	$GLOBALS['__test_user_meta'] = array();
@@ -223,6 +224,9 @@ function get_option( $key, $default = false ) {
 }
 
 function update_option( $key, $value, $autoload = null ) {
+	if ( ! empty( $GLOBALS['__test_update_fails'][$key] ) )
+		return false;
+
 	$GLOBALS['__test_options'][$key] = $value;
 
 	return true;

@@ -11,8 +11,6 @@
 
 class md_upgrade {
 
-	private $border = false;
-
 	/**
 	 * Check before md_enqueue::compile_after_upgrade() reads the compile flag.
 	 *
@@ -47,12 +45,14 @@ class md_upgrade {
 		$upgraded = $this->move_widths( $settings );
 		$upgraded = $this->move_box_style( $upgraded );
 
-		if ( $upgraded !== $settings )
-			update_option( 'marketers_delight', $upgraded );
+		$result = true;
 
-		delete_option( 'marketers_delight_storage_version' );
+		if ( $upgraded !== $settings && ! update_option( 'marketers_delight', $upgraded ) && get_option( 'marketers_delight' ) !== $upgraded )
+			$result = new WP_Error( 'md_upgrade', __( 'The MD 6.2.2 data upgrade couldn\'t save its changes.', 'md' ) );
+		else
+			delete_option( 'marketers_delight_storage_version' );
 
-		return true;
+		return $result;
 	}
 
 	/**
@@ -80,8 +80,7 @@ class md_upgrade {
 
 	/**
 	 * Turn the Box / Border / No style selects into Remove Box Style checkboxes.
-	 * No style and Border remove the box; Border keeps its lines as site Dividers
-	 * when the site has no box, since dividers are site-wide now.
+	 * No style and Border remove the box; a Border site also turns on Dividers.
 	 *
 	 * @since 6.2.2
 	 */
@@ -104,7 +103,6 @@ class md_upgrade {
 			unset( $settings['colors'] );
 
 		$removed = ! empty( $settings['effects']['box_style']['remove'] );
-		$this->border = false;
 
 		foreach ( $settings as $key => $group ) {
 			$moved = is_array( $group ) ? $this->move_layout_box_style( $group, $removed, true ) : $group;
@@ -115,15 +113,12 @@ class md_upgrade {
 				$settings[$key] = $moved;
 		}
 
-		if ( $this->border && $removed )
-			$settings['effects']['dividers'] = $settings['effects']['dividers'] ?? array( 'divide' => true );
-
 		return $settings;
 	}
 
 	/**
 	 * A post type group, and with $children its taxonomies. No style and Border remove
-	 * the box; Box keeps it on a site whose box is removed.
+	 * the box; Box keeps it (0) where the site or post type removes it.
 	 *
 	 * @since 6.2.2
 	 */
@@ -137,16 +132,16 @@ class md_upgrade {
 			if ( $style === 'plain' || $style === 'border' )
 				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? true;
 			elseif ( $style === 'box' && $removed )
-				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? false;
-
-			if ( $style === 'border' )
-				$this->border = true;
+				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? 0;
 
 			unset( $group['layout']['content_style'] );
 
 			if ( empty( $group['layout'] ) )
 				unset( $group['layout'] );
 		}
+
+		if ( isset( $group['layout']['content']['box_style'] ) )
+			$removed = (bool) $group['layout']['content']['box_style'];
 
 		foreach ( $taxonomies as $key => $child ) {
 			if ( ! is_array( $child ) || ! isset( $child['layout'] ) )

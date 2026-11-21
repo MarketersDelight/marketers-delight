@@ -21,6 +21,37 @@ class MD_Fields_Capture extends md_fields {
 
 class FieldsContextTest extends MD_TestCase {
 
+	// Fields read stored values through md_scope, which only knows registered groups
+
+	protected function setUp(): void {
+		parent::setUp();
+
+		$GLOBALS['__test_current_post'] = 10;
+		$group = array(
+			'title' => array( 'type' => 'text' ),
+			'elements' => array( 'type' => 'text' ),
+			'enabled' => array( 'type' => 'checkbox' ),
+			'disabled' => array( 'type' => 'checkbox' ),
+			'count' => array( 'type' => 'number' ),
+			'value' => array( 'type' => 'text' ),
+			'byline' => array( 'builder' => array( 'type' => 'builder', 'fields' => array( 'position' => array( 'type' => 'select' ) ) ) )
+		);
+
+		md_test_set_filter( 'md_register', array(
+			'admin_pages' => array(
+				'my_page' => array( 'has_groups' => true, 'fields' => array_merge( $group, array( 'child_field' => $group ) ) ),
+				'post' => array( 'has_groups' => true, 'fields' => array(
+					'loop' => array( 'date' => array( 'type' => 'checkbox' ), 'columns' => array( 'type' => 'number' ) ),
+					'page_cta' => array( 'page_cta' => array( 'type' => 'select' ) )
+				) )
+			),
+			'meta_boxes' => array( 'my_page' => array( 'fields' => $group ) ),
+			'terms' => array( 'my_page' => array( 'fields' => $group ) ),
+			'user_meta' => array( 'my_page' => array( 'fields' => $group ) )
+		) );
+		md_test_set_filter( 'md_taxonomy_groups', array( 'md_my_page' => array( 'category' => true ), 'md_post' => array( 'category' => true ) ) );
+	}
+
 	private function make_fields( $screen, $clean_id = 'my_page', $option = 'marketers_delight' ) {
 		$fields = new md_fields( array(
 			'id' => $clean_id,
@@ -150,41 +181,51 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( '', $context['taxonomy'] );
 	}
 
+	public function test_context_follows_a_new_screen() {
+		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
+
+		$this->assertFalse( $this->get_context( $fields )['is_post'] );
+
+		$fields->_get_screen = array_merge( $fields->_get_screen, array( 'is_post' => true ) );
+
+		$this->assertTrue( $this->get_context( $fields )['is_post'], 'md_api hands the fields a new screen on current_screen' );
+	}
+
 	// get_field() — post/term/user meta paths.
 
 	public function test_get_field_post_screen_reads_post_meta() {
-		md_test_set_post_meta( array( 'title' => 'Hello' ) );
+		update_post_meta( 10, 'marketers_delight', array( 'my_page' => array( 'title' => 'Hello' ) ) );
 
 		$fields = $this->make_fields( array( 'is_post' => true ) );
 
-		$this->assertSame( 'Hello', $fields->get_field( 'title' ) );
+		$this->assertSame( 'Hello', $fields->get_field( array( 'my_page', 'title' ) ) );
 	}
 
 	public function test_get_field_term_screen_reads_term_meta() {
-		md_test_set_term_meta( array( 'title' => 'Term Title' ) );
+		update_term_meta( 5, 'marketers_delight', array( 'my_page' => array( 'title' => 'Term Title' ) ) );
 
-		$fields = $this->make_fields( array( 'is_term' => true ) );
+		$fields = $this->make_fields( array( 'is_term' => true, 'screen_id' => 5 ) );
 
-		$this->assertSame( 'Term Title', $fields->get_field( 'title' ) );
+		$this->assertSame( 'Term Title', $fields->get_field( array( 'my_page', 'title' ) ) );
 	}
 
 	public function test_get_field_user_screen_reads_user_meta() {
-		md_test_set_user_meta( array( 'title' => 'User Title' ) );
+		update_user_meta( 1, 'marketers_delight', array( 'my_page' => array( 'title' => 'User Title' ) ) );
 
 		$fields = $this->make_fields( array( 'is_user' => true ) );
 
-		$this->assertSame( 'User Title', $fields->get_field( 'title' ) );
+		$this->assertSame( 'User Title', $fields->get_field( array( 'my_page', 'title' ) ) );
 	}
 
 	// get_field() — admin group nesting, root vs. child vs. taxonomy tab.
 
 	public function test_get_field_non_group_reads_top_level_setting() {
 		md_test_set_filter( 'md_admin_groups', array() );
-		md_test_set_settings( array( 'title' => 'Plain Setting' ) );
+		md_test_set_settings( array( 'my_page' => array( 'title' => 'Plain Setting' ) ) );
 
 		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
 
-		$this->assertSame( 'Plain Setting', $fields->get_field( 'title' ) );
+		$this->assertSame( 'Plain Setting', $fields->get_field( array( 'my_page', 'title' ) ) );
 	}
 
 	public function test_get_field_non_group_reads_only_stored_custom_option_values() {
@@ -193,23 +234,27 @@ class FieldsContextTest extends MD_TestCase {
 			'title' => 'Default Title',
 			'enabled' => true,
 		) );
-		md_test_set_option( 'client_portal', array( 'enabled' => false ) );
+		md_test_set_filter( 'md_register', array( 'admin_pages' => array( 'my_page' => array( '_option' => 'client_portal', 'fields' => array(
+			'title' => array( 'type' => 'text' ),
+			'enabled' => array( 'type' => 'checkbox' )
+		) ) ) ) );
+		md_test_set_option( 'client_portal', array( 'my_page' => array( 'enabled' => false ) ) );
 
 		$fields = $this->make_fields( array( 'page' => 'my_page' ), 'my_page', 'client_portal' );
 
-		$this->assertNull( $fields->get_field( 'title' ) );
-		$this->assertFalse( $fields->get_field( 'enabled', true ) );
+		$this->assertNull( $fields->get_field( array( 'my_page', 'title' ) ) );
+		$this->assertFalse( $fields->get_field( array( 'my_page', 'enabled' ), true ) );
 	}
 
 	public function test_get_field_preserves_falsey_setting_values() {
 		md_test_set_filter( 'md_admin_groups', array() );
-		md_test_set_settings( array( 'disabled' => false, 'count' => 0, 'value' => '0' ) );
+		md_test_set_settings( array( 'my_page' => array( 'disabled' => false, 'count' => 0, 'value' => '0' ) ) );
 
 		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
 
-		$this->assertFalse( $fields->get_field( 'disabled', true ) );
-		$this->assertSame( 0, $fields->get_field( 'count', 10 ) );
-		$this->assertSame( '0', $fields->get_field( 'value', 'fallback' ) );
+		$this->assertFalse( $fields->get_field( array( 'my_page', 'disabled' ), true ) );
+		$this->assertSame( 0, $fields->get_field( array( 'my_page', 'count' ), 10 ) );
+		$this->assertSame( '0', $fields->get_field( array( 'my_page', 'value' ), 'fallback' ) );
 	}
 
 	public function test_get_field_group_child_reads_nested_page_setting() {
@@ -299,7 +344,7 @@ class FieldsContextTest extends MD_TestCase {
 	// module() — post/term meta paths prefix keys with clean_id.
 
 	public function test_module_post_screen_reads_post_meta_prefixed_with_clean_id() {
-		md_test_set_post_meta( array( 'my_page' => array( 'enabled' => true ) ) );
+		update_post_meta( 10, 'marketers_delight', array( 'my_page' => array( 'enabled' => true ) ) );
 
 		$fields = $this->make_fields( array( 'is_post' => true ) );
 
@@ -307,7 +352,7 @@ class FieldsContextTest extends MD_TestCase {
 	}
 
 	public function test_module_term_screen_reads_term_meta_when_screen_id_present() {
-		md_test_set_term_meta( array( 'my_page' => array( 'enabled' => true ) ) );
+		update_term_meta( 5, 'marketers_delight', array( 'my_page' => array( 'enabled' => true ) ) );
 
 		$fields = $this->make_fields( array( 'is_term' => true, 'screen_id' => 5 ) );
 

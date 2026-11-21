@@ -115,21 +115,26 @@ class md_abilities {
 	}
 
 	/**
-	 * An output schema from the result's keys and their types.
+	 * An output schema from the result's keys and their types. A full schema, one
+	 * with properties, is used as given.
 	 *
 	 * @since 6.2.2
 	 */
 
 	public function output( $keys ) {
-		$properties = array();
+		$schema = $keys;
 
-		foreach ( $keys as $key => $type )
-			$properties[$key] = array( 'type' => $type );
+		if ( ! isset( $keys['properties'] ) || ! is_array( $keys['properties'] ) ) {
+			$schema = array(
+				'type' => 'object',
+				'properties' => array()
+			);
 
-		return array(
-			'type' => 'object',
-			'properties' => $properties
-		);
+			foreach ( $keys as $key => $type )
+				$schema['properties'][$key] = array( 'type' => $type );
+		}
+
+		return $schema;
 	}
 
 	/**

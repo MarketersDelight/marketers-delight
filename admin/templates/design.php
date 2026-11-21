@@ -9,7 +9,9 @@
 		<div class="md-widget-item md-widget-rows">
 
 			<div class="md-palette-grid">
+
 				<?php foreach ( $palette as $color_key => $color ) : ?>
+
 				<div class="md-palette-item">
 					<?php $this->fields->field( array( 'palette', $color_key, 'hex' ), array(
 						'hex_only' => true,
@@ -17,12 +19,12 @@
 						'default' => $palette_defaults[$color_key]
 					) ); ?>
 				</div>
+
 				<?php endforeach; ?>
+
 			</div>
 
-			<?php
-
-			$this->fields->field( 'custom', array(
+			<?php $this->fields->field( 'custom', array(
 				'button_text' => __( 'Add Color', 'md' ),
 				'wrap_classes' => 'md-custom-colors',
 				'callback' => function( $group, $field ) {
@@ -61,11 +63,13 @@
 		<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-admin-appearance', '', 'small' ); ?><span><?php echo __( 'Site Colors', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Default colors across your site', 'md' ); ?></span></span></h3>
 
 		<div class="md-widget-item columns-4 columns-single">
+
 			<?php foreach ( $options['site'] as $field => $opts ) : ?>
 			<div class="col mb-single">
 				<?php $this->color_field( array( 'site', $field ), $opts ); ?>
 			</div>
 			<?php endforeach; ?>
+
 		</div>
 
 	</div>
@@ -87,17 +91,21 @@
 						'secondary' => __( 'Secondary Button', 'md' ),
 						'status' => __( 'Status', 'md' )
 					) as $action => $label ) : ?>
+
 					<div>
 						<h4><?php echo esc_html( $label ); ?></h4>
 
 						<div class="columns-2 columns-single gap-single">
+
 							<?php foreach ( $options['actions'][$action] as $field => $opts ) : ?>
 							<div class="col">
 								<?php $this->color_field( array( 'actions', $action, $field ), $opts ); ?>
 							</div>
 							<?php endforeach; ?>
+
 						</div>
 					</div>
+
 					<?php endforeach; ?>
 
 				</div>
@@ -109,11 +117,13 @@
 				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( 'dashicons-table-row-before', '', 'small' ); ?><span><?php echo __( 'Header', 'md' ); ?><span class="md-widget-description"><?php echo __( 'Header bar colors', 'md' ); ?></span></span></h3>
 
 				<div class="md-widget-item columns-2 columns-single">
+
 					<?php foreach ( array( 'bg_color', 'text_color', 'border_color' ) as $field ) : ?>
 					<div class="col mb-single">
 						<?php $this->color_field( array( 'header', $field ), $options['header'][$field] ); ?>
 					</div>
 					<?php endforeach; ?>
+
 				</div>
 
 			</div>
@@ -128,11 +138,13 @@
 						<h4><?php echo __( 'Menu', 'md' ); ?></h4>
 
 						<div class="columns-2 columns-single gap-single">
+
 							<?php foreach ( $options['header']['menu'] as $field => $opts ) : ?>
 							<div class="col">
 								<?php $this->color_field( array( 'header', 'menu', $field ), $opts ); ?>
 							</div>
 							<?php endforeach; ?>
+
 						</div>
 					</div>
 
@@ -140,11 +152,13 @@
 						<h4><?php echo __( 'Submenu', 'md' ); ?></h4>
 
 						<div class="columns-2 columns-single gap-single">
+
 							<?php foreach ( $options['header']['submenu'] as $field => $opts ) : ?>
 							<div class="col">
 								<?php $this->color_field( array( 'header', 'submenu', $field ), $opts ); ?>
 							</div>
 							<?php endforeach; ?>
+
 						</div>
 					</div>
 
@@ -158,25 +172,20 @@
 
 			<h2 class="md-dashboard-title"><?php echo __( 'Layout', 'md' ); ?></h2>
 
-			<?php $areas = array(
-				'content' => array( 'label' => __( 'Content', 'md' ), 'description' => __( 'Colors for your posts and pages', 'md' ), 'icon' => 'dashicons-text-page' ),
-				'sidebar' => array( 'label' => __( 'Sidebar', 'md' ), 'description' => __( 'Colors for your sidebars', 'md' ), 'icon' => 'dashicons-align-pull-right' ),
-				'panel' => array( 'label' => __( 'Panel', 'md' ), 'description' => __( 'Colors for your panels', 'md' ), 'icon' => 'dashicons-align-pull-left' ),
-				'footer' => array( 'label' => __( 'Footer', 'md' ), 'description' => __( 'Colors for your site footer', 'md' ), 'icon' => 'dashicons-table-row-after' )
-			);
-
-			foreach ( $areas as $group => $area ) : ?>
+			<?php foreach ( $areas as $group => $area ) : ?>
 
 			<div class="md-widget md-toggle md-color-widget md-dashboard-card">
 
 				<h3 class="md-widget-title"><?php echo md_dropin_icon_tile( $area['icon'], '', 'small' ); ?><span><?php echo esc_html( $area['label'] ); ?><span class="md-widget-description"><?php echo esc_html( $area['description'] ); ?></span></span></h3>
 
 				<div class="md-widget-item columns-2 columns-single">
+
 					<?php foreach ( $options[$group] as $field => $opts ) : ?>
 					<div class="col mb-single">
 						<?php $this->color_field( array( $group, $field ), $opts ); ?>
 					</div>
 					<?php endforeach; ?>
+
 				</div>
 
 			</div>

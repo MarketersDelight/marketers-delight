@@ -166,7 +166,17 @@ class md_site_abilities extends md_abilities {
 	 */
 
 	public function update_menu( $input = array() ) {
-		if ( ! empty( $input['create'] ) ) {
+		$menu = empty( $input['create'] ) ? $this->menu( $input ) : null;
+
+		if ( is_wp_error( $menu ) )
+			return $menu;
+
+		$checked = $this->check_menu_changes( $menu ? (int) $menu->term_id : 0, $input );
+
+		if ( is_wp_error( $checked ) )
+			return $checked;
+
+		if ( ! $menu ) {
 			$menu_id = wp_create_nav_menu( $input['create'] );
 
 			if ( is_wp_error( $menu_id ) )
@@ -174,16 +184,6 @@ class md_site_abilities extends md_abilities {
 
 			$menu = wp_get_nav_menu_object( $menu_id );
 		}
-		else
-			$menu = $this->menu( $input );
-
-		if ( is_wp_error( $menu ) )
-			return $menu;
-
-		$checked = $this->check_menu_changes( (int) $menu->term_id, $input );
-
-		if ( is_wp_error( $checked ) )
-			return $checked;
 
 		// WordPress can give a first item position 0, then reads 0 as "add to the end"
 
@@ -210,6 +210,9 @@ class md_site_abilities extends md_abilities {
 
 			if ( ! empty( $operation['position'] ) && ( $operation['op'] ?? '' ) !== 'remove' )
 				$positions[(int) $done] = absint( $operation['position'] );
+
+			if ( ( $operation['op'] ?? '' ) === 'remove' )
+				unset( $positions[absint( $operation['id'] ?? 0 )] );
 		}
 
 		if ( $positions ) {
@@ -272,42 +275,104 @@ class md_site_abilities extends md_abilities {
 	 */
 
 	protected function check_menu_changes( $menu_id, $input ) {
-		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' );
-		$refs = array();
+		$posts = $menu_id ? $this->menu_posts( $menu_id ) : array();
+		$current = wp_list_pluck( $posts, 'ID' );
+		$refs = $parents = array();
+		$result = $this->check_menu_names( $menu_id, $input );
+
+		foreach ( $posts as $post )
+			$parents[$post->ID] = absint( get_post_meta( $post->ID, '_menu_item_menu_item_parent', true ) );
 
 		foreach ( (array) ( $input['items'] ?? array() ) as $operation ) {
+			if ( is_wp_error( $result ) )
+				break;
+
 			$operation = (array) $operation;
 			$op = $operation['op'] ?? '';
 			$id = absint( $operation['id'] ?? 0 );
 			$parent = $operation['parent'] ?? 0;
+			$ref = isset( $operation['ref'] ) ? (string) $operation['ref'] : '';
+			$parent_key = is_numeric( $parent ) ? absint( $parent ) : 'ref:' . $parent;
+			$edits = isset( $operation['title'] ) || isset( $operation['url'] ) || isset( $operation['parent'] );
 
 			if ( ! in_array( $op, array( 'add', 'update', 'remove' ), true ) )
-				return new WP_Error( 'md_abilities_menu_op', __( 'Each item needs an op: add, update or remove.', 'md' ) );
+				$result = new WP_Error( 'md_abilities_menu_op', __( 'Each item needs an op: add, update or remove.', 'md' ) );
+			elseif ( $op !== 'add' && ! in_array( $id, $current, true ) )
+				$result = $this->no_menu_item( $id );
+			elseif ( $parent && ! is_numeric( $parent ) && ! isset( $refs[(string) $parent] ) )
+				$result = new WP_Error( 'md_abilities_menu_parent', sprintf( __( 'No item added earlier in this call has the ref %s.', 'md' ), $parent ) );
+			elseif ( $parent && is_numeric( $parent ) && ! in_array( absint( $parent ), $current, true ) )
+				$result = $this->no_menu_item( absint( $parent ) );
+			elseif ( isset( $operation['position'] ) && ( ! is_numeric( $operation['position'] ) || $operation['position'] < 1 ) )
+				$result = new WP_Error( 'md_abilities_menu_position', __( 'position is the item\'s place in the menu, from 1.', 'md' ) );
+			elseif ( $op === 'add' && $ref !== '' && isset( $refs[$ref] ) )
+				$result = new WP_Error( 'md_abilities_menu_ref', sprintf( __( 'The ref %s is used twice. Give each new item its own ref.', 'md' ), $ref ) );
+			elseif ( $op === 'update' && $edits && ! in_array( get_post_status( $id ), array( 'publish', 'draft' ), true ) )
+				$result = new WP_Error( 'md_abilities_menu_status', sprintf( __( 'Item %d isn\'t published, and WordPress would publish it if its title, URL or parent changed. Only its position can change here.', 'md' ), $id ) );
+			elseif ( $op === 'add' && $ref !== '' ) {
+				$refs[$ref] = true;
+				$parents["ref:$ref"] = $parent_key;
+			}
+			elseif ( $op === 'update' && isset( $operation['parent'] ) ) {
+				$parents[$id] = $parent_key;
 
-			if ( $op !== 'add' && ! in_array( $id, $current, true ) )
-				return $this->no_menu_item( $id );
-
-			if ( $parent && ! is_numeric( $parent ) && ! isset( $refs[(string) $parent] ) )
-				return new WP_Error( 'md_abilities_menu_parent', sprintf( __( 'No item added earlier in this call has the ref %s.', 'md' ), $parent ) );
-
-			if ( $parent && is_numeric( $parent ) && ! in_array( absint( $parent ), $current, true ) )
-				return $this->no_menu_item( absint( $parent ) );
-
-			if ( isset( $operation['position'] ) && ( ! is_numeric( $operation['position'] ) || $operation['position'] < 1 ) )
-				return new WP_Error( 'md_abilities_menu_position', __( 'position is the item\'s place in the menu, from 1.', 'md' ) );
-
-			if ( $op === 'add' && isset( $operation['ref'] ) )
-				$refs[(string) $operation['ref']] = true;
-
-			if ( $op === 'remove' )
+				if ( $this->menu_loop( $id, $parents ) )
+					$result = new WP_Error( 'md_abilities_menu_parent', sprintf( __( 'Item %d can\'t be nested under itself or one of its own sub-items.', 'md' ), $id ) );
+			}
+			elseif ( $op === 'remove' ) {
 				$current = array_diff( $current, array( $id ) );
+				unset( $parents[$id] );
+			}
 		}
 
 		foreach ( array_map( 'absint', (array) ( $input['order'] ?? array() ) ) as $id )
-			if ( ! in_array( $id, $current, true ) )
-				return $this->no_menu_item( $id );
+			if ( ! is_wp_error( $result ) && ! in_array( $id, $current, true ) )
+				$result = $this->no_menu_item( $id );
 
-		return true;
+		return $result;
+	}
+
+	/**
+	 * Check a new or changed menu name: not blank, and not another menu's.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function check_menu_names( $menu_id, $input ) {
+		$result = true;
+
+		foreach ( array( 'create', 'name' ) as $key ) {
+			$name = isset( $input[$key] ) && is_string( $input[$key] ) ? trim( $input[$key] ) : '';
+			$existing = $name !== '' ? get_term_by( 'name', $name, 'nav_menu' ) : false;
+
+			if ( isset( $input[$key] ) && $input[$key] !== '' && $name === '' )
+				$result = new WP_Error( 'md_abilities_menu_name', __( 'A menu name can\'t be blank.', 'md' ) );
+			elseif ( $existing && (int) $existing->term_id !== $menu_id )
+				$result = new WP_Error( 'md_abilities_menu_name', sprintf( __( 'There\'s already a menu named %s. Pick another name.', 'md' ), $name ) );
+
+			if ( is_wp_error( $result ) )
+				break;
+		}
+
+		return $result;
+	}
+
+	/**
+	 * Whether following an item's parents leads back to it.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function menu_loop( $id, $parents ) {
+		$seen = array();
+		$parent = $parents[$id] ?? 0;
+
+		while ( $parent && $parent !== $id && ! isset( $seen[$parent] ) ) {
+			$seen[$parent] = true;
+			$parent = $parents[$parent] ?? 0;
+		}
+
+		return $parent === $id;
 	}
 
 	/**
@@ -348,7 +413,7 @@ class md_site_abilities extends md_abilities {
 			return $saved;
 		}
 
-		return $this->save_menu_item( $menu_id, $id, $item );
+		return $item ? $this->save_menu_item( $menu_id, $id, $item ) : $id;
 	}
 
 	/**
@@ -374,7 +439,7 @@ class md_site_abilities extends md_abilities {
 			'menu-item-target' => $item->target,
 			'menu-item-classes' => implode( ' ', (array) $item->classes ),
 			'menu-item-xfn' => $item->xfn,
-			'menu-item-status' => 'publish'
+			'menu-item-status' => get_post_status( $id )
 		), $changes ) );
 	}
 
@@ -387,10 +452,13 @@ class md_site_abilities extends md_abilities {
 
 	protected function order_menu( $menu_id, $order ) {
 		$order = array_map( 'absint', $order );
-		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'ID' );
+		$current = wp_list_pluck( $this->menu_posts( $menu_id ), 'menu_order', 'ID' );
 
-		foreach ( array_values( array_unique( array_merge( $order, $current ) ) ) as $index => $id ) {
-			$done = $this->save_menu_item( $menu_id, $id, array( 'menu-item-position' => $index + 1 ) );
+		foreach ( array_values( array_unique( array_merge( $order, array_keys( $current ) ) ) ) as $index => $id ) {
+			if ( isset( $current[$id] ) && (int) $current[$id] === $index + 1 )
+				continue;
+
+			$done = wp_update_post( array( 'ID' => $id, 'menu_order' => $index + 1 ), true );
 
 			if ( is_wp_error( $done ) )
 				return $done;
@@ -441,7 +509,8 @@ class md_site_abilities extends md_abilities {
 			'numberposts' => -1,
 			'orderby' => 'menu_order',
 			'order' => 'ASC',
-			'tax_query' => array( array( 'taxonomy' => 'nav_menu', 'terms' => $menu_id ) )
+			'tax_query' => array( array( 'taxonomy' => 'nav_menu', 'terms' => $menu_id ) ),
+			'update_menu_item_cache' => true
 		) );
 	}
 

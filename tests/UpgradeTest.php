@@ -216,7 +216,7 @@ class UpgradeTest extends MD_TestCase {
 		$this->assertArrayNotHasKey( 'effects', $moved );
 	}
 
-	public function test_no_style_site_keeps_post_type_boxes_and_border_lines() {
+	public function test_no_style_site_keeps_post_type_boxes_without_dividers() {
 		$moved = ( new md_upgrade )->move_box_style( array(
 			'colors' => array( 'design' => 'plain' ),
 			'post' => array( 'layout' => array( 'content_style' => 'border' ) ),
@@ -224,8 +224,8 @@ class UpgradeTest extends MD_TestCase {
 		) );
 
 		$this->assertSame( array( 'content' => array( 'box_style' => true ) ), $moved['post']['layout'] );
-		$this->assertSame( array( 'content' => array( 'box_style' => false ) ), $moved['stream']['layout'] );
-		$this->assertSame( array( 'box_style' => array( 'remove' => true ), 'dividers' => array( 'divide' => true ) ), $moved['effects'] );
+		$this->assertSame( array( 'content' => array( 'box_style' => 0 ) ), $moved['stream']['layout'] );
+		$this->assertSame( array( 'box_style' => array( 'remove' => true ) ), $moved['effects'] );
 	}
 
 	public function test_box_site_border_post_type_adds_no_dividers() {
