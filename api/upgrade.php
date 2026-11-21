@@ -11,8 +11,6 @@
 
 class md_upgrade {
 
-	private $border = false;
-
 	/**
 	 * Check before md_enqueue::compile_after_upgrade() reads the compile flag.
 	 *
@@ -82,8 +80,7 @@ class md_upgrade {
 
 	/**
 	 * Turn the Box / Border / No style selects into Remove Box Style checkboxes.
-	 * No style and Border remove the box; Border keeps its lines as site Dividers
-	 * when the site has no box, since dividers are site-wide now.
+	 * No style and Border remove the box; a Border site also turns on Dividers.
 	 *
 	 * @since 6.2.2
 	 */
@@ -106,7 +103,6 @@ class md_upgrade {
 			unset( $settings['colors'] );
 
 		$removed = ! empty( $settings['effects']['box_style']['remove'] );
-		$this->border = false;
 
 		foreach ( $settings as $key => $group ) {
 			$moved = is_array( $group ) ? $this->move_layout_box_style( $group, $removed, true ) : $group;
@@ -116,9 +112,6 @@ class md_upgrade {
 			else
 				$settings[$key] = $moved;
 		}
-
-		if ( $this->border && $removed )
-			$settings['effects']['dividers'] = $settings['effects']['dividers'] ?? array( 'divide' => true );
 
 		return $settings;
 	}
@@ -140,9 +133,6 @@ class md_upgrade {
 				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? true;
 			elseif ( $style === 'box' && $removed )
 				$group['layout']['content']['box_style'] = $group['layout']['content']['box_style'] ?? 0;
-
-			if ( $style === 'border' )
-				$this->border = true;
 
 			unset( $group['layout']['content_style'] );
 
