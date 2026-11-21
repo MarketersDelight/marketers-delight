@@ -107,7 +107,7 @@ html:not(.md-builder) .editor-styles-wrapper .wp-block-post-content > .wp-block-
 
 .expanded .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper { max-width: 100%; }
 
-:is(.expanded, .md-builder) .editor-styles-wrapper .wp-block-post-title {
+:is(.expanded, .md-builder) .editor-styles-wrapper .editor-post-title {
 	max-width: var(--md-width-site);
 	text-align: center;
 }

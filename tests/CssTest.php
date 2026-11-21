@@ -520,7 +520,7 @@ class CssTest extends MD_TestCase {
 		$this->assertStringContainsString( "! \$exclude_single && md_post_meta( array( 'layout', 'content', 'builder' ), \$post_id )", $admin );
 		$this->assertStringNotContainsString( 'classicEditorStyle', $admin_script );
 		$this->assertStringContainsString( '.expanded .editor-styles-wrapper .edit-post-visual-editor__post-title-wrapper', $block );
-		$this->assertStringContainsString( ':is(.expanded, .md-builder) .editor-styles-wrapper .wp-block-post-title', $block );
+		$this->assertStringContainsString( ':is(.expanded, .md-builder) .editor-styles-wrapper .editor-post-title', $block );
 		$this->assertStringNotContainsString( 'block_editor_layout_styles', $admin );
 		$this->assertStringNotContainsString( 'syncLayoutVariables', $script );
 		$this->assertStringNotContainsString( '--md-editor-', $block );
