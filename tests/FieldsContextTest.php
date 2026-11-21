@@ -181,6 +181,25 @@ class FieldsContextTest extends MD_TestCase {
 		$this->assertSame( '', $context['taxonomy'] );
 	}
 
+	public function test_context_before_wordpress_sets_a_screen() {
+		$fields = $this->make_fields( array() );
+		$fields->_get_screen = null;
+		$warnings = array();
+
+		set_error_handler( function( $no, $message ) use ( &$warnings ) {
+			$warnings[] = $message;
+
+			return true;
+		} );
+
+		$context = $this->get_context( $fields );
+		restore_error_handler();
+
+		$this->assertSame( array(), $warnings, 'AJAX, REST and early admin hooks run before current_screen' );
+		$this->assertFalse( $context['is_post'] );
+		$this->assertFalse( $context['is_group'] );
+	}
+
 	public function test_context_follows_a_new_screen() {
 		$fields = $this->make_fields( array( 'page' => 'my_page' ) );
 
