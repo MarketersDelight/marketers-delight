@@ -1,8 +1,11 @@
 <?php
 /**
- * Shapes the data of markup rendered on custom fields. The same fields
- * can be used across multiple WordPress APIs, and flat/structured levels
- * of fields for groups/repeater/builder/collections need their own handling.
+ * Draws MD's settings fields on every screen: settings pages, post type and taxonomy
+ * tabs, and the post, term and user editors. Values are read through md_scope, the
+ * same place md_save writes them.
+ *
+ * In order: drawing a field, where its value lives, reading values, what registration
+ * adds, inherited values, then template helpers and the group and builder controls.
  *
  * @since 4.7
  */
@@ -36,6 +39,16 @@ class md_fields extends md_fields_render {
 	protected $registered = array();
 
 	/**
+	 * The context worked out for the screen in $context_screen, reused until
+	 * md_api hands these fields another screen.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected $context = null;
+	protected $context_screen = null;
+
+	/**
 	 * Set properties of instance.
 	 *
 	 * @since 5.0
@@ -66,43 +79,6 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Determine the admin screeen context to render the correct field
-	 * settings based on the admin pages needs. We also check if a field
-	 * belongs to an admin group, nested, or a taxonomy settings screen.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function get_context() {
-		$screen = $this->_get_screen;
-
-		$context = array(
-			'is_post' => $screen['is_post'],
-			'is_term' => $screen['is_term'],
-			'is_user' => $screen['is_user'],
-			'is_group' => false,
-			'page_id' => null,
-			'is_child' => false,
-			'taxonomy' => ''
-		);
-
-		if ( $context['is_post'] || $context['is_term'] || $context['is_user'] )
-			return $context;
-
-		$page = $screen['page'];
-		$page_types = apply_filters( 'md_admin_groups', array() );
-
-		if ( ! empty( $page_types[$page] ) ) {
-			$context['is_group'] = true;
-			$context['page_id']  = md_clean_id( $page );
-			$context['is_child'] = $this->_clean_id !== $context['page_id'];
-			$context['taxonomy'] = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
-		}
-
-		return $context;
-	}
-
-	/**
 	 * Load any MD field. Takes a field name and arguments, which switch between
 	 * $parent, $fields and $args to create option groups per page.
 	 *
@@ -116,80 +92,85 @@ class md_fields extends md_fields_render {
 			$field = array_merge( $this->root, (array) $field );
 
 		$clean_id = $args['id'] ?? $this->_clean_id;
-		$args = array_merge( $this->registered_args( $field, $clean_id ), $args );
+		$args = $args + $this->registered_args( $field, $clean_id );
+		$args['field'] = $field;
 
 		if ( ! empty( $args['tokens'] ) )
 			$args['tokens'] = $this->token_set( $args );
 
 		$context = $this->get_context();
-		$scope = $this->scope( $context );
-		$name = "md[$scope][$clean_id]";
-		$id = "{$this->_option}_{$clean_id}";
-		$args['field'] = $field;
+		$stored = $this->stored( array_merge( array( $clean_id ), (array) $field ) );
+		$option = $stored['value'];
+		$name = 'md[' . $this->scope( $context ) . ']';
+		$id = $this->_option;
 
-		if ( $context['is_post'] || wp_doing_ajax() ) {
-			$setting = get_post_meta( get_the_ID(), $this->_option, true );
-			$setting = $this->standalone_setting( 'post', get_the_ID(), $setting, $field, $clean_id );
-		}
-		elseif ( $context['is_term'] )
-			$setting = get_term_meta( $this->_get_screen['screen_id'], $this->_option, true );
-		elseif ( $context['is_user'] ) {
-			$user_id = isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id();
-			$setting = get_user_meta( $user_id, $this->_option, true );
-			$setting = $this->standalone_setting( 'user', $user_id, $setting, $field, $clean_id );
-		}
-		else {
-			$setting = $this->stored_option();
-
-			if ( $context['is_group'] ) {
-				$taxonomy = $context['taxonomy'];
-				$page_id  = $context['page_id'];
-
-				if ( $context['is_child'] ) {
-					$setting = ! empty( $setting[$page_id] ) ? $setting[$page_id] : array();
-					$name = "md[$scope][$page_id][$clean_id]";
-					$id = "{$this->_option}_{$page_id}";
-
-					if ( $taxonomy ) {
-						$setting = ! empty( $setting[$taxonomy] ) ? $setting[$taxonomy] : array();
-						$id .= "_{$taxonomy}";
-					}
-
-					$id .= "_{$clean_id}";
-				}
-				elseif ( $taxonomy ) {
-					$id = "{$this->_option}_{$clean_id}_{$taxonomy}";
-					$setting = array( $clean_id => ! empty( $setting[$clean_id][$taxonomy] ) ? $setting[$clean_id][$taxonomy] : array() );
-				}
-			}
+		if ( $context['is_child'] ) {
+			$name .= "[{$context['page_id']}]";
+			$id .= "_{$context['page_id']}" . ( $context['taxonomy'] ? "_{$context['taxonomy']}" : '' );
 		}
 
-		$has_option = is_array( $setting ) && array_key_exists( $clean_id, $setting );
-		$option = $has_option && is_array( $setting[$clean_id] ) ? $setting[$clean_id] : array();
+		$name .= "[$clean_id]";
+		$id .= "_$clean_id" . ( ! $context['is_child'] && $context['taxonomy'] ? "_{$context['taxonomy']}" : '' );
 
 		foreach ( (array) $field as $key ) {
 			$name .= "[$key]";
-			$id .= "_{$key}";
-			$has_option = $has_option && is_array( $option ) && array_key_exists( $key, $option );
-			$option = $has_option ? $option[$key] : '';
+			$id .= "_$key";
 		}
 
-		if ( $args['type'] === 'builder' && ! $has_option && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
+		if ( $args['type'] === 'builder' && ! $stored['found'] && ! empty( $args['populate'] ) && array_key_exists( 'defaults', $args ) )
 			$option = is_array( $args['defaults'] ) ? $args['defaults'] : array();
-		elseif ( ! $has_option && is_array( $field ) && array_key_exists( 'default', $args ) && $args['type'] !== 'color' )
+		elseif ( ! $stored['found'] && is_array( $field ) && array_key_exists( 'default', $args ) && $args['type'] !== 'color' )
 			$option = $args['default'];
 
-		// Builder rows already know their displayed values, even before saving.
 		if ( array_key_exists( 'value', $args ) )
 			$option = $args['value'];
 
 		if ( $args['type'] === 'builder' && ! isset( $args['save_empty'] ) )
-			$args['save_empty'] = $has_option;
+			$args['save_empty'] = $stored['found'];
 
 		if ( ! empty( $args['inherit'] ) )
 			$args = $this->prepare_inheritance( $field, $option, $args );
 
 		$this->render_field( $name, $id, $option, $args, array( 'md-field' ) );
+	}
+
+	/**
+	 * Determine the admin screeen context to render the correct field
+	 * settings based on the admin pages needs. We also check if a field
+	 * belongs to an admin group, nested, or a taxonomy settings screen.
+	 *
+	 * @since 6.0
+	 */
+
+	protected function get_context() {
+		if ( $this->context !== null && $this->context_screen === $this->_get_screen )
+			return $this->context;
+
+		$screen = $this->_get_screen;
+		$context = array(
+			'is_post' => $screen['is_post'],
+			'is_term' => $screen['is_term'],
+			'is_user' => $screen['is_user'],
+			'is_group' => false,
+			'page_id' => null,
+			'is_child' => false,
+			'taxonomy' => ''
+		);
+
+		$page_types = apply_filters( 'md_admin_groups', array() );
+		$is_meta = $context['is_post'] || $context['is_term'] || $context['is_user'];
+
+		if ( ! $is_meta && ! empty( $page_types[$screen['page']] ) ) {
+			$context['is_group'] = true;
+			$context['page_id'] = md_clean_id( $screen['page'] );
+			$context['is_child'] = $this->_clean_id !== $context['page_id'];
+			$context['taxonomy'] = $screen['is_taxonomy'] ? $screen['md_tab'] : '';
+		}
+
+		$this->context = $context;
+		$this->context_screen = $screen;
+
+		return $context;
 	}
 
 	/**
@@ -217,6 +198,138 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
+	 * Where this screen's values are stored, read through md_scope like a save
+	 * writes them: post, term and user screens name their object's ID.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function storage() {
+		$context = $this->get_context();
+		$scope = $this->scope( $context );
+
+		if ( $scope === 'post' )
+			$scope .= ':' . get_the_ID();
+		elseif ( $scope === 'term' )
+			$scope .= ':' . $this->_get_screen['screen_id'];
+		elseif ( $scope === 'user' )
+			$scope .= ':' . ( isset( $_GET['user_id'] ) ? intval( $_GET['user_id'] ) : get_current_user_id() );
+
+		return md_scope::parse( $scope );
+	}
+
+	/**
+	 * What's saved at a path that starts with a group, and whether it's there.
+	 * Groups on a post type screen sit inside its own group.
+	 *
+	 * @since 6.2.2
+	 */
+
+	protected function stored( $keys ) {
+		$context = $this->get_context();
+		$keys = (array) $keys;
+		$group = $context['is_child'] ? $context['page_id'] : array_shift( $keys );
+		$scope = $this->storage();
+		$value = is_wp_error( $scope ) ? $scope : $scope->read( $group );
+		$found = ! is_wp_error( $value );
+
+		foreach ( $keys as $key ) {
+			$found = $found && is_array( $value ) && array_key_exists( $key, $value );
+			$value = $found ? $value[$key] : '';
+		}
+
+		return array(
+			'found' => $found,
+			'value' => $found ? $value : ''
+		);
+	}
+
+	/**
+	 * What's saved on this screen at a path that starts with a group, without
+	 * inheriting.
+	 *
+	 * @since 5.0.9
+	 */
+
+	public function get_field( $keys, $default = null ) {
+		$stored = $this->stored( $keys );
+
+		return $stored['found'] ? $stored['value'] : $default;
+	}
+
+	/**
+	 * Get only what's saved on the current screen, without inheriting.
+	 * Use it where a control shows this screen's own choice, like which
+	 * CTA type panel is open.
+	 *
+	 * @since 6.1
+	 */
+
+	public function saved( $keys, $default = null ) {
+		return $this->lookup( $keys, $default, false );
+	}
+
+	/**
+	 * Get field values based on current admin screen, inheriting from the
+	 * levels above it (term, then taxonomy, then post type) when unset.
+	 *
+	 * @since 4.1
+	 */
+
+	public function module( $keys, $default = null ) {
+		return $this->lookup( $keys, $default, true );
+	}
+
+	/**
+	 * Resolve a setting for the current screen, optionally inheriting.
+	 *
+	 * @since 6.1
+	 */
+
+	protected function lookup( $keys, $default, $inherit ) {
+		$keys = array_merge( $this->root, (array) $keys );
+		$screen = $this->_get_screen;
+		$context = $this->get_context();
+		$field_keys = array_merge( array( $this->_clean_id ), $keys );
+
+		if ( $context['is_post'] || ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) ) {
+			$stored = $this->stored( $field_keys );
+			$value = $stored['found'] ? $stored['value'] : null;
+
+			if ( $value === null && $inherit && $context['is_term'] )
+				$value = md_value( array(
+					'key' => $field_keys,
+					'default' => $default,
+					'taxonomy' => $screen['taxonomy'],
+					'post_type' => $screen['post_type']
+				) );
+		}
+		elseif ( $context['is_group'] ) {
+			$group_keys = $context['is_child'] ? $field_keys : $keys;
+			$value = null;
+
+			if ( $context['taxonomy'] )
+				$value = md_value( array(
+					'key' => $group_keys,
+					'taxonomy' => $context['taxonomy'],
+					'post_type' => $context['page_id'],
+					'inherit_post_type' => false
+				) );
+
+			if ( $value === null && ( $inherit || ! $context['taxonomy'] ) )
+				$value = md_value( array(
+					'key' => $group_keys,
+					'default' => $default,
+					'post_type' => $context['page_id']
+				) );
+		}
+		else
+			$value = md_option( $this->_option, $field_keys, $default );
+
+		return $value ?? $default;
+	}
+
+	/**
 	 * What a field's registration says about how it draws, for keys the template
 	 * didn't pass. A list of option values has no labels, so those stay with the
 	 * template.
@@ -233,37 +346,6 @@ class md_fields extends md_fields_render {
 			$args['options'] = $registered['options'];
 
 		return $args;
-	}
-
-	/**
-	 * The token set a field's `tokens` key asks for: a set name as given,
-	 * or for `true` the set this screen's archive text uses. Only plain
-	 * text and textarea fields outside groups and builders get tokens.
-	 *
-	 * @since 6.2
-	 */
-
-	protected function token_set( $args ) {
-		$type = isset( $args['type'] ) ? $args['type'] : '';
-
-		if ( ! is_string( $args['path'] ) || ! in_array( $type, array( 'text', 'textarea' ), true ) )
-			return '';
-
-		if ( is_string( $args['tokens'] ) )
-			return $args['tokens'];
-
-		$context = $this->get_context();
-
-		if ( $context['is_term'] || $context['taxonomy'] )
-			return 'term';
-
-		if ( $context['is_post'] || $context['is_user'] )
-			return '';
-
-		if ( md_clean_id( isset( $this->_get_screen['page'] ) ? $this->_get_screen['page'] : '' ) === 'author' )
-			return 'author';
-
-		return 'archive';
 	}
 
 	/**
@@ -302,6 +384,37 @@ class md_fields extends md_fields_render {
 		}
 
 		return $definition;
+	}
+
+	/**
+	 * The token set a field's `tokens` key asks for: a set name as given,
+	 * or for `true` the set this screen's archive text uses. Only plain
+	 * text and textarea fields outside groups and builders get tokens.
+	 *
+	 * @since 6.2
+	 */
+
+	protected function token_set( $args ) {
+		$type = isset( $args['type'] ) ? $args['type'] : '';
+
+		if ( ! is_string( $args['path'] ) || ! in_array( $type, array( 'text', 'textarea' ), true ) )
+			return '';
+
+		if ( is_string( $args['tokens'] ) )
+			return $args['tokens'];
+
+		$context = $this->get_context();
+
+		if ( $context['is_term'] || $context['taxonomy'] )
+			return 'term';
+
+		if ( $context['is_post'] || $context['is_user'] )
+			return '';
+
+		if ( md_clean_id( isset( $this->_get_screen['page'] ) ? $this->_get_screen['page'] : '' ) === 'author' )
+			return 'author';
+
+		return 'archive';
 	}
 
 	/**
@@ -399,57 +512,6 @@ class md_fields extends md_fields_render {
 	}
 
 	/**
-	 * Get stored field values based on current screen.
-	 *
-	 * @since 5.0.9
-	 */
-
-	public function get_field( $keys, $default = null ) {
-		$context = $this->get_context();
-		$option = $this->stored_option();
-
-		if ( $context['is_post'] )
-			$option = md_post_meta();
-		elseif ( $context['is_term'] )
-			$option = md_term_meta();
-		elseif ( $context['is_user'] )
-			$option = md_user_meta();
-		elseif ( $context['is_group'] ) {
-			$taxonomy = $context['taxonomy'];
-			$page_id = $context['page_id'];
-
-			if ( $context['is_child'] ) {
-				$option = ! empty( $option[$page_id] ) ? $option[$page_id] : array();
-
-				if ( $taxonomy )
-					$option = ! empty( $option[$taxonomy] ) ? $option[$taxonomy] : array();
-			}
-			elseif ( $taxonomy )
-				$option = array( $page_id => ! empty( $option[$page_id][$taxonomy] ) ? $option[$page_id][$taxonomy] : array() );
-		}
-
-		foreach ( (array) $keys as $key ) {
-			if ( ! is_array( $option ) || ! array_key_exists( $key, $option ) )
-				return $default;
-
-			$option = $option[$key];
-		}
-
-		return $option;
-	}
-
-	/**
-	 * Get field values based on current admin screen, inheriting from the
-	 * levels above it (term, then taxonomy, then post type) when unset.
-	 *
-	 * @since 4.1
-	 */
-
-	public function module( $keys, $default = null ) {
-		return $this->lookup( $keys, $default, true );
-	}
-
-	/**
 	 * The value this screen inherits from the level above it, or $default
 	 * when nothing is above it.
 	 *
@@ -460,145 +522,6 @@ class md_fields extends md_fields_render {
 		$parent = $this->parent_value( array_merge( $this->root, (array) $keys ), $default );
 
 		return $parent['value'];
-	}
-
-	/**
-	 * Get only what's saved on the current screen, without inheriting.
-	 * Use it where a control shows this screen's own choice, like which
-	 * CTA type panel is open.
-	 *
-	 * @since 6.1
-	 */
-
-	public function saved( $keys, $default = null ) {
-		return $this->lookup( $keys, $default, false );
-	}
-
-	/**
-	 * Resolve a setting for the current screen, optionally inheriting.
-	 *
-	 * @since 6.1
-	 */
-
-	protected function lookup( $keys, $default, $inherit ) {
-		if ( is_string( $keys ) )
-			$keys = (array) $keys;
-
-		if ( $this->root )
-			$keys = array_merge( $this->root, $keys );
-
-		$screen = $this->_get_screen;
-		$context = $this->get_context();
-
-		if ( $context['is_post'] ) {
-			array_unshift( $keys, $this->_clean_id );
-
-			return md_post_meta( $keys, null, $default );
-		}
-
-		if ( $context['is_term'] && ! empty( $screen['screen_id'] ) ) {
-			$field_keys = array_merge( array( $this->_clean_id ), $keys );
-			$value = md_term_meta( $field_keys, $screen['screen_id'], null );
-
-			if ( ! $inherit )
-				return $value ?? $default;
-
-			if ( is_null( $value ) )
-				$value = md_value( array(
-					'key' => $field_keys,
-					'default' => $default,
-					'taxonomy' => $screen['taxonomy'],
-					'post_type' => $screen['post_type']
-				) );
-
-			return $value;
-		}
-
-		if ( $context['is_group'] ) {
-			$field_keys = $keys;
-
-			if ( $context['is_child'] )
-				array_unshift( $field_keys, $this->_clean_id );
-
-			if ( $context['taxonomy'] ) {
-				$value = md_value( array(
-					'key' => $field_keys,
-					'taxonomy' => $context['taxonomy'],
-					'post_type' => $context['page_id'],
-					'inherit_post_type' => false
-				) );
-
-				if ( ! is_null( $value ) || ! $inherit )
-					return $value ?? $default;
-			}
-
-			return md_value( array(
-				'key' => $field_keys,
-				'default' => $default,
-				'post_type' => $context['page_id']
-			) );
-		}
-
-		array_unshift( $keys, $this->_clean_id );
-
-		return md_option( $this->_option, $keys, $default );
-	}
-
-	/**
-	 * Check if a field is saving as its own post or user meta key.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function is_standalone( $field, $clean_id, $settings = 'meta_boxes' ) {
-		$group = md_register( $settings )[$clean_id] ?? array();
-
-		return ! empty( $group['fields'][$field]['standalone'] );
-	}
-
-	/**
-	 * A standalone field's own meta key, read into its group the way the
-	 * field shows it.
-	 *
-	 * @since 6.2.4
-	 */
-
-	protected function standalone_setting( $type, $object_id, $setting, $field, $clean_id ) {
-		$result = $setting;
-
-		if ( is_string( $field ) && $this->is_standalone( $field, $clean_id, $type === 'user' ? 'user_meta' : 'meta_boxes' ) ) {
-			$standalone = get_metadata( $type, $object_id, $field, true );
-
-			if ( $standalone !== '' ) {
-				$result = is_array( $result ) ? $result : array();
-				$result[$clean_id][$field] = $standalone;
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Read raw option data for admin controls without merging defaults.
-	 *
-	 * @since 6.0
-	 */
-
-	protected function stored_option() {
-		$option = get_option( $this->_option, array() );
-
-		return is_array( $option ) ? $option : array();
-	}
-
-	/**
-	 * A screen title with the save status and Save button beside it, for
-	 * settings templates without a header of their own.
-	 *
-	 * @since 6.2
-	 */
-
-	public function title( $title ) {
-		echo md_save_settings::bar( '', $title );
 	}
 
 	/**

@@ -29,6 +29,12 @@ class FieldsWithinTest extends MD_TestCase {
 	private $row = array( 'builder', 'blog_heading', 'section_cta' );
 
 	private function make_fields() {
+		md_test_set_filter( 'md_register', array( 'admin_pages' => array( 'archive_sections' => array( 'fields' => array(
+			'links' => array( 'type' => 'group' ),
+			'custom_html' => array( 'type' => 'code' ),
+			'builder' => array( 'type' => 'builder' )
+		) ) ) ) );
+
 		$fields = new MD_Fields_Within_Capture( array(
 			'id' => 'archive_sections',
 			'clean_id' => 'archive_sections',

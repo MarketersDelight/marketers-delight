@@ -193,8 +193,6 @@ class md_admin {
 			if ( ! empty( $fields['toplevel'] ) ) {
 				$hook = add_menu_page( $fields['name'], $menu_title, $capability, $menu_slug, $callback, $icon, $position );
 
-				// The top-level page is also its menu's first item, named by its tab
-
 				if ( ! empty( $fields['tab_name'] ) )
 					add_submenu_page( $menu_slug, $fields['tab_name'], $fields['tab_name'], $capability, $menu_slug, $callback, 0 );
 			}
@@ -252,12 +250,12 @@ class md_admin {
 			'save' => array(
 				'clean' => '',
 				'dirty' => __( 'Unsaved changes', 'md' ),
-				'saving' => __( 'Saving…', 'md' ),
+				'saving' => __( 'Saving...', 'md' ),
 				'saved' => __( 'Saved', 'md' ),
 				'error' => __( 'Couldn\'t save: %s', 'md' ),
 				'failed' => __( 'check your connection and try again', 'md' ),
 				'button' => __( 'Save', 'md' ),
-				'saving_button' => __( 'Saving…', 'md' )
+				'saving_button' => __( 'Saving...', 'md' )
 			),
 			'colors' => md_localize_scripts( array( 'colors' ) )
 		);
@@ -303,11 +301,7 @@ class md_admin {
 
 		wp_register_script( 'md-block-editor-layout', false, array(), false );
 		wp_enqueue_script( 'md-block-editor-layout' );
-		wp_add_inline_script(
-			'md-block-editor-layout',
-			$script,
-			'before'
-		);
+		wp_add_inline_script( 'md-block-editor-layout', $script, 'before' );
 	}
 
 	/**
@@ -384,6 +378,7 @@ class md_admin {
 		$hook = ! empty( $tab ) ? $tab : $page;
 
 		ob_start();
+
 		include md_template( 'admin/admin', true );
 
 		echo md_save_settings::close_form( ob_get_clean() );
