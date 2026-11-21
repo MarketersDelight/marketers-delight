@@ -65,10 +65,8 @@ class md_save {
 			$warnings = array_merge( $warnings, $this->validate->warnings() );
 		}
 
-		if ( $where->type === 'post' )
-			$saves = $this->post_values( $where->id, $saves, $warnings );
-		elseif ( $where->type === 'user' )
-			$saves = $this->user_values( $where->id, $saves, $warnings );
+		if ( $where->has_standalone() )
+			$saves = $this->meta_values( $where, $saves, $warnings );
 
 		// Merge each group over what's stored
 
@@ -158,47 +156,23 @@ class md_save {
 	}
 
 	/**
-	 * Post meta boxes can be changed by other code before they save, and
-	 * groups that need manage_options are left out for post editors.
-	 *
-	 * @since 6.2
-	 */
-
-	private function post_values( $post_id, $values, &$warnings ) {
-		$registered = md_register( 'meta_boxes' );
-		$values = (array) apply_filters( 'md_post_meta_save', $values, get_post( $post_id ) );
-
-		foreach ( array_keys( $values ) as $group ) {
-			if ( ! isset( $registered[$group] ) )
-				continue;
-
-			$capability = ! empty( $registered[$group]['edit_post'] ) ? 'edit_post' : 'manage_options';
-
-			if ( ! current_user_can( $capability, $post_id ) ) {
-				unset( $values[$group] );
-				$warnings[] = sprintf( __( 'You are not allowed to change the `%s` settings, so they were left as they are.', 'md' ), $group );
-			}
-		}
-
-		return $values;
-	}
-
-	/**
-	 * Users can change only the profile groups that let them in with
-	 * edit_user; the rest need manage_options and are left as they are.
+	 * Post and user groups other code can change before they save (posts, through
+	 * md_post_meta_save). Groups this user can't change are left as they are.
 	 *
 	 * @since 6.2.4
 	 */
 
-	private function user_values( $user_id, $values, &$warnings ) {
-		$registered = md_register( 'user_meta' );
+	private function meta_values( $scope, $values, &$warnings ) {
+		$registered = md_register( $scope->type === 'user' ? 'user_meta' : 'meta_boxes' );
 
-		foreach ( array_keys( $values ) as $group ) {
-			if ( isset( $registered[$group] ) && ! current_user_can( md_meta_group_capability( 'user', $registered[$group] ), $user_id ) ) {
+		if ( $scope->type === 'post' )
+			$values = (array) apply_filters( 'md_post_meta_save', $values, get_post( $scope->id ) );
+
+		foreach ( array_keys( $values ) as $group )
+			if ( isset( $registered[$group] ) && ! current_user_can( md_meta_group_capability( $scope->type, $registered[$group] ), $scope->id ) ) {
 				unset( $values[$group] );
 				$warnings[] = sprintf( __( 'You are not allowed to change the `%s` settings, so they were left as they are.', 'md' ), $group );
 			}
-		}
 
 		return $values;
 	}
@@ -255,16 +229,7 @@ class md_save {
 			$field = isset( $fields_schema[$key] ) ? $fields_schema[$key] : null;
 			$type = is_array( $field ) && isset( $field['type'] ) ? $field['type'] : null;
 
-			// Raw code is executable. Keep an existing value when another editor saves.
-			if ( $type === 'code' && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) ) {
-				if ( $value !== ( $old[$key] ?? null ) && ! $this->is_empty_value( $value ) )
-					$this->skipped[] = sprintf( __( '`%s` is code, which needs an administrator who can add unfiltered HTML. It was left as it is.', 'md' ), $key );
-
-				continue;
-			}
-
-			if ( ! empty( $field['code_options'] ) && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) &&
-				( in_array( $value, $field['code_options'], true ) || in_array( $old[$key] ?? null, $field['code_options'], true ) ) )
+			if ( $this->is_locked( $key, $field, $value, $old[$key] ?? null ) )
 				continue;
 
 			if ( in_array( $type, array( 'group', 'builder' ), true ) && is_array( $value ) ) {
@@ -301,6 +266,32 @@ class md_save {
 		}
 
 		return $old;
+	}
+
+	/**
+	 * Raw code is executable, so only an administrator who can add unfiltered HTML
+	 * changes a code field, or a select option that switches code on or off.
+	 *
+	 * @since 6.2.4
+	 */
+
+	private function is_locked( $key, $field, $value, $old ) {
+		$locked = false;
+		$code = $field['code_options'] ?? array();
+		$is_code = ( $field['type'] ?? '' ) === 'code';
+
+		if ( ( $is_code || $code ) && ( ! current_user_can( 'manage_options' ) || ! current_user_can( 'unfiltered_html' ) ) ) {
+			if ( $is_code ) {
+				$locked = true;
+
+				if ( $value !== $old && ! $this->is_empty_value( $value ) )
+					$this->skipped[] = sprintf( __( '`%s` is code, which needs an administrator who can add unfiltered HTML. It was left as it is.', 'md' ), $key );
+			}
+			elseif ( $code && ( in_array( $value, $code, true ) || in_array( $old, $code, true ) ) )
+				$locked = true;
+		}
+
+		return $locked;
 	}
 
 	/**
@@ -492,7 +483,7 @@ class md_save {
 		}
 
 		if ( $scope->has_standalone() )
-			$new = $this->save_standalone_meta( $scope, $new, $groups );
+			$new = $scope->write_standalone_meta( $new, $groups );
 
 		$new = $this->prune_empty( $new );
 
@@ -500,46 +491,6 @@ class md_save {
 			update_metadata( $scope->type, $scope->id, 'marketers_delight', wp_slash( $new ) );
 		else
 			delete_metadata( $scope->type, $scope->id, 'marketers_delight' );
-	}
-
-	/**
-	 * For maximum query compatibility, we may want to save standalone
-	 * meta keys outside of the single meta key we usually save to, so a
-	 * simple standalone => true flag does just that, for posts and users.
-	 *
-	 * @since 6.0
-	 */
-
-	private function save_standalone_meta( $scope, $save, $groups ) {
-		$settings = $scope->type === 'user' ? 'user_meta' : 'meta_boxes';
-
-		foreach ( md_register( $settings ) as $id => $group ) {
-			if ( empty( $group['fields'] ) || ! current_user_can( md_meta_group_capability( $scope->type, $group ), $scope->id ) )
-				continue;
-
-			foreach ( $group['fields'] as $key => $field ) {
-				if ( empty( $field['standalone'] ) )
-					continue;
-
-				// A saved group without the key had it cleared
-
-				if ( ! isset( $save[$id] ) || ! is_array( $save[$id] ) || ! array_key_exists( $key, $save[$id] ) ) {
-					if ( in_array( $id, $groups, true ) )
-						delete_metadata( $scope->type, $scope->id, $key );
-
-					continue;
-				}
-
-				if ( $save[$id][$key] === '' )
-					delete_metadata( $scope->type, $scope->id, $key );
-				else
-					update_metadata( $scope->type, $scope->id, $key, wp_slash( $save[$id][$key] ) );
-
-				unset( $save[$id][$key] );
-			}
-		}
-
-		return $save;
 	}
 
 	/**

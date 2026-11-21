@@ -29,7 +29,6 @@ else {
 	$option = array_merge( $empty, $option );
 }
 
-$callback_args = isset( $args['callback_args'] ) ? $args['callback_args'] : null;
 
 $full = $max && count( $option ) - 1 >= $max;
 $classes[] = "md-group-$style";
@@ -43,7 +42,7 @@ $classes = join( ' ', $classes );
 	<?php if ( isset( $args['label'] ) )
 		$this->label( $id, $args ); ?>
 
-	<?php if ( ! isset( $args['sort'] ) && ! isset( $args['hide_button'] ) ) {
+	<?php if ( ! isset( $args['sort'] ) ) {
 		$button_label = ! empty( $args['button_text'] ) ? $args['button_text'] : __( 'Add New', 'md' );
 		$button_classes = ! empty( $args['classes'] ) ? ' ' . $args['classes'] : '';
 
@@ -103,7 +102,7 @@ $classes = join( ' ', $classes );
 		</div>
 
 		<div class="md-group-content<?php echo ( $style == 'boxes' ? ' md-widget-item' : '' ); ?>">
-			<?php call_user_func( $args['callback'], $path, $group, $callback_args ); ?>
+			<?php call_user_func( $args['callback'], $path, $group ); ?>
 		</div>
 
 	</div>

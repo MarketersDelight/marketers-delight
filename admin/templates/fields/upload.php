@@ -90,7 +90,7 @@ if ( $type == 'media' ) :
 
 <?php elseif ( $type == 'file' ) :
 	$upload_action = isset( $args['upload_action'] ) ? $args['upload_action'] : '';
-	$alert = isset( $args['alert'] ) ? $args['alert'] : __( 'You are about to upload a new file. Do you want to proceed?', 'md' );
+	$alert = __( 'You are about to upload a new file. Do you want to proceed?', 'md' );
 	$success_text = isset( $args['success_text'] ) ? $args['success_text'] : __( 'File successfully updated.', 'md' );
 	$accepts = isset( $args['accept'] ) ? $args['accept'] : '';
 	$accept = ! empty( $accepts ) ? " accept=\"$accepts\"" : '';

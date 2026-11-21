@@ -195,10 +195,6 @@ class md_validate {
 			case 'range':
 				return $this->sanitize->number( $val, $fields );
 
-			case 'hidden':
-			case 'data':
-				return sanitize_text_field( $val );
-
 			case 'url':
 				return $this->sanitize->url( $val );
 

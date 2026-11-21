@@ -4,7 +4,6 @@ $type = ! empty( $args['hidden'] ) ? 'hidden' : ( $args['type'] === 'date' ? 'da
 $has_option = array_key_exists( 'option', $args );
 $option = $has_option ? $args['option'] : $option;
 $value = ! $has_option && isset( $args['default'] ) && $option == '' ? $args['default'] : $option;
-$value = isset( $args['map'] ) && is_array( $option ) ? $option['value'] : $value;
 $readonly = isset( $args['readonly'] ) || ( ! empty( $args['readonly_after_save'] ) && ! empty( $option ) );
 $classes = array( 'regular-text' );
 
@@ -25,8 +24,6 @@ if ( isset( $args['placeholder'] ) )
 if ( ! empty( $args['style'] ) )
     $attrs['style'] = $args['style'];
 
-if ( ! empty( $args['disabled'] ) )
-    $attrs['disabled'] = true;
 
 foreach ( $args['attributes'] ?? array() as $key => $val )
 	$attrs[$key] = $val;
@@ -41,7 +38,7 @@ $attr = '';
 foreach ( $attrs as $key => $val )
 	$attr .= $val === true ? " $key" : ' ' . $key . '="' . esc_attr( $val ) . '"';
 
-$icon = $readonly && ! isset( $args['hide_icon'] ) ? '<label for="' . esc_attr( $id ) . '" class="dashicons dashicons-lock"></label>' : '';
+$icon = $readonly ? '<label for="' . esc_attr( $id ) . '" class="dashicons dashicons-lock"></label>' : '';
 $unit = ! empty( $args['unit'] ) ? ' <label for="' . esc_attr( $id ) . '" class="md-prefix description">' . $args['unit'] . '</label> ' : '';
 
 echo "$icon $unit <input $attr />";

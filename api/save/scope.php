@@ -179,6 +179,45 @@ class md_scope {
 	}
 
 	/**
+	 * Write each standalone field to its own meta key and take it out of the
+	 * group, the other half of standalone_meta(). Returns what's left to save.
+	 *
+	 * @since 6.0
+	 */
+
+	public function write_standalone_meta( $save, $groups ) {
+		$settings = $this->type === 'user' ? 'user_meta' : 'meta_boxes';
+
+		foreach ( md_register( $settings ) as $id => $group ) {
+			if ( empty( $group['fields'] ) || ! current_user_can( md_meta_group_capability( $this->type, $group ), $this->id ) )
+				continue;
+
+			foreach ( $group['fields'] as $key => $field ) {
+				if ( empty( $field['standalone'] ) )
+					continue;
+
+				// A saved group without the key had it cleared
+
+				if ( ! isset( $save[$id] ) || ! is_array( $save[$id] ) || ! array_key_exists( $key, $save[$id] ) ) {
+					if ( in_array( $id, $groups, true ) )
+						delete_metadata( $this->type, $this->id, $key );
+
+					continue;
+				}
+
+				if ( $save[$id][$key] === '' )
+					delete_metadata( $this->type, $this->id, $key );
+				else
+					update_metadata( $this->type, $this->id, $key, wp_slash( $save[$id][$key] ) );
+
+				unset( $save[$id][$key] );
+			}
+		}
+
+		return $save;
+	}
+
+	/**
 	 * Site settings: each group is a branch of its option.
 	 *
 	 * @since 6.2
