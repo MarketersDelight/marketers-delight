@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Marketers Delight 6.2.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/marketers-delight\n"
+"Project-Id-Version: Marketers Delight 6.2.3\n"
+"Report-Msgid-Bugs-To: https://marketersdelight.com/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-16T19:53:00+00:00\n"
+"POT-Creation-Date: 2026-11-23T19:17:34+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: style.css
 #: admin/templates/admin.php:22
 #: api/abilities/abilities.php:51
-#: marketers-delight.php:239
+#: marketers-delight.php:280
 msgid "Marketers Delight"
 msgstr ""
 
@@ -42,94 +42,89 @@ msgstr ""
 msgid "https://kolakube.com/"
 msgstr ""
 
-#: admin/admin.php:242
+#: admin/admin.php:240
 msgid "Sticky"
 msgstr ""
 
-#: admin/admin.php:243
+#: admin/admin.php:241
 #, php-format
 msgid "Keep this post at the top of %s."
 msgstr ""
 
-#: admin/admin.php:249
+#: admin/admin.php:247
 msgid "Could not connect. Please try again."
 msgstr ""
 
-#: admin/admin.php:250
+#: admin/admin.php:248
 msgid "Copied!"
 msgstr ""
 
-#: admin/admin.php:251
+#: admin/admin.php:249
 msgid "Preview image"
 msgstr ""
 
-#: admin/admin.php:253
-#: admin/save-settings.php:252
-msgid "All changes saved"
-msgstr ""
-
-#: admin/admin.php:254
+#: admin/admin.php:252
 msgid "Unsaved changes"
 msgstr ""
 
-#: admin/admin.php:255
-#: admin/admin.php:260
-msgid "Saving…"
+#: admin/admin.php:253
+#: admin/admin.php:258
+msgid "Saving..."
 msgstr ""
 
-#: admin/admin.php:256
+#: admin/admin.php:254
 msgid "Saved"
 msgstr ""
 
-#: admin/admin.php:257
+#: admin/admin.php:255
 #, php-format
 msgid "Couldn't save: %s"
 msgstr ""
 
-#: admin/admin.php:258
+#: admin/admin.php:256
 msgid "check your connection and try again"
 msgstr ""
 
-#: admin/admin.php:259
+#: admin/admin.php:257
 #: admin/save-settings.php:253
 msgid "Save"
 msgstr ""
 
-#: admin/admin.php:266
+#: admin/admin.php:264
 #, php-format
 msgid "Keep at the top of %s"
 msgstr ""
 
-#: admin/admin.php:550
+#: admin/admin.php:531
 msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
 msgstr ""
 
-#: admin/admin.php:573
+#: admin/admin.php:554
 #, php-format
 msgid "Ready to update %s %2s?"
 msgstr ""
 
-#: admin/admin.php:574
+#: admin/admin.php:555
 msgid "Here are some resources to help you:"
 msgstr ""
 
-#: admin/admin.php:575
+#: admin/admin.php:556
 msgid "Read the changelog"
 msgstr ""
 
-#: admin/admin.php:576
+#: admin/admin.php:557
 msgid "See what's new in MD"
 msgstr ""
 
-#: admin/admin.php:577
+#: admin/admin.php:558
 msgid "Get help at support"
 msgstr ""
 
-#: admin/admin.php:578
+#: admin/admin.php:559
 msgid "When in doubt, make a backup your website before proceeding."
 msgstr ""
 
-#: admin/admin.php:579
+#: admin/admin.php:560
 msgid "Close"
 msgstr ""
 
@@ -143,7 +138,7 @@ msgid "Edit Theme"
 msgstr ""
 
 #: admin/dashboard.php:30
-#: api/fields/data.php:169
+#: api/fields/data.php:189
 msgid "Theme"
 msgstr ""
 
@@ -151,9 +146,9 @@ msgstr ""
 #: admin/dropins/list-table.php:396
 #: admin/templates/fields/admin-header.php:15
 #: features/blog.php:22
-#: features/byline/admin.php:325
-#: features/byline/admin.php:344
-#: features/byline/admin.php:368
+#: features/byline/admin.php:331
+#: features/byline/admin.php:350
+#: features/byline/admin.php:374
 #: features/header/templates/admin/header.php:11
 #: features/layout/templates/admin/layout-toggle.php:34
 #: features/loop/templates/admin/loop.php:196
@@ -211,204 +206,257 @@ msgstr ""
 msgid "<b>Disable</b> MD abilities for apps and AI assistants"
 msgstr ""
 
-#: admin/dashboard.php:69
+#: admin/dashboard.php:70
+msgid "Post Width"
+msgstr ""
+
+#: admin/dashboard.php:74
+msgid "Sidebar Width"
+msgstr ""
+
+#: admin/dashboard.php:78
+msgid "Panel Width"
+msgstr ""
+
+#: admin/dashboard.php:82
+msgid "Site Width"
+msgstr ""
+
+#: admin/dashboard.php:87
 msgid "Manage Sidebars"
 msgstr ""
 
-#: admin/dashboard.php:77
+#: admin/dashboard.php:95
 msgid "Manage Panels"
 msgstr ""
 
-#: admin/dashboard.php:99
+#: admin/dashboard.php:117
 #: admin/dropins/list-table.php:216
 msgid "Inactive"
 msgstr ""
 
-#: admin/dashboard.php:109
+#: admin/dashboard.php:127
 #: admin/dropins/list-table.php:215
 msgid "Active"
 msgstr ""
 
-#: admin/dashboard.php:117
+#: admin/dashboard.php:135
 msgid "Something went wrong. Please try to connect your license key again."
 msgstr ""
 
-#: admin/dashboard.php:120
+#: admin/dashboard.php:138
 msgid "Enter your <b>MD license key</b>, then select <b>Activate license key</b>."
 msgstr ""
 
-#: admin/dashboard.php:123
+#: admin/dashboard.php:141
 msgid "Disabled"
 msgstr ""
 
-#: admin/dashboard.php:124
+#: admin/dashboard.php:142
 msgid "Your license key has been disabled. Please contact MD support for more information."
-msgstr ""
-
-#: admin/dashboard.php:128
-#, php-format
-msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
-msgstr ""
-
-#: admin/dashboard.php:132
-#, php-format
-msgid "Your license covers <b>%1$s sites</b> and is now on <b>%2$s</b>. This network counts as %3$s, one per site. <a href=\"%4$s\" target=\"_blank\" rel=\"noopener noreferrer\">Add site activations</a> to get updates and install Drop-ins again."
-msgstr ""
-
-#: admin/dashboard.php:140
-msgid "Paused"
-msgstr ""
-
-#: admin/dashboard.php:144
-msgid "Expired"
 msgstr ""
 
 #: admin/dashboard.php:146
 #, php-format
+msgid "You've reached your license activation limit. Please purchase more sites or disable other sites from your <a href=\"%s\" target=\"_blank\">MD account</a>."
+msgstr ""
+
+#: admin/dashboard.php:150
+#, php-format
+msgid "Your license covers <b>%1$s sites</b> and is now on <b>%2$s</b>. This network counts as %3$s, one per site. <a href=\"%4$s\" target=\"_blank\" rel=\"noopener noreferrer\">Add site activations</a> to get updates and install Drop-ins again."
+msgstr ""
+
+#: admin/dashboard.php:158
+msgid "Paused"
+msgstr ""
+
+#: admin/dashboard.php:162
+msgid "Expired"
+msgstr ""
+
+#: admin/dashboard.php:164
+#, php-format
 msgid "Your <b>MD license key has expired!</b> Renew it from your <a href=\"%s\" class=\"md-renew-link\" target=\"_blank\" rel=\"noopener noreferrer\">MD account</a> to continue receiving updates."
 msgstr ""
 
-#: admin/dashboard.php:152
+#: admin/dashboard.php:170
 msgid "This license key could not be activated for this site. Check the key or contact MD support."
 msgstr ""
 
+#: admin/dashboard.php:214
+msgid "The exact length your text reads in the content box."
+msgstr ""
+
+#: admin/dashboard.php:217
+#, php-format
+msgid "Content, sidebar and the space between them. Now <code>%spx</code>"
+msgstr ""
+
 #: admin/design.php:35
-#: admin/design.php:101
+#: admin/design.php:85
 #: api/save/settings-file.php:40
 msgid "Design"
 msgstr ""
 
-#: admin/design.php:63
-msgid "Site Width"
-msgstr ""
-
-#: admin/design.php:67
-msgid "Post Width"
-msgstr ""
-
-#: admin/design.php:71
-msgid "Sidebar Width"
-msgstr ""
-
-#: admin/design.php:81
+#: admin/design.php:65
 msgid "Additional Colors"
 msgstr ""
 
-#: admin/design.php:86
-#: admin/templates/fields/link.php:111
+#: admin/design.php:70
+#: admin/templates/fields/link.php:116
 #: features/header/logo.php:26
 #: features/header/logo.php:36
 #: features/page-title/admin.php:26
 msgid "Color"
 msgstr ""
 
-#: admin/design.php:90
+#: admin/design.php:74
 #: features/loop/templates/admin/loop.php:167
 msgid "Name"
 msgstr ""
 
-#: admin/design.php:94
+#: admin/design.php:78
 #: api/icons.php:176
 msgid "Key"
 msgstr ""
 
-#: admin/design.php:109
-msgid "Site style"
+#: admin/design.php:114
+#: admin/templates/fields/page.php:17
+#: features/layout/templates/admin/layout.php:157
+#: features/loop/templates/admin/loop.php:236
+msgid "Content"
 msgstr ""
 
-#: admin/design.php:209
+#: admin/design.php:115
+msgid "Colors for your posts and pages"
+msgstr ""
+
+#: admin/design.php:119
+#: admin/templates/typography.php:113
+#: api/icons.php:283
+#: features/layout/admin.php:178
+msgid "Sidebar"
+msgstr ""
+
+#: admin/design.php:120
+msgid "Colors for your sidebars"
+msgstr ""
+
+#: admin/design.php:124
+#: features/layout/admin.php:190
+msgid "Panel"
+msgstr ""
+
+#: admin/design.php:125
+msgid "Colors for your panels"
+msgstr ""
+
+#: admin/design.php:129
+#: admin/templates/typography.php:130
+#: features/layout/templates/admin/layout.php:100
+msgid "Footer"
+msgstr ""
+
+#: admin/design.php:130
+msgid "Colors for your site footer"
+msgstr ""
+
+#: admin/design.php:198
 msgid "Best contrast on background"
 msgstr ""
 
-#: admin/design.php:224
+#: admin/design.php:213
 msgid "Background"
 msgstr ""
 
-#: admin/design.php:225
+#: admin/design.php:214
 #: api/design/colors.php:304
 msgid "Border"
 msgstr ""
 
-#: admin/design.php:226
+#: admin/design.php:215
 msgid "Box Border"
 msgstr ""
 
-#: admin/design.php:227
+#: admin/design.php:216
 msgid "Content Border"
 msgstr ""
 
-#: admin/design.php:228
+#: admin/design.php:217
 msgid "Content Box"
 msgstr ""
 
-#: admin/design.php:229
+#: admin/design.php:218
 msgid "Contrast Text"
 msgstr ""
 
-#: admin/design.php:230
+#: admin/design.php:219
 msgid "Danger"
 msgstr ""
 
-#: admin/design.php:231
+#: admin/design.php:220
 msgid "Headline Links"
 msgstr ""
 
-#: admin/design.php:232
+#: admin/design.php:221
 msgid "Headlines"
 msgstr ""
 
-#: admin/design.php:233
+#: admin/design.php:222
 msgid "Hover Background"
 msgstr ""
 
-#: admin/design.php:234
-#: features/page-cta/functions.php:84
+#: admin/design.php:223
+#: features/page-cta/functions.php:104
+#: features/page-cta/functions.php:211
 msgid "Links"
 msgstr ""
 
-#: admin/design.php:235
+#: admin/design.php:224
 msgid "Links Active"
 msgstr ""
 
-#: admin/design.php:236
+#: admin/design.php:225
 msgid "Links Hover"
 msgstr ""
 
-#: admin/design.php:237
+#: admin/design.php:226
 msgid "Main Background"
 msgstr ""
 
-#: admin/design.php:238
+#: admin/design.php:227
 msgid "Muted Links"
 msgstr ""
 
-#: admin/design.php:239
+#: admin/design.php:228
 #: api/design/colors.php:307
 msgid "Muted Text"
 msgstr ""
 
-#: admin/design.php:240
+#: admin/design.php:229
 msgid "Page Cover Overlay"
 msgstr ""
 
-#: admin/design.php:241
-#: admin/templates/fields/link.php:79
+#: admin/design.php:230
+#: admin/templates/fields/link.php:84
 #: api/design/colors.php:306
-#: features/page-title/text.php:18
+#: features/page-cta/functions.php:162
+#: features/page-title/text.php:19
+#: functions/design-functions.php:60
 msgid "Text"
 msgstr ""
 
-#: admin/design.php:242
-#: api/fields/fields.php:782
+#: admin/design.php:231
+#: api/fields/fields.php:693
 #: features/loop/templates/admin/loop.php:69
 msgid "Title"
 msgstr ""
 
-#: admin/design.php:243
+#: admin/design.php:232
 msgid "Title Link"
 msgstr ""
 
-#: admin/design.php:244
+#: admin/design.php:233
 msgid "Warning"
 msgstr ""
 
@@ -430,7 +478,7 @@ msgid "Please select a Drop-in to install."
 msgstr ""
 
 #: admin/dropins/actions.php:189
-#: api/abilities/dropins.php:57
+#: api/abilities/dropins.php:70
 msgid "Install Drop-in"
 msgid_plural "Install Drop-ins"
 msgstr[0] ""
@@ -486,7 +534,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: admin/dropins/dropins.php:31
-#: admin/templates/dashboard.php:50
+#: admin/templates/dashboard.php:69
 #: admin/templates/dropins/core-updates.php:1
 msgid "Drop-ins"
 msgstr ""
@@ -619,13 +667,13 @@ msgstr ""
 
 #: admin/dropins/dropins.php:263
 #: admin/templates/fields/collection.php:37
-#: admin/templates/import-export.php:146
+#: admin/templates/import-export.php:157
 #: features/loop/comments.php:66
 msgid "Cancel"
 msgstr ""
 
 #: admin/dropins/dropins.php:264
-#: api/dropins/manage.php:143
+#: api/dropins/manage.php:151
 msgid "Could not install the Drop-in."
 msgstr ""
 
@@ -688,7 +736,7 @@ msgid "Drop-in"
 msgstr ""
 
 #: admin/dropins/list-table.php:185
-#: features/page-cover/functions.php:154
+#: features/page-cover/functions.php:208
 msgid "Description"
 msgstr ""
 
@@ -726,7 +774,7 @@ msgstr ""
 #: admin/dropins/list-table.php:266
 #: admin/dropins/list-table.php:406
 #: admin/templates/fields/builder-field.php:35
-#: admin/templates/fields/group.php:90
+#: admin/templates/fields/group.php:93
 msgid "Delete"
 msgstr ""
 
@@ -789,6 +837,68 @@ msgstr ""
 #: admin/dropins/list-table.php:476
 #, php-format
 msgid "Requires MD %s"
+msgstr ""
+
+#: admin/effects.php:30
+#: admin/templates/effects.php:3
+msgid "Effects"
+msgstr ""
+
+#: admin/effects.php:34
+#: admin/templates/design.php:118
+msgid "Corner Radius"
+msgstr ""
+
+#: admin/effects.php:38
+msgid "Border Width"
+msgstr ""
+
+#: admin/effects.php:42
+msgid "Box Style"
+msgstr ""
+
+#: admin/effects.php:47
+msgid "Dividers"
+msgstr ""
+
+#: admin/effects.php:52
+msgid "Button Radius"
+msgstr ""
+
+#: admin/effects.php:56
+msgid "Button Weight"
+msgstr ""
+
+#: admin/effects.php:61
+msgid "Button Case"
+msgstr ""
+
+#: admin/effects.php:66
+msgid "Button Shadow"
+msgstr ""
+
+#: admin/effects.php:71
+msgid "Form Button Style"
+msgstr ""
+
+#: admin/effects.php:76
+msgid "Field Style"
+msgstr ""
+
+#: admin/effects.php:81
+msgid "Field Radius"
+msgstr ""
+
+#: admin/effects.php:85
+msgid "Join"
+msgstr ""
+
+#: admin/effects.php:90
+msgid "Shadow Style"
+msgstr ""
+
+#: admin/effects.php:95
+msgid "Shadow Color"
 msgstr ""
 
 #: admin/icons.php:29
@@ -898,190 +1008,205 @@ msgstr ""
 msgid "Apps and AI assistants you sign in with an application password can use actions from MD and its Drop-ins, such as creating a Stream post. Nothing is shared with anyone who isn&rsquo;t signed in."
 msgstr ""
 
-#: admin/templates/dashboard.php:61
+#: admin/templates/dashboard.php:51
+msgid "Site Layout"
+msgstr ""
+
+#: admin/templates/dashboard.php:51
+msgid "Widths for every page, in every style"
+msgstr ""
+
+#: admin/templates/dashboard.php:80
 msgid "Widget Areas"
 msgstr ""
 
-#: admin/templates/dashboard.php:65
+#: admin/templates/dashboard.php:84
 msgid "Sidebars"
 msgstr ""
 
-#: admin/templates/dashboard.php:65
+#: admin/templates/dashboard.php:84
 msgid "Custom sidebar areas"
-msgstr ""
-
-#: admin/templates/dashboard.php:67
-#, php-format
-msgid "Create new sidebar areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
-msgstr ""
-
-#: admin/templates/dashboard.php:71
-msgid "New sidebar name"
-msgstr ""
-
-#: admin/templates/dashboard.php:74
-msgid "Enter sidebar name..."
-msgstr ""
-
-#: admin/templates/dashboard.php:84
-msgid "Panels"
-msgstr ""
-
-#: admin/templates/dashboard.php:84
-msgid "Custom widget areas"
 msgstr ""
 
 #: admin/templates/dashboard.php:86
 #, php-format
-msgid "Create new Panel areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom panels to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
+msgid "Create new sidebar areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom sidebars to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
 msgstr ""
 
 #: admin/templates/dashboard.php:90
-msgid "New panel name"
+msgid "New sidebar name"
 msgstr ""
 
 #: admin/templates/dashboard.php:93
+msgid "Enter sidebar name..."
+msgstr ""
+
+#: admin/templates/dashboard.php:103
+msgid "Panels"
+msgstr ""
+
+#: admin/templates/dashboard.php:103
+msgid "Custom widget areas"
+msgstr ""
+
+#: admin/templates/dashboard.php:105
+#, php-format
+msgid "Create new Panel areas to use in the <a href=\"%s\">Widgets</a> screen. You can assign custom panels to various pages from <strong>Edit</strong> and <strong>Settings</strong> screens."
+msgstr ""
+
+#: admin/templates/dashboard.php:109
+msgid "New panel name"
+msgstr ""
+
+#: admin/templates/dashboard.php:112
 msgid "Enter panel name..."
 msgstr ""
 
 #: admin/templates/design.php:3
-msgid "Site Design"
+#: admin/templates/design.php:95
+msgid "Colors"
 msgstr ""
 
-#: admin/templates/design.php:5
-msgid "Configure your site's design and brand settings here."
-msgstr ""
-
-#: admin/templates/design.php:11
+#: admin/templates/design.php:7
 msgid "Color Palette"
 msgstr ""
 
-#: admin/templates/design.php:11
+#: admin/templates/design.php:7
 msgid "Your brand colors, used across your site"
 msgstr ""
 
-#: admin/templates/design.php:15
-msgid "Enter the colors from your brand guide. These colors will be available throughout your website."
-msgstr ""
-
-#: admin/templates/design.php:34
+#: admin/templates/design.php:28
 msgid "Add Color"
 msgstr ""
 
-#: admin/templates/design.php:69
-msgid "Site Layout"
-msgstr ""
-
-#: admin/templates/design.php:69
-msgid "Content, sidebar and site widths"
-msgstr ""
-
-#: admin/templates/design.php:74
-#: features/loop/functions.php:318
-msgid "Box style"
-msgstr ""
-
-#: admin/templates/design.php:75
-msgid "Change your site from box style to simple, or add your own styles."
-msgstr ""
-
-#: admin/templates/design.php:105
-msgid "<b>Tip:</b> Set the <b>Post Width</b> to the exact length your text will read in the content box."
-msgstr ""
-
-#: admin/templates/design.php:107
-msgid "<b>Tip:</b> To calculate your own site width you must add any extra spacing within the content and sidebar, which can change based on the <b>Site style</b>."
-msgstr ""
-
-#: admin/templates/design.php:126
+#: admin/templates/design.php:63
 msgid "Site Colors"
 msgstr ""
 
-#: admin/templates/design.php:126
+#: admin/templates/design.php:63
 msgid "Default colors across your site"
 msgstr ""
 
-#: admin/templates/design.php:140
-msgid "Actions"
+#: admin/templates/design.php:86
+msgid "Elements"
+msgstr ""
+
+#: admin/templates/design.php:90
+msgid "Buttons"
+msgstr ""
+
+#: admin/templates/design.php:90
+msgid "Colors and shape for every button"
+msgstr ""
+
+#: admin/templates/design.php:99
+#: admin/templates/effects.php:83
+#: admin/templates/fields/link.php:5
+#: api/design/colors.php:301
+#: api/design/theme-json.php:192
+msgid "Primary"
+msgstr ""
+
+#: admin/templates/design.php:99
+#: api/design/colors.php:302
+#: functions/design-functions.php:43
+msgid "Secondary"
+msgstr ""
+
+#: admin/templates/design.php:102
+#, php-format
+msgid "%s Text"
+msgstr ""
+
+#: admin/templates/design.php:112
+msgid "Shape"
+msgstr ""
+
+#: admin/templates/design.php:130
+#: admin/templates/fields/typography.php:55
+msgid "Font Weight"
+msgstr ""
+
+#: admin/templates/design.php:131
+#, php-format
+msgid "Bold Text (%s)"
+msgstr ""
+
+#: admin/templates/design.php:139
+#: api/fields/data.php:86
+msgid "Letter Case"
 msgstr ""
 
 #: admin/templates/design.php:140
-msgid "Button and status colors"
+#: admin/templates/fields/typography.php:14
+#: admin/templates/typography.php:60
+#: api/design/theme-json.php:124
+msgid "Normal"
 msgstr ""
 
-#: admin/templates/design.php:145
-msgid "Primary Button"
+#: admin/templates/design.php:142
+#: admin/templates/fields/typography.php:117
+msgid "Uppercase"
 msgstr ""
 
-#: admin/templates/design.php:146
-msgid "Secondary Button"
+#: admin/templates/design.php:143
+#: admin/templates/fields/typography.php:118
+msgid "Lowercase"
 msgstr ""
 
-#: admin/templates/design.php:147
-#: admin/templates/dropins/list.php:44
-#: api/collections/collections.php:54
-msgid "Status"
+#: admin/templates/design.php:144
+#: admin/templates/fields/typography.php:119
+msgid "Capitalize"
 msgstr ""
 
-#: admin/templates/design.php:166
-msgid "Header and Navigation"
+#: admin/templates/design.php:154
+msgid "Remove <b>Shadow</b>"
 msgstr ""
 
-#: admin/templates/design.php:166
-msgid "Header, menu and submenu colors"
+#: admin/templates/design.php:164
+#: admin/templates/typography.php:96
+#: features/header/admin.php:43
+#: features/header/admin.php:119
+#: features/header/templates/admin/header.php:3
+#: features/header/templates/admin/header.php:76
+#: features/layout/templates/admin/layout.php:10
+msgid "Header"
 msgstr ""
 
-#: admin/templates/design.php:178
+#: admin/templates/design.php:164
+msgid "Header bar colors"
+msgstr ""
+
+#: admin/templates/design.php:180
+#: marketers-delight.php:307
+msgid "Header Menu"
+msgstr ""
+
+#: admin/templates/design.php:180
+msgid "Menu and submenu colors in your header"
+msgstr ""
+
+#: admin/templates/design.php:185
 #: admin/templates/fields/builder-menu.php:6
 #: api/icons.php:209
-#: features/header/admin.php:97
+#: features/header/admin.php:103
 #: features/header/functions.php:132
 msgid "Menu"
 msgstr ""
 
-#: admin/templates/design.php:188
+#: admin/templates/design.php:199
 msgid "Submenu"
 msgstr ""
 
-#: admin/templates/design.php:203
-#: admin/templates/fields/page.php:18
-#: features/layout/templates/admin/layout.php:157
-#: features/loop/templates/admin/loop.php:236
-msgid "Content"
+#: admin/templates/design.php:220
+#: features/header/admin.php:54
+#: features/layout/admin.php:21
+#: features/loop/templates/admin/loop.php:2
+msgid "Layout"
 msgstr ""
 
-#: admin/templates/design.php:203
-msgid "Colors for your posts and pages"
-msgstr ""
-
-#: admin/templates/design.php:204
-#: admin/templates/typography.php:79
-#: api/icons.php:283
-#: features/layout/admin.php:177
-msgid "Sidebar"
-msgstr ""
-
-#: admin/templates/design.php:204
-msgid "Colors for your sidebars"
-msgstr ""
-
-#: admin/templates/design.php:205
-#: features/layout/admin.php:189
-msgid "Panel"
-msgstr ""
-
-#: admin/templates/design.php:205
-msgid "Colors for your panels"
-msgstr ""
-
-#: admin/templates/design.php:206
-#: admin/templates/typography.php:96
-#: features/layout/templates/admin/layout.php:100
-msgid "Footer"
-msgstr ""
-
-#: admin/templates/design.php:206
-msgid "Colors for your site footer"
+#: admin/templates/design.php:246
+msgid "Shapes"
 msgstr ""
 
 #: admin/templates/dropins/core-updates.php:5
@@ -1094,7 +1219,7 @@ msgstr ""
 
 #: admin/templates/dropins/core-updates.php:15
 #: admin/templates/dropins/core-updates.php:57
-#: api/abilities/dropins.php:43
+#: api/abilities/dropins.php:52
 msgid "Update Drop-ins"
 msgstr ""
 
@@ -1180,6 +1305,11 @@ msgstr ""
 msgid "Requires MD"
 msgstr ""
 
+#: admin/templates/dropins/list.php:44
+#: api/collections/collections.php:54
+msgid "Status"
+msgstr ""
+
 #: admin/templates/dropins/list.php:56
 msgid "Your network admin installs, updates and deletes Drop-ins. Turn on the ones you want for this site."
 msgstr ""
@@ -1188,27 +1318,87 @@ msgstr ""
 msgid "These Drop-ins come with MD Pro. Upgrade and they move to Available, ready to install from here."
 msgstr ""
 
+#: admin/templates/effects.php:3
+msgid "Corners, borders and shadows"
+msgstr ""
+
+#: admin/templates/effects.php:8
+msgid "Boxes"
+msgstr ""
+
+#: admin/templates/effects.php:28
+#: features/layout/templates/admin/layout.php:237
+#: features/layout/templates/admin/layout.php:241
+msgid "Remove <b>Box Style</b>"
+msgstr ""
+
+#: admin/templates/effects.php:33
+msgid "<b>Divide</b> content with lines"
+msgstr ""
+
+#: admin/templates/effects.php:38
+msgid "Shadows"
+msgstr ""
+
+#: admin/templates/effects.php:42
+msgid "Soft"
+msgstr ""
+
+#: admin/templates/effects.php:44
+#: api/design/theme-json.php:177
+msgid "Hard"
+msgstr ""
+
+#: admin/templates/effects.php:45
+#: features/page-cta/templates/admin/page-cta.php:7
+msgid "None"
+msgstr ""
+
+#: admin/templates/effects.php:61
+msgid "Forms"
+msgstr ""
+
+#: admin/templates/effects.php:61
+msgid "Search, comment and signup fields"
+msgstr ""
+
+#: admin/templates/effects.php:67
+msgid "Box"
+msgstr ""
+
+#: admin/templates/effects.php:68
+msgid "Underline"
+msgstr ""
+
+#: admin/templates/effects.php:82
+msgid "Button Style"
+msgstr ""
+
+#: admin/templates/effects.php:90
+msgid "<b>Join</b> fields and buttons together"
+msgstr ""
+
 #: admin/templates/fields/builder-field.php:19
 msgid "Enter label..."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:26
-#: admin/templates/fields/group.php:79
+#: admin/templates/fields/group.php:82
 msgid "Add subtitle (optional)"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:32
-#: admin/templates/fields/group.php:86
+#: admin/templates/fields/group.php:89
 msgid "Click here to reorder this group."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:37
-#: admin/templates/fields/group.php:92
+#: admin/templates/fields/group.php:95
 msgid "Reorder"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:38
-#: admin/templates/fields/group.php:94
+#: admin/templates/fields/group.php:97
 msgid "Click to toggle"
 msgstr ""
 
@@ -1238,13 +1428,13 @@ msgstr ""
 
 #: admin/templates/fields/builder-menu.php:16
 #: admin/templates/fields/builder-search.php:6
-#: features/header/admin.php:58
+#: features/header/admin.php:64
 msgid "Display"
 msgstr ""
 
 #: admin/templates/fields/builder-menu.php:18
 #: admin/templates/fields/builder-search.php:10
-#: admin/templates/fields/link.php:123
+#: admin/templates/fields/link.php:128
 msgid "Hide label on mobile"
 msgstr ""
 
@@ -1257,8 +1447,8 @@ msgid "Enable toggle"
 msgstr ""
 
 #: admin/templates/fields/builder-search.php:9
-#: admin/templates/fields/link.php:122
-#: features/byline/admin.php:348
+#: admin/templates/fields/link.php:127
+#: features/byline/admin.php:354
 msgid "Hide label"
 msgstr ""
 
@@ -1277,8 +1467,8 @@ msgstr ""
 
 #: admin/templates/fields/builder-search.php:25
 #: api/icons.php:275
-#: features/header/admin.php:90
-#: features/header/admin.php:91
+#: features/header/admin.php:96
+#: features/header/admin.php:97
 #: header.php:56
 #: searchform.php:5
 #: searchform.php:7
@@ -1289,7 +1479,7 @@ msgstr ""
 msgid "Add Elements"
 msgstr ""
 
-#: admin/templates/fields/builder.php:92
+#: admin/templates/fields/builder.php:94
 msgid "Drag an element here."
 msgstr ""
 
@@ -1383,7 +1573,7 @@ msgstr ""
 #: admin/templates/fields/color.php:59
 #: admin/templates/fields/color.php:94
 #: admin/templates/fields/font.php:4
-#: admin/templates/fields/typography.php:51
+#: admin/templates/fields/typography.php:34
 msgid "Theme default"
 msgstr ""
 
@@ -1468,8 +1658,8 @@ msgstr ""
 
 #: admin/templates/fields/font.php:24
 #: admin/templates/fields/font.php:55
-#: admin/templates/fields/link.php:134
-#: admin/templates/fields/link.php:147
+#: admin/templates/fields/link.php:149
+#: admin/templates/fields/title.php:10
 #: features/header/templates/admin/header.php:51
 msgid "Default"
 msgstr ""
@@ -1510,127 +1700,131 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: admin/templates/fields/group.php:73
+#: admin/templates/fields/group.php:76
 msgid "New entry..."
 msgstr ""
 
-#: admin/templates/fields/group.php:113
+#: admin/templates/fields/group.php:116
 msgid "New entry name"
 msgstr ""
 
-#: admin/templates/fields/group.php:114
+#: admin/templates/fields/group.php:117
 #: features/layout/templates/admin/layout-toggle.php:43
 msgid "Add"
 msgstr ""
 
-#: admin/templates/fields/link.php:16
-#: features/loop/admin.php:195
-msgid "Type"
-msgstr ""
-
-#: admin/templates/fields/link.php:20
-msgid "Page URL"
-msgstr ""
-
-#: admin/templates/fields/link.php:21
-msgid "Open Popup"
-msgstr ""
-
-#: admin/templates/fields/link.php:22
-#: admin/templates/fields/link.php:57
-msgid "Phone Number"
-msgstr ""
-
-#: admin/templates/fields/link.php:30
-#: features/page-title/admin.php:21
-msgid "Icon"
-msgstr ""
-
-#: admin/templates/fields/link.php:31
-msgid "Select icon"
-msgstr ""
-
-#: admin/templates/fields/link.php:40
-msgid "URL"
-msgstr ""
-
-#: admin/templates/fields/link.php:48
-msgid "Open in new tab"
-msgstr ""
-
-#: admin/templates/fields/link.php:49
-msgid "Show icon at end"
-msgstr ""
-
-#: admin/templates/fields/link.php:58
-msgid "(999) 999-9999"
-msgstr ""
-
-#: admin/templates/fields/link.php:65
-msgid "Open popup"
-msgstr ""
-
-#: admin/templates/fields/link.php:87
-msgid "Sub Text"
-msgstr ""
-
-#: admin/templates/fields/link.php:99
-#: features/byline/admin.php:58
-msgid "Style"
-msgstr ""
-
-#: admin/templates/fields/link.php:100
-msgid "Text link"
-msgstr ""
-
-#: admin/templates/fields/link.php:103
+#: admin/templates/fields/link.php:5
+#: admin/templates/fields/link.php:108
 #: api/design/colors.php:308
 msgid "Button"
 msgstr ""
 
-#: admin/templates/fields/link.php:133
-msgid "Button styles"
+#: admin/templates/fields/link.php:21
+#: features/loop/admin.php:195
+msgid "Type"
 msgstr ""
 
-#: admin/templates/fields/link.php:137
-msgid "Outline"
+#: admin/templates/fields/link.php:25
+msgid "Page URL"
 msgstr ""
 
-#: admin/templates/fields/link.php:138
-msgid "Frame"
+#: admin/templates/fields/link.php:26
+msgid "Open Popup"
 msgstr ""
 
-#: admin/templates/fields/link.php:146
+#: admin/templates/fields/link.php:27
+#: admin/templates/fields/link.php:62
+msgid "Phone Number"
+msgstr ""
+
+#: admin/templates/fields/link.php:35
+#: features/page-title/admin.php:21
+msgid "Icon"
+msgstr ""
+
+#: admin/templates/fields/link.php:36
+msgid "Select icon"
+msgstr ""
+
+#: admin/templates/fields/link.php:45
+msgid "URL"
+msgstr ""
+
+#: admin/templates/fields/link.php:53
+msgid "Open in new tab"
+msgstr ""
+
+#: admin/templates/fields/link.php:54
+msgid "Show icon at end"
+msgstr ""
+
+#: admin/templates/fields/link.php:63
+msgid "(999) 999-9999"
+msgstr ""
+
+#: admin/templates/fields/link.php:70
+msgid "Open popup"
+msgstr ""
+
+#: admin/templates/fields/link.php:92
+msgid "Sub Text"
+msgstr ""
+
+#: admin/templates/fields/link.php:104
+#: features/byline/admin.php:58
+msgid "Style"
+msgstr ""
+
+#: admin/templates/fields/link.php:105
+msgid "Text link"
+msgstr ""
+
+#: admin/templates/fields/link.php:148
 msgid "Button size"
 msgstr ""
 
-#: admin/templates/fields/link.php:149
+#: admin/templates/fields/link.php:151
 #: api/design/theme-json.php:123
 #: api/design/theme-json.php:152
 #: api/design/theme-json.php:173
 msgid "Small"
 msgstr ""
 
-#: admin/templates/fields/link.php:150
+#: admin/templates/fields/link.php:152
 #: api/design/theme-json.php:175
 msgid "Large"
 msgstr ""
 
 #: admin/templates/fields/page.php:6
-#: features/page-title/admin.php:17
-msgid "Page Title"
-msgstr ""
-
-#: admin/templates/fields/page.php:7
 msgid "The main <code>h1</code> title displayed prominently on this page. Also used as the default browser title."
 msgstr ""
 
-#: admin/templates/fields/page.php:19
+#: admin/templates/fields/page.php:18
 msgid "Add short or longform content to show below the page title."
+msgstr ""
+
+#: admin/templates/fields/range.php:20
+msgid "Reset"
 msgstr ""
 
 #: admin/templates/fields/text.php:36
 msgid "Field cannot be edited."
+msgstr ""
+
+#: admin/templates/fields/title.php:5
+#: features/page-title/admin.php:17
+msgid "Page Title"
+msgstr ""
+
+#: admin/templates/fields/title.php:12
+#: admin/templates/typography.php:35
+#: api/design/theme-json.php:134
+#: api/design/theme-json.php:176
+msgid "Huge"
+msgstr ""
+
+#: admin/templates/fields/title.php:15
+msgid "Title size"
 msgstr ""
 
 #: admin/templates/fields/typography.php:10
@@ -1641,20 +1835,16 @@ msgstr ""
 msgid "Line Height"
 msgstr ""
 
-#: admin/templates/fields/typography.php:50
+#: admin/templates/fields/typography.php:33
 msgid "Font Family"
 msgstr ""
 
-#: admin/templates/fields/typography.php:72
-msgid "Font Weight"
-msgstr ""
-
-#: admin/templates/fields/typography.php:73
-#: admin/templates/fields/typography.php:83
+#: admin/templates/fields/typography.php:56
+#: admin/templates/fields/typography.php:66
 msgid "Select font weight..."
 msgstr ""
 
-#: admin/templates/fields/typography.php:82
+#: admin/templates/fields/typography.php:65
 msgid "Bold Text"
 msgstr ""
 
@@ -1748,109 +1938,117 @@ msgstr ""
 msgid "Unicode: %s"
 msgstr ""
 
-#: admin/templates/import-export.php:13
+#: admin/templates/import-export.php:14
 #, php-format
 msgid "%d item was skipped:"
 msgid_plural "%d items were skipped:"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/templates/import-export.php:31
-#: admin/templates/import-export.php:53
+#: admin/templates/import-export.php:34
+#: admin/templates/import-export.php:56
 msgid "Export"
 msgstr ""
 
-#: admin/templates/import-export.php:31
+#: admin/templates/import-export.php:34
 msgid "Download your settings as a file"
 msgstr ""
 
-#: admin/templates/import-export.php:35
+#: admin/templates/import-export.php:38
 msgid "Posts, pages, menus and media aren't in this file. Export those from WordPress under Tools → Export."
 msgstr ""
 
-#: admin/templates/import-export.php:37
+#: admin/templates/import-export.php:40
 msgid "Choose what to export:"
 msgstr ""
 
-#: admin/templates/import-export.php:49
+#: admin/templates/import-export.php:52
 msgid "Integrations, license keys and logo images are never exported."
 msgstr ""
 
-#: admin/templates/import-export.php:66
+#: admin/templates/import-export.php:69
 msgid "Import"
 msgstr ""
 
-#: admin/templates/import-export.php:67
+#: admin/templates/import-export.php:70
 msgid "Step 2 of 2"
 msgstr ""
 
-#: admin/templates/import-export.php:67
+#: admin/templates/import-export.php:70
 msgid "Step 1 of 2"
 msgstr ""
 
-#: admin/templates/import-export.php:68
+#: admin/templates/import-export.php:71
 msgid "Load settings from an export file"
 msgstr ""
 
-#: admin/templates/import-export.php:76
+#: admin/templates/import-export.php:79
 msgid "Upload an MD settings file, then choose which parts to import. Moving a whole site? First install the same Drop-ins and import the WordPress XML file under Tools → Import."
 msgstr ""
 
-#: admin/templates/import-export.php:83
+#: admin/templates/import-export.php:86
 msgid "Upload"
 msgstr ""
 
-#: admin/templates/import-export.php:91
+#: admin/templates/import-export.php:94
 msgid "Nothing has changed yet."
 msgstr ""
 
-#: admin/templates/import-export.php:91
+#: admin/templates/import-export.php:94
 msgid "Check this file's details, then choose what to import."
 msgstr ""
 
-#: admin/templates/import-export.php:95
+#: admin/templates/import-export.php:99
 msgid "From"
 msgstr ""
 
-#: admin/templates/import-export.php:98
+#: admin/templates/import-export.php:103
 msgid "MD version"
 msgstr ""
 
-#: admin/templates/import-export.php:101
+#: admin/templates/import-export.php:107
 msgid "Exported"
 msgstr ""
 
-#: admin/templates/import-export.php:106
+#: admin/templates/import-export.php:113
 #, php-format
 msgid "%s isn't installed, so its settings will be skipped. Install it under Theme → Drop-ins, then upload the file again."
 msgstr ""
 
-#: admin/templates/import-export.php:111
+#: admin/templates/import-export.php:118
 #, php-format
 msgid "%1$s is inactive, so its settings will be skipped. %2$s, then come back to this page."
 msgstr ""
 
-#: admin/templates/import-export.php:113
+#: admin/templates/import-export.php:120
 msgid "Activate it under Theme → Drop-ins"
 msgstr ""
 
-#: admin/templates/import-export.php:119
+#: admin/templates/import-export.php:125
+msgid "This file is from an older version of MD, so its settings only add and change values: anything it doesn't hold, like settings this version moved or added (ex: widths and Box Style), keeps its current value. Two parts still replace: Widgets replaces every sidebar the file lists, empty ones included, and Drop-ins that keep their own lists, like popup designs, get the file's list as a whole."
+msgstr ""
+
+#: admin/templates/import-export.php:130
 msgid "Choose what to import:"
 msgstr ""
 
-#: admin/templates/import-export.php:128
+#: admin/templates/import-export.php:139
 msgid "These can't be imported here:"
 msgstr ""
 
-#: admin/templates/import-export.php:140
+#: admin/templates/import-export.php:151
+msgid "Selected settings merge into this site's values. Widgets and Drop-in lists like popup designs are replaced. Back up first to keep a copy of all its MD settings."
+msgstr ""
+
+#: admin/templates/import-export.php:151
 msgid "Selected parts replace this site's current values. Back up first to keep a copy of all its MD settings."
 msgstr ""
 
-#: admin/templates/import-export.php:141
+#: admin/templates/import-export.php:152
 msgid "Back up all settings"
 msgstr ""
 
-#: admin/templates/import-export.php:145
+#: admin/templates/import-export.php:156
 msgid "Finish import"
 msgstr ""
 
@@ -1962,41 +2160,37 @@ msgstr ""
 msgid "The main text across your site"
 msgstr ""
 
-#: admin/templates/typography.php:32
-msgid "Inherit from body"
-msgstr ""
-
-#: admin/templates/typography.php:32
+#: admin/templates/typography.php:31
+#: admin/templates/typography.php:59
 msgid "Inherit from <h1>"
 msgstr ""
 
-#: admin/templates/typography.php:37
+#: admin/templates/typography.php:35
+msgid "Page titles set to Huge size, and the Huge font size"
+msgstr ""
+
+#: admin/templates/typography.php:59
+msgid "Inherit from body"
+msgstr ""
+
+#: admin/templates/typography.php:70
 #, php-format
-msgid "Headline (%s)"
+msgid "Heading (%s)"
 msgstr ""
 
-#: admin/templates/typography.php:37
-msgid "H2 to H6 inherit this font and weight"
-msgstr ""
-
-#: admin/templates/typography.php:62
-#: features/header/admin.php:37
-#: features/header/templates/admin/header.php:3
-#: features/header/templates/admin/header.php:76
-#: features/header/templates/admin/header.php:81
-#: features/layout/templates/admin/layout.php:10
-msgid "Header"
-msgstr ""
-
-#: admin/templates/typography.php:62
-msgid "Text in your site header"
-msgstr ""
-
-#: admin/templates/typography.php:79
-msgid "Text in your sidebars"
+#: admin/templates/typography.php:70
+msgid "Huge and H2 to H6 inherit this font, weight, spacing and case"
 msgstr ""
 
 #: admin/templates/typography.php:96
+msgid "Text in your site header"
+msgstr ""
+
+#: admin/templates/typography.php:113
+msgid "Text in your sidebars"
+msgstr ""
+
+#: admin/templates/typography.php:130
 msgid "Text in your site footer"
 msgstr ""
 
@@ -2008,24 +2202,24 @@ msgstr ""
 msgid "Actions from the Marketers Delight theme and its Drop-ins."
 msgstr ""
 
-#: api/abilities/abilities.php:169
+#: api/abilities/abilities.php:196
 msgid "Exact text replacements in the content. Each find must appear exactly once."
 msgstr ""
 
-#: api/abilities/abilities.php:192
+#: api/abilities/abilities.php:219
 #, php-format
 msgid "\"%1$s\" appears %2$d times. Use longer text that appears once."
 msgstr ""
 
-#: api/abilities/abilities.php:208
+#: api/abilities/abilities.php:235
 msgid "This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete it permanently. Delete it from wp-admin instead."
 msgstr ""
 
-#: api/abilities/abilities.php:247
+#: api/abilities/abilities.php:274
 msgid "That isn't a date WordPress understands. Use a format like 2026-10-23T09:30:00-05:00."
 msgstr ""
 
-#: api/abilities/abilities.php:251
+#: api/abilities/abilities.php:278
 msgid "The date must be in the past or now."
 msgstr ""
 
@@ -2057,84 +2251,101 @@ msgstr ""
 msgid "Include each result's full content."
 msgstr ""
 
-#: api/abilities/content.php:62
+#: api/abilities/content.php:67
 msgid "Save content"
 msgstr ""
 
-#: api/abilities/content.php:63
+#: api/abilities/content.php:68
 msgid "Creates content when given a type (a draft unless status says otherwise), or changes it when given an id: only what's given changes. terms replaces a taxonomy's terms and add_terms keeps the others. Use edits for small text changes. settings saves MD settings on it in the same call, shaped { group: values }; Describe settings lists them."
 msgstr ""
 
-#: api/abilities/content.php:72
+#: api/abilities/content.php:77
 msgid "Block markup or HTML."
 msgstr ""
 
-#: api/abilities/content.php:81
+#: api/abilities/content.php:86
+msgid "The author's user ID. New content is yours unless this says otherwise."
+msgstr ""
+
+#: api/abilities/content.php:90
+msgid "Its place among the same parent's content, lowest first, ex: the order of Docs."
+msgstr ""
+
+#: api/abilities/content.php:94
 msgid "When it was posted, in the past or now."
 msgstr ""
 
-#: api/abilities/content.php:85
+#: api/abilities/content.php:98
 msgid "A Media Library image for the featured image, 0 to remove it."
 msgstr ""
 
-#: api/abilities/content.php:97
+#: api/abilities/content.php:111
 msgid "Trash content"
 msgstr ""
 
-#: api/abilities/content.php:98
+#: api/abilities/content.php:112
 msgid "Moves content to the Trash, or brings it back with restore. Nothing is deleted permanently. Warns about menu items pointing at it."
 msgstr ""
 
-#: api/abilities/content.php:113
+#: api/abilities/content.php:129
 msgid "Find terms"
 msgstr ""
 
-#: api/abilities/content.php:114
+#: api/abilities/content.php:130
 msgid "Lists a taxonomy's terms, ex: its categories or tags, with IDs for term:ID settings."
 msgstr ""
 
-#: api/abilities/content.php:130
+#: api/abilities/content.php:150
 msgid "Save term"
 msgstr ""
 
-#: api/abilities/content.php:131
+#: api/abilities/content.php:151
 msgid "Creates a term, or renames or changes one when given its id."
 msgstr ""
 
-#: api/abilities/content.php:266
+#: api/abilities/content.php:295
+#, php-format
+msgid "No content type named %1$s. Types: %2$s."
+msgstr ""
+
+#: api/abilities/content.php:342
 msgid "Give an id to change content, or a post type to create it."
 msgstr ""
 
-#: api/abilities/content.php:289
+#: api/abilities/content.php:365
 msgid "That ID isn't an image in the Media Library. Find content with type attachment lists them."
 msgstr ""
 
-#: api/abilities/content.php:353
+#: api/abilities/content.php:373
+msgid "That user doesn't exist or can't write this type of content."
+msgstr ""
+
+#: api/abilities/content.php:437
 msgid "That content couldn't be changed."
 msgstr ""
 
-#: api/abilities/content.php:358
+#: api/abilities/content.php:442
 #, php-format
 msgid "%d menu item points at this."
 msgid_plural "%d menu items point at this."
 msgstr[0] ""
 msgstr[1] ""
 
-#: api/abilities/content.php:399
+#: api/abilities/content.php:483
 msgid "A new term needs a name."
 msgstr ""
 
-#: api/abilities/content.php:421
+#: api/abilities/content.php:505
 #, php-format
 msgid "%1$s doesn't have a taxonomy named %2$s."
 msgstr ""
 
-#: api/abilities/content.php:424
+#: api/abilities/content.php:508
 #: api/collections/collections.php:730
 msgid "You cannot assign these terms."
 msgstr ""
 
-#: api/abilities/content.php:441
+#: api/abilities/content.php:525
 #, php-format
 msgid "No %1$s term named %2$s. Find terms lists them, and Save term adds one."
 msgstr ""
@@ -2147,32 +2358,32 @@ msgstr ""
 msgid "Turns an installed Drop-in on or off. Describe site lists them. Its settings, post types and Collections appear on your next call."
 msgstr ""
 
-#: api/abilities/dropins.php:36
+#: api/abilities/dropins.php:41
 msgid "Find Drop-ins"
 msgstr ""
 
-#: api/abilities/dropins.php:37
+#: api/abilities/dropins.php:42
 msgid "Lists installed Drop-ins with their versions and any waiting updates, and Drop-ins this site's license can install. From the last update check."
 msgstr ""
 
-#: api/abilities/dropins.php:44
+#: api/abilities/dropins.php:53
 msgid "Installs waiting Drop-in updates. Give slugs, or leave them out to update everything waiting."
 msgstr ""
 
-#: api/abilities/dropins.php:58
+#: api/abilities/dropins.php:71
 msgid "Installs a Drop-in this license has already claimed, from Find Drop-ins, without turning it on. Drop-ins not yet claimed are claimed by a person, under Theme > Drop-ins."
 msgstr ""
 
-#: api/abilities/dropins.php:147
+#: api/abilities/dropins.php:165
 #, php-format
 msgid "%s isn't installed. Describe site lists the installed Drop-ins."
 msgstr ""
 
-#: api/abilities/dropins.php:180
+#: api/abilities/dropins.php:198
 msgid "The update failed."
 msgstr ""
 
-#: api/abilities/dropins.php:200
+#: api/abilities/dropins.php:218
 #, php-format
 msgid "%s can't be installed here. Find Drop-ins lists what can; one not yet claimed is claimed under Theme > Drop-ins."
 msgstr ""
@@ -2197,39 +2408,39 @@ msgstr ""
 msgid "Also list unpublished or trashed items."
 msgstr ""
 
-#: api/abilities/items.php:51
+#: api/abilities/items.php:52
 msgid "Save item"
 msgstr ""
 
-#: api/abilities/items.php:52
+#: api/abilities/items.php:53
 msgid "Adds an item to a published post, or changes one when given item_id: only the fields given change, and null clears one. A new item goes at the end. To put items in another order, send order with their IDs in the order you want; the server handles the dates, so don't change dates to move items. To add between two items, add it, then send order. Use edits for small text changes."
 msgstr ""
 
-#: api/abilities/items.php:60
+#: api/abilities/items.php:61
 msgid "The item to change. Leave out to add a new one."
 msgstr ""
 
-#: api/abilities/items.php:64
-msgid "The field values, using the field names from Describe site or Find items."
+#: api/abilities/items.php:65
+msgid "The field values, using the field names from Describe site or Find items. Images take an attachment ID or { \"id\": ID }."
 msgstr ""
 
-#: api/abilities/items.php:69
+#: api/abilities/items.php:70
 msgid "When it was posted, in the past or now, for backdating. Not for moving items."
 msgstr ""
 
-#: api/abilities/items.php:74
+#: api/abilities/items.php:75
 msgid "Item IDs in reading order. Items left out stay where their dates put them."
 msgstr ""
 
-#: api/abilities/items.php:84
+#: api/abilities/items.php:86
 msgid "Trash item"
 msgstr ""
 
-#: api/abilities/items.php:85
+#: api/abilities/items.php:87
 msgid "Moves an item to the Trash, or brings it back with restore. Nothing is deleted permanently."
 msgstr ""
 
-#: api/abilities/items.php:111
+#: api/abilities/items.php:131
 #, php-format
 msgid "No Collection named %s. Describe site lists them."
 msgstr ""
@@ -2250,100 +2461,105 @@ msgstr ""
 msgid "Call this first. Explains how Marketers Delight settings work on this site: active and installed Drop-ins, settings groups and where each can be saved, post types with settings, Collections, and how settings inherit."
 msgstr ""
 
-#: api/abilities/settings.php:51
+#: api/abilities/settings.php:60
 msgid "Describe settings"
 msgstr ""
 
-#: api/abilities/settings.php:52
+#: api/abilities/settings.php:61
 msgid "Lists one settings group's fields: type, label, allowed options, default and limits. Use it before Update settings. A post type group lists the groups it hosts by name; ask for each one with the post type's scope."
 msgstr ""
 
-#: api/abilities/settings.php:64
+#: api/abilities/settings.php:81
 msgid "Get settings"
 msgstr ""
 
-#: api/abilities/settings.php:65
+#: api/abilities/settings.php:82
 msgid "Reads the values saved for a group at a scope, and at each scope it inherits from, nearest first. A value missing from a scope comes from the next one. Use it to find which level sets something before changing it. At post:ID, term:ID or user:ID, leave out group to see everything set on that one item."
 msgstr ""
 
-#: api/abilities/settings.php:77
+#: api/abilities/settings.php:101
 msgid "Update settings"
 msgstr ""
 
-#: api/abilities/settings.php:78
-msgid "Changes only the values given. null resets a value, so it inherits again. On a checkbox with options, true turns an option on and 0 turns it off over an inherited setting. Colors take a hex, rgba() or palette key; images take { \"id\": attachment ID }. Group and builder items are keyed by ID: a new ID adds an item, null removes one, others stay. Set dry_run to see the changes without saving."
+#: api/abilities/settings.php:102
+msgid "Changes only the values given. null resets a value, so it inherits again. On a checkbox with options, true turns an option on and 0 turns it off over an inherited setting. Colors take a hex, rgba() or palette key; images take an attachment ID or { \"id\": ID }. Group and builder items are keyed by ID: a new ID adds an item, null removes one, others stay. Set dry_run to see the changes without saving."
 msgstr ""
 
-#: api/abilities/settings.php:86
+#: api/abilities/settings.php:110
 msgid "The values to change, shaped like the group's fields."
 msgstr ""
 
-#: api/abilities/settings.php:90
+#: api/abilities/settings.php:114
 msgid "A new order for items: the field's name and its item IDs in order, ex: { \"list\": [\"b\", \"a\"] }."
 msgstr ""
 
-#: api/abilities/settings.php:101
+#: api/abilities/settings.php:132
 msgid "Export settings"
 msgstr ""
 
-#: api/abilities/settings.php:102
+#: api/abilities/settings.php:133
 msgid "Returns this site's MD settings as a file Import settings can read, for a backup or another site: design, theme, post type and Drop-in settings, and widgets. Export design alone to share a look. Never includes license or integration keys."
 msgstr ""
 
-#: api/abilities/settings.php:109
+#: api/abilities/settings.php:140
 msgid "Leave out for everything."
 msgstr ""
 
-#: api/abilities/settings.php:120
+#: api/abilities/settings.php:161
 msgid "Import settings"
 msgstr ""
 
-#: api/abilities/settings.php:121
+#: api/abilities/settings.php:162
 msgid "Applies a file from Export settings. Each selected part replaces this site's values, so export a backup first. Set check to see what the file holds and which Drop-ins it needs, without changing anything. Posts, pages and menus aren't in these files."
 msgstr ""
 
-#: api/abilities/settings.php:129
+#: api/abilities/settings.php:170
 msgid "Parts to import, from check. Leave out for all."
 msgstr ""
 
-#: api/abilities/settings.php:243
+#: api/abilities/settings.php:294
 msgid "A value saved at a nearer scope wins: post or term, then taxonomy, then post type. A group lists where it saves in saves_to. Groups without site there have no site-wide value: Layout, Loop and others are set per post type, and post_type:post is the blog. Change something at the level it should apply to, and use null to remove an override."
 msgstr ""
 
-#: api/abilities/settings.php:245
+#: api/abilities/settings.php:296
 msgid "A group's fields can differ by scope: post_fields are what a single post of that type saves, ex: post:ID. Use them instead of writing those details into the content."
 msgstr ""
 
-#: api/abilities/settings.php:246
+#: api/abilities/settings.php:297
 msgid "Brand colors live in colors at site scope, in palette: changing primary there changes everything that uses it."
 msgstr ""
 
-#: api/abilities/settings.php:278
+#: api/abilities/settings.php:329
 #, php-format
 msgid "No settings group named %s. Describe site lists them."
 msgstr ""
 
-#: api/abilities/settings.php:297
+#: api/abilities/settings.php:348
 msgid "An object: { \"option\": true } turns an option on, { \"option\": 0 } turns it off over an inherited setting, and null resets it. Not a list of options."
 msgstr ""
 
-#: api/abilities/settings.php:298
+#: api/abilities/settings.php:349
 msgid "An object of items keyed by ID, each shaped like item_fields. Pick a new ID to add one."
 msgstr ""
 
-#: api/abilities/settings.php:299
-msgid "A hex, rgba() or palette key."
+#: api/abilities/settings.php:350
+#, php-format
+msgid "A hex, rgba() or one of this site's palette keys: %s. A field's palette is the key it uses by default. New colors go in colors > custom, each with a key."
 msgstr ""
 
-#: api/abilities/settings.php:300
-msgid "{ \"id\": attachment ID }."
+#: api/abilities/settings.php:351
+msgid "An attachment ID or { \"id\": ID }."
 msgstr ""
 
-#: api/abilities/settings.php:372
+#: api/abilities/settings.php:352
+msgid "Saved as HTML, so & reads back as &amp; and still shows as &. Send it back either way."
+msgstr ""
+
+#: api/abilities/settings.php:424
 msgid "Give a group. Only post:ID, term:ID and user:ID can list everything at once."
 msgstr ""
 
-#: api/abilities/settings.php:411
+#: api/abilities/settings.php:463
 #, php-format
 msgid "%1$s has no site-wide value, so this wouldn't change anything. It's set per post type: use post_type:post for the blog, or one of: %2$s."
 msgstr ""
@@ -2360,199 +2576,241 @@ msgstr ""
 msgid "With no input, lists menus and menu locations. Given a menu ID or name, or a location, lists its items in order and flags any that point at trashed or unpublished content."
 msgstr ""
 
-#: api/abilities/site.php:56
+#: api/abilities/site.php:63
 msgid "Update menu"
 msgstr ""
 
-#: api/abilities/site.php:57
-msgid "Changes a menu, or creates one with create. items is a list of operations: { op: add, title, url } or { op: add, object: post type or taxonomy, object_id, title }; { op: update, id, title, url, parent }; { op: remove, id }. New items go at the end; send order to arrange them, and items left out follow the ones listed. location puts the menu in a theme location."
+#: api/abilities/site.php:64
+msgid "Changes a menu, or creates one with create. items is a list of operations, run in order: { op: add, title, url } or { op: add, object: post type or taxonomy, object_id, title }; { op: update, id, title, url, parent, position }; { op: remove, id }. parent nests an item under another: an item ID, or the ref of an item added earlier in the same call, so { op: add, ref: \"school\", title: \"School\", url } then { op: add, parent: \"school\", ... } builds a nested menu in one call. position is the item's place in the menu, from 1; new items go at the end. order arranges many at once, and items left out follow the ones listed. name renames the menu; on phones the menu toggle shows it. location puts the menu in a theme location."
 msgstr ""
 
-#: api/abilities/site.php:62
+#: api/abilities/site.php:69
 msgid "The name of a new menu."
 msgstr ""
 
-#: api/abilities/site.php:74
+#: api/abilities/site.php:70
+msgid "A new name for the menu."
+msgstr ""
+
+#: api/abilities/site.php:89
 msgid "Get widgets"
 msgstr ""
 
-#: api/abilities/site.php:75
-msgid "Lists sidebars with their widgets and settings, and the widget types available."
+#: api/abilities/site.php:90
+msgid "Lists sidebars with their widgets and settings, the widget types available, and the setting keys each type saves in type_settings. Some widgets only show their keys once one is added."
 msgstr ""
 
-#: api/abilities/site.php:81
+#: api/abilities/site.php:101
 msgid "Update widgets"
 msgstr ""
 
-#: api/abilities/site.php:82
+#: api/abilities/site.php:102
 msgid "Changes a sidebar's widgets. widgets is a list of operations: { op: add, type, settings }; { op: update, id, settings }, which changes only the settings given; { op: remove, id }. New widgets go at the end; send order to arrange them."
 msgstr ""
 
-#: api/abilities/site.php:213
+#: api/abilities/site.php:267
 msgid "That menu doesn't exist. Get menu with no input lists them."
 msgstr ""
 
-#: api/abilities/site.php:231
+#: api/abilities/site.php:299
 msgid "Each item needs an op: add, update or remove."
 msgstr ""
 
-#: api/abilities/site.php:258
+#: api/abilities/site.php:303
+#, php-format
+msgid "No item added earlier in this call has the ref %s."
+msgstr ""
+
+#: api/abilities/site.php:307
+msgid "position is the item's place in the menu, from 1."
+msgstr ""
+
+#: api/abilities/site.php:309
+#, php-format
+msgid "The ref %s is used twice. Give each new item its own ref."
+msgstr ""
+
+#: api/abilities/site.php:311
+#, php-format
+msgid "Item %d isn't published, and WordPress would publish it if its title, URL or parent changed. Only its position can change here."
+msgstr ""
+
+#: api/abilities/site.php:320
+#, php-format
+msgid "Item %d can't be nested under itself or one of its own sub-items."
+msgstr ""
+
+#: api/abilities/site.php:349
+msgid "A menu name can't be blank."
+msgstr ""
+
+#: api/abilities/site.php:351
+#, php-format
+msgid "There's already a menu named %s. Pick another name."
+msgstr ""
+
+#: api/abilities/site.php:389
 #, php-format
 msgid "Menu item %d couldn't be removed."
 msgstr ""
 
-#: api/abilities/site.php:340
+#: api/abilities/site.php:495
 #, php-format
 msgid "This menu has no item with ID %d. Get menu lists its items."
 msgstr ""
 
-#: api/abilities/site.php:383
+#: api/abilities/site.php:539
 #, php-format
 msgid "Points at content with status %s."
 msgstr ""
 
-#: api/abilities/site.php:438
+#: api/abilities/site.php:598
 #, php-format
 msgid "No sidebar named %s. Get widgets lists them."
 msgstr ""
 
-#: api/abilities/site.php:481
+#: api/abilities/site.php:642
 #, php-format
 msgid "No widget type named %s. Get widgets lists them."
 msgstr ""
 
-#: api/abilities/site.php:502
+#: api/abilities/site.php:664
 #, php-format
 msgid "This sidebar has no widget %s."
 msgstr ""
 
-#: api/abilities/site.php:520
+#: api/abilities/site.php:683
 msgid "Each widget needs an op: add, update or remove."
 msgstr ""
 
-#: api/abilities/site.php:546
+#: api/abilities/site.php:700
+#, php-format
+msgid "`%1$s` isn't a setting on %2$s, so it wasn't saved."
+msgstr ""
+
+#: api/abilities/site.php:724
 #, php-format
 msgid "Widget %s wasn't saved: its type is missing or it refused these settings."
 msgstr ""
 
-#: api/api.php:339
+#: api/api.php:353
 #, php-format
 msgid "Add New %s"
 msgstr ""
 
-#: api/api.php:340
+#: api/api.php:354
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: api/api.php:341
+#: api/api.php:355
 #, php-format
 msgid "New %s"
 msgstr ""
 
-#: api/api.php:342
-#: api/api.php:343
-#: api/api.php:637
-#: api/api.php:639
+#: api/api.php:356
+#: api/api.php:357
+#: api/api.php:650
+#: api/api.php:652
 #, php-format
 msgid "View %s"
 msgstr ""
 
-#: api/api.php:344
+#: api/api.php:358
 #, php-format
 msgid "Search %s"
 msgstr ""
 
-#: api/api.php:345
+#: api/api.php:359
 #, php-format
 msgid "No %s found"
 msgstr ""
 
-#: api/api.php:346
+#: api/api.php:360
 #, php-format
 msgid "No %s found in trash"
 msgstr ""
 
-#: api/api.php:347
+#: api/api.php:361
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: api/api.php:348
+#: api/api.php:362
 #, php-format
 msgid "%s published."
 msgstr ""
 
-#: api/api.php:349
+#: api/api.php:363
 #, php-format
 msgid "%s published privately."
 msgstr ""
 
-#: api/api.php:350
+#: api/api.php:364
 #, php-format
 msgid "%s reverted to draft."
 msgstr ""
 
-#: api/api.php:351
+#: api/api.php:365
 #, php-format
 msgid "%s scheduled."
 msgstr ""
 
-#: api/api.php:352
+#: api/api.php:366
 #, php-format
 msgid "%s updated."
 msgstr ""
 
-#: api/api.php:406
-#: api/api.php:416
+#: api/api.php:420
+#: api/api.php:430
 #, php-format
 msgid "%s Categories"
 msgstr ""
 
-#: api/api.php:407
+#: api/api.php:421
 #, php-format
 msgid "%s Category"
 msgstr ""
 
-#: api/api.php:408
+#: api/api.php:422
 #, php-format
 msgid "Search %s Categories"
 msgstr ""
 
-#: api/api.php:409
+#: api/api.php:423
 #, php-format
 msgid "All %s Categories"
 msgstr ""
 
-#: api/api.php:410
+#: api/api.php:424
 msgid "Parent Category"
 msgstr ""
 
-#: api/api.php:411
+#: api/api.php:425
 msgid "Parent Category:"
 msgstr ""
 
-#: api/api.php:412
+#: api/api.php:426
 #, php-format
 msgid "Edit %s Category"
 msgstr ""
 
-#: api/api.php:413
+#: api/api.php:427
 #, php-format
 msgid "Update %s Category"
 msgstr ""
 
-#: api/api.php:414
+#: api/api.php:428
 #, php-format
 msgid "Add New %s Category"
 msgstr ""
 
-#: api/api.php:415
+#: api/api.php:429
 #, php-format
 msgid "New %s Category"
 msgstr ""
 
-#: api/api.php:645
+#: api/api.php:658
 #, php-format
 msgid "Edit %s Settings"
 msgstr ""
@@ -2696,15 +2954,6 @@ msgstr ""
 msgid "Card"
 msgstr ""
 
-#: api/design/colors.php:301
-#: api/design/theme-json.php:192
-msgid "Primary"
-msgstr ""
-
-#: api/design/colors.php:302
-msgid "Secondary"
-msgstr ""
-
 #: api/design/colors.php:303
 msgid "Accent"
 msgstr ""
@@ -2735,17 +2984,8 @@ msgstr ""
 msgid "Tiny"
 msgstr ""
 
-#: api/design/theme-json.php:124
-msgid "Normal"
-msgstr ""
-
 #: api/design/theme-json.php:125
 msgid "Intro"
-msgstr ""
-
-#: api/design/theme-json.php:134
-#: api/design/theme-json.php:176
-msgid "Huge"
 msgstr ""
 
 #: api/design/theme-json.php:153
@@ -2757,11 +2997,11 @@ msgid "Half"
 msgstr ""
 
 #: api/design/theme-json.php:155
-#: features/byline/admin.php:217
-#: features/byline/admin.php:221
-#: features/byline/admin.php:232
-#: features/byline/admin.php:241
-#: features/layout/admin.php:287
+#: features/byline/admin.php:223
+#: features/byline/admin.php:227
+#: features/byline/admin.php:238
+#: features/byline/admin.php:247
+#: features/layout/admin.php:296
 msgid "Single"
 msgstr ""
 
@@ -2785,19 +3025,16 @@ msgstr ""
 msgid "Medium"
 msgstr ""
 
-#: api/design/theme-json.php:177
-msgid "Hard"
-msgstr ""
-
 #: api/design/theme-json.php:191
 msgid "Ink"
 msgstr ""
 
 #: api/design/theme-json.php:219
+#: features/page-cta/functions.php:158
 msgid "Heading"
 msgstr ""
 
-#: api/design/theme-json.php:324
+#: api/design/theme-json.php:350
 msgid "Rounded"
 msgstr ""
 
@@ -2816,68 +3053,68 @@ msgstr ""
 msgid "This Drop-in requires Marketers Delight %s."
 msgstr ""
 
-#: api/dropins/manage.php:47
-#: api/dropins/manage.php:227
+#: api/dropins/manage.php:46
+#: api/dropins/manage.php:235
 msgid "That Drop-in is not installed."
 msgstr ""
 
-#: api/dropins/manage.php:81
+#: api/dropins/manage.php:89
 msgid "Sorry, you are not allowed to activate Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:94
+#: api/dropins/manage.php:102
 msgid "Sorry, you are not allowed to deactivate Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:115
-#: api/dropins/manage.php:317
+#: api/dropins/manage.php:123
+#: api/dropins/manage.php:325
 msgid "Sorry, you are not allowed to install Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:120
-#: api/dropins/manage.php:216
+#: api/dropins/manage.php:128
+#: api/dropins/manage.php:224
 msgid "Could not access the file system."
 msgstr ""
 
-#: api/dropins/manage.php:124
+#: api/dropins/manage.php:132
 msgid "Could not create the Drop-ins directory."
 msgstr ""
 
-#: api/dropins/manage.php:183
+#: api/dropins/manage.php:191
 msgid "Sorry, you are not allowed to update Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:193
+#: api/dropins/manage.php:201
 msgid "Could not update the Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:211
+#: api/dropins/manage.php:219
 msgid "Sorry, you are not allowed to delete Drop-ins."
 msgstr ""
 
-#: api/dropins/manage.php:232
+#: api/dropins/manage.php:240
 msgid "Deactivate the Drop-in before deleting it."
 msgstr ""
 
-#: api/dropins/manage.php:237
+#: api/dropins/manage.php:245
 msgid "Could not delete the Drop-in files."
 msgstr ""
 
-#: api/dropins/manage.php:314
-#: api/dropins/manage.php:338
+#: api/dropins/manage.php:322
+#: api/dropins/manage.php:346
 msgid "That Drop-in is not available to install."
 msgstr ""
 
-#: api/dropins/manage.php:478
+#: api/dropins/manage.php:486
 msgid "Invalid Drop-in package name."
 msgstr ""
 
-#: api/dropins/manage.php:483
+#: api/dropins/manage.php:491
 #, php-format
 msgid "The package must contain %s."
 msgstr ""
 
-#: api/dropins/manage.php:488
+#: api/dropins/manage.php:496
 msgid "The package does not match the selected Drop-in."
 msgstr ""
 
@@ -3024,123 +3261,135 @@ msgid "After headline"
 msgstr ""
 
 #: api/fields/data.php:39
-#: features/featured-media/functions.php:376
-#: features/page-cta/functions.php:154
+#: features/featured-media/functions.php:389
+#: features/page-cta/functions.php:198
 msgid "Don't show"
 msgstr ""
 
-#: api/fields/data.php:106
-msgid "System UI"
+#: api/fields/data.php:56
+msgid "Font Size (px)"
 msgstr ""
 
-#: api/fields/data.php:110
-msgid "Neo-Grotesque"
+#: api/fields/data.php:60
+msgid "Line Height (px, not a ratio)"
 msgstr ""
 
-#: api/fields/data.php:114
-msgid "Humanist"
-msgstr ""
-
-#: api/fields/data.php:118
-msgid "Geometric Humanist"
-msgstr ""
-
-#: api/fields/data.php:122
-msgid "Classical Humanist"
+#: api/fields/data.php:78
+msgid "Letter Spacing"
 msgstr ""
 
 #: api/fields/data.php:126
-msgid "Rounded Sans"
+msgid "System UI"
 msgstr ""
 
 #: api/fields/data.php:130
-msgid "Industrial"
+msgid "Neo-Grotesque"
 msgstr ""
 
 #: api/fields/data.php:134
-msgid "Transitional"
+msgid "Humanist"
 msgstr ""
 
 #: api/fields/data.php:138
-msgid "Old Style"
+msgid "Geometric Humanist"
 msgstr ""
 
 #: api/fields/data.php:142
-msgid "Antique"
+msgid "Classical Humanist"
 msgstr ""
 
 #: api/fields/data.php:146
-msgid "Slab Serif"
+msgid "Rounded Sans"
 msgstr ""
 
 #: api/fields/data.php:150
+msgid "Industrial"
+msgstr ""
+
+#: api/fields/data.php:154
+msgid "Transitional"
+msgstr ""
+
+#: api/fields/data.php:158
+msgid "Old Style"
+msgstr ""
+
+#: api/fields/data.php:162
+msgid "Antique"
+msgstr ""
+
+#: api/fields/data.php:166
+msgid "Slab Serif"
+msgstr ""
+
+#: api/fields/data.php:170
 msgid "Didone"
 msgstr ""
 
-#: api/fields/data.php:168
+#: api/fields/data.php:188
 msgid "Font Library"
 msgstr ""
 
-#: api/fields/fields.php:389
+#: api/fields/fields.php:480
 #, php-format
 msgid "Use default (%s)"
 msgstr ""
 
-#: api/fields/fields.php:673
+#: api/fields/fields.php:574
 msgid "Visibility"
 msgstr ""
 
-#: api/fields/fields.php:719
+#: api/fields/fields.php:620
 msgid "Edit link name..."
 msgstr ""
 
-#: api/fields/fields.php:769
+#: api/fields/fields.php:680
 #: features/loop/admin.php:71
 msgid "Entry Top"
 msgstr ""
 
-#: api/fields/fields.php:770
+#: api/fields/fields.php:681
 #: features/loop/admin.php:75
 msgid "Before Content"
 msgstr ""
 
-#: api/fields/fields.php:771
+#: api/fields/fields.php:682
 #: features/loop/admin.php:76
 msgid "After Content"
 msgstr ""
 
-#: api/fields/fields.php:772
+#: api/fields/fields.php:683
 #: features/loop/admin.php:77
 msgid "Entry Footer"
 msgstr ""
 
-#: api/fields/fields.php:778
-#: features/featured-media/functions.php:306
-#: features/page-cover/functions.php:141
-#: features/page-cta/functions.php:123
+#: api/fields/fields.php:689
+#: features/featured-media/functions.php:319
+#: features/page-cover/functions.php:195
+#: features/page-cta/functions.php:146
 msgid "Position"
 msgstr ""
 
-#: api/fields/fields.php:783
+#: api/fields/fields.php:694
 msgid "Entry"
 msgstr ""
 
-#: api/fields/fields.php:806
+#: api/fields/fields.php:717
 #, php-format
 msgid "%s Settings"
 msgstr ""
 
-#: api/fields/fields.php:807
+#: api/fields/fields.php:718
 #, php-format
 msgid "Adjust the global settings for the %s post type. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen."
 msgstr ""
 
-#: api/fields/fields.php:812
+#: api/fields/fields.php:723
 #, php-format
 msgid "%s Category Settings"
 msgstr ""
 
-#: api/fields/fields.php:813
+#: api/fields/fields.php:724
 #, php-format
 msgid "Set the defaults for every category page in the %s post type. Settings will be inherited from the post type settings, and you can override further from any Edit Category screen."
 msgstr ""
@@ -3307,7 +3556,7 @@ msgid "Home"
 msgstr ""
 
 #: api/icons.php:168
-#: features/featured-media/functions.php:312
+#: features/featured-media/functions.php:325
 #: features/featured-media/templates/admin/featured-media.php:14
 msgid "Image"
 msgstr ""
@@ -3325,7 +3574,7 @@ msgid "Location"
 msgstr ""
 
 #: api/icons.php:188
-#: features/header/admin.php:83
+#: features/header/admin.php:89
 msgid "Link"
 msgstr ""
 
@@ -3431,62 +3680,66 @@ msgid "Star Empty"
 msgstr ""
 
 #: api/icons.php:307
-msgid "Sun"
+msgid "Substack"
 msgstr ""
 
 #: api/icons.php:311
-msgid "Support"
+msgid "Sun"
 msgstr ""
 
 #: api/icons.php:315
-msgid "Tags"
+msgid "Support"
 msgstr ""
 
 #: api/icons.php:319
-msgid "Telegram"
+msgid "Tags"
 msgstr ""
 
 #: api/icons.php:323
-msgid "TikTok"
+msgid "Telegram"
 msgstr ""
 
 #: api/icons.php:327
-msgid "Trophy"
+msgid "TikTok"
 msgstr ""
 
 #: api/icons.php:331
-msgid "Twitch"
+msgid "Trophy"
 msgstr ""
 
 #: api/icons.php:335
-msgid "User"
+msgid "Twitch"
 msgstr ""
 
 #: api/icons.php:339
-msgid "User Add"
+msgid "User"
 msgstr ""
 
 #: api/icons.php:343
+msgid "User Add"
+msgstr ""
+
+#: api/icons.php:347
 msgid "Vimeo"
 msgstr ""
 
-#: api/icons.php:348
+#: api/icons.php:352
 msgid "Volume Up"
 msgstr ""
 
-#: api/icons.php:352
+#: api/icons.php:356
 msgid "WhatsApp"
 msgstr ""
 
-#: api/icons.php:356
+#: api/icons.php:360
 msgid "WordPress"
 msgstr ""
 
-#: api/icons.php:360
+#: api/icons.php:364
 msgid "X (Twitter)"
 msgstr ""
 
-#: api/icons.php:365
+#: api/icons.php:369
 msgid "YouTube"
 msgstr ""
 
@@ -3578,37 +3831,42 @@ msgstr ""
 msgid "The `%s` section isn't used by this version of MD."
 msgstr ""
 
-#: api/save/settings-file.php:498
+#: api/save/settings-file.php:530
 #, php-format
 msgid "The image for `%s` isn't in this site's Media Library, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:511
+#: api/save/settings-file.php:543
 #, php-format
 msgid "The image for `%s` isn't in this site's Media Library, so it was left out."
 msgstr ""
 
-#: api/save/settings-file.php:512
+#: api/save/settings-file.php:544
 #, php-format
 msgid "The menu for `%s` wasn't found on this site, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:592
+#: api/save/settings-file.php:629
 #, php-format
 msgid "An entry in `%s` can't be read."
 msgstr ""
 
-#: api/save/settings-file.php:599
+#: api/save/settings-file.php:636
 #, php-format
 msgid "Settings for `%s` can't be imported."
 msgstr ""
 
-#: api/save/settings-file.php:631
+#: api/save/settings-file.php:650
+#, php-format
+msgid "`%1$s` settings for `%2$s` aren't part of %3$s, so they weren't imported."
+msgstr ""
+
+#: api/save/settings-file.php:675
 #, php-format
 msgid "`%1$s.%2$s` isn't used on this site."
 msgstr ""
 
-#: api/save/settings-file.php:746
+#: api/save/settings-file.php:790
 #, php-format
 msgid "The `%s` settings can't be imported on this site."
 msgstr ""
@@ -3620,10 +3878,20 @@ msgstr ""
 
 #: api/save/validate.php:125
 #, php-format
-msgid "`%s` has a value this site can't use."
+msgid "`%1$s` isn't one of this site's options: %2$s."
 msgstr ""
 
 #: api/save/validate.php:128
+#, php-format
+msgid "`%s` is already its default, so nothing was saved and it keeps inheriting."
+msgstr ""
+
+#: api/save/validate.php:130
+#, php-format
+msgid "`%s` has a value this site can't use."
+msgstr ""
+
+#: api/save/validate.php:133
 #, php-format
 msgid "`%s` needs a set of values."
 msgstr ""
@@ -3641,6 +3909,15 @@ msgstr ""
 #: api/save/widgets.php:112
 #, php-format
 msgid "The `%s` widget refused its settings, so it wasn't placed."
+msgstr ""
+
+#: api/upgrade.php:51
+msgid "The MD 6.2.2 data upgrade couldn't save its changes."
+msgstr ""
+
+#: api/upgrade.php:199
+#, php-format
+msgid "The MD %s data upgrade did not finish."
 msgstr ""
 
 #: comments.php:9
@@ -3676,16 +3953,16 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
-#: features/author/author.php:41
-#: features/layout/admin.php:291
+#: features/author/author.php:45
+#: features/layout/admin.php:300
 msgid "Author Pages"
 msgstr ""
 
-#: features/author/author.php:65
+#: features/author/author.php:69
 msgid "Author Pages Settings"
 msgstr ""
 
-#: features/author/author.php:66
+#: features/author/author.php:70
 msgid "Set sitewide defaults for author archive pages."
 msgstr ""
 
@@ -3738,146 +4015,146 @@ msgid "Badge"
 msgstr ""
 
 #: features/byline/admin.php:93
-#: features/byline/admin.php:255
+#: features/byline/admin.php:261
 #: features/loop/templates/admin/loop.php:300
 msgid "Byline"
 msgstr ""
 
-#: features/byline/admin.php:140
+#: features/byline/admin.php:146
 msgid "New duration"
 msgstr ""
 
-#: features/byline/admin.php:144
+#: features/byline/admin.php:150
 msgid "Avatar size"
 msgstr ""
 
-#: features/byline/admin.php:148
+#: features/byline/admin.php:154
 msgid "Taxonomy"
 msgstr ""
 
-#: features/byline/admin.php:187
+#: features/byline/admin.php:193
 msgid "Replaces the post type's bylines on this taxonomy's archive pages."
 msgstr ""
 
-#: features/byline/admin.php:189
-#: features/byline/admin.php:193
-#: features/byline/admin.php:231
-#: features/byline/admin.php:236
+#: features/byline/admin.php:195
+#: features/byline/admin.php:199
+#: features/byline/admin.php:237
+#: features/byline/admin.php:242
 msgid "Archives"
 msgstr ""
 
-#: features/byline/admin.php:194
-#: features/byline/admin.php:237
+#: features/byline/admin.php:200
+#: features/byline/admin.php:243
 msgid "Byline items shown in post listing loops."
 msgstr ""
 
-#: features/byline/admin.php:201
+#: features/byline/admin.php:207
 msgid "Add byline items to the posts on author pages."
 msgstr ""
 
-#: features/byline/admin.php:203
-#: features/byline/admin.php:207
+#: features/byline/admin.php:209
+#: features/byline/admin.php:213
 msgid "Author Loop"
 msgstr ""
 
-#: features/byline/admin.php:208
+#: features/byline/admin.php:214
 msgid "Byline items shown on the primary author loop."
 msgstr ""
 
-#: features/byline/admin.php:215
+#: features/byline/admin.php:221
 msgid "Replaces the post type's Single byline on this post. Leave empty to keep it."
 msgstr ""
 
-#: features/byline/admin.php:222
+#: features/byline/admin.php:228
 msgid "Shown on this post."
 msgstr ""
 
-#: features/byline/admin.php:229
+#: features/byline/admin.php:235
 msgid "Add byline items to post listings and single posts."
 msgstr ""
 
-#: features/byline/admin.php:242
+#: features/byline/admin.php:248
 msgid "Byline items shown on single post pages."
 msgstr ""
 
-#: features/byline/admin.php:255
+#: features/byline/admin.php:261
 msgid "Author, date and other post details"
 msgstr ""
 
-#: features/byline/admin.php:260
+#: features/byline/admin.php:266
 msgid "Edit Byline"
 msgstr ""
 
-#: features/byline/admin.php:312
+#: features/byline/admin.php:318
 msgid "days"
 msgstr ""
 
-#: features/byline/admin.php:328
-#: features/byline/admin.php:371
+#: features/byline/admin.php:334
+#: features/byline/admin.php:377
 msgid "Show label"
 msgstr ""
 
-#: features/byline/admin.php:329
+#: features/byline/admin.php:335
 msgid "Show relative date"
 msgstr ""
 
-#: features/byline/admin.php:330
+#: features/byline/admin.php:336
 msgid "Show as <strong>Last Updated</strong> date"
 msgstr ""
 
-#: features/byline/admin.php:331
+#: features/byline/admin.php:337
 msgid "Hide <strong>Last Updated</strong> if date is unchanged"
 msgstr ""
 
-#: features/byline/admin.php:345
+#: features/byline/admin.php:351
 msgid "In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot."
 msgstr ""
 
-#: features/byline/admin.php:349
+#: features/byline/admin.php:355
 msgid "Show avatar"
 msgstr ""
 
-#: features/byline/admin.php:350
+#: features/byline/admin.php:356
 msgid "Show author first name"
 msgstr ""
 
-#: features/byline/admin.php:372
+#: features/byline/admin.php:378
 msgid "Hide if zero comments"
 msgstr ""
 
-#: features/byline/admin.php:377
+#: features/byline/admin.php:383
 msgid "Zero comments label"
 msgstr ""
 
-#: features/byline/admin.php:408
+#: features/byline/admin.php:414
 msgid "Show all"
 msgstr ""
 
-#: features/byline/admin.php:412
+#: features/byline/admin.php:418
 msgid "Use default category"
 msgstr ""
 
-#: features/byline/admin.php:418
+#: features/byline/admin.php:424
 msgid "Defaults to 3. Enter 0 to show all tags on archives."
 msgstr ""
 
-#: features/byline/admin.php:424
+#: features/byline/admin.php:430
 msgid "Only show"
 msgstr ""
 
-#: features/byline/admin.php:427
+#: features/byline/admin.php:433
 msgid "Only show first category"
 msgstr ""
 
-#: features/byline/admin.php:434
+#: features/byline/admin.php:440
 msgid "Show links"
 msgstr ""
 
-#: features/byline/admin.php:436
+#: features/byline/admin.php:442
 msgid "Show with icon"
 msgstr ""
 
-#: features/byline/admin.php:437
+#: features/byline/admin.php:443
 msgid "Show as tags"
 msgstr ""
 
@@ -3918,80 +4195,80 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: features/featured-media/functions.php:300
+#: features/featured-media/functions.php:313
 msgid "Media Type"
 msgstr ""
 
-#: features/featured-media/functions.php:317
+#: features/featured-media/functions.php:330
 msgid "Max width"
 msgstr ""
 
-#: features/featured-media/functions.php:321
+#: features/featured-media/functions.php:334
 msgid "Position on mobile"
 msgstr ""
 
-#: features/featured-media/functions.php:323
+#: features/featured-media/functions.php:336
 #: features/loop/admin.php:55
 msgid "Keep beside"
 msgstr ""
 
-#: features/featured-media/functions.php:324
+#: features/featured-media/functions.php:337
 #: features/loop/admin.php:56
 msgid "Hide"
 msgstr ""
 
-#: features/featured-media/functions.php:329
+#: features/featured-media/functions.php:342
 msgid "Video URL"
 msgstr ""
 
-#: features/featured-media/functions.php:333
+#: features/featured-media/functions.php:346
 #: features/featured-media/templates/admin/featured-media.php:17
-#: features/page-cta/functions.php:94
-#: features/page-cta/functions.php:98
+#: features/page-cta/functions.php:116
+#: features/page-cta/functions.php:120
 msgid "Custom HTML"
 msgstr ""
 
-#: features/featured-media/functions.php:349
+#: features/featured-media/functions.php:362
 #: features/layout/templates/admin/layout.php:140
 #: features/loop/templates/admin/loop.php:252
 msgid "Use default position"
 msgstr ""
 
-#: features/featured-media/functions.php:359
-#: features/featured-media/functions.php:362
+#: features/featured-media/functions.php:372
+#: features/featured-media/functions.php:375
 msgid "Left"
 msgstr ""
 
-#: features/featured-media/functions.php:360
-#: features/featured-media/functions.php:363
+#: features/featured-media/functions.php:373
+#: features/featured-media/functions.php:376
 msgid "Right"
 msgstr ""
 
-#: features/featured-media/functions.php:361
+#: features/featured-media/functions.php:374
 msgid "Center"
 msgstr ""
 
-#: features/featured-media/functions.php:364
+#: features/featured-media/functions.php:377
 msgid "Above the title"
 msgstr ""
 
-#: features/featured-media/functions.php:365
+#: features/featured-media/functions.php:378
 msgid "Below the title"
 msgstr ""
 
-#: features/featured-media/functions.php:366
+#: features/featured-media/functions.php:379
 msgid "At the bottom"
 msgstr ""
 
-#: features/featured-media/functions.php:370
+#: features/featured-media/functions.php:383
 msgid "Beside title"
 msgstr ""
 
-#: features/featured-media/functions.php:371
+#: features/featured-media/functions.php:384
 msgid "Beside title and text"
 msgstr ""
 
-#: features/featured-media/functions.php:372
+#: features/featured-media/functions.php:385
 msgid "Full width"
 msgstr ""
 
@@ -4012,42 +4289,48 @@ msgstr ""
 msgid "Stack (default)"
 msgstr ""
 
-#: features/header/admin.php:48
-#: features/layout/admin.php:21
-#: features/loop/templates/admin/loop.php:2
-msgid "Layout"
-msgstr ""
-
-#: features/header/admin.php:53
+#: features/header/admin.php:59
 msgid "Mobile Layout"
 msgstr ""
 
-#: features/header/admin.php:60
+#: features/header/admin.php:66
 msgid "Use <strong>Sticky</strong> Header"
 msgstr ""
 
-#: features/header/admin.php:61
+#: features/header/admin.php:67
 msgid "Remove <strong>Title</strong>"
 msgstr ""
 
-#: features/header/admin.php:62
+#: features/header/admin.php:68
 msgid "Remove <strong>Tagline</strong>"
 msgstr ""
 
-#: features/header/admin.php:63
+#: features/header/admin.php:69
 msgid "Hide <strong>Title</strong> on mobile"
 msgstr ""
 
-#: features/header/admin.php:64
+#: features/header/admin.php:70
 msgid "Hide <strong>Tagline</strong> on mobile"
 msgstr ""
 
-#: features/header/admin.php:65
+#: features/header/admin.php:71
 msgid "Show Title and Tagline on one line"
 msgstr ""
 
-#: features/header/admin.php:66
+#: features/header/admin.php:72
 msgid "Show Logo on one line"
+msgstr ""
+
+#: features/header/admin.php:120
+msgid "The main branding and navigation area at the top of every page."
+msgstr ""
+
+#: features/header/admin.php:124
+msgid "Header Aside"
+msgstr ""
+
+#: features/header/admin.php:125
+msgid "A secondary content area for the header area."
 msgstr ""
 
 #: features/header/logo.php:22
@@ -4139,18 +4422,6 @@ msgstr ""
 
 #: features/header/templates/admin/header.php:62
 msgid "Keeps the menu open below the logo and scrolls sideways."
-msgstr ""
-
-#: features/header/templates/admin/header.php:82
-msgid "The main branding and navigation area at the top of every page."
-msgstr ""
-
-#: features/header/templates/admin/header.php:86
-msgid "Header Aside"
-msgstr ""
-
-#: features/header/templates/admin/header.php:87
-msgid "A secondary content area for the header area."
 msgstr ""
 
 #: features/header/templates/admin/logo.php:7
@@ -4299,42 +4570,42 @@ msgstr ""
 msgid "Featured image"
 msgstr ""
 
-#: features/layout/admin.php:182
-#: features/layout/admin.php:195
+#: features/layout/admin.php:183
+#: features/layout/admin.php:196
 msgid "Show on left"
 msgstr ""
 
-#: features/layout/admin.php:183
-#: features/layout/admin.php:194
+#: features/layout/admin.php:184
+#: features/layout/admin.php:195
 msgid "Show on right"
 msgstr ""
 
-#: features/layout/admin.php:201
+#: features/layout/admin.php:202
 msgid "Closed by default"
 msgstr ""
 
-#: features/layout/admin.php:202
+#: features/layout/admin.php:203
 msgid "Opened by default"
 msgstr ""
 
-#: features/layout/admin.php:285
+#: features/layout/admin.php:294
 msgid "Archive"
 msgstr ""
 
-#: features/layout/admin.php:286
+#: features/layout/admin.php:295
 msgid "Categories"
 msgstr ""
 
-#: features/layout/admin.php:337
+#: features/layout/admin.php:346
 msgid "Header, sidebar, footer and content options"
 msgstr ""
 
-#: features/layout/admin.php:392
+#: features/layout/admin.php:400
 #: features/layout/templates/admin/layout.php:231
 msgid "Remove <b>Post Nav</b>"
 msgstr ""
 
-#: features/layout/admin.php:395
+#: features/layout/admin.php:403
 msgid "Add <b>Post Nav</b>"
 msgstr ""
 
@@ -4445,11 +4716,11 @@ msgstr ""
 
 #: features/layout/templates/admin/layout.php:160
 #: features/layout/templates/admin/layout.php:164
-msgid "Remove <b>Content Box</b>"
+msgid "Remove <b>Content Area</b>"
 msgstr ""
 
 #: features/layout/templates/admin/layout.php:165
-msgid "Show <b>Content Box</b>"
+msgid "Show <b>Content Area</b>"
 msgstr ""
 
 #: features/layout/templates/admin/layout.php:170
@@ -4497,8 +4768,8 @@ msgstr ""
 msgid "Add <b>Author Box</b>"
 msgstr ""
 
-#: features/layout/templates/admin/layout.php:238
-msgid "Use default style"
+#: features/layout/templates/admin/layout.php:242
+msgid "Show <b>Box Style</b>"
 msgstr ""
 
 #: features/loop/admin.php:17
@@ -4534,19 +4805,19 @@ msgid "Hide content"
 msgstr ""
 
 #: features/loop/admin.php:72
-#: features/page-cta/functions.php:125
-#: features/page-title/functions.php:144
+#: features/page-cta/functions.php:148
+#: features/page-title/functions.php:203
 msgid "Before Title"
 msgstr ""
 
 #: features/loop/admin.php:73
-#: features/page-title/functions.php:145
+#: features/page-title/functions.php:204
 msgid "Inside Title"
 msgstr ""
 
 #: features/loop/admin.php:74
 #: features/page-cta/templates/admin/page-cta.php:16
-#: features/page-title/functions.php:146
+#: features/page-title/functions.php:205
 msgid "After Title"
 msgstr ""
 
@@ -4700,39 +4971,43 @@ msgstr ""
 msgid "Leave a Comment"
 msgstr ""
 
-#: features/loop/functions.php:265
+#: features/loop/functions.php:293
 msgid "Article view (default)"
 msgstr ""
 
-#: features/loop/functions.php:266
+#: features/loop/functions.php:294
 msgid "A traditional blog with a flexible layout and styles."
 msgstr ""
 
-#: features/loop/functions.php:269
+#: features/loop/functions.php:297
 msgid "List view"
 msgstr ""
 
-#: features/loop/functions.php:270
+#: features/loop/functions.php:298
 msgid "A simple list with a condensed post listing."
 msgstr ""
 
-#: features/loop/functions.php:275
+#: features/loop/functions.php:303
 msgid "Timeline"
 msgstr ""
 
-#: features/loop/functions.php:276
+#: features/loop/functions.php:304
 msgid "A chronological timeline layout perfect for status updates and activity streams."
 msgstr ""
 
-#: features/loop/functions.php:319
+#: features/loop/functions.php:346
+msgid "Box style"
+msgstr ""
+
+#: features/loop/functions.php:347
 msgid "Border style"
 msgstr ""
 
-#: features/loop/functions.php:320
+#: features/loop/functions.php:348
 msgid "No style"
 msgstr ""
 
-#: features/loop/functions.php:453
+#: features/loop/functions.php:513
 #: features/loop/templates/admin/loop.php:351
 msgid "Continue reading &rarr;"
 msgstr ""
@@ -5182,19 +5457,19 @@ msgstr ""
 msgid "Remove overlay"
 msgstr ""
 
-#: features/page-cover/admin.php:115
+#: features/page-cover/admin.php:119
 msgid "Apply to all <strong>Posts</strong>"
 msgstr ""
 
-#: features/page-cover/admin.php:116
+#: features/page-cover/admin.php:120
 msgid "Show <strong>Excerpt</strong> in Post Titles"
 msgstr ""
 
-#: features/page-cover/functions.php:137
+#: features/page-cover/functions.php:191
 msgid "Upload Image"
 msgstr ""
 
-#: features/page-cover/functions.php:146
+#: features/page-cover/functions.php:200
 msgid "Overlay Color"
 msgstr ""
 
@@ -5218,17 +5493,46 @@ msgstr ""
 msgid "Single posts"
 msgstr ""
 
-#: features/page-cta/functions.php:118
+#: features/page-cta/functions.php:111
+#: features/page-cta/functions.php:212
+msgid "Buttons or text links."
+msgstr ""
+
+#: features/page-cta/functions.php:123
+msgid "Your own HTML, like a form embed code."
+msgstr ""
+
+#: features/page-cta/functions.php:141
 msgid "CTA Type"
 msgstr ""
 
-#: features/page-cta/functions.php:126
-#: features/page-title/functions.php:147
+#: features/page-cta/functions.php:149
+#: features/page-title/functions.php:206
 msgid "Title Aside"
 msgstr ""
 
-#: features/page-cta/templates/admin/page-cta.php:7
-msgid "None"
+#: features/page-cta/functions.php:154
+msgid "Lede"
+msgstr ""
+
+#: features/page-cta/functions.php:166
+msgid "Note below"
+msgstr ""
+
+#: features/page-cta/templates/admin/page-cta.php:49
+msgid "Message"
+msgstr ""
+
+#: features/page-cta/templates/admin/page-cta.php:51
+msgid "Optional words shown with your form or buttons."
+msgstr ""
+
+#: features/page-cta/templates/admin/page-cta.php:70
+msgid "No spam. Unsubscribe anytime."
+msgstr ""
+
+#: features/page-cta/templates/admin/page-cta.php:71
+msgid "Shows at the very bottom."
 msgstr ""
 
 #: features/page-title/admin.php:37
@@ -5256,13 +5560,17 @@ msgstr ""
 msgid "No icon"
 msgstr ""
 
-#: features/page-title/functions.php:16
+#: features/page-title/functions.php:18
 msgid "Page not found"
 msgstr ""
 
-#: features/page-title/functions.php:36
+#: features/page-title/functions.php:49
 #, php-format
 msgid "Search Results For: %s"
+msgstr ""
+
+#: features/page-title/text.php:47
+msgid "The main <code>h1</code> title on this page. Leave blank to use the post title."
 msgstr ""
 
 #: features/wordpress.php:193
@@ -5271,6 +5579,10 @@ msgstr ""
 
 #: features/wordpress.php:211
 msgid "Sorry, you are not allowed to make posts sticky."
+msgstr ""
+
+#: functions/design-functions.php:51
+msgid "Outline"
 msgstr ""
 
 #: functions/page-functions.php:28
@@ -5386,57 +5698,53 @@ msgstr ""
 msgid "Toggle Panel"
 msgstr ""
 
-#: marketers-delight.php:266
-msgid "Header Menu"
-msgstr ""
-
-#: marketers-delight.php:267
+#: marketers-delight.php:308
 msgid "Header Menu (logged-in users only)"
 msgstr ""
 
-#: marketers-delight.php:268
+#: marketers-delight.php:309
 msgid "Main Menu"
 msgstr ""
 
-#: marketers-delight.php:333
+#: marketers-delight.php:374
 msgid "Twitter username (without @)"
 msgstr ""
 
-#: marketers-delight.php:347
+#: marketers-delight.php:388
 msgid "Sidebar: Default"
 msgstr ""
 
-#: marketers-delight.php:348
+#: marketers-delight.php:389
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: marketers-delight.php:359
+#: marketers-delight.php:400
 #, php-format
 msgid "Sidebar: %s"
 msgstr ""
 
-#: marketers-delight.php:369
+#: marketers-delight.php:410
 msgid "Panel: Default"
 msgstr ""
 
-#: marketers-delight.php:370
+#: marketers-delight.php:411
 msgid "The default panel used around your site."
 msgstr ""
 
-#: marketers-delight.php:381
+#: marketers-delight.php:422
 #, php-format
 msgid "Panel: %s"
 msgstr ""
 
-#: marketers-delight.php:393
+#: marketers-delight.php:434
 #, php-format
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: marketers-delight.php:404
+#: marketers-delight.php:445
 msgid "Footer Copy"
 msgstr ""
 
-#: marketers-delight.php:405
+#: marketers-delight.php:446
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
