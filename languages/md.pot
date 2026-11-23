@@ -2,14 +2,14 @@
 # This file is distributed under the GNU General Public License v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Marketers Delight 6.2.3\n"
+"Project-Id-Version: Marketers Delight 6.2.4\n"
 "Report-Msgid-Bugs-To: https://marketersdelight.com/\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-23T19:17:34+00:00\n"
+"POT-Creation-Date: 2026-11-23T19:17:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: md\n"
@@ -95,36 +95,46 @@ msgstr ""
 msgid "Keep at the top of %s"
 msgstr ""
 
-#: admin/admin.php:531
+#: admin/admin.php:521
+#: admin/dropins/actions.php:208
+#: api/dropins/upgrader-skin.php:68
+msgid "Go to Drop-ins"
+msgstr ""
+
+#: admin/admin.php:523
+msgid "Your X profile and other social profiles are moving to the Author Extras Drop-in, which adds YouTube, Instagram and more to the author box."
+msgstr ""
+
+#: admin/admin.php:551
 msgid "Updating MD will lose any customizations you\\'ve made to the core files. Be sure to backup any changes to a Child Theme before updating. 'Cancel' to stop, 'OK' to update."
 msgstr ""
 
-#: admin/admin.php:554
+#: admin/admin.php:574
 #, php-format
 msgid "Ready to update %s %2s?"
 msgstr ""
 
-#: admin/admin.php:555
+#: admin/admin.php:575
 msgid "Here are some resources to help you:"
 msgstr ""
 
-#: admin/admin.php:556
+#: admin/admin.php:576
 msgid "Read the changelog"
 msgstr ""
 
-#: admin/admin.php:557
+#: admin/admin.php:577
 msgid "See what's new in MD"
 msgstr ""
 
-#: admin/admin.php:558
+#: admin/admin.php:578
 msgid "Get help at support"
 msgstr ""
 
-#: admin/admin.php:559
+#: admin/admin.php:579
 msgid "When in doubt, make a backup your website before proceeding."
 msgstr ""
 
-#: admin/admin.php:560
+#: admin/admin.php:580
 msgid "Close"
 msgstr ""
 
@@ -144,14 +154,14 @@ msgstr ""
 
 #: admin/dashboard.php:31
 #: admin/dropins/list-table.php:396
-#: admin/templates/fields/admin-header.php:15
+#: admin/templates/fields/admin-header.php:21
 #: features/blog.php:22
-#: features/byline/admin.php:331
 #: features/byline/admin.php:350
-#: features/byline/admin.php:374
+#: features/byline/admin.php:369
+#: features/byline/admin.php:393
 #: features/header/templates/admin/header.php:11
 #: features/layout/templates/admin/layout-toggle.php:34
-#: features/loop/templates/admin/loop.php:196
+#: features/loop/templates/admin/loop.php:202
 #: features/page-cover/templates/admin/page-cover.php:27
 msgid "Settings"
 msgstr ""
@@ -311,19 +321,19 @@ msgid "Color"
 msgstr ""
 
 #: admin/design.php:74
-#: features/loop/templates/admin/loop.php:167
+#: features/loop/templates/admin/loop.php:173
 msgid "Name"
 msgstr ""
 
 #: admin/design.php:78
-#: api/icons.php:176
+#: api/icons.php:180
 msgid "Key"
 msgstr ""
 
 #: admin/design.php:114
 #: admin/templates/fields/page.php:17
 #: features/layout/templates/admin/layout.php:157
-#: features/loop/templates/admin/loop.php:236
+#: features/loop/templates/admin/loop.php:242
 msgid "Content"
 msgstr ""
 
@@ -333,7 +343,7 @@ msgstr ""
 
 #: admin/design.php:119
 #: admin/templates/typography.php:113
-#: api/icons.php:283
+#: api/icons.php:287
 #: features/layout/admin.php:178
 msgid "Sidebar"
 msgstr ""
@@ -447,8 +457,8 @@ msgid "Text"
 msgstr ""
 
 #: admin/design.php:231
-#: api/fields/fields.php:693
-#: features/loop/templates/admin/loop.php:69
+#: api/fields/fields.php:686
+#: features/loop/templates/admin/loop.php:75
 msgid "Title"
 msgstr ""
 
@@ -492,11 +502,6 @@ msgstr ""
 #: admin/dropins/actions.php:205
 #, php-format
 msgid "Activate %s"
-msgstr ""
-
-#: admin/dropins/actions.php:208
-#: api/dropins/upgrader-skin.php:68
-msgid "Go to Drop-ins"
 msgstr ""
 
 #: admin/dropins/actions.php:223
@@ -741,7 +746,7 @@ msgid "Description"
 msgstr ""
 
 #: admin/dropins/list-table.php:214
-#: features/loop/admin.php:78
+#: features/loop/admin.php:83
 msgid "All"
 msgstr ""
 
@@ -774,7 +779,7 @@ msgstr ""
 #: admin/dropins/list-table.php:266
 #: admin/dropins/list-table.php:406
 #: admin/templates/fields/builder-field.php:35
-#: admin/templates/fields/group.php:93
+#: admin/templates/fields/group.php:94
 msgid "Delete"
 msgstr ""
 
@@ -1109,6 +1114,7 @@ msgstr ""
 
 #: admin/templates/design.php:99
 #: api/design/colors.php:302
+#: features/header/functions.php:246
 #: functions/design-functions.php:43
 msgid "Secondary"
 msgstr ""
@@ -1178,7 +1184,7 @@ msgid "Header bar colors"
 msgstr ""
 
 #: admin/templates/design.php:180
-#: marketers-delight.php:307
+#: marketers-delight.php:308
 msgid "Header Menu"
 msgstr ""
 
@@ -1188,7 +1194,7 @@ msgstr ""
 
 #: admin/templates/design.php:185
 #: admin/templates/fields/builder-menu.php:6
-#: api/icons.php:209
+#: api/icons.php:213
 #: features/header/admin.php:103
 #: features/header/functions.php:132
 msgid "Menu"
@@ -1306,7 +1312,7 @@ msgid "Requires MD"
 msgstr ""
 
 #: admin/templates/dropins/list.php:44
-#: api/collections/collections.php:54
+#: api/collections/collections.php:50
 msgid "Status"
 msgstr ""
 
@@ -1383,22 +1389,22 @@ msgid "Enter label..."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:26
-#: admin/templates/fields/group.php:82
+#: admin/templates/fields/group.php:83
 msgid "Add subtitle (optional)"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:32
-#: admin/templates/fields/group.php:89
+#: admin/templates/fields/group.php:90
 msgid "Click here to reorder this group."
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:37
-#: admin/templates/fields/group.php:95
+#: admin/templates/fields/group.php:96
 msgid "Reorder"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:38
-#: admin/templates/fields/group.php:97
+#: admin/templates/fields/group.php:98
 msgid "Click to toggle"
 msgstr ""
 
@@ -1411,7 +1417,7 @@ msgid "On categories"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:67
-msgid "On page 2+"
+msgid "On page 2+ and filtered views"
 msgstr ""
 
 #: admin/templates/fields/builder-field.php:71
@@ -1448,7 +1454,7 @@ msgstr ""
 
 #: admin/templates/fields/builder-search.php:9
 #: admin/templates/fields/link.php:127
-#: features/byline/admin.php:354
+#: features/byline/admin.php:373
 msgid "Hide label"
 msgstr ""
 
@@ -1466,7 +1472,7 @@ msgid "Submit text"
 msgstr ""
 
 #: admin/templates/fields/builder-search.php:25
-#: api/icons.php:275
+#: api/icons.php:279
 #: features/header/admin.php:96
 #: features/header/admin.php:97
 #: header.php:56
@@ -1488,7 +1494,7 @@ msgid "Quick edit"
 msgstr ""
 
 #: admin/templates/fields/collection.php:17
-#: features/byline/admin.php:78
+#: features/byline/admin.php:84
 #: features/loop/templates/comment.php:36
 msgid "Edit"
 msgstr ""
@@ -1696,19 +1702,19 @@ msgstr ""
 msgid "Manage fonts"
 msgstr ""
 
-#: admin/templates/fields/group.php:45
+#: admin/templates/fields/group.php:46
 msgid "Add New"
 msgstr ""
 
-#: admin/templates/fields/group.php:76
+#: admin/templates/fields/group.php:77
 msgid "New entry..."
 msgstr ""
 
-#: admin/templates/fields/group.php:116
+#: admin/templates/fields/group.php:117
 msgid "New entry name"
 msgstr ""
 
-#: admin/templates/fields/group.php:117
+#: admin/templates/fields/group.php:118
 #: features/layout/templates/admin/layout-toggle.php:43
 msgid "Add"
 msgstr ""
@@ -1720,7 +1726,7 @@ msgid "Button"
 msgstr ""
 
 #: admin/templates/fields/link.php:21
-#: features/loop/admin.php:195
+#: features/loop/admin.php:205
 msgid "Type"
 msgstr ""
 
@@ -1807,7 +1813,7 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: admin/templates/fields/text.php:36
+#: admin/templates/fields/text.php:33
 msgid "Field cannot be edited."
 msgstr ""
 
@@ -2341,7 +2347,7 @@ msgid "%1$s doesn't have a taxonomy named %2$s."
 msgstr ""
 
 #: api/abilities/content.php:508
-#: api/collections/collections.php:730
+#: api/collections/collections.php:711
 msgid "You cannot assign these terms."
 msgstr ""
 
@@ -2693,124 +2699,124 @@ msgstr ""
 msgid "Widget %s wasn't saved: its type is missing or it refused these settings."
 msgstr ""
 
-#: api/api.php:353
+#: api/api.php:337
 #, php-format
 msgid "Add New %s"
 msgstr ""
 
-#: api/api.php:354
+#: api/api.php:338
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: api/api.php:355
+#: api/api.php:339
 #, php-format
 msgid "New %s"
 msgstr ""
 
-#: api/api.php:356
-#: api/api.php:357
-#: api/api.php:650
-#: api/api.php:652
+#: api/api.php:340
+#: api/api.php:341
+#: api/api.php:628
+#: api/api.php:630
 #, php-format
 msgid "View %s"
 msgstr ""
 
-#: api/api.php:358
+#: api/api.php:342
 #, php-format
 msgid "Search %s"
 msgstr ""
 
-#: api/api.php:359
+#: api/api.php:343
 #, php-format
 msgid "No %s found"
 msgstr ""
 
-#: api/api.php:360
+#: api/api.php:344
 #, php-format
 msgid "No %s found in trash"
 msgstr ""
 
-#: api/api.php:361
+#: api/api.php:345
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: api/api.php:362
+#: api/api.php:346
 #, php-format
 msgid "%s published."
 msgstr ""
 
-#: api/api.php:363
+#: api/api.php:347
 #, php-format
 msgid "%s published privately."
 msgstr ""
 
-#: api/api.php:364
+#: api/api.php:348
 #, php-format
 msgid "%s reverted to draft."
 msgstr ""
 
-#: api/api.php:365
+#: api/api.php:349
 #, php-format
 msgid "%s scheduled."
 msgstr ""
 
-#: api/api.php:366
+#: api/api.php:350
 #, php-format
 msgid "%s updated."
 msgstr ""
 
-#: api/api.php:420
-#: api/api.php:430
+#: api/api.php:396
+#: api/api.php:406
 #, php-format
 msgid "%s Categories"
 msgstr ""
 
-#: api/api.php:421
+#: api/api.php:397
 #, php-format
 msgid "%s Category"
 msgstr ""
 
-#: api/api.php:422
+#: api/api.php:398
 #, php-format
 msgid "Search %s Categories"
 msgstr ""
 
-#: api/api.php:423
+#: api/api.php:399
 #, php-format
 msgid "All %s Categories"
 msgstr ""
 
-#: api/api.php:424
+#: api/api.php:400
 msgid "Parent Category"
 msgstr ""
 
-#: api/api.php:425
+#: api/api.php:401
 msgid "Parent Category:"
 msgstr ""
 
-#: api/api.php:426
+#: api/api.php:402
 #, php-format
 msgid "Edit %s Category"
 msgstr ""
 
-#: api/api.php:427
+#: api/api.php:403
 #, php-format
 msgid "Update %s Category"
 msgstr ""
 
-#: api/api.php:428
+#: api/api.php:404
 #, php-format
 msgid "Add New %s Category"
 msgstr ""
 
-#: api/api.php:429
+#: api/api.php:405
 #, php-format
 msgid "New %s Category"
 msgstr ""
 
-#: api/api.php:658
+#: api/api.php:636
 #, php-format
 msgid "Edit %s Settings"
 msgstr ""
@@ -2848,96 +2854,96 @@ msgstr ""
 msgid "Invalid compiled asset filename."
 msgstr ""
 
-#: api/collections/collections.php:58
+#: api/collections/collections.php:54
 msgid "Published"
 msgstr ""
 
-#: api/collections/collections.php:59
+#: api/collections/collections.php:55
 msgid "Draft"
 msgstr ""
 
-#: api/collections/collections.php:60
+#: api/collections/collections.php:56
 msgid "Pending Review"
 msgstr ""
 
-#: api/collections/collections.php:61
+#: api/collections/collections.php:57
 msgid "Private"
 msgstr ""
 
-#: api/collections/collections.php:69
+#: api/collections/collections.php:65
 msgid "Update Date"
 msgstr ""
 
-#: api/collections/collections.php:396
+#: api/collections/collections.php:378
 #, php-format
 msgid "%s must be a valid date."
 msgstr ""
 
-#: api/collections/collections.php:399
+#: api/collections/collections.php:381
 msgid "Select a valid publication status."
 msgstr ""
 
-#: api/collections/collections.php:402
+#: api/collections/collections.php:384
 #, php-format
 msgid "%s isn't one of its options."
 msgstr ""
 
-#: api/collections/collections.php:405
+#: api/collections/collections.php:387
 msgid "You cannot assign this item to another user."
 msgstr ""
 
-#: api/collections/collections.php:422
+#: api/collections/collections.php:404
 #, php-format
 msgid "%s is required."
 msgstr ""
 
-#: api/collections/collections.php:436
-#: api/collections/collections.php:538
+#: api/collections/collections.php:418
+#: api/collections/collections.php:519
 msgid "Collection item not found."
 msgstr ""
 
-#: api/collections/collections.php:531
+#: api/collections/collections.php:512
 msgid "Collection parent not found."
 msgstr ""
 
-#: api/collections/collections.php:534
+#: api/collections/collections.php:515
 msgid "You cannot edit this Collection."
 msgstr ""
 
-#: api/collections/collections.php:541
-#: api/collections/collections.php:698
+#: api/collections/collections.php:522
+#: api/collections/collections.php:679
 msgid "You cannot modify this Collection item."
 msgstr ""
 
-#: api/collections/collections.php:553
+#: api/collections/collections.php:534
 msgid "You cannot create Collection items."
 msgstr ""
 
-#: api/collections/collections.php:562
+#: api/collections/collections.php:543
 msgid "You cannot publish Collection items."
 msgstr ""
 
-#: api/collections/collections.php:578
+#: api/collections/collections.php:559
 msgid "Publish the parent before adding Collection items."
 msgstr ""
 
-#: api/collections/collections.php:626
+#: api/collections/collections.php:607
 msgid "This site has the Trash turned off (EMPTY_TRASH_DAYS), so this would delete the item permanently."
 msgstr ""
 
-#: api/collections/collections.php:629
+#: api/collections/collections.php:610
 msgid "The Collection item could not be moved to Trash."
 msgstr ""
 
-#: api/collections/collections.php:643
+#: api/collections/collections.php:624
 msgid "The Collection item could not be restored."
 msgstr ""
 
-#: api/collections/collections.php:734
+#: api/collections/collections.php:715
 msgid "You cannot create new terms."
 msgstr ""
 
-#: api/collections/collections.php:762
+#: api/collections/collections.php:743
 msgid "Collection Item"
 msgstr ""
 
@@ -2997,10 +3003,10 @@ msgid "Half"
 msgstr ""
 
 #: api/design/theme-json.php:155
-#: features/byline/admin.php:223
-#: features/byline/admin.php:227
-#: features/byline/admin.php:238
-#: features/byline/admin.php:247
+#: features/byline/admin.php:233
+#: features/byline/admin.php:237
+#: features/byline/admin.php:248
+#: features/byline/admin.php:257
 #: features/layout/admin.php:296
 msgid "Single"
 msgstr ""
@@ -3261,7 +3267,7 @@ msgid "After headline"
 msgstr ""
 
 #: api/fields/data.php:39
-#: features/featured-media/functions.php:389
+#: features/featured-media/functions.php:447
 #: features/page-cta/functions.php:198
 msgid "Don't show"
 msgstr ""
@@ -3330,66 +3336,66 @@ msgstr ""
 msgid "Font Library"
 msgstr ""
 
-#: api/fields/fields.php:480
+#: api/fields/fields.php:478
 #, php-format
 msgid "Use default (%s)"
 msgstr ""
 
-#: api/fields/fields.php:574
+#: api/fields/fields.php:567
 msgid "Visibility"
 msgstr ""
 
-#: api/fields/fields.php:620
+#: api/fields/fields.php:613
 msgid "Edit link name..."
 msgstr ""
 
-#: api/fields/fields.php:680
-#: features/loop/admin.php:71
+#: api/fields/fields.php:673
+#: features/loop/admin.php:76
 msgid "Entry Top"
 msgstr ""
 
-#: api/fields/fields.php:681
-#: features/loop/admin.php:75
+#: api/fields/fields.php:674
+#: features/loop/admin.php:80
 msgid "Before Content"
 msgstr ""
 
-#: api/fields/fields.php:682
-#: features/loop/admin.php:76
+#: api/fields/fields.php:675
+#: features/loop/admin.php:81
 msgid "After Content"
 msgstr ""
 
-#: api/fields/fields.php:683
-#: features/loop/admin.php:77
+#: api/fields/fields.php:676
+#: features/loop/admin.php:82
 msgid "Entry Footer"
 msgstr ""
 
-#: api/fields/fields.php:689
-#: features/featured-media/functions.php:319
+#: api/fields/fields.php:682
+#: features/featured-media/functions.php:370
 #: features/page-cover/functions.php:195
 #: features/page-cta/functions.php:146
 msgid "Position"
 msgstr ""
 
-#: api/fields/fields.php:694
+#: api/fields/fields.php:687
 msgid "Entry"
 msgstr ""
 
-#: api/fields/fields.php:717
+#: api/fields/fields.php:710
 #, php-format
 msgid "%s Settings"
 msgstr ""
 
-#: api/fields/fields.php:718
+#: api/fields/fields.php:711
 #, php-format
 msgid "Adjust the global settings for the %s post type. Most settings apply to the archive page, and categories inherit these defaults. Override these settings from any Edit Category or Post screen."
 msgstr ""
 
-#: api/fields/fields.php:723
+#: api/fields/fields.php:716
 #, php-format
 msgid "%s Category Settings"
 msgstr ""
 
-#: api/fields/fields.php:724
+#: api/fields/fields.php:717
 #, php-format
 msgid "Set the defaults for every category page in the %s post type. Settings will be inherited from the post type settings, and you can override further from any Edit Category screen."
 msgstr ""
@@ -3500,246 +3506,250 @@ msgid "Exclamation (!)"
 msgstr ""
 
 #: api/icons.php:110
-msgid "Eye"
+msgid "External Link"
 msgstr ""
 
 #: api/icons.php:114
+msgid "Eye"
+msgstr ""
+
+#: api/icons.php:118
 msgid "Facebook"
 msgstr ""
 
-#: api/icons.php:119
+#: api/icons.php:123
 msgid "File"
 msgstr ""
 
-#: api/icons.php:123
+#: api/icons.php:127
 msgid "Filter"
 msgstr ""
 
-#: api/icons.php:127
+#: api/icons.php:131
 msgid "Font"
 msgstr ""
 
-#: api/icons.php:131
+#: api/icons.php:135
 msgid "Folder"
 msgstr ""
 
-#: api/icons.php:135
+#: api/icons.php:139
 msgid "Forum"
 msgstr ""
 
-#: api/icons.php:139
+#: api/icons.php:143
 msgid "Game"
 msgstr ""
 
-#: api/icons.php:143
+#: api/icons.php:147
 msgid "Gemini"
 msgstr ""
 
-#: api/icons.php:147
+#: api/icons.php:151
 msgid "GitHub"
 msgstr ""
 
-#: api/icons.php:152
+#: api/icons.php:156
 msgid "Hand"
 msgstr ""
 
-#: api/icons.php:156
+#: api/icons.php:160
 msgid "Heart"
 msgstr ""
 
-#: api/icons.php:160
+#: api/icons.php:164
 msgid "Heart Empty"
 msgstr ""
 
-#: api/icons.php:164
+#: api/icons.php:168
 msgid "Home"
 msgstr ""
 
-#: api/icons.php:168
-#: features/featured-media/functions.php:325
+#: api/icons.php:172
+#: features/featured-media/functions.php:376
 #: features/featured-media/templates/admin/featured-media.php:14
 msgid "Image"
 msgstr ""
 
-#: api/icons.php:172
+#: api/icons.php:176
 msgid "Instagram"
 msgstr ""
 
-#: api/icons.php:180
+#: api/icons.php:184
 msgid "Like"
 msgstr ""
 
-#: api/icons.php:184
+#: api/icons.php:188
 msgid "Location"
 msgstr ""
 
-#: api/icons.php:188
+#: api/icons.php:192
 #: features/header/admin.php:89
 msgid "Link"
 msgstr ""
 
-#: api/icons.php:192
+#: api/icons.php:196
 msgid "LinkedIn"
 msgstr ""
 
-#: api/icons.php:197
+#: api/icons.php:201
 msgid "Loading"
 msgstr ""
 
-#: api/icons.php:201
+#: api/icons.php:205
 msgid "Lock"
 msgstr ""
 
-#: api/icons.php:205
+#: api/icons.php:209
 msgid "Mail"
 msgstr ""
 
-#: api/icons.php:213
+#: api/icons.php:217
 msgid "Moon"
 msgstr ""
 
-#: api/icons.php:217
+#: api/icons.php:221
 msgid "Notification"
 msgstr ""
 
-#: api/icons.php:221
+#: api/icons.php:225
 msgid "OK"
 msgstr ""
 
-#: api/icons.php:226
+#: api/icons.php:230
 msgid "Pencil"
 msgstr ""
 
-#: api/icons.php:230
+#: api/icons.php:234
 msgid "Phone"
 msgstr ""
 
-#: api/icons.php:234
+#: api/icons.php:238
 msgid "Pin"
 msgstr ""
 
-#: api/icons.php:238
+#: api/icons.php:242
 msgid "Pinterest"
 msgstr ""
 
-#: api/icons.php:243
+#: api/icons.php:247
 msgid "Play"
 msgstr ""
 
-#: api/icons.php:247
+#: api/icons.php:251
 msgid "Plus"
 msgstr ""
 
-#: api/icons.php:251
+#: api/icons.php:255
 msgid "Plugin"
 msgstr ""
 
-#: api/icons.php:255
+#: api/icons.php:259
 msgid "Publish"
 msgstr ""
 
-#: api/icons.php:259
+#: api/icons.php:263
 msgid "Quote"
 msgstr ""
 
-#: api/icons.php:263
+#: api/icons.php:267
 msgid "Reddit"
 msgstr ""
 
-#: api/icons.php:267
+#: api/icons.php:271
 #: features/loop/templates/comment.php:41
 msgid "Reply"
 msgstr ""
 
-#: api/icons.php:271
+#: api/icons.php:275
 msgid "RSS"
 msgstr ""
 
-#: api/icons.php:279
+#: api/icons.php:283
 msgid "Share"
 msgstr ""
 
-#: api/icons.php:287
+#: api/icons.php:291
 msgid "Social"
 msgstr ""
 
-#: api/icons.php:291
+#: api/icons.php:295
 msgid "Stack"
 msgstr ""
 
-#: api/icons.php:295
+#: api/icons.php:299
 msgid "Star"
 msgstr ""
 
-#: api/icons.php:299
+#: api/icons.php:303
 msgid "Star Half"
 msgstr ""
 
-#: api/icons.php:303
+#: api/icons.php:307
 msgid "Star Empty"
 msgstr ""
 
-#: api/icons.php:307
+#: api/icons.php:311
 msgid "Substack"
 msgstr ""
 
-#: api/icons.php:311
+#: api/icons.php:315
 msgid "Sun"
 msgstr ""
 
-#: api/icons.php:315
+#: api/icons.php:319
 msgid "Support"
 msgstr ""
 
-#: api/icons.php:319
+#: api/icons.php:323
 msgid "Tags"
 msgstr ""
 
-#: api/icons.php:323
+#: api/icons.php:327
 msgid "Telegram"
 msgstr ""
 
-#: api/icons.php:327
+#: api/icons.php:331
 msgid "TikTok"
 msgstr ""
 
-#: api/icons.php:331
+#: api/icons.php:335
 msgid "Trophy"
 msgstr ""
 
-#: api/icons.php:335
+#: api/icons.php:339
 msgid "Twitch"
 msgstr ""
 
-#: api/icons.php:339
+#: api/icons.php:343
 msgid "User"
 msgstr ""
 
-#: api/icons.php:343
+#: api/icons.php:347
 msgid "User Add"
 msgstr ""
 
-#: api/icons.php:347
+#: api/icons.php:351
 msgid "Vimeo"
 msgstr ""
 
-#: api/icons.php:352
+#: api/icons.php:356
 msgid "Volume Up"
 msgstr ""
 
-#: api/icons.php:356
+#: api/icons.php:360
 msgid "WhatsApp"
 msgstr ""
 
-#: api/icons.php:360
+#: api/icons.php:364
 msgid "WordPress"
 msgstr ""
 
-#: api/icons.php:364
+#: api/icons.php:368
 msgid "X (Twitter)"
 msgstr ""
 
-#: api/icons.php:369
+#: api/icons.php:373
 msgid "YouTube"
 msgstr ""
 
@@ -3764,12 +3774,12 @@ msgstr ""
 msgid "These settings groups are saved to different options."
 msgstr ""
 
-#: api/save/save.php:177
+#: api/save/save.php:174
 #, php-format
 msgid "You are not allowed to change the `%s` settings, so they were left as they are."
 msgstr ""
 
-#: api/save/save.php:239
+#: api/save/save.php:288
 #, php-format
 msgid "`%s` is code, which needs an administrator who can add unfiltered HTML. It was left as it is."
 msgstr ""
@@ -3779,17 +3789,17 @@ msgstr ""
 msgid "Unknown settings scope: `%s`"
 msgstr ""
 
-#: api/save/scope.php:204
+#: api/save/scope.php:253
 #, php-format
 msgid "No settings are registered for `%s`."
 msgstr ""
 
-#: api/save/scope.php:207
+#: api/save/scope.php:256
 #, php-format
 msgid "No settings are registered for the `%1$s` taxonomy of `%2$s`."
 msgstr ""
 
-#: api/save/scope.php:259
+#: api/save/scope.php:308
 #, php-format
 msgid "Unknown settings group: `%s`"
 msgstr ""
@@ -3810,88 +3820,88 @@ msgstr ""
 msgid "Widgets"
 msgstr ""
 
-#: api/save/settings-file.php:115
+#: api/save/settings-file.php:111
 msgid "This file is too large to be an MD settings file."
 msgstr ""
 
-#: api/save/settings-file.php:120
+#: api/save/settings-file.php:116
 msgid "This file can't be read. Upload a .json file exported from Settings → Import & Export."
 msgstr ""
 
-#: api/save/settings-file.php:123
+#: api/save/settings-file.php:119
 msgid "This isn't an MD settings file."
 msgstr ""
 
-#: api/save/settings-file.php:126
+#: api/save/settings-file.php:122
 msgid "This file was made by a newer version of MD. Update MD, then upload it again."
 msgstr ""
 
-#: api/save/settings-file.php:147
+#: api/save/settings-file.php:142
 #, php-format
 msgid "The `%s` section isn't used by this version of MD."
 msgstr ""
 
-#: api/save/settings-file.php:530
+#: api/save/settings-file.php:519
 #, php-format
 msgid "The image for `%s` isn't in this site's Media Library, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:543
+#: api/save/settings-file.php:532
 #, php-format
 msgid "The image for `%s` isn't in this site's Media Library, so it was left out."
 msgstr ""
 
-#: api/save/settings-file.php:544
+#: api/save/settings-file.php:533
 #, php-format
 msgid "The menu for `%s` wasn't found on this site, so it was left as it is."
 msgstr ""
 
-#: api/save/settings-file.php:629
+#: api/save/settings-file.php:618
 #, php-format
 msgid "An entry in `%s` can't be read."
 msgstr ""
 
-#: api/save/settings-file.php:636
+#: api/save/settings-file.php:625
 #, php-format
 msgid "Settings for `%s` can't be imported."
 msgstr ""
 
-#: api/save/settings-file.php:650
+#: api/save/settings-file.php:639
 #, php-format
 msgid "`%1$s` settings for `%2$s` aren't part of %3$s, so they weren't imported."
 msgstr ""
 
-#: api/save/settings-file.php:675
+#: api/save/settings-file.php:664
 #, php-format
 msgid "`%1$s.%2$s` isn't used on this site."
 msgstr ""
 
-#: api/save/settings-file.php:790
+#: api/save/settings-file.php:779
 #, php-format
 msgid "The `%s` settings can't be imported on this site."
 msgstr ""
 
-#: api/save/validate.php:90
+#: api/save/validate.php:91
 #, php-format
 msgid "`%s` isn't a setting on this site."
 msgstr ""
 
-#: api/save/validate.php:125
+#: api/save/validate.php:129
 #, php-format
 msgid "`%1$s` isn't one of this site's options: %2$s."
 msgstr ""
 
-#: api/save/validate.php:128
+#: api/save/validate.php:132
 #, php-format
 msgid "`%s` is already its default, so nothing was saved and it keeps inheriting."
 msgstr ""
 
-#: api/save/validate.php:130
+#: api/save/validate.php:134
 #, php-format
 msgid "`%s` has a value this site can't use."
 msgstr ""
 
-#: api/save/validate.php:133
+#: api/save/validate.php:137
 #, php-format
 msgid "`%s` needs a set of values."
 msgstr ""
@@ -3940,15 +3950,15 @@ msgid "Go to previous or next page in this post"
 msgstr ""
 
 #: comments.php:33
-#: features/loop/admin.php:200
-#: features/loop/templates/admin/loop.php:424
+#: features/loop/admin.php:210
+#: features/loop/templates/admin/loop.php:444
 #: features/loop/templates/pagination.php:4
 msgid "Previous"
 msgstr ""
 
 #: comments.php:34
-#: features/loop/admin.php:204
-#: features/loop/templates/admin/loop.php:431
+#: features/loop/admin.php:214
+#: features/loop/templates/admin/loop.php:451
 #: features/loop/templates/pagination.php:6
 msgid "Next"
 msgstr ""
@@ -3966,16 +3976,8 @@ msgstr ""
 msgid "Set sitewide defaults for author archive pages."
 msgstr ""
 
-#: features/author/templates/author-box.php:32
-msgid "Follow on X"
-msgstr ""
-
-#: features/author/templates/author-box.php:40
-msgid "Visit website"
-msgstr ""
-
-#: features/author/templates/author-box.php:46
-msgid "See all posts"
+#: features/author/functions.php:41
+msgid "Written by"
 msgstr ""
 
 #: features/blog.php:42
@@ -3983,18 +3985,18 @@ msgid "Blog"
 msgstr ""
 
 #: features/blog.php:43
-#: features/loop/content.php:19
+#: features/loop/content.php:22
 #: features/page-title/document-title.php:54
 msgid "Post"
 msgstr ""
 
 #: features/byline/admin.php:30
-#: functions/template-functions.php:237
+#: functions/template-functions.php:238
 msgid "Author"
 msgstr ""
 
 #: features/byline/admin.php:37
-#: features/loop/templates/admin/loop.php:79
+#: features/loop/templates/admin/loop.php:85
 msgid "Date"
 msgstr ""
 
@@ -4011,154 +4013,162 @@ msgid "Archive tag limit"
 msgstr ""
 
 #: features/byline/admin.php:71
+msgid "Post Type"
+msgstr ""
+
+#: features/byline/admin.php:77
 msgid "Badge"
 msgstr ""
 
-#: features/byline/admin.php:93
-#: features/byline/admin.php:261
-#: features/loop/templates/admin/loop.php:300
+#: features/byline/admin.php:99
+#: features/byline/admin.php:271
+#: features/loop/templates/admin/loop.php:320
 msgid "Byline"
 msgstr ""
 
-#: features/byline/admin.php:146
+#: features/byline/admin.php:152
 msgid "New duration"
 msgstr ""
 
-#: features/byline/admin.php:150
+#: features/byline/admin.php:156
 msgid "Avatar size"
 msgstr ""
 
-#: features/byline/admin.php:154
+#: features/byline/admin.php:164
 msgid "Taxonomy"
 msgstr ""
 
-#: features/byline/admin.php:193
+#: features/byline/admin.php:203
 msgid "Replaces the post type's bylines on this taxonomy's archive pages."
 msgstr ""
 
-#: features/byline/admin.php:195
-#: features/byline/admin.php:199
-#: features/byline/admin.php:237
-#: features/byline/admin.php:242
+#: features/byline/admin.php:205
+#: features/byline/admin.php:209
+#: features/byline/admin.php:247
+#: features/byline/admin.php:252
 msgid "Archives"
 msgstr ""
 
-#: features/byline/admin.php:200
-#: features/byline/admin.php:243
+#: features/byline/admin.php:210
+#: features/byline/admin.php:253
 msgid "Byline items shown in post listing loops."
 msgstr ""
 
-#: features/byline/admin.php:207
+#: features/byline/admin.php:217
 msgid "Add byline items to the posts on author pages."
 msgstr ""
 
-#: features/byline/admin.php:209
-#: features/byline/admin.php:213
+#: features/byline/admin.php:219
+#: features/byline/admin.php:223
 msgid "Author Loop"
 msgstr ""
 
-#: features/byline/admin.php:214
+#: features/byline/admin.php:224
 msgid "Byline items shown on the primary author loop."
 msgstr ""
 
-#: features/byline/admin.php:221
+#: features/byline/admin.php:231
 msgid "Replaces the post type's Single byline on this post. Leave empty to keep it."
 msgstr ""
 
-#: features/byline/admin.php:228
+#: features/byline/admin.php:238
 msgid "Shown on this post."
 msgstr ""
 
-#: features/byline/admin.php:235
+#: features/byline/admin.php:245
 msgid "Add byline items to post listings and single posts."
 msgstr ""
 
-#: features/byline/admin.php:248
+#: features/byline/admin.php:258
 msgid "Byline items shown on single post pages."
 msgstr ""
 
-#: features/byline/admin.php:261
+#: features/byline/admin.php:271
 msgid "Author, date and other post details"
 msgstr ""
 
-#: features/byline/admin.php:266
+#: features/byline/admin.php:276
 msgid "Edit Byline"
 msgstr ""
 
-#: features/byline/admin.php:318
-msgid "days"
-msgstr ""
-
-#: features/byline/admin.php:334
-#: features/byline/admin.php:377
-msgid "Show label"
-msgstr ""
-
-#: features/byline/admin.php:335
-msgid "Show relative date"
-msgstr ""
-
-#: features/byline/admin.php:336
-msgid "Show as <strong>Last Updated</strong> date"
+#: features/byline/admin.php:323
+msgid "Show under author name"
 msgstr ""
 
 #: features/byline/admin.php:337
-msgid "Hide <strong>Last Updated</strong> if date is unchanged"
+msgid "days"
 msgstr ""
 
-#: features/byline/admin.php:351
-msgid "In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot."
+#: features/byline/admin.php:353
+#: features/byline/admin.php:396
+msgid "Show label"
+msgstr ""
+
+#: features/byline/admin.php:354
+msgid "Show relative date"
 msgstr ""
 
 #: features/byline/admin.php:355
-msgid "Show avatar"
+msgid "Show as <strong>Last Updated</strong> date"
 msgstr ""
 
 #: features/byline/admin.php:356
+msgid "Hide <strong>Last Updated</strong> if date is unchanged"
+msgstr ""
+
+#: features/byline/admin.php:370
+msgid "In a Timeline, an avatar at Entry Top takes the place of the entry&rsquo;s dot."
+msgstr ""
+
+#: features/byline/admin.php:374
+msgid "Show avatar"
+msgstr ""
+
+#: features/byline/admin.php:375
 msgid "Show author first name"
 msgstr ""
 
-#: features/byline/admin.php:378
+#: features/byline/admin.php:397
 msgid "Hide if zero comments"
 msgstr ""
 
-#: features/byline/admin.php:383
+#: features/byline/admin.php:402
 msgid "Zero comments label"
 msgstr ""
 
-#: features/byline/admin.php:414
+#: features/byline/admin.php:433
 msgid "Show all"
 msgstr ""
 
-#: features/byline/admin.php:418
+#: features/byline/admin.php:437
 msgid "Use default category"
 msgstr ""
 
-#: features/byline/admin.php:424
+#: features/byline/admin.php:443
 msgid "Defaults to 3. Enter 0 to show all tags on archives."
 msgstr ""
 
-#: features/byline/admin.php:430
+#: features/byline/admin.php:449
 msgid "Only show"
 msgstr ""
 
-#: features/byline/admin.php:433
+#: features/byline/admin.php:452
 msgid "Only show first category"
 msgstr ""
 
-#: features/byline/admin.php:440
+#: features/byline/admin.php:459
 msgid "Show links"
 msgstr ""
 
-#: features/byline/admin.php:442
+#: features/byline/admin.php:461
 msgid "Show with icon"
 msgstr ""
 
-#: features/byline/admin.php:443
+#: features/byline/admin.php:462
 msgid "Show as tags"
 msgstr ""
 
-#: features/byline/templates/author.php:21
+#: features/byline/templates/author.php:24
 msgid "by"
 msgstr ""
 
@@ -4166,7 +4176,7 @@ msgstr ""
 msgid "New!"
 msgstr ""
 
-#: features/byline/templates/category.php:72
+#: features/byline/templates/category.php:83
 #, php-format
 msgid "+%s more"
 msgstr ""
@@ -4187,6 +4197,7 @@ msgid "Published on:"
 msgstr ""
 
 #: features/byline/templates/date.php:37
+#: features/featured-media/templates/latest.php:6
 #, php-format
 msgid "%s ago"
 msgstr ""
@@ -4195,80 +4206,88 @@ msgstr ""
 msgid "Media"
 msgstr ""
 
-#: features/featured-media/functions.php:313
+#: features/featured-media/functions.php:364
 msgid "Media Type"
 msgstr ""
 
-#: features/featured-media/functions.php:330
+#: features/featured-media/functions.php:381
 msgid "Max width"
 msgstr ""
 
-#: features/featured-media/functions.php:334
+#: features/featured-media/functions.php:385
 msgid "Position on mobile"
 msgstr ""
 
-#: features/featured-media/functions.php:336
-#: features/loop/admin.php:55
+#: features/featured-media/functions.php:387
+#: features/loop/admin.php:60
 msgid "Keep beside"
 msgstr ""
 
-#: features/featured-media/functions.php:337
-#: features/loop/admin.php:56
+#: features/featured-media/functions.php:388
+#: features/loop/admin.php:61
 msgid "Hide"
 msgstr ""
 
-#: features/featured-media/functions.php:342
+#: features/featured-media/functions.php:393
 msgid "Video URL"
 msgstr ""
 
-#: features/featured-media/functions.php:346
-#: features/featured-media/templates/admin/featured-media.php:17
+#: features/featured-media/functions.php:397
+#: features/featured-media/functions.php:424
 #: features/page-cta/functions.php:116
 #: features/page-cta/functions.php:120
 msgid "Custom HTML"
 msgstr ""
 
-#: features/featured-media/functions.php:362
+#: features/featured-media/functions.php:413
 #: features/layout/templates/admin/layout.php:140
-#: features/loop/templates/admin/loop.php:252
+#: features/loop/templates/admin/loop.php:258
 msgid "Use default position"
 msgstr ""
 
-#: features/featured-media/functions.php:372
-#: features/featured-media/functions.php:375
+#: features/featured-media/functions.php:421
+msgid "Video Embed"
+msgstr ""
+
+#: features/featured-media/functions.php:427
+msgid "Latest item"
+msgstr ""
+
+#: features/featured-media/functions.php:430
+#: features/featured-media/functions.php:433
 msgid "Left"
 msgstr ""
 
-#: features/featured-media/functions.php:373
-#: features/featured-media/functions.php:376
+#: features/featured-media/functions.php:431
+#: features/featured-media/functions.php:434
 msgid "Right"
 msgstr ""
 
-#: features/featured-media/functions.php:374
+#: features/featured-media/functions.php:432
 msgid "Center"
 msgstr ""
 
-#: features/featured-media/functions.php:377
+#: features/featured-media/functions.php:435
 msgid "Above the title"
 msgstr ""
 
-#: features/featured-media/functions.php:378
+#: features/featured-media/functions.php:436
 msgid "Below the title"
 msgstr ""
 
-#: features/featured-media/functions.php:379
+#: features/featured-media/functions.php:437
 msgid "At the bottom"
 msgstr ""
 
-#: features/featured-media/functions.php:383
+#: features/featured-media/functions.php:441
 msgid "Beside title"
 msgstr ""
 
-#: features/featured-media/functions.php:384
+#: features/featured-media/functions.php:442
 msgid "Beside title and text"
 msgstr ""
 
-#: features/featured-media/functions.php:385
+#: features/featured-media/functions.php:443
 msgid "Full width"
 msgstr ""
 
@@ -4280,12 +4299,7 @@ msgstr ""
 msgid "Featured Image"
 msgstr ""
 
-#: features/featured-media/templates/admin/featured-media.php:16
-#: features/featured-media/templates/admin/featured-media.php:18
-msgid "Video Embed"
-msgstr ""
-
-#: features/featured-media/templates/admin/featured-media.php:52
+#: features/featured-media/templates/admin/featured-media.php:49
 msgid "Stack (default)"
 msgstr ""
 
@@ -4331,6 +4345,10 @@ msgstr ""
 
 #: features/header/admin.php:125
 msgid "A secondary content area for the header area."
+msgstr ""
+
+#: features/header/functions.php:246
+msgid "Main"
 msgstr ""
 
 #: features/header/logo.php:22
@@ -4785,185 +4803,193 @@ msgid "Image Size"
 msgstr ""
 
 #: features/loop/admin.php:53
+msgid "Image Ratio"
+msgstr ""
+
+#: features/loop/admin.php:58
 msgid "Mobile Image"
 msgstr ""
 
-#: features/loop/admin.php:61
+#: features/loop/admin.php:66
 msgid "Post Content"
 msgstr ""
 
-#: features/loop/admin.php:63
+#: features/loop/admin.php:68
 msgid "Show excerpt"
 msgstr ""
 
-#: features/loop/admin.php:64
+#: features/loop/admin.php:69
 msgid "Show full content"
 msgstr ""
 
-#: features/loop/admin.php:65
+#: features/loop/admin.php:70
 msgid "Hide content"
 msgstr ""
 
-#: features/loop/admin.php:72
+#: features/loop/admin.php:77
 #: features/page-cta/functions.php:148
 #: features/page-title/functions.php:203
 msgid "Before Title"
 msgstr ""
 
-#: features/loop/admin.php:73
+#: features/loop/admin.php:78
 #: features/page-title/functions.php:204
 msgid "Inside Title"
 msgstr ""
 
-#: features/loop/admin.php:74
+#: features/loop/admin.php:79
 #: features/page-cta/templates/admin/page-cta.php:16
 #: features/page-title/functions.php:205
 msgid "After Title"
 msgstr ""
 
-#: features/loop/admin.php:87
+#: features/loop/admin.php:92
 msgid "Excerpt Length"
 msgstr ""
 
-#: features/loop/admin.php:91
+#: features/loop/admin.php:96
 msgid "Excerpt More"
 msgstr ""
 
-#: features/loop/admin.php:95
+#: features/loop/admin.php:100
 msgid "Read More Text"
 msgstr ""
 
-#: features/loop/admin.php:109
+#: features/loop/admin.php:114
 msgid "Template"
 msgstr ""
 
-#: features/loop/admin.php:114
+#: features/loop/admin.php:119
 msgid "Loop type"
 msgstr ""
 
-#: features/loop/admin.php:116
+#: features/loop/admin.php:121
 msgid "Post listing (default)"
 msgstr ""
 
-#: features/loop/admin.php:117
+#: features/loop/admin.php:122
 msgid "Posts grouped by month"
 msgstr ""
 
-#: features/loop/admin.php:118
+#: features/loop/admin.php:123
 msgid "Category overview"
 msgstr ""
 
-#: features/loop/admin.php:119
+#: features/loop/admin.php:124
 msgid "List posts by category"
 msgstr ""
 
-#: features/loop/admin.php:128
-#: features/loop/templates/admin/loop.php:224
+#: features/loop/admin.php:125
+msgid "List posts by post type"
+msgstr ""
+
+#: features/loop/admin.php:138
+#: features/loop/templates/admin/loop.php:230
 msgid "Featured Posts"
 msgstr ""
 
-#: features/loop/admin.php:132
+#: features/loop/admin.php:142
 msgid "Post Columns"
 msgstr ""
 
-#: features/loop/admin.php:136
+#: features/loop/admin.php:146
 msgid "Mobile Columns"
 msgstr ""
 
-#: features/loop/admin.php:142
+#: features/loop/admin.php:152
 msgid "Posts Per Page"
 msgstr ""
 
-#: features/loop/admin.php:146
+#: features/loop/admin.php:156
 msgid "Posts Per Category"
 msgstr ""
 
-#: features/loop/admin.php:150
+#: features/loop/admin.php:160
 msgid "Categories Per Page"
 msgstr ""
 
-#: features/loop/admin.php:154
+#: features/loop/admin.php:164
 msgid "Category Columns"
 msgstr ""
 
-#: features/loop/admin.php:158
+#: features/loop/admin.php:168
 msgid "Orderby"
 msgstr ""
 
-#: features/loop/admin.php:160
+#: features/loop/admin.php:170
 msgid "Slug"
 msgstr ""
 
-#: features/loop/admin.php:161
+#: features/loop/admin.php:171
 msgid "Term ID"
 msgstr ""
 
-#: features/loop/admin.php:162
+#: features/loop/admin.php:172
 msgid "Post Count"
 msgstr ""
 
-#: features/loop/admin.php:163
+#: features/loop/admin.php:173
 msgid "Parent"
 msgstr ""
 
-#: features/loop/admin.php:168
-#: features/loop/admin.php:188
+#: features/loop/admin.php:178
+#: features/loop/admin.php:198
 msgid "Order"
 msgstr ""
 
-#: features/loop/admin.php:170
-#: features/loop/templates/admin/loop.php:88
+#: features/loop/admin.php:180
+#: features/loop/templates/admin/loop.php:94
 msgid "Descending"
 msgstr ""
 
-#: features/loop/admin.php:175
+#: features/loop/admin.php:185
 msgid "Include Categories"
 msgstr ""
 
-#: features/loop/admin.php:179
+#: features/loop/admin.php:189
 msgid "Exclude Categories"
 msgstr ""
 
-#: features/loop/admin.php:183
+#: features/loop/admin.php:193
 msgid "Order by"
 msgstr ""
 
-#: features/loop/admin.php:190
-#: features/loop/templates/admin/loop.php:175
+#: features/loop/admin.php:200
+#: features/loop/templates/admin/loop.php:181
 msgid "Ascending"
 msgstr ""
 
-#: features/loop/admin.php:208
+#: features/loop/admin.php:218
 msgid "Show CTA after"
 msgstr ""
 
-#: features/loop/admin.php:212
-#: features/loop/templates/admin/loop.php:441
+#: features/loop/admin.php:222
+#: features/loop/templates/admin/loop.php:461
 #: features/page-cta/admin.php:18
 msgid "Call to Action"
 msgstr ""
 
-#: features/loop/admin.php:217
+#: features/loop/admin.php:227
 msgid "Exclude Posts"
 msgstr ""
 
-#: features/loop/admin.php:221
+#: features/loop/admin.php:231
 msgid "Exclude Terms"
 msgstr ""
 
-#: features/loop/admin.php:225
+#: features/loop/admin.php:235
 msgid "CSS Classes"
 msgstr ""
 
-#: features/loop/admin.php:243
+#: features/loop/admin.php:253
 msgid "Show child categories"
 msgstr ""
 
-#: features/loop/admin.php:243
+#: features/loop/admin.php:253
 msgid "Hide child categories"
 msgstr ""
 
-#: features/loop/admin.php:247
+#: features/loop/admin.php:257
 msgid "Which posts show and how they look"
 msgstr ""
 
@@ -4971,44 +4997,44 @@ msgstr ""
 msgid "Leave a Comment"
 msgstr ""
 
-#: features/loop/functions.php:293
+#: features/loop/functions.php:277
 msgid "Article view (default)"
 msgstr ""
 
-#: features/loop/functions.php:294
+#: features/loop/functions.php:278
 msgid "A traditional blog with a flexible layout and styles."
 msgstr ""
 
-#: features/loop/functions.php:297
+#: features/loop/functions.php:281
 msgid "List view"
 msgstr ""
 
-#: features/loop/functions.php:298
+#: features/loop/functions.php:282
 msgid "A simple list with a condensed post listing."
 msgstr ""
 
-#: features/loop/functions.php:303
+#: features/loop/functions.php:287
 msgid "Timeline"
 msgstr ""
 
-#: features/loop/functions.php:304
+#: features/loop/functions.php:288
 msgid "A chronological timeline layout perfect for status updates and activity streams."
 msgstr ""
 
-#: features/loop/functions.php:346
+#: features/loop/functions.php:330
 msgid "Box style"
 msgstr ""
 
-#: features/loop/functions.php:347
+#: features/loop/functions.php:331
 msgid "Border style"
 msgstr ""
 
-#: features/loop/functions.php:348
+#: features/loop/functions.php:332
 msgid "No style"
 msgstr ""
 
-#: features/loop/functions.php:513
-#: features/loop/templates/admin/loop.php:351
+#: features/loop/functions.php:484
+#: features/loop/templates/admin/loop.php:371
 msgid "Continue reading &rarr;"
 msgstr ""
 
@@ -5038,7 +5064,7 @@ msgstr ""
 
 #: features/loop/templates/admin/loop.php:12
 #: features/loop/templates/admin/loop.php:23
-#: features/loop/templates/admin/loop.php:244
+#: features/loop/templates/admin/loop.php:250
 msgid "Use default"
 msgstr ""
 
@@ -5062,321 +5088,353 @@ msgstr ""
 msgid "Hide links to child categories."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:56
+#: features/loop/templates/admin/loop.php:51
+msgid "Use each post type's own look"
+msgstr ""
+
+#: features/loop/templates/admin/loop.php:53
+msgid "Only applies when this loop shows more than one post type, like a category shared by Posts and Stream."
+msgstr ""
+
+#: features/loop/templates/admin/loop.php:62
 msgid "Post Options"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:57
+#: features/loop/templates/admin/loop.php:63
 msgid "Category Options"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:63
+#: features/loop/templates/admin/loop.php:69
 msgid "Results"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:64
+#: features/loop/templates/admin/loop.php:70
 msgid "Control which posts appear and in what order."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:71
+#: features/loop/templates/admin/loop.php:77
 msgid "Last Modified"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:72
+#: features/loop/templates/admin/loop.php:78
 msgid "Comment Count"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:73
+#: features/loop/templates/admin/loop.php:79
 msgid "Menu Order"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:74
+#: features/loop/templates/admin/loop.php:80
 msgid "Random"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:78
+#: features/loop/templates/admin/loop.php:84
 msgid "Sort field."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:87
+#: features/loop/templates/admin/loop.php:93
 msgid "Sort direction."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:95
+#: features/loop/templates/admin/loop.php:101
 msgid "Items per page."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:102
+#: features/loop/templates/admin/loop.php:108
 msgid "Feature first X."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:114
+#: features/loop/templates/admin/loop.php:120
 msgid "Post IDs to leave out of this archive, separated by commas."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:122
+#: features/loop/templates/admin/loop.php:128
 msgid "Category, tag or term IDs to leave out, separated by commas."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:130
+#: features/loop/templates/admin/loop.php:136
 msgid "Add your own CSS classes to this loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:145
+#: features/loop/templates/admin/loop.php:151
 msgid "Show category sections"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:152
+#: features/loop/templates/admin/loop.php:158
 msgid "Posts per category section"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:159
+#: features/loop/templates/admin/loop.php:165
 msgid "Show category columns"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:166
+#: features/loop/templates/admin/loop.php:172
 msgid "Sort order of categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:174
+#: features/loop/templates/admin/loop.php:180
 msgid "Lowest/highest value"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:182
-#: features/loop/templates/admin/loop.php:189
+#: features/loop/templates/admin/loop.php:188
+#: features/loop/templates/admin/loop.php:195
 msgid "Comma-separated term IDs"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:198
-#: features/loop/templates/admin/loop.php:203
+#: features/loop/templates/admin/loop.php:204
+#: features/loop/templates/admin/loop.php:209
 msgid "Hide description"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:199
-#: features/loop/templates/admin/loop.php:207
+#: features/loop/templates/admin/loop.php:205
+#: features/loop/templates/admin/loop.php:213
 msgid "Show empty categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:204
+#: features/loop/templates/admin/loop.php:210
 msgid "Show description"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:208
+#: features/loop/templates/admin/loop.php:214
 msgid "Hide empty categories"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:223
+#: features/loop/templates/admin/loop.php:229
 msgid "Standard Posts"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:237
+#: features/loop/templates/admin/loop.php:243
 msgid "Configure what appears for each post in the loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:242
+#: features/loop/templates/admin/loop.php:248
 msgid "Content shown per post."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:251
+#: features/loop/templates/admin/loop.php:257
 msgid "Featured image position."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:260
+#: features/loop/templates/admin/loop.php:266
 msgid "Featured image size."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:261
+#: features/loop/templates/admin/loop.php:267
 msgid "Show full size image"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:273
+#: features/loop/templates/admin/loop.php:275
+msgid "Crop images to one shape."
+msgstr ""
+
+#: features/loop/templates/admin/loop.php:276
+msgid "Original"
+msgstr ""
+
+#: features/loop/templates/admin/loop.php:282
+msgid "Square"
+msgstr ""
+
+#: features/loop/templates/admin/loop.php:293
 msgid "Featured image on small screens."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:274
+#: features/loop/templates/admin/loop.php:294
 msgid "Stack above or below"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:283
+#: features/loop/templates/admin/loop.php:303
 msgid "Inherit Media Position"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:285
+#: features/loop/templates/admin/loop.php:305
 msgid "Use each post’s own media position."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:289
+#: features/loop/templates/admin/loop.php:309
 msgid "Inherit Page Cover"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:291
+#: features/loop/templates/admin/loop.php:311
 msgid "Show each post’s own Page Cover in this loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:301
+#: features/loop/templates/admin/loop.php:321
 msgid "Hide elements of the post byline."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:307
+#: features/loop/templates/admin/loop.php:327
 msgid "Remove Entry Top byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:308
+#: features/loop/templates/admin/loop.php:328
 msgid "Show Entry Top byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:311
+#: features/loop/templates/admin/loop.php:331
 msgid "Remove Before Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:312
+#: features/loop/templates/admin/loop.php:332
 msgid "Show Before Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:315
+#: features/loop/templates/admin/loop.php:335
 msgid "Remove Inside Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:316
+#: features/loop/templates/admin/loop.php:336
 msgid "Show Inside Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:319
+#: features/loop/templates/admin/loop.php:339
 msgid "Remove After Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:320
+#: features/loop/templates/admin/loop.php:340
 msgid "Show After Title byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:323
+#: features/loop/templates/admin/loop.php:343
 msgid "Remove Before Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:324
+#: features/loop/templates/admin/loop.php:344
 msgid "Show Before Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:327
+#: features/loop/templates/admin/loop.php:347
 msgid "Remove After Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:328
+#: features/loop/templates/admin/loop.php:348
 msgid "Show After Content byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:331
+#: features/loop/templates/admin/loop.php:351
 msgid "Remove Entry Footer byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:332
+#: features/loop/templates/admin/loop.php:352
 msgid "Show Entry Footer byline"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:335
+#: features/loop/templates/admin/loop.php:355
 msgid "Remove all bylines"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:336
+#: features/loop/templates/admin/loop.php:356
 msgid "Show bylines"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:344
+#: features/loop/templates/admin/loop.php:364
 msgid "Excerpt and links"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:345
+#: features/loop/templates/admin/loop.php:365
 msgid "Control the excerpt and read more text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:350
+#: features/loop/templates/admin/loop.php:370
 msgid "Read More link text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:357
+#: features/loop/templates/admin/loop.php:377
 msgid "Excerpt ending text."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:364
+#: features/loop/templates/admin/loop.php:384
 msgid "Length in words."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:366
+#: features/loop/templates/admin/loop.php:386
 msgid "words"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:375
+#: features/loop/templates/admin/loop.php:395
 msgid "Do not show Read More"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:378
+#: features/loop/templates/admin/loop.php:398
 msgid "Hide Read More link"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:379
+#: features/loop/templates/admin/loop.php:399
 msgid "Show Read More link"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:384
+#: features/loop/templates/admin/loop.php:404
 msgid "Do not show Excerpt More"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:387
+#: features/loop/templates/admin/loop.php:407
 msgid "Hide excerpt more"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:388
+#: features/loop/templates/admin/loop.php:408
 msgid "Show excerpt more"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:402
+#: features/loop/templates/admin/loop.php:422
+#: features/loop/templates/pagination.php:14
 msgid "Pagination"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:403
+#: features/loop/templates/admin/loop.php:423
 msgid "Choose how visitors navigate between pages of results."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:409
+#: features/loop/templates/admin/loop.php:429
 msgid "Previous/Next Links"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:413
+#: features/loop/templates/admin/loop.php:433
 msgid "The pagination style to use."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:414
+#: features/loop/templates/admin/loop.php:434
 msgid "Page Numbers"
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:423
+#: features/loop/templates/admin/loop.php:443
 msgid "Label for the previous page link."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:430
+#: features/loop/templates/admin/loop.php:450
 msgid "Label for the next page link."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:442
+#: features/loop/templates/admin/loop.php:462
 msgid "Display a call to action within the loop."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:448
+#: features/loop/templates/admin/loop.php:468
 #, php-format
 msgid "Choose a pre-made <a href=\"%s\">call to action</a>."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:449
+#: features/loop/templates/admin/loop.php:469
 msgid "Select call to action..."
 msgstr ""
 
-#: features/loop/templates/admin/loop.php:457
+#: features/loop/templates/admin/loop.php:477
 msgid "Show after this many posts."
 msgstr ""
 
-#: features/loop/templates/category-post.php:98
+#: features/loop/templates/category-post.php:19
+msgid "post"
+msgid_plural "posts"
+msgstr[0] ""
+msgstr[1] ""
+
+#: features/loop/templates/category-post.php:21
 #, php-format
-msgid "See more in %s &rarr;"
+msgid "See %1$s more %2$s"
+msgstr ""
+
+#: features/loop/templates/category-post.php:21
+#, php-format
+msgid "See more in %s"
 msgstr ""
 
 #: features/loop/templates/comment.php:3
@@ -5392,10 +5450,6 @@ msgstr ""
 msgid "Undated"
 msgstr ""
 
-#: features/loop/templates/pagination.php:14
-msgid "Previous and next pages"
-msgstr ""
-
 #: features/loop/templates/post-nav.php:1
 msgid "Previous and next posts"
 msgstr ""
@@ -5408,6 +5462,11 @@ msgstr ""
 #: features/loop/templates/post-nav.php:37
 #, php-format
 msgid "Next %s"
+msgstr ""
+
+#: features/loop/templates/type-posts.php:54
+#, php-format
+msgid "See all %s &rarr;"
 msgstr ""
 
 #: features/page-cover/admin.php:17
@@ -5597,96 +5656,96 @@ msgstr ""
 msgid "Get Access"
 msgstr ""
 
-#: functions/template-functions.php:23
+#: functions/template-functions.php:24
 msgid "Scroll left"
 msgstr ""
 
-#: functions/template-functions.php:27
+#: functions/template-functions.php:28
 msgid "Scroll right"
 msgstr ""
 
-#: functions/template-functions.php:167
+#: functions/template-functions.php:168
 msgid "Category name"
 msgstr ""
 
-#: functions/template-functions.php:168
+#: functions/template-functions.php:169
 msgid "Category description"
 msgstr ""
 
-#: functions/template-functions.php:169
+#: functions/template-functions.php:170
 msgid "Category URL"
 msgstr ""
 
-#: functions/template-functions.php:170
+#: functions/template-functions.php:171
 msgid "Category slug"
 msgstr ""
 
-#: functions/template-functions.php:171
+#: functions/template-functions.php:172
 msgid "Total posts in category"
 msgstr ""
 
-#: functions/template-functions.php:172
+#: functions/template-functions.php:173
 msgid "Total published posts"
 msgstr ""
 
-#: functions/template-functions.php:173
+#: functions/template-functions.php:174
 msgid "Taxonomy label"
 msgstr ""
 
-#: functions/template-functions.php:174
-#: functions/template-functions.php:223
+#: functions/template-functions.php:175
+#: functions/template-functions.php:224
 msgid "Post type singular label"
 msgstr ""
 
-#: functions/template-functions.php:175
+#: functions/template-functions.php:176
 msgid "Post type plural label"
 msgstr ""
 
-#: functions/template-functions.php:176
+#: functions/template-functions.php:177
 msgid "Parent category name"
 msgstr ""
 
-#: functions/template-functions.php:216
+#: functions/template-functions.php:217
 msgid "Author display name"
 msgstr ""
 
-#: functions/template-functions.php:217
+#: functions/template-functions.php:218
 msgid "Author label"
 msgstr ""
 
-#: functions/template-functions.php:218
+#: functions/template-functions.php:219
 msgid "Author archive URL"
 msgstr ""
 
-#: functions/template-functions.php:219
+#: functions/template-functions.php:220
 msgid "Total posts by this author"
 msgstr ""
 
-#: functions/template-functions.php:222
+#: functions/template-functions.php:223
 msgid "Post type plural name"
 msgstr ""
 
-#: functions/template-functions.php:224
+#: functions/template-functions.php:225
 msgid "Archive URL"
 msgstr ""
 
-#: functions/template-functions.php:225
+#: functions/template-functions.php:226
 msgid "Total posts"
 msgstr ""
 
-#: functions/template-functions.php:274
+#: functions/template-functions.php:275
 msgid "Logged in users only"
 msgstr ""
 
-#: functions/template-functions.php:278
+#: functions/template-functions.php:279
 msgid "Logged out users only"
 msgstr ""
 
-#: functions/template-functions.php:282
+#: functions/template-functions.php:283
 msgid "Show on desktop only"
 msgstr ""
 
-#: functions/template-functions.php:286
+#: functions/template-functions.php:287
 msgid "Show on mobile only"
 msgstr ""
 
@@ -5698,53 +5757,53 @@ msgstr ""
 msgid "Toggle Panel"
 msgstr ""
 
-#: marketers-delight.php:308
+#: marketers-delight.php:309
 msgid "Header Menu (logged-in users only)"
 msgstr ""
 
-#: marketers-delight.php:309
+#: marketers-delight.php:310
 msgid "Main Menu"
 msgstr ""
 
-#: marketers-delight.php:374
-msgid "Twitter username (without @)"
+#: marketers-delight.php:393
+msgid "X username or URL"
 msgstr ""
 
-#: marketers-delight.php:388
+#: marketers-delight.php:407
 msgid "Sidebar: Default"
 msgstr ""
 
-#: marketers-delight.php:389
+#: marketers-delight.php:408
 msgid "The default sidebar used around your site."
 msgstr ""
 
-#: marketers-delight.php:400
+#: marketers-delight.php:419
 #, php-format
 msgid "Sidebar: %s"
 msgstr ""
 
-#: marketers-delight.php:410
+#: marketers-delight.php:429
 msgid "Panel: Default"
 msgstr ""
 
-#: marketers-delight.php:411
+#: marketers-delight.php:430
 msgid "The default panel used around your site."
 msgstr ""
 
-#: marketers-delight.php:422
+#: marketers-delight.php:441
 #, php-format
 msgid "Panel: %s"
 msgstr ""
 
-#: marketers-delight.php:434
+#: marketers-delight.php:453
 #, php-format
 msgid "You can create up to 3 columns of content in your site's footer. This is column %s."
 msgstr ""
 
-#: marketers-delight.php:445
+#: marketers-delight.php:464
 msgid "Footer Copy"
 msgstr ""
 
-#: marketers-delight.php:446
+#: marketers-delight.php:465
 msgid "Add text and site links to the bottom of the site footer."
 msgstr ""
